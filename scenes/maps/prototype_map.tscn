@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bq55cobk06e7p"]
+
+[ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://resources/sprites/tiles/tiles1.png" id="1_hub15"]
+[ext_resource type="PackedScene" uid="uid://7ht0084ykv43" path="res://scenes/entities/Player.tscn" id="2_iv6y7"]
+[ext_resource type="PackedScene" uid="uid://dosymipkljcjg" path="res://scenes/entities/NPCPrototype.tscn" id="3_0vgif"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2gieu"]
+texture = ExtResource("1_hub15")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+0:0/0/z_index = -1
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0 = 0
+1:0/0/z_index = -1
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, -24, 24, 24, 24, 24, -24)
+
+[sub_resource type="TileSet" id="TileSet_51rpb"]
+tile_size = Vector2i(48, 48)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_2gieu")
+
+[node name="prototype_map" type="Node2D"]
+y_sort_enabled = true
+
+[node name="TileMap" type="TileMap" parent="."]
+texture_filter = 1
+tile_set = SubResource("TileSet_51rpb")
+cell_quadrant_size = 48
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 65535, 0, 0, 65534, 0, 0, -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 1, 0, 0, 65533, 0, 0, -3, 0, 0, -65539, 0, 0, -65538, 0, 0, -65537, 0, 0, -131072, 0, 0, -131071, 0, 0, -131070, 0, 0, -65534, 0, 0, 2, 0, 0, 65538, 0, 0, 65537, 0, 0, 65536, 0, 0, 131071, 0, 0, 131070, 0, 0, 131069, 0, 0, 131068, 0, 0, 65532, 0, 0, -4, 0, 0, -65540, 0, 0, -131069, 0, 0, -65533, 0, 0, 3, 0, 0, 65539, 0, 0, -196605, 65536, 0, -196606, 65536, 0, -196607, 65536, 0, -196608, 65536, 0, -131073, 65536, 0, -131074, 65536, 0, -196610, 65536, 0, -196611, 65536, 0, -196612, 65536, 0, -131076, 65536, 0, -131075, 65536, 0, -196609, 65536, 0, -262144, 65536, 0, -262143, 65536, 0, -262142, 65536, 0, -262141, 65536, 0, -327677, 65536, 0, -327678, 65536, 0, -327679, 65536, 0, -327680, 65536, 0, -262145, 65536, 0, -262146, 65536, 0, -262147, 65536, 0, -262148, 65536, 0, -327684, 65536, 0, -327683, 65536, 0, -327682, 65536, 0, -327681, 65536, 0, -393216, 65536, 0, -393215, 65536, 0, -393214, 65536, 0, -393213, 65536, 0)
+
+[node name="Player" parent="." instance=ExtResource("2_iv6y7")]
+position = Vector2(0, 8)
+
+[node name="NPCPrototype" parent="." instance=ExtResource("3_0vgif")]
+position = Vector2(104, -88)

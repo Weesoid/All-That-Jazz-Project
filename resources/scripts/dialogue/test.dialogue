@@ -1,0 +1,5 @@
+~ start
+set Globals.player_can_move = false
+Let's have gay sex!!
+set Globals.player_can_move = true
+=> END
