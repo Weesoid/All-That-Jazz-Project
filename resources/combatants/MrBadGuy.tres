@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Combatant" load_steps=2 format=3 uid="uid://52uvvg4r73c1"]
+
+[ext_resource type="Script" path="res://scenes/gameplay/combat/Combatant.gd" id="1_vmbte"]
+
+[resource]
+script = ExtResource("1_vmbte")
+NAME = "MR BAD GUY SR."
+SPRITE_NAME = "BADGUY.png"
+HEALTH = 125
+IS_PLAYER_UNIT = false
+metadata/_editor_prop_ptr_SPRITE = null

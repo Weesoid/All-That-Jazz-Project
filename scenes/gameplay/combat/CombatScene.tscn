@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://l30ltulet6to"]
+
+[ext_resource type="Script" path="res://resources/scripts/CombatScript.gd" id="1_d41fb"]
+[ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://resources/images/battle_bg.png" id="1_e18k5"]
+[ext_resource type="Resource" uid="uid://52uvvg4r73c1" path="res://resources/combatants/MrBadGuy.tres" id="2_s4eq7"]
+[ext_resource type="Resource" uid="uid://mv8dv1iwga11" path="res://resources/combatants/DudeGuy.tres" id="3_7djii"]
+[ext_resource type="Resource" uid="uid://5luhac2x72rs" path="res://resources/combatants/MrPlayerHelper.tres" id="4_c8kqd"]
+
+[node name="CombatScene" type="Node2D"]
+script = ExtResource("1_d41fb")
+COMBATANTS = Array[Resource]([ExtResource("2_s4eq7"), ExtResource("3_7djii"), ExtResource("4_c8kqd")])
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("1_e18k5")
+
+[node name="Interface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="PlayerPanel" type="Panel" parent="Interface"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -174.0
+offset_right = 576.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ActionPanel" type="VBoxContainer" parent="Interface/PlayerPanel"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_right = 216.0
+grow_vertical = 2
+
+[node name="Attack" type="Button" parent="Interface/PlayerPanel/ActionPanel"]
+layout_mode = 2
+text = "ATTACK"
+
+[node name="Skills" type="Button" parent="Interface/PlayerPanel/ActionPanel"]
+layout_mode = 2
+text = "SKILLS"
+
+[node name="Escape" type="Button" parent="Interface/PlayerPanel/ActionPanel"]
+layout_mode = 2
+text = "ABSCOND"
+
+[node name="TeamContainer" type="HBoxContainer" parent="Interface/PlayerPanel"]
+layout_mode = 0
+offset_left = 216.0
+offset_right = 1152.0
+offset_bottom = 174.0
+
+[node name="EnemyContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 136.0
+offset_right = 1152.0
+offset_bottom = 455.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="DebugTimer" type="Timer" parent="."]
+
+[node name="CombatLog" type="Label" parent="."]
+offset_right = 1152.0
+offset_bottom = 51.0
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Interface/PlayerPanel/ActionPanel/Attack" to="." method="_on_attack_pressed"]
+[connection signal="timeout" from="DebugTimer" to="." method="_on_debug_timer_timeout"]

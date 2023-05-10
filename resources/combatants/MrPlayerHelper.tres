@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Combatant" load_steps=2 format=3 uid="uid://5luhac2x72rs"]
+
+[ext_resource type="Script" path="res://scenes/gameplay/combat/Combatant.gd" id="1_spetg"]
+
+[resource]
+script = ExtResource("1_spetg")
+NAME = "FRIEND"
+SPRITE_NAME = "Fremd.png"
+HEALTH = 25
+IS_PLAYER_UNIT = true

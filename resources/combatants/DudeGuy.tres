@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Combatant" load_steps=2 format=3 uid="uid://mv8dv1iwga11"]
+
+[ext_resource type="Script" path="res://scenes/gameplay/combat/Combatant.gd" id="1_m1r7v"]
+
+[resource]
+script = ExtResource("1_m1r7v")
+NAME = "The Slay Master"
+SPRITE_NAME = "1Dog.png"
+HEALTH = 999
+IS_PLAYER_UNIT = false
