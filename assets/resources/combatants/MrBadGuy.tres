@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Combatant" load_steps=2 format=3 uid="uid://c1oyttsxaf2ft"]
+
+[ext_resource type="Script" path="res://assets/resources/Combatant.gd" id="1_vmbte"]
+
+[resource]
+script = ExtResource("1_vmbte")
+NAME = "MR BAD GUY SR."
+SPRITE_NAME = "MrBadGuy"
+IS_PLAYER_UNIT = false
+COUNT = 2
+AI_PACKAGE_NAME = ""
+STAT_HEALTH = 0
+STAT_SPEED = 2
+STAT_BRAWN = 0
+STAT_WIT = 0

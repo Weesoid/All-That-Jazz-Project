@@ -1,8 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://7ht0084ykv43"]
+[gd_scene load_steps=15 format=3 uid="uid://dca68dkoai3bu"]
 
-[ext_resource type="Script" path="res://resources/scripts/Player.gd" id="1_mngvk"]
-[ext_resource type="Texture2D" uid="uid://cun01jq5202w" path="res://resources/sprites/characters/PLAYER_walk.png" id="2_gnjca"]
-[ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://resources/sprites/other/interact.png" id="3_loe6u"]
+[ext_resource type="Script" path="res://assets/scripts/Player.gd" id="1_mngvk"]
+[ext_resource type="Texture2D" uid="uid://cun01jq5202w" path="res://assets/media/sprites/characters/PLAYER_walk.png" id="2_8nsvb"]
+[ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/media/sprites/other/interact.png" id="3_y84xx"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -245,7 +245,7 @@ libraries = {
 }
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_gnjca")
+texture = ExtResource("2_8nsvb")
 hframes = 3
 vframes = 3
 frame = 1
@@ -271,7 +271,7 @@ debug_color = Color(0.917647, 0.996078, 0, 0.419608)
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
 position = Vector2(0.75, -28.079)
 scale = Vector2(0.546875, 0.476)
-texture = ExtResource("3_loe6u")
+texture = ExtResource("3_y84xx")
 hframes = 4
 vframes = 2
 frame = 4

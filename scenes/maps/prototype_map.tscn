@@ -1,11 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq55cobk06e7p"]
+[gd_scene load_steps=6 format=3 uid="uid://dwsudkrkfqak"]
 
-[ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://resources/sprites/tiles/tiles1.png" id="1_hub15"]
-[ext_resource type="PackedScene" uid="uid://dosymipkljcjg" path="res://scenes/entities/NPCPrototype.tscn" id="3_0vgif"]
-[ext_resource type="PackedScene" uid="uid://7ht0084ykv43" path="res://scenes/entities/Player.tscn" id="3_kxlav"]
+[ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/media/sprites/tiles/tiles1.png" id="1_388ch"]
+[ext_resource type="PackedScene" uid="uid://dji3xkmalovw6" path="res://scenes/entities/NPCPrototype.tscn" id="3_0vgif"]
+[ext_resource type="PackedScene" uid="uid://dca68dkoai3bu" path="res://scenes/entities/Player.tscn" id="3_kxlav"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2gieu"]
-texture = ExtResource("1_hub15")
+texture = ExtResource("1_388ch")
 texture_region_size = Vector2i(48, 48)
 0:0/0 = 0
 0:0/0/z_index = -1

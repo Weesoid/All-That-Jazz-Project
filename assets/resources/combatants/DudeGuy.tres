@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Combatant" load_steps=2 format=3 uid="uid://pjkpdqjl1kby"]
+
+[ext_resource type="Script" path="res://assets/resources/Combatant.gd" id="1_m1r7v"]
+
+[resource]
+script = ExtResource("1_m1r7v")
+NAME = "The Slay Master"
+SPRITE_NAME = "MrBadGuy"
+HEALTH = 999
+IS_PLAYER_UNIT = false
+COUNT = 3

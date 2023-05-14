@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvf4wn3fsxciv"]
+
+[ext_resource type="Script" path="res://assets/scripts/Interact.gd" id="1_5e03y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yxy0b"]
+radius = 12.0
+
+[node name="InteractComponent" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_5e03y")
+
+[node name="InteractionArea" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yxy0b")
+debug_color = Color(0.917647, 0.996078, 0, 0.419608)

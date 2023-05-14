@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dosymipkljcjg"]
+[gd_scene load_steps=5 format=3 uid="uid://dji3xkmalovw6"]
 
-[ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://resources/sprites/characters/NPC_unknown_entity.png" id="1_5qjcd"]
-[ext_resource type="PackedScene" uid="uid://c77hchtfgfgs6" path="res://resources/components/InteractComponent.tscn" id="2_560d3"]
-[ext_resource type="Resource" uid="uid://ck3xxe611ngg5" path="res://resources/scripts/dialogue/test.dialogue" id="3_fs6pt"]
+[ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://assets/media/sprites/characters/NPC_unknown_entity.png" id="1_ly6sy"]
+[ext_resource type="PackedScene" path="res://assets/components/InteractComponent.tscn" id="2_560d3"]
+[ext_resource type="Resource" uid="uid://ck3xxe611ngg5" path="res://assets/scripts/dialogue/test.dialogue" id="3_fs6pt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rolhl"]
 size = Vector2(21, 20)
@@ -10,7 +10,7 @@ size = Vector2(21, 20)
 [node name="NPCPrototype" type="CharacterBody2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_5qjcd")
+texture = ExtResource("1_ly6sy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 14)

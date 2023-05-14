@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgupboa4irsl8"]
+
+[ext_resource type="Script" path="res://assets/scripts/HealthBar.gd" id="1_qlv4s"]
+
+[node name="HealthBar" type="ProgressBar"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -584.0
+offset_top = -388.0
+offset_right = -568.0
+offset_bottom = -260.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 50.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("1_qlv4s")
+
+[connection signal="changed" from="." to="." method="_on_changed"]
