@@ -1,7 +1,5 @@
 extends Node
 
-static func applyEffects(target: Combatant):
-	# Calculate damage done to health with formula
-	# Apply effects / damage to the combatant
-	# Return combatant after the fact
-	pass
+static func applyEffects(caster: Combatant, target: Combatant):
+	target.STAT_HEALTH = target.STAT_HEALTH - caster.STAT_BRAWN
+

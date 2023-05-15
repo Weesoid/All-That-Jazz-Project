@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_p2wmf")
-EXPRESSION = ""
 ANIMATION_NAME = "PunchMunchie"
-TARGET = null
+ABILITY_SCRIPT_NAME = "WeaponAttack"
+TARGET_TYPE = 0
+TARGET_GROUP = 0

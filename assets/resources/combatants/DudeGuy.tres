@@ -5,7 +5,11 @@
 [resource]
 script = ExtResource("1_m1r7v")
 NAME = "The Slay Master"
-SPRITE_NAME = "MrBadGuy"
-HEALTH = 999
-IS_PLAYER_UNIT = false
-COUNT = 3
+SPRITE_NAME = "default"
+IS_PLAYER_UNIT = true
+COUNT = 1
+AI_PACKAGE_NAME = ""
+STAT_HEALTH = 5
+STAT_SPEED = 0
+STAT_BRAWN = 100
+STAT_WIT = 0

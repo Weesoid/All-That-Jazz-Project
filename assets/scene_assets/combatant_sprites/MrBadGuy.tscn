@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvq7dufxjiveu"]
+[gd_scene load_steps=11 format=3 uid="uid://bvq7dufxjiveu"]
 
 [ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://assets/media/sprites/combat_characters/BadGuyJr.png" id="1_p22vy"]
 [ext_resource type="PackedScene" uid="uid://dgupboa4irsl8" path="res://assets/components/HealthBarComponent.tscn" id="2_3whq3"]
+[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/media/sounds/hurt.wav" id="3_3lxqd"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"
@@ -70,6 +71,18 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.0, -0.74002, 0.315905, -0.528835, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../AudioStreamPlayer:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_7atq3"]
@@ -141,6 +154,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector2(1, 1)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../AudioStreamPlayer:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5k78l"]
 _data = {
@@ -171,3 +196,6 @@ root_node = NodePath("../Sprite")
 libraries = {
 "": SubResource("AnimationLibrary_5k78l")
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_3lxqd")

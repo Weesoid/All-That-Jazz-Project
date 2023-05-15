@@ -1,13 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://br7nob7tjhb37"]
+[gd_scene load_steps=6 format=3 uid="uid://br7nob7tjhb37"]
 
 [ext_resource type="Script" path="res://assets/scripts/CombatScript.gd" id="1_wsh4n"]
 [ext_resource type="Resource" uid="uid://c1oyttsxaf2ft" path="res://assets/resources/combatants/MrBadGuy.tres" id="2_srv51"]
+[ext_resource type="Resource" uid="uid://pjkpdqjl1kby" path="res://assets/resources/combatants/DudeGuy.tres" id="4_cbhqb"]
 [ext_resource type="Resource" uid="uid://d2wutdvn5pklr" path="res://assets/resources/combatants/MrPlayerHelper.tres" id="4_hwo7j"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/media/images/battle_bg.png" id="5_qe7f4"]
 
 [node name="CombatScene" type="Node2D"]
 script = ExtResource("1_wsh4n")
-COMBATANTS = Array[Resource("res://assets/resources/Combatant.gd")]([ExtResource("2_srv51"), ExtResource("4_hwo7j")])
+COMBATANTS = Array[Resource("res://assets/resources/Combatant.gd")]([ExtResource("2_srv51"), ExtResource("4_hwo7j"), ExtResource("4_cbhqb")])
 
 [node name="Background" type="TextureRect" parent="."]
 offset_right = 1152.0
@@ -68,6 +69,7 @@ offset_bottom = 621.0
 
 [node name="Attack" type="Button" parent="ActionPanel"]
 layout_mode = 2
+toggle_mode = true
 action_mode = 0
 text = "ATTACK"
 
@@ -84,3 +86,4 @@ layout_mode = 2
 
 [connection signal="timeout" from="DebugTimer" to="." method="_on_debug_timer_timeout"]
 [connection signal="pressed" from="ActionPanel/Attack" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="ActionPanel/Escape" to="." method="_on_escape_pressed"]

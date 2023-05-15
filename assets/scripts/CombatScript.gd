@@ -21,6 +21,8 @@ var active_index = 0
 var target_combatant: Combatant
 ## Index for the target combatant.
 var target_index = 0
+## 
+var once = true
 
 var debug_attack: Ability # Debugging purposes only
 
@@ -88,31 +90,40 @@ func _process(_delta):
 	
 ## Show player GUI and wait for them to confirm their action.
 func on_player_turn():
-	print('player turn!')
+	if checkWin():
+		print("You win!")
+		get_tree().quit()
+		
+	#print('player turn!')
 	$ActionPanel.show()
+	$ActionPanel.position = active_combatant.SCENE.global_position
 	await confirm
 	end_turn()
 	
 ## Execute enemy turn.
 func on_enemy_turn():
-	print('enemy turn!')
+	#print('enemy turn!')
 	#print(active_combatant.NAME, ' is ACTING!')
 	$ActionPanel.hide()
 	#$CombatLog.text = str(active_combatant.NAME, " does a FLIP!")
 	playCombatantAnim(active_combatant, 'Attack')
-	print('waitng..')
+	#print('waitng..')
 	await anim_finished # FOR DEBUG ONLY
 	end_turn()
 	
 ## End turn. This is the main thing that keeps combat running. Very important.
 func end_turn():
-	#COMBATANTS.sort_custom(sortBySpeed) Might break later, uncomment when you have speed adjusting abilities
+	removeDeadCombatant()
+	once = true
+	
+	COMBATANTS.sort_custom(sortBySpeed)
+	print('QUEUE: ', COMBATANTS)
 	if (active_index + 1 < COMBATANTS.size()):
 		active_index += 1
 	else:
 		active_index = 0
 	
-	print('Index ', active_index, ' is ACTING')
+	#print('Index ', active_index, ' is ACTING')
 	active_combatant = COMBATANTS[active_index]
 	active_combatant.act()
 
@@ -122,8 +133,14 @@ func _on_attack_pressed():
 	state = true
 	await target_selected
 	state = false
-	executeAbility(debug_attack, target_combatant)
-
+	if once:
+		executeAbility(debug_attack)
+		once = false
+	
+## Signal for when the escape button is pressed.
+func _on_escape_pressed():
+	end_turn()
+	
 ## Function for selecting a target.
 ## Single Target Function
 ## TO-DO: MULTI, RANDOM target function plus boolean to select specific targets (team or enemies)
@@ -149,20 +166,23 @@ func selectTarget():
 		target_selected.emit()
 
 ## Function for executing an ability. (Maybe enemy combatants can use this???)
-func executeAbility(ability_res: Ability, target: Combatant):
+func executeAbility(ability_res: Ability):
+	print('EXECUTING')
 	#print(ability_res.ANIMATION_NAME)
 	add_child(ability_res.ANIMATION)
 	
 	get_node(ability_res.ANIMATION_NAME).position = target_combatant.SCENE.global_position
 	var anim_player: AnimationPlayer = get_node(ability_res.ANIMATION_NAME).get_node("Animator")
 	anim_player.play('Execute')
-	# pseudo: target = ability_res.ABILITY_SCRIPT.applyEffects(target)
 	target_combatant.getAnimator().play('Hit')
 	await target_combatant.getAnimator().animation_finished
 	target_combatant.getAnimator().play('Idle')
 	await anim_player.animation_finished
-	confirm.emit()
+
+	ability_res.ABILITY_SCRIPT.applyEffects(active_combatant, target_combatant)
+	print('TARGET HAS ', target_combatant.STAT_HEALTH, ' HP')
 	
+	confirm.emit()
 	remove_child(ability_res.ANIMATION)
 	
 ## Plays an animation for a combatant.
@@ -173,7 +193,7 @@ func playCombatantAnim(combatant: Combatant, animation):
 	await combatant.getAnimator().animation_finished
 	combatant.getAnimator().play('Idle')
 	anim_finished.emit()
-	print('Emitting anim finsihed!')
+	#print('Emitting anim finsihed!')
 	
 ## Spawn troop combatants.
 ## Troops combatants are combatants with a count that's greater than 1.
@@ -184,3 +204,22 @@ func spawnTroops():
 				var temp_combatant = combatant.duplicate()
 				temp_combatant.COUNT = 1
 				COMBATANTS.append(temp_combatant)
+
+func removeDeadCombatant():
+	for combatant in COMBATANTS:
+		if combatant.STAT_HEALTH <= 0:
+			combatant.getAnimator().play('KO')
+			COMBATANTS.erase(combatant)
+	
+func checkWin() -> bool:
+	var living_enemies = 0
+	var living_allies = 0
+	
+	for combatant in COMBATANTS:
+		if combatant.IS_PLAYER_UNIT == false:
+			living_enemies += 1
+		else:
+			living_allies += 1
+	
+	if living_enemies == 0: return true
+	else: return false
