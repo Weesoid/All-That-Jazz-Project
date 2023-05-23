@@ -1,5 +1,3 @@
-extends AbilityScript
-
 static func animateCast(caster: Combatant):
 	caster.getAnimator().play('Attack')
 	await caster.getAnimator().animation_finished
@@ -12,6 +10,7 @@ static func applyEffects(caster: Combatant, target: Combatant, animation_scene):
 		target.STAT_HEALTH = target.getSprite().get_node("HealthBar").max_value
 	
 	# Visual Feedback
+	target.playIndicator(str('+',caster.STAT_WIT))
 	animation_scene.position = target.SCENE.global_position
 	animation_scene.get_node('AnimationPlayer').play('Execute')
 	target.updateHealth(target.STAT_HEALTH)

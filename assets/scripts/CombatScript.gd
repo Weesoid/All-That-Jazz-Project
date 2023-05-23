@@ -1,9 +1,8 @@
 # TO DO:
 # 1. ABILITY EFFECTS
 #		1.1 States
-#		1.2 Targeting
-#		1.1 Equipping and inventory system
-#		1.3 Visual Effects (Damage numbers)
+#		1.2 Targeting (AoE and Random abilities)
+#		1.3 Equipping and inventory system
 #
 # MISC:
 # 1. Different target states (Single, multi, rando)
@@ -129,10 +128,12 @@ func getPlayerAbilities(ability_set: Array[Ability]):
 	for child in ability_container.get_children():
 		child.free()
 	
-	for ability in ability_set:
+	for i in range(len(ability_set)):
+		if i == 0: continue
+		
 		var button = Button.new()
-		button.text = ability.NAME
-		button.pressed.connect(ability.execute)
+		button.text = ability_set[i].NAME
+		button.pressed.connect(ability_set[i].execute)
 		ability_container.add_child(button)
 	
 func playerSelectAbility(ability:Ability, state: int):
@@ -169,6 +170,7 @@ func playerSelectSingleTarget():
 		target_selected.emit() 
 	if Input.is_action_just_pressed("ui_cancel"):
 		target_state = 0
+		target_index = 0
 		attack_button.grab_focus()
 		action_panel.show()
 	
@@ -232,8 +234,6 @@ func sortBySpeed(a: Combatant, b: Combatant):
 func checkWin():
 	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant: Combatant): return !combatant.IS_PLAYER_UNIT)
 	var team = COMBATANTS.duplicate().filter(func getTeam(combatant: Combatant): return combatant.IS_PLAYER_UNIT)
-	
-	print('CHECKING ', enemies.size(), ' ', team.size())
 	
 	if enemies.size() == 0: 
 		print("You win!")

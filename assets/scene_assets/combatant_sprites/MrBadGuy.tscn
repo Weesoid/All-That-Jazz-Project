@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bvq7dufxjiveu"]
+[gd_scene load_steps=12 format=3 uid="uid://bvq7dufxjiveu"]
 
 [ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://assets/media/sprites/combat_characters/BadGuyJr.png" id="1_p22vy"]
 [ext_resource type="PackedScene" uid="uid://dgupboa4irsl8" path="res://assets/components/HealthBarComponent.tscn" id="2_3whq3"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/media/sounds/hurt.wav" id="3_3lxqd"]
+[ext_resource type="PackedScene" uid="uid://crlguk5wuy7ls" path="res://assets/components/IndicatorComponent.tscn" id="3_da66e"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"
@@ -190,6 +191,8 @@ offset_left = -269.779
 offset_top = -191.819
 offset_right = -253.779
 offset_bottom = -63.8188
+
+[node name="IndicatorComponent" parent="Sprite" instance=ExtResource("3_da66e")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")

@@ -1,5 +1,3 @@
-extends AIPackage
-
 static func selectAbility(abilities: Array[Ability]):
 	return abilities.pick_random()
 	

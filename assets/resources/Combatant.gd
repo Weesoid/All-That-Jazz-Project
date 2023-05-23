@@ -17,6 +17,7 @@ class_name Combatant
 
 var SCENE
 var AI_PACKAGE
+var STATUS_EFFECTS: Array[StatusEffect]
 
 signal enemy_turn
 signal player_turn
@@ -38,6 +39,10 @@ func act():
 
 func getSprite()-> Sprite2D:
 	return SCENE.get_node('Sprite')
+
+func playIndicator(value):
+	getSprite().get_node("IndicatorComponent").get_node("Label").text = str(value)
+	getSprite().get_node("IndicatorComponent").get_node("Animator").play('Show')
 
 func getAnimator()-> AnimationPlayer:
 	return SCENE.get_node('AnimationPlayer')

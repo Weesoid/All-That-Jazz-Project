@@ -13,6 +13,6 @@ COUNT = 2
 AI_PACKAGE_NAME = ""
 STAT_HEALTH = 50
 STAT_SPEED = 1
-STAT_BRAWN = 1
+STAT_BRAWN = 16
 STAT_WIT = 100
 ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("1_na0fa"), ExtResource("2_d63de")])
