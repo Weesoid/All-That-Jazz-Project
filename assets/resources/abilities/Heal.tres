@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Ability" load_steps=2 format=3 uid="uid://crgrwgg6xkd64"]
+
+[ext_resource type="Script" path="res://assets/resources/Ability.gd" id="1_kc5rc"]
+
+[resource]
+script = ExtResource("1_kc5rc")
+NAME = "Healing Beam"
+ANIMATION_NAME = "Heal"
+ABILITY_SCRIPT_NAME = "HealAttack"
+TARGET_TYPE = 0
+TARGET_GROUP = 0

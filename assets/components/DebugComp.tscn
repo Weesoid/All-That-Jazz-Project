@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bji7w32lt37ms"]
+[gd_scene load_steps=3 format=3 uid="uid://85hmbjvv8ijv"]
 
 [ext_resource type="Texture2D" uid="uid://jeqpg7riadk4" path="res://ATJ Icon.png" id="1_g3ygt"]
 [ext_resource type="PackedScene" uid="uid://dgupboa4irsl8" path="res://assets/components/HealthBarComponent.tscn" id="2_3b8bd"]

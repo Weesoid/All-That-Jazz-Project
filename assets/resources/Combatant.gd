@@ -1,7 +1,3 @@
-# TO-DO
-# Run _init automatically
-# Better way to handle sheets?
-
 extends Resource
 class_name Combatant
 
@@ -17,7 +13,7 @@ class_name Combatant
 @export var STAT_SPEED: int
 @export var STAT_BRAWN: int
 @export var STAT_WIT: int
-var STAT_CURRENT_HEALTH: int
+@export var ABILITY_SET: Array[Ability]
 
 var SCENE
 var AI_PACKAGE
@@ -27,7 +23,12 @@ signal player_turn
 
 func initializeCombatant():
 	SCENE = load(str("res://assets/scene_assets/combatant_sprites/",SPRITE_NAME,".tscn")).instantiate()
-	AI_PACKAGE = load(str("res://assets/scripts/ai_packages/",AI_PACKAGE_NAME,".gd"))
+	for ability in ABILITY_SET:
+		ability.initializeAbility()
+	if !IS_PLAYER_UNIT:
+		AI_PACKAGE = load(str("res://assets/scripts/ai_packages/",AI_PACKAGE_NAME,".gd"))
+	getSprite().get_node("HealthBar").max_value = STAT_HEALTH
+	getSprite().get_node("HealthBar").value = STAT_HEALTH
 
 func act():
 	if IS_PLAYER_UNIT:
@@ -43,6 +44,9 @@ func getAnimator()-> AnimationPlayer:
 
 func selectTarget(combatant_array: Array[Combatant])-> Combatant:
 	return AI_PACKAGE.selectTarget(combatant_array)
+
+func updateHealth(new_health):
+	getSprite().get_node("HealthBar").value = new_health
 
 func _to_string():
 	return str(NAME, ' ', STAT_SPEED)

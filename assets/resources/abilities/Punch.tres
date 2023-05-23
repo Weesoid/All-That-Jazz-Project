@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_p2wmf")
+NAME = "Striking Blow"
 ANIMATION_NAME = "PunchMunchie"
 ABILITY_SCRIPT_NAME = "WeaponAttack"
 TARGET_TYPE = 0
-TARGET_GROUP = 0
+TARGET_GROUP = 1

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Combatant" load_steps=3 format=3 uid="uid://bp2vfdh430hy0"]
+
+[ext_resource type="Resource" uid="uid://crgrwgg6xkd64" path="res://assets/resources/abilities/Heal.tres" id="1_d4mwc"]
+[ext_resource type="Script" path="res://assets/resources/Combatant.gd" id="2_3aser"]
+
+[resource]
+script = ExtResource("2_3aser")
+NAME = "MR BAD GUY SR."
+SPRITE_NAME = "default"
+IS_PLAYER_UNIT = false
+COUNT = 3
+AI_PACKAGE_NAME = "RandomAI"
+STAT_HEALTH = 100
+STAT_SPEED = 0
+STAT_BRAWN = 10
+STAT_WIT = 10
+ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("1_d4mwc")])

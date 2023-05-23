@@ -1,9 +1,9 @@
 # TO DO:
 # 1. ABILITY EFFECTS
-#		1.1 Targeting
-#		1.2 Ability Effects (damaging health, changing stats, etc)
-#		1.3 Visual Effects (Damage numbers, update health bar)
-# 2. AI TO USE THE ABILITIES
+#		1.1 States
+#		1.2 Targeting
+#		1.1 Equipping and inventory system
+#		1.3 Visual Effects (Damage numbers)
 #
 # MISC:
 # 1. Different target states (Single, multi, rando)
@@ -11,147 +11,150 @@
 
 extends Node2D
 
-## This bool determines when the player is able to target enemies
-var state = false
-## The combatant whose turn it is.
-var active_combatant: Combatant
-## Index for the active combatant.
-var active_index = 0
-## The player targeted combatant.
-var target_combatant: Combatant
-## Index for the target combatant.
-var target_index = 0
-## 
-var once = true
-
-var debug_attack: Ability # Debugging purposes only
-
-## An array of every combatant on the field.
-## Use this array to access combatant info.
 @export var COMBATANTS: Array[Combatant] = []
-## Onready variable for the team container. Player controlled combatants will be visually placed here.
 @onready var team_container = $TeamContainer.get_children()
-## Onready variable for the enemy container. enemy combatants will be visually placed here.
 @onready var enemy_container = $EnemyContainer.get_children()
+@onready var action_panel = $ActionPanel
+@onready var attack_button = $ActionPanel/Attack
+@onready var ability_scroller = $ActionPanel/Skills/SkillScroller
+@onready var ability_container = $ActionPanel/Skills/SkillScroller/SkillsContainer
+@onready var items_button = $ActionPanel/Items
+@onready var escape_button = $ActionPanel/Escape
 
-## Singal for when player confirms their action.
+var target_state = 0 # 0=None, 1=Single, 2=Multi, 3=Random
+var active_combatant: Combatant
+var active_index = 0
+var target_combatant: Combatant
+var target_index = 0
+var valid_targets: Array[Combatant] = []
+var selected_ability: Ability
+var run_once = true
+
 signal confirm
-## Signal for when player has selected their target.
 signal target_selected
-## Signal for when a combatant finishes their animation.
 signal anim_finished
 
-## Init
+#********************************************************************************
+# INITIALIZATION AND COMBAT LOOP
+#********************************************************************************
 func _ready():
-	# BASIS FOR AI PACKAGES
-	#var script = load("res://assets/scripts/ai_packages/DefaultAI.gd")
-	#var integer = script.returnInt(12)
-	#print(integer)
-		
-	debug_attack = load("res://assets/resources/abilities/Punch.tres") # debug
-	debug_attack.initializeAbility() # debug
-	spawnTroops()
-	
-	# Place combatants on the field and connect their signals
 	for combatant in COMBATANTS:
-		# Initialize combatant
+		spawnTroop(combatant)
 		combatant.initializeCombatant()
 		combatant.player_turn.connect(on_player_turn)
 		combatant.enemy_turn.connect(on_enemy_turn)
-
-		# Add combatants to appropriate positions
+	
 		if (combatant.IS_PLAYER_UNIT):
-			for marker in team_container:
-				if marker.get_child_count() == 0:
-					marker.add_child(combatant.SCENE)
-					combatant.getAnimator().play('Idle')
-					break
+			addCombatant(combatant, team_container)
+			connectPlayerAbilities(combatant)
 		else:
-			for marker in enemy_container:
-				if marker.get_child_count() == 0:
-					marker.add_child(combatant.SCENE)
-					combatant.getAnimator().play('Idle')
-					break
+			addCombatant(combatant, enemy_container)
 	
 	COMBATANTS.sort_custom(sortBySpeed)
 	
-	# Start the combat loop by making the first combatant act.
 	active_combatant = COMBATANTS[active_index]
 	active_combatant.act()
-
-## Sort combatants by their speed.
-func sortBySpeed(a: Combatant, b: Combatant):
-	return a.STAT_SPEED > b.STAT_SPEED
-
-## Determine what state the combat encounter is in and act accordingly.
-func _process(_delta):
-	if state:
-		selectTarget()
 	
-## Show player GUI and wait for them to confirm their action.
+func _process(_delta):
+	match target_state:
+		1: playerSelectSingleTarget()
+		2: print('Multi!')
+		3: print('Rando!')
+	
 func on_player_turn():
-	if checkWin():
-		print("You win!")
-		get_tree().quit()
-		
-	#print('player turn!')
-	$ActionPanel.show()
-	$ActionPanel.position = active_combatant.SCENE.global_position
+	checkWin()
+	action_panel.show()
+	attack_button.grab_focus()
+	action_panel.position = active_combatant.getSprite().global_position
 	await confirm
 	end_turn()
 	
-## Execute enemy turn.
 func on_enemy_turn():
-	#print('enemy turn!')
-	#print(active_combatant.NAME, ' is ACTING!')
-	$ActionPanel.hide()
-	#$CombatLog.text = str(active_combatant.NAME, " does a FLIP!")
-	playCombatantAnim(active_combatant, 'Attack')
-	#print('waitng..')
-	await anim_finished # FOR DEBUG ONLY
-	end_turn()
+	action_panel.hide()
+	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
+	valid_targets = selected_ability.getValidTargets(COMBATANTS, false)
+	target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 	
-## End turn. This is the main thing that keeps combat running. Very important.
+	if (target_combatant != null):
+		executeAbility()
+		await confirm
+		end_turn()
+	else:
+		checkWin()
+	
 func end_turn():
-	removeDeadCombatant()
-	once = true
-	
+	# Check and reset stuff
+	for combatant in COMBATANTS: 
+		removeDeadCombatant(combatant)
+	run_once = true
+	target_index = 0
+	ability_scroller.hide()
 	COMBATANTS.sort_custom(sortBySpeed)
-	print('QUEUE: ', COMBATANTS)
+	
+	# Determinte next combatant
 	if (active_index + 1 < COMBATANTS.size()):
 		active_index += 1
 	else:
 		active_index = 0
-	
-	#print('Index ', active_index, ' is ACTING')
 	active_combatant = COMBATANTS[active_index]
 	active_combatant.act()
 
-## Signal for when the attack button is pressed.
+#********************************************************************************
+# SCENE BUTTON SIGNALS
+#********************************************************************************
 func _on_attack_pressed():
-	#print('ATTACKING!')
-	state = true
+	Input.action_release("ui_accept")
+	selected_ability = active_combatant.ABILITY_SET[0]
+	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
+	target_state = 1
+	action_panel.hide()
 	await target_selected
-	state = false
-	if once:
-		executeAbility(debug_attack)
-		once = false
+	target_state = 0
+	if run_once:
+		executeAbility()
+		action_panel.hide()
+		run_once = false
 	
-## Signal for when the escape button is pressed.
+func _on_skills_pressed():
+	ability_scroller.visible = !ability_scroller.visible
+	getPlayerAbilities(active_combatant.ABILITY_SET)
+	
 func _on_escape_pressed():
-	end_turn()
+	pass
 	
-## Function for selecting a target.
-## Single Target Function
-## TO-DO: MULTI, RANDOM target function plus boolean to select specific targets (team or enemies)
-func selectTarget():
-	target_combatant = COMBATANTS[target_index]
+#********************************************************************************
+# ABILITY SELECTION, TARGETING, AND EXECUTION
+#********************************************************************************
+func getPlayerAbilities(ability_set: Array[Ability]):
+	for child in ability_container.get_children():
+		child.free()
+	
+	for ability in ability_set:
+		var button = Button.new()
+		button.text = ability.NAME
+		button.pressed.connect(ability.execute)
+		ability_container.add_child(button)
+	
+func playerSelectAbility(ability:Ability, state: int):
+	target_state = state
+	selected_ability = ability
+	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
+	action_panel.hide()
+	await target_selected
+	target_state = 0
+	if run_once:
+		executeAbility()
+		action_panel.hide()
+		run_once = false
+	
+func playerSelectSingleTarget():
+	target_combatant = valid_targets[target_index]
 	target_combatant.getSprite().scale = Vector2(1.1,1.1)
 	
 	# ABSTRACT THIS INTO FUNCTION (maybe)
 	if Input.is_action_just_pressed("ui_right"):
 		target_combatant.getSprite().scale = Vector2(1,1)
-		if (target_index + 1 < COMBATANTS.size()):
+		if (target_index + 1 < valid_targets.size()):
 			target_index += 1
 		else:
 			target_index = 0
@@ -160,66 +163,82 @@ func selectTarget():
 		if (target_index - 1 >= 0):
 			target_index -= 1
 		else:
-			target_index = COMBATANTS.size() - 1
+			target_index = valid_targets.size() - 1
 	if Input.is_action_just_pressed("ui_accept"):
 		target_combatant.getSprite().scale = Vector2(1,1)
-		target_selected.emit()
-
-## Function for executing an ability. (Maybe enemy combatants can use this???)
-func executeAbility(ability_res: Ability):
-	print('EXECUTING')
-	#print(ability_res.ANIMATION_NAME)
-	add_child(ability_res.ANIMATION)
+		target_selected.emit() 
+	if Input.is_action_just_pressed("ui_cancel"):
+		target_state = 0
+		attack_button.grab_focus()
+		action_panel.show()
 	
-	get_node(ability_res.ANIMATION_NAME).position = target_combatant.SCENE.global_position
-	var anim_player: AnimationPlayer = get_node(ability_res.ANIMATION_NAME).get_node("Animator")
-	anim_player.play('Execute')
-	target_combatant.getAnimator().play('Hit')
-	await target_combatant.getAnimator().animation_finished
-	target_combatant.getAnimator().play('Idle')
-	await anim_player.animation_finished
-
-	ability_res.ABILITY_SCRIPT.applyEffects(active_combatant, target_combatant)
-	print('TARGET HAS ', target_combatant.STAT_HEALTH, ' HP')
+func playerSelectMultiTarget():
+	print('MULTI')
+		
+func playerSelectRandomTarget():
+	print('RANDOM')
 	
+func executeAbility(): 
+	add_child(selected_ability.ANIMATION)
+	
+	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
+	selected_ability.ABILITY_SCRIPT.animateCast(active_combatant)
+	selected_ability.ABILITY_SCRIPT.applyEffects(
+										active_combatant, 
+										target_combatant, 
+										get_node(selected_ability.ANIMATION_NAME)
+									)
+	await selected_ability.getAnimator().animation_finished
+	
+	remove_child(selected_ability.ANIMATION)
 	confirm.emit()
-	remove_child(ability_res.ANIMATION)
 	
-## Plays an animation for a combatant.
-## Unlike .getAnimator().play(), this script waits for this animation to finish before continuing.
-func playCombatantAnim(combatant: Combatant, animation):
-	#print('Triggering ', combatant)
-	combatant.getAnimator().play(animation)
-	await combatant.getAnimator().animation_finished
-	combatant.getAnimator().play('Idle')
-	anim_finished.emit()
-	#print('Emitting anim finsihed!')
+#********************************************************************************
+# MISCELLANEOUS
+#********************************************************************************
+func addCombatant(combatant, container):
+	for marker in container:
+		if marker.get_child_count() != 0: continue
+		
+		marker.add_child(combatant.SCENE)
+		combatant.getAnimator().play('Idle')
+		break
 	
-## Spawn troop combatants.
-## Troops combatants are combatants with a count that's greater than 1.
-func spawnTroops():
-	for combatant in COMBATANTS:
-		if combatant.COUNT > 1:
-			for n in combatant.COUNT-1:
-				var temp_combatant = combatant.duplicate()
-				temp_combatant.COUNT = 1
-				COMBATANTS.append(temp_combatant)
-
-func removeDeadCombatant():
-	for combatant in COMBATANTS:
-		if combatant.STAT_HEALTH <= 0:
-			combatant.getAnimator().play('KO')
-			COMBATANTS.erase(combatant)
+func connectPlayerAbilities(combatant: Combatant):	
+	for ability in combatant.ABILITY_SET:
+		if ability.single_target.is_connected(playerSelectAbility): continue
+		
+		ability.single_target.connect(playerSelectAbility)
+		ability.multi_target.connect(playerSelectAbility)
+		ability.random_target.connect(playerSelectAbility)
 	
-func checkWin() -> bool:
-	var living_enemies = 0
-	var living_allies = 0
+func spawnTroop(combatant):
+	if combatant.COUNT < 1:
+		return
+		
+	for n in combatant.COUNT-1:
+		var temp_combatant = combatant.duplicate()
+		temp_combatant.COUNT = 1
+		COMBATANTS.append(temp_combatant)
 	
-	for combatant in COMBATANTS:
-		if combatant.IS_PLAYER_UNIT == false:
-			living_enemies += 1
-		else:
-			living_allies += 1
+func removeDeadCombatant(combatant):
+	if combatant.STAT_HEALTH <= 0:
+		combatant.getAnimator().play('KO')
+		COMBATANTS.erase(combatant)
 	
-	if living_enemies == 0: return true
-	else: return false
+func sortBySpeed(a: Combatant, b: Combatant):
+	return a.STAT_SPEED > b.STAT_SPEED
+	
+func checkWin():
+	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant: Combatant): return !combatant.IS_PLAYER_UNIT)
+	var team = COMBATANTS.duplicate().filter(func getTeam(combatant: Combatant): return combatant.IS_PLAYER_UNIT)
+	
+	print('CHECKING ', enemies.size(), ' ', team.size())
+	
+	if enemies.size() == 0: 
+		print("You win!")
+		get_tree().quit()
+	if team.size() == 0: 
+		print("You LOSE!")
+		get_tree().quit()
+	

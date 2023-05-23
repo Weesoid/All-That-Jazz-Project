@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cyqla4i3aeas"
-path="res://.godot/imported/TEST.png-53f11c42877c07f04f47f5fcbbcb7980.ctex"
+uid="uid://2wegg4h4scec"
+path="res://.godot/imported/GoodGuyB.png-9211835f13a748b1f626b5b45510c03f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/media/sprites/characters/TEST.png"
-dest_files=["res://.godot/imported/TEST.png-53f11c42877c07f04f47f5fcbbcb7980.ctex"]
+source_file="res://assets/media/sprites/combat_characters/GoodGuyB.png"
+dest_files=["res://.godot/imported/GoodGuyB.png-9211835f13a748b1f626b5b45510c03f.ctex"]
 
 [params]
 
