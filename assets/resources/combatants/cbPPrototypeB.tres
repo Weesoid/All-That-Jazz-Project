@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=6 format=3]
+
+[ext_resource type="Resource" path="res://assets/resources/abilities/abRandaStrike.tres" id="1_6kb0p"]
+[ext_resource type="Resource" path="res://assets/resources/abilities/abPunch.tres" id="2_f6cle"]
+[ext_resource type="Resource" path="res://assets/resources/abilities/abHeal.tres" id="3_2lv8x"]
+[ext_resource type="Resource" path="res://assets/resources/abilities/abAOE.tres" id="4_q5875"]
+[ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="5_upyxg"]
+
+[resource]
+script = ExtResource("5_upyxg")
+NAME = "PUMainBlasko"
+SPRITE_NAME = "sprGoodGuyB"
+IS_PLAYER_UNIT = true
+COUNT = 1
+AI_PACKAGE_NAME = ""
+ARMOR_TYPE = 0
+STAT_HEALTH = 100
+STAT_SPEED = 1
+STAT_BRAWN = 15
+STAT_WIT = 5
+STAT_GRIT = 5
+ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_6kb0p"), ExtResource("2_f6cle"), ExtResource("3_2lv8x"), ExtResource("4_q5875")])

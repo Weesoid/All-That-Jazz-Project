@@ -11,15 +11,15 @@ config_version=5
 [application]
 
 config/name="All That Jazz"
-run/main_scene="res://scenes/gameplay/combat/CombatScene.tscn"
+run/main_scene="res://scenes/gameplay/combat/gpscnCombatScene.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://ATJ Icon.png"
 
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-OverworldGlobals="*res://assets/scripts/GlobalsOverworld.gd"
-CombatGlobals="*res://assets/scripts/GlobalsCombat.gd"
+OverworldGlobals="*res://assets/scripts/gblOverworld.gd"
+CombatGlobals="*res://assets/scripts/gblCombat.gd"
 
 [dialogue_manager]
 

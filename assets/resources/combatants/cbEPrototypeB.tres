@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=3 format=3]
+
+[ext_resource type="Resource" path="res://assets/resources/abilities/abHeal.tres" id="1_g237a"]
+[ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="2_1bgvi"]
+
+[resource]
+script = ExtResource("2_1bgvi")
+NAME = "EUHealer"
+SPRITE_NAME = "sprDefault"
+IS_PLAYER_UNIT = false
+COUNT = 1
+AI_PACKAGE_NAME = "aiRandomAI"
+ARMOR_TYPE = 0
+STAT_HEALTH = 75
+STAT_SPEED = 5
+STAT_BRAWN = 10
+STAT_WIT = 10
+STAT_GRIT = 2
+ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_g237a")])
