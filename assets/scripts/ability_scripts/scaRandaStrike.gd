@@ -4,7 +4,6 @@ static func animateCast(caster: ResCombatant):
 	caster.getAnimator().play('Idle')
 	
 static func applyEffects(caster: ResCombatant, targets, animation_scene):
-	print('Taking in: ', targets)
 	for i in range(3):
 		targets.shuffle()
 		var target = targets.pick_random()

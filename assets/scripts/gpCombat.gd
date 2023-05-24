@@ -1,6 +1,5 @@
 # TO DO:
 # 1. ABILITY EFFECTS
-#		> REFACTOR (globals to parameters)
 #		1.1 States
 
 extends Node2D
@@ -197,7 +196,6 @@ func addCombatant(combatant, container):
 func connectPlayerAbilities(combatant: ResCombatant):	
 	for ability in combatant.ABILITY_SET:
 		if ability.single_target.is_connected(playerSelectAbility): continue
-		
 		ability.single_target.connect(playerSelectAbility)
 		ability.multi_target.connect(playerSelectAbility)
 	
@@ -211,14 +209,14 @@ func spawnTroop(combatant):
 		COMBATANTS.append(temp_combatant)
 	
 func getDeadCombatants():
-	return COMBATANTS.duplicate().filter(func getEnemies(combatant: ResCombatant): return combatant.STAT_HEALTH <= 0)
+	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.STAT_HEALTH <= 0)
 	
 func sortBySpeed(a: ResCombatant, b: ResCombatant):
 	return a.STAT_SPEED > b.STAT_SPEED
 	
 func checkWin():
-	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant: ResCombatant): return !combatant.IS_PLAYER_UNIT)
-	var team = COMBATANTS.duplicate().filter(func getTeam(combatant: ResCombatant): return combatant.IS_PLAYER_UNIT)
+	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return !combatant.IS_PLAYER_UNIT)
+	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant.IS_PLAYER_UNIT)
 	
 	if enemies.size() == 0: 
 		print("You win!")
@@ -230,10 +228,10 @@ func checkWin():
 func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit
 	
-func drawSelectionTarget(animation: String, position):
+func drawSelectionTarget(animation: String, pos: Vector2):
 	ui_target.show()
 	ui_target_animator.play(animation)
-	ui_target.position = position
+	ui_target.position = pos
 	
 func browseTargetsInputs():
 	if Input.is_action_just_pressed("ui_right"):

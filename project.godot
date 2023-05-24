@@ -18,8 +18,8 @@ config/icon="res://ATJ Icon.png"
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-OverworldGlobals="*res://assets/scripts/gblOverworld.gd"
-CombatGlobals="*res://assets/scripts/gblCombat.gd"
+OverworldGlobals="*res://assets/scripts/glbOverworld.gd"
+CombatGlobals="*res://assets/scripts/glbCombat.gd"
 
 [dialogue_manager]
 
@@ -35,6 +35,7 @@ enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
 
 [gui]
 
+theme/default_theme_scale=1.1
 theme/custom_font="res://assets/media/SHPinscher-Regular.otf"
 theme/default_font_antialiasing=0
 

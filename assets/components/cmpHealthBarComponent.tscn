@@ -13,5 +13,3 @@ offset_bottom = -260.0
 grow_horizontal = 2
 grow_vertical = 2
 fill_mode = 3
-
-[connection signal="changed" from="." to="." method="_on_changed"]
