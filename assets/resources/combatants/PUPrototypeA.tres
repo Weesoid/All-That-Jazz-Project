@@ -6,13 +6,15 @@
 
 [resource]
 script = ExtResource("3_ug3ps")
-NAME = "FRIEND"
+NAME = "PUFriendHealer"
 SPRITE_NAME = "GoodGuyA"
 IS_PLAYER_UNIT = true
 COUNT = 2
 AI_PACKAGE_NAME = ""
-STAT_HEALTH = 50
+ARMOR_TYPE = 0
+STAT_HEALTH = 100
 STAT_SPEED = 1
-STAT_BRAWN = 16
-STAT_WIT = 100
+STAT_BRAWN = 3
+STAT_WIT = 12
+STAT_GRIT = 5
 ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("1_na0fa"), ExtResource("2_d63de")])

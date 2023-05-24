@@ -4,14 +4,8 @@ static func animateCast(caster: Combatant):
 	caster.getAnimator().play('Idle')
 	
 static func applyEffects(caster: Combatant, target: Combatant, animation_scene):
-	# Effects
-	target.STAT_HEALTH = target.STAT_HEALTH + caster.STAT_WIT
-	if (target.STAT_HEALTH > target.getSprite().get_node("HealthBar").max_value):
-		target.STAT_HEALTH = target.getSprite().get_node("HealthBar").max_value
-	
 	# Visual Feedback
-	target.playIndicator(str('+',caster.STAT_WIT))
-	animation_scene.position = target.SCENE.global_position
-	animation_scene.get_node('AnimationPlayer').play('Execute')
-	target.updateHealth(target.STAT_HEALTH)
-	
+	CombatGlobals.playSingleTargetAnimation(target, animation_scene)
+	CombatGlobals.calculateHealing(caster, target, 10, 0.6)
+	await animation_scene.get_node('AnimationPlayer').animation_finished
+	CombatGlobals.emit_ability_executed()

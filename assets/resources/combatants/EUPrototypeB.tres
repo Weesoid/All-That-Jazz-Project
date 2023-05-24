@@ -5,13 +5,15 @@
 
 [resource]
 script = ExtResource("2_3aser")
-NAME = "MR BAD GUY SR."
+NAME = "EUHealer"
 SPRITE_NAME = "default"
 IS_PLAYER_UNIT = false
-COUNT = 3
+COUNT = 1
 AI_PACKAGE_NAME = "RandomAI"
-STAT_HEALTH = 100
-STAT_SPEED = 0
+ARMOR_TYPE = 0
+STAT_HEALTH = 75
+STAT_SPEED = 5
 STAT_BRAWN = 10
 STAT_WIT = 10
+STAT_GRIT = 2
 ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("1_d4mwc")])

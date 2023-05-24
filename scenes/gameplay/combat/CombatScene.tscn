@@ -1,14 +1,77 @@
-[gd_scene load_steps=6 format=3 uid="uid://dx3cfsegi3tvu"]
+[gd_scene load_steps=11 format=3 uid="uid://dx3cfsegi3tvu"]
 
 [ext_resource type="Script" path="res://assets/scripts/CombatScript.gd" id="1_wsh4n"]
 [ext_resource type="Resource" uid="uid://c1oyttsxaf2ft" path="res://assets/resources/combatants/EUPrototypeA.tres" id="2_f73ya"]
 [ext_resource type="Resource" uid="uid://d2wutdvn5pklr" path="res://assets/resources/combatants/PUPrototypeA.tres" id="3_fx3el"]
 [ext_resource type="Resource" uid="uid://pjkpdqjl1kby" path="res://assets/resources/combatants/PUPrototypeB.tres" id="4_3b7ne"]
+[ext_resource type="Resource" uid="uid://bp2vfdh430hy0" path="res://assets/resources/combatants/EUPrototypeB.tres" id="5_h4t8y"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/media/images/battle_bg.png" id="5_qe7f4"]
+[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/media/sprites/other/target.png" id="6_jijj8"]
+
+[sub_resource type="Animation" id="Animation_ng0qf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.330078, 0.330078)]
+}
+
+[sub_resource type="Animation" id="Animation_ilum3"]
+resource_name = "Target"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.330078, 0.330078), Vector2(0.361, 0.361), Vector2(0.330078, 0.330078)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h6ab4"]
+_data = {
+"RESET": SubResource("Animation_ng0qf"),
+"Target": SubResource("Animation_ilum3")
+}
 
 [node name="CombatScene" type="Node2D"]
 script = ExtResource("1_wsh4n")
-COMBATANTS = Array[Resource("res://assets/resources/Combatant.gd")]([ExtResource("2_f73ya"), ExtResource("3_fx3el"), ExtResource("4_3b7ne")])
+COMBATANTS = Array[Resource("res://assets/resources/Combatant.gd")]([ExtResource("3_fx3el"), ExtResource("4_3b7ne"), ExtResource("2_f73ya"), ExtResource("5_h4t8y")])
 
 [node name="Background" type="TextureRect" parent="."]
 offset_right = 1152.0
@@ -110,6 +173,17 @@ layout_mode = 2
 button_mask = 0
 text = "ABSCOND"
 
+[node name="Target" type="Sprite2D" parent="."]
+position = Vector2(85, 896)
+scale = Vector2(0.330078, 0.330078)
+texture = ExtResource("6_jijj8")
+
+[node name="TargetAnimator" type="AnimationPlayer" parent="Target"]
+libraries = {
+"": SubResource("AnimationLibrary_h6ab4")
+}
+
 [connection signal="pressed" from="ActionPanel/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="ActionPanel/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="ActionPanel/Items" to="." method="_on_items_pressed"]
 [connection signal="pressed" from="ActionPanel/Escape" to="." method="_on_escape_pressed"]

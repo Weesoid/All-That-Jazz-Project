@@ -1,6 +1,6 @@
 ~ start
-set Globals.player_can_move = false
+set OverworldGlobals.player_can_move = false
 Let's have gay sex!!
-set Globals.show_player_interaction = true
-set Globals.player_can_move = true
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
 => END

@@ -9,9 +9,9 @@ const ANIMATION_SPEED = 1.5
 func _ready():
 	$PlayerAnimator.speed_scale = ANIMATION_SPEED
 
-func _process(delta):
+func _process(_delta):
 	# MOVEMENT
-	if (Globals.player_can_move):
+	if (OverworldGlobals.player_can_move):
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -27,7 +27,7 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_select"):
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
-			Globals.show_player_interaction = false
+			OverworldGlobals.show_player_interaction = false
 			interactables[0].interact()
 			return
 
@@ -41,12 +41,12 @@ func animateWalk(input):
 	if input == Vector2(0,-1):
 		$PlayerAnimator.play('Walk_Up')
 
-	if (input == Vector2(0,0) || Globals.player_can_move == false):
+	if (input == Vector2(0,0) || OverworldGlobals.player_can_move == false):
 		$PlayerAnimator.seek(1, true)
 		$PlayerAnimator.pause()
 
 func animateInteract():
-	$PlayerInteractionBubble.visible = Globals.show_player_interaction
+	$PlayerInteractionBubble.visible = OverworldGlobals.show_player_interaction
 	if (interaction_detector.get_overlapping_areas().size() > 0):
 		$PlayerInteractionBubble/BubbleAnimator.play('Interact')
 	else:

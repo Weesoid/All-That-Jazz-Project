@@ -1,18 +1,22 @@
-[gd_resource type="Resource" script_class="Combatant" load_steps=4 format=3 uid="uid://pjkpdqjl1kby"]
+[gd_resource type="Resource" script_class="Combatant" load_steps=6 format=3 uid="uid://pjkpdqjl1kby"]
 
 [ext_resource type="Resource" uid="uid://1mab62jf3ysm" path="res://assets/resources/abilities/Punch.tres" id="1_xcpnr"]
 [ext_resource type="Resource" uid="uid://crgrwgg6xkd64" path="res://assets/resources/abilities/Heal.tres" id="2_fbqgb"]
 [ext_resource type="Script" path="res://assets/resources/Combatant.gd" id="3_0ntrf"]
+[ext_resource type="Resource" uid="uid://cfp34q27f838q" path="res://assets/resources/abilities/AOE.tres" id="3_hfx0m"]
+[ext_resource type="Resource" uid="uid://c30xldqrw7gwx" path="res://assets/resources/abilities/RandaStrike.tres" id="4_7ff3o"]
 
 [resource]
 script = ExtResource("3_0ntrf")
-NAME = "Friend B"
+NAME = "PUMainBlasko"
 SPRITE_NAME = "GoodGuyB"
 IS_PLAYER_UNIT = true
 COUNT = 1
 AI_PACKAGE_NAME = ""
+ARMOR_TYPE = 0
 STAT_HEALTH = 100
-STAT_SPEED = 0
-STAT_BRAWN = 25
-STAT_WIT = 0
-ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("1_xcpnr"), ExtResource("2_fbqgb")])
+STAT_SPEED = 1
+STAT_BRAWN = 15
+STAT_WIT = 5
+STAT_GRIT = 5
+ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("4_7ff3o"), ExtResource("1_xcpnr"), ExtResource("2_fbqgb"), ExtResource("3_hfx0m")])

@@ -1,18 +1,20 @@
 [gd_resource type="Resource" script_class="Combatant" load_steps=4 format=3 uid="uid://c1oyttsxaf2ft"]
 
 [ext_resource type="Resource" uid="uid://1mab62jf3ysm" path="res://assets/resources/abilities/Punch.tres" id="1_2v0vj"]
-[ext_resource type="Resource" uid="uid://crgrwgg6xkd64" path="res://assets/resources/abilities/Heal.tres" id="2_15k0i"]
 [ext_resource type="Script" path="res://assets/resources/Combatant.gd" id="2_lw3yf"]
+[ext_resource type="Resource" uid="uid://cfp34q27f838q" path="res://assets/resources/abilities/AOE.tres" id="2_x8bw8"]
 
 [resource]
 script = ExtResource("2_lw3yf")
-NAME = "MR BAD GUY SR."
+NAME = "EUStriker"
 SPRITE_NAME = "MrBadGuy"
 IS_PLAYER_UNIT = false
-COUNT = 2
+COUNT = 1
 AI_PACKAGE_NAME = "RandomAI"
-STAT_HEALTH = 100
-STAT_SPEED = 2
-STAT_BRAWN = 10
-STAT_WIT = 15
-ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("1_2v0vj"), ExtResource("2_15k0i")])
+ARMOR_TYPE = 0
+STAT_HEALTH = 50
+STAT_SPEED = 1
+STAT_BRAWN = 15
+STAT_WIT = 3
+STAT_GRIT = 3
+ABILITY_SET = Array[Resource("res://assets/resources/Ability.gd")]([ExtResource("1_2v0vj"), ExtResource("2_x8bw8")])

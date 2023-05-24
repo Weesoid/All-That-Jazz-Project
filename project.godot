@@ -18,7 +18,8 @@ config/icon="res://ATJ Icon.png"
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-Globals="*res://assets/scripts/Globals.gd"
+OverworldGlobals="*res://assets/scripts/GlobalsOverworld.gd"
+CombatGlobals="*res://assets/scripts/GlobalsCombat.gd"
 
 [dialogue_manager]
 
@@ -31,6 +32,11 @@ window/stretch/mode="canvas_items"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
+
+[gui]
+
+theme/custom_font="res://assets/media/SHPinscher-Regular.otf"
+theme/default_font_antialiasing=0
 
 [input]
 

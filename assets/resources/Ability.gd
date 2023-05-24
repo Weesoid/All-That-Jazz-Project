@@ -3,8 +3,7 @@ class_name Ability
 
 enum TargetType {
 	SINGLE,
-	MULTI,
-	RANDOM
+	MULTI
 }
 
 enum TargetGroup {
@@ -25,17 +24,17 @@ var ANIMATION
 signal single_target(type)
 signal multi_target(type)
 signal random_target(type)
+signal executed
 
 func initializeAbility():
 	ABILITY_SCRIPT = load(str("res://assets/scripts/ability_scripts/"+ABILITY_SCRIPT_NAME+".gd"))
 	ANIMATION = load(str("res://assets/scene_assets/animations/abilities/"+ANIMATION_NAME+".tscn")).instantiate()
-		
+	
 func execute():
 	match TARGET_TYPE:
-		TargetType.SINGLE: single_target.emit(get_self(), 1)
-		TargetType.RANDOM: random_target.emit(get_self(), 2)
-		TargetType.MULTI: multi_target.emit(get_self(), 3)
-
+		TargetType.SINGLE: single_target.emit(self, 1)
+		TargetType.MULTI: multi_target.emit(self, 2)
+	
 func getValidTargets(combatants: Array[Combatant], is_caster_player: bool):
 	if is_caster_player:
 		match TARGET_GROUP:
@@ -45,10 +44,18 @@ func getValidTargets(combatants: Array[Combatant], is_caster_player: bool):
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return !combatant.IS_PLAYER_UNIT)
 			TargetGroup.ENEMIES: return combatants.filter(func isEnemy(combatant): return combatant.IS_PLAYER_UNIT)
-		
+	
+func animateCast(caster: Combatant):
+	ABILITY_SCRIPT.animateCast(caster)
+	
+func applyEffects(caster: Combatant, targets, animation_scene):
+	ABILITY_SCRIPT.applyEffects(caster, targets, animation_scene)
+	
+func getTargetType():
+	match TARGET_TYPE:
+		TargetType.SINGLE: return 1
+		TargetType.MULTI: return 2
+	
 func getAnimator()-> AnimationPlayer:
 	return ANIMATION.get_node('AnimationPlayer')
-	
-func get_self():
-	return self
 	

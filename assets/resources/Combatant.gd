@@ -1,6 +1,12 @@
 extends Resource
 class_name Combatant
 
+enum ArmorType {
+	NEUTRAL,
+	LIGHT,
+	HEAVY
+}
+
 ## Backend export variables
 @export var NAME: String
 @export var SPRITE_NAME: String
@@ -9,15 +15,17 @@ class_name Combatant
 @export var AI_PACKAGE_NAME: String
 
 ## Frontend / Gameplay export variables
+@export var ARMOR_TYPE: ArmorType
 @export var STAT_HEALTH: int
 @export var STAT_SPEED: int
 @export var STAT_BRAWN: int
 @export var STAT_WIT: int
-@export var ABILITY_SET: Array[Ability]
+@export var STAT_GRIT: int
+@export var ABILITY_SET: Array[Ability] # May need to be refactored to dict for specific selection
 
+var STATUS_EFFECTS: Array[StatusEffect]
 var SCENE
 var AI_PACKAGE
-var STATUS_EFFECTS: Array[StatusEffect]
 
 signal enemy_turn
 signal player_turn
@@ -54,4 +62,4 @@ func updateHealth(new_health):
 	getSprite().get_node("HealthBar").value = new_health
 
 func _to_string():
-	return str(NAME, ' ', STAT_SPEED)
+	return str(NAME)
