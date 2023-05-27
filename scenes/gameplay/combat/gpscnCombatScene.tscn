@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://assets/scripts/gpCombat.gd" id="1_n1c2i"]
 [ext_resource type="Resource" uid="uid://711evclqhuid" path="res://assets/resources/combatants/cbEPrototypeA.tres" id="2_fvqcy"]
-[ext_resource type="Resource" path="res://assets/resources/combatants/cbEPrototypeB.tres" id="3_1afx5"]
-[ext_resource type="Resource" path="res://assets/resources/combatants/cbPPrototypeA.tres" id="4_ljlxl"]
-[ext_resource type="Resource" path="res://assets/resources/combatants/cbPPrototypeB.tres" id="5_dvimi"]
+[ext_resource type="Resource" uid="uid://c8ucbe8c5j4ab" path="res://assets/resources/combatants/cbEPrototypeB.tres" id="3_x78ng"]
+[ext_resource type="Resource" uid="uid://cj65h76njcw56" path="res://assets/resources/combatants/cbPPrototypeA.tres" id="4_ljlxl"]
+[ext_resource type="Resource" uid="uid://10j0ilwydsxv" path="res://assets/resources/combatants/cbPPrototypeB.tres" id="5_dvimi"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/media/images/battle_bg.png" id="6_4fetc"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/media/sprites/other/target.png" id="7_63pgq"]
 
@@ -71,7 +71,7 @@ _data = {
 
 [node name="CombatScene" type="Node2D"]
 script = ExtResource("1_n1c2i")
-COMBATANTS = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_fvqcy"), ExtResource("3_1afx5"), ExtResource("4_ljlxl"), ExtResource("5_dvimi")])
+COMBATANTS = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_fvqcy"), ExtResource("3_x78ng"), ExtResource("4_ljlxl"), ExtResource("5_dvimi")])
 
 [node name="Background" type="TextureRect" parent="."]
 offset_right = 1152.0

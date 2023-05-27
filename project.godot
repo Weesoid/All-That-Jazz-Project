@@ -18,8 +18,8 @@ config/icon="res://ATJ Icon.png"
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-OverworldGlobals="*res://assets/scripts/glbOverworld.gd"
-CombatGlobals="*res://assets/scripts/glbCombat.gd"
+OverworldGlobals="*res://assets/scripts/gblOverworld.gd"
+CombatGlobals="*res://assets/scripts/gblCombat.gd"
 
 [dialogue_manager]
 

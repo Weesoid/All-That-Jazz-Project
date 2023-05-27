@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="ResCombatant" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=6 format=3 uid="uid://cj65h76njcw56"]
 
 [ext_resource type="Resource" path="res://assets/resources/abilities/abHeal.tres" id="1_oyu6j"]
 [ext_resource type="Resource" path="res://assets/resources/abilities/abPunch.tres" id="2_qvqqt"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="3_3tdfi"]
+[ext_resource type="Resource" uid="uid://e3bhw0ct5cm0" path="res://assets/resources/abilities/abPumpUp.tres" id="3_qkmm4"]
+[ext_resource type="Resource" uid="uid://bsvkxxlwx84vw" path="res://assets/resources/abilities/abPoisonBite.tres" id="4_ghcut"]
 
 [resource]
 script = ExtResource("3_3tdfi")
@@ -12,9 +14,13 @@ IS_PLAYER_UNIT = true
 COUNT = 2
 AI_PACKAGE_NAME = ""
 ARMOR_TYPE = 0
-STAT_HEALTH = 100
-STAT_SPEED = 1
-STAT_BRAWN = 3
-STAT_WIT = 12
-STAT_GRIT = 5
-ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_oyu6j"), ExtResource("2_qvqqt")])
+STAT_VALUES = {
+"brawn": 2,
+"grit": 3,
+"health": 100,
+"hustle": 1,
+"verve": 1,
+"will": 5,
+"wit": 5
+}
+ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_oyu6j"), ExtResource("2_qvqqt"), ExtResource("3_qkmm4"), ExtResource("4_ghcut")])

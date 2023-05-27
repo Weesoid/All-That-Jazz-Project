@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://bsvlx8o47ycqe"]
+[gd_scene load_steps=13 format=3 uid="uid://bsvlx8o47ycqe"]
 
 [ext_resource type="Texture2D" uid="uid://6jibksvj0qnw" path="res://assets/media/sprites/combat_characters/GoodGuy.png" id="1_araly"]
 [ext_resource type="PackedScene" uid="uid://dgupboa4irsl8" path="res://assets/components/cmpHealthBarComponent.tscn" id="2_3whq3"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/media/sounds/hurt.wav" id="3_3lxqd"]
 [ext_resource type="PackedScene" uid="uid://crlguk5wuy7ls" path="res://assets/components/cmpIndicatorComponent.tscn" id="3_w1kgg"]
+[ext_resource type="PackedScene" uid="uid://dlrdt4g1at0ee" path="res://assets/components/cmpStatusBar.tscn" id="4_ift2h"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"
@@ -193,6 +194,9 @@ offset_right = -253.779
 offset_bottom = -63.8188
 
 [node name="IndicatorComponent" parent="Sprite" instance=ExtResource("3_w1kgg")]
+
+[node name="cmpStatusBar" parent="Sprite" instance=ExtResource("4_ift2h")]
+position = Vector2(-1.00002, -2.00002)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")

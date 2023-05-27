@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=2 format=3 uid="uid://bsvkxxlwx84vw"]
+
+[ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_83u7m"]
+
+[resource]
+script = ExtResource("1_83u7m")
+NAME = "Poisonous Bite!!!"
+ANIMATION_NAME = "aabAOE"
+ABILITY_SCRIPT_NAME = "scaPoisonBite"
+TARGET_TYPE = 0
+TARGET_GROUP = 1

@@ -74,7 +74,6 @@ func on_enemy_turn():
 		target_combatant = valid_targets
 	
 	if (target_combatant != null):
-		#print('ENEMY TURN: ',active_combatant.NAME, ' casts ', selected_ability.NAME, ' on ', target_combatant)
 		executeAbility()
 		await confirm
 		end_turn()
@@ -82,6 +81,10 @@ func on_enemy_turn():
 		checkWin()
 	
 func end_turn():
+	for combatant in COMBATANTS:
+		for effect in combatant.STATUS_EFFECTS:
+			effect.tick()
+		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
 		COMBATANTS.erase(combatant)
@@ -178,7 +181,7 @@ func executeAbility():
 								get_node(selected_ability.ANIMATION_NAME)
 								)
 	await CombatGlobals.ability_executed
-	
+
 	remove_child(selected_ability.ANIMATION)
 	confirm.emit()
 	
@@ -209,10 +212,10 @@ func spawnTroop(combatant):
 		COMBATANTS.append(temp_combatant)
 	
 func getDeadCombatants():
-	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.STAT_HEALTH <= 0)
+	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
 	
 func sortBySpeed(a: ResCombatant, b: ResCombatant):
-	return a.STAT_SPEED > b.STAT_SPEED
+	return a.STAT_VALUES['hustle'] > b.STAT_VALUES['hustle']
 	
 func checkWin():
 	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return !combatant.IS_PLAYER_UNIT)
@@ -235,9 +238,9 @@ func drawSelectionTarget(animation: String, pos: Vector2):
 	
 func browseTargetsInputs():
 	if Input.is_action_just_pressed("ui_right"):
-		target_index = incrementIndex(target_index, 1, valid_targets.size())
-	if Input.is_action_just_pressed("ui_left"):
 		target_index = incrementIndex(target_index, -1, valid_targets.size())
+	if Input.is_action_just_pressed("ui_left"):
+		target_index = incrementIndex(target_index, 1, valid_targets.size())
 	
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept"):

@@ -1,20 +1,25 @@
-[gd_resource type="Resource" script_class="ResCombatant" load_steps=4 format=3 uid="uid://711evclqhuid"]
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=5 format=3 uid="uid://711evclqhuid"]
 
 [ext_resource type="Resource" path="res://assets/resources/abilities/abPunch.tres" id="1_2v0vj"]
 [ext_resource type="Resource" path="res://assets/resources/abilities/abAOE.tres" id="2_x8bw8"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="3_qhmge"]
+[ext_resource type="Resource" path="res://assets/resources/abilities/abRandaStrike.tres" id="3_v5up5"]
 
 [resource]
 script = ExtResource("3_qhmge")
 NAME = "EUStriker"
 SPRITE_NAME = "sprMrBadGuy"
 IS_PLAYER_UNIT = false
-COUNT = 1
+COUNT = 2
 AI_PACKAGE_NAME = "aiRandomAI"
 ARMOR_TYPE = 0
-STAT_HEALTH = 50
-STAT_SPEED = 1
-STAT_BRAWN = 15
-STAT_WIT = 3
-STAT_GRIT = 3
-ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_2v0vj"), ExtResource("2_x8bw8")])
+STAT_VALUES = {
+"brawn": 5,
+"grit": 2,
+"health": 100,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
+ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_2v0vj"), ExtResource("2_x8bw8"), ExtResource("3_v5up5")])
