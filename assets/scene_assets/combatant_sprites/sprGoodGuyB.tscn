@@ -199,6 +199,8 @@ texture = ExtResource("1_an35d")
 hframes = 3
 vframes = 2
 
+[node name="cmpStatusBar" parent="Sprite" instance=ExtResource("4_f867j")]
+
 [node name="HealthBar" parent="Sprite" instance=ExtResource("2_y5uyv")]
 offset_left = -269.779
 offset_top = -191.819
@@ -206,8 +208,6 @@ offset_right = -253.779
 offset_bottom = -63.8188
 
 [node name="IndicatorComponent" parent="Sprite" instance=ExtResource("3_pn6k8")]
-
-[node name="cmpStatusBar" parent="Sprite" instance=ExtResource("4_f867j")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResCombatant" load_steps=5 format=3 uid="uid://c8ucbe8c5j4ab"]
 
-[ext_resource type="Resource" path="res://assets/resources/abilities/abHeal.tres" id="1_g237a"]
+[ext_resource type="Resource" uid="uid://dq3y16pids014" path="res://assets/resources/abilities/abHeal.tres" id="1_g237a"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="2_1bgvi"]
 [ext_resource type="Resource" uid="uid://e3bhw0ct5cm0" path="res://assets/resources/abilities/abPumpUp.tres" id="2_j1atd"]
 [ext_resource type="Resource" uid="uid://bsvkxxlwx84vw" path="res://assets/resources/abilities/abPoisonBite.tres" id="3_125q7"]

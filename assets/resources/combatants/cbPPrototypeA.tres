@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResCombatant" load_steps=6 format=3 uid="uid://cj65h76njcw56"]
 
-[ext_resource type="Resource" path="res://assets/resources/abilities/abHeal.tres" id="1_oyu6j"]
-[ext_resource type="Resource" path="res://assets/resources/abilities/abPunch.tres" id="2_qvqqt"]
+[ext_resource type="Resource" uid="uid://dq3y16pids014" path="res://assets/resources/abilities/abHeal.tres" id="1_oyu6j"]
+[ext_resource type="Resource" uid="uid://i4kmvjv6rwtr" path="res://assets/resources/abilities/abPunch.tres" id="2_qvqqt"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="3_3tdfi"]
 [ext_resource type="Resource" uid="uid://e3bhw0ct5cm0" path="res://assets/resources/abilities/abPumpUp.tres" id="3_qkmm4"]
 [ext_resource type="Resource" uid="uid://bsvkxxlwx84vw" path="res://assets/resources/abilities/abPoisonBite.tres" id="4_ghcut"]
@@ -11,15 +11,15 @@ script = ExtResource("3_3tdfi")
 NAME = "PUFriendHealer"
 SPRITE_NAME = "sprGoodGuyA"
 IS_PLAYER_UNIT = true
-COUNT = 2
+COUNT = 1
 AI_PACKAGE_NAME = ""
 ARMOR_TYPE = 0
 STAT_VALUES = {
-"brawn": 2,
+"brawn": 1,
 "grit": 3,
 "health": 100,
 "hustle": 1,
-"verve": 1,
+"verve": 8,
 "will": 5,
 "wit": 5
 }

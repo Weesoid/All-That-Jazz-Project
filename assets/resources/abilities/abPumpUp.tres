@@ -7,5 +7,7 @@ script = ExtResource("1_ohnil")
 NAME = "Pump Up!"
 ANIMATION_NAME = "aabHeal"
 ABILITY_SCRIPT_NAME = "scaPumpUp"
+COST = 10
+COST_RESOURCE = "verve"
 TARGET_TYPE = 0
 TARGET_GROUP = 0

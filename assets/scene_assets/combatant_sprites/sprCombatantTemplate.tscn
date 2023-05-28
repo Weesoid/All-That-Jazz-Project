@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://cc3ogstxidsbl"]
+
+[node name="sprCombatantTemplate" type="Node2D"]

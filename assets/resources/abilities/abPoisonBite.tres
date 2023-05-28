@@ -7,5 +7,7 @@ script = ExtResource("1_83u7m")
 NAME = "Poisonous Bite!!!"
 ANIMATION_NAME = "aabAOE"
 ABILITY_SCRIPT_NAME = "scaPoisonBite"
+COST = 1
+COST_RESOURCE = "verve"
 TARGET_TYPE = 0
 TARGET_GROUP = 1

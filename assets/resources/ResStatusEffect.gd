@@ -18,10 +18,10 @@ var STATUS_SCRIPT
 var ANIMATION
 
 func initializeStatus():
-	STATUS_SCRIPT = load(str("res://assets/scripts/ability_scripts/"+STATUS_SCRIPT_NAME+".gd"))
-	duration = MAX_DURATION
 	ICON = TextureRect.new()
 	ICON.texture = load(str("res://assets/media/icons/"+ICON_NAME+".png"))
+	STATUS_SCRIPT = load(str("res://assets/scripts/ability_scripts/"+STATUS_SCRIPT_NAME+".gd"))
+	duration = MAX_DURATION
 	
 func addStatusEffectIcon():
 	afflicted_combatant.getStatusBar().get_node("StatusContainer").add_child(ICON)
@@ -29,11 +29,10 @@ func addStatusEffectIcon():
 	
 func tick():
 	duration -= 1
-	if duration != 0 and !afflicted_combatant.isDead():
-		#getAnimator().play('Tick')
-		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
-		APPLY_ONCE = false
-	else:
+	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
+	APPLY_ONCE = false
+	if duration == 0 or afflicted_combatant.isDead():
+		print('done!')
 		afflicted_combatant.getStatusBar().get_node("StatusContainer").remove_child(ICON)
 		STATUS_SCRIPT.endEffects(afflicted_combatant)
 		afflicted_combatant.STATUS_EFFECTS.erase(self)

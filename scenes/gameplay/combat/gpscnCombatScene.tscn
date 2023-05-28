@@ -1,12 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://4va5pnmyrf1s"]
+[gd_scene load_steps=13 format=3 uid="uid://4va5pnmyrf1s"]
 
 [ext_resource type="Script" path="res://assets/scripts/gpCombat.gd" id="1_n1c2i"]
 [ext_resource type="Resource" uid="uid://711evclqhuid" path="res://assets/resources/combatants/cbEPrototypeA.tres" id="2_fvqcy"]
-[ext_resource type="Resource" uid="uid://c8ucbe8c5j4ab" path="res://assets/resources/combatants/cbEPrototypeB.tres" id="3_x78ng"]
 [ext_resource type="Resource" uid="uid://cj65h76njcw56" path="res://assets/resources/combatants/cbPPrototypeA.tres" id="4_ljlxl"]
 [ext_resource type="Resource" uid="uid://10j0ilwydsxv" path="res://assets/resources/combatants/cbPPrototypeB.tres" id="5_dvimi"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/media/images/battle_bg.png" id="6_4fetc"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/media/sprites/other/target.png" id="7_63pgq"]
+[ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/media/icons/s_brawn.png" id="7_ea4d3"]
+[ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/media/icons/s_wit.png" id="8_et4yd"]
+[ext_resource type="Texture2D" uid="uid://cgf1qb6eni4jx" path="res://assets/media/icons/s_speed.png" id="9_fps2w"]
 
 [sub_resource type="Animation" id="Animation_ng0qf"]
 length = 0.001
@@ -71,7 +73,7 @@ _data = {
 
 [node name="CombatScene" type="Node2D"]
 script = ExtResource("1_n1c2i")
-COMBATANTS = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_fvqcy"), ExtResource("3_x78ng"), ExtResource("4_ljlxl"), ExtResource("5_dvimi")])
+COMBATANTS = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_fvqcy"), ExtResource("5_dvimi"), ExtResource("4_ljlxl")])
 
 [node name="Background" type="TextureRect" parent="."]
 offset_right = 1152.0
@@ -81,7 +83,7 @@ texture = ExtResource("6_4fetc")
 [node name="CombatLog" type="Label" parent="."]
 offset_right = 85.0
 offset_bottom = 23.0
-horizontal_alignment = 1
+scale = Vector2(3.77668, 2.6192)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -134,11 +136,13 @@ toggle_mode = true
 action_mode = 0
 button_mask = 0
 text = "BLITZ"
+icon = ExtResource("7_ea4d3")
 
 [node name="Skills" type="Button" parent="ActionPanel"]
 layout_mode = 2
 button_mask = 0
 text = "SKILLS"
+icon = ExtResource("8_et4yd")
 
 [node name="SkillScroller" type="ScrollContainer" parent="ActionPanel/Skills"]
 visible = false
@@ -156,6 +160,7 @@ layout_mode = 2
 layout_mode = 2
 button_mask = 0
 text = "ITEMS"
+icon = ExtResource("9_fps2w")
 
 [node name="ItemScroller" type="ScrollContainer" parent="ActionPanel/Items"]
 visible = false

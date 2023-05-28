@@ -5,6 +5,8 @@
 extends Node2D
 
 @export var COMBATANTS: Array[ResCombatant] = []
+
+@onready var combat_log = $CombatLog
 @onready var enemy_container = $EnemyContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
@@ -88,6 +90,7 @@ func end_turn():
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
 		COMBATANTS.erase(combatant)
+	
 	checkWin()
 	run_once = true
 	target_index = 0
@@ -99,7 +102,7 @@ func end_turn():
 	active_combatant.act()
 
 #********************************************************************************
-# SCENE BUTTON SIGNALS
+# BASE SCENE NODE CONTROL
 #********************************************************************************
 func _on_attack_pressed():
 	Input.action_release("ui_accept")
@@ -108,12 +111,7 @@ func _on_attack_pressed():
 	target_state = selected_ability.getTargetType()
 	action_panel.hide()
 	await target_selected
-	target_state = 0
-	
-	if run_once:
-		executeAbility()
-		action_panel.hide()
-		run_once = false
+	runAbility()
 	
 func _on_skills_pressed():
 	getPlayerAbilities(active_combatant.ABILITY_SET)
@@ -131,6 +129,12 @@ func _on_items_pressed():
 	
 func _on_escape_pressed():
 	get_tree().quit()
+	
+func writeCombatLog(text: String):
+	combat_log.text = text
+	combat_log.show()
+	await get_tree().create_timer(1.5).timeout
+	combat_log.hide()
 	
 #********************************************************************************
 # ABILITY SELECTION, TARGETING, AND EXECUTION
@@ -154,24 +158,26 @@ func playerSelectAbility(ability:ResAbility, state: int):
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	action_panel.hide()
 	await target_selected
-	target_state = 0
-	if run_once:
-		executeAbility()
-		action_panel.hide()
-		run_once = false
+	runAbility()
 	
 func playerSelectSingleTarget():
+	if !validateAbilityCast():
+		return
+	
 	target_combatant = valid_targets[target_index]
 	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
 	browseTargetsInputs()
 	confirmCancelInputs()
 	
 func playerSelectMultiTarget():
+	if !validateAbilityCast():
+		return
+		
 	drawSelectionTarget('Target', enemy_container.global_position)
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
 	
-func executeAbility(): 
+func executeAbility():
 	add_child(selected_ability.ANIMATION)
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	selected_ability.animateCast(active_combatant)
@@ -181,10 +187,8 @@ func executeAbility():
 								get_node(selected_ability.ANIMATION_NAME)
 								)
 	await CombatGlobals.ability_executed
-
 	remove_child(selected_ability.ANIMATION)
 	confirm.emit()
-	
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
@@ -238,18 +242,36 @@ func drawSelectionTarget(animation: String, pos: Vector2):
 	
 func browseTargetsInputs():
 	if Input.is_action_just_pressed("ui_right"):
-		target_index = incrementIndex(target_index, -1, valid_targets.size())
-	if Input.is_action_just_pressed("ui_left"):
 		target_index = incrementIndex(target_index, 1, valid_targets.size())
+	if Input.is_action_just_pressed("ui_left"):
+		target_index = incrementIndex(target_index, -1, valid_targets.size())
 	
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept"):
 		ui_target.hide()
 		target_selected.emit() 
 	if Input.is_action_just_pressed("ui_cancel"):
-		ui_target.hide()
-		target_state = 0
-		target_index = 0
-		attack_button.grab_focus()
-		action_panel.show()
+		resetActionLog()
 	
+func resetActionLog():
+	ui_target.hide()
+	target_state = 0
+	target_index = 0
+	attack_button.grab_focus()
+	action_panel.show()
+	
+func validateAbilityCast():
+	if !selected_ability.canCast(active_combatant):
+		writeCombatLog('Not enough resources!')
+		resetActionLog()
+		return false
+	else:
+		return true
+	
+func runAbility():
+	target_state = 0
+	if run_once:
+		selected_ability.expendCost(active_combatant)
+		executeAbility()
+		action_panel.hide()
+		run_once = false
