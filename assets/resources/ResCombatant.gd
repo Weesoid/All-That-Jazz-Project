@@ -36,11 +36,11 @@ signal enemy_turn
 signal player_turn
 
 func initializeCombatant():
-	SCENE = load(str("res://assets/scene_assets/combatant_sprites/",SPRITE_NAME,".tscn")).instantiate()
+	SCENE = load(str("res://assets/combatant_sprites_scenes/",SPRITE_NAME,".tscn")).instantiate()
 	for ability in ABILITY_SET:
 		ability.initializeAbility()
 	if !IS_PLAYER_UNIT:
-		AI_PACKAGE = load(str("res://assets/scripts/ai_packages/",AI_PACKAGE_NAME,".gd"))
+		AI_PACKAGE = load(str("res://assets/ai_scripts/",AI_PACKAGE_NAME,".gd"))
 	getSprite().get_node("HealthBar").max_value = STAT_VALUES['health']
 	getSprite().get_node("HealthBar").value = STAT_VALUES['health']
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()

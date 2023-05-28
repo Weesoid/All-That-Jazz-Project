@@ -19,8 +19,8 @@ var ANIMATION
 
 func initializeStatus():
 	ICON = TextureRect.new()
-	ICON.texture = load(str("res://assets/media/icons/"+ICON_NAME+".png"))
-	STATUS_SCRIPT = load(str("res://assets/scripts/ability_scripts/"+STATUS_SCRIPT_NAME+".gd"))
+	ICON.texture = load(str("res://assets/icons/"+ICON_NAME+".png"))
+	STATUS_SCRIPT = load(str("res://assets/ability_scripts/"+STATUS_SCRIPT_NAME+".gd"))
 	duration = MAX_DURATION
 	
 func addStatusEffectIcon():

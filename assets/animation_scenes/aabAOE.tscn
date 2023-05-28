@@ -1,0 +1,83 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Texture2D" uid="uid://dihiaf7w04e20" path="res://assets/animation_sprites/Test.png" id="1_edvdi"]
+[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_83wr0"]
+
+[sub_resource type="Animation" id="Animation_7g5ea"]
+resource_name = "Execute"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 1, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_p6b05"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bxhel"]
+_data = {
+"Execute": SubResource("Animation_7g5ea"),
+"RESET": SubResource("Animation_p6b05")
+}
+
+[node name="aabAOE" type="Node2D"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bxhel")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1.52588e-05)
+rotation = 1.5708
+scale = Vector2(3.8999, 6.13209)
+texture = ExtResource("1_edvdi")
+vframes = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_83wr0")
+volume_db = 5.924
+pitch_scale = 0.61

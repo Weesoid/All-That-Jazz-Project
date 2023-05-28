@@ -1,8 +1,8 @@
 [gd_scene load_steps=15 format=3]
 
-[ext_resource type="Script" path="res://assets/scripts/gpPlayer.gd" id="1_mngvk"]
-[ext_resource type="Texture2D" uid="uid://cun01jq5202w" path="res://assets/media/sprites/characters/PLAYER_walk.png" id="2_8nsvb"]
-[ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/media/sprites/other/interact.png" id="3_y84xx"]
+[ext_resource type="Script" path="res://assets/general_scripts/gpPlayer.gd" id="1_mngvk"]
+[ext_resource type="Texture2D" uid="uid://cun01jq5202w" path="res://assets/overworld_characters/PLAYER_walk.png" id="2_8nsvb"]
+[ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/misc_sprites/interact.png" id="3_y84xx"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001

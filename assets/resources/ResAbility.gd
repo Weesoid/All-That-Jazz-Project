@@ -29,8 +29,8 @@ signal random_target(type)
 signal no_resource
 
 func initializeAbility():
-	ABILITY_SCRIPT = load(str("res://assets/scripts/ability_scripts/"+ABILITY_SCRIPT_NAME+".gd"))
-	ANIMATION = load(str("res://assets/scene_assets/animations/abilities/"+ANIMATION_NAME+".tscn")).instantiate()
+	ABILITY_SCRIPT = load(str("res://assets/ability_scripts/"+ABILITY_SCRIPT_NAME+".gd"))
+	ANIMATION = load(str("res://assets/animation_scenes/"+ANIMATION_NAME+".tscn")).instantiate()
 	
 # Add cost value, and cost resource parameters
 func execute():
