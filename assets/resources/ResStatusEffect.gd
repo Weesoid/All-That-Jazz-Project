@@ -27,19 +27,19 @@ func addStatusEffectIcon():
 	afflicted_combatant.getStatusBar().add_child(ICON)
 	current_rank = 1
 	
+func removeStatusEffect():
+	afflicted_combatant.getStatusBar().remove_child(ICON)
+	STATUS_SCRIPT.endEffects(afflicted_combatant)
+	ICON.queue_free()
+	afflicted_combatant.STATUS_EFFECTS.erase(self)
+	
 func tick():
 	duration -= 1
 	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	APPLY_ONCE = false
 	if duration == 0 or afflicted_combatant.isDead():
-		afflicted_combatant.getStatusBar().remove_child(ICON)
-		STATUS_SCRIPT.endEffects(afflicted_combatant)
-		afflicted_combatant.STATUS_EFFECTS.erase(self)
+		removeStatusEffect()
 	
-func removeStatusEffect():
-	afflicted_combatant.getStatusBar().remove_child(ICON)
-	STATUS_SCRIPT.endEffects(afflicted_combatant)
-	afflicted_combatant.STATUS_EFFECTS.erase(self)
 	
 func getAnimator()-> AnimationPlayer:
 	return ANIMATION.get_node('AnimationPlayer')

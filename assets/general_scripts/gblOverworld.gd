@@ -5,9 +5,11 @@ var show_player_interaction = true
 
 func changeToCombat():
 	# Load combatants in array as param
-	var combatantA: ResCombatant = load("res://assets/combatants_resources/cbEPrototypeA.tres")
-	var combatantD: ResCombatant = load("res://assets/combatants_resources/cbPPrototypeB.tres")
-	var my_array: Array[ResCombatant] = [combatantA, combatantD]
+	var combatantA: ResCombatant = load("res://assets/combatants_resources/cbEPrototypeA.tres").duplicate()
+	var combatantB: ResCombatant = load("res://assets/combatants_resources/cbEPrototypeB.tres").duplicate()
+	var combatantC: ResCombatant = load("res://assets/combatants_resources/cbPPrototypeA.tres").duplicate()
+	var combatantD: ResCombatant = load("res://assets/combatants_resources/cbPPrototypeB.tres").duplicate()
+	var my_array: Array[ResCombatant] = [combatantA, combatantB, combatantC, combatantD]
 	
 	var combat_scene: CombatScene = preload("res://main_scenes/gameplay/gpscnCombatScene.tscn").instantiate()
 	combat_scene.COMBATANTS = my_array
