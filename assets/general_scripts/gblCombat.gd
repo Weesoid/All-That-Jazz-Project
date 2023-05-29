@@ -1,5 +1,8 @@
 extends Node
 
+# Make the indicator be drawn globally by this global so that it's always on top and seperated from
+# combatants...
+
 signal ability_executed
 
 #********************************************************************************
@@ -12,7 +15,7 @@ func emit_ability_executed():
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
 func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling):
-	var damage = ((base_damage + caster.STAT_VALUES[attacker_stat] * bonus_scaling) * 100 ) / (100+target.STAT_VALUES[defender_stat])
+	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * 100 ) / (100+target.STAT_VALUES[defender_stat])
 	target.STAT_VALUES['health'] -= int(damage)
 	playAndResetAnimation(target, 'Hit')
 	playIndicatorAnimation(target, 'Hit!', damage)

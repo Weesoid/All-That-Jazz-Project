@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResCombatant" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=5 format=3 uid="uid://dwbeg0ljdk1ta"]
 
 [ext_resource type="Resource" uid="uid://i4kmvjv6rwtr" path="res://assets/ability_resources/abPunch.tres" id="1_2v0vj"]
 [ext_resource type="Resource" uid="uid://dkhp3pctqieee" path="res://assets/ability_resources/abAOE.tres" id="2_x8bw8"]
@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("3_qhmge")
 NAME = "EUStriker"
-SPRITE_NAME = "sprMrBadGuy"
+SPRITE_NAME = "sprBadGuyA"
 IS_PLAYER_UNIT = false
 COUNT = 1
 AI_PACKAGE_NAME = "aiRandomAI"
@@ -16,7 +16,7 @@ ARMOR_TYPE = 0
 STAT_VALUES = {
 "brawn": 5,
 "grit": 6,
-"health": 100,
+"health": 1,
 "hustle": 1,
 "verve": 1,
 "will": 1,

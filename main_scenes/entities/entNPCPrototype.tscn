@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://ud425xnds2hi"]
 
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://assets/overworld_characters/NPC_unknown_entity.png" id="1_ly6sy"]
-[ext_resource type="PackedScene" uid="uid://1nbcsipp1wob" path="res://assets/components/cmpInteractComponent.tscn" id="2_560d3"]
+[ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="2_qhjob"]
 [ext_resource type="Resource" uid="uid://ck3xxe611ngg5" path="res://assets/dialogue/test.dialogue" id="3_fs6pt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rolhl"]
@@ -16,6 +16,5 @@ texture = ExtResource("1_ly6sy")
 position = Vector2(0.5, 14)
 shape = SubResource("RectangleShape2D_rolhl")
 
-[node name="InteractComponent" parent="." instance=ExtResource("2_560d3")]
-position = Vector2(0, 12)
+[node name="InteractComponent" parent="." instance=ExtResource("2_qhjob")]
 dialogue_resource = ExtResource("3_fs6pt")

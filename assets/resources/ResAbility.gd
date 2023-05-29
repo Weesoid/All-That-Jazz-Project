@@ -30,7 +30,7 @@ signal no_resource
 
 func initializeAbility():
 	ABILITY_SCRIPT = load(str("res://assets/ability_scripts/"+ABILITY_SCRIPT_NAME+".gd"))
-	ANIMATION = load(str("res://assets/animation_scenes/"+ANIMATION_NAME+".tscn")).instantiate()
+	ANIMATION = load(str("res://assets/animation_scenes/"+ANIMATION_NAME+".tscn"))
 	
 # Add cost value, and cost resource parameters
 func execute():
@@ -56,6 +56,7 @@ func expendCost(caster: ResCombatant):
 		return
 	else:
 		caster.STAT_VALUES[COST_RESOURCE] -= COST
+		caster.updateEnergy(caster.STAT_VALUES[COST_RESOURCE]) # Doesn't support updating health, signals?
 	
 func animateCast(caster: ResCombatant):
 	ABILITY_SCRIPT.animateCast(caster)

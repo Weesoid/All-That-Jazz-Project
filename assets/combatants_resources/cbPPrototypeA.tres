@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResCombatant" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=6 format=3 uid="uid://dga8fe3nbmpwq"]
 
 [ext_resource type="Resource" uid="uid://dq3y16pids014" path="res://assets/ability_resources/abHeal.tres" id="1_oyu6j"]
 [ext_resource type="Resource" uid="uid://i4kmvjv6rwtr" path="res://assets/ability_resources/abPunch.tres" id="2_qvqqt"]
@@ -18,9 +18,9 @@ STAT_VALUES = {
 "brawn": 1,
 "grit": 3,
 "health": 100,
-"hustle": 1,
+"hustle": 8,
 "verve": 8,
 "will": 5,
 "wit": 5
 }
-ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_oyu6j"), ExtResource("2_qvqqt"), ExtResource("3_qkmm4"), ExtResource("4_ghcut")])
+ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("2_qvqqt"), ExtResource("1_oyu6j"), ExtResource("3_qkmm4"), ExtResource("4_ghcut")])

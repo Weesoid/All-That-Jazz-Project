@@ -1,6 +1,12 @@
 ~ start
 set OverworldGlobals.player_can_move = false
-Let's have gay sex!!
+Entity: Wanna have some GAY SEX?!
+- Willis: Gross!
+	Entity: Fuck you!
+- Willis: No Way!
+	Entity: Then EAT THIS!!!
+	# Grab entity combatant data for changeToCombat parmas
+	do OverworldGlobals.changeToCombat()
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true
 => END

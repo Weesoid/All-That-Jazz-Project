@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dgupboa4irsl8"]
 
-[node name="HealthBar" type="ProgressBar"]
+[node name="HealthBarComponent" type="ProgressBar"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

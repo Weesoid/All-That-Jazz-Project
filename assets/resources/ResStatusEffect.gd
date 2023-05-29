@@ -24,7 +24,7 @@ func initializeStatus():
 	duration = MAX_DURATION
 	
 func addStatusEffectIcon():
-	afflicted_combatant.getStatusBar().get_node("StatusContainer").add_child(ICON)
+	afflicted_combatant.getStatusBar().add_child(ICON)
 	current_rank = 1
 	
 func tick():
@@ -32,14 +32,15 @@ func tick():
 	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	APPLY_ONCE = false
 	if duration == 0 or afflicted_combatant.isDead():
-		print('done!')
-		afflicted_combatant.getStatusBar().get_node("StatusContainer").remove_child(ICON)
+		afflicted_combatant.getStatusBar().remove_child(ICON)
 		STATUS_SCRIPT.endEffects(afflicted_combatant)
 		afflicted_combatant.STATUS_EFFECTS.erase(self)
 	
+func removeStatusEffect():
+	afflicted_combatant.getStatusBar().remove_child(ICON)
+	STATUS_SCRIPT.endEffects(afflicted_combatant)
+	afflicted_combatant.STATUS_EFFECTS.erase(self)
+	
 func getAnimator()-> AnimationPlayer:
 	return ANIMATION.get_node('AnimationPlayer')
-	
-func get_self():
-	return self
 	

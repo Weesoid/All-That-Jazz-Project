@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResCombatant" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=5 format=3 uid="uid://b4xoniy36myge"]
 
 [ext_resource type="Resource" uid="uid://dq3y16pids014" path="res://assets/ability_resources/abHeal.tres" id="1_g237a"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="2_1bgvi"]
@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("2_1bgvi")
 NAME = "EUHealer"
-SPRITE_NAME = "sprDefault"
+SPRITE_NAME = "sprBadGuyB"
 IS_PLAYER_UNIT = false
 COUNT = 1
 AI_PACKAGE_NAME = "aiRandomAI"
@@ -16,7 +16,7 @@ ARMOR_TYPE = 0
 STAT_VALUES = {
 "brawn": 5,
 "grit": 3,
-"health": 100,
+"health": 1,
 "hustle": 1,
 "verve": 1,
 "will": 1,

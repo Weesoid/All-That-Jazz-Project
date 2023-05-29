@@ -3,9 +3,11 @@
 #		1.1 States
 
 extends Node2D
+class_name CombatScene
 
 @export var COMBATANTS: Array[ResCombatant] = []
 
+@onready var combat_camera = $CombatCamera
 @onready var combat_log = $CombatLog
 @onready var enemy_container = $EnemyContainer
 @onready var team_container_markers = $TeamContainer.get_children()
@@ -178,7 +180,8 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 	
 func executeAbility():
-	add_child(selected_ability.ANIMATION)
+	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
+	add_child(selected_ability.ANIMATION.instantiate())
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	selected_ability.animateCast(active_combatant)
 	selected_ability.applyEffects(
@@ -187,7 +190,7 @@ func executeAbility():
 								get_node(selected_ability.ANIMATION_NAME)
 								)
 	await CombatGlobals.ability_executed
-	remove_child(selected_ability.ANIMATION)
+	get_node(selected_ability.ANIMATION_NAME).queue_free()
 	confirm.emit()
 #********************************************************************************
 # MISCELLANEOUS
@@ -227,10 +230,17 @@ func checkWin():
 	
 	if enemies.size() == 0: 
 		print("You win!")
-		get_tree().quit()
+		# Clear all lingering status effects on end of combat
+		for combatant in COMBATANTS:
+			for status in combatant.STATUS_EFFECTS:
+				status.removeStatusEffect()
+		queue_free()
+		OverworldGlobals.restorePlayerView()
 	if team.size() == 0: 
 		print("You LOSE!")
-		get_tree().quit()
+		queue_free()
+		OverworldGlobals.restorePlayerView()
+	
 	
 func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit

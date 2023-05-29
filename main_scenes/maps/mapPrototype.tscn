@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://daer2k38gbtad"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_388ch"]
-[ext_resource type="PackedScene" path="res://scenes/entities/entNPCPrototype.tscn" id="3_0vgif"]
-[ext_resource type="PackedScene" path="res://scenes/entities/entPlayer.tscn" id="3_kxlav"]
+[ext_resource type="PackedScene" uid="uid://c4uo7b77jtx6g" path="res://main_scenes/entities/entPlayer.tscn" id="2_v2w4i"]
+[ext_resource type="PackedScene" uid="uid://ud425xnds2hi" path="res://main_scenes/entities/entNPCPrototype.tscn" id="3_578vb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2gieu"]
 texture = ExtResource("1_388ch")
@@ -32,8 +32,8 @@ cell_quadrant_size = 48
 format = 2
 layer_0/tile_data = PackedInt32Array(0, 0, 0, 65535, 0, 0, 65534, 0, 0, -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 1, 0, 0, 65533, 0, 0, -3, 0, 0, -65539, 0, 0, -65538, 0, 0, -65537, 0, 0, -131072, 0, 0, -131071, 0, 0, -131070, 0, 0, -65534, 0, 0, 2, 0, 0, 65538, 0, 0, 65537, 0, 0, 65536, 0, 0, 131071, 0, 0, 131070, 0, 0, 131069, 0, 0, 131068, 0, 0, 65532, 0, 0, -4, 0, 0, -65540, 0, 0, -131069, 0, 0, -65533, 0, 0, 3, 0, 0, 65539, 0, 0, -196605, 65536, 0, -196606, 65536, 0, -196607, 65536, 0, -196608, 65536, 0, -131073, 65536, 0, -131074, 65536, 0, -196610, 65536, 0, -196611, 65536, 0, -196612, 65536, 0, -131076, 65536, 0, -131075, 65536, 0, -196609, 65536, 0, -262144, 65536, 0, -262143, 65536, 0, -262142, 65536, 0, -262141, 65536, 0, -327677, 65536, 0, -327678, 65536, 0, -327679, 65536, 0, -327680, 65536, 0, -262145, 65536, 0, -262146, 65536, 0, -262147, 65536, 0, -262148, 65536, 0, -327684, 65536, 0, -327683, 65536, 0, -327682, 65536, 0, -327681, 65536, 0, -393216, 65536, 0, -393215, 65536, 0, -393214, 65536, 0, -393213, 65536, 0)
 
-[node name="NPCPrototype" parent="." instance=ExtResource("3_0vgif")]
-position = Vector2(104, -88)
+[node name="Player" parent="." instance=ExtResource("2_v2w4i")]
+position = Vector2(1, 0)
 
-[node name="Player" parent="." instance=ExtResource("3_kxlav")]
-position = Vector2(0, -8)
+[node name="NPCPrototype" parent="." instance=ExtResource("3_578vb")]
+position = Vector2(0, -100)

@@ -4,5 +4,5 @@ extends Area2D
 @export var dialogue_start: String = "start"
 
 func interact():
-	DialogueManager.show_example_dialogue_balloon(dialogue_resource, dialogue_start)
+	OverworldGlobals.showDialogueBox(dialogue_resource, dialogue_start)
 	

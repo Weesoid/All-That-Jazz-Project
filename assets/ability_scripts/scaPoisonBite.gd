@@ -3,7 +3,7 @@ static func animateCast(caster: ResCombatant):
 	await caster.getAnimator().animation_finished
 	caster.getAnimator().play('Idle')
 	
-static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
+static func applyEffects(_caster: ResCombatant, target: ResCombatant, animation_scene):
 	var status_effect = CombatGlobals.loadStatusEffect('Poison')
 	
 	if status_effect.NAME not in target.getStatusEffectNames():

@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://dnp0wfbcrodv1"]
+[gd_scene load_steps=12 format=3 uid="uid://dnp0wfbcrodv1"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpCombat.gd" id="1_kv6ut"]
-[ext_resource type="Resource" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="2_kkcje"]
-[ext_resource type="Resource" path="res://assets/combatants_resources/cbPPrototypeB.tres" id="3_epmf2"]
-[ext_resource type="Resource" path="res://assets/combatants_resources/cbPPrototypeA.tres" id="4_pn4w8"]
+[ext_resource type="Resource" uid="uid://dwbeg0ljdk1ta" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="2_by24j"]
+[ext_resource type="Resource" uid="uid://dga8fe3nbmpwq" path="res://assets/combatants_resources/cbPPrototypeA.tres" id="3_deo57"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
 [ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
@@ -72,21 +71,26 @@ _data = {
 }
 
 [node name="CombatScene" type="Node2D"]
+top_level = true
 script = ExtResource("1_kv6ut")
-COMBATANTS = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_kkcje"), ExtResource("3_epmf2"), ExtResource("4_pn4w8")])
+COMBATANTS = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_by24j"), ExtResource("3_deo57")])
 
 [node name="Background" type="TextureRect" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_left = -576.0
+offset_top = -320.0
+offset_right = 576.0
+offset_bottom = 328.0
 texture = ExtResource("5_5p8mu")
 
 [node name="CombatLog" type="Label" parent="."]
-offset_right = 85.0
-offset_bottom = 23.0
+offset_left = -576.0
+offset_top = -320.0
+offset_right = -491.0
+offset_bottom = -295.0
 scale = Vector2(3.77668, 2.6192)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
-y_sort_enabled = true
+position = Vector2(-576, -320)
 
 [node name="Position1" type="Marker2D" parent="EnemyContainer"]
 position = Vector2(320, 320)
@@ -110,7 +114,7 @@ position = Vector2(704, 192)
 position = Vector2(960, 192)
 
 [node name="TeamContainer" type="Node2D" parent="."]
-position = Vector2(0, 320)
+position = Vector2(-576, 0)
 
 [node name="Position1" type="Marker2D" parent="TeamContainer"]
 position = Vector2(192, 192)
@@ -125,9 +129,10 @@ position = Vector2(704, 192)
 position = Vector2(960, 192)
 
 [node name="ActionPanel" type="VBoxContainer" parent="."]
-offset_top = 665.0
-offset_right = 85.0
-offset_bottom = 790.0
+offset_left = -576.0
+offset_top = 345.0
+offset_right = -491.0
+offset_bottom = 500.0
 mouse_force_pass_scroll_events = false
 
 [node name="Attack" type="Button" parent="ActionPanel"]
@@ -179,7 +184,7 @@ button_mask = 0
 text = "ABSCOND"
 
 [node name="Target" type="Sprite2D" parent="."]
-position = Vector2(85, 896)
+position = Vector2(-491, 576)
 scale = Vector2(0.330078, 0.330078)
 texture = ExtResource("9_d3h28")
 
@@ -187,6 +192,9 @@ texture = ExtResource("9_d3h28")
 libraries = {
 "": SubResource("AnimationLibrary_h6ab4")
 }
+
+[node name="CombatCamera" type="Camera2D" parent="."]
+zoom = Vector2(1.05, 1.05)
 
 [connection signal="pressed" from="ActionPanel/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="ActionPanel/Skills" to="." method="_on_skills_pressed"]

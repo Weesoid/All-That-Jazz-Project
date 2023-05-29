@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=15 format=3 uid="uid://c4uo7b77jtx6g"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://cun01jq5202w" path="res://assets/overworld_characters/PLAYER_walk.png" id="2_8nsvb"]
@@ -256,6 +256,8 @@ shape = SubResource("RectangleShape2D_d8g3m")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
 
 [node name="PlayerDirection" type="Marker2D" parent="."]
 
