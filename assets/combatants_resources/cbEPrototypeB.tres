@@ -1,8 +1,6 @@
-[gd_resource type="Resource" script_class="ResCombatant" load_steps=5 format=3 uid="uid://b4xoniy36myge"]
+[gd_resource type="Resource" script_class="ResCombatant" load_steps=3 format=3 uid="uid://b4xoniy36myge"]
 
-[ext_resource type="Resource" uid="uid://dq3y16pids014" path="res://assets/ability_resources/abHeal.tres" id="1_g237a"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatant.gd" id="2_1bgvi"]
-[ext_resource type="Resource" uid="uid://e3bhw0ct5cm0" path="res://assets/ability_resources/abPumpUp.tres" id="2_j1atd"]
 [ext_resource type="Resource" uid="uid://bsvkxxlwx84vw" path="res://assets/ability_resources/abPoisonBite.tres" id="3_125q7"]
 
 [resource]
@@ -22,4 +20,4 @@ STAT_VALUES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("1_g237a"), ExtResource("2_j1atd"), ExtResource("3_125q7")])
+ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("3_125q7")])

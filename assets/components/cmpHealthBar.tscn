@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dgupboa4irsl8"]
+[gd_scene load_steps=2 format=3 uid="uid://dgupboa4irsl8"]
+
+[ext_resource type="PackedScene" uid="uid://bic7t4iy38v0m" path="res://assets/components/cmpAbsoluteValueLabel.tscn" id="1_atdxf"]
 
 [node name="HealthBarComponent" type="ProgressBar"]
 anchors_preset = 8
@@ -13,3 +15,9 @@ offset_bottom = -260.0
 grow_horizontal = 2
 grow_vertical = 2
 fill_mode = 3
+show_percentage = false
+
+[node name="AbsoluteValueLabel" parent="." instance=ExtResource("1_atdxf")]
+layout_mode = 0
+offset_top = 103.0
+offset_bottom = 131.0

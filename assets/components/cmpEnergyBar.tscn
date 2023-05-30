@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://d16v1bpwc7to2"]
+[gd_scene load_steps=2 format=3 uid="uid://d16v1bpwc7to2"]
+
+[ext_resource type="PackedScene" uid="uid://bic7t4iy38v0m" path="res://assets/components/cmpAbsoluteValueLabel.tscn" id="1_g7sac"]
 
 [node name="EnergyBarComponent" type="ProgressBar"]
 anchors_preset = 8
@@ -13,3 +15,6 @@ offset_bottom = -316.0
 grow_horizontal = 2
 grow_vertical = 2
 show_percentage = false
+
+[node name="AbsoluteValueLabel" parent="." instance=ExtResource("1_g7sac")]
+layout_mode = 0

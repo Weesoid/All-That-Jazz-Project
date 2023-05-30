@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name PlayerScene
 
+@export var PLAYER_SQUAD: Array[ResCombatant]
 @onready var player_camera = $PlayerCamera
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var player_animator = $PlayerAnimator

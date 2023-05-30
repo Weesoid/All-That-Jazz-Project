@@ -1,8 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://c4uo7b77jtx6g"]
+[gd_scene load_steps=18 format=3 uid="uid://c4uo7b77jtx6g"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://cun01jq5202w" path="res://assets/overworld_characters/PLAYER_walk.png" id="2_8nsvb"]
+[ext_resource type="Resource" uid="uid://dga8fe3nbmpwq" path="res://assets/combatants_resources/cbPPrototypeA.tres" id="2_tmhx3"]
+[ext_resource type="Resource" uid="uid://byeo878g637qe" path="res://assets/combatants_resources/cbPPrototypeB.tres" id="3_0jqxo"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/misc_sprites/interact.png" id="3_y84xx"]
+[ext_resource type="PackedScene" uid="uid://cmyccltenbww6" path="res://assets/components/cmpCombatantSquad.tscn" id="6_ucs2i"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -238,6 +241,10 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_mngvk")
+PLAYER_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_tmhx3"), ExtResource("3_0jqxo")])
+
+[node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
+COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_tmhx3")])
 
 [node name="PlayerAnimator" type="AnimationPlayer" parent="."]
 libraries = {

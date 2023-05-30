@@ -31,24 +31,36 @@ var STATUS_EFFECTS: Array[ResStatusEffect]
 var BASE_STAT_VALUES
 var SCENE
 var AI_PACKAGE
+var initalized = false
 
 signal enemy_turn
 signal player_turn
 
 func initializeCombatant():
 	SCENE = load(str("res://assets/combatant_sprites_scenes/",SPRITE_NAME,".tscn")).instantiate()
-	for ability in ABILITY_SET:
-		ability.initializeAbility()
-	if !IS_PLAYER_UNIT:
-		AI_PACKAGE = load(str("res://assets/ai_scripts/",AI_PACKAGE_NAME,".gd"))
-		SCENE.get_node("EnergyBarComponent").hide()
+	if !initalized:
+		for ability in ABILITY_SET:
+			ability.initializeAbility()
+		if !IS_PLAYER_UNIT:
+			AI_PACKAGE = load(str("res://assets/ai_scripts/",AI_PACKAGE_NAME,".gd"))
+			SCENE.get_node("EnergyBarComponent").hide()
+		else:
+			SCENE.get_node("EnergyBarComponent").max_value = STAT_VALUES['verve']
+			SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
+		
+		SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
+		SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
+		BASE_STAT_VALUES = STAT_VALUES.duplicate()
+		if IS_PLAYER_UNIT:
+			print('Init: ', BASE_STAT_VALUES)
+		initalized = true
 	else:
-		SCENE.get_node("EnergyBarComponent").max_value = STAT_VALUES['verve']
+		print('Already inited: ', BASE_STAT_VALUES)
+		SCENE.get_node("EnergyBarComponent").max_value = BASE_STAT_VALUES['verve']
 		SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
-	
-	SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
-	SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
-	BASE_STAT_VALUES = STAT_VALUES.duplicate()
+		
+		SCENE.get_node("HealthBarComponent").max_value = BASE_STAT_VALUES['health']
+		SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 	
 func act():
 	if IS_PLAYER_UNIT:

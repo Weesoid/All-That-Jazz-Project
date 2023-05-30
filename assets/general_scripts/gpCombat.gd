@@ -5,7 +5,7 @@
 extends Node2D
 class_name CombatScene
 
-@export var COMBATANTS: Array[ResCombatant] = []
+@export var COMBATANTS: Array[ResCombatant]
 
 @onready var combat_camera = $CombatCamera
 @onready var combat_log = $CombatLog
@@ -86,8 +86,7 @@ func on_enemy_turn():
 	
 func end_turn():
 	for combatant in COMBATANTS:
-		for effect in combatant.STATUS_EFFECTS:
-			effect.tick()
+		tickStatusEffects(combatant)
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
@@ -180,18 +179,21 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 	
 func executeAbility():
+	var animation = selected_ability.ANIMATION.instantiate()
 	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
-	add_child(selected_ability.ANIMATION.instantiate())
+	add_child(animation)
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	selected_ability.animateCast(active_combatant)
 	selected_ability.applyEffects(
 								active_combatant, 
 								target_combatant, 
-								get_node(selected_ability.ANIMATION_NAME)
+								animation
 								)
 	await CombatGlobals.ability_executed
-	get_node(selected_ability.ANIMATION_NAME).queue_free()
+	animation.queue_free()
+	
 	confirm.emit()
+
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
@@ -228,19 +230,21 @@ func checkWin():
 	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return !combatant.IS_PLAYER_UNIT)
 	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant.IS_PLAYER_UNIT)
 	
-	if enemies.size() == 0: 
+	if enemies.is_empty():
 		print("You win!")
-		# Clear all lingering status effects on end of combat
-		for combatant in COMBATANTS:
-			for status in combatant.STATUS_EFFECTS:
-				status.removeStatusEffect()
-		queue_free()
-		OverworldGlobals.restorePlayerView()
-	if team.size() == 0: 
+		concludeCombat()
+	elif team.is_empty():
 		print("You LOSE!")
-		queue_free()
-		OverworldGlobals.restorePlayerView()
+		concludeCombat()
+
 	
+func clearStatusEffects(combatant: ResCombatant):
+	for effect in combatant.STATUS_EFFECTS:
+		effect.removeStatusEffect()
+		
+func tickStatusEffects(combatant: ResCombatant):
+	for effect in combatant.STATUS_EFFECTS:
+		effect.tick()
 	
 func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit
@@ -285,3 +289,9 @@ func runAbility():
 		executeAbility()
 		action_panel.hide()
 		run_once = false
+	
+func concludeCombat():
+	for combatant in COMBATANTS:
+		clearStatusEffects(combatant)
+	queue_free()
+	OverworldGlobals.restorePlayerView()

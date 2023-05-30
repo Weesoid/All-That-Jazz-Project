@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://c7rpqtrfgutkt"]
 
 [ext_resource type="Texture2D" uid="uid://dihiaf7w04e20" path="res://assets/animation_sprites/Test.png" id="1_edvdi"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_83wr0"]

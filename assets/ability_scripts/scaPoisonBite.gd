@@ -6,10 +6,11 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(_caster: ResCombatant, target: ResCombatant, animation_scene):
 	var status_effect = CombatGlobals.loadStatusEffect('Poison')
 	
+	CombatGlobals.playSingleTargetAnimation(target, animation_scene)
 	if status_effect.NAME not in target.getStatusEffectNames():
 		CombatGlobals.addStatusEffect(target, status_effect)
+	else:
+		CombatGlobals.rankUpStatusEffect(target, status_effect)
 	
-	target.getAnimator().play('Hit')
-	await target.getAnimator().animation_finished
-	target.getAnimator().play('Idle')
+	await animation_scene.get_node('AnimationPlayer').animation_finished
 	CombatGlobals.emit_ability_executed()

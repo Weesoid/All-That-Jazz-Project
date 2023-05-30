@@ -9,3 +9,5 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 	
 	await animation_scene.get_node('AnimationPlayer').animation_finished
 	CombatGlobals.emit_ability_executed()
+	
+	

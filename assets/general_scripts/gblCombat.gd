@@ -9,6 +9,7 @@ signal ability_executed
 # COMBAT PROGRESSION / SIGNALS
 #********************************************************************************
 func emit_ability_executed():
+	print('emit!')
 	ability_executed.emit()
 	
 #********************************************************************************
@@ -66,9 +67,9 @@ func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.STATUS_EFFECTS:
-		if effect.NAME == status_effect.NAME: 
+		if effect.NAME == status_effect.NAME:
 			effect.duration = effect.MAX_DURATION
-		if effect.current_rank != effect.MAX_RANK:
+		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1
 	

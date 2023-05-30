@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bic7t4iy38v0m"]
+
+[ext_resource type="Script" path="res://assets/misc_scripts/scmEnergyCounter.gd" id="1_11how"]
+
+[node name="AbsoluteValueLabel" type="Label"]
+offset_right = 128.0
+offset_bottom = 28.0
+text = "8"
+script = ExtResource("1_11how")

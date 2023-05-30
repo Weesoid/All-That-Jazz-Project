@@ -1,8 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://dnp0wfbcrodv1"]
+[gd_scene load_steps=10 format=3 uid="uid://dnp0wfbcrodv1"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpCombat.gd" id="1_kv6ut"]
-[ext_resource type="Resource" uid="uid://dwbeg0ljdk1ta" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="2_by24j"]
-[ext_resource type="Resource" uid="uid://dga8fe3nbmpwq" path="res://assets/combatants_resources/cbPPrototypeA.tres" id="3_deo57"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
 [ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
@@ -73,7 +71,6 @@ _data = {
 [node name="CombatScene" type="Node2D"]
 top_level = true
 script = ExtResource("1_kv6ut")
-COMBATANTS = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_by24j"), ExtResource("3_deo57")])
 
 [node name="Background" type="TextureRect" parent="."]
 offset_left = -576.0
