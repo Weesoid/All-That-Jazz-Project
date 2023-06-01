@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://bjixaxu8eevfa"]
+
+[ext_resource type="Script" path="res://assets/ability_scripts/scaHealAttack.gd" id="1_6mpal"]
+[ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_iu7ac"]
+
+[resource]
+script = ExtResource("1_iu7ac")
+NAME = "Potion Heal"
+ANIMATION_NAME = "aabAOE"
+ABILITY_SCRIPT = ExtResource("1_6mpal")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 0
+TARGET_GROUP = 0

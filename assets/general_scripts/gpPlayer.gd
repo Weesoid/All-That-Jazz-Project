@@ -34,6 +34,8 @@ func _unhandled_input(_event: InputEvent):
 			OverworldGlobals.show_player_interaction = false
 			interactables[0].interact()
 			return
+	if Input.is_action_just_pressed("ui_cancel"):
+		OverworldGlobals.showMenu()
 	
 func animateWalk(input):
 	if input == Vector2(-1,0):

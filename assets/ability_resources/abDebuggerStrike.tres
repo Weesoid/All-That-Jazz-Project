@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://ld08pl0wihb"]
+
+[ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_bont0"]
+[ext_resource type="Script" path="res://assets/ability_scripts/scaDebuggerStrike.gd" id="1_jv18n"]
+
+[resource]
+script = ExtResource("1_bont0")
+NAME = "Debugger Strike!"
+ANIMATION_NAME = "aabAOE"
+ABILITY_SCRIPT = ExtResource("1_jv18n")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 1
+TARGET_GROUP = 1

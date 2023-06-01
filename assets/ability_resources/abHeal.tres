@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=2 format=3 uid="uid://dq3y16pids014"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://dq3y16pids014"]
 
+[ext_resource type="Script" path="res://assets/ability_scripts/scaHealAttack.gd" id="1_gjybg"]
 [ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_wf5nj"]
 
 [resource]
 script = ExtResource("1_wf5nj")
 NAME = "Healing Beam"
 ANIMATION_NAME = "aabHeal"
-ABILITY_SCRIPT_NAME = "scaHealAttack"
+ABILITY_SCRIPT = ExtResource("1_gjybg")
 COST = 4
 COST_RESOURCE = "verve"
 TARGET_TYPE = 0

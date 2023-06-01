@@ -15,3 +15,6 @@ func animateCast(caster: ResCombatant):
 
 func applyEffect(caster: ResCombatant, target: ResCombatant, animation_scene):
 	EFFECT.applyEffects(caster, target, animation_scene)
+
+func _to_string():
+	return str(NAME, ' x', STACK)

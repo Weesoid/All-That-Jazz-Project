@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=2 format=3 uid="uid://i4kmvjv6rwtr"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://i4kmvjv6rwtr"]
 
+[ext_resource type="Script" path="res://assets/ability_scripts/scaWeaponAttack.gd" id="1_6ejw8"]
 [ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_w22je"]
 
 [resource]
 script = ExtResource("1_w22je")
 NAME = "Striking Blow"
 ANIMATION_NAME = "aabPunchMunchie"
-ABILITY_SCRIPT_NAME = "scaWeaponAttack"
+ABILITY_SCRIPT = ExtResource("1_6ejw8")
 COST = 0
 COST_RESOURCE = "verve"
 TARGET_TYPE = 0

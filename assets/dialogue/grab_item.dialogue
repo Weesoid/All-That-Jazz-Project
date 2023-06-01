@@ -1,4 +1,4 @@
 ~ this_is_a_node_title
-do PlayerGlobals.addItemToInventory("HealingPotion")
+do PlayerGlobals.addItemToInventory("NeutralWeapon")
 Entity: You got an Healing Potion! Gay sex!
 => END

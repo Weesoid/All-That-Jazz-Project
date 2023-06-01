@@ -1,0 +1,76 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxakiabctkrg6"]
+
+[ext_resource type="Script" path="res://assets/misc_scripts/scmInventoryUI.gd" id="1_qwj2w"]
+
+[node name="uiInventory" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -35.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+script = ExtResource("1_qwj2w")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 0
+offset_left = -184.0
+offset_top = -104.0
+offset_right = 200.0
+offset_bottom = 107.0
+scale = Vector2(1, 0.986486)
+mouse_default_cursor_shape = 2
+
+[node name="Weapons" type="Button" parent="TabContainer"]
+layout_mode = 2
+button_mask = 0
+
+[node name="Armors" type="Button" parent="TabContainer"]
+visible = false
+layout_mode = 2
+button_mask = 0
+
+[node name="Misc" type="Button" parent="TabContainer"]
+visible = false
+layout_mode = 2
+button_mask = 0
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -184.0
+offset_top = 112.0
+offset_right = 200.0
+offset_bottom = 168.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_right = 368.0
+offset_bottom = 56.0
+text = "
+"
+
+[node name="UseContainer" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -184.0
+offset_top = 125.0
+offset_right = 200.0
+offset_bottom = 160.0
+alignment = 1
+
+[node name="Use" type="Button" parent="UseContainer"]
+layout_mode = 2
+text = "Use"
+
+[node name="Drop" type="Button" parent="UseContainer"]
+layout_mode = 2
+text = "Drop"
+
+[connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="pressed" from="UseContainer/Use" to="." method="_on_use_pressed"]
+[connection signal="pressed" from="UseContainer/Drop" to="." method="_on_drop_pressed"]

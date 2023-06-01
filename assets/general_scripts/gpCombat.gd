@@ -47,7 +47,7 @@ func _ready():
 		combatant.player_turn.connect(on_player_turn)
 		combatant.enemy_turn.connect(on_enemy_turn)
 		
-		if (combatant.IS_PLAYER_UNIT):
+		if combatant is ResPlayerCombatant:
 			addCombatant(combatant, team_container_markers)
 			connectPlayerAbilities(combatant)
 		else:
@@ -210,7 +210,7 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 	
 func executeAbility():
-	var animation = selected_ability.ANIMATION.instantiate()
+	var animation = selected_ability. ANIMATION.instantiate()
 	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
 	add_child(animation)
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
@@ -242,14 +242,15 @@ func connectPlayerAbilities(combatant: ResCombatant):
 		ability.single_target.connect(playerSelectAbility)
 		ability.multi_target.connect(playerSelectAbility)
 		
-func connectPlayerItems():	
+func connectPlayerItems():
 	for item in PlayerGlobals.INVENTORY.values():
+		item.EFFECT.initializeAbility()
 		if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
 		item.EFFECT.single_target.connect(playerSelectAbility)
 		item.EFFECT.multi_target.connect(playerSelectAbility)
 	
 func spawnTroop(combatant):
-	if combatant.COUNT < 1:
+	if combatant is ResPlayerCombatant or combatant.COUNT < 1:
 		return
 		
 	for n in combatant.COUNT-1:
@@ -264,8 +265,8 @@ func sortBySpeed(a: ResCombatant, b: ResCombatant):
 	return a.STAT_VALUES['hustle'] > b.STAT_VALUES['hustle']
 	
 func checkWin():
-	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return !combatant.IS_PLAYER_UNIT)
-	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant.IS_PLAYER_UNIT)
+	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
+	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
 	
 	if enemies.is_empty():
 		print("You win!")

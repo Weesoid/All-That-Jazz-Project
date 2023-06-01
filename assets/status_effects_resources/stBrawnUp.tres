@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=2 format=3 uid="uid://vukm0ujobnb6"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=3 format=3 uid="uid://vukm0ujobnb6"]
 
 [ext_resource type="Script" path="res://assets/resources/ResStatusEffect.gd" id="1_c8x4r"]
+[ext_resource type="Script" path="res://assets/ability_scripts/scsStatModifier.gd" id="1_kwaxl"]
 
 [resource]
 script = ExtResource("1_c8x4r")
 NAME = "Buff Up"
 ANIMATION_NAME = ""
-STATUS_SCRIPT_NAME = "scsStatModifier"
+STATUS_SCRIPT = ExtResource("1_kwaxl")
 ICON_NAME = "st_brawn_up1"
 MAX_DURATION = 6
 MAX_RANK = 2

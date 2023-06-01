@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=2 format=3 uid="uid://dkhp3pctqieee"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://dkhp3pctqieee"]
 
+[ext_resource type="Script" path="res://assets/ability_scripts/scaAoEAttack.gd" id="1_6w855"]
 [ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_yro00"]
 
 [resource]
 script = ExtResource("1_yro00")
 NAME = "AOE STRIKE"
 ANIMATION_NAME = "aabAOE"
-ABILITY_SCRIPT_NAME = "scaAoEAttack"
+ABILITY_SCRIPT = ExtResource("1_6w855")
 COST = 1
 COST_RESOURCE = "verve"
 TARGET_TYPE = 1

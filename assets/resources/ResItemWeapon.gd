@@ -11,6 +11,9 @@ enum DamageType {
 @export var STAT_MODIFICATIONS = {}
 @export var EFFECT: ResAbility
 
+func equip(combatant: ResCombatant):
+	combatant.EQUIPMENT['weapon'] = self
+
 func animateCast(caster: ResCombatant):
 	EFFECT.animateCast(caster)
 

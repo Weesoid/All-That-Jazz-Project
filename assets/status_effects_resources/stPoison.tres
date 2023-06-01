@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=2 format=3 uid="uid://cinuba8xotxdq"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=3 format=3 uid="uid://cinuba8xotxdq"]
 
 [ext_resource type="Script" path="res://assets/resources/ResStatusEffect.gd" id="1_5ugit"]
+[ext_resource type="Script" path="res://assets/ability_scripts/scsPoison.gd" id="1_t6ebe"]
 
 [resource]
 script = ExtResource("1_5ugit")
 NAME = "Poison"
 ANIMATION_NAME = ""
-STATUS_SCRIPT_NAME = "scsPoison"
+STATUS_SCRIPT = ExtResource("1_t6ebe")
 ICON_NAME = "st_wit_dn1"
 MAX_DURATION = 3
 MAX_RANK = 0

@@ -1,5 +1,7 @@
 extends Node
 
+
+var showing_menu = false
 var enemy_combatant_squad: Array[ResCombatant]
 var player_can_move = true
 var show_player_interaction = true
@@ -9,6 +11,19 @@ var show_player_interaction = true
 #********************************************************************************
 func getPlayer()-> PlayerScene:
 	return get_tree().current_scene.get_node('Player')
+	
+func showMenu():
+	var main_menu = load("res://main_scenes/user_interface/uiPauseMenu.tscn").instantiate()
+	
+	if !showing_menu:
+		getPlayer().player_camera.add_child(main_menu)
+		showing_menu = true
+	else:
+		main_menu.queue_free()
+		getPlayer().player_camera.get_node('uiPauseMenu').queue_free()
+		showing_menu = false
+	
+
 	
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES

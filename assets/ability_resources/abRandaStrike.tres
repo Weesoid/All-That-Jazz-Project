@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=2 format=3 uid="uid://c2yoqgocd8hr1"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://c2yoqgocd8hr1"]
 
+[ext_resource type="Script" path="res://assets/ability_scripts/scaRandaStrike.gd" id="1_462hh"]
 [ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_xkuih"]
 
 [resource]
 script = ExtResource("1_xkuih")
 NAME = "Randa Strike!"
 ANIMATION_NAME = "aabRandom"
-ABILITY_SCRIPT_NAME = "scaRandaStrike"
+ABILITY_SCRIPT = ExtResource("1_462hh")
 COST = 2
 COST_RESOURCE = "verve"
 TARGET_TYPE = 1

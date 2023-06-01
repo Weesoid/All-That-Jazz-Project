@@ -6,9 +6,10 @@ class_name ResItem
 
 var ICON
 var ITEM_SCRIPT
-var ANIMATION
 
 func initializeItem():
 	ICON = TextureRect.new()
 	ICON.texture = load(str("res://assets/icons/"+ICON_NAME+".png"))
 	
+func _to_string():
+	return str(NAME)
