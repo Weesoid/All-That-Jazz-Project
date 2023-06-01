@@ -147,7 +147,6 @@ text = "SKILLS"
 icon = ExtResource("7_dnqbg")
 
 [node name="SkillScroller" type="ScrollContainer" parent="ActionPanel/Skills"]
-visible = false
 layout_mode = 0
 offset_left = 93.0
 offset_top = -35.0
@@ -165,12 +164,12 @@ text = "ITEMS"
 icon = ExtResource("8_yp68o")
 
 [node name="ItemScroller" type="ScrollContainer" parent="ActionPanel/Items"]
-visible = false
 layout_mode = 0
 offset_left = 93.0
 offset_top = -35.0
-offset_right = 156.0
+offset_right = 269.0
 offset_bottom = 66.0
+horizontal_scroll_mode = 3
 
 [node name="ItemContainer" type="VBoxContainer" parent="ActionPanel/Items/ItemScroller"]
 layout_mode = 2

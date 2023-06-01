@@ -9,7 +9,6 @@ signal ability_executed
 # COMBAT PROGRESSION / SIGNALS
 #********************************************************************************
 func emit_ability_executed():
-	print('emit!')
 	ability_executed.emit()
 	
 #********************************************************************************

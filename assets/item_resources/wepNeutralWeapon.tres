@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ResItem" load_steps=2 format=3 uid="uid://ds3ikvmqtougm"]
+
+[ext_resource type="Script" path="res://assets/resources/ResItem.gd" id="1_lw47t"]
+
+[resource]
+script = ExtResource("1_lw47t")
+NAME = "Neutral Weapon"
+ICON_NAME = ""

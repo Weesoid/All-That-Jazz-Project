@@ -241,10 +241,9 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_mngvk")
-PLAYER_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_tmhx3"), ExtResource("3_0jqxo")])
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
-COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_tmhx3")])
+COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_tmhx3"), ExtResource("3_0jqxo")])
 
 [node name="PlayerAnimator" type="AnimationPlayer" parent="."]
 libraries = {

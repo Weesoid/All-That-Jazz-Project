@@ -1,0 +1,3 @@
+extends ResCombatant
+class_name ResEnemyCombatant
+

@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://dlrdt4g1at0ee"]
 
-[node name="StatusBarComponent" type="VBoxContainer"]
-offset_left = -6.0
-offset_top = -20.0
-offset_right = 7.0
-offset_bottom = 104.0
+[node name="StatusBarComponent" type="HBoxContainer"]
+offset_left = -109.0
+offset_top = -10.0
+offset_right = 110.0
+offset_bottom = 13.0
+size_flags_horizontal = 4

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ctapgmbwvlt6g"]
+[gd_scene load_steps=14 format=3 uid="uid://dlvxae5b6847s"]
 
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://assets/combatant_sprites/GoodGuyB.png" id="1_2b83e"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_hqk44"]
@@ -196,10 +196,10 @@ libraries = {
 stream = ExtResource("2_hqk44")
 
 [node name="StatusBarComponent" parent="." instance=ExtResource("3_cqjt4")]
-offset_left = -160.0
-offset_top = -56.0
-offset_right = -147.0
-offset_bottom = 56.0
+offset_left = -112.0
+offset_top = 39.0
+offset_right = 107.0
+offset_bottom = 62.0
 
 [node name="HealthBarComponent" parent="." instance=ExtResource("4_jlims")]
 offset_left = -141.779

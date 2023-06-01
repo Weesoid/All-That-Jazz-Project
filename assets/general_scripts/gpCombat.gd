@@ -16,6 +16,8 @@ class_name CombatScene
 @onready var attack_button = $ActionPanel/Attack
 @onready var ability_scroller = $ActionPanel/Skills/SkillScroller
 @onready var ability_container = $ActionPanel/Skills/SkillScroller/SkillsContainer
+@onready var item_scroller = $ActionPanel/Items/ItemScroller
+@onready var item_container = $ActionPanel/Items/ItemScroller/ItemContainer
 @onready var items_button = $ActionPanel/Items
 @onready var escape_button = $ActionPanel/Escape
 @onready var ui_target = $Target
@@ -37,6 +39,8 @@ signal target_selected
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
+	connectPlayerItems()
+	
 	for combatant in COMBATANTS:
 		spawnTroop(combatant)
 		combatant.initializeCombatant()
@@ -126,7 +130,19 @@ func _ability_focus_enter():
 	ability_scroller.show()
 	
 func _on_items_pressed():
-	confirm.emit()
+	getPlayerItems(PlayerGlobals.INVENTORY)
+	if PlayerGlobals.INVENTORY.is_empty():
+		items_button.disabled = true
+		return
+	items_button.disabled = false
+	item_scroller.show()
+	item_container.get_child(0).grab_focus()
+	
+func _item_focus_exit():
+	item_scroller.hide()
+	
+func _item_focus_enter():
+	item_scroller.show()
 	
 func _on_escape_pressed():
 	get_tree().quit()
@@ -151,7 +167,22 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.pressed.connect(ability_set[i].execute)
 		button.focus_entered.connect(_ability_focus_enter)
 		button.focus_exited.connect(_ability_focus_exit)
+		if !ability_set[i].canCast(active_combatant):
+			button.disabled = true
 		ability_container.add_child(button)
+	
+func getPlayerItems(inventory: Dictionary):
+	for child in item_container.get_children():
+		child.free()
+		
+	for item in inventory.values():
+		var button = Button.new()
+		button.text = str(item.NAME, ' x', item.STACK)
+		button.pressed.connect(item.EFFECT.execute)
+		button.pressed.connect(item.USE)
+		button.focus_entered.connect(_item_focus_enter)
+		button.focus_exited.connect(_item_focus_exit)
+		item_container.add_child(button)
 	
 func playerSelectAbility(ability:ResAbility, state: int):
 	target_state = state
@@ -210,6 +241,12 @@ func connectPlayerAbilities(combatant: ResCombatant):
 		if ability.single_target.is_connected(playerSelectAbility): continue
 		ability.single_target.connect(playerSelectAbility)
 		ability.multi_target.connect(playerSelectAbility)
+		
+func connectPlayerItems():	
+	for item in PlayerGlobals.INVENTORY.values():
+		if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
+		item.EFFECT.single_target.connect(playerSelectAbility)
+		item.EFFECT.multi_target.connect(playerSelectAbility)
 	
 func spawnTroop(combatant):
 	if combatant.COUNT < 1:

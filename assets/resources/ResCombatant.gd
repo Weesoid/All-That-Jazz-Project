@@ -1,3 +1,4 @@
+# Refactor Exstensions
 extends Resource
 class_name ResCombatant
 
@@ -26,7 +27,11 @@ enum ArmorType {
 	'will': 1
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
-
+@export var EQUIPMENT = {
+	'weapon': null,
+	'armor': null,
+	'charm': null
+}
 var STATUS_EFFECTS: Array[ResStatusEffect]
 var BASE_STAT_VALUES
 var SCENE
@@ -51,11 +56,8 @@ func initializeCombatant():
 		SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
 		SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
-		if IS_PLAYER_UNIT:
-			print('Init: ', BASE_STAT_VALUES)
 		initalized = true
 	else:
-		print('Already inited: ', BASE_STAT_VALUES)
 		SCENE.get_node("EnergyBarComponent").max_value = BASE_STAT_VALUES['verve']
 		SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
 		

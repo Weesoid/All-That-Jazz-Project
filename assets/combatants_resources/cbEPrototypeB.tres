@@ -21,3 +21,8 @@ STAT_VALUES = {
 "wit": 1
 }
 ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("3_125q7")])
+EQUIPMENT = {
+"armor": null,
+"charm": null,
+"weapon": null
+}

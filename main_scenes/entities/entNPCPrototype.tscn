@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ud425xnds2hi"]
+[gd_scene load_steps=7 format=3 uid="uid://ud425xnds2hi"]
 
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://assets/overworld_characters/NPC_unknown_entity.png" id="1_ly6sy"]
 [ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="2_qhjob"]
 [ext_resource type="PackedScene" uid="uid://cmyccltenbww6" path="res://assets/components/cmpCombatantSquad.tscn" id="3_662iy"]
 [ext_resource type="Resource" uid="uid://ck3xxe611ngg5" path="res://assets/dialogue/test.dialogue" id="3_fs6pt"]
 [ext_resource type="Resource" uid="uid://dwbeg0ljdk1ta" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="5_ke8to"]
-[ext_resource type="Resource" uid="uid://b4xoniy36myge" path="res://assets/combatants_resources/cbEPrototypeB.tres" id="6_tgq7m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rolhl"]
 size = Vector2(21, 20)
@@ -13,7 +12,7 @@ size = Vector2(21, 20)
 [node name="NPCPrototype" type="CharacterBody2D"]
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("3_662iy")]
-COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("5_ke8to"), ExtResource("6_tgq7m")])
+COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("5_ke8to")])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_ly6sy")

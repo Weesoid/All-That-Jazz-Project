@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://daer2k38gbtad"]
+[gd_scene load_steps=7 format=3 uid="uid://daer2k38gbtad"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_388ch"]
 [ext_resource type="PackedScene" uid="uid://c4uo7b77jtx6g" path="res://main_scenes/entities/entPlayer.tscn" id="2_v2w4i"]
 [ext_resource type="PackedScene" uid="uid://ud425xnds2hi" path="res://main_scenes/entities/entNPCPrototype.tscn" id="3_578vb"]
+[ext_resource type="PackedScene" uid="uid://gvedoxhpqu6c" path="res://main_scenes/entities/entItem.tscn" id="4_5n3oa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2gieu"]
 texture = ExtResource("1_388ch")
@@ -37,3 +38,6 @@ position = Vector2(1, 0)
 
 [node name="NPCPrototype" parent="." instance=ExtResource("3_578vb")]
 position = Vector2(0, -100)
+
+[node name="entItem" parent="." instance=ExtResource("4_5n3oa")]
+position = Vector2(-168, -100)
