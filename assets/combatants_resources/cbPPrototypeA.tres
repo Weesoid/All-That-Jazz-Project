@@ -8,8 +8,18 @@
 
 [resource]
 script = ExtResource("5_rov6a")
+STAT_GROWTH_RATES = {
+"brawn": 1,
+"grit": 1,
+"health": 1,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
 NAME = "PUFriendHealer"
 SPRITE_NAME = "sprGoodGuyA"
+DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
 "brawn": 1,
 "grit": 3,

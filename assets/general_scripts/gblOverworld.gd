@@ -6,6 +6,13 @@ var enemy_combatant_squad: Array[ResCombatant]
 var player_can_move = true
 var show_player_interaction = true
 
+func _ready():
+	print('initailzing combatanst!')
+	for member in getCombatantSquad('Player'):
+		if !member.initalized:
+			member.initializeCombatant()
+			member.SCENE.free()
+
 #********************************************************************************
 # GENERAL UTILITY
 #********************************************************************************
@@ -22,8 +29,6 @@ func showMenu():
 		main_menu.queue_free()
 		getPlayer().player_camera.get_node('uiPauseMenu').queue_free()
 		showing_menu = false
-	
-
 	
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES

@@ -1,6 +1,15 @@
 extends ResCombatant
 class_name ResPlayerCombatant
 
+@export var STAT_GROWTH_RATES = {
+	'health': 1,
+	'verve': 1,
+	'hustle': 1,
+	'brawn': 1,
+	'wit': 1,
+	'grit': 1,
+	'will': 1
+}
 var initalized = false
 
 func initializeCombatant():

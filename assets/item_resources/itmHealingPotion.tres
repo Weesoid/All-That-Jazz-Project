@@ -8,3 +8,4 @@ script = ExtResource("2_0mv4f")
 EFFECT = ExtResource("1_h323v")
 NAME = "Healing Potion"
 ICON_NAME = "st_grit_up1"
+DESCRIPTION = "\"Wow this shit heals!\" /n - Johnny Dyin"

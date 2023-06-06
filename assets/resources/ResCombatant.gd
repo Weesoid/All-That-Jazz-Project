@@ -5,6 +5,7 @@ class_name ResCombatant
 ## Backend export variables
 @export var NAME: String
 @export var SPRITE_NAME: String
+@export var DESCRIPTION: String
 
 ## Frontend / Gameplay export variables
 @export var STAT_VALUES = {
@@ -23,7 +24,7 @@ class_name ResCombatant
 	'charm': null
 }
 var STATUS_EFFECTS: Array[ResStatusEffect]
-var BASE_STAT_VALUES
+var BASE_STAT_VALUES: Dictionary
 var SCENE
 
 signal enemy_turn
@@ -65,6 +66,13 @@ func getMaxHealth():
 	
 func isDead()-> bool:
 	return STAT_VALUES['health'] < 0
+	
+func getStringStats():
+	var result = ""
+	for key in BASE_STAT_VALUES.keys():
+		result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
+	return result
+
 	
 func _to_string():
 	return str(NAME)

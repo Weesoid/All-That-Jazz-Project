@@ -20,3 +20,10 @@ func act():
 	
 func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 	return AI_PACKAGE.selectTarget(combatant_array)
+
+func getExperience():
+	var out = 0
+	for key in BASE_STAT_VALUES.keys():
+		if key != "health":
+			out += BASE_STAT_VALUES[key]
+	return out

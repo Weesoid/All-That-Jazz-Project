@@ -36,7 +36,6 @@ enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
 
 [gui]
 
-theme/default_theme_scale=1.25
 theme/custom_font="res://assets/design/SHPinscher-Regular.otf"
 theme/default_font_antialiasing=0
 

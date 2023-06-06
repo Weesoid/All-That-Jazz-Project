@@ -15,3 +15,9 @@ func _on_inventory_pressed():
 	
 func _on_quit_pressed():
 	get_tree().quit()
+
+
+func _on_posse_pressed():
+	var inventory_ui = load("res://main_scenes/user_interface/uiPartyMembers.tscn").instantiate()
+	$Container.modulate.a = 0
+	add_child(inventory_ui)

@@ -4,12 +4,16 @@ extends Node
 # combatants...
 
 signal ability_executed
+signal exp_updated(value: float, max_value: float)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
 #********************************************************************************
 func emit_ability_executed():
 	ability_executed.emit()
+
+func emit_exp_updated(value, max_value):
+	exp_updated.emit(value, max_value)
 	
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY

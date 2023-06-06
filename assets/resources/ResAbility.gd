@@ -12,6 +12,7 @@ enum TargetGroup {
 }
 
 @export var NAME: String
+@export var DESCRIPTION: String
 @export var ANIMATION_NAME: String
 @export var ABILITY_SCRIPT: GDScript
 @export var COST: int

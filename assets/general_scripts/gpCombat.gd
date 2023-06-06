@@ -22,6 +22,7 @@ class_name CombatScene
 @onready var escape_button = $ActionPanel/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
+@onready var party_exp_bar = $PartyExp
 
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
@@ -31,9 +32,12 @@ var target_combatant
 var target_index = 0
 var selected_ability: ResAbility
 var run_once = true
+var experience_earnt = 0
 
 signal confirm
 signal target_selected
+signal update_exp(value: float, max_value: float)
+
 
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
@@ -64,7 +68,7 @@ func _process(_delta):
 		2: playerSelectMultiTarget()
 	
 func on_player_turn():
-	checkWin()
+	#checkWin()
 	action_panel.show()
 	attack_button.grab_focus()
 	action_panel.position = active_combatant.getSprite().global_position
@@ -94,9 +98,9 @@ func end_turn():
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
+		if combatant is ResEnemyCombatant: experience_earnt += combatant.getExperience()
 		COMBATANTS.erase(combatant)
 	
-	checkWin()
 	run_once = true
 	target_index = 0
 	COMBATANTS.sort_custom(sortBySpeed)
@@ -105,6 +109,7 @@ func end_turn():
 	active_index = incrementIndex(active_index,1,COMBATANTS.size())
 	active_combatant = COMBATANTS[active_index]
 	active_combatant.act()
+	checkWin()
 
 #********************************************************************************
 # BASE SCENE NODE CONTROL
@@ -244,6 +249,7 @@ func connectPlayerAbilities(combatant: ResCombatant):
 		
 func connectPlayerItems():
 	for item in PlayerGlobals.INVENTORY.values():
+		if item is ResWeapon or item is ResArmor: continue
 		item.EFFECT.initializeAbility()
 		if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
 		item.EFFECT.single_target.connect(playerSelectAbility)
@@ -301,7 +307,7 @@ func browseTargetsInputs():
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept"):
 		ui_target.hide()
-		target_selected.emit() 
+		target_selected.emit()
 	if Input.is_action_just_pressed("ui_cancel"):
 		resetActionLog()
 	
@@ -331,5 +337,15 @@ func runAbility():
 func concludeCombat():
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
+		
+	action_panel.hide()
+	ui_target.hide()
+	target_state = 0
+	target_index = 0
+	party_exp_bar.show()
+	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
+	await get_tree().create_timer(1).timeout
+	
+	PlayerGlobals.addExperience(experience_earnt)
 	queue_free()
 	OverworldGlobals.restorePlayerView()

@@ -10,6 +10,7 @@ COUNT = 1
 AI_PACKAGE = ExtResource("2_t0rce")
 NAME = "EUStriker"
 SPRITE_NAME = "sprBadGuyA"
+DESCRIPTION = ""
 STAT_VALUES = {
 "brawn": 5,
 "grit": 6,

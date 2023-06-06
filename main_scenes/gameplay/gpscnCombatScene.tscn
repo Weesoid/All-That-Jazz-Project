@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dnp0wfbcrodv1"]
+[gd_scene load_steps=11 format=3 uid="uid://dnp0wfbcrodv1"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpCombat.gd" id="1_kv6ut"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
 [ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
+[ext_resource type="Script" path="res://assets/misc_scripts/scmPartyExp.gd" id="7_rrtk0"]
 [ext_resource type="Texture2D" uid="uid://cgf1qb6eni4jx" path="res://assets/icons/s_speed.png" id="8_yp68o"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="9_d3h28"]
 
@@ -191,6 +192,23 @@ libraries = {
 
 [node name="CombatCamera" type="Camera2D" parent="."]
 zoom = Vector2(1.05, 1.05)
+
+[node name="PartyExp" type="ProgressBar" parent="."]
+visible = false
+offset_left = -535.0
+offset_top = -16.0
+offset_right = 537.0
+offset_bottom = 14.0
+value = 50.0
+script = ExtResource("7_rrtk0")
+
+[node name="Label" type="Label" parent="PartyExp"]
+layout_mode = 0
+offset_top = -32.0
+offset_right = 1072.0
+offset_bottom = -4.0
+text = "POSSE EXPERIENCE"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="ActionPanel/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="ActionPanel/Skills" to="." method="_on_skills_pressed"]

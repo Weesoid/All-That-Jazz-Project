@@ -9,13 +9,23 @@
 
 [resource]
 script = ExtResource("5_4siku")
+STAT_GROWTH_RATES = {
+"brawn": 1,
+"grit": 1,
+"health": 1,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
 NAME = "PUMainBlasko"
 SPRITE_NAME = "sprGoodGuyB"
+DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
 "brawn": 5,
 "grit": 5,
 "health": 100,
-"hustle": 8,
+"hustle": 15,
 "verve": 8,
 "will": 3,
 "wit": 2
