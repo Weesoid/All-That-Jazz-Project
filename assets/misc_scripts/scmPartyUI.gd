@@ -1,3 +1,4 @@
+# TO-DO: GENERAL QUALITY CONTROL
 extends Control
 
 @onready var party_panel = $PartyPanel/ScrollContainer/VBoxContainer

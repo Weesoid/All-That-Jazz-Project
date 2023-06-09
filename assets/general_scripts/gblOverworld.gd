@@ -30,6 +30,18 @@ func showMenu():
 		getPlayer().player_camera.get_node('uiPauseMenu').queue_free()
 		showing_menu = false
 	
+# BODY MOVER
+# Receive csv (L,R,U,D)(integer)
+# 	e.g. L1,R2,r5,R6, etc.
+# csv -> array
+# for direction in array:
+# 	direction.split(half)
+#	direction[0] = direction
+#	direction[1] = move units
+
+# e.g. L5 > Move left, 5 units
+# This method can move any NPC at any time bc it's global
+	
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES
 #********************************************************************************

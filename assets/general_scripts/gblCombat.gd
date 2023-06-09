@@ -4,6 +4,7 @@ extends Node
 # combatants...
 
 signal ability_executed
+#signal fast_ability_executed
 signal exp_updated(value: float, max_value: float)
 
 #********************************************************************************

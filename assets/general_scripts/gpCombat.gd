@@ -1,7 +1,3 @@
-# TO DO:
-# 1. ABILITY EFFECTS
-#		1.1 States
-
 extends Node2D
 class_name CombatScene
 
@@ -176,11 +172,12 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 			button.disabled = true
 		ability_container.add_child(button)
 	
-func getPlayerItems(inventory: Dictionary):
+func getPlayerItems(inventory):
 	for child in item_container.get_children():
 		child.free()
 		
-	for item in inventory.values():
+	for item in inventory:
+		if !item is ResConsumable: continue
 		var button = Button.new()
 		button.text = str(item.NAME, ' x', item.STACK)
 		button.pressed.connect(item.EFFECT.execute)
@@ -248,7 +245,7 @@ func connectPlayerAbilities(combatant: ResCombatant):
 		ability.multi_target.connect(playerSelectAbility)
 		
 func connectPlayerItems():
-	for item in PlayerGlobals.INVENTORY.values():
+	for item in PlayerGlobals.INVENTORY:
 		if item is ResWeapon or item is ResArmor: continue
 		item.EFFECT.initializeAbility()
 		if item.EFFECT.single_target.is_connected(playerSelectAbility): continue

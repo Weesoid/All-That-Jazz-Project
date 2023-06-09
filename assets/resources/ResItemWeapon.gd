@@ -13,13 +13,15 @@ enum DamageType {
 var EQUIPPED_COMBATANT: ResCombatant
 
 func equip(combatant: ResCombatant):
+	if EQUIPPED_COMBATANT != null: 
+		unequip()
 	EQUIPPED_COMBATANT = combatant
 	combatant.EQUIPMENT['weapon'] = self
 	applyStatModifications()
 
-func unequip(combatant: ResCombatant):
+func unequip():
 	removeStatModifications()
-	combatant.EQUIPMENT['weapon'] = null
+	EQUIPPED_COMBATANT.EQUIPMENT['weapon'] = null
 	EQUIPPED_COMBATANT = null
 
 func applyStatModifications():

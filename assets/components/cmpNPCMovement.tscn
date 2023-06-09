@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcti1j6y5phfi"]
+
+[ext_resource type="Script" path="res://assets/misc_scripts/scmNPCMovement.gd" id="1_3ql0b"]
+
+[node name="NPCMovementComponent" type="Node"]
+script = ExtResource("1_3ql0b")

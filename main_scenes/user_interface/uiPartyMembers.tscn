@@ -24,6 +24,7 @@ offset_right = -72.0
 offset_bottom = 104.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PartyPanel"]
+layout_mode = 0
 offset_right = 112.0
 offset_bottom = 144.0
 horizontal_scroll_mode = 0
@@ -54,6 +55,7 @@ offset_right = 64.0
 offset_bottom = 104.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SkillPanel"]
+layout_mode = 0
 offset_right = 128.0
 offset_bottom = 144.0
 horizontal_scroll_mode = 0
@@ -69,6 +71,7 @@ offset_right = 200.0
 offset_bottom = 104.0
 
 [node name="DescriptionLabel" type="Label" parent="StatPanel"]
+layout_mode = 0
 offset_left = 8.0
 offset_right = 120.0
 offset_bottom = 144.0

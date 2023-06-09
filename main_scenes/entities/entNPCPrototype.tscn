@@ -1,25 +1,177 @@
-[gd_scene load_steps=7 format=3 uid="uid://ud425xnds2hi"]
+[gd_scene load_steps=12 format=3 uid="uid://ud425xnds2hi"]
 
-[ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://assets/overworld_characters/NPC_unknown_entity.png" id="1_ly6sy"]
-[ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="2_qhjob"]
+[ext_resource type="PackedScene" uid="uid://bcti1j6y5phfi" path="res://assets/components/cmpNPCMovement.tscn" id="1_n2s1n"]
 [ext_resource type="PackedScene" uid="uid://cmyccltenbww6" path="res://assets/components/cmpCombatantSquad.tscn" id="3_662iy"]
-[ext_resource type="Resource" uid="uid://ck3xxe611ngg5" path="res://assets/dialogue/test.dialogue" id="3_fs6pt"]
+[ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://assets/overworld_characters/ent_walker.png" id="4_5f2br"]
 [ext_resource type="Resource" uid="uid://dwbeg0ljdk1ta" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="5_ke8to"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rolhl"]
-size = Vector2(21, 20)
+[sub_resource type="Animation" id="Animation_jaucr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_31icp"]
+resource_name = "Walk_Down"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [2, 1, 0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_6sc3m"]
+resource_name = "Walk_Left"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_ddvpw"]
+resource_name = "Walk_Right"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_dpwad"]
+resource_name = "Walk_Up"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [8, 7, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sx3aq"]
+_data = {
+"RESET": SubResource("Animation_jaucr"),
+"Walk_Down": SubResource("Animation_31icp"),
+"Walk_Left": SubResource("Animation_6sc3m"),
+"Walk_Right": SubResource("Animation_ddvpw"),
+"Walk_Up": SubResource("Animation_dpwad")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
+radius = 8.06226
 
 [node name="NPCPrototype" type="CharacterBody2D"]
+motion_mode = 1
+wall_min_slide_angle = 0.0
+
+[node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "LINE_OF_SIGHT", "NAV_AGENT", "PATH_UPDATE_TIMER", "ANIMATOR") instance=ExtResource("1_n2s1n")]
+BODY = NodePath("..")
+LINE_OF_SIGHT = NodePath("../RayCast2D")
+NAV_AGENT = NodePath("../NavigationAgent2D")
+PATH_UPDATE_TIMER = NodePath("../NavigationAgent2D/PathUpdateTimer")
+ANIMATOR = NodePath("../Animator")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("3_662iy")]
 COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("5_ke8to")])
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_ly6sy")
+[node name="Animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sx3aq")
+}
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = ExtResource("4_5f2br")
+hframes = 3
+vframes = 3
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 14)
-shape = SubResource("RectangleShape2D_rolhl")
+position = Vector2(0, 14)
+shape = SubResource("CircleShape2D_6fsld")
 
-[node name="InteractComponent" parent="." instance=ExtResource("2_qhjob")]
-dialogue_resource = ExtResource("3_fs6pt")
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="PathUpdateTimer" type="Timer" parent="NavigationAgent2D"]
+wait_time = 0.5
+autostart = true
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 120)
+collide_with_areas = true

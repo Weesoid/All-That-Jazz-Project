@@ -1,25 +1,25 @@
+# Rename this to gblPlayerData
 extends Node
 
-var INVENTORY = {}
+var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
 func addItemToInventory(item_name: String):
 	var item = load("res://assets/item_resources/itm"+item_name+".tres")
-	if item is ResConsumable:
-		if INVENTORY.has(item.NAME):
-			INVENTORY[item.NAME].STACK += 1
-		else:
-			INVENTORY[item.NAME] = item
-	elif item is ResWeapon or item is ResArmor:
-		INVENTORY[item.NAME] = item
-	print('Inv is now: ', INVENTORY)
+	assert(item!=null, "Item not found!")
+	if item is ResConsumable and INVENTORY.has(item):
+		INVENTORY[INVENTORY.find(item)].STACK += 1
+	elif item is ResConsumable:
+		INVENTORY.append(item)
+	else:
+		INVENTORY.append(item.duplicate())
 	
+func getItemFromInventory(item: ResItem):
+	return INVENTORY[INVENTORY.find(item)]
 
 func addExperience(experience: int):
 	CURRENT_EXP += experience
-	print('current: ', CURRENT_EXP)
-	print('required: ', getRequiredExp())
 	if CURRENT_EXP >= getRequiredExp():
 		PARTY_LEVEL += 1
 		CURRENT_EXP = 0
