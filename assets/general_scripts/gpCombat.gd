@@ -58,6 +58,8 @@ func _ready():
 	active_combatant = COMBATANTS[active_index]
 	active_combatant.act()
 	
+	# TO-DO: Battle Transition
+	
 func _process(_delta):
 	match target_state:
 		1: playerSelectSingleTarget()
@@ -271,6 +273,7 @@ func checkWin():
 	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
 	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
 	
+	# TO-DO Win-Lose signals
 	if enemies.is_empty():
 		print("You win!")
 		concludeCombat()

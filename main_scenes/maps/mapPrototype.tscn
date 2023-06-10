@@ -37,16 +37,14 @@ y_sort_enabled = true
 texture_filter = 1
 tile_set = SubResource("TileSet_51rpb")
 cell_quadrant_size = 48
-collision_visibility_mode = 1
-navigation_visibility_mode = 1
 format = 2
 layer_0/tile_data = PackedInt32Array(0, 0, 0, 65535, 0, 0, 65534, 0, 0, -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 1, 0, 0, 65533, 0, 0, -3, 0, 0, -65539, 0, 0, -65538, 0, 0, -65537, 0, 0, -131072, 0, 0, -131071, 0, 0, -131070, 0, 0, -65534, 0, 0, 2, 0, 0, 65538, 0, 0, 65537, 0, 0, 65536, 0, 0, 131071, 0, 0, 131070, 0, 0, 131069, 0, 0, 131068, 0, 0, 65532, 0, 0, -4, 0, 0, -65540, 0, 0, -131069, 0, 0, -65533, 0, 0, 3, 0, 0, 65539, 0, 0, -196610, 65536, 0, -196611, 65536, 0, -196609, 65536, 0, -262144, 65536, 0, -262143, 65536, 0, -262142, 65536, 0, -327677, 0, 0, -327678, 0, 0, -327679, 0, 0, -327680, 0, 0, -262145, 0, 0, -262146, 0, 0, -262147, 0, 0, -262148, 0, 0, -327684, 0, 0, -327683, 0, 0, -327682, 0, 0, -327681, 0, 0, -393216, 0, 0, -393215, 0, 0, -393214, 0, 0, -393213, 0, 0, -262141, 0, 0, -196605, 0, 0, -131076, 0, 0, -196612, 0, 0, -196608, 0, 0, -131073, 0, 0, -196607, 0, 0, -196606, 0, 0, -131074, 0, 0, -131075, 0, 0)
 
-[node name="Player" parent="." instance=ExtResource("2_v2w4i")]
-position = Vector2(-15, -228)
-
 [node name="NPCPrototype" parent="." instance=ExtResource("3_578vb")]
-position = Vector2(-16, -46)
+position = Vector2(16, -92)
 
 [node name="entItem" parent="." instance=ExtResource("4_5n3oa")]
 position = Vector2(-71, -116)
+
+[node name="Player" parent="." instance=ExtResource("2_v2w4i")]
+position = Vector2(-7, -228)

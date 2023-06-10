@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://ud425xnds2hi"]
+[gd_scene load_steps=13 format=3 uid="uid://ud425xnds2hi"]
 
 [ext_resource type="PackedScene" uid="uid://bcti1j6y5phfi" path="res://assets/components/cmpNPCMovement.tscn" id="1_n2s1n"]
 [ext_resource type="PackedScene" uid="uid://cmyccltenbww6" path="res://assets/components/cmpCombatantSquad.tscn" id="3_662iy"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://assets/overworld_characters/ent_walker.png" id="4_5f2br"]
 [ext_resource type="Resource" uid="uid://dwbeg0ljdk1ta" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="5_ke8to"]
+[ext_resource type="PackedScene" uid="uid://blvua3xesk5sy" path="res://assets/components/cmpLineOfSight.tscn" id="5_tlyrk"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -140,11 +141,10 @@ radius = 8.06226
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
-[node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "LINE_OF_SIGHT", "NAV_AGENT", "PATH_UPDATE_TIMER", "ANIMATOR") instance=ExtResource("1_n2s1n")]
+[node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "NAV_AGENT", "LINE_OF_SIGHT", "ANIMATOR") instance=ExtResource("1_n2s1n")]
 BODY = NodePath("..")
-LINE_OF_SIGHT = NodePath("../RayCast2D")
 NAV_AGENT = NodePath("../NavigationAgent2D")
-PATH_UPDATE_TIMER = NodePath("../NavigationAgent2D/PathUpdateTimer")
+LINE_OF_SIGHT = NodePath("../LineOfSightComponent")
 ANIMATOR = NodePath("../Animator")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("3_662iy")]
@@ -166,12 +166,6 @@ position = Vector2(0, 14)
 shape = SubResource("CircleShape2D_6fsld")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
+target_desired_distance = 36.0
 
-[node name="PathUpdateTimer" type="Timer" parent="NavigationAgent2D"]
-wait_time = 0.5
-autostart = true
-
-[node name="RayCast2D" type="RayCast2D" parent="."]
-target_position = Vector2(0, 120)
-collide_with_areas = true
+[node name="LineOfSightComponent" parent="." instance=ExtResource("5_tlyrk")]

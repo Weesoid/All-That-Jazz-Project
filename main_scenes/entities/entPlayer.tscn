@@ -240,6 +240,8 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 17
+collision_mask = 17
 script = ExtResource("1_mngvk")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
