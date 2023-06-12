@@ -135,7 +135,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
-radius = 8.06226
+radius = 11.0
 
 [node name="NPCPrototype" type="CharacterBody2D"]
 motion_mode = 1
@@ -156,16 +156,16 @@ libraries = {
 }
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -14)
 texture = ExtResource("4_5f2br")
 hframes = 3
 vframes = 3
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 14)
 shape = SubResource("CircleShape2D_6fsld")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-target_desired_distance = 36.0
+debug_enabled = true
 
 [node name="LineOfSightComponent" parent="." instance=ExtResource("5_tlyrk")]

@@ -4,20 +4,26 @@ extends Node
 @export var NAV_AGENT: NavigationAgent2D
 @export var LINE_OF_SIGHT: LineOfSight
 @export var ANIMATOR: AnimationPlayer
-@export var MOVE_SPEED = 35
+@export var BASE_MOVE_SPEED = 35
+@export var PATROL_AREA: Area2D
 
+var MOVE_SPEED
 var STATE = 0
 var PATH_UPDATE_TIMER: Timer
 var IDLE_TIMER: Timer
 var rng = RandomNumberGenerator.new()
 
 func _ready():
+	MOVE_SPEED = BASE_MOVE_SPEED
+	
 	PATH_UPDATE_TIMER = Timer.new()
 	PATH_UPDATE_TIMER.autostart = true
-	PATH_UPDATE_TIMER.stop()
 	PATH_UPDATE_TIMER.timeout.connect(updatePath)
+	PATH_UPDATE_TIMER.stop()
+	
 	IDLE_TIMER = Timer.new()
 	IDLE_TIMER.autostart = true
+	
 	add_child(IDLE_TIMER)
 	add_child(PATH_UPDATE_TIMER)
 	
@@ -41,20 +47,20 @@ func patrol():
 	moveBody(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer():
-		PATH_UPDATE_TIMER.start(0.5)
-		MOVE_SPEED = 135
+		print('If cond passed!')
+		MOVE_SPEED = BASE_MOVE_SPEED * 3
 		STATE = 1
 		updatePath()
 		moveBody(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if !NAV_AGENT.is_target_reachable():
 		PATH_UPDATE_TIMER.stop()
-		MOVE_SPEED = 35
+		MOVE_SPEED = BASE_MOVE_SPEED
 		STATE = 0
 
 func updatePath():
 	if STATE == 0:
-		IDLE_TIMER.start(rng.randf_range(1.0, 5.0))
+		IDLE_TIMER.start(0) # Change later
 		await IDLE_TIMER.timeout
 		NAV_AGENT.target_position = moveRandom()
 		
@@ -62,8 +68,13 @@ func updatePath():
 		NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 
 func moveRandom():
-	rng.randomize()
-	return BODY.global_position + Vector2(rng.randf_range(-100.0, 100.0), rng.randf_range(-100.0, 100.0))
+	# REFACTOR
+	var col_shape = PATROL_AREA.get_node('CollisionShape2D')
+	var bounds = col_shape.global_position
+	var shape_bounds = col_shape.shape.get_rect().end
+	var randomX = rng.randf_range(bounds.x, bounds.x + shape_bounds.x)
+	var randomY = rng.randf_range(bounds.y, bounds.y + shape_bounds.y)
+	return Vector2(randomX, randomY)
 
 func moveBody(target_position: Vector2):
 	if targetReached():
@@ -77,7 +88,7 @@ func moveBody(target_position: Vector2):
 		ANIMATOR.pause()
 
 func targetReached():
-	return NAV_AGENT.distance_to_target() < 1
+	return NAV_AGENT.distance_to_target() < 1.0
 
 func updateLineOfSight():
 	LINE_OF_SIGHT.look_at(NAV_AGENT.get_next_path_position())
@@ -92,6 +103,3 @@ func updateLineOfSight():
 		ANIMATOR.play('Walk_Down')
 	else:
 		ANIMATOR.play('Walk_Up')
-	
-func isBodyMoving():
-	return BODY.velocity.length() > 0

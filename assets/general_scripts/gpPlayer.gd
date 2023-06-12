@@ -13,7 +13,7 @@ const ANIMATION_SPEED = 1.5
 
 func _ready():
 	player_animator.speed_scale = ANIMATION_SPEED
-	
+
 func _process(_delta):
 	if (OverworldGlobals.player_can_move):
 		direction = Vector2(
@@ -26,7 +26,7 @@ func _process(_delta):
 	
 	animateInteract()
 	animateWalk(direction)
-	
+
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_select"):
 		var interactables = interaction_detector.get_overlapping_areas()
@@ -36,7 +36,7 @@ func _unhandled_input(_event: InputEvent):
 			return
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu()
-	
+
 func animateWalk(input):
 	if input == Vector2(-1,0):
 		player_animator.play('Walk_Left')
@@ -50,7 +50,7 @@ func animateWalk(input):
 	if (input == Vector2(0,0) || OverworldGlobals.player_can_move == false):
 		player_animator.seek(1, true)
 		player_animator.pause()
-	
+
 func animateInteract():
 	interaction_prompt.visible = OverworldGlobals.show_player_interaction
 	if (interaction_detector.get_overlapping_areas().size() > 0):
