@@ -11,11 +11,12 @@ collision_mask = 16
 script = ExtResource("1_yp3we")
 
 [node name="AreaOfSight" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 95)
 shape = SubResource("RectangleShape2D_af0mu")
-debug_color = Color(0.968627, 0, 0.466667, 0.419608)
+debug_color = Color(0.94902, 0, 0.568627, 0.419608)
 
 [node name="LineOfSight" type="RayCast2D" parent="."]
+visible = false
 target_position = Vector2(0, 189)
 collision_mask = 17
-collide_with_areas = true

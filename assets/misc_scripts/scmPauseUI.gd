@@ -11,7 +11,7 @@ extends Control
 
 func _ready():
 	OverworldGlobals.player_can_move = false
-	inventory.grab_focus()
+	
 
 func _on_tree_exited():
 	OverworldGlobals.player_can_move = true

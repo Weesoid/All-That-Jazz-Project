@@ -8,12 +8,14 @@ extends Node
 @export var PATROL_AREA: Area2D
 
 var MOVE_SPEED
+var PATROL_SHAPE
 var STATE = 0
 var PATH_UPDATE_TIMER: Timer
 var IDLE_TIMER: Timer
 var rng = RandomNumberGenerator.new()
 
 func _ready():
+	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
 	PATH_UPDATE_TIMER = Timer.new()
@@ -48,7 +50,7 @@ func patrol():
 	
 	if LINE_OF_SIGHT.detectPlayer():
 		print('If cond passed!')
-		MOVE_SPEED = BASE_MOVE_SPEED * 3
+		MOVE_SPEED = BASE_MOVE_SPEED * 5
 		STATE = 1
 		updatePath()
 		moveBody(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
@@ -60,7 +62,7 @@ func patrol():
 
 func updatePath():
 	if STATE == 0:
-		IDLE_TIMER.start(0) # Change later
+		IDLE_TIMER.start(randf_range(1.0, 5.0))
 		await IDLE_TIMER.timeout
 		NAV_AGENT.target_position = moveRandom()
 		
@@ -68,13 +70,9 @@ func updatePath():
 		NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 
 func moveRandom():
-	# REFACTOR
-	var col_shape = PATROL_AREA.get_node('CollisionShape2D')
-	var bounds = col_shape.global_position
-	var shape_bounds = col_shape.shape.get_rect().end
-	var randomX = rng.randf_range(bounds.x, bounds.x + shape_bounds.x)
-	var randomY = rng.randf_range(bounds.y, bounds.y + shape_bounds.y)
-	return Vector2(randomX, randomY)
+	return Vector2(rng.randf_range(PATROL_SHAPE.global_position.x, PATROL_SHAPE.global_position.x + PATROL_SHAPE.shape.get_rect().end.x),
+					rng.randf_range(PATROL_SHAPE.global_position.y, PATROL_SHAPE.global_position.y + PATROL_SHAPE.shape.get_rect().end.y))
+
 
 func moveBody(target_position: Vector2):
 	if targetReached():
