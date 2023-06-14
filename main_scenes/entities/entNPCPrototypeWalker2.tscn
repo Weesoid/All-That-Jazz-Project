@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://bj2l5a4yy24jo"]
+[gd_scene load_steps=12 format=3 uid="uid://dn1obnt3l5dn"]
 
-[ext_resource type="PackedScene" uid="uid://cr7s4ydujxwp0" path="res://assets/components/cmpNPCMovement.tscn" id="1_bm8ri"]
-[ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="4_b8tg5"]
-[ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://assets/overworld_characters/ent_walker.png" id="4_qwyyl"]
-[ext_resource type="Resource" uid="uid://b8ukwky8cxq6y" path="res://assets/dialogue/grab_item.dialogue" id="5_ybvl1"]
+[ext_resource type="PackedScene" uid="uid://cr7s4ydujxwp0" path="res://assets/components/cmpNPCMovement.tscn" id="1_kwhoo"]
+[ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="2_uuq1m"]
+[ext_resource type="Resource" uid="uid://dqucedvnuj2ek" path="res://assets/dialogue/test2.dialogue" id="3_p7xqb"]
+[ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://assets/overworld_characters/ent_walker.png" id="4_b4f2t"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -136,16 +136,16 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
 radius = 11.0
 
-[node name="MrMovey" type="CharacterBody2D"]
+[node name="MrsMovey" type="CharacterBody2D"]
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
-[node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "ANIMATOR") instance=ExtResource("1_bm8ri")]
+[node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "ANIMATOR") instance=ExtResource("1_kwhoo")]
 BODY = NodePath("..")
 ANIMATOR = NodePath("../Animator")
 
-[node name="InteractComponent" parent="." instance=ExtResource("4_b8tg5")]
-dialogue_resource = ExtResource("5_ybvl1")
+[node name="InteractComponent" parent="." instance=ExtResource("2_uuq1m")]
+dialogue_resource = ExtResource("3_p7xqb")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {
@@ -153,8 +153,9 @@ libraries = {
 }
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0.211765, 1, 1)
 position = Vector2(0, -14)
-texture = ExtResource("4_qwyyl")
+texture = ExtResource("4_b4f2t")
 hframes = 3
 vframes = 3
 frame = 1

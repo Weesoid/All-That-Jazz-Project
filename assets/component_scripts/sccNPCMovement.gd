@@ -1,12 +1,12 @@
 extends Node
 class_name NPCMovement
 
-@export var NAME: String
 @export var BODY: CharacterBody2D
 @export var ANIMATOR: AnimationPlayer
 @export var BASE_MOVE_SPEED = 35
 
 var STATE = 0
+var NAME
 var TARGET
 var MOVE_SPEED
 
@@ -15,6 +15,8 @@ signal movement_finished
 
 func _ready():
 	OverworldGlobals.move_entity.connect(moveBody)
+	NAME = get_parent().name
+	print('Name is ', NAME)
 	MOVE_SPEED = BASE_MOVE_SPEED
 
 func _physics_process(_delta):
@@ -31,7 +33,6 @@ func _physics_process(_delta):
 func moveBody(body_name:String, move_sequence: String):
 	if body_name != NAME: return
 	var movements = move_sequence.split(",")
-	print(movements)
 	for movement in movements:
 		var direction
 		match movement.substr(0,1):
@@ -43,6 +44,7 @@ func moveBody(body_name:String, move_sequence: String):
 		updateSprite(movement.substr(0,1))
 		STATE = 1
 		await target_reached
+	
 	movement_finished.emit()
 
 # FACE APPROPRIATE DIRECTION

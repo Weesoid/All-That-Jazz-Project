@@ -1,4 +1,5 @@
 extends Node
+## REFACTOR THIS, EXTEND IT TO NPCMovement
 
 @export var BODY: CharacterBody2D
 @export var NAV_AGENT: NavigationAgent2D

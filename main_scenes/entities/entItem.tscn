@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://assets/overworld_characters/NPC_unknown_entity.png" id="1_ti2ba"]
 [ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="2_ante0"]
-[ext_resource type="Resource" uid="uid://b8ukwky8cxq6y" path="res://assets/dialogue/grab_item.dialogue" id="3_b1aov"]
+[ext_resource type="Resource" uid="uid://dqucedvnuj2ek" path="res://assets/dialogue/test2.dialogue" id="3_l4xo3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m615a"]
 size = Vector2(21, 20)
@@ -17,4 +17,4 @@ position = Vector2(0.5, 14)
 shape = SubResource("RectangleShape2D_m615a")
 
 [node name="InteractComponent" parent="." instance=ExtResource("2_ante0")]
-dialogue_resource = ExtResource("3_b1aov")
+dialogue_resource = ExtResource("3_l4xo3")
