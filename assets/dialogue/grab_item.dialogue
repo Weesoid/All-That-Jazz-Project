@@ -1,7 +1,10 @@
-~ this_is_a_node_title
-do PlayerGlobals.addItemToInventory("NeutralWeapon")
-do PlayerGlobals.addItemToInventory("NeutralWeapon")
-do PlayerGlobals.addItemToInventory("BluntWeapon")
-do PlayerGlobals.addItemToInventory("HealingPotion")
-Entity: You got an Healing Potion! Gay sex!
+~ start
+set OverworldGlobals.player_can_move = false
+
+Entity: Hello! I'm gonna move now!
+do OverworldGlobals.moveEntity("MrMovey", "U15,R25,D0")
+Entity: I have arrived God I love SEEEXX!!!
+
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
 => END

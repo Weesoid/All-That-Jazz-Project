@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://daer2k38gbtad"]
+[gd_scene load_steps=10 format=3 uid="uid://daer2k38gbtad"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_388ch"]
 [ext_resource type="PackedScene" uid="uid://c4uo7b77jtx6g" path="res://main_scenes/entities/entPlayer.tscn" id="2_v2w4i"]
-[ext_resource type="PackedScene" uid="uid://ud425xnds2hi" path="res://main_scenes/entities/entNPCPrototype.tscn" id="3_578vb"]
+[ext_resource type="PackedScene" uid="uid://dp3so0rebvt0g" path="res://main_scenes/entities/entNPCPrototype.tscn" id="3_578vb"]
 [ext_resource type="PackedScene" uid="uid://gvedoxhpqu6c" path="res://main_scenes/entities/entItem.tscn" id="4_5n3oa"]
+[ext_resource type="PackedScene" uid="uid://bj2l5a4yy24jo" path="res://main_scenes/entities/entNPCPrototypeWalker.tscn" id="5_y2xid"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -68,6 +69,7 @@ position = Vector2(-47, -116)
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -248)
 shape = SubResource("RectangleShape2D_uqnih")
 
 [node name="entItem" parent="." instance=ExtResource("4_5n3oa")]
@@ -76,7 +78,10 @@ position = Vector2(-71, -68)
 [node name="NPCPrototype" parent="." instance=ExtResource("3_578vb")]
 position = Vector2(-95, -248)
 
-[node name="NPCMovementComponent" parent="NPCPrototype" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="NPCPrototype" index="0" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
+
+[node name="MrMovey" parent="." instance=ExtResource("5_y2xid")]
+position = Vector2(24, -80)
 
 [editable path="NPCPrototype"]

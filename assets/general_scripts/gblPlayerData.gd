@@ -31,7 +31,6 @@ func getRequiredExp() -> int:
 	return int(baseExp * expMultiplier ** (PARTY_LEVEL - 1))
 
 func levelUpCombatants():
-	print('level up!')
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		for stat in combatant.BASE_STAT_VALUES.keys():
 			combatant.BASE_STAT_VALUES[stat] += combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)

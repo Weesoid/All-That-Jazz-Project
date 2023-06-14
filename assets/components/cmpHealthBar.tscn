@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dgupboa4irsl8"]
 
-[ext_resource type="PackedScene" uid="uid://bic7t4iy38v0m" path="res://assets/components/cmpAbsoluteValueLabel.tscn" id="1_atdxf"]
+[ext_resource type="PackedScene" path="res://assets/components/cmpAbsoluteValueLabel.tscn" id="1_atdxf"]
 
 [node name="HealthBarComponent" type="ProgressBar"]
 anchors_preset = 8

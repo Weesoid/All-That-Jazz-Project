@@ -4,6 +4,7 @@ extends Node
 @export var NAV_AGENT: NavigationAgent2D
 @export var LINE_OF_SIGHT: LineOfSight
 @export var ANIMATOR: AnimationPlayer
+@export var COMBAT_SQUAD: CombatantSquad
 @export var BASE_MOVE_SPEED = 35
 @export var PATROL_AREA: Area2D
 
@@ -40,16 +41,15 @@ func _physics_process(_delta):
 func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
-	
+		
 	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
-		OverworldGlobals.changeToCombat(OverworldGlobals.getCombatantSquad('NPCPrototype'))
+		OverworldGlobals.changeToCombat(COMBAT_SQUAD.COMBATANT_SQUAD)
 		BODY.queue_free()
 
 func patrol():
 	moveBody(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer():
-		print('If cond passed!')
 		MOVE_SPEED = BASE_MOVE_SPEED * 5
 		STATE = 1
 		updatePath()

@@ -1,13 +1,13 @@
 extends Node
 
-
 var showing_menu = false
 var enemy_combatant_squad: Array[ResCombatant]
 var player_can_move = true
 var show_player_interaction = true
 
+signal move_entity(target_position)
+
 func _ready():
-	print('initailzing combatanst!')
 	for member in getCombatantSquad('Player'):
 		if !member.initalized:
 			member.initializeCombatant()
@@ -18,6 +18,9 @@ func _ready():
 #********************************************************************************
 func getPlayer()-> PlayerScene:
 	return get_tree().current_scene.get_node('Player')
+	
+func getEntity(entity_name: String)-> PlayerScene:
+	return get_tree().current_scene.get_node(entity_name)
 	
 func showMenu():
 	var main_menu = load("res://main_scenes/user_interface/uiPauseMenu.tscn").instantiate()
@@ -41,6 +44,10 @@ func showMenu():
 
 # e.g. L5 > Move left, 5 units
 # This method can move any NPC at any time bc it's global
+
+func moveEntity(entity_body_name: String, move_sequence: String):
+	move_entity.emit(entity_body_name, move_sequence)
+	await getEntity(entity_body_name).get_node('NPCMovementComponent').movement_finished
 	
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES

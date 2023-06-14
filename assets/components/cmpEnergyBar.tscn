@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d16v1bpwc7to2"]
 
-[ext_resource type="PackedScene" uid="uid://bic7t4iy38v0m" path="res://assets/components/cmpAbsoluteValueLabel.tscn" id="1_g7sac"]
+[ext_resource type="PackedScene" path="res://assets/components/cmpAbsoluteValueLabel.tscn" id="1_g7sac"]
 
 [node name="EnergyBarComponent" type="ProgressBar"]
 anchors_preset = 8

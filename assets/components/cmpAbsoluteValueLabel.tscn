@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bic7t4iy38v0m"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://assets/misc_scripts/scmEnergyCounter.gd" id="1_11how"]
+[ext_resource type="Script" path="res://assets/misc_scripts/scmAbsoluteBarValue.gd" id="1_11how"]
 
 [node name="AbsoluteValueLabel" type="Label"]
 offset_right = 128.0

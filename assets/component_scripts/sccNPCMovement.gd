@@ -1,0 +1,57 @@
+extends Node
+class_name NPCMovement
+
+@export var NAME: String
+@export var BODY: CharacterBody2D
+@export var ANIMATOR: AnimationPlayer
+@export var BASE_MOVE_SPEED = 35
+
+var STATE = 0
+var TARGET
+var MOVE_SPEED
+
+signal target_reached
+signal movement_finished
+
+func _ready():
+	OverworldGlobals.move_entity.connect(moveBody)
+	MOVE_SPEED = BASE_MOVE_SPEED
+
+func _physics_process(_delta):
+	if STATE == 1:
+		BODY.global_position = BODY.global_position.move_toward(TARGET, 1)
+		if BODY.global_position == TARGET:
+			STATE = 0
+			ANIMATOR.seek(1, true)
+			ANIMATOR.pause()
+			target_reached.emit()
+	BODY.move_and_slide()
+
+## MOVE BODY
+func moveBody(body_name:String, move_sequence: String):
+	if body_name != NAME: return
+	var movements = move_sequence.split(",")
+	print(movements)
+	for movement in movements:
+		var direction
+		match movement.substr(0,1):
+			"L": direction = Vector2(-1, 0) * Vector2(int(movement.substr(1,2)), 0)
+			"R": direction = Vector2(1, 0) * Vector2(int(movement.substr(1,2)), 0)
+			"U": direction = Vector2(0, -1) * Vector2(0, int(movement.substr(1,2)))
+			"D": direction = Vector2(0, 1) * Vector2(0, int(movement.substr(1,2)))
+		TARGET = BODY.global_position + direction
+		updateSprite(movement.substr(0,1))
+		STATE = 1
+		await target_reached
+	movement_finished.emit()
+
+# FACE APPROPRIATE DIRECTION
+func updateSprite(direction: String):
+	if direction == 'L':
+		ANIMATOR.play('Walk_Left')
+	elif direction == 'R':
+		ANIMATOR.play('Walk_Right')
+	elif direction == 'D':
+		ANIMATOR.play('Walk_Down')
+	else:
+		ANIMATOR.play('Walk_Up')
