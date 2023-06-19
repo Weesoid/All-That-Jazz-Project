@@ -1,9 +1,10 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-I hate you.
-do OverworldGlobals.moveEntity("MrsMovey", "U15,R25,D0")
-Cum..!
+Entity: Hey chum!.
+Willis: What do you want
+Entity: Spoopen!
+Willis-happy: Now I'm happy!!
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

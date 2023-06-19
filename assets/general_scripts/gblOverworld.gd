@@ -23,7 +23,7 @@ func getEntity(entity_name: String)-> PlayerScene:
 	return get_tree().current_scene.get_node(entity_name)
 	
 func showMenu():
-	var main_menu = load("res://main_scenes/user_interface/uiPauseMenu.tscn").instantiate()
+	var main_menu: Control = load("res://main_scenes/user_interface/uiPauseMenu.tscn").instantiate()
 	
 	if !showing_menu:
 		getPlayer().player_camera.add_child(main_menu)
@@ -32,18 +32,6 @@ func showMenu():
 		main_menu.queue_free()
 		getPlayer().player_camera.get_node('uiPauseMenu').queue_free()
 		showing_menu = false
-	
-# BODY MOVER
-# Receive csv (L,R,U,D)(integer)
-# 	e.g. L1,R2,r5,R6, etc.
-# csv -> array
-# for direction in array:
-# 	direction.split(half)
-#	direction[0] = direction
-#	direction[1] = move units
-
-# e.g. L5 > Move left, 5 units
-# This method can move any NPC at any time bc it's global
 
 func moveEntity(entity_body_name: String, move_sequence: String):
 	move_entity.emit(entity_body_name, move_sequence)
@@ -65,16 +53,19 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
 func changeToCombat(inputted_enemy_combatants=null):
+	var temp = []
 	var combat_scene: CombatScene = load("res://main_scenes/gameplay/gpscnCombatScene.tscn").instantiate()
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	if inputted_enemy_combatants == null:
 		combat_scene.COMBATANTS.append_array(enemy_combatant_squad)
 	else:
-		combat_scene.COMBATANTS.append_array(inputted_enemy_combatants)
+		for combatant in inputted_enemy_combatants:
+			temp.append(combatant.duplicate())
+		combat_scene.COMBATANTS.append_array(temp)
 	enemy_combatant_squad = []
 	
-	getPlayer().process_mode = Node.PROCESS_MODE_DISABLED
 	get_tree().current_scene.add_child(combat_scene)
+	pauseAllExcept(combat_scene)
 	combat_scene.combat_camera.make_current()
 	
 func setEnemyCombatantSquad(entity_name: String):
@@ -84,7 +75,15 @@ func setEnemyCombatantSquad(entity_name: String):
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
 	
+func pauseAllExcept(node):
+	for child in get_tree().current_scene.get_children():
+		if child == node: continue
+		child.process_mode = Node.PROCESS_MODE_DISABLED
+	
 func restorePlayerView():
-	getPlayer().process_mode = Node.PROCESS_MODE_ALWAYS
+	for child in get_tree().current_scene.get_children():
+		if !child.can_process():
+			child.process_mode = Node.PROCESS_MODE_ALWAYS
+		
 	getPlayer().player_camera.make_current()
 	

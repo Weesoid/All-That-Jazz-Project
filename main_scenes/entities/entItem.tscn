@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="2_ante0"]
 [ext_resource type="Resource" uid="uid://dqucedvnuj2ek" path="res://assets/dialogue/test2.dialogue" id="3_l4xo3"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_m615a"]
-size = Vector2(21, 20)
+[sub_resource type="CircleShape2D" id="CircleShape2D_7vhre"]
+radius = 14.0
 
 [node name="entItem" type="CharacterBody2D"]
 
@@ -13,8 +13,8 @@ size = Vector2(21, 20)
 texture = ExtResource("1_ti2ba")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 14)
-shape = SubResource("RectangleShape2D_m615a")
+position = Vector2(0, 10)
+shape = SubResource("CircleShape2D_7vhre")
 
 [node name="InteractComponent" parent="." instance=ExtResource("2_ante0")]
 dialogue_resource = ExtResource("3_l4xo3")

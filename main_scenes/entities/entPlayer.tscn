@@ -290,6 +290,7 @@ libraries = {
 }
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
+z_as_relative = false
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0

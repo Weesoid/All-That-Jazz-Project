@@ -1,17 +1,12 @@
-extends Node
+extends NPCMovement
 ## REFACTOR THIS, EXTEND IT TO NPCMovement
 
-@export var BODY: CharacterBody2D
 @export var NAV_AGENT: NavigationAgent2D
 @export var LINE_OF_SIGHT: LineOfSight
-@export var ANIMATOR: AnimationPlayer
 @export var COMBAT_SQUAD: CombatantSquad
-@export var BASE_MOVE_SPEED = 35
 @export var PATROL_AREA: Area2D
 
-var MOVE_SPEED
 var PATROL_SHAPE
-var STATE = 0
 var PATH_UPDATE_TIMER: Timer
 var IDLE_TIMER: Timer
 var rng = RandomNumberGenerator.new()
@@ -42,19 +37,20 @@ func _physics_process(_delta):
 func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
-		
+	
 	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
+		print(COMBAT_SQUAD.COMBATANT_SQUAD)
 		OverworldGlobals.changeToCombat(COMBAT_SQUAD.COMBATANT_SQUAD)
 		BODY.queue_free()
 
 func patrol():
-	moveBody(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
+	patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer():
 		MOVE_SPEED = BASE_MOVE_SPEED * 5
 		STATE = 1
 		updatePath()
-		moveBody(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
+		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if !NAV_AGENT.is_target_reachable():
 		PATH_UPDATE_TIMER.stop()
@@ -75,7 +71,7 @@ func moveRandom():
 					rng.randf_range(PATROL_SHAPE.global_position.y, PATROL_SHAPE.global_position.y + PATROL_SHAPE.shape.get_rect().end.y))
 
 
-func moveBody(target_position: Vector2):
+func patrolToPosition(target_position: Vector2):
 	if targetReached():
 		BODY.velocity = Vector2(0,0)
 	elif !NAV_AGENT.get_current_navigation_path().is_empty():

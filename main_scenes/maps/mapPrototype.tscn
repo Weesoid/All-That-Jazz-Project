@@ -54,6 +54,7 @@ sources/0 = SubResource("TileSetAtlasSource_2gieu")
 size = Vector2(304, 71)
 
 [node name="prototype_map" type="Node2D"]
+z_index = -1
 y_sort_enabled = true
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -65,7 +66,7 @@ format = 2
 layer_0/tile_data = PackedInt32Array(0, 0, 0, 65535, 0, 0, 65534, 0, 0, -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 1, 0, 0, 65533, 0, 0, -3, 0, 0, -65539, 0, 0, -65538, 0, 0, -65537, 0, 0, -131072, 0, 0, -131071, 0, 0, -131070, 0, 0, -65534, 0, 0, 2, 0, 0, 65538, 0, 0, 65537, 0, 0, 65536, 0, 0, 131071, 0, 0, 131070, 0, 0, 131069, 0, 0, 131068, 0, 0, 65532, 0, 0, -4, 0, 0, -65540, 0, 0, -131069, 0, 0, -65533, 0, 0, 3, 0, 0, 65539, 0, 0, -196610, 65536, 0, -196611, 65536, 0, -196609, 65536, 0, -262144, 65536, 0, -262143, 65536, 0, -262142, 65536, 0, -327677, 0, 0, -327678, 0, 0, -327679, 0, 0, -327680, 0, 0, -262145, 0, 0, -262146, 0, 0, -262147, 0, 0, -262148, 0, 0, -327684, 0, 0, -327683, 0, 0, -327682, 0, 0, -327681, 0, 0, -393216, 0, 0, -393215, 0, 0, -393214, 0, 0, -393213, 0, 0, -262141, 0, 0, -196605, 0, 0, -131076, 0, 0, -196612, 0, 0, -196608, 0, 0, -131073, 0, 0, -196607, 0, 0, -196606, 0, 0, -131074, 0, 0, -131075, 0, 0, 196603, 65536, 0, 196604, 65536, 0, 196605, 65536, 0, 196606, 65536, 0, 196607, 65536, 0, 131072, 65536, 0, 131073, 65536, 0, 131074, 65536, 0, 131075, 65536, 0, 131076, 65536, 0, 65540, 65536, 0, 4, 65536, 0, -65532, 65536, 0, -131068, 65536, 0, -196604, 65536, 0, -262140, 65536, 0, -327676, 65536, 0, -393212, 65536, 0, -458748, 65536, 0, -458749, 65536, 0, -458750, 65536, 0, -458751, 65536, 0, -458752, 65536, 0, -393217, 65536, 0, -393218, 65536, 0, -393219, 65536, 0, -393220, 65536, 0, -393221, 65536, 0, -327685, 65536, 0, -262149, 65536, 0, -196613, 65536, 0, -131077, 65536, 0, -65541, 65536, 0, -5, 65536, 0, 65531, 65536, 0, 131067, 65536, 0)
 
 [node name="Player" parent="." instance=ExtResource("2_v2w4i")]
-position = Vector2(-47, -116)
+position = Vector2(-24, -80)
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -73,19 +74,40 @@ position = Vector2(-47, -116)
 position = Vector2(0, -248)
 shape = SubResource("RectangleShape2D_uqnih")
 
-[node name="entItem" parent="." instance=ExtResource("4_5n3oa")]
-position = Vector2(-71, -68)
-
 [node name="NPCPrototype" parent="." instance=ExtResource("3_578vb")]
-position = Vector2(-95, -248)
+position = Vector2(0, -248)
 
 [node name="NPCPatrolComponent" parent="NPCPrototype" index="0" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
+
+[node name="NPCPrototype2" parent="." instance=ExtResource("3_578vb")]
+position = Vector2(-71, -238)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype2" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="NPCPrototype3" parent="." instance=ExtResource("3_578vb")]
+position = Vector2(80, -240)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype3" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="NPCPrototype4" parent="." instance=ExtResource("3_578vb")]
+position = Vector2(40, -228)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype4" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="entItem" parent="." instance=ExtResource("4_5n3oa")]
+position = Vector2(-71, -68)
 
 [node name="MrsMovey" parent="." instance=ExtResource("5_lia35")]
 position = Vector2(88, -54)
 
 [node name="MrMovey" parent="." instance=ExtResource("5_y2xid")]
-position = Vector2(24, -80)
+position = Vector2(56, -54)
 
 [editable path="NPCPrototype"]
+[editable path="NPCPrototype2"]
+[editable path="NPCPrototype3"]
+[editable path="NPCPrototype4"]

@@ -141,12 +141,12 @@ radius = 11.0
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
-[node name="NPCPatrolComponent" parent="." node_paths=PackedStringArray("BODY", "NAV_AGENT", "LINE_OF_SIGHT", "ANIMATOR", "COMBAT_SQUAD") instance=ExtResource("1_n2s1n")]
-BODY = NodePath("..")
+[node name="NPCPatrolComponent" parent="." node_paths=PackedStringArray("NAV_AGENT", "LINE_OF_SIGHT", "COMBAT_SQUAD", "BODY", "ANIMATOR") instance=ExtResource("1_n2s1n")]
 NAV_AGENT = NodePath("../NavigationAgent2D")
 LINE_OF_SIGHT = NodePath("../LineOfSightComponent")
-ANIMATOR = NodePath("../Animator")
 COMBAT_SQUAD = NodePath("../CombatantSquadComponent")
+BODY = NodePath("..")
+ANIMATOR = NodePath("../Animator")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("3_662iy")]
 COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("5_ke8to")])

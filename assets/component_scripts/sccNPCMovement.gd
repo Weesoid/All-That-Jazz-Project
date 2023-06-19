@@ -16,7 +16,6 @@ signal movement_finished
 func _ready():
 	OverworldGlobals.move_entity.connect(moveBody)
 	NAME = get_parent().name
-	print('Name is ', NAME)
 	MOVE_SPEED = BASE_MOVE_SPEED
 
 func _physics_process(_delta):

@@ -347,5 +347,6 @@ func concludeCombat():
 	await get_tree().create_timer(1).timeout
 	
 	PlayerGlobals.addExperience(experience_earnt)
-	queue_free()
 	OverworldGlobals.restorePlayerView()
+	queue_free()
+	
