@@ -18,7 +18,11 @@ class_name CombatScene
 @onready var escape_button = $ActionPanel/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
-@onready var party_exp_bar = $PartyExp
+@onready var ui_indicator = $IndicatorComponent
+@onready var ui_indicator_comp = $IndicatorComponent/IndicatorComponent
+@onready var battle_conclusion = $BattleConclusion
+@onready var party_exp_bar = $BattleConclusion/PartyExp
+@onready var party_drops = $BattleConclusion/Drops/DropGrid
 
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
@@ -29,6 +33,7 @@ var target_index = 0
 var selected_ability: ResAbility
 var run_once = true
 var experience_earnt = 0
+var item_drops = []
 
 signal confirm
 signal target_selected
@@ -39,6 +44,8 @@ signal update_exp(value: float, max_value: float)
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
+	CombatGlobals.call_indicator.connect(playIndicatorAnimation)
+	
 	connectPlayerItems()
 	
 	for combatant in COMBATANTS:
@@ -96,7 +103,9 @@ func end_turn():
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
-		if combatant is ResEnemyCombatant: experience_earnt += combatant.getExperience()
+		if combatant is ResEnemyCombatant: 
+			experience_earnt += combatant.getExperience()
+			item_drops.append(combatant.getDrops())
 		COMBATANTS.erase(combatant)
 	
 	run_once = true
@@ -150,6 +159,15 @@ func _item_focus_enter():
 func _on_escape_pressed():
 	get_tree().quit()
 	
+func playIndicatorAnimation(target: ResCombatant, message: String, value):
+	var indicator = load("res://assets/components/cmpIndicator.tscn").instantiate()
+	add_child(indicator)
+	indicator.global_position = target.getSprite().global_position
+	indicator.get_node("IndicatorLabel").text = str(message,' ',value)
+	indicator.get_node("Animator").play('Show')
+	await indicator.get_node("Animator").animation_finished
+	indicator.queue_free()
+	
 func writeCombatLog(text: String):
 	combat_log.text = text
 	combat_log.show()
@@ -173,7 +191,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		if !ability_set[i].canCast(active_combatant):
 			button.disabled = true
 		ability_container.add_child(button)
-	
+
 func getPlayerItems(inventory):
 	for child in item_container.get_children():
 		child.free()
@@ -187,7 +205,7 @@ func getPlayerItems(inventory):
 		button.focus_entered.connect(_item_focus_enter)
 		button.focus_exited.connect(_item_focus_exit)
 		item_container.add_child(button)
-	
+
 func playerSelectAbility(ability:ResAbility, state: int):
 	target_state = state
 	selected_ability = ability
@@ -195,7 +213,7 @@ func playerSelectAbility(ability:ResAbility, state: int):
 	action_panel.hide()
 	await target_selected
 	runAbility()
-	
+
 func playerSelectSingleTarget():
 	if !validateAbilityCast():
 		return
@@ -208,11 +226,11 @@ func playerSelectSingleTarget():
 func playerSelectMultiTarget():
 	if !validateAbilityCast():
 		return
-		
+	
 	drawSelectionTarget('Target', enemy_container.global_position)
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
-	
+
 func executeAbility():
 	var animation = selected_ability. ANIMATION.instantiate()
 	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
@@ -337,14 +355,23 @@ func runAbility():
 func concludeCombat():
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
-		
+	
 	action_panel.hide()
 	ui_target.hide()
 	target_state = 0
 	target_index = 0
-	party_exp_bar.show()
+	battle_conclusion.show()
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
-	await get_tree().create_timer(1).timeout
+	item_drops.sort()
+	
+	for drop in item_drops:
+		if drop == null: continue
+		var drop_label = Label.new()
+		drop_label.text = drop.NAME
+		party_drops.add_child(drop_label)
+		PlayerGlobals.addItemResourceToInventory(drop)
+	
+	await get_tree().create_timer(2.0).timeout
 	
 	PlayerGlobals.addExperience(experience_earnt)
 	OverworldGlobals.restorePlayerView()

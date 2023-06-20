@@ -9,4 +9,4 @@ func startProgress(experience: int, required_exp: int):
 	var target_value = value + experience
 	while value != target_value:
 		value += 1
-		await get_tree().create_timer(0.05).timeout
+		await get_tree().create_timer(0.01).timeout

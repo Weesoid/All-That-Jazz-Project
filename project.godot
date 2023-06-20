@@ -78,7 +78,7 @@ ui_down={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://resources/scripts/dialogue/test.dialogue", "res://assets/scripts/dialogue/test.dialogue", "res://assets/dialogue/test.dialogue", "res://assets/dialogue/grab_item.dialogue", "res://assets/dialogue/test2.dialogue")
+locale/translations_pot_files=PackedStringArray("res://resources/scripts/dialogue/test.dialogue", "res://assets/scripts/dialogue/test.dialogue", "res://assets/dialogue/test.dialogue", "res://assets/dialogue/grab_item.dialogue", "res://assets/dialogue/test2.dialogue", "res://assets/dialogue/test_fight.dialogue")
 
 [layer_names]
 

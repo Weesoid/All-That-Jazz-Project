@@ -8,6 +8,7 @@
 script = ExtResource("3_fptwa")
 COUNT = 1
 AI_PACKAGE = ExtResource("2_xgrhx")
+DROPS = {}
 NAME = "EUHealer"
 SPRITE_NAME = "sprBadGuyB"
 DESCRIPTION = ""

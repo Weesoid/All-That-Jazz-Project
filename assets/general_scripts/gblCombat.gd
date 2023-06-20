@@ -6,6 +6,7 @@ extends Node
 signal ability_executed
 #signal fast_ability_executed
 signal exp_updated(value: float, max_value: float)
+signal call_indicator(target: ResCombatant, indicator: String, value: int)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -23,7 +24,8 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: S
 	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * 100 ) / (100+target.STAT_VALUES[defender_stat])
 	target.STAT_VALUES['health'] -= int(damage)
 	playAndResetAnimation(target, 'Hit')
-	playIndicatorAnimation(target, 'Hit!', damage)
+	call_indicator.emit(target, 'Hit!', int(damage))
+	target.updateHealth()
 	
 func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
 	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling)
@@ -31,9 +33,10 @@ func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: S
 	if target.STAT_VALUES['health'] + healing > target.getMaxHealth():
 		target.STAT_VALUES['health'] = target.getMaxHealth()
 	else:
-		target.STAT_VALUES['health'] = target.STAT_VALUES['health'] + healing
+		target.STAT_VALUES['health'] += healing
 	
-	playIndicatorAnimation(target, 'Healed!', healing)
+	call_indicator.emit(target, 'Healed!', healing)
+	target.updateHealth()
 	
 func modifyStat(target: ResCombatant, stat: String, percent_scale: float):
 	target.STAT_VALUES[stat] += target.STAT_VALUES[stat] * percent_scale
@@ -52,10 +55,6 @@ func playAndResetAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
 	await target.getAnimator().animation_finished
 	target.getAnimator().play('Idle')
-	
-func playIndicatorAnimation(target: ResCombatant, indicator: String, value):
-	target.playIndicator(str(indicator,' ', int(value)))
-	target.updateHealth(target.STAT_VALUES['health'])
 	
 #********************************************************************************
 # STATUS EFFECT HANDLING

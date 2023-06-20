@@ -1,0 +1,7 @@
+~ start
+
+Entity: Let's fuck shit up!!
+do OverworldGlobals.setEnemyCombatantSquad("FightTester")
+do OverworldGlobals.changeToCombat()
+
+=> END

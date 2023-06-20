@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://dnp0wfbcrodv1"]
+[gd_scene load_steps=12 format=3 uid="uid://dnp0wfbcrodv1"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpCombat.gd" id="1_kv6ut"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
 [ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
 [ext_resource type="Script" path="res://assets/misc_scripts/scmPartyExp.gd" id="7_rrtk0"]
+[ext_resource type="PackedScene" uid="uid://crlguk5wuy7ls" path="res://assets/components/cmpIndicator.tscn" id="8_6og0e"]
 [ext_resource type="Texture2D" uid="uid://cgf1qb6eni4jx" path="res://assets/icons/s_speed.png" id="8_yp68o"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="9_d3h28"]
 
@@ -74,10 +75,10 @@ top_level = true
 script = ExtResource("1_kv6ut")
 
 [node name="Background" type="TextureRect" parent="."]
-offset_left = -576.0
-offset_top = -320.0
-offset_right = 576.0
-offset_bottom = 328.0
+offset_left = -575.0
+offset_top = -347.0
+offset_right = 577.0
+offset_bottom = 301.0
 texture = ExtResource("5_5p8mu")
 
 [node name="CombatLog" type="Label" parent="."]
@@ -125,6 +126,21 @@ position = Vector2(704, 192)
 
 [node name="Position4" type="Marker2D" parent="TeamContainer"]
 position = Vector2(960, 192)
+
+[node name="Target" type="Sprite2D" parent="."]
+position = Vector2(-491, 576)
+scale = Vector2(0.330078, 0.330078)
+texture = ExtResource("9_d3h28")
+
+[node name="TargetAnimator" type="AnimationPlayer" parent="Target"]
+libraries = {
+"": SubResource("AnimationLibrary_h6ab4")
+}
+
+[node name="IndicatorComponent" type="Node2D" parent="."]
+position = Vector2(-192, 517)
+
+[node name="IndicatorComponent" parent="IndicatorComponent" instance=ExtResource("8_6og0e")]
 
 [node name="ActionPanel" type="VBoxContainer" parent="."]
 offset_left = -576.0
@@ -180,35 +196,50 @@ layout_mode = 2
 button_mask = 0
 text = "ABSCOND"
 
-[node name="Target" type="Sprite2D" parent="."]
-position = Vector2(-491, 576)
-scale = Vector2(0.330078, 0.330078)
-texture = ExtResource("9_d3h28")
-
-[node name="TargetAnimator" type="AnimationPlayer" parent="Target"]
-libraries = {
-"": SubResource("AnimationLibrary_h6ab4")
-}
-
-[node name="CombatCamera" type="Camera2D" parent="."]
-zoom = Vector2(1.05, 1.05)
-
-[node name="PartyExp" type="ProgressBar" parent="."]
+[node name="BattleConclusion" type="Control" parent="."]
 visible = false
-offset_left = -535.0
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PartyExp" type="ProgressBar" parent="BattleConclusion"]
+layout_mode = 0
+offset_left = -192.0
 offset_top = -16.0
-offset_right = 537.0
+offset_right = 192.0
 offset_bottom = 14.0
 value = 50.0
 script = ExtResource("7_rrtk0")
 
-[node name="Label" type="Label" parent="PartyExp"]
+[node name="Label" type="Label" parent="BattleConclusion/PartyExp"]
 layout_mode = 0
-offset_top = -32.0
-offset_right = 1072.0
-offset_bottom = -4.0
+offset_left = 141.0
+offset_top = -26.0
+offset_right = 243.0
+offset_bottom = -3.0
 text = "POSSE EXPERIENCE"
 horizontal_alignment = 1
+
+[node name="Drops" type="Label" parent="BattleConclusion"]
+layout_mode = 2
+offset_left = -16.0
+offset_top = 23.0
+offset_right = 17.0
+offset_bottom = 46.0
+text = "DROPS"
+horizontal_alignment = 1
+
+[node name="DropGrid" type="GridContainer" parent="BattleConclusion/Drops"]
+layout_mode = 0
+offset_left = -194.0
+offset_top = 23.0
+offset_right = 226.0
+offset_bottom = 73.0
+columns = 4
+
+[node name="CombatCamera" type="Camera2D" parent="."]
+position = Vector2(0, -19)
 
 [connection signal="pressed" from="ActionPanel/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="ActionPanel/Skills" to="." method="_on_skills_pressed"]

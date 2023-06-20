@@ -9,7 +9,7 @@ signal move_entity(target_position)
 
 func _ready():
 	for member in getCombatantSquad('Player'):
-		if !member.initalized:
+		if !member.initialized:
 			member.initializeCombatant()
 			member.SCENE.free()
 
@@ -84,6 +84,6 @@ func restorePlayerView():
 	for child in get_tree().current_scene.get_children():
 		if !child.can_process():
 			child.process_mode = Node.PROCESS_MODE_ALWAYS
-		
+	
 	getPlayer().player_camera.make_current()
 	

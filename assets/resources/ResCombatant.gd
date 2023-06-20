@@ -39,10 +39,6 @@ func act():
 func getSprite()-> Sprite2D:
 	return SCENE.get_node('Sprite')
 	
-func playIndicator(value):
-	SCENE.get_node("IndicatorComponent").text = str(value)
-	SCENE.get_node("IndicatorComponent").get_node("Animator").play('Show')
-	
 func getAnimator()-> AnimationPlayer:
 	return getSprite().get_node('SpriteAnimator')
 	
@@ -55,11 +51,11 @@ func getStatusEffectNames():
 		names.append(effect.NAME)
 	return names
 	
-func updateHealth(new_health):
-	SCENE.get_node("HealthBarComponent").value = new_health
+func updateHealth():
+	SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 	
-func updateEnergy(new_energy):
-	SCENE.get_node("EnergyBarComponent").value = new_energy
+func updateEnergy():
+	SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
 	
 func getMaxHealth():
 	return SCENE.get_node("HealthBarComponent").max_value

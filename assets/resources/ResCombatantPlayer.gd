@@ -10,11 +10,11 @@ class_name ResPlayerCombatant
 	'grit': 1,
 	'will': 1
 }
-var initalized = false
+var initialized = false
 
 func initializeCombatant():
 	SCENE = load(str("res://assets/combatant_sprites_scenes/",SPRITE_NAME,".tscn")).instantiate()
-	if !initalized:
+	if !initialized:
 		for ability in ABILITY_SET:
 			ability.initializeAbility()
 		
@@ -23,7 +23,7 @@ func initializeCombatant():
 		SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
 		SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
-		initalized = true
+		initialized = true
 	else:
 		SCENE.get_node("EnergyBarComponent").max_value = BASE_STAT_VALUES['verve']
 		SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
@@ -33,3 +33,4 @@ func initializeCombatant():
 		
 func act():
 	player_turn.emit()
+	

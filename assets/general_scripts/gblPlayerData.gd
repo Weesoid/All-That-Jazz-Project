@@ -8,13 +8,16 @@ var CURRENT_EXP = 0
 func addItemToInventory(item_name: String):
 	var item = load("res://assets/item_resources/itm"+item_name+".tres")
 	assert(item!=null, "Item not found!")
+	addItemResourceToInventory(item)
+
+func addItemResourceToInventory(item: ResItem):
 	if item is ResConsumable and INVENTORY.has(item):
 		INVENTORY[INVENTORY.find(item)].STACK += 1
 	elif item is ResConsumable:
 		INVENTORY.append(item)
 	else:
 		INVENTORY.append(item.duplicate())
-	
+
 func getItemFromInventory(item: ResItem):
 	return INVENTORY[INVENTORY.find(item)]
 
@@ -26,8 +29,8 @@ func addExperience(experience: int):
 		levelUpCombatants()
 
 func getRequiredExp() -> int:
-	var baseExp = 15
-	var expMultiplier = 1.2
+	var baseExp = 100
+	var expMultiplier = 1.25
 	return int(baseExp * expMultiplier ** (PARTY_LEVEL - 1))
 
 func levelUpCombatants():

@@ -1,13 +1,19 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://dwbeg0ljdk1ta"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://dwbeg0ljdk1ta"]
 
 [ext_resource type="Resource" uid="uid://i4kmvjv6rwtr" path="res://assets/ability_resources/abPunch.tres" id="1_2v0vj"]
 [ext_resource type="Script" path="res://assets/ai_scripts/aiRandomAI.gd" id="2_t0rce"]
+[ext_resource type="Resource" uid="uid://ds3ikvmqtougm" path="res://assets/item_resources/itmNeutralWeapon.tres" id="3_678wj"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatantEnemy.gd" id="3_tvtxk"]
+[ext_resource type="Resource" uid="uid://dpxja1f8dlomm" path="res://assets/item_resources/itmHealingPotion.tres" id="4_v7lp5"]
 
 [resource]
 script = ExtResource("3_tvtxk")
 COUNT = 1
 AI_PACKAGE = ExtResource("2_t0rce")
+DROPS = {
+ExtResource("4_v7lp5"): 1.0,
+ExtResource("3_678wj"): 2.0
+}
 NAME = "EUStriker"
 SPRITE_NAME = "sprBadGuyA"
 DESCRIPTION = ""
