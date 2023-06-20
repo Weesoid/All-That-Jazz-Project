@@ -18,8 +18,6 @@ class_name CombatScene
 @onready var escape_button = $ActionPanel/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
-@onready var ui_indicator = $IndicatorComponent
-@onready var ui_indicator_comp = $IndicatorComponent/IndicatorComponent
 @onready var battle_conclusion = $BattleConclusion
 @onready var party_exp_bar = $BattleConclusion/PartyExp
 @onready var party_drops = $BattleConclusion/Drops/DropGrid
