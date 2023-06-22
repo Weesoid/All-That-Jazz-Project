@@ -1,2 +1,8 @@
+SOUND EFFECTS
 Raclure - Damage sound effect
+Paveroux - Bow Draw
+jzdnvdoosj - Bow Shoot
+Hanbaal - Bow Shoot
+
+DESIGN
 SH PINSCHER Font - Design Sayshu
