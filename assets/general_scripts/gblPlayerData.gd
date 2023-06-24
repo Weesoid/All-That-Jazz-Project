@@ -9,6 +9,7 @@ func addItemToInventory(item_name: String):
 	var item = load("res://assets/item_resources/itm"+item_name+".tres")
 	assert(item!=null, "Item not found!")
 	addItemResourceToInventory(item)
+	
 
 func addItemResourceToInventory(item: ResItem):
 	if item is ResConsumable and INVENTORY.has(item):
@@ -20,6 +21,11 @@ func addItemResourceToInventory(item: ResItem):
 
 func getItemFromInventory(item: ResItem):
 	return INVENTORY[INVENTORY.find(item)]
+
+func getItemWithName(item_name: String):
+	for item in INVENTORY:
+		if item.NAME == item_name:
+			return item
 
 func addExperience(experience: int):
 	CURRENT_EXP += experience

@@ -1,15 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://dp3so0rebvt0g"]
+[gd_scene load_steps=11 format=3 uid="uid://bi28p6763hm4a"]
 
-[ext_resource type="PackedScene" uid="uid://ccfi7mrdobxtk" path="res://assets/components/cmpNPCPatrol.tscn" id="1_n2s1n"]
-[ext_resource type="PackedScene" uid="uid://cmyccltenbww6" path="res://assets/components/cmpCombatantSquad.tscn" id="3_662iy"]
-[ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://assets/overworld_characters/ent_walk.png" id="4_ogbrg"]
-[ext_resource type="PackedScene" uid="uid://dxmkpk06f638x" path="res://assets/components/cmpHurtbox.tscn" id="4_yl6sb"]
-[ext_resource type="Resource" uid="uid://dwbeg0ljdk1ta" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="5_ke8to"]
-[ext_resource type="PackedScene" uid="uid://blvua3xesk5sy" path="res://assets/components/cmpLineOfSight.tscn" id="5_tlyrk"]
+[ext_resource type="PackedScene" uid="uid://dxmkpk06f638x" path="res://assets/components/cmpHurtbox.tscn" id="4_77wor"]
+[ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://assets/overworld_characters/ent_walk.png" id="5_t5x3l"]
 
 [sub_resource type="Animation" id="Animation_cg5ba"]
 resource_name = "KO"
-length = 0.5
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -155,21 +151,11 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
 radius = 11.0
 
-[node name="NPCPrototype" type="CharacterBody2D"]
+[node name="NPCTester" type="CharacterBody2D"]
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
-[node name="NPCPatrolComponent" parent="." node_paths=PackedStringArray("NAV_AGENT", "LINE_OF_SIGHT", "COMBAT_SQUAD", "BODY", "ANIMATOR") instance=ExtResource("1_n2s1n")]
-NAV_AGENT = NodePath("../NavigationAgent2D")
-LINE_OF_SIGHT = NodePath("../LineOfSightComponent")
-COMBAT_SQUAD = NodePath("../CombatantSquadComponent")
-BODY = NodePath("..")
-ANIMATOR = NodePath("../Animator")
-
-[node name="CombatantSquadComponent" parent="." instance=ExtResource("3_662iy")]
-COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("5_ke8to")])
-
-[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY", "BODY_ANIMATOR") instance=ExtResource("4_yl6sb")]
+[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY", "BODY_ANIMATOR") instance=ExtResource("4_77wor")]
 BODY = NodePath("..")
 BODY_ANIMATOR = NodePath("../Animator")
 
@@ -180,14 +166,10 @@ libraries = {
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -14)
-texture = ExtResource("4_ogbrg")
+texture = ExtResource("5_t5x3l")
 hframes = 12
 vframes = 8
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_6fsld")
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
-[node name="LineOfSightComponent" parent="." instance=ExtResource("5_tlyrk")]

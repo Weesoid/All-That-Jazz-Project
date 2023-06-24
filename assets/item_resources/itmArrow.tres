@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ResConsumable" load_steps=2 format=3 uid="uid://bu27n2r0xqnxs"]
+
+[ext_resource type="Script" path="res://assets/resources/ResItemConsumable.gd" id="1_vrigq"]
+
+[resource]
+script = ExtResource("1_vrigq")
+NAME = "Arrow"
+ICON_NAME = ""
+DESCRIPTION = "A simple arrow."

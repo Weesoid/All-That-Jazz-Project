@@ -1,10 +1,9 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-Entity: Hey chum!.
-Willis: What do you want
-Entity: Spoopen!
-Willis-happy: Now I'm happy!!
+Entity: Hey chum! Here's some arrows!
+do PlayerGlobals.addItemToInventory("HealingPotion")
+do PlayerGlobals.addItemToInventory("Arrow")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

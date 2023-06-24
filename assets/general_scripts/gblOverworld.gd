@@ -8,6 +8,7 @@ var show_player_interaction = true
 signal move_entity(target_position)
 
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	for member in getCombatantSquad('Player'):
 		if !member.initialized:
 			member.initializeCombatant()
@@ -26,9 +27,11 @@ func showMenu():
 	var main_menu: Control = load("res://main_scenes/user_interface/uiPauseMenu.tscn").instantiate()
 	
 	if !showing_menu:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		getPlayer().player_camera.add_child(main_menu)
 		showing_menu = true
 	else:
+		print('Attempt exit')
 		main_menu.queue_free()
 		getPlayer().player_camera.get_node('uiPauseMenu').queue_free()
 		showing_menu = false

@@ -5,10 +5,10 @@ class_name ResConsumable
 
 var STACK = 1
 
-func USE():
+func use():
 	STACK -= 1
 	if STACK <= 0:
-		PlayerGlobals.INVENTORY.erase(NAME)
+		PlayerGlobals.INVENTORY.erase(self)
 
 func animateCast(caster: ResCombatant):
 	EFFECT.animateCast(caster)

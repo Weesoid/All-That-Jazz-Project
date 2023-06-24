@@ -3,9 +3,9 @@ extends Control
 
 @onready var use_container = $UseContainer
 @onready var party_panel = $PartyPanel/ScrollContainer/VBoxContainer
-@onready var misc_tab = $TabContainer/Misc
+@onready var misc_tab = $TabContainer/Misc/ScrollContainer/VBoxContainer
 @onready var weapon_tab = $TabContainer/Weapons/ScrollContainer/VBoxContainer
-@onready var armor_tab = $TabContainer/Armors
+@onready var armor_tab = $TabContainer/Armors/ScrollContainer/VBoxContainer
 @onready var use_button = $UseContainer/Use
 @onready var description_panel = $DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $StatPanel/DescriptionLabel
@@ -14,12 +14,11 @@ var selected_item: ResItem
 var selected_combatant: ResCombatant
 
 func _on_ready():
-	misc_tab.grab_focus()
+	$TabContainer/Misc.grab_focus()
 	for item in PlayerGlobals.INVENTORY:
 		var button = Button.new()
 		button.size.x = 272
 		button.text = str(item)
-		if isEquipped(item): button.text = str('EQUIPPED BY ', item.EQUIPPED_COMBATANT)
 		addButtonToTab(item, button)
 
 func showUseContainer():
@@ -48,7 +47,7 @@ func addMembers():
 		party_panel.add_child(button)
 
 func _on_drop_pressed():
-	print(selected_item)
+	print(PlayerGlobals.INVENTORY)
 	
 func isEquipped(item):
 	if item is ResConsumable:
@@ -63,16 +62,20 @@ func addButtonToTab(item: ResItem, button: Button):
 	if item is ResConsumable:
 		misc_tab.add_child(button)
 	elif item is ResWeapon:
+		if isEquipped(item): button.text = str('WEAPON EQUIPPED BY ', item.EQUIPPED_COMBATANT)
 		weapon_tab.add_child(button)
 	elif item is ResArmor:
+		if isEquipped(item): button.text = str('ARMOR EQUIPPED BY ', item.EQUIPPED_COMBATANT)
 		armor_tab.add_child(button)
 	
 	button.pressed.connect(
 		func setSelectedItem(): 
 			selected_item = PlayerGlobals.getItemFromInventory(item)
 			description_panel.text = item.DESCRIPTION
-			if !selected_item is ResConsumable:
+			if isItemEquippable(item):
 				stat_panel.text = item.getStringStats()
 			addMembers()
 			)
 	
+func isItemEquippable(item: ResItem):
+	return item is ResArmor or item is ResWeapon

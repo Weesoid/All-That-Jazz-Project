@@ -96,6 +96,7 @@ func on_enemy_turn():
 		checkWin()
 	
 func end_turn():
+	# BUG, POISON DOESN'T GET REMOVED, FIX LATER
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
 		
@@ -141,7 +142,7 @@ func _ability_focus_enter():
 	
 func _on_items_pressed():
 	getPlayerItems(PlayerGlobals.INVENTORY)
-	if PlayerGlobals.INVENTORY.is_empty():
+	if item_container.get_child_count() == 0:
 		items_button.disabled = true
 		return
 	items_button.disabled = false
@@ -195,11 +196,11 @@ func getPlayerItems(inventory):
 		child.free()
 		
 	for item in inventory:
-		if !item is ResConsumable: continue
+		if !item is ResConsumable or item.EFFECT == null: continue
 		var button = Button.new()
 		button.text = str(item.NAME, ' x', item.STACK)
 		button.pressed.connect(item.EFFECT.execute)
-		button.pressed.connect(item.USE)
+		button.pressed.connect(item.use)
 		button.focus_entered.connect(_item_focus_enter)
 		button.focus_exited.connect(_item_focus_exit)
 		item_container.add_child(button)
@@ -264,11 +265,12 @@ func connectPlayerAbilities(combatant: ResCombatant):
 		
 func connectPlayerItems():
 	for item in PlayerGlobals.INVENTORY:
-		if item is ResWeapon or item is ResArmor: continue
-		item.EFFECT.initializeAbility()
-		if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
-		item.EFFECT.single_target.connect(playerSelectAbility)
-		item.EFFECT.multi_target.connect(playerSelectAbility)
+		if !item is ResConsumable: continue
+		if item.EFFECT != null: 
+			item.EFFECT.initializeAbility()
+			if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
+			item.EFFECT.single_target.connect(playerSelectAbility)
+			item.EFFECT.multi_target.connect(playerSelectAbility)
 	
 func spawnTroop(combatant):
 	if combatant is ResPlayerCombatant or combatant.COUNT < 1:
@@ -299,9 +301,9 @@ func checkWin():
 
 	
 func clearStatusEffects(combatant: ResCombatant):
-	for effect in combatant.STATUS_EFFECTS:
-		effect.removeStatusEffect()
-		
+	while !combatant.STATUS_EFFECTS.is_empty():
+		combatant.STATUS_EFFECTS[0].removeStatusEffect()
+
 func tickStatusEffects(combatant: ResCombatant):
 	for effect in combatant.STATUS_EFFECTS:
 		effect.tick()
@@ -369,7 +371,7 @@ func concludeCombat():
 		party_drops.add_child(drop_label)
 		PlayerGlobals.addItemResourceToInventory(drop)
 	
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(1.5).timeout
 	
 	PlayerGlobals.addExperience(experience_earnt)
 	OverworldGlobals.restorePlayerView()

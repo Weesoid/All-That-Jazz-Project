@@ -1,9 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://bj2l5a4yy24jo"]
+[gd_scene load_steps=15 format=3 uid="uid://bj2l5a4yy24jo"]
 
+[ext_resource type="PackedScene" uid="uid://cmyccltenbww6" path="res://assets/components/cmpCombatantSquad.tscn" id="1_7g3ov"]
 [ext_resource type="PackedScene" uid="uid://cr7s4ydujxwp0" path="res://assets/components/cmpNPCMovement.tscn" id="1_bm8ri"]
+[ext_resource type="Resource" uid="uid://dwbeg0ljdk1ta" path="res://assets/combatants_resources/cbEPrototypeA.tres" id="2_3eqea"]
+[ext_resource type="Resource" uid="uid://b4xoniy36myge" path="res://assets/combatants_resources/cbEPrototypeB.tres" id="3_qyioo"]
+[ext_resource type="Resource" uid="uid://crf6wo1o4pndo" path="res://assets/dialogue/test_fight.dialogue" id="3_vf2xp"]
 [ext_resource type="PackedScene" uid="uid://cbu25mdmen3p3" path="res://assets/components/cmpInteract.tscn" id="4_b8tg5"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://assets/overworld_characters/ent_walker.png" id="4_qwyyl"]
-[ext_resource type="Resource" uid="uid://b8ukwky8cxq6y" path="res://assets/dialogue/grab_item.dialogue" id="5_ybvl1"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -140,12 +143,15 @@ radius = 11.0
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
+[node name="CombatantSquadComponent" parent="." instance=ExtResource("1_7g3ov")]
+COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("2_3eqea"), ExtResource("3_qyioo")])
+
 [node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "ANIMATOR") instance=ExtResource("1_bm8ri")]
 BODY = NodePath("..")
 ANIMATOR = NodePath("../Animator")
 
 [node name="InteractComponent" parent="." instance=ExtResource("4_b8tg5")]
-dialogue_resource = ExtResource("5_ybvl1")
+dialogue_resource = ExtResource("3_vf2xp")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {
