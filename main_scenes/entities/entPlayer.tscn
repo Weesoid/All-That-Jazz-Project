@@ -1415,7 +1415,7 @@ scale = Vector2(1.015, 1.015)
 texture = ExtResource("5_nms4n")
 hframes = 12
 vframes = 8
-frame = 18
+frame = 6
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
 visible = false
@@ -1433,7 +1433,6 @@ libraries = {
 
 [node name="PlayerDirection" type="Marker2D" parent="."]
 position = Vector2(0, -20)
-rotation = -1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 collision_layer = 0

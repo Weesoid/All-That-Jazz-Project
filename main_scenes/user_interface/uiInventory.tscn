@@ -53,6 +53,7 @@ layout_mode = 2
 button_mask = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Armors"]
+layout_mode = 0
 offset_right = 272.0
 offset_bottom = 183.0
 horizontal_scroll_mode = 0
@@ -66,6 +67,7 @@ layout_mode = 2
 button_mask = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Misc"]
+layout_mode = 0
 offset_right = 272.0
 offset_bottom = 183.0
 horizontal_scroll_mode = 0

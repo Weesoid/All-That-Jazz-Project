@@ -1,6 +1,6 @@
 extends Area2D
 
-var SPEED = 1000.0
+var SPEED = 1500.0
 var SHOOTER: CharacterBody2D
 
 func _physics_process(delta):

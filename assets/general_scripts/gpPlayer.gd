@@ -43,10 +43,18 @@ func _physics_process(_delta):
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
+		# DEBUGGING PURPOSES xxx
+		PlayerGlobals.POWER = load("res://assets/power_scripts/scpInvisibility.gd")
+		print('Ability set!')
+		# DEBUGGING PURPOSES xxx
 		OverworldGlobals.showMenu()
 	
 	if (OverworldGlobals.player_can_move):
 		if Input.is_action_just_pressed("ui_select"):
+			# DEBUGGING PURPOSES xxx
+			PlayerGlobals.POWER = null
+			print('Ability unset!')
+			# DEBUGGING PURPOSES xxx
 			var interactables = interaction_detector.get_overlapping_areas()
 			if interactables.size() > 0:
 				velocity = Vector2.ZERO
@@ -55,6 +63,12 @@ func _unhandled_input(_event: InputEvent):
 				return
 		if Input.is_action_just_pressed("ui_bow") and direction == Vector2.ZERO and PlayerGlobals.getItemWithName("Arrow") != null:
 			bow_mode = !bow_mode
+		
+		if Input.is_action_just_pressed("ui_gambit"):
+			if PlayerGlobals.POWER != null:
+				PlayerGlobals.POWER.executePower(self)
+			else:
+				print('No power!')
 	
 
 
@@ -68,7 +82,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 	
 func drawBow():
-	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO:
+	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and !animation_tree["parameters/conditions/void_call"]:
 		OverworldGlobals.player_can_move = false
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10)
@@ -103,7 +117,7 @@ func shootProjectile():
 	projectile.rotation = player_direction.rotation + 1.57079994678497
 		
 	
-# TO DO: SIMPLIFY, MAKE MORE READABLE
+# TO DO: SIMPLIFY, MAKE MORE READABLE, BREAK DOWN
 func updateAnimationParameters():
 	if velocity == Vector2.ZERO:
 		animation_tree["parameters/conditions/idle"] = true
@@ -141,17 +155,7 @@ func updateAnimationParameters():
 			else:
 				animation_tree["parameters/conditions/cancel"] = true
 			
-	if Input.is_action_just_pressed('ui_gambit') and OverworldGlobals.player_can_move:
+	if Input.is_action_just_pressed('ui_gambit') and OverworldGlobals.player_can_move and PlayerGlobals.POWER != null:
 		animation_tree["parameters/conditions/void_call"] = !animation_tree["parameters/conditions/void_call"]
-		# Code for invis ability!!!
-		set_collision_layer_value(5, !get_collision_mask_value(5))
-		set_collision_mask_value(5, !get_collision_mask_value(5))
-		if !get_collision_mask_value(5):
-			SPEED = 150
-			sprite.modulate.a = 0.5
-		else:
-			SPEED = 100
-			sprite.modulate.a = 1
-		# end
 		animation_tree["parameters/conditions/void_release"] = !animation_tree["parameters/conditions/void_call"]
 	

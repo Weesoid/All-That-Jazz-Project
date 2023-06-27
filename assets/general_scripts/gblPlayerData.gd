@@ -2,6 +2,7 @@
 extends Node
 
 var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
+var POWER: GDScript
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
