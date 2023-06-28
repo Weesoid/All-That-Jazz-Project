@@ -4,6 +4,7 @@ set OverworldGlobals.player_can_move = false
 Entity: Hey chum! Here's some arrows!
 do PlayerGlobals.addItemToInventory("HealingPotion")
 do PlayerGlobals.addItemToInventory("Arrow")
+do PlayerGlobals.addItemToInventory("ArrowSleeper")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

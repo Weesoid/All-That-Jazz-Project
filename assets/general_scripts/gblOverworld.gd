@@ -6,6 +6,7 @@ var player_can_move = true
 var show_player_interaction = true
 
 signal move_entity(target_position)
+signal alert_patrollers()
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
@@ -13,7 +14,17 @@ func _ready():
 		if !member.initialized:
 			member.initializeCombatant()
 			member.SCENE.free()
-
+	
+#********************************************************************************
+# SIGNALS
+#********************************************************************************
+func moveEntity(entity_body_name: String, move_sequence: String):
+	move_entity.emit(entity_body_name, move_sequence)
+	await getEntity(entity_body_name).get_node('NPCMovementComponent').movement_finished
+	
+func alertPatrollers():
+	alert_patrollers.emit()
+	
 #********************************************************************************
 # GENERAL UTILITY
 #********************************************************************************
@@ -35,10 +46,6 @@ func showMenu():
 		main_menu.queue_free()
 		getPlayer().player_camera.get_node('uiPauseMenu').queue_free()
 		showing_menu = false
-
-func moveEntity(entity_body_name: String, move_sequence: String):
-	move_entity.emit(entity_body_name, move_sequence)
-	await getEntity(entity_body_name).get_node('NPCMovementComponent').movement_finished
 	
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES

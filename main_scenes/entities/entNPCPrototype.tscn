@@ -169,9 +169,8 @@ ANIMATOR = NodePath("../Animator")
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("3_662iy")]
 COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("5_ke8to")])
 
-[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY", "BODY_ANIMATOR") instance=ExtResource("4_yl6sb")]
+[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY") instance=ExtResource("4_yl6sb")]
 BODY = NodePath("..")
-BODY_ANIMATOR = NodePath("../Animator")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {

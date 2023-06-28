@@ -1,4 +1,4 @@
-# IMPORTANT, MAJOR REFACTORING IS REQUIRED!!
+# IMPORTANT, MAJOR REFACTORING IS REQUIRED!
 
 extends CharacterBody2D
 class_name PlayerScene
@@ -40,28 +40,19 @@ func _physics_process(_delta):
 		velocity = direction * SPEED
 		move_and_slide()
 
-
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
-		# DEBUGGING PURPOSES xxx
-		PlayerGlobals.POWER = load("res://assets/power_scripts/scpInvisibility.gd")
-		print('Ability set!')
-		# DEBUGGING PURPOSES xxx
 		OverworldGlobals.showMenu()
 	
 	if (OverworldGlobals.player_can_move):
 		if Input.is_action_just_pressed("ui_select"):
-			# DEBUGGING PURPOSES xxx
-			PlayerGlobals.POWER = null
-			print('Ability unset!')
-			# DEBUGGING PURPOSES xxx
 			var interactables = interaction_detector.get_overlapping_areas()
 			if interactables.size() > 0:
 				velocity = Vector2.ZERO
 				OverworldGlobals.show_player_interaction = false
 				interactables[0].interact()
 				return
-		if Input.is_action_just_pressed("ui_bow") and direction == Vector2.ZERO and PlayerGlobals.getItemWithName("Arrow") != null:
+		if Input.is_action_just_pressed("ui_bow") and direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW != null:
 			bow_mode = !bow_mode
 		
 		if Input.is_action_just_pressed("ui_gambit"):
@@ -69,8 +60,6 @@ func _unhandled_input(_event: InputEvent):
 				PlayerGlobals.POWER.executePower(self)
 			else:
 				print('No power!')
-	
-
 
 func animateInteract():
 	interaction_prompt.visible = OverworldGlobals.show_player_interaction
@@ -80,7 +69,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 	else:
 		interaction_prompt_animator.play('RESET')
-	
+
 func drawBow():
 	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and !animation_tree["parameters/conditions/void_call"]:
 		OverworldGlobals.player_can_move = false
@@ -99,24 +88,26 @@ func drawBow():
 			draw_strength = 0
 			OverworldGlobals.player_can_move = true
 			return
+		
 		draw_strength = 0
 		shootProjectile()
 		await get_tree().create_timer(0.6).timeout
 		OverworldGlobals.player_can_move = true
-		if !PlayerGlobals.getItemWithName("Arrow") != null:
+		
+		if PlayerGlobals.EQUIPPED_ARROW == null:
 			bow_mode = false
 			animation_tree["parameters/conditions/equip_bow"] = bow_mode
 			animation_tree["parameters/conditions/unequip_bow"] = !bow_mode
-	
+
 func shootProjectile():
-	PlayerGlobals.getItemWithName("Arrow").use()
+	PlayerGlobals.EQUIPPED_ARROW.use()
 	var projectile = load("res://main_scenes/entities/mentArrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
 		
-	
+
 # TO DO: SIMPLIFY, MAKE MORE READABLE, BREAK DOWN
 func updateAnimationParameters():
 	if velocity == Vector2.ZERO:
@@ -158,4 +149,3 @@ func updateAnimationParameters():
 	if Input.is_action_just_pressed('ui_gambit') and OverworldGlobals.player_can_move and PlayerGlobals.POWER != null:
 		animation_tree["parameters/conditions/void_call"] = !animation_tree["parameters/conditions/void_call"]
 		animation_tree["parameters/conditions/void_release"] = !animation_tree["parameters/conditions/void_call"]
-	

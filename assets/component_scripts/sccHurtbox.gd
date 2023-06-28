@@ -1,12 +1,12 @@
 extends Node
 
 @export var BODY: CharacterBody2D
-@export var BODY_ANIMATOR: AnimationPlayer
+@export var SCENE: Node2D
+@export var HIT_SCRIPT: GDScript
 
-func destroy():
-	# Find a better way to disable nodes that are using the body
-	BODY.remove_child(BODY.get_node('NPCPatrolComponent'))
-	BODY_ANIMATOR.play('KO')
-	await BODY_ANIMATOR.animation_finished
-	BODY.queue_free()
+func applyEffect():
+	print('From hbox')
+	HIT_SCRIPT.applyEffect(BODY, SCENE)
+	
+
 

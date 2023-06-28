@@ -155,9 +155,8 @@ radius = 11.0
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
-[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY", "BODY_ANIMATOR") instance=ExtResource("4_77wor")]
+[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY") instance=ExtResource("4_77wor")]
 BODY = NodePath("..")
-BODY_ANIMATOR = NodePath("../Animator")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {

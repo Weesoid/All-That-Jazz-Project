@@ -9,7 +9,6 @@ extends NPCMovement
 var PATROL_SHAPE
 var PATH_UPDATE_TIMER: Timer
 var IDLE_TIMER: Timer
-var rng = RandomNumberGenerator.new()
 
 func _ready():
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
@@ -26,6 +25,8 @@ func _ready():
 	add_child(IDLE_TIMER)
 	add_child(PATH_UPDATE_TIMER)
 	
+	OverworldGlobals.alert_patrollers.connect(alertPatrolMode)
+	
 	NAV_AGENT.navigation_finished.connect(updatePath)
 	NAV_AGENT.navigation_finished.emit()
 
@@ -41,14 +42,16 @@ func executeCollisionAction():
 	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
 		print(COMBAT_SQUAD.COMBATANT_SQUAD)
 		OverworldGlobals.changeToCombat(COMBAT_SQUAD.COMBATANT_SQUAD)
+		OverworldGlobals.alert_patrollers.emit()
 		BODY.queue_free()
 
 func patrol():
-	patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
+	if STATE != 3:
+		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer():
 		MOVE_SPEED = BASE_MOVE_SPEED * 5
-		STATE = 1
+		STATE = 2
 		updatePath()
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
@@ -57,18 +60,49 @@ func patrol():
 		MOVE_SPEED = BASE_MOVE_SPEED
 		STATE = 0
 
+func alertPatrolMode():
+	MOVE_SPEED = BASE_MOVE_SPEED * 1.5
+	STATE = 1
+	
+func stunMode():
+	STATE = 3
+	updatePath()
+	
+func destroy():
+	stunMode()
+	ANIMATOR.play('KO')
+	await ANIMATOR.animation_finished
+	BODY.queue_free()
+
 func updatePath():
-	if STATE == 0:
-		IDLE_TIMER.start(randf_range(1.0, 5.0))
-		await IDLE_TIMER.timeout
-		NAV_AGENT.target_position = moveRandom()
-		
-	elif STATE == 1:
-		NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
+	match STATE:
+		0:
+			randomize()
+			IDLE_TIMER.start(randf_range(1.0, 5.0))
+			await IDLE_TIMER.timeout
+			NAV_AGENT.target_position = moveRandom()
+		1:
+			print('Alert patrol move!')
+			randomize()
+			IDLE_TIMER.start(randf_range(1.0, 2.5))
+			await IDLE_TIMER.timeout
+			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
+		2:
+			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
+		3: 
+			print('Stunned!')
+			BODY.velocity = Vector2.ZERO
+			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
+			await get_tree().create_timer(5.0).timeout
+			STATE = 1
+			updatePath()
+			print('Unstunned!')
+			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func moveRandom():
-	return Vector2(rng.randf_range(PATROL_SHAPE.global_position.x, PATROL_SHAPE.global_position.x + PATROL_SHAPE.shape.get_rect().end.x),
-					rng.randf_range(PATROL_SHAPE.global_position.y, PATROL_SHAPE.global_position.y + PATROL_SHAPE.shape.get_rect().end.y))
+	randomize()
+	return Vector2(randf_range(PATROL_SHAPE.global_position.x, PATROL_SHAPE.global_position.x + PATROL_SHAPE.shape.get_rect().end.x),
+					randf_range(PATROL_SHAPE.global_position.y, PATROL_SHAPE.global_position.y + PATROL_SHAPE.shape.get_rect().end.y))
 
 
 func patrolToPosition(target_position: Vector2):
@@ -81,6 +115,7 @@ func patrolToPosition(target_position: Vector2):
 	if BODY.velocity == Vector2(0,0):
 		ANIMATOR.seek(1, true)
 		ANIMATOR.pause()
+		
 
 func targetReached():
 	return NAV_AGENT.distance_to_target() < 1.0

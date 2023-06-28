@@ -22,10 +22,13 @@ func _on_ready():
 		addButtonToTab(item, button)
 
 func showUseContainer():
+	description_panel.text = ""
 	use_container.show()
 
 func _on_use_pressed():
-	if selected_item.EQUIPPED_COMBATANT == selected_combatant:
+	if selected_item is ResProjectileAmmo:
+		selected_item.equip()
+	elif selected_item.EQUIPPED_COMBATANT == selected_combatant:
 		PlayerGlobals.getItemFromInventory(selected_item).unequip()
 	else:
 		PlayerGlobals.getItemFromInventory(selected_item).equip(selected_combatant)
@@ -35,8 +38,7 @@ func _on_use_pressed():
 	use_container.hide()
 
 func addMembers():
-	for child in party_panel.get_children():
-		child.free()
+	clearMembers()
 		
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		var button = Button.new()
@@ -45,6 +47,10 @@ func addMembers():
 		button.pressed.connect(showUseContainer)
 		button.pressed.connect(func setSelectedCombatant(): selected_combatant = member)
 		party_panel.add_child(button)
+
+func clearMembers():
+	for child in party_panel.get_children():
+		child.free()
 
 func _on_drop_pressed():
 	print(PlayerGlobals.INVENTORY)
@@ -59,7 +65,7 @@ func isEquipped(item):
 		return false
 
 func addButtonToTab(item: ResItem, button: Button):
-	if item is ResConsumable:
+	if item is ResConsumable or item is ResProjectileAmmo:
 		misc_tab.add_child(button)
 	elif item is ResWeapon:
 		if isEquipped(item): button.text = str('WEAPON EQUIPPED BY ', item.EQUIPPED_COMBATANT)
@@ -70,12 +76,14 @@ func addButtonToTab(item: ResItem, button: Button):
 	
 	button.pressed.connect(
 		func setSelectedItem(): 
+			clearMembers()
+			use_container.hide()
 			selected_item = PlayerGlobals.getItemFromInventory(item)
 			description_panel.text = item.DESCRIPTION
-			if isItemEquippable(item):
+			if isItemEquippable(item) and !item is ResProjectileAmmo:
 				stat_panel.text = item.getStringStats()
 			addMembers()
 			)
 	
 func isItemEquippable(item: ResItem):
-	return item is ResArmor or item is ResWeapon
+	return item is ResArmor or item is ResWeapon or item is ResProjectileAmmo
