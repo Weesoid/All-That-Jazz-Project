@@ -1,5 +1,4 @@
 # IMPORTANT, MAJOR REFACTORING IS REQUIRED!
-
 extends CharacterBody2D
 class_name PlayerScene
 
@@ -15,11 +14,13 @@ class_name PlayerScene
 
 var direction = Vector2()
 var bow_mode = false
-var draw_strength = 0
+var bow_draw_strength = 0
+var bow_max_draw = 5.0
 var SPEED = 100.0
 const ANIMATION_SPEED = 1.5
 
 func _ready():
+	PlayerGlobals.POWER = load("res://assets/power_scripts/scpInvisibility.gd")
 	player_animator.speed_scale = ANIMATION_SPEED
 	print(animation_tree.tree_root)
 	animation_tree.active = true
@@ -31,7 +32,7 @@ func _process(_delta):
 		drawBow()
 
 func _physics_process(_delta):
-	if (OverworldGlobals.player_can_move):
+	if OverworldGlobals.player_can_move:
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -44,26 +45,30 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu()
 	
-	if (OverworldGlobals.player_can_move):
-		if Input.is_action_just_pressed("ui_select"):
-			var interactables = interaction_detector.get_overlapping_areas()
-			if interactables.size() > 0:
-				velocity = Vector2.ZERO
-				OverworldGlobals.show_player_interaction = false
-				interactables[0].interact()
-				return
-		if Input.is_action_just_pressed("ui_bow") and direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW != null:
+	if Input.is_action_just_pressed("ui_select") and !OverworldGlobals.showing_menu:
+		var interactables = interaction_detector.get_overlapping_areas()
+		if interactables.size() > 0:
+			undrawBowAnimation()
+			OverworldGlobals.show_player_interaction = false
+			interactables[0].interact()
+			return
+	
+	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
+		if bow_draw_strength == 0: 
 			bow_mode = !bow_mode
-		
-		if Input.is_action_just_pressed("ui_gambit"):
-			if PlayerGlobals.POWER != null:
-				PlayerGlobals.POWER.executePower(self)
-			else:
-				print('No power!')
+	
+	if Input.is_action_just_pressed("ui_gambit") and bow_draw_strength == 0:
+		if PlayerGlobals.POWER != null:
+			PlayerGlobals.POWER.executePower(self)
+		else:
+			print('No power!')
+
+func canDrawBow()-> bool:
+	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW != null
 
 func animateInteract():
 	interaction_prompt.visible = OverworldGlobals.show_player_interaction
-	if (interaction_detector.get_overlapping_areas().size() > 0) and OverworldGlobals.player_can_move:
+	if interaction_detector.get_overlapping_areas().size() > 0 and OverworldGlobals.player_can_move:
 		interaction_prompt_animator.play('Interact')
 	elif !OverworldGlobals.player_can_move:
 		interaction_prompt_animator.play('RESET')
@@ -71,33 +76,26 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and !animation_tree["parameters/conditions/void_call"]:
+	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and OverworldGlobals.show_player_interaction:
 		OverworldGlobals.player_can_move = false
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10)
-		draw_strength += 0.1
+		bow_draw_strength += 0.1
 		bow_line.points[1].y += 1
-		if draw_strength >= 6.0:
+		if bow_draw_strength >= bow_max_draw:
 			bow_line.points[1].y = 275
-			draw_strength = 6.0
+			bow_draw_strength = bow_max_draw
 	
 	if Input.is_action_just_released("ui_click"):
-		bow_line.hide()
-		bow_line.points[1].y = 0
-		if draw_strength < 6.0:
-			draw_strength = 0
-			OverworldGlobals.player_can_move = true
-			return
-		
-		draw_strength = 0
-		shootProjectile()
-		await get_tree().create_timer(0.6).timeout
-		OverworldGlobals.player_can_move = true
-		
-		if PlayerGlobals.EQUIPPED_ARROW == null:
-			bow_mode = false
-			animation_tree["parameters/conditions/equip_bow"] = bow_mode
-			animation_tree["parameters/conditions/unequip_bow"] = !bow_mode
+		if bow_draw_strength >= bow_max_draw: shootProjectile()
+		undrawBow(bow_draw_strength >= bow_max_draw)
+
+func undrawBow(wait=false):
+	bow_line.hide()
+	bow_line.points[1].y = 0
+	bow_draw_strength = 0
+	if wait: await get_tree().create_timer(0.6).timeout
+	OverworldGlobals.player_can_move = true
 
 func shootProjectile():
 	PlayerGlobals.EQUIPPED_ARROW.use()
@@ -106,9 +104,11 @@ func shootProjectile():
 	projectile.SHOOTER = self
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
-		
+	
+	if PlayerGlobals.EQUIPPED_ARROW == null:
+		bow_mode = false
+		toggleBowAnimation()
 
-# TO DO: SIMPLIFY, MAKE MORE READABLE, BREAK DOWN
 func updateAnimationParameters():
 	if velocity == Vector2.ZERO:
 		animation_tree["parameters/conditions/idle"] = true
@@ -124,28 +124,47 @@ func updateAnimationParameters():
 		animation_tree["parameters/Walk Bow/blend_position"] = direction
 		animation_tree["parameters/Shoot Bow/blend_position"] = direction
 		animation_tree["parameters/Draw Bow/blend_position"] = direction
-		
+	
 	if Input.is_action_just_pressed('ui_bow') and !animation_tree["parameters/conditions/void_call"]:
-		animation_tree["parameters/conditions/equip_bow"] = bow_mode
-		animation_tree["parameters/conditions/unequip_bow"] = !bow_mode
+		toggleBowAnimation()
 		if animation_tree["parameters/conditions/draw_bow"]:
-			draw_strength = 0
+			bow_draw_strength = 0
 			Input.action_release("ui_click")
 			animation_tree["parameters/conditions/draw_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = true
 	
 	if bow_mode:
-		if Input.is_action_pressed('ui_click') and !animation_tree["parameters/conditions/void_call"]:
+		if Input.is_action_pressed('ui_click') and OverworldGlobals.show_player_interaction and !animation_tree["parameters/conditions/void_call"]:
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false
+		
+		if velocity != Vector2.ZERO:
+			undrawBow()
+			animation_tree["parameters/conditions/draw_bow"] = false
+			animation_tree["parameters/conditions/cancel"] = true
+		
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
-			if draw_strength >= 6.0:
+			if bow_draw_strength >= bow_max_draw:
 				animation_tree["parameters/conditions/shoot_bow"] = true
 			else:
 				animation_tree["parameters/conditions/cancel"] = true
-			
-	if Input.is_action_just_pressed('ui_gambit') and OverworldGlobals.player_can_move and PlayerGlobals.POWER != null:
+	
+	if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null:
 		animation_tree["parameters/conditions/void_call"] = !animation_tree["parameters/conditions/void_call"]
 		animation_tree["parameters/conditions/void_release"] = !animation_tree["parameters/conditions/void_call"]
+
+func toggleBowAnimation():
+	animation_tree["parameters/conditions/equip_bow"] = bow_mode
+	animation_tree["parameters/conditions/unequip_bow"] = !bow_mode
+
+func playShootAnimation():
+	animation_tree["parameters/conditions/draw_bow"] = false
+	animation_tree["parameters/conditions/shoot_bow"] = true
+
+func undrawBowAnimation():
+	undrawBow()
+	animation_tree["parameters/conditions/draw_bow"] = false
+	animation_tree["parameters/conditions/cancel"] = true
+

@@ -11,7 +11,6 @@ func addItemToInventory(item_name: String):
 	var item = load("res://assets/item_resources/itm"+item_name+".tres")
 	assert(item!=null, "Item not found!")
 	addItemResourceToInventory(item)
-	
 
 func addItemResourceToInventory(item: ResItem):
 	if item is ResConsumable and INVENTORY.has(item):
