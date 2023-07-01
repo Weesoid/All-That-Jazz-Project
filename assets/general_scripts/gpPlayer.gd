@@ -43,11 +43,12 @@ func _physics_process(_delta):
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
-		OverworldGlobals.showMenu()
+		OverworldGlobals.showMenu("res://main_scenes/user_interface/uiPauseMenu.tscn")
 	
 	if Input.is_action_just_pressed("ui_select") and !OverworldGlobals.showing_menu:
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
+			velocity = Vector2.ZERO
 			undrawBowAnimation()
 			OverworldGlobals.show_player_interaction = false
 			interactables[0].interact()

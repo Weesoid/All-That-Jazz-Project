@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://1p8yicjyh74n"]
+[gd_scene load_steps=3 format=3 uid="uid://1p8yicjyh74n"]
 
 [ext_resource type="Script" path="res://assets/misc_scripts/scmPauseUI.gd" id="1_gyhaf"]
+[ext_resource type="Script" path="res://assets/misc_scripts/scmPlayerCurrencyCounter.gd" id="2_p2ikl"]
 
 [node name="uiPauseMenu" type="Control"]
 layout_mode = 3
@@ -39,6 +40,11 @@ text = "SAVE"
 [node name="Quit" type="Button" parent="Container"]
 layout_mode = 2
 text = "QUIT "
+
+[node name="Currency" type="Label" parent="Container"]
+layout_mode = 2
+text = "CASH 0"
+script = ExtResource("2_p2ikl")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="pressed" from="Container/Inventory" to="." method="_on_inventory_pressed"]

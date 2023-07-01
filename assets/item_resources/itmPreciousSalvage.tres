@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=2 format=3 uid="uid://xxg6hpehmfmc"]
+
+[ext_resource type="Script" path="res://assets/resources/ResItemStack.gd" id="1_dg7jj"]
+
+[resource]
+script = ExtResource("1_dg7jj")
+NAME = "Precious Salvage"
+ICON_NAME = ""
+DESCRIPTION = "Rare find that's used for crafting."

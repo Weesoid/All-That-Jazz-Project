@@ -34,21 +34,24 @@ func getPlayer()-> PlayerScene:
 func getEntity(entity_name: String)-> PlayerScene:
 	return get_tree().current_scene.get_node(entity_name)
 	
-func showMenu():
-	var main_menu: Control = load("res://main_scenes/user_interface/uiPauseMenu.tscn").instantiate()
+func showMenu(path: String):
+	
+	var main_menu: Control = load(path).instantiate()
 	
 	if !showing_menu:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		getPlayer().player_camera.add_child(main_menu)
+		player_can_move = false
 		show_player_interaction = false
 		showing_menu = true
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 		main_menu.queue_free()
-		getPlayer().player_camera.get_node('uiPauseMenu').queue_free()
+		getPlayer().player_camera.get_child(0).queue_free()
+		player_can_move = true
 		show_player_interaction = true
 		showing_menu = false
-	
+
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 	

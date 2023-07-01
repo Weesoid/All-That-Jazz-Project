@@ -1,11 +1,17 @@
 # Rename this to gblPlayerData
 extends Node
 
+var KNOWN_RECIPES: Array[ResRecipe] = []
 var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
+var CURRENCY = 0
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
+
+func _ready():
+	KNOWN_RECIPES.append(load("res://assets/recipe_resources/rcpArrow.tres"))
+	print(KNOWN_RECIPES)
 
 func addItemToInventory(item_name: String):
 	var item = load("res://assets/item_resources/itm"+item_name+".tres")
@@ -13,9 +19,10 @@ func addItemToInventory(item_name: String):
 	addItemResourceToInventory(item)
 
 func addItemResourceToInventory(item: ResItem):
-	if item is ResConsumable and INVENTORY.has(item):
+	if item is ResStackItem and INVENTORY.has(item):
 		INVENTORY[INVENTORY.find(item)].STACK += 1
-	elif item is ResConsumable:
+	elif item is ResStackItem:
+		if item.STACK != 1: item.STACK = 1
 		INVENTORY.append(item)
 	else:
 		INVENTORY.append(item.duplicate())
@@ -27,6 +34,24 @@ func getItemWithName(item_name: String):
 	for item in INVENTORY:
 		if item.NAME == item_name:
 			return item
+
+func removeItemWithName(item_name: String):
+	for item in INVENTORY:
+		if item.NAME == item_name:
+			INVENTORY.erase(item)
+			return
+
+func getUnstackableItemNames()-> Array:
+	var out = []
+	
+	for item in INVENTORY:
+		if !item is ResStackItem:
+			out.append(item.NAME)
+	
+	return out
+
+func getRecipe(item: ResRecipe):
+	return KNOWN_RECIPES[KNOWN_RECIPES.find(item)]
 
 func addExperience(experience: int):
 	CURRENT_EXP += experience

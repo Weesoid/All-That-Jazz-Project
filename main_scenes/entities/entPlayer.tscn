@@ -1,8 +1,9 @@
-[gd_scene load_steps=94 format=3 uid="uid://c4uo7b77jtx6g"]
+[gd_scene load_steps=95 format=3 uid="uid://c4uo7b77jtx6g"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpPlayer.gd" id="1_mngvk"]
 [ext_resource type="Resource" uid="uid://byeo878g637qe" path="res://assets/combatants_resources/cbPPrototypeB.tres" id="3_0jqxo"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/misc_sprites/interact.png" id="3_y84xx"]
+[ext_resource type="Resource" uid="uid://dga8fe3nbmpwq" path="res://assets/combatants_resources/cbPPrototypeA.tres" id="4_biqf6"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://assets/overworld_characters/player.png" id="5_nms4n"]
 [ext_resource type="PackedScene" uid="uid://cmyccltenbww6" path="res://assets/components/cmpCombatantSquad.tscn" id="6_ucs2i"]
 
@@ -1407,7 +1408,7 @@ collision_mask = 17
 script = ExtResource("1_mngvk")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
-COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("3_0jqxo")])
+COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("3_0jqxo"), ExtResource("4_biqf6")])
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -20)
