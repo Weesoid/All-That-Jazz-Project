@@ -10,6 +10,7 @@ var selected_recipe: ResRecipe
 func _on_ready():
 	craft_button.hide()
 	for recipe in PlayerGlobals.KNOWN_RECIPES:
+		print('Initing: ', recipe.OUTPUT)
 		var button = Button.new()
 		button.size.x = 9999
 		button.text = str(recipe.OUTPUT.NAME)

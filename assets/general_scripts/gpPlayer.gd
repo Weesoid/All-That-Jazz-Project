@@ -45,7 +45,7 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu("res://main_scenes/user_interface/uiPauseMenu.tscn")
 	
-	if Input.is_action_just_pressed("ui_select") and !OverworldGlobals.showing_menu:
+	if Input.is_action_just_pressed("ui_select") and !OverworldGlobals.showing_menu and interaction_prompt.visible:
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity = Vector2.ZERO
@@ -65,7 +65,7 @@ func _unhandled_input(_event: InputEvent):
 			print('No power!')
 
 func canDrawBow()-> bool:
-	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW != null
+	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW.STACK >= 0 and OverworldGlobals.show_player_interaction
 
 func animateInteract():
 	interaction_prompt.visible = OverworldGlobals.show_player_interaction
@@ -77,6 +77,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
+	#print('STACKS: ', PlayerGlobals.EQUIPPED_ARROW.STACK)
 	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and OverworldGlobals.show_player_interaction:
 		OverworldGlobals.player_can_move = false
 		bow_line.show()
@@ -106,7 +107,7 @@ func shootProjectile():
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
 	
-	if PlayerGlobals.EQUIPPED_ARROW == null:
+	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
 		bow_mode = false
 		toggleBowAnimation()
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cm5cfsxc8w3g"]
+[gd_scene load_steps=16 format=3 uid="uid://cm5cfsxc8w3g"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_388ch"]
 [ext_resource type="PackedScene" uid="uid://c4uo7b77jtx6g" path="res://main_scenes/entities/entPlayer.tscn" id="2_pw5yw"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bi28p6763hm4a" path="res://main_scenes/entities/entNPCPrototypeTester.tscn" id="7_q1mei"]
 [ext_resource type="Script" path="res://assets/hurtbox_scripts/schbReact.gd" id="8_hu8wo"]
 [ext_resource type="PackedScene" uid="uid://dih6v3acybod5" path="res://main_scenes/entities/entCraftingTable.tscn" id="9_cea8r"]
+[ext_resource type="PackedScene" uid="uid://byuqpirfnf4pv" path="res://main_scenes/entities/entPowerSelect.tscn" id="11_7bu63"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -107,6 +108,9 @@ HIT_SCRIPT = ExtResource("8_hu8wo")
 
 [node name="entCraftingTable" parent="." instance=ExtResource("9_cea8r")]
 position = Vector2(0, -120)
+
+[node name="entPowerSelect" parent="." instance=ExtResource("11_7bu63")]
+position = Vector2(-56, -120)
 
 [editable path="NPCPrototype"]
 [editable path="entItem2"]

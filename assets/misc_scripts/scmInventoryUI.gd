@@ -3,9 +3,9 @@ extends Control
 
 @onready var use_container = $UseContainer
 @onready var party_panel = $PartyPanel/ScrollContainer/VBoxContainer
-@onready var misc_tab = $TabContainer/Misc/ScrollContainer/VBoxContainer
-@onready var weapon_tab = $TabContainer/Weapons/ScrollContainer/VBoxContainer
-@onready var armor_tab = $TabContainer/Armors/ScrollContainer/VBoxContainer
+@onready var misc_tab = $TabContainer/Misc/VBoxContainer
+@onready var weapon_tab = $TabContainer/Weapons/VBoxContainer
+@onready var armor_tab = $TabContainer/Armors/VBoxContainer
 @onready var use_button = $UseContainer/Use
 @onready var description_panel = $DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $StatPanel/DescriptionLabel
@@ -15,7 +15,6 @@ var selected_combatant: ResCombatant
 var button_item_map: Dictionary
 
 func _on_ready():
-	$TabContainer/Misc.grab_focus()
 	for item in PlayerGlobals.INVENTORY:
 		var button = Button.new()
 		button.size.x = 272
@@ -40,6 +39,8 @@ func addMembers():
 		button.pressed.connect(func setSelectedCombatant(): selected_combatant = member)
 		button.pressed.connect(
 					func useItem():
+						# TO-DO Use item consumable logic
+						
 						if selected_item.EQUIPPED_COMBATANT == member:
 							PlayerGlobals.getItemFromInventory(selected_item).unequip()
 							button_item_map[selected_item].text = selected_item.NAME

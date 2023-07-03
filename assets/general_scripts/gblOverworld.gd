@@ -45,12 +45,15 @@ func showMenu(path: String):
 		show_player_interaction = false
 		showing_menu = true
 	else:
-		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
-		main_menu.queue_free()
-		getPlayer().player_camera.get_child(0).queue_free()
-		player_can_move = true
-		show_player_interaction = true
-		showing_menu = false
+		closeMenu(main_menu)
+
+func closeMenu(menu: Control):
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	menu.queue_free()
+	getPlayer().player_camera.get_child(0).queue_free()
+	player_can_move = true
+	show_player_interaction = true
+	showing_menu = false
 
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene

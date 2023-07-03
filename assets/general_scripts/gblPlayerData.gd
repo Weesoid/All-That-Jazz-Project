@@ -1,8 +1,10 @@
 # Rename this to gblPlayerData
 extends Node
 
-var KNOWN_RECIPES: Array[ResRecipe] = []
+
 var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
+var KNOWN_RECIPES: Array[ResRecipe] = []
+var KNOWN_POWERS: Array[ResPower] = []
 var CURRENCY = 0
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
@@ -10,8 +12,13 @@ var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
 func _ready():
+	EQUIPPED_ARROW = load("res://assets/item_resources/itmArrow.tres")
+	
 	KNOWN_RECIPES.append(load("res://assets/recipe_resources/rcpArrow.tres"))
-	print(KNOWN_RECIPES)
+	
+	KNOWN_POWERS.append(load("res://assets/power_resources/pwrAnchor.tres"))
+	KNOWN_POWERS.append(load("res://assets/power_resources/pwrStealth.tres"))
+	
 
 func addItemToInventory(item_name: String):
 	var item = load("res://assets/item_resources/itm"+item_name+".tres")
