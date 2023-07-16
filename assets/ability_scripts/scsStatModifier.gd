@@ -1,6 +1,3 @@
-static func animateEffect(caster):
-	pass
-
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	var modifier = 0.5
 	if status_effect.APPLY_ONCE:
@@ -9,4 +6,3 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 
 static func endEffects(target: ResCombatant):
 	CombatGlobals.resetStat(target, 'brawn')
-

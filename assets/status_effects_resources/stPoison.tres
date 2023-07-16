@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_5ugit")
 NAME = "Poison"
-ANIMATION_NAME = ""
 STATUS_SCRIPT = ExtResource("1_t6ebe")
+PARTICLE_NAME = "prtPoison"
 ICON_NAME = "st_wit_dn1"
 MAX_DURATION = 3
 MAX_RANK = 0

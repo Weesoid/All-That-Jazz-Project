@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://cuhoyx07jlwcl"]
+
+[ext_resource type="Script" path="res://assets/resources/ResAbility.gd" id="1_o1mb6"]
+[ext_resource type="Script" path="res://assets/ability_scripts/scwNeutral.gd" id="1_tggyt"]
+
+[resource]
+script = ExtResource("1_o1mb6")
+NAME = "Neutral Strike"
+DESCRIPTION = ""
+ANIMATION_NAME = "aabAOE"
+ABILITY_SCRIPT = ExtResource("1_tggyt")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 0
+TARGET_GROUP = 1

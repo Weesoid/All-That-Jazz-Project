@@ -30,10 +30,10 @@ func alertPatrollers():
 #********************************************************************************
 func getPlayer()-> PlayerScene:
 	return get_tree().current_scene.get_node('Player')
-	
+
 func getEntity(entity_name: String)-> PlayerScene:
 	return get_tree().current_scene.get_node(entity_name)
-	
+
 func showMenu(path: String):
 	
 	var main_menu: Control = load(path).instantiate()
@@ -57,7 +57,7 @@ func closeMenu(menu: Control):
 
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
-	
+
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES
 #********************************************************************************
@@ -69,7 +69,7 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	var balloon: Node = (SmallExampleBalloonScene if is_small_window else ExampleBalloonScene).instantiate()
 	get_tree().current_scene.add_child(balloon)
 	balloon.start(resource, title, extra_game_states)
-	
+
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
@@ -96,6 +96,7 @@ func setEnemyCombatantSquad(entity_name: String):
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
 	
+# TO DO BETTER PAUSING!!
 func pauseAllExcept(node):
 	for child in get_tree().current_scene.get_children():
 		if child == node: continue

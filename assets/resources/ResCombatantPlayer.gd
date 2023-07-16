@@ -14,6 +14,7 @@ var initialized = false
 
 func initializeCombatant():
 	SCENE = load(str("res://assets/combatant_sprites_scenes/",SPRITE_NAME,".tscn")).instantiate()
+	
 	if !initialized:
 		for ability in ABILITY_SET:
 			ability.initializeAbility()

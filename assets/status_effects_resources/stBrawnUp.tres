@@ -6,10 +6,11 @@
 [resource]
 script = ExtResource("1_c8x4r")
 NAME = "Buff Up"
-ANIMATION_NAME = ""
 STATUS_SCRIPT = ExtResource("1_kwaxl")
+PARTICLE_NAME = "prtModifier"
 ICON_NAME = "st_brawn_up1"
 MAX_DURATION = 6
 MAX_RANK = 2
 APPLY_ONCE = true
 metadata/_editor_prop_ptr_ICON = NodePath("")
+metadata/_editor_prop_ptr_PARTICLES = NodePath("")

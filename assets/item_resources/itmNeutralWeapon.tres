@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=2 format=3 uid="uid://ds3ikvmqtougm"]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://ds3ikvmqtougm"]
 
 [ext_resource type="Script" path="res://assets/resources/ResItemWeapon.gd" id="1_fmffi"]
+[ext_resource type="Resource" uid="uid://cuhoyx07jlwcl" path="res://assets/ability_resources/abNeutStrike.tres" id="1_vw8ht"]
 
 [resource]
 script = ExtResource("1_fmffi")
 DAMAGE_TYPE = 0
 STAT_MODIFICATIONS = {
-"brawn": 999
+"grit": 1
 }
+EFFECT = ExtResource("1_vw8ht")
+durability = Vector2i(3, 3)
 NAME = "Neutral Weapon"
 ICON_NAME = ""
 DESCRIPTION = "A neutral weapon in a hostile world..."

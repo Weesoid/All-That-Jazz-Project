@@ -10,6 +10,8 @@ enum DamageType {
 @export var DAMAGE_TYPE: DamageType
 @export var STAT_MODIFICATIONS = {}
 @export var EFFECT: ResAbility
+@export var durability: Vector2i
+
 var EQUIPPED_COMBATANT: ResCombatant
 
 func equip(combatant: ResCombatant):
@@ -18,12 +20,15 @@ func equip(combatant: ResCombatant):
 	if combatant.EQUIPMENT['weapon'] != null:
 		combatant.EQUIPMENT['weapon'].unequip()
 	
+	EFFECT.initializeAbility()
 	EQUIPPED_COMBATANT = combatant
 	combatant.EQUIPMENT['weapon'] = self
+	combatant.ABILITY_SET[0] = EFFECT
 	applyStatModifications()
 
 func unequip():
 	removeStatModifications()
+	EQUIPPED_COMBATANT.ABILITY_SET[0] = load("res://assets/ability_resources/abPunch.tres")
 	EQUIPPED_COMBATANT.EQUIPMENT['weapon'] = null
 	EQUIPPED_COMBATANT = null
 
@@ -47,12 +52,14 @@ func getStringStats():
 		result += key.to_upper() + ": " + str(STAT_MODIFICATIONS[key]) + "\n"
 	return result
 
-
 func animateCast(caster: ResCombatant):
 	EFFECT.animateCast(caster)
 
-func applyEffect(caster: ResCombatant, target: ResCombatant, animation_scene):
-	EFFECT.applyEffects(caster, target, animation_scene)
+func useDurability():
+	durability.x -= 1
+	if durability.x <= 0:
+		unequip()
+	
 
 func getStatModifications():
 	return STAT_MODIFICATIONS

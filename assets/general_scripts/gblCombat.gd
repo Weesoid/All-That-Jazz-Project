@@ -63,8 +63,8 @@ func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://assets/status_effects_resources/st"+status_effect_name+".tres")).duplicate()
 	
 func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
-	status_effect.initializeStatus()
 	status_effect.afflicted_combatant = target
+	status_effect.initializeStatus()
 	target.STATUS_EFFECTS.append(status_effect)
 	status_effect.addStatusEffectIcon()
 	

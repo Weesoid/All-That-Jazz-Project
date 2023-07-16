@@ -1,4 +1,6 @@
-# IMPORTANT, MAJOR REFACTORING IS REQUIRED!
+# Draw bow, set anchor, use anchor when drawn, get locked into void channel.
+# SOLUTION: Channel / Instant cast animation depending on power type
+
 extends CharacterBody2D
 class_name PlayerScene
 
@@ -65,7 +67,7 @@ func _unhandled_input(_event: InputEvent):
 			print('No power!')
 
 func canDrawBow()-> bool:
-	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW.STACK >= 0 and OverworldGlobals.show_player_interaction
+	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW.STACK > 0 and OverworldGlobals.show_player_interaction
 
 func animateInteract():
 	interaction_prompt.visible = OverworldGlobals.show_player_interaction
@@ -77,7 +79,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	#print('STACKS: ', PlayerGlobals.EQUIPPED_ARROW.STACK)
+	print('STACKS: ', PlayerGlobals.EQUIPPED_ARROW.STACK)
 	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and OverworldGlobals.show_player_interaction:
 		OverworldGlobals.player_can_move = false
 		bow_line.show()

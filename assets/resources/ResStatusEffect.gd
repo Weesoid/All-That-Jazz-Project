@@ -2,8 +2,8 @@ extends Resource
 class_name ResStatusEffect
 
 @export var NAME: String
-@export var ANIMATION_NAME: String
 @export var STATUS_SCRIPT: GDScript
+@export var PARTICLE_NAME: String
 @export var ICON_NAME: String
 @export var MAX_DURATION: int
 @export var MAX_RANK: int
@@ -13,12 +13,16 @@ var duration
 var current_rank
 var afflicted_combatant: ResCombatant
 var ICON: TextureRect
+var PARTICLES
 var TARGETABLE
-var ANIMATION
 
 func initializeStatus():
 	ICON = TextureRect.new()
 	ICON.texture = load(str("res://assets/icons/"+ICON_NAME+".png"))
+	
+	PARTICLES = load(str("res://assets/particle_scenes/"+PARTICLE_NAME+".tscn")).instantiate()
+	animateStatusEffect()
+	
 	duration = MAX_DURATION
 
 func addStatusEffectIcon():
@@ -28,6 +32,7 @@ func addStatusEffectIcon():
 func removeStatusEffect():
 	afflicted_combatant.getStatusBar().remove_child(ICON)
 	STATUS_SCRIPT.endEffects(afflicted_combatant)
+	PARTICLES.queue_free()
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
@@ -37,7 +42,10 @@ func tick():
 	APPLY_ONCE = false
 	if duration == 0 or afflicted_combatant.isDead():
 		removeStatusEffect()
-
-func getAnimator()-> AnimationPlayer:
-	return ANIMATION.get_node('AnimationPlayer')
+	
+func animateStatusEffect():
+	PARTICLES.global_position = Vector2(0, 60)
+	afflicted_combatant.SCENE.add_child(PARTICLES)
+	
+	PARTICLES.restart()
 

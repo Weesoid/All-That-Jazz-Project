@@ -15,6 +15,9 @@ class_name CombatScene
 @onready var item_scroller = $ActionPanel/Items/ItemScroller
 @onready var item_container = $ActionPanel/Items/ItemScroller/ItemContainer
 @onready var items_button = $ActionPanel/Items
+@onready var equip_scroller = $ActionPanel/Equipment/ItemScroller
+@onready var equip_container = $ActionPanel/Equipment/ItemScroller/ItemContainer
+@onready var equip_button = $ActionPanel/Equipment
 @onready var escape_button = $ActionPanel/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
@@ -74,7 +77,7 @@ func on_player_turn():
 	#checkWin()
 	action_panel.show()
 	attack_button.grab_focus()
-	action_panel.position = active_combatant.getSprite().global_position
+	action_panel.global_position = active_combatant.getSprite().global_position - Vector2(0, 60)
 	await confirm
 	end_turn()
 	
@@ -96,7 +99,6 @@ func on_enemy_turn():
 		checkWin()
 	
 func end_turn():
-	# BUG, POISON DOESN'T GET REMOVED, FIX LATER
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
 		
@@ -107,6 +109,7 @@ func end_turn():
 			item_drops.append(combatant.getDrops())
 		COMBATANTS.erase(combatant)
 	
+	# Reset values
 	run_once = true
 	target_index = 0
 	COMBATANTS.sort_custom(sortBySpeed)
@@ -122,7 +125,11 @@ func end_turn():
 #********************************************************************************
 func _on_attack_pressed():
 	Input.action_release("ui_accept")
+	
 	selected_ability = active_combatant.ABILITY_SET[0]
+	if active_combatant.EQUIPMENT['weapon'] != null:
+		active_combatant.EQUIPMENT['weapon'].useDurability()
+	
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	target_state = selected_ability.getTargetType()
 	action_panel.hide()
@@ -142,9 +149,7 @@ func _ability_focus_enter():
 	
 func _on_items_pressed():
 	getPlayerItems(PlayerGlobals.INVENTORY)
-	if item_container.get_child_count() == 0:
-		items_button.disabled = true
-		return
+	if item_container.get_child_count() == 0: return
 	items_button.disabled = false
 	item_scroller.show()
 	item_container.get_child(0).grab_focus()
@@ -154,6 +159,19 @@ func _item_focus_exit():
 	
 func _item_focus_enter():
 	item_scroller.show()
+	
+func _equip_focus_exit():
+	equip_scroller.hide()
+	
+func _equip_focus_enter():
+	equip_scroller.show()
+	
+func _on_equipment_pressed():
+	getPlayerWeapons(PlayerGlobals.INVENTORY)
+	if equip_container.get_child_count() == 0: return
+	equip_button.disabled = false
+	equip_scroller.show()
+	equip_container.get_child(0).grab_focus()
 	
 func _on_escape_pressed():
 	get_tree().quit()
@@ -205,6 +223,24 @@ func getPlayerItems(inventory):
 		button.focus_exited.connect(_item_focus_exit)
 		item_container.add_child(button)
 
+func getPlayerWeapons(inventory):
+	for child in equip_container.get_children():
+		child.free()
+		
+	for weapon in inventory:
+		if !weapon is ResWeapon: continue
+		var button = Button.new()
+		button.text = str(weapon.NAME, '(', weapon.durability.x, '/', weapon.durability.y,')')
+		button.pressed.connect(
+				func equipWeapon():
+					weapon.equip(active_combatant)
+					confirm.emit()
+		)
+		button.focus_entered.connect(_equip_focus_enter)
+		button.focus_exited.connect(_equip_focus_exit)
+		if weapon.durability.x <= 0: button.disabled = true
+		equip_container.add_child(button)
+
 func playerSelectAbility(ability:ResAbility, state: int):
 	target_state = state
 	selected_ability = ability
@@ -231,7 +267,7 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 
 func executeAbility():
-	var animation = selected_ability. ANIMATION.instantiate()
+	var animation = selected_ability.ANIMATION.instantiate()
 	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
 	add_child(animation)
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
@@ -245,7 +281,6 @@ func executeAbility():
 	animation.queue_free()
 	
 	confirm.emit()
-
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
@@ -308,6 +343,7 @@ func tickStatusEffects(combatant: ResCombatant):
 	for effect in combatant.STATUS_EFFECTS:
 		effect.tick()
 	
+
 func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit
 	

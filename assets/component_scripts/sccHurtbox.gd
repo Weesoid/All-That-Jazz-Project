@@ -5,7 +5,6 @@ extends Node
 @export var HIT_SCRIPT: GDScript
 
 func applyEffect():
-	print('From hbox')
 	HIT_SCRIPT.applyEffect(BODY, SCENE)
 	
 
