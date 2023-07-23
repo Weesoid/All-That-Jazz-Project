@@ -2,6 +2,7 @@
 set OverworldGlobals.player_can_move = false
 
 do PlayerGlobals.addItemToInventory("NeutralWeapon")
+do PlayerGlobals.addItemToInventory("LightArmor")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

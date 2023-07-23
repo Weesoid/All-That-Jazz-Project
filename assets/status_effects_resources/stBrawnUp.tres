@@ -12,5 +12,6 @@ ICON_NAME = "st_brawn_up1"
 MAX_DURATION = 6
 MAX_RANK = 2
 APPLY_ONCE = true
+PERMANENT = false
 metadata/_editor_prop_ptr_ICON = NodePath("")
 metadata/_editor_prop_ptr_PARTICLES = NodePath("")

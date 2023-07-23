@@ -8,6 +8,7 @@ class_name ResStatusEffect
 @export var MAX_DURATION: int
 @export var MAX_RANK: int
 @export var APPLY_ONCE: bool
+@export var PERMANENT: bool = false
 
 var duration
 var current_rank
@@ -17,6 +18,7 @@ var PARTICLES
 var TARGETABLE
 
 func initializeStatus():
+	print("Init: ", NAME, " on ", afflicted_combatant.NAME)
 	ICON = TextureRect.new()
 	ICON.texture = load(str("res://assets/icons/"+ICON_NAME+".png"))
 	
@@ -30,14 +32,14 @@ func addStatusEffectIcon():
 	current_rank = 1
 
 func removeStatusEffect():
-	afflicted_combatant.getStatusBar().remove_child(ICON)
 	STATUS_SCRIPT.endEffects(afflicted_combatant)
 	PARTICLES.queue_free()
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
 func tick():
-	duration -= 1
+	if !PERMANENT: 
+		duration -= 1
 	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	APPLY_ONCE = false
 	if duration == 0 or afflicted_combatant.isDead():

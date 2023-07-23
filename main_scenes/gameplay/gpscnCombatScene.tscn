@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dnp0wfbcrodv1"]
+[gd_scene load_steps=13 format=3 uid="uid://dnp0wfbcrodv1"]
 
 [ext_resource type="Script" path="res://assets/general_scripts/gpCombat.gd" id="1_kv6ut"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://0kbl5iime6vw" path="res://assets/icons/s_grit.png" id="7_6kiof"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
 [ext_resource type="Script" path="res://assets/misc_scripts/scmPartyExp.gd" id="7_rrtk0"]
+[ext_resource type="Texture2D" uid="uid://dq34rjolqps8n" path="res://assets/icons/s_will.png" id="8_pkk5v"]
 [ext_resource type="Texture2D" uid="uid://cgf1qb6eni4jx" path="res://assets/icons/s_speed.png" id="8_yp68o"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="9_d3h28"]
 
@@ -210,6 +211,7 @@ layout_mode = 2
 layout_mode = 2
 button_mask = 0
 text = "ABSCOND"
+icon = ExtResource("8_pkk5v")
 
 [node name="BattleConclusion" type="Control" parent="."]
 visible = false

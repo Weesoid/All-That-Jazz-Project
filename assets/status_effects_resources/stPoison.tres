@@ -12,3 +12,4 @@ ICON_NAME = "st_wit_dn1"
 MAX_DURATION = 3
 MAX_RANK = 0
 APPLY_ONCE = false
+PERMANENT = true

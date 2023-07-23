@@ -1,4 +1,4 @@
-extends ResItem
+extends ResEquippable
 class_name ResArmor
 
 enum ArmorType {
@@ -12,16 +12,28 @@ enum Slot {
 	CHARM # 2
 }
 
+@export var STATUS_EFFECT: ResStatusEffect
 @export var ARMOR_TYPE: ArmorType
 @export var SLOT: Slot
-@export var STAT_MODIFICATIONS = {}
-var EQUIPPED_COMBATANT: ResCombatant
 
 func equip(combatant: ResCombatant):
+	STATUS_EFFECT = STATUS_EFFECT.duplicate()
+	if EQUIPPED_COMBATANT != null:
+		unequip()
+	if combatant.EQUIPMENT[slotToString()]:
+		combatant.EQUIPMENT[slotToString()].unequip()
+	
 	EQUIPPED_COMBATANT = combatant
-	match SLOT:
-		Slot.ARMOR: combatant.EQUIPMENT['armor'] = self
-		Slot.CHARM: combatant.EQUIPMENT['charm'] = self
+	EQUIPPED_COMBATANT.EQUIPMENT[slotToString()] = self
+	applyStatModifications()
 
-func getStatModifications():
-	return STAT_MODIFICATIONS
+func unequip():
+	removeStatModifications()
+	EQUIPPED_COMBATANT.EQUIPMENT[slotToString()] = null
+	EQUIPPED_COMBATANT = null
+
+func slotToString():
+	if SLOT == Slot.ARMOR:
+		return "armor"
+	elif SLOT == Slot.CHARM:
+		return "charm"

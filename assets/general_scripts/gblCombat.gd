@@ -1,8 +1,5 @@
 extends Node
 
-# Make the indicator be drawn globally by this global so that it's always on top and seperated from
-# combatants...
-
 signal ability_executed
 #signal fast_ability_executed
 signal exp_updated(value: float, max_value: float)

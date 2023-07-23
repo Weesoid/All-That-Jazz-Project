@@ -11,6 +11,9 @@ func initializeCombatant():
 	for ability in ABILITY_SET:
 		ability.initializeAbility()
 	
+	for effect in STATUS_EFFECTS:
+		effect.initializeStatus()
+	
 	SCENE.get_node("EnergyBarComponent").hide()
 	
 	SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']

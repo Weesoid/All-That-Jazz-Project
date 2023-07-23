@@ -61,11 +61,15 @@ func _ready():
 		else:
 			addCombatant(combatant, enemy_container_markers)
 	
+	
+	
 	COMBATANTS.sort_custom(sortBySpeed)
 	
 	active_combatant = COMBATANTS[active_index]
 	active_combatant.act()
 	
+	for combatant in COMBATANTS:
+		tickStatusEffects(combatant)
 	# TO-DO: Battle Transition
 	
 func _process(_delta):

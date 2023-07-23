@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResArmor" load_steps=3 format=3 uid="uid://cqqykuhv0enu3"]
+
+[ext_resource type="Script" path="res://assets/resources/ResItemArmor.gd" id="1_75xnh"]
+[ext_resource type="Resource" uid="uid://cinuba8xotxdq" path="res://assets/status_effects_resources/stPoison.tres" id="1_wqrbk"]
+
+[resource]
+script = ExtResource("1_75xnh")
+STATUS_EFFECT = ExtResource("1_wqrbk")
+ARMOR_TYPE = 1
+SLOT = 0
+STAT_MODIFICATIONS = {
+"grit": 999
+}
+NAME = "Light Armor"
+ICON_NAME = ""
+DESCRIPTION = "An armor made of light armorite!"
