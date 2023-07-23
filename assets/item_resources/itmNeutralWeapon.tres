@@ -6,11 +6,11 @@
 [resource]
 script = ExtResource("1_fmffi")
 DAMAGE_TYPE = 0
+EFFECT = ExtResource("1_vw8ht")
+durability = Vector2i(3, 3)
 STAT_MODIFICATIONS = {
 "grit": 1
 }
-EFFECT = ExtResource("1_vw8ht")
-durability = Vector2i(3, 3)
 NAME = "Neutral Weapon"
 ICON_NAME = ""
 DESCRIPTION = "A neutral weapon in a hostile world..."

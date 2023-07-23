@@ -34,6 +34,7 @@ func moveBody(body_name:String, move_sequence: String):
 	var movements = move_sequence.split(",")
 	for movement in movements:
 		var direction
+		# TO DO Add maintain direction with L10m? where m is maintain direction?
 		match movement.substr(0,1):
 			"L": direction = Vector2(-1, 0) * Vector2(int(movement.substr(1,2)), 0)
 			"R": direction = Vector2(1, 0) * Vector2(int(movement.substr(1,2)), 0)
@@ -56,3 +57,5 @@ func updateSprite(direction: String):
 		ANIMATOR.play('Walk_Down')
 	else:
 		ANIMATOR.play('Walk_Up')
+		
+	# TO - DO add pause at pause frame when velocity == 0

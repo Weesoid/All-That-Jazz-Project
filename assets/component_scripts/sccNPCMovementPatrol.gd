@@ -1,5 +1,4 @@
 extends NPCMovement
-## REFACTOR THIS, EXTEND IT TO NPCMovement
 
 @export var NAV_AGENT: NavigationAgent2D
 @export var LINE_OF_SIGHT: LineOfSight
@@ -126,10 +125,10 @@ func updateLineOfSight():
 	var look_direction = LINE_OF_SIGHT.global_rotation_degrees
 	
 	if look_direction < 135 and look_direction > 45:
-		ANIMATOR.play('Walk_Left')
+		updateSprite('L')
 	elif look_direction < -45 and look_direction > -135:
-		ANIMATOR.play('Walk_Right')
+		updateSprite('R')
 	elif look_direction < 45 and look_direction > -45:
-		ANIMATOR.play('Walk_Down')
+		updateSprite('D')
 	else:
-		ANIMATOR.play('Walk_Up')
+		updateSprite('U')

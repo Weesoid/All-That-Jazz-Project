@@ -85,8 +85,8 @@ func changeToCombat(inputted_enemy_combatants=null):
 		combat_scene.COMBATANTS.append_array(temp)
 	enemy_combatant_squad = []
 	
-	get_tree().current_scene.add_child(combat_scene)
-	pauseAllExcept(combat_scene)
+	get_tree().current_scene.process_mode = Node.PROCESS_MODE_DISABLED
+	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
 	
 func setEnemyCombatantSquad(entity_name: String):
@@ -96,16 +96,12 @@ func setEnemyCombatantSquad(entity_name: String):
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
 	
-# TO DO BETTER PAUSING!!
 func pauseAllExcept(node):
 	for child in get_tree().current_scene.get_children():
 		if child == node: continue
 		child.process_mode = Node.PROCESS_MODE_DISABLED
 	
 func restorePlayerView():
-	for child in get_tree().current_scene.get_children():
-		if !child.can_process():
-			child.process_mode = Node.PROCESS_MODE_ALWAYS
-	
-	getPlayer().player_camera.make_current()
+	get_tree().current_scene.process_mode = Node.PROCESS_MODE_ALWAYS
+	getPlayer().player_camera.make_current() 
 	
