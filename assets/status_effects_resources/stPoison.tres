@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=3 format=3 uid="uid://cinuba8xotxdq"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://cinuba8xotxdq"]
 
 [ext_resource type="Script" path="res://assets/resources/ResStatusEffect.gd" id="1_5ugit"]
+[ext_resource type="PackedScene" uid="uid://dk24mnydk0216" path="res://assets/particle_scenes/prtPoison.tscn" id="1_qebaw"]
 [ext_resource type="Script" path="res://assets/ability_scripts/scsPoison.gd" id="1_t6ebe"]
+[ext_resource type="Texture2D" uid="uid://bn5owks8hqpg" path="res://assets/icons/st_wit_dn2.png" id="3_eb5um"]
 
 [resource]
 script = ExtResource("1_5ugit")
 NAME = "Poison"
 STATUS_SCRIPT = ExtResource("1_t6ebe")
-PARTICLE_NAME = "prtPoison"
-ICON_NAME = "st_wit_dn1"
+PACKED_SCENE = ExtResource("1_qebaw")
+TEXTURE = ExtResource("3_eb5um")
 MAX_DURATION = 3
 MAX_RANK = 0
 APPLY_ONCE = false

@@ -13,7 +13,7 @@ enum TargetGroup {
 
 @export var NAME: String
 @export var DESCRIPTION: String
-@export var ANIMATION_NAME: String
+@export var ANIMATION: PackedScene
 @export var ABILITY_SCRIPT: GDScript
 @export var COST: int
 @export var COST_RESOURCE: String
@@ -21,15 +21,11 @@ enum TargetGroup {
 @export var TARGET_GROUP: TargetGroup
 
 var TARGETABLE
-var ANIMATION
 
 signal single_target(type)
 signal multi_target(type)
 signal random_target(type)
 signal no_resource
-
-func initializeAbility():
-	ANIMATION = load(str("res://assets/animation_scenes/"+ANIMATION_NAME+".tscn"))
 
 # Add cost value, and cost resource parameters
 func execute():

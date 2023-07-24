@@ -3,8 +3,8 @@ class_name ResStatusEffect
 
 @export var NAME: String
 @export var STATUS_SCRIPT: GDScript
-@export var PARTICLE_NAME: String
-@export var ICON_NAME: String
+@export var PACKED_SCENE: PackedScene
+@export var TEXTURE: Texture
 @export var MAX_DURATION: int
 @export var MAX_RANK: int
 @export var APPLY_ONCE: bool
@@ -13,16 +13,15 @@ class_name ResStatusEffect
 var duration
 var current_rank
 var afflicted_combatant: ResCombatant
-var ICON: TextureRect
 var PARTICLES
+var ICON: TextureRect
 var TARGETABLE
 
 func initializeStatus():
-	print("Init: ", NAME, " on ", afflicted_combatant.NAME)
 	ICON = TextureRect.new()
-	ICON.texture = load(str("res://assets/icons/"+ICON_NAME+".png"))
+	ICON.texture = TEXTURE
 	
-	PARTICLES = load(str("res://assets/particle_scenes/"+PARTICLE_NAME+".tscn")).instantiate()
+	PARTICLES = PACKED_SCENE.instantiate()
 	animateStatusEffect()
 	
 	duration = MAX_DURATION

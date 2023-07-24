@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://byeo878g637qe"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://byeo878g637qe"]
 
 [ext_resource type="Resource" uid="uid://c2yoqgocd8hr1" path="res://assets/ability_resources/abRandaStrike.tres" id="1_6kb0p"]
 [ext_resource type="Resource" uid="uid://i4kmvjv6rwtr" path="res://assets/ability_resources/abPunch.tres" id="2_f6cle"]
@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://ld08pl0wihb" path="res://assets/ability_resources/abDebuggerStrike.tres" id="4_tuchi"]
 [ext_resource type="Script" path="res://assets/resources/ResCombatantPlayer.gd" id="5_4siku"]
 [ext_resource type="Resource" uid="uid://e3bhw0ct5cm0" path="res://assets/ability_resources/abPumpUp.tres" id="5_bqhr4"]
+[ext_resource type="PackedScene" uid="uid://dlvxae5b6847s" path="res://assets/combatant_sprites_scenes/sprGoodGuyB.tscn" id="6_wd1pn"]
 
 [resource]
 script = ExtResource("5_4siku")
@@ -19,7 +20,7 @@ STAT_GROWTH_RATES = {
 "wit": 1
 }
 NAME = "PUMainBlasko"
-SPRITE_NAME = "sprGoodGuyB"
+PACKED_SCENE = ExtResource("6_wd1pn")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
 "brawn": 5,

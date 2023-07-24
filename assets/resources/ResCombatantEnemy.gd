@@ -6,10 +6,7 @@ class_name ResEnemyCombatant
 @export var DROPS = {}
 
 func initializeCombatant():
-	SCENE = load(str("res://assets/combatant_sprites_scenes/",SPRITE_NAME,".tscn")).instantiate()
-	
-	for ability in ABILITY_SET:
-		ability.initializeAbility()
+	SCENE = PACKED_SCENE.instantiate()
 	
 	for effect in STATUS_EFFECTS:
 		effect.initializeStatus()

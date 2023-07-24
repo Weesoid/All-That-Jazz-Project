@@ -306,7 +306,6 @@ func connectPlayerItems():
 	for item in PlayerGlobals.INVENTORY:
 		if !item is ResConsumable: continue
 		if item.EFFECT != null: 
-			item.EFFECT.initializeAbility()
 			if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
 			item.EFFECT.single_target.connect(playerSelectAbility)
 			item.EFFECT.multi_target.connect(playerSelectAbility)

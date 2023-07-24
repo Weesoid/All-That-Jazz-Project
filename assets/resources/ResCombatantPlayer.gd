@@ -13,8 +13,7 @@ class_name ResPlayerCombatant
 var initialized = false
 
 func initializeCombatant():
-	print('Init player!')
-	SCENE = load(str("res://assets/combatant_sprites_scenes/",SPRITE_NAME,".tscn")).instantiate()
+	SCENE = PACKED_SCENE.instantiate()
 	
 	if EQUIPMENT['armor'] != null:
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['armor'].STATUS_EFFECT)
@@ -23,9 +22,6 @@ func initializeCombatant():
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['charm'].STATUS_EFFECT)
 	
 	if !initialized:
-		for ability in ABILITY_SET:
-			ability.initializeAbility()
-			
 		SCENE.get_node("EnergyBarComponent").max_value = STAT_VALUES['verve']
 		SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
 		SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']

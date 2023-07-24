@@ -4,7 +4,7 @@ class_name ResCombatant
 
 ## Backend export variables
 @export var NAME: String
-@export var SPRITE_NAME: String
+@export var PACKED_SCENE: PackedScene
 @export var DESCRIPTION: String
 
 ## Frontend / Gameplay export variables
