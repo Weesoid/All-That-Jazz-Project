@@ -1,7 +1,6 @@
 extends Node
 
 signal ability_executed
-#signal fast_ability_executed
 signal exp_updated(value: float, max_value: float)
 signal call_indicator(target: ResCombatant, indicator: String, value: int)
 
@@ -13,7 +12,7 @@ func emit_ability_executed():
 
 func emit_exp_updated(value, max_value):
 	exp_updated.emit(value, max_value)
-	
+
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************

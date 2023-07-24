@@ -61,8 +61,6 @@ func _ready():
 		else:
 			addCombatant(combatant, enemy_container_markers)
 	
-	
-	
 	COMBATANTS.sort_custom(sortBySpeed)
 	
 	active_combatant = COMBATANTS[active_index]
@@ -79,11 +77,13 @@ func _process(_delta):
 	
 func on_player_turn():
 	#checkWin()
+	print('Turn started! ', active_combatant.NAME)
 	action_panel.show()
 	attack_button.grab_focus()
 	action_panel.global_position = active_combatant.getSprite().global_position - Vector2(0, 60)
 	await confirm
-	end_turn()
+	print('Turn ended!')
+	end_turn(!selected_ability.INSTANT_CAST)
 	
 func on_enemy_turn():
 	action_panel.hide()
@@ -98,11 +98,11 @@ func on_enemy_turn():
 	if (target_combatant != null):
 		executeAbility()
 		await confirm
-		end_turn()
+		end_turn(!selected_ability.INSTANT_CAST)
 	else:
 		checkWin()
 	
-func end_turn():
+func end_turn(next_turn = true):
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
 		
@@ -119,9 +119,14 @@ func end_turn():
 	COMBATANTS.sort_custom(sortBySpeed)
 	ability_scroller.hide()
 	# Determinte next combatant
-	active_index = incrementIndex(active_index,1,COMBATANTS.size())
-	active_combatant = COMBATANTS[active_index]
+	if next_turn:
+		active_index = incrementIndex(active_index,1,COMBATANTS.size())
+		active_combatant = COMBATANTS[active_index]
+	else:
+		selected_ability.ENABLED = false
+	
 	active_combatant.act()
+	
 	checkWin()
 
 #********************************************************************************
@@ -209,7 +214,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.pressed.connect(ability_set[i].execute)
 		button.focus_entered.connect(_ability_focus_enter)
 		button.focus_exited.connect(_ability_focus_exit)
-		if !ability_set[i].canCast(active_combatant):
+		if !ability_set[i].canCast(active_combatant) or !ability_set[i].ENABLED:
 			button.disabled = true
 		ability_container.add_child(button)
 
@@ -238,7 +243,6 @@ func getPlayerWeapons(inventory):
 		button.pressed.connect(
 				func equipWeapon():
 					weapon.equip(active_combatant)
-					confirm.emit()
 		)
 		button.focus_entered.connect(_equip_focus_enter)
 		button.focus_exited.connect(_equip_focus_exit)
@@ -261,7 +265,7 @@ func playerSelectSingleTarget():
 	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
 	browseTargetsInputs()
 	confirmCancelInputs()
-	
+
 func playerSelectMultiTarget():
 	if !validateAbilityCast():
 		return
@@ -271,6 +275,7 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 
 func executeAbility():
+	print('Executing!')
 	var animation = selected_ability.ANIMATION.instantiate()
 	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
 	add_child(animation)
@@ -281,10 +286,11 @@ func executeAbility():
 								target_combatant, 
 								animation
 								)
+	
 	await CombatGlobals.ability_executed
 	animation.queue_free()
-	
 	confirm.emit()
+
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************

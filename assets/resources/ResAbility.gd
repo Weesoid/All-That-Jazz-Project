@@ -15,11 +15,13 @@ enum TargetGroup {
 @export var DESCRIPTION: String
 @export var ANIMATION_NAME: String
 @export var ABILITY_SCRIPT: GDScript
+@export var INSTANT_CAST: bool = false
 @export var COST: int
 @export var COST_RESOURCE: String
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
 
+var ENABLED = true
 var TARGETABLE
 var ANIMATION
 
