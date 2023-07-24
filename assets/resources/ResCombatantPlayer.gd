@@ -13,6 +13,7 @@ class_name ResPlayerCombatant
 var initialized = false
 
 func initializeCombatant():
+	print('Init player!')
 	SCENE = load(str("res://assets/combatant_sprites_scenes/",SPRITE_NAME,".tscn")).instantiate()
 	
 	if EQUIPMENT['armor'] != null:

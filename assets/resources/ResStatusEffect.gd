@@ -18,6 +18,7 @@ var PARTICLES
 var TARGETABLE
 
 func initializeStatus():
+	print("Init: ", NAME, " on ", afflicted_combatant.NAME)
 	ICON = TextureRect.new()
 	ICON.texture = load(str("res://assets/icons/"+ICON_NAME+".png"))
 	

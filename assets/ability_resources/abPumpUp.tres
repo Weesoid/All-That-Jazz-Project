@@ -6,10 +6,8 @@
 [resource]
 script = ExtResource("1_ohnil")
 NAME = "Pump Up!"
-DESCRIPTION = ""
 ANIMATION_NAME = "aabHeal"
 ABILITY_SCRIPT = ExtResource("1_g8wio")
-INSTANT_CAST = true
 COST = 1
 COST_RESOURCE = "verve"
 TARGET_TYPE = 0
