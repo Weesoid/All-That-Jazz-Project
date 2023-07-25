@@ -105,6 +105,7 @@ func on_enemy_turn():
 func end_turn():
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
+		refreshInstantCasts(combatant)
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
@@ -119,8 +120,12 @@ func end_turn():
 	COMBATANTS.sort_custom(sortBySpeed)
 	ability_scroller.hide()
 	# Determinte next combatant
-	active_index = incrementIndex(active_index,1,COMBATANTS.size())
-	active_combatant = COMBATANTS[active_index]
+	if !selected_ability.INSTANT_CAST:
+		active_index = incrementIndex(active_index,1,COMBATANTS.size())
+		active_combatant = COMBATANTS[active_index]
+	else:
+		selected_ability.ENABLED = false
+	
 	active_combatant.act()
 	checkWin()
 
@@ -209,7 +214,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.pressed.connect(ability_set[i].execute)
 		button.focus_entered.connect(_ability_focus_enter)
 		button.focus_exited.connect(_ability_focus_exit)
-		if !ability_set[i].canCast(active_combatant):
+		if !ability_set[i].canCast(active_combatant) or !ability_set[i].ENABLED:
 			button.disabled = true
 		ability_container.add_child(button)
 
@@ -345,7 +350,10 @@ func clearStatusEffects(combatant: ResCombatant):
 func tickStatusEffects(combatant: ResCombatant):
 	for effect in combatant.STATUS_EFFECTS:
 		effect.tick()
-	
+
+func refreshInstantCasts(combatant: ResCombatant):
+	for ability in combatant.ABILITY_SET:
+		if !ability.ENABLED and ability.INSTANT_CAST: ability.ENABLED = true
 
 func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit

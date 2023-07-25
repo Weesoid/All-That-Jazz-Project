@@ -17,6 +17,7 @@ func emit_exp_updated(value, max_value):
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
+# BUG HERE, IT HEALS!
 func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling):
 	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * 100 ) / (100+target.STAT_VALUES[defender_stat])
 	target.STAT_VALUES['health'] -= int(damage)

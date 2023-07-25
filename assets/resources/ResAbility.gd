@@ -19,7 +19,9 @@ enum TargetGroup {
 @export var COST_RESOURCE: String
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
+@export var INSTANT_CAST: bool = false
 
+var ENABLED: bool = true
 var TARGETABLE
 
 signal single_target(type)

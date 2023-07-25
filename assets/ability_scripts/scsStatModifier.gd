@@ -1,5 +1,6 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	var modifier = 0.5
+	# Fix bug, it goes to negative
+	var modifier = 100
 	if status_effect.APPLY_ONCE:
 		modifier = modifier * status_effect.current_rank
 		CombatGlobals.modifyStat(target, 'brawn', modifier)
