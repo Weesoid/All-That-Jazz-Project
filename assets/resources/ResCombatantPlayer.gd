@@ -14,11 +14,9 @@ var initialized = false
 
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
-
 	
-	if EQUIPMENT['armor'] != null:
+	if EQUIPMENT['armor'] != null and EQUIPMENT['armor'].STATUS_EFFECT != null:
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['armor'].STATUS_EFFECT)
-		print(EQUIPMENT['armor'].STATUS_EFFECT.afflicted_combatant.getStatusBar().get_children())
 	if EQUIPMENT['charm'] != null:
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['charm'].STATUS_EFFECT)
 	

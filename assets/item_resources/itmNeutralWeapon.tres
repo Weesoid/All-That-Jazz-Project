@@ -5,9 +5,9 @@
 
 [resource]
 script = ExtResource("1_fmffi")
-DAMAGE_TYPE = 0
+DAMAGE_TYPE = 2
 EFFECT = ExtResource("1_vw8ht")
-durability = Vector2i(3, 3)
+durability = Vector2i(8, 8)
 STAT_MODIFICATIONS = {
 "grit": 1
 }

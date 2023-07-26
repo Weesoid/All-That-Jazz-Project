@@ -51,6 +51,12 @@ func getStatusEffectNames():
 		names.append(effect.NAME)
 	return names
 	
+func isEquipped(slot_name: String):
+	return EQUIPMENT[slot_name] != null
+	
+func getEquipment(slot_name: String)-> ResEquippable:
+	return EQUIPMENT[slot_name]
+
 func updateHealth():
 	SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 	

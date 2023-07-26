@@ -2,7 +2,6 @@ extends ResEquippable
 class_name ResArmor
 
 enum ArmorType {
-	NONE, # 1
 	LIGHT, # 2
 	HEAVY # 3
 }
@@ -17,7 +16,8 @@ enum Slot {
 @export var SLOT: Slot
 
 func equip(combatant: ResCombatant):
-	STATUS_EFFECT = STATUS_EFFECT.duplicate()
+	if STATUS_EFFECT != null:
+		STATUS_EFFECT = STATUS_EFFECT.duplicate()
 	if EQUIPPED_COMBATANT != null:
 		unequip()
 	if combatant.EQUIPMENT[slotToString()]:

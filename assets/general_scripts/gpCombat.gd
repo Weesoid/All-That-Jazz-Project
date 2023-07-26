@@ -104,8 +104,8 @@ func on_enemy_turn():
 	
 func end_turn():
 	for combatant in COMBATANTS:
-		tickStatusEffects(combatant)
 		refreshInstantCasts(combatant)
+		tickStatusEffects(combatant)
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
@@ -136,7 +136,7 @@ func _on_attack_pressed():
 	Input.action_release("ui_accept")
 	
 	selected_ability = active_combatant.ABILITY_SET[0]
-	if active_combatant.EQUIPMENT['weapon'] != null:
+	if active_combatant.isEquipped('weapon'):
 		active_combatant.EQUIPMENT['weapon'].useDurability()
 	
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
@@ -240,11 +240,11 @@ func getPlayerWeapons(inventory):
 		if !weapon is ResWeapon: continue
 		var button = Button.new()
 		button.text = str(weapon.NAME, '(', weapon.durability.x, '/', weapon.durability.y,')')
-		button.pressed.connect(
-				func equipWeapon():
-					weapon.equip(active_combatant)
-					confirm.emit()
-		)
+		button.pressed.connect( 
+			func equipWeapon(): 
+				weapon.equip(active_combatant) 
+				resetActionLog()
+				)
 		button.focus_entered.connect(_equip_focus_enter)
 		button.focus_exited.connect(_equip_focus_exit)
 		if weapon.durability.x <= 0: button.disabled = true

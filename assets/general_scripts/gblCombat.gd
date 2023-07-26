@@ -1,7 +1,6 @@
 extends Node
 
 signal ability_executed
-#signal fast_ability_executed
 signal exp_updated(value: float, max_value: float)
 signal call_indicator(target: ResCombatant, indicator: String, value: int)
 
@@ -17,9 +16,9 @@ func emit_exp_updated(value, max_value):
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
-# BUG HERE, IT HEALS!
 func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling):
-	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * 100 ) / (100+target.STAT_VALUES[defender_stat])
+	base_damage += caster.STAT_VALUES[attacker_stat] * bonus_scaling
+	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat]))) * getDamageMultiplier(caster, target)
 	target.STAT_VALUES['health'] -= int(damage)
 	playAndResetAnimation(target, 'Hit')
 	call_indicator.emit(target, 'Hit!', int(damage))
@@ -36,6 +35,43 @@ func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: S
 	call_indicator.emit(target, 'Healed!', healing)
 	target.updateHealth()
 	
+func getDamageMultiplier(caster: ResCombatant, target:ResCombatant):
+	if !caster.isEquipped('weapon') or caster.EQUIPMENT['weapon'].DAMAGE_TYPE == caster.EQUIPMENT['weapon'].DamageType.NEUTRAL:
+		if !target.isEquipped('armor'):
+			return 1.0
+		if target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.LIGHT:
+			print('Resisted!')
+			return 0.5
+		elif target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.HEAVY:
+			print('Resisted!')
+			return 0.25
+	
+	elif caster.EQUIPMENT['weapon'].DAMAGE_TYPE == caster.EQUIPMENT['weapon'].DamageType.BLUNT: 
+		if !target.isEquipped('armor'):
+			print('Effective!')
+			return 2.0
+		if target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.LIGHT:
+			print('Resisted!')
+			return 0.75
+		elif target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.HEAVY:
+			print('Effective!')
+			return 1.75
+	
+	elif caster.EQUIPMENT['weapon'].DAMAGE_TYPE == caster.EQUIPMENT['weapon'].DamageType.EDGED:
+		if !target.isEquipped('armor'):
+			print('Effective!')
+			return 2.0
+		if target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.LIGHT:
+			print('Effective!')
+			return 1.75
+		elif target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.HEAVY:
+			print('Resisted!')
+			return 0.5
+	
+	else: 
+		print('Neutral!!')
+		return 1.0
+
 func modifyStat(target: ResCombatant, stat: String, percent_scale: float):
 	target.STAT_VALUES[stat] += target.STAT_VALUES[stat] * percent_scale
 	

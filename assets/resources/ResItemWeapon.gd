@@ -12,12 +12,12 @@ enum DamageType {
 @export var durability: Vector2i
 
 func equip(combatant: ResCombatant):
-	if EQUIPPED_COMBATANT != null or durability.x <= 0:
-		unequip()
-	if combatant.EQUIPMENT['weapon'] != null:
-		combatant.EQUIPMENT['weapon'].unequip()
+	if combatant is ResPlayerCombatant:
+		if EQUIPPED_COMBATANT != null or durability.x <= 0:
+			unequip()
+		if combatant.EQUIPMENT['weapon'] != null:
+			combatant.EQUIPMENT['weapon'].unequip()
 	
-	EFFECT.initializeAbility()
 	EQUIPPED_COMBATANT = combatant
 	combatant.EQUIPMENT['weapon'] = self
 	combatant.ABILITY_SET[0] = EFFECT

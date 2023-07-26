@@ -12,10 +12,14 @@ func initializeCombatant():
 		effect.initializeStatus()
 	
 	SCENE.get_node("EnergyBarComponent").hide()
-	
 	SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
 	SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
+	
+	for equipment in EQUIPMENT.values():
+		if equipment == null: continue
+		print('Equipping ', equipment.NAME)
+		equipment.equip(self)
 
 func act():
 	enemy_turn.emit()
