@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=11 format=3 uid="uid://bvj3rc1ggkrnv"]
 
 [ext_resource type="PackedScene" path="res://scenes/components/cmpHurtbox.tscn" id="4_77wor"]
 [ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://assets/overworld_sprites/ent_walk.png" id="5_t5x3l"]

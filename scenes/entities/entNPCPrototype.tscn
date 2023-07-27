@@ -1,10 +1,10 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=15 format=3 uid="uid://dqi8n8gg64yxf"]
 
 [ext_resource type="PackedScene" path="res://scenes/components/cmpNPCPatrol.tscn" id="1_n2s1n"]
 [ext_resource type="PackedScene" path="res://scenes/components/cmpCombatantSquad.tscn" id="3_662iy"]
 [ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://assets/overworld_sprites/ent_walk.png" id="4_ogbrg"]
 [ext_resource type="PackedScene" path="res://scenes/components/cmpHurtbox.tscn" id="4_yl6sb"]
-[ext_resource type="Resource" path="res://resources/combatants/cbEPrototypeA.tres" id="5_ke8to"]
+[ext_resource type="Resource" uid="uid://c03hmnhimghsa" path="res://resources/combatants/cbEPrototypeA.tres" id="5_ke8to"]
 [ext_resource type="PackedScene" path="res://scenes/components/cmpLineOfSight.tscn" id="5_tlyrk"]
 
 [sub_resource type="Animation" id="Animation_cg5ba"]
@@ -167,7 +167,7 @@ BODY = NodePath("..")
 ANIMATOR = NodePath("../Animator")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("3_662iy")]
-COMBATANT_SQUAD = Array[Resource("res://assets/resources/ResCombatant.gd")]([ExtResource("5_ke8to")])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("5_ke8to")])
 
 [node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY") instance=ExtResource("4_yl6sb")]
 BODY = NodePath("..")

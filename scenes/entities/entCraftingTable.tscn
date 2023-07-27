@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://bs8t1nj0cyw8f"]
 
 [ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://assets/overworld_sprites/table.png" id="1_wf5pl"]
 [ext_resource type="PackedScene" path="res://scenes/components/cmpInteract.tscn" id="2_e3w8u"]

@@ -21,18 +21,18 @@ func initializeCombatant():
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['charm'].STATUS_EFFECT)
 	
 	if !initialized:
-		SCENE.get_node("EnergyBarComponent").max_value = STAT_VALUES['verve']
-		SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
-		SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
-		SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
+		#SCENE.get_node("EnergyBarComponent").max_value = STAT_VALUES['verve']
+		#SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
+		#SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
+		#SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
 		initialized = true
 	else:
-		SCENE.get_node("EnergyBarComponent").max_value = BASE_STAT_VALUES['verve']
-		SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
-		
-		SCENE.get_node("HealthBarComponent").max_value = BASE_STAT_VALUES['health']
-		SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
+		#SCENE.get_node("EnergyBarComponent").max_value = BASE_STAT_VALUES['verve']
+		#SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
+		#SCENE.get_node("HealthBarComponent").max_value = BASE_STAT_VALUES['health']
+		#SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
+		pass
 		
 	for effect in STATUS_EFFECTS:
 		effect.initializeStatus()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://v7m4vmbeokvh"]
 
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://assets/overworld_sprites/NPC_unknown_entity.png" id="1_ti2ba"]
 [ext_resource type="PackedScene" path="res://scenes/components/cmpInteract.tscn" id="2_ante0"]

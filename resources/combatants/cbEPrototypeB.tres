@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://fth5movahyuk"]
 
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
 [ext_resource type="PackedScene" path="res://scenes/combatants/sprBadGuyB.tscn" id="3_4f05j"]
-[ext_resource type="Resource" path="res://resources/abilities/abPoisonBite.tres" id="3_125q7"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_fptwa"]
 
 [resource]
@@ -22,7 +21,7 @@ STAT_VALUES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("3_125q7")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 EQUIPMENT = {
 "armor": null,
 "charm": null,

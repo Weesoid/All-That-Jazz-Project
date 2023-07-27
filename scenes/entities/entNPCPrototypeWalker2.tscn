@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=12 format=3 uid="uid://ccoac10vtqkit"]
 
 [ext_resource type="PackedScene" path="res://scenes/components/cmpNPCMovement.tscn" id="1_kwhoo"]
 [ext_resource type="PackedScene" path="res://scenes/components/cmpInteract.tscn" id="2_uuq1m"]

@@ -1,8 +1,6 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=9 format=3 uid="uid://c03hmnhimghsa"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=7 format=3 uid="uid://c03hmnhimghsa"]
 
-[ext_resource type="Resource" path="res://resources/abilities/abPunch.tres" id="1_2v0vj"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_t0rce"]
-[ext_resource type="Resource" path="res://resources/abilities/abPumpUp.tres" id="2_w8bgk"]
 [ext_resource type="Resource" path="res://resources/items/itmNeutralWeapon.tres" id="3_678wj"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_tvtxk"]
 [ext_resource type="Resource" path="res://resources/items/itmHealingPotion.tres" id="4_v7lp5"]
@@ -29,7 +27,7 @@ STAT_VALUES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_2v0vj"), ExtResource("2_w8bgk")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 EQUIPMENT = {
 "armor": null,
 "charm": null,
