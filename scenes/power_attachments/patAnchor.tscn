@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" uid="uid://i4ia44qidv20" path="res://assets/overworld_sprites/ent_anchor.png" id="1_4dqva"]
+[ext_resource type="Script" path="res://scripts/power_scripts/scpaAnchor.gd" id="1_te7jj"]
+
+[node name="patAnchor" type="Node2D"]
+script = ExtResource("1_te7jj")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -24)
+texture = ExtResource("1_4dqva")

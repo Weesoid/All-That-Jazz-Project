@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="ResConsumable" load_steps=2 format=3 uid="uid://bu4dtl1pq7460"]
-
-[ext_resource type="Script" path="res://assets/resources/ResItemConsumable.gd" id="1_6ffg6"]
-
-[resource]
-script = ExtResource("1_6ffg6")
-NAME = ""
-ICON_NAME = ""
-DESCRIPTION = ""

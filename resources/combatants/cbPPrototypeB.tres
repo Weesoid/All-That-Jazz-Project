@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3]
+
+[ext_resource type="Resource" path="res://resources/abilities/abRandaStrike.tres" id="1_6kb0p"]
+[ext_resource type="Resource" path="res://resources/abilities/abPunch.tres" id="2_f6cle"]
+[ext_resource type="Resource" path="res://resources/abilities/abAOE.tres" id="4_q5875"]
+[ext_resource type="Resource" path="res://resources/abilities/abDebuggerStrike.tres" id="4_tuchi"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
+[ext_resource type="Resource" path="res://resources/abilities/abPumpUp.tres" id="5_bqhr4"]
+[ext_resource type="PackedScene" path="res://scenes/combatants/sprGoodGuyB.tscn" id="6_wd1pn"]
+
+[resource]
+script = ExtResource("5_4siku")
+STAT_GROWTH_RATES = {
+"brawn": 1,
+"grit": 1,
+"health": 1,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
+NAME = "PUMainBlasko"
+PACKED_SCENE = ExtResource("6_wd1pn")
+DESCRIPTION = "A ruthless striker, kills on sight."
+STAT_VALUES = {
+"brawn": 5,
+"grit": 5,
+"health": 100,
+"hustle": 15,
+"verve": 8,
+"will": 3,
+"wit": 2
+}
+ABILITY_SET = Array[Resource("res://assets/resources/ResAbility.gd")]([ExtResource("2_f6cle"), ExtResource("1_6kb0p"), ExtResource("4_q5875"), ExtResource("4_tuchi"), ExtResource("5_bqhr4")])
+EQUIPMENT = {
+"armor": null,
+"charm": null,
+"weapon": null
+}

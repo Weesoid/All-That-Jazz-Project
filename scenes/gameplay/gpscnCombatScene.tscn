@@ -1,0 +1,265 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/main/gpCombat.gd" id="1_kv6ut"]
+[ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
+[ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
+[ext_resource type="Texture2D" uid="uid://0kbl5iime6vw" path="res://assets/icons/s_grit.png" id="7_6kiof"]
+[ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
+[ext_resource type="Script" path="res://scripts/user_interface/scmPartyExp.gd" id="7_rrtk0"]
+[ext_resource type="Texture2D" uid="uid://dq34rjolqps8n" path="res://assets/icons/s_will.png" id="8_pkk5v"]
+[ext_resource type="Texture2D" uid="uid://cgf1qb6eni4jx" path="res://assets/icons/s_speed.png" id="8_yp68o"]
+[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="9_d3h28"]
+
+[sub_resource type="Animation" id="Animation_ng0qf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.330078, 0.330078)]
+}
+
+[sub_resource type="Animation" id="Animation_ilum3"]
+resource_name = "Target"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.330078, 0.330078), Vector2(0.361, 0.361), Vector2(0.330078, 0.330078)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h6ab4"]
+_data = {
+"RESET": SubResource("Animation_ng0qf"),
+"Target": SubResource("Animation_ilum3")
+}
+
+[node name="CombatScene" type="Node2D"]
+top_level = true
+script = ExtResource("1_kv6ut")
+
+[node name="Background" type="TextureRect" parent="."]
+offset_left = -575.0
+offset_top = -347.0
+offset_right = 577.0
+offset_bottom = 301.0
+texture = ExtResource("5_5p8mu")
+
+[node name="CombatLog" type="Label" parent="."]
+offset_left = -576.0
+offset_top = -320.0
+offset_right = -491.0
+offset_bottom = -295.0
+scale = Vector2(3.77668, 2.6192)
+
+[node name="EnemyContainer" type="Node2D" parent="."]
+position = Vector2(-576, -320)
+
+[node name="Position1" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(320, 320)
+
+[node name="Position2" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(576, 320)
+
+[node name="Position3" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(832, 320)
+
+[node name="Position4" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(192, 192)
+
+[node name="Position5" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(448, 192)
+
+[node name="Position6" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(704, 192)
+
+[node name="Position7" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(960, 192)
+
+[node name="TeamContainer" type="Node2D" parent="."]
+position = Vector2(-576, 0)
+
+[node name="Position1" type="Marker2D" parent="TeamContainer"]
+position = Vector2(192, 192)
+
+[node name="Position2" type="Marker2D" parent="TeamContainer"]
+position = Vector2(448, 192)
+
+[node name="Position3" type="Marker2D" parent="TeamContainer"]
+position = Vector2(704, 192)
+
+[node name="Position4" type="Marker2D" parent="TeamContainer"]
+position = Vector2(960, 192)
+
+[node name="Target" type="Sprite2D" parent="."]
+position = Vector2(-491, 576)
+scale = Vector2(0.330078, 0.330078)
+texture = ExtResource("9_d3h28")
+
+[node name="TargetAnimator" type="AnimationPlayer" parent="Target"]
+libraries = {
+"": SubResource("AnimationLibrary_h6ab4")
+}
+
+[node name="ActionPanel" type="VBoxContainer" parent="."]
+offset_left = -575.0
+offset_top = 366.0
+offset_right = -490.0
+offset_bottom = 521.0
+mouse_force_pass_scroll_events = false
+
+[node name="Attack" type="Button" parent="ActionPanel"]
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+button_mask = 0
+text = "ATTACK"
+icon = ExtResource("6_o5wif")
+
+[node name="Skills" type="Button" parent="ActionPanel"]
+layout_mode = 2
+button_mask = 0
+text = "SKILLS"
+icon = ExtResource("7_dnqbg")
+
+[node name="SkillScroller" type="ScrollContainer" parent="ActionPanel/Skills"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = -35.0
+offset_right = 269.0
+offset_bottom = 66.0
+follow_focus = true
+horizontal_scroll_mode = 3
+
+[node name="SkillsContainer" type="VBoxContainer" parent="ActionPanel/Skills/SkillScroller"]
+layout_mode = 2
+
+[node name="Items" type="Button" parent="ActionPanel"]
+layout_mode = 2
+button_mask = 0
+text = "ITEMS"
+icon = ExtResource("8_yp68o")
+
+[node name="ItemScroller" type="ScrollContainer" parent="ActionPanel/Items"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = -35.0
+offset_right = 269.0
+offset_bottom = 66.0
+follow_focus = true
+horizontal_scroll_mode = 3
+
+[node name="ItemContainer" type="VBoxContainer" parent="ActionPanel/Items/ItemScroller"]
+layout_mode = 2
+
+[node name="Equipment" type="Button" parent="ActionPanel"]
+layout_mode = 2
+button_mask = 0
+text = "EQUIPMENT"
+icon = ExtResource("7_6kiof")
+
+[node name="ItemScroller" type="ScrollContainer" parent="ActionPanel/Equipment"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = -35.0
+offset_right = 269.0
+offset_bottom = 66.0
+follow_focus = true
+horizontal_scroll_mode = 3
+
+[node name="ItemContainer" type="VBoxContainer" parent="ActionPanel/Equipment/ItemScroller"]
+layout_mode = 2
+
+[node name="Escape" type="Button" parent="ActionPanel"]
+layout_mode = 2
+button_mask = 0
+text = "ABSCOND"
+icon = ExtResource("8_pkk5v")
+
+[node name="BattleConclusion" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PartyExp" type="ProgressBar" parent="BattleConclusion"]
+layout_mode = 0
+offset_left = -192.0
+offset_top = -16.0
+offset_right = 192.0
+offset_bottom = 14.0
+value = 50.0
+script = ExtResource("7_rrtk0")
+
+[node name="Label" type="Label" parent="BattleConclusion/PartyExp"]
+layout_mode = 0
+offset_left = 141.0
+offset_top = -26.0
+offset_right = 243.0
+offset_bottom = -3.0
+text = "POSSE EXPERIENCE"
+horizontal_alignment = 1
+
+[node name="Drops" type="Label" parent="BattleConclusion"]
+layout_mode = 2
+offset_left = -16.0
+offset_top = 23.0
+offset_right = 17.0
+offset_bottom = 46.0
+text = "DROPS"
+horizontal_alignment = 1
+
+[node name="DropGrid" type="GridContainer" parent="BattleConclusion/Drops"]
+layout_mode = 0
+offset_left = -194.0
+offset_top = 23.0
+offset_right = 226.0
+offset_bottom = 73.0
+columns = 4
+
+[node name="CombatCamera" type="Camera2D" parent="."]
+position = Vector2(0, -19)
+
+[connection signal="pressed" from="ActionPanel/Attack" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="ActionPanel/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="ActionPanel/Items" to="." method="_on_items_pressed"]
+[connection signal="pressed" from="ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
+[connection signal="pressed" from="ActionPanel/Escape" to="." method="_on_escape_pressed"]

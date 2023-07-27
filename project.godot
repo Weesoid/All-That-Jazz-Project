@@ -11,16 +11,16 @@ config_version=5
 [application]
 
 config/name="All That Jazz"
-run/main_scene="res://main_scenes/maps/mapPrototype.tscn"
+run/main_scene="res://scenes/maps/mapPrototype.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://ATJ Icon.png"
 
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-OverworldGlobals="*res://assets/general_scripts/gblOverworld.gd"
-CombatGlobals="*res://assets/general_scripts/gblCombat.gd"
-PlayerGlobals="*res://assets/general_scripts/gblPlayerData.gd"
+OverworldGlobals="*res://scripts/main/gblOverworld.gd"
+CombatGlobals="*res://scripts/main/gblCombat.gd"
+PlayerGlobals="*res://scripts/main/gblPlayerData.gd"
 
 [dialogue_manager]
 
@@ -98,7 +98,7 @@ ui_click_right={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://resources/scripts/dialogue/test.dialogue", "res://assets/scripts/dialogue/test.dialogue", "res://assets/dialogue/test.dialogue", "res://assets/dialogue/grab_item.dialogue", "res://assets/dialogue/test2.dialogue", "res://assets/dialogue/test_fight.dialogue", "res://assets/dialogue/open_crafting_menu.dialogue", "res://assets/dialogue/give_item.dialogue", "res://assets/dialogue/open_power_menu.dialogue")
+locale/translations_pot_files=PackedStringArray("res://resources/scripts/dialogue/test.dialogue", "res://assets/scripts/dialogue/test.dialogue", "res://assets/dialogue/test.dialogue", "res://assets/dialogue/grab_item.dialogue", "res://assets/dialogue/test2.dialogue", "res://assets/dialogue/test_fight.dialogue", "res://assets/dialogue/open_crafting_menu.dialogue", "res://assets/dialogue/give_item.dialogue", "res://assets/dialogue/open_power_menu.dialogue", "res://resources/dialogue/give_item.dialogue", "res://resources/dialogue/grab_item.dialogue", "res://resources/dialogue/open_crafting_menu.dialogue", "res://resources/dialogue/open_power_menu.dialogue", "res://resources/dialogue/test.dialogue", "res://resources/dialogue/test2.dialogue", "res://resources/dialogue/test_fight.dialogue")
 
 [layer_names]
 

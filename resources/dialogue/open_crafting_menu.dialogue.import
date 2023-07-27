@@ -1,0 +1,14 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://6bhxkqlo57r6"
+path="res://.godot/imported/open_crafting_menu.dialogue-563821bb4e059c8e76f12fecf57bf771.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/open_crafting_menu.dialogue"
+dest_files=["res://.godot/imported/open_crafting_menu.dialogue-563821bb4e059c8e76f12fecf57bf771.tres"]
+
+[params]
+

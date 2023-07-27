@@ -1,0 +1,14 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://dbayd0pu7ryvs"
+path="res://.godot/imported/give_item.dialogue-0932e1226b68b96f3c9dec1a8fe30453.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/give_item.dialogue"
+dest_files=["res://.godot/imported/give_item.dialogue-0932e1226b68b96f3c9dec1a8fe30453.tres"]
+
+[params]
+
