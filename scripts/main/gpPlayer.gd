@@ -22,7 +22,7 @@ var SPEED = 100.0
 const ANIMATION_SPEED = 1.5
 
 func _ready():
-	PlayerGlobals.POWER = load("res://resources/powers/pwrStealth.tres")
+	PlayerGlobals.POWER = load("res://resources/powers/Stealth.tres")
 	player_animator.speed_scale = ANIMATION_SPEED
 	print(animation_tree.tree_root)
 	animation_tree.active = true
@@ -45,7 +45,7 @@ func _physics_process(_delta):
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
-		OverworldGlobals.showMenu("res://scenes/user_interface/uiPauseMenu.tscn")
+		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	
 	if Input.is_action_just_pressed("ui_select") and !OverworldGlobals.showing_menu and interaction_prompt.visible:
 		var interactables = interaction_detector.get_overlapping_areas()
@@ -103,7 +103,7 @@ func undrawBow(wait=false):
 
 func shootProjectile():
 	PlayerGlobals.EQUIPPED_ARROW.use()
-	var projectile = load("res://scenes/entities/mentArrow.tscn").instantiate()
+	var projectile = load("res://scenes/entities/Arrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self
 	get_tree().current_scene.add_child(projectile)

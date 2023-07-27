@@ -75,7 +75,7 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 #********************************************************************************
 func changeToCombat(inputted_enemy_combatants=null):
 	var temp = []
-	var combat_scene: CombatScene = load("res://scenes/gameplay/gpscnCombatScene.tscn").instantiate()
+	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	if inputted_enemy_combatants == null:
 		combat_scene.COMBATANTS.append_array(enemy_combatant_squad)

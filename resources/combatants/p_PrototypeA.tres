@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=5 format=3]
+
+[ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_5akdy"]
+[ext_resource type="Resource" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
+[ext_resource type="PackedScene" uid="uid://cpaxq5ifhhxjn" path="res://scenes/combatants/GoodGuyA.tscn" id="5_8cf7w"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
+
+[resource]
+script = ExtResource("5_rov6a")
+STAT_GROWTH_RATES = {
+"brawn": 1,
+"grit": 1,
+"health": 1,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
+NAME = "PUFriendHealer"
+PACKED_SCENE = ExtResource("5_8cf7w")
+DESCRIPTION = "A malevolent healer, first of his kind."
+STAT_VALUES = {
+"brawn": 1,
+"grit": 3,
+"health": 100,
+"hustle": 8,
+"verve": 8,
+"will": 5,
+"wit": 5
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_5akdy"), ExtResource("2_2x6l0")])
+EQUIPMENT = {
+"armor": null,
+"charm": null,
+"weapon": null
+}

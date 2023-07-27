@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ResConsumable" load_steps=3 format=3]
+
+[ext_resource type="Resource" uid="uid://3tvehndl14bu" path="res://resources/abilities/PotionHeal.tres" id="1_h323v"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemConsumable.gd" id="2_0mv4f"]
+
+[resource]
+script = ExtResource("2_0mv4f")
+EFFECT = ExtResource("1_h323v")
+NAME = "Healing Potion"
+ICON_NAME = "st_grit_up1"
+DESCRIPTION = "\"Wow this shit heals!\" /n - Johnny Dyin"

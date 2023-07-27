@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="All That Jazz"
-run/main_scene="res://scenes/maps/mapPrototype.tscn"
+run/main_scene="res://scenes/maps/Prototype.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://ATJ Icon.png"
 

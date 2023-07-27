@@ -12,16 +12,16 @@ var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
 func _ready():
-	EQUIPPED_ARROW = load("res://resources/items/itmArrow.tres")
+	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
 	
-	KNOWN_RECIPES.append(load("res://resources/recipes/rcpArrow.tres"))
+	KNOWN_RECIPES.append(load("res://resources/recipes/ArrowRecipe.tres"))
 	
-	KNOWN_POWERS.append(load("res://resources/powers/pwrAnchor.tres"))
-	KNOWN_POWERS.append(load("res://resources/powers/pwrStealth.tres"))
+	KNOWN_POWERS.append(load("res://resources/powers/Anchor.tres"))
+	KNOWN_POWERS.append(load("res://resources/powers/Stealth.tres"))
 	
 
 func addItemToInventory(item_name: String):
-	var item = load("res://resources/items/itm"+item_name+".tres")
+	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item not found!")
 	addItemResourceToInventory(item)
 

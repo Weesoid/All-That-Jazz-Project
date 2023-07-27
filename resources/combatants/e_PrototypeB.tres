@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3]
+
+[ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_8ysqk"]
+[ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
+[ext_resource type="PackedScene" uid="uid://b3l1rxf850mte" path="res://scenes/combatants/BadGuyB.tscn" id="3_4f05j"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_fptwa"]
+
+[resource]
+script = ExtResource("3_fptwa")
+COUNT = null
+AI_PACKAGE = ExtResource("2_xgrhx")
+DROPS = {}
+NAME = "EUHealer"
+PACKED_SCENE = ExtResource("3_4f05j")
+DESCRIPTION = ""
+STAT_VALUES = {
+"brawn": 5,
+"grit": 3,
+"health": 1,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_8ysqk")])
+EQUIPMENT = {
+"armor": null,
+"charm": null,
+"weapon": null
+}

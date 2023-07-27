@@ -18,13 +18,13 @@ func _on_tree_exited():
 	queue_free()
 
 func _on_inventory_pressed():
-	loadUserInterface("res://scenes/user_interface/uiInventory.tscn")
+	loadUserInterface("res://scenes/user_interface/Inventory.tscn")
 
 func _on_quit_pressed():
 	get_tree().quit()
 
 func _on_posse_pressed():
-	loadUserInterface("res://scenes/user_interface/uiPartyMembers.tscn")
+	loadUserInterface("res://scenes/user_interface/PartyMembers.tscn")
 
 func loadUserInterface(path):
 	var ui = load(path).instantiate()

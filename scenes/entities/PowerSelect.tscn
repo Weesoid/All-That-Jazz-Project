@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://d4m7w3yc4r6ef"]
+
+[ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://assets/overworld_sprites/table.png" id="1_5lixl"]
+[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="2_yxx8d"]
+[ext_resource type="Resource" uid="uid://cfgposr6is80x" path="res://resources/dialogue/open_power_menu.dialogue" id="3_3xmkf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cuxhy"]
+size = Vector2(46, 33)
+
+[node name="entPowerSelect" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0, 1, 1)
+position = Vector2(0, -24)
+texture = ExtResource("1_5lixl")
+
+[node name="InteractComponent" parent="." instance=ExtResource("2_yxx8d")]
+position = Vector2(0, -18)
+dialogue_resource = ExtResource("3_3xmkf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_cuxhy")

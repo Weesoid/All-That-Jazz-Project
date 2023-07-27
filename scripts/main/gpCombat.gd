@@ -187,7 +187,7 @@ func _on_escape_pressed():
 	get_tree().quit()
 	
 func playIndicatorAnimation(target: ResCombatant, message: String, value):
-	var indicator = load("res://scenes/components/cmpIndicator.tscn").instantiate()
+	var indicator = load("res://scenes/components/Indicator.tscn").instantiate()
 	add_child(indicator)
 	indicator.global_position = target.getSprite().global_position
 	indicator.get_node("IndicatorLabel").text = str(message,' ',value)

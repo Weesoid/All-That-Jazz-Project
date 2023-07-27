@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://b6wpm0d05ih06"]
 
 [ext_resource type="Script" path="res://scripts/main/gpDialogueBox.gd" id="1_m0qpu"]
 [ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_d5jvv"]
