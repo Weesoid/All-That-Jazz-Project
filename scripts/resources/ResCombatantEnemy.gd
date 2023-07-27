@@ -11,9 +11,9 @@ func initializeCombatant():
 	for effect in STATUS_EFFECTS:
 		effect.initializeStatus()
 	
-	SCENE.get_node("EnergyBarComponent").hide()
-	SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
-	SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
+	#SCENE.get_node("EnergyBarComponent").hide()
+	#SCENE.get_node("HealthBarComponent").max_value = STAT_VALUES['health']
+	#SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
 	
 	for equipment in EQUIPMENT.values():

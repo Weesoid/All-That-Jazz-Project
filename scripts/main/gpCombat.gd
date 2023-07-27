@@ -147,6 +147,7 @@ func _on_attack_pressed():
 	
 func _on_skills_pressed():
 	getPlayerAbilities(active_combatant.ABILITY_SET)
+	if ability_container.get_child_count() == 0: return
 	ability_scroller.show()
 	ability_container.get_child(0).grab_focus()
 	

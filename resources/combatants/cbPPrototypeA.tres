@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=3 format=3 uid="uid://cohbwjdr64g6b"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=4 format=3 uid="uid://cohbwjdr64g6b"]
 
-[ext_resource type="PackedScene" path="res://scenes/combatants/sprGoodGuyA.tscn" id="5_8cf7w"]
+[ext_resource type="Resource" path="res://resources/abilities/abPunch.tres" id="1_wf0jg"]
+[ext_resource type="PackedScene" uid="uid://cpaxq5ifhhxjn" path="res://scenes/combatants/sprGoodGuyA.tscn" id="5_8cf7w"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 
 [resource]
@@ -26,7 +27,7 @@ STAT_VALUES = {
 "will": 5,
 "wit": 5
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_wf0jg")])
 EQUIPMENT = {
 "armor": null,
 "charm": null,

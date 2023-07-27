@@ -1,10 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://fv63l46i34oa"]
+[gd_scene load_steps=10 format=3 uid="uid://fv63l46i34oa"]
 
 [ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://assets/combatant_sprites/BadGuyJr.png" id="1_qgnon"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_df45g"]
-[ext_resource type="PackedScene" uid="uid://dlrdt4g1at0ee" path="res://scenes/components/cmpStatusBar.tscn" id="3_518kr"]
-[ext_resource type="PackedScene" path="res://scenes/components/cmpHealthBar.tscn" id="4_ci4ok"]
-[ext_resource type="PackedScene" path="res://scenes/components/cmpEnergyBar.tscn" id="6_12hs8"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"
@@ -193,21 +190,3 @@ libraries = {
 
 [node name="AudioPlayer" type="AudioStreamPlayer" parent="Sprite"]
 stream = ExtResource("2_df45g")
-
-[node name="HealthBarComponent" parent="." instance=ExtResource("4_ci4ok")]
-offset_left = -141.779
-offset_top = -63.819
-offset_right = -125.779
-offset_bottom = 64.1812
-
-[node name="EnergyBarComponent" parent="." instance=ExtResource("6_12hs8")]
-offset_left = -142.0
-offset_top = 72.0
-offset_right = -14.0
-offset_bottom = 88.0
-
-[node name="StatusBarComponent" parent="." instance=ExtResource("3_518kr")]
-offset_left = -112.0
-offset_top = 39.0
-offset_right = 107.0
-offset_bottom = 62.0

@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cpeyfmk4177q3"]
+[gd_scene load_steps=9 format=3 uid="uid://cpeyfmk4177q3"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_388ch"]
 [ext_resource type="PackedScene" uid="uid://dud3fe0r3sqb7" path="res://scenes/entities/entPlayer.tscn" id="2_yhcnq"]
+[ext_resource type="PackedScene" uid="uid://ccoac10vtqkit" path="res://scenes/entities/entNPCPrototypeWalker2.tscn" id="3_66n6y"]
+[ext_resource type="PackedScene" uid="uid://bcnqlqjxx4m3i" path="res://scenes/entities/entNPCPrototypeWalker.tscn" id="4_ibfhh"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -69,3 +71,9 @@ shape = SubResource("RectangleShape2D_uqnih")
 
 [node name="Player" parent="." instance=ExtResource("2_yhcnq")]
 position = Vector2(0, -80)
+
+[node name="MrsMovey" parent="." instance=ExtResource("3_66n6y")]
+position = Vector2(72, -87)
+
+[node name="MrMovey" parent="." instance=ExtResource("4_ibfhh")]
+position = Vector2(-88, -88)

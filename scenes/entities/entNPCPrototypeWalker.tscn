@@ -144,7 +144,7 @@ motion_mode = 1
 wall_min_slide_angle = 0.0
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("1_7g3ov")]
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_qyioo"), ExtResource("2_3eqea")])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("2_3eqea"), ExtResource("3_qyioo")])
 
 [node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "ANIMATOR") instance=ExtResource("1_bm8ri")]
 BODY = NodePath("..")

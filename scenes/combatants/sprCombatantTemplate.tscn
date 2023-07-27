@@ -1,10 +1,10 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=13 format=3 uid="uid://c5ly6pxwg5f1j"]
 
 [ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://assets/combatant_sprites/BadGuyJr.png" id="1_n3q3p"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_4o7cx"]
 [ext_resource type="PackedScene" uid="uid://dlrdt4g1at0ee" path="res://scenes/components/cmpStatusBar.tscn" id="3_fvgkc"]
-[ext_resource type="PackedScene" uid="uid://dgupboa4irsl8" path="res://scenes/components/cmpHealthBar.tscn" id="4_2xw63"]
-[ext_resource type="PackedScene" uid="uid://d16v1bpwc7to2" path="res://scenes/components/cmpEnergyBar.tscn" id="6_g2k7y"]
+[ext_resource type="PackedScene" path="res://scenes/components/cmpHealthBar.tscn" id="4_2xw63"]
+[ext_resource type="PackedScene" path="res://scenes/components/cmpEnergyBar.tscn" id="6_g2k7y"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"
