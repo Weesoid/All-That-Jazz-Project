@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://cphbiwvara2nw"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
 [ext_resource type="PackedScene" path="res://scenes/particles/Poison.tscn" id="1_qebaw"]
@@ -11,7 +11,7 @@ NAME = "Poison"
 STATUS_SCRIPT = ExtResource("1_t6ebe")
 PACKED_SCENE = ExtResource("1_qebaw")
 TEXTURE = ExtResource("3_eb5um")
-MAX_DURATION = 3
+MAX_DURATION = 10
 MAX_RANK = 0
 APPLY_ONCE = false
-PERMANENT = true
+PERMANENT = false

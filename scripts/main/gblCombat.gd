@@ -94,13 +94,12 @@ func playAndResetAnimation(target: ResCombatant, animation_name: String):
 # STATUS EFFECT HANDLING
 #********************************************************************************
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
-	return load(str("res://resources/status_effects/st"+status_effect_name+".tres")).duplicate()
+	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 	
 func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	status_effect.afflicted_combatant = target
 	status_effect.initializeStatus()
 	target.STATUS_EFFECTS.append(status_effect)
-	status_effect.addStatusEffectIcon()
 	
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.STATUS_EFFECTS:

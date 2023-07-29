@@ -16,12 +16,13 @@ enum Slot {
 @export var SLOT: Slot
 
 func equip(combatant: ResCombatant):
-	if STATUS_EFFECT != null:
-		STATUS_EFFECT = STATUS_EFFECT.duplicate()
-	if EQUIPPED_COMBATANT != null:
-		unequip()
-	if combatant.EQUIPMENT[slotToString()]:
-		combatant.EQUIPMENT[slotToString()].unequip()
+	if combatant is ResPlayerCombatant:
+		if STATUS_EFFECT != null:
+			STATUS_EFFECT = STATUS_EFFECT.duplicate()
+		if EQUIPPED_COMBATANT != null:
+			unequip()
+		if combatant.EQUIPMENT[slotToString()]:
+			combatant.EQUIPMENT[slotToString()].unequip()
 	
 	EQUIPPED_COMBATANT = combatant
 	EQUIPPED_COMBATANT.EQUIPMENT[slotToString()] = self

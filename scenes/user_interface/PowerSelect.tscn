@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://1q5om06s3jyc"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/scmPowerSelectUI.gd" id="1_n2512"]
 [ext_resource type="Texture2D" uid="uid://b6un21a4652j3" path="res://assets/images/arrow.png" id="2_rlo8n"]

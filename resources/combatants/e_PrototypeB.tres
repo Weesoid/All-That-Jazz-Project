@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://sxvr4w0h1xr8"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_8ysqk"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
 [ext_resource type="PackedScene" uid="uid://b3l1rxf850mte" path="res://scenes/combatants/BadGuyB.tscn" id="3_4f05j"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_fptwa"]
+[ext_resource type="Resource" path="res://resources/items/LightArmor.tres" id="3_m84fx"]
 
 [resource]
 script = ExtResource("3_fptwa")
@@ -24,7 +25,7 @@ STAT_VALUES = {
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_8ysqk")])
 EQUIPMENT = {
-"armor": null,
+"armor": ExtResource("3_m84fx"),
 "charm": null,
 "weapon": null
 }

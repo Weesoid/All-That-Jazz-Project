@@ -54,14 +54,17 @@ func _ready():
 		combatant.initializeCombatant()
 		combatant.player_turn.connect(on_player_turn)
 		combatant.enemy_turn.connect(on_enemy_turn)
-		
+	
 		if combatant is ResPlayerCombatant:
 			addCombatant(combatant, team_container_markers)
 			connectPlayerAbilities(combatant)
 		else:
 			addCombatant(combatant, enemy_container_markers)
-	
-	
+		
+		var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
+		combat_bars.attached_combatant = combatant
+		combat_bars.global_position = combatant.SCENE.global_position - Vector2(110, -80)
+		add_child(combat_bars)
 	
 	COMBATANTS.sort_custom(sortBySpeed)
 	

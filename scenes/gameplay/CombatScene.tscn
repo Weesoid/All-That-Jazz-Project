@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=13 format=3 uid="uid://cuhp30nbgihjv"]
 
 [ext_resource type="Script" path="res://scripts/main/gpCombat.gd" id="1_kv6ut"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
@@ -129,7 +129,7 @@ position = Vector2(704, 192)
 position = Vector2(960, 192)
 
 [node name="Target" type="Sprite2D" parent="."]
-position = Vector2(-491, 576)
+position = Vector2(-384, 456)
 scale = Vector2(0.330078, 0.330078)
 texture = ExtResource("9_d3h28")
 
