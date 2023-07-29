@@ -16,10 +16,13 @@ func emit_exp_updated(value, max_value):
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
-func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling):
+func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling, damage_type: ResDamageType):
 	base_damage += caster.STAT_VALUES[attacker_stat] * bonus_scaling
-	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat]))) * getDamageMultiplier(caster, target)
+	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat])))
+	damage *= getDamageMultiplier(damage_type, getCombatantArmorType(target))
+	damage_type.rollEffect(target)
 	target.STAT_VALUES['health'] -= int(damage)
+	
 	playAndResetAnimation(target, 'Hit')
 	call_indicator.emit(target, 'Hit!', int(damage))
 	target.updateHealth()
@@ -34,43 +37,24 @@ func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: S
 	
 	call_indicator.emit(target, 'Healed!', healing)
 	target.updateHealth()
+
+func loadDamageType(damage_type_name: String)-> ResDamageType:
+	return load(str("res://resources/damage_types/"+damage_type_name+".tres"))
+
+func loadArmorType(armor_type_name: String)-> ResArmorType:
+	return load(str("res://resources/armor_types/"+armor_type_name+".tres"))
+
+func getDamageMultiplier(damage_type: ResDamageType, armor_type: ResArmorType):
+	if armor_type == null:
+		return loadArmorType('Unarmored').getMultiplier(damage_type)
 	
-func getDamageMultiplier(caster: ResCombatant, target:ResCombatant):
-	if !caster.isEquipped('weapon') or caster.EQUIPMENT['weapon'].DAMAGE_TYPE == caster.EQUIPMENT['weapon'].DamageType.NEUTRAL:
-		if !target.isEquipped('armor'):
-			return 1.0
-		if target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.LIGHT:
-			print('Resisted!')
-			return 0.5
-		elif target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.HEAVY:
-			print('Resisted!')
-			return 0.25
+	return armor_type.getMultiplier(damage_type)
+
+func getCombatantArmorType(combatant: ResCombatant):
+	if combatant.isEquipped('armor'):
+		return combatant.EQUIPMENT['armor'].ARMOR_TYPE
 	
-	elif caster.EQUIPMENT['weapon'].DAMAGE_TYPE == caster.EQUIPMENT['weapon'].DamageType.BLUNT: 
-		if !target.isEquipped('armor'):
-			print('Effective!')
-			return 2.0
-		if target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.LIGHT:
-			print('Resisted!')
-			return 0.75
-		elif target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.HEAVY:
-			print('Effective!')
-			return 1.75
-	
-	elif caster.EQUIPMENT['weapon'].DAMAGE_TYPE == caster.EQUIPMENT['weapon'].DamageType.EDGED:
-		if !target.isEquipped('armor'):
-			print('Effective!')
-			return 2.0
-		if target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.LIGHT:
-			print('Effective!')
-			return 1.75
-		elif target.EQUIPMENT['armor'].ARMOR_TYPE == target.EQUIPMENT['armor'].ArmorType.HEAVY:
-			print('Resisted!')
-			return 0.5
-	
-	else: 
-		print('Neutral!!')
-		return 1.0
+	return null
 
 func modifyStat(target: ResCombatant, stat: String, percent_scale: float):
 	target.STAT_VALUES[stat] += target.STAT_VALUES[stat] * percent_scale
@@ -97,10 +81,15 @@ func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 	
 func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
-	status_effect.afflicted_combatant = target
-	status_effect.initializeStatus()
-	target.STATUS_EFFECTS.append(status_effect)
-	
+	if status_effect.NAME not in target.getStatusEffectNames():
+		print('Fresh Effect! Applying')
+		status_effect.afflicted_combatant = target
+		status_effect.initializeStatus()
+		target.STATUS_EFFECTS.append(status_effect)
+	else:
+		print('Existing Effect! Ranking up')
+		rankUpStatusEffect(target, status_effect)
+
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.STATUS_EFFECTS:
 		if effect.NAME == status_effect.NAME:

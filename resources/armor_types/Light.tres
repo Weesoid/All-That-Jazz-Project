@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResArmorType" load_steps=5 format=3 uid="uid://dqoa08xxmd0r2"]
+
+[ext_resource type="Resource" uid="uid://bdajhga5cgdqi" path="res://resources/damage_types/Blunt.tres" id="1_mwmwp"]
+[ext_resource type="Script" path="res://scripts/resources/ResArmorType.gd" id="1_sc6a3"]
+[ext_resource type="Resource" uid="uid://bexqs1no832bf" path="res://resources/damage_types/Edged.tres" id="2_3eftn"]
+[ext_resource type="Resource" uid="uid://c8fjpedofd5mm" path="res://resources/damage_types/Neutral.tres" id="3_5du7v"]
+
+[resource]
+script = ExtResource("1_sc6a3")
+NAME = "Light"
+DEFAULT_MULTIPLIER = 1.0
+MULTIPLIERS = {
+ExtResource("1_mwmwp"): 0.75,
+ExtResource("2_3eftn"): 1.75,
+ExtResource("3_5du7v"): 0.5
+}

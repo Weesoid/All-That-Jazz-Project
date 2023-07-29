@@ -1,18 +1,13 @@
 extends ResEquippable
 class_name ResArmor
 
-enum ArmorType {
-	LIGHT, # 2
-	HEAVY # 3
-}
-
 enum Slot {
 	ARMOR, # 1
 	CHARM # 2
 }
 
 @export var STATUS_EFFECT: ResStatusEffect
-@export var ARMOR_TYPE: ArmorType
+@export var ARMOR_TYPE: ResArmorType
 @export var SLOT: Slot
 
 func equip(combatant: ResCombatant):

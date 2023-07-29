@@ -32,6 +32,7 @@ var valid_targets
 var target_combatant
 var target_index = 0
 var selected_ability: ResAbility
+var selected_item: ResConsumable
 var run_once = true
 var experience_earnt = 0
 var item_drops = []
@@ -121,6 +122,7 @@ func end_turn():
 	run_once = true
 	target_index = 0
 	COMBATANTS.sort_custom(sortBySpeed)
+	selected_item = null
 	ability_scroller.hide()
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
@@ -163,7 +165,6 @@ func _ability_focus_enter():
 func _on_items_pressed():
 	getPlayerItems(PlayerGlobals.INVENTORY)
 	if item_container.get_child_count() == 0: return
-	items_button.disabled = false
 	item_scroller.show()
 	item_container.get_child(0).grab_focus()
 	
@@ -187,7 +188,7 @@ func _on_equipment_pressed():
 	equip_container.get_child(0).grab_focus()
 	
 func _on_escape_pressed():
-	get_tree().quit()
+	concludeCombat()
 	
 func playIndicatorAnimation(target: ResCombatant, message: String, value):
 	var indicator = load("res://scenes/components/Indicator.tscn").instantiate()
@@ -231,7 +232,9 @@ func getPlayerItems(inventory):
 		var button = Button.new()
 		button.text = str(item.NAME, ' x', item.STACK)
 		button.pressed.connect(item.EFFECT.execute)
-		button.pressed.connect(item.use)
+		button.pressed.connect(
+			func playerSelectItem(): selected_item = item
+				)
 		button.focus_entered.connect(_item_focus_enter)
 		button.focus_exited.connect(_item_focus_exit)
 		item_container.add_child(button)
@@ -292,7 +295,8 @@ func executeAbility():
 								)
 	await CombatGlobals.ability_executed
 	animation.queue_free()
-	
+	if selected_item != null:
+		selected_item.use()
 	confirm.emit()
 #********************************************************************************
 # MISCELLANEOUS

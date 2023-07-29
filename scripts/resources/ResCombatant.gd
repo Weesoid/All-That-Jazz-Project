@@ -60,11 +60,11 @@ func getEquipment(slot_name: String)-> ResEquippable:
 func updateHealth():
 	pass
 	#SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
-	
+
 func updateEnergy():
 	pass
 	#SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
-	
+
 func getMaxHealth():
 	return BASE_STAT_VALUES['health']
 	
@@ -74,7 +74,10 @@ func isDead()-> bool:
 func getStringStats():
 	var result = ""
 	for key in BASE_STAT_VALUES.keys():
-		result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
+		if key == 'health':
+			result += key.to_upper() + ": " + str(STAT_VALUES[key]) + ' / ' + str(BASE_STAT_VALUES[key]) + "\n"
+		else:
+			result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
 	return result
 
 	

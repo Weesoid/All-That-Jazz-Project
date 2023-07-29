@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://cxmw4kd3fmtak"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_ce6nb"]
+[ext_resource type="Resource" path="res://resources/abilities/PoisonBite.tres" id="2_jsk6a"]
+[ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="3_bfkjx"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
 [ext_resource type="PackedScene" uid="uid://dorthwo1fbn68" path="res://scenes/combatants/GoodGuyB.tscn" id="6_wd1pn"]
 
@@ -27,7 +29,7 @@ STAT_VALUES = {
 "will": 3,
 "wit": 2
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ce6nb")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ce6nb"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx")])
 EQUIPMENT = {
 "armor": null,
 "charm": null,

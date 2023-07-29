@@ -1,16 +1,15 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=7 format=3 uid="uid://bcgejj4c83mm2"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_l8e2g"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_t0rce"]
-[ext_resource type="Resource" path="res://resources/items/NeutralWeapon.tres" id="3_678wj"]
+[ext_resource type="Resource" uid="uid://c6ebnoqu72day" path="res://resources/items/NeutralWeapon.tres" id="3_678wj"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_tvtxk"]
-[ext_resource type="Resource" path="res://resources/items/HealingPotion.tres" id="4_v7lp5"]
+[ext_resource type="Resource" uid="uid://ed2dvejnynu4" path="res://resources/items/HealingPotion.tres" id="4_v7lp5"]
 [ext_resource type="PackedScene" uid="uid://fv63l46i34oa" path="res://scenes/combatants/BadGuyA.tscn" id="5_rrp48"]
-[ext_resource type="Resource" path="res://resources/items/BluntWeapon.tres" id="6_vrodt"]
 
 [resource]
 script = ExtResource("3_tvtxk")
-COUNT = null
+COUNT = 2
 AI_PACKAGE = ExtResource("2_t0rce")
 DROPS = {
 ExtResource("4_v7lp5"): 1.0,
@@ -32,5 +31,5 @@ ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResou
 EQUIPMENT = {
 "armor": null,
 "charm": null,
-"weapon": ExtResource("6_vrodt")
+"weapon": null
 }

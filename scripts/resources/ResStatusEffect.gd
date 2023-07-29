@@ -11,7 +11,7 @@ class_name ResStatusEffect
 @export var PERMANENT: bool = false
 
 var duration
-var current_rank
+var current_rank = 1
 var afflicted_combatant: ResCombatant
 var PARTICLES
 var ICON: TextureRect

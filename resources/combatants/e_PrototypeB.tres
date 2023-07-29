@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
 [ext_resource type="PackedScene" uid="uid://b3l1rxf850mte" path="res://scenes/combatants/BadGuyB.tscn" id="3_4f05j"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_fptwa"]
-[ext_resource type="Resource" path="res://resources/items/LightArmor.tres" id="3_m84fx"]
+[ext_resource type="Resource" uid="uid://ckyppnbor0l0j" path="res://resources/items/LightArmor.tres" id="3_m84fx"]
 
 [resource]
 script = ExtResource("3_fptwa")

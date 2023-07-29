@@ -29,7 +29,6 @@ signal multi_target(type)
 signal random_target(type)
 signal no_resource
 
-# Add cost value, and cost resource parameters
 func execute():
 	match TARGET_TYPE:
 		TargetType.SINGLE: single_target.emit(self, 1)

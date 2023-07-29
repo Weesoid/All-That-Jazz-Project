@@ -1,4 +1,5 @@
-# TO-DO: GENERAL QUALITY CONTROL
+# I DO NOT LIKE THIS, THIS IS A MESS!! But whatever.
+# >:/
 extends Control
 
 @onready var use_container = $UseContainer
@@ -25,6 +26,14 @@ func _on_use_pressed():
 	if selected_item is ResProjectileAmmo:
 		selected_item.equip()
 		use_container.hide()
+	if selected_item is ResConsumable and selected_item.EFFECT.TARGET_TYPE == selected_item.EFFECT.TargetType.MULTI:
+		selected_item.initializeItem()
+		selected_combatant = OverworldGlobals.getCombatantSquad('Player')[0]
+		selected_item.applyEffect(selected_combatant, OverworldGlobals.getCombatantSquad('Player'), selected_item.EFFECT.ANIMATION, true)
+		button_item_map[selected_item].text = selected_item.to_string()
+		if selected_item.STACK <= 0:
+			button_item_map[selected_item].queue_free()
+		use_container.hide()
 	else:
 		use_container.hide()
 		addMembers()
@@ -39,9 +48,14 @@ func addMembers():
 		button.pressed.connect(func setSelectedCombatant(): selected_combatant = member)
 		button.pressed.connect(
 					func useItem():
-						# TO-DO Use item consumable logic
-						
-						if selected_item.EQUIPPED_COMBATANT == member:
+						selected_combatant = member
+						if selected_item is ResConsumable and selected_item.OVERWORLD_USE:
+							selected_item.initializeItem()
+							selected_item.applyEffect(selected_combatant, selected_combatant, selected_item.EFFECT.ANIMATION, true)
+							button_item_map[selected_item].text = selected_item.to_string()
+							if selected_item.STACK <= 0:
+								button_item_map[selected_item].queue_free()
+						elif selected_item.EQUIPPED_COMBATANT == member:
 							PlayerGlobals.getItemFromInventory(selected_item).unequip()
 							button_item_map[selected_item].text = selected_item.NAME
 						elif isMemberEquipped(member, selected_item):
@@ -129,11 +143,6 @@ func addButtonToTab(item: ResItem, button: Button):
 			selected_item = PlayerGlobals.getItemFromInventory(item)
 			updateItemInfo(item)
 			)
-	#button.focus_exited.connect(
-	#	func clearInfo():
-	#		description_panel.text = ""
-	#		stat_panel.text = ""
-	#		)
 
 func showUseContainer(item: ResItem):
 	use_button.show()

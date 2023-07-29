@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResArmorType" load_steps=4 format=3 uid="uid://c2ctxhed8x8dj"]
+
+[ext_resource type="Resource" uid="uid://bdajhga5cgdqi" path="res://resources/damage_types/Blunt.tres" id="1_k7shb"]
+[ext_resource type="Resource" uid="uid://bexqs1no832bf" path="res://resources/damage_types/Edged.tres" id="2_wkrym"]
+[ext_resource type="Script" path="res://scripts/resources/ResArmorType.gd" id="4_7k0rh"]
+
+[resource]
+script = ExtResource("4_7k0rh")
+NAME = "Unarmored"
+DEFAULT_MULTIPLIER = 1.0
+MULTIPLIERS = {
+ExtResource("1_k7shb"): 2.0,
+ExtResource("2_wkrym"): 2.5
+}

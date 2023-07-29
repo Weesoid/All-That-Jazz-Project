@@ -1,5 +1,5 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-do OverworldGlobals.showMenu("res://main_scenes/user_interface/uiPowerSelect.tscn")
+do OverworldGlobals.showMenu("res://scenes/user_interface/PowerSelect.tscn")
 => END

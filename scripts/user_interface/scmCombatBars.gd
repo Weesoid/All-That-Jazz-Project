@@ -16,7 +16,8 @@ func _ready():
 
 func _process(_delta):
 	if attached_combatant.isDead():
-		queue_free()
+		hide()
+	
 	updateBars()
 	updateArmorIcon()
 	updateStatusEffects()
@@ -31,9 +32,9 @@ func updateArmorIcon():
 	var armor: ResArmor = attached_combatant.EQUIPMENT['armor']
 	if armor == null:
 		armor_icon.texture = preload("res://assets/icons/armor_none.png")
-	elif armor.ARMOR_TYPE == armor.ArmorType.LIGHT:
+	elif armor.ARMOR_TYPE == CombatGlobals.loadArmorType('Light'):
 		armor_icon.texture = preload("res://assets/icons/armor_half.png")
-	elif armor.ARMOR_TYPE == armor.ArmorType.HEAVY:
+	elif armor.ARMOR_TYPE == CombatGlobals.loadArmorType('Heavy'):
 		armor_icon.texture = preload("res://assets/icons/armor_full.png")
 
 func updateStatusEffects():

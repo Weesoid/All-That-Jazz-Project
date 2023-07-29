@@ -1,13 +1,6 @@
 extends ResEquippable
 class_name ResWeapon
 
-enum DamageType {
-	NEUTRAL, # 1
-	EDGED, # 2
-	BLUNT # 3
-}
-
-@export var DAMAGE_TYPE: DamageType
 @export var EFFECT: ResAbility
 @export var durability: Vector2i
 
@@ -25,7 +18,7 @@ func equip(combatant: ResCombatant):
 
 func unequip():
 	removeStatModifications()
-	EQUIPPED_COMBATANT.ABILITY_SET[0] = load("res://resources/abilities/abPunch.tres")
+	EQUIPPED_COMBATANT.ABILITY_SET[0] = load("res://resources/abilities/Punch.tres")
 	EQUIPPED_COMBATANT.EQUIPMENT['weapon'] = null
 	EQUIPPED_COMBATANT = null
 
