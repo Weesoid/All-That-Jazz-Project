@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdewkp4f7iii1"]
+
+[ext_resource type="Texture2D" uid="uid://i4ia44qidv20" path="res://assets/overworld_sprites/ent_anchor.png" id="1_4qx3q"]
+[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="2_lawbp"]
+[ext_resource type="Resource" uid="uid://csgsebj5w8hhs" path="res://resources/dialogue/give_quest.dialogue" id="3_vmky2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bwyli"]
+
+[node name="entBaseEntity" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -19)
+texture = ExtResource("1_4qx3q")
+
+[node name="InteractComponent" parent="." instance=ExtResource("2_lawbp")]
+position = Vector2(0, -8)
+dialogue_resource = ExtResource("3_vmky2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_bwyli")

@@ -1,0 +1,14 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://dt0g3n85m4gwf"
+path="res://.godot/imported/quest_talker.dialogue-fc4f37a96917a5bb5b02659c88fad1ba.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/quest_talker.dialogue"
+dest_files=["res://.godot/imported/quest_talker.dialogue-fc4f37a96917a5bb5b02659c88fad1ba.tres"]
+
+[params]
+

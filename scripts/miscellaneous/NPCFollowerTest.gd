@@ -8,7 +8,6 @@ func _ready():
 	add_collision_exception_with(OverworldGlobals.getPlayer())
 
 func _process(_delta):
-	print(velocity)
 	if OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
 		updateSprite()
 		velocity = global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]) * 100

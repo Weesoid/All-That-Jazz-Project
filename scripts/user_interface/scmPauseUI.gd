@@ -11,7 +11,6 @@ extends Control
 
 func _ready():
 	OverworldGlobals.player_can_move = false
-	
 
 func _on_tree_exited():
 	OverworldGlobals.player_can_move = true
@@ -20,11 +19,14 @@ func _on_tree_exited():
 func _on_inventory_pressed():
 	loadUserInterface("res://scenes/user_interface/Inventory.tscn")
 
-func _on_quit_pressed():
-	get_tree().quit()
-
 func _on_posse_pressed():
 	loadUserInterface("res://scenes/user_interface/PartyMembers.tscn")
+
+func _on_quests_pressed():
+	loadUserInterface("res://scenes/user_interface/Quest.tscn")
+
+func _on_quit_pressed():
+	get_tree().quit()
 
 func loadUserInterface(path):
 	var ui = load(path).instantiate()

@@ -1,0 +1,30 @@
+~ start
+set OverworldGlobals.player_can_move = false
+
+
+
+if PlayerGlobals.hasQuest('GetThatItem') == false:
+	Entity: Here's a quest!! Idiot!!
+	do PlayerGlobals.addQuest("GetThatItem")
+	
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+
+if PlayerGlobals.isQuestCompleted('GetThatItem') == true:
+	Entity: Good job!
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+elif PlayerGlobals.isQuestObjectiveEnabled('GetThatItem', 'Wrap it up!') == true:
+	Entity: You completed it! Good!
+	Entity: Here's an arrow!
+	do PlayerGlobals.setQuestObjective('GetThatItem', 'Wrap it up!', true)
+	do PlayerGlobals.addItemToInventory("Arrow")
+else:
+	Entity: You didn't finish it yet!! FUCK YOU!
+	Willis: Jeez.
+
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
+=> END

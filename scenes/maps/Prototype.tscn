@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bnad0hve141rr"]
+[gd_scene load_steps=13 format=3 uid="uid://bnad0hve141rr"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://gjcs4krj1v0o" path="res://scenes/entities/Player.tscn" id="2_03scn"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://lejkrhg6llc1" path="res://scenes/entities/NPCPrototypeWalker.tscn" id="4_ydfa5"]
 [ext_resource type="PackedScene" uid="uid://doslnabe33syp" path="res://scenes/entities/CraftingTable.tscn" id="5_u7bub"]
 [ext_resource type="PackedScene" uid="uid://d4m7w3yc4r6ef" path="res://scenes/entities/PowerSelect.tscn" id="6_pmefb"]
+[ext_resource type="PackedScene" uid="uid://cdewkp4f7iii1" path="res://scenes/entities/QuestGiver.tscn" id="7_a4ilj"]
+[ext_resource type="PackedScene" uid="uid://vb55i3shv6e8" path="res://scenes/entities/TalkQuester.tscn" id="8_jybpt"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -85,3 +87,9 @@ position = Vector2(-24, -120)
 
 [node name="entPowerSelect" parent="." instance=ExtResource("6_pmefb")]
 position = Vector2(32, -120)
+
+[node name="entBaseEntity" parent="." instance=ExtResource("7_a4ilj")]
+position = Vector2(112, -80)
+
+[node name="entBaseEntity2" parent="." instance=ExtResource("8_jybpt")]
+position = Vector2(152, -88)

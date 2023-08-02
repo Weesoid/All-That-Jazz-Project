@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ResQuestObjectiveItem" load_steps=3 format=3 uid="uid://dl4b0bu3v3s61"]
+
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="1_8gng3"]
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjectiveItem.gd" id="1_kah7i"]
+
+[resource]
+script = ExtResource("1_kah7i")
+REQUIRED_ITEM = ExtResource("1_8gng3")
+AMOUNT = 8
+NAME = "Get Light Armor"
+DESCRIPTION = "Get 8 pieces of scrap for Mr. Questy to see"

@@ -1,0 +1,14 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://csgsebj5w8hhs"
+path="res://.godot/imported/give_quest.dialogue-c955b810e34bd557847bb23ca5e93c0f.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/give_quest.dialogue"
+dest_files=["res://.godot/imported/give_quest.dialogue-c955b810e34bd557847bb23ca5e93c0f.tres"]
+
+[params]
+

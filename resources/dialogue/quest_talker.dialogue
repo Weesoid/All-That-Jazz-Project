@@ -1,0 +1,24 @@
+~ start
+set OverworldGlobals.player_can_move = false
+
+if PlayerGlobals.isQuestObjectiveCompleted('GetThatItem', 'Talk to Man') == true:
+	Entity: I have nothing else to say to you!
+	
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+
+if PlayerGlobals.isQuestObjectiveEnabled('GetThatItem', 'Talk to Man') == true:
+	Entity: Oh! You're at that part of the quest?
+	Willis: Yep.
+	Entity: Well slap me in the ass and call my sally!! Ok I'll complete your objective now!
+	do PlayerGlobals.setQuestObjective('GetThatItem', 'Talk to Man', true)
+	Willis: Thanks.
+else:
+	Willis: Hey.
+	Entity: Not interested. Go suck a buncha cocks broseph.
+	Willis: K.
+
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
+=> END
