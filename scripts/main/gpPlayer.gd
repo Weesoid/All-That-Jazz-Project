@@ -42,6 +42,10 @@ func _physics_process(_delta):
 		direction = direction.normalized()
 		velocity = direction * SPEED
 		move_and_slide()
+	
+		OverworldGlobals.follow_array.push_front(self.global_position)
+		OverworldGlobals.follow_array.pop_back()
+
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):

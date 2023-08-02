@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://bx7u8akoltala"]
 
 [ext_resource type="Script" path="res://scripts/main/gpDialogueBox.gd" id="1_88a34"]
 [ext_resource type="AudioStream" uid="uid://3g8lmthlik76" path="res://assets/sounds/text_default.ogg" id="2_guvgn"]

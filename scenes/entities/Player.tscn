@@ -1415,6 +1415,7 @@ position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
 hframes = 12
 vframes = 8
+frame = 1
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
 visible = false
@@ -1438,12 +1439,11 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="InteractionColShape" type="CollisionShape2D" parent="PlayerDirection/InteractionDetector"]
-position = Vector2(0.500001, 21)
+position = Vector2(0, 21)
 shape = SubResource("RectangleShape2D_b8rwl")
 debug_color = Color(0.917647, 0.996078, 0, 0.419608)
 
 [node name="BowShotLine" type="Line2D" parent="PlayerDirection"]
-visible = false
 position = Vector2(-10, 0)
 points = PackedVector2Array(0, 0, 0, 0)
 width = 1.0

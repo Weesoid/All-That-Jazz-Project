@@ -4,6 +4,8 @@ var showing_menu = false
 var enemy_combatant_squad: Array[ResCombatant]
 var player_can_move = true
 var show_player_interaction = true
+var follow_array = []
+
 
 signal move_entity(target_position)
 signal alert_patrollers()
@@ -15,6 +17,9 @@ func _ready():
 			member.initializeCombatant()
 			member.SCENE.free()
 	
+	follow_array.resize(100)
+	loadFollowers()
+
 #********************************************************************************
 # SIGNALS
 #********************************************************************************
@@ -70,6 +75,14 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	get_tree().current_scene.add_child(balloon)
 	balloon.start(resource, title, extra_game_states)
 
+func loadFollowers():
+	var index = 20
+	for follower in getCombatantSquad('Player'):
+		follower.FOLLOWER_SCENE.FOLLOW_LOCATION = index
+		getCurrentMap().add_child(follower.FOLLOWER_SCENE)
+		index += 20
+	
+
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
@@ -88,19 +101,14 @@ func changeToCombat(inputted_enemy_combatants=null):
 	get_tree().current_scene.process_mode = Node.PROCESS_MODE_DISABLED
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
-	
+
 func setEnemyCombatantSquad(entity_name: String):
 	for combatant in getCombatantSquad(entity_name):
 		enemy_combatant_squad.append(combatant.duplicate())
-	
+
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
-	
-func pauseAllExcept(node):
-	for child in get_tree().current_scene.get_children():
-		if child == node: continue
-		child.process_mode = Node.PROCESS_MODE_DISABLED
-	
+
 func restorePlayerView():
 	get_tree().current_scene.process_mode = Node.PROCESS_MODE_ALWAYS
 	getPlayer().player_camera.make_current() 

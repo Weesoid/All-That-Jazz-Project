@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://vtaidrxm1tji"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://vtaidrxm1tji"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_5akdy"]
 [ext_resource type="Resource" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
 [ext_resource type="Resource" path="res://resources/abilities/PoisonBite.tres" id="3_k3ahh"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="4_nrs1w"]
+[ext_resource type="PackedScene" uid="uid://ve3ff3pmhinv" path="res://scenes/entities/NPCPrototypeFollower2.tscn" id="5_3c2l6"]
 [ext_resource type="PackedScene" uid="uid://cpaxq5ifhhxjn" path="res://scenes/combatants/GoodGuyA.tscn" id="5_8cf7w"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 
@@ -18,6 +19,7 @@ STAT_GROWTH_RATES = {
 "will": 1,
 "wit": 1
 }
+FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
 NAME = "PUFriendHealer"
 PACKED_SCENE = ExtResource("5_8cf7w")
 DESCRIPTION = "A malevolent healer, first of his kind."
