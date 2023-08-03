@@ -1,7 +1,7 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-do PlayerGlobals.addItemToInventory("ScrapSalvage")
+do PlayerGlobals.addItemToInventory("ScrapSalvage", 2)
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

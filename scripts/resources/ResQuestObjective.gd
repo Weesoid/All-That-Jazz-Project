@@ -8,7 +8,12 @@ class_name ResQuestObjective
 var ENABLED: bool
 var FINISHED: bool = false
 
+func initializeObjective():
+	pass
+
 func checkComplete():
+	if FINISHED:
+		PlayerGlobals.quest_objective_completed.emit()
 	return FINISHED
 
 func attemptEnable():

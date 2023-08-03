@@ -9,19 +9,28 @@ var COMPLETED: bool = false
 
 func initializeQuest():
 	for objective in OBJECTIVES:
+		objective.initializeObjective()
 		objective.attemptEnable()
 
 func getObjective(objective_name: String)-> ResQuestObjective:
 	return OBJECTIVES.filter(func getObjectiveFromName(objective): return objective.NAME == objective_name)[0]
 
-func _to_string():
-	return "%s : %s" % [NAME, COMPLETED]
+func getCurrentObjective()-> ResQuestObjective:
+	for objective in OBJECTIVES:
+		if !objective.FINISHED and objective.ENABLED:
+			return objective
+	
+	return null
 
 func isCompleted():
 	for objective in OBJECTIVES:
-		objective.checkComplete()
 		objective.attemptEnable()
-		if !objective.FINISHED: return false
+		if !objective.FINISHED: 
+			return false
 	
 	COMPLETED = true
+	PlayerGlobals.quest_completed.emit(self)
 	return COMPLETED
+
+func _to_string():
+	return "%s : %s" % [NAME, COMPLETED]

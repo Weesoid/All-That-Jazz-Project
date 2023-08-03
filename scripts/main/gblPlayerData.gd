@@ -1,7 +1,6 @@
 # Rename this to gblPlayerData
 extends Node
 
-
 var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
 var KNOWN_RECIPES: Array[ResRecipe] = []
 var KNOWN_POWERS: Array[ResPower] = []
@@ -12,34 +11,38 @@ var EQUIPPED_ARROW: ResProjectileAmmo
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
+signal quest_completed(quest)
+signal quest_objective_completed
+signal added_item_to_inventory
+
 func _ready():
 	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
-	
 	KNOWN_RECIPES.append(load("res://resources/recipes/ArrowRecipe.tres"))
 	KNOWN_POWERS.append(load("res://resources/powers/Anchor.tres"))
 	KNOWN_POWERS.append(load("res://resources/powers/Stealth.tres"))
-
-# This may lag.
-func _process(_delta):
-	for quest in PlayerGlobals.QUESTS:
-		quest.isCompleted()
+	
+	quest_objective_completed.connect(checkQuestsForCompleted)
+	quest_completed.connect(promptQuestCompleted)
 
 #********************************************************************************
 # INVENTORY MANAGEMENT
 #********************************************************************************
-func addItemToInventory(item_name: String):
+func addItemToInventory(item_name: String, count=1):
 	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item not found!")
-	addItemResourceToInventory(item)
+	addItemResourceToInventory(item, count)
 
-func addItemResourceToInventory(item: ResItem):
+func addItemResourceToInventory(item: ResItem, count=1):
 	if item is ResStackItem and INVENTORY.has(item):
-		INVENTORY[INVENTORY.find(item)].STACK += 1
+		INVENTORY[INVENTORY.find(item)].STACK += count
 	elif item is ResStackItem:
-		if item.STACK != 1: item.STACK = 1
+		if count != 1: 
+			item.STACK = count
 		INVENTORY.append(item)
 	else:
 		INVENTORY.append(item.duplicate())
+	
+	added_item_to_inventory.emit()
 
 func getItemFromInventory(item: ResItem):
 	return INVENTORY[INVENTORY.find(item)]
@@ -90,11 +93,61 @@ func levelUpCombatants():
 #********************************************************************************
 # QUEST MANAGEMENT
 #********************************************************************************
+func checkQuestsForCompleted():
+	var ongoing_quests = QUESTS.filter(func getOngoing(quest): return !quest.COMPLETED)
+	
+	for quest in ongoing_quests:
+		quest.isCompleted()
+		#updateObjectivePrompt(quest)
+
+# Damnit
+func updateObjectivePrompt(quest: ResQuest):
+	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
+	
+	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	prompt.setTitle(quest.NAME)
+	prompt.updateObjectives(quest.getCurrentObjective().DEPENDENT.DESCRIPTION, quest.getCurrentObjective().DESCRIPTION)
+	prompt.playAnimation('update_objective')
+	await prompt.animator.animation_finished
+	prompt.queue_free()
+
+func promptQuestCompleted(quest: ResQuest):
+	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
+	
+	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	prompt.setTitle(quest.NAME)
+	prompt.setStatus("Quest Completed:")
+	prompt.playAnimation('update_objective')
+	await prompt.animator.animation_finished
+	prompt.queue_free()
+
 func addQuest(quest_name: String):
+	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	var quest = load("res://resources/quests/%s/%s.tres" % [quest_name, quest_name])
 	quest.initializeQuest()
 	QUESTS.append(quest)
-	print(QUESTS)
+	
+	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	prompt.setTitle(quest.NAME)
+	prompt.playAnimation('show_quest')
+	await prompt.animator.animation_finished
+	prompt.queue_free()
+
+func hasQuest(quest_name: String):
+	if QUESTS.is_empty(): return false
+	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
+	return quest != null
+
+func isQuestCompleted(quest_name: String):
+	if QUESTS.is_empty(): return false
+	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
+	return quest.COMPLETED
+
+func setQuestObjective(quest_name: String, quest_objective_name: String, set_to: bool):
+	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
+	objective.FINISHED = set_to
+	if set_to:
+		PlayerGlobals.quest_objective_completed.emit()
 
 func isQuestObjectiveEnabled(quest_name: String, quest_objective_name: String) -> bool:
 	if QUESTS.is_empty(): return false
@@ -109,20 +162,6 @@ func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String)
 	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
 	
 	return objective.FINISHED
-
-func isQuestCompleted(quest_name: String):
-	if QUESTS.is_empty(): return false
-	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
-	return quest.COMPLETED
-
-func hasQuest(quest_name: String):
-	if QUESTS.is_empty(): return false
-	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
-	return quest != null
-
-func setQuestObjective(quest_name: String, quest_objective_name: String, set_to: bool):
-	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
-	objective.FINISHED = set_to
 
 func getQuest(quest_name: String):
 	for quest in QUESTS:
