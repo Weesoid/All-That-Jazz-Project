@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ResQuestObjectiveCombat" load_steps=2 format=3 uid="uid://caprjj5af64fu"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjectiveCombat.gd" id="1_bsnev"]
+
+[resource]
+script = ExtResource("1_bsnev")
+UNIQUE_COMBAT_ID = "SexMasters"
+REQUIRE_WIN = true
+NAME = "TutorialFight"
+DESCRIPTION = "Fight that bitch bro!! Fight it!!"

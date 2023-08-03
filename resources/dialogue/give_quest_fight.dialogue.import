@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://nx5an2n2wjho"
+path="res://.godot/imported/give_quest_fight.dialogue-e5db8e114baf48e5f1fa7fbb4b47046f.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/give_quest_fight.dialogue"
+dest_files=["res://.godot/imported/give_quest_fight.dialogue-e5db8e114baf48e5f1fa7fbb4b47046f.tres"]
+
+[params]
+
+defaults=true

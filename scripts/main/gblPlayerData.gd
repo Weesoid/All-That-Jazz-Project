@@ -11,6 +11,8 @@ var EQUIPPED_ARROW: ResProjectileAmmo
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
+signal combat_won(unique_id)
+signal combat_lost(unique_id)
 signal quest_completed(quest)
 signal quest_objective_completed
 signal added_item_to_inventory
@@ -20,7 +22,6 @@ func _ready():
 	KNOWN_RECIPES.append(load("res://resources/recipes/ArrowRecipe.tres"))
 	KNOWN_POWERS.append(load("res://resources/powers/Anchor.tres"))
 	KNOWN_POWERS.append(load("res://resources/powers/Stealth.tres"))
-	
 	quest_objective_completed.connect(checkQuestsForCompleted)
 	quest_completed.connect(promptQuestCompleted)
 
@@ -98,7 +99,7 @@ func checkQuestsForCompleted():
 	
 	for quest in ongoing_quests:
 		quest.isCompleted()
-		updateObjectivePrompt(quest)
+		#updateObjectivePrompt(quest)
 
 func updateObjectivePrompt(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()

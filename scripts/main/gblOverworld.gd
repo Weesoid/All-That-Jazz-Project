@@ -86,17 +86,14 @@ func loadFollowers():
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(inputted_enemy_combatants=null):
-	var temp = []
+func changeToCombat(entity_name: String):
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
+	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
-	if inputted_enemy_combatants == null:
-		combat_scene.COMBATANTS.append_array(enemy_combatant_squad)
-	else:
-		for combatant in inputted_enemy_combatants:
-			temp.append(combatant.duplicate())
-		combat_scene.COMBATANTS.append_array(temp)
-	enemy_combatant_squad = []
+	for combatant in getCombatantSquad(entity_name):
+		combat_scene.COMBATANTS.append(combatant.duplicate())
+	if combat_id != null:
+		combat_scene.unique_id = combat_id
 	
 	get_tree().current_scene.process_mode = Node.PROCESS_MODE_DISABLED
 	get_parent().add_child(combat_scene)
@@ -108,6 +105,9 @@ func setEnemyCombatantSquad(entity_name: String):
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
+
+func getCombatantSquadComponent(entity_name: String):
+	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent')
 
 func restorePlayerView():
 	get_tree().current_scene.process_mode = Node.PROCESS_MODE_ALWAYS

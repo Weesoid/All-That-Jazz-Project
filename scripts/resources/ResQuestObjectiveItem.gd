@@ -17,4 +17,3 @@ func checkComplete():
 		if PlayerGlobals.getItemWithName(REQUIRED_ITEM.NAME) != null:
 			FINISHED = true
 			PlayerGlobals.quest_objective_completed.emit()
-	print(NAME, ' ', FINISHED)

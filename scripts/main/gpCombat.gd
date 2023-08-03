@@ -25,6 +25,7 @@ class_name CombatScene
 @onready var party_exp_bar = $BattleConclusion/PartyExp
 @onready var party_drops = $BattleConclusion/Drops/DropGrid
 
+var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
 var active_index = 0
@@ -345,12 +346,15 @@ func checkWin():
 	# TO-DO Win-Lose signals
 	if enemies.is_empty():
 		print("You win!")
+		if unique_id != null:
+			PlayerGlobals.combat_won.emit(unique_id)
 		concludeCombat()
 	elif team.is_empty():
 		print("You LOSE!")
+		if unique_id != null:
+			PlayerGlobals.combat_lost.emit(unique_id)
 		concludeCombat()
 
-	
 func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
 		combatant.STATUS_EFFECTS[0].removeStatusEffect()
