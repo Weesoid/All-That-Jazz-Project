@@ -98,9 +98,8 @@ func checkQuestsForCompleted():
 	
 	for quest in ongoing_quests:
 		quest.isCompleted()
-		#updateObjectivePrompt(quest)
+		updateObjectivePrompt(quest)
 
-# Damnit
 func updateObjectivePrompt(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	
@@ -117,7 +116,7 @@ func promptQuestCompleted(quest: ResQuest):
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
 	prompt.setTitle(quest.NAME)
 	prompt.setStatus("Quest Completed:")
-	prompt.playAnimation('update_objective')
+	prompt.playAnimation('show_quest')
 	await prompt.animator.animation_finished
 	prompt.queue_free()
 
