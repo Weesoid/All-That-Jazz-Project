@@ -16,10 +16,8 @@ var run_once = true
 func _process(_delta):
 	if selected_quest != null and run_once:
 		setQuestInfo()
-	
 
 func _ready():
-	print(PlayerGlobals.QUESTS)
 	for quest in PlayerGlobals.QUESTS:
 		var button = Button.new()
 		button.text = str(quest.NAME)
@@ -49,6 +47,14 @@ func setQuestInfo():
 			if objectve.FINISHED:
 				objective_description.self_modulate.a = 0.5
 			if run_once and objectve.ENABLED:
+				objective_scroller.add_child(objective_description)
+		elif objectve.FAILED:
+			var objective_description = Label.new()
+			objective_description.custom_minimum_size.x = objectives_container.size.x
+			objective_description.text = str("* ", objectve.DESCRIPTION)
+			objective_description.autowrap_mode = 3
+			objective_description.self_modulate =  Color(1, 0, 0, 0.3)
+			if run_once:
 				objective_scroller.add_child(objective_description)
 	
 	run_once = false

@@ -1,10 +1,14 @@
 [gd_resource type="Resource" script_class="ResQuestObjective" load_steps=3 format=3 uid="uid://cp3063ta04dr8"]
 
-[ext_resource type="Resource" uid="uid://dl4b0bu3v3s61" path="res://resources/quests/GetThatItem/objectives/0_GetItem.tres" id="1_p1ba1"]
+[ext_resource type="Resource" uid="uid://dl4b0bu3v3s61" path="res://resources/quests/GetThatItem/objectives/0_GetItem.tres" id="1_exrsi"]
 [ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="1_vi3vw"]
 
 [resource]
 script = ExtResource("1_vi3vw")
 NAME = "Talk to Man"
 DESCRIPTION = "You got the Scrap, now talk to the man."
-DEPENDENT = ExtResource("1_p1ba1")
+DEPENDENT = Array[ExtResource("1_vi3vw")]([ExtResource("1_exrsi")])
+FAIL_CONDITIONS = Array[ExtResource("1_vi3vw")]([])
+OR_DEPENDENTS = false
+OR_FAIL_CONDITIONS = false
+END_OBJECTIVE = false

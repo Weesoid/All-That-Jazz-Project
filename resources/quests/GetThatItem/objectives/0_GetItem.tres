@@ -7,5 +7,9 @@
 script = ExtResource("1_kah7i")
 REQUIRED_ITEM = ExtResource("1_8gng3")
 AMOUNT = 8
-NAME = "Get Light Armor"
-DESCRIPTION = "Get 8 pieces of scrap for Mr. Questy to see"
+NAME = "Get Scrap"
+DESCRIPTION = "Get 8 Scraps!"
+DEPENDENT = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
+OR_DEPENDENTS = false
+FAIL_CONDITIONS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
+OR_FAIL_CONDITIONS = false

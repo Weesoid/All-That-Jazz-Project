@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResQuestObjective" load_steps=4 format=3 uid="uid://df4yqo1gq2dp8"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="1_lhpki"]
+[ext_resource type="Resource" uid="uid://bl4xricqrfxfk" path="res://resources/quests/ChoicesChoices/objectives/0_choiceB.tres" id="1_ymoq3"]
+[ext_resource type="Resource" uid="uid://dhrhtt0vojofy" path="res://resources/quests/ChoicesChoices/objectives/0_choiceA.tres" id="2_r5lvu"]
+
+[resource]
+script = ExtResource("1_lhpki")
+NAME = "OutcomeB"
+DESCRIPTION = "Tell Mr. Questy you killed his father"
+DEPENDENT = Array[ExtResource("1_lhpki")]([ExtResource("1_ymoq3")])
+FAIL_CONDITIONS = Array[ExtResource("1_lhpki")]([ExtResource("2_r5lvu")])
+OR_DEPENDENTS = false
+OR_FAIL_CONDITIONS = false
+END_OBJECTIVE = false

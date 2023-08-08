@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResQuest" load_steps=7 format=3 uid="uid://dgw5s0pmscuvr"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_0uhkd"]
+[ext_resource type="Resource" uid="uid://dhrhtt0vojofy" path="res://resources/quests/ChoicesChoices/objectives/0_choiceA.tres" id="1_vjie3"]
+[ext_resource type="Resource" uid="uid://bl4xricqrfxfk" path="res://resources/quests/ChoicesChoices/objectives/0_choiceB.tres" id="2_0vljd"]
+[ext_resource type="Resource" uid="uid://cm2fwg4gm68aj" path="res://resources/quests/ChoicesChoices/objectives/1_OutcomeA.tres" id="3_7j11s"]
+[ext_resource type="Resource" uid="uid://df4yqo1gq2dp8" path="res://resources/quests/ChoicesChoices/objectives/1_OutcomeB.tres" id="4_tmee2"]
+[ext_resource type="Resource" uid="uid://cvlu1mur2lum5" path="res://resources/quests/ChoicesChoices/objectives/2_KillHim.tres" id="5_qqiuj"]
+
+[resource]
+script = ExtResource("1_0uhkd")
+NAME = "Choices Choices"
+DESCRIPTION = "Make the right choice!"
+OBJECTIVES = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([ExtResource("1_vjie3"), ExtResource("2_0vljd"), ExtResource("3_7j11s"), ExtResource("4_tmee2"), ExtResource("5_qqiuj")])

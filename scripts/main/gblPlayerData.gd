@@ -15,6 +15,7 @@ signal combat_won(unique_id)
 signal combat_lost(unique_id)
 signal quest_completed(quest)
 signal quest_objective_completed
+signal quest_objective_failed
 signal added_item_to_inventory
 
 func _ready():
@@ -99,14 +100,12 @@ func checkQuestsForCompleted():
 	
 	for quest in ongoing_quests:
 		quest.isCompleted()
-		#updateObjectivePrompt(quest)
 
 func updateObjectivePrompt(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
 	prompt.setTitle(quest.NAME)
-	prompt.updateObjectives(quest.getCurrentObjective().DEPENDENT.DESCRIPTION, quest.getCurrentObjective().DESCRIPTION)
 	prompt.playAnimation('update_objective')
 	await prompt.animator.animation_finished
 	prompt.queue_free()
@@ -134,8 +133,10 @@ func addQuest(quest_name: String):
 	prompt.queue_free()
 
 func hasQuest(quest_name: String):
-	if QUESTS.is_empty(): return false
+	if QUESTS.is_empty() or getQuest(quest_name) == null: 
+		return false
 	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
+	print(quest)
 	return quest != null
 
 func isQuestCompleted(quest_name: String):
@@ -150,14 +151,16 @@ func setQuestObjective(quest_name: String, quest_objective_name: String, set_to:
 		PlayerGlobals.quest_objective_completed.emit()
 
 func isQuestObjectiveEnabled(quest_name: String, quest_objective_name: String) -> bool:
-	if QUESTS.is_empty(): return false
+	if QUESTS.is_empty() or getQuest(quest_name) == null:
+		return false
 	
 	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
 	
 	return objective.ENABLED
 
 func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String) -> bool:
-	if QUESTS.is_empty(): return false
+	if QUESTS.is_empty(): 
+		return false
 	
 	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
 	

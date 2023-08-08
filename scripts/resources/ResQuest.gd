@@ -13,6 +13,9 @@ func initializeQuest():
 		objective.attemptEnable()
 
 func getObjective(objective_name: String)-> ResQuestObjective:
+	if !PlayerGlobals.hasQuest(NAME):
+		return null
+	
 	return OBJECTIVES.filter(func getObjectiveFromName(objective): return objective.NAME == objective_name)[0]
 
 func getCurrentObjective()-> ResQuestObjective:
@@ -25,12 +28,10 @@ func getCurrentObjective()-> ResQuestObjective:
 func isCompleted():
 	for objective in OBJECTIVES:
 		objective.attemptEnable()
-		if !objective.FINISHED: 
-			return false
-	
-	COMPLETED = true
-	PlayerGlobals.quest_completed.emit(self)
-	return COMPLETED
+		if objective.END_OBJECTIVE and objective.FINISHED:
+			COMPLETED = true
+			PlayerGlobals.quest_completed.emit(self)
+			return COMPLETED
 
 func _to_string():
 	return "%s : %s" % [NAME, COMPLETED]

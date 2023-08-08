@@ -7,4 +7,8 @@
 script = ExtResource("1_weme7")
 NAME = "Wrap it up!"
 DESCRIPTION = "You finished the quest! Talk to Mr Questy to get your reward!"
-DEPENDENT = ExtResource("1_pmyjp")
+DEPENDENT = Array[ExtResource("1_weme7")]([ExtResource("1_pmyjp")])
+FAIL_CONDITIONS = Array[ExtResource("1_weme7")]([])
+OR_DEPENDENTS = false
+OR_FAIL_CONDITIONS = false
+END_OBJECTIVE = true

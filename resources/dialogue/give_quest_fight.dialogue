@@ -1,15 +1,14 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-if PlayerGlobals.hasQuest('FightThatBitch') == false:
+if PlayerGlobals.hasQuest('Fight That Bitch!') == false:
 	Entity: Fight this bitch.
 	
 	set OverworldGlobals.show_player_interaction = true
 	set OverworldGlobals.player_can_move = true
 	do PlayerGlobals.addQuest("FightThatBitch")
 	=> END
-
-if PlayerGlobals.isQuestCompleted('FightThatBitch') == true:
+elif PlayerGlobals.isQuestCompleted('Fight That Bitch!') == true:
 	Entity: You have fought that bitch!
 	set OverworldGlobals.show_player_interaction = true
 	set OverworldGlobals.player_can_move = true

@@ -22,7 +22,6 @@ func initializeObjective():
 			)
 
 func checkComplete():
-	print('Checking!')
 	if UNIQUE_COMBAT_ID == id:
 		if REQUIRE_WIN and combat_result == 1:
 			FINISHED = true

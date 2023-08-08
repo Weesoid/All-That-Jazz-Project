@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://cot2km0lxapbv"]
+
+[ext_resource type="PackedScene" uid="uid://bx16iy3b6f0t1" path="res://scenes/components/CombatantSquad.tscn" id="1_ky2dp"]
+[ext_resource type="Texture2D" uid="uid://i4ia44qidv20" path="res://assets/overworld_sprites/ent_anchor.png" id="1_wl13x"]
+[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="2_0jepb"]
+[ext_resource type="Resource" uid="uid://sxvr4w0h1xr8" path="res://resources/combatants/e_PrototypeB.tres" id="2_vjmnu"]
+[ext_resource type="Resource" uid="uid://y7to2o115c27" path="res://resources/dialogue/quest_giver_optionals.dialogue" id="3_8ol1f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bwyli"]
+
+[node name="QuestyJr" type="CharacterBody2D"]
+
+[node name="CombatantSquadComponent" parent="." instance=ExtResource("1_ky2dp")]
+UNIQUE_ID = "QuestyJr"
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("2_vjmnu")])
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -19)
+texture = ExtResource("1_wl13x")
+
+[node name="InteractComponent" parent="." instance=ExtResource("2_0jepb")]
+position = Vector2(0, -8)
+dialogue_resource = ExtResource("3_8ol1f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_bwyli")

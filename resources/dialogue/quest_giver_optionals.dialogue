@@ -1,0 +1,43 @@
+~ start
+set OverworldGlobals.player_can_move = false
+
+if PlayerGlobals.isQuestCompleted("Choices Choices") == true:
+	Entity: Thanks again!
+	
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+elif PlayerGlobals.hasQuest("Choices Choices") == false:
+	Entity: Here's a quest! Make sure to make the right choice.
+	
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	do PlayerGlobals.addQuest("ChoicesChoices")
+	=> END
+
+if PlayerGlobals.isQuestObjectiveEnabled("Choices Choices", "OutcomeA") == true:
+	Willis: Spoke to your dad.
+	Entity: The correct choice!
+	do PlayerGlobals.setQuestObjective("Choices Choices", "OutcomeA", true)
+	Willis: Thanks.
+elif PlayerGlobals.isQuestObjectiveEnabled("Choices Choices", "OutcomeB") == true:
+	Willis: Killed your dad.
+	Entity: W-W-W-What?!
+	Willis: Yep.
+	Entity: You monster! Prepare to die!
+	do OverworldGlobals.changeToCombat("QuestyJr")
+	do PlayerGlobals.setQuestObjective("Choices Choices", "OutcomeB", true)
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+
+if PlayerGlobals.isQuestCompleted("Choices choices") == false:
+	Entity: Get to work!! FUCK DO I HAVE TO TELL YOU TO DO EVERYTING?!
+	Willis: Jesus H. Christ, relax dude!
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
+=> END
