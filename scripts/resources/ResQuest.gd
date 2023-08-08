@@ -30,8 +30,15 @@ func isCompleted():
 		objective.attemptEnable()
 		if objective.END_OBJECTIVE and objective.FINISHED:
 			COMPLETED = true
+			failRemainingObjectives()
 			PlayerGlobals.quest_completed.emit(self)
 			return COMPLETED
+
+func failRemainingObjectives():
+	for objective in OBJECTIVES:
+		if !objective.FINISHED and objective.ENABLED: 
+			objective.FAILED = true
+			objective.ENABLED = false
 
 func _to_string():
 	return "%s : %s" % [NAME, COMPLETED]

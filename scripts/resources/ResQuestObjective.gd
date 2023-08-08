@@ -5,8 +5,7 @@ class_name ResQuestObjective
 @export var DESCRIPTION: String
 @export var DEPENDENT: Array[ResQuestObjective]
 @export var FAIL_CONDITIONS: Array[ResQuestObjective]
-@export var OR_DEPENDENTS: bool 
-@export var OR_FAIL_CONDITIONS: bool 
+@export var OR_DEPENDENTS: bool
 @export var END_OBJECTIVE: bool
 
 var ENABLED: bool
@@ -18,8 +17,6 @@ func initializeObjective():
 	pass
 
 func checkComplete():
-	failObjectives()
-	
 	if FINISHED:
 		PlayerGlobals.quest_objective_completed.emit()
 	elif FAILED:
@@ -27,19 +24,22 @@ func checkComplete():
 	return FINISHED
 
 func attemptEnable():
-	#print('-----------------------------------------------------------')
-	#print('Attempting to enable on: ', NAME)
-	
 	if DEPENDENT.is_empty():
 		ENABLED = true
 	else:
-		var objectives_finished = true
-		for objective in DEPENDENT:
-	#		print('Checking ', objective.NAME)
-			if !objective.FINISHED:
-	#			print('This is objective not yet done!')
-				objectives_finished = false
-				break
+		var objectives_finished = false
+		if !OR_DEPENDENTS:
+			var done = 0
+			for objective in DEPENDENT:
+				if objective.FINISHED:
+					done += 1
+			print(NAME, ' passed all reqs!')
+			objectives_finished = (done == DEPENDENT.size())
+		else:
+			for objective in DEPENDENT:
+				if objective.FINISHED and objective.ENABLED:
+					objectives_finished = true
+					break
 		ENABLED = objectives_finished
 	
 	failObjectives()
@@ -49,9 +49,6 @@ func failObjectives():
 		return
 	
 	if ENABLED:
-		print(NAME, ' is ENABLED! Failing objectives')
 		for objective in FAIL_CONDITIONS:
-			print('Failing: ', objective.NAME)
 			objective.FAILED = true
 			objective.ENABLED = false
-

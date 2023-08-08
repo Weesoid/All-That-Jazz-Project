@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResQuestObjectiveItem" load_steps=5 format=3 uid="uid://curelbx0abj6p"]
+
+[ext_resource type="Resource" uid="uid://2gn6c1nh0byv" path="res://resources/quests/Orand/objectives/0_must1.tres" id="1_s4sah"]
+[ext_resource type="Resource" uid="uid://cabs5ndos05x6" path="res://resources/quests/Orand/objectives/0_must2.tres" id="2_2pj44"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="3_6y5pa"]
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjectiveItem.gd" id="4_os27j"]
+
+[resource]
+script = ExtResource("4_os27j")
+REQUIRED_ITEM = ExtResource("3_6y5pa")
+AMOUNT = 100
+NAME = "ScrapSalvage100"
+DESCRIPTION = "Get 100 Scrap Salvage"
+DEPENDENT = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([ExtResource("1_s4sah"), ExtResource("2_2pj44")])
+FAIL_CONDITIONS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
+OR_DEPENDENTS = false
+END_OBJECTIVE = false

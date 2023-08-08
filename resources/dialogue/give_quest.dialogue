@@ -1,6 +1,15 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
+
+if PlayerGlobals.isQuestObjectiveEnabled("Orand", "Speak to Mr. Questy") == true and PlayerGlobals.isQuestObjectiveCompleted("Orand", "Speak to Mr. Questy") == false:
+	Willis: Questy Jr. has fake jordans
+	Entity: Unacceptable!
+	do PlayerGlobals.setQuestObjective("Orand", "Speak to Mr. Questy", true)
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+
 if PlayerGlobals.isQuestObjectiveEnabled("Choices Choices", "Talk to Mr. Questy") == true:
 	Willis: Hello Mr. Questy.
 	Entity: Willis my boy!

@@ -136,7 +136,6 @@ func hasQuest(quest_name: String):
 	if QUESTS.is_empty() or getQuest(quest_name) == null: 
 		return false
 	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
-	print(quest)
 	return quest != null
 
 func isQuestCompleted(quest_name: String):

@@ -1,6 +1,14 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
+if PlayerGlobals.isQuestObjectiveEnabled("Orand", "Talk to Fightey"):
+	Willis: You're a hoe btw
+	Entity: I know!
+	do PlayerGlobals.setQuestObjective("Orand", "Talk to Fightey", true)
+	set OverworldGlobals.show_player_interaction = true
+	set OverworldGlobals.player_can_move = true
+	=> END
+
 if PlayerGlobals.hasQuest('Fight That Bitch!') == false:
 	Entity: Fight this bitch.
 	

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResQuestObjective" load_steps=2 format=3 uid="uid://cabs5ndos05x6"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="1_u4wp2"]
+
+[resource]
+script = ExtResource("1_u4wp2")
+NAME = "Talk to Fightey"
+DESCRIPTION = "Tell  Fightey Hes a Hoe"
+DEPENDENT = Array[ExtResource("1_u4wp2")]([])
+FAIL_CONDITIONS = Array[ExtResource("1_u4wp2")]([])
+OR_DEPENDENTS = false
+OR_FAIL_CONDITIONS = false
+END_OBJECTIVE = false

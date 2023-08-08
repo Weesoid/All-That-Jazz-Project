@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResQuestObjective" load_steps=4 format=3 uid="uid://mbukex7rcjbu"]
+
+[ext_resource type="Resource" uid="uid://2gn6c1nh0byv" path="res://resources/quests/Orand/objectives/0_must1.tres" id="1_l1l6k"]
+[ext_resource type="Resource" uid="uid://cabs5ndos05x6" path="res://resources/quests/Orand/objectives/0_must2.tres" id="2_7c8pf"]
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="3_nl4of"]
+
+[resource]
+script = ExtResource("3_nl4of")
+NAME = "Speak to Mr. Questy"
+DESCRIPTION = "Tell Mr. Questy that Questy Jr. has fake jordans"
+DEPENDENT = Array[ExtResource("3_nl4of")]([ExtResource("1_l1l6k"), ExtResource("2_7c8pf")])
+FAIL_CONDITIONS = Array[ExtResource("3_nl4of")]([])
+OR_DEPENDENTS = false
+END_OBJECTIVE = false
