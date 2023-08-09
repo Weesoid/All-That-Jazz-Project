@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResQuest" load_steps=7 format=3 uid="uid://xb8qx06bmg6c"]
+
+[ext_resource type="Resource" uid="uid://dswu1pwgtpfbn" path="res://resources/quests/Completion/objectives/0_Choices.tres" id="1_08p28"]
+[ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_awvx6"]
+[ext_resource type="Resource" uid="uid://xaph2f81y50u" path="res://resources/quests/Completion/objectives/0_Fight.tres" id="2_g11i1"]
+[ext_resource type="Resource" uid="uid://bxkqth7xbnp4a" path="res://resources/quests/Completion/objectives/0_Item.tres" id="3_6g8mk"]
+[ext_resource type="Resource" uid="uid://beh3mb737r06j" path="res://resources/quests/Completion/objectives/0_Orand.tres" id="4_2hpln"]
+[ext_resource type="Resource" uid="uid://da453y8amjhug" path="res://resources/quests/Completion/objectives/1_conclude.tres" id="5_kltnc"]
+
+[resource]
+script = ExtResource("1_awvx6")
+NAME = "Completion"
+DESCRIPTION = "End it all."
+OBJECTIVES = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([ExtResource("1_08p28"), ExtResource("2_g11i1"), ExtResource("3_6g8mk"), ExtResource("4_2hpln"), ExtResource("5_kltnc")])

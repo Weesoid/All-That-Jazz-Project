@@ -155,7 +155,7 @@ func isQuestObjectiveEnabled(quest_name: String, quest_objective_name: String) -
 	
 	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
 	
-	return objective.ENABLED
+	return objective.ENABLED and !objective.FINISHED
 
 func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String) -> bool:
 	if QUESTS.is_empty(): 

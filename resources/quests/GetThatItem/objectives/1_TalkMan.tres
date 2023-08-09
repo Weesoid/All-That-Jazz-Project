@@ -7,8 +7,7 @@
 script = ExtResource("1_vi3vw")
 NAME = "Talk to Man"
 DESCRIPTION = "You got the Scrap, now talk to the man."
-DEPENDENT = Array[ExtResource("1_vi3vw")]([ExtResource("1_exrsi")])
-FAIL_CONDITIONS = Array[ExtResource("1_vi3vw")]([])
+DEPENDENTS = Array[ExtResource("1_vi3vw")]([ExtResource("1_exrsi")])
+FAIL_OBJECTIVES = Array[ExtResource("1_vi3vw")]([])
 OR_DEPENDENTS = false
-OR_FAIL_CONDITIONS = false
 END_OBJECTIVE = false

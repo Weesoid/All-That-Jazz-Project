@@ -1,48 +1,50 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
+Entity: What would you like to talk about?
+- Gimme a quest [if PlayerGlobals.hasQuest("Get that item!") == false] => gimme_quest
+- Orand. [if PlayerGlobals.isQuestObjectiveEnabled("Orand", "Speak to Mr. Questy")] => orand
+- Getting that item. [if PlayerGlobals.isQuestObjectiveEnabled("Get that item!", "Wrap it up!")] => get_that_item
+- Choices. [if PlayerGlobals.isQuestObjectiveEnabled("Choices Choices", "Talk to Mr. Questy")] => choices_choices
+- The end. [if PlayerGlobals.isQuestObjectiveEnabled("Completion", "Conclusion")] => conclusion
+- Nothing. => leave_dialogue
 
-if PlayerGlobals.isQuestObjectiveEnabled("Orand", "Speak to Mr. Questy") == true and PlayerGlobals.isQuestObjectiveCompleted("Orand", "Speak to Mr. Questy") == false:
-	Willis: Questy Jr. has fake jordans
-	Entity: Unacceptable!
-	do PlayerGlobals.setQuestObjective("Orand", "Speak to Mr. Questy", true)
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
-	=> END
+~ gimme_quest
+Entity: Here's a quest!! Idiot!!
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
+do PlayerGlobals.addQuest("GetThatItem")
+=> END
 
-if PlayerGlobals.isQuestObjectiveEnabled("Choices Choices", "Talk to Mr. Questy") == true:
-	Willis: Hello Mr. Questy.
-	Entity: Willis my boy!
-	Willis: Could you please complete this objective for me?
-	Entity: Of course! Anything for my favourite little fella!
-	do PlayerGlobals.setQuestObjective('Choices Choices!', 'Talk to Mr. Questy', true)
-	Willis: Thanks.
-	
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
-	=> END
+~ get_that_item
+Entity: You completed it! Good!
+Entity: Here's an arrow!
+do PlayerGlobals.setQuestObjective('Get that item!', 'Wrap it up!', true)
+do PlayerGlobals.addItemToInventory("Arrow")
+=> leave_dialogue
 
-if PlayerGlobals.hasQuest('Get that item!') == false:
-	Entity: Here's a quest!! Idiot!!
-	
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
-	do PlayerGlobals.addQuest("GetThatItem")
-	=> END
-elif PlayerGlobals.isQuestCompleted('Get that item!') == true:
-	Entity: Good job!
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
-	=> END
-elif PlayerGlobals.isQuestObjectiveEnabled('Get that item!', 'Wrap it up!') == true:
-	Entity: You completed it! Good!
-	Entity: Here's an arrow!
-	do PlayerGlobals.setQuestObjective('Get that item!', 'Wrap it up!', true)
-	do PlayerGlobals.addItemToInventory("Arrow")
-else:
-	Entity: You didn't finish it yet!! FUCK YOU!
-	Willis: Jeez.
+~ choices_choices
+Willis: Hello Mr. Questy.
+Entity: Willis my boy!
+Willis: Could you please complete this objective for me?
+Entity: Of course! Anything for my favourite little fella!
+do PlayerGlobals.setQuestObjective('Choices Choices', 'Talk to Mr. Questy', true)
+Willis: Thanks.
+=> leave_dialogue
 
+~ orand
+Willis: Questy Jr. has fake jordans
+Entity: Unacceptable!
+do PlayerGlobals.setQuestObjective("Orand", "Speak to Mr. Questy", true)
+=> leave_dialogue
+
+~ conclusion
+Willis: I have finished all the quests.
+Entity: Oh you did? Ain't that swell!
+do PlayerGlobals.setQuestObjective("Completion", "Conclusion", true)
+=> leave_dialogue
+
+~ leave_dialogue
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true
 => END

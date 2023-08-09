@@ -8,7 +8,7 @@
 script = ExtResource("3_tf7xr")
 NAME = "Finish up what you got"
 DESCRIPTION = "Tell Orand you're ready to wrap up"
-DEPENDENT = Array[ExtResource("3_tf7xr")]([ExtResource("1_yuhwr"), ExtResource("2_w6d3e")])
-FAIL_CONDITIONS = Array[ExtResource("3_tf7xr")]([])
+DEPENDENTS = Array[ExtResource("3_tf7xr")]([ExtResource("1_yuhwr"), ExtResource("2_w6d3e")])
+FAIL_OBJECTIVES = Array[ExtResource("3_tf7xr")]([])
 OR_DEPENDENTS = true
 END_OBJECTIVE = true

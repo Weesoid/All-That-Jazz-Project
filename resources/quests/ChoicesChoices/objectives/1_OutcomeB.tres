@@ -8,8 +8,7 @@
 script = ExtResource("1_lhpki")
 NAME = "OutcomeB"
 DESCRIPTION = "Tell Mr. Questy you killed his father"
-DEPENDENT = Array[ExtResource("1_lhpki")]([ExtResource("1_ymoq3")])
-FAIL_CONDITIONS = Array[ExtResource("1_lhpki")]([ExtResource("2_r5lvu")])
+DEPENDENTS = Array[ExtResource("1_lhpki")]([ExtResource("1_ymoq3")])
+FAIL_OBJECTIVES = Array[ExtResource("1_lhpki")]([ExtResource("2_r5lvu")])
 OR_DEPENDENTS = false
-OR_FAIL_CONDITIONS = false
 END_OBJECTIVE = false

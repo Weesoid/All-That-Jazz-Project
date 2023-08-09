@@ -6,8 +6,7 @@
 script = ExtResource("1_wmt4c")
 NAME = "Talk to Mr. Questy"
 DESCRIPTION = "Talk to Mr. Questy"
-DEPENDENT = Array[ExtResource("1_wmt4c")]([])
-FAIL_CONDITIONS = Array[ExtResource("1_wmt4c")]([])
+DEPENDENTS = Array[ExtResource("1_wmt4c")]([])
+FAIL_OBJECTIVES = Array[ExtResource("1_wmt4c")]([])
 OR_DEPENDENTS = false
-OR_FAIL_CONDITIONS = false
 END_OBJECTIVE = false

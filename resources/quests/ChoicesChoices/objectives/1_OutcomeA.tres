@@ -8,8 +8,7 @@
 script = ExtResource("1_jmkwn")
 NAME = "OutcomeA"
 DESCRIPTION = "Tell Questy Jr. you spoke to his father."
-DEPENDENT = Array[ExtResource("1_jmkwn")]([ExtResource("1_48l5h")])
-FAIL_CONDITIONS = Array[ExtResource("1_jmkwn")]([ExtResource("2_0x0hj")])
+DEPENDENTS = Array[ExtResource("1_jmkwn")]([ExtResource("1_48l5h")])
+FAIL_OBJECTIVES = Array[ExtResource("1_jmkwn")]([ExtResource("2_0x0hj")])
 OR_DEPENDENTS = false
-OR_FAIL_CONDITIONS = false
 END_OBJECTIVE = true

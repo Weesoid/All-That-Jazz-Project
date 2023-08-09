@@ -3,8 +3,8 @@ class_name ResQuestObjective
 
 @export var NAME: String
 @export var DESCRIPTION: String
-@export var DEPENDENT: Array[ResQuestObjective]
-@export var FAIL_CONDITIONS: Array[ResQuestObjective]
+@export var DEPENDENTS: Array[ResQuestObjective]
+@export var FAIL_OBJECTIVES: Array[ResQuestObjective]
 @export var OR_DEPENDENTS: bool
 @export var END_OBJECTIVE: bool
 
@@ -24,19 +24,19 @@ func checkComplete():
 	return FINISHED
 
 func attemptEnable():
-	if DEPENDENT.is_empty():
+	if DEPENDENTS.is_empty():
 		ENABLED = true
 	else:
 		var objectives_finished = false
 		if !OR_DEPENDENTS:
 			var done = 0
-			for objective in DEPENDENT:
+			for objective in DEPENDENTS:
 				if objective.FINISHED:
 					done += 1
-			print(NAME, ' passed all reqs!')
-			objectives_finished = (done == DEPENDENT.size())
+	
+			objectives_finished = (done == DEPENDENTS.size())
 		else:
-			for objective in DEPENDENT:
+			for objective in DEPENDENTS:
 				if objective.FINISHED and objective.ENABLED:
 					objectives_finished = true
 					break
@@ -45,10 +45,10 @@ func attemptEnable():
 	failObjectives()
 
 func failObjectives():
-	if FAIL_CONDITIONS.is_empty():
+	if FAIL_OBJECTIVES.is_empty():
 		return
 	
 	if ENABLED:
-		for objective in FAIL_CONDITIONS:
+		for objective in FAIL_OBJECTIVES:
 			objective.FAILED = true
 			objective.ENABLED = false

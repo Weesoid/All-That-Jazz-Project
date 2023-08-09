@@ -63,5 +63,4 @@ func clearQuestInfo():
 	title.text = ""
 	description.text = ""
 	for child in objective_scroller.get_children():
-		print('Freeing: ', child.text)
 		child.queue_free()

@@ -8,7 +8,7 @@
 script = ExtResource("3_nl4of")
 NAME = "Speak to Mr. Questy"
 DESCRIPTION = "Tell Mr. Questy that Questy Jr. has fake jordans"
-DEPENDENT = Array[ExtResource("3_nl4of")]([ExtResource("1_l1l6k"), ExtResource("2_7c8pf")])
-FAIL_CONDITIONS = Array[ExtResource("3_nl4of")]([])
+DEPENDENTS = Array[ExtResource("3_nl4of")]([ExtResource("1_l1l6k"), ExtResource("2_7c8pf")])
+FAIL_OBJECTIVES = Array[ExtResource("3_nl4of")]([])
 OR_DEPENDENTS = false
 END_OBJECTIVE = false
