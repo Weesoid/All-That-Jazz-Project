@@ -6,10 +6,10 @@
 script = ExtResource("1_bsnev")
 UNIQUE_COMBAT_ID = "SexMasters"
 REQUIRE_WIN = true
+COUNT = 3
 NAME = "TutorialFight"
 DESCRIPTION = "Fight that bitch bro!! Fight it!!"
-DEPENDENT = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
-FAIL_CONDITIONS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
+DEPENDENTS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
+FAIL_OBJECTIVES = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
 OR_DEPENDENTS = false
-OR_FAIL_CONDITIONS = false
 END_OBJECTIVE = true
