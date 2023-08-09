@@ -14,6 +14,7 @@ var CURRENT_EXP = 0
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
 signal quest_completed(quest)
+signal quest_added
 signal quest_objective_completed
 signal quest_objective_failed
 signal added_item_to_inventory
@@ -125,6 +126,8 @@ func addQuest(quest_name: String):
 	var quest = load("res://resources/quests/%s/%s.tres" % [quest_name, quest_name])
 	quest.initializeQuest()
 	QUESTS.append(quest)
+	quest_added.emit()
+	
 	
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
 	prompt.setTitle(quest.NAME)
@@ -135,6 +138,7 @@ func addQuest(quest_name: String):
 func hasQuest(quest_name: String):
 	if QUESTS.is_empty() or getQuest(quest_name) == null: 
 		return false
+	
 	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
 	return quest != null
 
@@ -158,13 +162,27 @@ func isQuestObjectiveEnabled(quest_name: String, quest_objective_name: String) -
 	return objective.ENABLED and !objective.FINISHED
 
 func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String) -> bool:
-	if QUESTS.is_empty(): 
+	if QUESTS.is_empty() or getQuest(quest_name) == null: 
 		return false
 	
 	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
 	
 	return objective.FINISHED
 
-func getQuest(quest_name: String):
+func isQuestObjectiveFailed(quest_name: String, quest_objective_name: String) -> bool:
+	if QUESTS.is_empty(): 
+		return false
+	
+	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
+	
+	return objective.FAILED
+
+func getQuest(quest_name: String)-> ResQuest:
+	print('Attempting to get quest')
 	for quest in QUESTS:
-		if quest.NAME == quest_name: return quest
+		if quest.NAME == quest_name: 
+			print('FOUND: ', quest.NAME)
+			return quest
+	
+	print('Returning null')
+	return null

@@ -24,8 +24,10 @@ func checkComplete():
 	return FINISHED
 
 func attemptEnable():
-	if DEPENDENTS.is_empty():
+	if DEPENDENTS.is_empty() and !FAILED:
 		ENABLED = true
+	elif FAILED:
+		ENABLED = false
 	else:
 		var objectives_finished = false
 		if !OR_DEPENDENTS:
@@ -33,7 +35,6 @@ func attemptEnable():
 			for objective in DEPENDENTS:
 				if objective.FINISHED:
 					done += 1
-	
 			objectives_finished = (done == DEPENDENTS.size())
 		else:
 			for objective in DEPENDENTS:
@@ -41,7 +42,7 @@ func attemptEnable():
 					objectives_finished = true
 					break
 		ENABLED = objectives_finished
-	
+		
 	failObjectives()
 
 func failObjectives():
