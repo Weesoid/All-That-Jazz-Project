@@ -9,7 +9,7 @@
 
 [resource]
 script = ExtResource("3_tvtxk")
-COUNT = 2
+COUNT = 1
 AI_PACKAGE = ExtResource("2_t0rce")
 DROPS = {
 ExtResource("4_v7lp5"): 1.0,
@@ -19,8 +19,12 @@ NAME = "EUStriker"
 PACKED_SCENE = ExtResource("5_rrp48")
 DESCRIPTION = ""
 STAT_VALUES = {
-"brawn": 9999,
-"grit": 6,
+"accuracy": 1,
+"brawn": 1,
+"crit": 0.05,
+"exposure": 1,
+"grit": 1,
+"heal mult": 1,
 "health": 100,
 "hustle": 1,
 "verve": 1,

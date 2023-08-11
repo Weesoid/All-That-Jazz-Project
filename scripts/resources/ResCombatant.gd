@@ -15,7 +15,11 @@ class_name ResCombatant
 	'brawn': 1,
 	'wit': 1,
 	'grit': 1,
-	'will': 1
+	'will': 1,
+	'crit': 0.05,
+	'accuracy': 1,
+	'heal mult': 1,
+	'exposure': 0
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var EQUIPMENT = {
@@ -56,14 +60,6 @@ func isEquipped(slot_name: String):
 	
 func getEquipment(slot_name: String)-> ResEquippable:
 	return EQUIPMENT[slot_name]
-
-func updateHealth():
-	pass
-	#SCENE.get_node("HealthBarComponent").value = STAT_VALUES['health']
-
-func updateEnergy():
-	pass
-	#SCENE.get_node("EnergyBarComponent").value = STAT_VALUES['verve']
 
 func getMaxHealth():
 	return BASE_STAT_VALUES['health']

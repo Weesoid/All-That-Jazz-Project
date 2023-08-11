@@ -128,7 +128,6 @@ func addQuest(quest_name: String):
 	QUESTS.append(quest)
 	quest_added.emit()
 	
-	
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
 	prompt.setTitle(quest.NAME)
 	prompt.playAnimation('show_quest')

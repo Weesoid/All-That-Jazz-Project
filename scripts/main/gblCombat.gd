@@ -17,18 +17,27 @@ func emit_exp_updated(value, max_value):
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
 func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling, damage_type: ResDamageType):
-	base_damage += caster.STAT_VALUES[attacker_stat] * bonus_scaling
-	var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat])))
-	damage *= getDamageMultiplier(damage_type, getCombatantArmorType(target))
-	damage_type.rollEffect(target)
-	target.STAT_VALUES['health'] -= int(damage)
-	
-	playAndResetAnimation(target, 'Hit')
-	call_indicator.emit(target, 'Hit!', int(damage))
-	target.updateHealth()
+	if randomRoll(caster.STAT_VALUES['accuracy']):
+		base_damage += caster.STAT_VALUES[attacker_stat] * bonus_scaling
+		var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat])))
+		damage *= getDamageMultiplier(damage_type, getCombatantArmorType(target))
+		damage = valueVariate(damage, 0.1)
+		damage_type.rollEffect(target)
+		if randomRoll(caster.STAT_VALUES['crit']):
+			damage *= 2.0
+			call_indicator.emit(target, 'CRITICAL!', int(damage))
+		else:
+			call_indicator.emit(target, 'Hit!', int(damage))
+		
+		target.STAT_VALUES['health'] -= int(damage)
+		playAndResetAnimation(target, 'Hit')
+	else:
+		call_indicator.emit(target, 'Whiff!', 0)
 	
 func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
-	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling)
+	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling) # Multiply by heal multplier
+	healing = valueVariate(healing, 0.1)
+	healing *= target.STAT_VALUES['heal mult']
 	
 	if target.STAT_VALUES['health'] + healing > target.getMaxHealth():
 		target.STAT_VALUES['health'] = target.getMaxHealth()
@@ -36,7 +45,22 @@ func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: S
 		target.STAT_VALUES['health'] += healing
 	
 	call_indicator.emit(target, 'Healed!', healing)
-	target.updateHealth()
+
+func randomRoll(percent_chance: float):
+	assert(percent_chance <= 1.0 and percent_chance >= 0, "% chance must be between 0 to 1")
+	percent_chance = 1.0 - percent_chance
+	randomize()
+	var roll = randf_range(0, 1.0)
+	if roll > percent_chance:
+		return true
+	else:
+		return false
+
+func valueVariate(value, percent_variance: float):
+	var variation = value * percent_variance
+	randomize()
+	value += randf_range(variation*-1, variation)
+	return value
 
 func loadDamageType(damage_type_name: String)-> ResDamageType:
 	return load(str("res://resources/damage_types/"+damage_type_name+".tres"))
@@ -82,12 +106,10 @@ func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	
 func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.NAME not in target.getStatusEffectNames():
-		print('Fresh Effect! Applying')
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.STATUS_EFFECTS.append(status_effect)
 	else:
-		print('Existing Effect! Ranking up')
 		rankUpStatusEffect(target, status_effect)
 
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):

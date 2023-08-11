@@ -7,4 +7,4 @@
 script = ExtResource("1_kdckf")
 NAME = "Blunt"
 EFFECT = ExtResource("1_eth24")
-EFFECT_CHANCE = 100.0
+EFFECT_CHANCE = 0.1

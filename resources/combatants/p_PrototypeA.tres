@@ -24,13 +24,17 @@ NAME = "PUFriendHealer"
 PACKED_SCENE = ExtResource("5_8cf7w")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
+"accuracy": 1,
 "brawn": 1,
-"grit": 3,
-"health": 1000,
-"hustle": 8,
-"verve": 8,
-"will": 5,
-"wit": 5
+"crit": 0.05,
+"exposure": 0,
+"grit": 1,
+"heal mult": 1,
+"health": 100,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_5akdy"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w")])
 EQUIPMENT = {

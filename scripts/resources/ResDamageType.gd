@@ -7,13 +7,16 @@ class_name ResDamageType
 
 func rollEffect(target: ResCombatant):
 	if EFFECT == null: return
-	randomize()
-	var random_number = randf_range(0, 100)
-	print('Rolled: ', random_number)
-	if EFFECT_CHANCE > random_number:
+	
+	var percent_chance = EFFECT_CHANCE + target.STAT_VALUES['exposure']
+	if percent_chance > 1.0: 
+		percent_chance = 1.0
+	elif percent_chance < 0:
+		percent_chance = 0
+	
+	if CombatGlobals.randomRoll(percent_chance):
 		CombatGlobals.addStatusEffect(target, EFFECT.duplicate())
 	else:
-		print('Fail!')
 		return
 
 func _to_string():

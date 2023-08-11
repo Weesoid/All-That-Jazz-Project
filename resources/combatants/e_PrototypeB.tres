@@ -8,16 +8,20 @@
 
 [resource]
 script = ExtResource("3_fptwa")
-COUNT = null
+COUNT = 1
 AI_PACKAGE = ExtResource("2_xgrhx")
 DROPS = {}
 NAME = "EUHealer"
 PACKED_SCENE = ExtResource("3_4f05j")
 DESCRIPTION = ""
 STAT_VALUES = {
-"brawn": 5,
-"grit": 3,
-"health": 1,
+"accuracy": 1,
+"brawn": 1,
+"crit": 0.05,
+"exposure": 0,
+"grit": 1,
+"heal mult": 1,
+"health": 100,
 "hustle": 1,
 "verve": 1,
 "will": 1,

@@ -129,6 +129,9 @@ func end_turn():
 	if !selected_ability.INSTANT_CAST:
 		active_index = incrementIndex(active_index,1,COMBATANTS.size())
 		active_combatant = COMBATANTS[active_index]
+		while active_combatant.STAT_VALUES['hustle'] == -1:
+			active_index = incrementIndex(active_index,1,COMBATANTS.size())
+			active_combatant = COMBATANTS[active_index]
 	else:
 		selected_ability.ENABLED = false
 	

@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://cxmw4kd3fmtak"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://cxmw4kd3fmtak"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_ce6nb"]
 [ext_resource type="Resource" path="res://resources/abilities/PoisonBite.tres" id="2_jsk6a"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="3_bfkjx"]
 [ext_resource type="PackedScene" uid="uid://d123j1lh52wik" path="res://scenes/entities/NPCPrototypeFollower.tscn" id="4_fpjeh"]
+[ext_resource type="Resource" path="res://resources/abilities/Heal.tres" id="4_mka0i"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
 [ext_resource type="PackedScene" uid="uid://dorthwo1fbn68" path="res://scenes/combatants/GoodGuyB.tscn" id="6_wd1pn"]
 
@@ -23,15 +24,19 @@ NAME = "PUMainBlasko"
 PACKED_SCENE = ExtResource("6_wd1pn")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
-"brawn": 5,
-"grit": 5,
+"accuracy": 1,
+"brawn": 1,
+"crit": 0.05,
+"exposure": 0,
+"grit": 1,
+"heal mult": 1,
 "health": 100,
-"hustle": 15,
-"verve": 8,
-"will": 3,
-"wit": 2
+"hustle": 2,
+"verve": 16,
+"will": 1,
+"wit": 10
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ce6nb"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ce6nb"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i")])
 EQUIPMENT = {
 "armor": null,
 "charm": null,
