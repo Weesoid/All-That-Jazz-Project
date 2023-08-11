@@ -2,7 +2,7 @@ extends Node
 
 signal ability_executed
 signal exp_updated(value: float, max_value: float)
-signal call_indicator(target: ResCombatant, indicator: String, value: int)
+signal call_indicator(animation: String)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -25,14 +25,17 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: S
 		damage_type.rollEffect(target)
 		if randomRoll(caster.STAT_VALUES['crit']):
 			damage *= 2.0
-			call_indicator.emit(target, 'CRITICAL!', int(damage))
+			call_indicator.emit('Crit')
 		else:
-			call_indicator.emit(target, 'Hit!', int(damage))
+			call_indicator.emit('Show')
 		
 		target.STAT_VALUES['health'] -= int(damage)
 		playAndResetAnimation(target, 'Hit')
+		
+		# Check for on-hit status effects, trigger a tick if any
 	else:
-		call_indicator.emit(target, 'Whiff!', 0)
+		call_indicator.emit('Whiff')
+		target.STAT_VALUES['health'] -= 1
 	
 func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
 	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling) # Multiply by heal multplier
@@ -44,7 +47,7 @@ func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: S
 	else:
 		target.STAT_VALUES['health'] += healing
 	
-	call_indicator.emit(target, 'Healed!', healing)
+	call_indicator.emit('Show')
 
 func randomRoll(percent_chance: float):
 	assert(percent_chance <= 1.0 and percent_chance >= 0, "% chance must be between 0 to 1")
@@ -111,6 +114,11 @@ func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 		target.STATUS_EFFECTS.append(status_effect)
 	else:
 		rankUpStatusEffect(target, status_effect)
+	# checkReactions(target)
+
+func checkReactions(target: ResCombatant):
+	pass
+	# If target has this effect and that effect, react and remove
 
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.STATUS_EFFECTS:

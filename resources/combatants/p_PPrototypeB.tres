@@ -26,11 +26,11 @@ DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
 "accuracy": 1,
 "brawn": 1,
-"crit": 0.05,
+"crit": 0.5,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 100,
+"health": 9999,
 "hustle": 2,
 "verve": 16,
 "will": 1,

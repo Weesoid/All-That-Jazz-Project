@@ -7,6 +7,7 @@ class_name ResStatusEffect
 @export var TEXTURE: Texture
 @export var MAX_DURATION: int
 @export var MAX_RANK: int
+@export var ON_HIT: bool
 @export var APPLY_ONCE: bool
 @export var PERMANENT: bool = false
 
@@ -39,11 +40,13 @@ func removeStatusEffect():
 func tick():
 	if !PERMANENT: 
 		duration -= 1
-	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
+	if !ON_HIT:
+		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
+	
 	APPLY_ONCE = false
 	if duration == 0 or afflicted_combatant.isDead():
 		removeStatusEffect()
-	
+
 func animateStatusEffect():
 	PARTICLES.global_position = Vector2(0, 60)
 	afflicted_combatant.SCENE.add_child(PARTICLES)

@@ -8,7 +8,11 @@ class_name ResPlayerCombatant
 	'brawn': 1,
 	'wit': 1,
 	'grit': 1,
-	'will': 1
+	'will': 1,
+	'crit': 0,
+	'accuracy': 0,
+	'heal mult': 0,
+	'exposure': 0
 }
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 

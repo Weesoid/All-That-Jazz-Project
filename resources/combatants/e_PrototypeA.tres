@@ -19,7 +19,7 @@ NAME = "EUStriker"
 PACKED_SCENE = ExtResource("5_rrp48")
 DESCRIPTION = ""
 STAT_VALUES = {
-"accuracy": 1,
+"accuracy": 0,
 "brawn": 1,
 "crit": 0.05,
 "exposure": 1,

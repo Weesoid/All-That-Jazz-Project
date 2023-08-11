@@ -47,8 +47,6 @@ signal update_exp(value: float, max_value: float)
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
-	CombatGlobals.call_indicator.connect(playIndicatorAnimation)
-	
 	connectPlayerItems()
 	
 	for combatant in COMBATANTS:
@@ -117,6 +115,7 @@ func end_turn():
 		if combatant is ResEnemyCombatant: 
 			experience_earnt += combatant.getExperience()
 			item_drops.append(combatant.getDrops())
+		
 		COMBATANTS.erase(combatant)
 	
 	# Reset values
