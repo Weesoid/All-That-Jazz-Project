@@ -9,6 +9,7 @@ class_name ResStatusEffect
 @export var MAX_RANK: int
 @export var ON_HIT: bool
 @export var APPLY_ONCE: bool
+@export var TICK_PER_TURN: bool
 @export var PERMANENT: bool = false
 
 var duration

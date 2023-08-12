@@ -15,4 +15,5 @@ MAX_DURATION = 6
 MAX_RANK = 0
 ON_HIT = false
 APPLY_ONCE = true
+TICK_PER_TURN = true
 PERMANENT = false

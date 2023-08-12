@@ -1,6 +1,7 @@
 extends Node
 
 signal ability_executed
+signal secondary_ability_executed
 signal exp_updated(value: float, max_value: float)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
 signal call_indicator(animation: String, combatant: ResCombatant)
@@ -22,7 +23,8 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: S
 	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
 		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
 	elif can_miss:
-		manual_call_indicator.emit(target, 'WHIFF!', 'Show')
+		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
+		call_indicator.emit('Show', target)
 	else:
 		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
 
@@ -44,9 +46,9 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, bonus
 	var damage = (base_damage) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat]))
 	var multiplier = getDamageMultiplier(damage_type, getCombatantArmorType(target))
 	if multiplier > 1.0:
-		manual_call_indicator.emit(target, 'WALLOP!!!', 'Show')
+		manual_call_indicator.emit(target, 'WALLOP!!!', 'Wallop')
 	elif multiplier < 1.0:
-		manual_call_indicator.emit(target, 'RESISTED!', 'Show')
+		manual_call_indicator.emit(target, 'RESISTED!', 'Resist')
 	damage *= multiplier
 	
 	# RNG Rolls
@@ -54,7 +56,8 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, bonus
 	damage_type.rollEffect(target)
 	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
 		damage *= 2.0
-		call_indicator.emit('Crit', target)
+		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
+		call_indicator.emit('Show', target)
 	else:
 		call_indicator.emit('Show', target)
 	

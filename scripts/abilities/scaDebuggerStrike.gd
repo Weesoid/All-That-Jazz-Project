@@ -5,11 +5,8 @@ static func animateCast(caster: ResCombatant):
 	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	for target in targets:
-		CombatGlobals.playSingleTargetAnimation(target, animation_scene)
-		CombatGlobals.manual_call_indicator.emit(target, '25 REACTION', 'Show')
+		CombatGlobals.manual_call_indicator.emit(target, '25 REACTION', 'Reaction')
 		target.STAT_VALUES['health'] -= 25
 		CombatGlobals.playAndResetAnimation(target, 'Hit')
-		await animation_scene.get_node('AnimationPlayer').animation_finished
-		
-	CombatGlobals.emit_ability_executed()
 	
+	CombatGlobals.secondary_ability_executed.emit()

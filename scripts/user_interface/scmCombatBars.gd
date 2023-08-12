@@ -5,6 +5,8 @@ extends Node2D
 
 @onready var energy_bar = $EnergyBar
 @onready var health_bar = $HealthBar
+@onready var absolute_health = $AbsoluteHealth
+@onready var absolute_energy = $AbsoluteEnergy
 @onready var armor_icon = $ArmorIcon
 @onready var status_effects = $StatusEffectContainer
 @onready var indicator = $Indicator
@@ -39,6 +41,8 @@ func updateBars():
 	health_bar.value = attached_combatant.STAT_VALUES['health']
 	energy_bar.max_value = attached_combatant.BASE_STAT_VALUES['verve']
 	energy_bar.value = attached_combatant.STAT_VALUES['verve']
+	absolute_health.text = str(health_bar.value)
+	absolute_energy.text = str(energy_bar.value)
 
 func updateArmorIcon():
 	var armor: ResArmor = attached_combatant.EQUIPMENT['armor']
@@ -55,23 +59,24 @@ func updateStatusEffects():
 		status_effects.add_child(effect.ICON)
 
 func _on_health_bar_value_changed(value):
+	indicator_label.text = str(previous_value - value)
 	if attached_combatant.isDead():
 		indicator_animator.play('KO')
 		await indicator_animator.animation_finished
 		hide()
 		return
 	
-	if received_combatant == attached_combatant:
-		indicator_label.text = str(previous_value - value)
-		match indicator_animation:
-			"Crit": indicator_label.text += " CRITICAL!"
-		indicator_animator.play(indicator_animation)
-		await indicator_animator.animation_finished
-		previous_value = value
-		indicator_animation = "Show"
+	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
+	indicator_animator.play(indicator_animation)
+	await indicator_animator.animation_finished
+	previous_value = value
+	indicator_animation = "Show"
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
 	if attached_combatant == combatant:
 		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
-		add_child(secondary_indicator)
-		secondary_indicator.playAnimation(indicator.global_position, text, animation)
+		var y_placement = 0
+		for child in $Marker2D.get_children():
+			y_placement -= 24
+		$Marker2D.add_child(secondary_indicator)
+		secondary_indicator.playAnimation(indicator.global_position + Vector2(0, y_placement), text, animation)

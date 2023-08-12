@@ -17,7 +17,7 @@ DESCRIPTION = ""
 STAT_VALUES = {
 "accuracy": 0.95,
 "brawn": 0,
-"crit": 0.05,
+"crit": 1.0,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,

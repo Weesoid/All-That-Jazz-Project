@@ -109,6 +109,7 @@ func on_enemy_turn():
 func end_turn():
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
+		tickStatusEffects(combatant, true)
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
@@ -315,7 +316,7 @@ func commandExecuteAbility(target, ability: ResAbility):
 						target, 
 						animation
 						)
-	await CombatGlobals.ability_executed
+	await CombatGlobals.secondary_ability_executed
 	animation.queue_free()
 #********************************************************************************
 # MISCELLANEOUS
@@ -377,8 +378,9 @@ func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
 		combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
-func tickStatusEffects(combatant: ResCombatant):
+func tickStatusEffects(combatant: ResCombatant, per_turn = false):
 	for effect in combatant.STATUS_EFFECTS:
+		if per_turn and !effect.TICK_PER_TURN: continue
 		effect.tick()
 
 func refreshInstantCasts(combatant: ResCombatant):
