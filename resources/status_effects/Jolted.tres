@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=2 format=3 uid="uid://bis45biacy6r8"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_6gnln"]
+
+[resource]
+script = ExtResource("1_6gnln")
+NAME = ""
+MAX_DURATION = 0
+MAX_RANK = 0
+ON_HIT = false
+APPLY_ONCE = false
+PERMANENT = false

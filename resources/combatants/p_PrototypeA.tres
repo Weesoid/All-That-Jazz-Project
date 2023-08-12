@@ -11,8 +11,12 @@
 [resource]
 script = ExtResource("5_rov6a")
 STAT_GROWTH_RATES = {
+"accuracy": 0,
 "brawn": 1,
+"crit": 0,
+"exposure": 0,
 "grit": 1,
+"heal mult": 0,
 "health": 1,
 "hustle": 1,
 "verve": 1,
@@ -24,7 +28,7 @@ NAME = "PUFriendHealer"
 PACKED_SCENE = ExtResource("5_8cf7w")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
-"accuracy": 1,
+"accuracy": 0.95,
 "brawn": 1,
 "crit": 0.05,
 "exposure": 0,

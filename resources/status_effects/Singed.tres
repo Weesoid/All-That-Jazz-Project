@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=2 format=3 uid="uid://dlplk7vsldftb"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_ty3fj"]
+
+[resource]
+script = ExtResource("1_ty3fj")
+NAME = "Singed"
+MAX_DURATION = 0
+MAX_RANK = 0
+ON_HIT = false
+APPLY_ONCE = false
+PERMANENT = false

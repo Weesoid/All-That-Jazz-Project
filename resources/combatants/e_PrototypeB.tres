@@ -15,9 +15,9 @@ NAME = "EUHealer"
 PACKED_SCENE = ExtResource("3_4f05j")
 DESCRIPTION = ""
 STAT_VALUES = {
-"accuracy": 1,
+"accuracy": 0.95,
 "brawn": 1,
-"crit": 1.0,
+"crit": 0.05,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,

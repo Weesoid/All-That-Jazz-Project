@@ -2,7 +2,8 @@ extends Node
 
 signal ability_executed
 signal exp_updated(value: float, max_value: float)
-signal call_indicator(animation: String)
+signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
+signal call_indicator(animation: String, combatant: ResCombatant)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -16,27 +17,14 @@ func emit_exp_updated(value, max_value):
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
-func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling, damage_type: ResDamageType):
-	if randomRoll(caster.STAT_VALUES['accuracy']):
-		base_damage += caster.STAT_VALUES[attacker_stat] * bonus_scaling
-		var damage = ((base_damage + (caster.STAT_VALUES[attacker_stat] * bonus_scaling)) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat])))
-		damage *= getDamageMultiplier(damage_type, getCombatantArmorType(target))
-		damage = valueVariate(damage, 0.1)
-		damage_type.rollEffect(target)
-		if randomRoll(caster.STAT_VALUES['crit']):
-			damage *= 2.0
-			call_indicator.emit('Crit')
-		else:
-			call_indicator.emit('Show')
-		
-		target.STAT_VALUES['health'] -= int(damage)
-		playAndResetAnimation(target, 'Hit')
-		
-		# Check for on-hit status effects, trigger a tick if any
+func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling, damage_type: ResDamageType, can_miss = true, can_crit = true):
+	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
+		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
+	elif can_miss:
+		manual_call_indicator.emit(target, 'WHIFF!', 'Show')
 	else:
-		call_indicator.emit('Whiff')
-		target.STAT_VALUES['health'] -= 1
-	
+		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
+
 func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
 	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling) # Multiply by heal multplier
 	healing = valueVariate(healing, 0.1)
@@ -47,7 +35,50 @@ func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: S
 	else:
 		target.STAT_VALUES['health'] += healing
 	
-	call_indicator.emit('Show')
+	call_indicator.emit('Show', target)
+
+func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, bonus_scaling, attacker_stat: String, defender_stat: String, damage_type: ResDamageType, can_crit: bool):
+	# Raw Damage Calculation
+	base_damage += caster.STAT_VALUES[attacker_stat] * bonus_scaling
+	var damage = (base_damage) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat]))
+	var multiplier = getDamageMultiplier(damage_type, getCombatantArmorType(target))
+	if multiplier > 1.0:
+		manual_call_indicator.emit(target, 'WALLOP!!!', 'Show')
+	elif multiplier < 1.0:
+		manual_call_indicator.emit(target, 'RESISTED!', 'Show')
+	damage *= multiplier
+	
+	# RNG Rolls
+	damage = valueVariate(damage, 0.15)
+	damage_type.rollEffect(target)
+	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
+		damage *= 2.0
+		call_indicator.emit('Crit', target)
+	else:
+		call_indicator.emit('Show', target)
+	
+	# Damage target
+	target.STAT_VALUES['health'] -= int(damage)
+	playAndResetAnimation(target, 'Hit')
+	
+func baseDamageTarget(target: ResCombatant, base_damage, defender_stat: String, damage_type = null, can_crit = false, crit_chance = 0.05):
+	# Raw Damage Calculation
+	var damage = (base_damage) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat]))
+	if damage != null:
+		damage *= getDamageMultiplier(damage_type, getCombatantArmorType(target))
+	
+	# RNG Rolls
+	damage = valueVariate(damage, 0.15)
+	damage_type.rollEffect(target)
+	if randomRoll(crit_chance) and can_crit:
+		damage *= 2.0
+		call_indicator.emit('Crit', target)
+	else:
+		call_indicator.emit('Show', target)
+	
+	# Damage target
+	target.STAT_VALUES['health'] -= int(damage)
+	playAndResetAnimation(target, 'Hit')
 
 func randomRoll(percent_chance: float):
 	assert(percent_chance <= 1.0 and percent_chance >= 0, "% chance must be between 0 to 1")

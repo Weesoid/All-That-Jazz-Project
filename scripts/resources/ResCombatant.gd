@@ -9,15 +9,15 @@ class_name ResCombatant
 
 ## Frontend / Gameplay export variables
 @export var STAT_VALUES = {
-	'health': 1,
-	'verve': 1,
+	'health': 100,
+	'verve': 8,
 	'hustle': 1,
 	'brawn': 1,
 	'wit': 1,
 	'grit': 1,
 	'will': 1,
 	'crit': 0.05,
-	'accuracy': 1,
+	'accuracy': 0.95,
 	'heal mult': 1,
 	'exposure': 0
 }
@@ -65,7 +65,7 @@ func getMaxHealth():
 	return BASE_STAT_VALUES['health']
 	
 func isDead()-> bool:
-	return STAT_VALUES['health'] < 0
+	return STAT_VALUES['health'] <= 0
 	
 func getStringStats():
 	var result = ""

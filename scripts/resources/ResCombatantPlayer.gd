@@ -21,8 +21,6 @@ var initialized = false
 
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
-	if FOLLOWER_PACKED_SCENE != null:
-		FOLLOWER_SCENE = FOLLOWER_PACKED_SCENE.instantiate()
 	
 	if EQUIPMENT['armor'] != null and EQUIPMENT['armor'].STATUS_EFFECT != null:
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['armor'].STATUS_EFFECT)
@@ -30,6 +28,8 @@ func initializeCombatant():
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['charm'].STATUS_EFFECT)
 	
 	if !initialized:
+		if FOLLOWER_PACKED_SCENE != null:
+			FOLLOWER_SCENE = FOLLOWER_PACKED_SCENE.instantiate()
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
 		initialized = true
 	

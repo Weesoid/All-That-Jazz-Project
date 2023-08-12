@@ -6,13 +6,7 @@ class_name ResArmorType
 @export var MULTIPLIERS: Dictionary
 
 func getMultiplier(damage_type: ResDamageType)-> float:
-	if !MULTIPLIERS.has(damage_type): 
-		#print('Neutral!')
+	if !MULTIPLIERS.has(damage_type):
 		return DEFAULT_MULTIPLIER
-	if MULTIPLIERS[damage_type] > 1.0:
-		pass
-		#print('Effective!')
-	else:
-		pass
 		#print('Resisted!')
 	return MULTIPLIERS[damage_type]

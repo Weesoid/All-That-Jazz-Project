@@ -11,8 +11,12 @@
 [resource]
 script = ExtResource("5_4siku")
 STAT_GROWTH_RATES = {
+"accuracy": 0,
 "brawn": 1,
+"crit": 0,
+"exposure": 0,
 "grit": 1,
+"heal mult": 0,
 "health": 1,
 "hustle": 1,
 "verve": 1,
@@ -24,17 +28,17 @@ NAME = "PUMainBlasko"
 PACKED_SCENE = ExtResource("6_wd1pn")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
-"accuracy": 1,
+"accuracy": 0.95,
 "brawn": 1,
-"crit": 0.5,
+"crit": 0.05,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 9999,
-"hustle": 2,
-"verve": 16,
+"health": 100,
+"hustle": 1,
+"verve": 1,
 "will": 1,
-"wit": 10
+"wit": 1
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ce6nb"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i")])
 EQUIPMENT = {
