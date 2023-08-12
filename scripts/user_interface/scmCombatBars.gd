@@ -27,7 +27,7 @@ func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 	if attached_combatant is ResEnemyCombatant:
 		energy_bar.hide()
-	
+	previous_value = attached_combatant.getMaxHealth()
 
 func _process(_delta):
 	updateBars()
