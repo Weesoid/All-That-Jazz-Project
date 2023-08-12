@@ -20,12 +20,12 @@ PACKED_SCENE = ExtResource("5_rrp48")
 DESCRIPTION = ""
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 1,
+"brawn": 0,
 "crit": 0.05,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 100,
+"health": 999,
 "hustle": 1,
 "verve": 1,
 "will": 1,

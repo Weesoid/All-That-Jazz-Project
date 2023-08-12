@@ -48,6 +48,7 @@ signal update_exp(value: float, max_value: float)
 #********************************************************************************
 func _ready():
 	connectPlayerItems()
+	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	
 	for combatant in COMBATANTS:
 		spawnTroop(combatant)
@@ -301,6 +302,21 @@ func executeAbility():
 	if selected_item != null:
 		selected_item.use()
 	confirm.emit()
+	
+func commandExecuteAbility(target, ability: ResAbility):
+	var animation = ability.ANIMATION.instantiate()
+	add_child(animation)
+	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
+	ability.animateCast(active_combatant)
+	if ability.TARGET_TYPE == ability.TargetType.MULTI:
+		target = ability.getValidTargets(COMBATANTS, active_combatant is ResPlayerCombatant)
+	ability.applyEffects(
+						null, 
+						target, 
+						animation
+						)
+	await CombatGlobals.ability_executed
+	animation.queue_free()
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************

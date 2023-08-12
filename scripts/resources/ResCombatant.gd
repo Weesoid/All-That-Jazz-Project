@@ -54,7 +54,7 @@ func getStatusEffectNames():
 	for effect in STATUS_EFFECTS:
 		names.append(effect.NAME)
 	return names
-	
+
 func isEquipped(slot_name: String):
 	return EQUIPMENT[slot_name] != null
 	

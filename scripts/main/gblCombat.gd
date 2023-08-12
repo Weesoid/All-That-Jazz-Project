@@ -4,6 +4,7 @@ signal ability_executed
 signal exp_updated(value: float, max_value: float)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
 signal call_indicator(animation: String, combatant: ResCombatant)
+signal execute_ability(target, ability: ResAbility)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -60,25 +61,6 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, bonus
 	# Damage target
 	target.STAT_VALUES['health'] -= int(damage)
 	playAndResetAnimation(target, 'Hit')
-	
-func baseDamageTarget(target: ResCombatant, base_damage, defender_stat: String, damage_type = null, can_crit = false, crit_chance = 0.05):
-	# Raw Damage Calculation
-	var damage = (base_damage) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat]))
-	if damage != null:
-		damage *= getDamageMultiplier(damage_type, getCombatantArmorType(target))
-	
-	# RNG Rolls
-	damage = valueVariate(damage, 0.15)
-	damage_type.rollEffect(target)
-	if randomRoll(crit_chance) and can_crit:
-		damage *= 2.0
-		call_indicator.emit('Crit', target)
-	else:
-		call_indicator.emit('Show', target)
-	
-	# Damage target
-	target.STAT_VALUES['health'] -= int(damage)
-	playAndResetAnimation(target, 'Hit')
 
 func randomRoll(percent_chance: float):
 	assert(percent_chance <= 1.0 and percent_chance >= 0, "% chance must be between 0 to 1")
@@ -116,7 +98,12 @@ func getCombatantArmorType(combatant: ResCombatant):
 
 func modifyStat(target: ResCombatant, stat: String, percent_scale: float):
 	target.STAT_VALUES[stat] += target.STAT_VALUES[stat] * percent_scale
-	
+
+func modifyStatFlat(target: ResCombatant, stat: String, value: float):
+	target.STAT_VALUES[stat] += value
+	if target.STAT_VALUES[stat] < 0:
+		target.STAT_VALUES[stat] = 0
+
 func resetStat(target: ResCombatant, stat: String):
 	target.STAT_VALUES[stat] = target.BASE_STAT_VALUES[stat]
 	
@@ -145,10 +132,14 @@ func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 		target.STATUS_EFFECTS.append(status_effect)
 	else:
 		rankUpStatusEffect(target, status_effect)
-	# checkReactions(target)
+	
+	checkReactions(target)
 
 func checkReactions(target: ResCombatant):
-	pass
+	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
+		removeStatusEffect(target, 'Singed')
+		removeStatusEffect(target, 'Poison')
+		execute_ability.emit(target, preload("res://resources/abilities/DebuggerStrike.tres"))
 	# If target has this effect and that effect, react and remove
 
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
@@ -158,4 +149,9 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1
-	
+
+func removeStatusEffect(target: ResCombatant, status_name: String):
+	for status in target.STATUS_EFFECTS:
+		if status.NAME == status_name:
+			status.removeStatusEffect()
+			return
