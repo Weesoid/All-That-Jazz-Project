@@ -109,7 +109,6 @@ func on_enemy_turn():
 func end_turn():
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
-		tickStatusEffects(combatant)
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
@@ -129,6 +128,7 @@ func end_turn():
 	if !selected_ability.INSTANT_CAST:
 		active_index = incrementIndex(active_index,1,COMBATANTS.size())
 		active_combatant = COMBATANTS[active_index]
+		tickStatusEffects(active_combatant)
 		while active_combatant.STAT_VALUES['hustle'] == -1:
 			active_index = incrementIndex(active_index,1,COMBATANTS.size())
 			active_combatant = COMBATANTS[active_index]

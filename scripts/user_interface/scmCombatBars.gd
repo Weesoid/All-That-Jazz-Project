@@ -55,9 +55,6 @@ func updateStatusEffects():
 		status_effects.add_child(effect.ICON)
 
 func _on_health_bar_value_changed(value):
-	if value == health_bar.max_value:
-		previous_value = health_bar.max_value
-		return
 	if attached_combatant.isDead():
 		indicator_animator.play('KO')
 		await indicator_animator.animation_finished
