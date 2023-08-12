@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://chftwgr1ebsxv"]
 
 [ext_resource type="Texture2D" uid="uid://lbsch8mqtfwd" path="res://assets/particle_sprites/arrow.png" id="1_ri33k"]
 

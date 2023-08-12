@@ -1,12 +1,18 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=2 format=3 uid="uid://dlplk7vsldftb"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://dlplk7vsldftb"]
 
+[ext_resource type="PackedScene" uid="uid://bn11ynbyx6dsp" path="res://scenes/particles/Singe.tscn" id="1_7nbwp"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_ty3fj"]
+[ext_resource type="Script" path="res://scripts/abilities/scsSinged.gd" id="2_jsky3"]
+[ext_resource type="Texture2D" uid="uid://cwni0lxcr0jft" path="res://assets/icons/st_brawn_dn2.png" id="3_io36o"]
 
 [resource]
 script = ExtResource("1_ty3fj")
 NAME = "Singed"
-MAX_DURATION = 0
+STATUS_SCRIPT = ExtResource("2_jsky3")
+PACKED_SCENE = ExtResource("1_7nbwp")
+TEXTURE = ExtResource("3_io36o")
+MAX_DURATION = 6
 MAX_RANK = 0
 ON_HIT = false
-APPLY_ONCE = false
+APPLY_ONCE = true
 PERMANENT = false

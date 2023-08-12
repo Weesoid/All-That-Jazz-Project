@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://bn13cdac7oodf"]
 
 [ext_resource type="Script" path="res://scripts/abilities/scaHealAttack.gd" id="1_gjybg"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_wf5nj"]
@@ -14,3 +14,4 @@ COST = 4
 COST_RESOURCE = "verve"
 TARGET_TYPE = 0
 TARGET_GROUP = 0
+INSTANT_CAST = false
