@@ -14,6 +14,7 @@ func emit_exp_updated(value, max_value):
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
+## Calculate damage using basic formula and parameters
 func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling, damage_type: ResDamageType, can_miss = true, can_crit = true):
 	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
 		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
@@ -23,18 +24,34 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: S
 	else:
 		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
 
-func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
-	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling) # Multiply by heal multplier
-	healing = valueVariate(healing, 0.15)
-	healing *= target.STAT_VALUES['heal mult']
+## Calculate damage using custom formula and parameters
+func calculateRawDamage(target: ResCombatant, damage, damage_type: ResDamageType = null, caster: ResCombatant = null, can_crit = false, can_miss = false, variate = false, variation = 15.0):
+	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']):
+		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
+		return
 	
-	if target.STAT_VALUES['health'] + healing > target.getMaxHealth():
-		target.STAT_VALUES['health'] = target.getMaxHealth()
+	if damage_type != null:
+		var multiplier = getDamageMultiplier(damage_type, getCombatantArmorType(target))
+		if multiplier > 1.0:
+			manual_call_indicator.emit(target, 'WALLOP!!!', 'Wallop')
+		elif multiplier < 1.0:
+			manual_call_indicator.emit(target, 'RESISTED!', 'Resist')
+		damage *= multiplier
+		damage_type.rollEffect(target)
+	
+	if variate:
+		damage = valueVariate(damage, variation)
+	
+	if can_crit and randomRoll(caster.STAT_VALUES['crit']):
+		damage *= 2.0
+		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
+		call_indicator.emit('Show', target)
 	else:
-		manual_call_indicator.emit(target, "%s HEALED!" % [int(healing)], 'Heal')
-		target.STAT_VALUES['health'] += int(healing)
+		call_indicator.emit('Show', target)
 	
-	call_indicator.emit('Show', target)
+	target.STAT_VALUES['health'] -= int(damage)
+	tickOnHitStatusEffects(target)
+	playAndResetAnimation(target, 'Hit')
 
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, bonus_scaling, attacker_stat: String, defender_stat: String, damage_type: ResDamageType, can_crit: bool):
 	# Raw Damage Calculation
@@ -59,7 +76,25 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, bonus
 	
 	# Damage target
 	target.STAT_VALUES['health'] -= int(damage)
+	tickOnHitStatusEffects(target)
 	playAndResetAnimation(target, 'Hit')
+
+func tickOnHitStatusEffects(target: ResCombatant):
+	for status in target.STATUS_EFFECTS:
+		if status.ON_HIT: status.tick()
+
+func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
+	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling) # Multiply by heal multplier
+	healing = valueVariate(healing, 0.15)
+	healing *= target.STAT_VALUES['heal mult']
+	
+	if target.STAT_VALUES['health'] + healing > target.getMaxHealth():
+		target.STAT_VALUES['health'] = target.getMaxHealth()
+	else:
+		manual_call_indicator.emit(target, "%s HEALED!" % [int(healing)], 'Heal')
+		target.STAT_VALUES['health'] += int(healing)
+	
+	call_indicator.emit('Show', target)
 
 func randomRoll(percent_chance: float):
 	assert(percent_chance <= 1.0 and percent_chance >= 0, "% chance must be between 0 to 1")
