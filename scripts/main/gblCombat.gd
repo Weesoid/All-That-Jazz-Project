@@ -1,7 +1,5 @@
 extends Node
 
-signal ability_executed
-signal secondary_ability_executed
 signal exp_updated(value: float, max_value: float)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
 signal call_indicator(animation: String, combatant: ResCombatant)
@@ -10,9 +8,6 @@ signal execute_ability(target, ability: ResAbility)
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
 #********************************************************************************
-func emit_ability_executed():
-	ability_executed.emit()
-
 func emit_exp_updated(value, max_value):
 	exp_updated.emit(value, max_value)
 	
@@ -30,13 +25,14 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: S
 
 func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
 	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling) # Multiply by heal multplier
-	healing = valueVariate(healing, 0.1)
+	healing = valueVariate(healing, 0.15)
 	healing *= target.STAT_VALUES['heal mult']
 	
 	if target.STAT_VALUES['health'] + healing > target.getMaxHealth():
 		target.STAT_VALUES['health'] = target.getMaxHealth()
 	else:
-		target.STAT_VALUES['health'] += healing
+		manual_call_indicator.emit(target, "%s HEALED!" % [int(healing)], 'Heal')
+		target.STAT_VALUES['health'] += int(healing)
 	
 	call_indicator.emit('Show', target)
 
@@ -82,7 +78,7 @@ func valueVariate(value, percent_variance: float):
 	return value
 
 func loadDamageType(damage_type_name: String)-> ResDamageType:
-	return load(str("res://resources/damage_types/"+damage_type_name+".tres"))
+	return load("res://resources/damage_types/%s.tres" % [damage_type_name])
 
 func loadArmorType(armor_type_name: String)-> ResArmorType:
 	return load(str("res://resources/armor_types/"+armor_type_name+".tres"))
@@ -113,10 +109,11 @@ func resetStat(target: ResCombatant, stat: String):
 #********************************************************************************
 # ANIMATION HANDLING
 #********************************************************************************
-func playSingleTargetAnimation(target:ResCombatant, animation_scene):
-	animation_scene.position = target.SCENE.global_position
-	animation_scene.get_node('AnimationPlayer').play('Execute')
-	
+func playAbilityAnimation(target:ResCombatant, animation_scene):
+	var animation = animation_scene.instantiate()
+	target.SCENE.add_child(animation)
+	animation.playAnimation(target.SCENE.position)
+
 func playAndResetAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
 	await target.getAnimator().animation_finished
@@ -139,7 +136,6 @@ func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	checkReactions(target)
 
 func checkReactions(target: ResCombatant):
-	print(target.getStatusEffectNames())
 	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
 		execute_ability.emit(target, preload("res://resources/abilities/ReactionCauterize.tres"))
 		removeStatusEffect(target, 'Singed')
@@ -149,15 +145,13 @@ func checkReactions(target: ResCombatant):
 	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Jolted', 'Poison', preload("res://resources/abilities/ReactionCatalyze.tres"))
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
-		execute_ability.emit(target, preload("res://resources/abilities/ReactionCatalyze.tres"))
+		execute_ability.emit(target, preload("res://resources/abilities/ReactionFulgurate.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Jolted')
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Jolted'):
 		runReaction(target, 'Chilled', 'Jolted', preload("res://resources/abilities/ReactionDisrupt.tres"))
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Chilled', 'Poison', preload("res://resources/abilities/ReactionVulnerate.tres"))
-	# DISRUPT (Cold shocking)
-
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
 	removeStatusEffect(target, effectA)

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://vtaidrxm1tji"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_5akdy"]
-[ext_resource type="Resource" uid="uid://cokg8661ybwgu" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
+[ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="3_k3ahh"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="4_nrs1w"]
 [ext_resource type="PackedScene" uid="uid://ve3ff3pmhinv" path="res://scenes/entities/NPCPrototypeFollower2.tscn" id="5_3c2l6"]

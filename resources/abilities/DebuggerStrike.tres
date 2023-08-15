@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://d3seiqhsea2h5"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_bont0"]
 [ext_resource type="Script" path="res://scripts/secondary_abilities/scaDebuggerStrike.gd" id="1_jv18n"]

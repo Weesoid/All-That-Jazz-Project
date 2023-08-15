@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResDamageType" load_steps=3 format=3 uid="uid://dg1ox1ax6ywmb"]
 
-[ext_resource type="Resource" uid="uid://cphbiwvara2nw" path="res://resources/status_effects/Poison.tres" id="1_1sbsk"]
+[ext_resource type="Resource" path="res://resources/status_effects/Poison.tres" id="1_1sbsk"]
 [ext_resource type="Script" path="res://scripts/resources/ResDamageType.gd" id="1_40tx2"]
 
 [resource]

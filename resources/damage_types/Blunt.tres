@@ -1,10 +1,8 @@
-[gd_resource type="Resource" script_class="ResDamageType" load_steps=3 format=3 uid="uid://bdajhga5cgdqi"]
+[gd_resource type="Resource" script_class="ResDamageType" load_steps=2 format=3 uid="uid://bdajhga5cgdqi"]
 
-[ext_resource type="Resource" uid="uid://cphbiwvara2nw" path="res://resources/status_effects/Poison.tres" id="1_eth24"]
 [ext_resource type="Script" path="res://scripts/resources/ResDamageType.gd" id="1_kdckf"]
 
 [resource]
 script = ExtResource("1_kdckf")
 NAME = "Blunt"
-EFFECT = ExtResource("1_eth24")
-EFFECT_CHANCE = 0.1
+EFFECT_CHANCE = 0.0

@@ -3,12 +3,9 @@ static func animateCast(caster: ResCombatant):
 	await caster.getAnimator().animation_finished
 	caster.getAnimator().play('Idle')
 	
-static func applyEffects(_caster: ResCombatant, target: ResCombatant, _animation_scene):
+static func applyEffects(_caster: ResCombatant, target: ResCombatant, animation_scene):
 	var damage = target.getStatusEffect('Poison').duration * (target.STAT_VALUES['health'] * 0.05)
-	
 	CombatGlobals.manual_call_indicator.emit(target, str(int(damage), ' CAUTERIZED!'), 'Reaction')
 	target.STAT_VALUES['health'] -= int(damage)
+	CombatGlobals.playAbilityAnimation(target, animation_scene)
 	
-	CombatGlobals.playAndResetAnimation(target, 'Hit')
-	
-	CombatGlobals.secondary_ability_executed.emit()

@@ -75,21 +75,18 @@ func _ready():
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
 	# TO-DO: Battle Transition
-	
+
 func _process(_delta):
 	match target_state:
 		1: playerSelectSingleTarget()
 		2: playerSelectMultiTarget()
-	
+
 func on_player_turn():
-	print(active_combatant, ' friend is acting')
-	#checkWin()
 	action_panel.show()
 	attack_button.grab_focus()
 	action_panel.global_position = active_combatant.getSprite().global_position - Vector2(0, 60)
 	
 	await confirm
-	print('Ringading')
 	end_turn()
 	
 func on_enemy_turn():
@@ -110,12 +107,10 @@ func on_enemy_turn():
 		checkWin()
 	
 func end_turn():
-	print('Refreshing instas')
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
 		
-	print('Ridding deads')
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
 		if combatant is ResEnemyCombatant: 
@@ -124,7 +119,6 @@ func end_turn():
 		
 		COMBATANTS.erase(combatant)
 	
-	print('Resetting values')
 	# Reset values
 	run_once = true
 	target_index = 0
@@ -132,7 +126,6 @@ func end_turn():
 	selected_item = null
 	ability_scroller.hide()
 	
-	print('Determining next')
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
 		active_index = incrementIndex(active_index,1,COMBATANTS.size())
@@ -144,8 +137,6 @@ func end_turn():
 	else:
 		selected_ability.ENABLED = false
 	
-	print('Acting!')
-	print(active_combatant)
 	active_combatant.act()
 	checkWin()
 
@@ -204,16 +195,7 @@ func _on_equipment_pressed():
 	
 func _on_escape_pressed():
 	concludeCombat()
-	
-func playIndicatorAnimation(target: ResCombatant, message: String, value):
-	var indicator = load("res://scenes/components/Indicator.tscn").instantiate()
-	add_child(indicator)
-	indicator.global_position = target.getSprite().global_position
-	indicator.get_node("IndicatorLabel").text = str(message,' ',value)
-	indicator.get_node("Animator").play('Show')
-	await indicator.get_node("Animator").animation_finished
-	indicator.queue_free()
-	
+
 func writeCombatLog(text: String):
 	combat_log.text = text
 	combat_log.show()
@@ -307,7 +289,6 @@ func executeAbility():
 								selected_ability.ANIMATION
 								)
 	await get_tree().create_timer(0.5).timeout
-	#await CombatGlobals.ability_executed
 	if selected_item != null:
 		selected_item.use()
 	confirm.emit()
@@ -322,12 +303,6 @@ func commandExecuteAbility(target, ability: ResAbility):
 						target, 
 						selected_ability.ANIMATION
 						)
-	await CombatGlobals.secondary_ability_executed
-
-func endAbility():
-	if selected_item != null:
-		selected_item.use()
-	confirm.emit()
 
 #********************************************************************************
 # MISCELLANEOUS
@@ -375,12 +350,10 @@ func checkWin():
 	
 	# TO-DO Win-Lose signals
 	if enemies.is_empty():
-		print("You win!")
 		if unique_id != null:
 			PlayerGlobals.combat_won.emit(unique_id)
 		concludeCombat()
 	elif team.is_empty():
-		print("You LOSE!")
 		if unique_id != null:
 			PlayerGlobals.combat_lost.emit(unique_id)
 		concludeCombat()

@@ -3,7 +3,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		var damage = target.BASE_STAT_VALUES['health'] * 0.025
 		CombatGlobals.manual_call_indicator.emit(target, str(int(damage), ' CHILLED!'), 'Show')
 		target.STAT_VALUES['health'] -= int(damage)
-		CombatGlobals.modifyStatFlat(target, 'hustle', -1)
+		CombatGlobals.modifyStatFlat(target, 'grit', -1)
 
 static func endEffects(target: ResCombatant):
-	CombatGlobals.resetStat(target, 'hustle')
+	CombatGlobals.resetStat(target, 'grit')

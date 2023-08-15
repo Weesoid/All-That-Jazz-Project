@@ -12,13 +12,14 @@ extends Node2D
 @onready var indicator = $Indicator
 @onready var indicator_label = $Indicator/Label
 @onready var indicator_animator = $Indicator/AnimationPlayer
-
+@onready var secondary_prompts = $Marker2D
 
 var indicator_animation = "Show"
 var received_combatant: ResCombatant
 var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
+var first_turn = true
 
 func _ready():
 	CombatGlobals.call_indicator.connect(
@@ -59,7 +60,12 @@ func updateStatusEffects():
 		status_effects.add_child(effect.ICON)
 
 func _on_health_bar_value_changed(value):
-	indicator_label.text = str(previous_value - value)
+	if first_turn: 
+		indicator.hide()
+	else:
+		indicator.show()
+	
+	indicator_label.text = str(abs(previous_value - value))
 	if attached_combatant.isDead():
 		indicator_animator.play('KO')
 		await indicator_animator.animation_finished
@@ -68,6 +74,7 @@ func _on_health_bar_value_changed(value):
 	
 	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
 	indicator_animator.play(indicator_animation)
+	first_turn = false
 	await indicator_animator.animation_finished
 	previous_value = value
 	indicator_animation = "Show"
@@ -76,7 +83,7 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 	if attached_combatant == combatant:
 		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 		var y_placement = 0
-		for child in $Marker2D.get_children():
+		for child in secondary_prompts.get_children():
 			y_placement -= 24
-		$Marker2D.add_child(secondary_indicator)
+		secondary_prompts.add_child(secondary_indicator)
 		secondary_indicator.playAnimation(indicator.global_position + Vector2(0, y_placement), text, animation)

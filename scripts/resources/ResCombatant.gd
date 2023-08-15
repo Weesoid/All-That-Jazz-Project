@@ -36,10 +36,10 @@ signal player_turn
 
 func initializeCombatant():
 	pass
-	
+
 func act():
 	pass
-	
+
 func getSprite()-> Sprite2D:
 	return SCENE.get_node('Sprite')
 	
@@ -65,9 +65,7 @@ func getMaxHealth():
 	return BASE_STAT_VALUES['health']
 
 func getStatusEffect(stat_name: String)-> ResStatusEffect:
-	print(STATUS_EFFECTS)
 	for status in STATUS_EFFECTS:
-		print('CHECKING: ', status.NAME)
 		if status.NAME == stat_name:
 			print('Returning')
 			return status

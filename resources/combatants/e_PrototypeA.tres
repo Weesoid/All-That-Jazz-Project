@@ -23,7 +23,7 @@ STAT_VALUES = {
 "brawn": 0,
 "crit": 0.05,
 "exposure": 0,
-"grit": 1,
+"grit": 10,
 "heal mult": 1,
 "health": 999,
 "hustle": 1,

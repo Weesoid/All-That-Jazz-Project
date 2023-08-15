@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResDamageType" load_steps=3 format=3 uid="uid://ce2uinaeqnbtj"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResDamageType.gd" id="1_njyi0"]
-[ext_resource type="Resource" uid="uid://nuqfju07c0lk" path="res://resources/status_effects/Chilled.tres" id="1_scs8e"]
+[ext_resource type="Resource" path="res://resources/status_effects/Chilled.tres" id="1_scs8e"]
 
 [resource]
 script = ExtResource("1_njyi0")

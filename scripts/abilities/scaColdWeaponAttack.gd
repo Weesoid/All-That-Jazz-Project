@@ -4,10 +4,6 @@ static func animateCast(caster: ResCombatant):
 	caster.getAnimator().play('Idle')
 	
 static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
-	var animation = animation_scene.instantiate()
-	animation.playAnimation(target.SCENE.global_position)
-	CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 10, 0.5, CombatGlobals.loadDamageType('Cold'))
-	
-	await animation_scene.get_node('AnimationPlayer').animation_finished
-	CombatGlobals.emit_ability_executed()
+	CombatGlobals.playAbilityAnimation(target, animation_scene)
+	CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 10, 0.5, preload("res://resources/damage_types/Cold.tres"))
 	

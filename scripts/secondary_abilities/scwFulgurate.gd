@@ -6,8 +6,7 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	for target in targets:
 		var damage = (target.STAT_VALUES['health'] * 0.15) * ((100.0) / (100.0+target.STAT_VALUES['grit']))
-		
+		CombatGlobals.playAbilityAnimation(target, animation_scene)
 		CombatGlobals.manual_call_indicator.emit(target, str(int(damage), ' FULGURATED!'), 'Reaction')
 		target.STAT_VALUES['health'] -= int(damage)
 	
-	CombatGlobals.secondary_ability_executed.emit()
