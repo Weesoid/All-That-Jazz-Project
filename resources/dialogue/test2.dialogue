@@ -1,8 +1,11 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-do PlayerGlobals.addItemToInventory("ScrapSalvage", 99)
 do PlayerGlobals.addItemToInventory("NeutralWeapon")
+do PlayerGlobals.addItemToInventory("ElectroTems")
+do PlayerGlobals.addItemToInventory("HotHand")
+do PlayerGlobals.addItemToInventory("WolfCold")
+do PlayerGlobals.addItemToInventory("Toxik")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

@@ -139,11 +139,30 @@ func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	checkReactions(target)
 
 func checkReactions(target: ResCombatant):
+	print(target.getStatusEffectNames())
 	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
+		execute_ability.emit(target, preload("res://resources/abilities/ReactionCauterize.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Poison')
-		execute_ability.emit(target, preload("res://resources/abilities/DebuggerStrike.tres"))
-	# If target has this effect and that effect, react and remove
+	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Chilled'):
+		runReaction(target, 'Singed', 'Chilled', preload("res://resources/abilities/ReactionScald.tres"))
+	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
+		runReaction(target, 'Jolted', 'Poison', preload("res://resources/abilities/ReactionCatalyze.tres"))
+	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
+		execute_ability.emit(target, preload("res://resources/abilities/ReactionCatalyze.tres"))
+		removeStatusEffect(target, 'Singed')
+		removeStatusEffect(target, 'Jolted')
+	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Jolted'):
+		runReaction(target, 'Chilled', 'Jolted', preload("res://resources/abilities/ReactionDisrupt.tres"))
+	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
+		runReaction(target, 'Chilled', 'Poison', preload("res://resources/abilities/ReactionVulnerate.tres"))
+	# DISRUPT (Cold shocking)
+
+
+func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
+	removeStatusEffect(target, effectA)
+	removeStatusEffect(target, effectB)
+	execute_ability.emit(target, reaction)
 
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.STATUS_EFFECTS:

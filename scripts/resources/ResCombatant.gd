@@ -63,7 +63,17 @@ func getEquipment(slot_name: String)-> ResEquippable:
 
 func getMaxHealth():
 	return BASE_STAT_VALUES['health']
+
+func getStatusEffect(stat_name: String)-> ResStatusEffect:
+	print(STATUS_EFFECTS)
+	for status in STATUS_EFFECTS:
+		print('CHECKING: ', status.NAME)
+		if status.NAME == stat_name:
+			print('Returning')
+			return status
 	
+	return null
+
 func isDead()-> bool:
 	return STAT_VALUES['health'] <= 0
 	

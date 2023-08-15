@@ -1,5 +1,4 @@
-static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if status_effect.APPLY_ONCE:
+static func applyEffects(target: ResCombatant, _status_effect: ResStatusEffect):
 		CombatGlobals.manual_call_indicator.emit(target, 'JOLTED!', 'Show')
 		target.STAT_VALUES['hustle'] = -1
 

@@ -1,12 +1,19 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=2 format=3 uid="uid://nuqfju07c0lk"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://nuqfju07c0lk"]
 
+[ext_resource type="PackedScene" uid="uid://ctor4ed1ocqxa" path="res://scenes/particles/Chilled.tscn" id="1_58yo2"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_fe3a6"]
+[ext_resource type="Script" path="res://scripts/abilities/scsChilled.gd" id="2_x06er"]
+[ext_resource type="Texture2D" uid="uid://csfqtelbgrufe" path="res://assets/icons/st_will_dn2.png" id="3_kv717"]
 
 [resource]
 script = ExtResource("1_fe3a6")
-NAME = ""
-MAX_DURATION = 0
+NAME = "Chilled"
+STATUS_SCRIPT = ExtResource("2_x06er")
+PACKED_SCENE = ExtResource("1_58yo2")
+TEXTURE = ExtResource("3_kv717")
+MAX_DURATION = 3
 MAX_RANK = 0
 ON_HIT = false
 APPLY_ONCE = false
+TICK_PER_TURN = false
 PERMANENT = false

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://dpmmorvtj4768"]
+
+[ext_resource type="Script" path="res://scripts/abilities/scwFulgurate.gd" id="1_drqp1"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
+[ext_resource type="PackedScene" uid="uid://c7rpqtrfgutkt" path="res://scenes/animations/AOE.tscn" id="2_0vdk1"]
+
+[resource]
+script = ExtResource("1_yro00")
+NAME = "Fulgurate"
+DESCRIPTION = ""
+ANIMATION = ExtResource("2_0vdk1")
+ABILITY_SCRIPT = ExtResource("1_drqp1")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 1
+TARGET_GROUP = 1
+INSTANT_CAST = false

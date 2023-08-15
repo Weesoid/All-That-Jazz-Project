@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://ngnxmyk5y2oi"]
+
+[ext_resource type="Resource" uid="uid://ct042cn5chwik" path="res://resources/abilities/ColdSlap.tres" id="1_vxu0m"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_jtrld"]
+
+[resource]
+script = ExtResource("2_jtrld")
+EFFECT = ExtResource("1_vxu0m")
+durability = Vector2i(100, 100)
+STAT_MODIFICATIONS = {}
+NAME = "Wolf Cold"
+ICON_NAME = ""
+DESCRIPTION = ""

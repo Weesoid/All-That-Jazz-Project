@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://ctjchsmpshbik"]
+
+[ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="1_ra2ys"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_7sjb4"]
+
+[resource]
+script = ExtResource("2_7sjb4")
+EFFECT = ExtResource("1_ra2ys")
+durability = Vector2i(100, 100)
+STAT_MODIFICATIONS = {}
+NAME = "Toxik"
+ICON_NAME = ""
+DESCRIPTION = ""

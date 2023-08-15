@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://hee1yr7mg760"]
+[gd_scene load_steps=5 format=3 uid="uid://cnw0gka66n28i"]
 
-[ext_resource type="Texture2D" uid="uid://cma71ipml06jw" path="res://assets/particle_sprites/singe.png" id="1_uhmtd"]
+[ext_resource type="Texture2D" uid="uid://b1u8egedbmkxa" path="res://assets/particle_sprites/spark.png" id="1_ioejx"]
 
 [sub_resource type="Gradient" id="Gradient_j0wh3"]
 offsets = PackedFloat32Array(0.362667, 0.648, 1)
@@ -12,22 +12,19 @@ gradient = SubResource("Gradient_j0wh3")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g5ke7"]
 direction = Vector3(0, 1, 0)
 spread = 180.0
-gravity = Vector3(0, -98, 0)
-initial_velocity_max = 0.25
-linear_accel_max = 25.0
-damping_max = 10.0
-scale_min = 0.1
-color = Color(0, 0, 0, 1)
+gravity = Vector3(0, 90, 90)
+initial_velocity_max = 200.0
+damping_max = 20.0
+scale_min = 0.25
+scale_max = 0.25
+color = Color(1, 1, 0, 0.443137)
 color_ramp = SubResource("GradientTexture1D_txdgo")
-turbulence_noise_scale = 5.0
 turbulence_noise_speed = Vector3(1, 1, 1)
-turbulence_initial_displacement_min = 1.0
-turbulence_initial_displacement_max = 1.0
 
-[node name="prtPoison" type="GPUParticles2D"]
-amount = 3
+[node name="prtCold" type="GPUParticles2D"]
+amount = 6
 process_material = SubResource("ParticleProcessMaterial_g5ke7")
-texture = ExtResource("1_uhmtd")
-lifetime = 2.5
-speed_scale = 1.5
+texture = ExtResource("1_ioejx")
+lifetime = 0.5
+explosiveness = 1.0
 randomness = 1.0

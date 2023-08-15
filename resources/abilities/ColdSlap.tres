@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://ct042cn5chwik"]
+
+[ext_resource type="Script" path="res://scripts/abilities/scaColdWeaponAttack.gd" id="1_77065"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_w22je"]
+[ext_resource type="PackedScene" uid="uid://y5ffmmh8uc76" path="res://scenes/animations/Punch.tscn" id="2_uxen0"]
+
+[resource]
+script = ExtResource("1_w22je")
+NAME = "Chilling Blow"
+DESCRIPTION = ""
+ANIMATION = ExtResource("2_uxen0")
+ABILITY_SCRIPT = ExtResource("1_77065")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+INSTANT_CAST = false

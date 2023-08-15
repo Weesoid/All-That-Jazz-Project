@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://dqssaas0mo42b"]
+
+[ext_resource type="Resource" uid="uid://ci67q12nr2pu7" path="res://resources/abilities/HotHit.tres" id="1_lb1fm"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_84o6q"]
+
+[resource]
+script = ExtResource("2_84o6q")
+EFFECT = ExtResource("1_lb1fm")
+durability = Vector2i(100, 100)
+STAT_MODIFICATIONS = {
+"grit": 1
+}
+NAME = "Hot Hand"
+ICON_NAME = ""
+DESCRIPTION = ""

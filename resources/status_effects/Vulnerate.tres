@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://ch8pwlq8tqda8"]
+
+[ext_resource type="PackedScene" uid="uid://d0khkuya8js5a" path="res://scenes/particles/Vulnerated.tscn" id="1_gkjan"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_ge1mk"]
+[ext_resource type="Script" path="res://scripts/abilities/scsVulnerated.gd" id="2_hfugv"]
+[ext_resource type="Texture2D" uid="uid://rdkwnjrlfqfh" path="res://assets/icons/st_grit_dn2.png" id="3_pjntp"]
+
+[resource]
+script = ExtResource("2_ge1mk")
+NAME = "Vulnerated"
+STATUS_SCRIPT = ExtResource("2_hfugv")
+PACKED_SCENE = ExtResource("1_gkjan")
+TEXTURE = ExtResource("3_pjntp")
+MAX_DURATION = 1
+MAX_RANK = 10
+ON_HIT = false
+APPLY_ONCE = true
+TICK_PER_TURN = true
+PERMANENT = true
+metadata/_editor_prop_ptr_ICON = NodePath("")
+metadata/_editor_prop_ptr_PARTICLES = NodePath("")

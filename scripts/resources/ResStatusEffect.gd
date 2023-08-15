@@ -49,7 +49,7 @@ func tick():
 		removeStatusEffect()
 
 func animateStatusEffect():
-	PARTICLES.global_position = Vector2(0, 60)
+	PARTICLES.global_position = Vector2(0, 0)
 	afflicted_combatant.SCENE.add_child(PARTICLES)
 	
 	PARTICLES.restart()
