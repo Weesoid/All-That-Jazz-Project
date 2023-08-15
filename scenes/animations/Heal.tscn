@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dndlfnonkjwk2"]
+[gd_scene load_steps=7 format=3 uid="uid://dndlfnonkjwk2"]
 
 [ext_resource type="Texture2D" uid="uid://dihiaf7w04e20" path="res://assets/animation_sprites/Test.png" id="1_lkmq0"]
+[ext_resource type="Script" path="res://scripts/miscellaneous/AbilityAnimations.gd" id="1_vuph7"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_y36fe"]
 
 [sub_resource type="Animation" id="Animation_7g5ea"]
@@ -112,6 +113,7 @@ _data = {
 }
 
 [node name="aabHeal" type="Node2D"]
+script = ExtResource("1_vuph7")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

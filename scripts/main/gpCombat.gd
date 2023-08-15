@@ -82,11 +82,14 @@ func _process(_delta):
 		2: playerSelectMultiTarget()
 	
 func on_player_turn():
+	print(active_combatant, ' friend is acting')
 	#checkWin()
 	action_panel.show()
 	attack_button.grab_focus()
 	action_panel.global_position = active_combatant.getSprite().global_position - Vector2(0, 60)
+	
 	await confirm
+	print('Ringading')
 	end_turn()
 	
 func on_enemy_turn():
@@ -107,10 +110,12 @@ func on_enemy_turn():
 		checkWin()
 	
 func end_turn():
+	print('Refreshing instas')
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
 		
+	print('Ridding deads')
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
 		if combatant is ResEnemyCombatant: 
@@ -119,12 +124,15 @@ func end_turn():
 		
 		COMBATANTS.erase(combatant)
 	
+	print('Resetting values')
 	# Reset values
 	run_once = true
 	target_index = 0
 	COMBATANTS.sort_custom(sortBySpeed)
 	selected_item = null
 	ability_scroller.hide()
+	
+	print('Determining next')
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
 		active_index = incrementIndex(active_index,1,COMBATANTS.size())
@@ -136,6 +144,8 @@ func end_turn():
 	else:
 		selected_ability.ENABLED = false
 	
+	print('Acting!')
+	print(active_combatant)
 	active_combatant.act()
 	checkWin()
 
@@ -288,25 +298,21 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 
 func executeAbility():
-	var animation = selected_ability.ANIMATION.instantiate()
 	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
-	add_child(animation)
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	selected_ability.animateCast(active_combatant)
 	selected_ability.applyEffects(
 								active_combatant, 
 								target_combatant, 
-								animation
+								selected_ability.ANIMATION
 								)
-	await CombatGlobals.ability_executed
-	animation.queue_free()
+	await get_tree().create_timer(0.5).timeout
+	#await CombatGlobals.ability_executed
 	if selected_item != null:
 		selected_item.use()
 	confirm.emit()
 	
 func commandExecuteAbility(target, ability: ResAbility):
-	var animation = ability.ANIMATION.instantiate()
-	add_child(animation)
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	ability.animateCast(active_combatant)
 	if ability.TARGET_TYPE == ability.TargetType.MULTI:
@@ -314,10 +320,15 @@ func commandExecuteAbility(target, ability: ResAbility):
 	ability.applyEffects(
 						null, 
 						target, 
-						animation
+						selected_ability.ANIMATION
 						)
 	await CombatGlobals.secondary_ability_executed
-	animation.queue_free()
+
+func endAbility():
+	if selected_item != null:
+		selected_item.use()
+	confirm.emit()
+
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************

@@ -15,7 +15,6 @@ func initializeCombatant():
 	
 	for equipment in EQUIPMENT.values():
 		if equipment == null: continue
-		print('Equipping ', equipment.NAME)
 		equipment.equip(self)
 
 func act():

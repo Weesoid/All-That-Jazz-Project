@@ -6,7 +6,8 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(_caster: ResCombatant, target: ResCombatant, animation_scene):
 	var status_effect = CombatGlobals.loadStatusEffect('Poison')
 	
-	CombatGlobals.playSingleTargetAnimation(target, animation_scene)
+	var animation = animation_scene.instantiate()
+	animation.playAnimation(target.SCENE.global_position)
 	CombatGlobals.addStatusEffect(target, status_effect)
 	
 	await animation_scene.get_node('AnimationPlayer').animation_finished

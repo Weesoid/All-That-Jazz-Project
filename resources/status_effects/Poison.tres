@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://cphbiwvara2nw"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
-[ext_resource type="PackedScene" path="res://scenes/particles/Poison.tscn" id="1_qebaw"]
-[ext_resource type="Script" path="res://scripts/abilities/scsPoison.gd" id="1_t6ebe"]
+[ext_resource type="PackedScene" uid="uid://bsuyrbl4hyjcw" path="res://scenes/particles/Poison.tscn" id="1_qebaw"]
+[ext_resource type="Script" path="res://scripts/status_effects/scsPoison.gd" id="1_t6ebe"]
 [ext_resource type="Texture2D" uid="uid://bn5owks8hqpg" path="res://assets/icons/st_wit_dn2.png" id="3_eb5um"]
 
 [resource]

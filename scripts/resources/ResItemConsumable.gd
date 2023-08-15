@@ -6,7 +6,6 @@ class_name ResConsumable
 
 func use():
 	STACK -= 1
-	print('cur stack: ', STACK)
 	if STACK <= 0:
 		PlayerGlobals.INVENTORY.erase(self)
 

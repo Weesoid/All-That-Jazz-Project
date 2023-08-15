@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://dpm4luyh18jeg"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
 [ext_resource type="PackedScene" uid="uid://so6e2r5rokwe" path="res://scenes/particles/Disrupted.tscn" id="1_smq3a"]
-[ext_resource type="Script" path="res://scripts/abilities/scsDisrupted.gd" id="2_r45kn"]
+[ext_resource type="Script" path="res://scripts/status_effects/scsDisrupted.gd" id="2_r45kn"]
 [ext_resource type="Texture2D" uid="uid://3umbafr8rf6e" path="res://assets/icons/st_grit_dn1.png" id="3_t1y6l"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_rcuq1"]
 
