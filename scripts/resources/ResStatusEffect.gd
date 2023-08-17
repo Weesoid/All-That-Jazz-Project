@@ -26,6 +26,13 @@ func initializeStatus():
 	PARTICLES = PACKED_SCENE.instantiate()
 	animateStatusEffect()
 	
+	if ON_HIT:
+		CombatGlobals.received_combatant_value.connect(
+			func onHitTick(combatant, caster, received_value):
+				if combatant == afflicted_combatant:
+					STATUS_SCRIPT.applyEffects(afflicted_combatant, caster, received_value, self)
+				)
+	
 	duration = MAX_DURATION
 
 func addStatusEffectIcon():
@@ -41,6 +48,7 @@ func removeStatusEffect():
 func tick():
 	if !PERMANENT: 
 		duration -= 1
+	
 	if !ON_HIT:
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	

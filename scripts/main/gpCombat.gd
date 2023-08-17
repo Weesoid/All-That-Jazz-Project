@@ -77,6 +77,7 @@ func _ready():
 	# TO-DO: Battle Transition
 
 func _process(_delta):
+	attack_button.text = active_combatant.ABILITY_SET[0].NAME.to_upper()
 	match target_state:
 		1: playerSelectSingleTarget()
 		2: playerSelectMultiTarget()
@@ -113,6 +114,7 @@ func end_turn():
 		
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
+		clearStatusEffects(combatant)
 		if combatant is ResEnemyCombatant: 
 			experience_earnt += combatant.getExperience()
 			item_drops.append(combatant.getDrops())
@@ -134,6 +136,7 @@ func end_turn():
 		while active_combatant.STAT_VALUES['hustle'] == -1:
 			active_index = incrementIndex(active_index,1,COMBATANTS.size())
 			active_combatant = COMBATANTS[active_index]
+			tickStatusEffects(active_combatant)
 	else:
 		selected_ability.ENABLED = false
 	

@@ -139,6 +139,7 @@ libraries = {
 }
 
 [node name="ActionPanel" type="VBoxContainer" parent="."]
+z_index = 2
 offset_left = -575.0
 offset_top = 366.0
 offset_right = -490.0

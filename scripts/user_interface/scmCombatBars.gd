@@ -57,7 +57,11 @@ func updateArmorIcon():
 func updateStatusEffects():
 	for effect in attached_combatant.STATUS_EFFECTS:
 		if status_effects.get_children().has(effect.ICON): continue
-		status_effects.add_child(effect.ICON)
+		var tick_down = preload("res://scenes/miscellaneous/StatusEffectTickDown.tscn").instantiate()
+		tick_down.attached_status = effect
+		var icon = effect.ICON
+		icon.add_child(tick_down)
+		status_effects.add_child(icon)
 
 func _on_health_bar_value_changed(value):
 	if first_turn: 

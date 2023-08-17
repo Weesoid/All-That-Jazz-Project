@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://bscmk3txfvu1b"]
+
+[ext_resource type="Script" path="res://scripts/abilities/scaApplyEffect.gd" id="1_0ivsl"]
+[ext_resource type="PackedScene" uid="uid://c7rpqtrfgutkt" path="res://scenes/animations/AOE.tscn" id="2_eggwp"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_2bldq"]
+
+[resource]
+script = ExtResource("3_2bldq")
+NAME = "DEBUG Add Effect"
+DESCRIPTION = ""
+ANIMATION = ExtResource("2_eggwp")
+ABILITY_SCRIPT = ExtResource("1_0ivsl")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 0
+TARGET_GROUP = 0
+INSTANT_CAST = true

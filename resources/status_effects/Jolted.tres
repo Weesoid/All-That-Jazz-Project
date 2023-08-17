@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://bf1bqmsqitd3a"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_6gnln"]
 [ext_resource type="PackedScene" uid="uid://cnw0gka66n28i" path="res://scenes/particles/Jolted.tscn" id="1_ukk5x"]
@@ -11,9 +11,9 @@ NAME = "Jolted"
 STATUS_SCRIPT = ExtResource("2_n0cly")
 PACKED_SCENE = ExtResource("1_ukk5x")
 TEXTURE = ExtResource("3_i0ddl")
-MAX_DURATION = 2
+MAX_DURATION = 6
 MAX_RANK = 0
 ON_HIT = false
 APPLY_ONCE = false
-TICK_PER_TURN = false
+TICK_PER_TURN = true
 PERMANENT = false
