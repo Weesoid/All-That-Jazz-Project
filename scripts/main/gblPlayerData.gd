@@ -44,8 +44,20 @@ func addItemResourceToInventory(item: ResItem, count=1):
 		INVENTORY.append(item)
 	else:
 		INVENTORY.append(item.duplicate())
-	
 	added_item_to_inventory.emit()
+	PlayerGlobals.INVENTORY.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
+	
+	var inventory_prompt = preload("res://scenes/user_interface/InventoryUpdate.tscn").instantiate()
+	var y_placement = 0
+	for child in OverworldGlobals.getPlayer().player_camera.get_children():
+		y_placement -= 23
+	inventory_prompt.global_position += Vector2(0, y_placement)
+	OverworldGlobals.getPlayer().player_camera.add_child(inventory_prompt)
+	inventory_prompt.get_node("Label").text = '+ %s x%s' % [item.NAME, count]
+	inventory_prompt.get_node("AnimationPlayer").play('Show')
+	await inventory_prompt.get_node("AnimationPlayer").animation_finished
+	inventory_prompt.queue_free()
+	
 
 func getItemFromInventory(item: ResItem):
 	return INVENTORY[INVENTORY.find(item)]
