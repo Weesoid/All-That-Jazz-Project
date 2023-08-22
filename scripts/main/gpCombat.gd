@@ -291,11 +291,13 @@ func executeAbility():
 								target_combatant, 
 								selected_ability.ANIMATION
 								)
-	await get_tree().create_timer(0.5).timeout
-	if selected_item != null:
-		selected_item.use()
-	confirm.emit()
 	
+	await get_tree().create_timer(0.5).timeout
+	if has_node('QTE'): await CombatGlobals.qte_finished
+	
+	if selected_item != null: selected_item.use()
+	confirm.emit()
+
 func commandExecuteAbility(target, ability: ResAbility):
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	ability.animateCast(active_combatant)

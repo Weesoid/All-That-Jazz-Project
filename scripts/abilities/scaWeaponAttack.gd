@@ -1,9 +1,26 @@
+var points
+
 static func animateCast(caster: ResCombatant):
 	caster.getAnimator().play('Attack')
 	await caster.getAnimator().animation_finished
 	caster.getAnimator().play('Idle')
 	
 static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
-	CombatGlobals.playAbilityAnimation(target, animation_scene)
-	CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 10, 0.5, preload("res://resources/damage_types/Neutral.tres"))
+	var damage = 10
+	if caster is ResPlayerCombatant:
+		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
+		qte.global_position = target.SCENE.global_position
+		CombatGlobals.getCombatScene().add_child(qte)
+		await CombatGlobals.qte_finished
+		
+		if qte.points == 1:
+			damage += 10
+		elif qte.points == 2:
+			damage += 20
+		elif qte.points == 3:
+			damage += 30
+		
+		qte.queue_free()
 	
+	CombatGlobals.playAbilityAnimation(target, animation_scene)
+	CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', damage, 0.5, preload("res://resources/damage_types/Neutral.tres"))

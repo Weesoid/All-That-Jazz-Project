@@ -5,6 +5,7 @@ signal received_combatant_value(combatant: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
 signal call_indicator(animation: String, combatant: ResCombatant)
 signal execute_ability(target, ability: ResAbility)
+signal qte_finished()
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -212,3 +213,6 @@ func removeStatusEffect(target: ResCombatant, status_name: String):
 		if status.NAME == status_name:
 			status.removeStatusEffect()
 			return
+
+func getCombatScene()-> CombatScene:
+	return get_parent().get_node('CombatScene')

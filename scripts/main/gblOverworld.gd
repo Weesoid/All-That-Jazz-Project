@@ -16,7 +16,7 @@ func _ready():
 		if !member.initialized:
 			member.initializeCombatant()
 			member.SCENE.free()
-	
+
 	follow_array.resize(100)
 	loadFollowers()
 
