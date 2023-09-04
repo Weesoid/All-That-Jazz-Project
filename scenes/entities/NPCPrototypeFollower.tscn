@@ -1,6 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://d123j1lh52wik"]
+[gd_scene load_steps=10 format=3]
 
-[ext_resource type="Script" path="res://scripts/miscellaneous/NPCFollowerTest.gd" id="1_g5p1e"]
+[ext_resource type="Script" path="res://scripts/miscellaneous/NPCFollower.gd" id="1_g5p1e"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://assets/overworld_sprites/ent_walker.png" id="4_5vdgd"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]

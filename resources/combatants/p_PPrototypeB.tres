@@ -3,7 +3,7 @@
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_ce6nb"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="2_jsk6a"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="3_bfkjx"]
-[ext_resource type="PackedScene" uid="uid://d123j1lh52wik" path="res://scenes/entities/NPCPrototypeFollower.tscn" id="4_fpjeh"]
+[ext_resource type="PackedScene" path="res://scenes/entities/NPCPrototypeFollower.tscn" id="4_fpjeh"]
 [ext_resource type="Resource" uid="uid://bn13cdac7oodf" path="res://resources/abilities/Heal.tres" id="4_mka0i"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
 [ext_resource type="Resource" uid="uid://bjp1onb68wkep" path="res://resources/abilities/AOE.tres" id="5_iixbd"]

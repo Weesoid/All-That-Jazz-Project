@@ -1,12 +1,12 @@
 extends Node2D
 
 @onready var target: Area2D = $TimingTarget
-@onready var ding_sound = $TimingTarget/AudioStreamPlayer2D
+@onready var ding_sound: AudioStreamPlayer2D = $TimingTarget/AudioStreamPlayer2D
 @onready var bar = $TimingBar
 
 var size = 150
-var target_speed = 1.5
-var max_ponts = 10
+var target_speed = 2.0
+var max_ponts = 3
 var points = 0
 var size_penalty = 0.15
 
@@ -29,6 +29,7 @@ func _unhandled_input(_event: InputEvent):
 			ding_sound.pitch_scale += (0.1 * points)
 			ding_sound.play()
 			if points == max_ponts:
+				ding_sound.volume_db += 0.5
 				target.hide()
 				await ding_sound.finished
 				CombatGlobals.qte_finished.emit()

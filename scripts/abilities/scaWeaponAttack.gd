@@ -8,16 +8,19 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
 	var damage = 10
 	if caster is ResPlayerCombatant:
-		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
+		var qte = preload("res://scenes/quick_time_events/Holding.tscn").instantiate()
 		qte.global_position = target.SCENE.global_position
 		CombatGlobals.getCombatScene().add_child(qte)
 		await CombatGlobals.qte_finished
 		
-		if qte.points == 1:
+		if qte.points >= 1:
+			CombatGlobals.manual_call_indicator.emit(target, '+10!', 'Show')
 			damage += 10
-		elif qte.points == 2:
+		if qte.points >= 2:
+			CombatGlobals.manual_call_indicator.emit(target, '+20!', 'Show')
 			damage += 20
-		elif qte.points == 3:
+		if qte.points >= 3:
+			CombatGlobals.manual_call_indicator.emit(target, '+30!', 'Show')
 			damage += 30
 		
 		qte.queue_free()

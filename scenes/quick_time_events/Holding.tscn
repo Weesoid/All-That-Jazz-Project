@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://8q6a4fh4yypq"]
+
+[ext_resource type="Script" path="res://scripts/miscellaneous/qteHolding.gd" id="1_3r72e"]
+[ext_resource type="PackedScene" uid="uid://c6yichsp0emqa" path="res://scenes/miscellaneous/HoldingTarget.tscn" id="2_8jteu"]
+[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://assets/sounds/coin.ogg" id="4_1j1c3"]
+
+[sub_resource type="Animation" id="Animation_a1eu3"]
+resource_name = "RotateLoop"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoldCircle/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_htf3m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoldCircle/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lj6m1"]
+_data = {
+"RESET": SubResource("Animation_htf3m"),
+"RotateLoop": SubResource("Animation_a1eu3")
+}
+
+[node name="QTE" type="Node2D"]
+z_index = 5
+script = ExtResource("1_3r72e")
+
+[node name="Label" type="Label" parent="."]
+offset_top = -156.0
+offset_right = 40.0
+offset_bottom = -136.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_1j1c3")
+
+[node name="HoldCircle" parent="." instance=ExtResource("2_8jteu")]
+scale = Vector2(1.75, 1.75)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lj6m1")
+}
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="HoldCircle"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://x6a4lnjddu0y"]
+[gd_scene load_steps=6 format=3 uid="uid://x6a4lnjddu0y"]
 
 [ext_resource type="Script" path="res://scripts/miscellaneous/qteTiming.gd" id="1_8tnjj"]
 [ext_resource type="Texture2D" uid="uid://dxw47c83a60c6" path="res://assets/images/timing_bar.png" id="2_xo8y4"]
@@ -7,42 +7,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rxcus"]
 size = Vector2(6, 32)
-
-[sub_resource type="Animation" id="Animation_je8ud"]
-resource_name = "Hit"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TimingTarget/AudioStreamPlayer2D:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(-4, 0),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, true]
-}
-
-[sub_resource type="Animation" id="Animation_yht7e"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TimingTarget/AudioStreamPlayer2D:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_o4gtk"]
-_data = {
-"Hit": SubResource("Animation_je8ud"),
-"RESET": SubResource("Animation_yht7e")
-}
 
 [node name="QTE" type="Node2D"]
 z_index = 5
@@ -66,9 +30,3 @@ shape = SubResource("RectangleShape2D_rxcus")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="TimingTarget"]
 stream = ExtResource("4_0qb72")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TimingTarget"]
-root_node = NodePath("../..")
-libraries = {
-"": SubResource("AnimationLibrary_o4gtk")
-}

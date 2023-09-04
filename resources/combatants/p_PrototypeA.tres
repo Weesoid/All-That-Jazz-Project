@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="3_k3ahh"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="4_nrs1w"]
-[ext_resource type="PackedScene" uid="uid://ve3ff3pmhinv" path="res://scenes/entities/NPCPrototypeFollower2.tscn" id="5_3c2l6"]
+[ext_resource type="PackedScene" path="res://scenes/entities/NPCPrototypeFollower2.tscn" id="5_3c2l6"]
 [ext_resource type="PackedScene" uid="uid://cpaxq5ifhhxjn" path="res://scenes/combatants/GoodGuyA.tscn" id="5_8cf7w"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 

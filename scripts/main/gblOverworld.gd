@@ -12,6 +12,9 @@ signal alert_patrollers()
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	initializePlayerParty()
+
+func initializePlayerParty():
 	for member in getCombatantSquad('Player'):
 		if !member.initialized:
 			member.initializeCombatant()
@@ -19,7 +22,6 @@ func _ready():
 
 	follow_array.resize(100)
 	loadFollowers()
-
 #********************************************************************************
 # SIGNALS
 #********************************************************************************

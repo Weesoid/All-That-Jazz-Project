@@ -1,6 +1,5 @@
-[gd_scene load_steps=11 format=3 uid="uid://dorthwo1fbn68"]
+[gd_scene load_steps=10 format=3 uid="uid://dorthwo1fbn68"]
 
-[ext_resource type="Script" path="res://scripts/miscellaneous/CombatantScene.gd" id="1_66ntq"]
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://assets/combatant_sprites/GoodGuyB.png" id="1_c365b"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_aej5c"]
 
@@ -130,7 +129,6 @@ _data = {
 }
 
 [node name="sprGoodGuyB" type="Node2D"]
-script = ExtResource("1_66ntq")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(16, 0)
