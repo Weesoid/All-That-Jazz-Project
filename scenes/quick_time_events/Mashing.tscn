@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://bq32o8sb6jcl3"]
+
+[ext_resource type="Script" path="res://scripts/miscellaneous/qteMashing.gd" id="1_l5x7j"]
+[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://assets/sounds/coin.ogg" id="2_uxgve"]
+
+[sub_resource type="Animation" id="Animation_htf3m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_k78bc"]
+resource_name = "Point"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-0.141372, 0.139626, -0.139626, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lj6m1"]
+_data = {
+"Point": SubResource("Animation_k78bc"),
+"RESET": SubResource("Animation_htf3m")
+}
+
+[node name="QTE" type="Node2D"]
+z_index = 5
+script = ExtResource("1_l5x7j")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_uxgve")
+
+[node name="MashBar" type="ProgressBar" parent="."]
+offset_left = -81.0
+offset_top = -78.0
+offset_right = 82.0
+offset_bottom = 78.0
+
+[node name="TimeBar" type="ProgressBar" parent="."]
+offset_left = -95.0
+offset_top = -78.0
+offset_right = -86.0
+offset_bottom = 78.0
+fill_mode = 3
+show_percentage = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lj6m1")
+}
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

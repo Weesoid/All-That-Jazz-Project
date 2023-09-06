@@ -6,7 +6,7 @@ extends Node2D
 
 var size = 150
 var target_speed = 2.0
-var max_ponts = 3
+var max_ponts = 4
 var points = 0
 var size_penalty = 0.15
 
@@ -18,7 +18,6 @@ func _process(delta):
 	moveTarget(delta)
 
 func _unhandled_input(_event: InputEvent):
-	
 	if Input.is_action_just_pressed("ui_accept"):
 		if target.has_overlapping_areas():
 			target.get_overlapping_areas()[0].queue_free()
@@ -29,6 +28,7 @@ func _unhandled_input(_event: InputEvent):
 			ding_sound.pitch_scale += (0.1 * points)
 			ding_sound.play()
 			if points == max_ponts:
+				print('max!')
 				ding_sound.volume_db += 0.5
 				target.hide()
 				await ding_sound.finished

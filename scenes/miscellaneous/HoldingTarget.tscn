@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c6yichsp0emqa"]
 
-[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="1_y8fex"]
+[ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://assets/misc_sprites/qte_target.png" id="1_3lsvu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xydwq"]
 radius = 71.0282
@@ -8,9 +8,10 @@ radius = 71.0282
 [node name="Hold" type="Area2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.2, 1, 0, 1)
 position = Vector2(-1.90735e-06, 0)
 scale = Vector2(0.34082, 0.328125)
-texture = ExtResource("1_y8fex")
+texture = ExtResource("1_3lsvu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_xydwq")

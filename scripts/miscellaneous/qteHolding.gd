@@ -3,10 +3,10 @@ extends Node2D
 var sweet_spot
 var goal_scale = Vector2(1.0, 1.0)
 var scale_penalty = 0.1
-var base_penalty = 5.0
+var base_penalty = 6.0
 var shrink = false
 var target_speed = 2.5
-var max_points = 3
+var max_points = 4
 var points = 0
 
 @onready var target = $HoldCircle
@@ -49,6 +49,8 @@ func _unhandled_input(event):
 				CombatGlobals.qte_finished.emit()
 			else:
 				target.scale = Vector2(1.0, 1.0)
+				randomize()
+				target_speed += randf_range(0.1, 0.5)
 				newSweetSpot()
 		else:
 			print('Missed!')

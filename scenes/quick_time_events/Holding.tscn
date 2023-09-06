@@ -1,8 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://8q6a4fh4yypq"]
+[gd_scene load_steps=8 format=3 uid="uid://8q6a4fh4yypq"]
 
 [ext_resource type="Script" path="res://scripts/miscellaneous/qteHolding.gd" id="1_3r72e"]
 [ext_resource type="PackedScene" uid="uid://c6yichsp0emqa" path="res://scenes/miscellaneous/HoldingTarget.tscn" id="2_8jteu"]
 [ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://assets/sounds/coin.ogg" id="4_1j1c3"]
+[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="4_6g54j"]
+
+[sub_resource type="Animation" id="Animation_htf3m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoldCircle/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_a1eu3"]
 resource_name = "RotateLoop"
@@ -20,21 +36,6 @@ tracks/0/keys = {
 "values": [0.0, 6.28319]
 }
 
-[sub_resource type="Animation" id="Animation_htf3m"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HoldCircle/Sprite2D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lj6m1"]
 _data = {
 "RESET": SubResource("Animation_htf3m"),
@@ -45,22 +46,20 @@ _data = {
 z_index = 5
 script = ExtResource("1_3r72e")
 
-[node name="Label" type="Label" parent="."]
-offset_top = -156.0
-offset_right = 40.0
-offset_bottom = -136.0
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
-
-[node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_1j1c3")
 
 [node name="HoldCircle" parent="." instance=ExtResource("2_8jteu")]
 scale = Vector2(1.75, 1.75)
+
+[node name="Sprite2D" parent="HoldCircle" index="0"]
+modulate = Color(1, 0, 0.8, 1)
+z_index = 10
+texture = ExtResource("4_6g54j")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
