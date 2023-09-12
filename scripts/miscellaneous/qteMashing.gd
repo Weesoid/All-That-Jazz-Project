@@ -27,7 +27,7 @@ func _process(delta):
 	if bar.value >= 99:
 		bar.value = 0
 		points += 1
-		ding_sound.pitch_scale += (0.1 * points)
+		ding_sound.pitch_scale += (0.005 * points)
 		ding_sound.play()
 		animator.play("Point")
 		if points == max_ponts:
@@ -42,11 +42,13 @@ func _process(delta):
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_accept"):
+		ding_sound.pitch_scale += (0.025 * points)
+		ding_sound.play()
 		bar.value += mash_strength
 
 func newMash():
 	randomize()
-	mash_strength -= randf_range(1.0, 2.0)
+	mash_strength -= randf_range(.0, 2.0)
 
 func _on_timer_timeout():
 	CombatGlobals.qte_finished.emit()

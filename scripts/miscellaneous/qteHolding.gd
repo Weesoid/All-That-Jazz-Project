@@ -37,7 +37,7 @@ func _unhandled_input(event):
 	if Input.is_action_just_released("ui_accept"):
 		shrink = false
 		if target.scale <= sweet_spot.scale:
-			ding_sound.pitch_scale += (0.1 * points)
+			ding_sound.pitch_scale += (0.025 * points)
 			ding_sound.play()
 			points += 1
 			print('+1!')

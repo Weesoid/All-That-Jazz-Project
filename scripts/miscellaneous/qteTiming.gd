@@ -25,7 +25,7 @@ func _unhandled_input(_event: InputEvent):
 			target_speed += randf_range(0.25, 0.5)
 			points += 1
 			size*=-1
-			ding_sound.pitch_scale += (0.1 * points)
+			ding_sound.pitch_scale += (0.025 * points)
 			ding_sound.play()
 			if points == max_ponts:
 				print('max!')
