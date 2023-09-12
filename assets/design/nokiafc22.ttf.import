@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c51ju4xnuy1wj"
-path="res://.godot/imported/SHPinscher-Regular.otf-5a151e2ccca2b1e62103886b150c7f1f.fontdata"
+uid="uid://cyywx7byxrbwp"
+path="res://.godot/imported/nokiafc22.ttf-fe66578f50ca9b6265220948dcbed216.fontdata"
 
 [deps]
 
-source_file="res://assets/design/SHPinscher-Regular.otf"
-dest_files=["res://.godot/imported/SHPinscher-Regular.otf-5a151e2ccca2b1e62103886b150c7f1f.fontdata"]
+source_file="res://assets/design/nokiafc22.ttf"
+dest_files=["res://.godot/imported/nokiafc22.ttf-fe66578f50ca9b6265220948dcbed216.fontdata"]
 
 [params]
 
@@ -27,13 +27,7 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "New Configuration",
-"size": Vector2i(16, 0),
-"variation_embolden": 0.0
-}]
+preload=[]
 language_support={}
 script_support={}
 opentype_features={}

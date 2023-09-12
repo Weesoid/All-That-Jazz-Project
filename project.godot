@@ -41,7 +41,7 @@ import/fbx/enabled=false
 
 [gui]
 
-theme/custom_font="res://assets/design/SHPinscher-Regular.otf"
+theme/custom_font="res://assets/design/nokiafc22.ttf"
 theme/default_font_antialiasing=0
 
 [input]

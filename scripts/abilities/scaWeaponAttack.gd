@@ -8,7 +8,7 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
 	var damage = 10
 	if caster is ResPlayerCombatant:
-		var qte = preload("res://scenes/quick_time_events/Mashing.tscn").instantiate()
+		var qte = preload("res://scenes/quick_time_events/Inputting.tscn").instantiate()
 		qte.global_position = target.SCENE.global_position
 		CombatGlobals.getCombatScene().add_child(qte)
 		await CombatGlobals.qte_finished

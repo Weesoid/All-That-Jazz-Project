@@ -278,7 +278,7 @@ offset_right = 442.0
 offset_bottom = 19.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 16
 text = "THIS IS A QUEST TITLE"
 uppercase = true
 
@@ -295,7 +295,6 @@ offset_right = 442.0
 offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 14
 text = "* Previous Objective"
 
 [node name="CurrentObjective" type="Label" parent="."]
@@ -311,7 +310,6 @@ offset_right = 442.0
 offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 14
 text = "* Current Objective"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

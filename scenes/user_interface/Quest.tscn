@@ -28,6 +28,7 @@ offset_right = -8.0
 offset_bottom = 124.0
 grow_horizontal = 0
 grow_vertical = 2
+theme_override_font_sizes/font_size = 8
 tab_alignment = 1
 
 [node name="Ongoing" type="ScrollContainer" parent="QuestContainer"]
@@ -67,10 +68,10 @@ uppercase = true
 [node name="Description" type="Label" parent="DescriptionPanel"]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 32.5
+offset_top = 33.0
 offset_right = 240.0
-offset_bottom = 68.5
-theme_override_font_sizes/font_size = 12
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 8
 text = "This is the quest description. Read it and learn it's glory!! Sex machine!!"
 autowrap_mode = 3
 

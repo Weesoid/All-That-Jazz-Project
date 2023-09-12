@@ -8,19 +8,15 @@ class_name CombatScene
 @onready var enemy_container = $EnemyContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
+@onready var secondary_panel = $SecondaryPanel
+@onready var secondary_panel_container = $SecondaryPanel/Scroller/Container
 @onready var action_panel = $ActionPanel
 @onready var attack_button = $ActionPanel/Attack
-@onready var ability_scroller = $ActionPanel/Skills/SkillScroller
-@onready var ability_container = $ActionPanel/Skills/SkillScroller/SkillsContainer
-@onready var item_scroller = $ActionPanel/Items/ItemScroller
-@onready var item_container = $ActionPanel/Items/ItemScroller/ItemContainer
-@onready var items_button = $ActionPanel/Items
-@onready var equip_scroller = $ActionPanel/Equipment/ItemScroller
-@onready var equip_container = $ActionPanel/Equipment/ItemScroller/ItemContainer
 @onready var equip_button = $ActionPanel/Equipment
 @onready var escape_button = $ActionPanel/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
+@onready var ui_inspect_target = $CombatInspectTarget
 @onready var battle_conclusion = $BattleConclusion
 @onready var party_exp_bar = $BattleConclusion/PartyExp
 @onready var party_drops = $BattleConclusion/Drops/DropGrid
@@ -77,15 +73,14 @@ func _ready():
 	# TO-DO: Battle Transition
 
 func _process(_delta):
-	attack_button.text = active_combatant.ABILITY_SET[0].NAME.to_upper()
 	match target_state:
 		1: playerSelectSingleTarget()
 		2: playerSelectMultiTarget()
+		3: playerSelectInspection()
 
 func on_player_turn():
 	action_panel.show()
 	attack_button.grab_focus()
-	action_panel.global_position = active_combatant.getSprite().global_position - Vector2(0, 60)
 	
 	await confirm
 	end_turn()
@@ -126,7 +121,7 @@ func end_turn():
 	target_index = 0
 	COMBATANTS.sort_custom(sortBySpeed)
 	selected_item = null
-	ability_scroller.hide()
+	secondary_panel.hide()
 	
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
@@ -161,40 +156,41 @@ func _on_attack_pressed():
 	
 func _on_skills_pressed():
 	getPlayerAbilities(active_combatant.ABILITY_SET)
-	if ability_container.get_child_count() == 0: return
-	ability_scroller.show()
-	ability_container.get_child(0).grab_focus()
+	if secondary_panel_container.get_child_count() == 0: return
+	secondary_panel.show()
+	secondary_panel_container.get_child(0).grab_focus()
 	
 func _ability_focus_exit():
-	ability_scroller.hide()
+	secondary_panel.hide()
 	
 func _ability_focus_enter():
-	ability_scroller.show()
+	secondary_panel.show()
 	
 func _on_items_pressed():
-	getPlayerItems(PlayerGlobals.INVENTORY)
-	if item_container.get_child_count() == 0: return
-	item_scroller.show()
-	item_container.get_child(0).grab_focus()
+	target_state = 3
+	#getPlayerItems(PlayerGlobals.INVENTORY)
+	#if item_container.get_child_count() == 0: return
+	#item_scroller.show()
+	#item_container.get_child(0).grab_focus()
 	
 func _item_focus_exit():
-	item_scroller.hide()
+	secondary_panel.hide()
 	
 func _item_focus_enter():
-	item_scroller.show()
+	secondary_panel.show()
 	
 func _equip_focus_exit():
-	equip_scroller.hide()
+	secondary_panel.hide()
 	
 func _equip_focus_enter():
-	equip_scroller.show()
+	secondary_panel.show()
 	
 func _on_equipment_pressed():
 	getPlayerWeapons(PlayerGlobals.INVENTORY)
-	if equip_container.get_child_count() == 0: return
+	if secondary_panel_container.get_child_count() == 0: return
 	equip_button.disabled = false
-	equip_scroller.show()
-	equip_container.get_child(0).grab_focus()
+	secondary_panel.show()
+	secondary_panel_container.get_child(0).grab_focus()
 	
 func _on_escape_pressed():
 	concludeCombat()
@@ -209,7 +205,7 @@ func writeCombatLog(text: String):
 # ABILITY SELECTION, TARGETING, AND EXECUTION
 #********************************************************************************
 func getPlayerAbilities(ability_set: Array[ResAbility]):
-	for child in ability_container.get_children():
+	for child in secondary_panel_container.get_children():
 		child.free()
 	
 	for i in range(len(ability_set)):
@@ -221,10 +217,10 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.focus_exited.connect(_ability_focus_exit)
 		if !ability_set[i].canCast(active_combatant) or !ability_set[i].ENABLED:
 			button.disabled = true
-		ability_container.add_child(button)
+		secondary_panel_container.add_child(button)
 
 func getPlayerItems(inventory):
-	for child in item_container.get_children():
+	for child in secondary_panel_container.get_children():
 		child.free()
 		
 	for item in inventory:
@@ -237,10 +233,10 @@ func getPlayerItems(inventory):
 				)
 		button.focus_entered.connect(_item_focus_enter)
 		button.focus_exited.connect(_item_focus_exit)
-		item_container.add_child(button)
+		secondary_panel_container.add_child(button)
 
 func getPlayerWeapons(inventory):
-	for child in equip_container.get_children():
+	for child in secondary_panel_container.get_children():
 		child.free()
 		
 	for weapon in inventory:
@@ -255,12 +251,13 @@ func getPlayerWeapons(inventory):
 		button.focus_entered.connect(_equip_focus_enter)
 		button.focus_exited.connect(_equip_focus_exit)
 		if weapon.durability.x <= 0: button.disabled = true
-		equip_container.add_child(button)
+		secondary_panel_container.add_child(button)
 
 func playerSelectAbility(ability:ResAbility, state: int):
 	target_state = state
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
+	secondary_panel.hide()
 	action_panel.hide()
 	await target_selected
 	runAbility()
@@ -280,6 +277,18 @@ func playerSelectMultiTarget():
 	
 	drawSelectionTarget('Target', enemy_container.global_position)
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
+	confirmCancelInputs()
+
+func playerSelectInspection():
+	action_panel.hide()
+	ui_inspect_target.show()
+	valid_targets = COMBATANTS
+	target_combatant = valid_targets[target_index]
+	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
+	ui_inspect_target.position = ui_target.position
+	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.25)
+	ui_inspect_target.subject = target_combatant
+	browseTargetsInputs()
 	confirmCancelInputs()
 
 func executeAbility():
@@ -348,7 +357,7 @@ func getDeadCombatants():
 	
 func sortBySpeed(a: ResCombatant, b: ResCombatant):
 	return a.STAT_VALUES['hustle'] > b.STAT_VALUES['hustle']
-	
+
 func checkWin():
 	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
 	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
@@ -398,6 +407,8 @@ func confirmCancelInputs():
 		resetActionLog()
 	
 func resetActionLog():
+	combat_camera.position = Vector2(0, -19)
+	ui_inspect_target.hide()
 	ui_target.hide()
 	target_state = 0
 	target_index = 0

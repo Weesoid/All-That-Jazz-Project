@@ -1,7 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://cuhp30nbgihjv"]
+[gd_scene load_steps=15 format=3 uid="uid://cuhp30nbgihjv"]
 
 [ext_resource type="Script" path="res://scripts/main/gpCombat.gd" id="1_kv6ut"]
+[ext_resource type="PackedScene" uid="uid://bt4b6i7iiex30" path="res://scenes/user_interface/CombatInspectTarget.tscn" id="4_kkdd3"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
+[ext_resource type="Texture2D" uid="uid://bn5owks8hqpg" path="res://assets/icons/st_wit_dn2.png" id="5_15yji"]
 [ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
 [ext_resource type="Texture2D" uid="uid://0kbl5iime6vw" path="res://assets/icons/s_grit.png" id="7_6kiof"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
@@ -138,13 +140,38 @@ libraries = {
 "": SubResource("AnimationLibrary_h6ab4")
 }
 
-[node name="ActionPanel" type="VBoxContainer" parent="."]
-z_index = 2
-offset_left = -575.0
-offset_top = 366.0
-offset_right = -490.0
-offset_bottom = 521.0
+[node name="SecondaryPanel" type="PanelContainer" parent="."]
+offset_left = -399.0
+offset_right = 399.0
+offset_bottom = 224.0
+
+[node name="Scroller" type="ScrollContainer" parent="SecondaryPanel"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 3
+
+[node name="Container" type="GridContainer" parent="SecondaryPanel/Scroller"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Button" type="Button" parent="SecondaryPanel/Scroller/Container"]
+layout_mode = 2
+text = "asdasd"
+
+[node name="Button2" type="Button" parent="SecondaryPanel/Scroller/Container"]
+layout_mode = 2
+text = "asdasd"
+
+[node name="ActionPanel" type="HBoxContainer" parent="."]
+z_index = 10
+offset_left = -577.0
+offset_top = 232.0
+offset_right = 577.0
+offset_bottom = 292.0
 mouse_force_pass_scroll_events = false
+theme_override_constants/separation = 8
+alignment = 1
 
 [node name="Attack" type="Button" parent="ActionPanel"]
 layout_mode = 2
@@ -154,23 +181,27 @@ button_mask = 0
 text = "ATTACK"
 icon = ExtResource("6_o5wif")
 
+[node name="Weapons" type="Button" parent="ActionPanel"]
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+button_mask = 0
+text = "WEAPONS"
+icon = ExtResource("5_15yji")
+
 [node name="Skills" type="Button" parent="ActionPanel"]
 layout_mode = 2
 button_mask = 0
 text = "SKILLS"
 icon = ExtResource("7_dnqbg")
 
-[node name="SkillScroller" type="ScrollContainer" parent="ActionPanel/Skills"]
-layout_mode = 0
-offset_left = 93.0
-offset_top = -35.0
-offset_right = 269.0
-offset_bottom = 66.0
-follow_focus = true
-horizontal_scroll_mode = 3
-
-[node name="SkillsContainer" type="VBoxContainer" parent="ActionPanel/Skills/SkillScroller"]
+[node name="Inspect" type="Button" parent="ActionPanel"]
 layout_mode = 2
+toggle_mode = true
+action_mode = 0
+button_mask = 0
+text = "INSPECT"
+icon = ExtResource("5_15yji")
 
 [node name="Items" type="Button" parent="ActionPanel"]
 layout_mode = 2
@@ -178,35 +209,11 @@ button_mask = 0
 text = "ITEMS"
 icon = ExtResource("8_yp68o")
 
-[node name="ItemScroller" type="ScrollContainer" parent="ActionPanel/Items"]
-layout_mode = 0
-offset_left = 93.0
-offset_top = -35.0
-offset_right = 269.0
-offset_bottom = 66.0
-follow_focus = true
-horizontal_scroll_mode = 3
-
-[node name="ItemContainer" type="VBoxContainer" parent="ActionPanel/Items/ItemScroller"]
-layout_mode = 2
-
 [node name="Equipment" type="Button" parent="ActionPanel"]
 layout_mode = 2
 button_mask = 0
 text = "EQUIPMENT"
 icon = ExtResource("7_6kiof")
-
-[node name="ItemScroller" type="ScrollContainer" parent="ActionPanel/Equipment"]
-layout_mode = 0
-offset_left = 93.0
-offset_top = -35.0
-offset_right = 269.0
-offset_bottom = 66.0
-follow_focus = true
-horizontal_scroll_mode = 3
-
-[node name="ItemContainer" type="VBoxContainer" parent="ActionPanel/Equipment/ItemScroller"]
-layout_mode = 2
 
 [node name="Escape" type="Button" parent="ActionPanel"]
 layout_mode = 2
@@ -255,6 +262,10 @@ offset_top = 23.0
 offset_right = 226.0
 offset_bottom = 73.0
 columns = 4
+
+[node name="CombatInspectTarget" parent="." instance=ExtResource("4_kkdd3")]
+visible = false
+position = Vector2(-192, 456)
 
 [node name="CombatCamera" type="Camera2D" parent="."]
 position = Vector2(0, -19)

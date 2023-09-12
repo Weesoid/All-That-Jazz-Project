@@ -181,7 +181,7 @@ func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String)
 	return objective.FINISHED
 
 func isQuestObjectiveFailed(quest_name: String, quest_objective_name: String) -> bool:
-	if QUESTS.is_empty(): 
+	if QUESTS.is_empty() or getQuest(quest_name) == null:
 		return false
 	
 	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
