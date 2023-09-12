@@ -39,8 +39,7 @@ func executeCollisionAction():
 		return
 	
 	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
-		print(COMBAT_SQUAD.COMBATANT_SQUAD)
-		OverworldGlobals.changeToCombat(COMBAT_SQUAD.COMBATANT_SQUAD)
+		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.alert_patrollers.emit()
 		BODY.queue_free()
 

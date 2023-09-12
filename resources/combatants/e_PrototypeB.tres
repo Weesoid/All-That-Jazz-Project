@@ -1,10 +1,151 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://sxvr4w0h1xr8"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=15 format=3 uid="uid://sxvr4w0h1xr8"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_8ysqk"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
-[ext_resource type="PackedScene" uid="uid://b3l1rxf850mte" path="res://scenes/combatants/BadGuyB.tscn" id="3_4f05j"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_fptwa"]
 [ext_resource type="Resource" uid="uid://ckyppnbor0l0j" path="res://resources/items/LightArmor.tres" id="3_m84fx"]
+[ext_resource type="Texture2D" uid="uid://mglcgp6i4rw2" path="res://assets/combatant_sprites/BadGuyJrB.png" id="4_j71o1"]
+[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="5_k76sc"]
+
+[sub_resource type="Animation" id="Animation_5q8qb"]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [3, 5, 3, 5, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.123, 1.123), Vector2(0.963, 0.963), Vector2(1.167, 1.167), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_38ggd"]
+resource_name = "Cast"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 3, 4, 3]
+}
+
+[sub_resource type="Animation" id="Animation_2ybq4"]
+resource_name = "Hit"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 4, 5, 4]
+}
+
+[sub_resource type="Animation" id="Animation_7atq3"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 0, 1, 0]
+}
+
+[sub_resource type="Animation" id="Animation_xkhtg"]
+resource_name = "KO"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="Animation" id="Animation_ak5yc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5k78l"]
+_data = {
+"Attack": SubResource("Animation_5q8qb"),
+"Cast": SubResource("Animation_38ggd"),
+"Hit": SubResource("Animation_2ybq4"),
+"Idle": SubResource("Animation_7atq3"),
+"KO": SubResource("Animation_xkhtg"),
+"RESET": SubResource("Animation_ak5yc")
+}
+
+[sub_resource type="PackedScene" id="PackedScene_q83j7"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("sprBadGuyB", "Node2D", "Sprite", "Sprite2D", "position", "texture", "hframes", "vframes", "SpriteAnimator", "AnimationPlayer", "libraries", "AudioPlayer", "AudioStreamPlayer", "stream"),
+"node_count": 4,
+"node_paths": [NodePath("."), NodePath("./Sprite"), NodePath("./Sprite")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 3, 2, -1, 4, 4, 0, 5, 1, 6, 2, 7, 3, 0, 1073741825, 0, 9, 8, -1, 1, 10, 4, 0, 1073741826, 0, 12, 11, -1, 1, 13, 5, 0),
+"variants": [Vector2(16, 0), ExtResource("4_j71o1"), 3, 2, {
+"": SubResource("AnimationLibrary_5k78l")
+}, ExtResource("5_k76sc")],
+"version": 3
+}
 
 [resource]
 script = ExtResource("3_fptwa")
@@ -12,7 +153,7 @@ COUNT = 1
 AI_PACKAGE = ExtResource("2_xgrhx")
 DROPS = {}
 NAME = "EUHealer"
-PACKED_SCENE = ExtResource("3_4f05j")
+PACKED_SCENE = SubResource("PackedScene_q83j7")
 DESCRIPTION = ""
 STAT_VALUES = {
 "accuracy": 0.95,
