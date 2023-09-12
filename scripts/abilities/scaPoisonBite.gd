@@ -9,5 +9,3 @@ static func applyEffects(_caster: ResCombatant, target: ResCombatant, animation_
 	CombatGlobals.playAbilityAnimation(target, animation_scene)
 	CombatGlobals.addStatusEffect(target, status_effect)
 	
-	
-	

@@ -8,7 +8,7 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
 	var damage = 10
 	if caster is ResPlayerCombatant:
-		var qte = preload("res://scenes/quick_time_events/Inputting.tscn").instantiate()
+		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.global_position = target.SCENE.global_position
 		CombatGlobals.getCombatScene().add_child(qte)
 		await CombatGlobals.qte_finished
@@ -24,7 +24,8 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 			damage += 30
 		if qte.points >= 4:
 			CombatGlobals.manual_call_indicator.emit(target, 'SINGE!', 'QTE')
-			CombatGlobals.addStatusEffect(target, preload("res://resources/status_effects/Singed.tres"))
+			var status_effect = CombatGlobals.loadStatusEffect('Poison')
+			CombatGlobals.addStatusEffect(target, status_effect)
 		
 		qte.queue_free()
 	

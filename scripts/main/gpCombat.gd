@@ -78,6 +78,11 @@ func _process(_delta):
 		2: playerSelectMultiTarget()
 		3: playerSelectInspection()
 
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed('ui_cancel') and secondary_panel.visible:
+		print('Closing with secondary!')
+		resetActionLog()
+
 func on_player_turn():
 	action_panel.show()
 	attack_button.grab_focus()
@@ -103,6 +108,7 @@ func on_enemy_turn():
 		checkWin()
 	
 func end_turn():
+	combat_camera.position = Vector2(0, -19)
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
@@ -160,30 +166,12 @@ func _on_skills_pressed():
 	secondary_panel.show()
 	secondary_panel_container.get_child(0).grab_focus()
 	
-func _ability_focus_exit():
-	secondary_panel.hide()
-	
-func _ability_focus_enter():
-	secondary_panel.show()
 	
 func _on_items_pressed():
-	target_state = 3
-	#getPlayerItems(PlayerGlobals.INVENTORY)
-	#if item_container.get_child_count() == 0: return
-	#item_scroller.show()
-	#item_container.get_child(0).grab_focus()
-	
-func _item_focus_exit():
-	secondary_panel.hide()
-	
-func _item_focus_enter():
+	getPlayerItems(PlayerGlobals.INVENTORY)
+	if secondary_panel_container.get_child_count() == 0: return
 	secondary_panel.show()
-	
-func _equip_focus_exit():
-	secondary_panel.hide()
-	
-func _equip_focus_enter():
-	secondary_panel.show()
+	secondary_panel_container.get_child(0).grab_focus()
 	
 func _on_equipment_pressed():
 	getPlayerWeapons(PlayerGlobals.INVENTORY)
@@ -191,7 +179,10 @@ func _on_equipment_pressed():
 	equip_button.disabled = false
 	secondary_panel.show()
 	secondary_panel_container.get_child(0).grab_focus()
-	
+
+func _on_inspect_pressed():
+	target_state = 3
+
 func _on_escape_pressed():
 	concludeCombat()
 
@@ -211,10 +202,9 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	for i in range(len(ability_set)):
 		if i == 0: continue
 		var button = Button.new()
+		button.custom_minimum_size.x = 240
 		button.text = ability_set[i].NAME
 		button.pressed.connect(ability_set[i].execute)
-		button.focus_entered.connect(_ability_focus_enter)
-		button.focus_exited.connect(_ability_focus_exit)
 		if !ability_set[i].canCast(active_combatant) or !ability_set[i].ENABLED:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
@@ -226,13 +216,12 @@ func getPlayerItems(inventory):
 	for item in inventory:
 		if !item is ResConsumable or item.EFFECT == null: continue
 		var button = Button.new()
+		button.custom_minimum_size.x = 240
 		button.text = str(item.NAME, ' x', item.STACK)
 		button.pressed.connect(item.EFFECT.execute)
 		button.pressed.connect(
 			func playerSelectItem(): selected_item = item
 				)
-		button.focus_entered.connect(_item_focus_enter)
-		button.focus_exited.connect(_item_focus_exit)
 		secondary_panel_container.add_child(button)
 
 func getPlayerWeapons(inventory):
@@ -242,14 +231,13 @@ func getPlayerWeapons(inventory):
 	for weapon in inventory:
 		if !weapon is ResWeapon: continue
 		var button = Button.new()
+		button.custom_minimum_size.x = 240
 		button.text = str(weapon.NAME, '(', weapon.durability.x, '/', weapon.durability.y,')')
 		button.pressed.connect( 
 			func equipWeapon(): 
 				weapon.equip(active_combatant) 
 				resetActionLog()
 				)
-		button.focus_entered.connect(_equip_focus_enter)
-		button.focus_exited.connect(_equip_focus_exit)
 		if weapon.durability.x <= 0: button.disabled = true
 		secondary_panel_container.add_child(button)
 
@@ -268,6 +256,7 @@ func playerSelectSingleTarget():
 	
 	target_combatant = valid_targets[target_index]
 	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
+	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.25)
 	browseTargetsInputs()
 	confirmCancelInputs()
 	
@@ -400,7 +389,7 @@ func browseTargetsInputs():
 		target_index = incrementIndex(target_index, -1, valid_targets.size())
 	
 func confirmCancelInputs():
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
 		ui_target.hide()
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -410,6 +399,7 @@ func resetActionLog():
 	combat_camera.position = Vector2(0, -19)
 	ui_inspect_target.hide()
 	ui_target.hide()
+	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
 	attack_button.grab_focus()
@@ -437,6 +427,7 @@ func concludeCombat():
 	
 	action_panel.hide()
 	ui_target.hide()
+	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
 	battle_conclusion.show()

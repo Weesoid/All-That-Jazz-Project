@@ -21,6 +21,7 @@ offset_bottom = 88.0
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="Stats"]
+layout_mode = 0
 offset_left = 14.0
 offset_top = 8.0
 offset_right = 206.0
@@ -40,6 +41,7 @@ offset_bottom = 226.0
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="Info"]
+layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 584.0
