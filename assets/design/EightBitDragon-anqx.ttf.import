@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cyywx7byxrbwp"
-path="res://.godot/imported/nokiafc22.ttf-fe66578f50ca9b6265220948dcbed216.fontdata"
+uid="uid://dsf4xfwtl2r5m"
+path="res://.godot/imported/EightBitDragon-anqx.ttf-e15ee57e3cb6e8e8601ea77adbac33c6.fontdata"
 
 [deps]
 
-source_file="res://assets/design/nokiafc22.ttf"
-dest_files=["res://.godot/imported/nokiafc22.ttf-fe66578f50ca9b6265220948dcbed216.fontdata"]
+source_file="res://assets/design/EightBitDragon-anqx.ttf"
+dest_files=["res://.godot/imported/EightBitDragon-anqx.ttf-e15ee57e3cb6e8e8601ea77adbac33c6.fontdata"]
 
 [params]
 
@@ -31,8 +31,7 @@ preload=[{
 "chars": [],
 "glyphs": [],
 "name": "New Configuration",
-"size": Vector2i(16, 0),
-"variation_embolden": 0.0
+"size": Vector2i(16, 0)
 }]
 language_support={}
 script_support={}

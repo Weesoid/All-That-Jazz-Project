@@ -78,30 +78,14 @@ top_level = true
 script = ExtResource("1_kv6ut")
 
 [node name="Background" type="TextureRect" parent="."]
-offset_left = -1713.0
-offset_top = -883.0
-offset_right = 1715.0
-offset_bottom = 837.0
+offset_left = -1538.0
+offset_top = -845.0
+offset_right = 1890.0
+offset_bottom = 875.0
 texture = ExtResource("5_5p8mu")
 
-[node name="CombatLog" type="Label" parent="."]
-offset_left = -576.0
-offset_top = -320.0
-offset_right = -491.0
-offset_bottom = -295.0
-scale = Vector2(3.77668, 2.6192)
-
 [node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(-576, -447)
-
-[node name="Position1" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(320, 320)
-
-[node name="Position2" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(576, 320)
-
-[node name="Position3" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(832, 320)
+position = Vector2(-576, -367)
 
 [node name="Position4" type="Marker2D" parent="EnemyContainer"]
 position = Vector2(192, 192)
@@ -114,6 +98,15 @@ position = Vector2(704, 192)
 
 [node name="Position7" type="Marker2D" parent="EnemyContainer"]
 position = Vector2(960, 192)
+
+[node name="Position1" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(320, 320)
+
+[node name="Position2" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(576, 320)
+
+[node name="Position3" type="Marker2D" parent="EnemyContainer"]
+position = Vector2(832, 320)
 
 [node name="TeamContainer" type="Node2D" parent="."]
 position = Vector2(-576, -73)
@@ -140,89 +133,106 @@ libraries = {
 "": SubResource("AnimationLibrary_h6ab4")
 }
 
-[node name="SecondaryPanel" type="PanelContainer" parent="."]
+[node name="CombatInspectTarget" parent="." instance=ExtResource("4_kkdd3")]
+visible = false
+z_index = 99
+position = Vector2(-192, 456)
+
+[node name="CombatCamera" type="Camera2D" parent="."]
+position = Vector2(0, -19)
+
+[node name="SecondaryPanel" type="PanelContainer" parent="CombatCamera"]
 visible = false
 z_index = 2
 offset_left = -256.0
+offset_top = 19.0
 offset_right = 256.0
-offset_bottom = 216.0
+offset_bottom = 235.0
 
-[node name="Scroller" type="ScrollContainer" parent="SecondaryPanel"]
+[node name="Scroller" type="ScrollContainer" parent="CombatCamera/SecondaryPanel"]
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 3
 
-[node name="Container" type="GridContainer" parent="SecondaryPanel/Scroller"]
+[node name="Container" type="GridContainer" parent="CombatCamera/SecondaryPanel/Scroller"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="ActionPanel" type="HBoxContainer" parent="."]
+[node name="ActionPanel" type="HBoxContainer" parent="CombatCamera"]
 z_index = 10
 offset_left = -576.0
-offset_top = 232.0
+offset_top = 251.0
 offset_right = 578.0
-offset_bottom = 292.0
+offset_bottom = 311.0
 mouse_force_pass_scroll_events = false
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Attack" type="Button" parent="ActionPanel"]
+[node name="Attack" type="Button" parent="CombatCamera/ActionPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 toggle_mode = true
 action_mode = 0
 button_mask = 0
 text = "ATTACK"
 icon = ExtResource("6_o5wif")
 
-[node name="Weapons" type="Button" parent="ActionPanel"]
+[node name="Weapons" type="Button" parent="CombatCamera/ActionPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 toggle_mode = true
 action_mode = 0
 button_mask = 0
 text = "WEAPONS"
 icon = ExtResource("5_15yji")
 
-[node name="Skills" type="Button" parent="ActionPanel"]
+[node name="Skills" type="Button" parent="CombatCamera/ActionPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "SKILLS"
 icon = ExtResource("7_dnqbg")
 
-[node name="Inspect" type="Button" parent="ActionPanel"]
+[node name="Inspect" type="Button" parent="CombatCamera/ActionPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 toggle_mode = true
 action_mode = 0
 button_mask = 0
 text = "INSPECT"
 icon = ExtResource("5_15yji")
 
-[node name="Items" type="Button" parent="ActionPanel"]
+[node name="Items" type="Button" parent="CombatCamera/ActionPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ITEMS"
 icon = ExtResource("8_yp68o")
 
-[node name="Equipment" type="Button" parent="ActionPanel"]
+[node name="Equipment" type="Button" parent="CombatCamera/ActionPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "EQUIPMENT"
 icon = ExtResource("7_6kiof")
 
-[node name="Escape" type="Button" parent="ActionPanel"]
+[node name="Escape" type="Button" parent="CombatCamera/ActionPanel"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ABSCOND"
 icon = ExtResource("8_pkk5v")
 
-[node name="BattleConclusion" type="Control" parent="."]
+[node name="BattleConclusion" type="Control" parent="CombatCamera"]
 visible = false
 layout_mode = 3
 anchors_preset = 0
+offset_top = 19.0
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = 59.0
 
-[node name="PartyExp" type="ProgressBar" parent="BattleConclusion"]
+[node name="PartyExp" type="ProgressBar" parent="CombatCamera/BattleConclusion"]
 layout_mode = 0
 offset_left = -192.0
 offset_top = -16.0
@@ -231,25 +241,27 @@ offset_bottom = 14.0
 value = 50.0
 script = ExtResource("7_rrtk0")
 
-[node name="Label" type="Label" parent="BattleConclusion/PartyExp"]
+[node name="Label" type="Label" parent="CombatCamera/BattleConclusion/PartyExp"]
 layout_mode = 0
 offset_left = 141.0
 offset_top = -26.0
 offset_right = 243.0
 offset_bottom = -3.0
+theme_override_font_sizes/font_size = 16
 text = "POSSE EXPERIENCE"
 horizontal_alignment = 1
 
-[node name="Drops" type="Label" parent="BattleConclusion"]
+[node name="Drops" type="Label" parent="CombatCamera/BattleConclusion"]
 layout_mode = 2
 offset_left = -16.0
 offset_top = 23.0
 offset_right = 17.0
 offset_bottom = 46.0
+theme_override_font_sizes/font_size = 16
 text = "DROPS"
 horizontal_alignment = 1
 
-[node name="DropGrid" type="GridContainer" parent="BattleConclusion/Drops"]
+[node name="DropGrid" type="GridContainer" parent="CombatCamera/BattleConclusion/Drops"]
 layout_mode = 0
 offset_left = -194.0
 offset_top = 23.0
@@ -257,16 +269,28 @@ offset_right = 226.0
 offset_bottom = 73.0
 columns = 4
 
-[node name="CombatInspectTarget" parent="." instance=ExtResource("4_kkdd3")]
-visible = false
-position = Vector2(-192, 456)
+[node name="Label" type="Label" parent="CombatCamera"]
+offset_left = -572.0
+offset_top = -320.0
+offset_right = -128.0
+offset_bottom = -225.0
+theme_override_font_sizes/font_size = 16
+text = " "
 
-[node name="CombatCamera" type="Camera2D" parent="."]
-position = Vector2(0, -19)
+[node name="LogContainer" type="PanelContainer" parent="CombatCamera"]
+offset_left = -576.0
+offset_top = -320.0
+offset_right = 578.0
+offset_bottom = -224.0
 
-[connection signal="pressed" from="ActionPanel/Attack" to="." method="_on_attack_pressed"]
-[connection signal="pressed" from="ActionPanel/Skills" to="." method="_on_skills_pressed"]
-[connection signal="pressed" from="ActionPanel/Inspect" to="." method="_on_inspect_pressed"]
-[connection signal="pressed" from="ActionPanel/Items" to="." method="_on_items_pressed"]
-[connection signal="pressed" from="ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
-[connection signal="pressed" from="ActionPanel/Escape" to="." method="_on_escape_pressed"]
+[node name="CombatLog" type="Label" parent="CombatCamera/LogContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "The wind howls."
+
+[connection signal="pressed" from="CombatCamera/ActionPanel/Attack" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Inspect" to="." method="_on_inspect_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Items" to="." method="_on_items_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Escape" to="." method="_on_escape_pressed"]

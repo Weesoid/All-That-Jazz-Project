@@ -12,6 +12,7 @@ func _on_ready():
 	for recipe in PlayerGlobals.KNOWN_RECIPES:
 		print('Initing: ', recipe.OUTPUT)
 		var button = Button.new()
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size.x = 9999
 		button.text = str(recipe.OUTPUT.NAME)
 		addButtonToPanel(recipe, button)

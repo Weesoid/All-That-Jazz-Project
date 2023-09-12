@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cfmkfqqx222mn"]
 
 [ext_resource type="Texture2D" uid="uid://i4ia44qidv20" path="res://assets/overworld_sprites/ent_anchor.png" id="1_mjs4p"]
-[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="2_862mk"]
+[ext_resource type="PackedScene" uid="uid://nu578646cekl" path="res://scenes/components/Interact.tscn" id="2_862mk"]
 [ext_resource type="Resource" uid="uid://nx5an2n2wjho" path="res://resources/dialogue/give_quest_fight.dialogue" id="3_jlfnf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bwyli"]

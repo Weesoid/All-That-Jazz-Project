@@ -4,22 +4,24 @@ class_name CombatScene
 @export var COMBATANTS: Array[ResCombatant]
 
 @onready var combat_camera = $CombatCamera
-@onready var combat_log = $CombatLog
+@onready var combat_log_panel = $CombatCamera/LogContainer
+@onready var combat_log = $CombatCamera/LogContainer/CombatLog
 @onready var enemy_container = $EnemyContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
-@onready var secondary_panel = $SecondaryPanel
-@onready var secondary_panel_container = $SecondaryPanel/Scroller/Container
-@onready var action_panel = $ActionPanel
-@onready var attack_button = $ActionPanel/Attack
-@onready var equip_button = $ActionPanel/Equipment
-@onready var escape_button = $ActionPanel/Escape
+@onready var secondary_panel = $CombatCamera/SecondaryPanel
+@onready var secondary_panel_container = $CombatCamera/SecondaryPanel/Scroller/Container
+@onready var action_panel = $CombatCamera/ActionPanel
+@onready var attack_button = $CombatCamera/ActionPanel/Attack
+@onready var equip_button = $CombatCamera/ActionPanel/Equipment
+@onready var escape_button = $CombatCamera/ActionPanel/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
 @onready var ui_inspect_target = $CombatInspectTarget
-@onready var battle_conclusion = $BattleConclusion
-@onready var party_exp_bar = $BattleConclusion/PartyExp
-@onready var party_drops = $BattleConclusion/Drops/DropGrid
+@onready var battle_conclusion = $CombatCamera/BattleConclusion
+@onready var party_exp_bar = $CombatCamera/BattleConclusion/PartyExp
+@onready var party_drops = $CombatCamera/BattleConclusion/Drops/DropGrid
+@onready var turn_counter = $CombatCamera/Label
 
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
@@ -33,11 +35,11 @@ var selected_item: ResConsumable
 var run_once = true
 var experience_earnt = 0
 var item_drops = []
+var turn_count = 0
 
 signal confirm
 signal target_selected
 signal update_exp(value: float, max_value: float)
-
 
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
@@ -73,6 +75,7 @@ func _ready():
 	# TO-DO: Battle Transition
 
 func _process(_delta):
+	turn_counter.text = str(turn_count)
 	match target_state:
 		1: playerSelectSingleTarget()
 		2: playerSelectMultiTarget()
@@ -106,8 +109,9 @@ func on_enemy_turn():
 		end_turn()
 	else:
 		checkWin()
-	
+
 func end_turn():
+	turn_count += 1
 	combat_camera.position = Vector2(0, -19)
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
@@ -187,10 +191,11 @@ func _on_escape_pressed():
 	concludeCombat()
 
 func writeCombatLog(text: String):
-	combat_log.text = text
-	combat_log.show()
-	await get_tree().create_timer(1.5).timeout
-	combat_log.hide()
+	combat_log.text += '\n'+text
+	combat_log_panel.show()
+	await get_tree().create_timer(2.5).timeout
+	combat_log.text = ''
+	combat_log_panel.hide()
 	
 #********************************************************************************
 # ABILITY SELECTION, TARGETING, AND EXECUTION
@@ -202,6 +207,8 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	for i in range(len(ability_set)):
 		if i == 0: continue
 		var button = Button.new()
+		button.add_theme_font_size_override('font_size', 16)
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size.x = 240
 		button.text = ability_set[i].NAME
 		button.pressed.connect(ability_set[i].execute)
@@ -216,6 +223,8 @@ func getPlayerItems(inventory):
 	for item in inventory:
 		if !item is ResConsumable or item.EFFECT == null: continue
 		var button = Button.new()
+		button.add_theme_font_size_override('font_size', 16)
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size.x = 240
 		button.text = str(item.NAME, ' x', item.STACK)
 		button.pressed.connect(item.EFFECT.execute)
@@ -231,6 +240,7 @@ func getPlayerWeapons(inventory):
 	for weapon in inventory:
 		if !weapon is ResWeapon: continue
 		var button = Button.new()
+		button.add_theme_font_size_override('font_size', 16)
 		button.custom_minimum_size.x = 240
 		button.text = str(weapon.NAME, '(', weapon.durability.x, '/', weapon.durability.y,')')
 		button.pressed.connect( 
@@ -281,7 +291,6 @@ func playerSelectInspection():
 	confirmCancelInputs()
 
 func executeAbility():
-	writeCombatLog(str(active_combatant.NAME, ' casts ', selected_ability.NAME, '!'))
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	selected_ability.animateCast(active_combatant)
 	selected_ability.applyEffects(
@@ -407,7 +416,6 @@ func resetActionLog():
 	
 func validateAbilityCast():
 	if !selected_ability.canCast(active_combatant):
-		writeCombatLog('Not enough resources!')
 		resetActionLog()
 		return false
 	else:

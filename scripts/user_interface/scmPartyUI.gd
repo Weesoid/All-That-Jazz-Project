@@ -12,6 +12,8 @@ var selected_combatant: ResCombatant
 func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		var button = Button.new()
+		
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = member.NAME
 		button.pressed.connect(
 			func updateMemberInfo(): 
@@ -22,6 +24,7 @@ func _ready():
 					
 				for ability in member.ABILITY_SET:
 					var ability_button = Button.new()
+					ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 					ability_button.text = ability.NAME
 					ability_panel.add_child(ability_button)
 				)

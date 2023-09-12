@@ -41,6 +41,7 @@ import/fbx/enabled=false
 
 [gui]
 
+theme/custom="res://assets/design/DefaultTheme.tres"
 theme/custom_font="res://assets/design/nokiafc22.ttf"
 theme/default_font_antialiasing=0
 

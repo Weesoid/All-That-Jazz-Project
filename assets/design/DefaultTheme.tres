@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bid2xvoeqgilk"]
+
+[ext_resource type="FontFile" uid="uid://cyywx7byxrbwp" path="res://assets/design/nokiafc22.ttf" id="1_rsrrv"]
+
+[resource]
+default_font_size = 8
+Fonts/fonts/large = ExtResource("1_rsrrv")
+Fonts/fonts/normal = ExtResource("1_rsrrv")

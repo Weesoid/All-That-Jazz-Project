@@ -18,6 +18,7 @@ var button_item_map: Dictionary
 func _on_ready():
 	for item in PlayerGlobals.INVENTORY:
 		var button = Button.new()
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size.x = 272
 		button.text = str(item)
 		addButtonToTab(item, button)
@@ -43,6 +44,7 @@ func addMembers():
 		
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		var button = Button.new()
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size.x = 272
 		button.text = member.NAME
 		button.pressed.connect(func setSelectedCombatant(): selected_combatant = member)

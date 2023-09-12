@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bx16iy3b6f0t1" path="res://scenes/components/CombatantSquad.tscn" id="1_ky2dp"]
 [ext_resource type="Texture2D" uid="uid://i4ia44qidv20" path="res://assets/overworld_sprites/ent_anchor.png" id="1_wl13x"]
-[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="2_0jepb"]
+[ext_resource type="PackedScene" uid="uid://nu578646cekl" path="res://scenes/components/Interact.tscn" id="2_0jepb"]
 [ext_resource type="Resource" uid="uid://sxvr4w0h1xr8" path="res://resources/combatants/e_PrototypeB.tres" id="2_vjmnu"]
 [ext_resource type="Resource" uid="uid://y7to2o115c27" path="res://resources/dialogue/quest_giver_optionals.dialogue" id="3_8ol1f"]
 

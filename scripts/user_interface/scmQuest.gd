@@ -20,6 +20,7 @@ func _process(_delta):
 func _ready():
 	for quest in PlayerGlobals.QUESTS:
 		var button = Button.new()
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = str(quest.NAME)
 		button.custom_minimum_size.x = quests_containter.size.x
 		button.pressed.connect(
