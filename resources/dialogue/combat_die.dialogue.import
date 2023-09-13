@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://hjuivjtvcdjd"
+path="res://.godot/imported/combat_die.dialogue-ac9c13aa95bf7406a63c243e35e57f7e.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/combat_die.dialogue"
+dest_files=["res://.godot/imported/combat_die.dialogue-ac9c13aa95bf7406a63c243e35e57f7e.tres"]
+
+[params]
+
+defaults=true

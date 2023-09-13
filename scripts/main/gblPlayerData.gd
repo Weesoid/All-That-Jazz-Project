@@ -11,8 +11,7 @@ var EQUIPPED_ARROW: ResProjectileAmmo
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
-signal combat_won(unique_id)
-signal combat_lost(unique_id)
+
 signal quest_completed(quest)
 signal quest_added
 signal quest_objective_completed

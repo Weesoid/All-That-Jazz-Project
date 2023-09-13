@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ResCombatDialogue" load_steps=7 format=3 uid="uid://dihinrcukn8kd"]
+
+[ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="1_cuh1j"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatDialogue.gd" id="1_j7ri4"]
+[ext_resource type="Resource" uid="uid://c282j3n66euv4" path="res://resources/dialogue/combat_dialogue_strike.dialogue" id="2_8c4dv"]
+[ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/dialogue/combat_dialogue.dialogue" id="2_v36c8"]
+[ext_resource type="Resource" uid="uid://hjuivjtvcdjd" path="res://resources/dialogue/combat_die.dialogue" id="3_xtiwq"]
+[ext_resource type="Resource" uid="uid://bo14cuc1ipvni" path="res://resources/dialogue/combat_dialogue_win.dialogue" id="5_0fiom"]
+
+[resource]
+script = ExtResource("1_j7ri4")
+turn_dialogue = ExtResource("2_v36c8")
+win_dialogue = ExtResource("5_0fiom")
+ability_dialogue = ExtResource("2_8c4dv")
+combatant_stat_dialogue = ExtResource("3_xtiwq")
+turn_condition = 10
+ability_condition = ExtResource("1_cuh1j")
+combatant_name = "EUStriker"
+combatant_stat_condition = "accuracy"
+combatant_stat_percentage = 0.3

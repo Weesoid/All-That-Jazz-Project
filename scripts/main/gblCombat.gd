@@ -1,5 +1,12 @@
 extends Node
 
+signal combat_won(unique_id)
+signal combat_lost(unique_id)
+signal turn_increment(count)
+signal ability_used(ability)
+signal combatant_stats(combatant)
+signal combat_dialogue_finished
+
 signal exp_updated(value: float, max_value: float)
 signal received_combatant_value(combatant: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)

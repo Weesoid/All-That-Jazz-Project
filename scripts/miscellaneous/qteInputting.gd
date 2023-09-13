@@ -58,14 +58,12 @@ func _unhandled_key_input(_event):
 		hit += 1
 		container.get_child(hit-1).self_modulate.a = 0
 		if hit % 3 == 0:
-			print('++!')
 			points += 1
 			timer.start(timer.time_left + 0.5)
 			displayInputs()
 			hit = 0
 		ding_sound.pitch_scale += (0.025 * points)
 		ding_sound.play()
-		print(points)
 		if points == max_points:
 			CombatGlobals.qte_finished.emit()
 		container.get_child(hit).self_modulate.a = 1.0

@@ -23,6 +23,8 @@ class_name CombatScene
 @onready var party_drops = $CombatCamera/BattleConclusion/Drops/DropGrid
 @onready var turn_counter = $CombatCamera/Label
 
+var combat_dialogue: ResCombatDialogue
+
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
@@ -72,6 +74,9 @@ func _ready():
 	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
+	
+	if combat_dialogue != null:
+		combat_dialogue.initializeDialogue(COMBATANTS)
 	# TO-DO: Battle Transition
 
 func _process(_delta):
@@ -85,6 +90,9 @@ func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_cancel') and secondary_panel.visible:
 		print('Closing with secondary!')
 		resetActionLog()
+	# Debug? Feature?
+	if Input.is_action_just_pressed('ui_cancel'):
+		toggleUI()
 
 func on_player_turn():
 	action_panel.show()
@@ -92,7 +100,7 @@ func on_player_turn():
 	
 	await confirm
 	end_turn()
-	
+
 func on_enemy_turn():
 	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
@@ -112,11 +120,13 @@ func on_enemy_turn():
 
 func end_turn():
 	turn_count += 1
+	CombatGlobals.turn_increment.emit(turn_count)
 	combat_camera.position = Vector2(0, -19)
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
-		
+		CombatGlobals.combatant_stats.emit(combatant)
+	
 	for combatant in getDeadCombatants():
 		combatant.getAnimator().play('KO')
 		clearStatusEffects(combatant)
@@ -144,6 +154,12 @@ func end_turn():
 			tickStatusEffects(active_combatant)
 	else:
 		selected_ability.ENABLED = false
+	if combat_dialogue != null:
+		if combat_dialogue.dialogue_node.dialogue_triggered:
+			toggleUI()
+			await DialogueManager.dialogue_ended
+			toggleUI()
+			combat_dialogue.dialogue_node.dialogue_triggered = false
 	
 	active_combatant.act()
 	checkWin()
@@ -196,7 +212,13 @@ func writeCombatLog(text: String):
 	await get_tree().create_timer(2.5).timeout
 	combat_log.text = ''
 	combat_log_panel.hide()
-	
+
+func toggleUI():
+	for child in get_children():
+		if child is CombatBar:
+			child.visible = !child.visible
+		
+
 #********************************************************************************
 # ABILITY SELECTION, TARGETING, AND EXECUTION
 #********************************************************************************
@@ -303,7 +325,15 @@ func executeAbility():
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	
 	if selected_item != null: selected_item.use()
+	CombatGlobals.ability_used.emit(selected_ability)
+	if combat_dialogue != null:
+		if combat_dialogue.dialogue_node.dialogue_triggered:
+			toggleUI()
+			await DialogueManager.dialogue_ended
+			toggleUI()
+			combat_dialogue.dialogue_node.dialogue_triggered = false
 	confirm.emit()
+	
 
 func commandExecuteAbility(target, ability: ResAbility):
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
@@ -363,11 +393,23 @@ func checkWin():
 	# TO-DO Win-Lose signals
 	if enemies.is_empty():
 		if unique_id != null:
-			PlayerGlobals.combat_won.emit(unique_id)
+			CombatGlobals.combat_won.emit(unique_id)
+		if combat_dialogue != null:
+			if combat_dialogue.dialogue_node.dialogue_triggered:
+				toggleUI()
+				await DialogueManager.dialogue_ended
+				toggleUI()
+				combat_dialogue.dialogue_node.dialogue_triggered = false
 		concludeCombat()
 	elif team.is_empty():
-		if unique_id != null:
-			PlayerGlobals.combat_lost.emit(unique_id)
+		if combat_dialogue != null:
+			if combat_dialogue.dialogue_node.dialogue_triggered:
+				toggleUI()
+				await DialogueManager.dialogue_ended
+				toggleUI()
+				combat_dialogue.dialogue_node.dialogue_triggered = false
+			if unique_id != null:
+				CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat()
 
 func clearStatusEffects(combatant: ResCombatant):

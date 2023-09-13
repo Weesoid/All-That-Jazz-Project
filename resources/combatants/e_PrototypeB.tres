@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=15 format=3 uid="uid://sxvr4w0h1xr8"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=15 format=3 uid="uid://ddddsdahuggm"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_8ysqk"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]

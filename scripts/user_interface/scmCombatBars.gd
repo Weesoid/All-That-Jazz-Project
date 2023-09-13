@@ -1,4 +1,5 @@
 extends Node2D
+class_name CombatBar
 
 # GAME PLAN, attach this to every combatant in CombatScene and set "attached
 # _combatant" to it's respective combatant

@@ -10,13 +10,13 @@ var objective_count = 0
 var combat_result
 
 func initializeObjective():
-	PlayerGlobals.combat_won.connect(
+	CombatGlobals.combat_won.connect(
 		func setID(input_id): 
 			id = input_id
 			combat_result = 1
 			checkComplete()
 			)
-	PlayerGlobals.combat_lost.connect(
+	CombatGlobals.combat_lost.connect(
 		func setID(input_id): 
 			id = input_id
 			combat_result = 0

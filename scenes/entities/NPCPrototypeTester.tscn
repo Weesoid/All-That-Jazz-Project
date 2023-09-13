@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://dxnvms47hbdnr"]
 
-[ext_resource type="PackedScene" path="res://scenes/components/Hurtbox.tscn" id="1_xkjjo"]
+[ext_resource type="PackedScene" uid="uid://ldtj4j0l61ow" path="res://scenes/components/Hurtbox.tscn" id="1_xkjjo"]
 [ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://assets/overworld_sprites/ent_walk.png" id="2_3t4cx"]
 
 [sub_resource type="Animation" id="Animation_cg5ba"]

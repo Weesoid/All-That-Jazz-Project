@@ -6,7 +6,6 @@ var player_can_move = true
 var show_player_interaction = true
 var follow_array = []
 
-
 signal move_entity(target_position)
 signal alert_patrollers()
 
@@ -74,7 +73,10 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	
 	var is_small_window: bool = ProjectSettings.get_setting("display/window/size/viewport_width") < 400
 	var balloon: Node = (SmallExampleBalloonScene if is_small_window else ExampleBalloonScene).instantiate()
-	get_tree().current_scene.add_child(balloon)
+	if get_parent().has_node('CombatScene'):
+		get_parent().get_node('CombatScene').add_child(balloon)
+	else:
+		get_tree().current_scene.add_child(balloon)
 	balloon.start(resource, title, extra_game_states)
 
 func loadFollowers():
@@ -83,12 +85,11 @@ func loadFollowers():
 		follower.FOLLOWER_SCENE.FOLLOW_LOCATION = index
 		getCurrentMap().add_child(follower.FOLLOWER_SCENE)
 		index += 20
-	
 
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String):
+func changeToCombat(entity_name: String, combat_dialogue_name: String=''):
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
@@ -96,6 +97,9 @@ func changeToCombat(entity_name: String):
 		combat_scene.COMBATANTS.append(combatant.duplicate())
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
+	
+	if !combat_dialogue_name.is_empty():
+		combat_scene.combat_dialogue = load("res://resources/combat_dialogue/%s.tres" % [combat_dialogue_name])
 	
 	get_tree().current_scene.process_mode = Node.PROCESS_MODE_DISABLED
 	get_parent().add_child(combat_scene)

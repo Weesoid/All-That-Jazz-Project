@@ -1,7 +1,7 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-do OverworldGlobals.changeToCombat("MrMovey")
+do OverworldGlobals.changeToCombat("MrMovey", "TestDialogue")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

@@ -26,10 +26,9 @@ func _process(delta):
 		target.scale -= Vector2(1, 1) * target_speed * delta
 	if target.scale <= Vector2.ZERO:
 		shrink = false
-		print('Miss!')
 		CombatGlobals.qte_finished.emit()
 	
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_pressed("ui_accept"):
 		target.get_node('Sprite2D').modulate.a = 1.0
 		timer.stop()
@@ -40,7 +39,6 @@ func _unhandled_input(event):
 			ding_sound.pitch_scale += (0.025 * points)
 			ding_sound.play()
 			points += 1
-			print('+1!')
 			sweet_spot.queue_free()
 			if points == max_points:
 				target.hide()
@@ -53,7 +51,6 @@ func _unhandled_input(event):
 				target_speed += randf_range(0.1, 0.5)
 				newSweetSpot()
 		else:
-			print('Missed!')
 			CombatGlobals.qte_finished.emit()
 
 func resetTarget():
@@ -67,5 +64,4 @@ func newSweetSpot():
 
 
 func _on_timer_timeout():
-	print('Timeout!')
 	CombatGlobals.qte_finished.emit()
