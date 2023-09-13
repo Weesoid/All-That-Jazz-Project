@@ -42,6 +42,7 @@ var turn_count = 0
 signal confirm
 signal target_selected
 signal update_exp(value: float, max_value: float)
+signal dialogue_done
 
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
@@ -154,12 +155,10 @@ func end_turn():
 			tickStatusEffects(active_combatant)
 	else:
 		selected_ability.ENABLED = false
-	if combat_dialogue != null:
-		if combat_dialogue.dialogue_node.dialogue_triggered:
-			toggleUI()
-			await DialogueManager.dialogue_ended
-			toggleUI()
-			combat_dialogue.dialogue_node.dialogue_triggered = false
+	
+	if checkDialogue():
+		triggerDialogue()
+		await dialogue_done
 	
 	active_combatant.act()
 	checkWin()
@@ -326,14 +325,10 @@ func executeAbility():
 	
 	if selected_item != null: selected_item.use()
 	CombatGlobals.ability_used.emit(selected_ability)
-	if combat_dialogue != null:
-		if combat_dialogue.dialogue_node.dialogue_triggered:
-			toggleUI()
-			await DialogueManager.dialogue_ended
-			toggleUI()
-			combat_dialogue.dialogue_node.dialogue_triggered = false
+	if checkDialogue():
+		triggerDialogue()
+		await dialogue_done
 	confirm.emit()
-	
 
 func commandExecuteAbility(target, ability: ResAbility):
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
@@ -394,23 +389,36 @@ func checkWin():
 	if enemies.is_empty():
 		if unique_id != null:
 			CombatGlobals.combat_won.emit(unique_id)
-		if combat_dialogue != null:
-			if combat_dialogue.dialogue_node.dialogue_triggered:
-				toggleUI()
-				await DialogueManager.dialogue_ended
-				toggleUI()
-				combat_dialogue.dialogue_node.dialogue_triggered = false
+		
+		if checkDialogue():
+			triggerDialogue()
+			await dialogue_done
+		
 		concludeCombat()
 	elif team.is_empty():
-		if combat_dialogue != null:
-			if combat_dialogue.dialogue_node.dialogue_triggered:
-				toggleUI()
-				await DialogueManager.dialogue_ended
-				toggleUI()
-				combat_dialogue.dialogue_node.dialogue_triggered = false
-			if unique_id != null:
-				CombatGlobals.combat_lost.emit(unique_id)
+		if unique_id != null:
+			CombatGlobals.combat_lost.emit(unique_id)
+		
+		if checkDialogue():
+			triggerDialogue()
+			await dialogue_done
+		
 		concludeCombat()
+
+func checkDialogue():
+	if combat_dialogue == null:
+		return false
+	
+	return combat_dialogue.dialogue_node.dialogue_triggered
+
+func triggerDialogue():
+	toggleUI()
+	await DialogueManager.dialogue_ended
+	toggleUI()
+	combat_dialogue.dialogue_node.dialogue_triggered = false
+	dialogue_done.emit()
+
+
 
 func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():

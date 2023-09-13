@@ -16,5 +16,5 @@ combatant_stat_dialogue = ExtResource("3_xtiwq")
 turn_condition = 10
 ability_condition = ExtResource("1_cuh1j")
 combatant_name = "EUStriker"
-combatant_stat_condition = "accuracy"
-combatant_stat_percentage = 0.3
+combatant_stat_condition = "grit"
+combatant_stat_value = 0.0
