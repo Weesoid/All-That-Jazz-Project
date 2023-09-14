@@ -93,5 +93,11 @@ func getStringCurrentStats():
 			result += key.to_upper() + ": " + str(STAT_VALUES[key]) + "\n"
 	return result
 
+func getStringGear():
+	var result = ""
+	for key in EQUIPMENT.keys():
+		result += key.to_upper() + ": " + str(EQUIPMENT[key]) + "\n"
+	return result
+
 func _to_string():
 	return str(NAME)

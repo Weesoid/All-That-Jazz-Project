@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_jtjaw")
 NAME = "Spread Heal"
-DESCRIPTION = ""
+DESCRIPTION = "Heal all targets! Mwah!"
 ANIMATION = ExtResource("2_kh0yo")
 ABILITY_SCRIPT = ExtResource("1_fw0h3")
 COST = 0

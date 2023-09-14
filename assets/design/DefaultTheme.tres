@@ -1,11 +1,8 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bid2xvoeqgilk"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bid2xvoeqgilk"]
 
 [ext_resource type="FontFile" uid="uid://cyywx7byxrbwp" path="res://assets/design/nokiafc22.ttf" id="1_rsrrv"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2iayi"]
-
 [resource]
 default_font_size = 8
-Button/styles/normal = SubResource("StyleBoxEmpty_2iayi")
 Fonts/fonts/large = ExtResource("1_rsrrv")
 Fonts/fonts/normal = ExtResource("1_rsrrv")

@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_83u7m")
 NAME = "Poisonous Bite!!!"
-DESCRIPTION = ""
+DESCRIPTION = "Poison em!"
 ANIMATION = ExtResource("2_cwmnp")
 ABILITY_SCRIPT = ExtResource("1_1dr1r")
 COST = 0

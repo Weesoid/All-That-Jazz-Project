@@ -41,8 +41,9 @@ func getEntity(entity_name: String)-> PlayerScene:
 	return get_tree().current_scene.get_node(entity_name)
 
 func showMenu(path: String):
-	
+	print('WOWZA')
 	var main_menu: Control = load(path).instantiate()
+	main_menu.name = 'uiMenu'
 	
 	if !showing_menu:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -56,7 +57,7 @@ func showMenu(path: String):
 func closeMenu(menu: Control):
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	menu.queue_free()
-	getPlayer().player_camera.get_child(0).queue_free()
+	getPlayer().player_camera.get_node('uiMenu').queue_free()
 	player_can_move = true
 	show_player_interaction = true
 	showing_menu = false

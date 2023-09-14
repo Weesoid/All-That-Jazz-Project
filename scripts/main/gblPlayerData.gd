@@ -129,8 +129,6 @@ func promptQuestCompleted(quest: ResQuest):
 	prompt.setTitle(quest.NAME)
 	prompt.setStatus("Quest Completed:")
 	prompt.playAnimation('show_quest')
-	await prompt.animator.animation_finished
-	prompt.queue_free()
 
 func addQuest(quest_name: String):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
@@ -142,8 +140,6 @@ func addQuest(quest_name: String):
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
 	prompt.setTitle(quest.NAME)
 	prompt.playAnimation('show_quest')
-	await prompt.animator.animation_finished
-	prompt.queue_free()
 
 func hasQuest(quest_name: String):
 	if QUESTS.is_empty() or getQuest(quest_name) == null: 

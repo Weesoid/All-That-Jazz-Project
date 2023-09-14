@@ -1415,7 +1415,7 @@ position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
 hframes = 12
 vframes = 8
-frame = 1
+frame = 6
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
 visible = false
