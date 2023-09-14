@@ -11,6 +11,7 @@
 script = ExtResource("1_j7ri4")
 turn_dialogue = ExtResource("2_v36c8")
 win_dialogue = ExtResource("5_0fiom")
+lose_dialogue = ExtResource("2_8c4dv")
 ability_dialogue = ExtResource("2_8c4dv")
 combatant_stat_dialogue = ExtResource("3_xtiwq")
 turn_condition = 10

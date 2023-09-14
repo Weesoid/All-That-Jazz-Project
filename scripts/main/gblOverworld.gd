@@ -11,6 +11,7 @@ signal alert_patrollers()
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	CombatGlobals.combat_conclusion_dialogue.connect(showCombatAftermathDialogue)
 	initializePlayerParty()
 
 func initializePlayerParty():
@@ -80,6 +81,20 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 		get_tree().current_scene.add_child(balloon)
 	balloon.start(resource, title, extra_game_states)
 
+func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_states: Array = []) -> void:
+	var ExampleBalloonScene = load("res://scenes/miscellaneous/DialogueBox.tscn")
+	var SmallExampleBalloonScene = load("res://scenes/miscellaneous/SmallDialogueBox.tscn")
+	
+	var is_small_window: bool = ProjectSettings.get_setting("display/window/size/viewport_width") < 400
+	var balloon: Node = (SmallExampleBalloonScene if is_small_window else ExampleBalloonScene).instantiate()
+	get_tree().current_scene.add_child(balloon)
+	if result == 0:
+		print('Lose!')
+		balloon.start(resource, 'lose', extra_game_states)
+	elif result == 1:
+		print('Won!')
+		balloon.start(resource, 'win', extra_game_states)
+
 func loadFollowers():
 	var index = 20
 	for follower in getCombatantSquad('Player'):
@@ -90,7 +105,7 @@ func loadFollowers():
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, combat_dialogue_name: String=''):
+func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = ''):
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
@@ -101,6 +116,8 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String=''):
 	
 	if !combat_dialogue_name.is_empty():
 		combat_scene.combat_dialogue = load("res://resources/combat_dialogue/%s.tres" % [combat_dialogue_name])
+	if !aftermath_dialogue_name.is_empty():
+		combat_scene.conclusion_dialogue = load("res://resources/dialogue/%s.dialogue" % [aftermath_dialogue_name])
 	
 	get_tree().current_scene.process_mode = Node.PROCESS_MODE_DISABLED
 	get_parent().add_child(combat_scene)

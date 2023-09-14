@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=17 format=3 uid="uid://vtaidrxm1tji"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=18 format=3 uid="uid://vtaidrxm1tji"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_5akdy"]
 [ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="3_k3ahh"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="4_nrs1w"]
 [ext_resource type="PackedScene" path="res://scenes/entities/NPCPrototypeFollower2.tscn" id="5_3c2l6"]
+[ext_resource type="Resource" uid="uid://b7342ukitk65q" path="res://resources/abilities/AOEHeal.tres" id="5_in4d2"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 [ext_resource type="Texture2D" uid="uid://6jibksvj0qnw" path="res://assets/combatant_sprites/GoodGuy.png" id="6_wr0qh"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="7_lnwc0"]
@@ -175,13 +176,13 @@ STAT_VALUES = {
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 999,
+"health": 1,
 "hustle": 1,
 "verve": 1,
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_5akdy"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_5akdy"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w"), ExtResource("5_in4d2")])
 EQUIPMENT = {
 "armor": null,
 "charm": null,

@@ -24,6 +24,7 @@ class_name CombatScene
 @onready var turn_counter = $CombatCamera/Label
 
 var combat_dialogue: ResCombatDialogue
+var conclusion_dialogue: DialogueResource
 
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
@@ -92,7 +93,7 @@ func _unhandled_input(_event):
 		print('Closing with secondary!')
 		resetActionLog()
 	# Debug? Feature?
-	if Input.is_action_just_pressed('ui_cancel'):
+	if Input.is_action_just_pressed('ui_home'):
 		toggleUI()
 
 func on_player_turn():
@@ -103,6 +104,10 @@ func on_player_turn():
 	end_turn()
 
 func on_enemy_turn():
+	if getCombatantGroup('team').is_empty():
+		return
+	
+	print('Sploofy')
 	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, false)
@@ -115,9 +120,8 @@ func on_enemy_turn():
 	if (target_combatant != null):
 		executeAbility()
 		await confirm
-		end_turn()
-	else:
-		checkWin()
+	
+	end_turn()
 
 func end_turn():
 	turn_count += 1
@@ -203,7 +207,7 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
-	concludeCombat()
+	concludeCombat(0)
 
 func writeCombatLog(text: String):
 	combat_log.text += '\n'+text
@@ -381,6 +385,13 @@ func getDeadCombatants():
 func sortBySpeed(a: ResCombatant, b: ResCombatant):
 	return a.STAT_VALUES['hustle'] > b.STAT_VALUES['hustle']
 
+func getCombatantGroup(type)-> Array[ResCombatant]:
+	match type:
+		'team': return COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
+		'enemies': return COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
+	
+	return [null]
+
 func checkWin():
 	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
 	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
@@ -394,7 +405,8 @@ func checkWin():
 			triggerDialogue()
 			await dialogue_done
 		
-		concludeCombat()
+		concludeCombat(1)
+	
 	elif team.is_empty():
 		if unique_id != null:
 			CombatGlobals.combat_lost.emit(unique_id)
@@ -403,7 +415,7 @@ func checkWin():
 			triggerDialogue()
 			await dialogue_done
 		
-		concludeCombat()
+		concludeCombat(0)
 
 func checkDialogue():
 	if combat_dialogue == null:
@@ -417,8 +429,6 @@ func triggerDialogue():
 	toggleUI()
 	combat_dialogue.dialogue_node.dialogue_triggered = false
 	dialogue_done.emit()
-
-
 
 func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
@@ -479,7 +489,7 @@ func runAbility():
 		action_panel.hide()
 		run_once = false
 	
-func concludeCombat():
+func concludeCombat(results: int):
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
 	
@@ -505,3 +515,6 @@ func concludeCombat():
 	OverworldGlobals.restorePlayerView()
 	queue_free()
 	
+	print('how')
+	if conclusion_dialogue != null:
+		CombatGlobals.combat_conclusion_dialogue.emit(conclusion_dialogue, results)

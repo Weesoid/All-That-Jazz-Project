@@ -59,7 +59,7 @@ func _unhandled_key_input(_event):
 		container.get_child(hit-1).self_modulate.a = 0
 		if hit % 3 == 0:
 			points += 1
-			timer.start(timer.time_left + 0.5)
+			timer.start(timer.time_left + 1.0)
 			displayInputs()
 			hit = 0
 		ding_sound.pitch_scale += (0.025 * points)

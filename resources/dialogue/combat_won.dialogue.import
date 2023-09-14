@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://26vj1iu0uw5h"
+path="res://.godot/imported/combat_won.dialogue-096ccb5d7f4d93ae316cb1d0f91183ed.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/combat_won.dialogue"
+dest_files=["res://.godot/imported/combat_won.dialogue-096ccb5d7f4d93ae316cb1d0f91183ed.tres"]
+
+[params]
+
+defaults=true
