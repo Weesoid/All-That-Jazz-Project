@@ -8,4 +8,4 @@ var subject
 func _process(_delta):
 	if subject is ResCombatant:
 		side_menu.text = subject.getStringCurrentStats()
-		bottom_menu.text = subject.DESCRIPTION
+		bottom_menu.text = subject.NAME

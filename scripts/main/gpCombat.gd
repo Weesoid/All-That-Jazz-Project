@@ -373,12 +373,16 @@ func connectPlayerItems():
 func spawnTroop(combatant):
 	if combatant is ResPlayerCombatant or combatant.COUNT < 1:
 		return
-		
+	
+	var id = 2
+	
 	for n in combatant.COUNT-1:
 		var temp_combatant = combatant.duplicate()
+		temp_combatant.NAME += ' ' + str(id)
+		id += 1
 		temp_combatant.COUNT = 1
 		COMBATANTS.append(temp_combatant)
-	
+
 func getDeadCombatants():
 	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
 	
