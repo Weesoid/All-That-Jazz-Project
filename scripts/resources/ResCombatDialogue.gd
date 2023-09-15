@@ -1,11 +1,7 @@
 extends Resource
 class_name ResCombatDialogue
 
-@export var turn_dialogue: DialogueResource 
-@export var win_dialogue: DialogueResource
-@export var lose_dialogue: DialogueResource
-@export var ability_dialogue: DialogueResource
-@export var combatant_stat_dialogue: DialogueResource
+@export var dialogue_resource: DialogueResource 
 
 @export var turn_condition: int
 @export var ability_condition: ResAbility
@@ -23,11 +19,7 @@ func initializeDialogue(combatants: Array[ResCombatant]):
 		if combatant.NAME == combatant_name:
 			combatant_condition = combatant
 	
-	dialogue_node.turn_dialogue = turn_dialogue
-	dialogue_node.win_dialogue = win_dialogue
-	dialogue_node.lose_dialogue = lose_dialogue
-	dialogue_node.ability_dialogue = ability_dialogue
-	dialogue_node.combatant_stat_dialogue = combatant_stat_dialogue
+	dialogue_node.dialogue_resource = dialogue_resource
 	dialogue_node.turn_condition = turn_condition
 	dialogue_node.ability_condition = ability_condition
 	dialogue_node.combatant_condition = combatant_condition

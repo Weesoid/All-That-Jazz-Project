@@ -1,6 +1,20 @@
-~ start
-
+~ on_turn
 Willis: It's been 10 turns you cum beast!
 Entity: YEAH!!!
+=> END
 
+~ on_win
+Willis: WON!
+=> END
+
+~ on_lose
+Willis: lost...
+=> END
+
+~ on_stat
+Willis: STATS..?
+=> END
+
+~ on_ability
+Willis: Neat..!
 => END
