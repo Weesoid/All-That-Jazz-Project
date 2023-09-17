@@ -20,7 +20,7 @@ var bow_mode = false
 var bow_draw_strength = 0
 var bow_max_draw = 4.0
 var SPEED = 100.0
-var followers: Array[NPCFollower] = []
+
 const ANIMATION_SPEED = 1.5
 
 func _ready():
@@ -71,27 +71,6 @@ func _unhandled_input(_event: InputEvent):
 			PlayerGlobals.POWER.executePower(self)
 		else:
 			print('No power!')
-
-func addFollower(follower: NPCFollower):
-	followers.append(follower)
-	follower.FOLLOW_LOCATION = 20 * followers.size()
-
-func removeFollower(follower_combatant: ResPlayerCombatant):
-	for f in followers:
-		if f.host_combatant == follower_combatant:
-			followers.erase(f)
-	
-	var index = 1
-	for f in followers:
-		f.FOLLOW_LOCATION = 20 * index
-		index += 1
-
-func hasFollower(follower_combatant: ResPlayerCombatant):
-	for f in followers:
-		if f.host_combatant == follower_combatant:
-			return true
-	
-	return false
 
 func canDrawBow()-> bool:
 	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW.STACK > 0 and OverworldGlobals.show_player_interaction

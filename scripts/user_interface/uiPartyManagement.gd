@@ -20,12 +20,13 @@ func _ready():
 				else:
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
 					member.active = false
-					OverworldGlobals.getPlayer().removeFollower(member)
+					PlayerGlobals.removeFollower(member)
 					current_members.remove_child(button)
 					benched_members.add_child(button)
 		)
 		button.mouse_entered.connect(
 			func updateInfo():
+				print(member.NAME)
 				info.subject_combatant = member
 				info.loadInformation()
 		)

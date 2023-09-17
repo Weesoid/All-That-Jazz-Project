@@ -84,6 +84,17 @@ func getStringStats():
 			result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
 	return result
 
+# NOT USED YET, MIGHT BE USED LATER
+func searchStringStats(stats: Array[String]):
+	var result = ""
+	for key in BASE_STAT_VALUES.keys():
+		if stats.has(key):
+			if key == 'health':
+				result += key.to_upper() + ": " + str(STAT_VALUES[key]) + ' / ' + str(BASE_STAT_VALUES[key]) + "\n"
+			else:
+				result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
+	return result
+
 func getStringCurrentStats():
 	var result = ""
 	for key in STAT_VALUES.keys():

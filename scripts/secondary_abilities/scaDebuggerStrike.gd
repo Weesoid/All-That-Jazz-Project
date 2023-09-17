@@ -3,10 +3,8 @@ static func animateCast(caster: ResCombatant):
 	await caster.getAnimator().animation_finished
 	caster.getAnimator().play('Idle')
 	
-static func applyEffects(_caster: ResCombatant, targets, animation_scene):
+static func applyEffects(caster: ResCombatant, targets, animation_scene):
 	for target in targets:
 		CombatGlobals.playAbilityAnimation(target, animation_scene)
-		CombatGlobals.manual_call_indicator.emit(target, '25 REACTION', 'Reaction')
-		target.STAT_VALUES['health'] -= 25
-	
+		CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 100, 100, preload("res://resources/damage_types/Neutral.tres"))
 	

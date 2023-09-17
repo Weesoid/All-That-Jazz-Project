@@ -13,7 +13,6 @@ func loadInformation():
 	clearInformation()
 	character_name.text = subject_combatant.NAME
 	stat_panel.text = subject_combatant.getStringStats()
-	print(stat_panel.text)
 	description.text = subject_combatant.DESCRIPTION
 	
 	for ability in subject_combatant.ABILITY_SET:

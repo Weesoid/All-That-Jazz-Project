@@ -11,7 +11,7 @@ var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
-
+var FOLLOWERS: Array[NPCFollower] = []
 
 signal quest_completed(quest)
 signal quest_added
@@ -29,6 +29,16 @@ func _ready():
 	
 	TEAM.append(preload("res://resources/combatants/p_PrototypeA.tres"))
 	TEAM.append(preload("res://resources/combatants/p_PPrototypeB.tres"))
+	initializeBenchedTeam()
+
+func initializeBenchedTeam():
+	if PlayerGlobals.TEAM.is_empty():
+		return
+	
+	for member in TEAM:
+		if !member.initialized:
+			member.initializeCombatant()
+			member.SCENE.free()
 
 #********************************************************************************
 # INVENTORY MANAGEMENT
@@ -104,9 +114,30 @@ func getRequiredExp() -> int:
 	return int(baseExp * expMultiplier ** (PARTY_LEVEL - 1))
 
 func levelUpCombatants():
-	for combatant in OverworldGlobals.getCombatantSquad('Player'):
+	for combatant in PlayerGlobals.TEAM:
 		for stat in combatant.BASE_STAT_VALUES.keys():
 			combatant.BASE_STAT_VALUES[stat] += combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
+
+func addFollower(follower: NPCFollower):
+	FOLLOWERS.append(follower)
+	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
+
+func removeFollower(follower_combatant: ResPlayerCombatant):
+	for f in FOLLOWERS:
+		if f.host_combatant == follower_combatant:
+			FOLLOWERS.erase(f)
+	
+	var index = 1
+	for f in FOLLOWERS:
+		f.FOLLOW_LOCATION = 20 * index
+		index += 1
+
+func hasFollower(follower_combatant: ResPlayerCombatant):
+	for f in FOLLOWERS:
+		if f.host_combatant == follower_combatant:
+			return true
+	
+	return false
 
 #********************************************************************************
 # QUEST MANAGEMENT

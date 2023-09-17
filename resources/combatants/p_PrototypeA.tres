@@ -165,7 +165,9 @@ STAT_GROWTH_RATES = {
 "will": 1,
 "wit": 1
 }
+ABILITY_POOL = {}
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
+MANDATORY = false
 NAME = "PUFriendHealer"
 PACKED_SCENE = SubResource("PackedScene_kq6rj")
 DESCRIPTION = "A malevolent healer, first of his kind."

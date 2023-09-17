@@ -166,7 +166,9 @@ STAT_GROWTH_RATES = {
 "will": 1,
 "wit": 1
 }
+ABILITY_POOL = {}
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
+MANDATORY = false
 NAME = "PUMainBlasko"
 PACKED_SCENE = SubResource("PackedScene_gvghd")
 DESCRIPTION = "A ruthless striker, kills on sight."

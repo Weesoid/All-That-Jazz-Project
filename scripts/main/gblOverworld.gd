@@ -13,7 +13,6 @@ signal alert_patrollers()
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	CombatGlobals.combat_conclusion_dialogue.connect(showCombatAftermathDialogue)
-	#initializePlayerParty()
 
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
@@ -26,6 +25,7 @@ func initializePlayerParty():
 		loadFollower(member)
 	
 	follow_array.resize(100)
+
 #********************************************************************************
 # SIGNALS
 #********************************************************************************
@@ -99,14 +99,14 @@ func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_
 		balloon.start(resource, 'win', extra_game_states)
 
 func loadFollower(combatant: ResPlayerCombatant):
-	if getPlayer().hasFollower(combatant) or combatant.FOLLOWER_PACKED_SCENE == null:
+	if PlayerGlobals.hasFollower(combatant) or combatant.FOLLOWER_PACKED_SCENE == null:
 		return
 	
 	var follower_scene
 	follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
 	follower_scene.host_combatant = combatant
 	follower_scene.FOLLOW_LOCATION = 20 * player_follower_count
-	getPlayer().addFollower(follower_scene)
+	PlayerGlobals.addFollower(follower_scene)
 	follower_scene.global_position = getPlayer().global_position
 	getCurrentMap().add_child(follower_scene)
 
