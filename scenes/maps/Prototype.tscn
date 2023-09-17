@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bnad0hve141rr"]
+[gd_scene load_steps=18 format=3 uid="uid://bnad0hve141rr"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://gjcs4krj1v0o" path="res://scenes/entities/Player.tscn" id="2_03scn"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cot2km0lxapbv" path="res://scenes/entities/QuestGiverOptionals.tscn" id="10_03ah6"]
 [ext_resource type="PackedScene" uid="uid://bdvyixpv77kxq" path="res://scenes/entities/QuestGiverOrAnd.tscn" id="11_qgfnt"]
 [ext_resource type="PackedScene" uid="uid://1vbu5mffsn7f" path="res://scenes/entities/QuestGiverEnder.tscn" id="12_7wxya"]
+[ext_resource type="PackedScene" uid="uid://dxm5iwog0p5ux" path="res://scenes/entities/PartyManager.tscn" id="13_ttgch"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -108,3 +109,6 @@ position = Vector2(144, 0)
 
 [node name="entBaseEntity5" parent="." instance=ExtResource("12_7wxya")]
 position = Vector2(-176, 80)
+
+[node name="entCraftingTable2" parent="." instance=ExtResource("13_ttgch")]
+position = Vector2(80, 40)

@@ -5,6 +5,7 @@ var enemy_combatant_squad: Array[ResCombatant]
 var player_can_move = true
 var show_player_interaction = true
 var follow_array = []
+var player_follower_count = 0
 
 signal move_entity(target_position)
 signal alert_patrollers()
@@ -12,16 +13,19 @@ signal alert_patrollers()
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	CombatGlobals.combat_conclusion_dialogue.connect(showCombatAftermathDialogue)
-	initializePlayerParty()
+	#initializePlayerParty()
 
 func initializePlayerParty():
+	if getCombatantSquad('Player').is_empty():
+		return
+	
 	for member in getCombatantSquad('Player'):
 		if !member.initialized:
 			member.initializeCombatant()
 			member.SCENE.free()
+		loadFollower(member)
 	
 	follow_array.resize(100)
-	loadFollowers()
 #********************************************************************************
 # SIGNALS
 #********************************************************************************
@@ -42,7 +46,6 @@ func getEntity(entity_name: String)-> PlayerScene:
 	return get_tree().current_scene.get_node(entity_name)
 
 func showMenu(path: String):
-	print('WOWZA')
 	var main_menu: Control = load(path).instantiate()
 	main_menu.name = 'uiMenu'
 	
@@ -95,12 +98,17 @@ func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_
 		print('Won!')
 		balloon.start(resource, 'win', extra_game_states)
 
-func loadFollowers():
-	var index = 20
-	for follower in getCombatantSquad('Player'):
-		follower.FOLLOWER_SCENE.FOLLOW_LOCATION = index
-		getCurrentMap().add_child(follower.FOLLOWER_SCENE)
-		index += 20
+func loadFollower(combatant: ResPlayerCombatant):
+	if getPlayer().hasFollower(combatant) or combatant.FOLLOWER_PACKED_SCENE == null:
+		return
+	
+	var follower_scene
+	follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
+	follower_scene.host_combatant = combatant
+	follower_scene.FOLLOW_LOCATION = 20 * player_follower_count
+	getPlayer().addFollower(follower_scene)
+	follower_scene.global_position = getPlayer().global_position
+	getCurrentMap().add_child(follower_scene)
 
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES

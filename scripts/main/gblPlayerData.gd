@@ -5,6 +5,7 @@ var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
 var KNOWN_RECIPES: Array[ResRecipe] = []
 var KNOWN_POWERS: Array[ResPower] = []
 var QUESTS: Array[ResQuest]
+var TEAM: Array[ResPlayerCombatant]
 var CURRENCY = 0
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
@@ -25,6 +26,9 @@ func _ready():
 	KNOWN_POWERS.append(load("res://resources/powers/Stealth.tres"))
 	quest_objective_completed.connect(checkQuestsForCompleted)
 	quest_completed.connect(promptQuestCompleted)
+	
+	TEAM.append(preload("res://resources/combatants/p_PrototypeA.tres"))
+	TEAM.append(preload("res://resources/combatants/p_PPrototypeB.tres"))
 
 #********************************************************************************
 # INVENTORY MANAGEMENT

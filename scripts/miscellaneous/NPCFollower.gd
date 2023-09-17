@@ -2,12 +2,17 @@ extends CharacterBody2D
 class_name NPCFollower
 
 @onready var ANIMATOR = $Animator
-@export var FOLLOW_LOCATION: int
+
+var FOLLOW_LOCATION: int
+var host_combatant: ResPlayerCombatant
 
 func _ready():
 	add_collision_exception_with(OverworldGlobals.getPlayer())
 
 func _process(_delta):
+	if !host_combatant.active:
+		queue_free()
+	
 	if OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
 		updateSprite()
 		velocity = global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]) * 100

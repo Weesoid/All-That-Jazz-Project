@@ -1,7 +1,7 @@
 # TO-DO: GENERAL QUALITY CONTROL
 extends Control
 
-@onready var character_name = $CharacterName
+@onready var character_name = $Panel/CharacterName
 @onready var description = $Description/DescriptionLabel
 @onready var stat_panel = $Stats/Label
 @onready var ability_panel = $Abilities/ScrollContainer/VBoxContainer
@@ -9,7 +9,8 @@ extends Control
 
 var subject_combatant: ResCombatant
 
-func _ready():
+func loadInformation():
+	clearInformation()
 	character_name.text = subject_combatant.NAME
 	stat_panel.text = subject_combatant.getStringStats()
 	print(stat_panel.text)
@@ -43,3 +44,14 @@ func _ready():
 		equipment_panel.add_child(equipment_button)
 	
 	stat_panel.text = subject_combatant.getStringStats()
+
+func clearInformation():
+	character_name.text = ''
+	description.text = ''
+	stat_panel.text = ''
+	
+	for child in ability_panel.get_children():
+		child.queue_free()
+	
+	for child in equipment_panel.get_children():
+		child.queue_free()

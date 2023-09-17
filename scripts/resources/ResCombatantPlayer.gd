@@ -18,6 +18,7 @@ class_name ResPlayerCombatant
 
 var FOLLOWER_SCENE
 var initialized = false
+var active = false
 
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
@@ -28,8 +29,6 @@ func initializeCombatant():
 		CombatGlobals.addStatusEffect(self, EQUIPMENT['charm'].STATUS_EFFECT)
 	
 	if !initialized:
-		if FOLLOWER_PACKED_SCENE != null:
-			FOLLOWER_SCENE = FOLLOWER_PACKED_SCENE.instantiate()
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
 		initialized = true
 	

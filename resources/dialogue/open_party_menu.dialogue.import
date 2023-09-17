@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://c46w0s8ddqfle"
+path="res://.godot/imported/open_party_menu.dialogue-cc7feb0b018d5f0c419117ea251c7de6.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/open_party_menu.dialogue"
+dest_files=["res://.godot/imported/open_party_menu.dialogue-cc7feb0b018d5f0c419117ea251c7de6.tres"]
+
+[params]
+
+defaults=true

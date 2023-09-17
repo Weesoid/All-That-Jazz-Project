@@ -17,12 +17,15 @@ func _on_tree_exited():
 	queue_free()
 
 func _on_inventory_pressed():
+	disableButtons()
 	loadUserInterface("res://scenes/user_interface/Inventory.tscn")
 
 func _on_posse_pressed():
+	disableButtons()
 	loadUserInterface("res://scenes/user_interface/PartyMembers.tscn")
 
 func _on_quests_pressed():
+	disableButtons()
 	loadUserInterface("res://scenes/user_interface/Quest.tscn")
 
 func _on_quit_pressed():
@@ -32,3 +35,7 @@ func loadUserInterface(path):
 	var ui = load(path).instantiate()
 	base.modulate.a = 0
 	add_child(ui)
+
+func disableButtons():
+	for child in base.get_children():
+		if child is Button: child.disabled = true
