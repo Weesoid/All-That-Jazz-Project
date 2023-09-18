@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://c7j2mkxyqu3jl"]
+[gd_scene load_steps=13 format=3 uid="uid://c7j2mkxyqu3jl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/scmSecondaryIndicator.gd" id="1_1fdpo"]
+[ext_resource type="AudioStream" uid="uid://3g8lmthlik76" path="res://assets/sounds/text_default.ogg" id="2_gglqm"]
 
 [sub_resource type="Animation" id="Animation_d3vq7"]
 resource_name = "Crit"
@@ -157,6 +158,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(-76, -48)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../AudioStreamPlayer:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_kpuxn"]
 resource_name = "Reaction"
@@ -250,6 +263,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(1e-05, 1e-05), Vector2(1.25, 1.25), Vector2(0.75, 0.75), Vector2(0.75, 0.75), Vector2(1e-05, 1e-05)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_su3w1"]
 resource_name = "Wallop"
@@ -341,7 +366,7 @@ offset_left = -76.0
 offset_top = -48.0
 offset_right = 165.0
 offset_bottom = -6.0
-pivot_offset = Vector2(76, 24)
+pivot_offset = Vector2(120.8, 20.8)
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -350,6 +375,9 @@ theme_override_font_sizes/font_size = 16
 text = "10 TOXICATED"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_gglqm")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Label")

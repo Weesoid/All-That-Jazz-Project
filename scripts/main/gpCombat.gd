@@ -107,7 +107,6 @@ func on_enemy_turn():
 	if getCombatantGroup('team').is_empty():
 		return
 	
-	print('Sploofy')
 	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, false)

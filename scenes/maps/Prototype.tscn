@@ -111,4 +111,4 @@ position = Vector2(144, 0)
 position = Vector2(-176, 80)
 
 [node name="entCraftingTable2" parent="." instance=ExtResource("13_ttgch")]
-position = Vector2(80, 40)
+position = Vector2(-40, -76)

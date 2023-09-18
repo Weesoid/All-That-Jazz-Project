@@ -24,9 +24,9 @@ class_name ResCombatant
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var EQUIPMENT = {
 	'weapon': null,
-	'armor': null,
-	'charm': null
+	'armor': null
 }
+@export var CHARMS: Array[ResCharm]
 var STATUS_EFFECTS: Array[ResStatusEffect]
 var BASE_STAT_VALUES: Dictionary
 var SCENE
@@ -94,6 +94,11 @@ func searchStringStats(stats: Array[String]):
 			else:
 				result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
 	return result
+
+func unequipGear():
+	for equipment in EQUIPMENT.values():
+		if equipment == null: continue
+		equipment.unequip()
 
 func getStringCurrentStats():
 	var result = ""

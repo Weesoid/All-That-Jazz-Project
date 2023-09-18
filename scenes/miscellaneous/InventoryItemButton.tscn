@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dg84g1qfg1ob2"]
+
+[node name="InventoryItemButton" type="Button"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1144.0
+offset_bottom = -630.0
+grow_horizontal = 2
+grow_vertical = 2

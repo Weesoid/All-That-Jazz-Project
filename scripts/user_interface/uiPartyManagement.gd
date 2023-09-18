@@ -19,6 +19,7 @@ func _ready():
 					current_members.add_child(button)
 				else:
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
+					member.unequipGear()
 					member.active = false
 					PlayerGlobals.removeFollower(member)
 					current_members.remove_child(button)
@@ -26,10 +27,11 @@ func _ready():
 		)
 		button.mouse_entered.connect(
 			func updateInfo():
-				print(member.NAME)
 				info.subject_combatant = member
 				info.loadInformation()
 		)
+		if member.MANDATORY and member.active: 
+			button.disabled = true
 		if member.active:
 			current_members.add_child(button)
 		else:

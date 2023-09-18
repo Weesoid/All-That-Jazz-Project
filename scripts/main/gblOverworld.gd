@@ -105,7 +105,6 @@ func loadFollower(combatant: ResPlayerCombatant):
 	var follower_scene
 	follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
 	follower_scene.host_combatant = combatant
-	follower_scene.FOLLOW_LOCATION = 20 * player_follower_count
 	PlayerGlobals.addFollower(follower_scene)
 	follower_scene.global_position = getPlayer().global_position
 	getCurrentMap().add_child(follower_scene)

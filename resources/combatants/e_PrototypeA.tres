@@ -202,3 +202,4 @@ EQUIPMENT = {
 "charm": null,
 "weapon": null
 }
+CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

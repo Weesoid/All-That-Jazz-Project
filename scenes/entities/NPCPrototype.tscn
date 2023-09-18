@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://cj86sc2hhun1j" path="res://scenes/components/NPCPatrol.tscn" id="1_qmtob"]
 [ext_resource type="PackedScene" uid="uid://bx16iy3b6f0t1" path="res://scenes/components/CombatantSquad.tscn" id="2_glfxh"]
-[ext_resource type="Resource" uid="uid://bcgejj4c83mm2" path="res://resources/combatants/e_PrototypeA.tres" id="3_643gc"]
-[ext_resource type="PackedScene" path="res://scenes/components/Hurtbox.tscn" id="4_ps25d"]
+[ext_resource type="Resource" uid="uid://crxc4jimvjjun" path="res://resources/combatants/e_PrototypeA.tres" id="3_643gc"]
+[ext_resource type="PackedScene" uid="uid://ldtj4j0l61ow" path="res://scenes/components/Hurtbox.tscn" id="4_ps25d"]
 [ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://assets/overworld_sprites/ent_walk.png" id="5_y0v56"]
 [ext_resource type="PackedScene" path="res://scenes/components/LineOfSight.tscn" id="6_3p5yl"]
 

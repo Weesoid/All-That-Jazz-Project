@@ -1,12 +1,13 @@
 extends ResEquippable
 class_name ResArmor
 
+# REFACTOR THIS
 enum Slot {
 	ARMOR, # 1
 	CHARM # 2
 }
 
-@export var STATUS_EFFECT: ResStatusEffect
+@export var STATUS_EFFECT: ResStatusEffect # Remove this? Keep it charm specific?
 @export var ARMOR_TYPE: ResArmorType
 @export var SLOT: Slot
 

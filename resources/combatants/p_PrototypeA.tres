@@ -167,18 +167,18 @@ STAT_GROWTH_RATES = {
 }
 ABILITY_POOL = {}
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
-MANDATORY = false
+MANDATORY = true
 NAME = "PUFriendHealer"
 PACKED_SCENE = SubResource("PackedScene_kq6rj")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 1,
+"brawn": 100,
 "crit": 1.0,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 100,
+"health": 999,
 "hustle": 1,
 "verve": 1,
 "will": 1,
@@ -190,3 +190,4 @@ EQUIPMENT = {
 "charm": null,
 "weapon": null
 }
+CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

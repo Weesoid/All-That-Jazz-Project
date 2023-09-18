@@ -3,7 +3,7 @@
 extends Control
 
 @onready var use_container = $UseContainer
-@onready var party_panel = $PartyPanel/ScrollContainer/VBoxContainer
+@onready var party_panel = $PartyPanel/VBoxContainer
 @onready var misc_tab = $TabContainer/Misc/VBoxContainer
 @onready var weapon_tab = $TabContainer/Weapons/VBoxContainer
 @onready var armor_tab = $TabContainer/Armors/VBoxContainer
@@ -27,7 +27,7 @@ func _on_use_pressed():
 	if selected_item is ResProjectileAmmo:
 		selected_item.equip()
 		use_container.hide()
-	if selected_item is ResConsumable and selected_item.EFFECT.TARGET_TYPE == selected_item.EFFECT.TargetType.MULTI:
+	elif selected_item is ResConsumable and selected_item.EFFECT.TARGET_TYPE == selected_item.EFFECT.TargetType.MULTI:
 		selected_item.initializeItem()
 		selected_combatant = OverworldGlobals.getCombatantSquad('Player')[0]
 		selected_item.applyEffect(selected_combatant, OverworldGlobals.getCombatantSquad('Player'), selected_item.EFFECT.ANIMATION, true)
@@ -55,10 +55,12 @@ func addMembers():
 							selected_item.initializeItem()
 							selected_item.applyEffect(selected_combatant, selected_combatant, selected_item.EFFECT.ANIMATION, true)
 							button_item_map[selected_item].text = selected_item.to_string()
-							if selected_item.STACK <= 0:
-								button_item_map[selected_item].queue_free()
+							description_panel.text = member.getStringStats()
+							if selected_item.STACK <= 0: button_item_map[selected_item].queue_free()
+							return
 						elif selected_item.EQUIPPED_COMBATANT == member:
 							PlayerGlobals.getItemFromInventory(selected_item).unequip()
+							description_panel.text = member.getStringStats()
 							button_item_map[selected_item].text = selected_item.NAME
 						elif isMemberEquipped(member, selected_item):
 							updateButtonUnequip(member, selected_item)
@@ -69,8 +71,13 @@ func addMembers():
 						
 						for child in party_panel.get_children():
 							child.queue_free()
+						
 						use_container.hide()
 						)
+		button.mouse_entered.connect(
+			func updateInfo():
+				description_panel.text = member.getStringStats()
+		)
 		party_panel.add_child(button)
 
 func isMemberEquipped(member: ResCombatant, slot: ResItem):
@@ -95,18 +102,20 @@ func equipMemberAndUpdateButton(member: ResCombatant, item: ResItem):
 	PlayerGlobals.getItemFromInventory(item).equip(member)
 	button_item_map[item].text = item.NAME
 	button_item_map[item].text += str(" equipped by ", member)
+	description_panel.text = member.getStringStats()
 
 func clearMembers():
 	for child in party_panel.get_children():
 		child.free()
 
 func _on_drop_pressed():
-	if !selected_item is ResStackItem:
+	if selected_item is ResEquippable:
 		PlayerGlobals.INVENTORY.erase(selected_item)
+		selected_item.unequip()
 		button_item_map[selected_item].queue_free()
 		selected_item = null
 		use_container.hide()
-	else:
+	elif selected_item is ResStackItem:
 		selected_item.take(1)
 		button_item_map[selected_item].text = str(selected_item)
 		if selected_item.STACK <= 0:
@@ -114,8 +123,7 @@ func _on_drop_pressed():
 			selected_item = null
 			use_container.hide()
 	
-	print(PlayerGlobals.INVENTORY)
-	
+
 func isEquipped(item):
 	if item is ResConsumable:
 		return false
