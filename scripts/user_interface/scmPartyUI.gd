@@ -27,15 +27,11 @@ func loadInformation():
 	
 	for equipment in subject_combatant.EQUIPMENT.values():
 		if equipment == null:
-			var equipment_button = Button.new()
-			equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			equipment_button.text = str('Not equipped')
-			equipment_panel.add_child(equipment_button)
 			continue
 		
 		var equipment_button = Button.new()
 		equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		equipment_button.text = equipment.NAME
+		equipment_button.text = getSlotName(equipment) + equipment.NAME
 		equipment_button.pressed.connect(
 		func updateDesciption():
 			description.text = equipment.getStringStats()
@@ -54,3 +50,13 @@ func clearInformation():
 	
 	for child in equipment_panel.get_children():
 		child.queue_free()
+
+func getSlotName(item):
+	if item is ResArmor:
+		return 'ARM '
+	elif item is ResWeapon:
+		return 'WPN '
+	elif item is ResCharm:
+		return 'CRM '
+	else:
+		return '??? '

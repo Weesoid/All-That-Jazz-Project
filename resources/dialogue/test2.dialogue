@@ -3,6 +3,7 @@ set OverworldGlobals.player_can_move = false
 
 do PlayerGlobals.addItemToInventory("Arrow",1000)
 do PlayerGlobals.addItemToInventory("HealingPotion", 100)
+do PlayerGlobals.addItemToInventory("ScrapSalvage", 100)
 do PlayerGlobals.addItemToInventory("NeutralWeapon")
 do PlayerGlobals.addItemToInventory("ElectroTems")
 do PlayerGlobals.addItemToInventory("HotHand")

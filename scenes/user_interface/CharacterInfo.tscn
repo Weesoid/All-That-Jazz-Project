@@ -36,7 +36,6 @@ offset_bottom = 135.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Equipment"]
 layout_mode = 2
-horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Equipment/ScrollContainer"]
 layout_mode = 2
@@ -62,7 +61,7 @@ offset_top = -9.0
 offset_right = 184.0
 offset_bottom = 134.0
 
-[node name="Label" type="Label" parent="Stats"]
+[node name="Label" type="RichTextLabel" parent="Stats"]
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="."]

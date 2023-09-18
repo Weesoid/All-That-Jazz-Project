@@ -2,6 +2,7 @@ extends Resource
 class_name ResStatusEffect
 
 @export var NAME: String
+@export var DESCRIPTION: String
 @export var STATUS_SCRIPT: GDScript
 @export var PACKED_SCENE: PackedScene
 @export var TEXTURE: Texture
@@ -27,19 +28,21 @@ func initializeStatus():
 	animateStatusEffect()
 	
 	if ON_HIT:
-		CombatGlobals.received_combatant_value.connect(
-			func onHitTick(combatant, caster, received_value):
-				if combatant == afflicted_combatant:
-					STATUS_SCRIPT.applyEffects(afflicted_combatant, caster, received_value, self)
-				)
+		CombatGlobals.received_combatant_value.connect(onHitTick)
 	
 	duration = MAX_DURATION
+
+func onHitTick(combatant, caster, received_value):
+	if combatant == afflicted_combatant:
+		STATUS_SCRIPT.applyEffects(afflicted_combatant, caster, received_value, self)
 
 func addStatusEffectIcon():
 	afflicted_combatant.getStatusBar().add_child(ICON)
 	current_rank = 1
 
 func removeStatusEffect():
+	if ON_HIT:
+		CombatGlobals.received_combatant_value.disconnect(onHitTick)
 	STATUS_SCRIPT.endEffects(afflicted_combatant)
 	PARTICLES.queue_free()
 	ICON.queue_free()

@@ -8,7 +8,7 @@ signal combatant_stats(combatant)
 signal combat_conclusion_dialogue(dialogue, result)
 
 signal exp_updated(value: float, max_value: float)
-signal received_combatant_value(combatant: ResCombatant, value)
+signal received_combatant_value(combatant: ResCombatant, caster: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
 signal call_indicator(animation: String, combatant: ResCombatant)
 signal execute_ability(target, ability: ResAbility)
@@ -107,7 +107,7 @@ func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: S
 		manual_call_indicator.emit(target, "%s HEALED!" % [int(healing)], 'Heal')
 		target.STAT_VALUES['health'] += int(healing)
 	
-	received_combatant_value.emit(target, int(healing))
+	received_combatant_value.emit(target, caster, int(healing))
 	call_indicator.emit('Show', target)
 
 func randomRoll(percent_chance: float):

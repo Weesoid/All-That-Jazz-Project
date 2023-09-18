@@ -27,8 +27,14 @@ func removeStatModifications():
 func getStringStats():
 	var result = ""
 	for key in STAT_MODIFICATIONS.keys():
-		result += key.to_upper() + ": " + str(STAT_MODIFICATIONS[key]) + "\n"
+		if STAT_MODIFICATIONS[key] > 0:
+			result += key.to_upper() + " +" + str(STAT_MODIFICATIONS[key]) + "\n"
+		else:
+			result += key.to_upper() + " " + str(STAT_MODIFICATIONS[key]) + "\n"
 	return result
+
+func isEquipped():
+	return EQUIPPED_COMBATANT != null
 
 func getStatModifications():
 	return STAT_MODIFICATIONS

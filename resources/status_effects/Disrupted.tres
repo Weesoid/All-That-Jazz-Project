@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://cr7mcpdrc2gvi"]
 
 [ext_resource type="PackedScene" uid="uid://so6e2r5rokwe" path="res://scenes/particles/Disrupted.tscn" id="1_smq3a"]
 [ext_resource type="Script" path="res://scripts/status_effects/scsDisrupted.gd" id="2_r45kn"]
@@ -8,6 +8,7 @@
 [resource]
 script = ExtResource("4_rcuq1")
 NAME = "Disrupted"
+DESCRIPTION = "Target has reduced ACCURACY."
 STATUS_SCRIPT = ExtResource("2_r45kn")
 PACKED_SCENE = ExtResource("1_smq3a")
 TEXTURE = ExtResource("3_t1y6l")

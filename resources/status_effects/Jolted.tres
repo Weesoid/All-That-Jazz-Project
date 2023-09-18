@@ -8,12 +8,13 @@
 [resource]
 script = ExtResource("1_6gnln")
 NAME = "Jolted"
+DESCRIPTION = "Target skips turns."
 STATUS_SCRIPT = ExtResource("2_n0cly")
 PACKED_SCENE = ExtResource("1_ukk5x")
 TEXTURE = ExtResource("3_i0ddl")
-MAX_DURATION = 6
+MAX_DURATION = 2
 MAX_RANK = 0
 ON_HIT = false
 APPLY_ONCE = false
-TICK_PER_TURN = true
+TICK_PER_TURN = false
 PERMANENT = false

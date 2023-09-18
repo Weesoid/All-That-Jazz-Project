@@ -149,12 +149,12 @@ _bundled = {
 
 [resource]
 script = ExtResource("3_fptwa")
-COUNT = 5
+COUNT = 1
 AI_PACKAGE = ExtResource("2_xgrhx")
 DROPS = {}
 NAME = "EUHealer"
 PACKED_SCENE = SubResource("PackedScene_q83j7")
-DESCRIPTION = ""
+DESCRIPTION = "Special unit! He's quite a bangarangangangan BRUH!!!"
 STAT_VALUES = {
 "accuracy": 0.95,
 "brawn": 0,

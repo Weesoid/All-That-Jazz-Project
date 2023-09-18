@@ -16,14 +16,16 @@ grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1_qwj2w")
 
-[node name="DescriptionLabel" type="Label" parent="."]
+[node name="Capacity" type="Label" parent="."]
 layout_mode = 0
-offset_left = -168.0
-offset_top = 112.0
-offset_right = 184.0
-offset_bottom = 168.0
-text = "
-"
+offset_top = -112.0
+offset_right = 208.0
+offset_bottom = -99.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0/100"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
@@ -41,16 +43,21 @@ horizontal_scroll_mode = 0
 custom_minimum_size = Vector2(272, 0)
 layout_mode = 2
 
-[node name="Button" type="Button" parent="TabContainer/Weapons/VBoxContainer"]
-layout_mode = 2
-text = "asdfasdf"
-
 [node name="Armors" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Armors"]
+custom_minimum_size = Vector2(272, 0)
+layout_mode = 2
+
+[node name="Charms" type="ScrollContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Charms"]
 custom_minimum_size = Vector2(272, 0)
 layout_mode = 2
 
@@ -89,19 +96,19 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 offset_left = -184.0
-offset_top = 131.0
+offset_top = 112.0
 offset_right = 96.0
-offset_bottom = 149.0
+offset_bottom = 168.0
 alignment = 1
 
 [node name="Use" type="Button" parent="UseContainer"]
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "Use"
 alignment = 0
 
 [node name="Drop" type="Button" parent="UseContainer"]
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "Drop"
 alignment = 0

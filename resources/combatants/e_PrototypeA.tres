@@ -182,7 +182,7 @@ ExtResource("3_678wj"): 2.0
 }
 NAME = "EUStriker"
 PACKED_SCENE = SubResource("PackedScene_tm1b0")
-DESCRIPTION = ""
+DESCRIPTION = "Don't fuck with him!"
 STAT_VALUES = {
 "accuracy": 0.95,
 "brawn": 0,

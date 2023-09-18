@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=19 format=3 uid="uid://cxmw4kd3fmtak"]
 
-[ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_ce6nb"]
+[ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_h6ewg"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="2_jsk6a"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="3_bfkjx"]
 [ext_resource type="PackedScene" uid="uid://b5w271wdy4wha" path="res://scenes/entities/NPCPrototypeFollower.tscn" id="4_fpjeh"]
@@ -174,18 +174,18 @@ PACKED_SCENE = SubResource("PackedScene_gvghd")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 10,
+"brawn": 1,
 "crit": 0.05,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 100,
+"health": 999,
 "hustle": 1,
 "verve": 1,
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ce6nb"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i"), ExtResource("5_iixbd"), ExtResource("6_ateo1")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_h6ewg"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i"), ExtResource("5_iixbd"), ExtResource("6_ateo1")])
 EQUIPMENT = {
 "armor": null,
 "charm": null,

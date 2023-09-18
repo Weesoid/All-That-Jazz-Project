@@ -79,6 +79,8 @@ func _ready():
 	
 	if combat_dialogue != null:
 		combat_dialogue.initializeDialogue(COMBATANTS)
+	
+	ui_inspect_target.get_node('AnimationPlayer').play('Loop')
 	# TO-DO: Battle Transition
 
 func _process(_delta):
@@ -97,6 +99,7 @@ func _unhandled_input(_event):
 		toggleUI()
 
 func on_player_turn():
+	resetActionLog()
 	action_panel.show()
 	attack_button.grab_focus()
 	
@@ -299,17 +302,16 @@ func playerSelectMultiTarget():
 		return
 	
 	drawSelectionTarget('Target', enemy_container.global_position)
+	combat_camera.zoom = lerp(combat_camera.zoom, Vector2(0.75, 0.75), 0.25)
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
 
 func playerSelectInspection():
 	action_panel.hide()
-	ui_inspect_target.show()
 	valid_targets = COMBATANTS
 	target_combatant = valid_targets[target_index]
-	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
-	ui_inspect_target.position = ui_target.position
-	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.25)
+	drawInspectionTarget(target_combatant.getSprite().global_position)
+	combat_camera.position = lerp(combat_camera.position, ui_inspect_target.position, 0.25)
 	ui_inspect_target.subject = target_combatant
 	browseTargetsInputs()
 	confirmCancelInputs()
@@ -435,6 +437,7 @@ func triggerDialogue():
 
 func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
+		print('Removing effect %s on %s' % [combatant.STATUS_EFFECTS[0].NAME, combatant.NAME])
 		combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
 func tickStatusEffects(combatant: ResCombatant, per_turn = false):
@@ -453,7 +456,11 @@ func drawSelectionTarget(animation: String, pos: Vector2):
 	ui_target.show()
 	ui_target_animator.play(animation)
 	ui_target.position = pos
-	
+
+func drawInspectionTarget(pos: Vector2):
+	ui_inspect_target.show()
+	ui_inspect_target.position = pos
+
 func browseTargetsInputs():
 	if Input.is_action_just_pressed("ui_right"):
 		target_index = incrementIndex(target_index, 1, valid_targets.size())
@@ -469,6 +476,7 @@ func confirmCancelInputs():
 	
 func resetActionLog():
 	combat_camera.position = Vector2(0, -19)
+	combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	ui_target.hide()
 	secondary_panel.hide()

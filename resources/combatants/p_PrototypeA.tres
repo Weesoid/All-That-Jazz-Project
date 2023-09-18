@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=18 format=3 uid="uid://vtaidrxm1tji"]
 
-[ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_5akdy"]
+[ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_bsdt7"]
 [ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="3_k3ahh"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="4_nrs1w"]
@@ -173,7 +173,7 @@ PACKED_SCENE = SubResource("PackedScene_kq6rj")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 100,
+"brawn": 1,
 "crit": 1.0,
 "exposure": 0,
 "grit": 1,
@@ -184,7 +184,7 @@ STAT_VALUES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_5akdy"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w"), ExtResource("5_in4d2")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_bsdt7"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w"), ExtResource("5_in4d2")])
 EQUIPMENT = {
 "armor": null,
 "charm": null,

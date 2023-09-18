@@ -14,6 +14,7 @@ class_name PlayerScene
 @onready var player_direction = $PlayerDirection
 @onready var bow_line = $PlayerDirection/BowShotLine
 @onready var squad = $CombatantSquadComponent
+@onready var ammo_count = $Ammo
 
 var direction = Vector2()
 var bow_mode = false
@@ -34,6 +35,10 @@ func _process(_delta):
 	animateInteract()
 	if bow_mode:
 		drawBow()
+		ammo_count.show()
+		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
+	else:
+		ammo_count.hide()
 
 func _physics_process(_delta):
 	if OverworldGlobals.player_can_move:
@@ -85,7 +90,6 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	print('STACKS: ', PlayerGlobals.EQUIPPED_ARROW.STACK)
 	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and OverworldGlobals.show_player_interaction:
 		OverworldGlobals.player_can_move = false
 		bow_line.show()

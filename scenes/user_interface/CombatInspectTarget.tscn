@@ -1,7 +1,45 @@
-[gd_scene load_steps=3 format=3 uid="uid://bt4b6i7iiex30"]
+[gd_scene load_steps=6 format=3 uid="uid://bt4b6i7iiex30"]
 
 [ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://assets/misc_sprites/qte_target.png" id="1_1tuxq"]
 [ext_resource type="Script" path="res://scripts/user_interface/scmCombatInspectTarget.gd" id="1_twgfn"]
+
+[sub_resource type="Animation" id="Animation_ob7ho"]
+resource_name = "Loop"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_3l3s7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qtr25"]
+_data = {
+"Loop": SubResource("Animation_ob7ho"),
+"RESET": SubResource("Animation_3l3s7")
+}
 
 [node name="CombatInspectTarget" type="Node2D"]
 script = ExtResource("1_twgfn")
@@ -10,44 +48,56 @@ script = ExtResource("1_twgfn")
 scale = Vector2(0.287109, 0.287109)
 texture = ExtResource("1_1tuxq")
 
-[node name="Stats" type="Panel" parent="."]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 74.0
-offset_top = -224.0
-offset_right = 296.0
-offset_bottom = 88.0
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Stats"]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 8.0
-offset_right = 206.0
-offset_bottom = 305.0
+[node name="CombatantName" type="Label" parent="."]
+offset_left = 88.0
+offset_top = -256.0
+offset_right = 448.0
+offset_bottom = -233.0
 scale = Vector2(1, 0.99604)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 16
+text = "NAME"
+autowrap_mode = 3
+
+[node name="Stats" type="Label" parent="."]
+offset_left = 88.0
+offset_top = -216.0
+offset_right = 280.0
+offset_bottom = 81.0
+scale = Vector2(1, 0.99604)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 16
 text = "STATS "
 autowrap_mode = 3
 
-[node name="Info" type="Panel" parent="."]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -296.0
-offset_top = 96.0
-offset_right = 296.0
-offset_bottom = 226.0
-grow_vertical = 2
+[node name="StatusEffects" type="RichTextLabel" parent="."]
+offset_left = -288.0
+offset_top = -256.0
+offset_right = -96.0
+offset_bottom = 81.0
+scale = Vector2(1, 0.99604)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[img]res://assets/icons/st_speed_dn2.png[/img] Target cannot move!"
+scroll_active = false
 
-[node name="Label" type="Label" parent="Info"]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 584.0
-offset_bottom = 120.0
+[node name="Description" type="Label" parent="."]
+offset_left = -288.0
+offset_top = 104.0
+offset_right = 288.0
+offset_bottom = 216.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 16
 text = "INFO
 "
 autowrap_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qtr25")
+}

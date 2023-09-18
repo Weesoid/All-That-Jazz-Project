@@ -7,6 +7,7 @@ extends Control
 @onready var misc_tab = $TabContainer/Misc/VBoxContainer
 @onready var weapon_tab = $TabContainer/Weapons/VBoxContainer
 @onready var armor_tab = $TabContainer/Armors/VBoxContainer
+@onready var charm_tab = $TabContainer/Charms/VBoxContainer
 @onready var use_button = $UseContainer/Use
 @onready var description_panel = $DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $StatPanel/DescriptionLabel
@@ -111,7 +112,8 @@ func clearMembers():
 func _on_drop_pressed():
 	if selected_item is ResEquippable:
 		PlayerGlobals.INVENTORY.erase(selected_item)
-		selected_item.unequip()
+		if selected_item.isEquipped():
+			selected_item.unequip()
 		button_item_map[selected_item].queue_free()
 		selected_item = null
 		use_container.hide()

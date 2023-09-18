@@ -9,7 +9,7 @@ func _ready():
 		member_button.text = member.NAME
 		member_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		member_button.custom_minimum_size.x = 96
-		member_button.pressed.connect(
+		member_button.mouse_entered.connect(
 			func loadMemberInformation():
 				info.subject_combatant = member
 				info.loadInformation()

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://c7k4ncn52lhts"]
 
 [ext_resource type="PackedScene" uid="uid://hee1yr7mg760" path="res://scenes/particles/Singe.tscn" id="1_7nbwp"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_ty3fj"]
@@ -8,6 +8,7 @@
 [resource]
 script = ExtResource("1_ty3fj")
 NAME = "Singed"
+DESCRIPTION = "Target has reduced healing."
 STATUS_SCRIPT = ExtResource("2_jsky3")
 PACKED_SCENE = ExtResource("1_7nbwp")
 TEXTURE = ExtResource("3_io36o")

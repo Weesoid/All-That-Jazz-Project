@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://dtda7c8dbuqtl"]
 
 [ext_resource type="PackedScene" uid="uid://d0khkuya8js5a" path="res://scenes/particles/Vulnerated.tscn" id="1_gkjan"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_ge1mk"]
@@ -8,6 +8,7 @@
 [resource]
 script = ExtResource("2_ge1mk")
 NAME = "Vulnerated"
+DESCRIPTION = "Target has permanently reduced GRIT."
 STATUS_SCRIPT = ExtResource("2_hfugv")
 PACKED_SCENE = ExtResource("1_gkjan")
 TEXTURE = ExtResource("3_pjntp")

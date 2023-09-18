@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://itsqkr4n00g6"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
 [ext_resource type="PackedScene" uid="uid://bsuyrbl4hyjcw" path="res://scenes/particles/Poison.tscn" id="1_qebaw"]
@@ -8,10 +8,13 @@
 [resource]
 script = ExtResource("1_5ugit")
 NAME = "Poison"
+DESCRIPTION = "Target takes damage per turn."
 STATUS_SCRIPT = ExtResource("1_t6ebe")
 PACKED_SCENE = ExtResource("1_qebaw")
 TEXTURE = ExtResource("3_eb5um")
 MAX_DURATION = 3
 MAX_RANK = 0
+ON_HIT = false
 APPLY_ONCE = false
+TICK_PER_TURN = false
 PERMANENT = false
