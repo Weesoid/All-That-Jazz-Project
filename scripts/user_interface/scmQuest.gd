@@ -23,7 +23,7 @@ func _ready():
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = str(quest.NAME)
 		button.custom_minimum_size.x = quests_containter.size.x
-		button.pressed.connect(
+		button.mouse_entered.connect(
 			func setQuest():
 				selected_quest = quest
 				run_once = true

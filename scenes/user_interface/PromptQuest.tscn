@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8wgdv7533ycv"]
+[gd_scene load_steps=9 format=3 uid="uid://c8wgdv7533ycv"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/scmPromptQuest.gd" id="1_mr51i"]
+[ext_resource type="AudioStream" uid="uid://b0i2tcoy5evhm" path="res://assets/sounds/629534__metkir__open-treasure-sound.wav" id="2_vpkar"]
+[ext_resource type="AudioStream" uid="uid://ydlx2bxjrejn" path="res://assets/sounds/641011__metkir__crying-sound.mp3" id="3_j3rpx"]
 
 [sub_resource type="Animation" id="Animation_8gdix"]
 length = 0.001
@@ -88,6 +90,123 @@ tracks/6/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("QuestStarted:text")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Quest Completed:"]
+}
+
+[sub_resource type="Animation" id="Animation_gs2mi"]
+resource_name = "quest_complete"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("QuestTitle:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 1.6, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("QuestStarted:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("QuestStarted:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PreviousObjective:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CurrentObjective:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_j3rpx")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/6/use_blend = true
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("QuestStarted:text")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Quest Completed:"]
+}
 
 [sub_resource type="Animation" id="Animation_8aewi"]
 resource_name = "show_quest"
@@ -166,6 +285,21 @@ tracks/5/keys = {
 "method": &"queue_free"
 }]
 }
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_vpkar")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/6/use_blend = true
 
 [sub_resource type="Animation" id="Animation_bvydc"]
 resource_name = "update_objective"
@@ -260,6 +394,7 @@ tracks/6/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dxlpa"]
 _data = {
 "RESET": SubResource("Animation_8gdix"),
+"quest_complete": SubResource("Animation_gs2mi"),
 "show_quest": SubResource("Animation_8aewi"),
 "update_objective": SubResource("Animation_bvydc")
 }
@@ -291,7 +426,9 @@ offset_right = 442.0
 offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Quest Added:"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Quest Completed:"
 
 [node name="QuestTitle" type="Label" parent="."]
 layout_mode = 1
@@ -306,6 +443,8 @@ offset_right = 442.0
 offset_bottom = 19.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 16
 text = "THIS IS A QUEST TITLE"
 uppercase = true
@@ -323,6 +462,8 @@ offset_right = 442.0
 offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 text = "* Previous Objective"
 
 [node name="CurrentObjective" type="Label" parent="."]
@@ -338,9 +479,13 @@ offset_right = 442.0
 offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 text = "* Current Objective"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_dxlpa")
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

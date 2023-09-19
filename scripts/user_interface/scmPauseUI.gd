@@ -29,7 +29,9 @@ func _on_quests_pressed():
 	loadUserInterface("res://scenes/user_interface/Quest.tscn")
 
 func _on_quit_pressed():
-	get_tree().quit()
+	#get_tree().quit()
+	disableButtons()
+	loadUserInterface("res://scenes/user_interface/Storage.tscn")
 
 func loadUserInterface(path):
 	var ui = load(path).instantiate()

@@ -2,6 +2,7 @@
 extends Node
 
 var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
+var STORAGE: Array[ResItem] = []
 var KNOWN_RECIPES: Array[ResRecipe] = []
 var KNOWN_POWERS: Array[ResPower] = []
 var QUESTS: Array[ResQuest]
@@ -95,6 +96,15 @@ func getUnstackableItemNames()-> Array:
 	
 	return out
 
+func hasItem(item_name):
+	for item in INVENTORY:
+		if item.NAME == item_name: return true
+	
+	for item in STORAGE:
+		if item.NAME == item_name: return true
+	
+	return false
+
 func getRecipe(item: ResRecipe):
 	return KNOWN_RECIPES[KNOWN_RECIPES.find(item)]
 
@@ -160,10 +170,9 @@ func updateObjectivePrompt(quest: ResQuest):
 func promptQuestCompleted(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	
-	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
 	prompt.setTitle(quest.NAME)
-	prompt.setStatus("Quest Completed:")
-	prompt.playAnimation('show_quest')
+	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	prompt.playAnimation('quest_complete')
 
 func addQuest(quest_name: String):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()

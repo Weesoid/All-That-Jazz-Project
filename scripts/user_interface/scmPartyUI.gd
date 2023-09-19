@@ -19,7 +19,7 @@ func loadInformation():
 		var ability_button = Button.new()
 		ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		ability_button.text = ability.NAME
-		ability_button.pressed.connect(
+		ability_button.mouse_entered.connect(
 			func updateDesciption():
 				description.text = ability.DESCRIPTION
 		)
@@ -32,7 +32,7 @@ func loadInformation():
 		var equipment_button = Button.new()
 		equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		equipment_button.text = getSlotName(equipment) + equipment.NAME
-		equipment_button.pressed.connect(
+		equipment_button.mouse_entered.connect(
 		func updateDesciption():
 			description.text = equipment.getStringStats()
 		)

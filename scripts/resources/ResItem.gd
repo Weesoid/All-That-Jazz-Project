@@ -4,6 +4,7 @@ class_name ResItem
 @export var NAME: String
 @export var ICON_NAME: String
 @export var DESCRIPTION: String
+@export var VALUE: int
 
 var ICON
 var ITEM_SCRIPT
