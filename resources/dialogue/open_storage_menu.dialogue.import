@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://cijdaq63n6ov"
+path="res://.godot/imported/open_storage_menu.dialogue-39e087b4104f9d4aa243d797e33074cc.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/open_storage_menu.dialogue"
+dest_files=["res://.godot/imported/open_storage_menu.dialogue-39e087b4104f9d4aa243d797e33074cc.tres"]
+
+[params]
+
+defaults=true

@@ -1,0 +1,5 @@
+~ start
+set OverworldGlobals.player_can_move = false
+
+do OverworldGlobals.showMenu("res://scenes/user_interface/Storage.tscn")
+=> END

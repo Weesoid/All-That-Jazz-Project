@@ -12,7 +12,7 @@ func add(count: int, show_prompt=true):
 	else:
 		STACK += count
 		WEIGHT = PER_WEIGHT * STACK
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]x%s %s[/color] to inventory.' % [count, NAME])
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]x%s %s[/color] to Inventory.' % [count, NAME])
 
 func take(count: int):
 	STACK -= count
