@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="ResStackItem" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=2 format=3 uid="uid://bc3yscth1qntp"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="1_tfqii"]
 
 [resource]
 script = ExtResource("1_tfqii")
+MAX_STACK = 100
 NAME = "Scrap Salvage"
 ICON_NAME = ""
 DESCRIPTION = "Used for crafting."
+VALUE = 0

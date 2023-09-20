@@ -5,8 +5,12 @@ extends Control
 @onready var description = $DescriptionPanel/Label
 @onready var stats = $StatsPanel/Label
 @onready var search = $LineEdit
+@onready var capacity = $Capacity
 
 var selected_item
+
+func _process(_delta):
+	capacity.text = "%s / %s" % [PlayerGlobals.CURRENT_CAPACITY, PlayerGlobals.MAX_CAPACITY]
 
 func _ready():
 	loadStorage()
@@ -23,24 +27,24 @@ func createButton(item, location):
 	var button = Button.new()
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.custom_minimum_size.x = 170
-	button.text = item.NAME
+	button.text = item._to_string()
 	button.pressed.connect(
 		func transferItem():
+			print('In inv? %s' % PlayerGlobals.INVENTORY.has(item))
+			print('In str? %s' % PlayerGlobals.STORAGE.has(item))
 			if PlayerGlobals.INVENTORY.has(item):
-				if item is ResEquippable and item.isEquipped():
-					item.unequip()
-				PlayerGlobals.STORAGE.append(item)
-				PlayerGlobals.INVENTORY.erase(item)
+				PlayerGlobals.transferItem(item, PlayerGlobals.INVENTORY, PlayerGlobals.STORAGE)
 				inventory.remove_child(button)
 				storage.add_child(button)
 			elif PlayerGlobals.STORAGE.has(item):
-				PlayerGlobals.INVENTORY.append(item)
-				PlayerGlobals.STORAGE.erase(item)
+				PlayerGlobals.transferItem(item, PlayerGlobals.STORAGE, PlayerGlobals.INVENTORY)
 				storage.remove_child(button)
 				inventory.add_child(button)
 	)
 	button.mouse_entered.connect(
 		func updateInfo():
+			description.text = ''
+			stats.text = ''
 			description.text = item.DESCRIPTION
 			if item is ResEquippable:
 				stats.text = item.getStringStats()

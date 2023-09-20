@@ -1,12 +1,16 @@
 [gd_resource type="Resource" script_class="ResConsumable" load_steps=3 format=3 uid="uid://ed2dvejnynu4"]
 
-[ext_resource type="Resource" path="res://resources/abilities/Heal.tres" id="1_gfk4x"]
+[ext_resource type="Resource" uid="uid://bn13cdac7oodf" path="res://resources/abilities/Heal.tres" id="1_gfk4x"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemConsumable.gd" id="2_0mv4f"]
 
 [resource]
 script = ExtResource("2_0mv4f")
 EFFECT = ExtResource("1_gfk4x")
 OVERWORLD_USE = true
+PER_WEIGHT = 25
+MAX_STACK = 100
 NAME = "Healing Potion"
 ICON_NAME = "st_grit_up1"
 DESCRIPTION = "\"Wow this shit heals!\" /n - Johnny Dyin"
+VALUE = 0
+WEIGHT = 1

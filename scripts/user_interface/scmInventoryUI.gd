@@ -11,10 +11,14 @@ extends Control
 @onready var use_button = $UseContainer/Use
 @onready var description_panel = $DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $StatPanel/DescriptionLabel
+@onready var capacity = $Capacity
 
 var selected_item: ResItem
 var selected_combatant: ResCombatant
 var button_item_map: Dictionary
+
+func _process(_delta):
+	capacity.text = "%s / %s" % [PlayerGlobals.CURRENT_CAPACITY, PlayerGlobals.MAX_CAPACITY]
 
 func _on_ready():
 	for item in PlayerGlobals.INVENTORY:
@@ -57,7 +61,9 @@ func addMembers():
 							selected_item.applyEffect(selected_combatant, selected_combatant, selected_item.EFFECT.ANIMATION, true)
 							button_item_map[selected_item].text = selected_item.to_string()
 							description_panel.text = member.getStringStats()
-							if selected_item.STACK <= 0: button_item_map[selected_item].queue_free()
+							if selected_item.STACK <= 0: 
+								button_item_map[selected_item].queue_free()
+								party_panel.hide()
 							return
 						elif selected_item.EQUIPPED_COMBATANT == member:
 							PlayerGlobals.getItemFromInventory(selected_item).unequip()
@@ -110,15 +116,12 @@ func clearMembers():
 		child.free()
 
 func _on_drop_pressed():
+	PlayerGlobals.removeItemResource(selected_item)
 	if selected_item is ResEquippable:
-		PlayerGlobals.INVENTORY.erase(selected_item)
-		if selected_item.isEquipped():
-			selected_item.unequip()
 		button_item_map[selected_item].queue_free()
 		selected_item = null
 		use_container.hide()
 	elif selected_item is ResStackItem:
-		selected_item.take(1)
 		button_item_map[selected_item].text = str(selected_item)
 		if selected_item.STACK <= 0:
 			button_item_map[selected_item].queue_free()

@@ -328,7 +328,7 @@ func executeAbility():
 	await get_tree().create_timer(0.5).timeout
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	
-	if selected_item != null: selected_item.use()
+	if selected_item != null: selected_item.take(1)
 	CombatGlobals.ability_used.emit(selected_ability)
 	if checkDialogue():
 		triggerDialogue()

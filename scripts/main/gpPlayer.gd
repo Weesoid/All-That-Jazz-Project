@@ -14,7 +14,8 @@ class_name PlayerScene
 @onready var player_direction = $PlayerDirection
 @onready var bow_line = $PlayerDirection/BowShotLine
 @onready var squad = $CombatantSquadComponent
-@onready var ammo_count = $Ammo
+@onready var ammo_count = $PlayerCamera/Ammo
+@onready var prompt = $PlayerCamera/PlayerPrompt
 
 var direction = Vector2()
 var bow_mode = false
@@ -27,7 +28,6 @@ const ANIMATION_SPEED = 1.5
 func _ready():
 	PlayerGlobals.POWER = load("res://resources/powers/Stealth.tres")
 	player_animator.speed_scale = ANIMATION_SPEED
-	print(animation_tree.tree_root)
 	animation_tree.active = true
 
 func _process(_delta):
@@ -112,7 +112,7 @@ func undrawBow(wait=false):
 	OverworldGlobals.player_can_move = true
 
 func shootProjectile():
-	PlayerGlobals.EQUIPPED_ARROW.use()
+	PlayerGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
 	var projectile = load("res://scenes/entities/Arrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self

@@ -1,7 +1,8 @@
-[gd_scene load_steps=93 format=3 uid="uid://gjcs4krj1v0o"]
+[gd_scene load_steps=97 format=3 uid="uid://gjcs4krj1v0o"]
 
 [ext_resource type="Script" path="res://scripts/main/gpPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/misc_sprites/interact.png" id="3_y84xx"]
+[ext_resource type="Script" path="res://scripts/user_interface/scmPlayerPrompt.gd" id="5_h8rtm"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://assets/overworld_sprites/player.png" id="5_nms4n"]
 [ext_resource type="PackedScene" uid="uid://bx16iy3b6f0t1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
 
@@ -48,6 +49,67 @@ size = Vector2(17, 22)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
 height = 22.0
+
+[sub_resource type="Animation" id="Animation_q42o5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-262, -149)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ljyis"]
+resource_name = "Show"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-262, -215.593), Vector2(-262, -149)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mkerc"]
+_data = {
+"RESET": SubResource("Animation_q42o5"),
+"Show": SubResource("Animation_ljyis")
+}
 
 [sub_resource type="Animation" id="Animation_u64m2"]
 resource_name = "Bow_Draw_Down"
@@ -1412,7 +1474,7 @@ position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
 hframes = 12
 vframes = 8
-frame = 14
+frame = 6
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
 visible = false
@@ -1430,7 +1492,6 @@ libraries = {
 
 [node name="PlayerDirection" type="Marker2D" parent="."]
 position = Vector2(0, -20)
-rotation = 1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 collision_layer = 0
@@ -1457,6 +1518,35 @@ zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0
 
+[node name="Ammo" type="Label" parent="PlayerCamera"]
+offset_left = 17.0
+offset_top = -32.0
+offset_right = 57.0
+offset_bottom = -19.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "1000"
+
+[node name="PlayerPrompt" type="RichTextLabel" parent="PlayerCamera"]
+modulate = Color(1, 1, 1, 0)
+z_index = 999
+offset_left = -262.0
+offset_top = -149.0
+offset_right = -177.0
+offset_bottom = -133.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+script = ExtResource("5_h8rtm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerCamera/PlayerPrompt"]
+libraries = {
+"": SubResource("AnimationLibrary_mkerc")
+}
+
 [node name="PlayerAnimator" type="AnimationPlayer" parent="."]
 root_node = NodePath("../PlayerSprite")
 libraries = {
@@ -1482,12 +1572,3 @@ parameters/Idle/blend_position = Vector2(-0.0135502, 0.151365)
 "parameters/Shoot Bow/blend_position" = Vector2(0, 0)
 parameters/Walk/blend_position = Vector2(0, 0)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
-
-[node name="Ammo" type="Label" parent="."]
-offset_left = 17.0
-offset_top = -32.0
-offset_right = 57.0
-offset_bottom = -22.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-text = "1000"

@@ -3,6 +3,8 @@ extends Node
 
 var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
 var STORAGE: Array[ResItem] = []
+var CURRENT_CAPACITY = 0
+var MAX_CAPACITY = 100
 var KNOWN_RECIPES: Array[ResRecipe] = []
 var KNOWN_POWERS: Array[ResPower] = []
 var QUESTS: Array[ResQuest]
@@ -44,48 +46,68 @@ func initializeBenchedTeam():
 #********************************************************************************
 # INVENTORY MANAGEMENT
 #********************************************************************************
-func addItemToInventory(item_name: String, count=1):
+func addItemToInventory(item_name: String, count=1, unit=INVENTORY):
 	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item not found!")
-	addItemResourceToInventory(item, count)
+	addItemResourceToInventory(item, count, unit)
 
-func addItemResourceToInventory(item: ResItem, count=1):
-	if item is ResStackItem and INVENTORY.has(item):
-		INVENTORY[INVENTORY.find(item)].STACK += count
+func addItemResourceToInventory(item: ResItem, count=1, unit=INVENTORY):
+	if !canAdd(item, count): return
+	
+	if item is ResStackItem and unit.has(item):
+		unit[unit.find(item)].add(count)
 	elif item is ResStackItem:
-		if count != 1: 
-			item.STACK = count
-		INVENTORY.append(item)
-	else:
-		INVENTORY.append(item.duplicate())
+		if item.STACK <= 0: item.STACK = 1
+		item.add(count-1, false)
+		unit.append(item)
+		OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
+	
+	elif item is ResEquippable:
+		unit.append(item)
+		OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
+	
+	if unit == INVENTORY: refreshWeights()
 	added_item_to_inventory.emit()
-	PlayerGlobals.INVENTORY.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
-	
-	var inventory_prompt = preload("res://scenes/user_interface/InventoryUpdate.tscn").instantiate()
-	var y_placement = 0
-	for child in OverworldGlobals.getPlayer().player_camera.get_children():
-		y_placement -= 23
-	inventory_prompt.global_position += Vector2(0, y_placement)
-	OverworldGlobals.getPlayer().player_camera.add_child(inventory_prompt)
-	inventory_prompt.get_node("Label").text = '+ %s x%s' % [item.NAME, count]
-	inventory_prompt.get_node("AnimationPlayer").play('Show')
-	await inventory_prompt.get_node("AnimationPlayer").animation_finished
-	inventory_prompt.queue_free()
-	
+	unit.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
 
-func getItemFromInventory(item: ResItem):
-	return INVENTORY[INVENTORY.find(item)]
+func getItemFromInventory(item: ResItem, unit=INVENTORY):
+	return unit[unit.find(item)]
 
-func getItemWithName(item_name: String):
-	for item in INVENTORY:
+func getItemWithName(item_name: String, unit=INVENTORY):
+	for item in unit:
 		if item.NAME == item_name:
 			return item
 
-func removeItemWithName(item_name: String):
-	for item in INVENTORY:
+func removeItemWithName(item_name: String, count=1, unit=INVENTORY):
+	for item in unit:
 		if item.NAME == item_name:
-			INVENTORY.erase(item)
-			return
+			removeItemResource(item,count)
+
+func removeItemResource(item, count=1, unit=INVENTORY):
+	if item is ResEquippable:
+		if item.isEquipped(): item.unequip()
+		unit.erase(item)
+		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] removed from %s.' % [item, getStorageUnitName(unit)])
+	
+	elif item is ResStackItem:
+		item.take(count)
+		if !item is ResProjectileAmmo:
+			OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] removed from %s.' % [count, item.NAME, getStorageUnitName(unit)])
+		if item.STACK <= 0: 
+			OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.NAME])
+			unit.erase(item)
+	
+	if unit == INVENTORY: refreshWeights()
+
+func refreshWeights():
+	CURRENT_CAPACITY = 0
+	for item in INVENTORY:
+		CURRENT_CAPACITY += item.WEIGHT
+
+func transferItem(item: ResItem, from: Array[ResItem], to: Array[ResItem]):
+	if from.has(item):
+		removeItemResource(item, 1, from)
+		addItemResourceToInventory(item, 1, to)
 
 func getUnstackableItemNames()-> Array:
 	var out = []
@@ -104,6 +126,24 @@ func hasItem(item_name):
 		if item.NAME == item_name: return true
 	
 	return false
+
+func getStorageUnitName(unit: Array[ResItem]):
+	match unit:
+		INVENTORY: return 'Inventory'
+		STORAGE: return 'Storage'
+
+func canAdd(item, count=1):
+	if item.WEIGHT + CURRENT_CAPACITY > MAX_CAPACITY:
+		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] not added! Your Inventory is full.' % item)
+		return false
+	if item is ResStackItem and (item.PER_WEIGHT * count) + CURRENT_CAPACITY > MAX_CAPACITY:
+		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] not added! Your Inventory is full.' % [str(count), item.NAME])
+		return false
+	if item is ResEquippable and hasItem(item.NAME):
+		OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
+		return false
+	
+	return true
 
 func getRecipe(item: ResRecipe):
 	return KNOWN_RECIPES[KNOWN_RECIPES.find(item)]
@@ -164,14 +204,12 @@ func updateObjectivePrompt(quest: ResQuest):
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
 	prompt.setTitle(quest.NAME)
 	prompt.playAnimation('update_objective')
-	await prompt.animator.animation_finished
-	prompt.queue_free()
 
 func promptQuestCompleted(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	
-	prompt.setTitle(quest.NAME)
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	prompt.setTitle(quest.NAME)
 	prompt.playAnimation('quest_complete')
 
 func addQuest(quest_name: String):

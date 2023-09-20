@@ -15,6 +15,8 @@ func initializeCombatant():
 	
 	for equipment in EQUIPMENT.values():
 		if equipment == null: continue
+		# iffy
+		EQUIPMENT[equipment] = equipment.duplicate()
 		equipment.equip(self)
 
 func act():

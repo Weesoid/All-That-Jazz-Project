@@ -11,3 +11,5 @@ STAT_MODIFICATIONS = {}
 NAME = "Electro Tems"
 ICON_NAME = ""
 DESCRIPTION = ""
+VALUE = 0
+WEIGHT = 1

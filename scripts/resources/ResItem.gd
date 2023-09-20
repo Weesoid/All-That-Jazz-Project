@@ -5,6 +5,7 @@ class_name ResItem
 @export var ICON_NAME: String
 @export var DESCRIPTION: String
 @export var VALUE: int
+@export var WEIGHT: int = 1
 
 var ICON
 var ITEM_SCRIPT

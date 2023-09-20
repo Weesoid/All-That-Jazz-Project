@@ -4,11 +4,6 @@ class_name ResConsumable
 @export var EFFECT: ResAbility
 @export var OVERWORLD_USE: bool = false
 
-func use():
-	STACK -= 1
-	if STACK <= 0:
-		PlayerGlobals.INVENTORY.erase(self)
-
 func animateCast(caster: ResCombatant):
 	EFFECT.animateCast(caster)
 
@@ -17,5 +12,4 @@ func applyEffect(caster: ResCombatant, targets, animation_scene, overworld=false
 		EFFECT.ABILITY_SCRIPT.applyOverworldEffects(caster, targets, animation_scene)
 	else:
 		EFFECT.applyEffects(caster, targets, animation_scene)
-	use()
-
+	PlayerGlobals.removeItemResource(self, 1)

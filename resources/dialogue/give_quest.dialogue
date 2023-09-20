@@ -17,7 +17,8 @@ do PlayerGlobals.addQuest("GetThatItem")
 => END
 
 ~ get_that_item
-Entity: You completed it! Good!
+Entity: You completed it! Good! I'll take those scrap thank you very much!
+do PlayerGlobals.removeItemWithName("Scrap Salvage", 8)
 Entity: Here's an arrow!
 do PlayerGlobals.setQuestObjective('Get that item!', 'Wrap it up!', true)
 do PlayerGlobals.addItemToInventory("Arrow")
