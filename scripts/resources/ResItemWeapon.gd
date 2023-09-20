@@ -26,5 +26,6 @@ func useDurability():
 	durability.x -= 1
 	if durability.x <= 0:
 		durability.x = 0
+		print('Unequipped!')
 		unequip()
 	

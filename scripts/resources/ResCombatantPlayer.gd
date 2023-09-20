@@ -25,17 +25,14 @@ var active = false
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
 	
-	if EQUIPMENT['armor'] != null and EQUIPMENT['armor'].STATUS_EFFECT != null:
-		CombatGlobals.addStatusEffect(self, EQUIPMENT['armor'].STATUS_EFFECT)
-	if EQUIPMENT['charm'] != null:
-		CombatGlobals.addStatusEffect(self, EQUIPMENT['charm'].STATUS_EFFECT)
-	
 	if !initialized:
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
 		initialized = true
 	
-	for effect in STATUS_EFFECTS:
-		effect.initializeStatus()
+	if isEquipped('armor'):
+		if EQUIPMENT['armor'].STATUS_EFFECT != null:
+			var status_effect = EQUIPMENT['armor'].STATUS_EFFECT.duplicate()
+			CombatGlobals.addStatusEffect(self, status_effect)
 
 func act():
 	player_turn.emit()

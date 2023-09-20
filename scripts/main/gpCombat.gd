@@ -176,13 +176,13 @@ func _on_attack_pressed():
 	Input.action_release("ui_accept")
 	
 	selected_ability = active_combatant.ABILITY_SET[0]
-	if active_combatant.isEquipped('weapon'):
-		active_combatant.EQUIPMENT['weapon'].useDurability()
 	
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	target_state = selected_ability.getTargetType()
 	action_panel.hide()
 	await target_selected
+	if active_combatant.isEquipped('weapon'):
+		active_combatant.EQUIPMENT['weapon'].useDurability()
 	runAbility()
 	
 func _on_skills_pressed():

@@ -14,3 +14,4 @@ NAME = "Neutral Weapon"
 ICON_NAME = ""
 DESCRIPTION = "A neutral weapon in a hostile world..."
 VALUE = 0
+WEIGHT = 1

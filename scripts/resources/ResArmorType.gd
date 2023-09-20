@@ -8,5 +8,5 @@ class_name ResArmorType
 func getMultiplier(damage_type: ResDamageType)-> float:
 	if !MULTIPLIERS.has(damage_type):
 		return DEFAULT_MULTIPLIER
-		#print('Resisted!')
+	
 	return MULTIPLIERS[damage_type]

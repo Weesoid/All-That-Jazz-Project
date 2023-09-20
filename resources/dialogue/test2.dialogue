@@ -1,9 +1,13 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
+do PlayerGlobals.addItemToInventory("Arrow", 8)
+do PlayerGlobals.addItemToInventory("HotHand", 1)
+do PlayerGlobals.addItemToInventory("HotHand", 1)
+do PlayerGlobals.addItemToInventory("LightArmor", 1)
+do PlayerGlobals.addItemToInventory("ScrapSalvage", 1)
 do PlayerGlobals.addItemToInventory("HealingPotion", 1)
-do PlayerGlobals.addItemToInventory("ScrapSalvage", 10)
-do PlayerGlobals.addItemToInventory("Arrow", 5)
+
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true
 => END

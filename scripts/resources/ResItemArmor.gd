@@ -12,6 +12,7 @@ enum Slot {
 @export var SLOT: Slot
 
 func equip(combatant: ResCombatant):
+	print('Equipping on: ', combatant.NAME)
 	if combatant is ResPlayerCombatant:
 		if STATUS_EFFECT != null:
 			STATUS_EFFECT = STATUS_EFFECT.duplicate()

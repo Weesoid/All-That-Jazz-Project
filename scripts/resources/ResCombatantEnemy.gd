@@ -5,6 +5,9 @@ class_name ResEnemyCombatant
 @export var AI_PACKAGE: GDScript
 @export var DROPS = {}
 
+# NOTE: Enemy combatants don't get the stat modifications of their gear.
+# They do get the ARMOR TYPE and STATUS EFFECTS on armors and charms
+# Set the auto-attack manually.
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
 	
@@ -13,11 +16,10 @@ func initializeCombatant():
 	
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
 	
-	for equipment in EQUIPMENT.values():
-		if equipment == null: continue
-		# iffy
-		EQUIPMENT[equipment] = equipment.duplicate()
-		equipment.equip(self)
+	if isEquipped('armor'):
+		if EQUIPMENT['armor'].STATUS_EFFECT != null:
+			var status_effect = EQUIPMENT['armor'].STATUS_EFFECT.duplicate()
+			CombatGlobals.addStatusEffect(self, status_effect)
 
 func act():
 	enemy_turn.emit()

@@ -8,7 +8,6 @@ class_name ResItem
 @export var WEIGHT: int = 1
 
 var ICON
-var ITEM_SCRIPT
 
 func initializeItem():
 	ICON = TextureRect.new()

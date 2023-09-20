@@ -173,7 +173,7 @@ func playAndResetAnimation(target: ResCombatant, animation_name: String):
 #********************************************************************************
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
-	
+
 func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.NAME not in target.getStatusEffectNames():
 		status_effect.afflicted_combatant = target

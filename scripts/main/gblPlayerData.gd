@@ -52,7 +52,7 @@ func addItemToInventory(item_name: String, count=1, unit=INVENTORY):
 	addItemResourceToInventory(item, count, unit)
 
 func addItemResourceToInventory(item: ResItem, count=1, unit=INVENTORY):
-	if !canAdd(item, count): return
+	if unit == INVENTORY and !canAdd(item, count): return
 	
 	if item is ResStackItem and unit.has(item):
 		unit[unit.find(item)].add(count)
@@ -69,6 +69,12 @@ func addItemResourceToInventory(item: ResItem, count=1, unit=INVENTORY):
 	if unit == INVENTORY: refreshWeights()
 	added_item_to_inventory.emit()
 	unit.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
+
+func incrementStackItem(item_name: String, count):
+	for item in INVENTORY:
+		if item.NAME == item_name:
+			item.add(count)
+			refreshWeights()
 
 func getItemFromInventory(item: ResItem, unit=INVENTORY):
 	return unit[unit.find(item)]
@@ -104,7 +110,40 @@ func refreshWeights():
 	for item in INVENTORY:
 		CURRENT_CAPACITY += item.WEIGHT
 
+func createGhostStack(item: ResStackItem):
+	for i in STORAGE:
+		if i.NAME == item.NAME: 
+			removeItemResource(item)
+			OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to Storage.' % item)
+			i.STACK += 1
+			return
+	
+	var ghost_stack = ResGhostStackItem.new(item)
+	removeItemWithName(item.NAME, 1)
+	addItemResourceToInventory(ghost_stack, 1, STORAGE)
+
+func takeFromGhostStack(item: ResGhostStackItem, count):
+	if !canAdd(item.REFERENCE_ITEM, 1):
+		return
+	
+	for stackable in STORAGE:
+		if stackable.NAME == item.NAME:
+			removeItemResource(stackable,count,STORAGE)
+	
+	if hasItemInInventory(item.NAME):
+		incrementStackItem(item.NAME, 1)
+	else:
+		addItemResourceToInventory(item.REFERENCE_ITEM)
+
 func transferItem(item: ResItem, from: Array[ResItem], to: Array[ResItem]):
+	if item is ResStackItem and from == INVENTORY and to == STORAGE:
+		print('Creating ghost stack!')
+		createGhostStack(item)
+		return
+	elif item is ResStackItem and from == STORAGE and to == INVENTORY:
+		takeFromGhostStack(item, 1)
+		return
+	
 	if from.has(item):
 		removeItemResource(item, 1, from)
 		addItemResourceToInventory(item, 1, to)
@@ -127,20 +166,34 @@ func hasItem(item_name):
 	
 	return false
 
+func getItemFromInventoryWithName(item_name):
+	for item in INVENTORY:
+		if item.NAME == item_name: return item
+	
+	return null
+
+func hasItemInInventory(item_name):
+	for item in INVENTORY:
+		if item.NAME == item_name: return true
+
 func getStorageUnitName(unit: Array[ResItem]):
 	match unit:
 		INVENTORY: return 'Inventory'
 		STORAGE: return 'Storage'
 
 func canAdd(item, count=1):
-	if item.WEIGHT + CURRENT_CAPACITY > MAX_CAPACITY:
+	if item is ResEquippable and item.WEIGHT + CURRENT_CAPACITY > MAX_CAPACITY:
 		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] not added! Your Inventory is full.' % item)
-		return false
-	if item is ResStackItem and (item.PER_WEIGHT * count) + CURRENT_CAPACITY > MAX_CAPACITY:
-		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] not added! Your Inventory is full.' % [str(count), item.NAME])
 		return false
 	if item is ResEquippable and hasItem(item.NAME):
 		OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
+		return false
+	
+	if item is ResStackItem and (item.PER_WEIGHT * count) + CURRENT_CAPACITY > MAX_CAPACITY:
+		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] not added! Your Inventory is full.' % [str(count), item.NAME])
+		return false
+	if item is ResStackItem and (item.STACK + count) > item.MAX_STACK:
+		OverworldGlobals.getPlayer().prompt.showPrompt('Max stack for [color=yellow]%s[/color] reached!' % item.NAME)
 		return false
 	
 	return true
