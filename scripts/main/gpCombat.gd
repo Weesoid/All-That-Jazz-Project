@@ -518,7 +518,7 @@ func concludeCombat(results: int):
 		var drop_label = Label.new()
 		drop_label.text = drop.NAME
 		party_drops.add_child(drop_label)
-		PlayerGlobals.addItemResourceToInventory(drop)
+		PlayerGlobals.addItemResource(drop)
 	
 	await get_tree().create_timer(1.5).timeout
 	

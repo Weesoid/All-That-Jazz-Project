@@ -66,14 +66,14 @@ func addMembers():
 								party_panel.hide()
 							return
 						elif selected_item.EQUIPPED_COMBATANT == member:
-							PlayerGlobals.getItemFromInventory(selected_item).unequip()
+							PlayerGlobals.getItem(selected_item).unequip()
 							description_panel.text = member.getStringStats()
 							button_item_map[selected_item].text = selected_item.NAME
 						elif isMemberEquipped(member, selected_item):
 							updateButtonUnequip(member, selected_item)
 							equipMemberAndUpdateButton(member, selected_item)
 						else:
-							PlayerGlobals.getItemFromInventory(selected_item).equip(member)
+							PlayerGlobals.getItem(selected_item).equip(member)
 							equipMemberAndUpdateButton(member, selected_item)
 						
 						for child in party_panel.get_children():
@@ -106,7 +106,7 @@ func updateButtonUnequip(member: ResCombatant, item:ResItem):
 			button_item_map[member.EQUIPMENT['charm']].text = member.EQUIPMENT['charm'].NAME
 
 func equipMemberAndUpdateButton(member: ResCombatant, item: ResItem):
-	PlayerGlobals.getItemFromInventory(item).equip(member)
+	PlayerGlobals.getItem(item).equip(member)
 	button_item_map[item].text = item.NAME
 	button_item_map[item].text += str(" equipped by ", member)
 	description_panel.text = member.getStringStats()
@@ -133,7 +133,7 @@ func isEquipped(item):
 	if item is ResConsumable:
 		return false
 	
-	if PlayerGlobals.getItemFromInventory(item).EQUIPPED_COMBATANT != null:
+	if PlayerGlobals.getItem(item).EQUIPPED_COMBATANT != null:
 		return true
 	else:
 		return false
@@ -155,7 +155,7 @@ func addButtonToTab(item: ResItem, button: Button):
 		func setSelectedItem(): 
 			clearMembers()
 			showUseContainer(item)
-			selected_item = PlayerGlobals.getItemFromInventory(item)
+			selected_item = PlayerGlobals.getItem(item)
 			updateItemInfo(item)
 			)
 

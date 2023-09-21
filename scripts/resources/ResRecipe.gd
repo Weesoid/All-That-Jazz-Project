@@ -26,11 +26,11 @@ func hasRequiredItems()-> bool:
 func craft():
 	for item in RECIPE:
 		if item is ResStackItem:
-			PlayerGlobals.getItemFromInventory(item).take(RECIPE[item])
+			PlayerGlobals.getItem(item).take(RECIPE[item])
 		else:
 			PlayerGlobals.removeItemWithName(item.NAME)
 	
-	PlayerGlobals.addItemResourceToInventory(OUTPUT)
+	PlayerGlobals.addItemResource(OUTPUT)
 
 func getStringRecipe():
 	var result = ""

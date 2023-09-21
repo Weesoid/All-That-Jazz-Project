@@ -19,6 +19,7 @@ class_name ResPlayerCombatant
 @export var MANDATORY = false
 
 var FOLLOWER_SCENE
+var SKILL_POINTS = 0
 var initialized = false
 var active = false
 

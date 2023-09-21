@@ -19,6 +19,7 @@ func take(count: int):
 	WEIGHT = PER_WEIGHT * STACK
 	if STACK <= 0:
 		PlayerGlobals.INVENTORY.erase(self)
+	PlayerGlobals.refreshWeights()
 
 func _to_string():
 	return str(NAME, ' x', STACK)

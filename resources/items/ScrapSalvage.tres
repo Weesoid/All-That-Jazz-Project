@@ -9,5 +9,5 @@ MAX_STACK = 100
 NAME = "Scrap Salvage"
 ICON_NAME = ""
 DESCRIPTION = "Used for crafting."
-VALUE = 0
+VALUE = 10
 WEIGHT = 1

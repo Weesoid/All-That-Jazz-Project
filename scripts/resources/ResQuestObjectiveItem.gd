@@ -10,7 +10,7 @@ func initializeObjective():
 
 func checkComplete():
 	if REQUIRED_ITEM is ResStackItem:
-		if PlayerGlobals.INVENTORY.has(REQUIRED_ITEM) and PlayerGlobals.getItemFromInventory(REQUIRED_ITEM).STACK >= AMOUNT:
+		if PlayerGlobals.INVENTORY.has(REQUIRED_ITEM) and PlayerGlobals.getItem(REQUIRED_ITEM).STACK >= AMOUNT:
 			FINISHED = true
 			PlayerGlobals.quest_objective_completed.emit()
 	elif REQUIRED_ITEM is ResEquippable:

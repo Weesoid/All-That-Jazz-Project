@@ -29,7 +29,14 @@ func _on_quests_pressed():
 	loadUserInterface("res://scenes/user_interface/Quest.tscn")
 
 func _on_quit_pressed():
-	get_tree().quit()
+	#get_tree().quit()
+	disableButtons()
+	base.modulate.a = 0
+	var array = [preload("res://resources/items/HotHand.tres"), preload("res://resources/items/ScrapSalvage.tres"), preload("res://resources/items/LightArmor.tres")]
+	var ui = preload("res://scenes/user_interface/Shop.tscn").instantiate()
+	ui.wares_array = array
+	ui.barter_array = PlayerGlobals.INVENTORY
+	add_child(ui)
 
 func loadUserInterface(path):
 	var ui = load(path).instantiate()
