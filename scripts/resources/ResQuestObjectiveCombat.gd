@@ -10,18 +10,20 @@ var objective_count = 0
 var combat_result
 
 func initializeObjective():
-	CombatGlobals.combat_won.connect(
-		func setID(input_id): 
-			id = input_id
-			combat_result = 1
-			checkComplete()
-			)
-	CombatGlobals.combat_lost.connect(
-		func setID(input_id): 
-			id = input_id
-			combat_result = 0
-			checkComplete()
-			)
+	CombatGlobals.combat_won.connect(setIDWin)
+	CombatGlobals.combat_lost.connect(setIDLose)
+
+func setIDLose(input_id):
+	id = input_id
+	combat_result = 0
+	checkComplete()
+	print('Sig received lose!')
+
+func setIDWin(input_id):
+	id = input_id
+	combat_result = 1
+	checkComplete()
+	print('Sig received won!')
 
 func checkComplete():
 	if UNIQUE_COMBAT_ID == id:
@@ -33,3 +35,5 @@ func checkComplete():
 	if objective_count == COUNT:
 		FINISHED = true
 		PlayerGlobals.quest_objective_completed.emit(self)
+		CombatGlobals.combat_won.disconnect(setIDWin)
+		CombatGlobals.combat_lost.disconnect(setIDLose)

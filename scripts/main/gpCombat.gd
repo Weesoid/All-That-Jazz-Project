@@ -401,7 +401,6 @@ func checkWin():
 	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
 	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
 	
-	# TO-DO Win-Lose signals
 	if enemies.is_empty():
 		if unique_id != null:
 			CombatGlobals.combat_won.emit(unique_id)

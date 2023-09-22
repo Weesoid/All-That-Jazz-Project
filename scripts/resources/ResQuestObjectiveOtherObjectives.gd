@@ -32,6 +32,7 @@ func checkComplete():
 		if PlayerGlobals.quest_objective_completed.is_connected(checkObjective):
 			PlayerGlobals.quest_objective_completed.disconnect(checkObjective)
 		PlayerGlobals.quest_objective_completed.emit(self)
+		PlayerGlobals.quest_added.disconnect(attemptEnable)
 	elif PlayerGlobals.isQuestObjectiveFailed(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		FAILED = true
 		ENABLED = false
@@ -40,3 +41,4 @@ func checkComplete():
 		if PlayerGlobals.quest_objective_completed.is_connected(checkObjective):
 			PlayerGlobals.quest_objective_completed.disconnect(checkObjective)
 		PlayerGlobals.quest_objective_completed.emit(self)
+		PlayerGlobals.quest_added.disconnect(attemptEnable)
