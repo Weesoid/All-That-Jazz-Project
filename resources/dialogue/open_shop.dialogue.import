@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://dyrny3sxniquy"
+path="res://.godot/imported/open_shop.dialogue-fc15f46683c24b7a9072f8ce29b3a2e4.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/open_shop.dialogue"
+dest_files=["res://.godot/imported/open_shop.dialogue-fc15f46683c24b7a9072f8ce29b3a2e4.tres"]
+
+[params]
+
+defaults=true

@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3 uid="uid://cq4rrfdxrs5g4"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiAbilityShop.gd" id="1_wcap5"]
+
+[node name="AbilityShop" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.0
+offset_top = -12.0
+offset_right = -112.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_wcap5")
+
+[node name="Abilities" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -104.0
+offset_right = 296.0
+offset_bottom = 40.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Abilities"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Abilities/Scroll"]
+layout_mode = 2
+
+[node name="DescriptionPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = 48.0
+offset_right = 296.0
+offset_bottom = 120.0
+grow_vertical = 2
+
+[node name="Label" type="RichTextLabel" parent="DescriptionPanel"]
+layout_mode = 2
+text = "This is the item description. FEAR IT'S GLORY!"
+
+[node name="ToggleMode" type="Button" parent="."]
+layout_mode = 0
+offset_left = -80.0
+offset_top = -126.0
+offset_right = 240.0
+offset_bottom = -108.0
+disabled = true
+text = "MODE: ASSOCIATION"
+alignment = 0
+
+[node name="Currency" type="Label" parent="."]
+layout_mode = 0
+offset_left = 240.0
+offset_top = -126.0
+offset_right = 296.0
+offset_bottom = -108.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "100 SP"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CombatantName" type="Label" parent="."]
+layout_mode = 0
+offset_left = -80.0
+offset_top = -144.0
+offset_right = 296.0
+offset_bottom = -126.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "COMBATANT'S ABILITIES"
+vertical_alignment = 1
+
+[node name="Members" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = 128.0
+offset_right = 296.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Members"]
+layout_mode = 2
+alignment = 1
+
+[connection signal="pressed" from="ToggleMode" to="." method="_on_toggle_mode_pressed"]

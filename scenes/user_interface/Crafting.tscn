@@ -55,7 +55,7 @@ layout_mode = 0
 offset_left = 72.0
 offset_top = -77.0
 offset_right = 200.0
-offset_bottom = 168.0
+offset_bottom = 107.0
 
 [node name="RecipeLabel" type="Label" parent="Recipe"]
 layout_mode = 0
@@ -66,11 +66,11 @@ autowrap_mode = 3
 
 [node name="Craft" type="Button" parent="Recipe"]
 layout_mode = 2
-offset_left = 19.0
 offset_top = 208.0
-offset_right = 101.0
-offset_bottom = 236.0
+offset_right = 128.0
+offset_bottom = 226.0
 text = "Craft"
+alignment = 0
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="pressed" from="Recipe/Craft" to="." method="_on_craft_pressed"]

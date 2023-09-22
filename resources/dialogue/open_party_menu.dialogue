@@ -1,5 +1,10 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-do OverworldGlobals.showMenu("res://scenes/user_interface/PartyManagement.tscn")
+Entity: The campfire flickers.
+- Manage posse 
+	do OverworldGlobals.showMenu("res://scenes/user_interface/PartyManagement.tscn")
+- Internalize 
+	do OverworldGlobals.showMenu("res://scenes/user_interface/AbilityShop.tscn") 
+
 => END

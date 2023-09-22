@@ -124,7 +124,7 @@ func incrementStackItem(item_name: String, count):
 func createGhostStack(item: ResStackItem, count=1, transfer=true):
 	for i in STORAGE:
 		if i.NAME == item.NAME: 
-			if transfer: removeItemResource(item)
+			if transfer: removeItemResource(item, count)
 			OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]x%s %s[/color] to Storage.' % [count, item.NAME])
 			i.STACK += count
 			return
@@ -133,8 +133,8 @@ func createGhostStack(item: ResStackItem, count=1, transfer=true):
 	if transfer: removeItemWithName(item.NAME, count)
 	addItemResource(ghost_stack, count, STORAGE)
 
-func takeFromGhostStack(item: ResGhostStackItem, count):
-	if !canAdd(item.REFERENCE_ITEM, 1, false):
+func takeFromGhostStack(item: ResGhostStackItem, count, transfer_to_storage=false):
+	if !canAdd(item.REFERENCE_ITEM, count, transfer_to_storage):
 		return
 	
 	for stackable in STORAGE:
@@ -142,42 +142,43 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 			removeItemResource(stackable,count,STORAGE)
 	
 	if hasItem(item.NAME):
-		incrementStackItem(item.NAME, 1)
+		incrementStackItem(item.NAME, count)
 	else:
-		addItemResource(item.REFERENCE_ITEM)
+		addItemResource(item.REFERENCE_ITEM, count)
 
-func transferItem(item: ResItem, from: Array[ResItem], to: Array[ResItem]):
+func transferItem(item: ResItem, count: int, from: Array[ResItem], to: Array[ResItem]):
+	if item is ResStackItem and count <= 0:
+		return
 	if item is ResStackItem and from == INVENTORY and to == STORAGE:
-		createGhostStack(item)
+		createGhostStack(item, count)
 		return
 	elif item is ResStackItem and from == STORAGE and to == INVENTORY:
-		takeFromGhostStack(item, 1)
+		takeFromGhostStack(item, count)
 		return
 	
 	if from.has(item):
-		removeItemResource(item, 1, from)
-		addItemResource(item, 1, to)
+		removeItemResource(item, count, from)
+		addItemResource(item, count, to)
 
-func canAdd(item, count=1, transfer_storage=true):
+func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
 	if item is ResEquippable and (hasItem(item.NAME) or hasItem(item.NAME, STORAGE)):
-		OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	if item is ResEquippable and item.WEIGHT + CURRENT_CAPACITY > MAX_CAPACITY:
-		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] not added! Your Inventory is full.' % item)
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] not added! Your Inventory is full.' % item)
 		if transfer_storage:
 			addItemResource(item,1,STORAGE)
 		return false
 	
 	if item is ResStackItem and (item.PER_WEIGHT * count) + CURRENT_CAPACITY > MAX_CAPACITY:
-		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] not added! Your Inventory is full.' % [str(count), item.NAME])
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] not added! Your Inventory is full.' % [str(count), item.NAME])
 		if transfer_storage:
 			var feasible_count = determineFeasibleCount(item, count)
 			addItemResource(item,feasible_count,INVENTORY)
 			createGhostStack(item, count - feasible_count, false)
-		return false
-		
+		return false	
 	if item is ResStackItem and (item.STACK + count) > item.MAX_STACK:
-		OverworldGlobals.getPlayer().prompt.showPrompt('Max stack for [color=yellow]%s[/color] reached!' % item.NAME)
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Max stack for [color=yellow]%s[/color] reached!' % item.NAME)
 		if transfer_storage:
 			var feasible_count = item.MAX_STACK - item.STACK
 			addItemResource(item,feasible_count,INVENTORY)

@@ -51,10 +51,9 @@ offset_right = 200.0
 offset_bottom = 120.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="DescriptionPanel"]
+[node name="Label" type="RichTextLabel" parent="DescriptionPanel"]
 layout_mode = 2
 text = "This is the item description. FEAR IT'S GLORY!"
-autowrap_mode = 3
 
 [node name="StatsPanel" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -64,31 +63,30 @@ anchor_bottom = 0.5
 offset_left = 208.0
 offset_top = 48.0
 offset_right = 296.0
-offset_bottom = 146.0
+offset_bottom = 120.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="StatsPanel"]
+[node name="Label" type="RichTextLabel" parent="StatsPanel"]
 layout_mode = 2
 text = "HP +100
 VP +1
 ACCURACY -100
 and so on.."
-autowrap_mode = 3
 
 [node name="Action" type="Button" parent="."]
 layout_mode = 0
 offset_left = -80.0
 offset_top = 128.0
-offset_right = 120.0
+offset_right = 216.0
 offset_bottom = 146.0
 text = "Purchase"
 alignment = 0
 
 [node name="ToggleMode" type="Button" parent="."]
 layout_mode = 0
-offset_left = 128.0
+offset_left = 224.0
 offset_top = 128.0
-offset_right = 200.0
+offset_right = 296.0
 offset_bottom = 146.0
 text = "Barter"
 alignment = 0
@@ -97,7 +95,7 @@ alignment = 0
 layout_mode = 0
 offset_left = -80.0
 offset_top = 152.0
-offset_right = 202.0
+offset_right = 298.0
 offset_bottom = 165.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4

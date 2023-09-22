@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bnad0hve141rr"]
+[gd_scene load_steps=20 format=3 uid="uid://bnad0hve141rr"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://gjcs4krj1v0o" path="res://scenes/entities/Player.tscn" id="2_03scn"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://1vbu5mffsn7f" path="res://scenes/entities/QuestGiverEnder.tscn" id="12_7wxya"]
 [ext_resource type="PackedScene" uid="uid://dxm5iwog0p5ux" path="res://scenes/entities/PartyManager.tscn" id="13_ttgch"]
 [ext_resource type="PackedScene" uid="uid://vdipsfsnqseh" path="res://scenes/entities/StorageUnit.tscn" id="14_s732r"]
+[ext_resource type="PackedScene" uid="uid://bhg2t57grfdfc" path="res://scenes/entities/ShopKeep.tscn" id="15_5mws6"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -116,3 +117,6 @@ position = Vector2(-40, -76)
 
 [node name="entStorageUnit" parent="." instance=ExtResource("14_s732r")]
 position = Vector2(56, -16)
+
+[node name="entShopKeep" parent="." instance=ExtResource("15_5mws6")]
+position = Vector2(128, 56)

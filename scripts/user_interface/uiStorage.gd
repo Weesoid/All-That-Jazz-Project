@@ -32,10 +32,10 @@ func createButton(item, location):
 	button.pressed.connect(
 		func transferItem():
 			if PlayerGlobals.INVENTORY.has(item):
-				PlayerGlobals.transferItem(item, PlayerGlobals.INVENTORY, PlayerGlobals.STORAGE)
+				PlayerGlobals.transferItem(item, await loadSlider(item), PlayerGlobals.INVENTORY, PlayerGlobals.STORAGE)
 				loadStorage()
 			elif PlayerGlobals.STORAGE.has(item):
-				PlayerGlobals.transferItem(item, PlayerGlobals.STORAGE, PlayerGlobals.INVENTORY)
+				PlayerGlobals.transferItem(item, await loadSlider(item), PlayerGlobals.STORAGE, PlayerGlobals.INVENTORY)
 				loadStorage()
 	)
 	button.mouse_entered.connect(
@@ -47,6 +47,18 @@ func createButton(item, location):
 				stats.text = item.getStringStats()
 	)
 	location.add_child(button)
+
+func loadSlider(item)-> int:
+	if !item is ResStackItem:
+		return 1
+	
+	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
+	a_slider.max_v = item.STACK
+	add_child(a_slider)
+	await a_slider.amount_enter
+	var amount = a_slider.slider.value
+	a_slider.queue_free()
+	return amount
 
 func filter(item_name):
 	filterButtons(storage, item_name)

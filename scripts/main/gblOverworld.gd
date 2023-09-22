@@ -66,6 +66,22 @@ func closeMenu(menu: Control):
 	show_player_interaction = true
 	showing_menu = false
 
+func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
+	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
+	main_menu.wares_array = getComponent(shopkeeper_name, 'ShopWares').SHOP_WARES
+	main_menu.buy_modifier = buy_mult
+	main_menu.sell_modifier = sell_mult
+	main_menu.name = 'uiMenu'
+	
+	if !showing_menu:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		getPlayer().player_camera.add_child(main_menu)
+		player_can_move = false
+		show_player_interaction = false
+		showing_menu = true
+	else:
+		closeMenu(main_menu)
+
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 
@@ -139,6 +155,9 @@ func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 
 func getCombatantSquadComponent(entity_name: String):
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent')
+
+func getComponent(entity_name: String, component_name: String):
+	return get_tree().current_scene.get_node(entity_name).get_node(component_name)
 
 func restorePlayerView():
 	get_tree().current_scene.process_mode = Node.PROCESS_MODE_ALWAYS

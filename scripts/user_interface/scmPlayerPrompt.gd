@@ -14,7 +14,6 @@ func animatePrompt(action: int):
 			showing = false
 			await animator.animation_finished
 			text = ''
-		
 
 func showPrompt(message: String, time=5.0):
 	if !showing:

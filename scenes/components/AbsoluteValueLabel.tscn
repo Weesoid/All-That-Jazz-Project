@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c7xs7e48ncv3i"]
+[gd_scene format=3 uid="uid://dyprfddxcxp8e"]
 
 [node name="AbsoluteValueLabel" type="Label"]
 offset_right = 128.0

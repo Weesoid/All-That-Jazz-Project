@@ -20,7 +20,7 @@ enum TargetGroup {
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
 @export var INSTANT_CAST: bool = false
-@export var VALUE: int
+@export var VALUE = 5
 
 var ENABLED: bool = true
 var TARGETABLE
