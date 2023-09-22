@@ -125,7 +125,7 @@ func createGhostStack(item: ResStackItem, count=1, transfer=true):
 		if i.NAME == item.NAME: 
 			if transfer: removeItemResource(item, count)
 			OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]x%s %s[/color] to Storage.' % [count, item.NAME])
-			i.STACK += count
+			i.add(count, false)
 			return
 	
 	var ghost_stack = ResGhostStackItem.new(item)
@@ -252,15 +252,14 @@ func hasFollower(follower_combatant: ResPlayerCombatant):
 	return false
 
 #********************************************************************************
-# QUEST MANAGEMENT
+# QUEST MANAGEMENT (NOT IF ANY OVERTIME LAG HAPPENS, CONSIDER REWORKING QUESTS TO NODES) ...ehh you know what this might be fine...
 #********************************************************************************
 func checkQuestsForCompleted(objective: ResQuestObjective):
 	var ongoing_quests = QUESTS.filter(func getOngoing(quest): return !quest.COMPLETED)
 	
 	for quest in ongoing_quests:
-		print(objective.FINISHED)
 		if quest.getObjective(objective.NAME) != null and !objective.END_OBJECTIVE:
-			OverworldGlobals.getPlayer().prompt.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest.NAME, 10.0)
+			OverworldGlobals.getPlayer().prompt.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest.NAME, 5.0, "641011__metkir__crying-sound-0.mp3")
 		
 		quest.isCompleted()
 

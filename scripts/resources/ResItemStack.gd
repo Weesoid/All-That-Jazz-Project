@@ -8,11 +8,11 @@ var STACK = 1
 
 func add(count: int, show_prompt=true):
 	if (STACK + count) > MAX_STACK:
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Max stack for [color=yellow]%s[/color] reached!' % [NAME])
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] could not be added, you have too many!' % [NAME])
 	else:
 		STACK += count
 		WEIGHT = PER_WEIGHT * STACK
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]x%s %s[/color] to Inventory.' % [count, NAME])
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]x%s [color=white]to[/color] %s[/color].' % [count, NAME])
 
 func take(count: int):
 	STACK -= count

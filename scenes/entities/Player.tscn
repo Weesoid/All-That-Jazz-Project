@@ -1541,6 +1541,10 @@ scroll_active = false
 autowrap_mode = 0
 script = ExtResource("5_h8rtm")
 
+[node name="Timer" type="Timer" parent="PlayerCamera/PlayerPrompt"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PlayerCamera/PlayerPrompt"]
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerCamera/PlayerPrompt"]
 libraries = {
 "": SubResource("AnimationLibrary_mkerc")
@@ -1571,3 +1575,5 @@ parameters/Idle/blend_position = Vector2(-0.0135502, 0.151365)
 "parameters/Shoot Bow/blend_position" = Vector2(0, 0)
 parameters/Walk/blend_position = Vector2(0, 0)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
+
+[connection signal="timeout" from="PlayerCamera/PlayerPrompt/Timer" to="PlayerCamera/PlayerPrompt" method="_on_timer_timeout"]
