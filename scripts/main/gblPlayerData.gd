@@ -17,9 +17,8 @@ var CURRENT_EXP = 0
 var FOLLOWERS: Array[NPCFollower] = []
 
 signal quest_completed(quest)
+signal quest_objective_completed(objective)
 signal quest_added
-signal quest_objective_completed
-signal quest_objective_failed
 signal added_item_to_inventory
 
 func _ready():
@@ -55,8 +54,7 @@ func addItem(item_name: String, count=1, unit=INVENTORY):
 	addItemResource(item, count, unit)
 
 func addItemResource(item: ResItem, count=1, unit=INVENTORY):
-	if unit == INVENTORY and !canAdd(item, count) or count <= 0: 
-		print('nah fam')
+	if unit == INVENTORY and !canAdd(item, count) or count <= 0:
 		return
 	
 	if item is ResStackItem and unit.has(item):
@@ -119,6 +117,7 @@ func incrementStackItem(item_name: String, count):
 	for item in INVENTORY:
 		if item.NAME == item_name:
 			item.add(count)
+			added_item_to_inventory.emit()
 			refreshWeights()
 
 func createGhostStack(item: ResStackItem, count=1, transfer=true):
@@ -227,6 +226,7 @@ func getRequiredExp() -> int:
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
+		combatant.ABILITY_POINTS += 1
 		for stat in combatant.BASE_STAT_VALUES.keys():
 			combatant.BASE_STAT_VALUES[stat] += combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
 
@@ -254,18 +254,15 @@ func hasFollower(follower_combatant: ResPlayerCombatant):
 #********************************************************************************
 # QUEST MANAGEMENT
 #********************************************************************************
-func checkQuestsForCompleted():
+func checkQuestsForCompleted(objective: ResQuestObjective):
 	var ongoing_quests = QUESTS.filter(func getOngoing(quest): return !quest.COMPLETED)
 	
 	for quest in ongoing_quests:
+		print(objective.FINISHED)
+		if quest.getObjective(objective.NAME) != null and !objective.END_OBJECTIVE:
+			OverworldGlobals.getPlayer().prompt.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest.NAME, 10.0)
+		
 		quest.isCompleted()
-
-func updateObjectivePrompt(quest: ResQuest):
-	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
-	
-	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
-	prompt.setTitle(quest.NAME)
-	prompt.playAnimation('update_objective')
 
 func promptQuestCompleted(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
@@ -301,7 +298,7 @@ func setQuestObjective(quest_name: String, quest_objective_name: String, set_to:
 	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
 	objective.FINISHED = set_to
 	if set_to:
-		PlayerGlobals.quest_objective_completed.emit()
+		quest_objective_completed.emit(objective)
 
 func isQuestObjectiveEnabled(quest_name: String, quest_objective_name: String) -> bool:
 	if QUESTS.is_empty() or getQuest(quest_name) == null:
@@ -328,11 +325,8 @@ func isQuestObjectiveFailed(quest_name: String, quest_objective_name: String) ->
 	return objective.FAILED
 
 func getQuest(quest_name: String)-> ResQuest:
-	print('Attempting to get quest')
 	for quest in QUESTS:
 		if quest.NAME == quest_name: 
-			print('FOUND: ', quest.NAME)
 			return quest
 	
-	print('Returning null')
 	return null

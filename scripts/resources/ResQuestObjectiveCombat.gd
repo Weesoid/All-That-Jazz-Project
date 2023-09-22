@@ -32,4 +32,4 @@ func checkComplete():
 	
 	if objective_count == COUNT:
 		FINISHED = true
-		PlayerGlobals.quest_objective_completed.emit()
+		PlayerGlobals.quest_objective_completed.emit(self)

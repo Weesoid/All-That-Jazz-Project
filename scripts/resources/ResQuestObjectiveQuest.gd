@@ -16,11 +16,11 @@ func initializeObjective():
 func checkComplete():
 	if quest_completed == REQUIRED_QUEST:
 		FINISHED = true
-		PlayerGlobals.quest_objective_completed.emit()
+		PlayerGlobals.quest_objective_completed.emit(self)
 
 func checkCompletedQuests():
 	for quest in PlayerGlobals.QUESTS:
 		if quest == REQUIRED_QUEST and quest.COMPLETED:
 			FINISHED = true
-			PlayerGlobals.quest_objective_completed.emit()
+			PlayerGlobals.quest_objective_completed.emit(self)
 			return

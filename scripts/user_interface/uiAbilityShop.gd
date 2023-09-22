@@ -66,7 +66,7 @@ func loadAbilities(ability_array):
 				description.text = '' 
 				description.text = ability.DESCRIPTION
 		)
-		if ability.VALUE > selected_combatant.ABILITY_POINTS and mode == 1: 
+		if ability.VALUE > selected_combatant.ABILITY_POINTS and mode == 1:
 			button.disabled = true
 		abilities.add_child(button)
 

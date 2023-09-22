@@ -16,7 +16,11 @@ func getObjective(objective_name: String)-> ResQuestObjective:
 	if !PlayerGlobals.hasQuest(NAME):
 		return null
 	
-	return OBJECTIVES.filter(func getObjectiveFromName(objective): return objective.NAME == objective_name)[0]
+	for objective in OBJECTIVES:
+		if objective.NAME == objective_name:
+			return objective
+	
+	return null
 
 func getCurrentObjective()-> ResQuestObjective:
 	for objective in OBJECTIVES:
