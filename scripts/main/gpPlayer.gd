@@ -17,17 +17,23 @@ class_name PlayerScene
 @onready var ammo_count = $PlayerCamera/Ammo
 @onready var prompt = $PlayerCamera/PlayerPrompt
 
+var stamina = 100.0
 var direction = Vector2()
 var bow_mode = false
 var bow_draw_strength = 0
 var bow_max_draw = 4.0
 var SPEED = 100.0
 
-const ANIMATION_SPEED = 1.5
+var walk_speed = 100.0
+var sprint_speed = 200.0
+var sprint_drain = 0.10
+var stamina_gain = 0.10
+
+var ANIMATION_SPEED = 0.0
 
 func _ready():
 	PlayerGlobals.POWER = load("res://resources/powers/Stealth.tres")
-	player_animator.speed_scale = ANIMATION_SPEED
+	SPEED = walk_speed
 	animation_tree.active = true
 
 func _process(_delta):
@@ -40,7 +46,8 @@ func _process(_delta):
 	else:
 		ammo_count.hide()
 
-func _physics_process(_delta):
+func _physics_process(delta):
+	animation_tree.advance(ANIMATION_SPEED * delta)
 	if OverworldGlobals.player_can_move:
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
@@ -50,8 +57,17 @@ func _physics_process(_delta):
 		velocity = direction * SPEED
 		move_and_slide()
 	
-		OverworldGlobals.follow_array.push_front(self.global_position)
-		OverworldGlobals.follow_array.pop_back()
+	if Input.is_action_pressed("ui_sprint") and stamina > 0.0:
+		SPEED = sprint_speed
+		ANIMATION_SPEED = 1.0
+		if velocity != Vector2.ZERO: stamina -= sprint_drain
+	else:
+		if stamina != 100 and !Input.is_action_pressed("ui_sprint"): stamina += stamina_gain
+		SPEED = walk_speed
+		ANIMATION_SPEED = 0.0
+	
+	OverworldGlobals.follow_array.push_front(self.global_position)
+	OverworldGlobals.follow_array.pop_back()
 
 
 func _unhandled_input(_event: InputEvent):
