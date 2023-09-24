@@ -7,7 +7,7 @@
 script = ExtResource("2_rbww4")
 OVERWORLD_EFFECT = ExtResource("1_r5kug")
 PER_WEIGHT = 0
-MAX_STACK = 8
+MAX_STACK = 100
 NAME = "Arrow"
 ICON_NAME = ""
 DESCRIPTION = "A simple arrow."

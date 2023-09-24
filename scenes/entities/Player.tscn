@@ -1,11 +1,14 @@
-[gd_scene load_steps=98 format=3 uid="uid://gjcs4krj1v0o"]
+[gd_scene load_steps=71 format=3 uid="uid://dqwasgchcywes"]
 
 [ext_resource type="Script" path="res://scripts/main/gpPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/misc_sprites/interact.png" id="3_y84xx"]
 [ext_resource type="Script" path="res://scripts/user_interface/scmPlayerPrompt.gd" id="5_h8rtm"]
-[ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://assets/overworld_sprites/player.png" id="5_nms4n"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="6_66sfb"]
 [ext_resource type="PackedScene" uid="uid://bx16iy3b6f0t1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
+[ext_resource type="Texture2D" uid="uid://dt76jx60swgsw" path="res://assets/overworld_sprites/PLAYER_bow_draw_walk.png" id="7_0ud6o"]
+[ext_resource type="Texture2D" uid="uid://drwwr7m8xutds" path="res://assets/overworld_sprites/PLAYER_bow_draw.png" id="7_1ru4x"]
+[ext_resource type="Texture2D" uid="uid://cun01jq5202w" path="res://assets/overworld_sprites/PLAYER_walk.png" id="7_jiapg"]
+[ext_resource type="Texture2D" uid="uid://5ns5nybxgkk4" path="res://assets/overworld_sprites/PLAYER_walk_bow.png" id="7_owgdk"]
 
 [sub_resource type="Animation" id="Animation_b30mo"]
 resource_name = "Interact"
@@ -112,9 +115,9 @@ _data = {
 "Show": SubResource("Animation_ljyis")
 }
 
-[sub_resource type="Animation" id="Animation_u64m2"]
-resource_name = "Bow_Draw_Down"
-length = 1.2
+[sub_resource type="Animation" id="Animation_h8s5o"]
+resource_name = "Bow_Shoot_Down"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -125,7 +128,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [6]
+"values": [1]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -143,18 +146,30 @@ tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/path = NodePath(".:position")
-tracks/2/interp = 1
+tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 2, 1),
 "update": 0,
-"values": [Vector2(0, -20), Vector2(0, -21)]
+"values": [Vector2(0, -21), Vector2(0, -19), Vector2(0, -20)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_1ru4x")]
 }
 
-[sub_resource type="Animation" id="Animation_aaa36"]
-resource_name = "Bow_Draw_Left"
-length = 1.2
+[sub_resource type="Animation" id="Animation_h876k"]
+resource_name = "Bow_Shoot_Left"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -165,7 +180,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [18]
+"values": [4]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -198,15 +213,27 @@ tracks/3/path = NodePath(".:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 2, 1),
 "update": 0,
-"values": [Vector2(0, -20), Vector2(1, -20)]
+"values": [Vector2(1, -20), Vector2(-1, -20), Vector2(0, -20)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:texture")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_1ru4x")]
 }
 
-[sub_resource type="Animation" id="Animation_1pxju"]
-resource_name = "Bow_Draw_Right"
-length = 1.2
+[sub_resource type="Animation" id="Animation_0cepm"]
+resource_name = "Bow_Shoot_Right"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -217,7 +244,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [18]
+"values": [4]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -247,57 +274,29 @@ tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/path = NodePath(".:position")
-tracks/3/interp = 1
+tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 2, 1),
 "update": 0,
-"values": [Vector2(0, -20), Vector2(-1, -20)]
+"values": [Vector2(-1, -20), Vector2(1, -20), Vector2(0, -20)]
 }
-
-[sub_resource type="Animation" id="Animation_3cxfv"]
-resource_name = "Bow_Draw_Up"
-length = 1.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:texture")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [30]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [3.14159]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, -20), Vector2(0, -19)]
+"values": [ExtResource("7_1ru4x")]
 }
 
-[sub_resource type="Animation" id="Animation_h8s5o"]
-resource_name = "Bow_Shoot_Down"
+[sub_resource type="Animation" id="Animation_8h4iq"]
+resource_name = "Bow_Shoot_Up"
 length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -321,150 +320,6 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:position")
-tracks/2/interp = 2
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, -21), Vector2(0, -19), Vector2(0, -20)]
-}
-
-[sub_resource type="Animation" id="Animation_h876k"]
-resource_name = "Bow_Shoot_Left"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [19]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.5708]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:position")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1, -20), Vector2(-1, -20), Vector2(0, -20)]
-}
-
-[sub_resource type="Animation" id="Animation_0cepm"]
-resource_name = "Bow_Shoot_Right"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [19]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-1.5708]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:position")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(-1, -20), Vector2(1, -20), Vector2(0, -20)]
-}
-
-[sub_resource type="Animation" id="Animation_8h4iq"]
-resource_name = "Bow_Shoot_Up"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [31]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
 "values": [3.14159]
 }
 tracks/2/type = "value"
@@ -474,16 +329,75 @@ tracks/2/path = NodePath(".:position")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 2, 1),
 "update": 0,
 "values": [Vector2(0, -19), Vector2(0, -21), Vector2(0, -20)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_1ru4x")]
+}
 
-[sub_resource type="Animation" id="Animation_l7n3f"]
+[sub_resource type="Animation" id="Animation_63hvg"]
+resource_name = "Change_Bow"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_owgdk")]
+}
+
+[sub_resource type="Animation" id="Animation_n4y6i"]
+resource_name = "Change_Bow_Draw"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_0ud6o")]
+}
+
+[sub_resource type="Animation" id="Animation_wptgv"]
+resource_name = "Change_Regular"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_jiapg")]
+}
+
+[sub_resource type="Animation" id="Animation_4nqaa"]
 resource_name = "Idle_Down"
-length = 1.2
-loop_mode = 1
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -503,16 +417,15 @@ tracks/1/path = NodePath("../PlayerDirection:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_miiek"]
-resource_name = "Idle_Down_Bow"
-length = 1.2
-loop_mode = 1
+[sub_resource type="Animation" id="Animation_iahof"]
+resource_name = "Idle_Left"
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -528,102 +441,31 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
+tracks/1/path = NodePath(".:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
-[sub_resource type="Animation" id="Animation_3yxfh"]
-resource_name = "Idle_Left"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [13]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.5708]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
 }
-
-[sub_resource type="Animation" id="Animation_mxtsp"]
-resource_name = "Idle_Left_Bow"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [16]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.5708]
-}
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
+tracks/2/path = NodePath("../PlayerDirection:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [1.5708]
 }
 
-[sub_resource type="Animation" id="Animation_cqlpn"]
+[sub_resource type="Animation" id="Animation_koj6n"]
 resource_name = "Idle_Right"
-length = 1.2
-loop_mode = 1
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -634,78 +476,36 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [13]
+"values": [4]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
+tracks/1/path = NodePath(".:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-1.5708]
+"update": 1,
+"values": [true]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
+tracks/2/path = NodePath("../PlayerDirection:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_im55j"]
-resource_name = "Idle_Right_Bow"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [16]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [-1.5708]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
 
-[sub_resource type="Animation" id="Animation_4ncne"]
+[sub_resource type="Animation" id="Animation_38xtk"]
 resource_name = "Idle_Up"
-length = 1.2
-loop_mode = 1
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -713,10 +513,10 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 6.40291e-05),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [25]
+"values": [8, 7]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -725,36 +525,7 @@ tracks/1/path = NodePath("../PlayerDirection:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [3.14159]
-}
-
-[sub_resource type="Animation" id="Animation_1bmm5"]
-resource_name = "Idle_Up_Bow"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
 "times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [28]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [3.14159]
@@ -772,7 +543,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("5_nms4n")]
+"values": [ExtResource("7_jiapg")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -797,6 +568,30 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../PlayerDirection:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_ur6br"]
@@ -883,48 +678,7 @@ tracks/1/path = NodePath("../PlayerDirection:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_uq8sy"]
-resource_name = "Walk_Down_Bow"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [5, 4, 3, 4]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
@@ -956,48 +710,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [14, 13, 12, 13]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.5708]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_poahb"]
-resource_name = "Walk_Left_Bow"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [15, 16, 17, 16]
+"values": [3, 4, 5, 4]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1038,48 +751,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [12, 13, 14, 13]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-1.5708]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_15la0"]
-resource_name = "Walk_Right_Bow"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [15, 16, 17, 16]
+"values": [5, 4, 3, 4]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1120,7 +792,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [26, 25, 24, 25]
+"values": [8, 7, 6, 7]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1147,321 +819,183 @@ tracks/2/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_vim8f"]
-resource_name = "Walk_Up_Bow"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [27, 28, 29, 28]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../PlayerDirection:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [3.14159]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sx3aq"]
 _data = {
-"Bow_Draw_Down": SubResource("Animation_u64m2"),
-"Bow_Draw_Left": SubResource("Animation_aaa36"),
-"Bow_Draw_Right": SubResource("Animation_1pxju"),
-"Bow_Draw_Up": SubResource("Animation_3cxfv"),
 "Bow_Shoot_Down": SubResource("Animation_h8s5o"),
 "Bow_Shoot_Left": SubResource("Animation_h876k"),
 "Bow_Shoot_Right": SubResource("Animation_0cepm"),
 "Bow_Shoot_Up": SubResource("Animation_8h4iq"),
-"Idle_Down": SubResource("Animation_l7n3f"),
-"Idle_Down_Bow": SubResource("Animation_miiek"),
-"Idle_Left": SubResource("Animation_3yxfh"),
-"Idle_Left_Bow": SubResource("Animation_mxtsp"),
-"Idle_Right": SubResource("Animation_cqlpn"),
-"Idle_Right_Bow": SubResource("Animation_im55j"),
-"Idle_Up": SubResource("Animation_4ncne"),
-"Idle_Up_Bow": SubResource("Animation_1bmm5"),
+"Change_Bow": SubResource("Animation_63hvg"),
+"Change_Bow_Draw": SubResource("Animation_n4y6i"),
+"Change_Regular": SubResource("Animation_wptgv"),
+"Idle_Down": SubResource("Animation_4nqaa"),
+"Idle_Left": SubResource("Animation_iahof"),
+"Idle_Right": SubResource("Animation_koj6n"),
+"Idle_Up": SubResource("Animation_38xtk"),
 "RESET": SubResource("Animation_jaucr"),
 "Void_Call": SubResource("Animation_ur6br"),
 "Void_Calm": SubResource("Animation_5orsp"),
 "Void_Charge": SubResource("Animation_pwb4e"),
 "Walk_Down": SubResource("Animation_31icp"),
-"Walk_Down_Bow": SubResource("Animation_uq8sy"),
 "Walk_Left": SubResource("Animation_6sc3m"),
-"Walk_Left_Bow": SubResource("Animation_poahb"),
 "Walk_Right": SubResource("Animation_ddvpw"),
-"Walk_Right_Bow": SubResource("Animation_15la0"),
-"Walk_Up": SubResource("Animation_dpwad"),
-"Walk_Up_Bow": SubResource("Animation_vim8f")
+"Walk_Up": SubResource("Animation_dpwad")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g5qyj"]
-animation = &"Bow_Draw_Down"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dld3q"]
+animation = &"Change_Bow"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1r0gm"]
-animation = &"Bow_Draw_Up"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h3qmy"]
+animation = &"Change_Bow_Draw"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4l5td"]
-animation = &"Bow_Draw_Left"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sg777"]
-animation = &"Bow_Draw_Right"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_am7tc"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_g5qyj")
-blend_point_0/pos = Vector2(0, 1.1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_1r0gm")
-blend_point_1/pos = Vector2(0, -1.1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_4l5td")
-blend_point_2/pos = Vector2(-1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_sg777")
-blend_point_3/pos = Vector2(1, 0)
-min_space = Vector2(-1, -1.1)
-max_space = Vector2(1, 1.1)
-blend_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ikjxj"]
-animation = &"Idle_Up_Bow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xbubl"]
-animation = &"Idle_Down_Bow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_42y1x"]
-animation = &"Idle_Left_Bow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_df25o"]
-animation = &"Idle_Right_Bow"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_bcrss"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_ikjxj")
-blend_point_0/pos = Vector2(0, -1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_xbubl")
-blend_point_1/pos = Vector2(0, 1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_42y1x")
-blend_point_2/pos = Vector2(-1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_df25o")
-blend_point_3/pos = Vector2(1, 0)
-blend_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sh6bn"]
-animation = &"Idle_Down"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bm8kv"]
-animation = &"Idle_Up"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jsprf"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rpgsg"]
 animation = &"Idle_Left"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_11f1v"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pkrpm"]
 animation = &"Idle_Right"
 
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_ygwhc"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_sh6bn")
-blend_point_0/pos = Vector2(0, 1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_bm8kv")
-blend_point_1/pos = Vector2(0, -1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_jsprf")
-blend_point_2/pos = Vector2(-1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_11f1v")
-blend_point_3/pos = Vector2(1, 0)
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_q7glb"]
+animation = &"Idle_Down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h1kl8"]
+animation = &"Idle_Up"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_blm25"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_rpgsg")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_pkrpm")
+blend_point_1/pos = Vector2(1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_q7glb")
+blend_point_2/pos = Vector2(0, 1.1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_h1kl8")
+blend_point_3/pos = Vector2(0, -1.1)
+min_space = Vector2(-1, -1.1)
+max_space = Vector2(1, 1.1)
 blend_mode = 1
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_upkx6"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fihqe"]
+animation = &"Change_Regular"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b0xws"]
 animation = &"Bow_Shoot_Down"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dp5an"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_geoig"]
 animation = &"Bow_Shoot_Up"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6ae5q"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e0b6i"]
 animation = &"Bow_Shoot_Left"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g2hio"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c2om7"]
 animation = &"Bow_Shoot_Right"
 
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_p10vb"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_upkx6")
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_urrpl"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_b0xws")
 blend_point_0/pos = Vector2(0, 1.1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_dp5an")
+blend_point_1/node = SubResource("AnimationNodeAnimation_geoig")
 blend_point_1/pos = Vector2(0, -1.1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_6ae5q")
+blend_point_2/node = SubResource("AnimationNodeAnimation_e0b6i")
 blend_point_2/pos = Vector2(-1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_g2hio")
+blend_point_3/node = SubResource("AnimationNodeAnimation_c2om7")
 blend_point_3/pos = Vector2(1, 0)
 min_space = Vector2(-1, -1.1)
 max_space = Vector2(1, 1.1)
 blend_mode = 1
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7fdwf"]
-animation = &"Void_Call"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gj5s3"]
-animation = &"Void_Calm"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_18g0e"]
-animation = &"Void_Charge"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ljod6"]
-animation = &"Walk_Down_Bow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rg0yd"]
-animation = &"Walk_Up_Bow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_amg7c"]
-animation = &"Walk_Left_Bow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_70jbu"]
-animation = &"Walk_Right_Bow"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_v7p5t"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_ljod6")
-blend_point_0/pos = Vector2(0, 1.1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_rg0yd")
-blend_point_1/pos = Vector2(0, -1.1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_amg7c")
-blend_point_2/pos = Vector2(-1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_70jbu")
-blend_point_3/pos = Vector2(1, 0)
-min_space = Vector2(-1, -1.1)
-max_space = Vector2(1, 1.1)
-blend_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dw57g"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cxwh7"]
 animation = &"Walk_Down"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rq2h8"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2v5ye"]
 animation = &"Walk_Up"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_37jh7"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_f7qw7"]
 animation = &"Walk_Left"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wv0nr"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ks00d"]
 animation = &"Walk_Right"
 
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_hjgg8"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_dw57g")
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_gn7xg"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_cxwh7")
 blend_point_0/pos = Vector2(0, 1.1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_rq2h8")
+blend_point_1/node = SubResource("AnimationNodeAnimation_2v5ye")
 blend_point_1/pos = Vector2(0, -1.1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_37jh7")
+blend_point_2/node = SubResource("AnimationNodeAnimation_f7qw7")
 blend_point_2/pos = Vector2(-1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_wv0nr")
+blend_point_3/node = SubResource("AnimationNodeAnimation_ks00d")
 blend_point_3/pos = Vector2(1, 0)
 min_space = Vector2(-1, -1.1)
 max_space = Vector2(1, 1.1)
 blend_mode = 1
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tus5o"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xfec6"]
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vn7n0"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pyid4"]
+switch_mode = 2
 advance_mode = 2
-advance_condition = &"is_moving"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ivvpp"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kupnm"]
 advance_mode = 2
-advance_condition = &"idle"
+advance_condition = &"stance_bow"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d4yll"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mgiqs"]
+switch_mode = 1
 advance_mode = 2
-advance_condition = &"equip_bow"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pwvh3"]
-advance_mode = 2
-advance_condition = &"is_moving"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_di8f5"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tfn7a"]
 advance_mode = 2
 advance_condition = &"idle"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xc2fq"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vryit"]
 advance_mode = 2
-advance_condition = &"unequip_bow"
+advance_condition = &"stance_draw"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yyjk8"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5dopg"]
+switch_mode = 2
 advance_mode = 2
-advance_condition = &"draw_bow"
+advance_condition = &"idle"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f5ypq"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jj3w8"]
+advance_mode = 2
+advance_condition = &"is_moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7v4a6"]
+advance_mode = 2
+advance_condition = &"stance_regular"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_75nnk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a30h4"]
 advance_mode = 2
 advance_condition = &"shoot_bow"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_13w0k"]
-switch_mode = 2
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p02c7"]
 advance_mode = 2
+advance_condition = &"shoot_bow"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_052le"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_etjmx"]
 advance_mode = 2
-advance_condition = &"void_call"
+advance_condition = &"stance_draw"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7rfp5"]
-advance_mode = 2
-advance_condition = &"void_call"
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7stjw"]
+states/Change_Bow/node = SubResource("AnimationNodeAnimation_dld3q")
+states/Change_Bow/position = Vector2(336, 316)
+states/Change_Bow_Draw/node = SubResource("AnimationNodeAnimation_h3qmy")
+states/Change_Bow_Draw/position = Vector2(715, 316)
+states/End/position = Vector2(820, 151)
+states/Idle/node = SubResource("AnimationNodeBlendSpace2D_blm25")
+states/Idle/position = Vector2(523, 151)
+"states/Regular Stance/node" = SubResource("AnimationNodeAnimation_fihqe")
+"states/Regular Stance/position" = Vector2(336, 151)
+states/ShootBow/node = SubResource("AnimationNodeBlendSpace2D_urrpl")
+states/ShootBow/position = Vector2(597, 46)
+states/Start/position = Vector2(201, 151)
+states/Walk/node = SubResource("AnimationNodeBlendSpace2D_gn7xg")
+states/Walk/position = Vector2(705, 151)
+transitions = ["Start", "Regular Stance", SubResource("AnimationNodeStateMachineTransition_xfec6"), "Regular Stance", "Idle", SubResource("AnimationNodeStateMachineTransition_pyid4"), "Idle", "Change_Bow", SubResource("AnimationNodeStateMachineTransition_kupnm"), "Change_Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_mgiqs"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_tfn7a"), "Idle", "Change_Bow_Draw", SubResource("AnimationNodeStateMachineTransition_vryit"), "ShootBow", "Idle", SubResource("AnimationNodeStateMachineTransition_5dopg"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_jj3w8"), "Idle", "Regular Stance", SubResource("AnimationNodeStateMachineTransition_7v4a6"), "Change_Bow_Draw", "Idle", SubResource("AnimationNodeStateMachineTransition_75nnk"), "Idle", "ShootBow", SubResource("AnimationNodeStateMachineTransition_a30h4"), "Walk", "ShootBow", SubResource("AnimationNodeStateMachineTransition_p02c7"), "Walk", "Change_Bow_Draw", SubResource("AnimationNodeStateMachineTransition_etjmx")]
+graph_offset = Vector2(0, 4.93063)
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ctdd1"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sxu5c"]
-advance_mode = 2
-advance_condition = &"void_release"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t3elc"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_87fsc"]
-advance_mode = 2
-advance_condition = &"unequip_bow"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n3d2h"]
-advance_mode = 2
-advance_condition = &"void_call"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c2w6y"]
-advance_mode = 2
-advance_condition = &"void_call"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a12pg"]
-advance_mode = 2
-advance_condition = &"cancel"
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_uxbxm"]
-"states/Draw Bow/node" = SubResource("AnimationNodeBlendSpace2D_am7tc")
-"states/Draw Bow/position" = Vector2(303.017, 6.774)
-states/Idle/node = SubResource("AnimationNodeBlendSpace2D_ygwhc")
-states/Idle/position = Vector2(84.0174, 100)
-"states/Idle Bow/node" = SubResource("AnimationNodeBlendSpace2D_bcrss")
-"states/Idle Bow/position" = Vector2(84.0174, 6.774)
-"states/Shoot Bow/node" = SubResource("AnimationNodeBlendSpace2D_p10vb")
-"states/Shoot Bow/position" = Vector2(84.0174, -81.226)
-states/Start/position = Vector2(84.0174, 210)
-states/Void_Call/node = SubResource("AnimationNodeAnimation_7fdwf")
-states/Void_Call/position = Vector2(-168, 6.774)
-states/Void_Calm/node = SubResource("AnimationNodeAnimation_gj5s3")
-states/Void_Calm/position = Vector2(-168, 210)
-states/Void_Charge/node = SubResource("AnimationNodeAnimation_18g0e")
-states/Void_Charge/position = Vector2(-327.983, 100)
-states/Walk/node = SubResource("AnimationNodeBlendSpace2D_hjgg8")
-states/Walk/position = Vector2(-168, 100)
-"states/Walk Bow/node" = SubResource("AnimationNodeBlendSpace2D_v7p5t")
-"states/Walk Bow/position" = Vector2(-168, -81.226)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_tus5o"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_vn7n0"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_ivvpp"), "Idle", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_d4yll"), "Idle Bow", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_pwvh3"), "Walk Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_di8f5"), "Idle Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_xc2fq"), "Idle Bow", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_yyjk8"), "Draw Bow", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_f5ypq"), "Shoot Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_13w0k"), "Idle Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_052le"), "Idle", "Void_Call", SubResource("AnimationNodeStateMachineTransition_7rfp5"), "Void_Call", "Void_Charge", SubResource("AnimationNodeStateMachineTransition_ctdd1"), "Void_Charge", "Void_Calm", SubResource("AnimationNodeStateMachineTransition_sxu5c"), "Void_Calm", "Idle", SubResource("AnimationNodeStateMachineTransition_t3elc"), "Draw Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_87fsc"), "Walk Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_n3d2h"), "Walk", "Void_Call", SubResource("AnimationNodeStateMachineTransition_c2w6y"), "Draw Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_a12pg")]
-graph_offset = Vector2(-489.266, -121.186)
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_7ym7e"]
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_s7g7y"]
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 17
@@ -1472,10 +1006,10 @@ script = ExtResource("1_mngvk")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -20)
-texture = ExtResource("5_nms4n")
-hframes = 12
-vframes = 8
-frame = 6
+texture = ExtResource("7_jiapg")
+hframes = 3
+vframes = 3
+frame = 5
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
 visible = false
@@ -1568,23 +1102,18 @@ libraries = {
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource("AnimationNodeStateMachine_uxbxm")
+tree_root = SubResource("AnimationNodeStateMachine_7stjw")
 anim_player = NodePath("../PlayerAnimator")
-parameters/playback = SubResource("AnimationNodeStateMachinePlayback_7ym7e")
-parameters/conditions/cancel = false
-parameters/conditions/draw_bow = false
-parameters/conditions/equip_bow = false
-parameters/conditions/idle = false
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_s7g7y")
+parameters/conditions/idle = true
 parameters/conditions/is_moving = false
 parameters/conditions/shoot_bow = false
-parameters/conditions/unequip_bow = false
-parameters/conditions/void_call = false
-parameters/conditions/void_release = false
-"parameters/Draw Bow/blend_position" = Vector2(0, 0)
-parameters/Idle/blend_position = Vector2(-0.0135502, 0.151365)
-"parameters/Idle Bow/blend_position" = Vector2(0, 0)
-"parameters/Shoot Bow/blend_position" = Vector2(0, 0)
-parameters/Walk/blend_position = Vector2(0, 0)
-"parameters/Walk Bow/blend_position" = Vector2(0, 0)
+parameters/conditions/stance_bow = false
+parameters/conditions/stance_draw = false
+parameters/conditions/stance_regular = false
+parameters/Idle/blend_position = Vector2(0.00813007, -0.931188)
+parameters/ShootBow/blend_position = Vector2(-0.319106, 0.122222)
+parameters/Walk/blend_position = Vector2(-0.29065, -0.423077)
 
 [connection signal="timeout" from="PlayerCamera/PlayerPrompt/Timer" to="PlayerCamera/PlayerPrompt" method="_on_timer_timeout"]
