@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://dqwasgchcywes"]
+[gd_scene load_steps=73 format=3 uid="uid://dqwasgchcywes"]
 
 [ext_resource type="Script" path="res://scripts/main/gpPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/misc_sprites/interact.png" id="3_y84xx"]
@@ -930,7 +930,6 @@ blend_mode = 1
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pyid4"]
-switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kupnm"]
@@ -977,23 +976,31 @@ advance_condition = &"shoot_bow"
 advance_mode = 2
 advance_condition = &"stance_draw"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cfd80"]
+advance_mode = 2
+advance_condition = &"stance_bow"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ooqo8"]
+advance_mode = 2
+advance_condition = &"stance_regular"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7stjw"]
 states/Change_Bow/node = SubResource("AnimationNodeAnimation_dld3q")
-states/Change_Bow/position = Vector2(336, 316)
+states/Change_Bow/position = Vector2(705, 297)
 states/Change_Bow_Draw/node = SubResource("AnimationNodeAnimation_h3qmy")
-states/Change_Bow_Draw/position = Vector2(715, 316)
+states/Change_Bow_Draw/position = Vector2(518, 297)
 states/End/position = Vector2(820, 151)
 states/Idle/node = SubResource("AnimationNodeBlendSpace2D_blm25")
 states/Idle/position = Vector2(523, 151)
 "states/Regular Stance/node" = SubResource("AnimationNodeAnimation_fihqe")
-"states/Regular Stance/position" = Vector2(336, 151)
+"states/Regular Stance/position" = Vector2(523, 27)
 states/ShootBow/node = SubResource("AnimationNodeBlendSpace2D_urrpl")
-states/ShootBow/position = Vector2(597, 46)
+states/ShootBow/position = Vector2(698, 27)
 states/Start/position = Vector2(201, 151)
 states/Walk/node = SubResource("AnimationNodeBlendSpace2D_gn7xg")
 states/Walk/position = Vector2(705, 151)
-transitions = ["Start", "Regular Stance", SubResource("AnimationNodeStateMachineTransition_xfec6"), "Regular Stance", "Idle", SubResource("AnimationNodeStateMachineTransition_pyid4"), "Idle", "Change_Bow", SubResource("AnimationNodeStateMachineTransition_kupnm"), "Change_Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_mgiqs"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_tfn7a"), "Idle", "Change_Bow_Draw", SubResource("AnimationNodeStateMachineTransition_vryit"), "ShootBow", "Idle", SubResource("AnimationNodeStateMachineTransition_5dopg"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_jj3w8"), "Idle", "Regular Stance", SubResource("AnimationNodeStateMachineTransition_7v4a6"), "Change_Bow_Draw", "Idle", SubResource("AnimationNodeStateMachineTransition_75nnk"), "Idle", "ShootBow", SubResource("AnimationNodeStateMachineTransition_a30h4"), "Walk", "ShootBow", SubResource("AnimationNodeStateMachineTransition_p02c7"), "Walk", "Change_Bow_Draw", SubResource("AnimationNodeStateMachineTransition_etjmx")]
-graph_offset = Vector2(0, 4.93063)
+transitions = ["Start", "Regular Stance", SubResource("AnimationNodeStateMachineTransition_xfec6"), "Regular Stance", "Idle", SubResource("AnimationNodeStateMachineTransition_pyid4"), "Idle", "Change_Bow", SubResource("AnimationNodeStateMachineTransition_kupnm"), "Change_Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_mgiqs"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_tfn7a"), "Idle", "Change_Bow_Draw", SubResource("AnimationNodeStateMachineTransition_vryit"), "ShootBow", "Idle", SubResource("AnimationNodeStateMachineTransition_5dopg"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_jj3w8"), "Idle", "Regular Stance", SubResource("AnimationNodeStateMachineTransition_7v4a6"), "Change_Bow_Draw", "Idle", SubResource("AnimationNodeStateMachineTransition_75nnk"), "Idle", "ShootBow", SubResource("AnimationNodeStateMachineTransition_a30h4"), "Walk", "ShootBow", SubResource("AnimationNodeStateMachineTransition_p02c7"), "Walk", "Change_Bow_Draw", SubResource("AnimationNodeStateMachineTransition_etjmx"), "Walk", "Change_Bow", SubResource("AnimationNodeStateMachineTransition_cfd80"), "Walk", "Regular Stance", SubResource("AnimationNodeStateMachineTransition_ooqo8")]
+graph_offset = Vector2(0, -29.3539)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_s7g7y"]
 
@@ -1104,7 +1111,6 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_7stjw")
 anim_player = NodePath("../PlayerAnimator")
-active = true
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_s7g7y")
 parameters/conditions/idle = true
 parameters/conditions/is_moving = false

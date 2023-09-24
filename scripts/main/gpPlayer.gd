@@ -32,6 +32,7 @@ var stamina_gain = 0.10
 var ANIMATION_SPEED = 0.0
 
 signal stance_changed
+signal bow_shot
 
 func _ready():
 	animation_tree.active = true
@@ -48,7 +49,7 @@ func _process(_delta):
 	else:
 		ammo_count.hide()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if OverworldGlobals.player_can_move:
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
@@ -112,34 +113,51 @@ func animateInteract():
 func drawBow():
 	if Input.is_action_pressed("ui_click") and OverworldGlobals.show_player_interaction and OverworldGlobals.player_can_move:
 		changeStance('draw')
-		SPEED = 5.0
+		SPEED = 15.0
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10)
 		bow_draw_strength += 0.1
 		bow_line.points[1].y += 1
 		
+		print(velocity)
+		if velocity == Vector2.ZERO:
+			bow_line.default_color.a = 1.0
+		else:
+			bow_line.default_color.a = 0.25
+		
 		if bow_draw_strength >= bow_max_draw:
+			stamina -= 0.25
 			bow_line.points[1].y = 275
 			bow_draw_strength = bow_max_draw
+			if Input.is_action_just_pressed("ui_bow"):
+				await stance_changed
+				undrawBow(true)
+				bow_mode = false
+		if stamina <= 0:
+			Input.action_release("ui_click")
+	
 	
 	if Input.is_action_just_released("ui_click"):
-		if bow_draw_strength >= bow_max_draw: 
+		if bow_draw_strength >= bow_max_draw and velocity == Vector2.ZERO: 
 			shootProjectile()
-		else:
-			changeStance('bow')
-		undrawBow(bow_draw_strength >= bow_max_draw)
+		
+		await stance_changed
+		undrawBow()
 
-func undrawBow(wait=false):
+func undrawBow(change_to_regular=false):
+	if !change_to_regular:
+		changeStance('bow')
+	else:
+		changeStance('regular')
 	bow_line.hide()
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
-	if wait: await get_tree().create_timer(0.6).timeout
 	SPEED = walk_speed
 	
 	#OverworldGlobals.player_can_move = true
 
 func shootProjectile():
-	OverworldGlobals.player_can_move = false
+	
 	PlayerGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
 	var projectile = load("res://scenes/entities/Arrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
@@ -147,6 +165,7 @@ func shootProjectile():
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
 	animateShootBow()
+
 	
 func updateAnimationParameters():
 	if velocity == Vector2.ZERO:
@@ -156,14 +175,12 @@ func updateAnimationParameters():
 		animation_tree["parameters/conditions/idle"] = false
 		animation_tree["parameters/conditions/is_moving"] = true
 	
-	if direction != Vector2.ZERO:
+	if direction != Vector2.ZERO and bow_draw_strength == 0 and OverworldGlobals.player_can_move:
 		animation_tree["parameters/Idle/blend_position"] = direction
 		animation_tree["parameters/ShootBow/blend_position"] = direction
 		animation_tree["parameters/Walk/blend_position"] = direction
 
 func changeStance(stance: String):
-	print('Changing stance to %s' % stance)
-	velocity = Vector2.ZERO
 	match stance:
 		'regular': 
 			animation_tree["parameters/conditions/stance_regular"] = true
@@ -189,10 +206,9 @@ func animateShootBow():
 	animation_tree["parameters/conditions/shoot_bow"] = true
 	await animation_tree.animation_finished
 	animation_tree["parameters/conditions/shoot_bow"] = false
+	OverworldGlobals.player_can_move = true
 	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
 		bow_mode = false
 		changeStance('regular')
 	else:
 		changeStance('bow')
-	await stance_changed
-	OverworldGlobals.player_can_move = true
