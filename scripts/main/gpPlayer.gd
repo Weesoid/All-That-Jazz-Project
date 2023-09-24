@@ -106,8 +106,9 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	if Input.is_action_pressed("ui_click") and velocity == Vector2.ZERO and OverworldGlobals.show_player_interaction:
-		OverworldGlobals.player_can_move = false
+	if Input.is_action_pressed("ui_click") and OverworldGlobals.show_player_interaction:
+		#OverworldGlobals.player_can_move = false
+		SPEED = 5.0
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10)
 		bow_draw_strength += 0.1
@@ -125,7 +126,8 @@ func undrawBow(wait=false):
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
 	if wait: await get_tree().create_timer(0.6).timeout
-	OverworldGlobals.player_can_move = true
+	SPEED = walk_speed
+	#OverworldGlobals.player_can_move = true
 
 func shootProjectile():
 	PlayerGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
@@ -147,7 +149,7 @@ func updateAnimationParameters():
 		animation_tree["parameters/conditions/idle"] = false
 		animation_tree["parameters/conditions/is_moving"] = true
 	
-	if direction != Vector2.ZERO:
+	if direction != Vector2.ZERO and bow_draw_strength == 0:
 		animation_tree["parameters/Idle/blend_position"] = direction
 		animation_tree["parameters/Walk/blend_position"] = direction
 		animation_tree["parameters/Idle Bow/blend_position"] = direction
@@ -165,14 +167,16 @@ func updateAnimationParameters():
 	
 	if bow_mode:
 		if Input.is_action_pressed('ui_click') and OverworldGlobals.show_player_interaction and !animation_tree["parameters/conditions/void_call"]:
+			animation_tree["parameters/conditions/idle"] = true
+			animation_tree["parameters/conditions/is_moving"] = false
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false
 		
-		if velocity != Vector2.ZERO:
-			undrawBow()
-			animation_tree["parameters/conditions/draw_bow"] = false
-			animation_tree["parameters/conditions/cancel"] = true
+		#if velocity != Vector2.ZERO:
+		#	undrawBow()
+		#	animation_tree["parameters/conditions/draw_bow"] = false
+		#	animation_tree["parameters/conditions/cancel"] = true
 		
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
