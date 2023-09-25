@@ -16,6 +16,7 @@ class_name PlayerScene
 @onready var squad = $CombatantSquadComponent
 @onready var ammo_count = $PlayerCamera/Ammo
 @onready var prompt = $PlayerCamera/PlayerPrompt
+@onready var audio_player = $ScriptAudioPlayer
 
 var stamina = 100.0
 var direction = Vector2()
@@ -32,6 +33,7 @@ var stamina_gain = 0.10
 var ANIMATION_SPEED = 0.0
 
 func _ready():
+	player_camera.global_position = global_position
 	PlayerGlobals.POWER = load("res://resources/powers/Stealth.tres")
 	SPEED = walk_speed
 	animation_tree.active = true
@@ -57,12 +59,14 @@ func _physics_process(delta):
 		velocity = direction * SPEED
 		move_and_slide()
 	
-	if Input.is_action_pressed("ui_sprint") and stamina > 0.0:
+	if Input.is_action_pressed("ui_sprint") and stamina > 0.0 and bow_draw_strength == 0:
 		SPEED = sprint_speed
 		ANIMATION_SPEED = 1.0
 		if velocity != Vector2.ZERO: stamina -= sprint_drain
+	elif bow_draw_strength >= bow_max_draw:
+		stamina -= 0.1
 	else:
-		if stamina != 100 and !Input.is_action_pressed("ui_sprint"): stamina += stamina_gain
+		if stamina < 100: stamina += stamina_gain
 		SPEED = walk_speed
 		ANIMATION_SPEED = 0.0
 	
@@ -83,7 +87,10 @@ func _unhandled_input(_event: InputEvent):
 			interactables[0].interact()
 			return
 	
-	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
+	if Input.is_action_just_pressed("ui_bow"):
+		if !canDrawBow():
+			prompt.showPrompt("No [color=yellow]%ss[/color] left." % PlayerGlobals.EQUIPPED_ARROW.NAME)
+			return
 		if bow_draw_strength == 0: 
 			bow_mode = !bow_mode
 	
@@ -91,7 +98,7 @@ func _unhandled_input(_event: InputEvent):
 		if PlayerGlobals.POWER != null:
 			PlayerGlobals.POWER.executePower(self)
 		else:
-			print('No power!')
+			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 
 func canDrawBow()-> bool:
 	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW.STACK > 0 and OverworldGlobals.show_player_interaction
@@ -106,9 +113,13 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
+	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
+		bow_mode = false
+		toggleBowAnimation()
+	
 	if Input.is_action_pressed("ui_click") and OverworldGlobals.show_player_interaction:
 		#OverworldGlobals.player_can_move = false
-		SPEED = 5.0
+		SPEED = 15.0
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10)
 		bow_draw_strength += 0.1
@@ -118,32 +129,42 @@ func drawBow():
 		else:
 			bow_line.default_color.a = 0.5
 		if bow_draw_strength >= bow_max_draw:
+			#player_camera.zoom = lerp(player_camera.zoom, Vector2(1.75, 1.75), 0.25)
 			bow_line.points[1].y = 275
 			bow_draw_strength = bow_max_draw
 	
 	if Input.is_action_just_released("ui_click") and velocity == Vector2.ZERO:
 		if bow_draw_strength >= bow_max_draw: shootProjectile()
-		undrawBow(bow_draw_strength >= bow_max_draw)
+		undrawBow()
 
-func undrawBow(wait=false):
+func undrawBow():
 	bow_line.hide()
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
-	if wait: await get_tree().create_timer(0.6).timeout
 	SPEED = walk_speed
+	#player_camera.zoom =  Vector2(2.0, 2.0)
 	#OverworldGlobals.player_can_move = true
 
 func shootProjectile():
+	playAudio("178872__hanbaal__bow.ogg", -15.0, true)
 	PlayerGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
 	var projectile = load("res://scenes/entities/Arrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
+
+func playAudio(filename: String, db=0.0, random_pitch=false):
+	audio_player.pitch_scale = 1
+	audio_player.stream = load("res://assets/sounds/%s" % filename)
+	audio_player.volume_db = db
+	print(audio_player.pitch_scale)
+	if random_pitch:
+		randomize()
+		audio_player.pitch_scale += randf_range(0.0, 0.25)
+		print(audio_player.pitch_scale)
 	
-	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
-		bow_mode = false
-		toggleBowAnimation()
+	audio_player.play()
 
 func updateAnimationParameters():
 	if velocity == Vector2.ZERO:
@@ -160,6 +181,7 @@ func updateAnimationParameters():
 		animation_tree["parameters/Walk Bow/blend_position"] = direction
 		animation_tree["parameters/Shoot Bow/blend_position"] = direction
 		animation_tree["parameters/Draw Bow/blend_position"] = direction
+		animation_tree["parameters/Draw Bow Walk/blend_position"] = direction
 	
 	if Input.is_action_just_pressed('ui_bow') and !animation_tree["parameters/conditions/void_call"]:
 		toggleBowAnimation()
@@ -171,16 +193,9 @@ func updateAnimationParameters():
 	
 	if bow_mode:
 		if Input.is_action_pressed('ui_click') and OverworldGlobals.show_player_interaction and !animation_tree["parameters/conditions/void_call"]:
-			animation_tree["parameters/conditions/idle"] = true
-			animation_tree["parameters/conditions/is_moving"] = false
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false
-		
-		#if velocity != Vector2.ZERO:
-		#	undrawBow()
-		#	animation_tree["parameters/conditions/draw_bow"] = false
-		#	animation_tree["parameters/conditions/cancel"] = true
 		
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
@@ -193,7 +208,7 @@ func updateAnimationParameters():
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
 	
-	if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null:
+	if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null and bow_draw_strength == 0:
 		animation_tree["parameters/conditions/void_call"] = !animation_tree["parameters/conditions/void_call"]
 		animation_tree["parameters/conditions/void_release"] = !animation_tree["parameters/conditions/void_call"]
 
