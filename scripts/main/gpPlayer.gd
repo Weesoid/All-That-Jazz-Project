@@ -113,11 +113,15 @@ func drawBow():
 		bow_line.global_position = global_position + Vector2(0, -10)
 		bow_draw_strength += 0.1
 		bow_line.points[1].y += 1
+		if velocity != Vector2.ZERO:
+			bow_line.default_color.a = 0.25
+		else:
+			bow_line.default_color.a = 0.5
 		if bow_draw_strength >= bow_max_draw:
 			bow_line.points[1].y = 275
 			bow_draw_strength = bow_max_draw
 	
-	if Input.is_action_just_released("ui_click"):
+	if Input.is_action_just_released("ui_click") and velocity == Vector2.ZERO:
 		if bow_draw_strength >= bow_max_draw: shootProjectile()
 		undrawBow(bow_draw_strength >= bow_max_draw)
 
@@ -180,9 +184,13 @@ func updateAnimationParameters():
 		
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
-			if bow_draw_strength >= bow_max_draw:
+			if bow_draw_strength >= bow_max_draw and velocity == Vector2.ZERO:
+				OverworldGlobals.player_can_move = false
 				animation_tree["parameters/conditions/shoot_bow"] = true
+				await animation_tree.animation_finished
+				OverworldGlobals.player_can_move = true
 			else:
+				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
 	
 	if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null:
