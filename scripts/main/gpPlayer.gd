@@ -114,7 +114,7 @@ func drawBow():
 		bow_draw_strength += 0.1
 		bow_line.points[1].y += 1
 		if velocity != Vector2.ZERO:
-			bow_line.default_color.a = 0.25
+			bow_line.default_color.a = 0.10
 		else:
 			bow_line.default_color.a = 0.5
 		if bow_draw_strength >= bow_max_draw:
