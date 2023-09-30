@@ -15,3 +15,9 @@ func initializeItem():
 
 func _to_string():
 	return str(NAME)
+
+func getInformation():
+	var out = ''
+	out += "W: %s V: %s\n\n" % [WEIGHT, VALUE]
+	out += DESCRIPTION
+	return out

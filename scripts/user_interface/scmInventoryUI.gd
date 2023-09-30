@@ -9,8 +9,8 @@ extends Control
 @onready var armor_tab = $TabContainer/Armors/VBoxContainer
 @onready var charm_tab = $TabContainer/Charms/VBoxContainer
 @onready var use_button = $UseContainer/Use
-@onready var description_panel = $DescriptionPanel/DescriptionLabel
-@onready var stat_panel = $StatPanel/DescriptionLabel
+@onready var description_panel = $PanelContainer/DescriptionPanel/DescriptionLabel
+@onready var stat_panel = $PanelContainer/DescriptionPanel/StatPanel
 @onready var capacity = $Capacity
 
 var selected_item: ResItem
@@ -60,14 +60,14 @@ func addMembers():
 							selected_item.initializeItem()
 							selected_item.applyEffect(selected_combatant, selected_combatant, selected_item.EFFECT.ANIMATION, true)
 							button_item_map[selected_item].text = selected_item.to_string()
-							description_panel.text = member.getStringStats()
+							stat_panel.text = member.getStringStats()
 							if selected_item.STACK <= 0: 
 								button_item_map[selected_item].queue_free()
 								party_panel.hide()
 							return
 						elif selected_item.EQUIPPED_COMBATANT == member:
 							PlayerGlobals.getItem(selected_item).unequip()
-							description_panel.text = member.getStringStats()
+							stat_panel.text = member.getStringStats()
 							button_item_map[selected_item].text = selected_item.NAME
 						elif isMemberEquipped(member, selected_item):
 							updateButtonUnequip(member, selected_item)
@@ -83,7 +83,7 @@ func addMembers():
 						)
 		button.mouse_entered.connect(
 			func updateInfo():
-				description_panel.text = member.getStringStats()
+				stat_panel.text = member.getStringStats()
 		)
 		party_panel.add_child(button)
 
@@ -109,7 +109,7 @@ func equipMemberAndUpdateButton(member: ResCombatant, item: ResItem):
 	PlayerGlobals.getItem(item).equip(member)
 	button_item_map[item].text = item.NAME
 	button_item_map[item].text += str(" equipped by ", member)
-	description_panel.text = member.getStringStats()
+	stat_panel.text = member.getStringStats()
 
 func clearMembers():
 	for child in party_panel.get_children():
@@ -129,13 +129,16 @@ func _on_drop_pressed():
 			selected_item = null
 			use_container.hide()
 
-func loadSlider(item)-> int:
+func loadSlider(item, repair=false)-> int:
 	if !item is ResStackItem:
 		return 1
 	
 	#disableButtons()
 	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
-	a_slider.max_v = item.STACK
+	if !repair:
+		a_slider.max_v = item.STACK
+	else:
+		a_slider.max_v = selected_item.max_durability - selected_item.durability
 	add_child(a_slider)
 	await a_slider.amount_enter
 	var amount = a_slider.slider.value
@@ -190,7 +193,7 @@ func isItemEquippable(item: ResItem):
 	return item is ResArmor or item is ResWeapon or item is ResProjectileAmmo
 
 func updateItemInfo(item: ResItem):
-	description_panel.text = item.DESCRIPTION
+	description_panel.text = item.getInformation()
 	if isItemEquippable(item) and !item is ResProjectileAmmo:
 		stat_panel.text = item.getStringStats()
 
@@ -202,3 +205,14 @@ func _on_tab_container_tab_changed(_tab):
 	use_container.hide()
 	description_panel.text = ""
 	stat_panel.text = ""
+
+func _on_repair_pressed():
+	var scrap_salvage = PlayerGlobals.getItemWithName('Scrap Salvage')
+	PlayerGlobals.repairItem(selected_item, await loadSlider(scrap_salvage, true))
+	description_panel.text = selected_item.getInformation()
+	
+	button_item_map[scrap_salvage].text = str(scrap_salvage)
+	if scrap_salvage.STACK <= 0:
+		button_item_map[scrap_salvage].queue_free()
+		scrap_salvage = null
+		use_container.hide()

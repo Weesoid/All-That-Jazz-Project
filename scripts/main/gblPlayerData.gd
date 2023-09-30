@@ -211,6 +211,21 @@ func getUnstackableItemNames()-> Array:
 func getRecipe(item: ResRecipe):
 	return KNOWN_RECIPES[KNOWN_RECIPES.find(item)]
 
+func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
+	if !free_repair and getItemWithName("Scrap Salvage").STACK >= repair_amount:
+		removeItemWithName("Scrap Salvage", repair_amount)
+		item.restoreDurability(repair_amount)
+	elif free_repair:
+		item.restoreDurability(repair_amount)
+	else:
+		OverworldGlobals.getPlayer().prompt.showPrompt('Not enough [color=yellow]Scrap Salvage![/color]')
+		return
+
+func repairAllItems():
+	for item in INVENTORY:
+		if !item is ResWeapon: continue
+		item.restoreDurability(item.max_durability)
+
 #********************************************************************************
 # COMBATANT MANAGEMENT
 #********************************************************************************

@@ -38,3 +38,10 @@ func isEquipped():
 
 func getStatModifications():
 	return STAT_MODIFICATIONS
+
+func getInformation():
+	var out = ""
+	out += "W: %s V: %s\n\n" % [WEIGHT, VALUE]
+	out += getStringStats()+"\n\n"
+	out += DESCRIPTION
+	return out

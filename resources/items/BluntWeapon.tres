@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://bdccajtl5nvol"]
 
 [ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_gu642"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="1_iv13v"]
 
 [resource]
 script = ExtResource("1_iv13v")
-DAMAGE_TYPE = 2
 EFFECT = ExtResource("1_gu642")
-durability = Vector2i(0, 0)
+max_durability = 1
 STAT_MODIFICATIONS = {}
 NAME = "Blunt Weapon"
 ICON_NAME = ""
 DESCRIPTION = "Hit em over the head!"
+VALUE = 0
+WEIGHT = 1

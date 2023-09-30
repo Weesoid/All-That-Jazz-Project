@@ -1,5 +1,12 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-do OverworldGlobals.showMenu("res://scenes/user_interface/Crafting.tscn")
+Entity: The crafting table tinkers.
+- Repair Weapons 
+	do PlayerGlobals.repairAllItems()
+- Craft Items
+	do OverworldGlobals.showMenu("res://scenes/user_interface/Crafting.tscn")
+
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
 => END

@@ -7,4 +7,6 @@ Entity: The campfire flickers.
 - Internalize 
 	do OverworldGlobals.showMenu("res://scenes/user_interface/AbilityShop.tscn") 
 
+set OverworldGlobals.show_player_interaction = true
+set OverworldGlobals.player_can_move = true
 => END

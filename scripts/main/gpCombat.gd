@@ -269,13 +269,13 @@ func getPlayerWeapons(inventory):
 		var button = Button.new()
 		button.add_theme_font_size_override('font_size', 16)
 		button.custom_minimum_size.x = 240
-		button.text = str(weapon.NAME, '(', weapon.durability.x, '/', weapon.durability.y,')')
+		button.text = str(weapon.NAME, '(', weapon.durability, '/', weapon.max_durability,')')
 		button.pressed.connect( 
 			func equipWeapon(): 
 				weapon.equip(active_combatant) 
 				resetActionLog()
 				)
-		if weapon.durability.x <= 0: button.disabled = true
+		if weapon.durability <= 0: button.disabled = true
 		secondary_panel_container.add_child(button)
 
 func playerSelectAbility(ability:ResAbility, state: int):
