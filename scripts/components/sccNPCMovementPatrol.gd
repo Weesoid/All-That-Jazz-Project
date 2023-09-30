@@ -10,6 +10,7 @@ var PATH_UPDATE_TIMER: Timer
 var IDLE_TIMER: Timer
 
 func _ready():
+	NAME = get_parent().name
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	

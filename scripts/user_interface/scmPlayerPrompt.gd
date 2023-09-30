@@ -20,7 +20,7 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 		timer.start(time)
 	else:
 		text += '\n '+message
-		timer.start(timer.time_left + 1.5)
+		timer.start(timer.time_left + 0.5)
 	
 	if !audio_file.is_empty():
 		audio_player.stream = load("res://assets/sounds/%s" % audio_file)

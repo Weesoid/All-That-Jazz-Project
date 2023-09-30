@@ -116,18 +116,31 @@ func clearMembers():
 		child.free()
 
 func _on_drop_pressed():
-	PlayerGlobals.removeItemResource(selected_item)
 	if selected_item is ResEquippable:
+		PlayerGlobals.removeItemResource(selected_item)
 		button_item_map[selected_item].queue_free()
 		selected_item = null
 		use_container.hide()
 	elif selected_item is ResStackItem:
+		PlayerGlobals.removeItemResource(selected_item, await loadSlider(selected_item))
 		button_item_map[selected_item].text = str(selected_item)
 		if selected_item.STACK <= 0:
 			button_item_map[selected_item].queue_free()
 			selected_item = null
 			use_container.hide()
+
+func loadSlider(item)-> int:
+	if !item is ResStackItem:
+		return 1
 	
+	#disableButtons()
+	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
+	a_slider.max_v = item.STACK
+	add_child(a_slider)
+	await a_slider.amount_enter
+	var amount = a_slider.slider.value
+	a_slider.queue_free()
+	return int(amount)
 
 func isEquipped(item):
 	if item is ResConsumable:

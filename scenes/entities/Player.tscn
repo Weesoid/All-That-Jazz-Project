@@ -1703,7 +1703,6 @@ libraries = {
 
 [node name="PlayerDirection" type="Marker2D" parent="."]
 position = Vector2(0, -20)
-rotation = -1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 collision_layer = 0
@@ -1801,8 +1800,7 @@ parameters/Idle/blend_position = Vector2(-0.0135502, 0.151365)
 parameters/Walk/blend_position = Vector2(0, 0)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
 [node name="ScriptAudioPlayer" type="AudioStreamPlayer" parent="."]
+max_polyphony = 8
 
 [connection signal="timeout" from="PlayerCamera/PlayerPrompt/Timer" to="PlayerCamera/PlayerPrompt" method="_on_timer_timeout"]

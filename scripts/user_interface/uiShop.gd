@@ -74,18 +74,10 @@ func clearButtons():
 	for child in wares.get_children():
 		child.queue_free()
 
-func disableButtons():
-	for child in wares.get_children():
-		child.disabled = true
-	
-	toggle_button.disabled = true
-	action_button.disabled = true
-
 func loadSlider(item)-> int:
 	if !item is ResStackItem:
 		return 1
 	
-	disableButtons()
 	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
 	
 	if mode == 1:
@@ -97,6 +89,7 @@ func loadSlider(item)-> int:
 		a_slider.max_v = item.STACK
 	
 	add_child(a_slider)
+	a_slider.position = Vector2(0,0)
 	await a_slider.amount_enter
 	var amount = a_slider.slider.value
 	a_slider.queue_free()

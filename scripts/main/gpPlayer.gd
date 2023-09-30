@@ -32,6 +32,8 @@ var stamina_gain = 0.10
 
 var ANIMATION_SPEED = 0.0
 
+var play_once = true
+
 func _ready():
 	player_camera.global_position = global_position
 	PlayerGlobals.POWER = load("res://resources/powers/Stealth.tres")
@@ -87,10 +89,7 @@ func _unhandled_input(_event: InputEvent):
 			interactables[0].interact()
 			return
 	
-	if Input.is_action_just_pressed("ui_bow"):
-		if !canDrawBow():
-			prompt.showPrompt("No [color=yellow]%ss[/color] left." % PlayerGlobals.EQUIPPED_ARROW.NAME)
-			return
+	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
 		if bow_draw_strength == 0: 
 			bow_mode = !bow_mode
 	
@@ -101,7 +100,13 @@ func _unhandled_input(_event: InputEvent):
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 
 func canDrawBow()-> bool:
-	return direction == Vector2.ZERO and PlayerGlobals.EQUIPPED_ARROW.STACK > 0 and OverworldGlobals.show_player_interaction
+	if velocity != Vector2.ZERO:
+		return false
+	elif PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
+		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
+		return false
+	
+	return true
 
 func animateInteract():
 	interaction_prompt.visible = OverworldGlobals.show_player_interaction
@@ -120,6 +125,9 @@ func drawBow():
 	if Input.is_action_pressed("ui_click") and OverworldGlobals.show_player_interaction:
 		#OverworldGlobals.player_can_move = false
 		SPEED = 15.0
+		if play_once:
+			playAudio('bow-loading-38752.ogg',0.0,true)
+			play_once = false
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10)
 		bow_draw_strength += 0.1
@@ -142,6 +150,7 @@ func undrawBow():
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
 	SPEED = walk_speed
+	play_once = true
 	#player_camera.zoom =  Vector2(2.0, 2.0)
 	#OverworldGlobals.player_can_move = true
 
@@ -158,11 +167,9 @@ func playAudio(filename: String, db=0.0, random_pitch=false):
 	audio_player.pitch_scale = 1
 	audio_player.stream = load("res://assets/sounds/%s" % filename)
 	audio_player.volume_db = db
-	print(audio_player.pitch_scale)
 	if random_pitch:
 		randomize()
 		audio_player.pitch_scale += randf_range(0.0, 0.25)
-		print(audio_player.pitch_scale)
 	
 	audio_player.play()
 

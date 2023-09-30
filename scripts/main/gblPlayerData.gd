@@ -169,6 +169,8 @@ func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
 			addItemResource(item,1,STORAGE)
 		return false
 	
+	if item is ResStackItem and count <= 0:
+		return
 	if item is ResStackItem and (item.PER_WEIGHT * count) + CURRENT_CAPACITY > MAX_CAPACITY:
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] not added! Your Inventory is full.' % [str(count), item.NAME])
 		if transfer_storage:
