@@ -194,8 +194,6 @@ func isItemEquippable(item: ResItem):
 
 func updateItemInfo(item: ResItem):
 	description_panel.text = item.getInformation()
-	if isItemEquippable(item) and !item is ResProjectileAmmo:
-		stat_panel.text = item.getStringStats()
 
 
 func _on_tab_container_tab_changed(_tab):

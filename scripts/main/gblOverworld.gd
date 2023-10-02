@@ -129,9 +129,11 @@ func loadFollower(combatant: ResPlayerCombatant):
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
 func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = ''):
+	print('start')
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
+	
 	for combatant in getCombatantSquad(entity_name):
 		combat_scene.COMBATANTS.append(combatant.duplicate())
 	if combat_id != null:
@@ -142,9 +144,12 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	if !aftermath_dialogue_name.is_empty():
 		combat_scene.conclusion_dialogue = load("res://resources/dialogue/%s.dialogue" % [aftermath_dialogue_name])
 	
-	get_tree().current_scene.process_mode = Node.PROCESS_MODE_DISABLED
+	get_tree().paused = true
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
+	await combat_scene.combat_done
+	getPlayer().player_camera.make_current()
+	get_tree().paused = false
 
 func setEnemyCombatantSquad(entity_name: String):
 	for combatant in getCombatantSquad(entity_name):
@@ -160,6 +165,7 @@ func getComponent(entity_name: String, component_name: String):
 	return get_tree().current_scene.get_node(entity_name).get_node(component_name)
 
 func restorePlayerView():
-	get_tree().current_scene.process_mode = Node.PROCESS_MODE_ALWAYS
-	getPlayer().player_camera.make_current() 
+	getPlayer().player_camera.make_current()
+	get_tree().paused = false
+	print('Restored!')
 	

@@ -42,8 +42,8 @@ func restoreDurability(amount: int):
 
 func getInformation():
 	var out = ""
-	out += "W: %s V: %s\n\n" % [WEIGHT, VALUE]
+	out += "W: %s V: %s\n" % [WEIGHT, VALUE]
 	out += 'D: %s / %s\n\n' % [durability, max_durability]
-	out += getStringStats()+"\n\n"
+	out += getStringStats()+"\n"
 	out += DESCRIPTION
 	return out

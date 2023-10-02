@@ -18,9 +18,6 @@ class_name CombatScene
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
 @onready var ui_inspect_target = $CombatInspectTarget
-@onready var battle_conclusion = $CombatCamera/BattleConclusion
-@onready var party_exp_bar = $CombatCamera/BattleConclusion/PartyExp
-@onready var party_drops = $CombatCamera/BattleConclusion/Drops/DropGrid
 @onready var turn_counter = $CombatCamera/Label
 
 var combat_dialogue: ResCombatDialogue
@@ -44,6 +41,7 @@ signal confirm
 signal target_selected
 signal update_exp(value: float, max_value: float)
 signal dialogue_done
+signal combat_done
 
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
@@ -288,9 +286,10 @@ func playerSelectAbility(ability:ResAbility, state: int):
 	runAbility()
 
 func playerSelectSingleTarget():
-	if !validateAbilityCast():
+	if !validateAbilityCast() or getCombatantGroup('enemies').is_empty():
 		return
 	
+	print(active_combatant)
 	target_combatant = valid_targets[target_index]
 	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
 	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.25)
@@ -298,7 +297,7 @@ func playerSelectSingleTarget():
 	confirmCancelInputs()
 	
 func playerSelectMultiTarget():
-	if !validateAbilityCast():
+	if !validateAbilityCast() or getCombatantGroup('enemies').is_empty():
 		return
 	
 	drawSelectionTarget('Target', enemy_container.global_position)
@@ -324,7 +323,6 @@ func executeAbility():
 								target_combatant, 
 								selected_ability.ANIMATION
 								)
-	
 	await get_tree().create_timer(0.5).timeout
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	
@@ -336,7 +334,6 @@ func executeAbility():
 	confirm.emit()
 
 func commandExecuteAbility(target, ability: ResAbility):
-	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
 	ability.animateCast(active_combatant)
 	if ability.TARGET_TYPE == ability.TargetType.MULTI:
 		target = ability.getValidTargets(COMBATANTS, active_combatant is ResPlayerCombatant)
@@ -398,8 +395,8 @@ func getCombatantGroup(type)-> Array[ResCombatant]:
 	return [null]
 
 func checkWin():
-	var enemies = COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
-	var team = COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
+	var enemies = getCombatantGroup('enemies')
+	var team = getCombatantGroup('player')
 	
 	if enemies.is_empty():
 		if unique_id != null:
@@ -508,23 +505,24 @@ func concludeCombat(results: int):
 	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
-	battle_conclusion.show()
-	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	item_drops.sort()
 	
+	var bc_ui = preload("res://scenes/user_interface/BattleConclusion.tscn").instantiate()
+	bc_ui.drops = item_drops
+	add_child(bc_ui)
+	
+	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
+	PlayerGlobals.addExperience(experience_earnt)
 	for drop in item_drops:
 		if drop == null: continue
-		var drop_label = Label.new()
-		drop_label.text = drop.NAME
-		party_drops.add_child(drop_label)
 		PlayerGlobals.addItemResource(drop)
 	
-	await get_tree().create_timer(1.5).timeout
+	await bc_ui.done
 	
-	PlayerGlobals.addExperience(experience_earnt)
-	OverworldGlobals.restorePlayerView()
-	queue_free()
-	
-	print('how')
 	if conclusion_dialogue != null:
 		CombatGlobals.combat_conclusion_dialogue.emit(conclusion_dialogue, results)
+	
+	combat_done.emit()
+	
+	queue_free()
+

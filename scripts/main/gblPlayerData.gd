@@ -16,6 +16,7 @@ var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var FOLLOWERS: Array[NPCFollower] = []
 
+signal level_up
 signal quest_completed(quest)
 signal quest_objective_completed(objective)
 signal quest_added
@@ -246,6 +247,7 @@ func levelUpCombatants():
 		combatant.ABILITY_POINTS += 1
 		for stat in combatant.BASE_STAT_VALUES.keys():
 			combatant.BASE_STAT_VALUES[stat] += combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
+	level_up.emit()
 
 func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)

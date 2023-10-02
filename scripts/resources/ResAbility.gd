@@ -67,3 +67,6 @@ func getTargetType():
 
 func getAnimator()-> AnimationPlayer:
 	return ANIMATION.get_node('AnimationPlayer')
+
+func _to_string():
+	return NAME

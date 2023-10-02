@@ -3,7 +3,6 @@ extends Control
 @onready var storage = $Storage/Scroll/VBoxContainer
 @onready var inventory = $Inventory/Scroll/VBoxContainer
 @onready var description = $DescriptionPanel/Label
-@onready var stats = $StatsPanel/Label
 @onready var search = $LineEdit
 @onready var capacity = $Capacity
 
@@ -41,10 +40,7 @@ func createButton(item, location):
 	button.mouse_entered.connect(
 		func updateInfo():
 			description.text = ''
-			stats.text = ''
-			description.text = item.DESCRIPTION
-			if item is ResEquippable:
-				stats.text = item.getStringStats()
+			description.text = item.getInformation()
 	)
 	location.add_child(button)
 

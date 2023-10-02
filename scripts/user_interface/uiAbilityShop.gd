@@ -34,14 +34,13 @@ func _process(_delta):
 		combatant_name.text = selected_combatant.NAME
 		currency.text = str(selected_combatant.ABILITY_POINTS) + ' SP'
 
-func loadAbilities(ability_array):
+func loadAbilities(ability_array, skip_first=false):
 	clearButtons()
 	for ability in ability_array:
-		if ability == ability_array[0]:
+		if ability == ability_array[0] and skip_first:
 			continue
-		if selected_combatant.ABILITY_SET.has(ability) and mode == 1: 
-			continue
-
+		#if selected_combatant.ABILITY_SET.has(ability) and mode == 1: 
+		#	continue
 		
 		var button = Button.new()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -58,8 +57,9 @@ func loadAbilities(ability_array):
 					selected_combatant.ABILITY_SET.erase(ability)
 					selected_combatant.ABILITY_POO.append(ability)
 					selected_combatant.ABILITY_POINTS += ability.VALUE
-					loadAbilities(selected_combatant.ABILITY_SET)
-					
+					loadAbilities(selected_combatant.ABILITY_SET, true)
+			#	print('POOL: ', selected_combatant.ABILITY_POO)
+			#	print('SET: ', selected_combatant.ABILITY_SET)
 		)
 		button.mouse_entered.connect(
 			func updateDescription():

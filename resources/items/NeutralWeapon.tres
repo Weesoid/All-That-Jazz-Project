@@ -9,7 +9,10 @@ EFFECT = ExtResource("1_vw8ht")
 max_durability = 100
 durability = 50
 STAT_MODIFICATIONS = {
-"grit": 1
+"brawn": 2,
+"grit": 1,
+"health": 20,
+"verve": 5.0
 }
 NAME = "Neutral Weapon"
 ICON_NAME = ""

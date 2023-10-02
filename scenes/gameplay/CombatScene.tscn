@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cuhp30nbgihjv"]
+[gd_scene load_steps=14 format=3 uid="uid://cuhp30nbgihjv"]
 
 [ext_resource type="Script" path="res://scripts/main/gpCombat.gd" id="1_kv6ut"]
 [ext_resource type="PackedScene" uid="uid://bt4b6i7iiex30" path="res://scenes/user_interface/CombatInspectTarget.tscn" id="4_kkdd3"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
 [ext_resource type="Texture2D" uid="uid://0kbl5iime6vw" path="res://assets/icons/s_grit.png" id="7_6kiof"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
-[ext_resource type="Script" path="res://scripts/user_interface/scmPartyExp.gd" id="7_rrtk0"]
 [ext_resource type="Texture2D" uid="uid://dq34rjolqps8n" path="res://assets/icons/s_will.png" id="8_pkk5v"]
 [ext_resource type="Texture2D" uid="uid://cgf1qb6eni4jx" path="res://assets/icons/s_speed.png" id="8_yp68o"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="9_d3h28"]
@@ -74,6 +73,7 @@ _data = {
 }
 
 [node name="CombatScene" type="Node2D"]
+process_mode = 3
 top_level = true
 script = ExtResource("1_kv6ut")
 
@@ -223,51 +223,6 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ABSCOND"
 icon = ExtResource("8_pkk5v")
-
-[node name="BattleConclusion" type="Control" parent="CombatCamera"]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_top = 19.0
-offset_right = 40.0
-offset_bottom = 59.0
-
-[node name="PartyExp" type="ProgressBar" parent="CombatCamera/BattleConclusion"]
-layout_mode = 0
-offset_left = -192.0
-offset_top = -16.0
-offset_right = 192.0
-offset_bottom = 14.0
-value = 50.0
-script = ExtResource("7_rrtk0")
-
-[node name="Label" type="Label" parent="CombatCamera/BattleConclusion/PartyExp"]
-layout_mode = 0
-offset_left = 141.0
-offset_top = -26.0
-offset_right = 243.0
-offset_bottom = -3.0
-theme_override_font_sizes/font_size = 16
-text = "POSSE EXPERIENCE"
-horizontal_alignment = 1
-
-[node name="Drops" type="Label" parent="CombatCamera/BattleConclusion"]
-layout_mode = 2
-offset_left = -16.0
-offset_top = 23.0
-offset_right = 17.0
-offset_bottom = 46.0
-theme_override_font_sizes/font_size = 16
-text = "DROPS"
-horizontal_alignment = 1
-
-[node name="DropGrid" type="GridContainer" parent="CombatCamera/BattleConclusion/Drops"]
-layout_mode = 0
-offset_left = -194.0
-offset_top = 23.0
-offset_right = 226.0
-offset_bottom = 73.0
-columns = 4
 
 [node name="Label" type="Label" parent="CombatCamera"]
 offset_left = -572.0

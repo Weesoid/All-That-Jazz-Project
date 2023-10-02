@@ -65,31 +65,13 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = -192.0
 offset_top = 52.0
-offset_right = 88.0
+offset_right = 192.0
 offset_bottom = 148.0
 grow_vertical = 2
 
 [node name="Label" type="RichTextLabel" parent="DescriptionPanel"]
 layout_mode = 2
 text = "This is the item description. FEAR IT'S GLORY!"
-
-[node name="StatsPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 96.0
-offset_top = 52.0
-offset_right = 192.0
-offset_bottom = 148.0
-grow_vertical = 2
-
-[node name="Label" type="RichTextLabel" parent="StatsPanel"]
-layout_mode = 2
-text = "HP +100
-VP +1
-ACCURACY -100
-and so on.."
 
 [node name="Capacity" type="Label" parent="."]
 layout_mode = 0
