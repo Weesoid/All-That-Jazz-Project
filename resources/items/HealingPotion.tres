@@ -7,7 +7,7 @@
 script = ExtResource("2_0mv4f")
 EFFECT = ExtResource("1_gfk4x")
 OVERWORLD_USE = true
-PER_WEIGHT = 25
+PER_WEIGHT = 1
 MAX_STACK = 100
 NAME = "Healing Potion"
 ICON_NAME = "st_grit_up1"

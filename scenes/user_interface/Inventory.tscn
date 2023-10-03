@@ -105,6 +105,7 @@ custom_minimum_size = Vector2(104, 0)
 layout_mode = 2
 
 [node name="UseContainer" type="HBoxContainer" parent="."]
+visible = false
 layout_mode = 2
 offset_left = -192.0
 offset_top = 117.0
@@ -119,6 +120,7 @@ text = "Use"
 alignment = 0
 
 [node name="Repair" type="Button" parent="UseContainer"]
+visible = false
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "Repair"

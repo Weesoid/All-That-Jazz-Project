@@ -5,13 +5,11 @@ extends Control
 @onready var exp_bar = $PartyExp
 @onready var audio_player = $AudioStreamPlayer
  
-var drops
+var drops = ''
 signal done
 
 func _ready():
-	for item in drops:
-		if item == null: continue
-		drop_text.text += item.NAME+'\n'
+	drop_text.text += drops
 	animator.play("Show")
 	audio_player.play()
 

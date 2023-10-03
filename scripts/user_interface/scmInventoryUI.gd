@@ -9,6 +9,7 @@ extends Control
 @onready var armor_tab = $TabContainer/Armors/VBoxContainer
 @onready var charm_tab = $TabContainer/Charms/VBoxContainer
 @onready var use_button = $UseContainer/Use
+@onready var repair_button = $UseContainer/Repair
 @onready var description_panel = $PanelContainer/DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $PanelContainer/DescriptionPanel/StatPanel
 @onready var capacity = $Capacity
@@ -177,9 +178,11 @@ func addButtonToTab(item: ResItem, button: Button):
 
 func showUseContainer(item: ResItem):
 	use_button.show()
+	repair_button.hide()
 	
 	if item is ResWeapon or item is ResArmor:
 		use_button.text = "Equip/Unequip"
+		if item is ResWeapon: repair_button.show()
 	elif item is ResProjectileAmmo:
 		use_button.text = "Equip Arrow"
 	elif item is ResConsumable:

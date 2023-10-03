@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://xiuccmt1snj8"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiCombatLog.gd" id="1_a2ou1"]
+
+[sub_resource type="Animation" id="Animation_xbrw1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-576, -320)]
+}
+
+[sub_resource type="Animation" id="Animation_nvj6g"]
+resource_name = "Show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-576, -520), Vector2(-576, -320)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sxqxt"]
+_data = {
+"RESET": SubResource("Animation_xbrw1"),
+"Show": SubResource("Animation_nvj6g")
+}
+
+[node name="LogContainer" type="PanelContainer"]
+z_index = 999
+offset_left = -576.0
+offset_top = -320.0
+offset_right = 578.0
+offset_bottom = -320.0
+script = ExtResource("1_a2ou1")
+
+[node name="CombatLog" type="RichTextLabel" parent="."]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sxqxt")
+}

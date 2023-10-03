@@ -8,7 +8,8 @@ enum TargetType {
 
 enum TargetGroup {
 	ALLIES,
-	ENEMIES
+	ENEMIES,
+	ALL
 }
 
 @export var NAME: String
@@ -31,6 +32,8 @@ signal random_target(type)
 signal no_resource
 
 func execute():
+	print('EXECUTING!')
+	print(TARGET_TYPE)
 	match TARGET_TYPE:
 		TargetType.SINGLE: single_target.emit(self, 1)
 		TargetType.MULTI: multi_target.emit(self, 2)
@@ -40,10 +43,12 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ENEMIES:  return combatants.filter(func isEnemy(combatant): return combatant is ResEnemyCombatant)
+			TargetGroup.ALL: return combatants
 	else:
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ENEMIES: return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
+			TargetGroup.ALL: return combatants
 
 func canCast(caster: ResCombatant):
 	return COST > 0 and caster.STAT_VALUES[COST_RESOURCE] >= COST or COST == 0

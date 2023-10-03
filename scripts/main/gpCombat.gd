@@ -4,8 +4,7 @@ class_name CombatScene
 @export var COMBATANTS: Array[ResCombatant]
 
 @onready var combat_camera = $CombatCamera
-@onready var combat_log_panel = $CombatCamera/LogContainer
-@onready var combat_log = $CombatCamera/LogContainer/CombatLog
+@onready var combat_log = $CombatCamera/LogContainer
 @onready var enemy_container = $EnemyContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
@@ -34,7 +33,7 @@ var selected_ability: ResAbility
 var selected_item: ResConsumable
 var run_once = true
 var experience_earnt = 0
-var item_drops = []
+var drop_summary = ''
 var turn_count = 0
 
 signal confirm
@@ -90,7 +89,6 @@ func _process(_delta):
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_cancel') and secondary_panel.visible:
-		print('Closing with secondary!')
 		resetActionLog()
 	# Debug? Feature?
 	if Input.is_action_just_pressed('ui_home'):
@@ -137,7 +135,7 @@ func end_turn():
 		clearStatusEffects(combatant)
 		if combatant is ResEnemyCombatant: 
 			experience_earnt += combatant.getExperience()
-			item_drops.append(combatant.getDrops())
+			drop_summary += combatant.getDrops()
 		
 		COMBATANTS.erase(combatant)
 	
@@ -209,13 +207,6 @@ func _on_inspect_pressed():
 func _on_escape_pressed():
 	concludeCombat(0)
 
-func writeCombatLog(text: String):
-	combat_log.text += '\n'+text
-	combat_log_panel.show()
-	await get_tree().create_timer(2.5).timeout
-	combat_log.text = ''
-	combat_log_panel.hide()
-
 func toggleUI():
 	for child in get_children():
 		if child is CombatBar:
@@ -254,7 +245,8 @@ func getPlayerItems(inventory):
 		button.text = str(item.NAME, ' x', item.STACK)
 		button.pressed.connect(item.EFFECT.execute)
 		button.pressed.connect(
-			func playerSelectItem(): selected_item = item
+			func playerSelectItem(): 
+				selected_item = item
 				)
 		secondary_panel_container.add_child(button)
 
@@ -289,7 +281,6 @@ func playerSelectSingleTarget():
 	if !validateAbilityCast() or getCombatantGroup('enemies').is_empty():
 		return
 	
-	print(active_combatant)
 	target_combatant = valid_targets[target_index]
 	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
 	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.25)
@@ -433,7 +424,6 @@ func triggerDialogue():
 
 func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
-		print('Removing effect %s on %s' % [combatant.STATUS_EFFECTS[0].NAME, combatant.NAME])
 		combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
 func tickStatusEffects(combatant: ResCombatant, per_turn = false):
@@ -505,17 +495,13 @@ func concludeCombat(results: int):
 	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
-	item_drops.sort()
 	
 	var bc_ui = preload("res://scenes/user_interface/BattleConclusion.tscn").instantiate()
-	bc_ui.drops = item_drops
+	bc_ui.drops = drop_summary
 	add_child(bc_ui)
 	
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)
-	for drop in item_drops:
-		if drop == null: continue
-		PlayerGlobals.addItemResource(drop)
 	
 	await bc_ui.done
 	
