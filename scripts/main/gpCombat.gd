@@ -69,10 +69,11 @@ func _ready():
 	COMBATANTS.sort_custom(sortBySpeed)
 	
 	active_combatant = COMBATANTS[active_index]
-	active_combatant.act()
 	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
+	
+	active_combatant.act()
 	
 	if combat_dialogue != null:
 		combat_dialogue.initializeDialogue(COMBATANTS)

@@ -92,25 +92,19 @@ func isMemberEquipped(member: ResCombatant, slot: ResItem):
 	if slot is ResWeapon:
 		return member.EQUIPMENT['weapon'] != null
 	elif slot is ResArmor:
-		if slot.SLOT == 1: 
-			return member.EQUIPMENT['armor'] != null
-		else:
-			return member.EQUIPMENT['charm'] != null
+		return member.EQUIPMENT['armor'] != null
 
 func updateButtonUnequip(member: ResCombatant, item:ResItem):
 	if item is ResWeapon:
 		button_item_map[member.EQUIPMENT['weapon']].text = member.EQUIPMENT['weapon'].NAME
 	elif item is ResArmor:
-		if item.SLOT == 1: 
-			button_item_map[member.EQUIPMENT['armor']].text = member.EQUIPMENT['armor'].NAME
-		else:
-			button_item_map[member.EQUIPMENT['charm']].text = member.EQUIPMENT['charm'].NAME
+		button_item_map[member.EQUIPMENT['armor']].text = member.EQUIPMENT['armor'].NAME
 
-func equipMemberAndUpdateButton(member: ResCombatant, item: ResItem):
-	PlayerGlobals.getItem(item).equip(member)
-	button_item_map[item].text = item.NAME
-	button_item_map[item].text += str(" equipped by ", member)
-	stat_panel.text = member.getStringStats()
+func equipMemberAndUpdateButton(member: ResCombatant, item: ResEquippable):
+	if item.isEquipped():
+		button_item_map[item].text = item.NAME
+		button_item_map[item].text += str(" equipped by ", member)
+		stat_panel.text = member.getStringStats()
 
 func clearMembers():
 	for child in party_panel.get_children():
@@ -167,7 +161,10 @@ func addButtonToTab(item: ResItem, button: Button):
 		if item.EQUIPPED_COMBATANT != null:
 			button.text += str(" equipped by ", item.EQUIPPED_COMBATANT)
 		armor_tab.add_child(button)
-	
+	elif item is ResCharm:
+		if item.EQUIPPED_COMBATANT != null:
+			button.text += str(" equipped by ", item.EQUIPPED_COMBATANT)
+		charm_tab.add_child(button)
 	button.pressed.connect(
 		func setSelectedItem(): 
 			clearMembers()
@@ -180,7 +177,7 @@ func showUseContainer(item: ResItem):
 	use_button.show()
 	repair_button.hide()
 	
-	if item is ResWeapon or item is ResArmor:
+	if item is ResEquippable:
 		use_button.text = "Equip/Unequip"
 		if item is ResWeapon: repair_button.show()
 	elif item is ResProjectileAmmo:
@@ -193,11 +190,10 @@ func showUseContainer(item: ResItem):
 	use_container.show()
 
 func isItemEquippable(item: ResItem):
-	return item is ResArmor or item is ResWeapon or item is ResProjectileAmmo
+	return item is ResEquippable or item is ResProjectileAmmo
 
 func updateItemInfo(item: ResItem):
 	description_panel.text = item.getInformation()
-
 
 func _on_tab_container_tab_changed(_tab):
 	selected_item = null
@@ -209,11 +205,13 @@ func _on_tab_container_tab_changed(_tab):
 
 func _on_repair_pressed():
 	var scrap_salvage = PlayerGlobals.getItemWithName('Scrap Salvage')
-	PlayerGlobals.repairItem(selected_item, await loadSlider(scrap_salvage, true))
 	description_panel.text = selected_item.getInformation()
 	
-	button_item_map[scrap_salvage].text = str(scrap_salvage)
-	if scrap_salvage.STACK <= 0:
-		button_item_map[scrap_salvage].queue_free()
-		scrap_salvage = null
-		use_container.hide()
+	if scrap_salvage != null:
+		PlayerGlobals.repairItem(selected_item, await loadSlider(scrap_salvage, true))
+		button_item_map[scrap_salvage].text = str(scrap_salvage)
+		
+		if scrap_salvage.STACK <= 0:
+			button_item_map[scrap_salvage].queue_free()
+			scrap_salvage = null
+			use_container.hide()

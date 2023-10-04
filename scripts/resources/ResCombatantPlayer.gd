@@ -30,10 +30,7 @@ func initializeCombatant():
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
 		initialized = true
 	
-	if isEquipped('armor'):
-		if EQUIPMENT['armor'].STATUS_EFFECT != null:
-			var status_effect = EQUIPMENT['armor'].STATUS_EFFECT.duplicate()
-			CombatGlobals.addStatusEffect(self, status_effect)
+	applyStatusEffects()
 
 func act():
 	player_turn.emit()

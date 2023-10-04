@@ -1,6 +1,52 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://bid2xvoeqgilk"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://bid2xvoeqgilk"]
 
-[ext_resource type="FontFile" uid="uid://cyywx7byxrbwp" path="res://assets/design/nokiafc22.ttf" id="1_rsrrv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kt3ag"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0.607843)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_51i8q"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_748hm"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8c56x"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 1)
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uux52"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jmchh"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_epse5"]
 bg_color = Color(0, 0, 0, 1)
@@ -9,12 +55,57 @@ border_color = Color(1, 1, 1, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rff4l"]
 bg_color = Color(0.701961, 0.701961, 0.701961, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_scqyn"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kllw"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q6f5j"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_74mkq"]
+bg_color = Color(1, 1, 1, 0.784314)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h17ev"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2tll8"]
+bg_color = Color(1, 1, 1, 1)
+
 [resource]
 default_font_size = 8
-Fonts/fonts/large = ExtResource("1_rsrrv")
-Fonts/fonts/normal = ExtResource("1_rsrrv")
+Button/colors/font_focus_color = Color(0.94902, 0.94902, 0, 1)
+Button/colors/font_hover_color = Color(0.94902, 0.94902, 0, 1)
+Button/colors/font_pressed_color = Color(1, 0.886275, 0, 1)
+Button/styles/disabled = SubResource("StyleBoxFlat_kt3ag")
+Button/styles/focus = SubResource("StyleBoxFlat_51i8q")
+Button/styles/hover = SubResource("StyleBoxFlat_748hm")
+Button/styles/normal = SubResource("StyleBoxFlat_8c56x")
+Button/styles/pressed = SubResource("StyleBoxFlat_uux52")
+Panel/styles/panel = SubResource("StyleBoxFlat_jmchh")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_jmchh")
 ProgressBar/colors/font_color = Color(1, 1, 1, 1)
 ProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
 ProgressBar/constants/outline_size = 2
 ProgressBar/styles/background = SubResource("StyleBoxFlat_epse5")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_rff4l")
+RichTextLabel/styles/normal = SubResource("StyleBoxEmpty_scqyn")
+TabContainer/styles/panel = SubResource("StyleBoxFlat_jmchh")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_8kllw")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_q6f5j")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_74mkq")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_h17ev")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_2tll8")
+VScrollBar/styles/scroll_focus = null

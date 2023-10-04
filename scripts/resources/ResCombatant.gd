@@ -57,9 +57,20 @@ func getStatusEffectNames():
 
 func isEquipped(slot_name: String):
 	return EQUIPMENT[slot_name] != null
-	
+
 func getEquipment(slot_name: String)-> ResEquippable:
 	return EQUIPMENT[slot_name]
+
+func applyStatusEffects():
+	if isEquipped('armor'):
+		if EQUIPMENT['armor'].STATUS_EFFECT != null:
+			var status_effect = EQUIPMENT['armor'].STATUS_EFFECT.duplicate()
+			CombatGlobals.addStatusEffect(self, status_effect)
+	for charm in CHARMS:
+		if charm == null: continue
+		if charm.STATUS_EFFECT != null:
+			var status_effect = charm.STATUS_EFFECT.duplicate()
+			CombatGlobals.addStatusEffect(self, status_effect)
 
 func getMaxHealth():
 	return BASE_STAT_VALUES['health']

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResCharm" load_steps=2 format=3 uid="uid://drgb4ejko51ty"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="1_18ebx"]
+
+[resource]
+script = ExtResource("1_18ebx")
+STAT_MODIFICATIONS = {
+"grit": 500
+}
+NAME = "Defender"
+ICON_NAME = ""
+DESCRIPTION = "Defendicious!"
+VALUE = 150
+WEIGHT = 1

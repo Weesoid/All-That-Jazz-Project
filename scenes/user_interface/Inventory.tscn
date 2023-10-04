@@ -39,7 +39,7 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Weapons"]
-custom_minimum_size = Vector2(272, 0)
+custom_minimum_size = Vector2(370, 0)
 layout_mode = 2
 
 [node name="Armors" type="ScrollContainer" parent="TabContainer"]
@@ -48,7 +48,7 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Armors"]
-custom_minimum_size = Vector2(272, 0)
+custom_minimum_size = Vector2(370, 0)
 layout_mode = 2
 
 [node name="Charms" type="ScrollContainer" parent="TabContainer"]
@@ -57,7 +57,7 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Charms"]
-custom_minimum_size = Vector2(272, 0)
+custom_minimum_size = Vector2(370, 0)
 layout_mode = 2
 
 [node name="Misc" type="ScrollContainer" parent="TabContainer"]
@@ -66,7 +66,7 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Misc"]
-custom_minimum_size = Vector2(272, 0)
+custom_minimum_size = Vector2(370, 0)
 layout_mode = 2
 
 [node name="PanelContainer" type="Panel" parent="."]
@@ -84,11 +84,6 @@ split_offset = 275
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="PanelContainer/DescriptionPanel"]
 layout_mode = 2
-text = "W: 10 V: 10
-+1 WIT
-+2 GRIT 
-+100 etc.
-This is a description. You will heed it's authoriteh!"
 
 [node name="StatPanel" type="RichTextLabel" parent="PanelContainer/DescriptionPanel"]
 layout_mode = 2
@@ -96,13 +91,14 @@ layout_mode = 2
 [node name="PartyPanel" type="PanelContainer" parent="."]
 layout_mode = 0
 offset_left = -192.0
-offset_top = 117.0
+offset_top = 116.0
 offset_right = 192.0
-offset_bottom = 140.0
+offset_bottom = 141.0
 
 [node name="VBoxContainer" type="HBoxContainer" parent="PartyPanel"]
 custom_minimum_size = Vector2(104, 0)
 layout_mode = 2
+alignment = 1
 
 [node name="UseContainer" type="HBoxContainer" parent="."]
 visible = false
@@ -120,7 +116,6 @@ text = "Use"
 alignment = 0
 
 [node name="Repair" type="Button" parent="UseContainer"]
-visible = false
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "Repair"

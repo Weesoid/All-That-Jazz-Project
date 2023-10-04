@@ -8,7 +8,6 @@
 script = ExtResource("1_75xnh")
 STATUS_EFFECT = ExtResource("2_pfp6v")
 ARMOR_TYPE = ExtResource("1_cj0po")
-SLOT = 0
 STAT_MODIFICATIONS = {
 "grit": 1
 }

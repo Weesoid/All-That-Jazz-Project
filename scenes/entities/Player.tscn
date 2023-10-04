@@ -1740,6 +1740,7 @@ text = "1000"
 
 [node name="PlayerPrompt" type="RichTextLabel" parent="PlayerCamera"]
 modulate = Color(1, 1, 1, 0)
+z_index = 998
 offset_left = -262.0
 offset_top = -149.0
 offset_right = -177.0

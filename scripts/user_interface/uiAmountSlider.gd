@@ -18,6 +18,6 @@ func loadSlider():
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_accept"):
 		amount_enter.emit()
-	elif Input.is_action_just_pressed("ui_cancel"):
+	elif Input.is_action_just_pressed("ui_alt_cancel"):
 		slider.value = 0
 		amount_enter.emit()

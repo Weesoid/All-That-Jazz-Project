@@ -182,6 +182,7 @@ func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	else:
 		rankUpStatusEffect(target, status_effect)
 	
+	status_effect.tick()
 	checkReactions(target)
 
 func checkReactions(target: ResCombatant):

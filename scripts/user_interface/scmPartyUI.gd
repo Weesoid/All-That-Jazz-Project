@@ -38,6 +38,19 @@ func loadInformation():
 		)
 		equipment_panel.add_child(equipment_button)
 	
+	for charm in subject_combatant.CHARMS:
+		if charm == null:
+			continue
+		
+		var equipment_button = Button.new()
+		equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		equipment_button.text = getSlotName(charm) + charm.NAME
+		equipment_button.mouse_entered.connect(
+		func updateDesciption():
+			description.text = charm.getInformation()
+		)
+		equipment_panel.add_child(equipment_button)
+	
 	stat_panel.text = subject_combatant.getStringStats()
 
 func clearInformation():

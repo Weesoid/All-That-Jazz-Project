@@ -1,10 +1,12 @@
 ~ start
 set OverworldGlobals.player_can_move = false
 
-do PlayerGlobals.addItem("ScrapSalvage", 50)
-do PlayerGlobals.addItem("NeutralWeapon")
-do PlayerGlobals.addItem("Toxik")
+do PlayerGlobals.addItem("CharmMurder")
+do PlayerGlobals.addItem("CharmStunning")
+do PlayerGlobals.addItem("CharmSpeed")
+do PlayerGlobals.addItem("CharmStoneWall")
 do PlayerGlobals.addItem("LightArmor")
+do PlayerGlobals.addItem("NeutralWeapon")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true
