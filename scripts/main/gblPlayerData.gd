@@ -89,13 +89,17 @@ func getItemWithName(item_name: String, unit=INVENTORY):
 		if item.NAME == item_name:
 			return item
 
-func removeItemWithName(item_name: String, count=1, unit=INVENTORY):
+func removeItemWithName(item_name: String, count=1, unit=INVENTORY, revoke_mandatory=false):
 	for item in unit:
 		if item.NAME == item_name:
+			if revoke_mandatory: item.MANDATORY = false
 			removeItemResource(item,count)
 
 func removeItemResource(item, count=1, unit=INVENTORY):
 	if count == 0:
+		return
+	elif item.MANDATORY:
+		OverworldGlobals.getPlayer().prompt.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item, getStorageUnitName(unit)])
 		return
 	
 	if item is ResEquippable:

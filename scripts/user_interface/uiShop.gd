@@ -56,6 +56,8 @@ func loadWares(array=wares_array):
 				selected_item = item
 				if PlayerGlobals.CURRENCY < selected_item.VALUE * buy_modifier and mode == 1:
 					action_button.disabled = true
+				elif selected_item.MANDATORY and mode == 0:
+					action_button.disabled = true
 				else:
 					action_button.disabled = false
 		)

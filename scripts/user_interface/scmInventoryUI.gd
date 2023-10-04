@@ -9,6 +9,7 @@ extends Control
 @onready var armor_tab = $TabContainer/Armors/VBoxContainer
 @onready var charm_tab = $TabContainer/Charms/VBoxContainer
 @onready var use_button = $UseContainer/Use
+@onready var drop_button = $UseContainer/Drop
 @onready var repair_button = $UseContainer/Repair
 @onready var description_panel = $PanelContainer/DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $PanelContainer/DescriptionPanel/StatPanel
@@ -32,6 +33,13 @@ func _on_ready():
 func _on_use_pressed():
 	if selected_item is ResProjectileAmmo:
 		selected_item.equip()
+		use_container.hide()
+	elif selected_item is ResUtilityCharm:
+		if !selected_item.isEquipped():
+			selected_item.equip(selected_combatant)
+		else:
+			selected_item.unequip()
+		
 		use_container.hide()
 	elif selected_item is ResConsumable and selected_item.EFFECT.TARGET_TYPE == selected_item.EFFECT.TargetType.MULTI:
 		selected_item.initializeItem()
@@ -161,7 +169,7 @@ func addButtonToTab(item: ResItem, button: Button):
 		if item.EQUIPPED_COMBATANT != null:
 			button.text += str(" equipped by ", item.EQUIPPED_COMBATANT)
 		armor_tab.add_child(button)
-	elif item is ResCharm:
+	elif item is ResCharm or item is ResUtilityCharm:
 		if item.EQUIPPED_COMBATANT != null:
 			button.text += str(" equipped by ", item.EQUIPPED_COMBATANT)
 		charm_tab.add_child(button)
@@ -176,6 +184,11 @@ func addButtonToTab(item: ResItem, button: Button):
 func showUseContainer(item: ResItem):
 	use_button.show()
 	repair_button.hide()
+	
+	if item.MANDATORY:
+		drop_button.disabled = true
+	else:
+		drop_button.disabled = false
 	
 	if item is ResEquippable:
 		use_button.text = "Equip/Unequip"

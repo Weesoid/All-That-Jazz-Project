@@ -16,3 +16,4 @@ ICON_NAME = ""
 DESCRIPTION = "Absolutely stunning!"
 VALUE = 150
 WEIGHT = 1
+MANDATORY = true

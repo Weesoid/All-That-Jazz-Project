@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="ResUtilityCharm" load_steps=2 format=3 uid="uid://ci3j0wurqoe3i"]
-
-[ext_resource type="Script" path="res://scripts/resources/ResUtilityCharm.gd" id="1_va2p4"]
-
-[resource]
-script = ExtResource("1_va2p4")
-NAME = "Sprint Stone"
-DESCRIPTION = ""

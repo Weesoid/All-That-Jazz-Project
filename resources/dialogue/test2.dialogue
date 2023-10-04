@@ -7,6 +7,7 @@ do PlayerGlobals.addItem("CharmSpeed")
 do PlayerGlobals.addItem("CharmStoneWall")
 do PlayerGlobals.addItem("LightArmor")
 do PlayerGlobals.addItem("NeutralWeapon")
+do PlayerGlobals.addItem("SprintStone")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

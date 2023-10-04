@@ -1,13 +1,16 @@
-extends Resource
+extends ResEquippable
 class_name ResUtilityCharm
 
-@export var NAME: String
-@export var DESCRIPTION: String
 @export var CHARM_SCRIPT: GDScript
-@export var ICON: Texture
+var equipped = false
 
-func equip():
+func equip(combatant: ResCombatant):
+	equipped = true
 	CHARM_SCRIPT.equip()
 
 func unequip():
+	equipped = false
 	CHARM_SCRIPT.unequip()
+
+func isEquipped():
+	return equipped

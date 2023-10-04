@@ -1,5 +1,7 @@
-func equip():
-	OverworldGlobals.getPlayer()
+static func equip():
+	print('Equipped! Wowza!')
+	OverworldGlobals.getPlayer().sprint_speed = 500.0
 
-func unequip():
-	pass
+static func unequip():
+	print('Bruh.')
+	OverworldGlobals.getPlayer().sprint_speed = 200.0
