@@ -14,6 +14,7 @@ extends Control
 @onready var description_panel = $PanelContainer/DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $PanelContainer/DescriptionPanel/StatPanel
 @onready var capacity = $Capacity
+@onready var charm_panel = $EquippedUtilityCharms
 
 var selected_item: ResItem
 var selected_combatant: ResCombatant
@@ -39,7 +40,7 @@ func _on_use_pressed():
 			selected_item.equip(selected_combatant)
 		else:
 			selected_item.unequip()
-		
+		charm_panel.showEquipped()
 		use_container.hide()
 	elif selected_item is ResConsumable and selected_item.EFFECT.TARGET_TYPE == selected_item.EFFECT.TargetType.MULTI:
 		selected_item.initializeItem()
@@ -208,7 +209,13 @@ func isItemEquippable(item: ResItem):
 func updateItemInfo(item: ResItem):
 	description_panel.text = item.getInformation()
 
-func _on_tab_container_tab_changed(_tab):
+func _on_tab_container_tab_changed(tab):
+	if tab == 2:
+		charm_panel.showEquipped()
+		charm_panel.show()
+	else:
+		charm_panel.hide()
+	
 	selected_item = null
 	selected_combatant = null
 	clearMembers()

@@ -16,3 +16,4 @@ ICON_NAME = ""
 DESCRIPTION = "An armor made of light armorite!"
 VALUE = 0
 WEIGHT = 1
+MANDATORY = false

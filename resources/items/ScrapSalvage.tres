@@ -11,3 +11,4 @@ ICON_NAME = ""
 DESCRIPTION = "Used for crafting."
 VALUE = 5
 WEIGHT = 1
+MANDATORY = false

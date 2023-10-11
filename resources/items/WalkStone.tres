@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResUtilityCharm" load_steps=3 format=3 uid="uid://dr1elu4ty5aee"]
+
+[ext_resource type="Script" path="res://scripts/utility_charms/uchWalk.gd" id="1_duxo3"]
+[ext_resource type="Script" path="res://scripts/resources/ResUtilityCharm.gd" id="1_f8a1s"]
+
+[resource]
+script = ExtResource("1_f8a1s")
+CHARM_SCRIPT = ExtResource("1_duxo3")
+STAT_MODIFICATIONS = {}
+NAME = "Walkinizer"
+ICON_NAME = ""
+DESCRIPTION = ""
+VALUE = 0
+WEIGHT = 1
+MANDATORY = true

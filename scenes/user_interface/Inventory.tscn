@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://d1tid35nycngt"]
+[gd_scene load_steps=3 format=3 uid="uid://d1tid35nycngt"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/scmInventoryUI.gd" id="1_qwj2w"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiEquippedUtilityCharms.gd" id="2_rlnwg"]
 
 [node name="uiInventory" type="Control"]
 layout_mode = 3
@@ -93,7 +94,7 @@ layout_mode = 0
 offset_left = -192.0
 offset_top = 116.0
 offset_right = 192.0
-offset_bottom = 141.0
+offset_bottom = 148.0
 
 [node name="VBoxContainer" type="HBoxContainer" parent="PartyPanel"]
 custom_minimum_size = Vector2(104, 0)
@@ -101,12 +102,11 @@ layout_mode = 2
 alignment = 1
 
 [node name="UseContainer" type="HBoxContainer" parent="."]
-visible = false
 layout_mode = 2
 offset_left = -192.0
-offset_top = 117.0
+offset_top = 118.0
 offset_right = 192.0
-offset_bottom = 140.0
+offset_bottom = 146.0
 alignment = 1
 
 [node name="Use" type="Button" parent="UseContainer"]
@@ -126,6 +126,19 @@ custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "Drop"
 alignment = 0
+
+[node name="EquippedUtilityCharms" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -272.0
+offset_top = -122.0
+offset_right = -196.0
+offset_bottom = -74.0
+script = ExtResource("2_rlnwg")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="EquippedUtilityCharms"]
+layout_mode = 2
+bbcode_enabled = true
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]

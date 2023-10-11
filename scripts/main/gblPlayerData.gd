@@ -12,7 +12,7 @@ var TEAM: Array[ResPlayerCombatant]
 var CURRENCY = 0
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
-var EQUIPPED_UTILITY_CHARMS: Array[ResUtilityCharm]
+var UTILITY_CHARM_COUNT = 0
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var FOLLOWERS: Array[NPCFollower] = []

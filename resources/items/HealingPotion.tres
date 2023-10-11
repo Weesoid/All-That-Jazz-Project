@@ -14,3 +14,4 @@ ICON_NAME = "st_grit_up1"
 DESCRIPTION = "\"Wow this shit heals!\" /n - Johnny Dyin"
 VALUE = 0
 WEIGHT = 1
+MANDATORY = false

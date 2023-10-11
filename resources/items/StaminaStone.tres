@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResUtilityCharm" load_steps=3 format=3 uid="uid://k13s2ynrlhle"]
+
+[ext_resource type="Script" path="res://scripts/utility_charms/uchStamina.gd" id="1_tmb2a"]
+[ext_resource type="Script" path="res://scripts/resources/ResUtilityCharm.gd" id="2_ulx4e"]
+
+[resource]
+script = ExtResource("2_ulx4e")
+CHARM_SCRIPT = ExtResource("1_tmb2a")
+STAT_MODIFICATIONS = {}
+NAME = "Staminizer"
+ICON_NAME = ""
+DESCRIPTION = ""
+VALUE = 0
+WEIGHT = 1
+MANDATORY = true

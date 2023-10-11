@@ -8,6 +8,9 @@ do PlayerGlobals.addItem("CharmStoneWall")
 do PlayerGlobals.addItem("LightArmor")
 do PlayerGlobals.addItem("NeutralWeapon")
 do PlayerGlobals.addItem("SprintStone")
+do PlayerGlobals.addItem("WalkStone")
+do PlayerGlobals.addItem("BowStone")
+do PlayerGlobals.addItem("StaminaStone")
 
 set OverworldGlobals.show_player_interaction = true
 set OverworldGlobals.player_can_move = true

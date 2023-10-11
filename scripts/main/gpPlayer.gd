@@ -67,7 +67,9 @@ func _physics_process(delta):
 		if velocity != Vector2.ZERO: stamina -= sprint_drain
 	elif bow_draw_strength >= bow_max_draw:
 		stamina -= 0.1
-	else:
+	elif stamina < 100.0:
+		print('regen')
+		print(stamina)
 		if stamina < 100: stamina += stamina_gain
 		SPEED = walk_speed
 		ANIMATION_SPEED = 0.0
