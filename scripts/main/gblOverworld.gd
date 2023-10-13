@@ -164,6 +164,13 @@ func getCombatantSquadComponent(entity_name: String):
 func getComponent(entity_name: String, component_name: String):
 	return get_tree().current_scene.get_node(entity_name).get_node(component_name)
 
+func isPlayerSquadDead():
+	for combatant in getCombatantSquad('Player'):
+		if !combatant.isDead():
+			return false
+	
+	return true
+
 func restorePlayerView():
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false

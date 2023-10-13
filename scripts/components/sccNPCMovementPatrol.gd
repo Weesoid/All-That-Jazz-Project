@@ -9,6 +9,9 @@ var PATROL_SHAPE
 var PATH_UPDATE_TIMER: Timer
 var IDLE_TIMER: Timer
 
+var COMBAT_RESULT = -1
+var COMBAT_SWITCH = true
+
 func _ready():
 	NAME = get_parent().name
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
@@ -29,6 +32,9 @@ func _ready():
 	
 	NAV_AGENT.navigation_finished.connect(updatePath)
 	NAV_AGENT.navigation_finished.emit()
+	
+	CombatGlobals.combat_won.connect(func(_id): COMBAT_RESULT = 1)
+	CombatGlobals.combat_lost.connect(func(_id): COMBAT_RESULT = 0)
 
 func _physics_process(_delta):
 	patrol()
@@ -39,10 +45,16 @@ func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
+	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer() and COMBAT_SWITCH:
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.alert_patrollers.emit()
-		BODY.queue_free()
+		COMBAT_SWITCH = false
+		await CombatGlobals.getCombatScene().combat_done
+		if COMBAT_RESULT == 1:
+			BODY.queue_free()
+		else:
+			stunMode()
+			COMBAT_RESULT = -1
 
 func patrol():
 	if STATE != 3:
@@ -96,6 +108,7 @@ func updatePath():
 			STATE = 1
 			updatePath()
 			print('Unstunned!')
+			COMBAT_SWITCH = true
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func moveRandom():
