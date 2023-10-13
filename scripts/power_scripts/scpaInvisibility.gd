@@ -1,0 +1,30 @@
+extends Node
+
+@onready var player = OverworldGlobals.getPlayer()
+var active = true
+
+func _physics_process(_delta):
+	if player.stamina > 0 and active:
+		setInvisible()
+	else:
+		setVisible()
+
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed("ui_gambit"):
+		active = false
+		setVisible()
+
+func setInvisible():
+	player.stamina -= 0.5
+	player.set_collision_layer_value(5, false)
+	player.set_collision_mask_value(5, false)
+	player.SPEED = 150
+	player.sprite.modulate.a = 0.5
+
+func setVisible():
+	player.SPEED = 100
+	player.set_collision_layer_value(5, true)
+	player.set_collision_mask_value(5, true)
+	player.sprite.modulate.a = 1
+	player.toggleVoidAnimation()
+	queue_free()

@@ -68,14 +68,13 @@ func _physics_process(delta):
 	elif bow_draw_strength >= bow_max_draw:
 		stamina -= 0.1
 	elif stamina < 100.0:
-		print('regen')
-		print(stamina)
 		if stamina < 100: stamina += stamina_gain
 		SPEED = walk_speed
 		ANIMATION_SPEED = 0.0
 	
 	OverworldGlobals.follow_array.push_front(self.global_position)
 	OverworldGlobals.follow_array.pop_back()
+
 
 
 func _unhandled_input(_event: InputEvent):
@@ -124,7 +123,7 @@ func drawBow():
 		bow_mode = false
 		toggleBowAnimation()
 	
-	if Input.is_action_pressed("ui_click") and OverworldGlobals.show_player_interaction:
+	if Input.is_action_pressed("ui_click") and OverworldGlobals.show_player_interaction and !animation_tree["parameters/conditions/void_call"]:
 		#OverworldGlobals.player_can_move = false
 		SPEED = 15.0
 		if play_once:
@@ -218,8 +217,11 @@ func updateAnimationParameters():
 				animation_tree["parameters/conditions/cancel"] = true
 	
 	if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null and bow_draw_strength == 0:
-		animation_tree["parameters/conditions/void_call"] = !animation_tree["parameters/conditions/void_call"]
-		animation_tree["parameters/conditions/void_release"] = !animation_tree["parameters/conditions/void_call"]
+		toggleVoidAnimation()
+
+func toggleVoidAnimation():
+	animation_tree["parameters/conditions/void_call"] = !animation_tree["parameters/conditions/void_call"]
+	animation_tree["parameters/conditions/void_release"] = !animation_tree["parameters/conditions/void_call"]
 
 func toggleBowAnimation():
 	animation_tree["parameters/conditions/equip_bow"] = bow_mode
