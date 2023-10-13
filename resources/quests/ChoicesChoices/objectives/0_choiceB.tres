@@ -6,6 +6,7 @@
 script = ExtResource("1_hncpc")
 UNIQUE_COMBAT_ID = "SexMasters"
 REQUIRE_WIN = true
+COUNT = 1
 NAME = "FightGoons"
 DESCRIPTION = "Fight Questies' Goons!"
 DEPENDENTS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])

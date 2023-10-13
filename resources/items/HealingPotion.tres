@@ -10,7 +10,6 @@ OVERWORLD_USE = true
 PER_WEIGHT = 1
 MAX_STACK = 100
 NAME = "Healing Potion"
-ICON_NAME = "st_grit_up1"
 DESCRIPTION = "\"Wow this shit heals!\" /n - Johnny Dyin"
 VALUE = 0
 WEIGHT = 1

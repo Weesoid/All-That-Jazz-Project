@@ -3,11 +3,24 @@ class_name ResQuest
 
 @export var NAME: String
 @export var DESCRIPTION: String
-@export var OBJECTIVES: Array[ResQuestObjective]
+var OBJECTIVES: Array[ResQuestObjective] = []
 
 var COMPLETED: bool = false
 
 func initializeQuest():
+	var path = get_path().get_base_dir()+'/objectives'
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			print("Found file: " + file_name)
+			OBJECTIVES.append(load(path+'/'+file_name))
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+		print(path)
+	
 	for objective in OBJECTIVES:
 		objective.initializeObjective()
 		objective.attemptEnable()

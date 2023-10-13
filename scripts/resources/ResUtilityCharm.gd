@@ -4,7 +4,7 @@ class_name ResUtilityCharm
 @export var CHARM_SCRIPT: GDScript
 var equipped = false
 
-func equip(combatant: ResCombatant):
+func equip(_combatant: ResCombatant):
 	if PlayerGlobals.UTILITY_CHARM_COUNT >= 3:
 		OverworldGlobals.getPlayer().prompt.showPrompt('Max [color=yelloe]Charm[/color] capacity reached. Unequip a [color=yellow]Charm[/color].')
 		return

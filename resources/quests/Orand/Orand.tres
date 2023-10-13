@@ -1,14 +1,8 @@
-[gd_resource type="Resource" script_class="ResQuest" load_steps=7 format=3 uid="uid://bkmod2galledy"]
+[gd_resource type="Resource" script_class="ResQuest" load_steps=2 format=3 uid="uid://bkmod2galledy"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_1otra"]
-[ext_resource type="Resource" uid="uid://2gn6c1nh0byv" path="res://resources/quests/Orand/objectives/0_must1.tres" id="1_bbshl"]
-[ext_resource type="Resource" uid="uid://cabs5ndos05x6" path="res://resources/quests/Orand/objectives/0_must2.tres" id="2_skdj5"]
-[ext_resource type="Resource" uid="uid://mbukex7rcjbu" path="res://resources/quests/Orand/objectives/1_or1.tres" id="3_88rcc"]
-[ext_resource type="Resource" uid="uid://curelbx0abj6p" path="res://resources/quests/Orand/objectives/1_or2.tres" id="4_p5g4t"]
-[ext_resource type="Resource" uid="uid://dyywsnb3ssg8i" path="res://resources/quests/Orand/objectives/2_conclude.tres" id="5_sxhbv"]
 
 [resource]
 script = ExtResource("1_1otra")
 NAME = "Orand"
 DESCRIPTION = "Branch forward with orand!"
-OBJECTIVES = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([ExtResource("1_bbshl"), ExtResource("2_skdj5"), ExtResource("3_88rcc"), ExtResource("4_p5g4t"), ExtResource("5_sxhbv")])

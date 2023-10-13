@@ -12,7 +12,6 @@ STAT_MODIFICATIONS = {
 "grit": 1
 }
 NAME = "Light Armor"
-ICON_NAME = ""
 DESCRIPTION = "An armor made of light armorite!"
 VALUE = 0
 WEIGHT = 1

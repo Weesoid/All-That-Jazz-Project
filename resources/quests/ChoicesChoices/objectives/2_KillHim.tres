@@ -7,6 +7,7 @@
 script = ExtResource("1_jp567")
 UNIQUE_COMBAT_ID = "QuestyJr"
 REQUIRE_WIN = true
+COUNT = 1
 NAME = "Kill!"
 DESCRIPTION = "Defeat Questy Jr. in martial combat!!!"
 DEPENDENTS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([ExtResource("1_ky312")])

@@ -7,7 +7,6 @@ script = ExtResource("1_tfqii")
 PER_WEIGHT = 1
 MAX_STACK = 100
 NAME = "Scrap Salvage"
-ICON_NAME = ""
 DESCRIPTION = "Used for crafting."
 VALUE = 5
 WEIGHT = 1

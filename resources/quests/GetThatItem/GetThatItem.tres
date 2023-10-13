@@ -1,12 +1,8 @@
-[gd_resource type="Resource" script_class="ResQuest" load_steps=5 format=3 uid="uid://bkbyv7pvwqc3l"]
+[gd_resource type="Resource" script_class="ResQuest" load_steps=2 format=3 uid="uid://eebo6up7637c"]
 
-[ext_resource type="Resource" uid="uid://dl4b0bu3v3s61" path="res://resources/quests/GetThatItem/objectives/0_GetItem.tres" id="1_2mnkk"]
-[ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_ax217"]
-[ext_resource type="Resource" uid="uid://cp3063ta04dr8" path="res://resources/quests/GetThatItem/objectives/1_TalkMan.tres" id="2_ag8ne"]
-[ext_resource type="Resource" uid="uid://dp5m2h0r5ch0h" path="res://resources/quests/GetThatItem/objectives/2_Conclude.tres" id="3_ci7u5"]
+[ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_mh6au"]
 
 [resource]
-script = ExtResource("1_ax217")
+script = ExtResource("1_mh6au")
 NAME = "Get that item!"
 DESCRIPTION = "Get the fucking item. FUCK YOU!"
-OBJECTIVES = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([ExtResource("1_2mnkk"), ExtResource("2_ag8ne"), ExtResource("3_ci7u5")])
