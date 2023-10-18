@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://cuhp30nbgihjv"]
+[gd_scene load_steps=17 format=3 uid="uid://cuhp30nbgihjv"]
 
 [ext_resource type="Script" path="res://scripts/main/gpCombat.gd" id="1_kv6ut"]
+[ext_resource type="Texture2D" uid="uid://b64hae3ym8ck" path="res://assets/misc_sprites/turn_highlight.png" id="3_qmtsl"]
 [ext_resource type="PackedScene" uid="uid://bt4b6i7iiex30" path="res://scenes/user_interface/CombatInspectTarget.tscn" id="4_kkdd3"]
 [ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
 [ext_resource type="Texture2D" uid="uid://bn5owks8hqpg" path="res://assets/icons/st_wit_dn2.png" id="5_15yji"]
@@ -140,6 +141,10 @@ libraries = {
 visible = false
 z_index = 99
 position = Vector2(-192, 456)
+
+[node name="TurnHighlight" type="Sprite2D" parent="."]
+position = Vector2(-172, 456)
+texture = ExtResource("3_qmtsl")
 
 [node name="CombatCamera" type="Camera2D" parent="."]
 position = Vector2(0, -19)

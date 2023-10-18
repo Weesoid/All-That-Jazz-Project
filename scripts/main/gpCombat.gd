@@ -19,6 +19,7 @@ class_name CombatScene
 @onready var ui_inspect_target = $CombatInspectTarget
 @onready var turn_counter = $CombatCamera/Label
 @onready var turn_indicator = $CombatCamera/TurnIndicator
+@onready var turn_highlight = $TurnHighlight
 
 var combat_dialogue: ResCombatDialogue
 var conclusion_dialogue: DialogueResource
@@ -78,6 +79,7 @@ func _ready():
 		tickStatusEffects(combatant)
 	
 	active_combatant.act()
+	turn_highlight.global_position = active_combatant.getSprite().global_position
 	
 	if combat_dialogue != null:
 		combat_dialogue.initializeDialogue(COMBATANTS)
@@ -168,9 +170,10 @@ func end_turn():
 		triggerDialogue()
 		await dialogue_done
 	
-	active_combatant.act()
 	turn_indicator.updateActive(active_combatant)
-	
+	turn_highlight.global_position = active_combatant.getSprite().global_position
+	active_combatant.act()
+
 	checkWin()
 
 #********************************************************************************
