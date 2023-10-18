@@ -6,6 +6,7 @@ signal turn_increment(count)
 signal ability_used(ability)
 signal combatant_stats(combatant)
 signal combat_conclusion_dialogue(dialogue, result)
+signal animation_done
 
 signal exp_updated(value: float, max_value: float)
 signal received_combatant_value(combatant: ResCombatant, caster: ResCombatant, value)
@@ -158,10 +159,13 @@ func resetStat(target: ResCombatant, stat: String):
 #********************************************************************************
 # ANIMATION HANDLING
 #********************************************************************************
-func playAbilityAnimation(target:ResCombatant, animation_scene):
+func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 	var animation = animation_scene.instantiate()
 	target.SCENE.add_child(animation)
 	animation.playAnimation(target.SCENE.position)
+	if time > 0.0:
+		await get_tree().create_timer(time).timeout
+		animation_done.emit()
 
 func playAndResetAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
@@ -182,7 +186,7 @@ func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
 	else:
 		rankUpStatusEffect(target, status_effect)
 	
-	status_effect.tick()
+	#status_effect.tick()
 	checkReactions(target)
 
 func checkReactions(target: ResCombatant):

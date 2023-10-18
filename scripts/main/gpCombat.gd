@@ -18,6 +18,7 @@ class_name CombatScene
 @onready var ui_target_animator = $Target/TargetAnimator
 @onready var ui_inspect_target = $CombatInspectTarget
 @onready var turn_counter = $CombatCamera/Label
+@onready var turn_indicator = $CombatCamera/TurnIndicator
 
 var combat_dialogue: ResCombatDialogue
 var conclusion_dialogue: DialogueResource
@@ -49,6 +50,9 @@ func _ready():
 	connectPlayerItems()
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	
+	turn_indicator.COMBATANTS = COMBATANTS
+	turn_indicator.initialize()
+	
 	for combatant in COMBATANTS:
 		spawnTroop(combatant)
 		combatant.initializeCombatant()
@@ -69,7 +73,7 @@ func _ready():
 	COMBATANTS.sort_custom(sortBySpeed)
 	
 	active_combatant = COMBATANTS[active_index]
-	
+	turn_indicator.updateActive(active_combatant)
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
 	
@@ -159,11 +163,14 @@ func end_turn():
 	else:
 		selected_ability.ENABLED = false
 	
+	
 	if checkDialogue():
 		triggerDialogue()
 		await dialogue_done
 	
 	active_combatant.act()
+	turn_indicator.updateActive(active_combatant)
+	
 	checkWin()
 
 #********************************************************************************
