@@ -1,6 +1,8 @@
 extends NPCMovement
+class_name NPCPatrolMovement
 
 @onready var PATROL_BUBBLE = $PatrolBubble/AnimationPlayer
+@onready var PATROL_BUBBLE_SPRITE = $PatrolBubble
 @export var NAV_AGENT: NavigationAgent2D
 @export var LINE_OF_SIGHT: LineOfSight
 @export var COMBAT_SQUAD: CombatantSquad
@@ -15,6 +17,7 @@ var COMBAT_SWITCH = true
 
 func _ready():
 	NAME = get_parent().name
+	BODY.get_node('CombatantSquadComponent').UNIQUE_ID = NAME
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
@@ -34,8 +37,16 @@ func _ready():
 	NAV_AGENT.navigation_finished.connect(updatePath)
 	NAV_AGENT.navigation_finished.emit()
 	
-	CombatGlobals.combat_won.connect(func(_id): COMBAT_RESULT = 1)
-	CombatGlobals.combat_lost.connect(func(_id): COMBAT_RESULT = 0)
+	CombatGlobals.combat_won.connect(
+		func(id):
+			if id == NAME:
+				COMBAT_RESULT = 1
+			)
+	CombatGlobals.combat_lost.connect(
+		func(id):
+			if id == NAME:
+				COMBAT_RESULT = 0
+			)
 
 func _physics_process(_delta):
 	patrol()
@@ -52,8 +63,10 @@ func executeCollisionAction():
 		COMBAT_SWITCH = false
 		await CombatGlobals.getCombatScene().combat_done
 		if COMBAT_RESULT == 1:
-			BODY.queue_free()
+			print('Res1')
+			destroy()
 		else:
+			print('Res2')
 			stunMode()
 			COMBAT_RESULT = -1
 
@@ -62,7 +75,7 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer():
-		MOVE_SPEED = BASE_MOVE_SPEED * 5
+		MOVE_SPEED = BASE_MOVE_SPEED * 8.0
 		STATE = 2
 		updatePath()
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
@@ -71,23 +84,26 @@ func patrol():
 		PATH_UPDATE_TIMER.stop()
 		MOVE_SPEED = BASE_MOVE_SPEED
 		STATE = 0
-		if PATROL_BUBBLE.is_playing():
+		if PATROL_BUBBLE_SPRITE.visible:
 			PATROL_BUBBLE.play_backwards("Show")
 
 func alertPatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * 1.5
 	STATE = 1
-	PATROL_BUBBLE.play("Show")
-	await PATROL_BUBBLE.animation_finished
-	PATROL_BUBBLE.play("Loop")
-	
+	if PATROL_BUBBLE.current_animation != "Loop":
+		PATROL_BUBBLE.play("Show")
+		await PATROL_BUBBLE.animation_finished
+		PATROL_BUBBLE.play("Loop")
+
 func stunMode():
 	STATE = 3
 	updatePath()
 	
 func destroy():
+	if PATROL_BUBBLE_SPRITE.visible:
+		PATROL_BUBBLE.play_backwards("Show")
 	stunMode()
-	ANIMATOR.play('KO')
+	ANIMATOR.play("KO")
 	await ANIMATOR.animation_finished
 	BODY.queue_free()
 
@@ -104,6 +120,8 @@ func updatePath():
 			await IDLE_TIMER.timeout
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		2:
+			if !PATROL_BUBBLE_SPRITE.visible:
+				PATROL_BUBBLE.play("Show")
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		3: 
 			ANIMATOR.play("Stun")
@@ -128,10 +146,9 @@ func patrolToPosition(target_position: Vector2):
 		BODY.velocity = target_position * MOVE_SPEED
 		updateLineOfSight()
 	
-	if BODY.velocity == Vector2(0,0):
+	if BODY.velocity == Vector2.ZERO:
 		ANIMATOR.seek(1, true)
 		ANIMATOR.pause()
-		
 
 func targetReached():
 	return NAV_AGENT.distance_to_target() < 1.0

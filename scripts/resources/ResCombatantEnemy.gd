@@ -42,15 +42,15 @@ func getDrops():
 	var drops_summary = ''
 	
 	for i in range(DROP_COUNT):
-		print('Roll ', i)
+		#print('Roll ', i)
 		if CombatGlobals.randomRoll(CHANCE_TO_DROP): 
 			var item = rollDrops()
-			print('Dropped: ', item.NAME)
+			#print('Dropped: ', item.NAME)
 			if drops.has(item):
 				drops[item] += randi_range(1, DROP_POOL[item].y)
 			else:
 				drops[item] = randi_range(1, DROP_POOL[item].y)
-			print(drops)
+			#print(drops)
 	
 	for item in drops:
 		PlayerGlobals.addItemResource(item, drops[item])
