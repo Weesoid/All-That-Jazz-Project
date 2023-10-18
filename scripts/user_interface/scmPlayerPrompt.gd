@@ -6,9 +6,9 @@ extends RichTextLabel
 
 func _process(_delta):
 	if OverworldGlobals.showing_menu:
-		modulate.a = 0.25
+		scale = Vector2(0.5, 0.5)
 	else:
-		modulate.a = 1.0
+		scale = Vector2(1.0, 1.0)
 	
 func animatePrompt(action: int):
 	match action:

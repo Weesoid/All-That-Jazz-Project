@@ -1,5 +1,6 @@
 extends NPCMovement
 
+@onready var PATROL_BUBBLE = $PatrolBubble/AnimationPlayer
 @export var NAV_AGENT: NavigationAgent2D
 @export var LINE_OF_SIGHT: LineOfSight
 @export var COMBAT_SQUAD: CombatantSquad
@@ -70,10 +71,15 @@ func patrol():
 		PATH_UPDATE_TIMER.stop()
 		MOVE_SPEED = BASE_MOVE_SPEED
 		STATE = 0
+		if PATROL_BUBBLE.is_playing():
+			PATROL_BUBBLE.play_backwards("Show")
 
 func alertPatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * 1.5
 	STATE = 1
+	PATROL_BUBBLE.play("Show")
+	await PATROL_BUBBLE.animation_finished
+	PATROL_BUBBLE.play("Loop")
 	
 func stunMode():
 	STATE = 3
@@ -93,7 +99,6 @@ func updatePath():
 			await IDLE_TIMER.timeout
 			NAV_AGENT.target_position = moveRandom()
 		1:
-			print('Alert patrol move!')
 			randomize()
 			IDLE_TIMER.start(randf_range(1.0, 2.5))
 			await IDLE_TIMER.timeout
@@ -101,13 +106,12 @@ func updatePath():
 		2:
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		3: 
-			print('Stunned!')
+			ANIMATOR.play("Stun")
 			BODY.velocity = Vector2.ZERO
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
 			await get_tree().create_timer(5.0).timeout
-			STATE = 1
+			alertPatrolMode()
 			updatePath()
-			print('Unstunned!')
 			COMBAT_SWITCH = true
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 
