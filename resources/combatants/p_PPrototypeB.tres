@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://cxmw4kd3fmtak"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=21 format=3 uid="uid://cxmw4kd3fmtak"]
 
 [ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_h6ewg"]
 [ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_bxed0"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://bjp1onb68wkep" path="res://resources/abilities/AOE.tres" id="5_iixbd"]
 [ext_resource type="Resource" uid="uid://bscmk3txfvu1b" path="res://resources/abilities/DebugAddEffect.tres" id="6_ateo1"]
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://assets/combatant_sprites/GoodGuyB.png" id="8_88eiy"]
+[ext_resource type="Texture2D" uid="uid://thcjdsdlqrof" path="res://assets/icons/team1.png" id="9_dfjyi"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="9_g1u54"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
@@ -171,6 +172,7 @@ ABILITY_POO = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResou
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
 MANDATORY = false
 NAME = "PUMainBlasko"
+ICON = ExtResource("9_dfjyi")
 PACKED_SCENE = SubResource("PackedScene_gvghd")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {

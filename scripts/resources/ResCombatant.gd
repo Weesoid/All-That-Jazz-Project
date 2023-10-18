@@ -4,6 +4,7 @@ class_name ResCombatant
 
 ## Backend export variables
 @export var NAME: String
+@export var ICON: Texture
 @export var PACKED_SCENE: PackedScene
 @export var DESCRIPTION: String
 

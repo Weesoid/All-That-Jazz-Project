@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=17 format=3 uid="uid://crxc4jimvjjun"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=18 format=3 uid="uid://crxc4jimvjjun"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_l8e2g"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_t0rce"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="4_wu60c"]
 [ext_resource type="Resource" uid="uid://dqssaas0mo42b" path="res://resources/items/HotHand.tres" id="5_44f6x"]
 [ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://assets/combatant_sprites/BadGuyJr.png" id="5_ogk53"]
+[ext_resource type="Texture2D" uid="uid://cm0lkrky28qm1" path="res://assets/icons/bad1.png" id="6_3bgk2"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="6_j2qnw"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
@@ -185,6 +186,7 @@ ExtResource("4_v7lp5"): Vector2i(2, 5),
 ExtResource("5_44f6x"): Vector2i(1, 1)
 }
 NAME = "EUStriker"
+ICON = ExtResource("6_3bgk2")
 PACKED_SCENE = SubResource("PackedScene_tm1b0")
 DESCRIPTION = "Don't fuck with him!"
 STAT_VALUES = {

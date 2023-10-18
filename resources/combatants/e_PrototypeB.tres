@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=16 format=3 uid="uid://ddddsdahuggm"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=17 format=3 uid="uid://ddddsdahuggm"]
 
 [ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_8ysqk"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://mglcgp6i4rw2" path="res://assets/combatant_sprites/BadGuyJrB.png" id="4_j71o1"]
 [ext_resource type="Resource" uid="uid://dqssaas0mo42b" path="res://resources/items/HotHand.tres" id="4_yy4xm"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="5_k76sc"]
+[ext_resource type="Texture2D" uid="uid://dujk7fbsungog" path="res://assets/icons/bad2.png" id="5_u6pqm"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"
@@ -156,6 +157,7 @@ CHANCE_TO_DROP = 0.5
 DROP_COUNT = 3
 DROP_POOL = {}
 NAME = "EUHealer"
+ICON = ExtResource("5_u6pqm")
 PACKED_SCENE = SubResource("PackedScene_q83j7")
 DESCRIPTION = "Special unit! He's quite a bangarangangangan BRUH!!!"
 STAT_VALUES = {

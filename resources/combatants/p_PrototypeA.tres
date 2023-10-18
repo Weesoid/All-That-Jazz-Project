@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=19 format=3 uid="uid://vtaidrxm1tji"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://vtaidrxm1tji"]
 
 [ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_bsdt7"]
 [ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 [ext_resource type="Texture2D" uid="uid://6jibksvj0qnw" path="res://assets/combatant_sprites/GoodGuy.png" id="6_wr0qh"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="7_lnwc0"]
+[ext_resource type="Texture2D" uid="uid://dhqwdbu6lsyry" path="res://assets/icons/team2.png" id="8_fydt8"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"
@@ -170,6 +171,7 @@ ABILITY_POO = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResou
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
 MANDATORY = true
 NAME = "PUFriendHealer"
+ICON = ExtResource("8_fydt8")
 PACKED_SCENE = SubResource("PackedScene_kq6rj")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {

@@ -29,6 +29,7 @@ func _on_ready():
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size.x = 272
 		button.text = str(item)
+		button.expand_icon = true
 		addButtonToTab(item, button)
 
 func _on_use_pressed():
@@ -62,6 +63,9 @@ func addMembers():
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size.x = 272
 		button.text = member.NAME
+		#button.expand_icon = true
+		button.icon = member.ICON
+		print(button.icon)
 		button.pressed.connect(func setSelectedCombatant(): selected_combatant = member)
 		button.pressed.connect(
 					func useItem():
@@ -78,9 +82,10 @@ func addMembers():
 						elif selected_item.EQUIPPED_COMBATANT == member:
 							PlayerGlobals.getItem(selected_item).unequip()
 							stat_panel.text = member.getStringStats()
-							button_item_map[selected_item].text = selected_item.NAME
+							button_item_map[selected_item].icon = null
 						elif isMemberEquipped(member, selected_item):
 							updateButtonUnequip(member, selected_item)
+							PlayerGlobals.getItem(selected_item).equip(member)
 							equipMemberAndUpdateButton(member, selected_item)
 						else:
 							PlayerGlobals.getItem(selected_item).equip(member)
@@ -105,14 +110,13 @@ func isMemberEquipped(member: ResCombatant, slot: ResItem):
 
 func updateButtonUnequip(member: ResCombatant, item:ResItem):
 	if item is ResWeapon:
-		button_item_map[member.EQUIPMENT['weapon']].text = member.EQUIPMENT['weapon'].NAME
+		button_item_map[member.EQUIPMENT['weapon']].icon = null
 	elif item is ResArmor:
-		button_item_map[member.EQUIPMENT['armor']].text = member.EQUIPMENT['armor'].NAME
+		button_item_map[member.EQUIPMENT['armor']].icon = null
 
 func equipMemberAndUpdateButton(member: ResCombatant, item: ResEquippable):
 	if item.isEquipped():
-		button_item_map[item].text = item.NAME
-		button_item_map[item].text += str(" equipped by ", member)
+		button_item_map[item].icon = item.EQUIPPED_COMBATANT.ICON
 		stat_panel.text = member.getStringStats()
 
 func clearMembers():
@@ -164,15 +168,15 @@ func addButtonToTab(item: ResItem, button: Button):
 		misc_tab.add_child(button)
 	elif item is ResWeapon:
 		if item.EQUIPPED_COMBATANT != null:
-			button.text += str(" equipped by ", item.EQUIPPED_COMBATANT)
+			button.icon = item.EQUIPPED_COMBATANT.ICON
 		weapon_tab.add_child(button)
 	elif item is ResArmor:
 		if item.EQUIPPED_COMBATANT != null:
-			button.text += str(" equipped by ", item.EQUIPPED_COMBATANT)
+			button.icon = item.EQUIPPED_COMBATANT.ICON
 		armor_tab.add_child(button)
 	elif item is ResCharm or item is ResUtilityCharm:
 		if item.EQUIPPED_COMBATANT != null:
-			button.text += str(" equipped by ", item.EQUIPPED_COMBATANT)
+			button.icon = item.EQUIPPED_COMBATANT.ICON
 		charm_tab.add_child(button)
 	button.pressed.connect(
 		func setSelectedItem(): 
