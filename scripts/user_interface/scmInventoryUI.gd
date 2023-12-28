@@ -71,7 +71,7 @@ func addMembers():
 					func useItem():
 						selected_combatant = member
 						if selected_item is ResConsumable and selected_item.OVERWORLD_USE:
-							selected_item.initializeItem()
+							#selected_item.initializeItem()
 							selected_item.applyEffect(selected_combatant, selected_combatant, selected_item.EFFECT.ANIMATION, true)
 							button_item_map[selected_item].text = selected_item.to_string()
 							stat_panel.text = member.getStringStats()

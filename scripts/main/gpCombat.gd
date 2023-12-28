@@ -31,6 +31,8 @@ var active_index = 0
 var valid_targets
 var target_combatant
 var target_index = 0
+var stage_hazard: ResAbility
+var stage_hazard_turn: int # % increment
 var selected_ability: ResAbility
 var selected_item: ResConsumable
 var run_once = true
@@ -51,7 +53,8 @@ func _ready():
 	connectPlayerItems()
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	
-	turn_indicator.COMBATANTS = COMBATANTS
+	turn_indicator.COMBAT_SCENE = self
+	#turn_indicator.COMBATANTS = COMBATANTS
 	turn_indicator.initialize()
 	
 	for combatant in COMBATANTS:
@@ -74,7 +77,7 @@ func _ready():
 	COMBATANTS.sort_custom(sortBySpeed)
 	
 	active_combatant = COMBATANTS[active_index]
-	turn_indicator.updateActive(active_combatant)
+	turn_indicator.updateActive()
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
 	
@@ -133,18 +136,23 @@ func end_turn():
 	CombatGlobals.turn_increment.emit(turn_count)
 	combat_camera.position = Vector2(0, -19)
 	for combatant in COMBATANTS:
+		if combatant.isDead(): continue
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
 		CombatGlobals.combatant_stats.emit(combatant)
 	
 	for combatant in getDeadCombatants():
-		combatant.getAnimator().play('KO')
-		clearStatusEffects(combatant)
-		if combatant is ResEnemyCombatant: 
-			experience_earnt += combatant.getExperience()
-			drop_summary += combatant.getDrops()
+		# To do fix KO getting cleared every predictable turn
+		if !combatant.getStatusEffectNames().has('Knock Out'): 
+			clearStatusEffects(combatant)
+			CombatGlobals.addStatusEffect(combatant, CombatGlobals.loadStatusEffect('KnockOut'))
+		#await combatant.getAnimator().animation_finished
+		#combatant.getAnimator().play('KO')
+		#if combatant is ResEnemyCombatant: 
+		#	experience_earnt += combatant.getExperience()
+		#	drop_summary += combatant.getDrops()
 		
-		COMBATANTS.erase(combatant)
+		#COMBATANTS.erase(combatant)
 	
 	# Reset values
 	run_once = true
@@ -165,15 +173,17 @@ func end_turn():
 	else:
 		selected_ability.ENABLED = false
 	
-	
 	if checkDialogue():
 		triggerDialogue()
 		await dialogue_done
 	
-	turn_indicator.updateActive(active_combatant)
+	# if turn_count % stage_hazard_turn == 0
+	# 	CombatGlobals.execute_ability(stage_hazard)
+	
+	turn_indicator.updateActive()
 	turn_highlight.global_position = active_combatant.getSprite().global_position
 	active_combatant.act()
-
+	
 	checkWin()
 
 #********************************************************************************
@@ -216,6 +226,7 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
+	CombatGlobals.combat_lost.emit(unique_id)
 	concludeCombat(0)
 
 func toggleUI():
@@ -396,11 +407,16 @@ func getCombatantGroup(type)-> Array[ResCombatant]:
 	
 	return [null]
 
-func checkWin():
-	var enemies = getCombatantGroup('enemies')
-	var team = getCombatantGroup('player')
+func isCombatantGroupDead(group: Array[ResCombatant]):
+	for combatant in group:
+		if !combatant.isDead():
+			return false
 	
-	if enemies.is_empty():
+	return true
+
+func checkWin():
+	if isCombatantGroupDead(getCombatantGroup('enemies')):
+		print('No more enemies')
 		if unique_id != null:
 			CombatGlobals.combat_won.emit(unique_id)
 		
@@ -410,7 +426,8 @@ func checkWin():
 		
 		concludeCombat(1)
 	
-	elif team.is_empty():
+	elif isCombatantGroupDead(getCombatantGroup('team')):
+		print('No more team')
 		if unique_id != null:
 			CombatGlobals.combat_lost.emit(unique_id)
 		

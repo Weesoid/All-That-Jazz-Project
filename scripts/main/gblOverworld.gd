@@ -135,10 +135,12 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	
 	for combatant in getCombatantSquad(entity_name):
+		# add status effect 'Vulnerable or something' if advantage is true
+		# Stunned, more exposed, less grit
 		combat_scene.COMBATANTS.append(combatant.duplicate())
+	
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
-	
 	if !combat_dialogue_name.is_empty():
 		combat_scene.combat_dialogue = load("res://resources/combat_dialogue/%s.tres" % [combat_dialogue_name])
 	if !aftermath_dialogue_name.is_empty():

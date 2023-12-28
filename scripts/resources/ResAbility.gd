@@ -20,6 +20,7 @@ enum TargetGroup {
 @export var COST_RESOURCE: String
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
+@export var TARGET_DEAD: bool = false
 @export var INSTANT_CAST: bool = false
 @export var VALUE = 5
 
@@ -39,6 +40,9 @@ func execute():
 		TargetType.MULTI: multi_target.emit(self, 2)
 
 func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
+	if !TARGET_DEAD:
+		combatants = combatants.filter(func filterDead(combatant): return !combatant.isDead())
+	
 	if is_caster_player:
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResPlayerCombatant)

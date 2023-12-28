@@ -171,7 +171,10 @@ func playAndResetAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
 	await target.getAnimator().animation_finished
 	target.getAnimator().play('Idle')
-	
+
+func playAnimation(target: ResCombatant, animation_name: String):
+	target.getAnimator().play(animation_name)
+
 #********************************************************************************
 # STATUS EFFECT HANDLING
 #********************************************************************************

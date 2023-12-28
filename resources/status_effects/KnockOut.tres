@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://7myk4nkchmjd"]
+
+[ext_resource type="Script" path="res://scripts/status_effects/scsKnockOut.gd" id="1_aglpc"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_w5lqe"]
+[ext_resource type="Texture2D" uid="uid://dq34rjolqps8n" path="res://assets/icons/s_will.png" id="2_84y1j"]
+
+[resource]
+script = ExtResource("1_w5lqe")
+NAME = "Knock Out"
+DESCRIPTION = "Target is out cold!"
+STATUS_SCRIPT = ExtResource("1_aglpc")
+TEXTURE = ExtResource("2_84y1j")
+MAX_DURATION = 999
+MAX_RANK = 0
+ON_HIT = false
+APPLY_ONCE = false
+TICK_PER_TURN = false
+PERMANENT = true

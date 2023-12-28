@@ -6,5 +6,5 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(caster: ResCombatant, targets, animation_scene):
 	for target in targets:
 		CombatGlobals.playAbilityAnimation(target, animation_scene)
-		CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 100, 100, preload("res://resources/damage_types/Neutral.tres"))
+		CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 100, 100, preload("res://resources/damage_types/Neutral.tres"),false)
 	

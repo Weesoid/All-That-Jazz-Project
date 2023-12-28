@@ -70,8 +70,8 @@ script = ExtResource("1_oxif4")
 
 [node name="CombatantNames" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = -101.0
-offset_right = 101.0
+offset_left = -122.0
+offset_right = 122.0
 offset_bottom = 47.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

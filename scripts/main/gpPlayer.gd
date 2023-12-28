@@ -22,7 +22,7 @@ var stamina = 100.0
 var direction = Vector2()
 var bow_mode = false
 var bow_draw_strength = 0
-var bow_max_draw = 4.0
+var bow_max_draw = 5.0
 var SPEED = 100.0
 
 var walk_speed = 100.0

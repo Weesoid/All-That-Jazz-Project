@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://c2b635npa36uo"]
 
 [ext_resource type="Script" path="res://scripts/secondary_abilities/scwVulnerate.gd" id="1_pqqsh"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
@@ -15,3 +15,4 @@ COST_RESOURCE = ""
 TARGET_TYPE = 0
 TARGET_GROUP = 1
 INSTANT_CAST = false
+VALUE = 5

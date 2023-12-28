@@ -5,4 +5,6 @@ extends Area2D
 
 func interact():
 	OverworldGlobals.showDialogueBox(dialogue_resource, dialogue_start)
-	
+
+#func combat_interact():
+#	pass

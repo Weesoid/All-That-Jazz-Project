@@ -1,9 +1,6 @@
 extends Node2D
 class_name CombatBar
 
-# GAME PLAN, attach this to every combatant in CombatScene and set "attached
-# _combatant" to it's respective combatant
-
 @onready var energy_bar = $EnergyBar
 @onready var health_bar = $HealthBar
 @onready var absolute_health = $AbsoluteHealth
@@ -56,6 +53,7 @@ func updateArmorIcon():
 		armor_icon.texture = preload("res://assets/icons/armor_full.png")
 
 func updateStatusEffects():
+	#print_orphan_nodes()
 	for effect in attached_combatant.STATUS_EFFECTS:
 		if status_effects.get_children().has(effect.ICON): continue
 		var tick_down = preload("res://scenes/miscellaneous/StatusEffectTickDown.tscn").instantiate()
@@ -74,8 +72,10 @@ func _on_health_bar_value_changed(value):
 	if attached_combatant.isDead():
 		indicator_animator.play('KO')
 		await indicator_animator.animation_finished
-		hide()
+		self_modulate.a = 0.5
 		return
+	else:
+		self_modulate.a = 1.0
 	
 	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
 	indicator_animator.play(indicator_animation)

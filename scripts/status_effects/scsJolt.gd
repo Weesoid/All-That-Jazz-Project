@@ -1,6 +1,6 @@
 static func applyEffects(target: ResCombatant, _status_effect: ResStatusEffect):
 	target.STAT_VALUES['hustle'] = -1
-	CombatGlobals.manual_call_indicator.emit(target, 'JOLTED!', 'Show')
+	#CombatGlobals.manual_call_indicator.emit(target, 'JOLTED!', 'Show')
 
 static func endEffects(target: ResCombatant):
 	var damage = target.BASE_STAT_VALUES['health'] * 0.05

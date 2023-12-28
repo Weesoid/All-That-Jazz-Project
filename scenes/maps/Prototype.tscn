@@ -91,10 +91,10 @@ position = Vector2(-128, 75)
 position = Vector2(-88, 75)
 
 [node name="entCraftingTable" parent="." instance=ExtResource("5_u7bub")]
-position = Vector2(-24, -120)
+position = Vector2(-8, -120)
 
 [node name="entPowerSelect" parent="." instance=ExtResource("6_pmefb")]
-position = Vector2(32, -120)
+position = Vector2(48, -120)
 
 [node name="entBaseEntity" parent="." instance=ExtResource("7_a4ilj")]
 position = Vector2(-8, 85)
@@ -115,13 +115,13 @@ position = Vector2(72, 80)
 position = Vector2(-176, 80)
 
 [node name="entCraftingTable2" parent="." instance=ExtResource("13_ttgch")]
-position = Vector2(-80, -121)
+position = Vector2(-64, -121)
 
 [node name="entStorageUnit" parent="." instance=ExtResource("14_s732r")]
-position = Vector2(80, -120)
+position = Vector2(96, -120)
 
 [node name="entShopKeep" parent="." instance=ExtResource("15_5mws6")]
-position = Vector2(-128, -121)
+position = Vector2(-112, -121)
 
 [node name="NPCPrototype" parent="." instance=ExtResource("16_d6npx")]
 position = Vector2(-96, -232)
@@ -135,5 +135,12 @@ position = Vector2(-40, -232)
 [node name="NPCPatrolComponent" parent="NPCPrototype2" index="0" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
+[node name="NPCPrototype3" parent="." instance=ExtResource("16_d6npx")]
+position = Vector2(24, -232)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype3" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
 [editable path="NPCPrototype"]
 [editable path="NPCPrototype2"]
+[editable path="NPCPrototype3"]

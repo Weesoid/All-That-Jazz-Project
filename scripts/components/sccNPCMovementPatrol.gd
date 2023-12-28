@@ -9,10 +9,9 @@ class_name NPCPatrolMovement
 @export var PATROL_AREA: Area2D
 
 var PATROL_SHAPE
-var PATH_UPDATE_TIMER: Timer
+#var PATH_UPDATE_TIMER: Timer
 var IDLE_TIMER: Timer
 
-var COMBAT_RESULT = -1
 var COMBAT_SWITCH = true
 
 func _ready():
@@ -21,16 +20,16 @@ func _ready():
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
-	PATH_UPDATE_TIMER = Timer.new()
-	PATH_UPDATE_TIMER.autostart = true
-	PATH_UPDATE_TIMER.timeout.connect(updatePath)
-	PATH_UPDATE_TIMER.stop()
+	#PATH_UPDATE_TIMER = Timer.new()
+	#PATH_UPDATE_TIMER.autostart = true
+	#PATH_UPDATE_TIMER.timeout.connect(updatePath)
+#	PATH_UPDATE_TIMER.timeout.connect(func(): print('to'))
 	
 	IDLE_TIMER = Timer.new()
 	IDLE_TIMER.autostart = true
 	
 	add_child(IDLE_TIMER)
-	add_child(PATH_UPDATE_TIMER)
+	#add_child(PATH_UPDATE_TIMER)
 	
 	OverworldGlobals.alert_patrollers.connect(alertPatrolMode)
 	
@@ -40,13 +39,18 @@ func _ready():
 	CombatGlobals.combat_won.connect(
 		func(id):
 			if id == NAME:
-				COMBAT_RESULT = 1
+				destroy()
 			)
 	CombatGlobals.combat_lost.connect(
-		func(id):
-			if id == NAME:
-				COMBAT_RESULT = 0
+		func(_id):
+			if ANIMATOR.current_animation == 'KO':
+				BODY.queue_free()
+			else:
+				stunMode()
 			)
+	
+#	PATH_UPDATE_TIMER.timeout.emit()
+#	PATH_UPDATE_TIMER.start(15.0)
 
 func _physics_process(_delta):
 	patrol()
@@ -61,17 +65,17 @@ func executeCollisionAction():
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.alert_patrollers.emit()
 		COMBAT_SWITCH = false
-		await CombatGlobals.getCombatScene().combat_done
-		if COMBAT_RESULT == 1:
-			print('Res1')
-			destroy()
-		else:
-			print('Res2')
-			stunMode()
-			COMBAT_RESULT = -1
+		#await CombatGlobals.getCombatScene().combat_done
+		#if COMBAT_RESULT == 1:
+		#	print('Res1')
+		#	destroy()
+		#else:
+		#	print('Res2')
+		#	stunMode()
+		#	COMBAT_RESULT = -1
 
 func patrol():
-	if STATE != 3:
+	if LINE_OF_SIGHT.process_mode != Node.PROCESS_MODE_DISABLED:
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer():
@@ -81,10 +85,10 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if !NAV_AGENT.is_target_reachable():
-		PATH_UPDATE_TIMER.stop()
+		#PATH_UPDATE_TIMER.timeout.emit()
 		MOVE_SPEED = BASE_MOVE_SPEED
 		STATE = 0
-		if PATROL_BUBBLE_SPRITE.visible:
+		if PATROL_BUBBLE_SPRITE.visible and PATROL_BUBBLE.current_animation != "Show":
 			PATROL_BUBBLE.play_backwards("Show")
 
 func alertPatrolMode():
@@ -100,9 +104,11 @@ func stunMode():
 	updatePath()
 	
 func destroy():
+	IDLE_TIMER.stop()
 	if PATROL_BUBBLE_SPRITE.visible:
 		PATROL_BUBBLE.play_backwards("Show")
-	stunMode()
+	immobolize()
+	ANIMATOR.stop()
 	ANIMATOR.play("KO")
 	await ANIMATOR.animation_finished
 	BODY.queue_free()
@@ -124,14 +130,24 @@ func updatePath():
 				PATROL_BUBBLE.play("Show")
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		3: 
+			immobolize()
 			ANIMATOR.play("Stun")
-			BODY.velocity = Vector2.ZERO
-			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
-			await get_tree().create_timer(5.0).timeout
+			randomize()
+			await get_tree().create_timer(randf_range(3.0, 4.0)).timeout
 			alertPatrolMode()
 			updatePath()
 			COMBAT_SWITCH = true
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
+		# 4:
+		#	COMBAT_SWITCH = true
+		#	interact_comp.combat_interact()
+		#	OverworldGlobals.alert_patrollers.emit()
+		#	COMBAT_SWITCH = false
+
+func immobolize():
+	BODY.velocity = Vector2.ZERO
+	LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
+	COMBAT_SWITCH = false
 
 func moveRandom():
 	randomize()

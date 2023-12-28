@@ -24,8 +24,9 @@ func initializeStatus():
 	ICON = TextureRect.new()
 	ICON.texture = TEXTURE
 	
-	PARTICLES = PACKED_SCENE.instantiate()
-	animateStatusEffect()
+	if PACKED_SCENE != null:
+		PARTICLES = PACKED_SCENE.instantiate()
+		animateStatusEffect()
 	
 	if ON_HIT:
 		CombatGlobals.received_combatant_value.connect(onHitTick)
@@ -44,22 +45,25 @@ func removeStatusEffect():
 	if ON_HIT:
 		CombatGlobals.received_combatant_value.disconnect(onHitTick)
 	STATUS_SCRIPT.endEffects(afflicted_combatant)
-	PARTICLES.queue_free()
+	if PARTICLES != null:
+		PARTICLES.queue_free()
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
 func tick():
 	if !PERMANENT: 
 		duration -= 1
-	
 	if !ON_HIT:
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if duration == 0 or afflicted_combatant.isDead():
+	if duration == 0 or afflicted_combatant.isDead() and NAME != "Knock Out":
 		removeStatusEffect()
 
 func animateStatusEffect():
+	if PARTICLES == null:
+		return
+	
 	PARTICLES.global_position = Vector2(0, 0)
 	afflicted_combatant.SCENE.add_child(PARTICLES)
 	

@@ -24,6 +24,9 @@ func removeStatModifications():
 			EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] -= STAT_MODIFICATIONS[key]
 			EQUIPPED_COMBATANT.STAT_VALUES[key] = EQUIPPED_COMBATANT.BASE_STAT_VALUES[key]
 
+#func refreshStatModifications():
+#	pass
+
 func getStringStats():
 	var result = ""
 	for key in STAT_MODIFICATIONS.keys():
