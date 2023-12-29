@@ -1,29 +1,29 @@
 ~ start
-set OverworldGlobals.player_can_move = false
+set player_can_move = false
 
-if PlayerGlobals.hasQuest("Orand") == false:
+if hasQuest("Orand") == false:
 	Entity: Name's Orand, here's a quest. >:3
 	
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
-	do PlayerGlobals.addQuest("Orand")
+	set show_player_interaction = true
+	set player_can_move = true
+	do addQuest("Orand")
 	=> END
 	
-elif PlayerGlobals.isQuestCompleted("Orand") == true:
+elif isQuestCompleted("Orand") == true:
 	Entity: Thanks pal!
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
+	set show_player_interaction = true
+	set player_can_move = true
 	=> END
-elif PlayerGlobals.isQuestObjectiveEnabled("Orand", "Finish up what you got") == true:
+elif isQuestObjectiveEnabled("Orand", "Finish up what you got") == true:
 	Entity: Looks like you're ready!
-	do PlayerGlobals.setQuestObjective("Orand", "Finish up what you got", true)
-	do PlayerGlobals.addItem("Arrow")
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
+	do setQuestObjective("Orand", "Finish up what you got", true)
+	do addItem("Arrow")
+	set show_player_interaction = true
+	set player_can_move = true
 	=> END
 else:
 	Entity: Finish the quest!
 
-set OverworldGlobals.show_player_interaction = true
-set OverworldGlobals.player_can_move = true
+set show_player_interaction = true
+set player_can_move = true
 => END

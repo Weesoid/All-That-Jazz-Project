@@ -48,7 +48,7 @@ func loadWares(array=wares_array):
 		
 		button.text = "%s (%s)" % [item, int(item.VALUE * modifier)]
 		
-		if item is ResEquippable and !PlayerGlobals.canAdd(item,1,false,false) and mode == 1: # TO DO Add no show prompt
+		if item is ResEquippable and !InventoryGlobals.canAdd(item,1,false,false) and mode == 1: # TO DO Add no show prompt
 			button.disabled = true
 		
 		button.pressed.connect(
@@ -102,22 +102,22 @@ func _on_action_pressed():
 		1:
 			if selected_item is ResGhostStackItem:
 				var amount = await loadSlider(selected_item)
-				PlayerGlobals.takeFromGhostStack(selected_item, amount, true)
+				InventoryGlobals.takeFromGhostStack(selected_item, amount, true)
 				PlayerGlobals.CURRENCY -= int((selected_item.VALUE * buy_modifier) * amount)
 			else:
-				PlayerGlobals.addItemResource(selected_item)
+				InventoryGlobals.addItemResource(selected_item)
 			loadWares(wares_array)
 		0:
 			var amount = await loadSlider(selected_item)
-			PlayerGlobals.removeItemResource(selected_item, amount)
+			InventoryGlobals.removeItemResource(selected_item, amount)
 			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
-			loadWares(PlayerGlobals.INVENTORY)
+			loadWares(InventoryGlobals.INVENTORY)
 
 func _on_toggle_mode_pressed():
 	match mode:
 		1:
 			mode = 0
-			loadWares(PlayerGlobals.INVENTORY)
+			loadWares(InventoryGlobals.INVENTORY)
 		0: 
 			mode = 1
 			loadWares(wares_array)

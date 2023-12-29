@@ -20,7 +20,7 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 			CombatGlobals.manual_call_indicator.emit(target, '20!', 'QTE')
 			damage += 20
 		if qte.points >= 3:
-			CombatGlobals.getCombatScene().writeCombatLog('PERFECTION!')
+			CombatGlobals.getCombatScene().combat_log.writeCombatLog('PERFECTION!')
 			CombatGlobals.manual_call_indicator.emit(target, '30!', 'QTE')
 			damage += 30
 		if qte.points >= 4:

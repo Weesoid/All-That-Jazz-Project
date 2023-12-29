@@ -18,9 +18,9 @@ func initializeObjective():
 
 func checkComplete():
 	if FINISHED:
-		PlayerGlobals.quest_objective_completed.emit(self)
+		QuestGlobals.quest_objective_completed.emit(self)
 	elif FAILED:
-		PlayerGlobals.quest_objective_completed.emit(self)
+		QuestGlobals.quest_objective_completed.emit(self)
 	return FINISHED
 
 func attemptEnable():

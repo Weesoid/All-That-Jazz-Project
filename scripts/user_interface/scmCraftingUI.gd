@@ -9,7 +9,7 @@ var selected_recipe: ResRecipe
 
 func _on_ready():
 	craft_button.hide()
-	for recipe in PlayerGlobals.KNOWN_RECIPES:
+	for recipe in InventoryGlobals.KNOWN_RECIPES:
 		print('Initing: ', recipe.OUTPUT)
 		var button = Button.new()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -21,7 +21,7 @@ func addButtonToPanel(recipe: ResRecipe, button: Button):
 	craftables.add_child(button)
 	button.pressed.connect(
 		func setSelectedItem(): 
-			selected_recipe = PlayerGlobals.getRecipe(recipe)
+			selected_recipe = InventoryGlobals.getRecipe(recipe)
 			description.text = recipe.OUTPUT.DESCRIPTION
 			recipe_label.text = recipe.getStringRecipe()
 			craft_button.visible = recipe.hasRequiredItems()

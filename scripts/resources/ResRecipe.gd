@@ -6,14 +6,14 @@ class_name ResRecipe
 
 func hasRequiredItems()-> bool:
 	for ingridient in RECIPE:
-		if PlayerGlobals.INVENTORY.has(ingridient) or PlayerGlobals.getUnstackableItemNames().has(ingridient.NAME):
+		if InventoryGlobals.INVENTORY.has(ingridient) or InventoryGlobals.getUnstackableItemNames().has(ingridient.NAME):
 			continue
 		else:
 			print('Missing: ', ingridient)
 			print('False! No ingridients')
 			return false
 	
-	for item in PlayerGlobals.INVENTORY:
+	for item in InventoryGlobals.INVENTORY:
 		if item is ResStackItem and RECIPE.has(item):
 			print(item)
 			if item.STACK < RECIPE[item]:
@@ -26,11 +26,11 @@ func hasRequiredItems()-> bool:
 func craft():
 	for item in RECIPE:
 		if item is ResStackItem:
-			PlayerGlobals.getItem(item).take(RECIPE[item])
+			InventoryGlobals.getItem(item).take(RECIPE[item])
 		else:
-			PlayerGlobals.removeItemWithName(item.NAME)
+			InventoryGlobals.removeItemWithName(item.NAME)
 	
-	PlayerGlobals.addItemResource(OUTPUT)
+	InventoryGlobals.addItemResource(OUTPUT)
 
 func getStringRecipe():
 	var result = ""

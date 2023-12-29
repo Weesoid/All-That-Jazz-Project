@@ -12,4 +12,4 @@ func applyEffect(caster: ResCombatant, targets, animation_scene, overworld=false
 		EFFECT.ABILITY_SCRIPT.applyOverworldEffects(caster, targets, animation_scene)
 	else:
 		EFFECT.applyEffects(caster, targets, animation_scene)
-	PlayerGlobals.removeItemResource(self, 1)
+	InventoryGlobals.removeItemResource(self, 1)

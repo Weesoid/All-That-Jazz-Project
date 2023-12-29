@@ -21,10 +21,12 @@ DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 OverworldGlobals="*res://scripts/main/gblOverworld.gd"
 CombatGlobals="*res://scripts/main/gblCombat.gd"
 PlayerGlobals="*res://scripts/main/gblPlayerData.gd"
+InventoryGlobals="*res://scripts/main/gblInventory.gd"
+QuestGlobals="*res://scripts/main/gblQuests.gd"
 
 [dialogue_manager]
 
-general/states=["Globals"]
+general/states=["Globals", "CombatGlobals", "OverworldGlobals", "PlayerGlobals", "InventoryGlobals", "QuestGlobals"]
 
 [display]
 

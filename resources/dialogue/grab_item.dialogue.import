@@ -12,3 +12,4 @@ dest_files=["res://.godot/imported/grab_item.dialogue-d4f1ad7ddf38fd9d8cb2c4f94c
 
 [params]
 
+defaults=true

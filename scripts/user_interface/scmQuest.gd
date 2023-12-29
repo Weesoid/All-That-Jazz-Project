@@ -18,7 +18,7 @@ func _process(_delta):
 		setQuestInfo()
 
 func _ready():
-	for quest in PlayerGlobals.QUESTS:
+	for quest in QuestGlobals.QUESTS:
 		var button = Button.new()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = str(quest.NAME)

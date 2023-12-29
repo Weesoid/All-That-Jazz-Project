@@ -34,6 +34,6 @@ func checkComplete():
 	
 	if objective_count == COUNT:
 		FINISHED = true
-		PlayerGlobals.quest_objective_completed.emit(self)
+		QuestGlobals.quest_objective_completed.emit(self)
 		CombatGlobals.combat_won.disconnect(setIDWin)
 		CombatGlobals.combat_lost.disconnect(setIDLose)

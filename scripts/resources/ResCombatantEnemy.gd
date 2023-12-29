@@ -53,7 +53,7 @@ func getDrops():
 			#print(drops)
 	
 	for item in drops:
-		PlayerGlobals.addItemResource(item, drops[item])
+		InventoryGlobals.addItemResource(item, drops[item])
 		if item is ResStackItem:
 			CombatGlobals.getCombatScene().combat_log.writeCombatLog('%s dropped [color=yellow]x%s %s[/color]!' % [NAME, drops[item], item.NAME])
 			drops_summary += 'x%s %s\n' % [drops[item], item.NAME]

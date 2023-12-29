@@ -9,8 +9,7 @@ extends Control
 var selected_item
 
 func _process(_delta):
-	capacity.text = "%s / %s" % [PlayerGlobals.CURRENT_CAPACITY, PlayerGlobals.MAX_CAPACITY]
-	
+	capacity.text = "%s / %s" % [InventoryGlobals.CURRENT_CAPACITY, InventoryGlobals.MAX_CAPACITY]
 
 func _ready():
 	loadStorage()
@@ -18,9 +17,9 @@ func _ready():
 func loadStorage():
 	clearButtons(storage)
 	clearButtons(inventory)
-	for item in PlayerGlobals.STORAGE:
+	for item in InventoryGlobals.STORAGE:
 		createButton(item, storage)
-	for item in PlayerGlobals.INVENTORY:
+	for item in InventoryGlobals.INVENTORY:
 		createButton(item, inventory)
 
 func createButton(item, location):
@@ -30,11 +29,11 @@ func createButton(item, location):
 	button.text = item._to_string()
 	button.pressed.connect(
 		func transferItem():
-			if PlayerGlobals.INVENTORY.has(item):
-				PlayerGlobals.transferItem(item, await loadSlider(item), PlayerGlobals.INVENTORY, PlayerGlobals.STORAGE)
+			if InventoryGlobals.INVENTORY.has(item):
+				InventoryGlobals.transferItem(item, await loadSlider(item), InventoryGlobals.INVENTORY, InventoryGlobals.STORAGE)
 				loadStorage()
-			elif PlayerGlobals.STORAGE.has(item):
-				PlayerGlobals.transferItem(item, await loadSlider(item), PlayerGlobals.STORAGE, PlayerGlobals.INVENTORY)
+			elif InventoryGlobals.STORAGE.has(item):
+				InventoryGlobals.transferItem(item, await loadSlider(item), InventoryGlobals.STORAGE, InventoryGlobals.INVENTORY)
 				loadStorage()
 	)
 	button.mouse_entered.connect(

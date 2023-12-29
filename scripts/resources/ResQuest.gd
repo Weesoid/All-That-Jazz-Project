@@ -26,7 +26,7 @@ func initializeQuest():
 		objective.attemptEnable()
 
 func getObjective(objective_name: String)-> ResQuestObjective:
-	if !PlayerGlobals.hasQuest(NAME):
+	if !QuestGlobals.hasQuest(NAME):
 		return null
 	
 	for objective in OBJECTIVES:
@@ -48,7 +48,7 @@ func isCompleted():
 		if objective.END_OBJECTIVE and objective.FINISHED:
 			COMPLETED = true
 			failRemainingObjectives()
-			PlayerGlobals.quest_completed.emit(self)
+			QuestGlobals.quest_completed.emit(self)
 			return COMPLETED
 
 func failRemainingObjectives():

@@ -7,14 +7,14 @@ class_name ResQuestObjectiveOtherObjectives
 func initializeObjective():
 	#assert(QUEST.getObjective(REQUIRED_OBJECTIVE.NAME) != null, "Objective %s does not exist in Quest %s" % [REQUIRED_OBJECTIVE.NAME, QUEST.NAME])
 	ENABLED = false
-	PlayerGlobals.quest_added.connect(attemptEnable)
-	PlayerGlobals.quest_objective_completed.connect(checkObjective)
+	QuestGlobals.quest_added.connect(attemptEnable)
+	QuestGlobals.quest_objective_completed.connect(checkObjective)
 	checkComplete()
 
 func attemptEnable():
-	if PlayerGlobals.isQuestObjectiveEnabled(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
+	if QuestGlobals.isQuestObjectiveEnabled(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		ENABLED = true
-	elif PlayerGlobals.isQuestObjectiveCompleted(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
+	elif QuestGlobals.isQuestObjectiveCompleted(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		ENABLED = true
 	
 	failObjectives()
@@ -25,20 +25,20 @@ func checkObjective(_objective: ResQuestObjective):
 func checkComplete():
 	attemptEnable()
 	
-	if PlayerGlobals.isQuestObjectiveCompleted(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
+	if QuestGlobals.isQuestObjectiveCompleted(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		FINISHED = true
-		if PlayerGlobals.quest_objective_completed.is_connected(checkComplete):
-			PlayerGlobals.quest_objective_completed.disconnect(checkComplete)
-		if PlayerGlobals.quest_objective_completed.is_connected(checkObjective):
-			PlayerGlobals.quest_objective_completed.disconnect(checkObjective)
-		PlayerGlobals.quest_objective_completed.emit(self)
-		PlayerGlobals.quest_added.disconnect(attemptEnable)
-	elif PlayerGlobals.isQuestObjectiveFailed(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
+		if QuestGlobals.quest_objective_completed.is_connected(checkComplete):
+			QuestGlobals.quest_objective_completed.disconnect(checkComplete)
+		if QuestGlobals.quest_objective_completed.is_connected(checkObjective):
+			QuestGlobals.quest_objective_completed.disconnect(checkObjective)
+		QuestGlobals.quest_objective_completed.emit(self)
+		QuestGlobals.quest_added.disconnect(attemptEnable)
+	elif QuestGlobals.isQuestObjectiveFailed(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		FAILED = true
 		ENABLED = false
-		if PlayerGlobals.quest_objective_completed.is_connected(checkComplete):
-			PlayerGlobals.quest_objective_completed.disconnect(checkComplete)
-		if PlayerGlobals.quest_objective_completed.is_connected(checkObjective):
-			PlayerGlobals.quest_objective_completed.disconnect(checkObjective)
-		PlayerGlobals.quest_objective_completed.emit(self)
-		PlayerGlobals.quest_added.disconnect(attemptEnable)
+		if QuestGlobals.quest_objective_completed.is_connected(checkComplete):
+			QuestGlobals.quest_objective_completed.disconnect(checkComplete)
+		if QuestGlobals.quest_objective_completed.is_connected(checkObjective):
+			QuestGlobals.quest_objective_completed.disconnect(checkObjective)
+		QuestGlobals.quest_objective_completed.emit(self)
+		QuestGlobals.quest_added.disconnect(attemptEnable)

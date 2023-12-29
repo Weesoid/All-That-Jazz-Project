@@ -1,12 +1,12 @@
 ~ start
-set OverworldGlobals.player_can_move = false
+set player_can_move = false
 Entity: Wanna have some GAY SEX?!
 - Willis: Gross!
 	Entity: Fuck you!
 - Willis: No Way!
 	Entity: Then EAT THIS!!!
-	do OverworldGlobals.setEnemyCombatantSquad("NPCPrototype")
-	do OverworldGlobals.changeToCombat()
-set OverworldGlobals.show_player_interaction = true
-set OverworldGlobals.player_can_move = true
+	do setEnemyCombatantSquad("NPCPrototype")
+	do changeToCombat()
+set show_player_interaction = true
+set player_can_move = true
 => END

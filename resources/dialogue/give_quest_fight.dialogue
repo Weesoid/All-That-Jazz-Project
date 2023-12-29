@@ -1,27 +1,27 @@
 ~ start
-set OverworldGlobals.player_can_move = false
+set player_can_move = false
 
-if PlayerGlobals.isQuestObjectiveEnabled("Orand", "Talk to Fightey"):
+if isQuestObjectiveEnabled("Orand", "Talk to Fightey"):
 	Willis: You're a hoe btw
 	Entity: I know!
-	do PlayerGlobals.setQuestObjective("Orand", "Talk to Fightey", true)
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
+	do setQuestObjective("Orand", "Talk to Fightey", true)
+	set show_player_interaction = true
+	set player_can_move = true
 	=> END
 
-if PlayerGlobals.hasQuest('Fight That Bitch!') == false:
+if hasQuest('Fight That Bitch!') == false:
 	Entity: Fight this bitch.
 	
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
-	do PlayerGlobals.addQuest("FightThatBitch")
+	set show_player_interaction = true
+	set player_can_move = true
+	do addQuest("FightThatBitch")
 	=> END
-elif PlayerGlobals.isQuestCompleted('Fight That Bitch!') == true:
+elif isQuestCompleted('Fight That Bitch!') == true:
 	Entity: You have fought that bitch!
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
+	set show_player_interaction = true
+	set player_can_move = true
 	=> END
 
-set OverworldGlobals.show_player_interaction = true
-set OverworldGlobals.player_can_move = true
+set show_player_interaction = true
+set player_can_move = true
 => END

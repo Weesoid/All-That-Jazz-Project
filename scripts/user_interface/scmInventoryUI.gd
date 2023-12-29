@@ -21,10 +21,10 @@ var selected_combatant: ResCombatant
 var button_item_map: Dictionary
 
 func _process(_delta):
-	capacity.text = "%s / %s" % [PlayerGlobals.CURRENT_CAPACITY, PlayerGlobals.MAX_CAPACITY]
+	capacity.text = "%s / %s" % [InventoryGlobals.CURRENT_CAPACITY, InventoryGlobals.MAX_CAPACITY]
 
 func _on_ready():
-	for item in PlayerGlobals.INVENTORY:
+	for item in InventoryGlobals.INVENTORY:
 		var button = Button.new()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size.x = 272
@@ -80,15 +80,15 @@ func addMembers():
 								party_panel.hide()
 							return
 						elif selected_item.EQUIPPED_COMBATANT == member:
-							PlayerGlobals.getItem(selected_item).unequip()
+							InventoryGlobals.getItem(selected_item).unequip()
 							stat_panel.text = member.getStringStats()
 							button_item_map[selected_item].icon = null
 						elif isMemberEquipped(member, selected_item):
 							updateButtonUnequip(member, selected_item)
-							PlayerGlobals.getItem(selected_item).equip(member)
+							InventoryGlobals.getItem(selected_item).equip(member)
 							equipMemberAndUpdateButton(member, selected_item)
 						else:
-							PlayerGlobals.getItem(selected_item).equip(member)
+							InventoryGlobals.getItem(selected_item).equip(member)
 							equipMemberAndUpdateButton(member, selected_item)
 						
 						for child in party_panel.get_children():
@@ -125,12 +125,12 @@ func clearMembers():
 
 func _on_drop_pressed():
 	if selected_item is ResEquippable:
-		PlayerGlobals.removeItemResource(selected_item)
+		InventoryGlobals.removeItemResource(selected_item)
 		button_item_map[selected_item].queue_free()
 		selected_item = null
 		use_container.hide()
 	elif selected_item is ResStackItem:
-		PlayerGlobals.removeItemResource(selected_item, await loadSlider(selected_item))
+		InventoryGlobals.removeItemResource(selected_item, await loadSlider(selected_item))
 		button_item_map[selected_item].text = str(selected_item)
 		if selected_item.STACK <= 0:
 			button_item_map[selected_item].queue_free()
@@ -182,7 +182,7 @@ func addButtonToTab(item: ResItem, button: Button):
 		func setSelectedItem(): 
 			clearMembers()
 			showUseContainer(item)
-			selected_item = PlayerGlobals.getItem(item)
+			selected_item = InventoryGlobals.getItem(item)
 			updateItemInfo(item)
 			)
 
@@ -228,11 +228,11 @@ func _on_tab_container_tab_changed(tab):
 	stat_panel.text = ""
 
 func _on_repair_pressed():
-	var scrap_salvage = PlayerGlobals.getItemWithName('Scrap Salvage')
+	var scrap_salvage = InventoryGlobals.getItemWithName('Scrap Salvage')
 	description_panel.text = selected_item.getInformation()
 	
 	if scrap_salvage != null:
-		PlayerGlobals.repairItem(selected_item, await loadSlider(scrap_salvage, true))
+		InventoryGlobals.repairItem(selected_item, await loadSlider(scrap_salvage, true))
 		button_item_map[scrap_salvage].text = str(scrap_salvage)
 		
 		if scrap_salvage.STACK <= 0:

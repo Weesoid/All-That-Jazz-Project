@@ -61,21 +61,28 @@ func _physics_process(delta):
 		velocity = direction * SPEED
 		move_and_slide()
 	
+	if stamina <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
+		Input.action_release("ui_click")
+	
 	if Input.is_action_pressed("ui_sprint") and stamina > 0.0 and bow_draw_strength == 0:
 		SPEED = sprint_speed
 		ANIMATION_SPEED = 1.0
 		if velocity != Vector2.ZERO: stamina -= sprint_drain
 	elif bow_draw_strength >= bow_max_draw:
-		stamina -= 0.1
-	elif stamina < 100.0:
-		if stamina < 100: stamina += stamina_gain
+		if stamina > 0.0:
+			stamina -= 0.1
+	elif Input.is_action_pressed("ui_sprint") and stamina < 0.0:
+		SPEED = walk_speed
+		ANIMATION_SPEED = 0.0
+	elif !Input.is_action_pressed("ui_sprint") and stamina < 100:
+		stamina += stamina_gain
+	
+	if Input.is_action_just_released("ui_sprint"):
 		SPEED = walk_speed
 		ANIMATION_SPEED = 0.0
 	
 	OverworldGlobals.follow_array.push_front(self.global_position)
 	OverworldGlobals.follow_array.pop_back()
-
-
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -157,7 +164,7 @@ func undrawBow():
 
 func shootProjectile():
 	playAudio("178872__hanbaal__bow.ogg", -15.0, true)
-	PlayerGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
+	InventoryGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
 	var projectile = load("res://scenes/entities/Arrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self

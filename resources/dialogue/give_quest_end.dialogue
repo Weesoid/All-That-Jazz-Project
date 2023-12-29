@@ -1,15 +1,15 @@
 ~ start
 
-set OverworldGlobals.player_can_move = false
+set player_can_move = false
 
-if PlayerGlobals.hasQuest("Completion") == false:
+if hasQuest("Completion") == false:
 	Entity: You got your work cut out for ya kid. God speed.
-	set OverworldGlobals.show_player_interaction = true
-	set OverworldGlobals.player_can_move = true
-	do PlayerGlobals.addQuest("Completion")
+	set show_player_interaction = true
+	set player_can_move = true
+	do addQuest("Completion")
 	=> END
 
-if PlayerGlobals.isQuestCompleted("Completion") == false:
+if isQuestCompleted("Completion") == false:
 	Entity: Get back ta' work!
 	=> leave_dialogue
 else:
@@ -17,6 +17,6 @@ else:
 	=> leave_dialogue
 
 ~ leave_dialogue
-set OverworldGlobals.show_player_interaction = true
-set OverworldGlobals.player_can_move = true
+set show_player_interaction = true
+set player_can_move = true
 => END

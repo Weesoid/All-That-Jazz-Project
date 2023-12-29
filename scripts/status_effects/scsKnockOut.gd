@@ -3,6 +3,5 @@ static func applyEffects(target: ResCombatant, _status_effect: ResStatusEffect):
 	
 
 static func endEffects(target: ResCombatant):
-	#CombatGlobals.resetStat(target, 'hustle')
-	pass
+	CombatGlobals.resetStat(target, 'hustle')
 	

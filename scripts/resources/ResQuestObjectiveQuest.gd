@@ -5,7 +5,7 @@ class_name ResQuestObjectiveQuest
 var quest_completed
 
 func initializeObjective():
-	PlayerGlobals.quest_completed.connect(setID)
+	QuestGlobals.quest_completed.connect(setID)
 	checkCompletedQuests()
 
 func setID(quest):
@@ -15,13 +15,13 @@ func setID(quest):
 func checkComplete():
 	if quest_completed == REQUIRED_QUEST:
 		FINISHED = true
-		PlayerGlobals.quest_objective_completed.emit(self)
-		PlayerGlobals.quest_completed.disconnect(setID)
+		QuestGlobals.quest_objective_completed.emit(self)
+		QuestGlobals.quest_completed.disconnect(setID)
 
 func checkCompletedQuests():
-	for quest in PlayerGlobals.QUESTS:
+	for quest in QuestGlobals.QUESTS:
 		if quest == REQUIRED_QUEST and quest.COMPLETED:
 			FINISHED = true
-			PlayerGlobals.quest_objective_completed.emit(self)
-			PlayerGlobals.quest_completed.disconnect(setID)
+			QuestGlobals.quest_objective_completed.emit(self)
+			QuestGlobals.quest_completed.disconnect(setID)
 			return

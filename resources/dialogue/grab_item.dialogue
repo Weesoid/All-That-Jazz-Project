@@ -1,10 +1,10 @@
 ~ start
-set OverworldGlobals.player_can_move = false
+set player_can_move = false
 
 Entity: Hello! I'm gonna move now!
-do OverworldGlobals.moveEntity("MrMovey", "U15,R25,D0")
+do moveEntity("MrMovey", "U15,R25,D0")
 Entity: I have arrived God I love SEEEXX!!!
 
-set OverworldGlobals.show_player_interaction = true
-set OverworldGlobals.player_can_move = true
+set show_player_interaction = true
+set player_can_move = true
 => END

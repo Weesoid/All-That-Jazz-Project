@@ -148,9 +148,9 @@ func end_turn():
 			CombatGlobals.addStatusEffect(combatant, CombatGlobals.loadStatusEffect('KnockOut'))
 		#await combatant.getAnimator().animation_finished
 		#combatant.getAnimator().play('KO')
-		#if combatant is ResEnemyCombatant: 
-		#	experience_earnt += combatant.getExperience()
-		#	drop_summary += combatant.getDrops()
+			if combatant is ResEnemyCombatant: 
+				experience_earnt += combatant.getExperience()
+				drop_summary += combatant.getDrops()
 		
 		#COMBATANTS.erase(combatant)
 	
@@ -210,13 +210,13 @@ func _on_skills_pressed():
 	
 	
 func _on_items_pressed():
-	getPlayerItems(PlayerGlobals.INVENTORY)
+	getPlayerItems(InventoryGlobals.INVENTORY)
 	if secondary_panel_container.get_child_count() == 0: return
 	secondary_panel.show()
 	secondary_panel_container.get_child(0).grab_focus()
 	
 func _on_equipment_pressed():
-	getPlayerWeapons(PlayerGlobals.INVENTORY)
+	getPlayerWeapons(InventoryGlobals.INVENTORY)
 	if secondary_panel_container.get_child_count() == 0: return
 	equip_button.disabled = false
 	secondary_panel.show()
@@ -374,7 +374,7 @@ func connectPlayerAbilities(combatant: ResCombatant):
 		ability.multi_target.connect(playerSelectAbility)
 		
 func connectPlayerItems():
-	for item in PlayerGlobals.INVENTORY:
+	for item in InventoryGlobals.INVENTORY:
 		if !item is ResConsumable: continue
 		if item.EFFECT != null: 
 			if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
