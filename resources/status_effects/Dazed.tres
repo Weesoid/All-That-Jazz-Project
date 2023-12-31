@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://bj64sklixu01e"]
+
+[ext_resource type="PackedScene" uid="uid://d0khkuya8js5a" path="res://scenes/particles/Vulnerated.tscn" id="1_8ihke"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_bb7g0"]
+[ext_resource type="Texture2D" uid="uid://cgf1qb6eni4jx" path="res://assets/icons/s_speed.png" id="2_vc3tq"]
+
+[resource]
+script = ExtResource("1_bb7g0")
+NAME = "Dazed"
+DESCRIPTION = "Target cannot act and takes additional damage."
+PACKED_SCENE = ExtResource("1_8ihke")
+TEXTURE = ExtResource("2_vc3tq")
+MAX_DURATION = 3
+MAX_RANK = 0
+ON_HIT = true
+APPLY_ONCE = false
+TICK_PER_TURN = false
+PERMANENT = false

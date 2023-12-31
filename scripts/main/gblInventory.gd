@@ -62,7 +62,7 @@ func removeItemResource(item, count=1, unit=INVENTORY):
 	if count == 0:
 		return
 	elif item.MANDATORY:
-		OverworldGlobals.getPlayer().prompt.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item, getStorageUnitName(unit)])
+		OverworldGlobals.getPlayer().prompt.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
 		return
 	
 	if item is ResEquippable:
@@ -120,6 +120,9 @@ func takeFromGhostStack(item: ResGhostStackItem, count, transfer_to_storage=fals
 func transferItem(item: ResItem, count: int, from: Array[ResItem], to: Array[ResItem]):
 	if item is ResStackItem and count <= 0:
 		return
+	elif INVENTORY.has(item) and item.MANDATORY:
+		return
+	
 	if item is ResStackItem and from == INVENTORY and to == STORAGE:
 		createGhostStack(item, count)
 		return

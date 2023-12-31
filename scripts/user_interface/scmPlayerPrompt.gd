@@ -6,9 +6,9 @@ extends RichTextLabel
 
 func _process(_delta):
 	if OverworldGlobals.showing_menu:
-		modulate.a = 0.5
+		visible = false
 	else:
-		modulate.a = 1.0
+		visible = true
 	
 func animatePrompt(action: int):
 	match action:
@@ -32,7 +32,7 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 		audio_player.stream = load("res://assets/sounds/%s" % audio_file)
 		audio_player.play()
 	
-	if get_line_count() > 10:
+	if get_line_count() > 15:
 		timer.timeout.emit()
 
 func _unhandled_input(_event):

@@ -535,14 +535,14 @@ func concludeCombat(results: int):
 	var morale_bonus = 1
 	var loot_bonus = 0
 	if turn_count <= 6 and results == 1:
-		combat_log.writeCombatLog('[color=orange]FAST BATTLE![/color] | +25% Morale & Increased Drops |')
+		combat_log.writeCombatLog('[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops')
 		morale_bonus += 1
 		loot_bonus += 1
-	if enemy_turn_count == 0:
-		combat_log.writeCombatLog('[color=orange]RUTHLESS FINISH![/color] | Increased Drops |')
+	if enemy_turn_count == 0 and results == 1:
+		combat_log.writeCombatLog('[color=orange]RUTHLESS FINISH![/color] Increased Drops')
 		loot_bonus += 1
-	if player_turn_count < 4:
-		combat_log.writeCombatLog('[color=orange]STRAGETIC VICTORY![/color] | +25% Morale |')
+	if player_turn_count < 4 and results == 1:
+		combat_log.writeCombatLog('[color=orange]STRAGETIC VICTORY![/color] +25% Morale')
 		morale_bonus += 1
 	
 	experience_earnt += (experience_earnt*0.25)*morale_bonus
