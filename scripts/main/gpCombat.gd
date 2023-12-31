@@ -39,6 +39,8 @@ var run_once = true
 var experience_earnt = 0
 var drop_summary = ''
 var turn_count = 0
+var player_turn_count = 0
+var enemy_turn_count = 0
 
 signal confirm
 signal target_selected
@@ -133,6 +135,11 @@ func on_enemy_turn():
 
 func end_turn():
 	turn_count += 1
+	if active_combatant is ResPlayerCombatant:
+		player_turn_count += 1
+	else:
+		enemy_turn_count += 1
+	
 	CombatGlobals.turn_increment.emit(turn_count)
 	combat_camera.position = Vector2(0, -19)
 	for combatant in COMBATANTS:
@@ -210,7 +217,7 @@ func _on_skills_pressed():
 	
 	
 func _on_items_pressed():
-	getPlayerItems(InventoryGlobals.INVENTORY)
+	getPlayerItems()
 	if secondary_panel_container.get_child_count() == 0: return
 	secondary_panel.show()
 	secondary_panel_container.get_child(0).grab_focus()
@@ -238,7 +245,7 @@ func toggleUI():
 #********************************************************************************
 # ABILITY SELECTION, TARGETING, AND EXECUTION
 #********************************************************************************
-func getPlayerAbilities(ability_set: Array[ResAbility]):
+func getPlayerAbilities(ability_set: Array[ResAbility]):	
 	for child in secondary_panel_container.get_children():
 		child.free()
 	
@@ -254,11 +261,11 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 			button.disabled = true
 		secondary_panel_container.add_child(button)
 
-func getPlayerItems(inventory):
+func getPlayerItems():
 	for child in secondary_panel_container.get_children():
 		child.free()
-		
-	for item in inventory:
+	
+	for item in InventoryGlobals.INVENTORY:
 		if !item is ResConsumable or item.EFFECT == null: continue
 		var button = Button.new()
 		button.add_theme_font_size_override('font_size', 16)
@@ -282,10 +289,11 @@ func getPlayerWeapons(inventory):
 		button.add_theme_font_size_override('font_size', 16)
 		button.custom_minimum_size.x = 240
 		button.text = str(weapon.NAME, '(', weapon.durability, '/', weapon.max_durability,')')
-		button.pressed.connect( 
+		button.pressed.connect(
 			func equipWeapon(): 
 				weapon.equip(active_combatant) 
 				resetActionLog()
+				_on_attack_pressed()
 				)
 		if weapon.durability <= 0: button.disabled = true
 		secondary_panel_container.add_child(button)
@@ -524,13 +532,28 @@ func concludeCombat(results: int):
 	target_state = 0
 	target_index = 0
 	
+	var morale_bonus = 1
+	var loot_bonus = 0
+	if turn_count <= 6 and results == 1:
+		combat_log.writeCombatLog('[color=orange]FAST BATTLE![/color] | +25% Morale & Increased Drops |')
+		morale_bonus += 1
+		loot_bonus += 1
+	if enemy_turn_count == 0:
+		combat_log.writeCombatLog('[color=orange]RUTHLESS FINISH![/color] | Increased Drops |')
+		loot_bonus += 1
+	if player_turn_count < 4:
+		combat_log.writeCombatLog('[color=orange]STRAGETIC VICTORY![/color] | +25% Morale |')
+		morale_bonus += 1
+	
+	experience_earnt += (experience_earnt*0.25)*morale_bonus
+	for i in range(loot_bonus):
+		for enemy in getCombatantGroup('enemies'): drop_summary += enemy.getDrops()
+	
 	var bc_ui = preload("res://scenes/user_interface/BattleConclusion.tscn").instantiate()
 	bc_ui.drops = drop_summary
 	add_child(bc_ui)
-	
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)
-	
 	await bc_ui.done
 	
 	if conclusion_dialogue != null:

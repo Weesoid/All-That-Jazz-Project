@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=21 format=3 uid="uid://cxmw4kd3fmtak"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://cxmw4kd3fmtak"]
 
 [ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_h6ewg"]
-[ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_bxed0"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="2_jsk6a"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="3_bfkjx"]
 [ext_resource type="PackedScene" uid="uid://b5w271wdy4wha" path="res://scenes/entities/NPCPrototypeFollower.tscn" id="4_fpjeh"]
@@ -168,7 +167,7 @@ STAT_GROWTH_RATES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_POO = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("6_ateo1"), ExtResource("2_bxed0")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
 MANDATORY = false
 NAME = "PUMainBlasko"

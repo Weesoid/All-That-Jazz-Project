@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=21 format=3 uid="uid://vtaidrxm1tji"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://vtaidrxm1tji"]
 
 [ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_bsdt7"]
 [ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
-[ext_resource type="Resource" uid="uid://bn13cdac7oodf" path="res://resources/abilities/Heal.tres" id="2_lgwhg"]
 [ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="3_k3ahh"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="4_nrs1w"]
 [ext_resource type="PackedScene" uid="uid://biqj1gj1bb25p" path="res://scenes/entities/NPCPrototypeFollower2.tscn" id="5_3c2l6"]
@@ -168,7 +167,7 @@ STAT_GROWTH_RATES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_POO = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_in4d2"), ExtResource("2_lgwhg")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
 MANDATORY = true
 NAME = "PUFriendHealer"
