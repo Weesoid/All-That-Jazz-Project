@@ -14,7 +14,7 @@ class_name ResPlayerCombatant
 	'heal mult': 0,
 	'exposure': 0
 }
-@export var ABILITY_POO: Array[ResAbility]
+@export var ABILITY_POOL: Array[ResAbility]
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 

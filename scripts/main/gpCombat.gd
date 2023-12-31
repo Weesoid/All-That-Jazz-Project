@@ -366,7 +366,7 @@ func addCombatant(combatant, container):
 		marker.add_child(combatant.SCENE)
 		combatant.getAnimator().play('Idle')
 		break
-	
+
 func connectPlayerAbilities(combatant: ResCombatant):	
 	for ability in combatant.ABILITY_SET:
 		if ability.single_target.is_connected(playerSelectAbility): continue

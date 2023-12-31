@@ -21,7 +21,7 @@ func _ready():
 				toggle_button.disabled = false
 				selected_combatant = member
 				mode = 1
-				loadAbilities(selected_combatant.ABILITY_POO)
+				loadAbilities(selected_combatant.ABILITY_POOL)
 		)
 		member_container.add_child(member_button)
 
@@ -49,13 +49,13 @@ func loadAbilities(ability_array, skip_first=false):
 		button.pressed.connect(
 			func():
 				if mode == 1:
-					selected_combatant.ABILITY_POO.erase(ability)
+					selected_combatant.ABILITY_POOL.erase(ability)
 					selected_combatant.ABILITY_SET.append(ability)
 					selected_combatant.ABILITY_POINTS -= ability.VALUE
-					loadAbilities(selected_combatant.ABILITY_POO)
+					loadAbilities(selected_combatant.ABILITY_POOL)
 				elif mode == 0:
 					selected_combatant.ABILITY_SET.erase(ability)
-					selected_combatant.ABILITY_POO.append(ability)
+					selected_combatant.ABILITY_POOL.append(ability)
 					selected_combatant.ABILITY_POINTS += ability.VALUE
 					loadAbilities(selected_combatant.ABILITY_SET, true)
 			#	print('POOL: ', selected_combatant.ABILITY_POO)
@@ -78,7 +78,7 @@ func _on_toggle_mode_pressed():
 	match mode:
 		1:
 			mode = 0
-			loadAbilities(selected_combatant.ABILITY_SET)
+			loadAbilities(selected_combatant.ABILITY_SET, true)
 		0: 
 			mode = 1
-			loadAbilities(selected_combatant.ABILITY_POO)
+			loadAbilities(selected_combatant.ABILITY_POOL)

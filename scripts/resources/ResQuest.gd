@@ -30,7 +30,7 @@ func getObjective(objective_name: String)-> ResQuestObjective:
 		return null
 	
 	for objective in OBJECTIVES:
-		if objective.NAME == objective_name:
+		if objective.NAME.to_lower() == objective_name.to_lower():
 			return objective
 	
 	return null

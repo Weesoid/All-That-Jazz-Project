@@ -83,7 +83,7 @@ func isQuestObjectiveFailed(quest_name: String, quest_objective_name: String) ->
 
 func getQuest(quest_name: String)-> ResQuest:
 	for quest in QUESTS:
-		if quest.NAME == quest_name: 
+		if quest.NAME.to_lower() == quest_name.to_lower(): 
 			return quest
 	
 	return null
