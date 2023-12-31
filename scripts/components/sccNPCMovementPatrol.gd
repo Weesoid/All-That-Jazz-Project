@@ -111,6 +111,8 @@ func destroy():
 	ANIMATOR.stop()
 	ANIMATOR.play("KO")
 	await ANIMATOR.animation_finished
+	OverworldGlobals.getPlayer().prompt.showPrompt('Morale increased!')
+	COMBAT_SQUAD.getExperience()
 	BODY.queue_free()
 
 func updatePath():

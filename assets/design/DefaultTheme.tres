@@ -53,7 +53,7 @@ bg_color = Color(0, 0, 0, 1)
 border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rff4l"]
-bg_color = Color(0.701961, 0.701961, 0.701961, 1)
+bg_color = Color(0.772549, 0.772549, 0.772549, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_scqyn"]
 content_margin_left = 6.0

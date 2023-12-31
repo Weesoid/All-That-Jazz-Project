@@ -30,6 +30,8 @@ func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 func getExperience():
 	var out = 0
 	for key in BASE_STAT_VALUES.keys():
+		print(key)
+		print(BASE_STAT_VALUES[key])
 		if key == "health": continue
 		out += BASE_STAT_VALUES[key]
 	return out

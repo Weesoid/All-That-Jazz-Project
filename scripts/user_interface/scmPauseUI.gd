@@ -7,10 +7,12 @@ extends Control
 @onready var party = $Container/Posse
 @onready var save = $Container/Save
 @onready var quit = $Container/Quit
-
+@onready var exp_bar = $Container/Experience
 
 func _ready():
 	OverworldGlobals.player_can_move = false
+	exp_bar.value = PlayerGlobals.CURRENT_EXP
+	exp_bar.max_value = PlayerGlobals.getRequiredExp()
 
 func _on_tree_exited():
 	OverworldGlobals.player_can_move = true

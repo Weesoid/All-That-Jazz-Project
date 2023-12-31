@@ -35,11 +35,13 @@ func initializeBenchedTeam():
 # COMBATANT MANAGEMENT
 #********************************************************************************
 func addExperience(experience: int):
+	print(experience)
 	CURRENT_EXP += experience
 	if CURRENT_EXP >= getRequiredExp():
 		PARTY_LEVEL += 1
 		CURRENT_EXP = 0
 		levelUpCombatants()
+		OverworldGlobals.getPlayer().prompt.showPrompt('Party levelled up to %s!' % [PARTY_LEVEL])
 
 func getRequiredExp() -> int:
 	var baseExp = 100

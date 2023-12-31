@@ -29,6 +29,7 @@ var walk_speed = 100.0
 var sprint_speed = 200.0
 var sprint_drain = 0.10
 var stamina_gain = 0.10
+var stamina_regen = true
 
 var ANIMATION_SPEED = 0.0
 
@@ -74,7 +75,7 @@ func _physics_process(delta):
 	elif Input.is_action_pressed("ui_sprint") and stamina < 0.0:
 		SPEED = walk_speed
 		ANIMATION_SPEED = 0.0
-	elif !Input.is_action_pressed("ui_sprint") and stamina < 100:
+	elif !Input.is_action_pressed("ui_sprint") and stamina < 100 and stamina_regen:
 		stamina += stamina_gain
 	
 	if Input.is_action_just_released("ui_sprint"):

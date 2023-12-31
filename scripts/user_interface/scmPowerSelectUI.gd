@@ -19,13 +19,13 @@ func _unhandled_input(_event):
 		updatePowerSelect()
 	
 	if Input.is_action_just_pressed("ui_accept"):
-		PlayerGlobals.KNOWN_POWERS[current_index].setPower()
+		InventoryGlobals.KNOWN_POWERS[current_index].setPower()
 		OverworldGlobals.closeMenu(self)
 	
 func updatePowerSelect():
-	if current_index > PlayerGlobals.KNOWN_POWERS.size() - 1 or current_index < 0:
+	if current_index > InventoryGlobals.KNOWN_POWERS.size() - 1 or current_index < 0:
 		current_index = 0
 	
-	icon.texture = PlayerGlobals.KNOWN_POWERS[current_index].ICON
-	info_name.text = PlayerGlobals.KNOWN_POWERS[current_index].NAME
-	info_description.text = PlayerGlobals.KNOWN_POWERS[current_index].DESCRIPTION
+	icon.texture = InventoryGlobals.KNOWN_POWERS[current_index].ICON
+	info_name.text = InventoryGlobals.KNOWN_POWERS[current_index].NAME
+	info_description.text = InventoryGlobals.KNOWN_POWERS[current_index].DESCRIPTION

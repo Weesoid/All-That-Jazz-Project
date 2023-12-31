@@ -15,6 +15,7 @@ func _unhandled_input(_event):
 		setVisible()
 
 func setInvisible():
+	player.stamina_regen = false
 	player.stamina -= 0.5
 	player.set_collision_layer_value(5, false)
 	player.set_collision_mask_value(5, false)
@@ -22,6 +23,7 @@ func setInvisible():
 	player.sprite.modulate.a = 0.5
 
 func setVisible():
+	player.stamina_regen = true
 	player.SPEED = 100
 	player.set_collision_layer_value(5, true)
 	player.set_collision_mask_value(5, true)
