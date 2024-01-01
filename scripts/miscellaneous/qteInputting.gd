@@ -17,7 +17,6 @@ func _ready():
 	timer.start(input_count / 3)
 	time_bar.max_value = timer.wait_time
 	generateInputs()
-	print(inputs)
 
 func _process(_delta):
 	time_bar.value = timer.time_left
@@ -73,5 +72,4 @@ func _unhandled_key_input(_event):
 			CombatGlobals.qte_finished.emit()
 
 func _on_timer_timeout():
-	print('timeout!')
 	CombatGlobals.qte_finished.emit()

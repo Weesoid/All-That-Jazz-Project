@@ -41,6 +41,8 @@ var drop_summary = ''
 var turn_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
+var initial_status_effect_enemy: String = ''
+var initial_status_effect_player: String = ''
 
 signal confirm
 signal target_selected
@@ -80,6 +82,14 @@ func _ready():
 	
 	active_combatant = COMBATANTS[active_index]
 	turn_indicator.updateActive()
+	
+	if initial_status_effect_enemy != '':
+		for combatant in getCombatantGroup('enemies'):
+			CombatGlobals.addStatusEffect(combatant, initial_status_effect_enemy)
+	if initial_status_effect_player != '':
+		for combatant in getCombatantGroup('player'):
+			CombatGlobals.addStatusEffect(combatant, initial_status_effect_player)
+	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
 	
@@ -152,7 +162,7 @@ func end_turn():
 		# To do fix KO getting cleared every predictable turn
 		if !combatant.getStatusEffectNames().has('Knock Out'): 
 			clearStatusEffects(combatant)
-			CombatGlobals.addStatusEffect(combatant, CombatGlobals.loadStatusEffect('KnockOut'))
+			CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 		#await combatant.getAnimator().animation_finished
 		#combatant.getAnimator().play('KO')
 			if combatant is ResEnemyCombatant: 
@@ -424,7 +434,6 @@ func isCombatantGroupDead(group: Array[ResCombatant]):
 
 func checkWin():
 	if isCombatantGroupDead(getCombatantGroup('enemies')):
-		print('No more enemies')
 		if unique_id != null:
 			CombatGlobals.combat_won.emit(unique_id)
 		
@@ -435,7 +444,6 @@ func checkWin():
 		concludeCombat(1)
 	
 	elif isCombatantGroupDead(getCombatantGroup('team')):
-		print('No more team')
 		if unique_id != null:
 			CombatGlobals.combat_lost.emit(unique_id)
 		

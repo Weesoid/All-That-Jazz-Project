@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://htw0wbvtq78d"]
+
+[ext_resource type="Texture2D" uid="uid://b6un21a4652j3" path="res://assets/images/arrow.png" id="1_apnj5"]
+[ext_resource type="Script" path="res://scripts/components/sccCombatInteract.gd" id="1_s0dql"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f1j23"]
+radius = 12.0
+
+[node name="CombatInteractComponent" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_s0dql")
+
+[node name="InteractionArea" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f1j23")
+debug_color = Color(0.917647, 0.372549, 0, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.19209e-07, -24)
+rotation = 1.5708
+scale = Vector2(0.102442, 0.112664)
+texture = ExtResource("1_apnj5")

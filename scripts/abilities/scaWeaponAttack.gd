@@ -25,8 +25,7 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 			damage += 30
 		if qte.points >= 4:
 			CombatGlobals.manual_call_indicator.emit(target, 'SINGE!', 'QTE')
-			var status_effect = CombatGlobals.loadStatusEffect('Poison')
-			CombatGlobals.addStatusEffect(target, status_effect)
+			CombatGlobals.addStatusEffect(target, 'Poison')
 		
 		qte.queue_free()
 	

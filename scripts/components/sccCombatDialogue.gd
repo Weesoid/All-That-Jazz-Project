@@ -44,7 +44,6 @@ func startCombatantDataDialogue(combatant: ResCombatant):
 
 func startAbilityDialogue(ability: ResAbility):
 	if ability == ability_condition:
-		print('Triggered!')
 		OverworldGlobals.showDialogueBox(dialogue_resource, 'on_ability')
 		dialogue_triggered = true
 		CombatGlobals.ability_used.disconnect(startAbilityDialogue)

@@ -1,7 +1,10 @@
-static func applyEffects(target: ResCombatant, caster:ResCombatant, value, status_effect: ResStatusEffect):
-	CombatGlobals.calculateRawDamage(target, target.STAT_VALUE['health']*0.15)
-	status_effect.removeStatusEffect()
+static func applyEffects(target: ResCombatant, _status_effect: ResStatusEffect):
+	CombatGlobals.manual_call_indicator.emit(target, 'DAZED!', 'Show')
+	CombatGlobals.modifyStat(target, 'grit', -0.5)
+	CombatGlobals.modifyStatFlat(target, 'exposure', 0.5)
+	target.STAT_VALUES['hustle'] = -1
 
-static func endEffects(_target: ResCombatant):
-	pass
-
+static func endEffects(target: ResCombatant):
+	CombatGlobals.resetStat(target, 'grit')
+	CombatGlobals.resetStat(target, 'exposure')
+	CombatGlobals.resetStat(target, 'hustle')

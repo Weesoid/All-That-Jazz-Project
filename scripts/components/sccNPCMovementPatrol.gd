@@ -13,6 +13,7 @@ var PATROL_SHAPE
 var IDLE_TIMER: Timer
 
 var COMBAT_SWITCH = true
+var PATROL = true
 
 func _ready():
 	NAME = get_parent().name
@@ -53,7 +54,8 @@ func _ready():
 #	PATH_UPDATE_TIMER.start(15.0)
 
 func _physics_process(_delta):
-	patrol()
+	if PATROL:
+		patrol()
 	BODY.move_and_slide()
 	executeCollisionAction()
 
@@ -65,14 +67,6 @@ func executeCollisionAction():
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.alert_patrollers.emit()
 		COMBAT_SWITCH = false
-		#await CombatGlobals.getCombatScene().combat_done
-		#if COMBAT_RESULT == 1:
-		#	print('Res1')
-		#	destroy()
-		#else:
-		#	print('Res2')
-		#	stunMode()
-		#	COMBAT_RESULT = -1
 
 func patrol():
 	if LINE_OF_SIGHT.process_mode != Node.PROCESS_MODE_DISABLED:
@@ -85,9 +79,9 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if !NAV_AGENT.is_target_reachable():
-		#PATH_UPDATE_TIMER.timeout.emit()
 		MOVE_SPEED = BASE_MOVE_SPEED
 		STATE = 0
+		updatePath()
 		if PATROL_BUBBLE_SPRITE.visible and PATROL_BUBBLE.current_animation != "Show":
 			PATROL_BUBBLE.play_backwards("Show")
 
@@ -104,9 +98,7 @@ func stunMode():
 	updatePath()
 	
 func destroy():
-	IDLE_TIMER.stop()
-	if PATROL_BUBBLE_SPRITE.visible:
-		PATROL_BUBBLE.play_backwards("Show")
+	PATROL = false
 	immobolize()
 	ANIMATOR.stop()
 	ANIMATOR.play("KO")
@@ -115,34 +107,38 @@ func destroy():
 
 func updatePath():
 	match STATE:
+		# PATROL
 		0:
 			randomize()
 			IDLE_TIMER.start(randf_range(1.0, 5.0))
 			await IDLE_TIMER.timeout
 			NAV_AGENT.target_position = moveRandom()
+		# ALERTED PATROL
 		1:
 			randomize()
 			IDLE_TIMER.start(randf_range(1.0, 2.5))
 			await IDLE_TIMER.timeout
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
+		# CHASE
 		2:
 			if !PATROL_BUBBLE_SPRITE.visible:
 				PATROL_BUBBLE.play("Show")
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
+		# STUNNED
 		3: 
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
+			#COMBAT_SQUAD.applyEffectToSquad(preload("res://resources/status_effects/Poison.tres"))
 			await get_tree().create_timer(randf_range(3.0, 4.0)).timeout
+			#COMBAT_SQUAD.clearSquadEffects()
+			for child in BODY.get_children():
+				if child.name == 'CombatInteractComponent': 
+					child.queue_free()
 			alertPatrolMode()
 			updatePath()
 			COMBAT_SWITCH = true
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
-		# 4:
-		#	COMBAT_SWITCH = true
-		#	interact_comp.combat_interact()
-		#	OverworldGlobals.alert_patrollers.emit()
-		#	COMBAT_SWITCH = false
 
 func immobolize():
 	BODY.velocity = Vector2.ZERO

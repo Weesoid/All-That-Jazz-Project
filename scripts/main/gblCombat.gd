@@ -178,10 +178,8 @@ func playAnimation(target: ResCombatant, animation_name: String):
 #********************************************************************************
 # STATUS EFFECT HANDLING
 #********************************************************************************
-func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
-	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
-
-func addStatusEffect(target: ResCombatant, status_effect: ResStatusEffect):
+func addStatusEffect(target: ResCombatant, status_effect_name: String):
+	var status_effect = load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 	if status_effect.NAME not in target.getStatusEffectNames():
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()

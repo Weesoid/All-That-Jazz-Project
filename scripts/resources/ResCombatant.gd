@@ -79,7 +79,6 @@ func getMaxHealth():
 func getStatusEffect(stat_name: String)-> ResStatusEffect:
 	for status in STATUS_EFFECTS:
 		if status.NAME == stat_name:
-			print('Returning')
 			return status
 	
 	return null

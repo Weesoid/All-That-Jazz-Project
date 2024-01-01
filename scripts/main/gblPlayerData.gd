@@ -35,7 +35,6 @@ func initializeBenchedTeam():
 # COMBATANT MANAGEMENT
 #********************************************************************************
 func addExperience(experience: int):
-	print(experience)
 	CURRENT_EXP += experience
 	if CURRENT_EXP >= getRequiredExp():
 		PARTY_LEVEL += 1

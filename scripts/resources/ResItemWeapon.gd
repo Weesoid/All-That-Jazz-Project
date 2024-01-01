@@ -7,8 +7,6 @@ class_name ResWeapon
 
 func equip(combatant: ResCombatant):
 	if combatant is ResPlayerCombatant:
-		print(durability)
-		print(EQUIPPED_COMBATANT)
 		if EQUIPPED_COMBATANT != null or max_durability <= 0:
 			unequip()
 		if combatant.EQUIPMENT['weapon'] != null:

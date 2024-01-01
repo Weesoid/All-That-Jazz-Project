@@ -108,10 +108,10 @@ func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_
 	var balloon: Node = (SmallExampleBalloonScene if is_small_window else ExampleBalloonScene).instantiate()
 	get_tree().current_scene.add_child(balloon)
 	if result == 0:
-		print('Lose!')
+
 		balloon.start(resource, 'lose', extra_game_states)
 	elif result == 1:
-		print('Won!')
+
 		balloon.start(resource, 'win', extra_game_states)
 
 func loadFollower(combatant: ResPlayerCombatant):
@@ -128,16 +128,14 @@ func loadFollower(combatant: ResPlayerCombatant):
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = ''):
-	print('start')
+func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = ''):
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
-	
 	for combatant in getCombatantSquad(entity_name):
-		# add status effect 'Vulnerable or something' if advantage is true
-		# Stunned, more exposed, less grit
 		combat_scene.COMBATANTS.append(combatant.duplicate())
+	combat_scene.initial_status_effect_enemy = initial_status_effect_enemy
+	combat_scene.initial_status_effect_player = initial_status_effect_player
 	
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
@@ -176,5 +174,4 @@ func isPlayerSquadDead():
 func restorePlayerView():
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
-	print('Restored!')
 	

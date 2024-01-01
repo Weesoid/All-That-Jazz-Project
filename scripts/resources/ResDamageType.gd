@@ -15,7 +15,7 @@ func rollEffect(target: ResCombatant):
 		percent_chance = 0
 	
 	if CombatGlobals.randomRoll(percent_chance):
-		CombatGlobals.addStatusEffect(target, EFFECT.duplicate())
+		CombatGlobals.addStatusEffect(target, EFFECT.NAME)
 	else:
 		return
 

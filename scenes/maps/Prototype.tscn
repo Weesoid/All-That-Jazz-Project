@@ -129,4 +129,5 @@ position = Vector2(0, -240)
 [node name="NPCPatrolComponent" parent="NPCPrototype" index="0" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
+[editable path="MrMovey"]
 [editable path="NPCPrototype"]

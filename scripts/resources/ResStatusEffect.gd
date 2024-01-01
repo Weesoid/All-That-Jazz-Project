@@ -69,3 +69,5 @@ func animateStatusEffect():
 	
 	PARTICLES.restart()
 
+func _to_string():
+	return NAME

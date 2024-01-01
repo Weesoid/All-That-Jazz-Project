@@ -35,7 +35,6 @@ func _process(delta):
 			time_bar.hide()
 			bar.hide()
 			await ding_sound.finished
-			print('Finished with points: ', points)
 			CombatGlobals.qte_finished.emit()
 		else:
 			newMash()

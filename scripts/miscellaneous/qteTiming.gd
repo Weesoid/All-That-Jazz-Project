@@ -28,7 +28,6 @@ func _unhandled_input(_event: InputEvent):
 			ding_sound.pitch_scale += (0.025 * points)
 			ding_sound.play()
 			if points == max_ponts:
-				print('max!')
 				ding_sound.volume_db += 0.5
 				target.hide()
 				await ding_sound.finished

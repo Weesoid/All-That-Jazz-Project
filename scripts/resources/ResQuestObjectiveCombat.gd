@@ -17,13 +17,11 @@ func setIDLose(input_id):
 	id = input_id
 	combat_result = 0
 	checkComplete()
-	print('Sig received lose!')
 
 func setIDWin(input_id):
 	id = input_id
 	combat_result = 1
 	checkComplete()
-	print('Sig received won!')
 
 func checkComplete():
 	if UNIQUE_COMBAT_ID == id:
