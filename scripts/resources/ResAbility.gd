@@ -33,8 +33,6 @@ signal random_target(type)
 signal no_resource
 
 func execute():
-	print('EXECUTING!')
-	print(TARGET_TYPE)
 	match TARGET_TYPE:
 		TargetType.SINGLE: single_target.emit(self, 1)
 		TargetType.MULTI: multi_target.emit(self, 2)

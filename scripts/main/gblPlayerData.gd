@@ -40,7 +40,6 @@ func addExperience(experience: int):
 		PARTY_LEVEL += 1
 		CURRENT_EXP = 0
 		levelUpCombatants()
-		OverworldGlobals.getPlayer().prompt.showPrompt('Party levelled up to %s!' % [PARTY_LEVEL])
 
 func getRequiredExp() -> int:
 	var baseExp = 100
@@ -52,6 +51,7 @@ func levelUpCombatants():
 		combatant.ABILITY_POINTS += 1
 		for stat in combatant.BASE_STAT_VALUES.keys():
 			combatant.BASE_STAT_VALUES[stat] += combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
+	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
 func addFollower(follower: NPCFollower):

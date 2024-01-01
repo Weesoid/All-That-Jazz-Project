@@ -64,6 +64,19 @@ func getDrops():
 	CombatGlobals.getCombatScene().connectPlayerItems()
 	return drops_summary
 
+func getRawDrops():
+	var drops = {}
+	
+	for i in range(DROP_COUNT):
+		if CombatGlobals.randomRoll(CHANCE_TO_DROP): 
+			var item = rollDrops()
+			if drops.has(item):
+				drops[item] += randi_range(1, DROP_POOL[item].y)
+			else:
+				drops[item] = randi_range(1, DROP_POOL[item].y)
+	
+	return drops
+
 func rollDrops():
 	var total_weight = 0
 	var cum_weight = 0

@@ -129,5 +129,19 @@ position = Vector2(0, -240)
 [node name="NPCPatrolComponent" parent="NPCPrototype" index="0" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
+[node name="NPCPrototype2" parent="." instance=ExtResource("16_6jymr")]
+position = Vector2(72, -240)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype2" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="NPCPrototype3" parent="." instance=ExtResource("16_6jymr")]
+position = Vector2(-104, -248)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype3" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
 [editable path="MrMovey"]
 [editable path="NPCPrototype"]
+[editable path="NPCPrototype2"]
+[editable path="NPCPrototype3"]
