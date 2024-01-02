@@ -20,6 +20,9 @@ class_name PlayerScene
 
 var stamina = 100.0
 var direction = Vector2()
+
+var channeling_power = false
+
 var bow_mode = false
 var bow_draw_strength = 0
 var bow_max_draw = 5.0

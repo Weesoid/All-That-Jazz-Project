@@ -1,11 +1,17 @@
-[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=4 format=3 uid="uid://copje6h0tiqjk"]
 
+[ext_resource type="Texture2D" uid="uid://q0wyjp6htclx" path="res://assets/misc_sprites/arrow2.png" id="1_3sf8o"]
 [ext_resource type="Script" path="res://scripts/arrow_scripts/scprSleeper.gd" id="1_5yufo"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemProjectile.gd" id="1_ry84n"]
 
 [resource]
 script = ExtResource("1_ry84n")
 OVERWORLD_EFFECT = ExtResource("1_5yufo")
+PER_WEIGHT = 1
+MAX_STACK = 100
 NAME = "Sleeper Arrow"
-ICON_NAME = ""
+ICON = ExtResource("1_3sf8o")
 DESCRIPTION = "Knock em out!"
+VALUE = 0
+WEIGHT = 1
+MANDATORY = false

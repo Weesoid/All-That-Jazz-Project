@@ -54,16 +54,17 @@ func _ready():
 #	PATH_UPDATE_TIMER.start(15.0)
 
 func _physics_process(_delta):
+	BODY.move_and_slide()
 	if PATROL:
 		patrol()
-	BODY.move_and_slide()
-	executeCollisionAction()
+	if COMBAT_SWITCH:
+		executeCollisionAction()
 
 func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer() and COMBAT_SWITCH:
+	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.alert_patrollers.emit()
 		COMBAT_SWITCH = false
@@ -99,6 +100,7 @@ func stunMode():
 	
 func destroy():
 	PATROL = false
+	COMBAT_SWITCH = false
 	immobolize()
 	ANIMATOR.stop()
 	ANIMATOR.play("KO")

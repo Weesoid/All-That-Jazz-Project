@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=3 format=3 uid="uid://dqox7a1l8gtua"]
+[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=4 format=3 uid="uid://dqox7a1l8gtua"]
 
+[ext_resource type="Texture2D" uid="uid://hhwkf2u82bfq" path="res://assets/misc_sprites/arrow1.png" id="1_kqrt4"]
 [ext_resource type="Script" path="res://scripts/arrow_scripts/scprStunner.gd" id="1_r5kug"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemProjectile.gd" id="2_rbww4"]
 
@@ -9,7 +10,8 @@ OVERWORLD_EFFECT = ExtResource("1_r5kug")
 PER_WEIGHT = 0
 MAX_STACK = 100
 NAME = "Arrow"
-ICON_NAME = ""
+ICON = ExtResource("1_kqrt4")
 DESCRIPTION = "A simple arrow."
 VALUE = 0
 WEIGHT = 1
+MANDATORY = false

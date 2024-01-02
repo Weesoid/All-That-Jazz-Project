@@ -129,6 +129,9 @@ func loadFollower(combatant: ResPlayerCombatant):
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
 func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = ''):
+	Input.action_release("ui_sprint")
+	Input.action_release("ui_bow")
+	
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))

@@ -61,7 +61,7 @@ navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_2gieu")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uqnih"]
-size = Vector2(304, 80)
+size = Vector2(304, 72)
 
 [node name="prototype_map" type="Node2D"]
 z_index = -1
@@ -78,7 +78,7 @@ layer_0/tile_data = PackedInt32Array(0, 0, 0, 65535, 0, 0, 65534, 0, 0, -2, 0, 0
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, -240)
+position = Vector2(0, -244)
 shape = SubResource("RectangleShape2D_uqnih")
 
 [node name="Player" parent="." instance=ExtResource("2_03scn")]
@@ -126,19 +126,19 @@ position = Vector2(-112, -121)
 [node name="NPCPrototype" parent="." instance=ExtResource("16_6jymr")]
 position = Vector2(0, -240)
 
-[node name="NPCPatrolComponent" parent="NPCPrototype" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="NPCPrototype" index="2" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [node name="NPCPrototype2" parent="." instance=ExtResource("16_6jymr")]
 position = Vector2(72, -240)
 
-[node name="NPCPatrolComponent" parent="NPCPrototype2" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="NPCPrototype2" index="2" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [node name="NPCPrototype3" parent="." instance=ExtResource("16_6jymr")]
 position = Vector2(-104, -248)
 
-[node name="NPCPatrolComponent" parent="NPCPrototype3" index="0" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="NPCPrototype3" index="2" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [editable path="MrMovey"]

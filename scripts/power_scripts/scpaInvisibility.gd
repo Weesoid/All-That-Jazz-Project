@@ -5,8 +5,10 @@ var active = true
 
 func _physics_process(_delta):
 	if player.stamina > 0 and active:
+		player.channeling_power = true
 		setInvisible()
 	else:
+		player.channeling_power = false
 		setVisible()
 
 func _unhandled_input(_event):

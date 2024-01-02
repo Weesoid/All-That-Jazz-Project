@@ -177,6 +177,12 @@ radius = 11.0
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+radius = 60.0
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+
 [node name="NPCPatrolComponent" parent="." node_paths=PackedStringArray("NAV_AGENT", "LINE_OF_SIGHT", "COMBAT_SQUAD", "BODY", "ANIMATOR") instance=ExtResource("1_qmtob")]
 NAV_AGENT = NodePath("../NavigationAgent2D")
 LINE_OF_SIGHT = NodePath("../LineOfSightComponent")
@@ -204,7 +210,5 @@ frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_6fsld")
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
 [node name="LineOfSightComponent" parent="." instance=ExtResource("6_3p5yl")]

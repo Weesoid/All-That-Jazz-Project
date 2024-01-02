@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://assets/animation_sprites/arrow.png" id="2_3geok"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6l46u"]
-size = Vector2(20, 8)
+size = Vector2(16, 2)
 
 [node name="mentArrow" type="Area2D"]
 collision_layer = 17

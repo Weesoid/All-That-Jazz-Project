@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResPower" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResPower" load_steps=4 format=3 uid="uid://bf24ujws828oh"]
 
-[ext_resource type="Texture2D" uid="uid://dfvwksn0dbmxc" path="res://assets/images/power1.png" id="1_0ivx7"]
+[ext_resource type="Texture2D" uid="uid://daj63f5hbitmd" path="res://assets/misc_sprites/power1.png" id="1_db1p2"]
 [ext_resource type="Script" path="res://scripts/resources/ResPower.gd" id="1_nguqf"]
 [ext_resource type="Script" path="res://scripts/power_scripts/scpInvisibility.gd" id="2_x00vh"]
 
@@ -8,5 +8,5 @@
 script = ExtResource("1_nguqf")
 NAME = "Void Stealth"
 DESCRIPTION = "Enter the void and become invisible to the naked eye."
-ICON = ExtResource("1_0ivx7")
+ICON = ExtResource("1_db1p2")
 POWER_SCRIPT = ExtResource("2_x00vh")
