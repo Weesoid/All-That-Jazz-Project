@@ -187,7 +187,9 @@ func addStatusEffect(target: ResCombatant, status_effect_name: String):
 	else:
 		rankUpStatusEffect(target, status_effect)
 	
-	#status_effect.tick()
+	if status_effect.LINGERING and target is ResPlayerCombatant and !target.LINGERING_STATUS_EFFECTS.has(status_effect.NAME):
+		target.LINGERING_STATUS_EFFECTS.append(status_effect.NAME)
+	
 	checkReactions(target)
 
 func checkReactions(target: ResCombatant):

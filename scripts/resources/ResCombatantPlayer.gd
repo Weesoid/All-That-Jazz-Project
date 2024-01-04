@@ -18,6 +18,7 @@ class_name ResPlayerCombatant
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 
+var LINGERING_STATUS_EFFECTS: Array[String]
 var UNMODIFIED_STAT_VALUES: Dictionary
 var ABILITY_POINTS = 0
 var initialized = false
@@ -35,6 +36,18 @@ func initializeCombatant():
 
 func act():
 	player_turn.emit()
+
+func applyStatusEffects():
+	if isEquipped('armor'):
+		if EQUIPMENT['armor'].STATUS_EFFECT != null:
+			CombatGlobals.addStatusEffect(self, EQUIPMENT['armor'].STATUS_EFFECT.NAME)
+	for charm in CHARMS:
+		if charm == null: continue
+		if charm.STATUS_EFFECT != null:
+			CombatGlobals.addStatusEffect(self, charm.STATUS_EFFECT.NAME)
+	for effect in LINGERING_STATUS_EFFECTS:
+		print(LINGERING_STATUS_EFFECTS)
+		CombatGlobals.addStatusEffect(self, effect)
 
 func applyEquipmentModifications():
 	for item in EQUIPMENT.values():

@@ -1,211 +1,46 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=18 format=3 uid="uid://crxc4jimvjjun"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=10 format=3 uid="uid://crxc4jimvjjun"]
 
-[ext_resource type="Resource" path="res://resources/abilities/Punch.tres" id="1_l8e2g"]
+[ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="1_f5ggl"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_t0rce"]
+[ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="2_wq4th"]
+[ext_resource type="Resource" uid="uid://dqox7a1l8gtua" path="res://resources/items/Arrow.tres" id="2_wue3c"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_tvtxk"]
-[ext_resource type="Resource" uid="uid://ed2dvejnynu4" path="res://resources/items/HealingPotion.tres" id="4_v7lp5"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="4_wu60c"]
 [ext_resource type="Resource" uid="uid://dqssaas0mo42b" path="res://resources/items/HotHand.tres" id="5_44f6x"]
-[ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://assets/combatant_sprites/BadGuyJr.png" id="5_ogk53"]
 [ext_resource type="Texture2D" uid="uid://cm0lkrky28qm1" path="res://assets/icons/bad1.png" id="6_3bgk2"]
-[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="6_j2qnw"]
-
-[sub_resource type="Animation" id="Animation_5q8qb"]
-resource_name = "Attack"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [3, 5, 3, 5, 3]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.123, 1.123), Vector2(0.963, 0.963), Vector2(1.167, 1.167), Vector2(1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_38ggd"]
-resource_name = "Cast"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [3, 4, 3, 4, 3]
-}
-
-[sub_resource type="Animation" id="Animation_xav41"]
-resource_name = "Hit"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [3, 5, 3, 5, 3]
-}
-
-[sub_resource type="Animation" id="Animation_7atq3"]
-resource_name = "Idle"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 0, 1, 0]
-}
-
-[sub_resource type="Animation" id="Animation_xkhtg"]
-resource_name = "KO"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [5]
-}
-
-[sub_resource type="Animation" id="Animation_ak5yc"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AudioPlayer:playing")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5k78l"]
-_data = {
-"Attack": SubResource("Animation_5q8qb"),
-"Cast": SubResource("Animation_38ggd"),
-"Hit": SubResource("Animation_xav41"),
-"Idle": SubResource("Animation_7atq3"),
-"KO": SubResource("Animation_xkhtg"),
-"RESET": SubResource("Animation_ak5yc")
-}
-
-[sub_resource type="PackedScene" id="PackedScene_tm1b0"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("sprBadGuyA", "Node2D", "Sprite", "Sprite2D", "position", "texture", "hframes", "vframes", "SpriteAnimator", "AnimationPlayer", "libraries", "AudioPlayer", "AudioStreamPlayer", "stream"),
-"node_count": 4,
-"node_paths": [NodePath("."), NodePath("./Sprite"), NodePath("./Sprite")],
-"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 3, 2, -1, 4, 4, 0, 5, 1, 6, 2, 7, 3, 0, 1073741825, 0, 9, 8, -1, 1, 10, 4, 0, 1073741826, 0, 12, 11, -1, 1, 13, 5, 0),
-"variants": [Vector2(16, 0), ExtResource("5_ogk53"), 3, 2, {
-"": SubResource("AnimationLibrary_5k78l")
-}, ExtResource("6_j2qnw")],
-"version": 3
-}
+[ext_resource type="PackedScene" uid="uid://fv63l46i34oa" path="res://scenes/combatants/BadGuyA.tscn" id="8_tfinb"]
 
 [resource]
 script = ExtResource("3_tvtxk")
 COUNT = 1
 AI_PACKAGE = ExtResource("2_t0rce")
-CHANCE_TO_DROP = 1.0
-DROP_COUNT = 3
+CHANCE_TO_DROP = 0.5
+DROP_COUNT = 1
 DROP_POOL = {
-ExtResource("4_wu60c"): Vector2i(5, 5),
-ExtResource("4_v7lp5"): Vector2i(2, 5),
-ExtResource("5_44f6x"): Vector2i(1, 1)
+ExtResource("2_wue3c"): Vector2(0.25, 1),
+ExtResource("4_wu60c"): Vector2(0.5, 5),
+ExtResource("5_44f6x"): Vector2(0.15, 1)
 }
-NAME = "EUStriker"
+NAME = "Striker"
 ICON = ExtResource("6_3bgk2")
-PACKED_SCENE = SubResource("PackedScene_tm1b0")
-DESCRIPTION = "Don't fuck with him!"
+PACKED_SCENE = ExtResource("8_tfinb")
+DESCRIPTION = "A striker!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0,
+"brawn": 1,
 "crit": 0.05,
 "exposure": 0,
-"grit": 10,
+"grit": 1,
 "heal mult": 1,
 "health": 100,
 "hustle": 1,
-"verve": 1,
+"verve": 8,
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_l8e2g")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_f5ggl"), ExtResource("2_wq4th")])
 EQUIPMENT = {
 "armor": null,
-"charm": null,
 "weapon": null
 }
 CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

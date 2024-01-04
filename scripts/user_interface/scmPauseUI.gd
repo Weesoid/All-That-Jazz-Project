@@ -9,10 +9,15 @@ extends Control
 @onready var quit = $Container/Quit
 @onready var exp_bar = $Container/Experience
 
+@onready var level = $Container/Level
+@onready var currency = $Container/Currency
+
 func _ready():
 	OverworldGlobals.player_can_move = false
 	exp_bar.value = PlayerGlobals.CURRENT_EXP
 	exp_bar.max_value = PlayerGlobals.getRequiredExp()
+	level.text = 'POSSE LEVEL ' + str(PlayerGlobals.PARTY_LEVEL)
+	currency.text = 'CHAINS ' + str(PlayerGlobals.CURRENCY)
 
 func _on_tree_exited():
 	OverworldGlobals.player_can_move = true

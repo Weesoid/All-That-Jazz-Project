@@ -12,6 +12,7 @@ class_name ResStatusEffect
 @export var APPLY_ONCE: bool
 @export var TICK_PER_TURN: bool
 @export var PERMANENT: bool = false
+@export var LINGERING: bool = false
 
 var duration
 var current_rank = 1

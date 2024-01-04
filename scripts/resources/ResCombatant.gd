@@ -70,7 +70,7 @@ func applyStatusEffects():
 		if charm == null: continue
 		if charm.STATUS_EFFECT != null:
 			CombatGlobals.addStatusEffect(self, charm.STATUS_EFFECT.NAME)
-
+	
 func getMaxHealth():
 	return BASE_STAT_VALUES['health']
 
@@ -80,6 +80,13 @@ func getStatusEffect(stat_name: String)-> ResStatusEffect:
 			return status
 	
 	return null
+
+func hasStatusEffect(stat_name: String)-> bool:
+	for status in STATUS_EFFECTS:
+		if status.NAME == stat_name:
+			return true
+	
+	return false
 
 func isDead()-> bool:
 	return STAT_VALUES['health'] <= 0

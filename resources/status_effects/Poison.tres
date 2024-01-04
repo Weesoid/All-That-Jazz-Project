@@ -18,3 +18,4 @@ ON_HIT = false
 APPLY_ONCE = false
 TICK_PER_TURN = false
 PERMANENT = false
+LINGERING = true
