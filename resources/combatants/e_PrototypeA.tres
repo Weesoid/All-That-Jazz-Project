@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=10 format=3 uid="uid://crxc4jimvjjun"]
 
-[ext_resource type="Resource" uid="uid://blkjwu31x2ooo" path="res://resources/abilities/PoisonBite.tres" id="1_f5ggl"]
+[ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_5jlbr"]
 [ext_resource type="Script" path="res://scripts/combatant_ai/aiRandomAI.gd" id="2_t0rce"]
 [ext_resource type="Resource" path="res://resources/abilities/PumpUp.tres" id="2_wq4th"]
 [ext_resource type="Resource" uid="uid://dqox7a1l8gtua" path="res://resources/items/Arrow.tres" id="2_wue3c"]
@@ -27,7 +27,7 @@ PACKED_SCENE = ExtResource("8_tfinb")
 DESCRIPTION = "A striker!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 1,
+"brawn": 5,
 "crit": 0.05,
 "exposure": 0,
 "grit": 1,
@@ -38,7 +38,7 @@ STAT_VALUES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_f5ggl"), ExtResource("2_wq4th")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_5jlbr"), ExtResource("2_wq4th")])
 EQUIPMENT = {
 "armor": null,
 "weapon": null

@@ -28,6 +28,10 @@ func createButton(item, location):
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.custom_minimum_size.x = 170
 	button.text = item._to_string()
+	if item.MANDATORY:
+		button.disabled = true
+		location.add_child(button)
+		return
 	button.pressed.connect(
 		func transferItem():
 			if InventoryGlobals.INVENTORY.has(item):

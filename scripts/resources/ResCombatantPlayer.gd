@@ -63,8 +63,9 @@ func removeEquipmentModifications():
 	for charm in CHARMS:
 			charm.removeStatModifications()
 
-func updateStatValues():
+func updateStatValues(previous_max_health, previous_max_verve):
+	STAT_VALUES['health'] =  BASE_STAT_VALUES['health'] * (float(STAT_VALUES['health']) / float(previous_max_health))
+	STAT_VALUES['verve'] =  BASE_STAT_VALUES['verve'] * (float(STAT_VALUES['verve']) / float(previous_max_verve))
 	for stat in BASE_STAT_VALUES.keys():
-		if stat == 'health' or stat == 'verve':
-			continue 
+		if stat == 'health' or stat == 'verve': continue
 		STAT_VALUES[stat] = BASE_STAT_VALUES[stat]

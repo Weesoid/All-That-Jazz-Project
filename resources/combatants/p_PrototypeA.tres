@@ -161,7 +161,7 @@ STAT_GROWTH_RATES = {
 "exposure": 0,
 "grit": 1,
 "heal mult": 0,
-"health": 50,
+"health": 2,
 "hustle": 1,
 "verve": 1,
 "will": 1,
@@ -183,7 +183,7 @@ STAT_VALUES = {
 "heal mult": 1,
 "health": 100,
 "hustle": 1,
-"verve": 1,
+"verve": 3,
 "will": 1,
 "wit": 1
 }
