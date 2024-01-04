@@ -48,9 +48,17 @@ func getRequiredExp() -> int:
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
+		print(combatant)
 		combatant.ABILITY_POINTS += 1
+		combatant.removeEquipmentModifications()
 		for stat in combatant.BASE_STAT_VALUES.keys():
-			combatant.BASE_STAT_VALUES[stat] += combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
+			var increase = combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
+			print('%s +%s' % [stat, combatant.STAT_GROWTH_RATES[stat]])
+			combatant.BASE_STAT_VALUES[stat] += increase
+			combatant.UNMODIFIED_STAT_VALUES[stat] += increase
+		combatant.STAT_VALUES = combatant.BASE_STAT_VALUES
+		combatant.applyEquipmentModifications()
+	
 	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 

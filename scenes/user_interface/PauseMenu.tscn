@@ -52,14 +52,14 @@ layout_mode = 2
 text = "INVENTORY"
 alignment = 0
 
-[node name="Quests" type="Button" parent="Container"]
-layout_mode = 2
-text = "QUESTS"
-alignment = 0
-
 [node name="Posse" type="Button" parent="Container"]
 layout_mode = 2
 text = "POSSE"
+alignment = 0
+
+[node name="Quests" type="Button" parent="Container"]
+layout_mode = 2
+text = "QUESTS"
 alignment = 0
 
 [node name="Save" type="Button" parent="Container"]
@@ -94,6 +94,6 @@ script = ExtResource("2_p2ikl")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="pressed" from="Container/Inventory" to="." method="_on_inventory_pressed"]
-[connection signal="pressed" from="Container/Quests" to="." method="_on_quests_pressed"]
 [connection signal="pressed" from="Container/Posse" to="." method="_on_posse_pressed"]
+[connection signal="pressed" from="Container/Quests" to="." method="_on_quests_pressed"]
 [connection signal="pressed" from="Container/Quit" to="." method="_on_quit_pressed"]

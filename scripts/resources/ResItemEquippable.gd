@@ -14,26 +14,37 @@ func applyStatModifications():
 	if STAT_MODIFICATIONS.is_empty(): return
 	for key in EQUIPPED_COMBATANT.BASE_STAT_VALUES.keys():
 		if STAT_MODIFICATIONS.has(key):
-			EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] += STAT_MODIFICATIONS[key]
-			EQUIPPED_COMBATANT.STAT_VALUES[key] = EQUIPPED_COMBATANT.BASE_STAT_VALUES[key]
+			if STAT_MODIFICATIONS[key] is float:
+				EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] += int(STAT_MODIFICATIONS[key]*EQUIPPED_COMBATANT.UNMODIFIED_STAT_VALUES[key])
+			elif STAT_MODIFICATIONS[key] is int:
+				EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] += STAT_MODIFICATIONS[key]
+			
+			EQUIPPED_COMBATANT.updateStatValues()
 
 func removeStatModifications():
 	if STAT_MODIFICATIONS.is_empty(): return
 	for key in EQUIPPED_COMBATANT.BASE_STAT_VALUES.keys():
 		if STAT_MODIFICATIONS.has(key):
-			EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] -= STAT_MODIFICATIONS[key]
-			EQUIPPED_COMBATANT.STAT_VALUES[key] = EQUIPPED_COMBATANT.BASE_STAT_VALUES[key]
-
-#func refreshStatModifications():
-#	pass
+			if STAT_MODIFICATIONS[key] is float:
+				EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] -= int(STAT_MODIFICATIONS[key]*EQUIPPED_COMBATANT.UNMODIFIED_STAT_VALUES[key])
+			elif STAT_MODIFICATIONS[key] is int:
+				EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] -= STAT_MODIFICATIONS[key]
+			
+			EQUIPPED_COMBATANT.updateStatValues()
 
 func getStringStats():
 	var result = ""
 	for key in STAT_MODIFICATIONS.keys():
-		if STAT_MODIFICATIONS[key] > 0:
-			result += key.to_upper() + " +" + str(STAT_MODIFICATIONS[key]) + "\n"
-		else:
-			result += key.to_upper() + " " + str(STAT_MODIFICATIONS[key]) + "\n"
+		if STAT_MODIFICATIONS[key] is int:
+			if STAT_MODIFICATIONS[key] > 0 and STAT_MODIFICATIONS[key]:
+				result += key.to_upper() + " +" + str(STAT_MODIFICATIONS[key]) + "\n"
+			else:
+				result += key.to_upper() + " " + str(STAT_MODIFICATIONS[key]) + "\n"
+		elif STAT_MODIFICATIONS[key] is float:
+			if STAT_MODIFICATIONS[key] > 0 and STAT_MODIFICATIONS[key]:
+				result += key.to_upper() + " +" + str(STAT_MODIFICATIONS[key]*100) + "%\n"
+			else:
+				result += key.to_upper() + " " + str(STAT_MODIFICATIONS[key]*100) + "%\n"
 	return result
 
 func isEquipped():

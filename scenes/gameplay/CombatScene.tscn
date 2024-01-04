@@ -178,6 +178,7 @@ theme_override_constants/separation = 8
 alignment = 1
 
 [node name="Attack" type="Button" parent="CombatCamera/ActionPanel"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 toggle_mode = true
@@ -187,6 +188,7 @@ text = "ATTACK"
 icon = ExtResource("6_o5wif")
 
 [node name="Equipment" type="Button" parent="CombatCamera/ActionPanel"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 button_mask = 0
@@ -194,13 +196,23 @@ text = "WEAPONS"
 icon = ExtResource("7_6kiof")
 
 [node name="Skills" type="Button" parent="CombatCamera/ActionPanel"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "SKILLS"
 icon = ExtResource("7_dnqbg")
 
+[node name="Items" type="Button" parent="CombatCamera/ActionPanel"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+button_mask = 0
+text = "ITEMS"
+icon = ExtResource("8_yp68o")
+
 [node name="Inspect" type="Button" parent="CombatCamera/ActionPanel"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 toggle_mode = true
@@ -209,14 +221,8 @@ button_mask = 0
 text = "INSPECT"
 icon = ExtResource("5_15yji")
 
-[node name="Items" type="Button" parent="CombatCamera/ActionPanel"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-button_mask = 0
-text = "ITEMS"
-icon = ExtResource("8_yp68o")
-
 [node name="Escape" type="Button" parent="CombatCamera/ActionPanel"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 button_mask = 0
@@ -242,6 +248,6 @@ offset_bottom = -215.0
 [connection signal="pressed" from="CombatCamera/ActionPanel/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Skills" to="." method="_on_skills_pressed"]
-[connection signal="pressed" from="CombatCamera/ActionPanel/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Items" to="." method="_on_items_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Escape" to="." method="_on_escape_pressed"]

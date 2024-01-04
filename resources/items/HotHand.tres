@@ -6,12 +6,13 @@
 [resource]
 script = ExtResource("2_84o6q")
 EFFECT = ExtResource("1_lb1fm")
+max_durability = 100
 durability = Vector2i(1, 1)
 STAT_MODIFICATIONS = {
 "grit": 1
 }
 NAME = "Hot Hand"
-ICON_NAME = ""
 DESCRIPTION = ""
 VALUE = 25
 WEIGHT = 1
+MANDATORY = false

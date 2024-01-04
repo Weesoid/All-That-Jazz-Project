@@ -12,9 +12,4 @@ func getRawDrops():
 
 func getExperience():
 	for member in COMBATANT_SQUAD:
-		member.BASE_STAT_VALUES = member.STAT_VALUES.duplicate()
 		PlayerGlobals.addExperience(member.getExperience())
-
-func clearSquadEffects():
-	for member in COMBATANT_SQUAD:
-		member.STATUS_EFFECTS.clear()

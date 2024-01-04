@@ -9,13 +9,13 @@ EFFECT = ExtResource("1_vw8ht")
 max_durability = 100
 durability = 50
 STAT_MODIFICATIONS = {
-"brawn": 2,
-"grit": 1,
-"health": 20,
-"verve": 5.0
+"brawn": 25,
+"grit": 25,
+"health": 0.75,
+"verve": 25
 }
 NAME = "Neutral Weapon"
-ICON_NAME = ""
 DESCRIPTION = "A neutral weapon in a hostile world..."
 VALUE = 0
 WEIGHT = 1
+MANDATORY = false

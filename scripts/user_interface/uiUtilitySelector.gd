@@ -46,7 +46,7 @@ func updatePowerSelect():
 
 func updateArrowSelect():
 	var arrows = InventoryGlobals.INVENTORY.filter(func(item): return item is ResProjectileAmmo)
-	if arrows.is_empty():
+	if arrows.size() <= 1:
 		return
 	
 	if current_index > InventoryGlobals.KNOWN_POWERS.size() - 1:

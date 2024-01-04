@@ -20,7 +20,8 @@ func loadStorage():
 	for item in InventoryGlobals.STORAGE:
 		createButton(item, storage)
 	for item in InventoryGlobals.INVENTORY:
-		createButton(item, inventory)
+		if item.WEIGHT > 0.0:
+			createButton(item, inventory)
 
 func createButton(item, location):
 	var button = Button.new()

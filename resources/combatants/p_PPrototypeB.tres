@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://bjp1onb68wkep" path="res://resources/abilities/AOE.tres" id="5_iixbd"]
 [ext_resource type="Resource" uid="uid://bscmk3txfvu1b" path="res://resources/abilities/DebugAddEffect.tres" id="6_ateo1"]
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://assets/combatant_sprites/GoodGuyB.png" id="8_88eiy"]
-[ext_resource type="Texture2D" uid="uid://thcjdsdlqrof" path="res://assets/icons/team1.png" id="9_dfjyi"]
+[ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://assets/misc_sprites/will_icon.png" id="8_ydcen"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="9_g1u54"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
@@ -171,7 +171,7 @@ ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
 MANDATORY = false
 NAME = "PUMainBlasko"
-ICON = ExtResource("9_dfjyi")
+ICON = ExtResource("8_ydcen")
 PACKED_SCENE = SubResource("PackedScene_gvghd")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {

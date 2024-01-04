@@ -21,16 +21,10 @@ func _ready():
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
-	#PATH_UPDATE_TIMER = Timer.new()
-	#PATH_UPDATE_TIMER.autostart = true
-	#PATH_UPDATE_TIMER.timeout.connect(updatePath)
-#	PATH_UPDATE_TIMER.timeout.connect(func(): print('to'))
-	
 	IDLE_TIMER = Timer.new()
 	IDLE_TIMER.autostart = true
 	
 	add_child(IDLE_TIMER)
-	#add_child(PATH_UPDATE_TIMER)
 	
 	OverworldGlobals.alert_patrollers.connect(alertPatrolMode)
 	
@@ -49,22 +43,18 @@ func _ready():
 			else:
 				stunMode()
 			)
-	
-#	PATH_UPDATE_TIMER.timeout.emit()
-#	PATH_UPDATE_TIMER.start(15.0)
 
 func _physics_process(_delta):
 	BODY.move_and_slide()
 	if PATROL:
 		patrol()
-	if COMBAT_SWITCH:
-		executeCollisionAction()
+	executeCollisionAction()
 
 func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
+	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer() and COMBAT_SWITCH:
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.alert_patrollers.emit()
 		COMBAT_SWITCH = false
@@ -100,11 +90,12 @@ func stunMode():
 	
 func destroy():
 	PATROL = false
-	COMBAT_SWITCH = false
+	BODY.get_node('CollisionShape2D').disabled = true
 	immobolize()
 	ANIMATOR.stop()
 	ANIMATOR.play("KO")
 	await ANIMATOR.animation_finished
+	OverworldGlobals.alert_patrollers.emit()
 	BODY.queue_free()
 
 func updatePath():
@@ -139,8 +130,8 @@ func updatePath():
 					child.queue_free()
 			alertPatrolMode()
 			updatePath()
-			COMBAT_SWITCH = true
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
+			COMBAT_SWITCH = true
 
 func immobolize():
 	BODY.velocity = Vector2.ZERO
