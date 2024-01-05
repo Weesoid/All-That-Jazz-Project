@@ -3,9 +3,10 @@ extends Control
 
 @onready var character_name = $Panel/CharacterName
 @onready var description = $Description/DescriptionLabel
-@onready var stat_panel = $Stats/Label
-@onready var ability_panel = $Abilities/ScrollContainer/VBoxContainer
-@onready var equipment_panel = $Equipment/ScrollContainer/VBoxContainer
+@onready var stat_panel = $TabContainer/Attributes
+@onready var ability_panel = $TabContainer/Abilities/VBoxContainer
+@onready var equipment_panel = $TabContainer/Equipment/VBoxContainer
+@onready var status_panel = $"TabContainer/Status Effects/VBoxContainer"
 
 var subject_combatant: ResCombatant
 
@@ -51,6 +52,17 @@ func loadInformation():
 		)
 		equipment_panel.add_child(equipment_button)
 	
+	for effect_name in subject_combatant.LINGERING_STATUS_EFFECTS:
+		var status_button = Button.new()
+		status_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		status_button.text = effect_name
+		status_button.mouse_entered.connect(
+		func updateDesciption():
+			var effect = CombatGlobals.loadStatusEffect(effect_name)
+			description.text = "\n[img]%s[/img] %s\n" % [effect.TEXTURE.resource_path, effect.DESCRIPTION]
+		)
+		status_panel.add_child(status_button)
+	
 	stat_panel.text = subject_combatant.getStringStats()
 
 func clearInformation():
@@ -62,6 +74,9 @@ func clearInformation():
 		child.queue_free()
 	
 	for child in equipment_panel.get_children():
+		child.queue_free()
+	
+	for child in status_panel.get_children():
 		child.queue_free()
 
 func getSlotName(item):
