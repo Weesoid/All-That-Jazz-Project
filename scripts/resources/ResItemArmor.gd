@@ -17,4 +17,5 @@ func equip(combatant: ResCombatant):
 
 func unequip():
 	removeStatModifications()
+	EQUIPPED_COMBATANT.EQUIPMENT['armor'] = null
 	EQUIPPED_COMBATANT = null

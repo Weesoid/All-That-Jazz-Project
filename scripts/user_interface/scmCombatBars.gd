@@ -36,10 +36,10 @@ func _process(_delta):
 	updateStatusEffects()
 
 func updateBars():
-	health_bar.max_value = attached_combatant.BASE_STAT_VALUES['health']
-	health_bar.value = attached_combatant.STAT_VALUES['health']
-	energy_bar.max_value = attached_combatant.BASE_STAT_VALUES['verve']
-	energy_bar.value = attached_combatant.STAT_VALUES['verve']
+	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])
+	health_bar.value = int(attached_combatant.STAT_VALUES['health'])
+	energy_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['verve'])
+	energy_bar.value = int(attached_combatant.STAT_VALUES['verve'])
 	absolute_health.text = str(health_bar.value)
 	absolute_energy.text = str(energy_bar.value)
 

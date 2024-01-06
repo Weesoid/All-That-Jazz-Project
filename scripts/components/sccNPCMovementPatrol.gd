@@ -3,14 +3,16 @@ class_name NPCPatrolMovement
 
 @onready var PATROL_BUBBLE = $PatrolBubble/AnimationPlayer
 @onready var PATROL_BUBBLE_SPRITE = $PatrolBubble
+@onready var DEBUG = $Label
 @export var NAV_AGENT: NavigationAgent2D
 @export var LINE_OF_SIGHT: LineOfSight
 @export var COMBAT_SQUAD: CombatantSquad
 @export var PATROL_AREA: Area2D
 
 var PATROL_SHAPE
-#var PATH_UPDATE_TIMER: Timer
+#var STUCK_TIMER: Timer
 var IDLE_TIMER: Timer
+var STUN_TIMER: Timer
 
 var COMBAT_SWITCH = true
 var PATROL = true
@@ -21,13 +23,17 @@ func _ready():
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
+	#STUCK_TIMER = Timer.new()
 	IDLE_TIMER = Timer.new()
-	IDLE_TIMER.autostart = true
+	STUN_TIMER = Timer.new()
+	#STUCK_TIMER.autostart = true
 	
+	#add_child(STUCK_TIMER)
 	add_child(IDLE_TIMER)
+	add_child(STUN_TIMER)
 	
 	OverworldGlobals.alert_patrollers.connect(alertPatrolMode)
-	
+	#STUCK_TIMER.timeout.connect(updatePath)
 	NAV_AGENT.navigation_finished.connect(updatePath)
 	NAV_AGENT.navigation_finished.emit()
 	
@@ -36,25 +42,23 @@ func _ready():
 			if id == NAME:
 				destroy()
 			)
-	CombatGlobals.combat_lost.connect(
-		func(_id):
-			if ANIMATOR.current_animation == 'KO':
-				BODY.queue_free()
-			else:
-				stunMode()
-			)
+	
+	#STUCK_TIMER.start(10.0)
 
 func _physics_process(_delta):
 	BODY.move_and_slide()
 	if PATROL:
 		patrol()
-	executeCollisionAction()
+	if COMBAT_SWITCH:
+		executeCollisionAction()
+	
+	DEBUG.text = str(int(IDLE_TIMER.time_left))
 
 func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer() and COMBAT_SWITCH:
+	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.alert_patrollers.emit()
 		COMBAT_SWITCH = false
@@ -63,7 +67,7 @@ func patrol():
 	if LINE_OF_SIGHT.process_mode != Node.PROCESS_MODE_DISABLED:
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
-	if LINE_OF_SIGHT.detectPlayer():
+	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
 		MOVE_SPEED = BASE_MOVE_SPEED * 8.0
 		STATE = 2
 		updatePath()
@@ -75,7 +79,7 @@ func patrol():
 		updatePath()
 		if PATROL_BUBBLE_SPRITE.visible and PATROL_BUBBLE.current_animation != "Show":
 			PATROL_BUBBLE.play_backwards("Show")
-
+	
 func alertPatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * 1.5
 	STATE = 1
@@ -90,7 +94,7 @@ func stunMode():
 	
 func destroy():
 	PATROL = false
-	BODY.get_node('CollisionShape2D').disabled = true
+	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
 	ANIMATOR.stop()
 	ANIMATOR.play("KO")
@@ -103,14 +107,16 @@ func updatePath():
 		# PATROL
 		0:
 			randomize()
-			IDLE_TIMER.start(randf_range(1.0, 5.0))
+			IDLE_TIMER.start(randf_range(2.0, 5.0))
 			await IDLE_TIMER.timeout
+			IDLE_TIMER.stop()
 			NAV_AGENT.target_position = moveRandom()
 		# ALERTED PATROL
 		1:
 			randomize()
-			IDLE_TIMER.start(randf_range(1.0, 2.5))
+			IDLE_TIMER.start(randf_range(2.0, 3.0))
 			await IDLE_TIMER.timeout
+			IDLE_TIMER.stop()
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# CHASE
 		2:
@@ -122,21 +128,21 @@ func updatePath():
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
-			#COMBAT_SQUAD.applyEffectToSquad(preload("res://resources/status_effects/Poison.tres"))
-			await get_tree().create_timer(randf_range(3.0, 4.0)).timeout
-			#COMBAT_SQUAD.clearSquadEffects()
+			STUN_TIMER.start(randf_range(3.0,4.0))
+			IDLE_TIMER.stop()
+			await STUN_TIMER.timeout
 			for child in BODY.get_children():
-				if child.name == 'CombatInteractComponent': 
-					child.queue_free()
+				if child.name == 'CombatInteractComponent': child.queue_free()
+			STUN_TIMER.stop()
 			alertPatrolMode()
 			updatePath()
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 			COMBAT_SWITCH = true
 
 func immobolize():
+	COMBAT_SWITCH = false
 	BODY.velocity = Vector2.ZERO
 	LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
-	COMBAT_SWITCH = false
 
 func moveRandom():
 	randomize()

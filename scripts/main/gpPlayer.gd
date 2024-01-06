@@ -47,15 +47,17 @@ func _ready():
 func _process(_delta):
 	updateAnimationParameters()
 	animateInteract()
+
+func _physics_process(delta):
+	animation_tree.advance(ANIMATION_SPEED * delta)
+	
 	if bow_mode:
 		drawBow()
 		ammo_count.show()
 		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
 	else:
 		ammo_count.hide()
-
-func _physics_process(delta):
-	animation_tree.advance(ANIMATION_SPEED * delta)
+	
 	if OverworldGlobals.player_can_move:
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
@@ -66,7 +68,7 @@ func _physics_process(delta):
 		move_and_slide()
 	
 	if stamina <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
-		Input.action_release("ui_click")
+		Input.action_press("ui_bow")
 	
 	if Input.is_action_pressed("ui_sprint") and stamina > 0.0 and bow_draw_strength == 0:
 		SPEED = sprint_speed
@@ -87,6 +89,11 @@ func _physics_process(delta):
 	
 	OverworldGlobals.follow_array.push_front(self.global_position)
 	OverworldGlobals.follow_array.pop_back()
+
+func resetStates():
+	undrawBowAnimation()
+	SPEED = walk_speed
+	ANIMATION_SPEED = 0.0
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):

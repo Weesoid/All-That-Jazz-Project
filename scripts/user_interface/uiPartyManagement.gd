@@ -8,6 +8,7 @@ func _ready():
 	for member in PlayerGlobals.TEAM:
 		var button = Button.new()
 		button.text = member.NAME
+		button.icon = member.ICON
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.pressed.connect(
 			func addToAcitve():

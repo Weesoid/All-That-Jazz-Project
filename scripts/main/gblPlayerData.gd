@@ -50,6 +50,7 @@ func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
 		print(combatant)
 		combatant.ABILITY_POINTS += 1
+		
 		combatant.removeEquipmentModifications()
 		for stat in combatant.BASE_STAT_VALUES.keys():
 			var increase = combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)

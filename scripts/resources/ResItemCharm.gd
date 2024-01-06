@@ -12,7 +12,7 @@ func equip(combatant: ResCombatant):
 		if STATUS_EFFECT != null:
 			STATUS_EFFECT = STATUS_EFFECT.duplicate()
 		if EQUIPPED_COMBATANT.CHARMS.size() >= 3:
-			OverworldGlobals.getPlayer().prompt.showPrompt('Max [color=yelloe]Charm[/color] capacity reached. Unequip a [color=yellow]Charm[/color].')
+			OverworldGlobals.getPlayer().prompt.showPrompt('Max [color=yellow]Charm[/color] capacity reached. Unequip a [color=yellow]Charm[/color].')
 			EQUIPPED_COMBATANT = null
 			return
 	

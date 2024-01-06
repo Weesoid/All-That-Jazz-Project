@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("1_7iidr")
-NAME = "Void Anchor"
+NAME = "Anchor"
 DESCRIPTION = "Spawn an anchor, warp to it's location on command."
 ICON = ExtResource("1_i14op")
 POWER_SCRIPT = ExtResource("2_u3uft")

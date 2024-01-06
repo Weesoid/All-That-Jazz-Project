@@ -323,7 +323,7 @@ func playerSelectSingleTarget():
 	
 	target_combatant = valid_targets[target_index]
 	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
-	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.25)
+	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.1)
 	browseTargetsInputs()
 	confirmCancelInputs()
 	
@@ -568,6 +568,7 @@ func concludeCombat(results: int):
 		CombatGlobals.combat_conclusion_dialogue.emit(conclusion_dialogue, results)
 	
 	combat_done.emit()
+	OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())
 	
 	queue_free()
 

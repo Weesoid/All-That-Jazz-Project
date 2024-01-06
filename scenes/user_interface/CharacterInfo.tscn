@@ -27,10 +27,10 @@ offset_right = 192.0
 offset_bottom = 40.0
 
 [node name="Attributes" type="RichTextLabel" parent="TabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="Abilities" type="ScrollContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 

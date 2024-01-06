@@ -67,12 +67,6 @@ offset_bottom = 52.0
 [node name="TabContainer" parent="uiCharacterInformation" index="0"]
 offset_right = 200.0
 
-[node name="Attributes" parent="uiCharacterInformation/TabContainer" index="1"]
-visible = true
-
-[node name="Abilities" parent="uiCharacterInformation/TabContainer" index="2"]
-visible = false
-
 [node name="Description" parent="uiCharacterInformation" index="1"]
 offset_right = 200.0
 

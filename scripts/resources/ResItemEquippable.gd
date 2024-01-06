@@ -11,7 +11,7 @@ func unequip():
 	pass
 
 func applyStatModifications():
-	if STAT_MODIFICATIONS.is_empty(): return
+	if STAT_MODIFICATIONS.is_empty() or !isEquipped(): return
 	var previous_health = EQUIPPED_COMBATANT.BASE_STAT_VALUES['health']
 	var previous_verve = EQUIPPED_COMBATANT.BASE_STAT_VALUES['verve']
 	for key in EQUIPPED_COMBATANT.BASE_STAT_VALUES.keys():
@@ -24,7 +24,7 @@ func applyStatModifications():
 	EQUIPPED_COMBATANT.updateStatValues(previous_health, previous_verve)
 
 func removeStatModifications():
-	if STAT_MODIFICATIONS.is_empty(): return
+	if STAT_MODIFICATIONS.is_empty() or !isEquipped(): return
 	var previous_health = EQUIPPED_COMBATANT.BASE_STAT_VALUES['health']
 	var previous_verve = EQUIPPED_COMBATANT.BASE_STAT_VALUES['verve']
 	for key in EQUIPPED_COMBATANT.BASE_STAT_VALUES.keys():
@@ -33,7 +33,7 @@ func removeStatModifications():
 				EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] -= int(STAT_MODIFICATIONS[key]*EQUIPPED_COMBATANT.UNMODIFIED_STAT_VALUES[key])
 			elif STAT_MODIFICATIONS[key] is int:
 				EQUIPPED_COMBATANT.BASE_STAT_VALUES[key] -= STAT_MODIFICATIONS[key]
-			
+	
 	EQUIPPED_COMBATANT.updateStatValues(previous_health, previous_verve)
 
 func getStringStats():
