@@ -9,10 +9,12 @@ func _physics_process(_delta):
 		setInvisible()
 	else:
 		player.channeling_power = false
+		player.toggleVoidAnimation(false)
 		setVisible()
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_gambit"):
+		player.toggleVoidAnimation(false)
 		active = false
 		setVisible()
 
@@ -30,5 +32,4 @@ func setVisible():
 	player.set_collision_layer_value(5, true)
 	player.set_collision_mask_value(5, true)
 	player.sprite.modulate.a = 1
-	player.toggleVoidAnimation()
 	queue_free()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bnad0hve141rr"]
+[gd_scene load_steps=22 format=3 uid="uid://bojgd5mka42j3"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://gjcs4krj1v0o" path="res://scenes/entities/Player.tscn" id="2_03scn"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://vdipsfsnqseh" path="res://scenes/entities/StorageUnit.tscn" id="14_s732r"]
 [ext_resource type="PackedScene" uid="uid://bhg2t57grfdfc" path="res://scenes/entities/ShopKeep.tscn" id="15_5mws6"]
 [ext_resource type="PackedScene" uid="uid://dc16k4vsgrvv7" path="res://scenes/entities/NPCPrototype.tscn" id="16_6jymr"]
+[ext_resource type="PackedScene" uid="uid://bxktksw38ggwu" path="res://scenes/entities/Door.tscn" id="17_0v7bm"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -134,6 +135,10 @@ position = Vector2(-48, -240)
 
 [node name="NPCPatrolComponent" parent="NPCPrototype2" index="2" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
+
+[node name="DoorInteractable" parent="." instance=ExtResource("17_0v7bm")]
+position = Vector2(-224, -139)
+TO_SCENE_PATH = "res://scenes/maps/SecondMap.tscn"
 
 [editable path="MrMovey"]
 [editable path="NPCPrototype"]

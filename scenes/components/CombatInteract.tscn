@@ -73,6 +73,10 @@ collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_s0dql")
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(24, -24)
 texture = ExtResource("2_hvtrn")

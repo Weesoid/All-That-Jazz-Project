@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxktksw38ggwu"]
+
+[ext_resource type="Script" path="res://scenes/entities/entDoor.gd" id="1_vnb0s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u1b2x"]
+radius = 24.0
+
+[node name="DoorInteractable" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_vnb0s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_u1b2x")
+debug_color = Color(0, 0.545098, 0.941176, 0.419608)

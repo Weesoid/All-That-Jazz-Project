@@ -131,8 +131,6 @@ func updatePath():
 			STUN_TIMER.start(randf_range(3.0,4.0))
 			IDLE_TIMER.stop()
 			await STUN_TIMER.timeout
-			for child in BODY.get_children():
-				if child.name == 'CombatInteractComponent': child.queue_free()
 			STUN_TIMER.stop()
 			alertPatrolMode()
 			updatePath()

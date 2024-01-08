@@ -82,3 +82,8 @@ func hasFollower(follower_combatant: ResPlayerCombatant):
 			return true
 	
 	return false
+
+func loadSquad():
+	for member in TEAM:
+		if member.active: 
+			OverworldGlobals.getCombatantSquad('Player').append(member)

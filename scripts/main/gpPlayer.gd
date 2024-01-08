@@ -39,10 +39,12 @@ var ANIMATION_SPEED = 0.0
 var play_once = true
 
 func _ready():
+	print('Badings!')
 	player_camera.global_position = global_position
 	PlayerGlobals.POWER = load("res://resources/powers/Stealth.tres")
 	SPEED = walk_speed
 	animation_tree.active = true
+	PlayerGlobals.loadSquad()
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -50,7 +52,6 @@ func _process(_delta):
 
 func _physics_process(delta):
 	animation_tree.advance(ANIMATION_SPEED * delta)
-	
 	if bow_mode:
 		drawBow()
 		ammo_count.show()
@@ -234,12 +235,18 @@ func updateAnimationParameters():
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
 	
-	if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null and bow_draw_strength == 0:
-		toggleVoidAnimation()
+	#if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null and bow_draw_strength == 0:
+	#	toggleVoidAnimation()
 
-func toggleVoidAnimation():
-	animation_tree["parameters/conditions/void_call"] = !animation_tree["parameters/conditions/void_call"]
-	animation_tree["parameters/conditions/void_release"] = !animation_tree["parameters/conditions/void_call"]
+func toggleVoidAnimation(set=true):
+	if set:
+		print('Voiding up!')
+		animation_tree["parameters/conditions/void_call"] = true
+		animation_tree["parameters/conditions/void_release"] = false
+	else:
+		print('Voiding down...')
+		animation_tree["parameters/conditions/void_call"] = false
+		animation_tree["parameters/conditions/void_release"] = true
 
 func toggleBowAnimation():
 	animation_tree["parameters/conditions/equip_bow"] = bow_mode

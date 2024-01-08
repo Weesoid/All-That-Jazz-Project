@@ -7,5 +7,5 @@
 script = ExtResource("1_te7jj")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(0, -22)
+position = Vector2(0, -21)
 texture = ExtResource("1_4dqva")

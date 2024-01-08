@@ -5,10 +5,11 @@ extends Control
 @onready var description = $Description/DescriptionLabel
 @onready var stat_panel = $TabContainer/Attributes
 @onready var ability_panel = $TabContainer/Abilities/VBoxContainer
+@onready var ability_pool_panel = $"TabContainer/Ability Pool/VBoxContainer"
 @onready var equipment_panel = $TabContainer/Equipment/VBoxContainer
 @onready var status_panel = $"TabContainer/Status Effects/VBoxContainer"
 
-var subject_combatant: ResCombatant
+var subject_combatant: ResPlayerCombatant
 
 func loadInformation():
 	clearInformation()
@@ -25,6 +26,16 @@ func loadInformation():
 				description.text = ability.DESCRIPTION
 		)
 		ability_panel.add_child(ability_button)
+	
+	for ability in subject_combatant.ABILITY_POOL:
+		var ability_button = Button.new()
+		ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		ability_button.text = ability.NAME
+		ability_button.mouse_entered.connect(
+			func updateDesciption():
+				description.text = ability.DESCRIPTION
+		)
+		ability_pool_panel.add_child(ability_button)
 	
 	for equipment in subject_combatant.EQUIPMENT.values():
 		if equipment == null:

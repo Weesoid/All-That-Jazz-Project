@@ -14,4 +14,3 @@ func _unhandled_input(_event):
 			queue_free()
 		else:
 			player.prompt.showPrompt('Not enough [color=yellow]stamina[/color].')
-	
