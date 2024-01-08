@@ -1,6 +1,7 @@
-[gd_scene load_steps=115 format=3 uid="uid://gjcs4krj1v0o"]
+[gd_scene load_steps=119 format=3 uid="uid://gjcs4krj1v0o"]
 
 [ext_resource type="Script" path="res://scripts/main/gpPlayer.gd" id="1_mngvk"]
+[ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://assets/overworld_sprites/power_dark.png" id="3_h566x"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://assets/misc_sprites/interact.png" id="3_y84xx"]
 [ext_resource type="Script" path="res://scripts/user_interface/scmPlayerPrompt.gd" id="5_h8rtm"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://assets/overworld_sprites/player.png" id="5_nms4n"]
@@ -124,6 +125,115 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_te3tf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -51)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_2eywy"]
+resource_name = "Show"
+length = 1.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5, 6, 7, 8, 7, 6, 4, 3, 2, 1, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 1, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1e-05, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.2, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -13.753), Vector2(0, -51), Vector2(0, -51), Vector2(0, -13.753)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wiltc"]
+_data = {
+"RESET": SubResource("Animation_te3tf"),
+"Show": SubResource("Animation_2eywy")
+}
 
 [sub_resource type="Animation" id="Animation_u64m2"]
 resource_name = "Bow_Draw_Down"
@@ -1682,6 +1792,12 @@ script = ExtResource("1_mngvk")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
 
+[node name="PlayerPower" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -51)
+texture = ExtResource("3_h566x")
+hframes = 9
+
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
@@ -1690,7 +1806,6 @@ vframes = 8
 frame = 1
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(1, -49)
 scale = Vector2(0.546875, 0.476)
 texture = ExtResource("3_y84xx")
@@ -1729,7 +1844,7 @@ shape = SubResource("CapsuleShape2D_8i7nm")
 z_as_relative = false
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
-position_smoothing_speed = 7.0
+position_smoothing_speed = 8.0
 
 [node name="Ammo" type="Label" parent="PlayerCamera"]
 offset_left = 17.0
@@ -1797,6 +1912,12 @@ theme_override_font_sizes/font_size = 0
 text = "ARROW"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PowerAnimator" type="AnimationPlayer" parent="."]
+root_node = NodePath("../PlayerPower")
+libraries = {
+"": SubResource("AnimationLibrary_wiltc")
+}
 
 [node name="PlayerAnimator" type="AnimationPlayer" parent="."]
 root_node = NodePath("../PlayerSprite")

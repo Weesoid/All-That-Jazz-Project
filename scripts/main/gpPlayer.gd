@@ -11,6 +11,7 @@ class_name PlayerScene
 @onready var interaction_prompt = $PlayerInteractionBubble
 @onready var interaction_prompt_animator = $PlayerInteractionBubble/BubbleAnimator
 @onready var animation_tree = $AnimationTree
+@onready var cast_animator = $PowerAnimator
 @onready var player_direction = $PlayerDirection
 @onready var bow_line = $PlayerDirection/BowShotLine
 @onready var squad = $CombatantSquadComponent
@@ -121,7 +122,7 @@ func _unhandled_input(_event: InputEvent):
 
 func canDrawBow()-> bool:
 	if OverworldGlobals.getCurrentMapData().SAFE:
-		prompt.showPrompt("Can't use  [color=yellow]Bow[/color] in safe area.")
+		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
 		return false
 	
 	if velocity != Vector2.ZERO:
@@ -134,7 +135,7 @@ func canDrawBow()-> bool:
 
 func canUsePower():
 	if OverworldGlobals.getCurrentMapData().SAFE:
-		prompt.showPrompt("Can't use  [color=yellow]Gambit[/color] in safe area.")
+		prompt.showPrompt("Can't use [color=gray]Gambit[/color] right now.")
 		return false
 	
 	if bow_draw_strength != 0.0:
@@ -269,6 +270,9 @@ func toggleBowAnimation():
 func playShootAnimation():
 	animation_tree["parameters/conditions/draw_bow"] = false
 	animation_tree["parameters/conditions/shoot_bow"] = true
+
+func playCastAnimation():
+	cast_animator.play("Show")
 
 func undrawBowAnimation():
 	undrawBow()

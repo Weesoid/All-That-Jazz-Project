@@ -120,11 +120,10 @@ func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_
 
 # REFACTOR
 func loadFollowers():
-	PlayerGlobals.FOLLOWERS.clear()
 	for follower in PlayerGlobals.FOLLOWERS:
-		follower.queue_free()
-	
+		if follower != null: follower.queue_free()
 	PlayerGlobals.FOLLOWERS.clear()
+	
 	for combatant in PlayerGlobals.TEAM:
 		if combatant.active:
 			var follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()

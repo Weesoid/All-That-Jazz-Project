@@ -16,6 +16,7 @@ func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_gambit"):
 		player.toggleVoidAnimation(false)
 		active = false
+		player.channeling_power = false
 		setVisible()
 
 func setInvisible():
