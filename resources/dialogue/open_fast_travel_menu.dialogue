@@ -1,0 +1,8 @@
+~ start
+set player_can_move = false
+
+do showMenu("res://scenes/user_interface/FastTravel.tscn")
+
+set show_player_interaction = true
+set player_can_move = true
+=> END

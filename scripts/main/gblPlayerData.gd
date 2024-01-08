@@ -9,8 +9,15 @@ var UTILITY_CHARM_COUNT = 0
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var FOLLOWERS: Array[NPCFollower] = []
-signal level_up
+var FAST_TRAVEL_LOCATIONS: Array[String] = []
 
+var bow_max_draw = 5.0
+var walk_speed = 100.0
+var sprint_speed = 200.0
+var sprint_drain = 0.10
+var stamina_gain = 0.10
+
+signal level_up
 
 func _ready():
 	CURRENCY = 100
@@ -20,6 +27,7 @@ func _ready():
 	
 	TEAM.append(preload("res://resources/combatants/p_PrototypeA.tres"))
 	TEAM.append(preload("res://resources/combatants/p_PPrototypeB.tres"))
+	FAST_TRAVEL_LOCATIONS.append('SecondMap')
 	initializeBenchedTeam()
 
 func initializeBenchedTeam():

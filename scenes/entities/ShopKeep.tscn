@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://nu578646cekl" path="res://scenes/components/Interact.tscn" id="2_4rpqb"]
 [ext_resource type="Resource" uid="uid://dqox7a1l8gtua" path="res://resources/items/Arrow.tres" id="2_fafbi"]
 [ext_resource type="Resource" uid="uid://dyrny3sxniquy" path="res://resources/dialogue/open_shop.dialogue" id="3_gnm0e"]
-[ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="3_kw8gc"]
+[ext_resource type="Resource" uid="uid://copje6h0tiqjk" path="res://resources/items/ArrowSleeper.tres" id="3_kw8gc"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="4_30mec"]
 [ext_resource type="Resource" uid="uid://ctjchsmpshbik" path="res://resources/items/Toxik.tres" id="5_wbfy6"]
 [ext_resource type="Resource" uid="uid://ckyppnbor0l0j" path="res://resources/items/LightArmor.tres" id="6_hgjvs"]

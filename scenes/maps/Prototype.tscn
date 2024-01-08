@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bojgd5mka42j3"]
+[gd_scene load_steps=24 format=3 uid="uid://bojgd5mka42j3"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_iet4p"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://bhg2t57grfdfc" path="res://scenes/entities/ShopKeep.tscn" id="15_5mws6"]
 [ext_resource type="PackedScene" uid="uid://dc16k4vsgrvv7" path="res://scenes/entities/NPCPrototype.tscn" id="16_6jymr"]
 [ext_resource type="PackedScene" uid="uid://bxktksw38ggwu" path="res://scenes/entities/Door.tscn" id="17_0v7bm"]
+[ext_resource type="PackedScene" uid="uid://cjfgtjggovrcu" path="res://scenes/entities/FastTravel.tscn" id="19_tw6u4"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -144,6 +145,9 @@ PATROL_AREA = NodePath("../../Area2D")
 [node name="DoorInteractable" parent="." instance=ExtResource("17_0v7bm")]
 position = Vector2(-224, -139)
 TO_SCENE_PATH = "res://scenes/maps/SecondMap.tscn"
+
+[node name="entShopKeep2" parent="." instance=ExtResource("19_tw6u4")]
+position = Vector2(144, -120)
 
 [editable path="MrMovey"]
 [editable path="NPCPrototype"]

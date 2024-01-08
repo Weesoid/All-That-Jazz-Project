@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmuwce6nb3nfn"]
+[gd_scene load_steps=8 format=3 uid="uid://bmuwce6nb3nfn"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_6xrm5"]
 [ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_74bsj"]
 [ext_resource type="PackedScene" uid="uid://gjcs4krj1v0o" path="res://scenes/entities/Player.tscn" id="2_ltr5q"]
 [ext_resource type="PackedScene" uid="uid://bxktksw38ggwu" path="res://scenes/entities/Door.tscn" id="3_ns64c"]
+[ext_resource type="PackedScene" uid="uid://cjfgtjggovrcu" path="res://scenes/entities/FastTravel.tscn" id="5_4v5tg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j5tc8"]
 texture = ExtResource("1_6xrm5")
@@ -62,3 +63,6 @@ position = Vector2(216, 24)
 [node name="DoorInteractable" parent="." instance=ExtResource("3_ns64c")]
 position = Vector2(216, 24)
 TO_SCENE_PATH = "res://scenes/maps/Prototype.tscn"
+
+[node name="FastTravel" parent="." instance=ExtResource("5_4v5tg")]
+position = Vector2(-112, 16)

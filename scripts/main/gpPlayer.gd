@@ -26,22 +26,15 @@ var channeling_power = false
 
 var bow_mode = false
 var bow_draw_strength = 0
-var bow_max_draw = 5.0
 var SPEED = 100.0
-
-var walk_speed = 100.0
-var sprint_speed = 200.0
-var sprint_drain = 0.10
-var stamina_gain = 0.10
 var stamina_regen = true
 
 var ANIMATION_SPEED = 0.0
-
 var play_once = true
 
 func _ready():
 	player_camera.global_position = global_position
-	SPEED = walk_speed
+	SPEED = PlayerGlobals.walk_speed
 	animation_tree.active = true
 	PlayerGlobals.loadSquad()
 	if OverworldGlobals.getCurrentMapData().SAFE:
@@ -73,20 +66,23 @@ func _physics_process(delta):
 		Input.action_press("ui_bow")
 	
 	if Input.is_action_pressed("ui_sprint") and stamina > 0.0 and bow_draw_strength == 0:
-		SPEED = sprint_speed
+		SPEED = PlayerGlobals.sprint_speed
 		ANIMATION_SPEED = 1.0
-		if velocity != Vector2.ZERO: stamina -= sprint_drain
-	elif bow_draw_strength >= bow_max_draw:
+		if velocity != Vector2.ZERO: stamina -= PlayerGlobals.sprint_drain
+	elif bow_draw_strength >= PlayerGlobals.bow_max_draw:
 		if stamina > 0.0:
 			stamina -= 0.1
 	elif Input.is_action_pressed("ui_sprint") and stamina < 0.0:
-		SPEED = walk_speed
+		SPEED = PlayerGlobals.walk_speed
 		ANIMATION_SPEED = 0.0
 	elif !Input.is_action_pressed("ui_sprint") and stamina < 100 and stamina_regen:
-		stamina += stamina_gain
+		stamina += PlayerGlobals.stamina_gain
+	
+	if stamina > 100.0:
+		stamina = 100.0
 	
 	if Input.is_action_just_released("ui_sprint"):
-		SPEED = walk_speed
+		SPEED = PlayerGlobals.walk_speed
 		ANIMATION_SPEED = 0.0
 	
 	OverworldGlobals.follow_array.push_front(self.global_position)
@@ -94,7 +90,7 @@ func _physics_process(delta):
 
 func resetStates():
 	undrawBowAnimation()
-	SPEED = walk_speed
+	SPEED = PlayerGlobals.walk_speed
 	ANIMATION_SPEED = 0.0
 
 func _unhandled_input(_event: InputEvent):
@@ -171,20 +167,20 @@ func drawBow():
 			bow_line.default_color.a = 0.10
 		else:
 			bow_line.default_color.a = 0.5
-		if bow_draw_strength >= bow_max_draw:
+		if bow_draw_strength >= PlayerGlobals.bow_max_draw:
 			#player_camera.zoom = lerp(player_camera.zoom, Vector2(1.75, 1.75), 0.25)
 			bow_line.points[1].y = 275
-			bow_draw_strength = bow_max_draw
+			bow_draw_strength = PlayerGlobals.bow_max_draw
 	
 	if Input.is_action_just_released("ui_click") and velocity == Vector2.ZERO:
-		if bow_draw_strength >= bow_max_draw: shootProjectile()
+		if bow_draw_strength >= PlayerGlobals.bow_max_draw: shootProjectile()
 		undrawBow()
 
 func undrawBow():
 	bow_line.hide()
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
-	SPEED = walk_speed
+	SPEED = PlayerGlobals.walk_speed
 	play_once = true
 	#player_camera.zoom =  Vector2(2.0, 2.0)
 	#OverworldGlobals.player_can_move = true
@@ -241,7 +237,7 @@ func updateAnimationParameters():
 		
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
-			if bow_draw_strength >= bow_max_draw and velocity == Vector2.ZERO:
+			if bow_draw_strength >= PlayerGlobals.bow_max_draw and velocity == Vector2.ZERO:
 				OverworldGlobals.player_can_move = false
 				animation_tree["parameters/conditions/shoot_bow"] = true
 				await animation_tree.animation_finished

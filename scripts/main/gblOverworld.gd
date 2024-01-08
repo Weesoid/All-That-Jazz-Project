@@ -83,6 +83,12 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
 	else:
 		closeMenu(main_menu)
 
+func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
+	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
+
+func changeMap(map_name: String):
+	get_tree().change_scene_to_file("res://scenes/maps/%s.tscn" % map_name)
+
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 
