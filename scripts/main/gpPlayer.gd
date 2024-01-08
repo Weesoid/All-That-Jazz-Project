@@ -39,12 +39,12 @@ var ANIMATION_SPEED = 0.0
 var play_once = true
 
 func _ready():
-	print('Badings!')
 	player_camera.global_position = global_position
-	PlayerGlobals.POWER = load("res://resources/powers/Stealth.tres")
 	SPEED = walk_speed
 	animation_tree.active = true
 	PlayerGlobals.loadSquad()
+	if OverworldGlobals.getCurrentMapData().SAFE:
+		OverworldGlobals.loadFollowers()
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -113,17 +113,31 @@ func _unhandled_input(_event: InputEvent):
 		if bow_draw_strength == 0: 
 			bow_mode = !bow_mode
 	
-	if Input.is_action_just_pressed("ui_gambit") and bow_draw_strength == 0:
+	if Input.is_action_just_pressed("ui_gambit") and canUsePower():
 		if PlayerGlobals.POWER != null:
 			PlayerGlobals.POWER.executePower(self)
 		else:
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 
 func canDrawBow()-> bool:
+	if OverworldGlobals.getCurrentMapData().SAFE:
+		prompt.showPrompt("Can't use  [color=yellow]Bow[/color] in safe area.")
+		return false
+	
 	if velocity != Vector2.ZERO:
 		return false
 	elif PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
 		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
+		return false
+	
+	return true
+
+func canUsePower():
+	if OverworldGlobals.getCurrentMapData().SAFE:
+		prompt.showPrompt("Can't use  [color=yellow]Gambit[/color] in safe area.")
+		return false
+	
+	if bow_draw_strength != 0.0:
 		return false
 	
 	return true
@@ -238,7 +252,7 @@ func updateAnimationParameters():
 	#if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null and bow_draw_strength == 0:
 	#	toggleVoidAnimation()
 
-func toggleVoidAnimation(set=true):
+func toggleVoidAnimation(set: bool):
 	if set:
 		print('Voiding up!')
 		animation_tree["parameters/conditions/void_call"] = true

@@ -67,9 +67,7 @@ func addFollower(follower: NPCFollower):
 	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
 
 func removeFollower(follower_combatant: ResPlayerCombatant):
-	for f in FOLLOWERS:
-		if f.host_combatant == follower_combatant:
-			FOLLOWERS.erase(f)
+	OverworldGlobals.loadFollowers()
 	
 	var index = 1
 	for f in FOLLOWERS:

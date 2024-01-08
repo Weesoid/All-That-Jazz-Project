@@ -22,7 +22,8 @@ func initializePlayerParty():
 		if !member.initialized:
 			member.initializeCombatant()
 			member.SCENE.free()
-		loadFollower(member)
+	
+	loadFollowers()
 	
 	follow_array.resize(100)
 
@@ -85,6 +86,9 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 
+func getCurrentMapData()-> MapData:
+	return get_tree().current_scene.get_node('MapDataComponent')
+
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES
 #********************************************************************************
@@ -114,16 +118,20 @@ func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_
 
 		balloon.start(resource, 'win', extra_game_states)
 
-func loadFollower(combatant: ResPlayerCombatant):
-	if PlayerGlobals.hasFollower(combatant) or combatant.FOLLOWER_PACKED_SCENE == null:
-		return
+# REFACTOR
+func loadFollowers():
+	PlayerGlobals.FOLLOWERS.clear()
+	for follower in PlayerGlobals.FOLLOWERS:
+		follower.queue_free()
 	
-	var follower_scene
-	follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
-	follower_scene.host_combatant = combatant
-	PlayerGlobals.addFollower(follower_scene)
-	follower_scene.global_position = getPlayer().global_position
-	getCurrentMap().add_child(follower_scene)
+	PlayerGlobals.FOLLOWERS.clear()
+	for combatant in PlayerGlobals.TEAM:
+		if combatant.active:
+			var follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
+			follower_scene.host_combatant = combatant
+			PlayerGlobals.addFollower(follower_scene)
+			follower_scene.global_position = getPlayer().global_position
+			getCurrentMap().add_child.call_deferred(follower_scene)
 
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
@@ -175,4 +183,3 @@ func isPlayerSquadDead():
 func restorePlayerView():
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
-	

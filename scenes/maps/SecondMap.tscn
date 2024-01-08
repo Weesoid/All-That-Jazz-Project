@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmuwce6nb3nfn"]
+[gd_scene load_steps=7 format=3 uid="uid://bmuwce6nb3nfn"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://assets/tiles/tiles1.png" id="1_6xrm5"]
+[ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_74bsj"]
 [ext_resource type="PackedScene" uid="uid://gjcs4krj1v0o" path="res://scenes/entities/Player.tscn" id="2_ltr5q"]
 [ext_resource type="PackedScene" uid="uid://bxktksw38ggwu" path="res://scenes/entities/Door.tscn" id="3_ns64c"]
 
@@ -13,6 +14,7 @@ texture_region_size = Vector2i(48, 48)
 1:0/0 = 0
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
 0:1/0 = 0
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:1/0/physics_layer_0/angular_velocity = 0.0
@@ -39,15 +41,23 @@ navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_j5tc8")
 
 [node name="SecondMap" type="Node2D"]
+z_index = -1
+y_sort_enabled = true
+
+[node name="MapDataComponent" parent="." instance=ExtResource("1_74bsj")]
+NAME = "Alt Room"
+DESCRIPTION = "Just for debugging!"
+SAFE = true
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_p1l6j")
 cell_quadrant_size = 48
 collision_animatable = true
 format = 2
-layer_0/tile_data = PackedInt32Array(-1, 0, 0, 65535, 0, 0, 0, 0, 0, -65536, 0, 0, -2, 0, 0, 65534, 0, 0, 1, 0, 0, -65535, 0, 0, -65534, 0, 0, 2, 0, 0, 65533, 0, 0, -3, 0, 0, -65539, 65536, 0, -65538, 65536, 0, -65537, 65536, 0, -131072, 65536, 0, -131071, 65536, 0, -131070, 65536, 0, -196606, 65536, 0, -196607, 65536, 0, -196608, 65536, 0, -131073, 65536, 0, -131074, 65536, 0, -131075, 65536, 0, 131069, 0, 0, 131070, 0, 0, 131071, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, -196611, 65536, 0, -196610, 65536, 0, -196609, 65536, 0, -262144, 65536, 0, -262143, 65536, 0, -262142, 65536, 0, 3, 0, 0, -65533, 0, 0, -131069, 65536, 0, -196605, 65536, 0, -262141, 65536, 0, 65539, 0, 0, 4, 0, 0)
+layer_0/tile_data = PackedInt32Array(-1, 65536, 0, 65535, 0, 0, 0, 0, 0, -65536, 65536, 0, -2, 65536, 0, 65534, 0, 0, 1, 0, 0, -65535, 65536, 0, -65534, 65536, 0, 2, 0, 0, 65533, 0, 0, -3, 65536, 0, -65539, 65536, 0, -65538, 65536, 0, -65537, 65536, 0, -131072, 65536, 0, -131071, 65536, 0, -131070, 65536, 0, -196606, 65536, 0, -196607, 65536, 0, -196608, 65536, 0, -131073, 65536, 0, -131074, 65536, 0, -131075, 65536, 0, 131069, 0, 0, 131070, 0, 0, 131071, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, -196611, 65536, 0, -196610, 65536, 0, -196609, 65536, 0, -262144, 65536, 0, -262143, 65536, 0, -262142, 65536, 0, 3, 0, 0, -65533, 65536, 0, -131069, 65536, 0, -196605, 65536, 0, -262141, 65536, 0, 65539, 0, 0, 4, 0, 0)
 
 [node name="Player" parent="." instance=ExtResource("2_ltr5q")]
+position = Vector2(216, 24)
 
 [node name="DoorInteractable" parent="." instance=ExtResource("3_ns64c")]
 position = Vector2(216, 24)
