@@ -30,10 +30,25 @@ func initializePlayerParty():
 #********************************************************************************
 # SIGNALS
 #********************************************************************************
-func moveEntity(entity_body_name: String, move_sequence: String):
-	move_entity.emit(entity_body_name, move_sequence)
-	await getEntity(entity_body_name).get_node('NPCMovementComponent').movement_finished
+# REWORK MOVEMENT
+func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), animate_direction=true):
+	if getEntity(entity_body_name).has_node('ScriptedMovementComponent'):
+		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').tree_exited
 	
+	getEntity(entity_body_name).add_child(preload("res://scenes/components/ScriptedMovement.tscn").instantiate())
+	getEntity(entity_body_name).get_node('ScriptedMovementComponent').ANIMATE_DIRECTION = animate_direction
+	
+	if move_to is Vector2:
+		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_LOCATION = move_to + offset
+	elif move_to is String and move_to.substr(0,1) == '>':
+		getEntity(entity_body_name).get_node('ScriptedMovementComponent').moveBody(move_to)
+	elif move_to is String:
+		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_LOCATION = getEntity(move_to).global_position + offset
+	else:
+		print('Invalid move_to parameter.')
+	
+	await getEntity(entity_body_name).get_node('ScriptedMovementComponent').movement_finished
+
 func alertPatrollers():
 	alert_patrollers.emit()
 	
@@ -45,6 +60,18 @@ func getPlayer()-> PlayerScene:
 
 func getEntity(entity_name: String)-> PlayerScene:
 	return get_tree().current_scene.get_node(entity_name)
+
+func playEntityAnimation(entity_name: String, animation_name: String):
+	get_tree().current_scene.get_node(entity_name).get_node('AnimationPlayer').play(animation_name)
+
+func changeEntityVisibility(entity_name: String, set:bool):
+	get_tree().current_scene.get_node(entity_name).visible = set
+
+func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
+	if teleport_to is Vector2:
+		getEntity(entity_name).global_position = teleport_to + offset
+	elif teleport_to is String:
+		getEntity(entity_name).global_position = getEntity(teleport_to).global_position + offset
 
 func showMenu(path: String):
 	var main_menu: Control = load(path).instantiate()
@@ -143,6 +170,10 @@ func loadFollowers():
 #********************************************************************************
 func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = ''):
 	getPlayer().resetStates()
+	
+	if get_parent().has_node('CombatantSquadComponent'):
+		await get_parent().get_node('CombatantSquadComponent').tree_exited
+	
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))

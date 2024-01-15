@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://cdl8vad57bffh"
+path="res://.godot/imported/animate.dialogue-74334fd247a17ff8272683f11893990d.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/animate.dialogue"
+dest_files=["res://.godot/imported/animate.dialogue-74334fd247a17ff8272683f11893990d.tres"]
+
+[params]
+
+defaults=true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=119 format=3 uid="uid://gjcs4krj1v0o"]
+[gd_scene load_steps=123 format=3 uid="uid://gjcs4krj1v0o"]
 
 [ext_resource type="Script" path="res://scripts/main/gpPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://assets/overworld_sprites/power_dark.png" id="3_h566x"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bx16iy3b6f0t1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
 [ext_resource type="Texture2D" uid="uid://ttptw1qp8wj2" path="res://assets/misc_sprites/arrow_icon.png" id="7_7jyj3"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiUtilitySelector.gd" id="8_lyttf"]
+[ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://assets/overworld_sprites/power.png" id="10_wsxx2"]
 
 [sub_resource type="Animation" id="Animation_b30mo"]
 resource_name = "Interact"
@@ -1785,6 +1786,151 @@ graph_offset = Vector2(-489.266, -235.464)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_7ym7e"]
 
+[sub_resource type="Animation" id="Animation_x7qsu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationSprite:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimationSprite:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimationSprite:hframes")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationSprite:vframes")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_ogoem"]
+resource_name = "VoidChannel"
+length = 1.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationSprite:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimationSprite:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("10_wsxx2"), null]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimationSprite:hframes")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [9, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c2xtv"]
+_data = {
+"RESET": SubResource("Animation_x7qsu"),
+"VoidChannel": SubResource("Animation_ogoem")
+}
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 17
 collision_mask = 17
@@ -1846,15 +1992,6 @@ zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
-[node name="Ammo" type="Label" parent="PlayerCamera"]
-offset_left = 17.0
-offset_top = -32.0
-offset_right = 57.0
-offset_bottom = -19.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-text = "1000"
-
 [node name="PlayerPrompt" type="RichTextLabel" parent="PlayerCamera"]
 modulate = Color(1, 1, 1, 0)
 z_index = 998
@@ -1890,6 +2027,15 @@ value = 50.0
 fill_mode = 3
 show_percentage = false
 script = ExtResource("6_66sfb")
+
+[node name="Ammo" type="Label" parent="PlayerCamera"]
+offset_left = 17.0
+offset_top = -32.0
+offset_right = 57.0
+offset_bottom = -19.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "1000"
 
 [node name="UtilitySelector" type="TextureRect" parent="PlayerCamera"]
 offset_left = -11.0
@@ -1943,8 +2089,17 @@ parameters/conditions/void_release = false
 parameters/Idle/blend_position = Vector2(-0.0135502, 0.151365)
 "parameters/Idle Bow/blend_position" = Vector2(0, 0)
 "parameters/Shoot Bow/blend_position" = Vector2(0, 0)
-parameters/Walk/blend_position = Vector2(0, 0)
+parameters/Walk/blend_position = Vector2(0.170443, -0.0128806)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
+
+[node name="AnimationSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -21)
+
+[node name="OtherAnimations" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_c2xtv")
+}
 
 [node name="ScriptAudioPlayer" type="AudioStreamPlayer" parent="."]
 max_polyphony = 8

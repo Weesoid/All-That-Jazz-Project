@@ -37,6 +37,7 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_clear_prompts"):
+		OverworldGlobals.getPlayer().global_position = lerp(OverworldGlobals.getPlayer().global_position, Vector2(0,0), 0.5)
 		timer.timeout.emit()
 
 func _on_timer_timeout():

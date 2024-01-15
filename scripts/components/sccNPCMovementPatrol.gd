@@ -1,4 +1,4 @@
-extends NPCMovement
+extends Node2D
 class_name NPCPatrolMovement
 
 @onready var PATROL_BUBBLE = $PatrolBubble/AnimationPlayer
@@ -8,9 +8,15 @@ class_name NPCPatrolMovement
 @export var LINE_OF_SIGHT: LineOfSight
 @export var COMBAT_SQUAD: CombatantSquad
 @export var PATROL_AREA: Area2D
+@export var BODY: CharacterBody2D
+@export var ANIMATOR: AnimationPlayer
+@export var BASE_MOVE_SPEED = 35
 
+var STATE = 0
+var NAME
+var TARGET
+var MOVE_SPEED
 var PATROL_SHAPE
-#var STUCK_TIMER: Timer
 var IDLE_TIMER: Timer
 var STUN_TIMER: Timer
 
@@ -175,3 +181,13 @@ func updateLineOfSight():
 		updateSprite('D')
 	else:
 		updateSprite('U')
+
+func updateSprite(direction: String):
+	if direction == 'L':
+		ANIMATOR.play('Walk_Left')
+	elif direction == 'R':
+		ANIMATOR.play('Walk_Right')
+	elif direction == 'D':
+		ANIMATOR.play('Walk_Down')
+	else:
+		ANIMATOR.play('Walk_Up')

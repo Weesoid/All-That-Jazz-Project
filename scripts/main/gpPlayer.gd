@@ -115,7 +115,11 @@ func _unhandled_input(_event: InputEvent):
 			PlayerGlobals.POWER.executePower(self)
 		else:
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
-
+	
+	if Input.is_action_just_pressed("ui_text_backspace"):
+		$OtherAnimations.play("VoidChannel")
+		await $OtherAnimations.animation_finished
+	
 func canDrawBow()-> bool:
 	if OverworldGlobals.getCurrentMapData().SAFE:
 		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
@@ -182,8 +186,6 @@ func undrawBow():
 	bow_draw_strength = 0
 	SPEED = PlayerGlobals.walk_speed
 	play_once = true
-	#player_camera.zoom =  Vector2(2.0, 2.0)
-	#OverworldGlobals.player_can_move = true
 
 func shootProjectile():
 	playAudio("178872__hanbaal__bow.ogg", -15.0, true)
@@ -204,6 +206,7 @@ func playAudio(filename: String, db=0.0, random_pitch=false):
 	
 	audio_player.play()
 
+# Based on https://www.youtube.com/watch?v=WrMORzl3g1U
 func updateAnimationParameters():
 	if velocity == Vector2.ZERO:
 		animation_tree["parameters/conditions/idle"] = true

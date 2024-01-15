@@ -1,0 +1,20 @@
+~ start
+set player_can_move = false
+
+do moveEntity("Player", "Animator", Vector2(0,-20))
+do moveEntity("Player", ">D1")
+Willis: I'm gonna hug you now.
+Entity: Woah!
+do moveEntity("Player", ">D15")
+do changeEntityVisibility("Player", false)
+do playEntityAnimation("Animator", "Hug")
+do wait(1.5)
+do changeEntityVisibility("Player", true)
+do playEntityAnimation("Animator", "RESET")
+do moveEntity("Player", "Animator", Vector2(0,-20), false)
+do wait(1.0)
+Entity: Nice hug!
+
+set show_player_interaction = true
+set player_can_move = true
+=> END

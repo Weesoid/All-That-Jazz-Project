@@ -197,21 +197,21 @@ func addStatusEffect(target: ResCombatant, status_effect_name: String):
 
 func checkReactions(target: ResCombatant):
 	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
-		execute_ability.emit(target, preload("res://resources/abilities/ReactionCauterize.tres"))
+		execute_ability.emit(target, load("res://resources/abilities/ReactionCauterize.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Poison')
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Chilled'):
-		runReaction(target, 'Singed', 'Chilled', preload("res://resources/abilities/ReactionScald.tres"))
+		runReaction(target, 'Singed', 'Chilled', load("res://resources/abilities/ReactionScald.tres"))
 	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
-		runReaction(target, 'Jolted', 'Poison', preload("res://resources/abilities/ReactionCatalyze.tres"))
+		runReaction(target, 'Jolted', 'Poison', load("res://resources/abilities/ReactionCatalyze.tres"))
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
-		execute_ability.emit(target, preload("res://resources/abilities/ReactionFulgurate.tres"))
+		execute_ability.emit(target, load("res://resources/abilities/ReactionFulgurate.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Jolted')
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Jolted'):
-		runReaction(target, 'Chilled', 'Jolted', preload("res://resources/abilities/ReactionDisrupt.tres"))
+		runReaction(target, 'Chilled', 'Jolted', load("res://resources/abilities/ReactionDisrupt.tres"))
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
-		runReaction(target, 'Chilled', 'Poison', preload("res://resources/abilities/ReactionVulnerate.tres"))
+		runReaction(target, 'Chilled', 'Poison', load("res://resources/abilities/ReactionVulnerate.tres"))
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
 	removeStatusEffect(target, effectA)
