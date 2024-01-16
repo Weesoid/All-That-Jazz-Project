@@ -87,7 +87,7 @@ func patrol():
 			PATROL_BUBBLE.play_backwards("Show")
 	
 func alertPatrolMode():
-	MOVE_SPEED = BASE_MOVE_SPEED * 1.5
+	MOVE_SPEED = BASE_MOVE_SPEED * 1.25
 	STATE = 1
 	if PATROL_BUBBLE.current_animation != "Loop":
 		PATROL_BUBBLE.play("Show")

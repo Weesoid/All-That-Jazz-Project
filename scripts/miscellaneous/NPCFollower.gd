@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name NPCFollower
 
-@onready var ANIMATOR = $Animator
+@onready var ANIMATOR = $WalkingAnimations
 
 var FOLLOW_LOCATION: int
 var host_combatant: ResPlayerCombatant

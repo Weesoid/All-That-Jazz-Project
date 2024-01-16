@@ -20,8 +20,11 @@ func _physics_process(delta):
 	if !TARGET_POSITIONS.is_empty():
 		BODY.velocity = BODY.global_position.direction_to(TARGET_POSITIONS[0]) * MOVE_SPEED
 		
-		if BODY is PlayerScene and ANIMATE_DIRECTION:
-			OverworldGlobals.getPlayer().direction = BODY.velocity.normalized()
+		if ANIMATE_DIRECTION:
+			if BODY is PlayerScene:
+				OverworldGlobals.getPlayer().direction = BODY.velocity.normalized()
+			elif BODY.has_node('WalkingAnimations'):
+				animateWalk(BODY.velocity.normalized())
 	
 	if !TARGET_POSITIONS.is_empty() and BODY.global_position.distance_to(TARGET_POSITIONS[0]) < 1.0:
 		TARGET_POSITIONS.remove_at(0)
@@ -51,3 +54,18 @@ func moveBody(move_sequence: String):
 		else:
 			TARGET_POSITIONS.append(previous_position + direction)
 			previous_position = previous_position + direction
+
+func animateWalk(direction: Vector2):
+	var animator: AnimationPlayer = BODY.get_node('WalkingAnimations')
+	if BODY.velocity.x < 0:
+		print('L')
+		animator.play('Walk_Left')
+	elif BODY.velocity.x > 0:
+		print('R')
+		animator.play('Walk_Right')
+	elif  BODY.velocity.y < 0:
+		print('U')
+		animator.play('Walk_Up')
+	elif BODY.velocity.y > 0:
+		print('D')
+		animator.play('Walk_Down')
