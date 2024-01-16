@@ -117,8 +117,8 @@ func _unhandled_input(_event: InputEvent):
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 	
 	if Input.is_action_just_pressed("ui_text_backspace"):
-		$OtherAnimations.play("VoidChannel")
-		await $OtherAnimations.animation_finished
+		$AnimationPlayer.play("VoidChannel")
+		await $AnimationPlayer.animation_finished
 	
 func canDrawBow()-> bool:
 	if OverworldGlobals.getCurrentMapData().SAFE:

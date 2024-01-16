@@ -5,7 +5,7 @@ class_name NPCFollower
 
 var FOLLOW_LOCATION: int
 var host_combatant: ResPlayerCombatant
-var SPEED
+var SPEED = 1.0
 
 func _ready():
 	add_collision_exception_with(OverworldGlobals.getPlayer())
@@ -14,15 +14,16 @@ func _physics_process(_delta):
 	if !host_combatant.active:
 		queue_free()
 	
-	SPEED = OverworldGlobals.getPlayer().SPEED
-	
-	if OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
-		updateSprite()
-		velocity = lerp(velocity, global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]) * SPEED, 0.25)
-	else:
-		velocity = Vector2.ZERO
-		ANIMATOR.seek(1, true)
-		ANIMATOR.pause()
+	# Positive SPEED allows followers to move, negative SPEED stops them. See 'setFollowerMotion' function
+	if SPEED > 0.0:
+		SPEED = OverworldGlobals.getPlayer().SPEED
+		if OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
+			updateSprite()
+			velocity = lerp(velocity, global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]) * SPEED, 0.25)
+		else:
+			velocity = Vector2.ZERO
+			ANIMATOR.seek(1, true)
+			ANIMATOR.pause()
 	
 	move_and_slide()
 

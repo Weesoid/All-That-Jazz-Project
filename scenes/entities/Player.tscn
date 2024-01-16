@@ -2096,7 +2096,7 @@ parameters/Walk/blend_position = Vector2(0.170443, -0.0128806)
 visible = false
 position = Vector2(0, -21)
 
-[node name="OtherAnimations" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_c2xtv")
 }

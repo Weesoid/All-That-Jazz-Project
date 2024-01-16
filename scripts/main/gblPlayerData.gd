@@ -90,7 +90,21 @@ func hasFollower(follower_combatant: ResPlayerCombatant):
 	
 	return false
 
+func isFollowerActive(follower_combatant_name: String):
+	for f in FOLLOWERS:
+		if f.host_combatant.NAME == follower_combatant_name:
+			return true
+	
+	return false
+
 func loadSquad():
 	for member in TEAM:
 		if member.active: 
 			OverworldGlobals.getCombatantSquad('Player').append(member)
+
+func setFollowersMotion(enable:bool):
+	for follower in FOLLOWERS:
+		if enable:
+			follower.SPEED = 1.0
+		else:
+			follower.SPEED = -1.0
