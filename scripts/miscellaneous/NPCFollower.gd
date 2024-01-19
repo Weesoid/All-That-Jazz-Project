@@ -21,9 +21,7 @@ func _physics_process(_delta):
 			updateSprite()
 			velocity = lerp(velocity, global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]) * SPEED, 0.25)
 		else:
-			velocity = Vector2.ZERO
-			ANIMATOR.seek(1, true)
-			ANIMATOR.pause()
+			stopWalkAnimation()
 	
 	move_and_slide()
 
@@ -38,3 +36,8 @@ func updateSprite():
 		ANIMATOR.play('Walk_Down')
 	elif player_direction == 179:
 		ANIMATOR.play('Walk_Up')
+
+func stopWalkAnimation():
+	velocity = Vector2.ZERO
+	ANIMATOR.seek(1, true)
+	ANIMATOR.pause()

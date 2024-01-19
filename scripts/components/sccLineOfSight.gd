@@ -13,4 +13,4 @@ func detectPlayer():
 		RAYCAST.rotation -= PI/2
 		RAYCAST.force_raycast_update()
 		return RAYCAST.get_collider() == OverworldGlobals.getPlayer()
-		
+	

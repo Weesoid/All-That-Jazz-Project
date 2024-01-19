@@ -30,7 +30,6 @@ func initializePlayerParty():
 #********************************************************************************
 # SIGNALS
 #********************************************************************************
-# REWORK MOVEMENT
 func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=35.0, animate_direction=true, wait=true):
 	if getEntity(entity_body_name).has_node('ScriptedMovementComponent'):
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').tree_exited
@@ -42,7 +41,7 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=35
 	
 	if move_to is Vector2:
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_POSITIONS.append(move_to + offset)
-	elif move_to is String and move_to.substr(0,1) == '>':
+	elif move_to is String and move_to.contains('>'):
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').moveBody(move_to)
 	elif move_to is String:
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_POSITIONS.append(getEntity(move_to).global_position + offset)
@@ -65,13 +64,13 @@ func getPlayer()-> PlayerScene:
 func getEntity(entity_name: String):
 	return get_tree().current_scene.get_node(entity_name)
 
-func playEntityAnimation(entity_name: String, animation_name: String, wait=false):
+func playEntityAnimation(entity_name: String, animation_name: String, wait=true):
 	getEntity(entity_name).get_node('AnimationPlayer').play(animation_name)
 	if wait:
 		await getEntity(entity_name).get_node('AnimationPlayer').animation_finished
 
-func changeEntityVisibility(entity_name: String, set:bool):
-	get_tree().current_scene.get_node(entity_name).visible = set
+func changeEntityVisibility(entity_name: String, visibility:bool):
+	get_tree().current_scene.get_node(entity_name).visible = visibility
 
 func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 	if teleport_to is Vector2:

@@ -4,8 +4,8 @@ set player_can_move = false
 do moveEntity("Player", "Animator", Vector2(0,-20))
 if isFollowerActive("PUFriendHealer"):
 	Willis: My frined is just gonna move on over here.
-	do moveEntity("NPCPrototypeFollower", "Player", Vector2(-40,0), 105.0, true, false)
-	do moveEntity("NPCPrototypeFollower", ">D1")
+	do moveEntity("NPCPrototypeFollower", "v>-97 44,-97 45", Vector2(0,-0), 35.0, true, false)
+
 do moveEntity("Player", ">D1")
 Willis: ...
 Willis: I'm gonna hug you now.
@@ -15,12 +15,12 @@ do changeEntityVisibility("Player", false)
 do playEntityAnimation("Animator", "Hug")
 do wait(1.5)
 do changeEntityVisibility("Player", true)
-do playEntityAnimation("Animator", "RESET")
+do playEntityAnimation("Animator", "RESET", false)
 do moveEntity("Player", "Animator", Vector2(0,-20), 35.0, false)
 do moveEntity("Animator", ">L10,R10,U10,D10")
 Entity: Nice hug!
 
-do playEntityAnimation("Player", "VoidChannel", true)
+do playEntityAnimation("Player", "VoidChannel")
 Entity: Nice trick!
 
 set show_player_interaction = true

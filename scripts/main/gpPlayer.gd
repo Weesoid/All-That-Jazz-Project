@@ -252,13 +252,11 @@ func updateAnimationParameters():
 	#if Input.is_action_just_pressed('ui_gambit') and PlayerGlobals.POWER != null and bow_draw_strength == 0:
 	#	toggleVoidAnimation()
 
-func toggleVoidAnimation(set: bool):
-	if set:
-		print('Voiding up!')
+func toggleVoidAnimation(enabled: bool):
+	if enabled:
 		animation_tree["parameters/conditions/void_call"] = true
 		animation_tree["parameters/conditions/void_release"] = false
 	else:
-		print('Voiding down...')
 		animation_tree["parameters/conditions/void_call"] = false
 		animation_tree["parameters/conditions/void_release"] = true
 

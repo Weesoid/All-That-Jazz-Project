@@ -1,10 +1,10 @@
-extends Node
+extends Node2D
 class_name ScriptedMovement
 
 var BODY: CharacterBody2D
-var TARGET_POSITIONS = []
+var TARGET_POSITIONS: Array[Vector2] = []
 var MOVE_SPEED = 35
-var ANIMATE_DIRECTION
+var ANIMATE_DIRECTION: bool
 
 signal movement_finished
 
@@ -14,7 +14,7 @@ func _ready():
 	BODY.set_collision_layer_value(1, false)
 	BODY.set_collision_mask_value(1, false)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	BODY.move_and_slide()
 	
 	if !TARGET_POSITIONS.is_empty():
@@ -24,7 +24,7 @@ func _physics_process(delta):
 			if BODY is PlayerScene:
 				OverworldGlobals.getPlayer().direction = BODY.velocity.normalized()
 			elif BODY.has_node('WalkingAnimations'):
-				animateWalk(BODY.velocity.normalized())
+				animateWalk()
 	
 	if !TARGET_POSITIONS.is_empty() and BODY.global_position.distance_to(TARGET_POSITIONS[0]) < 1.0:
 		TARGET_POSITIONS.remove_at(0)
@@ -37,8 +37,14 @@ func _physics_process(delta):
 		queue_free()
 
 func moveBody(move_sequence: String):
-	move_sequence = move_sequence.replace('>', '')
-	var movements = move_sequence.split(",")
+	if move_sequence.contains('v>'):
+		move_sequence = move_sequence.replace('v>', '')
+		setVectorMoveSequence(move_sequence.split(','))
+	elif move_sequence.contains('>'):
+		move_sequence = move_sequence.replace('>', '')
+		setMoveSequence(move_sequence.split(','))
+
+func setMoveSequence(movements: Array[String]):
 	var previous_position
 	for i in range(movements.size()):
 		var direction
@@ -55,17 +61,32 @@ func moveBody(move_sequence: String):
 			TARGET_POSITIONS.append(previous_position + direction)
 			previous_position = previous_position + direction
 
-func animateWalk(direction: Vector2):
-	var animator: AnimationPlayer = BODY.get_node('WalkingAnimations')
-	if BODY.velocity.x < 0:
-		print('L')
+func setVectorMoveSequence(movements: Array[String]):
+	for pos in movements:
+		var coords = pos.split(' ')
+		TARGET_POSITIONS.append(Vector2(int(coords[0]), int(coords[1])))
+
+func animateWalk():
+	look_at(TARGET_POSITIONS[0])
+	rotation -= PI/2
+	var look_direction = global_rotation_degrees
+	
+	if look_direction < 135 and look_direction > 45:
+		updateSprite('L')
+	elif look_direction < -45 and look_direction > -135:
+		updateSprite('R')
+	elif look_direction < 45 and look_direction > -45:
+		updateSprite('D')
+	else:
+		updateSprite('U')
+
+func updateSprite(direction: String):
+	var animator = BODY.get_node('WalkingAnimations')
+	if direction == 'L':
 		animator.play('Walk_Left')
-	elif BODY.velocity.x > 0:
-		print('R')
+	elif direction == 'R':
 		animator.play('Walk_Right')
-	elif  BODY.velocity.y < 0:
-		print('U')
-		animator.play('Walk_Up')
-	elif BODY.velocity.y > 0:
-		print('D')
+	elif direction == 'D':
 		animator.play('Walk_Down')
+	else:
+		animator.play('Walk_Up')

@@ -56,7 +56,6 @@ func getRequiredExp() -> int:
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
-		print(combatant)
 		combatant.ABILITY_POINTS += 1
 		
 		combatant.removeEquipmentModifications()
@@ -108,3 +107,4 @@ func setFollowersMotion(enable:bool):
 			follower.SPEED = 1.0
 		else:
 			follower.SPEED = -1.0
+			follower.stopWalkAnimation()
