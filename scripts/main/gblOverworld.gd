@@ -2,8 +2,7 @@ extends Node
 
 var showing_menu = false
 var enemy_combatant_squad: Array[ResCombatant]
-var player_can_move = true
-var show_player_interaction = true
+var player_input = true
 var follow_array = []
 var player_follower_count = 0
 
@@ -26,6 +25,10 @@ func initializePlayerParty():
 	loadFollowers()
 	
 	follow_array.resize(100)
+
+func setPlayerInput(enabled:bool):
+	getPlayer().set_process_unhandled_input(enabled)
+	player_input = enabled
 
 #********************************************************************************
 # SIGNALS
@@ -85,8 +88,8 @@ func showMenu(path: String):
 	if !showing_menu:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		getPlayer().player_camera.add_child(main_menu)
-		player_can_move = false
-		show_player_interaction = false
+		setPlayerInput(false)
+		#show_player_interaction = false
 		showing_menu = true
 	else:
 		closeMenu(main_menu)
@@ -95,8 +98,8 @@ func closeMenu(menu: Control):
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	menu.queue_free()
 	getPlayer().player_camera.get_node('uiMenu').queue_free()
-	player_can_move = true
-	show_player_interaction = true
+	setPlayerInput(true)
+	#show_player_interaction = true
 	showing_menu = false
 
 func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
@@ -109,8 +112,8 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
 	if !showing_menu:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		getPlayer().player_camera.add_child(main_menu)
-		player_can_move = false
-		show_player_interaction = false
+		setPlayerInput(false)
+		#show_player_interaction = false
 		showing_menu = true
 	else:
 		closeMenu(main_menu)

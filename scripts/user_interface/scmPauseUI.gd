@@ -13,14 +13,14 @@ extends Control
 @onready var currency = $Container/Currency
 
 func _ready():
-	OverworldGlobals.player_can_move = false
+	OverworldGlobals.setPlayerInput(false)
 	exp_bar.value = PlayerGlobals.CURRENT_EXP
 	exp_bar.max_value = PlayerGlobals.getRequiredExp()
 	level.text = 'POSSE LEVEL ' + str(PlayerGlobals.PARTY_LEVEL)
 	currency.text = 'CHAINS ' + str(PlayerGlobals.CURRENCY)
 
 func _on_tree_exited():
-	OverworldGlobals.player_can_move = true
+	#OverworldGlobals.setPlayerInput(true)
 	queue_free()
 
 func _on_inventory_pressed():
@@ -46,3 +46,7 @@ func loadUserInterface(path):
 func disableButtons():
 	for child in base.get_children():
 		if child is Button: child.disabled = true
+
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("ui_cancel"):
+		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")

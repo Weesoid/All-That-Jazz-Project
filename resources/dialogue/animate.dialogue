@@ -1,6 +1,4 @@
 ~ start
-set player_can_move = false
-
 do moveEntity("Player", "Animator", Vector2(0,-20))
 if isFollowerActive("PUFriendHealer"):
 	Willis: My frined is just gonna move on over here.
@@ -22,7 +20,4 @@ Entity: Nice hug!
 
 do playEntityAnimation("Player", "VoidChannel")
 Entity: Nice trick!
-
-set show_player_interaction = true
-set player_can_move = true
 => END

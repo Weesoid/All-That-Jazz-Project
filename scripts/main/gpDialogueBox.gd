@@ -30,7 +30,7 @@ var is_waiting_for_input: bool = false
 var dialogue_line: DialogueLine:
 	set(next_dialogue_line):
 		if not next_dialogue_line:
-			print('END :3')
+			OverworldGlobals.setPlayerInput(true)
 			queue_free()
 			return
 		
@@ -102,7 +102,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 ## Start some dialogue
 func start(dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []) -> void:
-	print('START!')
+	OverworldGlobals.setPlayerInput(false)
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource

@@ -1,6 +1,4 @@
 ~ start
-set player_can_move = false
-
 Entity: What would you like to talk about?
 - Gimme a quest [if hasQuest("Get that item!") == false] => gimme_quest
 - Orand. [if isQuestObjectiveEnabled("Orand", "Speak to Mr. Questy")] => orand
@@ -46,6 +44,5 @@ do setQuestObjective("Completion", "Conclusion", true)
 => leave_dialogue
 
 ~ leave_dialogue
-set show_player_interaction = true
-set player_can_move = true
+Entity: Bye!
 => END

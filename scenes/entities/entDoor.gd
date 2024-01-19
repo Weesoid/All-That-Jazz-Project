@@ -5,4 +5,4 @@ extends Area2D
 func interact():
 	print(TO_SCENE_PATH)
 	get_tree().change_scene_to_file(TO_SCENE_PATH)
-	OverworldGlobals.show_player_interaction = true
+	#OverworldGlobals.show_player_interaction = true

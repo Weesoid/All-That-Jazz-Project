@@ -53,7 +53,7 @@ func _physics_process(delta):
 	else:
 		ammo_count.hide()
 	
-	if OverworldGlobals.player_can_move:
+	if OverworldGlobals.player_input:
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -97,12 +97,12 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	
-	if Input.is_action_just_pressed("ui_select") and !OverworldGlobals.showing_menu and interaction_prompt.visible:
+	if Input.is_action_just_pressed("ui_select"):
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity = Vector2.ZERO
 			undrawBowAnimation()
-			OverworldGlobals.show_player_interaction = false
+			#OverworldGlobals.show_player_interaction = false
 			interactables[0].interact()
 			return
 	
@@ -144,21 +144,22 @@ func canUsePower():
 	return true
 
 func animateInteract():
-	interaction_prompt.visible = OverworldGlobals.show_player_interaction
-	if interaction_detector.get_overlapping_areas().size() > 0 and OverworldGlobals.player_can_move:
+	if interaction_detector.get_overlapping_areas().size() > 0 and OverworldGlobals.player_input: #and OverworldGlobals.player_can_move
+		interaction_prompt.visible = true
 		interaction_prompt_animator.play('Interact')
-	elif !OverworldGlobals.player_can_move:
-		interaction_prompt_animator.play('RESET')
 	else:
 		interaction_prompt_animator.play('RESET')
+		
+	#elif !OverworldGlobals.player_can_move:
+	#else:
+	#	interaction_prompt_animator.play('RESET')
 
 func drawBow():
 	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
 		bow_mode = false
 		toggleBowAnimation()
 	
-	if Input.is_action_pressed("ui_click") and OverworldGlobals.show_player_interaction and !animation_tree["parameters/conditions/void_call"]:
-		#OverworldGlobals.player_can_move = false
+	if Input.is_action_pressed("ui_click") and !animation_tree["parameters/conditions/void_call"]:
 		SPEED = 15.0
 		if play_once:
 			playAudio('bow-loading-38752.ogg',0.0,true)
@@ -233,7 +234,7 @@ func updateAnimationParameters():
 			animation_tree["parameters/conditions/cancel"] = true
 	
 	if bow_mode:
-		if Input.is_action_pressed('ui_click') and OverworldGlobals.show_player_interaction and !animation_tree["parameters/conditions/void_call"]:
+		if Input.is_action_pressed('ui_click') and !animation_tree["parameters/conditions/void_call"]:
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false
@@ -241,10 +242,10 @@ func updateAnimationParameters():
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
 			if bow_draw_strength >= PlayerGlobals.bow_max_draw and velocity == Vector2.ZERO:
-				OverworldGlobals.player_can_move = false
+				OverworldGlobals.setPlayerInput(false)
 				animation_tree["parameters/conditions/shoot_bow"] = true
 				await animation_tree.animation_finished
-				OverworldGlobals.player_can_move = true
+				OverworldGlobals.setPlayerInput(true)
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true

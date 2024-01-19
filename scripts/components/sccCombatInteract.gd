@@ -10,5 +10,5 @@ func _ready():
 
 func interact():
 	OverworldGlobals.changeToCombat(patroller_name, '', '', 'Dazed')
-	OverworldGlobals.show_player_interaction = true
+	#OverworldGlobals.show_player_interaction = true
 	queue_free()
