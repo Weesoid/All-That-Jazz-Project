@@ -1964,8 +1964,13 @@ libraries = {
 "": SubResource("AnimationLibrary_woxdh")
 }
 
+[node name="AnimationSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -21)
+
 [node name="PlayerDirection" type="Marker2D" parent="."]
 position = Vector2(0, -20)
+rotation = 3.14159
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 collision_layer = 0
@@ -2065,7 +2070,7 @@ libraries = {
 "": SubResource("AnimationLibrary_wiltc")
 }
 
-[node name="PlayerAnimator" type="AnimationPlayer" parent="."]
+[node name="WalkingAnimations" type="AnimationPlayer" parent="."]
 root_node = NodePath("../PlayerSprite")
 libraries = {
 "": SubResource("AnimationLibrary_sx3aq")
@@ -2073,7 +2078,7 @@ libraries = {
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_uxbxm")
-anim_player = NodePath("../PlayerAnimator")
+anim_player = NodePath("../WalkingAnimations")
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_7ym7e")
 parameters/conditions/cancel = false
 parameters/conditions/draw_bow = false
@@ -2091,10 +2096,6 @@ parameters/Idle/blend_position = Vector2(-0.00206614, 0.0179641)
 "parameters/Shoot Bow/blend_position" = Vector2(0, 0)
 parameters/Walk/blend_position = Vector2(0.170443, -0.0128806)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
-
-[node name="AnimationSprite" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(0, -21)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

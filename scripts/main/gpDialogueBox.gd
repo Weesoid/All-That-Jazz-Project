@@ -16,7 +16,6 @@ const DIALOGUE_PITCHES = {
 @onready var character_label: RichTextLabel = $Balloon/Margin/HBox/VBox/CharacterLabel
 @onready var dialogue_label := $Balloon/Margin/HBox/VBox/DialogueLabel
 @onready var responses_menu: VBoxContainer = $Balloon/Margin/HBox/VBox/Responses
-
 ## The dialogue resource
 var resource: DialogueResource
 
@@ -91,7 +90,6 @@ var dialogue_line: DialogueLine:
 func _ready() -> void:
 	response_template.hide()
 	balloon.hide()
-	
 	Engine.get_singleton("DialogueManager").mutated.connect(_on_mutated)
 
 

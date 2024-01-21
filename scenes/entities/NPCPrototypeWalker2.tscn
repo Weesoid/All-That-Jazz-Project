@@ -1,6 +1,5 @@
-[gd_scene load_steps=12 format=3 uid="uid://cjnneaw6j1gkr"]
+[gd_scene load_steps=11 format=3 uid="uid://cjnneaw6j1gkr"]
 
-[ext_resource type="PackedScene" uid="uid://bogfgtw4lbd8q" path="res://scenes/components/NPCMovement.tscn" id="1_kwhoo"]
 [ext_resource type="PackedScene" uid="uid://nu578646cekl" path="res://scenes/components/Interact.tscn" id="2_uuq1m"]
 [ext_resource type="Resource" uid="uid://dqucedvnuj2ek" path="res://resources/dialogue/test2.dialogue" id="3_p7xqb"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://assets/overworld_sprites/ent_walker.png" id="4_b4f2t"]
@@ -139,10 +138,6 @@ radius = 11.0
 [node name="MrsMovey" type="CharacterBody2D"]
 motion_mode = 1
 wall_min_slide_angle = 0.0
-
-[node name="NPCMovementComponent" parent="." node_paths=PackedStringArray("BODY", "ANIMATOR") instance=ExtResource("1_kwhoo")]
-BODY = NodePath("..")
-ANIMATOR = NodePath("../Animator")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {

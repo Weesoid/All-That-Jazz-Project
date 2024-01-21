@@ -7,7 +7,7 @@ class_name PlayerScene
 @onready var player_camera = $PlayerCamera
 @onready var sprite = $PlayerSprite
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
-@onready var player_animator = $PlayerAnimator
+@onready var player_animator = $WalkingAnimations
 @onready var interaction_prompt = $PlayerInteractionBubble
 @onready var interaction_prompt_animator = $PlayerInteractionBubble/BubbleAnimator
 @onready var animation_tree = $AnimationTree
@@ -18,7 +18,6 @@ class_name PlayerScene
 @onready var ammo_count = $PlayerCamera/Ammo
 @onready var prompt = $PlayerCamera/PlayerPrompt
 @onready var audio_player = $ScriptAudioPlayer
-
 var stamina = 100.0
 var direction = Vector2()
 
@@ -272,4 +271,3 @@ func undrawBowAnimation():
 	undrawBow()
 	animation_tree["parameters/conditions/draw_bow"] = false
 	animation_tree["parameters/conditions/cancel"] = true
-
