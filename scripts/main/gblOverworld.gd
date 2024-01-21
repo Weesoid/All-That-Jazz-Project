@@ -73,10 +73,10 @@ func playEntityAnimation(entity_name: String, animation_name: String, wait=true)
 		await getEntity(entity_name).get_node('AnimationPlayer').animation_finished
 
 func changeEntityVisibility(entity_name: String, visibility:bool):
-	get_tree().current_scene.get_node(entity_name).visible = visibility
-
-func changeEntityNodeVisibility(entity_name: String, node_name: String,visibility:bool):
-	get_tree().current_scene.get_node(entity_name).get_node(node_name).visible = visibility
+	if get_tree().current_scene.get_node(entity_name) is PlayerScene:
+		getPlayer().sprite.visible = visibility
+	else:
+		get_tree().current_scene.get_node(entity_name).visible = visibility
 
 func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 	if teleport_to is Vector2:

@@ -1791,7 +1791,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite:visible")
+tracks/0/path = NodePath("Sprite2D:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -1867,7 +1867,7 @@ length = 1.7
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite:visible")
+tracks/0/path = NodePath("Sprite2D:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -1944,7 +1944,7 @@ position = Vector2(0, -51)
 texture = ExtResource("3_h566x")
 hframes = 9
 
-[node name="PlayerSprite" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
 hframes = 9
@@ -2064,6 +2064,23 @@ text = "ARROW"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="CinematicBars" type="Node2D" parent="PlayerCamera"]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="PlayerCamera/CinematicBars"]
+offset_left = -306.0
+offset_top = -177.0
+offset_right = 302.0
+offset_bottom = -129.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="PlayerCamera/CinematicBars"]
+offset_left = -306.0
+offset_top = 127.0
+offset_right = 302.0
+offset_bottom = 175.0
+color = Color(0, 0, 0, 1)
+
 [node name="PowerAnimator" type="AnimationPlayer" parent="."]
 root_node = NodePath("../PlayerPower")
 libraries = {
@@ -2071,7 +2088,7 @@ libraries = {
 }
 
 [node name="WalkingAnimations" type="AnimationPlayer" parent="."]
-root_node = NodePath("../PlayerSprite")
+root_node = NodePath("../Sprite2D")
 libraries = {
 "": SubResource("AnimationLibrary_sx3aq")
 }

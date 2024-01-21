@@ -5,7 +5,7 @@ extends CharacterBody2D
 class_name PlayerScene
 
 @onready var player_camera = $PlayerCamera
-@onready var sprite = $PlayerSprite
+@onready var sprite = $Sprite2D
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var player_animator = $WalkingAnimations
 @onready var interaction_prompt = $PlayerInteractionBubble
@@ -18,6 +18,8 @@ class_name PlayerScene
 @onready var ammo_count = $PlayerCamera/Ammo
 @onready var prompt = $PlayerCamera/PlayerPrompt
 @onready var audio_player = $ScriptAudioPlayer
+@onready var cinematic_bars = $PlayerCamera/CinematicBars
+
 var stamina = 100.0
 var direction = Vector2()
 
@@ -199,7 +201,6 @@ func playAudio(filename: String, db=0.0, random_pitch=false):
 	if random_pitch:
 		randomize()
 		audio_player.pitch_scale += randf_range(0.0, 0.25)
-	
 	audio_player.play()
 
 # Based on https://www.youtube.com/watch?v=WrMORzl3g1U

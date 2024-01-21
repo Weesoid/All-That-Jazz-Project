@@ -29,6 +29,7 @@ var is_waiting_for_input: bool = false
 var dialogue_line: DialogueLine:
 	set(next_dialogue_line):
 		if not next_dialogue_line:
+			OverworldGlobals.getPlayer().cinematic_bars.visible = false
 			OverworldGlobals.setPlayerInput(true)
 			queue_free()
 			return
@@ -100,6 +101,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 ## Start some dialogue
 func start(dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []) -> void:
+	OverworldGlobals.getPlayer().cinematic_bars.visible = true
+	OverworldGlobals.getPlayer().playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
 	OverworldGlobals.setPlayerInput(false)
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
