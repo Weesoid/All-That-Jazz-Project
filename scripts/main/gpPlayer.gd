@@ -20,6 +20,8 @@ class_name PlayerScene
 @onready var audio_player = $ScriptAudioPlayer
 @onready var cinematic_bars = $PlayerCamera/CinematicBars
 
+var can_move = true
+
 var stamina = 100.0
 var direction = Vector2()
 
@@ -54,7 +56,7 @@ func _physics_process(delta):
 	else:
 		ammo_count.hide()
 	
-	if !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
+	if !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move:
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -238,10 +240,10 @@ func updateAnimationParameters():
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
 			if bow_draw_strength >= PlayerGlobals.bow_max_draw and velocity == Vector2.ZERO:
-				OverworldGlobals.setPlayerInput(false)
 				animation_tree["parameters/conditions/shoot_bow"] = true
+				can_move = false
 				await animation_tree.animation_finished
-				OverworldGlobals.setPlayerInput(true)
+				can_move = true
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
