@@ -46,14 +46,14 @@ func _process(_delta):
 
 func _physics_process(delta):
 	animation_tree.advance(ANIMATION_SPEED * delta)
-	if bow_mode:
+	if bow_mode and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
 		drawBow()
 		ammo_count.show()
 		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
 	else:
 		ammo_count.hide()
 	
-	if OverworldGlobals.player_input:
+	if !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -97,7 +97,7 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	
-	if Input.is_action_just_pressed("ui_select"):
+	if Input.is_action_just_pressed("ui_select") and !channeling_power and !OverworldGlobals.inMenu():
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity = Vector2.ZERO
@@ -115,10 +115,6 @@ func _unhandled_input(_event: InputEvent):
 			PlayerGlobals.POWER.executePower(self)
 		else:
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
-	
-	if Input.is_action_just_pressed("ui_text_backspace"):
-		$AnimationPlayer.play("VoidChannel")
-		await $AnimationPlayer.animation_finished
 	
 func canDrawBow()-> bool:
 	if OverworldGlobals.getCurrentMapData().SAFE:
@@ -144,7 +140,7 @@ func canUsePower():
 	return true
 
 func animateInteract():
-	if interaction_detector.get_overlapping_areas().size() > 0 and OverworldGlobals.player_input: #and OverworldGlobals.player_can_move
+	if interaction_detector.get_overlapping_areas().size() > 0 and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and !channeling_power:
 		interaction_prompt.visible = true
 		interaction_prompt_animator.play('Interact')
 	else:
@@ -159,7 +155,7 @@ func drawBow():
 		bow_mode = false
 		toggleBowAnimation()
 	
-	if Input.is_action_pressed("ui_click") and !animation_tree["parameters/conditions/void_call"]:
+	if Input.is_action_pressed("ui_click") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
 		SPEED = 15.0
 		if play_once:
 			playAudio('bow-loading-38752.ogg',0.0,true)
@@ -234,7 +230,7 @@ func updateAnimationParameters():
 			animation_tree["parameters/conditions/cancel"] = true
 	
 	if bow_mode:
-		if Input.is_action_pressed('ui_click') and !animation_tree["parameters/conditions/void_call"]:
+		if Input.is_action_pressed('ui_click') and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false

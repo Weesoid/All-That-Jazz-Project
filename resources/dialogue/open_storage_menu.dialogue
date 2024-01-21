@@ -1,5 +1,4 @@
 ~ start
-set player_can_move = false
 
 do showMenu("res://scenes/user_interface/Storage.tscn")
 => END

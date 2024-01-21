@@ -5,7 +5,7 @@ extends RichTextLabel
 @onready var audio_player = $AudioStreamPlayer
 
 func _process(_delta):
-	if OverworldGlobals.showing_menu:
+	if OverworldGlobals.inMenu():
 		visible = false
 	else:
 		visible = true

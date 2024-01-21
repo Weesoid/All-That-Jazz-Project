@@ -1,5 +1,4 @@
 ~ start
-set player_can_move = false
 Entity: Wanna have some GAY SEX?!
 - Willis: Gross!
 	Entity: Fuck you!
@@ -7,6 +6,4 @@ Entity: Wanna have some GAY SEX?!
 	Entity: Then EAT THIS!!!
 	do setEnemyCombatantSquad("NPCPrototype")
 	do changeToCombat()
-set show_player_interaction = true
-set player_can_move = true
 => END

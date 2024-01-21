@@ -1,5 +1,4 @@
 ~ start
-set player_can_move = false
 
 if isQuestObjectiveEnabled('Get that item!', 'Talk to Man') == true:
 	Entity: Oh! You're at that part of the quest?
@@ -8,25 +7,17 @@ if isQuestObjectiveEnabled('Get that item!', 'Talk to Man') == true:
 	do setQuestObjective('Get that item!', 'Talk to Man', true)
 	Willis: Thanks.
 	
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 else:
 	Willis: Hey.
 	Entity: Not interested. Go suck a buncha cocks broseph.
 	Willis: K.
 	
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 
 if isQuestObjectiveCompleted('Get that item!', 'Talk to Man') == true:
 	Entity: I have nothing else to say to you!
 	
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 
-set show_player_interaction = true
-set player_can_move = true
 => END

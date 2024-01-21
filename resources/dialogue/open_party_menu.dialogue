@@ -1,5 +1,4 @@
 ~ start
-set player_can_move = false
 
 Entity: The campfire flickers.
 - Manage posse 
@@ -7,6 +6,4 @@ Entity: The campfire flickers.
 - Internalize 
 	do showMenu("res://scenes/user_interface/AbilityShop.tscn") 
 
-set show_player_interaction = true
-set player_can_move = true
 => END

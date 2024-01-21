@@ -1,27 +1,18 @@
 ~ start
-set player_can_move = false
 
 if isQuestObjectiveEnabled("Orand", "Talk to Fightey"):
 	Willis: You're a hoe btw
 	Entity: I know!
 	do setQuestObjective("Orand", "Talk to Fightey", true)
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 
 if hasQuest('Fight That Bitch!') == false:
 	Entity: Fight this bitch.
 	
-	set show_player_interaction = true
-	set player_can_move = true
 	do addQuest("FightThatBitch")
 	=> END
 elif isQuestCompleted('Fight That Bitch!') == true:
 	Entity: You have fought that bitch!
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 
-set show_player_interaction = true
-set player_can_move = true
 => END

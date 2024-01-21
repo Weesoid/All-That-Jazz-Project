@@ -1,5 +1,4 @@
 ~ start
-set player_can_move = false
 
 Entity: The crafting table tinkers.
 - Repair Weapons 
@@ -7,6 +6,4 @@ Entity: The crafting table tinkers.
 - Craft Items
 	do showMenu("res://scenes/user_interface/Crafting.tscn")
 
-set show_player_interaction = true
-set player_can_move = true
 => END

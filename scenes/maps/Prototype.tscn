@@ -130,24 +130,24 @@ position = Vector2(96, -120)
 [node name="entShopKeep" parent="." instance=ExtResource("15_5mws6")]
 position = Vector2(-112, -121)
 
-[node name="NPCPrototype" parent="." instance=ExtResource("16_6jymr")]
-position = Vector2(0, -240)
-
-[node name="NPCPatrolComponent" parent="NPCPrototype" index="2" node_paths=PackedStringArray("PATROL_AREA")]
-PATROL_AREA = NodePath("../../Area2D")
-
-[node name="NPCPrototype2" parent="." instance=ExtResource("16_6jymr")]
-position = Vector2(-48, -240)
-
-[node name="NPCPatrolComponent" parent="NPCPrototype2" index="2" node_paths=PackedStringArray("PATROL_AREA")]
-PATROL_AREA = NodePath("../../Area2D")
-
 [node name="DoorInteractable" parent="." instance=ExtResource("17_0v7bm")]
 position = Vector2(-224, -139)
 TO_SCENE_PATH = "res://scenes/maps/SecondMap.tscn"
 
 [node name="entShopKeep2" parent="." instance=ExtResource("19_tw6u4")]
 position = Vector2(144, -120)
+
+[node name="NPCPrototype" parent="." instance=ExtResource("16_6jymr")]
+position = Vector2(-88, -232)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="NPCPrototype2" parent="." instance=ExtResource("16_6jymr")]
+position = Vector2(72, -256)
+
+[node name="NPCPatrolComponent" parent="NPCPrototype2" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
 
 [editable path="MrMovey"]
 [editable path="NPCPrototype"]

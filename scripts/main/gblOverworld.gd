@@ -1,8 +1,6 @@
 extends Node
 
-var showing_menu = false
 var enemy_combatant_squad: Array[ResCombatant]
-var player_input = true
 var follow_array = []
 var player_follower_count = 0
 
@@ -28,7 +26,9 @@ func initializePlayerParty():
 
 func setPlayerInput(enabled:bool):
 	getPlayer().set_process_unhandled_input(enabled)
-	player_input = enabled
+
+func inDialogue() -> bool:
+	return getCurrentMap().has_node('Balloon')
 
 #********************************************************************************
 # SIGNALS
@@ -84,13 +84,11 @@ func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 func showMenu(path: String):
 	var main_menu: Control = load(path).instantiate()
 	main_menu.name = 'uiMenu'
-	
-	if !showing_menu:
+	getPlayer().resetStates()
+	if !inMenu():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		getPlayer().player_camera.add_child(main_menu)
 		setPlayerInput(false)
-		#show_player_interaction = false
-		showing_menu = true
 	else:
 		closeMenu(main_menu)
 
@@ -100,7 +98,9 @@ func closeMenu(menu: Control):
 	getPlayer().player_camera.get_node('uiMenu').queue_free()
 	setPlayerInput(true)
 	#show_player_interaction = true
-	showing_menu = false
+
+func inMenu():
+	return getPlayer().player_camera.has_node('uiMenu')
 
 func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
 	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
@@ -109,12 +109,11 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
 	main_menu.sell_modifier = sell_mult
 	main_menu.name = 'uiMenu'
 	
-	if !showing_menu:
+	if !inMenu():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		getPlayer().player_camera.add_child(main_menu)
 		setPlayerInput(false)
 		#show_player_interaction = false
-		showing_menu = true
 	else:
 		closeMenu(main_menu)
 

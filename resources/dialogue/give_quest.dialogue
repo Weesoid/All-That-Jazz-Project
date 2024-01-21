@@ -5,12 +5,10 @@ Entity: What would you like to talk about?
 - Getting that item. [if isQuestObjectiveEnabled("Get that item!", "Wrap it up!")] => get_that_item
 - Choices. [if isQuestObjectiveEnabled("Choices Choices", "Talk to Mr. Questy")] => choices_choices
 - The end. [if isQuestObjectiveEnabled("Completion", "Conclusion")] => conclusion
-- Nothing. => leave_dialogue
+- Nothing. => END
 
 ~ gimme_quest
 Entity: Here's a quest!! Idiot!!
-set show_player_interaction = true
-set player_can_move = true
 do addQuest("GetThatItem")
 => END
 
@@ -20,8 +18,7 @@ do removeItemWithName("Scrap Salvage", 8)
 Entity: Here's an arrow!
 do setQuestObjective('Get that item!', 'Wrap it up!', true)
 do addItem("Arrow")
-=> leave_dialogue
-
+=> END
 ~ choices_choices
 Willis: Hello Mr. Questy.
 Entity: Willis my boy!
@@ -29,20 +26,14 @@ Willis: Could you please complete this objective for me?
 Entity: Of course! Anything for my favourite little fella!
 do setQuestObjective('Choices Choices', 'Talk to Mr. Questy', true)
 Willis: Thanks.
-=> leave_dialogue
-
+=> END
 ~ orand
 Willis: Questy Jr. has fake jordans
 Entity: Unacceptable!
 do setQuestObjective("Orand", "Speak to Mr. Questy", true)
-=> leave_dialogue
-
+=> END
 ~ conclusion
 Willis: I have finished all the quests.
 Entity: Oh you did? Ain't that swell!
 do setQuestObjective("Completion", "Conclusion", true)
-=> leave_dialogue
-
-~ leave_dialogue
-Entity: Bye!
 => END

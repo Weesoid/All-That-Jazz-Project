@@ -1,17 +1,12 @@
 ~ start
-set player_can_move = false
 
 if isQuestCompleted("Choices Choices") == true:
 	Entity: Thanks again!
 	
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 elif hasQuest("Choices Choices") == false:
 	Entity: Here's a quest! Make sure to make the right choice.
 	
-	set show_player_interaction = true
-	set player_can_move = true
 	do addQuest("ChoicesChoices")
 	=> END
 
@@ -27,17 +22,11 @@ elif isQuestObjectiveEnabled("Choices Choices", "OutcomeB") == true:
 	Entity: You monster! Prepare to die!
 	do changeToCombat("QuestyJr")
 	do setQuestObjective("Choices Choices", "OutcomeB", true)
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 
 if isQuestCompleted("Choices choices") == false:
 	Entity: Get to work!! FUCK DO I HAVE TO TELL YOU TO DO EVERYTING?!
 	Willis: Jesus H. Christ, relax dude!
-	set show_player_interaction = true
-	set player_can_move = true
 	=> END
 
-set show_player_interaction = true
-set player_can_move = true
 => END

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bahnqy0iowmdt"]
 
-[ext_resource type="Script" path="res://scripts/components/sccLineOfSight.gd" id="1_yp3we"]
+[ext_resource type="Script" path="res://scripts/components/sccLineOfSight.gd" id="1_5kkgs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_af0mu"]
 size = Vector2(202, 190)
@@ -8,7 +8,7 @@ size = Vector2(202, 190)
 [node name="LineOfSightComponent" type="Area2D"]
 collision_layer = 16
 collision_mask = 16
-script = ExtResource("1_yp3we")
+script = ExtResource("1_5kkgs")
 
 [node name="AreaOfSight" type="CollisionShape2D" parent="."]
 position = Vector2(0, 95)

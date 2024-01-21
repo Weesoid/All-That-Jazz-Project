@@ -1,22 +1,14 @@
 ~ start
-
-set player_can_move = false
-
 if hasQuest("Completion") == false:
 	Entity: You got your work cut out for ya kid. God speed.
-	set show_player_interaction = true
-	set player_can_move = true
 	do addQuest("Completion")
 	=> END
 
 if isQuestCompleted("Completion") == false:
 	Entity: Get back ta' work!
-	=> leave_dialogue
+	=> END
 else:
 	Entity: Good job.
-	=> leave_dialogue
+	=> END
 
-~ leave_dialogue
-set show_player_interaction = true
-set player_can_move = true
 => END

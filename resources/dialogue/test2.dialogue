@@ -1,5 +1,4 @@
 ~ start
-set player_can_move = false
 
 do addItem("CharmMurder")
 do addItem("CharmStunning")
@@ -14,6 +13,4 @@ do addItem("WalkStone")
 do addItem("BowStone")
 do addItem("StaminaStone")
 
-set show_player_interaction = true
-set player_can_move = true
 => END
