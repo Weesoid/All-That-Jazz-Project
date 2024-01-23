@@ -179,7 +179,6 @@ func loadFollowers():
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
 func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = ''):
-	getPlayer().resetStates()
 	
 	if get_parent().has_node('CombatantSquadComponent'):
 		await get_parent().get_node('CombatantSquadComponent').tree_exited
@@ -199,12 +198,22 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	if !aftermath_dialogue_name.is_empty():
 		combat_scene.conclusion_dialogue = load("res://resources/dialogue/%s.dialogue" % [aftermath_dialogue_name])
 	
+	# here
+	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
+	getPlayer().player_camera.add_child(battle_transition)
+	battle_transition.get_node('AnimationPlayer').play('In')
+	await battle_transition.get_node('AnimationPlayer').animation_finished
+	
 	get_tree().paused = true
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
 	await combat_scene.combat_done
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
+	battle_transition.get_node('AnimationPlayer').play('Out')
+	await battle_transition.get_node('AnimationPlayer').animation_finished
+	battle_transition.queue_free()
+	getPlayer().resetStates()
 
 func setEnemyCombatantSquad(entity_name: String):
 	for combatant in getCombatantSquad(entity_name):

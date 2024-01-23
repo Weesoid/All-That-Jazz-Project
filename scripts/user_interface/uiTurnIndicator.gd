@@ -14,19 +14,23 @@ func initialize():
 		var combatant_name = Label.new()
 		combatant_name.add_theme_font_size_override('font_size', 16)
 		combatant_name.add_theme_constant_override('outline_size', 8)
-		combatant_name.add_theme_color_override('font_outline_color', Color.BLACK)
+		combatant_name.add_theme_color_override('font_outline_color', Color.DIM_GRAY)
 		combatant_name.self_modulate = Color.YELLOW
-		combatant_name.text = combatant.NAME
 		combatant_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		combatant_name.text = combatant.NAME
 		combatant_name.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		if combatant.isDead():
 			combatant_name.modulate.a = 0.5
 		combatant_names.add_child(combatant_name)
 
 func updateActive():
-	#animator.play("Update")
+	animator.play("Update")
 	initialize()
 	for label in combatant_names.get_children():
+		label.text.replace(' <', '')
 		label.self_modulate = Color.WHITE
+		label.add_theme_constant_override('outline_size', 8)
 		if COMBAT_SCENE.active_combatant.NAME == label.text:
 			label.self_modulate = Color.YELLOW
+			label.add_theme_constant_override('outline_size', 16)
+			label.text += ' <'

@@ -176,12 +176,12 @@ PACKED_SCENE = SubResource("PackedScene_kq6rj")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 100,
+"brawn": 1,
 "crit": 1.0,
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 100,
+"health": 999,
 "hustle": 1,
 "verve": 3,
 "will": 1,

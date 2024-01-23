@@ -17,17 +17,21 @@ class_name CombatScene
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
 @onready var ui_inspect_target = $CombatInspectTarget
-@onready var turn_counter = $CombatCamera/Label
+@onready var turn_counter = $CombatCamera/TurnCounter
 @onready var turn_indicator = $CombatCamera/TurnIndicator
 @onready var turn_highlight = $TurnHighlight
-
+@onready var transition_scene = $CombatCamera/BattleTransition
+@onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
+@onready var battle_music = $BattleMusic
+@onready var battle_sounds = $BattleSounds
+@onready var battle_back = $CombatCamera/DefaultBattleParallax.get_node('AnimationPlayer')
 var combat_dialogue: ResCombatDialogue
 var conclusion_dialogue: DialogueResource
 
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
-var active_index = 0
+var active_index = -1
 var valid_targets
 var target_combatant
 var target_index = 0
@@ -41,6 +45,7 @@ var drop_summary = ''
 var turn_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
+var battle_music_name: String = "Little Speck DV.ogg"
 var initial_status_effect_enemy: String = ''
 var initial_status_effect_player: String = ''
 
@@ -54,11 +59,12 @@ signal combat_done
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
+	#battle_back.play_backwards('Win')
+	transition_scene.visible = true
 	connectPlayerItems()
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	
 	turn_indicator.COMBAT_SCENE = self
-	#turn_indicator.COMBATANTS = COMBATANTS
 	turn_indicator.initialize()
 	
 	for combatant in COMBATANTS:
@@ -78,11 +84,6 @@ func _ready():
 		combat_bars.global_position = combatant.SCENE.global_position - Vector2(110, -80)
 		add_child(combat_bars)
 	
-	COMBATANTS.sort_custom(sortBySpeed)
-	
-	active_combatant = COMBATANTS[active_index]
-	turn_indicator.updateActive()
-	
 	if initial_status_effect_enemy != '':
 		for combatant in getCombatantGroup('enemies'):
 			CombatGlobals.addStatusEffect(combatant, initial_status_effect_enemy)
@@ -90,9 +91,26 @@ func _ready():
 		for combatant in getCombatantGroup('player'):
 			CombatGlobals.addStatusEffect(combatant, initial_status_effect_player)
 	
+	battle_music.stream = load("res://assets/music/%s" % battle_music_name)
+	battle_music.play()
+	transition.play('Out')
+	await transition.animation_finished
+	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
+	removeDeadCombatants()
 	
+	COMBATANTS.sort_custom(sortBySpeed)
+	
+	active_index = incrementIndex(active_index,1,COMBATANTS.size())
+	active_combatant = COMBATANTS[active_index]
+	while active_combatant.STAT_VALUES['hustle'] == -1:
+		active_index = incrementIndex(active_index,1,COMBATANTS.size())
+		print('checking again!', active_combatant)
+		active_combatant = COMBATANTS[active_index]
+	
+	turn_indicator.updateActive()
+	print('active is ', active_combatant)
 	active_combatant.act()
 	turn_highlight.global_position = active_combatant.getSprite().global_position
 	
@@ -100,7 +118,7 @@ func _ready():
 		combat_dialogue.initializeDialogue(COMBATANTS)
 	
 	ui_inspect_target.get_node('AnimationPlayer').play('Loop')
-	# TO-DO: Battle Transition
+	transition_scene.visible = false
 
 func _process(_delta):
 	turn_counter.text = str(turn_count)
@@ -114,9 +132,14 @@ func _unhandled_input(_event):
 		resetActionLog()
 	# Debug? Feature?
 	if Input.is_action_just_pressed('ui_home'):
-		toggleUI()
+		if action_panel.visible == true:
+			toggleUI(false)
+		else:
+			toggleUI(true)
 
 func on_player_turn():
+	battle_back.play('Player_Turn')
+	$CombatCamera/ActionPanel/AnimationPlayer.play("Show")
 	resetActionLog()
 	action_panel.show()
 	attack_button.grab_focus()
@@ -125,7 +148,9 @@ func on_player_turn():
 	end_turn()
 
 func on_enemy_turn():
-	if getCombatantGroup('team').is_empty():
+	battle_back.play('Enemy_Turn')
+	if isCombatantGroupDead(getCombatantGroup('team')):
+		checkWin()
 		return
 	
 	action_panel.hide()
@@ -158,18 +183,7 @@ func end_turn():
 		tickStatusEffects(combatant, true)
 		CombatGlobals.combatant_stats.emit(combatant)
 	
-	for combatant in getDeadCombatants():
-		# To do fix KO getting cleared every predictable turn
-		if !combatant.getStatusEffectNames().has('Knock Out'): 
-			clearStatusEffects(combatant)
-			CombatGlobals.addStatusEffect(combatant, 'KnockOut')
-		#await combatant.getAnimator().animation_finished
-		#combatant.getAnimator().play('KO')
-			if combatant is ResEnemyCombatant: 
-				experience_earnt += combatant.getExperience()
-				drop_summary += combatant.getDrops()
-		
-		#COMBATANTS.erase(combatant)
+	removeDeadCombatants()
 	
 	# Reset values
 	run_once = true
@@ -183,10 +197,12 @@ func end_turn():
 		active_index = incrementIndex(active_index,1,COMBATANTS.size())
 		active_combatant = COMBATANTS[active_index]
 		tickStatusEffects(active_combatant)
+		removeDeadCombatants()
 		while active_combatant.STAT_VALUES['hustle'] == -1:
 			active_index = incrementIndex(active_index,1,COMBATANTS.size())
 			active_combatant = COMBATANTS[active_index]
 			tickStatusEffects(active_combatant)
+			removeDeadCombatants()
 	else:
 		selected_ability.ENABLED = false
 	
@@ -199,9 +215,20 @@ func end_turn():
 	
 	turn_indicator.updateActive()
 	turn_highlight.global_position = active_combatant.getSprite().global_position
+	turn_highlight.get_node('AnimationPlayer').play('Show')
 	active_combatant.act()
-	
 	checkWin()
+
+func removeDeadCombatants():
+	for combatant in getDeadCombatants():
+		if !combatant.getStatusEffectNames().has('Knock Out'): 
+			clearStatusEffects(combatant)
+			CombatGlobals.addStatusEffect(combatant, 'KnockOut')
+			if combatant is ResEnemyCombatant: 
+				experience_earnt += combatant.getExperience()
+				drop_summary += combatant.getDrops()
+			tickStatusEffects(combatant)
+			
 
 #********************************************************************************
 # BASE SCENE NODE CONTROL
@@ -246,11 +273,14 @@ func _on_escape_pressed():
 	CombatGlobals.combat_lost.emit(unique_id)
 	concludeCombat(0)
 
-func toggleUI():
+func toggleUI(visibility: bool):
 	for child in get_children():
-		if child is CombatBar:
-			child.visible = !child.visible
-		
+		if child is CombatBar or child == turn_highlight:
+			child.visible = visibility
+	for child in combat_camera.get_children():
+		if child is Control:
+			child.visible = visibility
+	if visibility: resetActionLog()
 
 #********************************************************************************
 # ABILITY SELECTION, TARGETING, AND EXECUTION
@@ -432,6 +462,9 @@ func isCombatantGroupDead(group: Array[ResCombatant]):
 	
 	return true
 
+func getLivingCombatants():
+	return COMBATANTS.duplicate().filter(func(combatant: ResCombatant): return !combatant.isDead())
+
 func checkWin():
 	if isCombatantGroupDead(getCombatantGroup('enemies')):
 		if unique_id != null:
@@ -460,9 +493,9 @@ func checkDialogue():
 	return combat_dialogue.dialogue_node.dialogue_triggered
 
 func triggerDialogue():
-	toggleUI()
+	toggleUI(false)
 	await DialogueManager.dialogue_ended
-	toggleUI()
+	toggleUI(true)
 	combat_dialogue.dialogue_node.dialogue_triggered = false
 	dialogue_done.emit()
 
@@ -531,6 +564,9 @@ func runAbility():
 		run_once = false
 	
 func concludeCombat(results: int):
+	toggleUI(false)
+	battle_music.stop()
+	battle_back.play('Win')
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
 	
@@ -552,10 +588,10 @@ func concludeCombat(results: int):
 	if player_turn_count < 4 and results == 1:
 		combat_log.writeCombatLog('[color=orange]STRAGETIC VICTORY![/color] +25% Morale')
 		morale_bonus += 1
-	
-	experience_earnt += (experience_earnt*0.25)*morale_bonus
-	for i in range(loot_bonus):
-		for enemy in getCombatantGroup('enemies'): drop_summary += enemy.getDrops()
+	if results == 1:
+		experience_earnt += (experience_earnt*0.25)*morale_bonus
+		for i in range(loot_bonus):
+			for enemy in getCombatantGroup('enemies'): drop_summary += enemy.getDrops()
 	
 	var bc_ui = preload("res://scenes/user_interface/BattleConclusion.tscn").instantiate()
 	bc_ui.drops = drop_summary
@@ -563,6 +599,10 @@ func concludeCombat(results: int):
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)
 	await bc_ui.done
+	
+	transition_scene.visible = true
+	transition.play('In')
+	await transition.animation_finished
 	
 	if conclusion_dialogue != null:
 		CombatGlobals.combat_conclusion_dialogue.emit(conclusion_dialogue, results)

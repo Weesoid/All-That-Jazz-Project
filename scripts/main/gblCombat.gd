@@ -170,7 +170,11 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 func playAndResetAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
 	await target.getAnimator().animation_finished
-	target.getAnimator().play('Idle')
+	if !target.isDead():
+		target.getAnimator().play('Idle')
+	else:
+		target.getSprite().modulate.a = 0.5
+		target.getAnimator().play('KO')
 
 func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)

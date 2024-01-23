@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://cuhp30nbgihjv"]
+[gd_scene load_steps=25 format=3 uid="uid://cuhp30nbgihjv"]
 
 [ext_resource type="Script" path="res://scripts/main/gpCombat.gd" id="1_kv6ut"]
 [ext_resource type="Texture2D" uid="uid://b64hae3ym8ck" path="res://assets/misc_sprites/turn_highlight.png" id="3_qmtsl"]
+[ext_resource type="PackedScene" uid="uid://cfrcsemroofp5" path="res://scenes/parallaxes/DefaultBattleParallax.tscn" id="3_r3luu"]
 [ext_resource type="PackedScene" uid="uid://bt4b6i7iiex30" path="res://scenes/user_interface/CombatInspectTarget.tscn" id="4_kkdd3"]
-[ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="5_5p8mu"]
 [ext_resource type="Texture2D" uid="uid://bn5owks8hqpg" path="res://assets/icons/st_wit_dn2.png" id="5_15yji"]
+[ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Texture2D" uid="uid://cf05uq058eikf" path="res://assets/icons/s_brawn.png" id="6_o5wif"]
 [ext_resource type="Texture2D" uid="uid://0kbl5iime6vw" path="res://assets/icons/s_grit.png" id="7_6kiof"]
 [ext_resource type="Texture2D" uid="uid://ccs7487p2y2re" path="res://assets/icons/s_wit.png" id="7_dnqbg"]
@@ -13,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="9_d3h28"]
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
 [ext_resource type="PackedScene" uid="uid://bipsixd3gwi1r" path="res://scenes/user_interface/TurnIndicator.tscn" id="12_mnv7p"]
+[ext_resource type="AudioStream" uid="uid://yvuurakrdh6k" path="res://assets/sounds/658273__matrixxx__war-ready.ogg" id="14_56vls"]
 
 [sub_resource type="Animation" id="Animation_ng0qf"]
 length = 0.001
@@ -75,18 +77,152 @@ _data = {
 "Target": SubResource("Animation_ilum3")
 }
 
+[sub_resource type="Animation" id="Animation_1s1ex"]
+resource_name = "Show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2, 1.333), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_safbe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.05, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.28319]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bj17i"]
+_data = {
+"RESET": SubResource("Animation_safbe"),
+"Show": SubResource("Animation_1s1ex")
+}
+
+[sub_resource type="Animation" id="Animation_oinet"]
+resource_name = "Show"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.5708, -0.0872665, 0.0]
+}
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../BattleSounds")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("14_56vls")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/1/use_blend = true
+
+[sub_resource type="Animation" id="Animation_my0vw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_thvvk"]
+_data = {
+"RESET": SubResource("Animation_my0vw"),
+"Show": SubResource("Animation_oinet")
+}
+
 [node name="CombatScene" type="Node2D"]
 process_mode = 3
 top_level = true
 z_index = 999
 script = ExtResource("1_kv6ut")
 
-[node name="Background" type="TextureRect" parent="."]
-offset_left = -1784.0
-offset_top = -545.0
-offset_right = 1644.0
-offset_bottom = 1175.0
-texture = ExtResource("5_5p8mu")
+[node name="BattleSounds" type="AudioStreamPlayer" parent="."]
+
+[node name="BattleMusic" type="AudioStreamPlayer" parent="."]
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 position = Vector2(-576, -367)
@@ -144,10 +280,45 @@ position = Vector2(-192, 456)
 
 [node name="TurnHighlight" type="Sprite2D" parent="."]
 position = Vector2(-172, 456)
+rotation = 6.28319
+scale = Vector2(1.05, 1)
 texture = ExtResource("3_qmtsl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TurnHighlight"]
+libraries = {
+"": SubResource("AnimationLibrary_bj17i")
+}
 
 [node name="CombatCamera" type="Camera2D" parent="."]
 position = Vector2(0, -19)
+
+[node name="DefaultBattleParallax" parent="CombatCamera" instance=ExtResource("3_r3luu")]
+z_index = -1
+position = Vector2(0, 19)
+scale = Vector2(1.5, 1.5)
+
+[node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
+z_index = 1000
+position = Vector2(5, 19)
+
+[node name="TurnCounter" type="Label" parent="CombatCamera"]
+z_index = 10
+offset_left = 478.0
+offset_top = 259.0
+offset_right = 597.0
+offset_bottom = 302.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = " 100"
+vertical_alignment = 1
+uppercase = true
+
+[node name="TurnIndicator" parent="CombatCamera" instance=ExtResource("12_mnv7p")]
+offset_left = 420.0
+offset_top = -304.0
+offset_right = 553.0
+offset_bottom = -304.0
 
 [node name="SecondaryPanel" type="PanelContainer" parent="CombatCamera"]
 visible = false
@@ -173,6 +344,7 @@ offset_left = -576.0
 offset_top = 251.0
 offset_right = 578.0
 offset_bottom = 311.0
+rotation = 1.5708
 mouse_force_pass_scroll_events = false
 theme_override_constants/separation = 8
 alignment = 1
@@ -229,21 +401,12 @@ button_mask = 0
 text = "ABSCOND"
 icon = ExtResource("8_pkk5v")
 
-[node name="Label" type="Label" parent="CombatCamera"]
-offset_left = 536.0
-offset_top = -289.0
-offset_right = 600.0
-offset_bottom = -230.0
-theme_override_font_sizes/font_size = 16
-text = " "
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CombatCamera/ActionPanel"]
+libraries = {
+"": SubResource("AnimationLibrary_thvvk")
+}
 
 [node name="LogContainer" parent="CombatCamera" instance=ExtResource("11_8bne6")]
-
-[node name="TurnIndicator" parent="CombatCamera" instance=ExtResource("12_mnv7p")]
-offset_left = 426.0
-offset_top = -261.0
-offset_right = 452.0
-offset_bottom = -215.0
 
 [connection signal="pressed" from="CombatCamera/ActionPanel/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Equipment" to="." method="_on_equipment_pressed"]

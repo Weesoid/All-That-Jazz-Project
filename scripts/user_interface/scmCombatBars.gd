@@ -42,6 +42,8 @@ func updateBars():
 	energy_bar.value = int(attached_combatant.STAT_VALUES['verve'])
 	absolute_health.text = str(health_bar.value)
 	absolute_energy.text = str(energy_bar.value)
+	if attached_combatant.isDead():
+		hide()
 
 func updateArmorIcon():
 	var armor: ResArmor = attached_combatant.EQUIPMENT['armor']

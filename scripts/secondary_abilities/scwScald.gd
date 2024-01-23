@@ -8,7 +8,4 @@ static func applyEffects(_caster: ResCombatant, target, animation_scene):
 	
 	CombatGlobals.playAbilityAnimation(target, animation_scene)
 	CombatGlobals.manual_call_indicator.emit(target, str(int(damage), ' SCALD!'), 'Reaction')
-	target.STAT_VALUES['health'] -= int(damage)
-	CombatGlobals.playAndResetAnimation(target, 'Hit')
-	
-	
+	CombatGlobals.calculateRawDamage(target, damage)

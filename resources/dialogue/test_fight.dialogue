@@ -1,5 +1,5 @@
 ~ start
 
-do OverworldGlobals.changeToCombat("MrMovey","TestDialogue")
+do OverworldGlobals.changeToCombat("MrMovey")
 
 => END
