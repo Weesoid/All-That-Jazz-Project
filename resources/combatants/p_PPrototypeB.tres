@@ -181,7 +181,7 @@ STAT_VALUES = {
 "exposure": 0,
 "grit": 1,
 "heal mult": 1,
-"health": 1,
+"health": 100,
 "hustle": 1,
 "verve": 1,
 "will": 1,

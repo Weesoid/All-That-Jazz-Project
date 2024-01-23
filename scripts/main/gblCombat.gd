@@ -171,6 +171,7 @@ func playAndResetAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
 	await target.getAnimator().animation_finished
 	if !target.isDead():
+		target.getSprite().modulate.a = 1.0
 		target.getAnimator().play('Idle')
 	else:
 		target.getSprite().modulate.a = 0.5
@@ -185,14 +186,18 @@ func playAnimation(target: ResCombatant, animation_name: String):
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 
-func addStatusEffect(target: ResCombatant, status_effect_name: String):
-	var status_effect = load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
+func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false):
+	var status_effect: ResStatusEffect = load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 	if status_effect.NAME not in target.getStatusEffectNames():
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.STATUS_EFFECTS.append(status_effect)
+		if tick_on_apply:
+			status_effect.tick()
 	else:
 		rankUpStatusEffect(target, status_effect)
+		if tick_on_apply:
+			target.getStatusEffect(status_effect.NAME).tick()
 	
 	if status_effect.LINGERING and target is ResPlayerCombatant and !target.LINGERING_STATUS_EFFECTS.has(status_effect.NAME):
 		target.LINGERING_STATUS_EFFECTS.append(status_effect.NAME)

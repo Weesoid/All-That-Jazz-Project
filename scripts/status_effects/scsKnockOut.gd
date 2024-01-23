@@ -3,5 +3,5 @@ static func applyEffects(target: ResCombatant, _status_effect: ResStatusEffect):
 	
 
 static func endEffects(target: ResCombatant):
+	print('KO removed!')
 	CombatGlobals.resetStat(target, 'hustle')
-	

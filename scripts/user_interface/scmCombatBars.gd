@@ -44,6 +44,8 @@ func updateBars():
 	absolute_energy.text = str(energy_bar.value)
 	if attached_combatant.isDead():
 		hide()
+	else:
+		show()
 
 func updateArmorIcon():
 	var armor: ResArmor = attached_combatant.EQUIPMENT['armor']

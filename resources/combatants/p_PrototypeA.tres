@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://vtaidrxm1tji"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=22 format=3 uid="uid://vtaidrxm1tji"]
 
 [ext_resource type="Resource" path="res://resources/abilities/NeutStrike.tres" id="1_bsdt7"]
 [ext_resource type="Resource" uid="uid://d3seiqhsea2h5" path="res://resources/abilities/DebuggerStrike.tres" id="2_2x6l0"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://6jibksvj0qnw" path="res://assets/combatant_sprites/GoodGuy.png" id="6_wr0qh"]
 [ext_resource type="Resource" uid="uid://6h2gcqmnufky" path="res://resources/abilities/RushSpeed.tres" id="7_6iflm"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="7_lnwc0"]
+[ext_resource type="Resource" uid="uid://c4k22pnqraoi2" path="res://resources/abilities/Revive.tres" id="7_p5hen"]
+[ext_resource type="Resource" uid="uid://c3chou1bbm7e3" path="res://resources/abilities/OmniStrike.tres" id="8_05w5d"]
 [ext_resource type="Texture2D" uid="uid://dhqwdbu6lsyry" path="res://assets/icons/team2.png" id="8_fydt8"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
@@ -187,7 +189,7 @@ STAT_VALUES = {
 "will": 1,
 "wit": 1
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_bsdt7"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w"), ExtResource("5_in4d2"), ExtResource("7_6iflm")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_bsdt7"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w"), ExtResource("5_in4d2"), ExtResource("7_6iflm"), ExtResource("7_p5hen"), ExtResource("8_05w5d")])
 EQUIPMENT = {
 "armor": null,
 "charm": null,

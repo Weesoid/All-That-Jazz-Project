@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://c4k22pnqraoi2"]
+
+[ext_resource type="PackedScene" uid="uid://dndlfnonkjwk2" path="res://scenes/animations/Heal.tscn" id="1_utuif"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_xda83"]
+[ext_resource type="Script" path="res://scripts/abilities/scaRevive.gd" id="1_ykb5t"]
+
+[resource]
+script = ExtResource("1_xda83")
+NAME = "Revive"
+DESCRIPTION = "Revivivify an ally!"
+ANIMATION = ExtResource("1_utuif")
+ABILITY_SCRIPT = ExtResource("1_ykb5t")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 0
+TARGET_GROUP = 0
+TARGET_DEAD = true
+INSTANT_CAST = false
+VALUE = 1
