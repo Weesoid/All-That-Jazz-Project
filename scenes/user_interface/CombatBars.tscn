@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://o2grs78qgij3"]
+[gd_scene load_steps=10 format=3 uid="uid://o2grs78qgij3"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/scmCombatBars.gd" id="1_i2y2p"]
+[ext_resource type="Texture2D" uid="uid://tb4yrfiieksa" path="res://assets/images/bar_texture.png" id="2_by75a"]
 [ext_resource type="Texture2D" uid="uid://cajqqe50ctw0n" path="res://assets/icons/armor_none.png" id="2_ugsjj"]
 [ext_resource type="PackedScene" uid="uid://o2i7arwckx" path="res://scenes/user_interface/Indicator.tscn" id="3_2wqip"]
+[ext_resource type="Texture2D" uid="uid://c7ep4ikhv4043" path="res://assets/images/h_bar_texture.png" id="3_bdlxd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kau5d"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -11,13 +13,13 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n1lfj"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a2vfi"]
+texture = ExtResource("2_by75a")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x64h3"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -26,13 +28,13 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
-corner_radius_top_right = 8
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glht3"]
-bg_color = Color(1, 1, 1, 1)
-border_width_top = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_873y4"]
+texture = ExtResource("3_bdlxd")
 
 [node name="CombatBars" type="Node2D"]
 script = ExtResource("1_i2y2p")
@@ -50,7 +52,7 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/background = SubResource("StyleBoxFlat_kau5d")
-theme_override_styles/fill = SubResource("StyleBoxFlat_n1lfj")
+theme_override_styles/fill = SubResource("StyleBoxTexture_a2vfi")
 value = 50.0
 fill_mode = 3
 show_percentage = false
@@ -67,7 +69,7 @@ grow_vertical = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 0
 theme_override_styles/background = SubResource("StyleBoxFlat_x64h3")
-theme_override_styles/fill = SubResource("StyleBoxFlat_glht3")
+theme_override_styles/fill = SubResource("StyleBoxTexture_873y4")
 value = 50.0
 show_percentage = false
 
@@ -94,20 +96,20 @@ offset_bottom = -19.0
 [node name="Indicator" parent="." instance=ExtResource("3_2wqip")]
 
 [node name="AbsoluteHealth" type="Label" parent="."]
-offset_left = -12.0
-offset_top = -39.0
-offset_right = 28.0
-offset_bottom = -16.0
+offset_left = -7.0
+offset_top = -40.0
+offset_right = 33.0
+offset_bottom = -17.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 16
 text = "100"
 
 [node name="AbsoluteEnergy" type="Label" parent="."]
-offset_left = 19.0
-offset_top = -5.0
-offset_right = 59.0
-offset_bottom = 19.0
+offset_left = 22.0
+offset_top = -8.0
+offset_right = 62.0
+offset_bottom = 16.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 16

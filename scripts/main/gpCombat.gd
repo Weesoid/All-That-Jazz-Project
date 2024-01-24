@@ -35,8 +35,7 @@ var active_index = -1
 var valid_targets
 var target_combatant
 var target_index = 0
-var stage_hazard: ResAbility
-var stage_hazard_turn: int # % increment
+var combat_event: ResCombatEvent
 var selected_ability: ResAbility
 var selected_item: ResConsumable
 var run_once = true
@@ -59,7 +58,6 @@ signal combat_done
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
-	#battle_back.play_backwards('Win')
 	transition_scene.visible = true
 	connectPlayerItems()
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
@@ -192,6 +190,12 @@ func end_turn():
 	selected_item = null
 	secondary_panel.hide()
 	
+	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
+		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
+		commandExecuteAbility(null, combat_event.ABILITY)
+	elif combat_event != null and turn_count % combat_event.TURN_TRIGGER == combat_event.TURN_TRIGGER - 3:
+		combat_log.writeCombatLog(combat_event.WARNING_MESSAGE)
+	
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
 		active_index = incrementIndex(active_index,1,COMBATANTS.size())
@@ -209,9 +213,6 @@ func end_turn():
 	if checkDialogue():
 		triggerDialogue()
 		await dialogue_done
-	
-	# if turn_count % stage_hazard_turn == 0
-	# 	CombatGlobals.execute_ability(stage_hazard)
 	
 	turn_indicator.updateActive()
 	turn_highlight.global_position = active_combatant.getSprite().global_position

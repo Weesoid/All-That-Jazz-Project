@@ -178,8 +178,7 @@ func loadFollowers():
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = ''):
-	
+func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = '', combat_event_name: String=''):
 	if get_parent().has_node('CombatantSquadComponent'):
 		await get_parent().get_node('CombatantSquadComponent').tree_exited
 	
@@ -190,6 +189,7 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 		combat_scene.COMBATANTS.append(combatant.duplicate())
 	combat_scene.initial_status_effect_enemy = initial_status_effect_enemy
 	combat_scene.initial_status_effect_player = initial_status_effect_player
+	combat_scene.combat_event = load("res://resources/combat_events/%s.tres" % combat_event_name)
 	
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
@@ -198,7 +198,6 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	if !aftermath_dialogue_name.is_empty():
 		combat_scene.conclusion_dialogue = load("res://resources/dialogue/%s.dialogue" % [aftermath_dialogue_name])
 	
-	# here
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')

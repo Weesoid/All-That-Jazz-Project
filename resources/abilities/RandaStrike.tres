@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://dbnnhyiwvk6nm"]
 
 [ext_resource type="Script" path="res://scripts/abilities/scaRandaStrike.gd" id="1_462hh"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_xkuih"]
@@ -13,4 +13,7 @@ ABILITY_SCRIPT = ExtResource("1_462hh")
 COST = 2
 COST_RESOURCE = "verve"
 TARGET_TYPE = 1
-TARGET_GROUP = 1
+TARGET_GROUP = 2
+TARGET_DEAD = false
+INSTANT_CAST = false
+VALUE = 5
