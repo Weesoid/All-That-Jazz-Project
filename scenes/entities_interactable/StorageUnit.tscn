@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://bw7fb3r0er6tg"]
 
 [ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://images/sprites/table.png" id="1_dcd34"]
-[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="2_lke3q"]
+[ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_lke3q"]
 [ext_resource type="Resource" uid="uid://cijdaq63n6ov" path="res://resources/dialogue/open_storage_menu.dialogue" id="3_nj1x5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cuxhy"]
 size = Vector2(46, 33)
 
-[node name="entStorageUnit" type="CharacterBody2D"]
+[node name="StorageUnit" type="CharacterBody2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(0.270588, 1, 0, 1)

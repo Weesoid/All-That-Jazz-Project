@@ -3,14 +3,12 @@
 [ext_resource type="PackedScene" path="res://scenes/particles/BrawnBuff.tscn" id="1_7cdig"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsStatModifier.gd" id="1_i1rm7"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_ge1mk"]
-[ext_resource type="Texture2D" uid="uid://d1n1g7y201u1l" path="res://images/icons/st_brawn_up1.png" id="3_5rcgx"]
 
 [resource]
 script = ExtResource("2_ge1mk")
 NAME = "Buff Up"
 STATUS_SCRIPT = ExtResource("1_i1rm7")
 PACKED_SCENE = ExtResource("1_7cdig")
-TEXTURE = ExtResource("3_5rcgx")
 MAX_DURATION = 1
 MAX_RANK = 0
 APPLY_ONCE = true

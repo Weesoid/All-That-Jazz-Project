@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdqu5oor4hiq7"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyManagement.gd" id="1_s86ib"]
-[ext_resource type="PackedScene" uid="uid://o43ff1yvriv6" path="res://scenes/user_interface/CharacterInfo.tscn" id="2_55e7u"]
+[ext_resource type="PackedScene" uid="uid://bdm816lf04v8q" path="res://scenes/user_interface/CharacterInfo.tscn" id="2_55e7u"]
 
 [node name="uiPartyManagement" type="Control"]
 layout_mode = 3
@@ -61,8 +61,8 @@ alignment = 1
 
 [node name="uiCharacterInformation" parent="." instance=ExtResource("2_55e7u")]
 layout_mode = 1
-offset_top = 52.0
-offset_bottom = 52.0
+offset_top = 54.0
+offset_bottom = 54.0
 
 [node name="TabContainer" parent="uiCharacterInformation" index="0"]
 offset_right = 200.0

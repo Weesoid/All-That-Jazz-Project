@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
 [ext_resource type="PackedScene" uid="uid://chftwgr1ebsxv" path="res://scenes/particles/BrawnBuff.tscn" id="1_v4ihd"]
-[ext_resource type="Texture2D" uid="uid://boyadulx5jiuq" path="res://images/icons/st_speed_up1.png" id="2_2cbm3"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_njgqp"]
 
 [sub_resource type="GDScript" id="GDScript_ngr15"]
@@ -23,7 +22,6 @@ NAME = "Hustle Up!"
 DESCRIPTION = ""
 STATUS_SCRIPT = SubResource("GDScript_ngr15")
 PACKED_SCENE = ExtResource("1_v4ihd")
-TEXTURE = ExtResource("2_2cbm3")
 MAX_DURATION = 6
 MAX_RANK = 2
 ON_HIT = false

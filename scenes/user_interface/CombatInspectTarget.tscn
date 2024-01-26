@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://dqs8b1y4j5h7r"]
 
 [ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://images/sprites/qte_target.png" id="1_1tuxq"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatInspectTarget.gd" id="1_twgfn"]
@@ -82,7 +82,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
-text = "[img]res://assets/icons/st_speed_dn2.png[/img] Target cannot move!"
+text = "x Target cannot move!"
 scroll_active = false
 
 [node name="Description" type="Label" parent="."]

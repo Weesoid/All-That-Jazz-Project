@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://ca73rnpg85py1"]
 
 [ext_resource type="Script" path="res://scripts/components/sccCombatantSquad.gd" id="1_2pyv0"]
 

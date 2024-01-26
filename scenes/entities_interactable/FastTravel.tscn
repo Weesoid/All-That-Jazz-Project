@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://b3eqyupdraliq" path="res://resources/dialogue/open_fast_travel_menu.dialogue" id="3_1vqke"]
 [ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://images/sprites/table.png" id="7_hjdo4"]
-[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="8_46j25"]
+[ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="8_46j25"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cuxhy"]
 size = Vector2(46, 33)

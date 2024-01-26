@@ -147,10 +147,8 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 
 func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_states: Array = []) -> void:
 	var ExampleBalloonScene = load("res://scenes/miscellaneous/DialogueBox.tscn")
-	var SmallExampleBalloonScene = load("res://scenes/miscellaneous/SmallDialogueBox.tscn")
+	var balloon: Node = ExampleBalloonScene.instantiate()
 	
-	var is_small_window: bool = ProjectSettings.get_setting("display/window/size/viewport_width") < 400
-	var balloon: Node = (SmallExampleBalloonScene if is_small_window else ExampleBalloonScene).instantiate()
 	get_tree().current_scene.add_child(balloon)
 	if result == 0:
 

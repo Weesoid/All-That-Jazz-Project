@@ -20,5 +20,8 @@ func getStatusEffectInfo(combatant: ResCombatant):
 		return
 	
 	for effect in combatant.STATUS_EFFECTS:
-		var texture_path = effect.TEXTURE.resource_path
-		status_effects.text += "\n[img]%s[/img] %s\n" % [texture_path, effect.DESCRIPTION]
+		if effect.TEXTURE != null:
+			var texture_path = effect.TEXTURE.resource_path
+			status_effects.text += "\n[img]%s[/img] %s\n" % [texture_path, effect.DESCRIPTION]
+		else:
+			status_effects.text += "\n%s\n" % [effect.DESCRIPTION]

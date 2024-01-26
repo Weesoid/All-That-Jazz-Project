@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" path="res://scenes/particles/Vulnerated.tscn" id="1_gkjan"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_ge1mk"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsVulnerated.gd" id="2_hfugv"]
-[ext_resource type="Texture2D" uid="uid://rdkwnjrlfqfh" path="res://images/icons/st_grit_dn2.png" id="3_pjntp"]
 
 [resource]
 script = ExtResource("2_ge1mk")
@@ -11,7 +10,6 @@ NAME = "Vulnerated"
 DESCRIPTION = "Target has permanently reduced GRIT."
 STATUS_SCRIPT = ExtResource("2_hfugv")
 PACKED_SCENE = ExtResource("1_gkjan")
-TEXTURE = ExtResource("3_pjntp")
 MAX_DURATION = 1
 MAX_RANK = 10
 ON_HIT = false

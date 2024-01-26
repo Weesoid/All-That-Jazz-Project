@@ -23,7 +23,7 @@ var TARGETABLE
 
 func initializeStatus():
 	ICON = TextureRect.new()
-	ICON.texture = TEXTURE
+	#ICON.texture = TEXTURE
 	
 	if PACKED_SCENE != null:
 		PARTICLES = PACKED_SCENE.instantiate()

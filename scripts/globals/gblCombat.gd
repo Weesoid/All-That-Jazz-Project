@@ -188,6 +188,7 @@ func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 
 func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false):
+	print(load(str("res://resources/combat/status_effects/BrawnUp.tres")))
 	var status_effect: ResStatusEffect = load(str("res://resources/combat/status_effects/"+status_effect_name+".tres")).duplicate()
 	if status_effect.NAME not in target.getStatusEffectNames():
 		status_effect.afflicted_combatant = target

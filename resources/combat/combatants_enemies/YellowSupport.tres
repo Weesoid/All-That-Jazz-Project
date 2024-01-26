@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://djgp4wo3klm5f"]
 
-[ext_resource type="Resource" uid="uid://bn13cdac7oodf" path="res://resources/combat/abilities/Heal.tres" id="1_cydwi"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="1_cydwi"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
 [ext_resource type="PackedScene" path="res://scenes/combatants/BadGuyB.tscn" id="3_dwh58"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_fptwa"]

@@ -59,7 +59,7 @@ func updateArmorIcon():
 func updateStatusEffects():
 	#print_orphan_nodes()
 	for effect in attached_combatant.STATUS_EFFECTS:
-		if status_effects.get_children().has(effect.ICON): continue
+		if status_effects.get_children().has(effect.ICON) or effect.ICON == null: continue
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
 		var icon = effect.ICON

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://6vi341u7jww0"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="Texture2D" uid="uid://tb4yrfiieksa" path="res://images/textures/bar_texture.png" id="2_by75a"]

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" path="res://scenes/entities/Player.tscn" id="3_oqinw"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravel.tscn" id="4_ryo4p"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://images/animations/ent_walker.png" id="5_n08rf"]
-[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="6_65xht"]
+[ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="6_65xht"]
 [ext_resource type="Resource" uid="uid://cdl8vad57bffh" path="res://scenes/maps/TestRoom/dialogue/animate.dialogue" id="7_cys1p"]
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="8_oqijn"]
 [ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="9_jv7s8"]

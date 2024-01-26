@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Texture2D" uid="uid://b64hae3ym8ck" path="res://images/sprites/turn_highlight.png" id="3_qmtsl"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
-[ext_resource type="PackedScene" path="res://scenes/user_interface/CombatInspectTarget.tscn" id="4_kkdd3"]
+[ext_resource type="PackedScene" uid="uid://dqs8b1y4j5h7r" path="res://scenes/user_interface/CombatInspectTarget.tscn" id="4_kkdd3"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="8_lqkpn"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="9_d3h28"]
