@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://b8c76o5kvsawj"]
+[gd_scene load_steps=3 format=3 uid="uid://j6m3ygvp1xoj"]
 
-[ext_resource type="Script" path="res://scripts/user_interface/scmPauseUI.gd" id="1_gyhaf"]
-[ext_resource type="Texture2D" uid="uid://cf0bsobb1k2cs" path="res://assets/images/battle_bg.png" id="2_r235f"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiPauseUI.gd" id="1_gyhaf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3hhx"]
 bg_color = Color(1, 1, 1, 1)
@@ -22,15 +21,6 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gyhaf")
-
-[node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.627451)
-layout_mode = 2
-offset_left = -574.0
-offset_top = -319.0
-offset_right = 578.0
-offset_bottom = 329.0
-texture = ExtResource("2_r235f")
 
 [node name="Container" type="VBoxContainer" parent="."]
 layout_mode = 1

@@ -1,0 +1,206 @@
+[gd_scene load_steps=16 format=3 uid="uid://cju07dhtt56h2"]
+
+[ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_2jmjv"]
+[ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="2_yo4y6"]
+[ext_resource type="PackedScene" path="res://scenes/entities/Player.tscn" id="3_oqinw"]
+[ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravel.tscn" id="4_ryo4p"]
+[ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://images/animations/ent_walker.png" id="5_n08rf"]
+[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="6_65xht"]
+[ext_resource type="Resource" uid="uid://cdl8vad57bffh" path="res://scenes/maps/TestRoom/dialogue/animate.dialogue" id="7_cys1p"]
+[ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="8_oqijn"]
+[ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="9_jv7s8"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j5tc8"]
+texture = ExtResource("2_yo4y6")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+1:2/0 = 0
+1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:2/0/physics_layer_0/angular_velocity = 0.0
+2:2/0 = 0
+2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:2/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_p1l6j"]
+tile_size = Vector2i(48, 48)
+physics_layer_0/collision_layer = 1
+navigation_layer_0/layers = 1
+sources/0 = SubResource("TileSetAtlasSource_j5tc8")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2apxe"]
+radius = 11.0
+
+[sub_resource type="Animation" id="Animation_g1n5f"]
+resource_name = "Hug"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("8_oqijn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_j4r3k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_n08rf")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2ni2q"]
+_data = {
+"Hug": SubResource("Animation_g1n5f"),
+"RESET": SubResource("Animation_j4r3k")
+}
+
+[node name="TestRoomB" type="Node2D"]
+z_index = -1
+y_sort_enabled = true
+
+[node name="MapDataComponent" parent="." instance=ExtResource("1_2jmjv")]
+NAME = "Alt Room"
+DESCRIPTION = "Just for debugging!"
+SAFE = true
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_p1l6j")
+cell_quadrant_size = 48
+collision_animatable = true
+format = 2
+layer_0/tile_data = PackedInt32Array(-1, 65536, 0, 65535, 0, 0, 0, 0, 0, -65536, 65536, 0, -2, 65536, 0, 65534, 0, 0, 1, 0, 0, -65535, 65536, 0, -65534, 65536, 0, 2, 0, 0, 65533, 0, 0, -3, 65536, 0, -65539, 65536, 0, -65538, 65536, 0, -65537, 65536, 0, -131072, 65536, 0, -131071, 65536, 0, -131070, 65536, 0, -196606, 65536, 0, -196607, 65536, 0, -196608, 65536, 0, -131073, 65536, 0, -131074, 65536, 0, -131075, 65536, 0, 131069, 0, 0, 131070, 0, 0, 131071, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, -196611, 65536, 0, -196610, 65536, 0, -196609, 65536, 0, -262144, 65536, 0, -262143, 65536, 0, -262142, 65536, 0, 3, 0, 0, -65533, 65536, 0, -131069, 65536, 0, -196605, 65536, 0, -262141, 65536, 0, 65539, 0, 0, 4, 0, 0)
+
+[node name="Player" parent="." instance=ExtResource("3_oqinw")]
+position = Vector2(39, 28)
+
+[node name="FastTravel" parent="." instance=ExtResource("4_ryo4p")]
+position = Vector2(-112, 16)
+
+[node name="Animator" type="CharacterBody2D" parent="."]
+position = Vector2(-64, 64)
+
+[node name="Sprite2D" type="Sprite2D" parent="Animator"]
+texture = ExtResource("5_n08rf")
+hframes = 3
+vframes = 3
+frame = 7
+
+[node name="InteractComponent" parent="Animator" instance=ExtResource("6_65xht")]
+position = Vector2(0, 8)
+dialogue_resource = ExtResource("7_cys1p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Animator"]
+position = Vector2(0, 13)
+shape = SubResource("CircleShape2D_2apxe")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Animator"]
+libraries = {
+"": SubResource("AnimationLibrary_2ni2q")
+}
+
+[node name="DoorInteractable" parent="." instance=ExtResource("9_jv7s8")]
+position = Vector2(217, 23)
+TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomA.tscn"

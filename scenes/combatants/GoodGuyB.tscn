@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://dorthwo1fbn68"]
+[gd_scene load_steps=10 format=3]
 
-[ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://assets/combatant_sprites/GoodGuyB.png" id="1_c365b"]
-[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_aej5c"]
+[ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://images/animations/GoodGuyB.png" id="1_c365b"]
+[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="2_aej5c"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Attack"

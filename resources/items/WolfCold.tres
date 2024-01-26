@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://ngnxmyk5y2oi"]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3]
 
-[ext_resource type="Resource" uid="uid://ct042cn5chwik" path="res://resources/abilities/ColdSlap.tres" id="1_vxu0m"]
+[ext_resource type="Resource" uid="uid://ct042cn5chwik" path="res://resources/combat/abilities/ColdSlap.tres" id="1_vxu0m"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_jtrld"]
 
 [resource]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://y7to2o115c27"
+path="res://.godot/imported/quest_giver_optionals.dialogue-2159c8d6ff42030d4b0d32dbb75d25ed.tres"
+
+[deps]
+
+source_file="res://scenes/maps/TestRoom/dialogue/quest_giver_optionals.dialogue"
+dest_files=["res://.godot/imported/quest_giver_optionals.dialogue-2159c8d6ff42030d4b0d32dbb75d25ed.tres"]
+
+[params]
+
+defaults=true

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResArmorType" load_steps=6 format=3 uid="uid://c7hp3j5ohcbuk"]
+
+[ext_resource type="Texture2D" uid="uid://bumfgxk63pfkb" path="res://images/icons/armor_full.png" id="1_45ulp"]
+[ext_resource type="Resource" uid="uid://bdajhga5cgdqi" path="res://resources/combat/damage_types/Blunt.tres" id="1_n1r1u"]
+[ext_resource type="Resource" uid="uid://bexqs1no832bf" path="res://resources/combat/damage_types/Edged.tres" id="2_k7snh"]
+[ext_resource type="Resource" uid="uid://c8fjpedofd5mm" path="res://resources/combat/damage_types/Neutral.tres" id="3_g66q6"]
+[ext_resource type="Script" path="res://scripts/resources/ResArmorType.gd" id="4_rmm0c"]
+
+[resource]
+script = ExtResource("4_rmm0c")
+NAME = "Heavy"
+DEFAULT_MULTIPLIER = 1.0
+MULTIPLIERS = {
+ExtResource("1_n1r1u"): 1.75,
+ExtResource("2_k7snh"): 0.5,
+ExtResource("3_g66q6"): 0.25
+}
+ICON = ExtResource("1_45ulp")

@@ -1,16 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://x6a4lnjddu0y"]
+[gd_scene load_steps=6 format=3 uid="uid://dorckpgb0hrim"]
 
-[ext_resource type="Script" path="res://scripts/miscellaneous/qteTiming.gd" id="1_8tnjj"]
-[ext_resource type="Texture2D" uid="uid://dxw47c83a60c6" path="res://assets/images/timing_bar.png" id="2_xo8y4"]
-[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://assets/sounds/coin.ogg" id="4_0qb72"]
-[ext_resource type="Texture2D" uid="uid://d33jb5c7qwjn3" path="res://assets/images/timing_target.png" id="4_xogn6"]
+[ext_resource type="Script" path="res://scripts/quick_time_events/qteTiming.gd" id="1_4ef8u"]
+[ext_resource type="Texture2D" uid="uid://dxw47c83a60c6" path="res://images/sprites/timing_bar.png" id="2_xo8y4"]
+[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://audio/sounds/coin.ogg" id="4_0qb72"]
+[ext_resource type="Texture2D" uid="uid://d33jb5c7qwjn3" path="res://images/sprites/timing_target.png" id="4_xogn6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rxcus"]
 size = Vector2(6, 32)
 
 [node name="QTE" type="Node2D"]
 z_index = 5
-script = ExtResource("1_8tnjj")
+script = ExtResource("1_4ef8u")
 
 [node name="TimingBar" type="Sprite2D" parent="."]
 scale = Vector2(0.632813, 1)

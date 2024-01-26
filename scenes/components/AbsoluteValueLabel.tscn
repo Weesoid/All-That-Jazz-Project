@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://dyprfddxcxp8e"]
-
-[node name="AbsoluteValueLabel" type="Label"]
-offset_right = 128.0
-offset_bottom = 28.0
-text = "8"

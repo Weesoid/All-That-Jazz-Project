@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=4 format=3 uid="uid://dqox7a1l8gtua"]
+[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=4 format=3]
 
-[ext_resource type="Texture2D" uid="uid://hhwkf2u82bfq" path="res://assets/misc_sprites/arrow1.png" id="1_kqrt4"]
-[ext_resource type="Script" path="res://scripts/arrow_scripts/scprStunner.gd" id="1_r5kug"]
+[ext_resource type="Texture2D" uid="uid://hhwkf2u82bfq" path="res://images/icons/arrow1.png" id="1_kqrt4"]
+[ext_resource type="Script" path="res://scripts/arrows/scprStunner.gd" id="1_r5kug"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemProjectile.gd" id="2_rbww4"]
 
 [resource]

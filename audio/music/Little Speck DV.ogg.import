@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://br3neqy3ntg51"
+path="res://.godot/imported/Little Speck DV.ogg-f3eaec76e99422f5fe795eee0c927669.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/Little Speck DV.ogg"
+dest_files=["res://.godot/imported/Little Speck DV.ogg-f3eaec76e99422f5fe795eee0c927669.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

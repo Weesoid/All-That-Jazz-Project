@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResPower" load_steps=4 format=3 uid="uid://bvwexd3pkerrr"]
+[gd_resource type="Resource" script_class="ResPower" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResPower.gd" id="1_7iidr"]
-[ext_resource type="Texture2D" uid="uid://biqwlvu76q2b0" path="res://assets/misc_sprites/power2.png" id="1_i14op"]
+[ext_resource type="Texture2D" uid="uid://biqwlvu76q2b0" path="res://images/icons/power2.png" id="1_i14op"]
 [ext_resource type="Script" path="res://scripts/power_scripts/scpAnchor.gd" id="2_u3uft"]
 
 [resource]

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResConsumable" load_steps=3 format=3 uid="uid://ed2dvejnynu4"]
+[gd_resource type="Resource" script_class="ResConsumable" load_steps=3 format=3]
 
-[ext_resource type="Resource" uid="uid://bn13cdac7oodf" path="res://resources/abilities/Heal.tres" id="1_gfk4x"]
+[ext_resource type="Resource" uid="uid://bn13cdac7oodf" path="res://resources/combat/abilities/Heal.tres" id="1_gfk4x"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemConsumable.gd" id="2_0mv4f"]
 
 [resource]

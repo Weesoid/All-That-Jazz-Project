@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq32o8sb6jcl3"]
+[gd_scene load_steps=6 format=3 uid="uid://bae7aifhormuj"]
 
-[ext_resource type="Script" path="res://scripts/miscellaneous/qteMashing.gd" id="1_l5x7j"]
-[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://assets/sounds/coin.ogg" id="2_uxgve"]
+[ext_resource type="Script" path="res://scripts/quick_time_events/qteMashing.gd" id="1_8qkyh"]
+[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://audio/sounds/coin.ogg" id="2_uxgve"]
 
 [sub_resource type="Animation" id="Animation_k78bc"]
 resource_name = "Point"
@@ -41,7 +41,7 @@ _data = {
 
 [node name="QTE" type="Node2D"]
 z_index = 5
-script = ExtResource("1_l5x7j")
+script = ExtResource("1_8qkyh")
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true

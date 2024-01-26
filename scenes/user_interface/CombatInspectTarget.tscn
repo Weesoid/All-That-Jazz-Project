@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bt4b6i7iiex30"]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://assets/misc_sprites/qte_target.png" id="1_1tuxq"]
-[ext_resource type="Script" path="res://scripts/user_interface/scmCombatInspectTarget.gd" id="1_twgfn"]
+[ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://images/sprites/qte_target.png" id="1_1tuxq"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiCombatInspectTarget.gd" id="1_twgfn"]
 
 [sub_resource type="Animation" id="Animation_ob7ho"]
 resource_name = "Loop"

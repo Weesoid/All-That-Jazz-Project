@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cj86sc2hhun1j"]
+[gd_scene load_steps=8 format=3 uid="uid://b0e4gc4eq74ca"]
 
 [ext_resource type="Script" path="res://scripts/components/sccNPCMovementPatrol.gd" id="1_gxlj6"]
-[ext_resource type="Texture2D" uid="uid://cvlxblusko57c" path="res://assets/misc_sprites/untitled.png" id="2_qga5p"]
-[ext_resource type="AudioStream" uid="uid://cnv2ohy1bwt61" path="res://assets/sounds/413641__djlprojects__metal-gear-solid-inspired-alert-surprise-sfx.wav" id="3_a8svp"]
+[ext_resource type="Texture2D" uid="uid://cvlxblusko57c" path="res://images/animations/untitled.png" id="2_qga5p"]
+[ext_resource type="AudioStream" uid="uid://cnv2ohy1bwt61" path="res://audio/sounds/413641__djlprojects__metal-gear-solid-inspired-alert-surprise-sfx.wav" id="3_a8svp"]
 
 [sub_resource type="Animation" id="Animation_r7k43"]
 resource_name = "Loop"

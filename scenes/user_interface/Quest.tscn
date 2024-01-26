@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://log77ibhmt1e"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://scripts/user_interface/scmQuest.gd" id="1_kyse4"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiQuest.gd" id="1_kyse4"]
 
 [node name="Quest" type="Control"]
 layout_mode = 3

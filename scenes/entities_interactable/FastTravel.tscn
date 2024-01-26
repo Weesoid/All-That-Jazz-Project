@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://db24pbalvd8xy"]
+
+[ext_resource type="Resource" uid="uid://b3eqyupdraliq" path="res://resources/dialogue/open_fast_travel_menu.dialogue" id="3_1vqke"]
+[ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://images/sprites/table.png" id="7_hjdo4"]
+[ext_resource type="PackedScene" path="res://scenes/components/Interact.tscn" id="8_46j25"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cuxhy"]
+size = Vector2(46, 33)
+
+[node name="FastTravel" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0.831373, 1)
+position = Vector2(0, -24)
+texture = ExtResource("7_hjdo4")
+
+[node name="InteractComponent" parent="." instance=ExtResource("8_46j25")]
+position = Vector2(0, -16)
+dialogue_resource = ExtResource("3_1vqke")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_cuxhy")

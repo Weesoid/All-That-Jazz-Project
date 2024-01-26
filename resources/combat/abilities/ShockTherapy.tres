@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaJoltWeaponAttack.gd" id="1_uq8pc"]
+[ext_resource type="PackedScene" path="res://scenes/animations/Punch.tscn" id="2_coxhu"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_0faqm"]
+
+[resource]
+script = ExtResource("3_0faqm")
+NAME = "Shock Therapy"
+DESCRIPTION = ""
+ANIMATION = ExtResource("2_coxhu")
+ABILITY_SCRIPT = ExtResource("1_uq8pc")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+INSTANT_CAST = false

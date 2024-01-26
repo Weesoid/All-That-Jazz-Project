@@ -1,10 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://d0e8o8qjcmyfw"]
+[gd_scene load_steps=3 format=3 uid="uid://c7wh3ffsmrhli"]
 
-[ext_resource type="Script" path="res://scripts/miscellaneous/qteInputting.gd" id="1_a0pwi"]
-[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://assets/sounds/coin.ogg" id="2_qdoxa"]
+[ext_resource type="Script" path="res://scripts/quick_time_events/qteInputting.gd" id="1_eclpy"]
+[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://audio/sounds/coin.ogg" id="2_qdoxa"]
 
 [node name="QTE" type="Node2D"]
-script = ExtResource("1_a0pwi")
+script = ExtResource("1_eclpy")
 
 [node name="Timer" type="Timer" parent="."]
 

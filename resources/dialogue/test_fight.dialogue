@@ -1,5 +1,0 @@
-~ start
-
-do OverworldGlobals.changeToCombat("MrMovey", "", "", "", "", "Hail")
-
-=> END

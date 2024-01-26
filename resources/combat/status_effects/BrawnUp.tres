@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_c8x4r"]
+[ext_resource type="PackedScene" path="res://scenes/particles/BrawnBuff.tscn" id="1_j8t03"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsStatModifier.gd" id="1_kwaxl"]
+[ext_resource type="Texture2D" uid="uid://d1n1g7y201u1l" path="res://images/icons/st_brawn_up1.png" id="3_b05gd"]
+
+[resource]
+script = ExtResource("1_c8x4r")
+NAME = "Buff Up"
+STATUS_SCRIPT = ExtResource("1_kwaxl")
+PACKED_SCENE = ExtResource("1_j8t03")
+TEXTURE = ExtResource("3_b05gd")
+MAX_DURATION = 6
+MAX_RANK = 2
+ON_HIT = false
+APPLY_ONCE = true
+TICK_PER_TURN = false
+PERMANENT = false
+metadata/_editor_prop_ptr_ICON = NodePath("")
+metadata/_editor_prop_ptr_PARTICLES = NodePath("")

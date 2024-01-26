@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b6lhum4raos0o"]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiBattleConclusion.gd" id="1_aq72l"]
-[ext_resource type="PackedScene" uid="uid://dcuctq4ljveqv" path="res://scenes/user_interface/PartyExperienceBar.tscn" id="2_g7sy1"]
-[ext_resource type="AudioStream" uid="uid://boe4eh86o5go5" path="res://assets/sounds/494984__original_sound__cinematic-trailer-risers-1.ogg" id="3_oh8nk"]
+[ext_resource type="PackedScene" path="res://scenes/user_interface/PartyExperienceBar.tscn" id="2_g7sy1"]
+[ext_resource type="AudioStream" uid="uid://boe4eh86o5go5" path="res://audio/sounds/494984__original_sound__cinematic-trailer-risers-1.ogg" id="3_oh8nk"]
 
 [sub_resource type="Animation" id="Animation_hnm0j"]
 length = 0.001

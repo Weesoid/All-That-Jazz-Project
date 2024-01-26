@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaHealAttackAOE.gd" id="1_fw0h3"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_jtjaw"]
+[ext_resource type="PackedScene" path="res://scenes/animations/Heal.tscn" id="2_kh0yo"]
+
+[resource]
+script = ExtResource("1_jtjaw")
+NAME = "Spread Heal"
+DESCRIPTION = "Heal all targets! Mwah!"
+ANIMATION = ExtResource("2_kh0yo")
+ABILITY_SCRIPT = ExtResource("1_fw0h3")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 1
+TARGET_GROUP = 2
+INSTANT_CAST = false
+VALUE = 5

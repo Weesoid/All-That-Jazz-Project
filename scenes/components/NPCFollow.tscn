@@ -1,7 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://sq18hiigkjmf"]
+[gd_scene load_steps=2 format=3 uid="uid://d2sm7ba1qfn5d"]
 
 [sub_resource type="GDScript" id="GDScript_oedq7"]
-script/source = "extends NPCMovement
+script/source = "extends Node
+
+var BODY
+
+func _ready():
+	BODY = get_parent()
+	ANIMATOR = get_parent().get_node('WalkingAnimations')
 
 func _physics_process(_delta):
 	lookAtPlayer()

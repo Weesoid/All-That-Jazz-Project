@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2lbquwtqos8t"]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/components/sccStunPatrollers.gd" id="1_o2jn4"]
-[ext_resource type="Texture2D" uid="uid://c8spkgaqlwrge" path="res://assets/images/circle_sprite.png" id="2_funky"]
+[ext_resource type="Texture2D" uid="uid://c8spkgaqlwrge" path="res://images/sprites/circle_sprite.png" id="2_funky"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a1rey"]
 radius = 80.0

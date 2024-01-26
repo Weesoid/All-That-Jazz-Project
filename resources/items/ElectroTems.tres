@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://d2b01tj2pnom5"]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3]
 
-[ext_resource type="Resource" uid="uid://wppjhvu2u077" path="res://resources/abilities/ShockTherapy.tres" id="1_fnwot"]
+[ext_resource type="Resource" uid="uid://wppjhvu2u077" path="res://resources/combat/abilities/ShockTherapy.tres" id="1_fnwot"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_teou6"]
 
 [resource]

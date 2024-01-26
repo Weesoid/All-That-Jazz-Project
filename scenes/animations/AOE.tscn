@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c7rpqtrfgutkt"]
+[gd_scene load_steps=7 format=3 uid="uid://bldcfcy8pg511"]
 
-[ext_resource type="Texture2D" uid="uid://dihiaf7w04e20" path="res://assets/animation_sprites/Test.png" id="1_edvdi"]
-[ext_resource type="Script" path="res://scripts/miscellaneous/AbilityAnimations.gd" id="1_ruq8r"]
-[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_83wr0"]
+[ext_resource type="Script" path="res://scripts/combat/scnAbilityAnimations.gd" id="1_ruq8r"]
+[ext_resource type="Texture2D" uid="uid://dihiaf7w04e20" path="res://images/sprites/Test.png" id="2_2fglc"]
+[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="3_5ld2m"]
 
 [sub_resource type="Animation" id="Animation_7g5ea"]
 resource_name = "Execute"
@@ -64,7 +64,7 @@ _data = {
 "RESET": SubResource("Animation_p6b05")
 }
 
-[node name="aabAOE" type="Node2D"]
+[node name="AOE" type="Node2D"]
 script = ExtResource("1_ruq8r")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -76,10 +76,10 @@ libraries = {
 position = Vector2(0, -1.52588e-05)
 rotation = 1.5708
 scale = Vector2(3.8999, 6.13209)
-texture = ExtResource("1_edvdi")
+texture = ExtResource("2_2fglc")
 vframes = 3
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_83wr0")
+stream = ExtResource("3_5ld2m")
 volume_db = 5.924
 pitch_scale = 0.61

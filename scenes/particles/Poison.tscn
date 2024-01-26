@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://bsuyrbl4hyjcw"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Texture2D" uid="uid://doomnj5fua3n8" path="res://assets/particle_sprites/bubble.png" id="1_dspwt"]
+[ext_resource type="Texture2D" uid="uid://doomnj5fua3n8" path="res://images/sprites/bubble.png" id="1_dspwt"]
 
 [sub_resource type="Gradient" id="Gradient_j0wh3"]
 offsets = PackedFloat32Array(0.362667, 0.648, 1)

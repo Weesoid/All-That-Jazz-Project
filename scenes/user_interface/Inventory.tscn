@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1tid35nycngt"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/user_interface/scmInventoryUI.gd" id="1_qwj2w"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiInventoryUI.gd" id="1_qwj2w"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiEquippedUtilityCharms.gd" id="2_rlnwg"]
 
 [node name="uiInventory" type="Control"]

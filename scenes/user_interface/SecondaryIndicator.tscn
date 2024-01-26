@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://c7j2mkxyqu3jl"]
+[gd_scene load_steps=13 format=3]
 
-[ext_resource type="Script" path="res://scripts/user_interface/scmSecondaryIndicator.gd" id="1_1fdpo"]
-[ext_resource type="AudioStream" uid="uid://3g8lmthlik76" path="res://assets/sounds/text_default.ogg" id="2_gglqm"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiSecondaryIndicator.gd" id="1_1fdpo"]
+[ext_resource type="AudioStream" uid="uid://3g8lmthlik76" path="res://audio/sounds/text_default.ogg" id="2_gglqm"]
 
 [sub_resource type="Animation" id="Animation_d3vq7"]
 resource_name = "Crit"

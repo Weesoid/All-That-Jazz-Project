@@ -1,0 +1,5 @@
+~ start
+
+do OverworldGlobals.changeToCombat("Fighter", "", "", "", "", "Hail")
+
+=> END

@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://tjb6n7jgkert"]
+[gd_scene load_steps=6 format=3 uid="uid://b2umjualal1no"]
 
-[ext_resource type="Texture2D" uid="uid://i4ia44qidv20" path="res://assets/overworld_sprites/ent_anchor.png" id="1_4dqva"]
+[ext_resource type="Texture2D" uid="uid://i4ia44qidv20" path="res://images/sprites/ent_anchor.png" id="1_4dqva"]
 [ext_resource type="Script" path="res://scripts/power_scripts/scpaAnchor.gd" id="1_te7jj"]
 
 [sub_resource type="Animation" id="Animation_jn0x6"]
@@ -64,7 +64,7 @@ _data = {
 "Spawn": SubResource("Animation_elg0g")
 }
 
-[node name="patAnchor" type="Node2D"]
+[node name="Anchor" type="Node2D"]
 script = ExtResource("1_te7jj")
 
 [node name="Sprite" type="Sprite2D" parent="."]

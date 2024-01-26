@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://oxya1bn6qs8y"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_o1mb6"]
+[ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwNeutral.gd" id="1_tggyt"]
+[ext_resource type="PackedScene" uid="uid://bldcfcy8pg511" path="res://scenes/animations/AOE.tscn" id="2_qeexk"]
+
+[resource]
+script = ExtResource("1_o1mb6")
+NAME = "Neutral Strike"
+DESCRIPTION = ""
+ANIMATION = ExtResource("2_qeexk")
+ABILITY_SCRIPT = ExtResource("1_tggyt")
+COST = 0
+COST_RESOURCE = ""
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+TARGET_DEAD = false
+INSTANT_CAST = false
+VALUE = 5

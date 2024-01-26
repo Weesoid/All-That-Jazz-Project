@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResArmorType" load_steps=6 format=3 uid="uid://cfe6tqaicb2be"]
+
+[ext_resource type="Texture2D" uid="uid://bk1axgiqbv3p2" path="res://images/icons/armor_half.png" id="1_hh0jg"]
+[ext_resource type="Resource" uid="uid://bdajhga5cgdqi" path="res://resources/combat/damage_types/Blunt.tres" id="1_mwmwp"]
+[ext_resource type="Script" path="res://scripts/resources/ResArmorType.gd" id="1_sc6a3"]
+[ext_resource type="Resource" uid="uid://bexqs1no832bf" path="res://resources/combat/damage_types/Edged.tres" id="2_3eftn"]
+[ext_resource type="Resource" uid="uid://c8fjpedofd5mm" path="res://resources/combat/damage_types/Neutral.tres" id="3_5du7v"]
+
+[resource]
+script = ExtResource("1_sc6a3")
+NAME = "Light"
+DEFAULT_MULTIPLIER = 1.0
+MULTIPLIERS = {
+ExtResource("1_mwmwp"): 0.75,
+ExtResource("2_3eftn"): 1.75,
+ExtResource("3_5du7v"): 0.5
+}
+ICON = ExtResource("1_hh0jg")

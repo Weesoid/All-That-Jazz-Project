@@ -1,0 +1,196 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://xr5mninhq8kt"]
+
+[ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
+[ext_resource type="Resource" uid="uid://di00nscjwoc7x" path="res://resources/combat/abilities/PoisonBite.tres" id="2_jsk6a"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="3_bfkjx"]
+[ext_resource type="PackedScene" path="res://scenes/entities/followers/Pinky.tscn" id="4_fpjeh"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="4_mka0i"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
+[ext_resource type="Resource" uid="uid://0ltptboemylg" path="res://resources/combat/abilities/AOE.tres" id="5_iixbd"]
+[ext_resource type="Resource" uid="uid://bcwc00l52dxp" path="res://resources/combat/abilities/DebugAddEffect.tres" id="6_ateo1"]
+[ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://images/animations/GoodGuyB.png" id="8_88eiy"]
+[ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/icons/will_icon.png" id="8_sl7ba"]
+[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="10_gxbu7"]
+
+[sub_resource type="Animation" id="Animation_5q8qb"]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [3, 5, 3, 5, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.123, 1.123), Vector2(0.963, 0.963), Vector2(1.167, 1.167), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_38ggd"]
+resource_name = "Cast"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 3, 4, 3]
+}
+
+[sub_resource type="Animation" id="Animation_2ybq4"]
+resource_name = "Hit"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 4, 5, 4]
+}
+
+[sub_resource type="Animation" id="Animation_7atq3"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 0, 1, 0]
+}
+
+[sub_resource type="Animation" id="Animation_xkhtg"]
+resource_name = "KO"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="Animation" id="Animation_ak5yc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5k78l"]
+_data = {
+"Attack": SubResource("Animation_5q8qb"),
+"Cast": SubResource("Animation_38ggd"),
+"Hit": SubResource("Animation_2ybq4"),
+"Idle": SubResource("Animation_7atq3"),
+"KO": SubResource("Animation_xkhtg"),
+"RESET": SubResource("Animation_ak5yc")
+}
+
+[sub_resource type="PackedScene" id="PackedScene_gvghd"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("sprGoodGuyB", "Node2D", "Sprite", "Sprite2D", "position", "rotation", "texture", "hframes", "vframes", "SpriteAnimator", "AnimationPlayer", "libraries", "AudioPlayer", "AudioStreamPlayer", "stream"),
+"node_count": 4,
+"node_paths": [NodePath("."), NodePath("./Sprite"), NodePath("./Sprite")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 3, 2, -1, 5, 4, 0, 5, 1, 6, 2, 7, 3, 8, 4, 0, 1073741825, 0, 10, 9, -1, 1, 11, 5, 0, 1073741826, 0, 13, 12, -1, 1, 14, 6, 0),
+"variants": [Vector2(16, 0), -0.212057, ExtResource("8_88eiy"), 3, 2, {
+"": SubResource("AnimationLibrary_5k78l")
+}, ExtResource("10_gxbu7")],
+"version": 3
+}
+
+[resource]
+script = ExtResource("5_4siku")
+STAT_GROWTH_RATES = {
+"accuracy": 0,
+"brawn": 10,
+"crit": 0,
+"exposure": 0,
+"grit": 1,
+"heal mult": 0,
+"health": 1,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
+MANDATORY = false
+NAME = "PUMainBlasko"
+ICON = ExtResource("8_sl7ba")
+PACKED_SCENE = SubResource("PackedScene_gvghd")
+DESCRIPTION = "A ruthless striker, kills on sight."
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 1,
+"crit": 0.05,
+"exposure": 0,
+"grit": 1,
+"heal mult": 1,
+"health": 100,
+"hustle": 1,
+"verve": 1,
+"will": 1,
+"wit": 1
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_h6ewg"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i"), ExtResource("5_iixbd"), ExtResource("6_ateo1")])
+EQUIPMENT = {
+"armor": null,
+"charm": null,
+"weapon": null
+}
+CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

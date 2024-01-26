@@ -4,6 +4,7 @@ class_name ResArmorType
 @export var NAME: String
 @export var DEFAULT_MULTIPLIER = 1.0
 @export var MULTIPLIERS: Dictionary
+@export var ICON: Texture
 
 func getMultiplier(damage_type: ResDamageType)-> float:
 	if !MULTIPLIERS.has(damage_type):

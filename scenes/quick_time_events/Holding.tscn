@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://8q6a4fh4yypq"]
+[gd_scene load_steps=8 format=3 uid="uid://bdjyh0eu2tya7"]
 
-[ext_resource type="Script" path="res://scripts/miscellaneous/qteHolding.gd" id="1_3r72e"]
-[ext_resource type="PackedScene" uid="uid://c6yichsp0emqa" path="res://scenes/miscellaneous/HoldingTarget.tscn" id="2_8jteu"]
-[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://assets/sounds/coin.ogg" id="4_1j1c3"]
-[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://assets/misc_sprites/target.png" id="4_6g54j"]
+[ext_resource type="Script" path="res://scripts/quick_time_events/qteHolding.gd" id="1_17ur7"]
+[ext_resource type="PackedScene" path="res://scenes/quick_time_events/targets/HoldingTarget.tscn" id="2_8jteu"]
+[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://audio/sounds/coin.ogg" id="4_1j1c3"]
+[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="4_6g54j"]
 
 [sub_resource type="Animation" id="Animation_htf3m"]
 length = 0.001
@@ -44,7 +44,7 @@ _data = {
 
 [node name="QTE" type="Node2D"]
 z_index = 5
-script = ExtResource("1_3r72e")
+script = ExtResource("1_17ur7")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0

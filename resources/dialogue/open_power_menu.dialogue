@@ -1,4 +1,0 @@
-~ start
-
-do showMenu("res://scenes/user_interface/PowerSelect.tscn")
-=> END

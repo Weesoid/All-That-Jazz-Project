@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://dqssaas0mo42b"]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://bkc07fma87bjx"]
 
-[ext_resource type="Resource" uid="uid://ci67q12nr2pu7" path="res://resources/abilities/HotHit.tres" id="1_lb1fm"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/HotHit.tres" id="1_lb1fm"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_84o6q"]
 
 [resource]

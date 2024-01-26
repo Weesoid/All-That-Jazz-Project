@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://o43ff1yvriv6"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://scripts/user_interface/scmPartyUI.gd" id="1_sq7cs"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiPartyUI.gd" id="1_sq7cs"]
 
 [node name="uiCharacterInformation" type="Control"]
 layout_mode = 3

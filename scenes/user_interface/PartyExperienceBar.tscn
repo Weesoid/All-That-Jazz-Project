@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcuctq4ljveqv"]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource type="Script" path="res://scripts/user_interface/scmPartyExp.gd" id="1_7lc7m"]
-[ext_resource type="AudioStream" uid="uid://cmwxips7uduiw" path="res://assets/sounds/loading sfx loopable.ogg" id="2_vr6ob"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiPartyExp.gd" id="1_7lc7m"]
+[ext_resource type="AudioStream" uid="uid://cmwxips7uduiw" path="res://audio/sounds/loading sfx loopable.ogg" id="2_vr6ob"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_64y0w"]
 bg_color = Color(0, 0, 0, 1)

@@ -1,0 +1,113 @@
+# Rename this to gblPlayerData
+extends Node
+
+var TEAM: Array[ResPlayerCombatant]
+var CURRENCY = 0
+var POWER: GDScript
+var EQUIPPED_ARROW: ResProjectileAmmo
+var UTILITY_CHARM_COUNT = 0
+var PARTY_LEVEL = 1
+var CURRENT_EXP = 0
+var FOLLOWERS: Array[NPCFollower] = []
+var FAST_TRAVEL_LOCATIONS: Array[String] = []
+
+var bow_max_draw = 5.0
+var walk_speed = 100.0
+var sprint_speed = 200.0
+var sprint_drain = 0.10
+var stamina_gain = 0.10
+
+signal level_up
+
+func _ready():
+	CURRENCY = 100
+	# Fix later
+	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
+	EQUIPPED_ARROW.STACK = 0
+	
+	TEAM.append(preload("res://resources/combat/combatants_player/GreenHealer.tres"))
+	TEAM.append(preload("res://resources/combat/combatants_player/PinkBlasko.tres"))
+	#for mem in TEAM:
+	#	mem.active = true
+	
+	FAST_TRAVEL_LOCATIONS.append('SecondMap')
+	initializeBenchedTeam()
+
+func initializeBenchedTeam():
+	if PlayerGlobals.TEAM.is_empty():
+		return
+	
+	for member in TEAM:
+		if !member.initialized:
+			member.initializeCombatant()
+			member.SCENE.free()
+
+#********************************************************************************
+# COMBATANT MANAGEMENT
+#********************************************************************************
+func addExperience(experience: int):
+	CURRENT_EXP += experience
+	if CURRENT_EXP >= getRequiredExp():
+		PARTY_LEVEL += 1
+		CURRENT_EXP = 0
+		levelUpCombatants()
+
+func getRequiredExp() -> int:
+	var baseExp = 100
+	var expMultiplier = 1.25
+	return int(baseExp * expMultiplier ** (PARTY_LEVEL - 1))
+
+func levelUpCombatants():
+	for combatant in PlayerGlobals.TEAM:
+		combatant.ABILITY_POINTS += 1
+		
+		combatant.removeEquipmentModifications()
+		for stat in combatant.BASE_STAT_VALUES.keys():
+			var increase = combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
+			#print('%s +%s' % [stat, combatant.STAT_GROWTH_RATES[stat]])
+			combatant.BASE_STAT_VALUES[stat] += increase
+			combatant.UNMODIFIED_STAT_VALUES[stat] += increase
+		combatant.applyEquipmentModifications()
+		#combatant.STAT_VALUES = combatant.BASE_STAT_VALUES
+	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
+	level_up.emit()
+
+func addFollower(follower: NPCFollower):
+	FOLLOWERS.append(follower)
+	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
+
+func removeFollower(follower_combatant: ResPlayerCombatant):
+	follower_combatant.active = false
+	OverworldGlobals.loadFollowers()
+	
+	var index = 1
+	for f in FOLLOWERS:
+		f.FOLLOW_LOCATION = 20 * index
+		index += 1
+
+func hasFollower(follower_combatant: ResPlayerCombatant):
+	for f in FOLLOWERS:
+		if f.host_combatant == follower_combatant:
+			return true
+	
+	return false
+
+func isFollowerActive(follower_combatant_name: String):
+	for f in FOLLOWERS:
+		if f.host_combatant.NAME == follower_combatant_name:
+			return true
+	
+	return false
+
+func loadSquad():
+	for member in TEAM:
+		if member.active: 
+			OverworldGlobals.getCombatantSquad('Player').append(member)
+
+func setFollowersMotion(enable:bool):
+	for follower in FOLLOWERS:
+		if enable:
+			follower.SPEED = 1.0
+		else:
+			follower.SPEED = -1.0
+			follower.stopWalkAnimation()

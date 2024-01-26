@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://bmstsor885530"
+path="res://.godot/imported/give_quest_end.dialogue-fdca0048b5ac899bfb9afd060ead010b.tres"
+
+[deps]
+
+source_file="res://scenes/maps/TestRoom/dialogue/give_quest_end.dialogue"
+dest_files=["res://.godot/imported/give_quest_end.dialogue-fdca0048b5ac899bfb9afd060ead010b.tres"]
+
+[params]
+
+defaults=true

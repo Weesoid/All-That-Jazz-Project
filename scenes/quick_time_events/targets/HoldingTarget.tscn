@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://images/sprites/qte_target.png" id="1_3lsvu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xydwq"]
+radius = 71.0282
+
+[node name="Hold" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.2, 1, 0, 1)
+position = Vector2(-1.90735e-06, 0)
+scale = Vector2(0.34082, 0.328125)
+texture = ExtResource("1_3lsvu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xydwq")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)

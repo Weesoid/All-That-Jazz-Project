@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResArmor" load_steps=4 format=3 uid="uid://ckyppnbor0l0j"]
+[gd_resource type="Resource" script_class="ResArmor" load_steps=4 format=3 uid="uid://btw87xu0kjn1"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResItemArmor.gd" id="1_75xnh"]
-[ext_resource type="Resource" uid="uid://dqoa08xxmd0r2" path="res://resources/armor_types/Light.tres" id="1_cj0po"]
-[ext_resource type="Resource" uid="uid://itsqkr4n00g6" path="res://resources/status_effects/Poison.tres" id="2_pfp6v"]
+[ext_resource type="Resource" path="res://resources/combat/armor_types/Light.tres" id="1_cj0po"]
+[ext_resource type="Resource" path="res://resources/combat/status_effects/Poison.tres" id="2_pfp6v"]
 
 [resource]
 script = ExtResource("1_75xnh")

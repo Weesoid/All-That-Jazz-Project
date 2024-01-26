@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1wqaiye6b7a"]
+[gd_scene load_steps=7 format=3 uid="uid://cgffo5qm33yne"]
 
-[ext_resource type="Script" path="res://scripts/miscellaneous/AbilityAnimations.gd" id="1_16b20"]
-[ext_resource type="Texture2D" uid="uid://dihiaf7w04e20" path="res://assets/animation_sprites/Test.png" id="1_etcdy"]
-[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://assets/sounds/hurt.wav" id="2_awrnk"]
+[ext_resource type="Script" path="res://scripts/combat/scnAbilityAnimations.gd" id="1_16b20"]
+[ext_resource type="Texture2D" uid="uid://dihiaf7w04e20" path="res://images/sprites/Test.png" id="1_etcdy"]
+[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="2_awrnk"]
 
 [sub_resource type="Animation" id="Animation_7g5ea"]
 resource_name = "Execute"
@@ -112,7 +112,7 @@ _data = {
 "RESET": SubResource("Animation_p6b05")
 }
 
-[node name="aabRandom" type="Node2D"]
+[node name="Random" type="Node2D"]
 script = ExtResource("1_16b20")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
