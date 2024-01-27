@@ -8,7 +8,7 @@ STAT_MODIFICATIONS = {
 "hustle": 10
 }
 NAME = "Speedy Boy"
-ICON_NAME = ""
 DESCRIPTION = "Speedightful!"
 VALUE = 150
 WEIGHT = 1
+MANDATORY = false

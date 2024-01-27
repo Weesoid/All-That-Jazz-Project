@@ -4,7 +4,7 @@ static func animateCast(caster: ResCombatant):
 	caster.getAnimator().play('Idle')
 	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
-	var effects = [preload("res://resources/status_effects/Chilled.tres"), preload("res://resources/status_effects/Singed.tres"), preload("res://resources/status_effects/Poison.tres")]
+	var effects = [preload("res://resources/combat/status_effects/Chilled.tres"), preload("res://resources/combat/status_effects/Singed.tres"), preload("res://resources/combat/status_effects/Poison.tres")]
 	randomize()
 	for target in targets:
 		randomize()

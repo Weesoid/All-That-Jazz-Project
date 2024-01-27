@@ -4,7 +4,7 @@ class_name ResStatusEffect
 @export var NAME: String
 @export var DESCRIPTION: String
 @export var STATUS_SCRIPT: GDScript
-@export var PACKED_SCENE: PackedScene
+@export var PACKED_SCENE: PackedScene # Turn this into a Node2D
 @export var TEXTURE: Texture
 @export var MAX_DURATION: int
 @export var MAX_RANK: int
@@ -37,10 +37,6 @@ func initializeStatus():
 func onHitTick(combatant, caster, received_value):
 	if combatant == afflicted_combatant:
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, caster, received_value, self)
-
-func addStatusEffectIcon():
-	afflicted_combatant.getStatusBar().add_child(ICON)
-	current_rank = 1
 
 func removeStatusEffect():
 	if ON_HIT:

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hhwkf2u82bfq"
-path="res://.godot/imported/arrow1.png-adf3f3f10019355fef47351b422f1efa.ctex"
+uid="uid://biqwlvu76q2b0"
+path="res://.godot/imported/power2.png-6136bccf5a2531efa4be83ff079022a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/icons/arrow1.png"
-dest_files=["res://.godot/imported/arrow1.png-adf3f3f10019355fef47351b422f1efa.ctex"]
+source_file="res://images/sprites/power2.png"
+dest_files=["res://.godot/imported/power2.png-6136bccf5a2531efa4be83ff079022a5.ctex"]
 
 [params]
 

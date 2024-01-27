@@ -29,7 +29,7 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 		timer.start(timer.time_left + 0.5)
 	
 	if !audio_file.is_empty():
-		audio_player.stream = load("res://assets/sounds/%s" % audio_file)
+		audio_player.stream = load("res://audio/sounds/%s" % audio_file)
 		audio_player.play()
 	
 	if get_line_count() > 15:

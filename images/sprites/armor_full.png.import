@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci5m18ekjsrrh"
-path="res://.godot/imported/arrow_up.png-806d478d73d85afce48a40eba16b4ce3.ctex"
+uid="uid://bumfgxk63pfkb"
+path="res://.godot/imported/armor_full.png-2a9c79a1f8bf962118a555a9d90e5757.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/icons/arrow_up.png"
-dest_files=["res://.godot/imported/arrow_up.png-806d478d73d85afce48a40eba16b4ce3.ctex"]
+source_file="res://images/sprites/armor_full.png"
+dest_files=["res://.godot/imported/armor_full.png-2a9c79a1f8bf962118a555a9d90e5757.ctex"]
 
 [params]
 

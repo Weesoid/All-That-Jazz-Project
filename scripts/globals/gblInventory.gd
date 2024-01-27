@@ -15,7 +15,7 @@ func _ready():
 
 func addItem(item_name: String, count=1, unit=INVENTORY):
 	var item = load("res://resources/items/"+item_name+".tres")
-	assert(item!=null, "Item not found!")
+	assert(item!=null, "Item '%s' not found!" % item_name)
 	addItemResource(item, count, unit)
 
 func addItemResource(item: ResItem, count=1, unit=INVENTORY):

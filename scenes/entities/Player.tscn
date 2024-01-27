@@ -6,8 +6,8 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiPlayerPrompt.gd" id="5_h8rtm"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/animations/player.png" id="5_nms4n"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="6_66sfb"]
-[ext_resource type="PackedScene" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
-[ext_resource type="Texture2D" uid="uid://ttptw1qp8wj2" path="res://images/icons/arrow_icon.png" id="7_7jyj3"]
+[ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
+[ext_resource type="Texture2D" uid="uid://ttptw1qp8wj2" path="res://images/sprites/arrow_icon.png" id="7_7jyj3"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiUtilitySelector.gd" id="8_lyttf"]
 [ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="10_wsxx2"]
 

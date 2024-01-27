@@ -54,7 +54,7 @@ func updateArmorIcon():
 		var armor: ResArmor = attached_combatant.EQUIPMENT['armor']
 		armor_icon.texture = armor.ICON
 	else:
-		armor_icon.texture = preload("res://images/icons/armor_none.png")
+		armor_icon.texture = preload("res://images/sprites/armor_none.png")
 
 func updateStatusEffects():
 	#print_orphan_nodes()

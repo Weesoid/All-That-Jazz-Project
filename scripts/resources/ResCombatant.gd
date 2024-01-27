@@ -47,9 +47,6 @@ func getSprite()-> Sprite2D:
 func getAnimator()-> AnimationPlayer:
 	return getSprite().get_node('SpriteAnimator')
 	
-func getStatusBar():
-	return SCENE.get_node("StatusBarComponent")
-	
 func getStatusEffectNames():
 	var names = []
 	for effect in STATUS_EFFECTS:

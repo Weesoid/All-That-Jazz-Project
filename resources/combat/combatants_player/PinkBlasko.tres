@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://xr5mninhq8kt"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://ditk8hkfnmg0o"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
 [ext_resource type="Resource" uid="uid://di00nscjwoc7x" path="res://resources/combat/abilities/PoisonBite.tres" id="2_jsk6a"]
@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://0ltptboemylg" path="res://resources/combat/abilities/AOE.tres" id="5_iixbd"]
 [ext_resource type="Resource" uid="uid://bcwc00l52dxp" path="res://resources/combat/abilities/DebugAddEffect.tres" id="6_ateo1"]
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://images/animations/GoodGuyB.png" id="8_88eiy"]
-[ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/icons/will_icon.png" id="8_sl7ba"]
+[ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/sprites/will_icon.png" id="8_sl7ba"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="10_gxbu7"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]

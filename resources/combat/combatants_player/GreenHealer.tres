@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=22 format=3 uid="uid://dxmhpq8fprt02"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=22 format=3 uid="uid://dqq2jvicpe82l"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_bsdt7"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="2_2x6l0"]
@@ -11,7 +11,7 @@
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_6iflm"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/Revive.tres" id="7_p5hen"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/OmniStrike.tres" id="8_05w5d"]
-[ext_resource type="Texture2D" uid="uid://dhqwdbu6lsyry" path="res://images/icons/team2.png" id="8_fydt8"]
+[ext_resource type="Texture2D" uid="uid://dhqwdbu6lsyry" path="res://images/sprites/team2.png" id="8_fydt8"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="12_i6m42"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]

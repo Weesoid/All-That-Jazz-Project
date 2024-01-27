@@ -7,10 +7,18 @@ signal quest_added
 
 func _ready():
 	quest_objective_completed.connect(checkQuestsForCompleted)
+	quest_completed.connect(promptQuestCompleted)
 
 #********************************************************************************
 # QUEST MANAGEMENT (NOT IF ANY OVERTIME LAG HAPPENS, CONSIDER REWORKING QUESTS TO NODES) ...ehh you know what this might be fine...
 #********************************************************************************
+func promptQuestCompleted(quest: ResQuest):
+	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
+
+	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	prompt.setTitle(quest.NAME)
+	prompt.playAnimation('quest_complete')
+
 func checkQuestsForCompleted(objective: ResQuestObjective):
 	var ongoing_quests = QUESTS.filter(func getOngoing(quest): return !quest.COMPLETED)
 	
@@ -21,7 +29,12 @@ func checkQuestsForCompleted(objective: ResQuestObjective):
 		quest.isCompleted()
 
 func addQuest(quest_name: String):
+	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	var quest = load("res://resources/quests/%s/%s.tres" % [quest_name, quest_name])
+	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	prompt.setTitle(quest.NAME)
+	prompt.playAnimation('show_quest')
+	
 	quest.initializeQuest()
 	QUESTS.append(quest)
 	quest_added.emit()

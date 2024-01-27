@@ -188,7 +188,6 @@ func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 
 func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false):
-	print(load(str("res://resources/combat/status_effects/BrawnUp.tres")))
 	var status_effect: ResStatusEffect = load(str("res://resources/combat/status_effects/"+status_effect_name+".tres")).duplicate()
 	if status_effect.NAME not in target.getStatusEffectNames():
 		status_effect.afflicted_combatant = target
@@ -208,21 +207,21 @@ func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_a
 
 func checkReactions(target: ResCombatant):
 	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
-		execute_ability.emit(target, load("res://resources/abilities/ReactionCauterize.tres"))
+		execute_ability.emit(target, load("res://resources/abilities_reactions/Cauterize.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Poison')
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Chilled'):
-		runReaction(target, 'Singed', 'Chilled', load("res://resources/abilities/ReactionScald.tres"))
+		runReaction(target, 'Singed', 'Chilled', load("res://resources/abilities/Scald.tres"))
 	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
-		runReaction(target, 'Jolted', 'Poison', load("res://resources/abilities/ReactionCatalyze.tres"))
+		runReaction(target, 'Jolted', 'Poison', load("res://resources/abilities_reactions/Catalyze.tres"))
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
-		execute_ability.emit(target, load("res://resources/abilities/ReactionFulgurate.tres"))
+		execute_ability.emit(target, load("res://resources/abilities_reactions/Fulgurate.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Jolted')
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Jolted'):
-		runReaction(target, 'Chilled', 'Jolted', load("res://resources/abilities/ReactionDisrupt.tres"))
+		runReaction(target, 'Chilled', 'Jolted', load("res://resources/abilities_reactions/Disrupt.tres"))
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
-		runReaction(target, 'Chilled', 'Poison', load("res://resources/abilities/ReactionVulnerate.tres"))
+		runReaction(target, 'Chilled', 'Poison', load("res://resources/abilities_reactions/Vulnerate.tres"))
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
 	removeStatusEffect(target, effectA)

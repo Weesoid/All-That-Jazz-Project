@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bk1axgiqbv3p2"
-path="res://.godot/imported/armor_half.png-da8e153aa8feaea71e803137573f959b.ctex"
+uid="uid://ttptw1qp8wj2"
+path="res://.godot/imported/arrow_icon.png-9db2c4796fe7afc5d69bce3d014c2bab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/icons/armor_half.png"
-dest_files=["res://.godot/imported/armor_half.png-da8e153aa8feaea71e803137573f959b.ctex"]
+source_file="res://images/sprites/arrow_icon.png"
+dest_files=["res://.godot/imported/arrow_icon.png-9db2c4796fe7afc5d69bce3d014c2bab.ctex"]
 
 [params]
 
