@@ -1,0 +1,42 @@
+extends Node
+
+func saveGame():
+	var saved_game: SavedGame = SavedGame.new()
+	saved_game.current_map_path = OverworldGlobals.getCurrentMap().scene_file_path
+	
+	var save_data = []
+	get_tree().call_group('presist', 'saveData', save_data)
+	InventoryGlobals.saveData(save_data)
+	saved_game.save_data = save_data
+	
+	ResourceSaver.save(saved_game, "res://saves/save.tres")
+	OverworldGlobals.showPlayerPrompt('[color=yellow]Game saved[/color]!')
+
+func loadGame():
+	var saved_game: SavedGame = load('res://saves/save.tres') as SavedGame
+	get_tree().change_scene_to_file(saved_game.current_map_path)
+	
+	await get_tree().create_timer(0.01).timeout
+	get_tree().call_group('presist', 'loadData')
+	
+	for item in saved_game.save_data:
+		if item is EntitySaveData:
+			var scene: Node2D = load(item.scene_path).instantiate()
+			scene.global_position = item.position
+			OverworldGlobals.getCurrentMap().add_child(scene)
+		elif item is InventorySaveData:
+			InventoryGlobals.loadData(item)
+		
+	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
+
+
+
+#func saveResources(resource_array, append_to):
+#	for item in resource_array:
+#		var save_data: ResSaver = ResSaver.new()
+#		save_data.saveProperties(item)
+#		append_to.append(save_data)
+
+#func loadResources(save_data, resource_array):
+#	for item in resource_array:
+#		save_data.loadProperties(item)

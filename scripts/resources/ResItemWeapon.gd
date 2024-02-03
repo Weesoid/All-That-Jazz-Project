@@ -19,7 +19,7 @@ func equip(combatant: ResCombatant):
 
 func unequip():
 	removeStatModifications()
-	EQUIPPED_COMBATANT.ABILITY_SET[0] = load("res://resources/abilities/Punch.tres")
+	EQUIPPED_COMBATANT.ABILITY_SET[0] = load("res://resources/combat/abilities/Punch.tres")
 	EQUIPPED_COMBATANT.EQUIPMENT['weapon'] = null
 	EQUIPPED_COMBATANT = null
 

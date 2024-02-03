@@ -23,6 +23,7 @@ CombatGlobals="*res://scripts/globals/gblCombat.gd"
 PlayerGlobals="*res://scripts/globals/gblPlayerData.gd"
 InventoryGlobals="*res://scripts/globals/gblInventory.gd"
 QuestGlobals="*res://scripts/globals/gblQuests.gd"
+SaveLoadGlobals="*res://scripts/globals/gblSaveLoadManager.gd"
 
 [dialogue_manager]
 

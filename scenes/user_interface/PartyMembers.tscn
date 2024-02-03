@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dd8noni1srjes"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyMembers.gd" id="1_sgqkv"]
-[ext_resource type="PackedScene" uid="uid://o43ff1yvriv6" path="res://scenes/user_interface/CharacterInfo.tscn" id="2_bgidd"]
+[ext_resource type="PackedScene" uid="uid://bdm816lf04v8q" path="res://scenes/user_interface/CharacterInfo.tscn" id="2_bgidd"]
 
 [node name="uiParty" type="Control"]
 layout_mode = 3
@@ -16,6 +16,11 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1_sgqkv")
+
+[node name="uiCharacterInformation" parent="." instance=ExtResource("2_bgidd")]
+layout_mode = 1
+offset_top = -32.0
+offset_bottom = -32.0
 
 [node name="Members" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -33,8 +38,3 @@ grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Members"]
 layout_mode = 2
-
-[node name="uiCharacterInformation" parent="." instance=ExtResource("2_bgidd")]
-layout_mode = 1
-offset_top = -32.0
-offset_bottom = -32.0

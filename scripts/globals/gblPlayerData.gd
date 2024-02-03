@@ -2,15 +2,16 @@
 extends Node
 
 var TEAM: Array[ResPlayerCombatant]
-var CURRENCY = 0
+var FOLLOWERS: Array[NPCFollower] = []
+var FAST_TRAVEL_LOCATIONS: Array[String] = []
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
+var CURRENCY = 0
 var UTILITY_CHARM_COUNT = 0
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
-var FOLLOWERS: Array[NPCFollower] = []
-var FAST_TRAVEL_LOCATIONS: Array[String] = []
 
+var stamina = 100.0
 var bow_max_draw = 5.0
 var walk_speed = 100.0
 var sprint_speed = 200.0

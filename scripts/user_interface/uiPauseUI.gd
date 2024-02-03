@@ -43,6 +43,9 @@ func loadUserInterface(path):
 	base.modulate.a = 0
 	add_child(ui)
 
+func _on_save_pressed():
+	SaveLoadGlobals.saveGame()
+
 func disableButtons():
 	for child in base.get_children():
 		if child is Button: child.disabled = true
@@ -50,3 +53,7 @@ func disableButtons():
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
+	if Input.is_action_just_pressed("ui_bow"):
+		queue_free()
+		SaveLoadGlobals.loadGame()
+

@@ -17,7 +17,6 @@ class_name ResPlayerCombatant
 @export var ABILITY_POOL: Array[ResAbility]
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
-
 var LINGERING_STATUS_EFFECTS: Array[String]
 var UNMODIFIED_STAT_VALUES: Dictionary
 var ABILITY_POINTS = 0

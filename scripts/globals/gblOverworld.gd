@@ -1,10 +1,8 @@
 extends Node
 
-var enemy_combatant_squad: Array[ResCombatant]
 var follow_array = []
 var player_follower_count = 0
 
-signal move_entity(target_position)
 signal alert_patrollers()
 
 func _ready():
@@ -185,7 +183,8 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 		combat_scene.COMBATANTS.append(combatant.duplicate())
 	combat_scene.initial_status_effect_enemy = initial_status_effect_enemy
 	combat_scene.initial_status_effect_player = initial_status_effect_player
-	combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % combat_event_name)
+	if combat_event_name != '':
+		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % combat_event_name)
 	
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
@@ -202,6 +201,7 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	get_tree().paused = true
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
+	
 	await combat_scene.combat_done
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
@@ -209,10 +209,6 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
-
-func setEnemyCombatantSquad(entity_name: String):
-	for combatant in getCombatantSquad(entity_name):
-		enemy_combatant_squad.append(combatant.duplicate())
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD

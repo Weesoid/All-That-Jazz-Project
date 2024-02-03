@@ -39,10 +39,10 @@ func displayInputs():
 	for i in range(3):
 		var icon = TextureRect.new()
 		match inputs[i]:
-			'ui_left': icon.texture = preload("res://assets/icons/arrow_left.png")
-			'ui_right': icon.texture = preload("res://assets/icons/arrow_right.png")
-			'ui_down': icon.texture = preload("res://assets/icons/arrow_down.png")
-			'ui_up': icon.texture = preload("res://assets/icons/arrow_up.png")
+			'ui_left': icon.texture = preload("res://images/sprites/arrow_left.png")
+			'ui_right': icon.texture = preload("res://images/sprites/arrow_right.png")
+			'ui_down': icon.texture = preload("res://images/sprites/arrow_down.png")
+			'ui_up': icon.texture = preload("res://images/sprites/arrow_up.png")
 		if i != 0:
 			icon.self_modulate.a = 0.25
 		else:

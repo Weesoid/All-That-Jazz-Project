@@ -4,7 +4,7 @@ extends Node
 var active = true
 
 func _physics_process(_delta):
-	if player.stamina > 0 and active:
+	if PlayerGlobals.stamina > 0 and active:
 		player.channeling_power = true
 		setInvisible()
 	else:
@@ -21,7 +21,7 @@ func _unhandled_input(_event):
 
 func setInvisible():
 	player.stamina_regen = false
-	player.stamina -= 0.5
+	PlayerGlobals.stamina -= 0.5
 	player.set_collision_layer_value(5, false)
 	player.set_collision_mask_value(5, false)
 	player.SPEED = 150

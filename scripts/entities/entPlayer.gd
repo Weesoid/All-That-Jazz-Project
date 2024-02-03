@@ -22,7 +22,6 @@ class_name PlayerScene
 
 var can_move = true
 
-var stamina = 100.0
 var direction = Vector2()
 
 var channeling_power = false
@@ -65,24 +64,24 @@ func _physics_process(delta):
 		velocity = direction * SPEED
 		move_and_slide()
 	
-	if stamina <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
+	if PlayerGlobals.stamina <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
 		Input.action_press("ui_bow")
 	
-	if Input.is_action_pressed("ui_sprint") and stamina > 0.0 and bow_draw_strength == 0:
+	if Input.is_action_pressed("ui_sprint") and PlayerGlobals.stamina > 0.0 and bow_draw_strength == 0:
 		SPEED = PlayerGlobals.sprint_speed
 		ANIMATION_SPEED = 1.0
-		if velocity != Vector2.ZERO: stamina -= PlayerGlobals.sprint_drain
+		if velocity != Vector2.ZERO: PlayerGlobals.stamina -= PlayerGlobals.sprint_drain
 	elif bow_draw_strength >= PlayerGlobals.bow_max_draw:
-		if stamina > 0.0:
-			stamina -= 0.1
-	elif Input.is_action_pressed("ui_sprint") and stamina < 0.0:
+		if PlayerGlobals.stamina > 0.0:
+			PlayerGlobals.stamina -= 0.1
+	elif Input.is_action_pressed("ui_sprint") and PlayerGlobals.stamina < 0.0:
 		SPEED = PlayerGlobals.walk_speed
 		ANIMATION_SPEED = 0.0
-	elif !Input.is_action_pressed("ui_sprint") and stamina < 100 and stamina_regen:
-		stamina += PlayerGlobals.stamina_gain
+	elif !Input.is_action_pressed("ui_sprint") and PlayerGlobals.stamina < 100 and stamina_regen:
+		PlayerGlobals.stamina += PlayerGlobals.stamina_gain
 	
-	if stamina > 100.0:
-		stamina = 100.0
+	if PlayerGlobals.stamina > 100.0:
+		PlayerGlobals.stamina = 100.0
 	
 	if Input.is_action_just_released("ui_sprint"):
 		SPEED = PlayerGlobals.walk_speed
@@ -190,7 +189,7 @@ func undrawBow():
 func shootProjectile():
 	playAudio("178872__hanbaal__bow.ogg", -15.0, true)
 	InventoryGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
-	var projectile = load("res://scenes/entities/Arrow.tscn").instantiate()
+	var projectile = load("res://scenes/entities_disposable/Arrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self
 	get_tree().current_scene.add_child(projectile)
@@ -271,3 +270,15 @@ func undrawBowAnimation():
 	undrawBow()
 	animation_tree["parameters/conditions/draw_bow"] = false
 	animation_tree["parameters/conditions/cancel"] = true
+
+func saveData(save_data: Array):
+	print('Hehe')
+	var data = EntitySaveData.new()
+	data.position = global_position
+	data.scene_path = scene_file_path
+	
+	save_data.append(data)
+
+func loadData():
+	get_parent().remove_child(self)
+	queue_free()

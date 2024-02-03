@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="SavedGame" load_steps=11 format=3 uid="uid://m3ttatwq40jr"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_prip8"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="2_pcl8s"]
+[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="3_pcxi0"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="4_pkvjj"]
+[ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="5_hbe3v"]
+[ext_resource type="Resource" uid="uid://jk4hho7bpdu" path="res://resources/items/NeutralWeapon.tres" id="6_w2kdk"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="7_pi8dp"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="8_4jl4t"]
+
+[sub_resource type="Resource" id="Resource_hvesn"]
+script = ExtResource("1_prip8")
+position = Vector2(-52.5266, -38.7442)
+scene_path = "res://scenes/entities/Player.tscn"
+
+[sub_resource type="Resource" id="Resource_nhk3a"]
+script = ExtResource("7_pi8dp")
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_pcl8s")])
+STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("6_w2kdk")])
+KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("5_hbe3v")])
+KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("3_pcxi0"), ExtResource("4_pkvjj")])
+CURRENT_CAPACITY = 0
+MAX_CAPACITY = 100
+ITEM_DATA_INVENTORY = {
+"Arrow": 100
+}
+ITEM_DATA_STORAGE = {
+"Arrow": ["res://resources/items/Arrow.tres", 899],
+"Neutral Weapon": null
+}
+
+[resource]
+script = ExtResource("8_4jl4t")
+current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
+save_data = [SubResource("Resource_hvesn"), SubResource("Resource_nhk3a")]

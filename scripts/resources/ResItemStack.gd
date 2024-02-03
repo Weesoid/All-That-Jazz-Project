@@ -21,5 +21,8 @@ func take(count: int):
 		InventoryGlobals.INVENTORY.erase(self)
 	InventoryGlobals.refreshWeights()
 
+func calcWeight():
+	WEIGHT = PER_WEIGHT * STACK
+
 func _to_string():
 	return str(NAME, ' x', STACK)

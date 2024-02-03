@@ -1,11 +1,11 @@
 extends Node
 
-var INVENTORY: Array[ResItem] = [] # Refactor into list with limit
+var INVENTORY: Array[ResItem] = []
 var STORAGE: Array[ResItem] = []
-var CURRENT_CAPACITY = 0
-var MAX_CAPACITY = 100
 var KNOWN_RECIPES: Array[ResRecipe] = []
 var KNOWN_POWERS: Array[ResPower] = []
+var CURRENT_CAPACITY = 0
+var MAX_CAPACITY = 100
 signal added_item_to_inventory
 
 func _ready():
@@ -18,7 +18,7 @@ func addItem(item_name: String, count=1, unit=INVENTORY):
 	assert(item!=null, "Item '%s' not found!" % item_name)
 	addItemResource(item, count, unit)
 
-func addItemResource(item: ResItem, count=1, unit=INVENTORY):
+func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 	if unit == INVENTORY and !canAdd(item, count) or count <= 0:
 		return
 	
@@ -28,10 +28,10 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY):
 		if item.STACK <= 0: item.STACK = 1
 		item.add(count-1, false)
 		unit.append(item)
-		OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
-	
 	elif item is ResEquippable:
 		unit.append(item)
+	
+	if show_message:
 		OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
 	
 	if unit == INVENTORY: refreshWeights()
@@ -202,3 +202,68 @@ func repairAllItems():
 	for item in INVENTORY:
 		if !item is ResWeapon: continue
 		item.restoreDurability(item.max_durability)
+
+func saveData(save_data: Array):
+	var data = InventorySaveData.new()
+	data.MAX_CAPACITY = MAX_CAPACITY
+	data.INVENTORY = INVENTORY
+	data.STORAGE = STORAGE.filter(func(item): return !item is ResStackItem)
+	data.KNOWN_POWERS = KNOWN_POWERS
+	data.KNOWN_RECIPES = KNOWN_RECIPES
+	data.MAX_CAPACITY = MAX_CAPACITY
+	#data.STORAGE = STORAGE
+	saveItemData(INVENTORY, data)
+	saveItemData(STORAGE, data)
+	print('STRG: ', data.STORAGE)
+	save_data.append(data)
+
+func loadData(save_data: InventorySaveData):
+	MAX_CAPACITY = save_data.MAX_CAPACITY
+	INVENTORY = save_data.INVENTORY
+	STORAGE = save_data.STORAGE
+	KNOWN_POWERS = save_data.KNOWN_POWERS
+	KNOWN_RECIPES = save_data.KNOWN_RECIPES
+	MAX_CAPACITY = save_data.MAX_CAPACITY
+	#STORAGE = save_data.getStorage()
+	loadItemData(INVENTORY, save_data)
+	loadItemData(STORAGE, save_data)
+	refreshWeights()
+
+func saveItemData(storage_unit: Array[ResItem], inv_save_data: InventorySaveData):
+	var item_data: Dictionary
+	if storage_unit == INVENTORY:
+		item_data = inv_save_data.ITEM_DATA_INVENTORY
+	else:
+		item_data = inv_save_data.ITEM_DATA_STORAGE
+	
+	for item in storage_unit:
+		if item is ResGhostStackItem:
+			item_data[item.NAME] = [item.REFERENCE_ITEM.resource_path, item.STACK]
+		elif item is ResStackItem:
+			item_data[item.NAME] = item.STACK
+		elif item is ResEquippable:
+			item_data[item.NAME] = item.EQUIPPED_COMBATANT
+
+func loadItemData(storage_unit: Array[ResItem], save_data: InventorySaveData):
+	var item_data: Dictionary
+	if storage_unit == INVENTORY:
+		item_data = save_data.ITEM_DATA_INVENTORY
+	else:
+		item_data = save_data.ITEM_DATA_STORAGE
+	
+	if storage_unit == STORAGE:
+		for item in item_data.keys():
+			if item_data[item] is Array:
+				var ghost_data: Array = item_data[item]
+				var ghost_stack = ResGhostStackItem.new(load(ghost_data[0]))
+				addItemResource(ghost_stack, ghost_data[1], STORAGE, false)
+	
+	for item in storage_unit:
+		if item_data.keys().has(item.NAME):
+			if item is ResGhostStackItem:
+				continue
+			elif item is ResStackItem:
+				item.STACK = item_data[item.NAME]
+				item.calcWeight()
+			elif item is ResEquippable:
+				item.EQUIPPED_COMBATANT = item_data[item.NAME]

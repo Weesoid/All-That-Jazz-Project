@@ -1,4 +1,4 @@
-[gd_scene load_steps=123 format=3]
+[gd_scene load_steps=123 format=3 uid="uid://xfrvaohqhfml"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
@@ -1931,7 +1931,7 @@ _data = {
 "VoidChannel": SubResource("Animation_ogoem")
 }
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["presist"]]
 collision_layer = 17
 collision_mask = 17
 script = ExtResource("1_mngvk")
