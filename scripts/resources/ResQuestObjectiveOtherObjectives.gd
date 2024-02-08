@@ -12,19 +12,27 @@ func initializeObjective():
 	checkComplete()
 
 func attemptEnable():
+	if QUEST.OBJECTIVES.is_empty():
+		QUEST.initializeQuest()
+	
 	if QuestGlobals.isQuestObjectiveEnabled(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		ENABLED = true
 	elif QuestGlobals.isQuestObjectiveCompleted(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		ENABLED = true
 	
+	if ENABLED and FAILED:
+		ENABLED = false
+	
 	failObjectives()
 
-func checkObjective(_objective: ResQuestObjective):
-	checkComplete()
+func checkObjective(objective: ResQuestObjective):
+	if objective == REQUIRED_OBJECTIVE:
+		checkComplete()
+	else:
+		return
 
 func checkComplete():
 	attemptEnable()
-	
 	if QuestGlobals.isQuestObjectiveCompleted(QUEST.NAME, REQUIRED_OBJECTIVE.NAME):
 		FINISHED = true
 		if QuestGlobals.quest_objective_completed.is_connected(checkComplete):
@@ -42,3 +50,8 @@ func checkComplete():
 			QuestGlobals.quest_objective_completed.disconnect(checkObjective)
 		QuestGlobals.quest_objective_completed.emit(self)
 		QuestGlobals.quest_added.disconnect(attemptEnable)
+
+func disconnectSignals():
+	print('DC!')
+	QuestGlobals.quest_added.disconnect(attemptEnable)
+	QuestGlobals.quest_objective_completed.disconnect(checkObjective)

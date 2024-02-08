@@ -53,3 +53,6 @@ func failObjectives():
 		for objective in FAIL_OBJECTIVES:
 			objective.FAILED = true
 			objective.ENABLED = false
+
+func disconnectSignals():
+	pass

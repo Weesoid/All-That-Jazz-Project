@@ -1,5 +1,7 @@
 extends Node
 
+signal done_loading
+
 func saveGame():
 	var saved_game: SavedGame = SavedGame.new()
 	saved_game.current_map_path = OverworldGlobals.getCurrentMap().scene_file_path
@@ -7,6 +9,7 @@ func saveGame():
 	var save_data = []
 	get_tree().call_group('presist', 'saveData', save_data)
 	InventoryGlobals.saveData(save_data)
+	QuestGlobals.saveData(save_data)
 	saved_game.save_data = save_data
 	
 	ResourceSaver.save(saved_game, "res://saves/save.tres")
@@ -19,6 +22,7 @@ func loadGame():
 	await get_tree().create_timer(0.01).timeout
 	get_tree().call_group('presist', 'loadData')
 	
+	QuestGlobals.quest_objective_completed.disconnect(QuestGlobals.checkQuestsForCompleted)
 	for item in saved_game.save_data:
 		if item is EntitySaveData:
 			var scene: Node2D = load(item.scene_path).instantiate()
@@ -26,17 +30,9 @@ func loadGame():
 			OverworldGlobals.getCurrentMap().add_child(scene)
 		elif item is InventorySaveData:
 			InventoryGlobals.loadData(item)
-		
+		elif item is QuestSaveData:
+			QuestGlobals.loadData(item)
+	QuestGlobals.quest_objective_completed.connect(QuestGlobals.checkQuestsForCompleted)
+	
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
 
-
-
-#func saveResources(resource_array, append_to):
-#	for item in resource_array:
-#		var save_data: ResSaver = ResSaver.new()
-#		save_data.saveProperties(item)
-#		append_to.append(save_data)
-
-#func loadResources(save_data, resource_array):
-#	for item in resource_array:
-#		save_data.loadProperties(item)

@@ -1,36 +1,80 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=11 format=3 uid="uid://m3ttatwq40jr"]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=23 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_prip8"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="2_pcl8s"]
-[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="3_pcxi0"]
-[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="4_pkvjj"]
-[ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="5_hbe3v"]
-[ext_resource type="Resource" uid="uid://jk4hho7bpdu" path="res://resources/items/NeutralWeapon.tres" id="6_w2kdk"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="7_pi8dp"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="8_4jl4t"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_v8pl7"]
+[ext_resource type="Resource" path="res://resources/items/NeutralWeapon.tres" id="2_aagrv"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="2_gww0y"]
+[ext_resource type="Resource" path="res://resources/items/BowStone.tres" id="3_8jnls"]
+[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="3_tylcs"]
+[ext_resource type="Resource" path="res://resources/items/CharmStoneWall.tres" id="4_4s1j0"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="4_ekymg"]
+[ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="5_jdlx7"]
+[ext_resource type="Resource" path="res://resources/items/HotHand.tres" id="5_ukg2p"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="6_d27h1"]
+[ext_resource type="Resource" path="res://resources/items/LightArmor.tres" id="6_yfkrm"]
+[ext_resource type="Resource" path="res://resources/items/CharmMurder.tres" id="7_dm8p0"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="7_qeifx"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="9_b3lyu"]
+[ext_resource type="Resource" path="res://resources/items/CharmSpeed.tres" id="10_v8v1c"]
+[ext_resource type="Resource" path="res://resources/items/SprintStone.tres" id="11_a7gd6"]
+[ext_resource type="Resource" path="res://resources/items/StaminaStone.tres" id="12_0w6oe"]
+[ext_resource type="Resource" path="res://resources/items/CharmStunning.tres" id="13_o41di"]
+[ext_resource type="Resource" path="res://resources/items/Toxik.tres" id="14_y00xu"]
+[ext_resource type="Resource" path="res://resources/items/WalkStone.tres" id="15_ndmcs"]
 
-[sub_resource type="Resource" id="Resource_hvesn"]
-script = ExtResource("1_prip8")
-position = Vector2(-52.5266, -38.7442)
+[sub_resource type="Resource" id="Resource_nkifv"]
+script = ExtResource("1_v8pl7")
+position = Vector2(-131.824, 46.2564)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_nhk3a"]
-script = ExtResource("7_pi8dp")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_pcl8s")])
-STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("6_w2kdk")])
-KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("5_hbe3v")])
-KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("3_pcxi0"), ExtResource("4_pkvjj")])
+[sub_resource type="Resource" id="Resource_nc2nv"]
+script = ExtResource("6_d27h1")
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_gww0y"), ExtResource("3_8jnls"), ExtResource("4_4s1j0"), ExtResource("5_ukg2p"), ExtResource("6_yfkrm"), ExtResource("7_dm8p0"), ExtResource("2_aagrv"), ExtResource("9_b3lyu"), ExtResource("10_v8v1c"), ExtResource("11_a7gd6"), ExtResource("12_0w6oe"), ExtResource("13_o41di"), ExtResource("14_y00xu"), ExtResource("15_ndmcs")])
+STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
+KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("5_jdlx7")])
+KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("3_tylcs"), ExtResource("4_ekymg")])
 CURRENT_CAPACITY = 0
 MAX_CAPACITY = 100
 ITEM_DATA_INVENTORY = {
-"Arrow": 100
+"Arrow": 2,
+"Bow Stone": null,
+"Defender": null,
+"Hot Hand": null,
+"Light Armor": null,
+"Murder Charm": null,
+"Neutral Weapon": null,
+"Scrap Salvage": 19,
+"Speedy Boy": null,
+"Sprint Stone": null,
+"Staminizer": null,
+"Stunna Charm": null,
+"Toxik": null,
+"Walkinizer": null
 }
-ITEM_DATA_STORAGE = {
-"Arrow": ["res://resources/items/Arrow.tres", 899],
-"Neutral Weapon": null
-}
+ITEM_DATA_STORAGE = {}
 
 [resource]
-script = ExtResource("8_4jl4t")
+script = ExtResource("7_qeifx")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_hvesn"), SubResource("Resource_nhk3a")]
+save_data = [SubResource("Resource_nkifv"), SubResource("Resource_nc2nv"), Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"editor_description":"","script":Resource("res://scripts/resources/ResSaveDataQuests.gd"),"QUESTS":Array[Resource("res://scripts/resources/ResQuest.gd")]([Resource("res://resources/quests/Orand/Orand.tres"), Resource("res://resources/quests/Completion/Completion.tres"), Resource("res://resources/quests/ChoicesChoices/ChoicesChoices.tres"), Resource("res://resources/quests/GetThatItem/GetThatItem.tres"), Resource("res://resources/quests/FightThatBitch/FightThatBitch.tres")]),"QUEST_OBJECTIVES_DATA":{
+Resource("res://resources/quests/FightThatBitch/objectives/0_Fight.tres"): [true, true, false],
+Resource("res://resources/quests/GetThatItem/objectives/2_Conclude.tres"): [true, true, false],
+Resource("res://resources/quests/GetThatItem/objectives/1_TalkMan.tres"): [true, true, false],
+Resource("res://resources/quests/GetThatItem/objectives/0_GetItem.tres"): [true, true, false],
+Resource("res://resources/quests/ChoicesChoices/objectives/2_KillHim.tres"): [false, false, false],
+Resource("res://resources/quests/ChoicesChoices/objectives/1_OutcomeB.tres"): [false, false, false],
+Resource("res://resources/quests/ChoicesChoices/objectives/1_OutcomeA.tres"): [true, true, false],
+Resource("res://resources/quests/ChoicesChoices/objectives/0_choiceB.tres"): [false, true, true],
+Resource("res://resources/quests/ChoicesChoices/objectives/0_choiceA.tres"): [true, true, false],
+Resource("res://resources/quests/Completion/objectives/1_conclude.tres"): [true, true, false],
+Resource("res://resources/quests/Completion/objectives/0_Orand.tres"): [true, true, false],
+Resource("res://resources/quests/Completion/objectives/0_Item.tres"): [true, true, false],
+Resource("res://resources/quests/Completion/objectives/0_FightGoons.tres"): [false, true, true],
+Resource("res://resources/quests/Completion/objectives/0_Fight.tres"): [true, true, false],
+Resource("res://resources/quests/Completion/objectives/0_Choices.tres"): [true, true, false],
+Resource("res://resources/quests/Orand/objectives/2_conclude.tres"): [true, true, false],
+Resource("res://resources/quests/Orand/objectives/1_or2.tres"): [false, false, true],
+Resource("res://resources/quests/Orand/objectives/1_or1.tres"): [true, true, false],
+Resource("res://resources/quests/Orand/objectives/0_must2.tres"): [true, true, false],
+Resource("res://resources/quests/Orand/objectives/0_must1.tres"): [true, true, false]
+})
+]

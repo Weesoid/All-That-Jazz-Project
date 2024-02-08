@@ -19,3 +19,7 @@ func checkComplete():
 			FINISHED = true
 			QuestGlobals.quest_objective_completed.emit(self)
 			InventoryGlobals.added_item_to_inventory.disconnect(checkComplete)
+
+func disconnectSignals():
+	if InventoryGlobals.added_item_to_inventory.is_connected(checkComplete):
+		InventoryGlobals.added_item_to_inventory.disconnect(checkComplete)

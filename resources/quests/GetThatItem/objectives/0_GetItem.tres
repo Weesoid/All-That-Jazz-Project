@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResQuestObjectiveItem" load_steps=3 format=3 uid="uid://dl4b0bu3v3s61"]
 
-[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="1_8gng3"]
+[ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="1_8gng3"]
 [ext_resource type="Script" path="res://scripts/resources/ResQuestObjectiveItem.gd" id="1_kah7i"]
 
 [resource]
@@ -9,7 +9,7 @@ REQUIRED_ITEM = ExtResource("1_8gng3")
 AMOUNT = 8
 NAME = "Get Scrap"
 DESCRIPTION = "Get 8 Scraps!"
-DEPENDENT = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
+DEPENDENTS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
+FAIL_OBJECTIVES = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
 OR_DEPENDENTS = false
-FAIL_CONDITIONS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
-OR_FAIL_CONDITIONS = false
+END_OBJECTIVE = false

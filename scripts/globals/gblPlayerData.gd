@@ -22,14 +22,12 @@ signal level_up
 
 func _ready():
 	CURRENCY = 100
-	# Fix later
+	
 	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
 	EQUIPPED_ARROW.STACK = 0
 	
 	TEAM.append(preload("res://resources/combat/combatants_player/GreenHealer.tres"))
 	TEAM.append(preload("res://resources/combat/combatants_player/PinkBlasko.tres"))
-	#for mem in TEAM:
-	#	mem.active = true
 	
 	FAST_TRAVEL_LOCATIONS.append('SecondMap')
 	initializeBenchedTeam()

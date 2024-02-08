@@ -214,7 +214,6 @@ func saveData(save_data: Array):
 	#data.STORAGE = STORAGE
 	saveItemData(INVENTORY, data)
 	saveItemData(STORAGE, data)
-	print('STRG: ', data.STORAGE)
 	save_data.append(data)
 
 func loadData(save_data: InventorySaveData):

@@ -25,3 +25,6 @@ func checkCompletedQuests():
 			QuestGlobals.quest_objective_completed.emit(self)
 			QuestGlobals.quest_completed.disconnect(setID)
 			return
+
+func disconnectSignals():
+	QuestGlobals.quest_completed.disconnect(setID)

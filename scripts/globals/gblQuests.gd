@@ -52,7 +52,7 @@ func isQuestCompleted(quest_name: String):
 	return quest.COMPLETED
 
 func setQuestObjective(quest_name: String, quest_objective_name: String, set_to: bool):
-	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
+	var objective = getQuest(quest_name).getObjective(quest_objective_name)
 	objective.FINISHED = set_to
 	if set_to:
 		quest_objective_completed.emit(objective)
@@ -61,7 +61,11 @@ func isQuestObjectiveEnabled(quest_name: String, quest_objective_name: String) -
 	if QUESTS.is_empty() or getQuest(quest_name) == null:
 		return false
 	
-	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
+	#print('List objs')
+	#for obj in getQuest('Choice Choices').OBJECTIVES:
+	#	print(obj.NAME)
+	
+	var objective = getQuest(quest_name).getObjective(quest_objective_name)
 	
 	return objective.ENABLED and !objective.FINISHED
 
@@ -69,7 +73,7 @@ func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String)
 	if QUESTS.is_empty() or getQuest(quest_name) == null: 
 		return false
 	
-	var objective = QUESTS[QUESTS.find(getQuest(quest_name))].getObjective(quest_objective_name)
+	var objective = getQuest(quest_name).getObjective(quest_objective_name)
 	
 	return objective.FINISHED
 
@@ -87,3 +91,27 @@ func getQuest(quest_name: String)-> ResQuest:
 			return quest
 	
 	return null
+
+func saveData(save_data: Array):
+	var data: QuestSaveData = QuestSaveData.new()
+	data.QUESTS = QUESTS
+	for quest in QUESTS:
+		for objective in quest.OBJECTIVES:
+			data.QUEST_OBJECTIVES_DATA[objective] = [objective.ENABLED, objective.FINISHED, objective.FAILED]
+	save_data.append(data)
+
+func loadData(save_data: QuestSaveData):
+	QUESTS = save_data.QUESTS
+	
+	for quest in QUESTS:
+		quest.initializeQuest()
+	
+	for quest in QUESTS:
+		for objective in quest.OBJECTIVES:
+			objective.ENABLED = save_data.QUEST_OBJECTIVES_DATA[objective][0]
+			objective.FINISHED = save_data.QUEST_OBJECTIVES_DATA[objective][1]
+			objective.FAILED = save_data.QUEST_OBJECTIVES_DATA[objective][2]
+		
+		quest.isCompleted(true)
+		if quest.COMPLETED:
+			for objective in quest.OBJECTIVES: objective.disconnectSignals()

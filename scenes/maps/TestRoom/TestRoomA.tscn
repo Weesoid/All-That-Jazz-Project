@@ -164,7 +164,7 @@ dialogue_resource = ExtResource("13_aqxrw")
 shape = SubResource("CircleShape2D_yr6hg")
 
 [node name="MrOptionals" type="CharacterBody2D" parent="."]
-position = Vector2(-93, 74)
+position = Vector2(27, 74)
 
 [node name="Sprite2D" type="Sprite2D" parent="MrOptionals"]
 position = Vector2(0, -11)
@@ -177,7 +177,7 @@ dialogue_resource = ExtResource("14_hu5n7")
 shape = SubResource("CircleShape2D_yr6hg")
 
 [node name="MrOrand" type="CharacterBody2D" parent="."]
-position = Vector2(-93, 74)
+position = Vector2(-94, 74)
 
 [node name="Sprite2D" type="Sprite2D" parent="MrOrand"]
 position = Vector2(0, -11)
