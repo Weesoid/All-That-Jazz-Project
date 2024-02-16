@@ -18,7 +18,8 @@ func initializePlayerParty():
 			member.initializeCombatant()
 			member.SCENE.free()
 	
-	loadFollowers()
+	if OverworldGlobals.getCurrentMapData().SAFE:
+		loadFollowers()
 	
 	follow_array.resize(100)
 

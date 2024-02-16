@@ -84,6 +84,9 @@ func clearInformation():
 	for child in ability_panel.get_children():
 		child.queue_free()
 	
+	for child in ability_pool_panel.get_children():
+		child.queue_free()
+	
 	for child in equipment_panel.get_children():
 		child.queue_free()
 	

@@ -27,6 +27,8 @@ func emit_exp_updated(value, max_value):
 ## Calculate damage using basic formula and parameters
 func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling, damage_type_name: String, can_miss = true, can_crit = true):
 	var damage_type = load("res://resources/combat/damage_types/%s.tres" % damage_type_name)
+	print("res://resources/combat/damage_types/%s.tres" % damage_type_name)
+	print("res://resources/combat/damage_types/Hot.tres")
 	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
 		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
 	elif can_miss:

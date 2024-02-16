@@ -63,11 +63,9 @@ func levelUpCombatants():
 		combatant.removeEquipmentModifications()
 		for stat in combatant.BASE_STAT_VALUES.keys():
 			var increase = combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
-			#print('%s +%s' % [stat, combatant.STAT_GROWTH_RATES[stat]])
 			combatant.BASE_STAT_VALUES[stat] += increase
 			combatant.UNMODIFIED_STAT_VALUES[stat] += increase
 		combatant.applyEquipmentModifications()
-		#combatant.STAT_VALUES = combatant.BASE_STAT_VALUES
 	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
@@ -110,3 +108,75 @@ func setFollowersMotion(enable:bool):
 		else:
 			follower.SPEED = -1.0
 			follower.stopWalkAnimation()
+
+func saveData(save_data: Array):
+	var data: PlayerSaveData = PlayerSaveData.new()
+	data.TEAM = TEAM
+	data.FOLLOWERS = FOLLOWERS
+	data.FAST_TRAVEL_LOCATIONS = FAST_TRAVEL_LOCATIONS
+	data.POWER = POWER
+	data.EQUIPPED_ARROW = EQUIPPED_ARROW
+	data.CURRENCY = CURRENCY
+	data.UTILITY_CHARM_COUNT = UTILITY_CHARM_COUNT
+	data.PARTY_LEVEL = PARTY_LEVEL
+	data.CURRENT_EXP = CURRENT_EXP
+	data.stamina = stamina
+	data.bow_max_draw= bow_max_draw
+	data.walk_speed = walk_speed
+	data.sprint_speed = sprint_speed
+	data.sprint_drain = sprint_drain
+	data.stamina_gain = stamina_gain
+	
+	for combatant in TEAM:
+		data.COMBATANT_SAVE_DATA[combatant] = [
+			combatant.ABILITY_SET, 
+			combatant.EQUIPMENT,
+			combatant.CHARMS,
+			combatant.STAT_VALUES,
+			combatant.BASE_STAT_VALUES,
+			combatant.ABILITY_POOL,
+			combatant.MANDATORY,
+			combatant.LINGERING_STATUS_EFFECTS,
+			combatant.UNMODIFIED_STAT_VALUES,
+			combatant.initialized,
+			combatant.active,
+			combatant.ABILITY_POINTS
+			]
+	
+	save_data.append(data)
+
+func loadData(save_data: PlayerSaveData):
+	TEAM = save_data.TEAM
+	FOLLOWERS = save_data.FOLLOWERS
+	FAST_TRAVEL_LOCATIONS = save_data.FAST_TRAVEL_LOCATIONS
+	POWER = save_data.POWER
+	EQUIPPED_ARROW = save_data.EQUIPPED_ARROW
+	CURRENCY = save_data.CURRENCY
+	UTILITY_CHARM_COUNT = save_data.UTILITY_CHARM_COUNT
+	PARTY_LEVEL = save_data.PARTY_LEVEL
+	CURRENT_EXP = save_data.CURRENT_EXP
+	stamina = save_data.stamina
+	bow_max_draw= save_data.bow_max_draw
+	walk_speed = save_data.walk_speed
+	sprint_speed = save_data.sprint_speed
+	sprint_drain = save_data.sprint_drain
+	stamina_gain = save_data.stamina_gain
+	
+	for combatant in TEAM:
+		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
+		combatant.EQUIPMENT = save_data.COMBATANT_SAVE_DATA[combatant][1]
+		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][2]
+		combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][3]
+		combatant.BASE_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][4]
+		combatant.ABILITY_POOL = save_data.COMBATANT_SAVE_DATA[combatant][5]
+		combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][6]
+		combatant.LINGERING_STATUS_EFFECTS = save_data.COMBATANT_SAVE_DATA[combatant][7]
+		combatant.UNMODIFIED_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][8]
+		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][9]
+		combatant.active = save_data.COMBATANT_SAVE_DATA[combatant][10]
+		combatant.ABILITY_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][11]
+		if combatant.active:
+			OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(combatant)
+	
+	initializeBenchedTeam()
+	OverworldGlobals.initializePlayerParty()

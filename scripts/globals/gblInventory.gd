@@ -240,6 +240,8 @@ func saveItemData(storage_unit: Array[ResItem], inv_save_data: InventorySaveData
 			item_data[item.NAME] = [item.REFERENCE_ITEM.resource_path, item.STACK]
 		elif item is ResStackItem:
 			item_data[item.NAME] = item.STACK
+		elif item is ResUtilityCharm:
+			item_data[item.NAME] = item.equipped
 		elif item is ResEquippable:
 			item_data[item.NAME] = item.EQUIPPED_COMBATANT
 
@@ -264,5 +266,7 @@ func loadItemData(storage_unit: Array[ResItem], save_data: InventorySaveData):
 			elif item is ResStackItem:
 				item.STACK = item_data[item.NAME]
 				item.calcWeight()
+			elif item is ResUtilityCharm:
+				item.equipped = item_data[item.NAME]
 			elif item is ResEquippable:
 				item.EQUIPPED_COMBATANT = item_data[item.NAME]

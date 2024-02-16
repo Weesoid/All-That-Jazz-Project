@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResDamageType" load_steps=3 format=3 uid="uid://csa7sj4q5jkrk"]
 
-[ext_resource type="Resource" uid="uid://bis45biacy6r8" path="res://resources/status_effects/Jolted.tres" id="1_4abm6"]
+[ext_resource type="Resource" path="res://resources/combat/status_effects/Jolted.tres" id="1_4abm6"]
 [ext_resource type="Script" path="res://scripts/resources/ResDamageType.gd" id="1_mdywo"]
 
 [resource]

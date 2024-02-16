@@ -10,6 +10,7 @@ func saveGame():
 	get_tree().call_group('presist', 'saveData', save_data)
 	InventoryGlobals.saveData(save_data)
 	QuestGlobals.saveData(save_data)
+	PlayerGlobals.saveData(save_data)
 	saved_game.save_data = save_data
 	
 	ResourceSaver.save(saved_game, "res://saves/save.tres")
@@ -32,6 +33,9 @@ func loadGame():
 			InventoryGlobals.loadData(item)
 		elif item is QuestSaveData:
 			QuestGlobals.loadData(item)
+		elif item is PlayerSaveData:
+			PlayerGlobals.loadData(item)
+		
 	QuestGlobals.quest_objective_completed.connect(QuestGlobals.checkQuestsForCompleted)
 	
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
