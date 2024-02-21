@@ -2043,6 +2043,7 @@ theme_override_constants/outline_size = 4
 text = "1000"
 
 [node name="UtilitySelector" type="TextureRect" parent="PlayerCamera"]
+visible = false
 offset_left = -11.0
 offset_top = -63.0
 offset_right = 29.0
