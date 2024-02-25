@@ -34,30 +34,18 @@ func _ready():
 
 func _process(_delta):
 	updateBars()
-	updateArmorIcon()
 	updateStatusEffects()
 
 func updateBars():
 	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])
 	health_bar.value = int(attached_combatant.STAT_VALUES['health'])
-	energy_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['verve'])
-	energy_bar.value = int(attached_combatant.STAT_VALUES['verve'])
 	absolute_health.text = str(health_bar.value)
-	absolute_energy.text = str(energy_bar.value)
 	if attached_combatant.isDead():
 		hide()
 	else:
 		show()
 
-func updateArmorIcon():
-	if attached_combatant.isEquipped('armor'):
-		var armor: ResArmor = attached_combatant.EQUIPMENT['armor']
-		armor_icon.texture = armor.ICON
-	else:
-		armor_icon.texture = preload("res://images/sprites/armor_none.png")
-
 func updateStatusEffects():
-	#print_orphan_nodes()
 	for effect in attached_combatant.STATUS_EFFECTS:
 		if status_effects.get_children().has(effect.ICON) or effect.ICON == null: continue
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()

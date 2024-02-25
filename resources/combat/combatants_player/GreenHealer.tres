@@ -156,19 +156,6 @@ _bundled = {
 
 [resource]
 script = ExtResource("5_rov6a")
-STAT_GROWTH_RATES = {
-"accuracy": 0,
-"brawn": 1,
-"crit": 0,
-"exposure": 0,
-"grit": 1,
-"heal mult": 0,
-"health": 2,
-"hustle": 1,
-"verve": 1,
-"will": 1,
-"wit": 1
-}
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
 MANDATORY = true
@@ -178,16 +165,14 @@ PACKED_SCENE = SubResource("PackedScene_kq6rj")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 1,
-"crit": 1.0,
-"exposure": 0,
-"grit": 1,
-"heal mult": 1,
-"health": 999,
-"hustle": 1,
-"verve": 3,
-"will": 1,
-"wit": 1
+"brawn": 0.0,
+"crit": 0.05,
+"dodge": 0.0,
+"exposure": 0.0,
+"grit": 0.0,
+"heal mult": 1.0,
+"health": 100,
+"hustle": 1
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_bsdt7"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w"), ExtResource("5_in4d2"), ExtResource("7_6iflm"), ExtResource("7_p5hen"), ExtResource("8_05w5d")])
 EQUIPMENT = {

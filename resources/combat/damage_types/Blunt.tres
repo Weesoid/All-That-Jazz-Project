@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="ResDamageType" load_steps=2 format=3 uid="uid://bdajhga5cgdqi"]
-
-[ext_resource type="Script" path="res://scripts/resources/ResDamageType.gd" id="1_kdckf"]
-
-[resource]
-script = ExtResource("1_kdckf")
-NAME = "Blunt"
-EFFECT_CHANCE = 0.0

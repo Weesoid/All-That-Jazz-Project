@@ -11,7 +11,6 @@ class_name CombatScene
 @onready var secondary_panel = $CombatCamera/SecondaryPanel
 @onready var secondary_panel_container = $CombatCamera/SecondaryPanel/Scroller/Container
 @onready var action_panel = $CombatCamera/ActionPanel
-@onready var attack_button = $CombatCamera/ActionPanel/Attack
 @onready var equip_button = $CombatCamera/ActionPanel/Equipment
 @onready var escape_button = $CombatCamera/ActionPanel/Escape
 @onready var ui_target = $Target
@@ -140,7 +139,7 @@ func on_player_turn():
 	$CombatCamera/ActionPanel/AnimationPlayer.play("Show")
 	resetActionLog()
 	action_panel.show()
-	attack_button.grab_focus()
+	action_panel.get_child(0).grab_focus()
 	
 	await confirm
 	end_turn()
@@ -234,19 +233,6 @@ func removeDeadCombatants():
 #********************************************************************************
 # BASE SCENE NODE CONTROL
 #********************************************************************************
-func _on_attack_pressed():
-	Input.action_release("ui_accept")
-	
-	selected_ability = active_combatant.ABILITY_SET[0]
-	
-	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
-	target_state = selected_ability.getTargetType()
-	action_panel.hide()
-	await target_selected
-	if active_combatant.isEquipped('weapon'):
-		active_combatant.EQUIPMENT['weapon'].useDurability()
-	runAbility()
-	
 func _on_skills_pressed():
 	getPlayerAbilities(active_combatant.ABILITY_SET)
 	if secondary_panel_container.get_child_count() == 0: return
@@ -290,15 +276,14 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	for child in secondary_panel_container.get_children():
 		child.free()
 	
-	for i in range(len(ability_set)):
-		if i == 0: continue
+	for ability in ability_set:
 		var button = Button.new()
 		button.add_theme_font_size_override('font_size', 16)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size.x = 240
-		button.text = ability_set[i].NAME
-		button.pressed.connect(ability_set[i].execute)
-		if !ability_set[i].canCast(active_combatant) or !ability_set[i].ENABLED:
+		button.text = ability.NAME
+		button.pressed.connect(ability.execute)
+		if !ability.ENABLED:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
 
@@ -330,12 +315,7 @@ func getPlayerWeapons(inventory):
 		button.add_theme_font_size_override('font_size', 16)
 		button.custom_minimum_size.x = 240
 		button.text = str(weapon.NAME, '(', weapon.durability, '/', weapon.max_durability,')')
-		button.pressed.connect(
-			func equipWeapon(): 
-				weapon.equip(active_combatant) 
-				resetActionLog()
-				_on_attack_pressed()
-				)
+		button.pressed.connect(weapon.EFFECT.execute)
 		if weapon.durability <= 0: button.disabled = true
 		secondary_panel_container.add_child(button)
 
@@ -349,7 +329,7 @@ func playerSelectAbility(ability:ResAbility, state: int):
 	runAbility()
 
 func playerSelectSingleTarget():
-	if !validateAbilityCast() or getCombatantGroup('enemies').is_empty():
+	if getCombatantGroup('enemies').is_empty():
 		return
 	
 	target_combatant = valid_targets[target_index]
@@ -359,7 +339,7 @@ func playerSelectSingleTarget():
 	confirmCancelInputs()
 	
 func playerSelectMultiTarget():
-	if !validateAbilityCast() or getCombatantGroup('enemies').is_empty():
+	if getCombatantGroup('enemies').is_empty():
 		return
 	
 	drawSelectionTarget('Target', enemy_container.global_position)
@@ -546,20 +526,12 @@ func resetActionLog():
 	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
-	attack_button.grab_focus()
+	action_panel.get_child(0).grab_focus()
 	action_panel.show()
-	
-func validateAbilityCast():
-	if !selected_ability.canCast(active_combatant):
-		resetActionLog()
-		return false
-	else:
-		return true
-	
+
 func runAbility():
 	target_state = 0
 	if run_once:
-		selected_ability.expendCost(active_combatant)
 		executeAbility()
 		action_panel.hide()
 		run_once = false

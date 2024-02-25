@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://cmu5v5d578wll"]
 
 [ext_resource type="Texture2D" uid="uid://doomnj5fua3n8" path="res://images/sprites/bubble.png" id="1_dspwt"]
 

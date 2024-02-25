@@ -6,7 +6,6 @@ extends Control
 @onready var party_panel = $PartyPanel/VBoxContainer
 @onready var misc_tab = $TabContainer/Misc/VBoxContainer
 @onready var weapon_tab = $TabContainer/Weapons/VBoxContainer
-@onready var armor_tab = $TabContainer/Armors/VBoxContainer
 @onready var charm_tab = $TabContainer/Charms/VBoxContainer
 @onready var use_button = $UseContainer/Use
 @onready var drop_button = $UseContainer/Drop
@@ -83,10 +82,6 @@ func addMembers():
 							InventoryGlobals.getItem(selected_item).unequip()
 							stat_panel.text = member.getStringStats()
 							button_item_map[selected_item].icon = null
-						elif isMemberEquipped(member, selected_item):
-							updateButtonUnequip(member, selected_item)
-							InventoryGlobals.getItem(selected_item).equip(member)
-							equipMemberAndUpdateButton(member, selected_item)
 						else:
 							InventoryGlobals.getItem(selected_item).equip(member)
 							equipMemberAndUpdateButton(member, selected_item)
@@ -101,18 +96,6 @@ func addMembers():
 				stat_panel.text = member.getStringStats()
 		)
 		party_panel.add_child(button)
-
-func isMemberEquipped(member: ResCombatant, slot: ResItem):
-	if slot is ResWeapon:
-		return member.EQUIPMENT['weapon'] != null
-	elif slot is ResArmor:
-		return member.EQUIPMENT['armor'] != null
-
-func updateButtonUnequip(member: ResCombatant, item:ResItem):
-	if item is ResWeapon:
-		button_item_map[member.EQUIPMENT['weapon']].icon = null
-	elif item is ResArmor:
-		button_item_map[member.EQUIPMENT['armor']].icon = null
 
 func equipMemberAndUpdateButton(member: ResCombatant, item: ResEquippable):
 	if item.isEquipped():
@@ -163,17 +146,12 @@ func isEquipped(item):
 		return false
 
 func addButtonToTab(item: ResItem, button: Button):
+	print('checking: ', item)
 	button_item_map[item] = button
-	if item is ResStackItem:
-		misc_tab.add_child(button)
-	elif item is ResWeapon:
-		if item.EQUIPPED_COMBATANT != null:
-			button.icon = item.EQUIPPED_COMBATANT.ICON
+	if item is ResWeapon:
 		weapon_tab.add_child(button)
-	elif item is ResArmor:
-		if item.EQUIPPED_COMBATANT != null:
-			button.icon = item.EQUIPPED_COMBATANT.ICON
-		armor_tab.add_child(button)
+	elif item is ResStackItem:
+		misc_tab.add_child(button)
 	elif item is ResCharm or item is ResUtilityCharm:
 		if item.EQUIPPED_COMBATANT != null:
 			button.icon = item.EQUIPPED_COMBATANT.ICON

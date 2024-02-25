@@ -7,7 +7,7 @@ static func applyEffects(caster: ResCombatant, targets, animation_scene):
 	if targets is Array:
 		for target in targets:
 			CombatGlobals.playAbilityAnimation(target, animation_scene)
-			CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 100, 100, 'Neutral',false)
+			CombatGlobals.calculateDamage(caster, target, 100)
 	else:
 		CombatGlobals.playAbilityAnimation(targets, animation_scene)
-		CombatGlobals.calculateDamage(caster, targets, 'brawn', 'grit', 100, 100, 'Neutral',false)
+		CombatGlobals.calculateDamage(caster, targets, 100)

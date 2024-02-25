@@ -30,4 +30,4 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 		qte.queue_free()
 	
 	CombatGlobals.playAbilityAnimation(target, animation_scene)
-	CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', damage, 0.5, 'Neutral')
+	CombatGlobals.calculateDamage(caster, target, damage)

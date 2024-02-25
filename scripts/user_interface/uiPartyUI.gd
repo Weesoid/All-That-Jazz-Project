@@ -37,26 +37,13 @@ func loadInformation():
 		)
 		ability_pool_panel.add_child(ability_button)
 	
-	for equipment in subject_combatant.EQUIPMENT.values():
-		if equipment == null:
-			continue
-		
-		var equipment_button = Button.new()
-		equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		equipment_button.text = getSlotName(equipment) + equipment.NAME
-		equipment_button.mouse_entered.connect(
-		func updateDesciption():
-			description.text = equipment.getStringStats()
-		)
-		equipment_panel.add_child(equipment_button)
-	
 	for charm in subject_combatant.CHARMS:
 		if charm == null:
 			continue
 		
 		var equipment_button = Button.new()
 		equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		equipment_button.text = getSlotName(charm) + charm.NAME
+		equipment_button.text = charm.NAME
 		equipment_button.mouse_entered.connect(
 		func updateDesciption():
 			description.text = charm.getInformation()
@@ -92,13 +79,3 @@ func clearInformation():
 	
 	for child in status_panel.get_children():
 		child.queue_free()
-
-func getSlotName(item):
-	if item is ResArmor:
-		return 'ARM '
-	elif item is ResWeapon:
-		return 'WPN '
-	elif item is ResCharm:
-		return 'CRM '
-	else:
-		return '??? '

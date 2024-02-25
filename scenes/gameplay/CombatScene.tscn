@@ -346,14 +346,13 @@ mouse_force_pass_scroll_events = false
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Attack" type="Button" parent="CombatCamera/ActionPanel"]
+[node name="Skills" type="Button" parent="CombatCamera/ActionPanel"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
-action_mode = 0
 button_mask = 0
-text = "ATTACK"
+text = "SKILLS"
 
 [node name="Equipment" type="Button" parent="CombatCamera/ActionPanel"]
 custom_minimum_size = Vector2(150, 0)
@@ -362,14 +361,6 @@ theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "WEAPONS"
-
-[node name="Skills" type="Button" parent="CombatCamera/ActionPanel"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
-button_mask = 0
-text = "SKILLS"
 
 [node name="Items" type="Button" parent="CombatCamera/ActionPanel"]
 custom_minimum_size = Vector2(150, 0)
@@ -404,9 +395,8 @@ libraries = {
 
 [node name="Timer" type="Timer" parent="CombatCamera/LogContainer"]
 
-[connection signal="pressed" from="CombatCamera/ActionPanel/Attack" to="." method="_on_attack_pressed"]
-[connection signal="pressed" from="CombatCamera/ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Items" to="." method="_on_items_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Escape" to="." method="_on_escape_pressed"]

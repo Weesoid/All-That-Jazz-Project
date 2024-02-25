@@ -20,37 +20,29 @@ signal qte_finished()
 #********************************************************************************
 func emit_exp_updated(value, max_value):
 	exp_updated.emit(value, max_value)
-	
+
 #********************************************************************************
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
-func calculateDamage(caster: ResCombatant, target:ResCombatant, attacker_stat: String, defender_stat: String, base_damage, bonus_scaling, damage_type_name: String, can_miss = true, can_crit = true):
-	var damage_type = load("res://resources/combat/damage_types/%s.tres" % damage_type_name)
-	print("res://resources/combat/damage_types/%s.tres" % damage_type_name)
-	print("res://resources/combat/damage_types/Hot.tres")
+func calculateDamage(caster: ResCombatant, target:ResCombatant, base_damage, can_miss = true, can_crit = true):
 	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
-		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
+		if randomRoll(1.0 - target.STAT_VALUES['dodge']):
+			damageTarget(caster, target, base_damage, can_crit)
+		else:
+			manual_call_indicator.emit(target, 'Dodged!', 'Whiff')
+			call_indicator.emit('Show', target)
 	elif can_miss:
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		call_indicator.emit('Show', target)
 	else:
-		damageTarget(caster, target, base_damage, bonus_scaling, attacker_stat, defender_stat, damage_type, can_crit)
+		damageTarget(caster, target, base_damage, can_crit)
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, damage_type: ResDamageType = null, message = null, trigger_on_hits = false):
+func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false):
 	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']):
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		return
-	
-	if damage_type != null:
-		var multiplier = getDamageMultiplier(damage_type, getCombatantArmorType(target))
-		if multiplier > 1.0:
-			manual_call_indicator.emit(target, 'WALLOP!!!', 'Wallop')
-		elif multiplier < 1.0:
-			manual_call_indicator.emit(target, 'RESISTED!', 'Resist')
-		damage *= multiplier
-		damage_type.rollEffect(target)
 	
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
@@ -74,44 +66,34 @@ func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: 
 	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
 	playAndResetAnimation(target, 'Hit')
 
-func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, bonus_scaling, attacker_stat: String, defender_stat: String, damage_type: ResDamageType, can_crit: bool):
-	# Raw Damage Calculation
-	base_damage += caster.STAT_VALUES[attacker_stat] * bonus_scaling
-	var damage = (base_damage) * ((100.0) / (100.0+target.STAT_VALUES[defender_stat]))
-	var multiplier = getDamageMultiplier(damage_type, getCombatantArmorType(target))
-	if multiplier > 1.0:
-		manual_call_indicator.emit(target, 'WALLOP!!!', 'Wallop')
-	elif multiplier < 1.0:
-		manual_call_indicator.emit(target, 'RESISTED!', 'Resist')
-	damage *= multiplier
+func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
+	base_damage += caster.STAT_VALUES['brawn'] * base_damage
+	base_damage -= caster.STAT_VALUES['grit'] * base_damage
 	
-	# RNG Rolls
-	damage = valueVariate(damage, 0.15)
-	damage_type.rollEffect(target)
+	base_damage = valueVariate(base_damage, 0.15)
 	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
-		damage *= 2.0
+		base_damage *= 2.0
 		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 		call_indicator.emit('Show', target)
 	else:
 		call_indicator.emit('Show', target)
 	
-	# Damage target
-	target.STAT_VALUES['health'] -= int(damage)
-	received_combatant_value.emit(target, caster, int(damage))
+	target.STAT_VALUES['health'] -= int(base_damage)
+	received_combatant_value.emit(target, caster, int(base_damage))
 	playAndResetAnimation(target, 'Hit')
 
-func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing, bonus_scaling):
-	var healing = base_healing + (caster.STAT_VALUES[healing_stat] * bonus_scaling) # Multiply by heal multplier
-	healing = valueVariate(healing, 0.15)
-	healing *= target.STAT_VALUES['heal mult']
+func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing):
+	base_healing += caster.STAT_VALUES[healing_stat] * base_healing
+	base_healing = valueVariate(base_healing, 0.15)
+	base_healing *= target.STAT_VALUES['heal mult']
 	
-	if target.STAT_VALUES['health'] + healing > target.getMaxHealth():
+	if target.STAT_VALUES['health'] + base_healing > target.getMaxHealth():
 		target.STAT_VALUES['health'] = target.getMaxHealth()
 	else:
-		manual_call_indicator.emit(target, "%s HEALED!" % [int(healing)], 'Heal')
-		target.STAT_VALUES['health'] += int(healing)
+		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
+		target.STAT_VALUES['health'] += int(base_healing)
 	
-	received_combatant_value.emit(target, caster, int(healing))
+	received_combatant_value.emit(target, caster, int(base_healing))
 	call_indicator.emit('Show', target)
 
 func randomRoll(percent_chance: float):
@@ -130,24 +112,6 @@ func valueVariate(value, percent_variance: float):
 	value += randf_range(variation*-1, variation)
 	return value
 
-func loadDamageType(damage_type_name: String)-> ResDamageType:
-	return load("res://resources/combat/damage_types/%s.tres" % [damage_type_name])
-
-func loadArmorType(armor_type_name: String)-> ResArmorType:
-	return load(str("res://resources/combat/armor_types/"+armor_type_name+".tres"))
-
-func getDamageMultiplier(damage_type: ResDamageType, armor_type: ResArmorType):
-	if armor_type == null:
-		return loadArmorType('Unarmored').getMultiplier(damage_type)
-	
-	return armor_type.getMultiplier(damage_type)
-
-func getCombatantArmorType(combatant: ResCombatant):
-	if combatant.isEquipped('armor'):
-		return combatant.EQUIPMENT['armor'].ARMOR_TYPE
-	
-	return null
-
 func modifyStat(target: ResCombatant, stat: String, percent_scale: float):
 	target.STAT_VALUES[stat] += target.STAT_VALUES[stat] * percent_scale
 
@@ -158,7 +122,7 @@ func modifyStatFlat(target: ResCombatant, stat: String, value: float):
 
 func resetStat(target: ResCombatant, stat: String):
 	target.STAT_VALUES[stat] = target.BASE_STAT_VALUES[stat]
-	
+
 #********************************************************************************
 # ANIMATION HANDLING
 #********************************************************************************
@@ -189,7 +153,11 @@ func playAnimation(target: ResCombatant, animation_name: String):
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 
-func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false):
+func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false, base_chance = 2.0):
+	if base_chance != 2.0 and !randomRoll(base_chance-target.STAT_VALUES['exposure']):
+		manual_call_indicator.emit(target, '%s  Resisted!' % status_effect_name, 'Whiff')
+		return
+	
 	var status_effect: ResStatusEffect = load(str("res://resources/combat/status_effects/"+status_effect_name+".tres")).duplicate()
 	if status_effect.NAME not in target.getStatusEffectNames():
 		status_effect.afflicted_combatant = target

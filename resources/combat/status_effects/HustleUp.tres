@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cwpas7w01qbw3"]
 
-[ext_resource type="PackedScene" path="res://scenes/particles/BrawnBuff.tscn" id="1_v4ihd"]
+[ext_resource type="PackedScene" uid="uid://ecoy08x465xk" path="res://scenes/particles/BrawnBuff.tscn" id="1_v4ihd"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_njgqp"]
 
 [sub_resource type="GDScript" id="GDScript_ngr15"]

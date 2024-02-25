@@ -3,7 +3,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	var modifier = 0.25
 	if status_effect.APPLY_ONCE:
 		modifier += status_effect.current_rank
-		CombatGlobals.modifyStat(target, 'brawn', modifier)
+		CombatGlobals.modifyStatFlat(target, 'brawn', modifier)
 		CombatGlobals.manual_call_indicator.emit(target, 'BUFF UP!', 'Show')
 
 static func endEffects(target: ResCombatant):

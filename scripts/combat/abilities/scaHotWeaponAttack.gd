@@ -5,4 +5,4 @@ static func animateCast(caster: ResCombatant):
 	
 static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
 	CombatGlobals.playAbilityAnimation(target, animation_scene)
-	CombatGlobals.calculateDamage(caster, target, 'brawn', 'grit', 10, 0.5, 'Hot')
+	CombatGlobals.calculateDamage(caster, target, 20)

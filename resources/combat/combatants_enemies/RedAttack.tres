@@ -27,16 +27,14 @@ PACKED_SCENE = ExtResource("8_tfinb")
 DESCRIPTION = "A striker!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 5,
+"brawn": 0.0,
 "crit": 0.05,
-"exposure": 0,
-"grit": 1,
-"heal mult": 1,
+"dodge": 0.0,
+"exposure": 0.05,
+"grit": 0.0,
+"heal mult": 1.0,
 "health": 100,
-"hustle": 1,
-"verve": 8,
-"will": 1,
-"wit": 1
+"hustle": 1
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_wq4th"), ExtResource("2_vfkoe")])
 EQUIPMENT = {

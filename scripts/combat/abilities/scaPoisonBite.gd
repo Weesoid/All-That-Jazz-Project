@@ -5,5 +5,5 @@ static func animateCast(caster: ResCombatant):
 	
 static func applyEffects(_caster: ResCombatant, target: ResCombatant, animation_scene):
 	CombatGlobals.playAbilityAnimation(target, animation_scene)
-	CombatGlobals.addStatusEffect(target, 'Poison')
+	CombatGlobals.addStatusEffect(target, 'Poison', false, 0.95)
 	

@@ -10,7 +10,7 @@ var subject
 func _process(_delta):
 	if subject is ResCombatant:
 		combatant_name.text = subject.NAME
-		bottom_menu.text = subject.getStringCurrentStats()
+		bottom_menu.text = subject.getStringStats(true)
 		side_menu.text = subject.DESCRIPTION
 		getStatusEffectInfo(subject)
 

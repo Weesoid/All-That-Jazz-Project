@@ -16,8 +16,6 @@ enum TargetGroup {
 @export var DESCRIPTION: String
 @export var ANIMATION: PackedScene
 @export var ABILITY_SCRIPT: GDScript
-@export var COST: int
-@export var COST_RESOURCE: String
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
 @export var TARGET_DEAD: bool = false
@@ -30,7 +28,7 @@ var TARGETABLE
 signal single_target(type)
 signal multi_target(type)
 signal random_target(type)
-signal no_resource
+#signal no_resource
 
 func execute():
 	match TARGET_TYPE:
@@ -51,15 +49,6 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ENEMIES: return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ALL: return combatants
-
-func canCast(caster: ResCombatant):
-	return COST > 0 and caster.STAT_VALUES[COST_RESOURCE] >= COST or COST == 0
-
-func expendCost(caster: ResCombatant):
-	if COST == 0:
-		return
-	else:
-		caster.STAT_VALUES[COST_RESOURCE] -= COST
 
 func animateCast(caster: ResCombatant):
 	ABILITY_SCRIPT.animateCast(caster)
