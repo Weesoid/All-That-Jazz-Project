@@ -183,7 +183,7 @@ radius = 60.0
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
 
-[node name="NPCPatrolComponent" parent="." node_paths=PackedStringArray("NAV_AGENT", "LINE_OF_SIGHT", "COMBAT_SQUAD", "BODY", "ANIMATOR") instance=ExtResource("1_qmtob")]
+[node name="NPCPatrolComponent" parent="." node_paths=PackedStringArray("NAV_AGENT", "LINE_OF_SIGHT", "COMBAT_SQUAD", "BODY", "ANIMATOR") groups=["patroller"] instance=ExtResource("1_qmtob")]
 NAV_AGENT = NodePath("../NavigationAgent2D")
 LINE_OF_SIGHT = NodePath("../LineOfSightComponent")
 COMBAT_SQUAD = NodePath("../CombatantSquadComponent")

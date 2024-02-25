@@ -24,6 +24,9 @@ var COMBAT_SWITCH = true
 var PATROL = true
 
 func _ready():
+	if OverworldGlobals.getCurrentMapData().CLEARED:
+		destroy(false)
+	
 	NAME = get_parent().name
 	BODY.get_node('CombatantSquadComponent').UNIQUE_ID = NAME
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
@@ -98,15 +101,23 @@ func stunMode():
 	STATE = 3
 	updatePath()
 	
-func destroy():
+func destroy(fancy=true):
 	PATROL = false
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
-	ANIMATOR.stop()
-	ANIMATOR.play("KO")
-	await ANIMATOR.animation_finished
-	OverworldGlobals.alert_patrollers.emit()
+	if fancy:
+		isMapCleared()
+		ANIMATOR.stop()
+		ANIMATOR.play("KO")
+		await ANIMATOR.animation_finished
+		OverworldGlobals.alert_patrollers.emit()
 	BODY.queue_free()
+
+func isMapCleared():
+	for child in OverworldGlobals.getCurrentMap().get_children():
+		if child.is_in_group('patroller'):
+			return
+	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMapData().NAME)
 
 func updatePath():
 	match STATE:

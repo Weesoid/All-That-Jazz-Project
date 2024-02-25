@@ -4,6 +4,7 @@ class_name PlayerSaveData
 @export var TEAM: Array[ResPlayerCombatant]
 @export var FOLLOWERS: Array[NPCFollower]
 @export var FAST_TRAVEL_LOCATIONS: Array[String]
+@export var CLEARED_MAPS = []
 @export var POWER: GDScript
 @export var EQUIPPED_ARROW: ResProjectileAmmo
 @export var CURRENCY: int

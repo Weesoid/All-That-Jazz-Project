@@ -4,6 +4,7 @@ extends Node
 var TEAM: Array[ResPlayerCombatant]
 var FOLLOWERS: Array[NPCFollower] = []
 var FAST_TRAVEL_LOCATIONS: Array[String] = []
+var CLEARED_MAPS = []
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
 var CURRENCY = 0
@@ -120,6 +121,7 @@ func saveData(save_data: Array):
 	data.UTILITY_CHARM_COUNT = UTILITY_CHARM_COUNT
 	data.PARTY_LEVEL = PARTY_LEVEL
 	data.CURRENT_EXP = CURRENT_EXP
+	data.CLEARED_MAPS = CLEARED_MAPS
 	data.stamina = stamina
 	data.bow_max_draw= bow_max_draw
 	data.walk_speed = walk_speed
@@ -155,6 +157,7 @@ func loadData(save_data: PlayerSaveData):
 	UTILITY_CHARM_COUNT = save_data.UTILITY_CHARM_COUNT
 	PARTY_LEVEL = save_data.PARTY_LEVEL
 	CURRENT_EXP = save_data.CURRENT_EXP
+	CLEARED_MAPS = save_data.CLEARED_MAPS
 	stamina = save_data.stamina
 	bow_max_draw= save_data.bow_max_draw
 	walk_speed = save_data.walk_speed
