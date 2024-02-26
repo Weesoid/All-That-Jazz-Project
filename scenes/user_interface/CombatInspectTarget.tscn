@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqs8b1y4j5h7r"]
+[gd_scene load_steps=7 format=3 uid="uid://dqs8b1y4j5h7r"]
 
 [ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://images/sprites/qte_target.png" id="1_1tuxq"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatInspectTarget.gd" id="1_twgfn"]
+[ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="3_sf2yb"]
 
 [sub_resource type="Animation" id="Animation_ob7ho"]
 resource_name = "Loop"
@@ -48,11 +49,18 @@ script = ExtResource("1_twgfn")
 scale = Vector2(0.287109, 0.287109)
 texture = ExtResource("1_1tuxq")
 
+[node name="AttributeView" parent="." instance=ExtResource("3_sf2yb")]
+offset_left = -8.0
+offset_top = 144.0
+offset_right = -8.0
+offset_bottom = 144.0
+scale = Vector2(1.5, 1.5)
+
 [node name="CombatantName" type="Label" parent="."]
-offset_left = 88.0
-offset_top = -256.0
-offset_right = 448.0
-offset_bottom = -233.0
+offset_left = -272.0
+offset_top = 224.0
+offset_right = 88.0
+offset_bottom = 247.0
 scale = Vector2(1, 0.99604)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
@@ -60,23 +68,11 @@ theme_override_font_sizes/font_size = 16
 text = "NAME"
 autowrap_mode = 3
 
-[node name="Stats" type="Label" parent="."]
-offset_left = 88.0
-offset_top = -216.0
-offset_right = 280.0
-offset_bottom = 81.0
-scale = Vector2(1, 0.99604)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 16
-text = "STATS "
-autowrap_mode = 3
-
 [node name="StatusEffects" type="RichTextLabel" parent="."]
-offset_left = -288.0
+offset_left = -272.0
 offset_top = -256.0
-offset_right = -96.0
-offset_bottom = 81.0
+offset_right = -80.0
+offset_bottom = 65.0
 scale = Vector2(1, 0.99604)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
@@ -86,10 +82,11 @@ text = "x Target cannot move!"
 scroll_active = false
 
 [node name="Description" type="Label" parent="."]
+visible = false
 offset_left = -288.0
-offset_top = 104.0
+offset_top = 176.0
 offset_right = 288.0
-offset_bottom = 216.0
+offset_bottom = 288.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 16

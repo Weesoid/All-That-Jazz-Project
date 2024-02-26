@@ -43,7 +43,7 @@ var drop_summary = ''
 var turn_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
-var battle_music_name: String = "Little Speck DV.ogg"
+var battle_music_name: String = "706171__timbre__atmosphere-prince-funk-via-stableaudio.ogg"
 var initial_status_effect_enemy: String = ''
 var initial_status_effect_player: String = ''
 

@@ -96,6 +96,9 @@ func resetStates():
 	ANIMATION_SPEED = 0.0
 
 func _unhandled_input(_event: InputEvent):
+	if Input.is_action_just_pressed("ui_text_backspace"):
+		OverworldGlobals.showMenu("res://scenes/user_interface/AttributeView.tscn")
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	

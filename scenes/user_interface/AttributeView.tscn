@@ -1,0 +1,256 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3kxw4js4bdau"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiAttributeView.gd" id="1_5knxr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bjulq"]
+bg_color = Color(0.858824, 0.858824, 0.858824, 1)
+
+[node name="AttributeView" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5knxr")
+
+[node name="HiddenAttributes" type="PanelContainer" parent="."]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = -48.5
+offset_right = 176.0
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HiddenAttributes"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HiddenAttributes/MarginContainer"]
+layout_mode = 2
+
+[node name="Accuracy" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Accuracy"]
+layout_mode = 2
+text = "Accuracy"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="HiddenAttributes/MarginContainer/VBoxContainer/Accuracy"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+
+[node name="Dodge" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Dodge"]
+layout_mode = 2
+text = "Dodge"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="HiddenAttributes/MarginContainer/VBoxContainer/Dodge"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+
+[node name="Crit" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Crit"]
+layout_mode = 2
+text = "Crit"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="HiddenAttributes/MarginContainer/VBoxContainer/Crit"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+
+[node name="Resist" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Resist"]
+layout_mode = 2
+text = "Resist"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="HiddenAttributes/MarginContainer/VBoxContainer/Resist"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+
+[node name="HealMult" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 45
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/HealMult"]
+layout_mode = 2
+text = "HEAL M."
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/HealMult"]
+layout_mode = 2
+text = "0"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Attributes" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = -48.5
+offset_right = 176.0
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Attributes"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Attributes/MarginContainer"]
+layout_mode = 2
+
+[node name="Health" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "How much damage character can take before getting knocked out."
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Health"]
+layout_mode = 2
+text = "Health
+"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Attributes/MarginContainer/VBoxContainer/Health"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+value = 50.0
+
+[node name="Brawn" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Bonus damage for damaging abilities."
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Brawn"]
+layout_mode = 2
+text = "Brawn"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Attributes/MarginContainer/VBoxContainer/Brawn"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+
+[node name="Grit" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Resistance from damage."
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Grit"]
+layout_mode = 2
+text = "Grit"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Attributes/MarginContainer/VBoxContainer/Grit"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+
+[node name="Handling" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Rank of weapon character can use."
+split_offset = 100
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Handling"]
+layout_mode = 2
+text = "Handling"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Attributes/MarginContainer/VBoxContainer/Handling"]
+custom_minimum_size = Vector2(267, 0)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjulq")
+value = 1.0
+
+[node name="Hustle" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Determines turn order. Higher, the better."
+split_offset = 45
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Hustle"]
+layout_mode = 2
+text = "Hustle"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Value" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Hustle"]
+layout_mode = 2
+text = "0"
+vertical_alignment = 1
+uppercase = true

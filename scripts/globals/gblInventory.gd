@@ -28,8 +28,8 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 		if item.STACK <= 0: item.STACK = 1
 		item.add(count-1, false)
 		unit.append(item)
-	elif item is ResEquippable:
-		unit.append(item)
+	elif item is ResCharm:
+		unit.append(item.duplicate())
 	
 	if show_message:
 		OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
@@ -135,9 +135,9 @@ func transferItem(item: ResItem, count: int, from: Array[ResItem], to: Array[Res
 		addItemResource(item, count, to)
 
 func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
-	if item is ResEquippable and (hasItem(item.NAME) or hasItem(item.NAME, STORAGE)):
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
-		return false
+	#if item is ResEquippable and (hasItem(item.NAME) or hasItem(item.NAME, STORAGE)):
+	#	if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
+	#	return false
 	if item is ResEquippable and item.WEIGHT + CURRENT_CAPACITY > MAX_CAPACITY:
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] not added! Your Inventory is full.' % item)
 		if transfer_storage:
@@ -152,7 +152,7 @@ func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
 			var feasible_count = determineFeasibleCount(item, count)
 			addItemResource(item,feasible_count,INVENTORY)
 			createGhostStack(item, count - feasible_count, false)
-		return false	
+		return false
 	if item is ResStackItem and (item.STACK + count) > item.MAX_STACK:
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Max stack for [color=yellow]%s[/color] reached!' % item.NAME)
 		if transfer_storage:

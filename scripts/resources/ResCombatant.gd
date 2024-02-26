@@ -14,13 +14,14 @@ class_name ResCombatant
 	'health': 100,
 	'brawn': 0.0,
 	'grit': 0.0,
+	'handling': 0,
 	'hustle': 1,
 	# Hidden Stats
-	'crit': 0.05,
-	'dodge': 0.0,
 	'accuracy': 0.95,
+	'dodge': 0.0,
+	'crit': 0.05,
 	'heal mult': 1.0,
-	'exposure': 0.05
+	'resist': 0.05
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var CHARMS: Array[ResCharm]

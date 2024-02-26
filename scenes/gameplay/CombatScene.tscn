@@ -218,6 +218,7 @@ script = ExtResource("1_kv6ut")
 [node name="BattleSounds" type="AudioStreamPlayer" parent="."]
 
 [node name="BattleMusic" type="AudioStreamPlayer" parent="."]
+volume_db = -15.0
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 position = Vector2(-576, -367)

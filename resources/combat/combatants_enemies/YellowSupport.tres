@@ -22,15 +22,12 @@ STAT_VALUES = {
 "brawn": 0.0,
 "crit": 0.05,
 "dodge": 0.0,
-"exposure": 0.0,
 "grit": 0.0,
+"handling": 0,
 "heal mult": 1.0,
 "health": 100,
-"hustle": 1
+"hustle": 1,
+"resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_cydwi")])
-EQUIPMENT = {
-"armor": null,
-"weapon": null
-}
 CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

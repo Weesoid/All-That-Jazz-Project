@@ -1,15 +1,5 @@
 ~ start
 
 do addItem("CharmMurder")
-do addItem("CharmStunning")
-do addItem("CharmSpeed")
-do addItem("CharmStoneWall")
-do addItem("NeutralWeapon")
-do addItem("HotHand")
-do addItem("Toxik")
-do addItem("SprintStone")
-do addItem("WalkStone")
-do addItem("BowStone")
-do addItem("StaminaStone")
 
 => END

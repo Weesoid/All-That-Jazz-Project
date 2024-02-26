@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var combatant_name = $CombatantName
-@onready var bottom_menu = $Stats
+@onready var attribute_view = $AttributeView
 @onready var side_menu = $Description
 @onready var status_effects = $StatusEffects
 
@@ -10,9 +10,9 @@ var subject
 func _process(_delta):
 	if subject is ResCombatant:
 		combatant_name.text = subject.NAME
-		bottom_menu.text = subject.getStringStats(true)
 		side_menu.text = subject.DESCRIPTION
 		getStatusEffectInfo(subject)
+		attribute_view.combatant = subject
 
 func getStatusEffectInfo(combatant: ResCombatant):
 	status_effects.text = ''

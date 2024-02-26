@@ -20,7 +20,6 @@ func _ready():
 					current_members.add_child(button)
 				else:
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
-					member.unequipGear()
 					PlayerGlobals.removeFollower(member)
 					current_members.remove_child(button)
 					benched_members.add_child(button)

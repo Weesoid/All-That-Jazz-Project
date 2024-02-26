@@ -14,7 +14,7 @@ var subject_combatant: ResPlayerCombatant
 func loadInformation():
 	clearInformation()
 	character_name.text = subject_combatant.NAME
-	stat_panel.text = subject_combatant.getStringStats()
+	stat_panel.combatant = subject_combatant
 	description.text = subject_combatant.DESCRIPTION
 	
 	for ability in subject_combatant.ABILITY_SET:
@@ -61,12 +61,12 @@ func loadInformation():
 		)
 		status_panel.add_child(status_button)
 	
-	stat_panel.text = subject_combatant.getStringStats()
+	stat_panel.combatant = subject_combatant
 
 func clearInformation():
 	character_name.text = ''
 	description.text = ''
-	stat_panel.text = ''
+	#stat_panel.text = ''
 	
 	for child in ability_panel.get_children():
 		child.queue_free()

@@ -1,9 +1,8 @@
 extends Control
 
+@onready var pool = $Pool/Scroll/VBoxContainer
 @onready var abilities = $Abilities/Scroll/VBoxContainer
 @onready var description = $DescriptionPanel/Label
-@onready var toggle_button = $ToggleMode
-@onready var currency = $Currency
 @onready var member_container = $Members/HBoxContainer
 @onready var combatant_name = $CombatantName
 
@@ -18,67 +17,46 @@ func _ready():
 		member_button.custom_minimum_size.x = 96
 		member_button.pressed.connect(
 			func loadMemberInformation():
-				toggle_button.disabled = false
 				selected_combatant = member
-				mode = 1
-				loadAbilities(selected_combatant.ABILITY_POOL)
+				loadAbilities()
 		)
 		member_container.add_child(member_button)
 
-func _process(_delta):
-	match mode:
-		1: toggle_button.text = 'MODE: ASSOCIATION'
-		0: toggle_button.text = 'MODE: DISSOCIATION'
-	
-	if selected_combatant != null:
-		combatant_name.text = selected_combatant.NAME
-		currency.text = str(selected_combatant.ABILITY_POINTS) + ' SP'
-
-func loadAbilities(ability_array, skip_first=false):
+func loadAbilities():
 	clearButtons()
-	for ability in ability_array:
-		if ability == ability_array[0] and skip_first:
-			continue
-		#if selected_combatant.ABILITY_SET.has(ability) and mode == 1: 
-		#	continue
-		
-		var button = Button.new()
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size.x = 360
-		button.text = "%s (%s)" % [ability.NAME, ability.VALUE]
-		button.pressed.connect(
-			func():
-				if mode == 1:
-					selected_combatant.ABILITY_POOL.erase(ability)
-					selected_combatant.ABILITY_SET.append(ability)
-					selected_combatant.ABILITY_POINTS -= ability.VALUE
-					loadAbilities(selected_combatant.ABILITY_POOL)
-				elif mode == 0:
-					selected_combatant.ABILITY_SET.erase(ability)
-					selected_combatant.ABILITY_POOL.append(ability)
-					selected_combatant.ABILITY_POINTS += ability.VALUE
-					loadAbilities(selected_combatant.ABILITY_SET, true)
-			#	print('POOL: ', selected_combatant.ABILITY_POO)
-			#	print('SET: ', selected_combatant.ABILITY_SET)
-		)
-		button.mouse_entered.connect(
-			func updateDescription():
-				description.text = '' 
-				description.text = ability.DESCRIPTION
-		)
-		if ability.VALUE > selected_combatant.ABILITY_POINTS and mode == 1:
-			button.disabled = true
-		abilities.add_child(button)
+	for ability in selected_combatant.ABILITY_POOL:
+		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL: continue
+		createButton(ability, pool)
+	for ability in selected_combatant.ABILITY_SET:
+		createButton(ability, abilities)
 
 func clearButtons():
 	for child in abilities.get_children():
 		child.queue_free()
+	for chid in pool.get_children():
+		chid.queue_free()
 
-func _on_toggle_mode_pressed():
-	match mode:
-		1:
-			mode = 0
-			loadAbilities(selected_combatant.ABILITY_SET, true)
-		0: 
-			mode = 1
-			loadAbilities(selected_combatant.ABILITY_POOL)
+func createButton(ability, location):
+	var button = Button.new()
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.custom_minimum_size.x = 170
+	button.text = ability.NAME
+	button.pressed.connect(
+		func transferItem():
+			if selected_combatant.ABILITY_POOL.has(ability):
+				if selected_combatant.ABILITY_SET.size() + 1 > 4:
+					return
+				selected_combatant.ABILITY_POOL.erase(ability)
+				selected_combatant.ABILITY_SET.append(ability)
+				loadAbilities()
+			elif selected_combatant.ABILITY_SET.has(ability):
+				selected_combatant.ABILITY_SET.erase(ability)
+				selected_combatant.ABILITY_POOL.append(ability)
+				loadAbilities()
+	)
+	button.mouse_entered.connect(
+		func updateInfo():
+			description.text = '' 
+			description.text = ability.DESCRIPTION
+	)
+	location.add_child(button)

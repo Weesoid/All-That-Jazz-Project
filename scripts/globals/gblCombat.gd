@@ -154,9 +154,9 @@ func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 
 func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false, base_chance = 2.0):
-	if base_chance != 2.0 and !randomRoll(base_chance-target.STAT_VALUES['exposure']):
-		manual_call_indicator.emit(target, '%s  Resisted!' % status_effect_name, 'Whiff')
-		return
+	#if base_chance != 2.0 and !randomRoll(base_chance-target.STAT_VALUES['exposure']):
+	#	manual_call_indicator.emit(target, '%s  Resisted!' % status_effect_name, 'Whiff')
+	#	return
 	
 	var status_effect: ResStatusEffect = load(str("res://resources/combat/status_effects/"+status_effect_name+".tres")).duplicate()
 	if status_effect.NAME not in target.getStatusEffectNames():

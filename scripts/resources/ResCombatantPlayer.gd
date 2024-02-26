@@ -6,7 +6,7 @@ class_name ResPlayerCombatant
 @export var MANDATORY = false
 var LINGERING_STATUS_EFFECTS: Array[String]
 var UNMODIFIED_STAT_VALUES: Dictionary
-var ABILITY_POINTS = 0
+var STAT_POINTS = 0
 var initialized = false
 var active = false
 

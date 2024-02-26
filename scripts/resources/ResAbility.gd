@@ -20,7 +20,7 @@ enum TargetGroup {
 @export var TARGET_GROUP: TargetGroup
 @export var TARGET_DEAD: bool = false
 @export var INSTANT_CAST: bool = false
-@export var VALUE = 5
+@export var REQUIRED_LEVEL = 0
 
 var ENABLED: bool = true
 var TARGETABLE
@@ -28,7 +28,6 @@ var TARGETABLE
 signal single_target(type)
 signal multi_target(type)
 signal random_target(type)
-#signal no_resource
 
 func execute():
 	match TARGET_TYPE:

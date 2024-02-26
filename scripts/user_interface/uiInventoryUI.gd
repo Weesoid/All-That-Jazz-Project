@@ -12,6 +12,7 @@ extends Control
 @onready var repair_button = $UseContainer/Repair
 @onready var description_panel = $PanelContainer/DescriptionPanel/DescriptionLabel
 @onready var stat_panel = $PanelContainer/DescriptionPanel/StatPanel
+@onready var trinkets_tab = $TabContainer/Trinkets/VBoxContainer
 @onready var capacity = $Capacity
 @onready var charm_panel = $EquippedUtilityCharms
 
@@ -152,10 +153,12 @@ func addButtonToTab(item: ResItem, button: Button):
 		weapon_tab.add_child(button)
 	elif item is ResStackItem:
 		misc_tab.add_child(button)
-	elif item is ResCharm or item is ResUtilityCharm:
+	elif item is ResCharm:
 		if item.EQUIPPED_COMBATANT != null:
 			button.icon = item.EQUIPPED_COMBATANT.ICON
 		charm_tab.add_child(button)
+	elif item is ResUtilityCharm:
+		trinkets_tab.add_child(button)
 	button.pressed.connect(
 		func setSelectedItem(): 
 			clearMembers()
@@ -175,7 +178,8 @@ func showUseContainer(item: ResItem):
 	
 	if item is ResEquippable:
 		use_button.text = "Equip/Unequip"
-		if item is ResWeapon: repair_button.show()
+	elif item is ResWeapon: 
+		repair_button.show()
 	elif item is ResProjectileAmmo:
 		use_button.text = "Equip Arrow"
 	elif item is ResConsumable:

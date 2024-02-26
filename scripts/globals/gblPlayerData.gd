@@ -59,14 +59,7 @@ func getRequiredExp() -> int:
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
-		combatant.ABILITY_POINTS += 1
-		
-		combatant.removeEquipmentModifications()
-		for stat in combatant.BASE_STAT_VALUES.keys():
-			var increase = combatant.STAT_GROWTH_RATES[stat] ** (PARTY_LEVEL - 1)
-			combatant.BASE_STAT_VALUES[stat] += increase
-			combatant.UNMODIFIED_STAT_VALUES[stat] += increase
-		combatant.applyEquipmentModifications()
+		combatant.STAT_POINTS += 1
 	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
@@ -132,7 +125,6 @@ func saveData(save_data: Array):
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
 			combatant.ABILITY_SET, 
-			combatant.EQUIPMENT,
 			combatant.CHARMS,
 			combatant.STAT_VALUES,
 			combatant.BASE_STAT_VALUES,
@@ -167,17 +159,16 @@ func loadData(save_data: PlayerSaveData):
 	
 	for combatant in TEAM:
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
-		combatant.EQUIPMENT = save_data.COMBATANT_SAVE_DATA[combatant][1]
-		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][2]
-		combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][3]
-		combatant.BASE_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][4]
-		combatant.ABILITY_POOL = save_data.COMBATANT_SAVE_DATA[combatant][5]
-		combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][6]
-		combatant.LINGERING_STATUS_EFFECTS = save_data.COMBATANT_SAVE_DATA[combatant][7]
-		combatant.UNMODIFIED_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][8]
-		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][9]
-		combatant.active = save_data.COMBATANT_SAVE_DATA[combatant][10]
-		combatant.ABILITY_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][11]
+		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][1]
+		combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][2]
+		combatant.BASE_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][3]
+		combatant.ABILITY_POOL = save_data.COMBATANT_SAVE_DATA[combatant][4]
+		combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][5]
+		combatant.LINGERING_STATUS_EFFECTS = save_data.COMBATANT_SAVE_DATA[combatant][6]
+		combatant.UNMODIFIED_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][7]
+		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][8]
+		combatant.active = save_data.COMBATANT_SAVE_DATA[combatant][9]
+		combatant.ABILITY_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][10]
 		if combatant.active:
 			OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(combatant)
 	
