@@ -101,7 +101,7 @@ func _ready():
 	
 	active_index = incrementIndex(active_index,1,COMBATANTS.size())
 	active_combatant = COMBATANTS[active_index]
-	while active_combatant.STAT_VALUES['hustle'] == -1:
+	while active_combatant.STAT_VALUES['hustle'] < 0:
 		active_index = incrementIndex(active_index,1,COMBATANTS.size())
 		print('checking again!', active_combatant)
 		active_combatant = COMBATANTS[active_index]
@@ -201,7 +201,7 @@ func end_turn():
 		active_combatant = COMBATANTS[active_index]
 		tickStatusEffects(active_combatant)
 		removeDeadCombatants()
-		while active_combatant.STAT_VALUES['hustle'] == -1:
+		while active_combatant.STAT_VALUES['hustle'] < 0:
 			active_index = incrementIndex(active_index,1,COMBATANTS.size())
 			active_combatant = COMBATANTS[active_index]
 			tickStatusEffects(active_combatant)

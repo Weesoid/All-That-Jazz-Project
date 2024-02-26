@@ -25,6 +25,7 @@ class_name ResCombatant
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var CHARMS: Array[ResCharm]
+var STAT_MODIFIERS = {}
 var STATUS_EFFECTS: Array[ResStatusEffect]
 var BASE_STAT_VALUES: Dictionary
 var SCENE
@@ -40,7 +41,7 @@ func act():
 
 func getSprite()-> Sprite2D:
 	return SCENE.get_node('Sprite')
-	
+
 func getAnimator()-> AnimationPlayer:
 	return getSprite().get_node('SpriteAnimator')
 	
@@ -103,6 +104,21 @@ func searchStringStats(stats: Array[String]):
 			else:
 				result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
 	return result
+
+func applyStatModifications(modifier_id: String):
+	for modifier in STAT_MODIFIERS.keys():
+		if modifier == modifier_id:
+			for stat in STAT_MODIFIERS[modifier]: 
+				STAT_VALUES[stat] += STAT_MODIFIERS[modifier][stat]
+			return
+
+func removeStatModification(modifier_id: String):
+	for modifier in STAT_MODIFIERS.keys():
+		if modifier == modifier_id:
+			for stat in STAT_MODIFIERS[modifier]: 
+				STAT_VALUES[stat] -= STAT_MODIFIERS[modifier][stat]
+			STAT_MODIFIERS.erase(modifier)
+			return
 
 func _to_string():
 	return str(NAME)

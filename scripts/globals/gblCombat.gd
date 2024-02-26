@@ -112,16 +112,13 @@ func valueVariate(value, percent_variance: float):
 	value += randf_range(variation*-1, variation)
 	return value
 
-func modifyStat(target: ResCombatant, stat: String, percent_scale: float):
-	target.STAT_VALUES[stat] += target.STAT_VALUES[stat] * percent_scale
+func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String):
+	target.removeStatModification(modifier_id)
+	target.STAT_MODIFIERS[modifier_id] = stat_modifications
+	target.applyStatModifications(modifier_id)
 
-func modifyStatFlat(target: ResCombatant, stat: String, value: float):
-	target.STAT_VALUES[stat] += value
-	if target.STAT_VALUES[stat] < 0:
-		target.STAT_VALUES[stat] = 0
-
-func resetStat(target: ResCombatant, stat: String):
-	target.STAT_VALUES[stat] = target.BASE_STAT_VALUES[stat]
+func resetStat(target: ResCombatant, modifier_id: String):
+	target.removeStatModification(modifier_id)
 
 #********************************************************************************
 # ANIMATION HANDLING

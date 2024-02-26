@@ -1,0 +1,121 @@
+[gd_scene load_steps=4 format=3 uid="uid://cm6aksgnbvl1o"]
+
+[ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="1_farxc"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiAttributeAdjust.gd" id="1_unumd"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_is7rp"]
+
+[node name="AttributeAdjust" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_unumd")
+
+[node name="AttributeView" parent="." instance=ExtResource("1_farxc")]
+layout_mode = 1
+view_hidden = false
+
+[node name="Attributes" parent="AttributeView" index="1"]
+offset_left = -171.0
+offset_top = -61.0
+offset_right = 256.0
+offset_bottom = 29.0
+
+[node name="Health" parent="AttributeView/Attributes/MarginContainer/VBoxContainer" index="0"]
+visible = false
+
+[node name="Label" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn" index="0"]
+visible = false
+
+[node name="UpBrawn" type="Button" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn" index="1"]
+layout_mode = 2
+text = "BRAWN"
+alignment = 0
+
+[node name="ProgressBar" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn" index="2"]
+custom_minimum_size = Vector2(267, 22)
+
+[node name="Label" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit" index="0"]
+visible = false
+
+[node name="UpGrit" type="Button" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit" index="1"]
+layout_mode = 2
+text = "GRIT"
+alignment = 0
+
+[node name="ProgressBar" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit" index="2"]
+custom_minimum_size = Vector2(267, 22)
+
+[node name="Label" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling" index="0"]
+visible = false
+
+[node name="UpHand" type="Button" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling" index="1"]
+layout_mode = 2
+text = "HANDLING"
+alignment = 0
+
+[node name="ProgressBar" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling" index="2"]
+custom_minimum_size = Vector2(267, 22)
+
+[node name="Hustle" parent="AttributeView/Attributes/MarginContainer/VBoxContainer" index="4"]
+visible = false
+
+[node name="Available" type="Label" parent="."]
+layout_mode = 0
+offset_left = -171.0
+offset_top = -76.0
+offset_right = -77.0
+offset_bottom = -63.0
+theme = ExtResource("3_is7rp")
+text = "POINTS AVAILABLE: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Points" type="Label" parent="Available"]
+layout_mode = 0
+offset_left = 94.0
+offset_top = -8.0
+offset_right = 114.0
+offset_bottom = 15.0
+theme_override_font_sizes/font_size = 16
+text = "10"
+
+[node name="ResetBrawn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 248.0
+offset_top = -53.0
+offset_right = 290.0
+offset_bottom = -31.0
+text = "RESET"
+alignment = 0
+
+[node name="ResetGrit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 248.0
+offset_top = -27.0
+offset_right = 290.0
+offset_bottom = -5.0
+text = "RESET"
+alignment = 0
+
+[node name="ResetHandling" type="Button" parent="."]
+layout_mode = 0
+offset_left = 248.0
+offset_top = -1.0
+offset_right = 290.0
+offset_bottom = 21.0
+text = "RESET"
+alignment = 0
+
+[connection signal="pressed" from="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn/UpBrawn" to="." method="_on_up_brawn_pressed"]
+[connection signal="pressed" from="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit/UpGrit" to="." method="_on_up_grit_pressed"]
+[connection signal="pressed" from="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling/UpHand" to="." method="_on_up_hand_pressed"]
+[connection signal="pressed" from="ResetBrawn" to="." method="_on_reset_brawn_pressed"]
+[connection signal="pressed" from="ResetGrit" to="." method="_on_reset_grit_pressed"]
+[connection signal="pressed" from="ResetHandling" to="." method="_on_reset_handling_pressed"]
+
+[editable path="AttributeView"]

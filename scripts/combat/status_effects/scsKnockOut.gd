@@ -1,7 +1,7 @@
-static func applyEffects(target: ResCombatant, _status_effect: ResStatusEffect):
-	target.STAT_VALUES['hustle'] = -1
+static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
+	CombatGlobals.modifyStat(target, {'hustle': -100}, status_effect.NAME)
 	
 
-static func endEffects(target: ResCombatant):
+static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	print('KO removed!')
-	CombatGlobals.resetStat(target, 'hustle')
+	CombatGlobals.resetStat(target, status_effect.NAME)

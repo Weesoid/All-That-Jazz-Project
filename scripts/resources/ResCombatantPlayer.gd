@@ -5,8 +5,12 @@ class_name ResPlayerCombatant
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 var LINGERING_STATUS_EFFECTS: Array[String]
-var UNMODIFIED_STAT_VALUES: Dictionary
 var STAT_POINTS = 0
+var STAT_POINT_ALLOCATIONS = {
+	'brawn': 0,
+	'grit': 0,
+	'handling': 0
+}
 var initialized = false
 var active = false
 
@@ -15,7 +19,6 @@ func initializeCombatant():
 	
 	if !initialized:
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
-		UNMODIFIED_STAT_VALUES = STAT_VALUES.duplicate()
 		initialized = true
 	
 	applyStatusEffects()

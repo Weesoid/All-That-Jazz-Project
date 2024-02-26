@@ -1,10 +1,8 @@
 extends Node2D
 class_name CombatBar
 
-@onready var energy_bar = $EnergyBar
 @onready var health_bar = $HealthBar
 @onready var absolute_health = $AbsoluteHealth
-@onready var absolute_energy = $AbsoluteEnergy
 @onready var armor_icon = $ArmorIcon
 @onready var status_effects = $StatusEffectContainer
 @onready var indicator = $Indicator
@@ -26,9 +24,6 @@ func _ready():
 			indicator_animation = anim_string
 			)
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
-	if attached_combatant is ResEnemyCombatant:
-		energy_bar.hide()
-		absolute_energy.hide()
 	
 	previous_value = attached_combatant.getMaxHealth()
 

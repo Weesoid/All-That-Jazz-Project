@@ -1,26 +1,14 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cwpas7w01qbw3"]
 
 [ext_resource type="PackedScene" uid="uid://ecoy08x465xk" path="res://scenes/particles/BrawnBuff.tscn" id="1_v4ihd"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsHustleUp.gd" id="2_03cmm"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_njgqp"]
-
-[sub_resource type="GDScript" id="GDScript_ngr15"]
-script/source = "static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	# Fix bug, it goes to negative
-	var modifier = 0.25
-	if status_effect.APPLY_ONCE:
-		modifier += status_effect.current_rank
-		CombatGlobals.modifyStat(target, 'hustle', modifier)
-		CombatGlobals.manual_call_indicator.emit(target, 'HUSTLE UP!', 'Show')
-
-static func endEffects(target: ResCombatant):
-	CombatGlobals.resetStat(target, 'hustle')
-"
 
 [resource]
 script = ExtResource("4_njgqp")
-NAME = "Hustle Up!"
+NAME = "Hustle Up"
 DESCRIPTION = ""
-STATUS_SCRIPT = SubResource("GDScript_ngr15")
+STATUS_SCRIPT = ExtResource("2_03cmm")
 PACKED_SCENE = ExtResource("1_v4ihd")
 MAX_DURATION = 6
 MAX_RANK = 2

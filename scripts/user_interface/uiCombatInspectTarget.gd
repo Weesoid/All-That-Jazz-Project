@@ -10,7 +10,7 @@ var subject
 func _process(_delta):
 	if subject is ResCombatant:
 		combatant_name.text = subject.NAME
-		side_menu.text = subject.DESCRIPTION
+		side_menu.text = str(subject.STAT_MODIFIERS)
 		getStatusEffectInfo(subject)
 		attribute_view.combatant = subject
 

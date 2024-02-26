@@ -4,10 +4,13 @@ extends Control
 @onready var abilities = $Abilities/Scroll/VBoxContainer
 @onready var description = $DescriptionPanel/Label
 @onready var member_container = $Members/HBoxContainer
-@onready var combatant_name = $CombatantName
 
 var mode = 1
 var selected_combatant: ResPlayerCombatant
+
+func _process(_delta):
+	if selected_combatant != null:
+		$AttributeAdjust.combatant = selected_combatant
 
 func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):

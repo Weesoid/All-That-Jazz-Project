@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cq4rrfdxrs5g4"]
+[gd_scene load_steps=3 format=3 uid="uid://cq4rrfdxrs5g4"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAbilityShop.gd" id="1_wcap5"]
+[ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_qod5e"]
 
 [node name="AbilityShop" type="Control"]
 layout_mode = 3
@@ -76,17 +77,6 @@ grow_vertical = 2
 layout_mode = 2
 text = "This is the item description. FEAR IT'S GLORY!"
 
-[node name="CombatantName" type="Label" parent="."]
-layout_mode = 0
-offset_left = -80.0
-offset_top = -152.0
-offset_right = 296.0
-offset_bottom = -134.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-text = "COMBATANT'S ABILITIES"
-vertical_alignment = 1
-
 [node name="Members" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -104,3 +94,10 @@ grow_vertical = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="Members"]
 layout_mode = 2
 alignment = 1
+
+[node name="AttributeAdjust" parent="." instance=ExtResource("2_qod5e")]
+layout_mode = 1
+offset_left = 88.0
+offset_top = 144.0
+offset_right = 88.0
+offset_bottom = 144.0

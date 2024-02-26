@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://ditk8hkfnmg0o"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=21 format=3 uid="uid://ditk8hkfnmg0o"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
 [ext_resource type="Resource" uid="uid://di00nscjwoc7x" path="res://resources/combat/abilities/PoisonBite.tres" id="2_jsk6a"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
 [ext_resource type="Resource" uid="uid://0ltptboemylg" path="res://resources/combat/abilities/AOE.tres" id="5_iixbd"]
 [ext_resource type="Resource" uid="uid://bcwc00l52dxp" path="res://resources/combat/abilities/DebugAddEffect.tres" id="6_ateo1"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_kr4q2"]
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://images/animations/GoodGuyB.png" id="8_88eiy"]
 [ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/sprites/will_icon.png" id="8_sl7ba"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="10_gxbu7"]
@@ -173,5 +174,5 @@ STAT_VALUES = {
 "hustle": 1,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_h6ewg"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i"), ExtResource("5_iixbd"), ExtResource("6_ateo1")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_h6ewg"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i"), ExtResource("5_iixbd"), ExtResource("6_ateo1"), ExtResource("7_kr4q2")])
 CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

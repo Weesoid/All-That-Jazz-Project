@@ -5,7 +5,7 @@ class_name ResStatusEffect
 @export var DESCRIPTION: String
 @export var STATUS_SCRIPT: GDScript
 @export var PACKED_SCENE: PackedScene # Turn this into a Node2D
-@export var TEXTURE: Texture
+@export var TEXTURE: Texture = preload("res://images/sprites/unknown_icon.png")
 @export var MAX_DURATION: int
 @export var MAX_RANK: int
 @export var ON_HIT: bool
@@ -23,7 +23,7 @@ var TARGETABLE
 
 func initializeStatus():
 	ICON = TextureRect.new()
-	#ICON.texture = TEXTURE
+	ICON.texture = TEXTURE
 	
 	if PACKED_SCENE != null:
 		PARTICLES = PACKED_SCENE.instantiate()
@@ -41,7 +41,8 @@ func onHitTick(combatant, caster, received_value):
 func removeStatusEffect():
 	if ON_HIT:
 		CombatGlobals.received_combatant_value.disconnect(onHitTick)
-	STATUS_SCRIPT.endEffects(afflicted_combatant)
+	
+	STATUS_SCRIPT.endEffects(afflicted_combatant, self)
 	if PARTICLES != null:
 		PARTICLES.queue_free()
 	ICON.queue_free()

@@ -1,6 +1,8 @@
 extends Control
 
 @export var borders = true
+@export var view_hidden = true
+
 @onready var combatant: ResCombatant
 @onready var attribute_tab = $Attributes
 @onready var hidden_tab = $HiddenAttributes
@@ -38,6 +40,6 @@ func _process(_delta):
 		healm_val.text = str(combatant.STAT_VALUES['heal mult'])
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_tab"):
+	if Input.is_action_just_pressed("ui_tab") and view_hidden:
 		print('x')
 		hidden_tab.visible = !hidden_tab.visible
