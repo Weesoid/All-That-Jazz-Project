@@ -7,7 +7,6 @@ extends Control
 @onready var ability_pool_panel = $"TabContainer/Ability Pool/VBoxContainer"
 @onready var equipment_panel = $TabContainer/Equipment/VBoxContainer
 @onready var status_panel = $"TabContainer/Status Effects/VBoxContainer"
-
 var subject_combatant: ResPlayerCombatant
 
 func loadInformation():
@@ -78,5 +77,5 @@ func clearInformation():
 		child.queue_free()
 
 
-func _on_tab_container_tab_changed(tab):
+func _on_tab_container_tab_changed(_tab):
 	description.text = ''

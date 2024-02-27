@@ -1,13 +1,11 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=21 format=3 uid="uid://ditk8hkfnmg0o"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=19 format=3 uid="uid://ditk8hkfnmg0o"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
-[ext_resource type="Resource" uid="uid://di00nscjwoc7x" path="res://resources/combat/abilities/PoisonBite.tres" id="2_jsk6a"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="3_14gbd"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="3_bfkjx"]
 [ext_resource type="PackedScene" path="res://scenes/entities/followers/Pinky.tscn" id="4_fpjeh"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="4_mka0i"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
-[ext_resource type="Resource" uid="uid://0ltptboemylg" path="res://resources/combat/abilities/AOE.tres" id="5_iixbd"]
-[ext_resource type="Resource" uid="uid://bcwc00l52dxp" path="res://resources/combat/abilities/DebugAddEffect.tres" id="6_ateo1"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="5_5571v"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_kr4q2"]
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://images/animations/GoodGuyB.png" id="8_88eiy"]
 [ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/sprites/will_icon.png" id="8_sl7ba"]
@@ -155,7 +153,7 @@ _bundled = {
 
 [resource]
 script = ExtResource("5_4siku")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_bfkjx"), ExtResource("7_kr4q2"), ExtResource("3_14gbd"), ExtResource("1_h6ewg")])
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
 MANDATORY = false
 NAME = "PUMainBlasko"
@@ -164,15 +162,15 @@ PACKED_SCENE = SubResource("PackedScene_gvghd")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 0.2,
 "crit": 0.05,
 "dodge": 0.0,
-"grit": 0.0,
-"handling": 0,
+"grit": 0.1,
+"handling": 4,
 "heal mult": 1.0,
 "health": 100,
-"hustle": 1,
+"hustle": 2,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_h6ewg"), ExtResource("2_jsk6a"), ExtResource("3_bfkjx"), ExtResource("4_mka0i"), ExtResource("5_iixbd"), ExtResource("6_ateo1"), ExtResource("7_kr4q2")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_5571v")])
 CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

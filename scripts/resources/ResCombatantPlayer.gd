@@ -5,7 +5,7 @@ class_name ResPlayerCombatant
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 var LINGERING_STATUS_EFFECTS: Array[String]
-var STAT_POINTS = 0
+var STAT_POINTS = 1
 var STAT_POINT_ALLOCATIONS = {
 	'brawn': 0,
 	'grit': 0,

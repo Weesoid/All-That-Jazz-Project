@@ -1,16 +1,15 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=22 format=3 uid="uid://dqq2jvicpe82l"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=21 format=3 uid="uid://dqq2jvicpe82l"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_bsdt7"]
+[ext_resource type="Resource" uid="uid://bcwc00l52dxp" path="res://resources/combat/abilities/DebugAddEffect.tres" id="1_jdoll"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="2_2x6l0"]
 [ext_resource type="Resource" uid="uid://di00nscjwoc7x" path="res://resources/combat/abilities/PoisonBite.tres" id="3_k3ahh"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="4_nrs1w"]
 [ext_resource type="PackedScene" path="res://scenes/entities/followers/Greenie.tscn" id="5_3c2l6"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="5_in4d2"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/RandaStrike.tres" id="5_ckxsc"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 [ext_resource type="Texture2D" uid="uid://6jibksvj0qnw" path="res://images/animations/GoodGuy.png" id="6_wr0qh"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_6iflm"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/Revive.tres" id="7_p5hen"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/OmniStrike.tres" id="8_05w5d"]
 [ext_resource type="Texture2D" uid="uid://dhqwdbu6lsyry" path="res://images/sprites/team2.png" id="8_fydt8"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="12_i6m42"]
 
@@ -156,7 +155,7 @@ _bundled = {
 
 [resource]
 script = ExtResource("5_rov6a")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_jdoll"), ExtResource("2_2x6l0"), ExtResource("1_bsdt7"), ExtResource("3_k3ahh"), ExtResource("5_ckxsc"), ExtResource("7_6iflm"), ExtResource("4_nrs1w")])
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
 MANDATORY = true
 NAME = "PUFriendHealer"
@@ -165,15 +164,15 @@ PACKED_SCENE = SubResource("PackedScene_kq6rj")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 0.1,
 "crit": 0.05,
 "dodge": 0.0,
-"grit": 0.0,
+"grit": 0.2,
 "handling": 0,
 "heal mult": 1.0,
 "health": 100,
 "hustle": 1,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_bsdt7"), ExtResource("2_2x6l0"), ExtResource("3_k3ahh"), ExtResource("4_nrs1w"), ExtResource("5_in4d2"), ExtResource("7_6iflm"), ExtResource("7_p5hen"), ExtResource("8_05w5d")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_2x6l0")])
 CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

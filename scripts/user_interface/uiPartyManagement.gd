@@ -28,6 +28,7 @@ func _ready():
 			func updateInfo():
 				info.subject_combatant = member
 				info.loadInformation()
+				info.show()
 		)
 		if member.MANDATORY and member.active: 
 			button.disabled = true
@@ -35,3 +36,4 @@ func _ready():
 			current_members.add_child(button)
 		else:
 			benched_members.add_child(button)
+		info.hide()

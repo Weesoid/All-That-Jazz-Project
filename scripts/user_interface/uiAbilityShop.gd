@@ -1,16 +1,18 @@
 extends Control
 
-@onready var pool = $Pool/Scroll/VBoxContainer
-@onready var abilities = $Abilities/Scroll/VBoxContainer
-@onready var description = $DescriptionPanel/Label
+@onready var pool = $TabContainer/Abilities/Pool/Scroll/VBoxContainer
+@onready var abilities = $TabContainer/Abilities/Abilities/Scroll/VBoxContainer
+@onready var description = $TabContainer/Abilities/DescriptionPanel/Label
 @onready var member_container = $Members/HBoxContainer
+@onready var attrib_adjust = $TabContainer/Attributes
+@onready var attrib_view = $AttributeView
 
-var mode = 1
 var selected_combatant: ResPlayerCombatant
 
 func _process(_delta):
 	if selected_combatant != null:
-		$AttributeAdjust.combatant = selected_combatant
+		attrib_view.combatant = selected_combatant
+		attrib_adjust.combatant = selected_combatant
 
 func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
@@ -42,7 +44,7 @@ func clearButtons():
 func createButton(ability, location):
 	var button = Button.new()
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.custom_minimum_size.x = 170
+	#dbutton.custom_minimum_size.x = 170
 	button.text = ability.NAME
 	button.pressed.connect(
 		func transferItem():

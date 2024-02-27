@@ -1,6 +1,5 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm6aksgnbvl1o"]
+[gd_scene load_steps=3 format=3 uid="uid://cm6aksgnbvl1o"]
 
-[ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="1_farxc"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeAdjust.gd" id="1_unumd"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_is7rp"]
 
@@ -15,60 +14,121 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_unumd")
 
-[node name="AttributeView" parent="." instance=ExtResource("1_farxc")]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
-view_hidden = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -44.5
+offset_right = 120.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Attributes" parent="AttributeView" index="1"]
-offset_top = -61.0
-offset_right = 256.0
-offset_bottom = 29.0
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
 
-[node name="Health" parent="AttributeView/Attributes/MarginContainer/VBoxContainer" index="0"]
-visible = false
+[node name="Brawn" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 100
+dragger_visibility = 1
 
-[node name="Label" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn" index="0"]
-visible = false
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Brawn"]
+layout_mode = 2
 
-[node name="UpBrawn" type="Button" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn" index="1"]
+[node name="Up" type="Button" parent="HBoxContainer/VBoxContainer/Brawn/HBoxContainer"]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "BRAWN"
 alignment = 0
 
-[node name="ProgressBar" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn" index="2"]
-custom_minimum_size = Vector2(267, 22)
+[node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Brawn/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme = ExtResource("3_is7rp")
+theme_override_font_sizes/font_size = 16
+text = "+0%"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Label" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit" index="0"]
-visible = false
+[node name="Reset" type="Button" parent="HBoxContainer/VBoxContainer/Brawn"]
+layout_mode = 2
+text = "RESET"
+alignment = 0
 
-[node name="UpGrit" type="Button" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit" index="1"]
+[node name="Grit" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 100
+dragger_visibility = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Grit"]
+layout_mode = 2
+
+[node name="Up" type="Button" parent="HBoxContainer/VBoxContainer/Grit/HBoxContainer"]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "GRIT"
 alignment = 0
 
-[node name="ProgressBar" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit" index="2"]
-custom_minimum_size = Vector2(267, 22)
+[node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Grit/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme = ExtResource("3_is7rp")
+theme_override_font_sizes/font_size = 16
+text = "+10%"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Label" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling" index="0"]
-visible = false
+[node name="Reset" type="Button" parent="HBoxContainer/VBoxContainer/Grit"]
+layout_mode = 2
+text = "RESET"
+alignment = 0
 
-[node name="UpHand" type="Button" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling" index="1"]
+[node name="Handling" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 100
+dragger_visibility = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Handling"]
+layout_mode = 2
+
+[node name="Up" type="Button" parent="HBoxContainer/VBoxContainer/Handling/HBoxContainer"]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "HANDLING"
 alignment = 0
 
-[node name="ProgressBar" parent="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling" index="2"]
-custom_minimum_size = Vector2(267, 22)
+[node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Handling/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme = ExtResource("3_is7rp")
+theme_override_font_sizes/font_size = 16
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Hustle" parent="AttributeView/Attributes/MarginContainer/VBoxContainer" index="4"]
-visible = false
+[node name="Reset" type="Button" parent="HBoxContainer/VBoxContainer/Handling"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "RESET"
+alignment = 0
 
 [node name="Available" type="Label" parent="."]
-layout_mode = 0
-offset_left = -174.0
-offset_top = 29.0
-offset_right = -80.0
-offset_bottom = 42.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 36.0
+offset_right = -26.0
+offset_bottom = 49.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("3_is7rp")
 text = "POINTS AVAILABLE: "
 horizontal_alignment = 1
@@ -76,45 +136,15 @@ vertical_alignment = 1
 
 [node name="Points" type="Label" parent="Available"]
 layout_mode = 0
-offset_left = 94.0
-offset_top = -8.0
-offset_right = 114.0
-offset_bottom = 15.0
+offset_left = 96.0
+offset_right = 116.0
+offset_bottom = 23.0
 theme_override_font_sizes/font_size = 16
 text = "10"
 
-[node name="ResetBrawn" type="Button" parent="."]
-layout_mode = 0
-offset_left = 248.0
-offset_top = -53.0
-offset_right = 290.0
-offset_bottom = -31.0
-text = "RESET"
-alignment = 0
-
-[node name="ResetGrit" type="Button" parent="."]
-layout_mode = 0
-offset_left = 248.0
-offset_top = -27.0
-offset_right = 290.0
-offset_bottom = -5.0
-text = "RESET"
-alignment = 0
-
-[node name="ResetHandling" type="Button" parent="."]
-layout_mode = 0
-offset_left = 248.0
-offset_top = -1.0
-offset_right = 290.0
-offset_bottom = 21.0
-text = "RESET"
-alignment = 0
-
-[connection signal="pressed" from="AttributeView/Attributes/MarginContainer/VBoxContainer/Brawn/UpBrawn" to="." method="_on_up_brawn_pressed"]
-[connection signal="pressed" from="AttributeView/Attributes/MarginContainer/VBoxContainer/Grit/UpGrit" to="." method="_on_up_grit_pressed"]
-[connection signal="pressed" from="AttributeView/Attributes/MarginContainer/VBoxContainer/Handling/UpHand" to="." method="_on_up_hand_pressed"]
-[connection signal="pressed" from="ResetBrawn" to="." method="_on_reset_brawn_pressed"]
-[connection signal="pressed" from="ResetGrit" to="." method="_on_reset_grit_pressed"]
-[connection signal="pressed" from="ResetHandling" to="." method="_on_reset_handling_pressed"]
-
-[editable path="AttributeView"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Up" to="." method="_on_up_brawn_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Brawn/Reset" to="." method="_on_reset_brawn_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Grit/HBoxContainer/Up" to="." method="_on_up_grit_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Grit/Reset" to="." method="_on_reset_grit_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Handling/HBoxContainer/Up" to="." method="_on_up_hand_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Handling/Reset" to="." method="_on_reset_handling_pressed"]
