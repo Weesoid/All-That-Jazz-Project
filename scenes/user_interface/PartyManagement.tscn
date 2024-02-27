@@ -63,11 +63,3 @@ alignment = 1
 layout_mode = 1
 offset_top = 54.0
 offset_bottom = 54.0
-
-[node name="TabContainer" parent="uiCharacterInformation" index="0"]
-offset_right = 200.0
-
-[node name="Description" parent="uiCharacterInformation" index="1"]
-offset_right = 200.0
-
-[editable path="uiCharacterInformation"]

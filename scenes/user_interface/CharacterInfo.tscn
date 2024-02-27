@@ -1,7 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdm816lf04v8q"]
+[gd_scene load_steps=5 format=3 uid="uid://bdm816lf04v8q"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyUI.gd" id="1_sq7cs"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="2_u4e5r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifrbu"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jr4f4"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
 
 [node name="uiCharacterInformation" type="Control"]
 layout_mode = 3
@@ -25,27 +39,24 @@ layout_mode = 0
 offset_left = -184.0
 offset_top = -88.0
 offset_right = 192.0
-offset_bottom = 40.0
+offset_bottom = 56.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifrbu")
 
-[node name="Abilities" type="ScrollContainer" parent="TabContainer"]
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Abilities"]
+[node name="Attributes" type="Control" parent="TabContainer"]
 layout_mode = 2
 
-[node name="Attributes" parent="TabContainer" instance=ExtResource("2_u4e5r")]
-visible = false
+[node name="Attributes" parent="TabContainer/Attributes" instance=ExtResource("2_u4e5r")]
 layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 184.0
+offset_top = 80.0
+offset_right = 184.0
+offset_bottom = 80.0
 borders = false
-
-[node name="Equipment" type="ScrollContainer" parent="TabContainer"]
-visible = false
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Equipment"]
-layout_mode = 2
 
 [node name="Ability Pool" type="ScrollContainer" parent="TabContainer"]
 visible = false
@@ -53,6 +64,22 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Ability Pool"]
+layout_mode = 2
+
+[node name="Abilities" type="ScrollContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Abilities"]
+layout_mode = 2
+
+[node name="Equipment" type="ScrollContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Equipment"]
 layout_mode = 2
 
 [node name="Status Effects" type="ScrollContainer" parent="TabContainer"]
@@ -66,27 +93,13 @@ layout_mode = 2
 [node name="Description" type="PanelContainer" parent="."]
 layout_mode = 2
 offset_left = -184.0
-offset_top = 48.0
+offset_top = 56.0
 offset_right = 192.0
 offset_bottom = 112.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jr4f4")
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="Description"]
 layout_mode = 2
 bbcode_enabled = true
 
-[node name="Panel" type="Panel" parent="."]
-visible = false
-layout_mode = 2
-offset_left = -184.0
-offset_top = -121.0
-offset_right = 184.0
-offset_bottom = -89.0
-
-[node name="CharacterName" type="Label" parent="Panel"]
-layout_mode = 2
-offset_left = 80.0
-offset_right = 290.0
-offset_bottom = 31.0
-theme_override_font_sizes/font_size = 16
-horizontal_alignment = 1
-vertical_alignment = 1
+[connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]

@@ -1,9 +1,8 @@
 # TO-DO: GENERAL QUALITY CONTROL
 extends Control
 
-@onready var character_name = $Panel/CharacterName
 @onready var description = $Description/DescriptionLabel
-@onready var stat_panel = $TabContainer/Attributes
+@onready var stat_panel = $TabContainer/Attributes/Attributes
 @onready var ability_panel = $TabContainer/Abilities/VBoxContainer
 @onready var ability_pool_panel = $"TabContainer/Ability Pool/VBoxContainer"
 @onready var equipment_panel = $TabContainer/Equipment/VBoxContainer
@@ -13,7 +12,6 @@ var subject_combatant: ResPlayerCombatant
 
 func loadInformation():
 	clearInformation()
-	character_name.text = subject_combatant.NAME
 	stat_panel.combatant = subject_combatant
 	description.text = subject_combatant.DESCRIPTION
 	
@@ -64,7 +62,6 @@ func loadInformation():
 	stat_panel.combatant = subject_combatant
 
 func clearInformation():
-	character_name.text = ''
 	description.text = ''
 	#stat_panel.text = ''
 	
@@ -79,3 +76,7 @@ func clearInformation():
 	
 	for child in status_panel.get_children():
 		child.queue_free()
+
+
+func _on_tab_container_tab_changed(tab):
+	description.text = ''

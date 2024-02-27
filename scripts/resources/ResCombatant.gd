@@ -11,7 +11,7 @@ class_name ResCombatant
 ## Frontend / Gameplay export variables
 @export var STAT_VALUES = {
 	# Base Stats
-	'health': 100,
+	'health': 20,
 	'brawn': 0.0,
 	'grit': 0.0,
 	'handling': 0,

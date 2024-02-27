@@ -4,6 +4,6 @@ Entity: The campfire flickers.
 - Manage posse 
 	do showMenu("res://scenes/user_interface/PartyManagement.tscn")
 - Internalize 
-	do showMenu("res://scenes/user_interface/AbilityShop.tscn") 
+	do showMenu("res://scenes/user_interface/CharacterAdjust.tscn") 
 
 => END

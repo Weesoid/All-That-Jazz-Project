@@ -20,7 +20,6 @@ layout_mode = 1
 view_hidden = false
 
 [node name="Attributes" parent="AttributeView" index="1"]
-offset_left = -171.0
 offset_top = -61.0
 offset_right = 256.0
 offset_bottom = 29.0
@@ -66,10 +65,10 @@ visible = false
 
 [node name="Available" type="Label" parent="."]
 layout_mode = 0
-offset_left = -171.0
-offset_top = -76.0
-offset_right = -77.0
-offset_bottom = -63.0
+offset_left = -174.0
+offset_top = 29.0
+offset_right = -80.0
+offset_bottom = 42.0
 theme = ExtResource("3_is7rp")
 text = "POINTS AVAILABLE: "
 horizontal_alignment = 1

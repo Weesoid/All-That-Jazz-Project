@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://cq4rrfdxrs5g4"]
 
-[ext_resource type="Script" path="res://scripts/user_interface/uiAbilityShop.gd" id="1_wcap5"]
-[ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_qod5e"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiAbilityShop.gd" id="1_yymbw"]
+[ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
 
-[node name="AbilityShop" type="Control"]
+[node name="CharacterAdjust" type="Control"]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -18,7 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-script = ExtResource("1_wcap5")
+script = ExtResource("1_yymbw")
 
 [node name="Pool" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -28,9 +28,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -80.0
-offset_top = -88.0
-offset_right = 104.0
-offset_bottom = 56.0
+offset_top = -64.0
+offset_right = 128.0
+offset_bottom = 48.0
 grow_horizontal = 0
 grow_vertical = 2
 
@@ -48,10 +48,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = 120.0
-offset_top = -70.0
-offset_right = 304.0
-offset_bottom = 34.0
+offset_left = 144.0
+offset_top = -64.0
+offset_right = 352.0
+offset_bottom = 48.0
 grow_horizontal = 0
 grow_vertical = 2
 
@@ -68,9 +68,9 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = -80.0
-offset_top = 64.0
-offset_right = 304.0
-offset_bottom = 136.0
+offset_top = 56.0
+offset_right = 352.0
+offset_bottom = 128.0
 grow_vertical = 2
 
 [node name="Label" type="RichTextLabel" parent="DescriptionPanel"]
@@ -85,9 +85,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -80.0
-offset_top = -128.0
-offset_right = 304.0
-offset_bottom = -96.0
+offset_top = -104.0
+offset_right = 352.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -95,9 +95,9 @@ grow_vertical = 2
 layout_mode = 2
 alignment = 1
 
-[node name="AttributeAdjust" parent="." instance=ExtResource("2_qod5e")]
+[node name="AttributeAdjust" parent="." instance=ExtResource("2_f13wv")]
 layout_mode = 1
-offset_left = 88.0
-offset_top = 144.0
-offset_right = 88.0
-offset_bottom = 144.0
+offset_left = 96.0
+offset_top = 112.0
+offset_right = 96.0
+offset_bottom = 112.0
