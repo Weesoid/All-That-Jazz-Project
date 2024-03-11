@@ -3,6 +3,11 @@ class_name ResPlayerCombatant
 
 @export var ABILITY_POOL: Array[ResAbility]
 @export var FOLLOWER_PACKED_SCENE: PackedScene
+@export var CHARMS = {
+	0: null,
+	1: null,
+	2: null
+}
 @export var MANDATORY = false
 var LINGERING_STATUS_EFFECTS: Array[String]
 var STAT_POINTS = 1
@@ -27,7 +32,7 @@ func act():
 	player_turn.emit()
 
 func applyStatusEffects():
-	for charm in CHARMS:
+	for charm in CHARMS.values():
 		if charm == null: continue
 		if charm.STATUS_EFFECT != null:
 			CombatGlobals.addStatusEffect(self, charm.STATUS_EFFECT.NAME)
@@ -42,8 +47,28 @@ func removeEquipmentModifications():
 	for charm in CHARMS:
 		charm.removeStatModifications()
 
-func updateStatValues(previous_max_health):
-	STAT_VALUES['health'] =  BASE_STAT_VALUES['health'] * (float(STAT_VALUES['health']) / float(previous_max_health))
-	for stat in BASE_STAT_VALUES.keys():
-		if stat == 'health': continue
-		STAT_VALUES[stat] = BASE_STAT_VALUES[stat]
+func equipCharm(charm: ResCharm, slot: int):
+	if hasCharm(charm):
+		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] already has [color=yellow]%s[/color] equipped.' % [NAME, charm.NAME])
+		return
+	
+	if InventoryGlobals.getItem(charm) != null:
+		InventoryGlobals.removeItemResource(charm)
+		charm.equip(self)
+		CHARMS[slot] = charm
+		print(CHARMS)
+		return
+
+func unequipCharm(slot: int):
+	if CHARMS[slot] == null:
+		return
+	
+	CHARMS[slot].unequip()
+	InventoryGlobals.addItemResource(CHARMS[slot])
+	CHARMS[slot] = null
+	print(CHARMS)
+
+func hasCharm(charm: ResCharm):
+	for equipped_charm in CHARMS.values():
+		if equipped_charm == null: continue
+		if equipped_charm.NAME == charm.NAME: return true

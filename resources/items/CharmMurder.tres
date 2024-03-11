@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("1_kre4j")
 STAT_MODIFICATIONS = {
-"brawn": 1000,
-"grit": 1000
+"brawn": 0.1,
+"grit": 0.2
 }
 NAME = "Murder Charm"
-ICON_NAME = ""
 DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
 WEIGHT = 1
+MANDATORY = false

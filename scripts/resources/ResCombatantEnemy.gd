@@ -18,8 +18,6 @@ func initializeCombatant():
 		effect.initializeStatus()
 	
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
-	
-	applyStatusEffects()
 
 func act():
 	enemy_turn.emit()

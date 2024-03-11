@@ -24,7 +24,6 @@ class_name ResCombatant
 	'resist': 0.05
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
-@export var CHARMS: Array[ResCharm]
 var STAT_MODIFIERS = {}
 var STATUS_EFFECTS: Array[ResStatusEffect]
 var BASE_STAT_VALUES: Dictionary
@@ -51,12 +50,6 @@ func getStatusEffectNames():
 		names.append(effect.NAME)
 	return names
 
-func applyStatusEffects():
-	for charm in CHARMS:
-		if charm == null: continue
-		if charm.STATUS_EFFECT != null:
-			CombatGlobals.addStatusEffect(self, charm.STATUS_EFFECT.NAME)
-	
 func getMaxHealth():
 	return BASE_STAT_VALUES['health']
 

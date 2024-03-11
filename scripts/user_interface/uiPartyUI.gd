@@ -34,7 +34,7 @@ func loadInformation():
 		)
 		ability_pool_panel.add_child(ability_button)
 	
-	for charm in subject_combatant.CHARMS:
+	for charm in subject_combatant.CHARMS.values():
 		if charm == null:
 			continue
 		

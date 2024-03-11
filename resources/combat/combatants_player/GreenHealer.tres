@@ -157,6 +157,11 @@ _bundled = {
 script = ExtResource("5_rov6a")
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_jdoll"), ExtResource("2_2x6l0"), ExtResource("1_bsdt7"), ExtResource("3_k3ahh"), ExtResource("5_ckxsc"), ExtResource("7_6iflm"), ExtResource("4_nrs1w")])
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
+CHARMS = {
+0: null,
+1: null,
+2: null
+}
 MANDATORY = true
 NAME = "PUFriendHealer"
 ICON = ExtResource("8_fydt8")
@@ -175,4 +180,3 @@ STAT_VALUES = {
 "resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_2x6l0")])
-CHARMS = Array[Resource("res://scripts/resources/ResItemCharm.gd")]([])

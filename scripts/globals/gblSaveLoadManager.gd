@@ -2,6 +2,9 @@ extends Node
 
 signal done_loading
 
+#func _ready():
+#	loadGame()
+
 func saveGame():
 	var saved_game: SavedGame = SavedGame.new()
 	saved_game.current_map_path = OverworldGlobals.getCurrentMap().scene_file_path
