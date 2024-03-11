@@ -64,6 +64,7 @@ func unequipCharm(slot: int):
 		return
 	
 	CHARMS[slot].unequip()
+	CombatGlobals.resetStat(self, CHARMS[slot].NAME)
 	InventoryGlobals.addItemResource(CHARMS[slot])
 	CHARMS[slot] = null
 	print(CHARMS)

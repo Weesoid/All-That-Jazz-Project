@@ -133,7 +133,8 @@ func saveData(save_data: Array):
 			combatant.LINGERING_STATUS_EFFECTS,
 			combatant.initialized,
 			combatant.active,
-			combatant.STAT_POINTS
+			combatant.STAT_POINTS,
+			combatant.STAT_MODIFIERS
 			]
 	
 	save_data.append(data)
@@ -167,6 +168,7 @@ func loadData(save_data: PlayerSaveData):
 		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][7]
 		combatant.active = save_data.COMBATANT_SAVE_DATA[combatant][8]
 		combatant.STAT_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][9]
+		combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][10]
 		if combatant.active:
 			OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(combatant)
 	
