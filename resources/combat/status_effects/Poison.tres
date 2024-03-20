@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
-[ext_resource type="PackedScene" path="res://scenes/particles/Poison.tscn" id="1_qebaw"]
+[ext_resource type="PackedScene" uid="uid://cmu5v5d578wll" path="res://scenes/status_visuals/Poison.tscn" id="1_qebaw"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsPoison.gd" id="1_t6ebe"]
 
 [resource]

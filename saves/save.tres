@@ -1,107 +1,72 @@
 [gd_resource type="Resource" script_class="SavedGame" load_steps=26 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_uidqj"]
-[ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_fxc4v"]
-[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="3_g2nig"]
-[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="4_wh2xi"]
-[ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="5_5h23x"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="6_vnakp"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="7_u0vkb"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="8_4f0bm"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/DebugAddEffect.tres" id="9_2x43k"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/NeutStrike.tres" id="10_hskv7"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/PoisonBite.tres" id="11_dgytg"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/RandaStrike.tres" id="12_wh7l0"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="13_wrv2b"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="14_iktlk"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/PinkBlasko.tres" id="15_avyr7"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="16_nmdo7"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="17_yjlp2"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="18_0vcm0"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="19_ujtkx"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_jh6l7"]
+[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_s4yhn"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="3_rcf6l"]
+[ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="4_2w505"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_v7qi7"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="6_n7s88"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="7_hsrn3"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/DebugAddEffect.tres" id="8_n8h68"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/NeutStrike.tres" id="9_hkkcg"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PoisonBite.tres" id="10_5so44"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/RandaStrike.tres" id="11_hq5a1"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="12_rfdwv"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="13_a7x51"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/PinkBlasko.tres" id="14_orfdk"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/VenoStrike.tres" id="15_8r4hk"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/ShockTherapy.tres" id="16_5u13b"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/HotHit.tres" id="17_dljaj"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/ColdSlap.tres" id="18_qx2hm"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="19_07fei"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="20_or3xy"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="21_eb2g3"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="22_faa5g"]
 
-[sub_resource type="Resource" id="Resource_jrsxd"]
-script = ExtResource("1_uidqj")
-position = Vector2(-119.029, -87.421)
+[sub_resource type="Resource" id="Resource_7v5wc"]
+script = ExtResource("1_jh6l7")
+position = Vector2(-172.712, -146.046)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_l1qhn"]
-script = ExtResource("2_fxc4v")
-STAT_MODIFICATIONS = {
-"brawn": 0.1,
-"grit": 0.2
-}
-NAME = "Murder Charm"
-DESCRIPTION = "KILL KILL EVERYTHING!"
-VALUE = 100
-WEIGHT = 1
-MANDATORY = false
-
-[sub_resource type="Resource" id="Resource_kfm3i"]
-script = ExtResource("6_vnakp")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([SubResource("Resource_l1qhn")])
+[sub_resource type="Resource" id="Resource_tujov"]
+script = ExtResource("5_v7qi7")
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
-KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("5_5h23x")])
-KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("3_g2nig"), ExtResource("4_wh2xi")])
+KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("4_2w505")])
+KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_s4yhn"), ExtResource("3_rcf6l")])
 CURRENT_CAPACITY = 0
 MAX_CAPACITY = 100
-ITEM_DATA_INVENTORY = {
-"Murder Charm": null
-}
+ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_f1nau"]
-script = ExtResource("2_fxc4v")
-STAT_MODIFICATIONS = {
-"brawn": 0.1,
-"grit": 0.2
-}
-NAME = "Murder Charm"
-DESCRIPTION = "KILL KILL EVERYTHING!"
-VALUE = 100
-WEIGHT = 1
-MANDATORY = false
-
-[sub_resource type="Resource" id="Resource_5qh5g"]
-script = ExtResource("2_fxc4v")
-STAT_MODIFICATIONS = {
-"brawn": 0.1,
-"grit": 0.2
-}
-NAME = "Murder Charm"
-DESCRIPTION = "KILL KILL EVERYTHING!"
-VALUE = 100
-WEIGHT = 1
-MANDATORY = false
-
-[sub_resource type="Resource" id="Resource_no7br"]
-script = ExtResource("18_0vcm0")
-TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("7_u0vkb"), ExtResource("15_avyr7")])
-FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
+[sub_resource type="Resource" id="Resource_who1v"]
+script = ExtResource("21_eb2g3")
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_n7s88"), ExtResource("14_orfdk")])
+FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([null])
 FAST_TRAVEL_LOCATIONS = Array[String](["SecondMap"])
 CLEARED_MAPS = []
-EQUIPPED_ARROW = ExtResource("17_yjlp2")
+EQUIPPED_ARROW = ExtResource("20_or3xy")
 CURRENCY = 100
 UTILITY_CHARM_COUNT = 0
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
-stamina = 100.0
+stamina = 99.4
 bow_max_draw = 5.0
 walk_speed = 100.0
 sprint_speed = 200.0
 sprint_drain = 0.1
 stamina_gain = 0.1
 COMBATANT_SAVE_DATA = {
-ExtResource("7_u0vkb"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_4f0bm")]), {
-0: SubResource("Resource_f1nau"),
+ExtResource("6_n7s88"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_hsrn3")]), {
+0: null,
 1: null,
 2: null
 }, {
 "accuracy": 0.95,
-"brawn": 0.2,
+"brawn": 0.1,
 "crit": 0.05,
 "dodge": 0.0,
-"grit": 0.4,
+"grit": 0.2,
 "handling": 0,
 "heal mult": 1.0,
 "health": 100,
@@ -118,25 +83,20 @@ ExtResource("7_u0vkb"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 100,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("9_2x43k"), ExtResource("8_4f0bm"), ExtResource("10_hskv7"), ExtResource("11_dgytg"), ExtResource("12_wh7l0"), ExtResource("13_wrv2b"), ExtResource("14_iktlk")]), true, Array[String]([]), true, true, 1, {
-"Murder Charm": {
-"brawn": 0.1,
-"grit": 0.2
-}
-}],
-ExtResource("15_avyr7"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_4f0bm")]), {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_n8h68"), ExtResource("7_hsrn3"), ExtResource("9_hkkcg"), ExtResource("10_5so44"), ExtResource("11_hq5a1"), ExtResource("12_rfdwv"), ExtResource("13_a7x51")]), true, Array[String]([]), true, false, 1, {}],
+ExtResource("14_orfdk"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("15_8r4hk"), ExtResource("16_5u13b"), ExtResource("17_dljaj"), ExtResource("18_qx2hm")]), {
 0: null,
 1: null,
-2: SubResource("Resource_5qh5g")
+2: null
 }, {
 "accuracy": 0.95,
-"brawn": 0.3,
+"brawn": 0.2,
 "crit": 0.05,
 "dodge": 0.0,
-"grit": 0.3,
+"grit": 0.1,
 "handling": 4,
 "heal mult": 1.0,
-"health": 100,
+"health": 70,
 "hustle": 2,
 "resist": 0.05
 }, {
@@ -150,16 +110,11 @@ ExtResource("15_avyr7"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 100,
 "hustle": 2,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("14_iktlk"), ExtResource("13_wrv2b"), ExtResource("16_nmdo7"), ExtResource("10_hskv7")]), false, Array[String]([]), true, true, 1, {
-"Murder Charm": {
-"brawn": 0.1,
-"grit": 0.2
-}
-}]
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_a7x51"), ExtResource("12_rfdwv"), ExtResource("19_07fei"), ExtResource("7_hsrn3"), ExtResource("9_hkkcg")]), false, Array[String]([]), true, true, 1, {}]
 }
 
 [resource]
-script = ExtResource("19_ujtkx")
+script = ExtResource("22_faa5g")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_jrsxd"), SubResource("Resource_kfm3i"), Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"editor_description":"","script":Resource("res://scripts/resources/ResSaveDataQuests.gd"),"QUESTS":Array[Resource("res://scripts/resources/ResQuest.gd")]([]),"QUEST_OBJECTIVES_DATA":{})
-, SubResource("Resource_no7br")]
+save_data = [SubResource("Resource_7v5wc"), SubResource("Resource_tujov"), Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"editor_description":"","script":Resource("res://scripts/resources/ResSaveDataQuests.gd"),"QUESTS":Array[Resource("res://scripts/resources/ResQuest.gd")]([]),"QUEST_OBJECTIVES_DATA":{})
+, SubResource("Resource_who1v")]

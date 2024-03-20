@@ -6,3 +6,4 @@ static func animateCast(caster: ResCombatant):
 static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_scene):
 	CombatGlobals.playAbilityAnimation(target, animation_scene)
 	CombatGlobals.calculateDamage(caster, target, 20)
+	CombatGlobals.addStatusEffect(target, 'Singed')

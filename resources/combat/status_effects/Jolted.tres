@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_6gnln"]
-[ext_resource type="PackedScene" path="res://scenes/particles/Jolted.tscn" id="1_ukk5x"]
+[ext_resource type="PackedScene" uid="uid://dfke8oc4d7x0o" path="res://scenes/status_visuals/Jolted.tscn" id="1_ukk5x"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsJolt.gd" id="2_n0cly"]
 
 [resource]

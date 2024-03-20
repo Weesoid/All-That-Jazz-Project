@@ -5,7 +5,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 										true, null, 1.0, 
 										false, -1.0, null, 
 										"SINGED")
-		CombatGlobals.modifyStatFlat(target, 'heal mult', -0.75)
+		CombatGlobals.modifyStat(target, {'heal mult': -0.75}, status_effect.NAME)
 
-static func endEffects(target: ResCombatant):
-	CombatGlobals.resetStat(target, 'heal mult')
+static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
+	CombatGlobals.resetStat(target, status_effect.NAME)

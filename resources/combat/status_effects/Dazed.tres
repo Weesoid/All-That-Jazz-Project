@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cubcm6bferg2d"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/particles/Vulnerated.tscn" id="1_8ihke"]
+[ext_resource type="PackedScene" path="res://scenes/status_visuals/Vulnerated.tscn" id="1_8ihke"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_bb7g0"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsDazed.gd" id="2_h2sbp"]
 

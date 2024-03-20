@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/particles/Singe.tscn" id="1_7nbwp"]
+[ext_resource type="PackedScene" path="res://scenes/status_visuals/Singe.tscn" id="1_7nbwp"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_ty3fj"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsSinged.gd" id="2_jsky3"]
 

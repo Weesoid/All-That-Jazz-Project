@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cwpas7w01qbw3"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://p0lan7trguvk"]
 
-[ext_resource type="PackedScene" uid="uid://ecoy08x465xk" path="res://scenes/particles/BrawnBuff.tscn" id="1_v4ihd"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsHustleUp.gd" id="2_03cmm"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_wur0o"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_njgqp"]
 
 [resource]
@@ -9,7 +9,7 @@ script = ExtResource("4_njgqp")
 NAME = "Hustle Up"
 DESCRIPTION = ""
 STATUS_SCRIPT = ExtResource("2_03cmm")
-PACKED_SCENE = ExtResource("1_v4ihd")
+TEXTURE = ExtResource("2_wur0o")
 MAX_DURATION = 6
 MAX_RANK = 2
 ON_HIT = false

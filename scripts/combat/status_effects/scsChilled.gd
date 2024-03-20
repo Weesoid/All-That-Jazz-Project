@@ -5,5 +5,5 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.calculateRawDamage(target, damage)
 		CombatGlobals.modifyStatFlat(target, 'grit', -1)
 
-static func endEffects(target: ResCombatant):
-	CombatGlobals.resetStat(target, 'grit')
+static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
+	CombatGlobals.resetStat(target, status_effect.NAME)

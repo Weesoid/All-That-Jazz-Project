@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/particles/Vulnerated.tscn" id="1_gkjan"]
+[ext_resource type="PackedScene" path="res://scenes/status_visuals/Vulnerated.tscn" id="1_gkjan"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_ge1mk"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsVulnerated.gd" id="2_hfugv"]
 

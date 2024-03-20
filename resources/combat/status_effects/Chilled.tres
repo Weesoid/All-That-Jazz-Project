@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://wdspqvfjnoqr"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/particles/Chilled.tscn" id="1_58yo2"]
+[ext_resource type="PackedScene" uid="uid://crvtpyb3daqtt" path="res://scenes/status_visuals/Chilled.tscn" id="1_58yo2"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_fe3a6"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsChilled.gd" id="2_x06er"]
 

@@ -17,7 +17,7 @@ class_name ResStatusEffect
 var duration
 var current_rank = 1
 var afflicted_combatant: ResCombatant
-var PARTICLES
+var VISUALS
 var ICON: TextureRect
 var TARGETABLE
 
@@ -26,7 +26,7 @@ func initializeStatus():
 	ICON.texture = TEXTURE
 	
 	if PACKED_SCENE != null:
-		PARTICLES = PACKED_SCENE.instantiate()
+		VISUALS = PACKED_SCENE.instantiate()
 		animateStatusEffect()
 	
 	if ON_HIT:
@@ -43,8 +43,8 @@ func removeStatusEffect():
 		CombatGlobals.received_combatant_value.disconnect(onHitTick)
 	
 	STATUS_SCRIPT.endEffects(afflicted_combatant, self)
-	if PARTICLES != null:
-		PARTICLES.queue_free()
+	if VISUALS != null:
+		VISUALS.queue_free()
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
@@ -59,13 +59,12 @@ func tick():
 		removeStatusEffect()
 
 func animateStatusEffect():
-	if PARTICLES == null:
+	if VISUALS == null:
 		return
 	
-	PARTICLES.global_position = Vector2(0, 0)
-	afflicted_combatant.SCENE.add_child(PARTICLES)
-	
-	PARTICLES.restart()
+	VISUALS.global_position = Vector2(0, 0)
+	VISUALS.get_node('AnimationPlayer').play('Show')
+	afflicted_combatant.SCENE.add_child(VISUALS)
 
 func _to_string():
 	return NAME

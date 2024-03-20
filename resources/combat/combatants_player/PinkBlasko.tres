@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=19 format=3 uid="uid://ditk8hkfnmg0o"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=23 format=3 uid="uid://ditk8hkfnmg0o"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="3_14gbd"]
@@ -6,8 +6,12 @@
 [ext_resource type="PackedScene" path="res://scenes/entities/followers/Pinky.tscn" id="4_fpjeh"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="5_5571v"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/ColdSlap.tres" id="5_sy720"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/HotHit.tres" id="6_lnnlb"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/VenoStrike.tres" id="7_12dc3"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_kr4q2"]
 [ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://images/animations/GoodGuyB.png" id="8_88eiy"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/ShockTherapy.tres" id="8_mp4jg"]
 [ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/sprites/will_icon.png" id="8_sl7ba"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="10_gxbu7"]
 
@@ -153,7 +157,7 @@ _bundled = {
 
 [resource]
 script = ExtResource("5_4siku")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_bfkjx"), ExtResource("7_kr4q2"), ExtResource("3_14gbd"), ExtResource("1_h6ewg")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_bfkjx"), ExtResource("7_kr4q2"), ExtResource("3_14gbd"), ExtResource("1_h6ewg"), ExtResource("5_sy720"), ExtResource("6_lnnlb"), ExtResource("7_12dc3"), ExtResource("8_mp4jg")])
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
 CHARMS = {
 0: null,
