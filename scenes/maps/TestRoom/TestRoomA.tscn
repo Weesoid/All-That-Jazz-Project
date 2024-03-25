@@ -112,7 +112,7 @@ position = Vector2(130, -131)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("8_eg7gu")]
 UNIQUE_ID = "SexMasters"
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_ppre7"), ExtResource("10_geual")])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_ppre7"), ExtResource("10_geual"), ExtResource("10_geual")])
 
 [node name="Sprite2D" type="Sprite2D" parent="Fighter"]
 position = Vector2(0, -12)

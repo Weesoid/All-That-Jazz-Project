@@ -192,8 +192,10 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
+	
 	for combatant in getCombatantSquad(entity_name):
 		combat_scene.COMBATANTS.append(combatant.duplicate())
+	
 	combat_scene.initial_status_effect_enemy = initial_status_effect_enemy
 	combat_scene.initial_status_effect_player = initial_status_effect_player
 	if combat_event_name != '':

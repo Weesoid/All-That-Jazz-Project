@@ -1,7 +1,6 @@
 extends ResCombatant
 class_name ResEnemyCombatant
 
-@export var COUNT: int = 1
 @export var AI_PACKAGE: GDScript
 @export var CHANCE_TO_DROP = 0.50
 @export var DROP_COUNT = 1
