@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Container
 
 @onready var combat_log = $CombatLog
 @onready var animator = $AnimationPlayer

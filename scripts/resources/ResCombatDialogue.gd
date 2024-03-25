@@ -2,6 +2,7 @@ extends Resource
 class_name ResCombatDialogue
 
 @export var dialogue_resource: DialogueResource 
+@export var dialogue_conditions: Dictionary
 
 @export var turn_condition: int
 @export var ability_condition: ResAbility

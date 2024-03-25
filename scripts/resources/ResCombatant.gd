@@ -27,6 +27,8 @@ class_name ResCombatant
 var STAT_MODIFIERS = {}
 var STATUS_EFFECTS: Array[ResStatusEffect]
 var BASE_STAT_VALUES: Dictionary
+var ROLLED_SPEED: int
+var ACTED: bool
 var SCENE
 
 signal enemy_turn

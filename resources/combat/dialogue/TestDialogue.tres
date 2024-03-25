@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ResCombatDialogue" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResCombatDialogue" load_steps=4 format=3 uid="uid://s3y4wyjmik54"]
 
-[ext_resource type="Resource" path="res://resources/combat/abilities/PoisonBite.tres" id="1_cuh1j"]
+[ext_resource type="Resource" uid="uid://di00nscjwoc7x" path="res://resources/combat/abilities/PoisonBite.tres" id="1_cuh1j"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatDialogue.gd" id="1_j7ri4"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="2_hyiq0"]
 
 [resource]
 script = ExtResource("1_j7ri4")
 dialogue_resource = ExtResource("2_hyiq0")
+dialogue_conditions = {}
 turn_condition = 10
 ability_condition = ExtResource("1_cuh1j")
 combatant_name = "EUStriker"

@@ -1,9 +1,11 @@
 extends Node
 
 var dialogue_resource: DialogueResource 
+var dialogue_conditions: Dictionary
 
 var turn_condition: int
 var ability_condition: ResAbility
+
 var combatant_condition: ResCombatant
 var combatant_stat_condition: String
 var combatant_stat_value
@@ -47,3 +49,10 @@ func startAbilityDialogue(ability: ResAbility):
 		OverworldGlobals.showDialogueBox(dialogue_resource, 'on_ability')
 		dialogue_triggered = true
 		CombatGlobals.ability_used.disconnect(startAbilityDialogue)
+
+func _exit_tree():
+	CombatGlobals.ability_used.disconnect(startAbilityDialogue)
+	CombatGlobals.combatant_stats.disconnect(startCombatantDataDialogue)
+	CombatGlobals.combat_lost.disconnect(startLoseDialogue)
+	CombatGlobals.combat_won.disconnect(startWinDialogue)
+	CombatGlobals.turn_increment.disconnect(startTurnDialogue)

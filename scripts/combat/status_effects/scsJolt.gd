@@ -1,6 +1,6 @@
 static func applyEffects(target: ResCombatant, _status_effect: ResStatusEffect):
-	target.STAT_VALUES['hustle'] = -1
-	#CombatGlobals.manual_call_indicator.emit(target, 'JOLTED!', 'Show')
+	CombatGlobals.manual_call_indicator.emit(target, 'JOLTED!', 'Show')
+	CombatGlobals.addStatusEffect(target, 'Dazed')
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	CombatGlobals.resetStat(target, status_effect.NAME)

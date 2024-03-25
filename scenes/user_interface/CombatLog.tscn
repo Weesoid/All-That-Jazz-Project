@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://xiuccmt1snj8"]
+[gd_scene load_steps=6 format=3 uid="uid://xiuccmt1snj8"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatLog.gd" id="1_a2ou1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eg870"]
 
 [sub_resource type="Animation" id="Animation_xbrw1"]
 length = 0.001
@@ -66,14 +68,18 @@ _data = {
 [node name="LogContainer" type="PanelContainer"]
 modulate = Color(1, 1, 1, 0)
 z_index = 999
+clip_contents = true
 offset_left = -576.0
 offset_top = -320.0
 offset_right = 574.0
-offset_bottom = -304.0
+offset_bottom = -284.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_eg870")
 script = ExtResource("1_a2ou1")
 
 [node name="CombatLog" type="RichTextLabel" parent="."]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 fit_content = true

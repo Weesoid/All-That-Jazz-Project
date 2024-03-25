@@ -24,9 +24,10 @@ class_name CombatScene
 @onready var battle_music = $BattleMusic
 @onready var battle_sounds = $BattleSounds
 @onready var battle_back = $CombatCamera/DefaultBattleParallax.get_node('AnimationPlayer')
+
+var combatant_turn_order: Array[ResCombatant]
 var combat_dialogue: ResCombatDialogue
 var conclusion_dialogue: DialogueResource
-
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
@@ -43,7 +44,7 @@ var drop_summary = ''
 var turn_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
-var battle_music_name: String = "706171__timbre__atmosphere-prince-funk-via-stableaudio.ogg"
+var battle_music_name: String = ""
 var initial_status_effect_enemy: String = ''
 var initial_status_effect_player: String = ''
 
@@ -62,9 +63,9 @@ func _ready():
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	turn_indicator.COMBAT_SCENE = self
 	turn_indicator.initialize()
+	renameDuplicates()
 	
 	for combatant in COMBATANTS:
-		#spawnTroop(combatant)
 		combatant.initializeCombatant()
 		combatant.player_turn.connect(on_player_turn)
 		combatant.enemy_turn.connect(on_enemy_turn)
@@ -87,8 +88,10 @@ func _ready():
 		for combatant in getCombatantGroup('player'):
 			CombatGlobals.addStatusEffect(combatant, initial_status_effect_player)
 	
-	battle_music.stream = load("res://audio/music/%s" % battle_music_name)
-	battle_music.play()
+	if battle_music_name != "":
+		battle_music.stream = load("res://audio/music/%s" % battle_music_name)
+		battle_music.play()
+	
 	transition.play('Out')
 	await transition.animation_finished
 	
@@ -96,19 +99,12 @@ func _ready():
 		tickStatusEffects(combatant)
 	removeDeadCombatants(false)
 	
-	COMBATANTS.sort_custom(sortBySpeed)
-	
-	active_index = incrementIndex(active_index,1,COMBATANTS.size())
-	active_combatant = COMBATANTS[active_index]
+	rollTurns()
+	setActiveCombatant(false)
 	while active_combatant.STAT_VALUES['hustle'] < 0:
-		active_index = incrementIndex(active_index,1,COMBATANTS.size())
-		print('checking again!', active_combatant)
-		active_combatant = COMBATANTS[active_index]
+		setActiveCombatant(false)
 	
-	turn_indicator.updateActive()
-	print('active is ', active_combatant)
 	active_combatant.act()
-	turn_highlight.global_position = active_combatant.getSprite().global_position
 	
 	if combat_dialogue != null:
 		combat_dialogue.initializeDialogue(COMBATANTS)
@@ -143,7 +139,9 @@ func on_player_turn():
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
 	
+	print('Waiting!')
 	await confirm
+	print('Ring!')
 	end_turn()
 
 func on_enemy_turn():
@@ -167,7 +165,17 @@ func on_enemy_turn():
 	
 	end_turn()
 
-func end_turn():
+func end_turn(combatant_act=true):
+	if combatant_act:
+		active_combatant.ACTED = true
+	
+	if allCombatantsActed():
+		rollTurns()
+		active_index = -1
+		end_turn(false)
+		turn_indicator.updateActive()
+		return
+	
 	turn_count += 1
 	if active_combatant is ResPlayerCombatant:
 		player_turn_count += 1
@@ -187,7 +195,6 @@ func end_turn():
 	# Reset values
 	run_once = true
 	target_index = 0
-	COMBATANTS.sort_custom(sortBySpeed)
 	selected_item = null
 	secondary_panel.hide()
 	
@@ -199,15 +206,11 @@ func end_turn():
 	
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
-		active_index = incrementIndex(active_index,1,COMBATANTS.size())
-		active_combatant = COMBATANTS[active_index]
-		tickStatusEffects(active_combatant)
-		removeDeadCombatants()
+		setActiveCombatant()
 		while active_combatant.STAT_VALUES['hustle'] < 0:
-			active_index = incrementIndex(active_index,1,COMBATANTS.size())
-			active_combatant = COMBATANTS[active_index]
-			tickStatusEffects(active_combatant)
-			removeDeadCombatants()
+			print('active is stuned!')
+			active_combatant.ACTED = true
+			setActiveCombatant()
 	else:
 		selected_ability.ENABLED = false
 	
@@ -215,11 +218,18 @@ func end_turn():
 		triggerDialogue()
 		await dialogue_done
 	
+	active_combatant.act()
+	checkWin()
+
+func setActiveCombatant(tick_effect=true):
+	active_index = incrementIndex(active_index,1,combatant_turn_order.size())
+	active_combatant = combatant_turn_order[active_index]
 	turn_indicator.updateActive()
 	turn_highlight.global_position = active_combatant.getSprite().global_position
 	turn_highlight.get_node('AnimationPlayer').play('Show')
-	active_combatant.act()
-	checkWin()
+	if tick_effect:
+		tickStatusEffects(active_combatant)
+		removeDeadCombatants()
 
 func removeDeadCombatants(fading=true):
 	for combatant in getDeadCombatants():
@@ -227,15 +237,18 @@ func removeDeadCombatants(fading=true):
 			if !combatant.getStatusEffectNames().has('Knock Out'): 
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
+				combatant.ACTED = true
 				experience_earnt += combatant.getExperience()
 				drop_summary += combatant.getDrops()
 		else:
 			if !combatant.getStatusEffectNames().has('Fading') and !combatant.getStatusEffectNames().has('Knock Out') and fading: 
-				print('Adding effect!')
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
+				combatant.ACTED = true
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
+				combatant.ACTED = true
+
 #********************************************************************************
 # BASE SCENE NODE CONTROL
 #********************************************************************************
@@ -381,6 +394,7 @@ func executeAbility():
 	if checkDialogue():
 		triggerDialogue()
 		await dialogue_done
+	print('Emitting!')
 	confirm.emit()
 
 func commandExecuteAbility(target, ability: ResAbility):
@@ -417,25 +431,25 @@ func connectPlayerItems():
 			if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
 			item.EFFECT.single_target.connect(playerSelectAbility)
 			item.EFFECT.multi_target.connect(playerSelectAbility)
-	
-#func spawnTroop(combatant):
-#	if combatant is ResPlayerCombatant or combatant.COUNT < 1:
-#		return
-#
-#	var id = 2
-#
-#	for n in combatant.COUNT-1:
-#		var temp_combatant = combatant.duplicate()
-#		temp_combatant.NAME += ' ' + str(id)
-#		id += 1
-#		temp_combatant.COUNT = 1
-#		COMBATANTS.append(temp_combatant)
 
 func getDeadCombatants():
 	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
-	
-func sortBySpeed(a: ResCombatant, b: ResCombatant):
-	return a.STAT_VALUES['hustle'] > b.STAT_VALUES['hustle']
+
+func rollTurns():
+	combatant_turn_order.clear()
+	for combatant in COMBATANTS:
+		if combatant.isDead(): continue
+		randomize()
+		combatant.ACTED = false
+		combatant.ROLLED_SPEED = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
+		combatant_turn_order.append(combatant)
+	combatant_turn_order.sort_custom(func(a, b): return a.ROLLED_SPEED > b.ROLLED_SPEED)
+	print(combatant_turn_order)
+
+func allCombatantsActed() -> bool:
+	for combatant in combatant_turn_order:
+		if !combatant.ACTED: return false
+	return true
 
 func getCombatantGroup(type)-> Array[ResCombatant]:
 	match type:
@@ -453,6 +467,14 @@ func isCombatantGroupDead(group: Array[ResCombatant]):
 
 func getLivingCombatants():
 	return COMBATANTS.duplicate().filter(func(combatant: ResCombatant): return !combatant.isDead())
+
+func renameDuplicates():
+	var seen = []
+	for combatant in COMBATANTS:
+		if seen.has(combatant.NAME):
+			combatant.NAME = '%s%s' % [combatant.NAME, seen.count(combatant.NAME)]
+		else:
+			seen.append(combatant.NAME)
 
 func checkWin():
 	if isCombatantGroupDead(getCombatantGroup('enemies')):
