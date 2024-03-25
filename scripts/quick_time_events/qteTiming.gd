@@ -6,15 +6,14 @@ extends Node2D
 
 var size = 150
 var target_speed = 2.0
-var max_ponts = 4
+var max_ponts = 1
 var points = 0
 var size_penalty = 0.15
 
-func _ready():
+func _enter_tree():
 	newGoal(true)
 
-
-func _process(delta):
+func _physics_process(delta):
 	moveTarget(delta)
 
 func _unhandled_input(_event: InputEvent):
@@ -35,7 +34,8 @@ func _unhandled_input(_event: InputEvent):
 			newGoal()
 		else:
 			CombatGlobals.qte_finished.emit()
-
+	#if Input.is_action_pressed("ui_left"):
+	#	target.global_position += Vector2(1.0, 0)
 func moveTarget(d):
 	target.global_position = lerp(target.global_position, target.global_position+Vector2(size,0), target_speed * d)
 	if size > 0:
@@ -44,7 +44,7 @@ func moveTarget(d):
 		if target.position.x <= size: CombatGlobals.qte_finished.emit()
 
 func newGoal(init=false):
-	var goal = preload("res://scenes/miscellaneous/TimingTarget.tscn").instantiate()
+	var goal = preload("res://scenes/quick_time_events/targets/TimingTarget.tscn").instantiate()
 	goal.scale.x -=  (size_penalty * points)
 	if init:
 		#debugPoints((size*-1)+100, size)

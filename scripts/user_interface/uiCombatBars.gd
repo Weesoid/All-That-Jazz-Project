@@ -35,10 +35,10 @@ func updateBars():
 	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])
 	health_bar.value = int(attached_combatant.STAT_VALUES['health'])
 	absolute_health.text = str(health_bar.value)
-	if attached_combatant.isDead():
-		hide()
-	else:
-		show()
+	#if attached_combatant.hasStatusEffect('Knock Out'):
+	#	hide()
+	#else:
+	#	show()
 
 func updateStatusEffects():
 	for effect in attached_combatant.STATUS_EFFECTS:
@@ -59,10 +59,7 @@ func _on_health_bar_value_changed(value):
 	if attached_combatant.isDead():
 		indicator_animator.play('KO')
 		await indicator_animator.animation_finished
-		self_modulate.a = 0.5
 		return
-	else:
-		self_modulate.a = 1.0
 	
 	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
 	indicator_animator.play(indicator_animation)

@@ -37,7 +37,9 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_clear_prompts"):
-		print(OverworldGlobals.getPlayer().global_position)
+		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
+		qte.global_position = OverworldGlobals.getPlayer().global_position
+		OverworldGlobals.getCurrentMap().add_child(qte)
 		timer.timeout.emit()
 
 func _on_timer_timeout():

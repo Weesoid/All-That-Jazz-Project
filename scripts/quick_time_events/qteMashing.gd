@@ -7,8 +7,8 @@ extends Node2D
 @onready var animator = $AnimationPlayer
 
 var time
-var drain_speed = 2.0
-var mash_strength = 10.0
+var drain_speed = 10.0
+var mash_strength = 15.0
 var max_ponts = 3
 var points = 0
 
@@ -20,7 +20,7 @@ func _ready():
 	time_bar.max_value = time
 	timer.start(time)
 
-func _process(delta):
+func _physics_process(delta):
 	time_bar.value = timer.time_left
 	if bar.value != 0:
 		bar.value -= 0.05

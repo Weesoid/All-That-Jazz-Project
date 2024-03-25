@@ -45,6 +45,7 @@ func removeStatusEffect():
 	STATUS_SCRIPT.endEffects(afflicted_combatant, self)
 	if VISUALS != null:
 		VISUALS.queue_free()
+	
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
@@ -55,7 +56,7 @@ func tick():
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if duration == 0 or afflicted_combatant.isDead() and NAME != "Knock Out":
+	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading'].has(NAME):
 		removeStatusEffect()
 
 func animateStatusEffect():

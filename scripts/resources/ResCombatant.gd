@@ -69,7 +69,7 @@ func hasStatusEffect(stat_name: String)-> bool:
 
 func isDead()-> bool:
 	return STAT_VALUES['health'] < 1.0
-	
+
 func getStringStats(current_stats=false):
 	var result = ""
 	var stats

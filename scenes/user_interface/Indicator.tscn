@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://yuje0oodg6y2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiIndicator.gd" id="1_578rr"]
 [ext_resource type="AudioStream" uid="uid://t5i7iw5r225l" path="res://audio/sounds/611193__eminyildirim__power-up-buff-positive-level-up.ogg" id="2_xhfcd"]

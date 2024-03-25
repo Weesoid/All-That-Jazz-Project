@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://ccou74m72m87i"]
+
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsFading.gd" id="1_12rad"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="1_dpk41"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_sesnd"]
+
+[resource]
+script = ExtResource("2_sesnd")
+NAME = "Fading"
+DESCRIPTION = "Target is in the brink of a Knock Out."
+STATUS_SCRIPT = ExtResource("1_12rad")
+TEXTURE = ExtResource("1_dpk41")
+MAX_DURATION = 4
+MAX_RANK = 0
+ON_HIT = false
+APPLY_ONCE = true
+TICK_PER_TURN = false
+PERMANENT = false
+LINGERING = false

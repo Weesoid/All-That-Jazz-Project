@@ -9,6 +9,7 @@
 size = Vector2(6, 32)
 
 [node name="QTE" type="Node2D"]
+process_mode = 3
 z_index = 5
 script = ExtResource("1_4ef8u")
 

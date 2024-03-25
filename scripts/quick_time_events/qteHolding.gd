@@ -6,7 +6,7 @@ var scale_penalty = 0.1
 var base_penalty = 6.0
 var shrink = false
 var target_speed = 2.5
-var max_points = 4
+var max_points = 1
 var points = 0
 
 @onready var target = $HoldCircle
@@ -57,7 +57,7 @@ func resetTarget():
 	target.scale = Vector2(1.0, 1.0)
 
 func newSweetSpot():
-	sweet_spot = preload("res://scenes/miscellaneous/HoldingTarget.tscn").instantiate()
+	sweet_spot = preload("res://scenes/quick_time_events/targets/HoldingTarget.tscn").instantiate()
 	sweet_spot.scale -= Vector2(scale_penalty, scale_penalty) * (base_penalty + points)
 	add_child(sweet_spot)
 	timer.start(1.0)

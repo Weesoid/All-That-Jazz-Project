@@ -95,7 +95,7 @@ func _ready():
 	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
-	removeDeadCombatants()
+	removeDeadCombatants(false)
 	
 	COMBATANTS.sort_custom(sortBySpeed)
 	
@@ -135,6 +135,10 @@ func _unhandled_input(_event):
 			toggleUI(true)
 
 func on_player_turn():
+	if has_node('QTE'): 
+		print('Waiting!')
+		await CombatGlobals.qte_finished
+	
 	battle_back.play('Player_Turn')
 	$CombatCamera/ActionPanel/AnimationPlayer.play("Show")
 	resetActionLog()
@@ -219,17 +223,21 @@ func end_turn():
 	active_combatant.act()
 	checkWin()
 
-func removeDeadCombatants():
+func removeDeadCombatants(fading=true):
 	for combatant in getDeadCombatants():
-		if !combatant.getStatusEffectNames().has('Knock Out'): 
-			clearStatusEffects(combatant)
-			CombatGlobals.addStatusEffect(combatant, 'KnockOut')
-			if combatant is ResEnemyCombatant: 
+		if combatant is ResEnemyCombatant:
+			if !combatant.getStatusEffectNames().has('Knock Out'): 
+				clearStatusEffects(combatant)
+				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				experience_earnt += combatant.getExperience()
 				drop_summary += combatant.getDrops()
-			tickStatusEffects(combatant)
-			
-
+		else:
+			if !combatant.getStatusEffectNames().has('Fading') and !combatant.getStatusEffectNames().has('Knock Out') and fading: 
+				print('Adding effect!')
+				clearStatusEffects(combatant)
+				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
+			#else:
+			#	CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 #********************************************************************************
 # BASE SCENE NODE CONTROL
 #********************************************************************************
