@@ -216,6 +216,7 @@ z_index = 999
 script = ExtResource("1_kv6ut")
 
 [node name="BattleSounds" type="AudioStreamPlayer" parent="."]
+max_polyphony = 16
 
 [node name="BattleMusic" type="AudioStreamPlayer" parent="."]
 volume_db = -15.0

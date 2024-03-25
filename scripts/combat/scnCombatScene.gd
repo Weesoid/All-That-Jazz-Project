@@ -60,7 +60,6 @@ func _ready():
 	transition_scene.visible = true
 	connectPlayerItems()
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
-	
 	turn_indicator.COMBAT_SCENE = self
 	turn_indicator.initialize()
 	
@@ -135,8 +134,7 @@ func _unhandled_input(_event):
 			toggleUI(true)
 
 func on_player_turn():
-	if has_node('QTE'): 
-		print('Waiting!')
+	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 	
 	battle_back.play('Player_Turn')
@@ -236,8 +234,8 @@ func removeDeadCombatants(fading=true):
 				print('Adding effect!')
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
-			#else:
-			#	CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
+			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
+				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 #********************************************************************************
 # BASE SCENE NODE CONTROL
 #********************************************************************************
@@ -374,7 +372,9 @@ func executeAbility():
 								selected_ability.ANIMATION
 								)
 	await get_tree().create_timer(0.5).timeout
-	if has_node('QTE'): await CombatGlobals.qte_finished
+	if has_node('QTE'): 
+		await CombatGlobals.qte_finished
+		await get_node('QTE').tree_exited
 	
 	if selected_item != null: selected_item.take(1)
 	CombatGlobals.ability_used.emit(selected_ability)
@@ -543,7 +543,16 @@ func runAbility():
 		executeAbility()
 		action_panel.hide()
 		run_once = false
-	
+
+func playCombatAudio(filename: String, db=0.0, pitch = 1, random_pitch=false):
+	battle_sounds.pitch_scale = pitch
+	battle_sounds.stream = load("res://audio/sounds/%s" % filename)
+	battle_sounds.volume_db = db
+	if random_pitch:
+		randomize()
+		battle_sounds.pitch_scale += randf_range(0.0, 0.25)
+	battle_sounds.play()
+
 func concludeCombat(results: int):
 	toggleUI(false)
 	battle_music.stop()

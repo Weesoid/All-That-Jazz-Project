@@ -24,12 +24,12 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="22_ccl1x"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="23_h35dj"]
 
-[sub_resource type="Resource" id="Resource_l713j"]
+[sub_resource type="Resource" id="Resource_bidbr"]
 script = ExtResource("1_fv010")
-position = Vector2(130.118, -82.071)
+position = Vector2(120.794, -89.8467)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_rr5i7"]
+[sub_resource type="Resource" id="Resource_27r1n"]
 script = ExtResource("5_sm60v")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -40,7 +40,7 @@ MAX_CAPACITY = 100
 ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_b7utd"]
+[sub_resource type="Resource" id="Resource_wejw1"]
 script = ExtResource("22_ccl1x")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_hyaey"), ExtResource("14_hvbbr")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -51,14 +51,14 @@ CURRENCY = 100
 UTILITY_CHARM_COUNT = 0
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
-stamina = 98.3
+stamina = 100.0
 bow_max_draw = 5.0
 walk_speed = 100.0
 sprint_speed = 200.0
 sprint_drain = 0.1
 stamina_gain = 0.1
 COMBATANT_SAVE_DATA = {
-ExtResource("6_hyaey"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rqtq2"), ExtResource("8_0vsdb")]), {
+ExtResource("6_hyaey"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rqtq2"), ExtResource("8_0vsdb"), ExtResource("10_q4r4w")]), {
 0: null,
 1: null,
 2: null
@@ -84,8 +84,8 @@ ExtResource("6_hyaey"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 100,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("9_ahh4g"), ExtResource("7_rqtq2"), ExtResource("10_q4r4w"), ExtResource("11_6i2o5"), ExtResource("12_sshaq"), ExtResource("13_adihq")]), true, Array[String]([]), true, true, 1, {}],
-ExtResource("14_hvbbr"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rqtq2"), ExtResource("15_msffl"), ExtResource("8_0vsdb")]), {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("9_ahh4g"), ExtResource("7_rqtq2"), ExtResource("11_6i2o5"), ExtResource("12_sshaq"), ExtResource("13_adihq")]), true, Array[String]([]), true, true, 1, {}],
+ExtResource("14_hvbbr"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rqtq2"), ExtResource("15_msffl"), ExtResource("8_0vsdb"), ExtResource("10_q4r4w")]), {
 0: null,
 1: null,
 2: null
@@ -111,11 +111,11 @@ ExtResource("14_hvbbr"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 999,
 "hustle": 2,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_adihq"), ExtResource("16_4vgdr"), ExtResource("10_q4r4w"), ExtResource("17_523re"), ExtResource("18_hnlu6"), ExtResource("19_e82kj"), ExtResource("20_4kg42"), ExtResource("10_q4r4w")]), false, Array[String]([]), true, true, 1, {}]
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_adihq"), ExtResource("16_4vgdr"), ExtResource("17_523re"), ExtResource("18_hnlu6"), ExtResource("19_e82kj"), ExtResource("20_4kg42"), ExtResource("10_q4r4w")]), false, Array[String]([]), true, true, 1, {}]
 }
 
 [resource]
 script = ExtResource("23_h35dj")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_l713j"), SubResource("Resource_rr5i7"), Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"editor_description":"","script":Resource("res://scripts/resources/ResSaveDataQuests.gd"),"QUESTS":Array[Resource("res://scripts/resources/ResQuest.gd")]([]),"QUEST_OBJECTIVES_DATA":{})
-, SubResource("Resource_b7utd")]
+save_data = [SubResource("Resource_bidbr"), SubResource("Resource_27r1n"), Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"editor_description":"","script":Resource("res://scripts/resources/ResSaveDataQuests.gd"),"QUESTS":Array[Resource("res://scripts/resources/ResQuest.gd")]([]),"QUEST_OBJECTIVES_DATA":{})
+, SubResource("Resource_wejw1")]

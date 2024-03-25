@@ -10,6 +10,7 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 	if caster is ResPlayerCombatant:
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.global_position = target.SCENE.global_position
+		qte.max_points = 3
 		CombatGlobals.getCombatScene().add_child(qte)
 		await CombatGlobals.qte_finished
 		
