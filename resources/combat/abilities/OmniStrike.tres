@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://dne68qskv6g1y"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scaDebuggerStrike.gd" id="1_dvr7x"]
-[ext_resource type="PackedScene" path="res://scenes/animations/Heal.tscn" id="2_am3sf"]
+[ext_resource type="PackedScene" uid="uid://c8hpqomh4qilw" path="res://scenes/animations/Heal.tscn" id="2_am3sf"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_2kbdk"]
 
 [resource]
@@ -10,10 +10,9 @@ NAME = "Omni Strike"
 DESCRIPTION = "Strike Anybody!"
 ANIMATION = ExtResource("2_am3sf")
 ABILITY_SCRIPT = ExtResource("1_dvr7x")
-COST = 0
-COST_RESOURCE = ""
 TARGET_TYPE = 0
-TARGET_GROUP = 2
+TARGET_GROUP = 3
+CAN_TARGET_SELF = true
 TARGET_DEAD = false
 INSTANT_CAST = false
-VALUE = 100
+REQUIRED_LEVEL = 0

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=21 format=3 uid="uid://dqq2jvicpe82l"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=22 format=3 uid="uid://dqq2jvicpe82l"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_bsdt7"]
 [ext_resource type="Resource" uid="uid://bcwc00l52dxp" path="res://resources/combat/abilities/DebugAddEffect.tres" id="1_jdoll"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://6jibksvj0qnw" path="res://images/animations/GoodGuy.png" id="6_wr0qh"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_6iflm"]
 [ext_resource type="Texture2D" uid="uid://dhqwdbu6lsyry" path="res://images/sprites/team2.png" id="8_fydt8"]
+[ext_resource type="Resource" uid="uid://bdytywwtltmru" path="res://resources/combat/abilities/Guard.tres" id="8_ldibr"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="12_i6m42"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
@@ -155,13 +156,9 @@ _bundled = {
 
 [resource]
 script = ExtResource("5_rov6a")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_jdoll"), ExtResource("2_2x6l0"), ExtResource("1_bsdt7"), ExtResource("3_k3ahh"), ExtResource("5_ckxsc"), ExtResource("7_6iflm"), ExtResource("4_nrs1w")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_jdoll"), ExtResource("2_2x6l0"), ExtResource("1_bsdt7"), ExtResource("3_k3ahh"), ExtResource("5_ckxsc"), ExtResource("7_6iflm"), ExtResource("4_nrs1w"), null])
+ABILITY_SLOT = ExtResource("8_ldibr")
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
-CHARMS = {
-0: null,
-1: null,
-2: null
-}
 MANDATORY = true
 NAME = "PUFriendHealer"
 ICON = ExtResource("8_fydt8")

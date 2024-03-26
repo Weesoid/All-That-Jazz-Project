@@ -82,23 +82,24 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	received_combatant_value.emit(target, caster, int(base_damage))
 	playAndResetAnimation(target, 'Hit')
 
-func calculateHealing(caster: ResCombatant, target:ResCombatant, healing_stat: String, base_healing):
-	base_healing += caster.STAT_VALUES[healing_stat] * base_healing
+func calculateHealing(target:ResCombatant, base_healing):
 	base_healing = valueVariate(base_healing, 0.15)
 	base_healing *= target.STAT_VALUES['heal mult']
 	
 	if target.STAT_VALUES['health'] + base_healing > target.getMaxHealth():
+		manual_call_indicator.emit(target, "FULLY HEALED!", 'Heal')
 		target.STAT_VALUES['health'] = target.getMaxHealth()
 	else:
 		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
 		target.STAT_VALUES['health'] += int(base_healing)
 	
-	received_combatant_value.emit(target, caster, int(base_healing))
+	#received_combatant_value.emit(target, caster, int(base_healing))
 	call_indicator.emit('Show', target)
 
 func randomRoll(percent_chance: float):
-	assert(percent_chance <= 1.0 and percent_chance >= 0, "% chance must be between 0 to 1")
 	percent_chance = 1.0 - percent_chance
+	if percent_chance > 1.0:
+		percent_chance = 1.0
 	randomize()
 	var roll = randf_range(0, 1.0)
 	if roll > percent_chance:

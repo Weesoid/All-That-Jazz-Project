@@ -9,6 +9,7 @@ enum TargetType {
 enum TargetGroup {
 	ALLIES,
 	ENEMIES,
+	SELF,
 	ALL
 }
 
@@ -18,6 +19,7 @@ enum TargetGroup {
 @export var ABILITY_SCRIPT: GDScript
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
+@export var CAN_TARGET_SELF: bool = true
 @export var TARGET_DEAD: bool = false
 @export var INSTANT_CAST: bool = false
 @export var REQUIRED_LEVEL = 0
@@ -37,6 +39,11 @@ func execute():
 func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 	if !TARGET_DEAD:
 		combatants = combatants.filter(func filterDead(combatant): return !combatant.isDead())
+	if !CAN_TARGET_SELF:
+		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
+	
+	if TARGET_GROUP == TargetGroup.SELF:
+		return CombatGlobals.getCombatScene().active_combatant
 	
 	if is_caster_player:
 		match TARGET_GROUP:

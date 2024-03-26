@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://dxbuny7c3eoa0"]
+
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="1_bbcmt"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBrace.gd" id="1_hhq1d"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_8trds"]
+
+[resource]
+script = ExtResource("2_8trds")
+NAME = "Brace"
+DESCRIPTION = "Target is bracing for an attack."
+STATUS_SCRIPT = ExtResource("1_hhq1d")
+TEXTURE = ExtResource("1_bbcmt")
+MAX_DURATION = 2
+MAX_RANK = 0
+ON_HIT = true
+APPLY_ONCE = false
+TICK_PER_TURN = false
+PERMANENT = false
+LINGERING = false

@@ -17,6 +17,7 @@ class_name ResStatusEffect
 var duration
 var current_rank = 1
 var afflicted_combatant: ResCombatant
+var attached_data
 var VISUALS
 var ICON: TextureRect
 var TARGETABLE
@@ -36,7 +37,7 @@ func initializeStatus():
 
 func onHitTick(combatant, caster, received_value):
 	if combatant == afflicted_combatant:
-		STATUS_SCRIPT.applyEffects(afflicted_combatant, caster, received_value, self)
+		STATUS_SCRIPT.applyHitEffects(afflicted_combatant, caster, received_value, self)
 
 func removeStatusEffect():
 	if ON_HIT:
@@ -52,8 +53,8 @@ func removeStatusEffect():
 func tick():
 	if !PERMANENT: 
 		duration -= 1
-	if !ON_HIT:
-		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
+	
+	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
 	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading'].has(NAME):

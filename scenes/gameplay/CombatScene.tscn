@@ -356,6 +356,14 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "SKILLS"
 
+[node name="Guard" type="Button" parent="CombatCamera/ActionPanel"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme = ExtResource("8_lqkpn")
+theme_override_font_sizes/font_size = 16
+button_mask = 0
+text = "GUARD "
+
 [node name="Equipment" type="Button" parent="CombatCamera/ActionPanel"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -398,6 +406,7 @@ libraries = {
 [node name="Timer" type="Timer" parent="CombatCamera/LogContainer"]
 
 [connection signal="pressed" from="CombatCamera/ActionPanel/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="CombatCamera/ActionPanel/Guard" to="." method="_on_guard_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Items" to="." method="_on_items_pressed"]
 [connection signal="pressed" from="CombatCamera/ActionPanel/Inspect" to="." method="_on_inspect_pressed"]

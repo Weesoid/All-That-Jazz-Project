@@ -218,6 +218,7 @@ func end_turn(combatant_act=true):
 		triggerDialogue()
 		await dialogue_done
 	
+	turn_indicator.updateActive()
 	active_combatant.act()
 	checkWin()
 
@@ -257,8 +258,19 @@ func _on_skills_pressed():
 	if secondary_panel_container.get_child_count() == 0: return
 	secondary_panel.show()
 	secondary_panel_container.get_child(0).grab_focus()
+
+func _on_guard_pressed():
+	Input.action_release("ui_accept")
 	
+	selected_ability = active_combatant.ABILITY_SLOT
 	
+	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
+	target_state = selected_ability.getTargetType()
+	action_panel.hide()
+	await target_selected
+	runAbility()
+
+
 func _on_items_pressed():
 	getPlayerItems()
 	if secondary_panel_container.get_child_count() == 0: return
@@ -351,18 +363,21 @@ func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty():
 		return
 	
-	target_combatant = valid_targets[target_index]
+	if valid_targets is Array:
+		target_combatant = valid_targets[target_index]
+	else:
+		target_combatant = valid_targets
+	
 	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
-	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.1)
+	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.005)
 	browseTargetsInputs()
 	confirmCancelInputs()
-	
+
 func playerSelectMultiTarget():
 	if getCombatantGroup('enemies').is_empty():
 		return
 	
 	drawSelectionTarget('Target', enemy_container.global_position)
-	combat_camera.zoom = lerp(combat_camera.zoom, Vector2(0.75, 0.75), 0.25)
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
 
@@ -371,7 +386,7 @@ func playerSelectInspection():
 	valid_targets = COMBATANTS
 	target_combatant = valid_targets[target_index]
 	drawInspectionTarget(target_combatant.getSprite().global_position)
-	combat_camera.position = lerp(combat_camera.position, ui_inspect_target.position, 0.25)
+	combat_camera.position = lerp(combat_camera.position, ui_inspect_target.position, 0.005)
 	ui_inspect_target.subject = target_combatant
 	browseTargetsInputs()
 	confirmCancelInputs()
@@ -438,13 +453,15 @@ func getDeadCombatants():
 func rollTurns():
 	combatant_turn_order.clear()
 	for combatant in COMBATANTS:
-		if combatant.isDead(): continue
+		if combatant.isDead() and !combatant.hasStatusEffect('Fading'): continue
 		randomize()
 		combatant.ACTED = false
 		combatant.ROLLED_SPEED = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
 		combatant_turn_order.append(combatant)
 	combatant_turn_order.sort_custom(func(a, b): return a.ROLLED_SPEED > b.ROLLED_SPEED)
-	print(combatant_turn_order)
+	for combatant in combatant_turn_order:
+		await get_tree().create_timer(0.25).timeout
+		CombatGlobals.manual_call_indicator.emit(combatant, "%s Hustle!" % [str(combatant.ROLLED_SPEED)], 'Show')
 
 func allCombatantsActed() -> bool:
 	for combatant in combatant_turn_order:
@@ -536,11 +553,14 @@ func drawInspectionTarget(pos: Vector2):
 	ui_inspect_target.position = pos
 
 func browseTargetsInputs():
+	if !valid_targets is Array:
+		return
+	
 	if Input.is_action_just_pressed("ui_right"):
 		target_index = incrementIndex(target_index, 1, valid_targets.size())
 	if Input.is_action_just_pressed("ui_left"):
 		target_index = incrementIndex(target_index, -1, valid_targets.size())
-	
+
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
 		ui_target.hide()
@@ -550,7 +570,7 @@ func confirmCancelInputs():
 	
 func resetActionLog():
 	combat_camera.position = Vector2(0, -19)
-	combat_camera.zoom = Vector2(1.0, 1.0)
+	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	ui_target.hide()
 	secondary_panel.hide()
@@ -623,4 +643,3 @@ func concludeCombat(results: int):
 	OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())
 	
 	queue_free()
-

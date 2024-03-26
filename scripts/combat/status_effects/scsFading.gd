@@ -3,9 +3,9 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.manual_call_indicator.emit(target, 'Fading!', 'Show')
 		CombatGlobals.modifyStat(target, {'grit': -5.0, 'brawn': -5.0, 'hustle': -999.0}, status_effect.NAME)
 	
-	if CombatGlobals.randomRoll(0.5 + target.BASE_STAT_VALUES['grit']) and status_effect.duration != status_effect.MAX_DURATION - 1 and status_effect.duration > 0:
+	if CombatGlobals.randomRoll(1.0 + target.BASE_STAT_VALUES['grit']) and status_effect.duration != status_effect.MAX_DURATION - 1 and status_effect.duration > 0:
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
-		qte.target_speed = 2.5 + randf_range(0.5, 1.0)
+		qte.target_speed = 2.0 + randf_range(0.5, 1.0)
 		qte.global_position = target.SCENE.global_position
 		CombatGlobals.getCombatScene().add_child(qte)
 		await CombatGlobals.qte_finished
