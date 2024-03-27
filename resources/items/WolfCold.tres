@@ -6,8 +6,10 @@
 [resource]
 script = ExtResource("2_jtrld")
 EFFECT = ExtResource("1_vxu0m")
+USE_REQUIREMENT = {
+"handling": 1
+}
 max_durability = 100
-durability = Vector2i(100, 100)
 NAME = "Wolf Cold"
 DESCRIPTION = ""
 VALUE = 0

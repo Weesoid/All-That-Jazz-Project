@@ -263,7 +263,6 @@ func _on_guard_pressed():
 	Input.action_release("ui_accept")
 	
 	selected_ability = active_combatant.ABILITY_SLOT
-	
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	target_state = selected_ability.getTargetType()
 	action_panel.hide()
@@ -346,8 +345,13 @@ func getPlayerWeapons(inventory):
 		button.add_theme_font_size_override('font_size', 16)
 		button.custom_minimum_size.x = 240
 		button.text = str(weapon.NAME, '(', weapon.durability, '/', weapon.max_durability,')')
-		button.pressed.connect(weapon.EFFECT.execute)
-		if weapon.durability <= 0: button.disabled = true
+		button.pressed.connect(
+			func():
+				if weapon.durability > 0:
+					forceCastAbility(weapon.EFFECT)
+					weapon.useDurability())
+		if weapon.durability <= 0 or !weapon.canUse(active_combatant): 
+			button.disabled = true
 		secondary_panel_container.add_child(button)
 
 func playerSelectAbility(ability:ResAbility, state: int):
@@ -438,7 +442,7 @@ func connectPlayerAbilities(combatant: ResCombatant):
 		if ability.single_target.is_connected(playerSelectAbility): continue
 		ability.single_target.connect(playerSelectAbility)
 		ability.multi_target.connect(playerSelectAbility)
-		
+
 func connectPlayerItems():
 	for item in InventoryGlobals.INVENTORY:
 		if !item is ResConsumable: continue
@@ -446,6 +450,15 @@ func connectPlayerItems():
 			if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
 			item.EFFECT.single_target.connect(playerSelectAbility)
 			item.EFFECT.multi_target.connect(playerSelectAbility)
+
+func forceCastAbility(ability: ResAbility):
+	selected_ability = ability
+	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
+	target_state = selected_ability.getTargetType()
+	secondary_panel.hide()
+	action_panel.hide()
+	await target_selected
+	runAbility()
 
 func getDeadCombatants():
 	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())

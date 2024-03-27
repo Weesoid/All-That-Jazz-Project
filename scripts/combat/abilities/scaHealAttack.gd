@@ -9,5 +9,5 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 	CombatGlobals.calculateHealing(caster, 10.0)
 	
 
-static func applyOverworldEffects(caster: ResCombatant, target: ResCombatant, _animation_scene):
+static func applyOverworldEffects(caster: ResCombatant, _target: ResCombatant, _animation_scene):
 	CombatGlobals.calculateHealing(caster, 10.0)

@@ -30,6 +30,8 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 		unit.append(item)
 	elif item is ResCharm:
 		unit.append(item.duplicate())
+	else:
+		unit.append(item)
 	
 	if show_message:
 		OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
@@ -135,9 +137,9 @@ func transferItem(item: ResItem, count: int, from: Array[ResItem], to: Array[Res
 		addItemResource(item, count, to)
 
 func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
-	#if item is ResEquippable and (hasItem(item.NAME) or hasItem(item.NAME, STORAGE)):
-	#	if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
-	#	return false
+	if item is ResWeapon and (hasItem(item.NAME) or hasItem(item.NAME, STORAGE)):
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
+		return false
 	if item is ResEquippable and item.WEIGHT + CURRENT_CAPACITY > MAX_CAPACITY:
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] not added! Your Inventory is full.' % item)
 		if transfer_storage:

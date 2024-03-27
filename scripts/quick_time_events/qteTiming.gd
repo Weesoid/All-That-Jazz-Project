@@ -10,7 +10,6 @@ var points = 0
 var size_penalty = 0.15
 
 func _enter_tree():
-	await get_tree().create_timer(0.5)
 	newGoal(true)
 
 func _physics_process(delta):
