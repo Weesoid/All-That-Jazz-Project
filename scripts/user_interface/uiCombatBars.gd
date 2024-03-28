@@ -3,7 +3,6 @@ class_name CombatBar
 
 @onready var health_bar = $HealthBar
 @onready var absolute_health = $AbsoluteHealth
-@onready var armor_icon = $ArmorIcon
 @onready var status_effects = $StatusEffectContainer
 @onready var indicator = $Indicator
 @onready var indicator_label = $Indicator/Label

@@ -25,6 +25,7 @@ func loadInformation():
 		ability_panel.add_child(ability_button)
 	
 	for ability in subject_combatant.ABILITY_POOL:
+		if ability == null: continue
 		var ability_button = Button.new()
 		ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		ability_button.text = ability.NAME

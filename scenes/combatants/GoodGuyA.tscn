@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://cco5140akhaqr"]
 
 [ext_resource type="Texture2D" uid="uid://6jibksvj0qnw" path="res://images/animations/GoodGuy.png" id="1_yemle"]
 [ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="2_gxqu0"]

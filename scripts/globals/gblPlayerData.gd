@@ -29,7 +29,8 @@ func _ready():
 	
 	TEAM.append(preload("res://resources/combat/combatants_player/GreenHealer.tres"))
 	TEAM.append(preload("res://resources/combat/combatants_player/PinkBlasko.tres"))
-	
+	TEAM.append(preload("res://resources/combat/combatants_player/Filler1.tres"))
+	TEAM.append(preload("res://resources/combat/combatants_player/Filler2.tres"))
 	FAST_TRAVEL_LOCATIONS.append('SecondMap')
 	initializeBenchedTeam()
 

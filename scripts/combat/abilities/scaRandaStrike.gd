@@ -9,6 +9,4 @@ static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 		var target = targets.pick_random()
 		CombatGlobals.playAbilityAnimation(target, animation_scene)
 		CombatGlobals.calculateRawDamage(target, 25.0)
-		
-		
 	

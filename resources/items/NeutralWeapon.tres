@@ -6,8 +6,10 @@
 [resource]
 script = ExtResource("1_fmffi")
 EFFECT = ExtResource("1_vw8ht")
+USE_REQUIREMENT = {
+"handling": 1
+}
 max_durability = 100
-durability = 50
 NAME = "Neutral Weapon"
 DESCRIPTION = "A neutral weapon in a hostile world..."
 VALUE = 0

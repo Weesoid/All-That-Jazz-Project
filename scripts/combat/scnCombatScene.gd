@@ -4,20 +4,21 @@ class_name CombatScene
 @export var COMBATANTS: Array[ResCombatant]
 
 @onready var combat_camera = $CombatCamera
-@onready var combat_log = $CombatCamera/LogContainer
+@onready var combat_log = $CombatCamera/Interface/LogContainer
 @onready var enemy_container = $EnemyContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
-@onready var secondary_panel = $CombatCamera/SecondaryPanel
-@onready var secondary_panel_container = $CombatCamera/SecondaryPanel/Scroller/Container
-@onready var action_panel = $CombatCamera/ActionPanel
-@onready var equip_button = $CombatCamera/ActionPanel/Equipment
-@onready var escape_button = $CombatCamera/ActionPanel/Escape
+@onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
+@onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/Scroller/Container
+@onready var action_panel = $CombatCamera/Interface/ActionPanel
+@onready var equip_button = $CombatCamera/Interface/ActionPanel/Equipment
+@onready var escape_button = $CombatCamera/Interface/ActionPanel/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
 @onready var ui_inspect_target = $CombatInspectTarget
-@onready var turn_counter = $CombatCamera/TurnCounter
-@onready var turn_indicator = $CombatCamera/TurnIndicator
+@onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
+@onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
+@onready var turn_indicator = $CombatCamera/Interface/TurnIndicator
 @onready var turn_highlight = $TurnHighlight
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
@@ -42,6 +43,7 @@ var run_once = true
 var experience_earnt = 0
 var drop_summary = ''
 var turn_count = 0
+var round_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_name: String = ""
@@ -114,6 +116,7 @@ func _ready():
 
 func _process(_delta):
 	turn_counter.text = str(turn_count)
+	round_counter.text = str(round_count)
 	match target_state:
 		1: playerSelectSingleTarget()
 		2: playerSelectMultiTarget()
@@ -132,9 +135,9 @@ func _unhandled_input(_event):
 func on_player_turn():
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
+	Input.action_release("ui_accept")
 	
 	battle_back.play('Player_Turn')
-	$CombatCamera/ActionPanel/AnimationPlayer.play("Show")
 	resetActionLog()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
@@ -260,6 +263,7 @@ func _on_skills_pressed():
 	secondary_panel_container.get_child(0).grab_focus()
 
 func _on_guard_pressed():
+	resetActionLog()
 	Input.action_release("ui_accept")
 	
 	selected_ability = active_combatant.ABILITY_SLOT
@@ -310,7 +314,6 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		var button = Button.new()
 		button.add_theme_font_size_override('font_size', 16)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size.x = 240
 		button.text = ability.NAME
 		button.pressed.connect(ability.execute)
 		if !ability.ENABLED:
@@ -407,6 +410,7 @@ func executeAbility():
 	if has_node('QTE'): 
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
+	Input.action_release("ui_accept")
 	
 	if selected_item != null: selected_item.take(1)
 	CombatGlobals.ability_used.emit(selected_ability)
@@ -472,6 +476,7 @@ func rollTurns():
 		combatant.ROLLED_SPEED = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
 		combatant_turn_order.append(combatant)
 	combatant_turn_order.sort_custom(func(a, b): return a.ROLLED_SPEED > b.ROLLED_SPEED)
+	round_count += 1
 	for combatant in combatant_turn_order:
 		await get_tree().create_timer(0.25).timeout
 		CombatGlobals.manual_call_indicator.emit(combatant, "%s Hustle!" % [str(combatant.ROLLED_SPEED)], 'Show')

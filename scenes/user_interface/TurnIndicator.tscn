@@ -1,6 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bipsixd3gwi1r"]
+[gd_scene load_steps=7 format=3 uid="uid://bipsixd3gwi1r"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiTurnIndicator.gd" id="1_oxif4"]
+[ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://images/animations/BadGuyJr.png" id="2_rwaut"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0uv1q"]
+atlas = ExtResource("2_rwaut")
+region = Rect2(0, 0, 256, 256)
 
 [sub_resource type="Animation" id="Animation_4kmvf"]
 length = 0.001
@@ -45,12 +50,17 @@ anchors_preset = 0
 pivot_offset = Vector2(122, 0)
 script = ExtResource("1_oxif4")
 
-[node name="CombatantNames" type="VBoxContainer" parent="."]
+[node name="CombatantNames" type="HBoxContainer" parent="."]
 layout_mode = 0
 offset_left = -122.0
 offset_right = 122.0
 offset_bottom = 47.0
 pivot_offset = Vector2(244, 0)
+
+[node name="TextureRect" type="TextureRect" parent="CombatantNames"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_0uv1q")
+expand_mode = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
