@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://yuje0oodg6y2" path="res://scenes/user_interface/Indicator.tscn" id="3_2wqip"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kau5d"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -28,29 +28,30 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = -16.0
-offset_right = 224.0
-offset_bottom = -6.0
+offset_left = 32.0
+offset_top = -128.0
+offset_right = 42.0
+offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/background = SubResource("StyleBoxFlat_kau5d")
 theme_override_styles/fill = SubResource("StyleBoxTexture_a2vfi")
 value = 50.0
+fill_mode = 3
 show_percentage = false
 
-[node name="StatusEffectContainer" type="HBoxContainer" parent="."]
-offset_left = 24.0
-offset_top = -40.0
-offset_right = 224.0
-offset_bottom = -24.0
+[node name="StatusEffectContainer" type="VBoxContainer" parent="."]
+offset_left = 8.0
+offset_top = -128.0
+offset_right = 26.0
 
 [node name="Indicator" parent="." instance=ExtResource("3_2wqip")]
 
 [node name="AbsoluteHealth" type="Label" parent="."]
-offset_top = -24.0
+offset_left = 8.0
+offset_top = -32.0
 offset_right = 40.0
-offset_bottom = -1.0
+offset_bottom = -9.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 16

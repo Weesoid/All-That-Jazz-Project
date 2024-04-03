@@ -50,17 +50,23 @@ scale = Vector2(0.287109, 0.287109)
 texture = ExtResource("1_1tuxq")
 
 [node name="AttributeView" parent="." instance=ExtResource("3_sf2yb")]
-offset_left = -8.0
-offset_top = 144.0
-offset_right = -8.0
-offset_bottom = 144.0
+offset_left = 336.0
+offset_top = -72.0
+offset_right = 336.0
+offset_bottom = -72.0
 scale = Vector2(1.5, 1.5)
 
+[node name="HiddenAttributes" parent="AttributeView" index="0"]
+offset_left = -176.0
+offset_top = 48.0
+offset_right = 0.0
+offset_bottom = 145.0
+
 [node name="CombatantName" type="Label" parent="."]
-offset_left = -272.0
-offset_top = 224.0
-offset_right = 88.0
-offset_bottom = 247.0
+offset_left = 80.0
+offset_top = -168.0
+offset_right = 344.0
+offset_bottom = -145.0
 scale = Vector2(1, 0.99604)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
@@ -69,10 +75,10 @@ text = "NAME"
 autowrap_mode = 3
 
 [node name="StatusEffects" type="RichTextLabel" parent="."]
-offset_left = -272.0
-offset_top = -256.0
-offset_right = -80.0
-offset_bottom = 65.0
+offset_left = -264.0
+offset_top = -176.0
+offset_right = -72.0
+offset_bottom = 178.0
 scale = Vector2(1, 0.99604)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
@@ -82,10 +88,10 @@ text = "x Target cannot move!"
 scroll_active = false
 
 [node name="Description" type="Label" parent="."]
-offset_left = -272.0
-offset_top = 256.0
-offset_right = 304.0
-offset_bottom = 368.0
+offset_left = 72.0
+offset_top = 152.0
+offset_right = 336.0
+offset_bottom = 264.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 16
@@ -97,3 +103,5 @@ autowrap_mode = 3
 libraries = {
 "": SubResource("AnimationLibrary_qtr25")
 }
+
+[editable path="AttributeView"]

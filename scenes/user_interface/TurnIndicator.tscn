@@ -1,48 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://bipsixd3gwi1r"]
+[gd_scene load_steps=2 format=3 uid="uid://bipsixd3gwi1r"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiTurnIndicator.gd" id="1_oxif4"]
-[ext_resource type="Texture2D" uid="uid://ugf7m2mff53i" path="res://images/animations/BadGuyJr.png" id="2_rwaut"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0uv1q"]
-atlas = ExtResource("2_rwaut")
-region = Rect2(0, 0, 256, 256)
-
-[sub_resource type="Animation" id="Animation_4kmvf"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_w1nb3"]
-resource_name = "Update"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_k4f41"]
-_data = {
-"RESET": SubResource("Animation_4kmvf"),
-"Update": SubResource("Animation_w1nb3")
-}
 
 [node name="TurnIndicator" type="Control"]
 layout_mode = 3
@@ -56,13 +14,3 @@ offset_left = -122.0
 offset_right = 122.0
 offset_bottom = 47.0
 pivot_offset = Vector2(244, 0)
-
-[node name="TextureRect" type="TextureRect" parent="CombatantNames"]
-layout_mode = 2
-texture = SubResource("AtlasTexture_0uv1q")
-expand_mode = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_k4f41")
-}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dqax0vfpytli7"]
+[gd_scene load_steps=21 format=3 uid="uid://dqax0vfpytli7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Texture2D" uid="uid://b64hae3ym8ck" path="res://images/sprites/turn_highlight.png" id="3_qmtsl"]
@@ -157,6 +157,74 @@ _data = {
 "Show": SubResource("Animation_1s1ex")
 }
 
+[sub_resource type="Animation" id="Animation_morbt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-376, -269)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_vgh37"]
+resource_name = "Show"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-376, -317), Vector2(-376, -301), Vector2(-376, -316.111), Vector2(-376, -317)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 1.7, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b63ig"]
+_data = {
+"RESET": SubResource("Animation_morbt"),
+"Show": SubResource("Animation_vgh37")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35ewg"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(1, 1, 1, 1)
+
 [node name="CombatScene" type="Node2D"]
 process_mode = 3
 top_level = true
@@ -170,34 +238,34 @@ max_polyphony = 16
 volume_db = -15.0
 
 [node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(-576, -500)
+position = Vector2(-576, -320)
 
 [node name="Position1" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(192, 320)
+position = Vector2(384, 192)
 
 [node name="Position2" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(448, 320)
+position = Vector2(512, 192)
 
 [node name="Position3" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(704, 320)
+position = Vector2(640, 192)
 
 [node name="Position4" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(960, 320)
+position = Vector2(768, 192)
 
 [node name="TeamContainer" type="Node2D" parent="."]
-position = Vector2(-576, -108)
+position = Vector2(-576, -136)
 
 [node name="Position1" type="Marker2D" parent="TeamContainer"]
-position = Vector2(192, 192)
+position = Vector2(224, 192)
 
 [node name="Position2" type="Marker2D" parent="TeamContainer"]
-position = Vector2(448, 192)
+position = Vector2(352, 192)
 
 [node name="Position3" type="Marker2D" parent="TeamContainer"]
-position = Vector2(704, 192)
+position = Vector2(800, 192)
 
 [node name="Position4" type="Marker2D" parent="TeamContainer"]
-position = Vector2(960, 192)
+position = Vector2(928, 192)
 
 [node name="Target" type="Sprite2D" parent="."]
 position = Vector2(-384, 456)
@@ -225,20 +293,13 @@ libraries = {
 "": SubResource("AnimationLibrary_bj17i")
 }
 
-[node name="TextureRect" type="Panel" parent="."]
-z_index = -1
-offset_left = 1540.0
-offset_top = 68.0
-offset_right = 2479.0
-offset_bottom = 3148.0
-rotation = 1.5708
-
 [node name="CombatCamera" type="Camera2D" parent="."]
 position = Vector2(0, -19)
+zoom = Vector2(1.25, 1.25)
 
 [node name="DefaultBattleParallax" parent="CombatCamera" instance=ExtResource("3_r3luu")]
 z_index = -2
-position = Vector2(0, 19)
+position = Vector2(-19, 163)
 scale = Vector2(1.5, 1.5)
 
 [node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
@@ -248,12 +309,15 @@ position = Vector2(5, 19)
 [node name="Interface" type="Control" parent="CombatCamera"]
 layout_mode = 3
 anchors_preset = 0
+offset_top = -69.0
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = -29.0
 
 [node name="Counts" type="Control" parent="CombatCamera/Interface"]
+visible = false
 anchors_preset = 0
-offset_right = 40.0
+offset_left = -111.0
+offset_right = -71.0
 offset_bottom = 40.0
 
 [node name="RoundCounter" type="Label" parent="CombatCamera/Interface/Counts"]
@@ -305,42 +369,96 @@ text = "Turn"
 vertical_alignment = 2
 
 [node name="TurnIndicator" parent="CombatCamera/Interface" instance=ExtResource("12_mnv7p")]
-offset_left = -108.0
-offset_top = 279.0
-offset_right = 25.0
-offset_bottom = 279.0
+z_index = 1
+offset_left = -335.0
+offset_top = 272.0
+offset_right = -202.0
+offset_bottom = 272.0
 
-[node name="SecondaryPanel" type="PanelContainer" parent="CombatCamera/Interface"]
-z_index = 2
+[node name="LogContainer" parent="CombatCamera/Interface" instance=ExtResource("11_8bne6")]
 layout_mode = 0
-offset_left = -227.0
-offset_top = 19.0
-offset_right = 231.0
-offset_bottom = 194.0
+offset_left = 168.0
+offset_top = 240.0
+offset_right = 454.0
+offset_bottom = 293.0
 
-[node name="Scroller" type="ScrollContainer" parent="CombatCamera/Interface/SecondaryPanel"]
+[node name="Timer" type="Timer" parent="CombatCamera/Interface/LogContainer"]
+
+[node name="TopLog" type="Label" parent="CombatCamera/Interface"]
+layout_mode = 0
+offset_left = -376.0
+offset_top = -269.0
+offset_right = 377.0
+offset_bottom = -226.0
+theme = ExtResource("7_56rvc")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CombatCamera/Interface/TopLog"]
+libraries = {
+"": SubResource("AnimationLibrary_b63ig")
+}
+
+[node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
+z_index = 999
+layout_mode = 3
+anchors_preset = 0
+offset_left = -71.0
+offset_top = 144.0
+offset_right = -31.0
+offset_bottom = 184.0
+
+[node name="DescriptionPanel" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
+layout_mode = 2
+offset_left = 241.0
+offset_top = -248.0
+offset_right = 527.0
+offset_bottom = -96.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/SecondaryPanel/DescriptionPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 16
+text = "ASDasdas"
+
+[node name="OptionContainer" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
+z_index = 11
+layout_mode = 0
+offset_left = 241.0
+offset_top = -88.0
+offset_right = 527.0
+offset_bottom = 80.0
+
+[node name="Scroller" type="ScrollContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 3
 
-[node name="Container" type="VBoxContainer" parent="CombatCamera/Interface/SecondaryPanel/Scroller"]
+[node name="Container" type="VBoxContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller"]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ActionPanel" type="GridContainer" parent="CombatCamera/Interface"]
 z_index = 10
 layout_mode = 0
-offset_left = -229.0
-offset_top = 200.0
-offset_right = 229.0
-offset_bottom = 304.0
+offset_left = -153.0
+offset_top = 193.0
+offset_right = 157.0
+offset_bottom = 297.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_force_pass_scroll_events = false
 columns = 3
 
 [node name="Skills" type="Button" parent="CombatCamera/Interface/ActionPanel"]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
@@ -348,31 +466,31 @@ button_mask = 0
 text = "SKILLS"
 
 [node name="Guard" type="Button" parent="CombatCamera/Interface/ActionPanel"]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "GUARD "
 
-[node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
-button_mask = 0
-text = "INSPECT"
-
 [node name="Equipment" type="Button" parent="CombatCamera/Interface/ActionPanel"]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "WEAPONS"
 
+[node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme = ExtResource("8_lqkpn")
+theme_override_font_sizes/font_size = 16
+button_mask = 0
+text = "INSPECT"
+
 [node name="Items" type="Button" parent="CombatCamera/Interface/ActionPanel"]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
@@ -380,25 +498,33 @@ button_mask = 0
 text = "ITEMS"
 
 [node name="Escape" type="Button" parent="CombatCamera/Interface/ActionPanel"]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ABSCOND"
 
-[node name="LogContainer" parent="CombatCamera/Interface" instance=ExtResource("11_8bne6")]
-layout_mode = 0
-offset_left = -565.0
-offset_top = 200.0
-offset_right = -238.0
-offset_bottom = 315.0
+[node name="TextureRect2" type="Panel" parent="CombatCamera/Interface"]
+z_index = 1
+layout_mode = 2
+offset_left = -166.0
+offset_top = 180.0
+offset_right = 166.0
+offset_bottom = 234.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_35ewg")
 
-[node name="Timer" type="Timer" parent="CombatCamera/Interface/LogContainer"]
+[node name="Panel" type="Panel" parent="CombatCamera/Interface/TextureRect2"]
+z_index = -1
+layout_mode = 0
+offset_left = -346.0
+offset_top = 52.0
+offset_right = 678.0
+offset_bottom = 164.0
 
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Guard" to="." method="_on_guard_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Equipment" to="." method="_on_equipment_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Items" to="." method="_on_items_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Escape" to="." method="_on_escape_pressed"]

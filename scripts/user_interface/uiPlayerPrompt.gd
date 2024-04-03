@@ -37,10 +37,11 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_clear_prompts"):
-		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
-		qte.global_position = OverworldGlobals.getPlayer().global_position
-		OverworldGlobals.getCurrentMap().add_child(qte)
-		timer.timeout.emit()
+		var tween = create_tween()
+		var pluh = OverworldGlobals.getPlayer()
+		tween.tween_property(pluh, 'position', pluh.global_position + Vector2(20, 0), 0.25)
+		tween.tween_property(pluh, 'position', pluh.global_position - Vector2(40, 0), 0.25)
+		tween.tween_property(pluh, 'position', Vector2(0, 0), 0.25)
 
 func _on_timer_timeout():
 	animatePrompt(0)

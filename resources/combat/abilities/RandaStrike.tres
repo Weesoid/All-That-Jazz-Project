@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_xkuih")
 NAME = "Randa Strike!"
-DESCRIPTION = ""
+DESCRIPTION = "Randomly attack targets!"
 ANIMATION = ExtResource("2_rnjt4")
 ABILITY_SCRIPT = ExtResource("1_462hh")
 TARGET_TYPE = 1

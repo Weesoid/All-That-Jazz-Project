@@ -32,7 +32,6 @@ signal multi_target(type)
 signal random_target(type)
 
 func execute():
-	print('x')
 	match TARGET_TYPE:
 		TargetType.SINGLE: single_target.emit(self, 1)
 		TargetType.MULTI: multi_target.emit(self, 2)

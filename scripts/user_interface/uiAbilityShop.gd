@@ -38,8 +38,16 @@ func _ready():
 
 func loadAbilities():
 	clearButtons()
+	if selected_combatant.ABILITY_POOL.is_empty():
+		return
+	
+	print(selected_combatant.ABILITY_POOL)
 	for ability in selected_combatant.ABILITY_POOL:
-		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL: continue
+		if ability == null: 
+			selected_combatant.ABILITY_POOL.erase(ability)
+			continue
+		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL: 
+			continue
 		createButton(ability, pool)
 	for ability in selected_combatant.ABILITY_SET:
 		createButton(ability, abilities)

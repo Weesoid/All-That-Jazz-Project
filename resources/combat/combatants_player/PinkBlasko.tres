@@ -1,171 +1,30 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=25 format=3 uid="uid://ditk8hkfnmg0o"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=16 format=3 uid="uid://ditk8hkfnmg0o"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="3_14gbd"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="3_bfkjx"]
+[ext_resource type="Resource" uid="uid://r3xiqg0rf78c" path="res://resources/combat/abilities/AOEHeal.tres" id="3_14gbd"]
+[ext_resource type="Resource" uid="uid://dj018x62rghdm" path="res://resources/combat/abilities/PumpUp.tres" id="3_bfkjx"]
 [ext_resource type="PackedScene" path="res://scenes/entities/followers/Pinky.tscn" id="4_fpjeh"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="5_5571v"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/ColdSlap.tres" id="5_sy720"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/HotHit.tres" id="6_lnnlb"]
+[ext_resource type="Resource" uid="uid://dwogklso4jeqr" path="res://resources/combat/abilities/DebuggerStrike.tres" id="5_5571v"]
+[ext_resource type="Resource" uid="uid://dlts84m2aivmo" path="res://resources/combat/abilities/ColdSlap.tres" id="5_sy720"]
+[ext_resource type="Resource" uid="uid://8v7wdj464tlq" path="res://resources/combat/abilities/HotHit.tres" id="6_lnnlb"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/VenoStrike.tres" id="7_12dc3"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_kr4q2"]
-[ext_resource type="Texture2D" uid="uid://2wegg4h4scec" path="res://images/animations/GoodGuyB.png" id="8_88eiy"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/ShockTherapy.tres" id="8_mp4jg"]
+[ext_resource type="Resource" uid="uid://dm2yej3rcmyy" path="res://resources/combat/abilities/ShockTherapy.tres" id="8_mp4jg"]
 [ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/sprites/will_icon.png" id="8_sl7ba"]
 [ext_resource type="Resource" uid="uid://dne68qskv6g1y" path="res://resources/combat/abilities/OmniStrike.tres" id="9_1d8is"]
-[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="10_gxbu7"]
-[ext_resource type="Resource" uid="uid://bdytywwtltmru" path="res://resources/combat/abilities/Guard.tres" id="11_yklx8"]
-
-[sub_resource type="Animation" id="Animation_5q8qb"]
-resource_name = "Attack"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [3, 5, 3, 5, 3]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.123, 1.123), Vector2(0.963, 0.963), Vector2(1.167, 1.167), Vector2(1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_38ggd"]
-resource_name = "Cast"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [3, 4, 3, 4, 3]
-}
-
-[sub_resource type="Animation" id="Animation_2ybq4"]
-resource_name = "Hit"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [4, 5, 4, 5, 4]
-}
-
-[sub_resource type="Animation" id="Animation_7atq3"]
-resource_name = "Idle"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 0, 1, 0]
-}
-
-[sub_resource type="Animation" id="Animation_xkhtg"]
-resource_name = "KO"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [5]
-}
-
-[sub_resource type="Animation" id="Animation_ak5yc"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5k78l"]
-_data = {
-"Attack": SubResource("Animation_5q8qb"),
-"Cast": SubResource("Animation_38ggd"),
-"Hit": SubResource("Animation_2ybq4"),
-"Idle": SubResource("Animation_7atq3"),
-"KO": SubResource("Animation_xkhtg"),
-"RESET": SubResource("Animation_ak5yc")
-}
-
-[sub_resource type="PackedScene" id="PackedScene_gvghd"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("sprGoodGuyB", "Node2D", "Sprite", "Sprite2D", "position", "rotation", "texture", "hframes", "vframes", "SpriteAnimator", "AnimationPlayer", "libraries", "AudioPlayer", "AudioStreamPlayer", "stream"),
-"node_count": 4,
-"node_paths": [NodePath("."), NodePath("./Sprite"), NodePath("./Sprite")],
-"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 3, 2, -1, 5, 4, 0, 5, 1, 6, 2, 7, 3, 8, 4, 0, 1073741825, 0, 10, 9, -1, 1, 11, 5, 0, 1073741826, 0, 13, 12, -1, 1, 14, 6, 0),
-"variants": [Vector2(16, 0), -0.212057, ExtResource("8_88eiy"), 3, 2, {
-"": SubResource("AnimationLibrary_5k78l")
-}, ExtResource("10_gxbu7")],
-"version": 3
-}
+[ext_resource type="Resource" uid="uid://glgmswqt1vcu" path="res://resources/combat/abilities/BraceSelf.tres" id="11_87wl6"]
+[ext_resource type="PackedScene" uid="uid://dlvg7wwaai4ra" path="res://scenes/combatants/GoodGuyA.tscn" id="14_chxsb"]
 
 [resource]
 script = ExtResource("5_4siku")
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_bfkjx"), ExtResource("7_kr4q2"), ExtResource("3_14gbd"), ExtResource("1_h6ewg"), ExtResource("5_sy720"), ExtResource("6_lnnlb"), ExtResource("7_12dc3"), ExtResource("8_mp4jg"), ExtResource("9_1d8is"), ExtResource("1_h6ewg")])
-ABILITY_SLOT = ExtResource("11_yklx8")
+ABILITY_SLOT = ExtResource("11_87wl6")
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
 MANDATORY = false
 NAME = "PUMainBlasko"
 ICON = ExtResource("8_sl7ba")
-PACKED_SCENE = SubResource("PackedScene_gvghd")
+PACKED_SCENE = ExtResource("14_chxsb")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
 "accuracy": 0.95,
@@ -176,7 +35,7 @@ STAT_VALUES = {
 "handling": 4,
 "heal mult": 1.0,
 "health": 999,
-"hustle": 2,
+"hustle": 0,
 "resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_5571v")])

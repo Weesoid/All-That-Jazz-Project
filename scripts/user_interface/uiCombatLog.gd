@@ -11,5 +11,6 @@ func writeCombatLog(text: String, lifetime=5.0):
 	animator.play("Show")
 	
 	await timer.timeout
-	combat_log.text = ''
 	animator.play_backwards("Show")
+	await animator.animation_finished
+	combat_log.text = ''

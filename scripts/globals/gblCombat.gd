@@ -64,7 +64,7 @@ func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: 
 	
 	target.STAT_VALUES['health'] -= int(damage)
 	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
-	playAndResetAnimation(target, 'Hit')
+	playHurtAnimation(target)
 
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
 	base_damage += caster.STAT_VALUES['brawn'] * base_damage
@@ -80,7 +80,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
 	received_combatant_value.emit(target, caster, int(base_damage))
-	playAndResetAnimation(target, 'Hit')
+	playHurtAnimation(target)
 
 func calculateHealing(target:ResCombatant, base_healing):
 	base_healing = valueVariate(base_healing, 0.15)
@@ -132,15 +132,19 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 		await get_tree().create_timer(time).timeout
 		animation_done.emit()
 
-func playAndResetAnimation(target: ResCombatant, animation_name: String):
-	target.getAnimator().play(animation_name)
-	await target.getAnimator().animation_finished
+func playHurtAnimation(target: ResCombatant):
+	target.getAnimator().play('Hit')
+	var tween = getCombatScene().create_tween()
+	tween.set_trans(Tween.TRANS_BOUNCE)
+	randomize()
+	var shake = Vector2(40, 0) + Vector2(randf_range(0, 40), 0)
+	var duration = 0.05 + randf_range(0, 0.05)
+	tween.tween_property(target.SCENE, 'position', target.SCENE.position + shake, duration)
+	tween.tween_property(target.SCENE, 'position', target.SCENE.position - shake, duration)
+	tween.tween_property(target.SCENE, 'position', Vector2(0, 0), duration)
 	if !target.isDead():
-		target.getSprite().modulate.a = 1.0
+		await target.getAnimator().animation_finished
 		target.getAnimator().play('Idle')
-	else:
-		target.getSprite().modulate.a = 0.5
-		target.getAnimator().play('KO')
 
 func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
@@ -151,7 +155,7 @@ func playAnimation(target: ResCombatant, animation_name: String):
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
 
-func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false, base_chance = 2.0):
+func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false, _base_chance = 2.0):
 	#if base_chance != 2.0 and !randomRoll(base_chance-target.STAT_VALUES['exposure']):
 	#	manual_call_indicator.emit(target, '%s  Resisted!' % status_effect_name, 'Whiff')
 	#	return

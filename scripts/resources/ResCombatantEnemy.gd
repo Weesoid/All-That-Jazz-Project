@@ -58,7 +58,6 @@ func getDrops():
 			CombatGlobals.getCombatScene().combat_log.writeCombatLog('%s dropped [color=yellow]%s[/color]' % [NAME, item.NAME])
 			drops_summary += '%s\n' % item.NAME
 	
-	CombatGlobals.getCombatScene().connectPlayerItems()
 	return drops_summary
 
 func getRawDrops():

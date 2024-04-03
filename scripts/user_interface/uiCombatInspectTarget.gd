@@ -5,12 +5,12 @@ extends Node2D
 @onready var side_menu = $Description
 @onready var status_effects = $StatusEffects
 
-var subject
+var subject: ResCombatant
 
 func _process(_delta):
 	if subject is ResCombatant:
 		combatant_name.text = subject.NAME
-		side_menu.text = str(subject.STAT_MODIFIERS)
+		side_menu.text = str(subject.STAT_MODIFIERS) + ' ACTED: %s' % subject.ACTED
 		getStatusEffectInfo(subject)
 		attribute_view.combatant = subject
 

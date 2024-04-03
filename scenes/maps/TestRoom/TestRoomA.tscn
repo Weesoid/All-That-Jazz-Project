@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://3xhmv62u5c1v"]
+[gd_scene load_steps=33 format=3 uid="uid://3xhmv62u5c1v"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_iet4p"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://knc1563g65sr" path="res://scenes/entities_interactable/CraftingTable.tscn" id="5_u7bub"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="8_eg7gu"]
 [ext_resource type="Resource" uid="uid://drv1o8j6wl6pf" path="res://resources/combat/combatants_enemies/RedAttack.tres" id="9_ppre7"]
-[ext_resource type="Resource" uid="uid://cx7a1d4nfkjwh" path="res://resources/combat/combatants_enemies/YellowSupport.tres" id="10_geual"]
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://images/sprites/NPC_unknown_entity.png" id="11_othvh"]
 [ext_resource type="Resource" uid="uid://csgsebj5w8hhs" path="res://scenes/maps/TestRoom/dialogue/give_quest.dialogue" id="11_qo0xo"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="12_au046"]
@@ -112,7 +111,7 @@ position = Vector2(130, -131)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("8_eg7gu")]
 UNIQUE_ID = "SexMasters"
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_ppre7"), ExtResource("10_geual"), ExtResource("10_geual")])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_ppre7"), ExtResource("9_ppre7"), ExtResource("9_ppre7")])
 
 [node name="Sprite2D" type="Sprite2D" parent="Fighter"]
 position = Vector2(0, -12)

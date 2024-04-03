@@ -7,11 +7,12 @@
 [resource]
 script = ExtResource("1_o1mb6")
 NAME = "Neutral Strike"
-DESCRIPTION = ""
+DESCRIPTION = "Execute a QTE!"
 ANIMATION = ExtResource("2_qeexk")
 ABILITY_SCRIPT = ExtResource("1_b2g3v")
 TARGET_TYPE = 0
 TARGET_GROUP = 1
+CAN_TARGET_SELF = true
 TARGET_DEAD = false
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0

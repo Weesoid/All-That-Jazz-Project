@@ -2,4 +2,5 @@
 
 do addItem("CharmMurder")
 do addItem("WolfCold")
+do addItem("HealingPotion")
 => END

@@ -41,5 +41,4 @@ func _process(_delta):
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_tab") and view_hidden:
-		print('x')
 		hidden_tab.visible = !hidden_tab.visible

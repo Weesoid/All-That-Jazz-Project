@@ -9,7 +9,8 @@ class_name CombatScene
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
-@onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/Scroller/Container
+@onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
+@onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
 @onready var action_panel = $CombatCamera/Interface/ActionPanel
 @onready var equip_button = $CombatCamera/Interface/ActionPanel/Equipment
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/Escape
@@ -25,6 +26,8 @@ class_name CombatScene
 @onready var battle_music = $BattleMusic
 @onready var battle_sounds = $BattleSounds
 @onready var battle_back = $CombatCamera/DefaultBattleParallax.get_node('AnimationPlayer')
+@onready var top_log_label = $CombatCamera/Interface/TopLog
+@onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
 
 var combatant_turn_order: Array[ResCombatant]
 var combat_dialogue: ResCombatDialogue
@@ -38,7 +41,6 @@ var target_combatant
 var target_index = 0
 var combat_event: ResCombatEvent
 var selected_ability: ResAbility
-var selected_item: ResConsumable
 var run_once = true
 var experience_earnt = 0
 var drop_summary = ''
@@ -61,10 +63,8 @@ signal combat_done
 #********************************************************************************
 func _ready():
 	transition_scene.visible = true
-	connectPlayerItems()
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	turn_indicator.COMBAT_SCENE = self
-	turn_indicator.initialize()
 	renameDuplicates()
 	
 	for combatant in COMBATANTS:
@@ -74,7 +74,6 @@ func _ready():
 	
 		if combatant is ResPlayerCombatant:
 			addCombatant(combatant, team_container_markers)
-			connectPlayerAbilities(combatant)
 		else:
 			addCombatant(combatant, enemy_container_markers)
 		
@@ -106,6 +105,9 @@ func _ready():
 	while active_combatant.STAT_VALUES['hustle'] < 0:
 		setActiveCombatant(false)
 	
+	for button in action_panel.get_children():
+		button.focus_entered.connect(func(): secondary_panel.hide())
+	battle_back.play('Show')
 	active_combatant.act()
 	
 	if combat_dialogue != null:
@@ -113,6 +115,7 @@ func _ready():
 	
 	ui_inspect_target.get_node('AnimationPlayer').play('Loop')
 	transition_scene.visible = false
+	turn_indicator.updateActive()
 
 func _process(_delta):
 	turn_counter.text = str(turn_count)
@@ -135,20 +138,21 @@ func _unhandled_input(_event):
 func on_player_turn():
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
+	
 	Input.action_release("ui_accept")
 	
-	battle_back.play('Player_Turn')
 	resetActionLog()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
 	
-	print('Waiting!')
+	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
 	await confirm
-	print('Ring!')
 	end_turn()
 
 func on_enemy_turn():
-	battle_back.play('Enemy_Turn')
+	if has_node('QTE'):
+		await CombatGlobals.qte_finished
+	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 0.75, true)
 	if isCombatantGroupDead(getCombatantGroup('team')):
 		checkWin()
 		return
@@ -176,7 +180,6 @@ func end_turn(combatant_act=true):
 		rollTurns()
 		active_index = -1
 		end_turn(false)
-		turn_indicator.updateActive()
 		return
 	
 	turn_count += 1
@@ -198,7 +201,6 @@ func end_turn(combatant_act=true):
 	# Reset values
 	run_once = true
 	target_index = 0
-	selected_item = null
 	secondary_panel.hide()
 	
 	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
@@ -210,10 +212,9 @@ func end_turn(combatant_act=true):
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
 		setActiveCombatant()
-		while active_combatant.STAT_VALUES['hustle'] < 0:
-			print('active is stuned!')
-			active_combatant.ACTED = true
-			setActiveCombatant()
+		#while active_combatant.STAT_VALUES['hustle'] < 0:
+		#	active_combatant.ACTED = true
+		#	setActiveCombatant()
 	else:
 		selected_ability.ENABLED = false
 	
@@ -221,13 +222,17 @@ func end_turn(combatant_act=true):
 		triggerDialogue()
 		await dialogue_done
 	
-	turn_indicator.updateActive()
-	active_combatant.act()
+	if active_combatant.STAT_VALUES['hustle'] > 0:
+		active_combatant.act()
+	else:
+		end_turn()
+	
 	checkWin()
 
 func setActiveCombatant(tick_effect=true):
 	active_index = incrementIndex(active_index,1,combatant_turn_order.size())
 	active_combatant = combatant_turn_order[active_index]
+	print('ACTIVE: ', active_combatant)
 	turn_indicator.updateActive()
 	turn_highlight.global_position = active_combatant.getSprite().global_position
 	turn_highlight.get_node('AnimationPlayer').play('Show')
@@ -245,7 +250,7 @@ func removeDeadCombatants(fading=true):
 				experience_earnt += combatant.getExperience()
 				drop_summary += combatant.getDrops()
 		else:
-			if !combatant.getStatusEffectNames().has('Fading') and !combatant.getStatusEffectNames().has('Knock Out') and fading: 
+			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
 				combatant.ACTED = true
@@ -265,13 +270,7 @@ func _on_skills_pressed():
 func _on_guard_pressed():
 	resetActionLog()
 	Input.action_release("ui_accept")
-	
-	selected_ability = active_combatant.ABILITY_SLOT
-	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
-	target_state = selected_ability.getTargetType()
-	action_panel.hide()
-	await target_selected
-	runAbility()
+	forceCastAbility(active_combatant.ABILITY_SLOT)
 
 
 func _on_items_pressed():
@@ -315,7 +314,8 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.add_theme_font_size_override('font_size', 16)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = ability.NAME
-		button.pressed.connect(ability.execute)
+		button.pressed.connect(func(): forceCastAbility(ability))
+		button.focus_entered.connect(func():updateDescription(ability.DESCRIPTION))
 		if !ability.ENABLED:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
@@ -331,11 +331,13 @@ func getPlayerItems():
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size.x = 240
 		button.text = str(item.NAME, ' x', item.STACK)
-		button.pressed.connect(item.EFFECT.execute)
 		button.pressed.connect(
-			func playerSelectItem(): 
-				selected_item = item
+			func():
+				if item.STACK > 0:
+					forceCastAbility(item.EFFECT)
+					item.take(1)
 				)
+		button.focus_entered.connect(func(): updateDescription(item.DESCRIPTION))
 		secondary_panel_container.add_child(button)
 
 func getPlayerWeapons(inventory):
@@ -353,18 +355,12 @@ func getPlayerWeapons(inventory):
 				if weapon.durability > 0:
 					forceCastAbility(weapon.EFFECT)
 					weapon.useDurability())
+		button.focus_entered.connect(
+			func(): updateDescription(weapon.DESCRIPTION)
+		)
 		if weapon.durability <= 0 or !weapon.canUse(active_combatant): 
 			button.disabled = true
 		secondary_panel_container.add_child(button)
-
-func playerSelectAbility(ability:ResAbility, state: int):
-	target_state = state
-	selected_ability = ability
-	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
-	secondary_panel.hide()
-	action_panel.hide()
-	await target_selected
-	runAbility()
 
 func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty():
@@ -412,12 +408,10 @@ func executeAbility():
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
 	
-	if selected_item != null: selected_item.take(1)
 	CombatGlobals.ability_used.emit(selected_ability)
 	if checkDialogue():
 		triggerDialogue()
 		await dialogue_done
-	print('Emitting!')
 	confirm.emit()
 
 func commandExecuteAbility(target, ability: ResAbility):
@@ -441,33 +435,25 @@ func addCombatant(combatant, container):
 		combatant.getAnimator().play('Idle')
 		break
 
-func connectPlayerAbilities(combatant: ResCombatant):	
-	for ability in combatant.ABILITY_SET:
-		if ability.single_target.is_connected(playerSelectAbility): continue
-		ability.single_target.connect(playerSelectAbility)
-		ability.multi_target.connect(playerSelectAbility)
-
-func connectPlayerItems():
-	for item in InventoryGlobals.INVENTORY:
-		if !item is ResConsumable: continue
-		if item.EFFECT != null: 
-			if item.EFFECT.single_target.is_connected(playerSelectAbility): continue
-			item.EFFECT.single_target.connect(playerSelectAbility)
-			item.EFFECT.multi_target.connect(playerSelectAbility)
-
 func forceCastAbility(ability: ResAbility):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	target_state = selected_ability.getTargetType()
 	secondary_panel.hide()
 	action_panel.hide()
+	writeTopLogMessage(selected_ability.NAME)
 	await target_selected
 	runAbility()
+
+func updateDescription(description: String):
+	secondary_description.show()
+	secondary_description.text = description
 
 func getDeadCombatants():
 	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
 
 func rollTurns():
+	playCombatAudio("714571__matrixxx__reverse-time.ogg", 0.0, 1, true)
 	combatant_turn_order.clear()
 	for combatant in COMBATANTS:
 		if combatant.isDead() and !combatant.hasStatusEffect('Fading'): continue
@@ -475,6 +461,7 @@ func rollTurns():
 		combatant.ACTED = false
 		combatant.ROLLED_SPEED = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
 		combatant_turn_order.append(combatant)
+	
 	combatant_turn_order.sort_custom(func(a, b): return a.ROLLED_SPEED > b.ROLLED_SPEED)
 	round_count += 1
 	for combatant in combatant_turn_order:
@@ -613,10 +600,15 @@ func playCombatAudio(filename: String, db=0.0, pitch = 1, random_pitch=false):
 		battle_sounds.pitch_scale += randf_range(0.0, 0.25)
 	battle_sounds.play()
 
+func writeTopLogMessage(message: String):
+	top_log_label.text = message
+	top_log_animator.stop()
+	top_log_animator.play("Show")
+
 func concludeCombat(results: int):
 	toggleUI(false)
 	battle_music.stop()
-	battle_back.play('Win')
+	#battle_back.play('Win')
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
 	

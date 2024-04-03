@@ -16,6 +16,8 @@ var previous_value = 0
 var current_bar_value = 100
 var first_turn = true
 
+# OBJECT SPAM BUG IS HERE!!
+
 func _ready():
 	CombatGlobals.call_indicator.connect(
 		func setAnimation(anim_string, combatant):
@@ -34,10 +36,10 @@ func updateBars():
 	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])
 	health_bar.value = int(attached_combatant.STAT_VALUES['health'])
 	absolute_health.text = str(health_bar.value)
-	#if attached_combatant.hasStatusEffect('Knock Out'):
-	#	hide()
-	#else:
-	#	show()
+	if attached_combatant.hasStatusEffect('Knock Out'):
+		hide()
+	else:
+		show()
 
 func updateStatusEffects():
 	for effect in attached_combatant.STATUS_EFFECTS:

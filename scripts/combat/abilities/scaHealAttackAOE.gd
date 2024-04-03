@@ -1,5 +1,5 @@
 static func animateCast(caster: ResCombatant):
-	caster.getAnimator().play('Attack')
+	caster.getAnimator().play('Cast')
 	await caster.getAnimator().animation_finished
 	caster.getAnimator().play('Idle')
 

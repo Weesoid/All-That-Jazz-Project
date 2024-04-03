@@ -51,6 +51,7 @@ theme_override_constants/separation = 20
 [node name="Portrait" type="Control" parent="Balloon/Margin/HBox"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="Balloon/Margin/HBox/Portrait"]
 centered = false
