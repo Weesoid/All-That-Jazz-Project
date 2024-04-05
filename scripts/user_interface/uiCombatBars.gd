@@ -2,8 +2,8 @@ extends Node2D
 class_name CombatBar
 
 @onready var health_bar = $HealthBar
-@onready var absolute_health = $AbsoluteHealth
-@onready var status_effects = $StatusEffectContainer
+@onready var absolute_health = $HealthBar/AbsoluteHealth
+@onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var indicator = $Indicator
 @onready var indicator_label = $Indicator/Label
 @onready var indicator_animator = $Indicator/AnimationPlayer
@@ -27,6 +27,9 @@ func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 	
 	previous_value = attached_combatant.getMaxHealth()
+	
+	if attached_combatant is ResPlayerCombatant:
+		health_bar.position = Vector2(-56, 128)
 
 func _process(_delta):
 	updateBars()

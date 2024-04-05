@@ -20,6 +20,7 @@ expand_margin_bottom = 2.0
 texture = ExtResource("2_by75a")
 
 [node name="CombatBars" type="Node2D"]
+z_index = 20
 script = ExtResource("1_i2y2p")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
@@ -28,35 +29,35 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = -128.0
-offset_right = 42.0
-offset_bottom = -16.0
+offset_left = -56.0
+offset_top = -144.0
+offset_right = 56.0
+offset_bottom = -136.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/background = SubResource("StyleBoxFlat_kau5d")
 theme_override_styles/fill = SubResource("StyleBoxTexture_a2vfi")
 value = 50.0
-fill_mode = 3
 show_percentage = false
 
-[node name="StatusEffectContainer" type="VBoxContainer" parent="."]
-offset_left = 8.0
-offset_top = -128.0
-offset_right = 26.0
-
-[node name="Indicator" parent="." instance=ExtResource("3_2wqip")]
-
-[node name="AbsoluteHealth" type="Label" parent="."]
-offset_left = 8.0
-offset_top = -32.0
-offset_right = 40.0
-offset_bottom = -9.0
+[node name="AbsoluteHealth" type="Label" parent="HealthBar"]
+offset_top = -24.0
+offset_right = 32.0
+offset_bottom = -1.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 16
 text = "100"
 vertical_alignment = 2
+
+[node name="StatusEffectContainer" type="HBoxContainer" parent="HealthBar"]
+offset_left = -2.0
+offset_top = 10.0
+offset_right = 114.0
+offset_bottom = 26.0
+
+[node name="Indicator" parent="." instance=ExtResource("3_2wqip")]
+position = Vector2(7.62939e-06, -64)
 
 [node name="Marker2D" type="Marker2D" parent="."]
 

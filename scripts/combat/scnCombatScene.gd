@@ -79,8 +79,7 @@ func _ready():
 		
 		var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
 		combat_bars.attached_combatant = combatant
-		combat_bars.global_position = combatant.SCENE.global_position - Vector2(110, -80)
-		add_child(combat_bars)
+		combatant.SCENE.add_child(combat_bars)
 	
 	if initial_status_effect_enemy != '':
 		for combatant in getCombatantGroup('enemies'):

@@ -238,7 +238,7 @@ max_polyphony = 16
 volume_db = -15.0
 
 [node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(-576, -320)
+position = Vector2(-448, -320)
 
 [node name="Position1" type="Marker2D" parent="EnemyContainer"]
 position = Vector2(384, 192)
@@ -253,19 +253,19 @@ position = Vector2(640, 192)
 position = Vector2(768, 192)
 
 [node name="TeamContainer" type="Node2D" parent="."]
-position = Vector2(-576, -136)
+position = Vector2(-704, -128)
 
 [node name="Position1" type="Marker2D" parent="TeamContainer"]
-position = Vector2(224, 192)
+position = Vector2(384, 192)
 
 [node name="Position2" type="Marker2D" parent="TeamContainer"]
-position = Vector2(352, 192)
+position = Vector2(512, 192)
 
 [node name="Position3" type="Marker2D" parent="TeamContainer"]
-position = Vector2(800, 192)
+position = Vector2(640, 192)
 
 [node name="Position4" type="Marker2D" parent="TeamContainer"]
-position = Vector2(928, 192)
+position = Vector2(768, 192)
 
 [node name="Target" type="Sprite2D" parent="."]
 position = Vector2(-384, 456)
@@ -309,9 +309,9 @@ position = Vector2(5, 19)
 [node name="Interface" type="Control" parent="CombatCamera"]
 layout_mode = 3
 anchors_preset = 0
-offset_top = -69.0
+offset_top = -53.0
 offset_right = 40.0
-offset_bottom = -29.0
+offset_bottom = -13.0
 
 [node name="Counts" type="Control" parent="CombatCamera/Interface"]
 visible = false
@@ -369,18 +369,17 @@ text = "Turn"
 vertical_alignment = 2
 
 [node name="TurnIndicator" parent="CombatCamera/Interface" instance=ExtResource("12_mnv7p")]
-z_index = 1
-offset_left = -335.0
-offset_top = 272.0
-offset_right = -202.0
-offset_bottom = 272.0
+offset_left = -328.0
+offset_top = 216.0
+offset_right = -195.0
+offset_bottom = 216.0
 
 [node name="LogContainer" parent="CombatCamera/Interface" instance=ExtResource("11_8bne6")]
 layout_mode = 0
-offset_left = 168.0
-offset_top = 240.0
-offset_right = 454.0
-offset_bottom = 293.0
+offset_left = -448.0
+offset_top = 256.0
+offset_right = 128.0
+offset_bottom = 300.0
 
 [node name="Timer" type="Timer" parent="CombatCamera/Interface/LogContainer"]
 
@@ -411,10 +410,10 @@ offset_bottom = 184.0
 
 [node name="DescriptionPanel" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
 layout_mode = 2
-offset_left = 241.0
-offset_top = -248.0
-offset_right = 527.0
-offset_bottom = -96.0
+offset_left = -121.0
+offset_top = 72.0
+offset_right = 199.0
+offset_bottom = 224.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/SecondaryPanel/DescriptionPanel"]
 layout_mode = 2
@@ -431,10 +430,10 @@ text = "ASDasdas"
 [node name="OptionContainer" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
 z_index = 11
 layout_mode = 0
-offset_left = 241.0
-offset_top = -88.0
+offset_left = 207.0
+offset_top = -104.0
 offset_right = 527.0
-offset_bottom = 80.0
+offset_bottom = 64.0
 
 [node name="Scroller" type="ScrollContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
 layout_mode = 2
@@ -448,10 +447,10 @@ size_flags_horizontal = 3
 [node name="ActionPanel" type="GridContainer" parent="CombatCamera/Interface"]
 z_index = 10
 layout_mode = 0
-offset_left = -153.0
-offset_top = 193.0
-offset_right = 157.0
-offset_bottom = 297.0
+offset_left = 144.0
+offset_top = 232.0
+offset_right = 454.0
+offset_bottom = 336.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_force_pass_scroll_events = false
@@ -508,19 +507,19 @@ text = "ABSCOND"
 [node name="TextureRect2" type="Panel" parent="CombatCamera/Interface"]
 z_index = 1
 layout_mode = 2
-offset_left = -166.0
-offset_top = 180.0
-offset_right = 166.0
-offset_bottom = 234.0
+offset_left = -504.0
+offset_top = 248.0
+offset_right = 512.0
+offset_bottom = 392.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_35ewg")
 
 [node name="Panel" type="Panel" parent="CombatCamera/Interface/TextureRect2"]
-z_index = -1
+z_index = 2
 layout_mode = 0
-offset_left = -346.0
-offset_top = 52.0
-offset_right = 678.0
-offset_bottom = 164.0
+offset_left = 640.0
+offset_top = -32.0
+offset_right = 1262.0
+offset_bottom = 80.0
 
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/Guard" to="." method="_on_guard_pressed"]
