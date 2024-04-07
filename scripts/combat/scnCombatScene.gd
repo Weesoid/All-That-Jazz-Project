@@ -11,12 +11,14 @@ class_name CombatScene
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
-@onready var action_panel = $CombatCamera/Interface/ActionPanel
-@onready var equip_button = $CombatCamera/Interface/ActionPanel/Equipment
-@onready var escape_button = $CombatCamera/Interface/ActionPanel/Escape
+@onready var action_panel = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons
+@onready var equip_button = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Equipment
+@onready var escape_button = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Escape
 @onready var ui_target = $Target
 @onready var ui_target_animator = $Target/TargetAnimator
-@onready var ui_inspect_target = $CombatInspectTarget
+@onready var ui_inspect_target = $CombatCamera/Interface/Inspect
+@onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
+@onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
 @onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
 @onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
 @onready var turn_indicator = $CombatCamera/Interface/TurnIndicator
@@ -112,7 +114,6 @@ func _ready():
 	if combat_dialogue != null:
 		combat_dialogue.initializeDialogue(COMBATANTS)
 	
-	ui_inspect_target.get_node('AnimationPlayer').play('Loop')
 	transition_scene.visible = false
 	turn_indicator.updateActive()
 
@@ -188,7 +189,7 @@ func end_turn(combatant_act=true):
 		enemy_turn_count += 1
 	
 	CombatGlobals.turn_increment.emit(turn_count)
-	combat_camera.position = Vector2(0, -19)
+	combat_camera.position = Vector2(0, -40)
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		refreshInstantCasts(combatant)
@@ -387,11 +388,22 @@ func playerSelectInspection():
 	action_panel.hide()
 	valid_targets = COMBATANTS
 	target_combatant = valid_targets[target_index]
-	drawInspectionTarget(target_combatant.getSprite().global_position)
-	combat_camera.position = lerp(combat_camera.position, ui_inspect_target.position, 0.005)
-	ui_inspect_target.subject = target_combatant
+	ui_inspect_target.show()
+	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
+	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.005)
+	ui_attribute_view.combatant = target_combatant
+	getStatusEffectInfo(target_combatant)
 	browseTargetsInputs()
 	confirmCancelInputs()
+
+func getStatusEffectInfo(combatant: ResCombatant):
+	ui_status_inspect.text = ''
+	if combatant.STATUS_EFFECTS.is_empty():
+		return
+	
+	for effect in combatant.STATUS_EFFECTS:
+		var texture_path = effect.TEXTURE.resource_path
+		ui_status_inspect.text += "\n[img]%s[/img] %s\n" % [texture_path, effect.DESCRIPTION]
 
 func executeAbility():
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
@@ -552,10 +564,6 @@ func drawSelectionTarget(animation: String, pos: Vector2):
 	ui_target_animator.play(animation)
 	ui_target.position = pos
 
-func drawInspectionTarget(pos: Vector2):
-	ui_inspect_target.show()
-	ui_inspect_target.position = pos
-
 func browseTargetsInputs():
 	if !valid_targets is Array:
 		return
@@ -573,7 +581,7 @@ func confirmCancelInputs():
 		resetActionLog()
 	
 func resetActionLog():
-	combat_camera.position = Vector2(0, -19)
+	combat_camera.position = Vector2(0, -40)
 	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	ui_target.hide()
