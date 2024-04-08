@@ -5,9 +5,8 @@ class_name CombatScene
 
 @onready var combat_camera = $CombatCamera
 @onready var combat_log = $CombatCamera/Interface/LogContainer
-@onready var enemy_container = $EnemyContainer
-@onready var team_container_markers = $TeamContainer.get_children()
-@onready var enemy_container_markers = $EnemyContainer.get_children()
+@onready var team_container_markers = $ParallaxBackground/ParallaxLayer2/TeamContainer.get_children()
+@onready var enemy_container_markers = $ParallaxBackground/ParallaxLayer/EnemyContainer.get_children()
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
@@ -22,7 +21,6 @@ class_name CombatScene
 @onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
 @onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
 @onready var turn_indicator = $CombatCamera/Interface/TurnIndicator
-@onready var turn_highlight = $TurnHighlight
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
@@ -234,8 +232,6 @@ func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[active_index]
 	print('ACTIVE: ', active_combatant)
 	turn_indicator.updateActive()
-	turn_highlight.global_position = active_combatant.getSprite().global_position
-	turn_highlight.get_node('AnimationPlayer').play('Show')
 	if tick_effect:
 		tickStatusEffects(active_combatant)
 		removeDeadCombatants()
@@ -295,7 +291,7 @@ func _on_escape_pressed():
 
 func toggleUI(visibility: bool):
 	for child in get_children():
-		if child is CombatBar or child == turn_highlight:
+		if child is CombatBar:
 			child.visible = visibility
 	for child in combat_camera.get_children():
 		if child is Control:
@@ -380,7 +376,7 @@ func playerSelectMultiTarget():
 	if getCombatantGroup('enemies').is_empty():
 		return
 	
-	drawSelectionTarget('Target', enemy_container.global_position)
+	#drawSelectionTarget('Target', enemy_container.global_position)
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
 

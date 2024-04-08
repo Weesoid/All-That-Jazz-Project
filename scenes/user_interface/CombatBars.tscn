@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4dlbbhtcf2f2"]
+[gd_scene load_steps=14 format=3 uid="uid://b4dlbbhtcf2f2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="Texture2D" uid="uid://tb4yrfiieksa" path="res://images/textures/bar_texture.png" id="2_by75a"]
 [ext_resource type="PackedScene" uid="uid://yuje0oodg6y2" path="res://scenes/user_interface/Indicator.tscn" id="3_2wqip"]
+[ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kau5d"]
 bg_color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -18,6 +19,182 @@ expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a2vfi"]
 texture = ExtResource("2_by75a")
+
+[sub_resource type="Gradient" id="Gradient_12uoa"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7aykj"]
+gradient = SubResource("Gradient_12uoa")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Animation" id="Animation_p01ae"]
+resource_name = "Show"
+
+[sub_resource type="Animation" id="Animation_fmtyg"]
+resource_name = "Loop"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(56, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1.75, 0.5), Vector2(1.784, 0.502), Vector2(1.75, 0.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:self_modulate")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.392157), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_upebf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(56, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.75, 0.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8gmg6"]
+resource_name = "Loop_Enemy"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(56, 16)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.14159]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1.75, 0.5), Vector2(1.784, 0.502), Vector2(1.75, 0.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:self_modulate")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.392157), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_813j3"]
+_data = {
+"Loop": SubResource("Animation_fmtyg"),
+"Loop_Enemy": SubResource("Animation_8gmg6"),
+"RESET": SubResource("Animation_upebf"),
+"Show": SubResource("Animation_p01ae")
+}
 
 [node name="CombatBars" type="Node2D"]
 z_index = 20
@@ -58,8 +235,21 @@ offset_top = 10.0
 offset_right = 114.0
 offset_bottom = 26.0
 
+[node name="TurnGradient" type="Sprite2D" parent="HealthBar"]
+z_index = -1
+position = Vector2(56, -8)
+scale = Vector2(1.75, 0.5)
+texture = SubResource("GradientTexture2D_7aykj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HealthBar/TurnGradient"]
+libraries = {
+"": SubResource("AnimationLibrary_813j3")
+}
+
 [node name="Indicator" parent="." instance=ExtResource("3_2wqip")]
-position = Vector2(7.62939e-06, -64)
+position = Vector2(0, 3.8147e-06)
+
+[node name="SelectTarget" parent="." instance=ExtResource("4_x0qas")]
 
 [node name="Marker2D" type="Marker2D" parent="."]
 

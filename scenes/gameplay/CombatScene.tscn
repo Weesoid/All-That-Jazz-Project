@@ -1,7 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://dqax0vfpytli7"]
+[gd_scene load_steps=17 format=3 uid="uid://dqax0vfpytli7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
-[ext_resource type="Texture2D" uid="uid://b64hae3ym8ck" path="res://images/sprites/turn_highlight.png" id="3_qmtsl"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_56rvc"]
@@ -70,91 +69,6 @@ tracks/1/keys = {
 _data = {
 "RESET": SubResource("Animation_ng0qf"),
 "Target": SubResource("Animation_ilum3")
-}
-
-[sub_resource type="Animation" id="Animation_safbe"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1.05, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [6.28319]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_1s1ex"]
-resource_name = "Show"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(2, 1.333), Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 6.28319]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_bj17i"]
-_data = {
-"RESET": SubResource("Animation_safbe"),
-"Show": SubResource("Animation_1s1ex")
 }
 
 [sub_resource type="Animation" id="Animation_morbt"]
@@ -237,34 +151,42 @@ max_polyphony = 16
 [node name="BattleMusic" type="AudioStreamPlayer" parent="."]
 volume_db = -15.0
 
-[node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(-448, -320)
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+follow_viewport_enabled = true
 
-[node name="Position1" type="Marker2D" parent="EnemyContainer"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+
+[node name="EnemyContainer" type="Node2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(-752, -456)
+
+[node name="Position1" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
 position = Vector2(384, 192)
 
-[node name="Position2" type="Marker2D" parent="EnemyContainer"]
+[node name="Position2" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
 position = Vector2(512, 192)
 
-[node name="Position3" type="Marker2D" parent="EnemyContainer"]
+[node name="Position3" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
 position = Vector2(640, 192)
 
-[node name="Position4" type="Marker2D" parent="EnemyContainer"]
+[node name="Position4" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
 position = Vector2(768, 192)
 
-[node name="TeamContainer" type="Node2D" parent="."]
-position = Vector2(-704, -128)
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
 
-[node name="Position1" type="Marker2D" parent="TeamContainer"]
+[node name="TeamContainer" type="Node2D" parent="ParallaxBackground/ParallaxLayer2"]
+position = Vector2(-1224, -456)
+
+[node name="Position1" type="Marker2D" parent="ParallaxBackground/ParallaxLayer2/TeamContainer"]
 position = Vector2(384, 192)
 
-[node name="Position2" type="Marker2D" parent="TeamContainer"]
+[node name="Position2" type="Marker2D" parent="ParallaxBackground/ParallaxLayer2/TeamContainer"]
 position = Vector2(512, 192)
 
-[node name="Position3" type="Marker2D" parent="TeamContainer"]
+[node name="Position3" type="Marker2D" parent="ParallaxBackground/ParallaxLayer2/TeamContainer"]
 position = Vector2(640, 192)
 
-[node name="Position4" type="Marker2D" parent="TeamContainer"]
+[node name="Position4" type="Marker2D" parent="ParallaxBackground/ParallaxLayer2/TeamContainer"]
 position = Vector2(768, 192)
 
 [node name="Target" type="Sprite2D" parent="."]
@@ -277,27 +199,18 @@ libraries = {
 "": SubResource("AnimationLibrary_h6ab4")
 }
 
-[node name="TurnHighlight" type="Sprite2D" parent="."]
-position = Vector2(-172, 456)
-rotation = 6.28319
-scale = Vector2(1.05, 1)
-texture = ExtResource("3_qmtsl")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TurnHighlight"]
-libraries = {
-"": SubResource("AnimationLibrary_bj17i")
-}
-
 [node name="CombatCamera" type="Camera2D" parent="."]
 position = Vector2(0, -40)
-zoom = Vector2(1.25, 1.25)
+zoom = Vector2(1.15, 1.15)
 
 [node name="DefaultBattleParallax" parent="CombatCamera" instance=ExtResource("3_r3luu")]
+visible = false
 z_index = -2
 position = Vector2(-19, 163)
 scale = Vector2(1.5, 1.5)
 
 [node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
+visible = false
 z_index = 1000
 position = Vector2(5, 19)
 

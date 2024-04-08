@@ -218,10 +218,12 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
 	
+	getCurrentMap().hide()
 	await combat_scene.combat_done
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
 	battle_transition.get_node('AnimationPlayer').play('Out')
+	getCurrentMap().show()
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()

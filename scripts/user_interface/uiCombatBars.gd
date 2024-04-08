@@ -8,6 +8,8 @@ class_name CombatBar
 @onready var indicator_label = $Indicator/Label
 @onready var indicator_animator = $Indicator/AnimationPlayer
 @onready var secondary_prompts = $Marker2D
+@onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
+@onready var select_target = $SelectTarget
 
 var indicator_animation = "Show"
 var received_combatant: ResCombatant
@@ -26,6 +28,7 @@ func _ready():
 			)
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 	
+	select_target.attached_combatant = attached_combatant
 	previous_value = attached_combatant.getMaxHealth()
 	
 	if attached_combatant is ResPlayerCombatant:
@@ -34,6 +37,19 @@ func _ready():
 func _process(_delta):
 	updateBars()
 	updateStatusEffects()
+	if CombatGlobals.getCombatScene().active_combatant == attached_combatant:
+		turn_gradient.get_parent().show()
+		if attached_combatant is ResPlayerCombatant:
+			turn_gradient.play('Loop')
+		else:
+			turn_gradient.play('Loop_Enemy')
+	else:
+		turn_gradient.get_parent().hide()
+	
+	if CombatGlobals.getCombatScene().target_state != 0:
+		select_target.show()
+	else:
+		select_target.hide()
 
 func updateBars():
 	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])

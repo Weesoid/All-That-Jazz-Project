@@ -233,6 +233,7 @@ tracks/6/keys = {
 [sub_resource type="Animation" id="Animation_leao7"]
 resource_name = "Reaction"
 length = 2.0
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -386,7 +387,7 @@ _data = {
 
 [node name="Indicator" type="Node2D"]
 z_index = 2
-position = Vector2(88, -70)
+position = Vector2(7.62939e-06, -7.62939e-06)
 scale = Vector2(1.25, 1.25)
 script = ExtResource("1_578rr")
 
