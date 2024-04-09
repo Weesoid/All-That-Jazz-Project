@@ -13,8 +13,6 @@ class_name CombatScene
 @onready var action_panel = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons
 @onready var equip_button = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Equipment
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Escape
-@onready var ui_target = $Target
-@onready var ui_target_animator = $Target/TargetAnimator
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
@@ -367,8 +365,7 @@ func playerSelectSingleTarget():
 	else:
 		target_combatant = valid_targets
 	
-	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
-	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.005)
+	combat_camera.position = lerp(combat_camera.global_position, target_combatant.SCENE.global_position, 0.005)
 	browseTargetsInputs()
 	confirmCancelInputs()
 
@@ -376,7 +373,6 @@ func playerSelectMultiTarget():
 	if getCombatantGroup('enemies').is_empty():
 		return
 	
-	#drawSelectionTarget('Target', enemy_container.global_position)
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
 
@@ -385,8 +381,7 @@ func playerSelectInspection():
 	valid_targets = COMBATANTS
 	target_combatant = valid_targets[target_index]
 	ui_inspect_target.show()
-	drawSelectionTarget('Target', target_combatant.getSprite().global_position)
-	combat_camera.position = lerp(combat_camera.position, ui_target.position, 0.005)
+	combat_camera.position = lerp(combat_camera.global_position, target_combatant.SCENE.global_position, 0.005)
 	ui_attribute_view.combatant = target_combatant
 	getStatusEffectInfo(target_combatant)
 	browseTargetsInputs()
@@ -554,11 +549,6 @@ func refreshInstantCasts(combatant: ResCombatant):
 
 func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit
-	
-func drawSelectionTarget(animation: String, pos: Vector2):
-	ui_target.show()
-	ui_target_animator.play(animation)
-	ui_target.position = pos
 
 func browseTargetsInputs():
 	if !valid_targets is Array:
@@ -571,7 +561,6 @@ func browseTargetsInputs():
 
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
-		ui_target.hide()
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_cancel"):
 		resetActionLog()
@@ -580,7 +569,6 @@ func resetActionLog():
 	combat_camera.position = Vector2(0, -40)
 	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
-	ui_target.hide()
 	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
@@ -616,7 +604,6 @@ func concludeCombat(results: int):
 		clearStatusEffects(combatant)
 	
 	action_panel.hide()
-	ui_target.hide()
 	secondary_panel.hide()
 	target_state = 0
 	target_index = 0

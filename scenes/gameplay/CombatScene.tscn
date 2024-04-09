@@ -1,75 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://dqax0vfpytli7"]
+[gd_scene load_steps=13 format=3 uid="uid://dqax0vfpytli7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_56rvc"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="8_lqkpn"]
-[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="9_d3h28"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
 [ext_resource type="PackedScene" uid="uid://bipsixd3gwi1r" path="res://scenes/user_interface/TurnIndicator.tscn" id="12_mnv7p"]
-
-[sub_resource type="Animation" id="Animation_ng0qf"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.330078, 0.330078)]
-}
-
-[sub_resource type="Animation" id="Animation_ilum3"]
-resource_name = "Target"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 6.28319]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0.330078, 0.330078), Vector2(0.361, 0.361), Vector2(0.330078, 0.330078)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_h6ab4"]
-_data = {
-"RESET": SubResource("Animation_ng0qf"),
-"Target": SubResource("Animation_ilum3")
-}
 
 [sub_resource type="Animation" id="Animation_morbt"]
 length = 0.001
@@ -188,16 +126,6 @@ position = Vector2(640, 192)
 
 [node name="Position4" type="Marker2D" parent="ParallaxBackground/ParallaxLayer2/TeamContainer"]
 position = Vector2(768, 192)
-
-[node name="Target" type="Sprite2D" parent="."]
-position = Vector2(-384, 456)
-scale = Vector2(0.330078, 0.330078)
-texture = ExtResource("9_d3h28")
-
-[node name="TargetAnimator" type="AnimationPlayer" parent="Target"]
-libraries = {
-"": SubResource("AnimationLibrary_h6ab4")
-}
 
 [node name="CombatCamera" type="Camera2D" parent="."]
 position = Vector2(0, -40)

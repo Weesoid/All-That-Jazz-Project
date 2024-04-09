@@ -5,14 +5,20 @@ var attached_combatant: ResCombatant
 
 # WORK ON THIS!!!
 func _process(delta):
-	if attached_combatant != null:
-		if CombatGlobals.getCombatScene().active_combatant == attached_combatant:
+	if attached_combatant != null and CombatGlobals.getCombatScene().target_state != 0:
+		if CombatGlobals.getCombatScene().target_combatant is ResCombatant:
 			if CombatGlobals.getCombatScene().target_combatant == attached_combatant:
+				show()
 				animator.play("Select")
-			else:
-				animator.play("Show")
-		if CombatGlobals.getCombatScene().valid_targets != null and CombatGlobals.getCombatScene().valid_targets is Array:
-			if CombatGlobals.getCombatScene().valid_targets.has(attached_combatant):
+			elif CombatGlobals.getCombatScene().valid_targets is Array and CombatGlobals.getCombatScene().valid_targets.has(attached_combatant):
+				show()
 				animator.play("Show")
 			else:
+				hide()
 				animator.play("RESET")
+		if CombatGlobals.getCombatScene().target_combatant is Array and CombatGlobals.getCombatScene().valid_targets.has(attached_combatant):
+			show()
+			animator.play("Select")
+		elif CombatGlobals.getCombatScene().target_combatant is Array and !CombatGlobals.getCombatScene().valid_targets.has(attached_combatant):
+			hide()
+			animator.play("RESET")
