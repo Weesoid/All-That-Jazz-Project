@@ -309,7 +309,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = ability.NAME
 		button.pressed.connect(func(): forceCastAbility(ability))
-		button.focus_entered.connect(func():updateDescription(ability.DESCRIPTION))
+		button.focus_entered.connect(func():updateDescription(ability.getRichDescription()))
 		if !ability.ENABLED:
 			button.disabled = true
 		secondary_panel_container.add_child(button)

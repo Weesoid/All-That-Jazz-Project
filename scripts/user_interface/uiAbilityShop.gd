@@ -86,7 +86,7 @@ func createButton(ability, location):
 	button.mouse_entered.connect(
 		func updateInfo():
 			description.text = '' 
-			description.text = ability.DESCRIPTION
+			description.text = ability.getRichDescription()
 	)
 	location.add_child(button)
 

@@ -20,7 +20,7 @@ func loadInformation():
 		ability_button.text = ability.NAME
 		ability_button.mouse_entered.connect(
 			func updateDesciption():
-				description.text = ability.DESCRIPTION
+				description.text = ability.getRichDescription()
 		)
 		ability_panel.add_child(ability_button)
 	
@@ -31,7 +31,7 @@ func loadInformation():
 		ability_button.text = ability.NAME
 		ability_button.mouse_entered.connect(
 			func updateDesciption():
-				description.text = ability.DESCRIPTION
+				description.text = ability.getRichDescription()
 		)
 		ability_pool_panel.add_child(ability_button)
 	

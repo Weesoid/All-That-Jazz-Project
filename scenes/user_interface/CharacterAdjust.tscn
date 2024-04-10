@@ -96,6 +96,7 @@ offset_left = 8.0
 offset_top = 144.0
 offset_right = 336.0
 offset_bottom = 216.0
+bbcode_enabled = true
 
 [node name="Attributes" parent="TabContainer" instance=ExtResource("2_f13wv")]
 visible = false
@@ -161,6 +162,7 @@ theme_override_styles/panel = ExtResource("2_s7p7p")
 
 [node name="Label" type="RichTextLabel" parent="TabContainer/Abilities/DescriptionPanel"]
 layout_mode = 2
+bbcode_enabled = true
 text = "This is the item description. FEAR IT'S GLORY!"
 
 [node name="Members" type="PanelContainer" parent="."]

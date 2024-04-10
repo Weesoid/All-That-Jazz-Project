@@ -305,6 +305,7 @@ theme_override_constants/margin_bottom = 3
 [node name="RichTextLabel" type="RichTextLabel" parent="CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
 text = "ASDasdas"
 
 [node name="OptionContainer" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bipsixd3gwi1r"]
+[gd_scene load_steps=3 format=3 uid="uid://bipsixd3gwi1r"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiTurnIndicator.gd" id="1_oxif4"]
+[ext_resource type="Texture2D" uid="uid://de0o3saxpymti" path="res://images/sprites/icon_single_target.png" id="3_i8qb4"]
 
 [node name="TurnIndicator" type="Control"]
 layout_mode = 3
@@ -14,3 +15,6 @@ offset_left = -122.0
 offset_right = 122.0
 offset_bottom = 47.0
 pivot_offset = Vector2(244, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_i8qb4")

@@ -2,23 +2,27 @@ extends Node2D
 
 @onready var animator = $AnimationPlayer
 var attached_combatant: ResCombatant
+var combat_scene = CombatGlobals.getCombatScene()
 
-# WORK ON THIS!!!
-func _process(delta):
-	if attached_combatant != null and CombatGlobals.getCombatScene().target_state != 0:
-		if CombatGlobals.getCombatScene().target_combatant is ResCombatant:
-			if CombatGlobals.getCombatScene().target_combatant == attached_combatant:
+func _process(_delta):
+	if attached_combatant != null and combat_scene.target_state != 0:
+		if combat_scene.target_combatant is ResCombatant:
+			if combat_scene.target_combatant == attached_combatant:
 				show()
 				animator.play("Select")
-			elif CombatGlobals.getCombatScene().valid_targets is Array and CombatGlobals.getCombatScene().valid_targets.has(attached_combatant):
+			elif combat_scene.valid_targets is Array and combat_scene.valid_targets.has(attached_combatant):
 				show()
 				animator.play("Show")
 			else:
 				hide()
 				animator.play("RESET")
-		if CombatGlobals.getCombatScene().target_combatant is Array and CombatGlobals.getCombatScene().valid_targets.has(attached_combatant):
-			show()
-			animator.play("Select")
-		elif CombatGlobals.getCombatScene().target_combatant is Array and !CombatGlobals.getCombatScene().valid_targets.has(attached_combatant):
-			hide()
-			animator.play("RESET")
+		elif combat_scene.target_combatant is Array:
+			if combat_scene.valid_targets.has(attached_combatant):
+				show()
+				animator.play("Select")
+			else:
+				hide()
+				animator.play("RESET")
+	else:
+		hide()
+		animator.play("RESET")

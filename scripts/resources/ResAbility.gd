@@ -72,3 +72,25 @@ func getAnimator()-> AnimationPlayer:
 
 func _to_string():
 	return NAME
+
+func getRichDescription(with_name=true)-> String:
+	var description = ''
+	if with_name:
+		description += NAME.to_upper()+'\n'
+	description += '[img]%s[/img]' % [getValidTargetIcon()]
+	if INSTANT_CAST:
+		description += '[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
+	description += ' '+DESCRIPTION
+	return description
+
+func getValidTargetIcon():
+	if TARGET_TYPE == TargetType.SINGLE:
+		match TARGET_GROUP:
+			TargetGroup.ALLIES: return "res://images/sprites/icon_single_friend.png"
+			TargetGroup.ENEMIES:  return "res://images/sprites/icon_single_enemy.png"
+			TargetGroup.ALL: return "res://images/sprites/icon_single_all.png"
+	if TARGET_TYPE == TargetType.MULTI:
+		match TARGET_GROUP:
+			TargetGroup.ALLIES: return "res://images/sprites/icon_multi_friend.png"
+			TargetGroup.ENEMIES:  return "res://images/sprites/icon_multi_enemy.png"
+			TargetGroup.ALL: return "res://images/sprites/icon_multi_all.png"
