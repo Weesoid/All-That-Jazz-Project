@@ -32,7 +32,7 @@ STAT_VALUES = {
 "crit": 0.05,
 "dodge": 0.0,
 "grit": 0.1,
-"handling": 4,
+"handling": 2,
 "heal mult": 1.0,
 "health": 999,
 "hustle": 0,

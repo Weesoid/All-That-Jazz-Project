@@ -56,9 +56,9 @@ func updateBars():
 	health_bar.value = int(attached_combatant.STAT_VALUES['health'])
 	absolute_health.text = str(health_bar.value)
 	if attached_combatant.hasStatusEffect('Knock Out'):
-		hide()
+		health_bar.hide()
 	else:
-		show()
+		health_bar.show()
 
 func updateStatusEffects():
 	for effect in attached_combatant.STATUS_EFFECTS:

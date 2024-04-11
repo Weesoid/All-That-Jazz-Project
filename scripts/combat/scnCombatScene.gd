@@ -365,7 +365,7 @@ func playerSelectSingleTarget():
 	else:
 		target_combatant = valid_targets
 	
-	combat_camera.position = lerp(combat_camera.global_position, target_combatant.SCENE.global_position, 0.005)
+	moveCamera(target_combatant.SCENE.global_position)
 	browseTargetsInputs()
 	confirmCancelInputs()
 
@@ -381,8 +381,9 @@ func playerSelectInspection():
 	valid_targets = COMBATANTS
 	target_combatant = valid_targets[target_index]
 	ui_inspect_target.show()
-	combat_camera.position = lerp(combat_camera.global_position, target_combatant.SCENE.global_position, 0.005)
 	ui_attribute_view.combatant = target_combatant
+	
+	moveCamera(target_combatant.SCENE.global_position)
 	getStatusEffectInfo(target_combatant)
 	browseTargetsInputs()
 	confirmCancelInputs()
@@ -404,6 +405,7 @@ func executeAbility():
 								target_combatant, 
 								selected_ability.ANIMATION
 								)
+	#writeTopLogMessage(selected_ability.NAME)
 	await get_tree().create_timer(0.5).timeout
 	if has_node('QTE'): 
 		await CombatGlobals.qte_finished
@@ -429,6 +431,9 @@ func commandExecuteAbility(target, ability: ResAbility):
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
+func moveCamera(target: Vector2, speed=0.005):
+	combat_camera.global_position = lerp(combat_camera.global_position, target, speed)
+
 func addCombatant(combatant, container):
 	for marker in container:
 		if marker.get_child_count() != 0: continue
@@ -443,7 +448,7 @@ func forceCastAbility(ability: ResAbility):
 	target_state = selected_ability.getTargetType()
 	secondary_panel.hide()
 	action_panel.hide()
-	writeTopLogMessage(selected_ability.NAME)
+	#writeTopLogMessage(selected_ability.NAME)
 	await target_selected
 	runAbility()
 

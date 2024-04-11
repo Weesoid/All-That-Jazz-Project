@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3kxw4js4bdau"]
+[gd_scene load_steps=4 format=3 uid="uid://d3kxw4js4bdau"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeView.gd" id="1_5knxr"]
+[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="2_pqnlq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -163,8 +164,29 @@ uppercase = true
 
 [node name="ProgressBar" type="ProgressBar" parent="Attributes/MarginContainer/VBoxContainer/Health"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 value = 50.0
+
+[node name="HealthValues" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Health/ProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -7.0
+offset_right = 39.5
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Brawn" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -210,11 +232,8 @@ text = "Handling"
 vertical_alignment = 1
 uppercase = true
 
-[node name="ProgressBar" type="ProgressBar" parent="Attributes/MarginContainer/VBoxContainer/Handling"]
+[node name="CustomCountBar" parent="Attributes/MarginContainer/VBoxContainer/Handling" instance=ExtResource("2_pqnlq")]
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
-max_value = 4.0
-value = 1.0
 
 [node name="Hustle" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
 layout_mode = 2

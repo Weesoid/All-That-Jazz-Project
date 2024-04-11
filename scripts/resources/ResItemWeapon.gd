@@ -33,5 +33,6 @@ func getInformation():
 	var out = ""
 	out += "W: %s V: %s\n" % [WEIGHT, VALUE]
 	out += 'D: %s / %s\n\n' % [durability, max_durability]
-	out += DESCRIPTION
+	out += DESCRIPTION + '\n\n'
+	out += EFFECT.getRichDescription()
 	return out
