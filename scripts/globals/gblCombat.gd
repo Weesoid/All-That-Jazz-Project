@@ -32,9 +32,11 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, base_damage, can
 		else:
 			manual_call_indicator.emit(target, 'Dodged!', 'Whiff')
 			call_indicator.emit('Show', target)
+			#playDodgeAnimation(target)
 	elif can_miss:
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		call_indicator.emit('Show', target)
+		#playDodgeAnimation(target)
 	else:
 		damageTarget(caster, target, base_damage, can_crit)
 
@@ -145,6 +147,14 @@ func playHurtAnimation(target: ResCombatant):
 	if !target.isDead():
 		await target.getAnimator().animation_finished
 		target.getAnimator().play('Idle')
+# work on this
+func playDodgeAnimation(target: ResCombatant):
+	var original_pos = target.SCENE.position
+	var tween = getCombatScene().create_tween()
+	tween.set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(target.SCENE, 'scale', Vector2(0, 1), 0.25)
+	tween.tween_property(target.SCENE, 'scale', Vector2(-1, 1), 0.25)
+	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.25)
 
 func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)

@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3 uid="uid://co8jakmd0wtwb"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiCombatResultScreen.gd" id="1_pb2ki"]
+
+[node name="CombatResultScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pb2ki")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 333.0
+offset_bottom = 212.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ResultsTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "RESULTS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bonuses" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "<BONUSES>"
+horizontal_alignment = 1
+
+[node name="MoraleTitle2" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Morale"
+vertical_alignment = 2
+
+[node name="Experience" type="ProgressBar" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DropsTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Drops"
+vertical_alignment = 2
+
+[node name="AllDrops" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+bbcode_enabled = true
+text = "Scrap Salvage x3
+Hot Hand x1
+etc."

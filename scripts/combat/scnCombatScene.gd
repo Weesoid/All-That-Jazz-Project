@@ -8,17 +8,19 @@ class_name CombatScene
 @onready var team_container_markers = $ParallaxBackground/ParallaxLayer2/TeamContainer.get_children()
 @onready var enemy_container_markers = $ParallaxBackground/ParallaxLayer/EnemyContainer.get_children()
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
+@onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
-@onready var action_panel = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons
-@onready var equip_button = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Equipment
-@onready var escape_button = $CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Escape
+#@onready var action_panel_group = $CombatCamera/Interface/ActionPanel/ActionPanel
+@onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
+@onready var equip_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Equipment
+@onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
 @onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
 @onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
-@onready var turn_indicator = $CombatCamera/Interface/TurnIndicator
+@onready var turn_indicator = $CombatCamera/Interface/ActionPanel/TurnIndicator
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
@@ -26,6 +28,7 @@ class_name CombatScene
 @onready var battle_back = $CombatCamera/DefaultBattleParallax.get_node('AnimationPlayer')
 @onready var top_log_label = $CombatCamera/Interface/TopLog
 @onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
+@onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
 
 var combatant_turn_order: Array[ResCombatant]
 var combat_dialogue: ResCombatDialogue
@@ -124,7 +127,7 @@ func _process(_delta):
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_cancel') and secondary_panel.visible:
 		resetActionLog()
-	# Debug? Feature?
+	
 	if Input.is_action_just_pressed('ui_home'):
 		if action_panel.visible == true:
 			toggleUI(false)
@@ -140,12 +143,13 @@ func on_player_turn():
 	resetActionLog()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
-	
+	ui_animator.play('ShowActionPanel')
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
 	await confirm
 	end_turn()
 
 func on_enemy_turn():
+	ui_animator.play_backwards('ShowActionPanel')
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 0.75, true)
@@ -228,7 +232,6 @@ func end_turn(combatant_act=true):
 func setActiveCombatant(tick_effect=true):
 	active_index = incrementIndex(active_index,1,combatant_turn_order.size())
 	active_combatant = combatant_turn_order[active_index]
-	print('ACTIVE: ', active_combatant)
 	turn_indicator.updateActive()
 	if tick_effect:
 		tickStatusEffects(active_combatant)
@@ -258,14 +261,15 @@ func removeDeadCombatants(fading=true):
 func _on_skills_pressed():
 	getPlayerAbilities(active_combatant.ABILITY_SET)
 	if secondary_panel_container.get_child_count() == 0: return
-	secondary_panel.show()
+	animateSecondaryPanel('show')
 	secondary_panel_container.get_child(0).grab_focus()
 
 func _on_guard_pressed():
 	resetActionLog()
+	updateDescription(active_combatant.ABILITY_SLOT.getRichDescription())
+	animateSecondaryPanel('show')
 	Input.action_release("ui_accept")
 	forceCastAbility(active_combatant.ABILITY_SLOT)
-
 
 func _on_items_pressed():
 	getPlayerItems()
@@ -446,7 +450,9 @@ func forceCastAbility(ability: ResAbility):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	target_state = selected_ability.getTargetType()
-	secondary_panel.hide()
+	ui_animator.play('FocusDescription')
+	#ui_animator.play_backwards('ShowOptionPanel')
+	secondary_action_panel.hide()
 	action_panel.hide()
 	#writeTopLogMessage(selected_ability.NAME)
 	await target_selected
@@ -455,6 +461,15 @@ func forceCastAbility(ability: ResAbility):
 func updateDescription(description: String):
 	secondary_description.show()
 	secondary_description.text = description
+
+func animateSecondaryPanel(animation: String):
+	if animation == 'show':
+		secondary_action_panel.show()
+		secondary_panel.show()
+		ui_animator.play("ShowSecondaryPanel")
+	elif animation == 'hide':
+		ui_animator.play_backwards("ShowDescriptionPanel")
+		ui_animator.play_backwards("ShowOptionPanel")
 
 func getDeadCombatants():
 	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
@@ -568,6 +583,7 @@ func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_cancel"):
+		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
 	
 func resetActionLog():
@@ -579,6 +595,7 @@ func resetActionLog():
 	target_index = 0
 	action_panel.get_child(0).grab_focus()
 	action_panel.show()
+	ui_animator.play('ShowActionPanel')
 
 func runAbility():
 	target_state = 0

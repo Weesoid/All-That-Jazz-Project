@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dqax0vfpytli7"]
+[gd_scene load_steps=20 format=3 uid="uid://dqax0vfpytli7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
@@ -75,6 +75,266 @@ border_width_left = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_5b8u0"]
+resource_name = "ShowActionPanel"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ActionPanel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 101), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ActionPanel/ActionPanel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6ffbp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ActionPanel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SecondaryPanel/OptionContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(199, -123)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SecondaryPanel/OptionContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SecondaryPanel/DescriptionPanel:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SecondaryPanel/DescriptionPanel:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-129, 53)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ActionPanel/ActionPanel:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_u2dts"]
+resource_name = "ShowOptionPanel"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SecondaryPanel/OptionContainer:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(199, -100), Vector2(199, -123)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SecondaryPanel/OptionContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fln3o"]
+resource_name = "ShowDescriptionPanel"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SecondaryPanel/DescriptionPanel:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SecondaryPanel/DescriptionPanel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-119, 53), Vector2(-129, 53)]
+}
+
+[sub_resource type="Animation" id="Animation_1l7kn"]
+resource_name = "ShowSecondaryPanel"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SecondaryPanel/DescriptionPanel:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SecondaryPanel/DescriptionPanel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-119, 53), Vector2(-129, 53)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SecondaryPanel/OptionContainer:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(199, -100), Vector2(199, -123)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SecondaryPanel/OptionContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6vvqj"]
+resource_name = "FocusDescription"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SecondaryPanel/DescriptionPanel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-129, 53), Vector2(199, 53)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ActionPanel:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ActionPanel/ActionPanel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fveyc"]
+_data = {
+"FocusDescription": SubResource("Animation_6vvqj"),
+"RESET": SubResource("Animation_6ffbp"),
+"ShowActionPanel": SubResource("Animation_5b8u0"),
+"ShowDescriptionPanel": SubResource("Animation_fln3o"),
+"ShowOptionPanel": SubResource("Animation_u2dts"),
+"ShowSecondaryPanel": SubResource("Animation_1l7kn")
+}
 
 [node name="CombatScene" type="Node2D"]
 process_mode = 3
@@ -203,18 +463,12 @@ theme_override_font_sizes/font_size = 16
 text = "Turn"
 vertical_alignment = 2
 
-[node name="TurnIndicator" parent="CombatCamera/Interface" instance=ExtResource("12_mnv7p")]
-offset_left = 248.0
-offset_top = 168.0
-offset_right = 381.0
-offset_bottom = 168.0
-
 [node name="LogContainer" parent="CombatCamera/Interface" instance=ExtResource("11_8bne6")]
 layout_mode = 0
-offset_left = -454.0
+offset_left = -488.0
 offset_top = 197.0
 offset_right = 120.0
-offset_bottom = 275.0
+offset_bottom = 285.0
 
 [node name="Timer" type="Timer" parent="CombatCamera/Interface/LogContainer"]
 
@@ -226,7 +480,6 @@ offset_right = 377.0
 offset_bottom = -226.0
 theme = ExtResource("7_56rvc")
 theme_override_font_sizes/font_size = 32
-text = "asdfasdf"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -236,6 +489,7 @@ libraries = {
 }
 
 [node name="Inspect" type="Control" parent="CombatCamera/Interface"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -278,7 +532,6 @@ text = "x Target cannot move!"
 scroll_active = false
 
 [node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
-visible = false
 z_index = 99
 layout_mode = 3
 anchors_preset = 0
@@ -323,7 +576,19 @@ horizontal_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface"]
+[node name="ActionPanel" type="Control" parent="CombatCamera/Interface"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TurnIndicator" parent="CombatCamera/Interface/ActionPanel" instance=ExtResource("12_mnv7p")]
+layout_mode = 2
+offset_left = 248.0
+offset_top = 168.0
+offset_right = 574.0
+offset_bottom = 252.0
+
+[node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface/ActionPanel"]
 z_index = 10
 layout_mode = 0
 offset_left = 128.0
@@ -331,21 +596,21 @@ offset_top = 197.0
 offset_right = 458.0
 offset_bottom = 285.0
 
-[node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/ActionPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Buttons" type="GridContainer" parent="CombatCamera/Interface/ActionPanel/MarginContainer"]
+[node name="Buttons" type="GridContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_force_pass_scroll_events = false
 columns = 3
 
-[node name="Skills" type="Button" parent="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons"]
+[node name="Skills" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
@@ -353,7 +618,7 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "SKILLS"
 
-[node name="Guard" type="Button" parent="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons"]
+[node name="Guard" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
@@ -361,7 +626,7 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "GUARD "
 
-[node name="Equipment" type="Button" parent="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons"]
+[node name="Equipment" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
@@ -369,7 +634,7 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "WEAPONS"
 
-[node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons"]
+[node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
@@ -377,7 +642,7 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "INSPECT"
 
-[node name="Items" type="Button" parent="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons"]
+[node name="Items" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
@@ -385,7 +650,7 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ITEMS"
 
-[node name="Escape" type="Button" parent="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons"]
+[node name="Escape" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
@@ -393,11 +658,16 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ABSCOND"
 
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Guard" to="." method="_on_guard_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Equipment" to="." method="_on_equipment_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Inspect" to="." method="_on_inspect_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Items" to="." method="_on_items_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_pressed"]
+[node name="InterfaceAnimator" type="AnimationPlayer" parent="CombatCamera/Interface"]
+libraries = {
+"": SubResource("AnimationLibrary_fveyc")
+}
+
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard" to="." method="_on_guard_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Equipment" to="." method="_on_equipment_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Inspect" to="." method="_on_inspect_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Items" to="." method="_on_items_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_pressed"]
 
 [editable path="CombatCamera/Interface/Inspect/AttributeView"]

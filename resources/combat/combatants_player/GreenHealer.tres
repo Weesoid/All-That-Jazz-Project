@@ -24,7 +24,7 @@ ICON = ExtResource("8_fydt8")
 PACKED_SCENE = ExtResource("11_xa4xd")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
-"accuracy": 0.95,
+"accuracy": 0.01,
 "brawn": 0.1,
 "crit": 0.05,
 "dodge": 0.0,
