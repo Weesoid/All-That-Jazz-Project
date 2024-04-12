@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://c576r28218c82"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyExp.gd" id="1_7lc7m"]
 [ext_resource type="AudioStream" uid="uid://cmwxips7uduiw" path="res://audio/sounds/loading sfx loopable.ogg" id="2_vr6ob"]

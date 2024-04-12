@@ -1,11 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://dqax0vfpytli7"]
+[gd_scene load_steps=22 format=3 uid="uid://dqax0vfpytli7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_56rvc"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="8_lqkpn"]
+[ext_resource type="AudioStream" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="9_0bsv4"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
+[ext_resource type="AudioStream" path="res://audio/sounds/536805__egomassive__gun_2.ogg" id="10_gi6jx"]
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
 [ext_resource type="PackedScene" uid="uid://bipsixd3gwi1r" path="res://scenes/user_interface/TurnIndicator.tscn" id="12_mnv7p"]
 
@@ -76,32 +78,75 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
-[sub_resource type="Animation" id="Animation_5b8u0"]
-resource_name = "ShowActionPanel"
-length = 0.2
+[sub_resource type="Animation" id="Animation_6vvqj"]
+resource_name = "FocusDescription"
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ActionPanel:position")
+tracks/0/path = NodePath("SecondaryPanel/DescriptionPanel:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 101), Vector2(0, 0)]
+"values": [Vector2(-129, 53), Vector2(199, 53)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("ActionPanel/ActionPanel:modulate")
-tracks/1/interp = 1
+tracks/1/path = NodePath("ActionPanel:position")
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ActionPanel/ActionPanel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../BattleSounds")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("9_0bsv4")
+}, {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("10_gi6jx")
+}],
+"times": PackedFloat32Array(0, 0.2)
+}
+tracks/3/use_blend = true
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SecondaryPanel/DescriptionPanel:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_6ffbp"]
@@ -178,26 +223,38 @@ tracks/5/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SecondaryPanel/DescriptionPanel:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
 
-[sub_resource type="Animation" id="Animation_u2dts"]
-resource_name = "ShowOptionPanel"
+[sub_resource type="Animation" id="Animation_5b8u0"]
+resource_name = "ShowActionPanel"
 length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SecondaryPanel/OptionContainer:position")
+tracks/0/path = NodePath("ActionPanel:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(199, -100), Vector2(199, -123)]
+"values": [Vector2(0, 101), Vector2(0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SecondaryPanel/OptionContainer:modulate")
+tracks/1/path = NodePath("ActionPanel/ActionPanel:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -233,6 +290,34 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(-119, 53), Vector2(-129, 53)]
+}
+
+[sub_resource type="Animation" id="Animation_u2dts"]
+resource_name = "ShowOptionPanel"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SecondaryPanel/OptionContainer:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(199, -100), Vector2(199, -123)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SecondaryPanel/OptionContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_1l7kn"]
@@ -284,46 +369,6 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_6vvqj"]
-resource_name = "FocusDescription"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SecondaryPanel/DescriptionPanel:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-129, 53), Vector2(199, 53)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ActionPanel:position")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("ActionPanel/ActionPanel:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fveyc"]
@@ -532,6 +577,7 @@ text = "x Target cannot move!"
 scroll_active = false
 
 [node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
+visible = false
 z_index = 99
 layout_mode = 3
 anchors_preset = 0

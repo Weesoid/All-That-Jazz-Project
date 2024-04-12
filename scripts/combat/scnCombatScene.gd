@@ -143,6 +143,7 @@ func on_player_turn():
 	resetActionLog()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
+	OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play('ShowActionPanel')
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
 	await confirm
@@ -575,12 +576,15 @@ func browseTargetsInputs():
 		return
 	
 	if Input.is_action_just_pressed("ui_right"):
+		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.wav", -10.0, 1, true)
 		target_index = incrementIndex(target_index, 1, valid_targets.size())
 	if Input.is_action_just_pressed("ui_left"):
+		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.wav", -10.0, 1, true)
 		target_index = incrementIndex(target_index, -1, valid_targets.size())
 
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
+		OverworldGlobals.playSound("56243__qk__latch_01.wav")
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_cancel"):
 		ui_animator.play_backwards('FocusDescription')
@@ -647,8 +651,8 @@ func concludeCombat(results: int):
 		for i in range(loot_bonus):
 			for enemy in getCombatantGroup('enemies'): drop_summary += enemy.getDrops()
 	
-	var bc_ui = preload("res://scenes/user_interface/BattleConclusion.tscn").instantiate()
-	bc_ui.drops = drop_summary
+	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
+	#bc_ui.drops.text = drop_summary
 	add_child(bc_ui)
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)
