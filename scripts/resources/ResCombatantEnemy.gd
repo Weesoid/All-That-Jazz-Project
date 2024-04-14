@@ -32,33 +32,20 @@ func getExperience():
 	return out
 
 func getDrops():
-	if DROP_POOL.is_empty():
-		return ''
-	
 	var drops = {}
-	var drops_summary = ''
 	
 	for i in range(DROP_COUNT):
-		#print('Roll ', i)
 		if CombatGlobals.randomRoll(CHANCE_TO_DROP): 
 			var item = rollDrops()
-			#print('Dropped: ', item.NAME)
 			if drops.has(item):
 				drops[item] += randi_range(1, DROP_POOL[item].y)
 			else:
 				drops[item] = randi_range(1, DROP_POOL[item].y)
-			#print(drops)
 	
-	for item in drops:
-		InventoryGlobals.addItemResource(item, drops[item])
-		if item is ResStackItem:
-			CombatGlobals.getCombatScene().combat_log.writeCombatLog('%s dropped [color=yellow]x%s %s[/color]!' % [NAME, drops[item], item.NAME])
-			drops_summary += 'x%s %s\n' % [drops[item], item.NAME]
-		else:
-			CombatGlobals.getCombatScene().combat_log.writeCombatLog('%s dropped [color=yellow]%s[/color]' % [NAME, item.NAME])
-			drops_summary += '%s\n' % item.NAME
+#	for item in drops:
+#		InventoryGlobals.addItemResource(item, drops[item])
 	
-	return drops_summary
+	return drops
 
 func getRawDrops():
 	var drops = {}

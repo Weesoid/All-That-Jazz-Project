@@ -11,7 +11,6 @@ class_name CombatScene
 @onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
-#@onready var action_panel_group = $CombatCamera/Interface/ActionPanel/ActionPanel
 @onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
 @onready var equip_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Equipment
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
@@ -44,7 +43,7 @@ var combat_event: ResCombatEvent
 var selected_ability: ResAbility
 var run_once = true
 var experience_earnt = 0
-var drop_summary = ''
+var drops = {}
 var turn_count = 0
 var round_count = 0
 var player_turn_count = 0
@@ -246,7 +245,7 @@ func removeDeadCombatants(fading=true):
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				combatant.ACTED = true
 				experience_earnt += combatant.getExperience()
-				drop_summary += combatant.getDrops()
+				addDrop(combatant.getDrops())
 		else:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
@@ -475,6 +474,14 @@ func animateSecondaryPanel(animation: String):
 func getDeadCombatants():
 	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
 
+func addDrop(loot_drops: Dictionary):
+	for loot in loot_drops.keys():
+		if drops.keys().has(loot):
+			drops[loot] += loot_drops[loot]
+		else:
+			drops[loot] = loot_drops[loot]
+
+
 func rollTurns():
 	playCombatAudio("714571__matrixxx__reverse-time.ogg", 0.0, 1, true)
 	combatant_turn_order.clear()
@@ -623,7 +630,7 @@ func writeTopLogMessage(message: String):
 	top_log_animator.play("Show")
 
 func concludeCombat(results: int):
-	toggleUI(false)
+	#toggleUI(false)
 	battle_music.stop()
 	#battle_back.play('Win')
 	for combatant in COMBATANTS:
@@ -636,26 +643,34 @@ func concludeCombat(results: int):
 	
 	var morale_bonus = 1
 	var loot_bonus = 0
+	var all_bonuses = ''
 	if turn_count <= 6 and results == 1:
-		combat_log.writeCombatLog('[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops')
+		all_bonuses += '[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops\n'
 		morale_bonus += 1
 		loot_bonus += 1
 	if enemy_turn_count == 0 and results == 1:
-		combat_log.writeCombatLog('[color=orange]RUTHLESS FINISH![/color] Increased Drops')
+		all_bonuses += '[color=orange]RUTHLESS FINISH![/color] Increased Drops\n'
 		loot_bonus += 1
-	if player_turn_count < 4 and results == 1:
-		combat_log.writeCombatLog('[color=orange]STRAGETIC VICTORY![/color] +25% Morale')
+	if round_count == 1 and results == 1:
+		all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
 		morale_bonus += 1
 	if results == 1:
 		experience_earnt += (experience_earnt*0.25)*morale_bonus
 		for i in range(loot_bonus):
-			for enemy in getCombatantGroup('enemies'): drop_summary += enemy.getDrops()
+			for enemy in getCombatantGroup('enemies'): addDrop(enemy.getDrops())
 	
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
-	#bc_ui.drops.text = drop_summary
+	for item in drops.keys():
+		InventoryGlobals.addItemResource(item, drops[item])
 	add_child(bc_ui)
+	if results == 1:
+		bc_ui.title.text = 'VICTORY!'
+	else:
+		bc_ui.title.text = 'ESCAPED!'
+	bc_ui.setBonuses(all_bonuses)
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)
+	bc_ui.writeDrops(drops)
 	await bc_ui.done
 	
 	transition_scene.visible = true

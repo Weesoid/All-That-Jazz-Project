@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_56rvc"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="8_lqkpn"]
-[ext_resource type="AudioStream" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="9_0bsv4"]
+[ext_resource type="AudioStream" uid="uid://cujwmntfbmh8b" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="9_0bsv4"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
-[ext_resource type="AudioStream" path="res://audio/sounds/536805__egomassive__gun_2.ogg" id="10_gi6jx"]
+[ext_resource type="AudioStream" uid="uid://b32ltjrgmftph" path="res://audio/sounds/536805__egomassive__gun_2.ogg" id="10_gi6jx"]
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
 [ext_resource type="PackedScene" uid="uid://bipsixd3gwi1r" path="res://scenes/user_interface/TurnIndicator.tscn" id="12_mnv7p"]
 

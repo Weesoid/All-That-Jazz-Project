@@ -29,7 +29,7 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 		item.add(count-1, false)
 		unit.append(item)
 	elif item is ResCharm:
-		unit.append(item.duplicate())
+		for i in range(count): unit.append(item.duplicate())
 	else:
 		unit.append(item)
 	
