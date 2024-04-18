@@ -42,4 +42,6 @@ func loadGame():
 	QuestGlobals.quest_objective_completed.connect(QuestGlobals.checkQuestsForCompleted)
 	
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
+	print(PlayerGlobals.TEAM)
+	print(OverworldGlobals.getCombatantSquad('Player'))
 	#print_orphan_nodes()

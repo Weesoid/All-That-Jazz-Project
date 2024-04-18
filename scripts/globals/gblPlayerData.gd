@@ -141,6 +141,7 @@ func saveData(save_data: Array):
 	save_data.append(data)
 
 func loadData(save_data: PlayerSaveData):
+	OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.clear()
 	TEAM = save_data.TEAM
 	FOLLOWERS = save_data.FOLLOWERS
 	FAST_TRAVEL_LOCATIONS = save_data.FAST_TRAVEL_LOCATIONS

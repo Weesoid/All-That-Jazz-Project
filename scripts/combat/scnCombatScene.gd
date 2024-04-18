@@ -647,6 +647,7 @@ func concludeCombat(results: int):
 	var morale_bonus = 1
 	var loot_bonus = 0
 	var all_bonuses = ''
+	
 	if turn_count <= 6 and results == 1:
 		all_bonuses += '[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops\n'
 		morale_bonus += 1
