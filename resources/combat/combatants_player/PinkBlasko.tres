@@ -3,7 +3,7 @@
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
 [ext_resource type="Resource" uid="uid://r3xiqg0rf78c" path="res://resources/combat/abilities/AOEHeal.tres" id="3_14gbd"]
 [ext_resource type="Resource" uid="uid://dj018x62rghdm" path="res://resources/combat/abilities/PumpUp.tres" id="3_bfkjx"]
-[ext_resource type="PackedScene" path="res://scenes/entities/followers/Pinky.tscn" id="4_fpjeh"]
+[ext_resource type="PackedScene" uid="uid://ovdh5raaljpb" path="res://scenes/entities/followers/Pinky.tscn" id="4_fpjeh"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
 [ext_resource type="Resource" uid="uid://dwogklso4jeqr" path="res://resources/combat/abilities/DebuggerStrike.tres" id="5_5571v"]
 [ext_resource type="Resource" uid="uid://dlts84m2aivmo" path="res://resources/combat/abilities/ColdSlap.tres" id="5_sy720"]
