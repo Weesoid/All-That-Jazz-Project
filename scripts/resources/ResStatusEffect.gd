@@ -47,7 +47,7 @@ func removeStatusEffect():
 	if VISUALS != null:
 		VISUALS.queue_free()
 	
-	ICON.queue_free()
+	ICON.queue_free()  
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
 func tick():

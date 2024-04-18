@@ -630,9 +630,9 @@ offset_bottom = 40.0
 [node name="TurnIndicator" parent="CombatCamera/Interface/ActionPanel" instance=ExtResource("12_mnv7p")]
 layout_mode = 2
 offset_left = 248.0
-offset_top = 168.0
+offset_top = 157.0
 offset_right = 574.0
-offset_bottom = 252.0
+offset_bottom = 241.0
 
 [node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface/ActionPanel"]
 z_index = 10

@@ -9,7 +9,6 @@
 script = ExtResource("2_nqghy")
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 ABILITY_SLOT = ExtResource("1_5vfgn")
-FOLLOWER_PACKED_SCENE = ExtResource("2_imtq7")
 MANDATORY = false
 NAME = "Filler 1"
 ICON = ExtResource("2_5m8sm")

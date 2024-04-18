@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=13 format=3 uid="uid://hc8hrodt25vu"]
 
 [ext_resource type="Script" path="res://scripts/entities/entNPCFollower.gd" id="1_6pooa"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://images/animations/ent_walker.png" id="2_gvwlb"]

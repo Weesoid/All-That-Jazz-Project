@@ -222,10 +222,11 @@ func end_turn(combatant_act=true):
 		triggerDialogue()
 		await dialogue_done
 	
-	if active_combatant.STAT_VALUES['hustle'] > 0:
+	if active_combatant.STAT_VALUES['hustle'] >= 0:
 		active_combatant.act()
 	else:
 		end_turn()
+		return
 	
 	checkWin()
 
@@ -266,7 +267,6 @@ func _on_skills_pressed():
 
 func _on_guard_pressed():
 	resetActionLog()
-	updateDescription(active_combatant.ABILITY_SLOT.getRichDescription())
 	animateSecondaryPanel('show')
 	Input.action_release("ui_accept")
 	forceCastAbility(active_combatant.ABILITY_SLOT)
@@ -313,7 +313,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = ability.NAME
 		button.pressed.connect(func(): forceCastAbility(ability))
-		button.focus_entered.connect(func():updateDescription(ability.getRichDescription()))
+		button.focus_entered.connect(func():updateDescription(ability))
 		if !ability.ENABLED:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
@@ -335,7 +335,7 @@ func getPlayerItems():
 					forceCastAbility(item.EFFECT)
 					item.take(1)
 				)
-		button.focus_entered.connect(func(): updateDescription(item.DESCRIPTION))
+		button.focus_entered.connect(func(): updateDescription(item.EFFECT))
 		secondary_panel_container.add_child(button)
 
 func getPlayerWeapons(inventory):
@@ -450,6 +450,7 @@ func forceCastAbility(ability: ResAbility):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	target_state = selected_ability.getTargetType()
+	updateDescription(ability)
 	ui_animator.play('FocusDescription')
 	#ui_animator.play_backwards('ShowOptionPanel')
 	secondary_action_panel.hide()
@@ -458,9 +459,9 @@ func forceCastAbility(ability: ResAbility):
 	await target_selected
 	runAbility()
 
-func updateDescription(description: String):
+func updateDescription(ability: ResAbility):
+	secondary_description.text = ability.getRichDescription()
 	secondary_description.show()
-	secondary_description.text = description
 
 func animateSecondaryPanel(animation: String):
 	if animation == 'show':
@@ -496,7 +497,10 @@ func rollTurns():
 	round_count += 1
 	for combatant in combatant_turn_order:
 		await get_tree().create_timer(0.25).timeout
-		CombatGlobals.manual_call_indicator.emit(combatant, "%s Hustle!" % [str(combatant.ROLLED_SPEED)], 'Show')
+		if combatant.STAT_VALUES['hustle'] >= 0:
+			CombatGlobals.manual_call_indicator.emit(combatant, "%s Hustle!" % [str(combatant.ROLLED_SPEED)], 'Show')
+		else:
+			CombatGlobals.manual_call_indicator.emit(combatant, "Immobilized!", 'Show')
 
 func allCombatantsActed() -> bool:
 	for combatant in combatant_turn_order:
@@ -630,9 +634,8 @@ func writeTopLogMessage(message: String):
 	top_log_animator.play("Show")
 
 func concludeCombat(results: int):
-	#toggleUI(false)
+	print('%s is Concluding!' % self)
 	battle_music.stop()
-	#battle_back.play('Win')
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
 	
@@ -662,6 +665,7 @@ func concludeCombat(results: int):
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 	for item in drops.keys():
 		InventoryGlobals.addItemResource(item, drops[item])
+	
 	add_child(bc_ui)
 	if results == 1:
 		bc_ui.title.text = 'VICTORY!'
@@ -672,6 +676,7 @@ func concludeCombat(results: int):
 	PlayerGlobals.addExperience(experience_earnt)
 	bc_ui.writeDrops(drops)
 	await bc_ui.done
+	bc_ui.queue_free()
 	
 	transition_scene.visible = true
 	transition.play('In')

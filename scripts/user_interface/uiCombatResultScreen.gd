@@ -11,12 +11,15 @@ signal done
 
 func _ready():
 	CombatGlobals.exp_updated.connect(startProgress)
-	animator.play('Show')
+	animator.play("Show")
+	OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
 
-func startProgress(exp: int, required_exp: int):
+func startProgress(xp: int, required_exp: int):
+	CombatGlobals.exp_updated.disconnect(startProgress)
+	#print('x')
 	experience.value = PlayerGlobals.CURRENT_EXP
 	experience.max_value = required_exp
-	create_tween().tween_property(experience, 'value', experience.value + exp, 1.0)
+	create_tween().tween_property(experience, 'value', experience.value + xp, 1.0)
 
 func writeDrops(item_drops: Dictionary):
 	var text = ''
@@ -30,6 +33,6 @@ func setBonuses(bonus: String):
 	bonuses.text = bonus
 	create_tween().tween_property(bonuses, 'visible_ratio', 1, 1.0)
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_accept'):
 		done.emit()

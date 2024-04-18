@@ -4,7 +4,7 @@ extends Container
 @onready var animator = $AnimationPlayer
 @onready var timer = $Timer
 
-func writeCombatLog(text: String, lifetime=5.0):
+func writeCombatLog(text: String, lifetime=5.0):	
 	if !text.is_empty():
 		combat_log.text += text+'\n'
 		timer.start(lifetime)

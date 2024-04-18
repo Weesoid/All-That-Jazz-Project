@@ -84,6 +84,8 @@ func getRichDescription(with_name=true)-> String:
 	return description
 
 func getValidTargetIcon():
+	if TARGET_GROUP == TargetGroup.SELF:
+		return "res://images/sprites/icon_single_friend.png"
 	if TARGET_TYPE == TargetType.SINGLE:
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return "res://images/sprites/icon_single_friend.png"

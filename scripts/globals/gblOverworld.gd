@@ -163,7 +163,7 @@ func loadFollowers():
 	PlayerGlobals.FOLLOWERS.clear()
 	
 	for combatant in PlayerGlobals.TEAM:
-		if combatant.active:
+		if combatant.active and combatant.FOLLOWER_PACKED_SCENE != null:
 			var follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
 			follower_scene.host_combatant = combatant
 			PlayerGlobals.addFollower(follower_scene)

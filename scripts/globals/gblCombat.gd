@@ -149,7 +149,6 @@ func playHurtAnimation(target: ResCombatant):
 		target.getAnimator().play('Idle')
 # work on this
 func playDodgeAnimation(target: ResCombatant):
-	var original_pos = target.SCENE.position
 	var tween = getCombatScene().create_tween()
 	tween.set_trans(Tween.TRANS_BOUNCE)
 	tween.tween_property(target.SCENE, 'scale', Vector2(0, 1), 0.25)

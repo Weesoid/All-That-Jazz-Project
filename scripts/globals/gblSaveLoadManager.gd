@@ -32,7 +32,7 @@ func loadGame():
 			var scene: Node2D = load(item.scene_path).instantiate()
 			scene.global_position = item.position
 			OverworldGlobals.getCurrentMap().add_child(scene)
-		elif item is InventorySaveData:
+		if item is InventorySaveData:
 			InventoryGlobals.loadData(item)
 		elif item is QuestSaveData:
 			QuestGlobals.loadData(item)
@@ -42,4 +42,4 @@ func loadGame():
 	QuestGlobals.quest_objective_completed.connect(QuestGlobals.checkQuestsForCompleted)
 	
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
-
+	#print_orphan_nodes()
