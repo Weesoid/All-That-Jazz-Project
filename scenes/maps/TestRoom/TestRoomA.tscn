@@ -24,7 +24,7 @@
 [ext_resource type="Resource" uid="uid://dt0g3n85m4gwf" path="res://scenes/maps/TestRoom/dialogue/quest_talker.dialogue" id="16_qgghh"]
 [ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="17_0v7bm"]
 [ext_resource type="Resource" uid="uid://dqucedvnuj2ek" path="res://scenes/maps/TestRoom/dialogue/test2.dialogue" id="17_cg6sf"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="17_nryad"]
+[ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="17_nryad"]
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="18_vkkst"]
 [ext_resource type="PackedScene" uid="uid://cfgaxedrlkql3" path="res://scenes/entities/mobs/Patroller.tscn" id="28_dbsah"]
 

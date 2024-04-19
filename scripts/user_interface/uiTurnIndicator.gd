@@ -4,7 +4,6 @@ extends Control
 var COMBAT_SCENE: CombatScene
 
 func updateActive():
-	print_orphan_nodes()
 	for child in turn_container.get_children():
 		child.queue_free()
 	

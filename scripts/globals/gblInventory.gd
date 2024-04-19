@@ -18,10 +18,10 @@ func addItem(item_name: String, count=1, unit=INVENTORY):
 	assert(item!=null, "Item '%s' not found!" % item_name)
 	addItemResource(item, count, unit)
 
+# BUG HERE !!
 func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 	if unit == INVENTORY and !canAdd(item, count) or count <= 0:
 		return
-	
 	if item is ResStackItem and unit.has(item):
 		unit[unit.find(item)].add(count)
 	elif item is ResStackItem:
@@ -35,7 +35,6 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 	
 	if show_message:
 		OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
-	
 	if unit == INVENTORY: refreshWeights()
 	added_item_to_inventory.emit()
 	unit.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
@@ -145,15 +144,13 @@ func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
 		if transfer_storage:
 			addItemResource(item,1,STORAGE)
 		return false
-	
 	if item is ResStackItem and count <= 0:
 		return
 	if item is ResStackItem and (item.PER_WEIGHT * count) + CURRENT_CAPACITY > MAX_CAPACITY:
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] not added! Your Inventory is full.' % [str(count), item.NAME])
 		if transfer_storage:
-			var feasible_count = determineFeasibleCount(item, count)
-			addItemResource(item,feasible_count,INVENTORY)
-			createGhostStack(item, count - feasible_count, false)
+			print(count, ' not valid! Determining feasible... Adding to storage!')
+			createGhostStack(item, count, false)
 		return false
 	if item is ResStackItem and (item.STACK + count) > item.MAX_STACK:
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Max stack for [color=yellow]%s[/color] reached!' % item.NAME)
@@ -162,14 +159,7 @@ func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
 			addItemResource(item,feasible_count,INVENTORY)
 			createGhostStack(item, count - feasible_count, false)
 		return false
-	
 	return true
-
-func determineFeasibleCount(item: ResStackItem, count: int):
-	while (item.PER_WEIGHT * count) + CURRENT_CAPACITY > MAX_CAPACITY:
-		count -= 1
-	
-	return count
 
 func getStorageUnitName(unit: Array[ResItem]):
 	match unit:
@@ -225,7 +215,6 @@ func loadData(save_data: InventorySaveData):
 	KNOWN_POWERS = save_data.KNOWN_POWERS
 	KNOWN_RECIPES = save_data.KNOWN_RECIPES
 	MAX_CAPACITY = save_data.MAX_CAPACITY
-	#STORAGE = save_data.getStorage()
 	loadItemData(INVENTORY, save_data)
 	loadItemData(STORAGE, save_data)
 	refreshWeights()

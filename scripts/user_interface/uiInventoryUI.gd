@@ -147,7 +147,6 @@ func isEquipped(item):
 		return false
 
 func addButtonToTab(item: ResItem, button: Button):
-	print('checking: ', item)
 	button_item_map[item] = button
 	if item is ResWeapon:
 		weapon_tab.add_child(button)

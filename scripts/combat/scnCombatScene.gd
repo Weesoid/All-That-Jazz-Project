@@ -195,7 +195,6 @@ func end_turn(combatant_act=true):
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
 		CombatGlobals.combatant_stats.emit(combatant)
-	
 	removeDeadCombatants()
 	
 	# Reset values
@@ -354,7 +353,7 @@ func getPlayerWeapons(inventory):
 					forceCastAbility(weapon.EFFECT)
 					weapon.useDurability())
 		button.focus_entered.connect(
-			func(): updateDescription(weapon.DESCRIPTION)
+			func(): updateDescription(weapon.EFFECT.getRichDescription())
 		)
 		if weapon.durability <= 0 or !weapon.canUse(active_combatant): 
 			button.disabled = true
@@ -638,12 +637,10 @@ func concludeCombat(results: int):
 	battle_music.stop()
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
-	
 	action_panel.hide()
 	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
-	
 	var morale_bonus = 1
 	var loot_bonus = 0
 	var all_bonuses = ''
@@ -662,11 +659,13 @@ func concludeCombat(results: int):
 		experience_earnt += (experience_earnt*0.25)*morale_bonus
 		for i in range(loot_bonus):
 			for enemy in getCombatantGroup('enemies'): addDrop(enemy.getDrops())
-	
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
+	# BEAR TRAP
+	print(drops)
 	for item in drops.keys():
+		print(item)
 		InventoryGlobals.addItemResource(item, drops[item])
-	
+	# BEAR TRAP
 	add_child(bc_ui)
 	if results == 1:
 		bc_ui.title.text = 'VICTORY!'
@@ -676,6 +675,7 @@ func concludeCombat(results: int):
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)
 	bc_ui.writeDrops(drops)
+	
 	await bc_ui.done
 	bc_ui.queue_free()
 	
