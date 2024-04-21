@@ -2,221 +2,48 @@
 # >:/
 extends Control
 
-@onready var use_container = $UseContainer
-@onready var party_panel = $PartyPanel/VBoxContainer
-@onready var misc_tab = $TabContainer/Misc/VBoxContainer
-@onready var weapon_tab = $TabContainer/Weapons/VBoxContainer
-@onready var charm_tab = $TabContainer/Charms/VBoxContainer
-@onready var use_button = $UseContainer/Use
-@onready var drop_button = $UseContainer/Drop
-@onready var repair_button = $UseContainer/Repair
-@onready var description_panel = $PanelContainer/DescriptionPanel/DescriptionLabel
-@onready var stat_panel = $PanelContainer/DescriptionPanel/StatPanel
-@onready var trinkets_tab = $TabContainer/Trinkets/VBoxContainer
-@onready var capacity = $Capacity
-@onready var charm_panel = $EquippedUtilityCharms
+@onready var inventory_grid = $PanelContainer2/MarginContainer/ScrollContainer/TabContainer
+@onready var item_info_panel = $Infomration
+@onready var item_info = $Infomration/ItemInfo/DescriptionLabel2
+@onready var item_general_info = $Infomration/GeneralInfo
 
-var selected_item: ResItem
-var selected_combatant: ResCombatant
-var button_item_map: Dictionary
+func _ready():
+	updateInventory()
 
-func _process(_delta):
-	capacity.text = "%s / %s" % [InventoryGlobals.CURRENT_CAPACITY, InventoryGlobals.MAX_CAPACITY]
-
-func _on_ready():
+func updateInventory():
+	for child in inventory_grid.get_children():
+		child.queue_free()
+	
 	for item in InventoryGlobals.INVENTORY:
-		var button = Button.new()
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.size.x = 272
-		button.text = str(item)
-		button.expand_icon = true
-		addButtonToTab(item, button)
+		inventory_grid.add_child(createButton(item))
 
-func _on_use_pressed():
-	if selected_item is ResProjectileAmmo:
-		selected_item.equip()
-		use_container.hide()
-	elif selected_item is ResUtilityCharm:
-		if !selected_item.isEquipped():
-			selected_item.equip(selected_combatant)
-		else:
-			selected_item.unequip()
-		charm_panel.showEquipped()
-		use_container.hide()
-	elif selected_item is ResConsumable and selected_item.EFFECT.TARGET_TYPE == selected_item.EFFECT.TargetType.MULTI:
-		selected_item.initializeItem()
-		selected_combatant = OverworldGlobals.getCombatantSquad('Player')[0]
-		selected_item.applyEffect(selected_combatant, OverworldGlobals.getCombatantSquad('Player'), selected_item.EFFECT.ANIMATION, true)
-		button_item_map[selected_item].text = selected_item.to_string()
-		if selected_item.STACK <= 0:
-			button_item_map[selected_item].queue_free()
-		use_container.hide()
-	else:
-		use_container.hide()
-		addMembers()
+func createButton(item: ResItem):
+	var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+	button.theme = preload("res://design/ItemButtons.tres")
+	button.icon = item.ICON
+	button.tooltip_text = item.NAME
+	button.gui_input.connect(func(input): setButtonFunction(input, item, button))
+	
+	if item is ResStackItem:
+		var label = Label.new()
+		label.text = str(item.STACK)
+		label.theme = preload("res://design/OutlinedLabel.tres")
+		button.add_child(label)
+	
+	return button
 
-func addMembers():
-	clearMembers()
+func setButtonFunction(event, item, button: Button):
+	item_info.text = '[center]'+ item.NAME.to_upper() + '[/center]\n'
+	item_info.text += item.getInformation()
+	item_general_info.text = item.getGeneralInfo()
+	item_info_panel.show()
+	
+	if Input.is_action_pressed("ui_alt_accept"):
+		if item is ResProjectileAmmo:
+			item.equip()
+		elif item is ResConsumable:
+			item.applyOverworldEffects()
+		elif item is ResUtilityCharm:
+			item.equip(PlayerGlobals.TEAM[0])
 		
-	for member in OverworldGlobals.getCombatantSquad('Player'):
-		var button = Button.new()
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.size.x = 272
-		button.text = member.NAME
-		#button.expand_icon = true
-		button.icon = member.ICON
-		print(button.icon)
-		button.pressed.connect(func setSelectedCombatant(): selected_combatant = member)
-		button.pressed.connect(
-					func useItem():
-						selected_combatant = member
-						if selected_item is ResConsumable and selected_item.OVERWORLD_USE:
-							#selected_item.initializeItem()
-							selected_item.applyEffect(selected_combatant, selected_combatant, selected_item.EFFECT.ANIMATION, true)
-							button_item_map[selected_item].text = selected_item.to_string()
-							stat_panel.text = member.getStringStats()
-							if selected_item.STACK <= 0: 
-								button_item_map[selected_item].queue_free()
-								party_panel.hide()
-							return
-						elif selected_item.EQUIPPED_COMBATANT == member:
-							InventoryGlobals.getItem(selected_item).unequip()
-							stat_panel.text = member.getStringStats()
-							button_item_map[selected_item].icon = null
-						else:
-							InventoryGlobals.getItem(selected_item).equip(member)
-							equipMemberAndUpdateButton(member, selected_item)
-						
-						for child in party_panel.get_children():
-							child.queue_free()
-						
-						use_container.hide()
-						)
-		button.mouse_entered.connect(
-			func updateInfo():
-				stat_panel.text = member.getStringStats()
-		)
-		party_panel.add_child(button)
-
-func equipMemberAndUpdateButton(member: ResCombatant, item: ResEquippable):
-	if item.isEquipped():
-		button_item_map[item].icon = item.EQUIPPED_COMBATANT.ICON
-		stat_panel.text = member.getStringStats()
-
-func clearMembers():
-	for child in party_panel.get_children():
-		child.free()
-
-func _on_drop_pressed():
-	if selected_item is ResEquippable:
-		InventoryGlobals.removeItemResource(selected_item)
-		button_item_map[selected_item].queue_free()
-		selected_item = null
-		use_container.hide()
-	elif selected_item is ResStackItem:
-		InventoryGlobals.removeItemResource(selected_item, await loadSlider(selected_item))
-		button_item_map[selected_item].text = str(selected_item)
-		if selected_item.STACK <= 0:
-			button_item_map[selected_item].queue_free()
-			selected_item = null
-			use_container.hide()
-
-func loadSlider(item, repair=false)-> int:
-	if !item is ResStackItem:
-		return 1
-	
-	#disableButtons()
-	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
-	if !repair:
-		a_slider.max_v = item.STACK
-	else:
-		a_slider.max_v = selected_item.max_durability - selected_item.durability
-	add_child(a_slider)
-	await a_slider.amount_enter
-	var amount = a_slider.slider.value
-	a_slider.queue_free()
-	return int(amount)
-
-func isEquipped(item):
-	if item is ResConsumable:
-		return false
-	
-	if PlayerGlobals.getItem(item).EQUIPPED_COMBATANT != null:
-		return true
-	else:
-		return false
-
-func addButtonToTab(item: ResItem, button: Button):
-	button_item_map[item] = button
-	if item is ResWeapon:
-		weapon_tab.add_child(button)
-	elif item is ResStackItem:
-		misc_tab.add_child(button)
-	elif item is ResCharm:
-		if item.EQUIPPED_COMBATANT != null:
-			button.icon = item.EQUIPPED_COMBATANT.ICON
-		charm_tab.add_child(button)
-	elif item is ResUtilityCharm:
-		trinkets_tab.add_child(button)
-	button.pressed.connect(
-		func setSelectedItem(): 
-			clearMembers()
-			showUseContainer(item)
-			selected_item = InventoryGlobals.getItem(item)
-			updateItemInfo(item)
-			)
-
-func showUseContainer(item: ResItem):
-	use_button.show()
-	repair_button.hide()
-	
-	if item.MANDATORY:
-		drop_button.disabled = true
-	else:
-		drop_button.disabled = false
-	
-	if item is ResEquippable:
-		use_button.text = "Equip/Unequip"
-	elif item is ResWeapon: 
-		repair_button.show()
-	elif item is ResProjectileAmmo:
-		use_button.text = "Equip Arrow"
-	elif item is ResConsumable:
-		use_button.text = "Use"
-	else:
-		use_button.hide()
-	
-	use_container.show()
-
-func isItemEquippable(item: ResItem):
-	return item is ResEquippable or item is ResProjectileAmmo
-
-func updateItemInfo(item: ResItem):
-	description_panel.text = item.getInformation()
-
-func _on_tab_container_tab_changed(tab):
-	if tab == 2:
-		charm_panel.showEquipped()
-		charm_panel.show()
-	else:
-		charm_panel.hide()
-	
-	selected_item = null
-	selected_combatant = null
-	clearMembers()
-	use_container.hide()
-	description_panel.text = ""
-	stat_panel.text = ""
-
-func _on_repair_pressed():
-	var scrap_salvage = InventoryGlobals.getItemWithName('Scrap Salvage')
-	description_panel.text = selected_item.getInformation()
-	
-	if scrap_salvage != null:
-		InventoryGlobals.repairItem(selected_item, await loadSlider(scrap_salvage, true))
-		button_item_map[scrap_salvage].text = str(scrap_salvage)
-		
-		if scrap_salvage.STACK <= 0:
-			button_item_map[scrap_salvage].queue_free()
-			scrap_salvage = null
-			use_container.hide()
+		updateInventory()

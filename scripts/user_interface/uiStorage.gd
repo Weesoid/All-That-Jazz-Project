@@ -4,12 +4,8 @@ extends Control
 @onready var inventory = $Inventory/Scroll/VBoxContainer
 @onready var description = $DescriptionPanel/Label
 @onready var search = $LineEdit
-@onready var capacity = $Capacity
 
 var selected_item
-
-func _process(_delta):
-	capacity.text = "%s / %s" % [InventoryGlobals.CURRENT_CAPACITY, InventoryGlobals.MAX_CAPACITY]
 
 func _ready():
 	loadStorage()

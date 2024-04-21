@@ -27,28 +27,26 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_756vk"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_8d1cq"]
 
-[sub_resource type="Resource" id="Resource_k4nan"]
+[sub_resource type="Resource" id="Resource_r5p7e"]
 script = ExtResource("1_oqpno")
-position = Vector2(43.6887, -26.3113)
+position = Vector2(43.6887, -9.64464)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_jwq80"]
+[sub_resource type="Resource" id="Resource_tbl6y"]
 script = ExtResource("5_heaj2")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("4_hld2x")])
 KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_7gaec"), ExtResource("3_mavcw")])
-CURRENT_CAPACITY = 0
-MAX_CAPACITY = 100
 ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_q338o"]
+[sub_resource type="Resource" id="Resource_r2nhd"]
 script = ExtResource("6_rka4m")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_5olyx"]
+[sub_resource type="Resource" id="Resource_erxgx"]
 script = ExtResource("25_756vk")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("7_y057v"), ExtResource("15_kkfjh"), ExtResource("22_avsf7"), ExtResource("23_1clie")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -179,4 +177,4 @@ ExtResource("23_1clie"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 [resource]
 script = ExtResource("26_8d1cq")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_k4nan"), SubResource("Resource_jwq80"), SubResource("Resource_q338o"), SubResource("Resource_5olyx")]
+save_data = [SubResource("Resource_r5p7e"), SubResource("Resource_tbl6y"), SubResource("Resource_r2nhd"), SubResource("Resource_erxgx")]

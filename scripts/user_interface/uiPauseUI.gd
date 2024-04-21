@@ -18,6 +18,7 @@ func _ready():
 	exp_bar.max_value = PlayerGlobals.getRequiredExp()
 	level.text = 'POSSE LEVEL ' + str(PlayerGlobals.PARTY_LEVEL)
 	currency.text = 'CHAINS ' + str(PlayerGlobals.CURRENCY)
+	base.get_child(0).grab_focus()
 
 func _on_tree_exited():
 	#OverworldGlobals.setPlayerInput(true)

@@ -35,7 +35,6 @@ func getStatModifications():
 
 func getInformation():
 	var out = ""
-	out += "W: %s V: %s\n\n" % [WEIGHT, VALUE]
-	out += getStringStats()+"\n\n"
+	out += getStringStats()+"\n"
 	out += DESCRIPTION
 	return out

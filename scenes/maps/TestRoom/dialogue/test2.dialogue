@@ -3,4 +3,8 @@
 do addItem("CharmMurder")
 do addItem("WolfCold")
 do addItem("HealingPotion")
+do addItem("SprintStone")
+do addItem("WalkStone")
+do addItem("StaminaStone")
+
 => END

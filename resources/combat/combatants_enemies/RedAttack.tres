@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_8shg0"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="2_t0rce"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="2_wue3c"]
+[ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="2_wue3c"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_tvtxk"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="4_wu60c"]
 [ext_resource type="Resource" uid="uid://bkc07fma87bjx" path="res://resources/items/HotHand.tres" id="5_44f6x"]

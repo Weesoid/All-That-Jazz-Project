@@ -10,6 +10,7 @@ static func applyEffects(caster: ResCombatant, target, animation_scene):
 		CombatGlobals.calculateHealing(caster, 10.0)
 		await CombatGlobals.animation_done
 
-static func applyOverworldEffects(caster: ResCombatant, target, _animation_scene):
-	for combatant in target:
-		CombatGlobals.calculateHealing(caster, 10.0)
+static func applyOverworldEffects():
+	for combatant in PlayerGlobals.TEAM:
+		if combatant.active:
+			CombatGlobals.calculateHealing(combatant, 50)

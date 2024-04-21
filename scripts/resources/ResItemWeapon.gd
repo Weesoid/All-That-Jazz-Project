@@ -31,8 +31,11 @@ func canUse(combatant: ResCombatant):
 
 func getInformation():
 	var out = ""
-	out += "W: %s V: %s\n" % [WEIGHT, VALUE]
-	out += 'D: %s / %s\n\n' % [durability, max_durability]
 	out += DESCRIPTION + '\n\n'
 	out += EFFECT.getRichDescription()
+	return out
+
+func getGeneralInfo():
+	var out = ''
+	out += '[img]res://images/sprites/icon_value.png[/img]%s	[img]res://images/sprites/icon_durability.png[/img]%s/%s	[img]res://images/sprites/circle_filled.png[/img]%s' % [VALUE,durability,max_durability,USE_REQUIREMENT['handling']]
 	return out

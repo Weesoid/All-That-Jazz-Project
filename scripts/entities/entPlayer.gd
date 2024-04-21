@@ -275,7 +275,6 @@ func undrawBowAnimation():
 	animation_tree["parameters/conditions/cancel"] = true
 
 func saveData(save_data: Array):
-	print('Hehe')
 	var data = EntitySaveData.new()
 	data.position = global_position
 	data.scene_path = scene_file_path

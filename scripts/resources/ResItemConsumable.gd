@@ -7,9 +7,11 @@ class_name ResConsumable
 func animateCast(caster: ResCombatant):
 	EFFECT.animateCast(caster)
 
-func applyEffect(caster: ResCombatant, targets, animation_scene, overworld=false):
-	if overworld:
-		EFFECT.ABILITY_SCRIPT.applyOverworldEffects(caster, targets, animation_scene)
-	else:
-		EFFECT.applyEffects(caster, targets, animation_scene)
+func applyEffect(caster: ResCombatant, targets, animation_scene):
+	EFFECT.applyEffects(caster, targets, animation_scene)
 	InventoryGlobals.removeItemResource(self, 1)
+
+func applyOverworldEffects():
+	if STACK >= 0:
+		EFFECT.ABILITY_SCRIPT.applyOverworldEffects()
+		InventoryGlobals.removeItemResource(self, 1)

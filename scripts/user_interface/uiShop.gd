@@ -109,7 +109,7 @@ func _on_action_pressed():
 			loadWares(wares_array)
 		0:
 			var amount = await loadSlider(selected_item)
-			InventoryGlobals.removeItemResource(selected_item, amount)
+			InventoryGlobals.removeItemResource(selected_item, amount, InventoryGlobals.INVENTORY, false)
 			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
 			loadWares(InventoryGlobals.INVENTORY)
 

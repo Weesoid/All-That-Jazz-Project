@@ -1,4 +1,6 @@
-[gd_resource type="Theme" load_steps=15 format=3 uid="uid://bid2xvoeqgilk"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://bid2xvoeqgilk"]
+
+[ext_resource type="FontFile" uid="uid://cyywx7byxrbwp" path="res://design/nokiafc22.ttf" id="1_cnnh2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kt3ag"]
 content_margin_left = 6.0
@@ -116,6 +118,14 @@ RichTextLabel/styles/normal = SubResource("StyleBoxEmpty_scqyn")
 TabContainer/styles/panel = SubResource("StyleBoxFlat_jmchh")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_8kllw")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_q6f5j")
+TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
+TooltipLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+TooltipLabel/colors/font_shadow_color = Color(0, 0, 0, 0)
+TooltipLabel/constants/outline_size = 0
+TooltipLabel/constants/shadow_offset_x = 1
+TooltipLabel/constants/shadow_offset_y = 1
+TooltipLabel/font_sizes/font_size = 16
+TooltipLabel/fonts/font = ExtResource("1_cnnh2")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_74mkq")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_h17ev")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_2tll8")

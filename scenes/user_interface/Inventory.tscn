@@ -15,118 +15,56 @@ grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1_qwj2w")
 
-[node name="Capacity" type="Label" parent="."]
+[node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_top = -140.0
-offset_right = 208.0
-offset_bottom = -127.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-text = "0/100"
-horizontal_alignment = 2
-vertical_alignment = 1
+offset_left = -144.0
+offset_top = -100.0
+offset_right = 144.0
+offset_bottom = 92.0
 
-[node name="TabContainer" type="TabContainer" parent="."]
-layout_mode = 0
-offset_left = -209.0
-offset_top = -140.0
-offset_right = 209.0
-offset_bottom = -10.0
-scale = Vector2(1, 0.986486)
-
-[node name="Weapons" type="ScrollContainer" parent="TabContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2"]
 layout_mode = 2
-horizontal_scroll_mode = 0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Weapons"]
-custom_minimum_size = Vector2(370, 0)
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer2/MarginContainer"]
 layout_mode = 2
+vertical_scroll_mode = 2
 
-[node name="Charms" type="ScrollContainer" parent="TabContainer"]
-visible = false
+[node name="TabContainer" type="GridContainer" parent="PanelContainer2/MarginContainer/ScrollContainer"]
 layout_mode = 2
-horizontal_scroll_mode = 0
+columns = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Charms"]
-custom_minimum_size = Vector2(370, 0)
+[node name="Infomration" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GeneralInfo" type="RichTextLabel" parent="Infomration"]
+z_index = 1
 layout_mode = 2
+offset_left = -152.0
+offset_top = 132.0
+offset_right = 152.0
+offset_bottom = 154.0
+bbcode_enabled = true
+text = "asdfasdfasdf"
+fit_content = true
+scroll_active = false
 
-[node name="Trinkets" type="ScrollContainer" parent="TabContainer"]
-visible = false
+[node name="ItemInfo" type="PanelContainer" parent="Infomration"]
 layout_mode = 2
-horizontal_scroll_mode = 0
+offset_left = -152.0
+offset_top = 60.0
+offset_right = 152.0
+offset_bottom = 156.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Trinkets"]
-custom_minimum_size = Vector2(370, 0)
-layout_mode = 2
-
-[node name="Misc" type="ScrollContainer" parent="TabContainer"]
-visible = false
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Misc"]
-custom_minimum_size = Vector2(370, 0)
-layout_mode = 2
-
-[node name="PanelContainer" type="Panel" parent="."]
-layout_mode = 2
-offset_left = -209.0
-offset_top = 36.0
-offset_right = 209.0
-offset_bottom = 148.0
-
-[node name="DescriptionPanel" type="HSplitContainer" parent="PanelContainer"]
-layout_mode = 2
-offset_right = 560.0
-offset_bottom = 112.0
-split_offset = 288
-
-[node name="DescriptionLabel" type="RichTextLabel" parent="PanelContainer/DescriptionPanel"]
+[node name="DescriptionLabel2" type="RichTextLabel" parent="Infomration/ItemInfo"]
 layout_mode = 2
 bbcode_enabled = true
-text = "asd"
-
-[node name="StatPanel" type="RichTextLabel" parent="PanelContainer/DescriptionPanel"]
-layout_mode = 2
-text = "asd"
-
-[node name="PartyPanel" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = -209.0
-offset_top = -4.0
-offset_right = 209.0
-offset_bottom = 32.0
-
-[node name="VBoxContainer" type="HBoxContainer" parent="PartyPanel"]
-custom_minimum_size = Vector2(104, 0)
-layout_mode = 2
-
-[node name="UseContainer" type="HBoxContainer" parent="."]
-visible = false
-layout_mode = 2
-offset_left = -207.0
-offset_top = -2.0
-offset_right = 173.0
-offset_bottom = 30.0
-
-[node name="Use" type="Button" parent="UseContainer"]
-custom_minimum_size = Vector2(75, 0)
-layout_mode = 2
-text = "Use"
-alignment = 0
-
-[node name="Repair" type="Button" parent="UseContainer"]
-custom_minimum_size = Vector2(75, 0)
-layout_mode = 2
-text = "Repair"
-alignment = 0
-
-[node name="Drop" type="Button" parent="UseContainer"]
-custom_minimum_size = Vector2(75, 0)
-layout_mode = 2
-text = "Drop"
-alignment = 0
+text = "This is a text nyah nyah nyah! "
 
 [node name="EquippedUtilityCharms" type="PanelContainer" parent="."]
 visible = false
@@ -140,9 +78,3 @@ script = ExtResource("2_rlnwg")
 [node name="RichTextLabel" type="RichTextLabel" parent="EquippedUtilityCharms"]
 layout_mode = 2
 bbcode_enabled = true
-
-[connection signal="ready" from="." to="." method="_on_ready"]
-[connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
-[connection signal="pressed" from="UseContainer/Use" to="." method="_on_use_pressed"]
-[connection signal="pressed" from="UseContainer/Repair" to="." method="_on_repair_pressed"]
-[connection signal="pressed" from="UseContainer/Drop" to="." method="_on_drop_pressed"]

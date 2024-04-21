@@ -32,7 +32,7 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 		audio_player.stream = load("res://audio/sounds/%s" % audio_file)
 		audio_player.play()
 	
-	if get_line_count() > 6:
+	if get_line_count() > 15:
 		timer.timeout.emit()
 
 func _unhandled_input(_event):

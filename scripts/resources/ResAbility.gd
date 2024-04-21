@@ -62,6 +62,9 @@ func animateCast(caster: ResCombatant):
 func applyEffects(caster: ResCombatant, targets, animation_scene):
 	ABILITY_SCRIPT.applyEffects(caster, targets, animation_scene)
 
+func applyOverworldEffects():
+	ABILITY_SCRIPT.applyOverworldEffects()
+
 func getTargetType():
 	match TARGET_TYPE:
 		TargetType.SINGLE: return 1
