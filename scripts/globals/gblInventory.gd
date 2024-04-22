@@ -104,7 +104,7 @@ func transferItem(item: ResItem, count: int, from: Array[ResItem], to: Array[Res
 		addItemResource(item, count, to)
 
 func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
-	if item is ResWeapon or item is ResUtilityCharm and INVENTORY.has(item):
+	if (item is ResWeapon or item is ResUtilityCharm) and INVENTORY.has(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	
@@ -190,7 +190,6 @@ func loadItemData(storage_unit: Array[ResItem], save_data: InventorySaveData):
 				continue
 			elif item is ResStackItem:
 				item.STACK = item_data[item.NAME]
-				item.calcWeight()
 			elif item is ResUtilityCharm:
 				item.equipped = item_data[item.NAME]
 			elif item is ResEquippable:

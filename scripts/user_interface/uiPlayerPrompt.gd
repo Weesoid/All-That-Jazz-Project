@@ -4,12 +4,6 @@ extends RichTextLabel
 @onready var timer = $Timer
 @onready var audio_player = $AudioStreamPlayer
 
-#func _process(_delta):
-#	if OverworldGlobals.inMenu():
-#		visible = false
-#	else:
-#		visible = true
-	
 func animatePrompt(action: int):
 	match action:
 		1: 

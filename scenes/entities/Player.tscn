@@ -1,11 +1,11 @@
-[gd_scene load_steps=123 format=3 uid="uid://xfrvaohqhfml"]
+[gd_scene load_steps=120 format=3 uid="uid://xfrvaohqhfml"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="3_y84xx"]
-[ext_resource type="Script" path="res://scripts/user_interface/uiPlayerPrompt.gd" id="5_h8rtm"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/animations/player.png" id="5_nms4n"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="6_66sfb"]
+[ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="6_rb4b6"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
 [ext_resource type="Texture2D" uid="uid://ttptw1qp8wj2" path="res://images/sprites/arrow_icon.png" id="7_7jyj3"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiUtilitySelector.gd" id="8_lyttf"]
@@ -54,67 +54,6 @@ size = Vector2(17, 22)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
 height = 22.0
-
-[sub_resource type="Animation" id="Animation_q42o5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-262, -149)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_ljyis"]
-resource_name = "Show"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-262, -215.593), Vector2(-262, -149)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.2, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_mkerc"]
-_data = {
-"RESET": SubResource("Animation_q42o5"),
-"Show": SubResource("Animation_ljyis")
-}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_846aw"]
 bg_color = Color(0, 0, 0, 1)
@@ -1995,29 +1934,7 @@ z_as_relative = false
 zoom = Vector2(2, 2)
 position_smoothing_speed = 6.0
 
-[node name="PlayerPrompt" type="RichTextLabel" parent="PlayerCamera"]
-modulate = Color(1, 1, 1, 0)
-z_index = 998
-offset_left = -262.0
-offset_top = -149.0
-offset_right = -177.0
-offset_bottom = -133.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-bbcode_enabled = true
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-script = ExtResource("5_h8rtm")
-
-[node name="Timer" type="Timer" parent="PlayerCamera/PlayerPrompt"]
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PlayerCamera/PlayerPrompt"]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerCamera/PlayerPrompt"]
-libraries = {
-"": SubResource("AnimationLibrary_mkerc")
-}
+[node name="PlayerPrompt" parent="PlayerCamera" instance=ExtResource("6_rb4b6")]
 
 [node name="StaminaBar" type="ProgressBar" parent="PlayerCamera"]
 offset_left = -24.0
@@ -2120,5 +2037,3 @@ libraries = {
 
 [node name="ScriptAudioPlayer" type="AudioStreamPlayer" parent="."]
 max_polyphony = 8
-
-[connection signal="timeout" from="PlayerCamera/PlayerPrompt/Timer" to="PlayerCamera/PlayerPrompt" method="_on_timer_timeout"]

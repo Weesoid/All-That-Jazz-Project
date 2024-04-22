@@ -8,6 +8,7 @@
 script = ExtResource("2_0mv4f")
 EFFECT = ExtResource("1_gfk4x")
 OVERWORLD_USE = true
+MAX_STACK = 8
 NAME = "Healing Potion"
 ICON = ExtResource("2_xgp4h")
 DESCRIPTION = "\"Wow this shit heals!\" /n - Johnny Dyin"

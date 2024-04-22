@@ -27,9 +27,10 @@ func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 func getExperience():
 	var out = 0
 	for key in BASE_STAT_VALUES.keys():
-		if key == "health": continue
-		out += BASE_STAT_VALUES[key]
-	return out
+		if BASE_STAT_VALUES[key] <= 1.0:
+			out += BASE_STAT_VALUES[key]
+	
+	return int(out * 2.0)
 
 func getDrops():
 	var drops = {}

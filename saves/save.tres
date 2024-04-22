@@ -1,11 +1,17 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=31 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=39 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_oqpno"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_7gaec"]
+[ext_resource type="Resource" path="res://resources/items/HealingPotion.tres" id="2_a8b73"]
+[ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="3_edmkh"]
 [ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="3_mavcw"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="4_47v0l"]
 [ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="4_hld2x"]
+[ext_resource type="Resource" path="res://resources/items/SprintStone.tres" id="5_bdg8a"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_heaj2"]
+[ext_resource type="Resource" path="res://resources/items/StaminaStone.tres" id="6_n4edf"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="6_rka4m"]
+[ext_resource type="Resource" path="res://resources/items/WalkStone.tres" id="7_o5bo2"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="7_y057v"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="8_5m4g6"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebugAddEffect.tres" id="9_ytp7t"]
@@ -27,26 +33,56 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_756vk"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_8d1cq"]
 
-[sub_resource type="Resource" id="Resource_r5p7e"]
+[sub_resource type="Resource" id="Resource_irt3h"]
 script = ExtResource("1_oqpno")
-position = Vector2(43.6887, -9.64464)
+position = Vector2(131.569, 58.0074)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_tbl6y"]
+[sub_resource type="Resource" id="Resource_lf4tm"]
+script = ExtResource("4_47v0l")
+STAT_MODIFICATIONS = {
+"brawn": 0.1,
+"grit": 0.2
+}
+NAME = "Murder Charm"
+ICON = ExtResource("3_edmkh")
+DESCRIPTION = "KILL KILL EVERYTHING!"
+VALUE = 100
+MANDATORY = false
+
+[sub_resource type="Resource" id="Resource_s35ka"]
+script = ExtResource("4_47v0l")
+STAT_MODIFICATIONS = {
+"brawn": 0.1,
+"grit": 0.2
+}
+NAME = "Murder Charm"
+ICON = ExtResource("3_edmkh")
+DESCRIPTION = "KILL KILL EVERYTHING!"
+VALUE = 100
+MANDATORY = false
+
+[sub_resource type="Resource" id="Resource_b5ah6"]
 script = ExtResource("5_heaj2")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_a8b73"), SubResource("Resource_lf4tm"), SubResource("Resource_s35ka"), ExtResource("5_bdg8a"), ExtResource("6_n4edf"), ExtResource("7_o5bo2")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("4_hld2x")])
 KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_7gaec"), ExtResource("3_mavcw")])
-ITEM_DATA_INVENTORY = {}
+ITEM_DATA_INVENTORY = {
+"Healing Potion": 1,
+"Murder Charm": null,
+"Sprint Stone": false,
+"Staminizer": false,
+"Walkinizer": false
+}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_r2nhd"]
+[sub_resource type="Resource" id="Resource_ly5os"]
 script = ExtResource("6_rka4m")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_erxgx"]
+[sub_resource type="Resource" id="Resource_dmb2t"]
 script = ExtResource("25_756vk")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("7_y057v"), ExtResource("15_kkfjh"), ExtResource("22_avsf7"), ExtResource("23_1clie")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -177,4 +213,4 @@ ExtResource("23_1clie"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 [resource]
 script = ExtResource("26_8d1cq")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_r5p7e"), SubResource("Resource_tbl6y"), SubResource("Resource_r2nhd"), SubResource("Resource_erxgx")]
+save_data = [SubResource("Resource_irt3h"), SubResource("Resource_b5ah6"), SubResource("Resource_ly5os"), SubResource("Resource_dmb2t")]
