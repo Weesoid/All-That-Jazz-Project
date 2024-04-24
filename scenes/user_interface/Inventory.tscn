@@ -38,6 +38,7 @@ layout_mode = 2
 columns = 8
 
 [node name="Infomration" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 offset_top = -204.0
 offset_right = 40.0

@@ -46,7 +46,7 @@ func loadAbilities():
 		return
 	
 	for ability in selected_combatant.ABILITY_POOL:
-		if ability == null: 
+		if ability == null:
 			selected_combatant.ABILITY_POOL.erase(ability)
 			continue
 		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL: 
@@ -66,18 +66,20 @@ func clearButtons():
 func createButton(ability, location):
 	var button = OverworldGlobals.createCustomButton()
 	button.text = ability.NAME
+	if selected_combatant.ABILITY_SET.has(ability):
+		button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
+	
 	button.pressed.connect(
-		func transferItem():
-			if selected_combatant.ABILITY_POOL.has(ability):
-				if selected_combatant.ABILITY_SET.size() + 1 > 4:
+		func():
+			if !selected_combatant.ABILITY_SET.has(ability):
+				if selected_combatant.ABILITY_SET.size() >= 4:
+					OverworldGlobals.showPlayerPrompt('Max abilities enabled.')
 					return
-				selected_combatant.ABILITY_POOL.erase(ability)
 				selected_combatant.ABILITY_SET.append(ability)
-				loadAbilities()
+				button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
 			elif selected_combatant.ABILITY_SET.has(ability):
 				selected_combatant.ABILITY_SET.erase(ability)
-				selected_combatant.ABILITY_POOL.append(ability)
-				loadAbilities()
+				button.remove_theme_icon_override('icon')
 	)
 	button.mouse_entered.connect(
 		func updateInfo():

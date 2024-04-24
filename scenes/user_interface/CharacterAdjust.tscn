@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://cq4rrfdxrs5g4"]
+[gd_scene load_steps=7 format=3 uid="uid://boubqwafllx3y"]
 
-[ext_resource type="Script" path="res://scripts/user_interface/uiAbilityShop.gd" id="1_yymbw"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
@@ -22,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-script = ExtResource("1_yymbw")
+script = ExtResource("1_iqbvd")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
@@ -32,7 +32,6 @@ offset_right = 216.0
 offset_bottom = 117.0
 
 [node name="Charms" type="Panel" parent="TabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="EquippedCharms" type="VBoxContainer" parent="TabContainer/Charms"]
@@ -103,7 +102,8 @@ bbcode_enabled = true
 visible = false
 layout_mode = 2
 
-[node name="Abilities" type="Panel" parent="TabContainer"]
+[node name="Abilities" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Abilities"]
@@ -111,55 +111,19 @@ layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 336.0
-offset_bottom = 112.0
+offset_bottom = 128.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Abilities/ScrollContainer"]
 layout_mode = 2
-
-[node name="CustomButton" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton2" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton3" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton5" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton6" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton7" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton8" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton9" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton4" parent="TabContainer/Abilities/ScrollContainer/VBoxContainer" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "Test"
 
 [node name="DescriptionPanel" type="PanelContainer" parent="TabContainer/Abilities"]
 layout_mode = 2
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 8.0
-offset_top = 64.0
+offset_top = 24.0
 offset_right = 336.0
-offset_bottom = 129.0
+offset_bottom = 89.0
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_s7p7p")
 
