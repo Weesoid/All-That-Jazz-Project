@@ -30,7 +30,7 @@ func _on_inventory_pressed():
 
 func _on_posse_pressed():
 	disableButtons()
-	loadUserInterface("res://scenes/user_interface/PartyMembers.tscn")
+	loadUserInterface("res://scenes/user_interface/CharacterAdjust.tscn")
 
 func _on_quests_pressed():
 	disableButtons()

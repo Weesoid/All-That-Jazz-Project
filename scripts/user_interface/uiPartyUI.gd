@@ -15,7 +15,7 @@ func loadInformation():
 	description.text = subject_combatant.DESCRIPTION
 	
 	for ability in subject_combatant.ABILITY_SET:
-		var ability_button = Button.new()
+		var ability_button = OverworldGlobals.createCustomButton()
 		ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		ability_button.text = ability.NAME
 		ability_button.mouse_entered.connect(
@@ -26,7 +26,7 @@ func loadInformation():
 	
 	for ability in subject_combatant.ABILITY_POOL:
 		if ability == null: continue
-		var ability_button = Button.new()
+		var ability_button = OverworldGlobals.createCustomButton()
 		ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		ability_button.text = ability.NAME
 		ability_button.mouse_entered.connect(
@@ -39,7 +39,7 @@ func loadInformation():
 		if charm == null:
 			continue
 		
-		var equipment_button = Button.new()
+		var equipment_button = OverworldGlobals.createCustomButton()
 		equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		equipment_button.text = charm.NAME
 		equipment_button.mouse_entered.connect(
@@ -49,7 +49,7 @@ func loadInformation():
 		equipment_panel.add_child(equipment_button)
 	
 	for effect_name in subject_combatant.LINGERING_STATUS_EFFECTS:
-		var status_button = Button.new()
+		var status_button = OverworldGlobals.createCustomButton()
 		status_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		status_button.text = effect_name
 		status_button.mouse_entered.connect(

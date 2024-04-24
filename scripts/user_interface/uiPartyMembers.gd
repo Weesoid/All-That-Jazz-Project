@@ -5,7 +5,7 @@ extends Control
 @onready var info = $uiCharacterInformation
 func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
-		var member_button = Button.new()
+		var member_button = OverworldGlobals.createCustomButton()
 		member_button.text = member.NAME
 		member_button.icon = member.ICON
 		member_button.alignment = HORIZONTAL_ALIGNMENT_LEFT

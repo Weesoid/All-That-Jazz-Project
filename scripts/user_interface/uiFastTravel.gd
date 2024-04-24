@@ -15,7 +15,7 @@ func _process(_delta):
 
 func _ready():
 	for location in PlayerGlobals.FAST_TRAVEL_LOCATIONS:
-		var button = Button.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.text = location
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size.x = 96

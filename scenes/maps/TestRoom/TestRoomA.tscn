@@ -225,6 +225,7 @@ position = Vector2(-24, -124)
 
 [node name="ShopWares" parent="ShopKeep" instance=ExtResource("14_dat7j")]
 SHOP_WARES = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("15_rt31o"), ExtResource("16_d1hec"), ExtResource("17_nryad"), ExtResource("18_vkkst")])
+GOD_SHOP = true
 
 [node name="StorageUnit" parent="." instance=ExtResource("14_s732r")]
 position = Vector2(-77, -124)

@@ -39,7 +39,7 @@ func loadWares(array=wares_array):
 		toggle_button.text = 'Shop'
 	
 	for item in array:
-		var button = Button.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size.x = 360
 		if item is ResStackItem and mode == 1:

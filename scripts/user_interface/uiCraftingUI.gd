@@ -11,7 +11,7 @@ func _on_ready():
 	craft_button.hide()
 	for recipe in InventoryGlobals.KNOWN_RECIPES:
 		print('Initing: ', recipe.OUTPUT)
-		var button = Button.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size.x = 9999
 		button.text = str(recipe.OUTPUT.NAME)

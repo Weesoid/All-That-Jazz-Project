@@ -3,6 +3,24 @@ extends RichTextLabel
 @onready var animator = $AnimationPlayer
 @onready var timer = $Timer
 @onready var audio_player = $AudioStreamPlayer
+var prompts = {}
+
+
+func _process(_delta):
+	if prompts.size() > 100:
+		print('Clearing prompts!')
+		prompts.clear()
+	
+	for key in prompts.keys():
+		if !animator.is_playing():
+			text = prompts[key][0]
+			if !prompts[key][2].is_empty():
+				audio_player.stream = load("res://audio/sounds/%s" % prompts[key][2])
+				audio_player.play()
+			
+			animatePrompt(1)
+			await  animator.animation_finished
+			prompts.erase(key)
 
 func animatePrompt(action: int):
 	match action:
@@ -14,20 +32,8 @@ func animatePrompt(action: int):
 			text = ''
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
-	if text.is_empty():
-		text += ' '+message
-		animatePrompt(1)
-		timer.start(time)
-	else:
-		text += '\n '+message
-		timer.start(timer.time_left + 0.5)
-	
-	if !audio_file.is_empty():
-		audio_player.stream = load("res://audio/sounds/%s" % audio_file)
-		audio_player.play()
-	
-	if get_line_count() > 15:
-		timer.timeout.emit()
+	print(prompts.size())
+	prompts[prompts.size()] = [message, time, audio_file]
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_clear_prompts"):

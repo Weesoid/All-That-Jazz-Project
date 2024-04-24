@@ -119,6 +119,9 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
 	else:
 		closeMenu(main_menu)
 
+func createCustomButton()-> CustomButton:
+	return preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 

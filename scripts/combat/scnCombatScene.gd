@@ -307,7 +307,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		child.free()
 	
 	for ability in ability_set:
-		var button = CustomButton.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.add_theme_font_size_override('font_size', 16)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = ability.NAME
@@ -323,7 +323,7 @@ func getPlayerItems():
 	
 	for item in InventoryGlobals.INVENTORY:
 		if !item is ResConsumable or item.EFFECT == null: continue
-		var button = CustomButton.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.add_theme_font_size_override('font_size', 16)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size.x = 240
@@ -343,7 +343,7 @@ func getPlayerWeapons(inventory):
 		
 	for weapon in inventory:
 		if !weapon is ResWeapon: continue
-		var button = CustomButton.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.add_theme_font_size_override('font_size', 16)
 		button.custom_minimum_size.x = 240
 		button.text = str(weapon.NAME, '(', weapon.durability, '/', weapon.max_durability,')')

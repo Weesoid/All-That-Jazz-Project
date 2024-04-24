@@ -6,7 +6,7 @@ extends Control
 
 func _ready():
 	for member in PlayerGlobals.TEAM:
-		var button = Button.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.text = member.NAME
 		button.icon = member.ICON
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT

@@ -23,6 +23,8 @@ func createButton(item: ResItem):
 	button.icon = item.ICON
 	button.tooltip_text = item.NAME
 	button.gui_input.connect(func(input): setButtonFunction(input, item, button))
+	button.mouse_entered.connect(func(): updateItemInfo(item))
+	button.mouse_exited.connect(func(): item_info_panel.hide())
 	
 	if item is ResStackItem:
 		var label = Label.new()
@@ -31,6 +33,12 @@ func createButton(item: ResItem):
 		button.add_child(label)
 	
 	return button
+
+func updateItemInfo(item):
+	item_info.text = '[center]'+ item.NAME.to_upper() + '[/center]\n'
+	item_info.text += item.getInformation()
+	item_general_info.text = item.getGeneralInfo()
+	item_info_panel.show()
 
 func setButtonFunction(event, item, button: Button):
 	item_info.text = '[center]'+ item.NAME.to_upper() + '[/center]\n'

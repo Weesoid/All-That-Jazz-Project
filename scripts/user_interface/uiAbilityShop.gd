@@ -13,7 +13,7 @@ extends Control
 @onready var charm_slot_a = $TabContainer/Charms/EquippedCharms/SlotA
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
-
+@onready var member_preview = $Marker2D
 var selected_combatant: ResPlayerCombatant
 
 func _process(_delta):
@@ -23,12 +23,17 @@ func _process(_delta):
 
 func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
-		var member_button = Button.new()
+		var member_button = OverworldGlobals.createCustomButton()
 		member_button.text = member.NAME
 		member_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		member_button.custom_minimum_size.x = 96
 		member_button.pressed.connect(
 			func loadMemberInformation():
+#				for child in member_preview.get_children():
+#					child.queue_free()
+#				member.initializeCombatant()
+#				member_preview.add_child(member.SCENE)
+#				member.getAnimator().play('Idle')
 				selected_combatant = member
 				select_charms_panel.hide()
 				loadAbilities()
@@ -41,7 +46,6 @@ func loadAbilities():
 	if selected_combatant.ABILITY_POOL.is_empty():
 		return
 	
-	print(selected_combatant.ABILITY_POOL)
 	for ability in selected_combatant.ABILITY_POOL:
 		if ability == null: 
 			selected_combatant.ABILITY_POOL.erase(ability)
@@ -67,7 +71,7 @@ func clearButtons():
 		child.queue_free()
 
 func createButton(ability, location):
-	var button = Button.new()
+	var button = OverworldGlobals.createCustomButton()
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.text = ability.NAME
 	button.pressed.connect(
@@ -93,7 +97,7 @@ func createButton(ability, location):
 func showCharmEquipMenu(slot_button: Button):
 	clearButtons()
 	select_charms_panel.show()
-	var unequip_button = CustomButton.new()
+	var unequip_button = OverworldGlobals.createCustomButton()
 	unequip_button.text = 'UNEQUIP'
 	unequip_button.pressed.connect(
 		func():
@@ -108,7 +112,7 @@ func showCharmEquipMenu(slot_button: Button):
 	)
 	select_charms.add_child(unequip_button)
 	for charm in InventoryGlobals.INVENTORY.filter(func(item): return item is ResCharm):
-		var button = CustomButton.new()
+		var button = OverworldGlobals.createCustomButton()
 		button.text = charm.NAME
 		button.pressed.connect(
 			func():

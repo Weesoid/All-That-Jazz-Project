@@ -19,7 +19,6 @@ extends Control
 @onready var hp_text = $Attributes/MarginContainer/VBoxContainer/Health/ProgressBar/HealthValues
 func _ready():
 	if !borders:
-		print('Ready!')
 		var stylebox:StyleBox = preload("res://design/BorderlessContiner.tres")
 		attribute_tab.add_theme_stylebox_override('panel', stylebox)
 		hidden_tab.add_theme_stylebox_override('panel', stylebox)

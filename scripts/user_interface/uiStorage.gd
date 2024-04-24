@@ -20,7 +20,7 @@ func loadStorage():
 			createButton(item, inventory)
 
 func createButton(item, location):
-	var button = Button.new()
+	var button = OverworldGlobals.createCustomButton()
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.custom_minimum_size.x = 170
 	button.text = item._to_string()

@@ -1,5 +1,5 @@
 ~ start
 
 do addItem("HealingPotion")
-
+do addItem("ScrapSalvage", 10)
 => END

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=39 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=41 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_oqpno"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_7gaec"]
@@ -9,9 +9,11 @@
 [ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="4_hld2x"]
 [ext_resource type="Resource" path="res://resources/items/SprintStone.tres" id="5_bdg8a"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_heaj2"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="5_uchks"]
 [ext_resource type="Resource" path="res://resources/items/StaminaStone.tres" id="6_n4edf"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="6_rka4m"]
 [ext_resource type="Resource" path="res://resources/items/WalkStone.tres" id="7_o5bo2"]
+[ext_resource type="Resource" path="res://resources/items/Toxik.tres" id="7_tnnbm"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="7_y057v"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="8_5m4g6"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebugAddEffect.tres" id="9_ytp7t"]
@@ -33,9 +35,9 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_756vk"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_8d1cq"]
 
-[sub_resource type="Resource" id="Resource_irt3h"]
+[sub_resource type="Resource" id="Resource_vfqsu"]
 script = ExtResource("1_oqpno")
-position = Vector2(131.569, 58.0074)
+position = Vector2(-11.6122, -13.1246)
 scene_path = "res://scenes/entities/Player.tscn"
 
 [sub_resource type="Resource" id="Resource_lf4tm"]
@@ -62,27 +64,28 @@ DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
 MANDATORY = false
 
-[sub_resource type="Resource" id="Resource_b5ah6"]
+[sub_resource type="Resource" id="Resource_cggar"]
 script = ExtResource("5_heaj2")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_a8b73"), SubResource("Resource_lf4tm"), SubResource("Resource_s35ka"), ExtResource("5_bdg8a"), ExtResource("6_n4edf"), ExtResource("7_o5bo2")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_a8b73"), SubResource("Resource_lf4tm"), SubResource("Resource_s35ka"), ExtResource("5_uchks"), ExtResource("5_bdg8a"), ExtResource("6_n4edf"), ExtResource("7_tnnbm"), ExtResource("7_o5bo2")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("4_hld2x")])
 KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_7gaec"), ExtResource("3_mavcw")])
 ITEM_DATA_INVENTORY = {
-"Healing Potion": 1,
+"Healing Potion": 8,
 "Murder Charm": null,
+"Scrap Salvage": 100,
 "Sprint Stone": false,
 "Staminizer": false,
 "Walkinizer": false
 }
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_ly5os"]
+[sub_resource type="Resource" id="Resource_uo1wd"]
 script = ExtResource("6_rka4m")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_dmb2t"]
+[sub_resource type="Resource" id="Resource_6dtdm"]
 script = ExtResource("25_756vk")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("7_y057v"), ExtResource("15_kkfjh"), ExtResource("22_avsf7"), ExtResource("23_1clie")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -213,4 +216,4 @@ ExtResource("23_1clie"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 [resource]
 script = ExtResource("26_8d1cq")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_irt3h"), SubResource("Resource_b5ah6"), SubResource("Resource_ly5os"), SubResource("Resource_dmb2t")]
+save_data = [SubResource("Resource_vfqsu"), SubResource("Resource_cggar"), SubResource("Resource_uo1wd"), SubResource("Resource_6dtdm")]
