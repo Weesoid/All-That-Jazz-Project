@@ -15,6 +15,7 @@ extends Control
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
 @onready var member_preview = $Marker2D
+@onready var member_name = $Label
 var selected_combatant: ResPlayerCombatant
 
 func _process(_delta):
@@ -26,21 +27,24 @@ func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		var member_button = OverworldGlobals.createCustomButton()
 		member_button.text = member.NAME
-		member_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		member_button.custom_minimum_size.x = 96
 		member_button.pressed.connect(
-			func loadMemberInformation():
-#				for child in member_preview.get_children():
-#					child.queue_free()
-#				member.initializeCombatant()
-#				member_preview.add_child(member.SCENE)
-#				member.getAnimator().play('Idle')
-				selected_combatant = member
-				select_charms_panel.hide()
-				loadAbilities()
-				updateEquipped()
+			func(): loadMemberInfo(member)
 		)
 		member_container.add_child(member_button)
+	
+	loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
+
+func loadMemberInfo(member: ResCombatant):
+	for child in member_preview.get_children():
+		child.queue_free()
+	member.initializeCombatant()
+	member_preview.add_child(member.SCENE)
+	member.getAnimator().play('Idle')
+	selected_combatant = member
+	select_charms_panel.hide()
+	member_name.text = member.NAME
+	loadAbilities()
+	updateEquipped()
 
 func loadAbilities():
 	clearButtons()
@@ -87,6 +91,10 @@ func createButton(ability, location):
 		func updateInfo():
 			description.text = '' 
 			description.text = ability.getRichDescription()
+	)
+	button.mouse_exited.connect(
+		func():
+			description.text = '' 
 	)
 	location.add_child(button)
 
@@ -164,9 +172,6 @@ func updateItemDescription(item: ResItem):
 	charm_description_general.text = item.getGeneralInfo()
 	charm_description.text = item.getInformation()
 
-func _on_tab_container_tab_button_pressed(tab):
-	pass
-
 func _on_slot_a_mouse_entered():
 	updateItemDescription(selected_combatant.CHARMS[0])
 
@@ -178,3 +183,11 @@ func _on_slot_c_mouse_entered():
 
 func hideItemDescription():
 	charm_info_panel.hide()
+
+
+func _on_tab_container_tab_changed(tab):
+	if tab == 0:
+		loadAbilities()
+		attrib_view.hide()
+	elif tab == 1 or tab == 2:
+		attrib_view.show()

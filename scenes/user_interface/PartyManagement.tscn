@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdqu5oor4hiq7"]
+[gd_scene load_steps=4 format=3 uid="uid://cdqu5oor4hiq7"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyManagement.gd" id="1_s86ib"]
 [ext_resource type="PackedScene" uid="uid://bdm816lf04v8q" path="res://scenes/user_interface/CharacterInfo.tscn" id="2_55e7u"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_sbl6q"]
 
 [node name="uiPartyManagement" type="Control"]
 layout_mode = 3
@@ -25,10 +26,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -248.0
-offset_top = -98.0
-offset_right = -104.0
-offset_bottom = 150.0
+offset_left = -264.0
+offset_top = -106.0
+offset_right = -120.0
+offset_bottom = 142.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(144, 45)
@@ -43,7 +44,28 @@ alignment = 1
 
 [node name="uiCharacterInformation" parent="." instance=ExtResource("2_55e7u")]
 layout_mode = 1
-offset_left = 88.0
-offset_top = -26.0
-offset_right = 88.0
-offset_bottom = -26.0
+offset_left = 72.0
+offset_top = 6.0
+offset_right = 72.0
+offset_bottom = 6.0
+
+[node name="TabContainer" parent="uiCharacterInformation" index="0"]
+offset_bottom = 80.0
+
+[node name="Description" parent="uiCharacterInformation" index="1"]
+offset_top = 80.0
+offset_bottom = 136.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -104.0
+offset_top = -106.0
+offset_right = 264.0
+offset_bottom = -82.0
+theme = ExtResource("3_sbl6q")
+theme_override_font_sizes/font_size = 16
+text = "MEMBER NAME"
+vertical_alignment = 1
+uppercase = true
+
+[editable path="uiCharacterInformation"]

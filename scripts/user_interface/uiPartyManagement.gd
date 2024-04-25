@@ -1,5 +1,6 @@
 extends Control
 
+@onready var inspecting_name = $Label
 @onready var members = $BenchedMembers/ScrollContainer/VBoxContainer
 @onready var info = $uiCharacterInformation
 
@@ -20,12 +21,7 @@ func _ready():
 					PlayerGlobals.removeFollower(member)
 					button.remove_theme_icon_override('icon')
 		)
-		button.mouse_entered.connect(
-			func updateInfo():
-				info.subject_combatant = member
-				info.loadInformation()
-				info.show()
-		)
+		button.mouse_entered.connect(func(): updateInfo(member))
 		if member.MANDATORY and member.active: 
 			button.disabled = true
 		if member.active:
@@ -34,4 +30,11 @@ func _ready():
 			button.remove_theme_icon_override('icon')
 		
 		members.add_child(button)
-		info.hide()
+	
+	updateInfo(OverworldGlobals.getCombatantSquad('Player')[0])
+
+func updateInfo(member: ResCombatant):
+	inspecting_name.text = member.NAME
+	info.subject_combatant = member
+	info.loadInformation()
+	info.show()
