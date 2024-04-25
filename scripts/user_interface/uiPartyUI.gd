@@ -3,8 +3,7 @@ extends Control
 
 @onready var description = $Description/DescriptionLabel
 @onready var stat_panel = $TabContainer/Attributes/Attributes
-@onready var ability_panel = $TabContainer/Abilities/VBoxContainer
-@onready var ability_pool_panel = $"TabContainer/Ability Pool/VBoxContainer"
+@onready var ability_pool_panel = $TabContainer/Abilities/VBoxContainer
 @onready var equipment_panel = $TabContainer/Equipment/VBoxContainer
 @onready var status_panel = $"TabContainer/Status Effects/VBoxContainer"
 var subject_combatant: ResPlayerCombatant
@@ -14,20 +13,9 @@ func loadInformation():
 	stat_panel.combatant = subject_combatant
 	description.text = subject_combatant.DESCRIPTION
 	
-	for ability in subject_combatant.ABILITY_SET:
-		var ability_button = OverworldGlobals.createCustomButton()
-		ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		ability_button.text = ability.NAME
-		ability_button.mouse_entered.connect(
-			func updateDesciption():
-				description.text = ability.getRichDescription()
-		)
-		ability_panel.add_child(ability_button)
-	
 	for ability in subject_combatant.ABILITY_POOL:
 		if ability == null: continue
 		var ability_button = OverworldGlobals.createCustomButton()
-		ability_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		ability_button.text = ability.NAME
 		ability_button.mouse_entered.connect(
 			func updateDesciption():
@@ -63,10 +51,6 @@ func loadInformation():
 
 func clearInformation():
 	description.text = ''
-	#stat_panel.text = ''
-	
-	for child in ability_panel.get_children():
-		child.queue_free()
 	
 	for child in ability_pool_panel.get_children():
 		child.queue_free()

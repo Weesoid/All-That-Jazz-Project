@@ -1,14 +1,12 @@
 extends Control
 
-@onready var current_members = $CurrentMembers/VBoxContainer
-@onready var benched_members = $BenchedMembers/ScrollContainer/VBoxContainer
+@onready var members = $BenchedMembers/ScrollContainer/VBoxContainer
 @onready var info = $uiCharacterInformation
 
 func _ready():
 	for member in PlayerGlobals.TEAM:
 		var button = OverworldGlobals.createCustomButton()
 		button.text = member.NAME
-		button.icon = member.ICON
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.pressed.connect(
 			func addToAcitve():
@@ -16,13 +14,11 @@ func _ready():
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(member)
 					member.active = true
 					OverworldGlobals.initializePlayerParty()
-					benched_members.remove_child(button)
-					current_members.add_child(button)
+					button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
 				else:
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
 					PlayerGlobals.removeFollower(member)
-					current_members.remove_child(button)
-					benched_members.add_child(button)
+					button.remove_theme_icon_override('icon')
 		)
 		button.mouse_entered.connect(
 			func updateInfo():
@@ -33,7 +29,9 @@ func _ready():
 		if member.MANDATORY and member.active: 
 			button.disabled = true
 		if member.active:
-			current_members.add_child(button)
+			button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
 		else:
-			benched_members.add_child(button)
+			button.remove_theme_icon_override('icon')
+		
+		members.add_child(button)
 		info.hide()

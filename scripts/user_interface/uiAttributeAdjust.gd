@@ -8,6 +8,11 @@ extends Control
 @onready var reset_brawn = $HBoxContainer/VBoxContainer/Brawn/Reset
 @onready var reset_grit = $HBoxContainer/VBoxContainer/Grit/Reset
 @onready var reset_handling = $HBoxContainer/VBoxContainer/Handling/Reset
+
+func _ready():
+	print(OverworldGlobals.getCombatantSquad('Player')[0])
+	combatant = OverworldGlobals.getCombatantSquad('Player')[0]
+
 func _process(_delta):
 	if combatant != null:
 		points_left.text = str(combatant.STAT_POINTS)

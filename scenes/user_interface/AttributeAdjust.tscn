@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cm6aksgnbvl1o"]
+[gd_scene load_steps=4 format=3 uid="uid://cm6aksgnbvl1o"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeAdjust.gd" id="1_unumd"]
+[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_il4r5"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_is7rp"]
 
 [node name="AttributeAdjust" type="Control"]
@@ -39,11 +40,10 @@ dragger_visibility = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Brawn"]
 layout_mode = 2
 
-[node name="Up" type="Button" parent="HBoxContainer/VBoxContainer/Brawn/HBoxContainer"]
-custom_minimum_size = Vector2(70, 0)
+[node name="Up" parent="HBoxContainer/VBoxContainer/Brawn/HBoxContainer" instance=ExtResource("2_il4r5")]
+custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
 text = "BRAWN"
-alignment = 0
 
 [node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Brawn/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
@@ -54,11 +54,9 @@ text = "+0%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Reset" type="Button" parent="HBoxContainer/VBoxContainer/Brawn"]
-visible = false
+[node name="Reset" parent="HBoxContainer/VBoxContainer/Brawn" instance=ExtResource("2_il4r5")]
 layout_mode = 2
 text = "RESET"
-alignment = 0
 
 [node name="Grit" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -68,11 +66,10 @@ dragger_visibility = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Grit"]
 layout_mode = 2
 
-[node name="Up" type="Button" parent="HBoxContainer/VBoxContainer/Grit/HBoxContainer"]
-custom_minimum_size = Vector2(70, 0)
+[node name="Up" parent="HBoxContainer/VBoxContainer/Grit/HBoxContainer" instance=ExtResource("2_il4r5")]
+custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
 text = "GRIT"
-alignment = 0
 
 [node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Grit/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
@@ -83,11 +80,9 @@ text = "+10%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Reset" type="Button" parent="HBoxContainer/VBoxContainer/Grit"]
-visible = false
+[node name="Reset" parent="HBoxContainer/VBoxContainer/Grit" instance=ExtResource("2_il4r5")]
 layout_mode = 2
 text = "RESET"
-alignment = 0
 
 [node name="Handling" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -97,11 +92,9 @@ dragger_visibility = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Handling"]
 layout_mode = 2
 
-[node name="Up" type="Button" parent="HBoxContainer/VBoxContainer/Handling/HBoxContainer"]
-custom_minimum_size = Vector2(70, 0)
+[node name="Up" parent="HBoxContainer/VBoxContainer/Handling/HBoxContainer" instance=ExtResource("2_il4r5")]
 layout_mode = 2
 text = "HANDLING"
-alignment = 0
 
 [node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Handling/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
@@ -112,12 +105,9 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Reset" type="Button" parent="HBoxContainer/VBoxContainer/Handling"]
-visible = false
+[node name="Reset" parent="HBoxContainer/VBoxContainer/Handling" instance=ExtResource("2_il4r5")]
 layout_mode = 2
-size_flags_horizontal = 4
 text = "RESET"
-alignment = 0
 
 [node name="Available" type="Label" parent="."]
 layout_mode = 1

@@ -1,11 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://boubqwafllx3y"]
+[gd_scene load_steps=9 format=3 uid="uid://boubqwafllx3y"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
-[ext_resource type="Script" path="res://scripts/user_interface/CustomButton.gd" id="2_tp2xi"]
+[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="5_cqrwt"]
+[ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfwvc"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="CharacterAdjust" type="Control"]
 layout_mode = 3
@@ -31,79 +35,7 @@ offset_top = -104.0
 offset_right = 216.0
 offset_bottom = 117.0
 
-[node name="Charms" type="Panel" parent="TabContainer"]
-layout_mode = 2
-
-[node name="EquippedCharms" type="VBoxContainer" parent="TabContainer/Charms"]
-layout_mode = 0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 338.0
-offset_bottom = 144.0
-alignment = 1
-
-[node name="SlotA" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "EMPTY"
-
-[node name="SlotB" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "EMPTY"
-
-[node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "EMPTY"
-
-[node name="Panel" type="Panel" parent="TabContainer/Charms"]
-visible = false
-layout_mode = 0
-offset_right = 338.0
-offset_bottom = 140.0
-
-[node name="SelectCharms" type="ScrollContainer" parent="TabContainer/Charms/Panel"]
-layout_mode = 2
-offset_left = 2.0
-offset_top = 20.0
-offset_right = 342.0
-offset_bottom = 144.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Charms/Panel/SelectCharms"]
-layout_mode = 2
-
-[node name="CustomButton" type="Button" parent="TabContainer/Charms/Panel/SelectCharms/VBoxContainer"]
-layout_mode = 2
-text = "asdasdasd"
-script = ExtResource("2_tp2xi")
-
-[node name="CustomButton2" type="Button" parent="TabContainer/Charms/Panel/SelectCharms/VBoxContainer"]
-layout_mode = 2
-text = "asdasdasd"
-script = ExtResource("2_tp2xi")
-
-[node name="CustomButton3" type="Button" parent="TabContainer/Charms/Panel/SelectCharms/VBoxContainer"]
-layout_mode = 2
-text = "asdasdasd"
-script = ExtResource("2_tp2xi")
-
-[node name="CustomButton4" type="Button" parent="TabContainer/Charms/Panel/SelectCharms/VBoxContainer"]
-layout_mode = 2
-text = "asdasdasd"
-script = ExtResource("2_tp2xi")
-
-[node name="Description" type="RichTextLabel" parent="TabContainer/Charms"]
-layout_mode = 2
-offset_left = 8.0
-offset_top = 144.0
-offset_right = 336.0
-offset_bottom = 216.0
-bbcode_enabled = true
-
-[node name="Attributes" parent="TabContainer" instance=ExtResource("2_f13wv")]
-visible = false
-layout_mode = 2
-
 [node name="Abilities" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Abilities"]
@@ -131,6 +63,98 @@ theme_override_styles/panel = ExtResource("2_s7p7p")
 layout_mode = 2
 bbcode_enabled = true
 text = "This is the item description. FEAR IT'S GLORY!"
+
+[node name="Charms" type="Panel" parent="TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bfwvc")
+
+[node name="EquippedCharms" type="GridContainer" parent="TabContainer/Charms"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -39.5
+offset_right = 46.0
+offset_bottom = -11.5
+grow_horizontal = 2
+grow_vertical = 2
+columns = 3
+
+[node name="SlotA" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
+layout_mode = 2
+theme = ExtResource("5_004gj")
+icon = ExtResource("6_8ov74")
+
+[node name="SlotB" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
+layout_mode = 2
+theme = ExtResource("5_004gj")
+icon = ExtResource("6_8ov74")
+
+[node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
+layout_mode = 2
+theme = ExtResource("5_004gj")
+icon = ExtResource("6_8ov74")
+
+[node name="Panel" type="Panel" parent="TabContainer/Charms"]
+layout_mode = 2
+offset_left = 6.0
+offset_top = 12.0
+offset_right = 334.0
+offset_bottom = 108.0
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="SelectCharms" type="ScrollContainer" parent="TabContainer/Charms/Panel"]
+custom_minimum_size = Vector2(7.866, 0)
+layout_mode = 2
+offset_right = 331.0
+offset_bottom = 95.0
+
+[node name="VBoxContainer" type="GridContainer" parent="TabContainer/Charms/Panel/SelectCharms"]
+layout_mode = 2
+columns = 10
+
+[node name="Infomration" type="Control" parent="TabContainer/Charms"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 166.0
+offset_top = 44.0
+offset_right = 206.0
+offset_bottom = 84.0
+
+[node name="GeneralInfo" type="RichTextLabel" parent="TabContainer/Charms/Infomration"]
+z_index = 1
+layout_mode = 2
+offset_left = -168.0
+offset_top = 132.0
+offset_right = 176.0
+offset_bottom = 154.0
+bbcode_enabled = true
+text = "[img]res://images/sprites/circle_filled.png[/img]"
+fit_content = true
+scroll_active = false
+
+[node name="ItemInfo" type="PanelContainer" parent="TabContainer/Charms/Infomration"]
+layout_mode = 2
+offset_left = -168.0
+offset_top = 60.0
+offset_right = 176.0
+offset_bottom = 156.0
+
+[node name="DescriptionLabel2" type="RichTextLabel" parent="TabContainer/Charms/Infomration/ItemInfo"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]LEFT CLICK TO USE ITEM
+[/center]
+"
+
+[node name="Attributes" parent="TabContainer" instance=ExtResource("2_f13wv")]
+visible = false
+layout_mode = 2
 
 [node name="Members" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -174,8 +198,14 @@ offset_bottom = -165.0
 position = Vector2(304, 72)
 
 [connection signal="tab_button_pressed" from="TabContainer" to="." method="_on_tab_container_tab_button_pressed"]
+[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="hideItemDescription"]
 [connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_pressed"]
+[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="hideItemDescription"]
 [connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_pressed"]
+[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="hideItemDescription"]
 [connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
 
 [editable path="TabContainer/Attributes"]

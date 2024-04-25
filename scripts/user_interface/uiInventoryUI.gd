@@ -24,7 +24,7 @@ func createButton(item: ResItem):
 	button.tooltip_text = item.NAME
 	button.gui_input.connect(func(input): setButtonFunction(input, item, button))
 	button.mouse_entered.connect(func(): updateItemInfo(item))
-	button.mouse_exited.connect(func(): item_info_panel.hide())
+	button.mouse_exited.connect(func(): resetDescription())
 	
 	if item is ResStackItem:
 		var label = Label.new()
@@ -55,3 +55,7 @@ func setButtonFunction(event, item, button: Button):
 			item.equip(PlayerGlobals.TEAM[0])
 		
 		updateInventory()
+
+func resetDescription():
+	item_info.text = '[center]LEFT CLICK TO USE ITEM[/center]'
+	item_general_info.text = '[img]res://images/sprites/circle_filled.png[/img]%s [img]res://images/sprites/circle_filled.png[/img]Charm O Cumming!' % [PlayerGlobals.CURRENCY]
