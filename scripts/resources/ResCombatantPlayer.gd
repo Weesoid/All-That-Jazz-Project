@@ -41,6 +41,15 @@ func applyStatusEffects():
 	for effect in LINGERING_STATUS_EFFECTS:
 		CombatGlobals.addStatusEffect(self, effect)
 
+func isInflicted()-> bool:
+	return !LINGERING_STATUS_EFFECTS.is_empty()
+
+func getLingeringEffectsString():
+	var out = '%s is afflicted with:\n' % NAME
+	for effect in LINGERING_STATUS_EFFECTS:
+		out += '%s - %s\n' % [effect, CombatGlobals.loadStatusEffect(effect).DESCRIPTION]
+	return out
+
 func applyEquipmentModifications():
 	for charm in CHARMS:
 		charm.applyStatModifications()
@@ -69,7 +78,6 @@ func unequipCharm(slot: int):
 	CombatGlobals.resetStat(self, CHARMS[slot].NAME)
 	InventoryGlobals.addItemResource(CHARMS[slot])
 	CHARMS[slot] = null
-	print(CHARMS)
 
 func hasCharm(charm: ResCharm):
 	for equipped_charm in CHARMS.values():

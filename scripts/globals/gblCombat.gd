@@ -162,7 +162,7 @@ func playAnimation(target: ResCombatant, animation_name: String):
 # STATUS EFFECT HANDLING
 #********************************************************************************
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
-	return load(str("res://resources/status_effects/"+status_effect_name+".tres")).duplicate()
+	return load(str("res://resources/combat/status_effects/"+status_effect_name+".tres")).duplicate()
 
 func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false, _base_chance = 2.0):
 	#if base_chance != 2.0 and !randomRoll(base_chance-target.STAT_VALUES['exposure']):

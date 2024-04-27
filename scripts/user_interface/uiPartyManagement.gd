@@ -31,7 +31,8 @@ func _ready():
 		
 		members.add_child(button)
 	
-	updateInfo(OverworldGlobals.getCombatantSquad('Player')[0])
+	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
+		updateInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 
 func updateInfo(member: ResCombatant):
 	inspecting_name.text = member.NAME

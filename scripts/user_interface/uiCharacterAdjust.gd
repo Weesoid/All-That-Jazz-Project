@@ -32,7 +32,8 @@ func _ready():
 		)
 		member_container.add_child(member_button)
 	
-	loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
+	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
+		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 
 func loadMemberInfo(member: ResCombatant):
 	for child in member_preview.get_children():

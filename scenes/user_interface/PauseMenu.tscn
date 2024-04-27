@@ -1,14 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://j6m3ygvp1xoj"]
+[gd_scene load_steps=7 format=3 uid="uid://j6m3ygvp1xoj"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPauseUI.gd" id="1_gyhaf"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_5ibri"]
+[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="3_m3iej"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_t8o7i"]
+[ext_resource type="Texture2D" uid="uid://nyr8hffx6x17" path="res://images/sprites/icon_cross.png" id="4_osvvh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3hhx"]
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 anti_aliasing = false
 
@@ -23,6 +22,19 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gyhaf")
 
+[node name="Quit" parent="." instance=ExtResource("2_5ibri")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 252.0
+offset_top = 130.0
+offset_right = 280.0
+offset_bottom = 158.0
+tooltip_text = "Quit Game"
+theme = ExtResource("3_m3iej")
+icon = ExtResource("4_osvvh")
+
 [node name="Container" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -31,9 +43,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -96.0
-offset_top = -61.5
+offset_top = -61.0
 offset_right = 96.0
-offset_bottom = 61.5
+offset_bottom = 61.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -50,26 +62,53 @@ layout_mode = 2
 text = "QUESTS"
 
 [node name="Save" parent="Container" instance=ExtResource("2_5ibri")]
+visible = false
 layout_mode = 2
 text = "SAVE"
-
-[node name="Quit" parent="Container" instance=ExtResource("2_5ibri")]
-layout_mode = 2
-text = "QUIT"
-
-[node name="Level" type="Label" parent="Container"]
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-text = "PARTY LEVEL 25"
-vertical_alignment = 2
 
 [node name="Experience" type="ProgressBar" parent="Container"]
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_g3hhx")
 value = 50.0
 
+[node name="Level" type="Label" parent="Container/Experience"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -11.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_t8o7i")
+text = "1"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Label" type="Label" parent="Container/Experience"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -11.0
+offset_right = 33.0
+offset_bottom = 2.0
+grow_vertical = 0
+theme = ExtResource("3_t8o7i")
+text = "Morale"
+vertical_alignment = 2
+
+[node name="VBoxContainer" type="GridContainer" parent="Container"]
+layout_mode = 2
+columns = 2
+
 [node name="Currency" type="Label" parent="Container"]
+visible = false
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
@@ -77,8 +116,8 @@ text = "CASH 0"
 vertical_alignment = 2
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="Container/Inventory" to="." method="_on_inventory_pressed"]
 [connection signal="pressed" from="Container/Posse" to="." method="_on_posse_pressed"]
 [connection signal="pressed" from="Container/Quests" to="." method="_on_quests_pressed"]
 [connection signal="pressed" from="Container/Save" to="." method="_on_save_pressed"]
-[connection signal="pressed" from="Container/Quit" to="." method="_on_quit_pressed"]

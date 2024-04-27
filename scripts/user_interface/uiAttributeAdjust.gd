@@ -10,8 +10,8 @@ extends Control
 @onready var reset_handling = $HBoxContainer/VBoxContainer/Handling/Reset
 
 func _ready():
-	print(OverworldGlobals.getCombatantSquad('Player')[0])
-	combatant = OverworldGlobals.getCombatantSquad('Player')[0]
+	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
+		combatant = OverworldGlobals.getCombatantSquad('Player')[0]
 
 func _process(_delta):
 	if combatant != null:

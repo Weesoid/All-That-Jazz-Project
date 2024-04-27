@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwufa7157t4m"]
+
+[ext_resource type="Script" path="res://scripts/components/sccDebugComponent.gd" id="1_3ae1j"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="2_pc8b0"]
+
+[node name="DebugComponent" type="Node2D"]
+script = ExtResource("1_3ae1j")
+
+[node name="Coordinates" type="Label" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
+offset_left = 8.0
+offset_top = -16.0
+offset_right = 112.0
+offset_bottom = -6.0
+theme = ExtResource("2_pc8b0")
+text = "(0,0)"

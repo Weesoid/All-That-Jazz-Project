@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://bghmn4bbqr528"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiGeneralCombatantStatus.gd" id="1_5oepl"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="2_mghxc"]
+[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="3_x3pgg"]
+
+[node name="GeneralCombatantStatus" type="MarginContainer"]
+offset_right = 137.0
+offset_bottom = 17.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 3
+script = ExtResource("1_5oepl")
+
+[node name="Health" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(100, 12)
+layout_mode = 2
+show_percentage = false
+
+[node name="CharacterName" type="Label" parent="Health"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -5.0
+offset_right = 91.0
+offset_bottom = 8.0
+grow_vertical = 0
+theme = ExtResource("2_mghxc")
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 6
+text = "MR. SANDMAN"
+vertical_alignment = 1
+
+[node name="StatusContainer" type="HBoxContainer" parent="Health"]
+layout_mode = 2
+offset_left = 108.0
+offset_top = 14.0
+offset_right = 200.0
+offset_bottom = 50.0
+
+[node name="ProgressBarTrueValues" parent="Health" instance=ExtResource("3_x3pgg")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 2.0
+offset_bottom = 5.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 6
+horizontal_alignment = 2
+vertical_alignment = 2

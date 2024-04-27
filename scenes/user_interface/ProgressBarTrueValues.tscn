@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://507m3nw3cpie"]
+
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="1_hh53t"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiProgressBarTrueValues.gd" id="2_aa0tc"]
+
+[node name="ProgressBarTrueValues" type="Label"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_hh53t")
+text = "0 / 0"
+vertical_alignment = 1
+script = ExtResource("2_aa0tc")

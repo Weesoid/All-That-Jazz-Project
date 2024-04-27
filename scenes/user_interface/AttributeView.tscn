@@ -52,6 +52,7 @@ layout_mode = 2
 
 [node name="Accuracy" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Chance to land missable abilities."
 split_offset = 50
 dragger_visibility = 1
 
@@ -67,6 +68,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
 [node name="Dodge" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Chance to dodge dodgeable abilities."
 split_offset = 50
 dragger_visibility = 1
 
@@ -82,6 +84,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
 [node name="Crit" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Chance to land criticals."
 split_offset = 50
 dragger_visibility = 1
 
@@ -97,6 +100,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
 [node name="Resist" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Chance to resist status effects."
 split_offset = 50
 dragger_visibility = 1
 
@@ -112,6 +116,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
 [node name="HealMult" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Heal multiplier."
 split_offset = 50
 dragger_visibility = 1
 

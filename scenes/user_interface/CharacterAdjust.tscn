@@ -126,13 +126,12 @@ layout_mode = 2
 columns = 10
 
 [node name="Infomration" type="Control" parent="TabContainer/Charms"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 166.0
-offset_top = 44.0
+offset_top = 48.0
 offset_right = 206.0
-offset_bottom = 84.0
+offset_bottom = 88.0
 
 [node name="GeneralInfo" type="RichTextLabel" parent="TabContainer/Charms/Infomration"]
 z_index = 1
