@@ -6,6 +6,7 @@ class_name ResPlayerCombatant
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 
+var EQUIPPED_WEAPON: ResWeapon
 var LINGERING_STATUS_EFFECTS: Array[String]
 var STAT_POINTS = 1
 var CHARMS = {
@@ -58,6 +59,25 @@ func removeEquipmentModifications():
 	for charm in CHARMS:
 		charm.removeStatModifications()
 
+func equipWeapon(weapon: ResWeapon):
+	if EQUIPPED_WEAPON != null:
+		unequipWeapon()
+		
+	if InventoryGlobals.getItem(weapon) != null:
+		InventoryGlobals.removeItemResource(weapon)
+		weapon.equip(self)
+		return
+
+func unequipWeapon():
+	if EQUIPPED_WEAPON != null:
+		if !EQUIPPED_WEAPON.canUse(self):
+			OverworldGlobals.showPlayerPrompt('%s does not meet %s requirements.' % [NAME, EQUIPPED_WEAPON.NAME])
+			return
+		
+		EQUIPPED_WEAPON.unequip()
+		InventoryGlobals.addItemResource(EQUIPPED_WEAPON)
+		EQUIPPED_WEAPON = null
+
 func equipCharm(charm: ResCharm, slot: int):
 	if hasCharm(charm):
 		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] already has [color=yellow]%s[/color] equipped.' % [NAME, charm.NAME])
@@ -67,7 +87,6 @@ func equipCharm(charm: ResCharm, slot: int):
 		InventoryGlobals.removeItemResource(charm)
 		charm.equip(self)
 		CHARMS[slot] = charm
-		print(CHARMS)
 		return
 
 func unequipCharm(slot: int):

@@ -672,14 +672,6 @@ theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "GUARD "
 
-[node name="Equipment" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
-button_mask = 0
-text = "WEAPONS"
-
 [node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -711,7 +703,6 @@ libraries = {
 
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard" to="." method="_on_guard_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Equipment" to="." method="_on_equipment_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Items" to="." method="_on_items_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_pressed"]

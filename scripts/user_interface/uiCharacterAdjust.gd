@@ -11,6 +11,7 @@ extends Control
 @onready var charm_info_panel = $TabContainer/Charms/Infomration
 @onready var charm_description = $TabContainer/Charms/Infomration/ItemInfo/DescriptionLabel2
 @onready var charm_description_general = $TabContainer/Charms/Infomration/GeneralInfo
+@onready var weapon_button = $TabContainer/Charms/EquippedCharms/Weapon
 @onready var charm_slot_a = $TabContainer/Charms/EquippedCharms/SlotA
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
@@ -59,10 +60,6 @@ func loadAbilities():
 		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL: 
 			continue
 		createButton(ability, pool)
-
-func loadCharms():
-	clearButtons()
-	pass
 
 func clearButtons():
 	for chid in pool.get_children():
@@ -133,11 +130,50 @@ func showCharmEquipMenu(slot_button: Button):
 			select_charms_panel.hide()
 			charm_info_panel.hide()
 		)
-		select_charms.add_child(button)
 		button.mouse_entered.connect(
 			func():
 				updateItemDescription(charm)
 		)
+		select_charms.add_child(button)
+
+func showWeaponEquipMenu():
+	clearButtons()
+	select_charms_panel.show()
+	var unequip_button = OverworldGlobals.createCustomButton()
+	unequip_button.theme = preload("res://design/ItemButtons.tres")
+	unequip_button.icon = preload('res://images/sprites/icon_cross.png')
+	unequip_button.pressed.connect(
+		func():
+			selected_combatant.unequipWeapon()
+			weapon_button.icon = null
+			weapon_button.text = 'Unarmed'
+			select_charms_panel.hide()
+			charm_info_panel.hide()
+	)
+	select_charms.add_child(unequip_button)
+	for weapon in InventoryGlobals.INVENTORY.filter(func(item): return item is ResWeapon):
+		var button = OverworldGlobals.createCustomButton()
+		button.theme = preload("res://design/ItemButtons.tres")
+		button.icon = weapon.ICON
+		button.pressed.connect(
+			func():
+			if weapon.canUse(selected_combatant):
+				selected_combatant.equipWeapon(weapon)
+				weapon_button.text = weapon.NAME
+				weapon_button.icon = weapon.ICON
+			else:
+				OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] does not meet [color=yellow]%s[/color] requirements.' % [selected_combatant.NAME, weapon.NAME])
+			select_charms_panel.hide()
+			charm_info_panel.hide()
+		)
+		button.mouse_entered.connect(
+			func():
+				updateItemDescription(weapon)
+		)
+		select_charms.add_child(button)
+
+func _on_weapon_pressed():
+	showWeaponEquipMenu()
 
 func _on_slot_a_pressed():
 	showCharmEquipMenu(charm_slot_a)
@@ -149,10 +185,16 @@ func _on_slot_c_pressed():
 	showCharmEquipMenu(charm_slot_c)
 
 func updateEquipped():
+	if selected_combatant.EQUIPPED_WEAPON != null:
+		weapon_button.text = selected_combatant.EQUIPPED_WEAPON.NAME
+		weapon_button.icon = selected_combatant.EQUIPPED_WEAPON.ICON
+	else:
+		weapon_button.icon = null
+		weapon_button.text = 'Unarmed'
+	
 	charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
 	charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
 	charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
-	
 	if selected_combatant.CHARMS[0] != null:
 		charm_slot_a.icon = selected_combatant.CHARMS[0].ICON
 	if selected_combatant.CHARMS[1] != null:
@@ -185,10 +227,10 @@ func _on_slot_c_mouse_entered():
 func hideItemDescription():
 	charm_info_panel.hide()
 
-
 func _on_tab_container_tab_changed(tab):
 	if tab == 0:
 		loadAbilities()
 		attrib_view.hide()
 	elif tab == 1 or tab == 2:
 		attrib_view.show()
+

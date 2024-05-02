@@ -12,8 +12,8 @@ class_name CombatScene
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
 @onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
-@onready var equip_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Equipment
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
+@onready var ability_slot_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
@@ -145,6 +145,7 @@ func on_player_turn():
 	OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play('ShowActionPanel')
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
+	ability_slot_button.text = active_combatant.ABILITY_SLOT.NAME.to_upper()
 	await confirm
 	end_turn()
 
@@ -273,13 +274,6 @@ func _on_guard_pressed():
 func _on_items_pressed():
 	getPlayerItems()
 	if secondary_panel_container.get_child_count() == 0: return
-	secondary_panel.show()
-	secondary_panel_container.get_child(0).grab_focus()
-	
-func _on_equipment_pressed():
-	getPlayerWeapons(InventoryGlobals.INVENTORY)
-	if secondary_panel_container.get_child_count() == 0: return
-	equip_button.disabled = false
 	secondary_panel.show()
 	secondary_panel_container.get_child(0).grab_focus()
 

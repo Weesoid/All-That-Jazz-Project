@@ -9,6 +9,7 @@ extends Control
 
 func _ready():
 	updateInventory()
+	resetDescription()
 
 func updateInventory():
 	for child in inventory_grid.get_children():
@@ -52,10 +53,17 @@ func setButtonFunction(event, item, button: Button):
 		elif item is ResConsumable:
 			item.applyOverworldEffects()
 		elif item is ResUtilityCharm:
-			item.equip(PlayerGlobals.TEAM[0])
+			if PlayerGlobals.EQUIPPED_CHARM == item:
+				PlayerGlobals.EQUIPPED_CHARM.unequip()
+			else:
+				item.equip(PlayerGlobals.TEAM[0])
 		
 		updateInventory()
 
 func resetDescription():
-	item_info.text = '[center]LEFT CLICK TO USE ITEM[/center]'
-	item_general_info.text = '[img]res://images/sprites/circle_filled.png[/img]%s [img]res://images/sprites/circle_filled.png[/img]Charm O Cumming!' % [PlayerGlobals.CURRENCY]
+	if PlayerGlobals.hasUtilityCharm():
+		item_info.text = '[img]%s[/img]	%s' % [PlayerGlobals.EQUIPPED_CHARM.ICON.resource_path, PlayerGlobals.EQUIPPED_CHARM.NAME]
+	else:
+		item_info.text = ''
+	
+	item_general_info.text = '[img]res://images/sprites/circle_filled.png[/img]%s' % PlayerGlobals.CURRENCY

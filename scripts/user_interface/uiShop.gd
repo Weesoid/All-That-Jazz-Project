@@ -41,7 +41,6 @@ func loadWares(array=wares_array):
 	for item in array:
 		var button = OverworldGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size.x = 360
 		if item is ResStackItem and mode == 1:
 			item = ResGhostStackItem.new(item)
 			item.STACK = 999

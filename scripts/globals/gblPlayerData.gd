@@ -7,8 +7,8 @@ var FAST_TRAVEL_LOCATIONS: Array[String] = []
 var CLEARED_MAPS = []
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
+var EQUIPPED_CHARM: ResUtilityCharm
 var CURRENCY = 0
-var UTILITY_CHARM_COUNT = 0
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 
@@ -84,6 +84,9 @@ func hasFollower(follower_combatant: ResPlayerCombatant):
 	
 	return false
 
+func hasUtilityCharm():
+	return EQUIPPED_CHARM != null
+
 func isFollowerActive(follower_combatant_name: String):
 	for f in FOLLOWERS:
 		if f.host_combatant.NAME == follower_combatant_name:
@@ -112,7 +115,7 @@ func saveData(save_data: Array):
 	data.POWER = POWER
 	data.EQUIPPED_ARROW = EQUIPPED_ARROW
 	data.CURRENCY = CURRENCY
-	data.UTILITY_CHARM_COUNT = UTILITY_CHARM_COUNT
+	data.EQUIPPED_CHARM = EQUIPPED_CHARM
 	data.PARTY_LEVEL = PARTY_LEVEL
 	data.CURRENT_EXP = CURRENT_EXP
 	data.CLEARED_MAPS = CLEARED_MAPS
@@ -135,7 +138,9 @@ func saveData(save_data: Array):
 			combatant.initialized,
 			combatant.active,
 			combatant.STAT_POINTS,
-			combatant.STAT_MODIFIERS
+			combatant.STAT_MODIFIERS,
+			combatant.EQUIPPED_WEAPON,
+			combatant.STAT_POINT_ALLOCATIONS
 			]
 	
 	save_data.append(data)
@@ -148,7 +153,7 @@ func loadData(save_data: PlayerSaveData):
 	POWER = save_data.POWER
 	EQUIPPED_ARROW = save_data.EQUIPPED_ARROW
 	CURRENCY = save_data.CURRENCY
-	UTILITY_CHARM_COUNT = save_data.UTILITY_CHARM_COUNT
+	EQUIPPED_CHARM = save_data.EQUIPPED_CHARM
 	PARTY_LEVEL = save_data.PARTY_LEVEL
 	CURRENT_EXP = save_data.CURRENT_EXP
 	CLEARED_MAPS = save_data.CLEARED_MAPS
@@ -171,6 +176,8 @@ func loadData(save_data: PlayerSaveData):
 		combatant.active = save_data.COMBATANT_SAVE_DATA[combatant][8]
 		combatant.STAT_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][9]
 		combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][10]
+		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][11]
+		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][12]
 		if combatant.active:
 			OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(combatant)
 	

@@ -1,4 +1,4 @@
-extends ResItem
+extends ResEquippable
 class_name ResWeapon
 
 @export var EFFECT: ResAbility
@@ -7,6 +7,25 @@ class_name ResWeapon
 }
 @export var max_durability = 100
 var durability: int = max_durability
+
+func equip(combatant: ResCombatant):
+	if isEquipped():
+		unequip()
+	
+	EQUIPPED_COMBATANT = combatant
+	EQUIPPED_COMBATANT.ABILITY_SLOT = EFFECT
+	EQUIPPED_COMBATANT.EQUIPPED_WEAPON = self
+	
+	if !STAT_MODIFICATIONS.is_empty():
+		applyStatModifications()
+
+func unequip():
+	if !STAT_MODIFICATIONS.is_empty():
+		removeStatModifications()
+	
+	EQUIPPED_COMBATANT.ABILITY_SLOT = preload("res://resources/combat/abilities/BraceSelf.tres")
+	EQUIPPED_COMBATANT = null
+	#EQUIPPED_COMBATANT.EQUIPPED_WEAPON = null
 
 func useDurability():
 	durability -= 1

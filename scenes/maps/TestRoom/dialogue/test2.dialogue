@@ -1,5 +1,8 @@
 ~ start
 
-do addItem("CharmMurder")
+do addItem("WolfCold")
+do addItem("HotHand")
+do addItem("SprintStone")
+do addItem("BowStone")
 
 => END

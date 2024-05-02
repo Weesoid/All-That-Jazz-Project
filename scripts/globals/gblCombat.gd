@@ -192,7 +192,7 @@ func checkReactions(target: ResCombatant):
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Poison')
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Chilled'):
-		runReaction(target, 'Singed', 'Chilled', load("res://resources/combat/abilities/Scald.tres"))
+		runReaction(target, 'Singed', 'Chilled', load("res://resources/combat/abilities_reactions/Scald.tres"))
 	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Jolted', 'Poison', load("res://resources/combat/abilities_reactions/Catalyze.tres"))
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):

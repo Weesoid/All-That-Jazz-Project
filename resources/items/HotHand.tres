@@ -1,15 +1,19 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=3 format=3 uid="uid://bkc07fma87bjx"]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=4 format=3 uid="uid://bkc07fma87bjx"]
 
-[ext_resource type="Resource" path="res://resources/combat/abilities/HotHit.tres" id="1_lb1fm"]
+[ext_resource type="Resource" uid="uid://8v7wdj464tlq" path="res://resources/combat/abilities/HotHit.tres" id="1_lb1fm"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_84o6q"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="2_djvs1"]
 
 [resource]
 script = ExtResource("2_84o6q")
 EFFECT = ExtResource("1_lb1fm")
+USE_REQUIREMENT = {
+"handling": 0
+}
 max_durability = 100
-durability = null
+STAT_MODIFICATIONS = {}
 NAME = "Hot Hand"
+ICON = ExtResource("2_djvs1")
 DESCRIPTION = "Spicey!"
 VALUE = 25
-WEIGHT = 1
 MANDATORY = false

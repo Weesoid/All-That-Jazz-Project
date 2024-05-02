@@ -53,8 +53,9 @@ offset_top = 8.0
 offset_right = 336.0
 offset_bottom = 128.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Abilities/ScrollContainer"]
+[node name="VBoxContainer" type="GridContainer" parent="TabContainer/Abilities/ScrollContainer"]
 layout_mode = 2
+columns = 2
 
 [node name="DescriptionPanel" type="PanelContainer" parent="TabContainer/Abilities"]
 layout_mode = 2
@@ -77,7 +78,7 @@ visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bfwvc")
 
-[node name="EquippedCharms" type="GridContainer" parent="TabContainer/Charms"]
+[node name="EquippedCharms" type="HFlowContainer" parent="TabContainer/Charms"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -90,7 +91,12 @@ offset_right = 46.0
 offset_bottom = -11.5
 grow_horizontal = 2
 grow_vertical = 2
-columns = 3
+
+[node name="Weapon" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+theme = ExtResource("5_004gj")
+text = "WEAPON"
 
 [node name="SlotA" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
 layout_mode = 2
@@ -219,6 +225,7 @@ vertical_alignment = 1
 uppercase = true
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
+[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_pressed"]
 [connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
 [connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="hideItemDescription"]
 [connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_pressed"]
