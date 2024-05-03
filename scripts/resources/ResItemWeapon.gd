@@ -23,9 +23,7 @@ func unequip():
 	if !STAT_MODIFICATIONS.is_empty():
 		removeStatModifications()
 	
-	EQUIPPED_COMBATANT.ABILITY_SLOT = preload("res://resources/combat/abilities/BraceSelf.tres")
 	EQUIPPED_COMBATANT = null
-	#EQUIPPED_COMBATANT.EQUIPPED_WEAPON = null
 
 func useDurability():
 	durability -= 1

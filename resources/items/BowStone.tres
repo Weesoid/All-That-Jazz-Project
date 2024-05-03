@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ResUtilityCharm" load_steps=3 format=3 uid="uid://df3gbotmkpun8"]
+[gd_resource type="Resource" script_class="ResUtilityCharm" load_steps=4 format=3 uid="uid://df3gbotmkpun8"]
 
 [ext_resource type="Script" path="res://scripts/utility_charms/uchBow.gd" id="1_tvi4u"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="2_7doex"]
 [ext_resource type="Script" path="res://scripts/resources/ResUtilityCharm.gd" id="2_dbkks"]
 
 [resource]
@@ -8,8 +9,7 @@ script = ExtResource("2_dbkks")
 CHARM_SCRIPT = ExtResource("1_tvi4u")
 STAT_MODIFICATIONS = {}
 NAME = "Bow Stone"
-ICON_NAME = ""
+ICON = ExtResource("2_7doex")
 DESCRIPTION = ""
-VALUE = 0
-WEIGHT = 1
-MANDATORY = true
+VALUE = 9999
+MANDATORY = false

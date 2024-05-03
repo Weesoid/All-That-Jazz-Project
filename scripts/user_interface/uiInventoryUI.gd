@@ -47,7 +47,7 @@ func setButtonFunction(event, item, button: Button):
 	item_general_info.text = item.getGeneralInfo()
 	item_info_panel.show()
 	
-	if Input.is_action_pressed("ui_alt_accept"):
+	if Input.is_action_just_pressed("ui_alt_accept"):
 		if item is ResProjectileAmmo:
 			item.equip()
 		elif item is ResConsumable:

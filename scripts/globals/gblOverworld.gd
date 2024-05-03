@@ -104,11 +104,12 @@ func closeMenu(menu: Control):
 func inMenu():
 	return getPlayer().player_camera.has_node('uiMenu')
 
-func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
+func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_description=''):
 	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
 	main_menu.wares_array = getComponent(shopkeeper_name, 'ShopWares').SHOP_WARES
 	main_menu.buy_modifier = buy_mult
 	main_menu.sell_modifier = sell_mult
+	main_menu.open_description = entry_description
 	main_menu.name = 'uiMenu'
 	
 	if !inMenu():
@@ -119,8 +120,10 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5):
 	else:
 		closeMenu(main_menu)
 
-func createCustomButton()-> CustomButton:
-	return preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+func createCustomButton(theme: Theme = preload("res://design/DefaultTheme.tres"))-> CustomButton:
+	var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+	button.theme = theme
+	return button
 
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)

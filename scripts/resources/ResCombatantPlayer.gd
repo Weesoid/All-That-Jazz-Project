@@ -77,6 +77,7 @@ func unequipWeapon():
 		EQUIPPED_WEAPON.unequip()
 		InventoryGlobals.addItemResource(EQUIPPED_WEAPON)
 		EQUIPPED_WEAPON = null
+		ABILITY_SLOT = preload("res://resources/combat/abilities/BraceSelf.tres")
 
 func equipCharm(charm: ResCharm, slot: int):
 	if hasCharm(charm):

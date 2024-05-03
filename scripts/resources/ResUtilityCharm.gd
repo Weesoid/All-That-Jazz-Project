@@ -5,11 +5,11 @@ class_name ResUtilityCharm
 var equipped = false
 
 func equip(_combatant: ResCombatant):
-	if PlayerGlobals.hasUtilityCharm() and PlayerGlobals.CURRENCY < 25:
+	if PlayerGlobals.CURRENCY < 25:
 		OverworldGlobals.getPlayer().prompt.showPrompt('A tribute of [color=yellow]25[/color] gold is required to change your charm.')
 		return
 	
-	if PlayerGlobals.hasUtilityCharm() and PlayerGlobals.CURRENCY < 25:
+	if PlayerGlobals.hasUtilityCharm() and PlayerGlobals.CURRENCY > 25:
 		PlayerGlobals.CURRENCY -= 25
 		PlayerGlobals.EQUIPPED_CHARM.CHARM_SCRIPT.unequip()
 		PlayerGlobals.EQUIPPED_CHARM.equipped = false

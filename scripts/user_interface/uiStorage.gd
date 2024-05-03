@@ -8,7 +8,7 @@ extends Control
 var selected_item
 
 func _ready():
-	loadStorage()
+	print('Depracated!')
 
 func loadStorage():
 	clearButtons(storage)

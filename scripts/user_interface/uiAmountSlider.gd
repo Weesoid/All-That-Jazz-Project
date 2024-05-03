@@ -15,9 +15,9 @@ func _ready():
 func loadSlider():
 	slider.max_value = max_v
 
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_accept"):
-		amount_enter.emit()
-	elif Input.is_action_just_pressed("ui_alt_cancel"):
-		slider.value = 0
-		amount_enter.emit()
+func _on_return_button_up():
+	slider.value = 0
+	amount_enter.emit()
+
+func _on_accept_button_up():
+	amount_enter.emit()

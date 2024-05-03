@@ -17,13 +17,12 @@ func addItem(item_name: String, count=1, unit=INVENTORY):
 
 # BUG HERE !!
 func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
-	if !canAdd(item,count):
+	if !canAdd(item,count) or count == 0:
 		return
 	
 	if item is ResStackItem and unit.has(item):
 		unit[unit.find(item)].add(count)
 	elif item is ResStackItem:
-		print('grah')
 		if item.STACK <= 0: item.STACK = 1
 		item.add(count-1, false)
 		unit.append(item)
@@ -85,7 +84,7 @@ func incrementStackItem(item_name: String, count):
 			added_item_to_inventory.emit()
 
 func takeFromGhostStack(item: ResGhostStackItem, count, transfer_to_storage=false):
-	if !canAdd(item.REFERENCE_ITEM, count, transfer_to_storage):
+	if !canAdd(item.REFERENCE_ITEM, count, transfer_to_storage) or count <= 0:
 		return
 	
 	if hasItem(item.NAME):
@@ -111,6 +110,21 @@ func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
 	return true
 #	if item is ResStackItem and count <= 0:
 #		return
+
+func calculateValidAdd(item: ResStackItem) -> int:
+	if item is ResGhostStackItem:
+		item = item.REFERENCE_ITEM
+	
+	if item.MAX_STACK == 0:
+		return 100
+	
+	if INVENTORY.has(item):
+		if item.MAX_STACK - getItem(item).STACK > 0:
+			return item.MAX_STACK - getItem(item).STACK
+		else:
+			return 0
+	else:
+		return item.MAX_STACK
 
 func getStorageUnitName(unit: Array[ResItem]):
 	match unit:

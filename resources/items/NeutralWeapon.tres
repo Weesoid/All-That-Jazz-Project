@@ -11,6 +11,7 @@ USE_REQUIREMENT = {
 "handling": 1
 }
 max_durability = 100
+STAT_MODIFICATIONS = {}
 NAME = "Neutral Weapon"
 ICON = ExtResource("2_ii4r4")
 DESCRIPTION = "A neutral weapon in a hostile world..."
