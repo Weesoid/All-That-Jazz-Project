@@ -132,6 +132,7 @@ layout_mode = 2
 columns = 10
 
 [node name="Infomration" type="Control" parent="TabContainer/Charms"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 166.0

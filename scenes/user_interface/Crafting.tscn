@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://cj67wj3vrhfw7"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCraftingUI.gd" id="1_y6pgg"]
+[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_3ycts"]
+[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="2_fqj8l"]
+[ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="3_m17c3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6eudg"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(1, 1, 1, 1)
 
 [node name="uiCrafting" type="Control"]
 layout_mode = 3
@@ -9,68 +19,126 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = -44.0
-offset_bottom = -44.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_y6pgg")
 
-[node name="Craftables" type="Panel" parent="."]
+[node name="CoreComp2" parent="." instance=ExtResource("2_3ycts")]
 layout_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -184.0
-offset_top = -76.0
-offset_right = 64.0
-offset_bottom = 107.0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 124.0
+offset_top = -90.0
+offset_right = 214.0
+offset_bottom = -68.0
+text = "Repair Weapons"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Craftables"]
-layout_mode = 0
-offset_right = 248.0
-offset_bottom = 183.0
-horizontal_scroll_mode = 0
+[node name="Craftables" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -91.5
+offset_right = 124.0
+offset_bottom = 91.5
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Craftables/ScrollContainer"]
-custom_minimum_size = Vector2(248, 0)
+[node name="CenterContainer" type="CenterContainer" parent="Craftables"]
 layout_mode = 2
 
-[node name="DescriptionPanel" type="Panel" parent="."]
-layout_mode = 0
-offset_left = -184.0
-offset_top = 112.0
-offset_right = 64.0
-offset_bottom = 168.0
+[node name="GridContainer" type="VBoxContainer" parent="Craftables/CenterContainer"]
+layout_mode = 2
 
-[node name="DescriptionLabel" type="Label" parent="DescriptionPanel"]
+[node name="CoreComp" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme = ExtResource("2_fqj8l")
+text = "CORE COMPONENT"
+icon = ExtResource("3_m17c3")
+alignment = 2
+
+[node name="CompA" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme = ExtResource("2_fqj8l")
+text = "COMPONENT A"
+icon = ExtResource("3_m17c3")
+alignment = 2
+
+[node name="CompB" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme = ExtResource("2_fqj8l")
+text = "COMPONENT B"
+icon = ExtResource("3_m17c3")
+alignment = 2
+
+[node name="Craft" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme = ExtResource("2_fqj8l")
+text = "CRAFT"
+
+[node name="ItemSelect" type="Panel" parent="."]
+visible = false
 layout_mode = 0
+offset_left = -168.0
+offset_top = -132.0
+offset_right = 168.0
+offset_bottom = 20.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6eudg")
+
+[node name="SelectCharms" type="ScrollContainer" parent="ItemSelect"]
+custom_minimum_size = Vector2(7.866, 0)
+layout_mode = 2
 offset_left = 8.0
-offset_right = 240.0
-offset_bottom = 56.0
-autowrap_mode = 3
+offset_top = 8.0
+offset_right = 328.0
+offset_bottom = 96.0
 
-[node name="Recipe" type="Panel" parent="."]
-layout_mode = 0
-offset_left = 72.0
-offset_top = -77.0
-offset_right = 200.0
-offset_bottom = 107.0
-
-[node name="RecipeLabel" type="Label" parent="Recipe"]
-layout_mode = 0
-offset_left = 8.0
-offset_right = 120.0
-offset_bottom = 184.0
-autowrap_mode = 3
-
-[node name="Craft" type="Button" parent="Recipe"]
+[node name="VBoxContainer" type="GridContainer" parent="ItemSelect/SelectCharms"]
 layout_mode = 2
-offset_top = 208.0
-offset_right = 128.0
-offset_bottom = 226.0
-text = "Craft"
-alignment = 0
+columns = 10
+
+[node name="Infomration" type="Control" parent="ItemSelect"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 168.0
+offset_top = 88.0
+offset_right = 208.0
+offset_bottom = 128.0
+
+[node name="GeneralInfo" type="RichTextLabel" parent="ItemSelect/Infomration"]
+z_index = 1
+layout_mode = 2
+offset_left = -168.0
+offset_top = 132.0
+offset_right = 168.0
+offset_bottom = 154.0
+bbcode_enabled = true
+text = "[img]res://images/sprites/circle_filled.png[/img]"
+fit_content = true
+scroll_active = false
+
+[node name="ItemInfo" type="PanelContainer" parent="ItemSelect/Infomration"]
+layout_mode = 2
+offset_left = -168.0
+offset_top = 64.0
+offset_right = 168.0
+offset_bottom = 164.0
+
+[node name="DescriptionLabel2" type="RichTextLabel" parent="ItemSelect/Infomration/ItemInfo"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]LEFT CLICK TO USE ITEM
+[/center]
+"
 
 [connection signal="ready" from="." to="." method="_on_ready"]
-[connection signal="pressed" from="Recipe/Craft" to="." method="_on_craft_pressed"]

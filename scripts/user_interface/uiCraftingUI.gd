@@ -1,33 +1,123 @@
 extends Control
 
-@onready var craftables = $Craftables/ScrollContainer/VBoxContainer
-@onready var description = $DescriptionPanel/DescriptionLabel
-@onready var craft_button = $Recipe/Craft
-@onready var recipe_label = $Recipe/RecipeLabel
+@onready var component_core = $Craftables/CenterContainer/GridContainer/CoreComp
+@onready var component_a = $Craftables/CenterContainer/GridContainer/CompA
+@onready var component_b = $Craftables/CenterContainer/GridContainer/CompB
+@onready var craft_button = $Craftables/CenterContainer/GridContainer/Craft
+@onready var item_select = $ItemSelect
+@onready var item_select_buttons = $ItemSelect/SelectCharms/VBoxContainer
+@onready var item_select_info = $ItemSelect/Infomration
+@onready var item_select_info_main = $ItemSelect/Infomration/ItemInfo/DescriptionLabel2
+@onready var item_select_info_general = $ItemSelect/Infomration/GeneralInfo
+var all_components: Array[ResItem] = [null, null, null]
 
 var selected_recipe: ResRecipe
 
-func _on_ready():
-	craft_button.hide()
-	for recipe in InventoryGlobals.KNOWN_RECIPES:
-		print('Initing: ', recipe.OUTPUT)
-		var button = OverworldGlobals.createCustomButton()
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.size.x = 9999
-		button.text = str(recipe.OUTPUT.NAME)
-		addButtonToPanel(recipe, button)
-
-func addButtonToPanel(recipe: ResRecipe, button: Button):
-	craftables.add_child(button)
-	button.pressed.connect(
-		func setSelectedItem(): 
-			selected_recipe = InventoryGlobals.getRecipe(recipe)
-			description.text = recipe.OUTPUT.DESCRIPTION
-			recipe_label.text = recipe.getStringRecipe()
-			craft_button.visible = recipe.hasRequiredItems()
-			)
-
-func _on_craft_pressed():
-	selected_recipe.craft()
-	if !selected_recipe.hasRequiredItems():
+func _process(_delta):
+	if InventoryGlobals.RECIPES.has(recipeToString()) and canAddToInventory():
+		craft_button.show()
+		craft_button.disabled = false
+		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
+		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME
+	elif InventoryGlobals.RECIPES.has(recipeToString()) and !canAddToInventory():
+		craft_button.show()
+		craft_button.disabled = true
+		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
+		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME
+	else:
 		craft_button.hide()
+
+func canAddToInventory():
+	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
+	
+	if result_data.size() > 1:
+		print(InventoryGlobals.canAdd(result_data[0], int(result_data[1]), false))
+		return InventoryGlobals.canAdd(result_data[0], int(result_data[1]), false)
+	else:
+		return InventoryGlobals.canAdd(result_data[0], 1, false)
+
+func _exit_tree():
+	for item in all_components:
+		if item != null:
+			InventoryGlobals.addItemResource(item)
+
+func recipeToString()-> Array:
+	var out = [null, null, null]
+	for i in range(3):
+		if all_components[i] != null:
+			out[i] = all_components[i].NAME
+	
+	return out
+
+func _on_ready():
+	component_core.pressed.connect(func(): showItems(component_core, 0))
+	component_a.pressed.connect(func(): showItems(component_a, 1))
+	component_b.pressed.connect(func(): showItems(component_b, 2))
+	craft_button.connect('pressed', craft)
+
+func craft():
+	InventoryGlobals.craftItem(all_components)
+	removeItemFromSlot(component_core, 0, false)
+	removeItemFromSlot(component_a, 1, false)
+	removeItemFromSlot(component_b, 2, false)
+
+func showItems(slot_button: Button, slot: int):
+	for child in item_select_buttons.get_children():
+		child.free()
+	
+	item_select.show()
+	var cancel_button = OverworldGlobals.createCustomButton()
+	cancel_button.theme = preload("res://design/ItemButtons.tres")
+	cancel_button.icon = preload('res://images/sprites/icon_cross.png')
+	cancel_button.pressed.connect(
+		func():
+			if all_components[slot] != null:
+				removeItemFromSlot(slot_button, slot)
+			item_select.hide()
+	)
+	item_select_buttons.add_child(cancel_button)
+	
+	for charm in InventoryGlobals.INVENTORY:
+		var button = OverworldGlobals.createCustomButton()
+		button.theme = preload("res://design/ItemButtons.tres")
+		button.icon = charm.ICON
+		button.pressed.connect(
+			func():
+				addItemToSlot(charm, slot, slot_button)
+				item_select.hide()
+		)
+		button.mouse_entered.connect(func(): updateItemDescription(charm))
+		item_select_buttons.add_child(button)
+
+func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
+	if item.MANDATORY:
+		InventoryGlobals.removeItemResource(item) # This will show 'Cannot remove item'
+	else:
+		if all_components[slot] != null: InventoryGlobals.addItemResource(all_components[slot])
+		slot_button.icon = item.ICON
+		slot_button.text = item.NAME
+		InventoryGlobals.removeItemResource(item)
+		all_components[slot] = item
+		print(all_components)
+
+func removeItemFromSlot(slot_button: Button, slot: int, return_item=true):
+	slot_button.icon = preload("res://images/sprites/icon_plus.png")
+	match slot_button:
+		component_core:
+			slot_button.text = 'CORE COMPONENT'
+			if return_item: InventoryGlobals.addItemResource(all_components[0])
+		component_a:
+			slot_button.text = 'COMPONENT A'
+			if return_item: InventoryGlobals.addItemResource(all_components[1])
+		component_b:
+			slot_button.text = 'COMPONENT B'
+			if return_item: InventoryGlobals.addItemResource(all_components[2])
+	all_components[slot] = null
+
+func updateItemDescription(item: ResItem):
+	if item == null:
+		return
+	
+	item_select_info.show()
+	item_select_info_general.text = item.getGeneralInfo()
+	item_select_info_main.text = item.getInformation()

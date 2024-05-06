@@ -145,7 +145,12 @@ func on_player_turn():
 	OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play('ShowActionPanel')
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
-	ability_slot_button.text = active_combatant.ABILITY_SLOT.NAME.to_upper()
+	if active_combatant.EQUIPPED_WEAPON != null:
+		ability_slot_button.text = 'WPN'
+		ability_slot_button.icon = active_combatant.EQUIPPED_WEAPON.ICON
+	else:
+		ability_slot_button.text = 'GUARD'
+		ability_slot_button.icon = null
 	await confirm
 	end_turn()
 
@@ -428,8 +433,11 @@ func commandExecuteAbility(target, ability: ResAbility):
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
-func moveCamera(target: Vector2, speed=0.005):
-	combat_camera.global_position = lerp(combat_camera.global_position, target, speed)
+func moveCamera(target: Vector2, speed=0.25):
+	var tween = create_tween()
+	#tween.set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(combat_camera, 'global_position', target, speed)
+	#combat_camera.global_position = lerp(combat_camera.global_position, target, speed)
 
 func addCombatant(combatant, container):
 	for marker in container:
@@ -595,7 +603,7 @@ func confirmCancelInputs():
 		resetActionLog()
 	
 func resetActionLog():
-	combat_camera.position = Vector2(0, -40)
+	moveCamera(Vector2(0, -40))
 	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	secondary_panel.hide()

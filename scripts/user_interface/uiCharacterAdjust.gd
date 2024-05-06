@@ -71,7 +71,7 @@ func createButton(ability, location):
 	var button = OverworldGlobals.createCustomButton()
 	button.text = ability.NAME
 	if selected_combatant.ABILITY_SET.has(ability):
-		button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
+		button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 	
 	button.pressed.connect(
 		func():
@@ -80,7 +80,7 @@ func createButton(ability, location):
 					OverworldGlobals.showPlayerPrompt('Max abilities enabled.')
 					return
 				selected_combatant.ABILITY_SET.append(ability)
-				button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
+				button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 			elif selected_combatant.ABILITY_SET.has(ability):
 				selected_combatant.ABILITY_SET.erase(ability)
 				button.remove_theme_icon_override('icon')

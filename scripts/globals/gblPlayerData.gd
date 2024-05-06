@@ -11,6 +11,7 @@ var EQUIPPED_CHARM: ResUtilityCharm
 var CURRENCY = 0
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
+var STRING_CONDITIONS: Array[String] # This'll be handly later...
 
 var stamina = 100.0
 var bow_max_draw = 5.0

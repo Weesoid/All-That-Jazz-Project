@@ -3,11 +3,11 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_0mji2"]
 [ext_resource type="Resource" path="res://resources/items/BowStone.tres" id="2_aw5kc"]
 [ext_resource type="Resource" path="res://resources/items/HotHand.tres" id="3_2puys"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="3_iwbc0"]
 [ext_resource type="Resource" path="res://resources/items/SprintStone.tres" id="4_1diij"]
 [ext_resource type="Resource" path="res://resources/items/WolfCold.tres" id="5_xspjg"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="6_46v10"]
 [ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="7_m0s43"]
-[ext_resource type="Resource" path="res://resources/recipes/ArrowRecipe.tres" id="8_svlm0"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="9_x32xa"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="10_77tse"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="11_fgdt8"]
@@ -32,36 +32,37 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="30_p8r1h"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="31_0q1ny"]
 
-[sub_resource type="Resource" id="Resource_5j6s8"]
+[sub_resource type="Resource" id="Resource_e3ndd"]
 script = ExtResource("1_0mji2")
-position = Vector2(-8.80208, -48.2192)
+position = Vector2(26.5533, -100.123)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_e34hk"]
+[sub_resource type="Resource" id="Resource_70oer"]
 script = ExtResource("9_x32xa")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_aw5kc"), ExtResource("4_1diij")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_aw5kc"), ExtResource("3_iwbc0"), ExtResource("4_1diij")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
-KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([ExtResource("8_svlm0")])
+KNOWN_RECIPES = Array[Resource("res://scripts/resources/ResRecipe.gd")]([])
 KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("6_46v10"), ExtResource("7_m0s43")])
 ITEM_DATA_INVENTORY = {
 "Bow Stone": false,
+"Scrap Salvage": 26,
 "Sprint Stone": false
 }
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_f5dyd"]
+[sub_resource type="Resource" id="Resource_hmr8u"]
 script = ExtResource("10_77tse")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_a6rt2"]
+[sub_resource type="Resource" id="Resource_3hc5e"]
 script = ExtResource("30_p8r1h")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("11_fgdt8"), ExtResource("20_oowly"), ExtResource("27_wivx2"), ExtResource("28_v2jxn")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["SecondMap"])
 CLEARED_MAPS = []
 EQUIPPED_ARROW = ExtResource("29_ye7cf")
-CURRENCY = 100
+CURRENCY = 3
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
 stamina = 100.0
@@ -200,4 +201,4 @@ ExtResource("28_v2jxn"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 [resource]
 script = ExtResource("31_0q1ny")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_5j6s8"), SubResource("Resource_e34hk"), SubResource("Resource_f5dyd"), SubResource("Resource_a6rt2")]
+save_data = [SubResource("Resource_e3ndd"), SubResource("Resource_70oer"), SubResource("Resource_hmr8u"), SubResource("Resource_3hc5e")]

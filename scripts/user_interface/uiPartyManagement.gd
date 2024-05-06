@@ -15,7 +15,7 @@ func _ready():
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(member)
 					member.active = true
 					OverworldGlobals.initializePlayerParty()
-					button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
+					button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 				else:
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
 					PlayerGlobals.removeFollower(member)
@@ -25,7 +25,7 @@ func _ready():
 		if member.MANDATORY and member.active: 
 			button.disabled = true
 		if member.active:
-			button.add_theme_icon_override('icon', preload("res://images/sprites/circle_filled.png"))
+			button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 		else:
 			button.remove_theme_icon_override('icon')
 		

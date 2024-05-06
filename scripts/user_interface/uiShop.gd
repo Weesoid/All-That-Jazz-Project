@@ -63,13 +63,17 @@ func loadWares(array=wares_array):
 			item = ResGhostStackItem.new(item)
 			item.STACK = 999
 		
-		if (item is ResUtilityCharm and PlayerGlobals.EQUIPPED_CHARM == item) or (item is ResEquippable and !InventoryGlobals.canAdd(item,1,false,false)) and mode == 1:
+		if (item is ResUtilityCharm and PlayerGlobals.EQUIPPED_CHARM == item) or (item is ResEquippable and !InventoryGlobals.canAdd(item,1,false)) and mode == 1:
 			button.disabled = true
 			label.text = ''
 		
 		if (item is ResStackItem and InventoryGlobals.calculateValidAdd(item) == 0) and mode == 1:
 			button.disabled = true
 			label.text = ''
+		
+#		if item.MANDATORY and mode == 0:
+#			button.disabled = true
+#			label.text = ''
 		
 		if PlayerGlobals.CURRENCY >= item.VALUE * buy_modifier and mode == 1:
 			label.add_theme_color_override('font_color', Color.GREEN)
@@ -146,15 +150,17 @@ func setButtonFunction(input, selected_item, button: Button):
 				
 				if selected_item is ResGhostStackItem:
 					var amount = await loadSlider(selected_item)
-					InventoryGlobals.takeFromGhostStack(selected_item, amount, true)
+					InventoryGlobals.takeFromGhostStack(selected_item, amount)
 					PlayerGlobals.CURRENCY -= int((selected_item.VALUE * buy_modifier) * amount)
 				else:
 					InventoryGlobals.addItemResource(selected_item)
 					PlayerGlobals.CURRENCY -= int(selected_item.VALUE * buy_modifier)
 				loadWares(wares_array)
 			0:
-				if PlayerGlobals.CURRENCY < selected_item.VALUE * buy_modifier:
+				if selected_item.MANDATORY:
 					OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
+					return
+				
 				var amount = await loadSlider(selected_item)
 				InventoryGlobals.removeItemResource(selected_item, amount, InventoryGlobals.INVENTORY, false)
 				PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)

@@ -639,7 +639,7 @@ z_index = 10
 layout_mode = 0
 offset_left = 128.0
 offset_top = 197.0
-offset_right = 458.0
+offset_right = 456.0
 offset_bottom = 285.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel"]
@@ -649,15 +649,14 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Buttons" type="GridContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer"]
+[node name="Buttons" type="HFlowContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_force_pass_scroll_events = false
-columns = 3
 
 [node name="Skills" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(204, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
@@ -670,7 +669,6 @@ layout_mode = 2
 theme = ExtResource("8_lqkpn")
 theme_override_font_sizes/font_size = 16
 button_mask = 0
-text = "GUARD "
 
 [node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)

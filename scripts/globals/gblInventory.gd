@@ -1,21 +1,43 @@
 extends Node
 
 var INVENTORY: Array[ResItem] = []
-var KNOWN_RECIPES: Array[ResRecipe] = []
 var KNOWN_POWERS: Array[ResPower] = []
+var RECIPES: Dictionary = {
+	['Scrap Salvage', null, null]: 'Arrow.15',
+	['Murder Charm', 'Scrap Salvage', null]: 'BowStone'
+}
+
 signal added_item_to_inventory
 
-func _ready():
-	KNOWN_RECIPES.append(load("res://resources/recipes/ArrowRecipe.tres"))
-	KNOWN_POWERS.append(load("res://resources/powers/Anchor.tres"))
-	KNOWN_POWERS.append(load("res://resources/powers/Stealth.tres"))
 
 func addItem(item_name: String, count=1, unit=INVENTORY):
 	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item '%s' not found!" % item_name)
 	addItemResource(item, count, unit)
 
-# BUG HERE !!
+func getRecipeResult(item_name_array: Array, get_raw_string=false):
+	var item = RECIPES[item_name_array].split('.')
+	var output = [null, null]
+	if get_raw_string:
+		output[0] = load("res://resources/items/"+item[0]+".tres")
+		output[1] = int(item[1])
+		return output
+	else:
+		return load("res://resources/items/"+item[0]+".tres")
+
+func craftItem(item_array: Array[ResItem]):
+	var out = [null, null, null]
+	for i in range(item_array.size()):
+		if item_array[i] != null:
+			out[i] = item_array[i].NAME
+	
+	if RECIPES.has(out):
+		var craft_data = RECIPES[out].split('.')
+		if craft_data.size() > 1:
+			addItem(craft_data[0], int(craft_data[1]))
+		else:
+			addItem(craft_data[0])
+
 func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 	if !canAdd(item,count) or count == 0:
 		return
@@ -83,8 +105,8 @@ func incrementStackItem(item_name: String, count):
 			item.add(count)
 			added_item_to_inventory.emit()
 
-func takeFromGhostStack(item: ResGhostStackItem, count, transfer_to_storage=false):
-	if !canAdd(item.REFERENCE_ITEM, count, transfer_to_storage) or count <= 0:
+func takeFromGhostStack(item: ResGhostStackItem, count):
+	if !canAdd(item.REFERENCE_ITEM, count) or count <= 0:
 		return
 	
 	if hasItem(item.NAME):
@@ -102,10 +124,14 @@ func transferItem(item: ResItem, count: int, from: Array[ResItem], to: Array[Res
 		removeItemResource(item, count, from, false)
 		addItemResource(item, count, to)
 
-func canAdd(item, count=1, transfer_storage=true, show_prompt=true):
+func canAdd(item, count:int=1, show_prompt=true):
 	if (item is ResWeapon or item is ResUtilityCharm) and INVENTORY.has(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
+	elif item is ResStackItem and hasItem(item.NAME) and item.STACK + count > item.MAX_STACK and item.MAX_STACK > 0:
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
+		return false
+	
 	
 	return true
 #	if item is ResStackItem and count <= 0:
@@ -139,9 +165,6 @@ func getUnstackableItemNames()-> Array:
 	
 	return out
 
-func getRecipe(item: ResRecipe):
-	return KNOWN_RECIPES[KNOWN_RECIPES.find(item)]
-
 func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
 	#if getItemWithName("Scrap Salvage") == null: 
 	#	OverworldGlobals.getPlayer().prompt.showPrompt('Not enough [color=yellow]Scrap Salvage![/color]')
@@ -163,7 +186,6 @@ func saveData(save_data: Array):
 	var data = InventorySaveData.new()
 	data.INVENTORY = INVENTORY
 	data.KNOWN_POWERS = KNOWN_POWERS
-	data.KNOWN_RECIPES = KNOWN_RECIPES
 	#data.STORAGE = STORAGE
 	saveItemData(INVENTORY, data)
 	save_data.append(data)
@@ -171,7 +193,6 @@ func saveData(save_data: Array):
 func loadData(save_data: InventorySaveData):
 	INVENTORY = save_data.INVENTORY
 	KNOWN_POWERS = save_data.KNOWN_POWERS
-	KNOWN_RECIPES = save_data.KNOWN_RECIPES
 	loadItemData(INVENTORY, save_data)
 
 func saveItemData(storage_unit: Array[ResItem], inv_save_data: InventorySaveData):

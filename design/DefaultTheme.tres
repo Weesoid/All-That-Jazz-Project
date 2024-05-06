@@ -1,6 +1,9 @@
-[gd_resource type="Theme" load_steps=16 format=3 uid="uid://bid2xvoeqgilk"]
+[gd_resource type="Theme" load_steps=21 format=3 uid="uid://bid2xvoeqgilk"]
 
+[ext_resource type="Texture2D" uid="uid://dxfjdpna7oxmx" path="res://images/sprites/grabber.png" id="1_1k802"]
 [ext_resource type="FontFile" uid="uid://cyywx7byxrbwp" path="res://design/nokiafc22.ttf" id="1_cnnh2"]
+[ext_resource type="Texture2D" uid="uid://d18200h2tn5i7" path="res://images/sprites/grabber_disabled.png" id="2_ghtii"]
+[ext_resource type="Texture2D" uid="uid://bto4bkg6doi7b" path="res://images/sprites/grabber_highlight.png" id="3_ixae8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kt3ag"]
 content_margin_left = 6.0
@@ -43,6 +46,12 @@ content_margin_right = 8.0
 content_margin_bottom = 8.0
 bg_color = Color(0, 0, 0, 1)
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uvtdc"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t74dk"]
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jmchh"]
 bg_color = Color(0, 0, 0, 1)
@@ -106,6 +115,11 @@ Button/styles/focus = SubResource("StyleBoxFlat_51i8q")
 Button/styles/hover = SubResource("StyleBoxFlat_748hm")
 Button/styles/normal = SubResource("StyleBoxFlat_8c56x")
 Button/styles/pressed = SubResource("StyleBoxFlat_uux52")
+HSlider/icons/grabber = ExtResource("1_1k802")
+HSlider/icons/grabber_disabled = ExtResource("2_ghtii")
+HSlider/icons/grabber_highlight = ExtResource("3_ixae8")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_uvtdc")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_t74dk")
 Panel/styles/panel = SubResource("StyleBoxFlat_jmchh")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_jmchh")
 ProgressBar/colors/font_color = Color(0.95, 0.95, 0.95, 1)
