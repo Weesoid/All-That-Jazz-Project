@@ -27,19 +27,24 @@ func _process(_delta):
 	else:
 		craft_button.hide()
 
-func canAddToInventory():
-	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
-	
-	if result_data.size() > 1:
-		print(InventoryGlobals.canAdd(result_data[0], int(result_data[1]), false))
-		return InventoryGlobals.canAdd(result_data[0], int(result_data[1]), false)
-	else:
-		return InventoryGlobals.canAdd(result_data[0], 1, false)
+func _on_ready():
+	component_core.pressed.connect(func(): showItems(component_core, 0))
+	component_a.pressed.connect(func(): showItems(component_a, 1))
+	component_b.pressed.connect(func(): showItems(component_b, 2))
+	craft_button.connect('pressed', craft)
 
 func _exit_tree():
 	for item in all_components:
 		if item != null:
 			InventoryGlobals.addItemResource(item)
+
+func canAddToInventory():
+	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
+	
+	if result_data[1] != null:
+		return InventoryGlobals.canAdd(result_data[0], result_data[1], false)
+	else:
+		return InventoryGlobals.canAdd(result_data[0], 1, false)
 
 func recipeToString()-> Array:
 	var out = [null, null, null]
@@ -48,12 +53,6 @@ func recipeToString()-> Array:
 			out[i] = all_components[i].NAME
 	
 	return out
-
-func _on_ready():
-	component_core.pressed.connect(func(): showItems(component_core, 0))
-	component_a.pressed.connect(func(): showItems(component_a, 1))
-	component_b.pressed.connect(func(): showItems(component_b, 2))
-	craft_button.connect('pressed', craft)
 
 func craft():
 	InventoryGlobals.craftItem(all_components)
@@ -77,16 +76,13 @@ func showItems(slot_button: Button, slot: int):
 	)
 	item_select_buttons.add_child(cancel_button)
 	
-	for charm in InventoryGlobals.INVENTORY:
-		var button = OverworldGlobals.createCustomButton()
-		button.theme = preload("res://design/ItemButtons.tres")
-		button.icon = charm.ICON
+	for item in InventoryGlobals.INVENTORY:
+		var button = OverworldGlobals.createItemButton(item)
 		button.pressed.connect(
 			func():
-				addItemToSlot(charm, slot, slot_button)
-				item_select.hide()
+				addItemToSlot(item, slot, slot_button)
 		)
-		button.mouse_entered.connect(func(): updateItemDescription(charm))
+		button.mouse_entered.connect(func(): updateItemDescription(item))
 		item_select_buttons.add_child(button)
 
 func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
@@ -98,20 +94,20 @@ func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 		slot_button.text = item.NAME
 		InventoryGlobals.removeItemResource(item)
 		all_components[slot] = item
-		print(all_components)
+		item_select.hide()
 
 func removeItemFromSlot(slot_button: Button, slot: int, return_item=true):
 	slot_button.icon = preload("res://images/sprites/icon_plus.png")
 	match slot_button:
 		component_core:
 			slot_button.text = 'CORE COMPONENT'
-			if return_item: InventoryGlobals.addItemResource(all_components[0])
 		component_a:
 			slot_button.text = 'COMPONENT A'
-			if return_item: InventoryGlobals.addItemResource(all_components[1])
 		component_b:
 			slot_button.text = 'COMPONENT B'
-			if return_item: InventoryGlobals.addItemResource(all_components[2])
+	if return_item: 
+		InventoryGlobals.addItemResource(all_components[slot])
+	
 	all_components[slot] = null
 
 func updateItemDescription(item: ResItem):
@@ -121,3 +117,6 @@ func updateItemDescription(item: ResItem):
 	item_select_info.show()
 	item_select_info_general.text = item.getGeneralInfo()
 	item_select_info_main.text = item.getInformation()
+
+func _on_repair_pressed():
+	InventoryGlobals.repairAllItems()

@@ -3,6 +3,7 @@ extends Node
 var INVENTORY: Array[ResItem] = []
 var KNOWN_POWERS: Array[ResPower] = []
 var RECIPES: Dictionary = {
+	# In-game name -> .tres name
 	['Scrap Salvage', null, null]: 'Arrow.15',
 	['Murder Charm', 'Scrap Salvage', null]: 'BowStone'
 }
@@ -20,7 +21,7 @@ func getRecipeResult(item_name_array: Array, get_raw_string=false):
 	var output = [null, null]
 	if get_raw_string:
 		output[0] = load("res://resources/items/"+item[0]+".tres")
-		output[1] = int(item[1])
+		if output[1] != null: output[1] = int(item[1])
 		return output
 	else:
 		return load("res://resources/items/"+item[0]+".tres")

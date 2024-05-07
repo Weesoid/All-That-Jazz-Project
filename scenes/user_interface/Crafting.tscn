@@ -25,7 +25,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_y6pgg")
 
-[node name="CoreComp2" parent="." instance=ExtResource("2_3ycts")]
+[node name="Repair" parent="." instance=ExtResource("2_3ycts")]
 layout_mode = 2
 anchors_preset = 0
 anchor_right = 0.0
@@ -142,3 +142,4 @@ text = "[center]LEFT CLICK TO USE ITEM
 "
 
 [connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="pressed" from="Repair" to="." method="_on_repair_pressed"]

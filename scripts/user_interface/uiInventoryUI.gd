@@ -19,10 +19,7 @@ func updateInventory():
 		inventory_grid.add_child(createButton(item))
 
 func createButton(item: ResItem):
-	var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
-	button.theme = preload("res://design/ItemButtons.tres")
-	button.icon = item.ICON
-	button.tooltip_text = item.NAME
+	var button = OverworldGlobals.createItemButton(item)
 	button.gui_input.connect(func(input): setButtonFunction(input, item, button))
 	button.mouse_entered.connect(func(): updateItemInfo(item))
 	button.mouse_exited.connect(func(): resetDescription())

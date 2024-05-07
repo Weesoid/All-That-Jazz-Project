@@ -125,6 +125,39 @@ func createCustomButton(theme: Theme = preload("res://design/DefaultTheme.tres")
 	button.theme = theme
 	return button
 
+func createItemButton(item: ResItem, value_modifier=0.0)-> CustomButton:
+	var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+	button.custom_minimum_size.x = 28
+	button.custom_minimum_size.y = 28
+	button.expand_icon = true
+	button.icon = item.ICON
+	button.tooltip_text = item.NAME
+	
+	if item is ResStackItem:
+		var label = Label.new()
+		label.text = str(item.STACK)
+		label.theme = preload("res://design/OutlinedLabel.tres")
+		button.add_child(label)
+	
+	if value_modifier != 0.0:
+		var label = Label.new()
+		if item.VALUE * value_modifier <= 0:
+			label.text = 'Free'
+			label.add_theme_font_size_override('font_size', 6)
+		else:
+			label.text = str(int(item.VALUE * value_modifier))
+		label.theme = preload("res://design/OutlinedLabel.tres")
+		label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+		button.add_child(label)
+	
+	if item.MANDATORY:
+		button.theme = preload("res://design/ItemButtonsMandatory.tres")
+	else:
+		button.theme = preload("res://design/ItemButtons.tres")
+	
+	return button
+
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 

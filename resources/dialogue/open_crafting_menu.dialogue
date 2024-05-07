@@ -1,9 +1,5 @@
 ~ start
 
-Entity: The crafting table tinkers.
-- Repair Weapons 
-	do repairAllItems()
-- Craft Items
-	do showMenu("res://scenes/user_interface/Crafting.tscn")
+do showMenu("res://scenes/user_interface/Crafting.tscn")
 
 => END

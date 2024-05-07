@@ -37,10 +37,7 @@ func loadWares(array=wares_array):
 		toggle_button.text = 'Shop'
 	
 	for item in array:
-		var button = OverworldGlobals.createCustomButton(preload("res://design/ItemButtons.tres"))
-		button.icon = item.ICON
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.tooltip_text = item.NAME
+		var button = OverworldGlobals.createItemButton(item)
 		
 		var label = Label.new()
 		if item.VALUE * modifier <= 0:
@@ -88,9 +85,9 @@ func loadWares(array=wares_array):
 		if item.VALUE * buy_modifier == 0:
 			label.add_theme_color_override('font_color', Color.WHITE)
 		
-		button.gui_input.connect(
-			func(input):
-				setButtonFunction(input, item, button)
+		button.pressed.connect(
+			func():
+				setButtonFunction(item, button)
 		)
 		button.mouse_entered.connect(
 			func updateDescription():
@@ -140,31 +137,30 @@ func loadSlider(item)-> int:
 	
 	return int(amount)
 
-func setButtonFunction(input, selected_item, button: Button):
-	if Input.is_action_just_pressed("ui_alt_accept") and !button.disabled:
-		match mode:
-			1:
-				if PlayerGlobals.CURRENCY < selected_item.VALUE * buy_modifier:
-					OverworldGlobals.showPlayerPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.NAME)
-					return
-				
-				if selected_item is ResGhostStackItem:
-					var amount = await loadSlider(selected_item)
-					InventoryGlobals.takeFromGhostStack(selected_item, amount)
-					PlayerGlobals.CURRENCY -= int((selected_item.VALUE * buy_modifier) * amount)
-				else:
-					InventoryGlobals.addItemResource(selected_item)
-					PlayerGlobals.CURRENCY -= int(selected_item.VALUE * buy_modifier)
-				loadWares(wares_array)
-			0:
-				if selected_item.MANDATORY:
-					OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
-					return
-				
+func setButtonFunction(selected_item, button: Button):
+	match mode:
+		1:
+			if PlayerGlobals.CURRENCY < selected_item.VALUE * buy_modifier:
+				OverworldGlobals.showPlayerPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.NAME)
+				return
+			
+			if selected_item is ResGhostStackItem:
 				var amount = await loadSlider(selected_item)
-				InventoryGlobals.removeItemResource(selected_item, amount, InventoryGlobals.INVENTORY, false)
-				PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
-				loadWares(InventoryGlobals.INVENTORY)
+				InventoryGlobals.takeFromGhostStack(selected_item, amount)
+				PlayerGlobals.CURRENCY -= int((selected_item.VALUE * buy_modifier) * amount)
+			else:
+				InventoryGlobals.addItemResource(selected_item)
+				PlayerGlobals.CURRENCY -= int(selected_item.VALUE * buy_modifier)
+			loadWares(wares_array)
+		0:
+			if selected_item.MANDATORY:
+				OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
+				return
+			
+			var amount = await loadSlider(selected_item)
+			InventoryGlobals.removeItemResource(selected_item, amount, InventoryGlobals.INVENTORY, false)
+			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
+			loadWares(InventoryGlobals.INVENTORY)
 
 func _on_toggle_mode_pressed():
 	match mode:
