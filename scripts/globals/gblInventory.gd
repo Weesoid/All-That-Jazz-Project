@@ -5,11 +5,11 @@ var KNOWN_POWERS: Array[ResPower] = []
 var RECIPES: Dictionary = {
 	# In-game name -> .tres name
 	['Scrap Salvage', null, null]: 'Arrow.15',
+	['Arrow', 'Scrap Salvage', null]: 'ArrowSleeper.15',
 	['Murder Charm', 'Scrap Salvage', null]: 'BowStone'
 }
 
 signal added_item_to_inventory
-
 
 func addItem(item_name: String, count=1, unit=INVENTORY):
 	var item = load("res://resources/items/"+item_name+".tres")
@@ -19,9 +19,10 @@ func addItem(item_name: String, count=1, unit=INVENTORY):
 func getRecipeResult(item_name_array: Array, get_raw_string=false):
 	var item = RECIPES[item_name_array].split('.')
 	var output = [null, null]
+	
 	if get_raw_string:
 		output[0] = load("res://resources/items/"+item[0]+".tres")
-		if output[1] != null: output[1] = int(item[1])
+		if item.size() > 1: output[1] = int(item[1])
 		return output
 	else:
 		return load("res://resources/items/"+item[0]+".tres")
@@ -60,9 +61,12 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 	added_item_to_inventory.emit()
 	unit.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
 
-func hasItem(item_name, unit=INVENTORY):
-	for item in unit:
-		if item.NAME == item_name: return true
+func hasItem(item_name):
+	if item_name is String:
+		for item in INVENTORY:
+			if item.NAME == item_name: return true
+	elif item_name is ResItem:
+		return INVENTORY.has(item_name)
 	
 	return false
 
@@ -80,7 +84,7 @@ func removeItemWithName(item_name: String, count=1, unit=INVENTORY, revoke_manda
 			if revoke_mandatory: item.MANDATORY = false
 			removeItemResource(item,count)
 
-func removeItemResource(item, count=1, unit=INVENTORY, prompt=true):
+func removeItemResource(item, count=1, prompt=true):
 	if count == 0:
 		return
 	elif item.MANDATORY:
@@ -89,16 +93,16 @@ func removeItemResource(item, count=1, unit=INVENTORY, prompt=true):
 	
 	if item is ResEquippable:
 		if item.isEquipped(): item.unequip()
-		unit.erase(item)
-		if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] removed from %s.' % [item, getStorageUnitName(unit)])
+		INVENTORY.erase(item)
+		if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] removed.' % item)
 	
 	elif item is ResStackItem:
 		item.take(count)
 		if !item is ResProjectileAmmo:
-			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] removed from %s.' % [count, item.NAME, getStorageUnitName(unit)])
+			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] removed from %s.' % [count, item.NAME])
 		if item.STACK <= 0: 
 			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.NAME])
-			unit.erase(item)
+			INVENTORY.erase(item)
 
 func incrementStackItem(item_name: String, count):
 	for item in INVENTORY:
@@ -115,21 +119,12 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 	else:
 		addItemResource(item.REFERENCE_ITEM, count)
 
-func transferItem(item: ResItem, count: int, from: Array[ResItem], to: Array[ResItem]):
-	if item is ResStackItem and count <= 0:
-		return
-	elif INVENTORY.has(item) and item.MANDATORY:
-		return
-	
-	if from.has(item):
-		removeItemResource(item, count, from, false)
-		addItemResource(item, count, to)
-
 func canAdd(item, count:int=1, show_prompt=true):
 	if (item is ResWeapon or item is ResUtilityCharm) and INVENTORY.has(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item.NAME) and item.STACK + count > item.MAX_STACK and item.MAX_STACK > 0:
+		print('cannot add this stack item')
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
 	

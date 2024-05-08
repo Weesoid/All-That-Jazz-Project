@@ -14,16 +14,11 @@ var all_components: Array[ResItem] = [null, null, null]
 var selected_recipe: ResRecipe
 
 func _process(_delta):
-	if InventoryGlobals.RECIPES.has(recipeToString()) and canAddToInventory():
-		craft_button.show()
-		craft_button.disabled = false
+	if InventoryGlobals.RECIPES.has(recipeToString()):
 		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
-		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME
-	elif InventoryGlobals.RECIPES.has(recipeToString()) and !canAddToInventory():
+		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME	
 		craft_button.show()
-		craft_button.disabled = true
-		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
-		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME
+		craft_button.disabled = !canAddToInventory()
 	else:
 		craft_button.hide()
 
@@ -55,10 +50,26 @@ func recipeToString()-> Array:
 	return out
 
 func craft():
+	var craft_result = InventoryGlobals.getRecipeResult(recipeToString())
+	
 	InventoryGlobals.craftItem(all_components)
-	removeItemFromSlot(component_core, 0, false)
-	removeItemFromSlot(component_a, 1, false)
-	removeItemFromSlot(component_b, 2, false)
+	for i in range(all_components.size()):
+		if all_components[i] == null: continue
+		InventoryGlobals.removeItemResource(all_components[i], 1, false)
+		updateComponentSlot(i)
+
+func updateComponentSlot(slot: int):
+	var item = all_components[slot]
+	if !InventoryGlobals.hasItem(item):
+		removeItemFromSlot(slot)
+	elif item is ResStackItem:
+		match slot:
+			0: 
+				component_core.text = '%s x%s' % [item.NAME, item.STACK]
+			1:
+				component_a.text = '%s x%s' % [item.NAME, item.STACK]
+			2:
+				component_b.text = '%s x%s' % [item.NAME, item.STACK]
 
 func showItems(slot_button: Button, slot: int):
 	for child in item_select_buttons.get_children():
@@ -71,12 +82,13 @@ func showItems(slot_button: Button, slot: int):
 	cancel_button.pressed.connect(
 		func():
 			if all_components[slot] != null:
-				removeItemFromSlot(slot_button, slot)
+				removeItemFromSlot(slot)
 			item_select.hide()
 	)
 	item_select_buttons.add_child(cancel_button)
 	
 	for item in InventoryGlobals.INVENTORY:
+		if all_components.has(item): continue
 		var button = OverworldGlobals.createItemButton(item)
 		button.pressed.connect(
 			func():
@@ -89,25 +101,26 @@ func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 	if item.MANDATORY:
 		InventoryGlobals.removeItemResource(item) # This will show 'Cannot remove item'
 	else:
-		if all_components[slot] != null: InventoryGlobals.addItemResource(all_components[slot])
 		slot_button.icon = item.ICON
-		slot_button.text = item.NAME
-		InventoryGlobals.removeItemResource(item)
+		if item is ResStackItem:
+			slot_button.text = '%s x%s' % [item.NAME, item.STACK]
+		else:
+			slot_button.text = item.NAME
+		
 		all_components[slot] = item
 		item_select.hide()
 
-func removeItemFromSlot(slot_button: Button, slot: int, return_item=true):
-	slot_button.icon = preload("res://images/sprites/icon_plus.png")
-	match slot_button:
-		component_core:
-			slot_button.text = 'CORE COMPONENT'
-		component_a:
-			slot_button.text = 'COMPONENT A'
-		component_b:
-			slot_button.text = 'COMPONENT B'
-	if return_item: 
-		InventoryGlobals.addItemResource(all_components[slot])
-	
+func removeItemFromSlot(slot: int):
+	match slot:
+		0:
+			component_core.text = 'CORE COMPONENT'
+			component_core.icon = preload("res://images/sprites/icon_plus.png")
+		1:
+			component_a.text = 'COMPONENT A'
+			component_a.icon = preload("res://images/sprites/icon_plus.png")
+		2:
+			component_b.text = 'COMPONENT B'
+			component_b.icon = preload("res://images/sprites/icon_plus.png")
 	all_components[slot] = null
 
 func updateItemDescription(item: ResItem):

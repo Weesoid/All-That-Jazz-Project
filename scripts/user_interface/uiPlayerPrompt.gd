@@ -32,7 +32,6 @@ func animatePrompt(action: int):
 			text = ''
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
-	print(prompts.size())
 	prompts[prompts.size()] = [message, time, audio_file]
 
 func _unhandled_input(_event):

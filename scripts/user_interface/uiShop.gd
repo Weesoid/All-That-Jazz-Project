@@ -158,7 +158,7 @@ func setButtonFunction(selected_item, button: Button):
 				return
 			
 			var amount = await loadSlider(selected_item)
-			InventoryGlobals.removeItemResource(selected_item, amount, InventoryGlobals.INVENTORY, false)
+			InventoryGlobals.removeItemResource(selected_item, amount, false)
 			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
 			loadWares(InventoryGlobals.INVENTORY)
 
