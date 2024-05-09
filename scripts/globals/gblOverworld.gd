@@ -181,6 +181,7 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 		get_parent().get_node('CombatScene').add_child(balloon)
 	else:
 		get_tree().current_scene.add_child(balloon)
+	
 	balloon.start(resource, title, extra_game_states)
 
 func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_states: Array = []) -> void:
@@ -224,9 +225,9 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=false):
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, combat_dialogue_name: String='', aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = '', combat_event_name: String=''):
-	if get_parent().has_node('CombatantSquadComponent'):
-		await get_parent().get_node('CombatantSquadComponent').tree_exited
+func changeToCombat(entity_name: String, aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = '', combat_event_name: String=''):
+	if get_parent().has_node('CombatScene'):
+		await get_parent().get_node('CombatScene').tree_exited
 	
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
@@ -242,8 +243,8 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
-	if !combat_dialogue_name.is_empty():
-		combat_scene.combat_dialogue = load("res://resources/combat_dialogue/%s.tres" % [combat_dialogue_name])
+#	if !combat_dialogue_name.is_empty():
+#		combat_scene.combat_dialogue = load("res://resources/combat_dialogue/%s.tres" % [combat_dialogue_name])
 	if !aftermath_dialogue_name.is_empty():
 		combat_scene.conclusion_dialogue = load("res://resources/dialogue/%s.dialogue" % [aftermath_dialogue_name])
 	
@@ -256,6 +257,11 @@ func changeToCombat(entity_name: String, combat_dialogue_name: String='', afterm
 	PhysicsServer2D.set_active(true)
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
+	if getComponent(entity_name, 'CombatDialogue') != null:
+		var dialogue = getComponent(entity_name, 'CombatDialogue').duplicate()
+		dialogue.initialize()
+		combat_scene.add_child(dialogue)
+		combat_scene.combat_dialogue = dialogue
 	
 	getCurrentMap().hide()
 	await combat_scene.combat_done

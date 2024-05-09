@@ -4,8 +4,8 @@ var INVENTORY: Array[ResItem] = []
 var KNOWN_POWERS: Array[ResPower] = []
 var RECIPES: Dictionary = {
 	# In-game name -> .tres name
-	['Scrap Salvage', null, null]: 'Arrow.15',
-	['Arrow', 'Scrap Salvage', null]: 'ArrowSleeper.15',
+	['Scrap Salvage', null, null]: 'Arrow',
+	['Arrow', 'Scrap Salvage', null]: 'ArrowSleeper',
 	['Murder Charm', 'Scrap Salvage', null]: 'BowStone'
 }
 

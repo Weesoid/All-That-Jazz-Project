@@ -1,4 +1,4 @@
-~ on_turn
+~ turn/10
 Willis: It's been 10 turns you cum beast!
 Entity: YEAH!!!
 => END
@@ -11,10 +11,10 @@ Willis: WON!
 Willis: lost...
 => END
 
-~ on_stat
-Willis: STATS..?
+~ stat/Striker/health/50`once
+Willis: Guh... I'm- I'm dying!
 => END
 
-~ on_ability
+~ ability/PoisonWap`once
 Willis: Neat..!
 => END

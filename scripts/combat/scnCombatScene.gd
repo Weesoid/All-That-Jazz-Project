@@ -30,7 +30,7 @@ class_name CombatScene
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
 
 var combatant_turn_order: Array[ResCombatant]
-var combat_dialogue: ResCombatDialogue
+var combat_dialogue: CombatDialogue
 var conclusion_dialogue: DialogueResource
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
@@ -110,7 +110,7 @@ func _ready():
 	active_combatant.act()
 	
 	if combat_dialogue != null:
-		combat_dialogue.initializeDialogue(COMBATANTS)
+		combat_dialogue.initialize()
 	
 	transition_scene.visible = false
 	turn_indicator.updateActive()
@@ -194,7 +194,8 @@ func end_turn(combatant_act=true):
 	else:
 		enemy_turn_count += 1
 	
-	CombatGlobals.turn_increment.emit(turn_count)
+	var turn_title = 'turn/%s' % turn_count
+	CombatGlobals.turn_increment.emit(turn_title)
 	combat_camera.position = Vector2(0, -40)
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
@@ -414,7 +415,8 @@ func executeAbility():
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
 	
-	CombatGlobals.ability_used.emit(selected_ability)
+	var ability_title = 'ability/%s' % selected_ability.NAME
+	CombatGlobals.ability_used.emit(ability_title)
 	if checkDialogue():
 		triggerDialogue()
 		await dialogue_done
@@ -558,13 +560,13 @@ func checkDialogue():
 	if combat_dialogue == null:
 		return false
 	
-	return combat_dialogue.dialogue_node.dialogue_triggered
+	return combat_dialogue.dialogue_triggered
 
 func triggerDialogue():
 	toggleUI(false)
 	await DialogueManager.dialogue_ended
 	toggleUI(true)
-	combat_dialogue.dialogue_node.dialogue_triggered = false
+	combat_dialogue.dialogue_triggered = false
 	dialogue_done.emit()
 
 func clearStatusEffects(combatant: ResCombatant):

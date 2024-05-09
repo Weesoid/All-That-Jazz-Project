@@ -28,11 +28,6 @@ func _on_ready():
 	component_b.pressed.connect(func(): showItems(component_b, 2))
 	craft_button.connect('pressed', craft)
 
-func _exit_tree():
-	for item in all_components:
-		if item != null:
-			InventoryGlobals.addItemResource(item)
-
 func canAddToInventory():
 	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
 	
