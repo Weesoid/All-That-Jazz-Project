@@ -31,7 +31,6 @@ class_name CombatScene
 
 var combatant_turn_order: Array[ResCombatant]
 var combat_dialogue: CombatDialogue
-var conclusion_dialogue: DialogueResource
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
@@ -51,6 +50,7 @@ var enemy_turn_count = 0
 var battle_music_name: String = ""
 var initial_status_effect_enemy: String = ''
 var initial_status_effect_player: String = ''
+var combat_result: int
 
 signal confirm
 signal target_selected
@@ -195,13 +195,13 @@ func end_turn(combatant_act=true):
 		enemy_turn_count += 1
 	
 	var turn_title = 'turn/%s' % turn_count
-	CombatGlobals.turn_increment.emit(turn_title)
+	CombatGlobals.dialogue_signal.emit(turn_title)
 	combat_camera.position = Vector2(0, -40)
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
-		CombatGlobals.combatant_stats.emit(combatant)
+		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
 	
 	# Reset values
@@ -225,8 +225,7 @@ func end_turn(combatant_act=true):
 		selected_ability.ENABLED = false
 	
 	if checkDialogue():
-		triggerDialogue()
-		await dialogue_done
+		await DialogueManager.dialogue_ended
 	
 	if active_combatant.STAT_VALUES['hustle'] >= 0:
 		active_combatant.act()
@@ -291,9 +290,13 @@ func _on_escape_pressed():
 	concludeCombat(0)
 
 func toggleUI(visibility: bool):
-	for child in get_children():
-		if child is CombatBar:
-			child.visible = visibility
+	for marker in enemy_container_markers:
+		if marker.get_child_count() != 0:
+			marker.get_child(0).get_node('CombatBars').visible = visibility
+	for marker in team_container_markers:
+		if marker.get_child_count() != 0:
+			marker.get_child(0).get_node('CombatBars').visible = visibility
+	
 	for child in combat_camera.get_children():
 		if child is Control:
 			child.visible = visibility
@@ -415,11 +418,10 @@ func executeAbility():
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
 	
-	var ability_title = 'ability/%s' % selected_ability.NAME
-	CombatGlobals.ability_used.emit(ability_title)
+	var ability_title = 'ability/%s' % selected_ability.resource_path.get_file().trim_suffix('.tres')
+	CombatGlobals.dialogue_signal.emit(ability_title)
 	if checkDialogue():
-		triggerDialogue()
-		await dialogue_done
+		await DialogueManager.dialogue_ended
 	confirm.emit()
 
 func commandExecuteAbility(target, ability: ResAbility):
@@ -539,20 +541,18 @@ func checkWin():
 	if isCombatantGroupDead(getCombatantGroup('enemies')):
 		if unique_id != null:
 			CombatGlobals.combat_won.emit(unique_id)
-		
+			CombatGlobals.dialogue_signal.emit('win')
 		if checkDialogue():
-			triggerDialogue()
-			await dialogue_done
+			await DialogueManager.dialogue_ended
 		
 		concludeCombat(1)
 	
 	elif isCombatantGroupDead(getCombatantGroup('team')):
 		if unique_id != null:
 			CombatGlobals.combat_lost.emit(unique_id)
-		
+			CombatGlobals.dialogue_signal.emit('lose')
 		if checkDialogue():
-			triggerDialogue()
-			await dialogue_done
+			await DialogueManager.dialogue_ended
 		
 		concludeCombat(0)
 
@@ -561,13 +561,6 @@ func checkDialogue():
 		return false
 	
 	return combat_dialogue.dialogue_triggered
-
-func triggerDialogue():
-	toggleUI(false)
-	await DialogueManager.dialogue_ended
-	toggleUI(true)
-	combat_dialogue.dialogue_triggered = false
-	dialogue_done.emit()
 
 func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
@@ -637,6 +630,7 @@ func writeTopLogMessage(message: String):
 	top_log_animator.play("Show")
 
 func concludeCombat(results: int):
+	combat_result = results
 	battle_music.stop()
 	for combatant in COMBATANTS:
 		clearStatusEffects(combatant)
@@ -663,15 +657,15 @@ func concludeCombat(results: int):
 		for i in range(loot_bonus):
 			for enemy in getCombatantGroup('enemies'): addDrop(enemy.getDrops())
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
-	# BEAR TRAP
+	
 	for item in drops.keys():
 		InventoryGlobals.addItemResource(item, drops[item])
-	# BEAR TRAP
 	add_child(bc_ui)
 	if results == 1:
 		bc_ui.title.text = 'VICTORY!'
 	else:
 		bc_ui.title.text = 'ESCAPED!'
+	
 	bc_ui.setBonuses(all_bonuses)
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)
@@ -684,10 +678,8 @@ func concludeCombat(results: int):
 	transition.play('In')
 	await transition.animation_finished
 	
-	if conclusion_dialogue != null:
-		CombatGlobals.combat_conclusion_dialogue.emit(conclusion_dialogue, results)
-	
 	combat_done.emit()
 	OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())
 	
+	if combat_dialogue != null: combat_dialogue.disconnectSignal()
 	queue_free()

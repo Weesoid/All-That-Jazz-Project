@@ -244,4 +244,7 @@ position = Vector2(-32, -225)
 [node name="NPCPatrolComponent" parent="NPCPrototype" index="2" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
+[node name="CombatDialogue" parent="NPCPrototype" instance=ExtResource("7_eiq6g")]
+dialogue_resource = ExtResource("8_pga02")
+
 [editable path="NPCPrototype"]

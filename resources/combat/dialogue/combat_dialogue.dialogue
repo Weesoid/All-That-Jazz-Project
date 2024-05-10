@@ -1,20 +1,32 @@
-~ turn/10
+~ turn/2
 Willis: It's been 10 turns you cum beast!
 Entity: YEAH!!!
 => END
 
-~ on_win
+~ win
 Willis: WON!
 => END
 
-~ on_lose
+~ lose
 Willis: lost...
 => END
 
-~ stat/Striker/health/50`once
+~ combatant/stats/Striker/health/50`once
 Willis: Guh... I'm- I'm dying!
 => END
 
-~ ability/PoisonWap`once
+~ combatant/effect/Striker/Poison`once
+Willis: Hngh! I'm poisoned! Woe is me!
+=> END
+
+~ ability/PoisonBite`once
 Willis: Neat..!
+=> END
+
+~ win_aftermath
+Willis: Suck it loser!
+=> END
+
+~ lose_aftermath
+Willis: Ugh.... How could I loose?! Must rape tems immediately!
 => END

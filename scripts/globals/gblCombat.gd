@@ -2,9 +2,7 @@ extends Node
 
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
-signal turn_increment(count)
-signal ability_used(ability)
-signal combatant_stats(combatant)
+signal dialogue_signal(flag)
 signal combat_conclusion_dialogue(dialogue, result)
 signal animation_done
 

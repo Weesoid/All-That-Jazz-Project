@@ -5,9 +5,9 @@ var player_follower_count = 0
 
 signal alert_patrollers()
 
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
-	CombatGlobals.combat_conclusion_dialogue.connect(showCombatAftermathDialogue)
 
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
@@ -184,18 +184,6 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	
 	balloon.start(resource, title, extra_game_states)
 
-func showCombatAftermathDialogue(resource: DialogueResource, result, extra_game_states: Array = []) -> void:
-	var ExampleBalloonScene = load("res://scenes/miscellaneous/DialogueBox.tscn")
-	var balloon: Node = ExampleBalloonScene.instantiate()
-	
-	get_tree().current_scene.add_child(balloon)
-	if result == 0:
-
-		balloon.start(resource, 'lose', extra_game_states)
-	elif result == 1:
-
-		balloon.start(resource, 'win', extra_game_states)
-
 # REFACTOR
 func loadFollowers():
 	for follower in PlayerGlobals.FOLLOWERS:
@@ -225,9 +213,11 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=false):
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, aftermath_dialogue_name: String = '', initial_status_effect_enemy: String = '', initial_status_effect_player: String = '', combat_event_name: String=''):
+func changeToCombat(entity_name: String, initial_status_effect_enemy: String = '', initial_status_effect_player: String = '', combat_event_name: String=''):
 	if get_parent().has_node('CombatScene'):
 		await get_parent().get_node('CombatScene').tree_exited
+	if getCurrentMap().has_node('Balloon'):
+		getCurrentMap().get_node('Balloon').queue_free()
 	
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
@@ -243,10 +233,6 @@ func changeToCombat(entity_name: String, aftermath_dialogue_name: String = '', i
 	
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
-#	if !combat_dialogue_name.is_empty():
-#		combat_scene.combat_dialogue = load("res://resources/combat_dialogue/%s.tres" % [combat_dialogue_name])
-	if !aftermath_dialogue_name.is_empty():
-		combat_scene.conclusion_dialogue = load("res://resources/dialogue/%s.dialogue" % [aftermath_dialogue_name])
 	
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
@@ -257,14 +243,12 @@ func changeToCombat(entity_name: String, aftermath_dialogue_name: String = '', i
 	PhysicsServer2D.set_active(true)
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
-	if getComponent(entity_name, 'CombatDialogue') != null:
-		var dialogue = getComponent(entity_name, 'CombatDialogue').duplicate()
-		dialogue.initialize()
-		combat_scene.add_child(dialogue)
-		combat_scene.combat_dialogue = dialogue
+	if getEntity(entity_name).has_node('CombatDialogue'):
+		combat_scene.combat_dialogue = getComponent(entity_name, 'CombatDialogue')
 	
 	getCurrentMap().hide()
 	await combat_scene.combat_done
+	var combat_results = combat_scene.combat_result
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
 	battle_transition.get_node('AnimationPlayer').play('Out')
@@ -272,6 +256,12 @@ func changeToCombat(entity_name: String, aftermath_dialogue_name: String = '', i
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
+	
+	if getEntity(entity_name).has_node('CombatDialogue'):
+		if combat_results == 1:
+			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
+		elif combat_results == 0:
+			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'lose_aftermath')
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD

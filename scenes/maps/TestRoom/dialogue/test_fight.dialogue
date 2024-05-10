@@ -1,5 +1,9 @@
 ~ start
+Entity: Wanna fight!?
+- YES => fight
+- Nah fam. => END
+=> END
 
-do OverworldGlobals.changeToCombat("Fighter")
-
+~ fight
+do changeToCombat("Fighter")
 => END

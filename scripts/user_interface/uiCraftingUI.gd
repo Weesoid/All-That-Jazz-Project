@@ -11,8 +11,6 @@ extends Control
 @onready var item_select_info_general = $ItemSelect/Infomration/GeneralInfo
 var all_components: Array[ResItem] = [null, null, null]
 
-var selected_recipe: ResRecipe
-
 func _process(_delta):
 	if InventoryGlobals.RECIPES.has(recipeToString()):
 		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
