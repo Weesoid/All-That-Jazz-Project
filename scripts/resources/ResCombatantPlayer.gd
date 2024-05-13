@@ -7,7 +7,6 @@ class_name ResPlayerCombatant
 @export var MANDATORY = false
 
 var EQUIPPED_WEAPON: ResWeapon
-var LINGERING_STATUS_EFFECTS: Array[String]
 var STAT_POINTS = 1
 var CHARMS = {
 	0: null,
@@ -18,7 +17,7 @@ var STAT_POINT_ALLOCATIONS = {
 	'brawn': 0,
 	'grit': 0,
 	'handling': 0
-} 
+}
 var initialized = false
 var active = false
 
@@ -36,9 +35,8 @@ func act():
 
 func applyStatusEffects():
 	for charm in CHARMS.values():
-		if charm == null: continue
-		if charm.STATUS_EFFECT != null:
-			CombatGlobals.addStatusEffect(self, charm.STATUS_EFFECT.NAME)
+		if charm == null or charm.STATUS_EFFECT == null: continue
+		CombatGlobals.addStatusEffect(self, charm.STATUS_EFFECT.NAME)
 	for effect in LINGERING_STATUS_EFFECTS:
 		CombatGlobals.addStatusEffect(self, effect)
 

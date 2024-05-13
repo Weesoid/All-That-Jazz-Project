@@ -213,7 +213,7 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=false):
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, initial_status_effect_enemy: String = '', initial_status_effect_player: String = '', combat_event_name: String=''):
+func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if get_parent().has_node('CombatScene'):
 		await get_parent().get_node('CombatScene').tree_exited
 	if getCurrentMap().has_node('Balloon'):
@@ -224,10 +224,11 @@ func changeToCombat(entity_name: String, initial_status_effect_enemy: String = '
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	
 	for combatant in getCombatantSquad(entity_name):
-		combat_scene.COMBATANTS.append(combatant.duplicate())
+		var duped_combatant = combatant.duplicate()
+		for effect in getCombatantSquadComponent(entity_name).afflicted_status_effects:
+			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
+		combat_scene.COMBATANTS.append(duped_combatant)
 	
-	combat_scene.initial_status_effect_enemy = initial_status_effect_enemy
-	combat_scene.initial_status_effect_player = initial_status_effect_player
 	if combat_event_name != '':
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % combat_event_name)
 	
@@ -266,8 +267,11 @@ func changeToCombat(entity_name: String, initial_status_effect_enemy: String = '
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
 
-func getCombatantSquadComponent(entity_name: String):
+func getCombatantSquadComponent(entity_name: String)-> CombatantSquad:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent')
+
+func afflictCombatantSquad(entity_name: String, status_effect_name: String):
+	getCombatantSquadComponent(entity_name).afflicted_status_effects.append(status_effect_name)
 
 func getComponent(entity_name: String, component_name: String):
 	return get_tree().current_scene.get_node(entity_name).get_node(component_name)

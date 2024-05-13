@@ -3,6 +3,15 @@ class_name CombatantSquad
  
 @export var UNIQUE_ID: String
 @export var COMBATANT_SQUAD: Array[ResCombatant]
+var afflicted_status_effects: Array[String]
+
+func addLingeringEffect(status_effect_name: String):
+	print('Adding! ', status_effect_name)
+	afflicted_status_effects.append(status_effect_name)
+
+func removeLingeringEffect(status_effect_name: String):
+	print('Erasing! ', status_effect_name)
+	afflicted_status_effects.erase(status_effect_name)
 
 func getRawDrops():
 	var drops = {}

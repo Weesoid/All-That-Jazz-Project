@@ -6,9 +6,12 @@ var patroller_name: String
 
 func _ready():
 	sprite_animator.play("Show")
-	timer.timeout.connect(func(): queue_free())
+	OverworldGlobals.getCombatantSquadComponent(get_parent().name).addLingeringEffect('Dazed')
+	timer.timeout.connect(func():queue_free())
 
 func interact():
-	OverworldGlobals.changeToCombat(patroller_name, '', '', 'Dazed')
-	#OverworldGlobals.show_player_interaction = true
+	OverworldGlobals.changeToCombat(patroller_name)
 	queue_free()
+
+func _exit_tree():
+	OverworldGlobals.getCombatantSquadComponent(get_parent().name).removeLingeringEffect('Dazed')

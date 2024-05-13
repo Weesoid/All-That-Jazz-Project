@@ -33,9 +33,9 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="30_p8r1h"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="31_0q1ny"]
 
-[sub_resource type="Resource" id="Resource_q1ixd"]
+[sub_resource type="Resource" id="Resource_8mn58"]
 script = ExtResource("1_0mji2")
-position = Vector2(145.188, -97.9333)
+position = Vector2(-65.9906, -90.0881)
 scene_path = "res://scenes/entities/Player.tscn"
 
 [sub_resource type="Resource" id="Resource_ryvue"]
@@ -50,12 +50,13 @@ DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
 MANDATORY = false
 
-[sub_resource type="Resource" id="Resource_3ckir"]
+[sub_resource type="Resource" id="Resource_wj265"]
 script = ExtResource("9_x32xa")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("3_2puys"), SubResource("Resource_ryvue"), ExtResource("3_iwbc0"), ExtResource("4_1diij"), ExtResource("5_xspjg")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("29_ye7cf"), ExtResource("3_2puys"), SubResource("Resource_ryvue"), ExtResource("3_iwbc0"), ExtResource("4_1diij"), ExtResource("5_xspjg")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("6_46v10"), ExtResource("7_m0s43")])
 ITEM_DATA_INVENTORY = {
+"Arrow": 10,
 "Hot Hand": null,
 "Murder Charm": null,
 "Scrap Salvage": 26,
@@ -64,12 +65,12 @@ ITEM_DATA_INVENTORY = {
 }
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_ookuj"]
+[sub_resource type="Resource" id="Resource_xiljk"]
 script = ExtResource("10_77tse")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_7kden"]
+[sub_resource type="Resource" id="Resource_i0bxu"]
 script = ExtResource("30_p8r1h")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("11_fgdt8"), ExtResource("20_oowly"), ExtResource("27_wivx2"), ExtResource("28_v2jxn")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -215,4 +216,4 @@ ExtResource("28_v2jxn"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 [resource]
 script = ExtResource("31_0q1ny")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_q1ixd"), SubResource("Resource_3ckir"), SubResource("Resource_ookuj"), SubResource("Resource_7kden")]
+save_data = [SubResource("Resource_8mn58"), SubResource("Resource_wj265"), SubResource("Resource_xiljk"), SubResource("Resource_i0bxu")]

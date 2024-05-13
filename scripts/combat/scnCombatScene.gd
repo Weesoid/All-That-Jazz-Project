@@ -48,8 +48,6 @@ var round_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_name: String = ""
-var initial_status_effect_enemy: String = ''
-var initial_status_effect_player: String = ''
 var combat_result: int
 
 signal confirm
@@ -81,12 +79,12 @@ func _ready():
 		combat_bars.attached_combatant = combatant
 		combatant.SCENE.add_child(combat_bars)
 	
-	if initial_status_effect_enemy != '':
-		for combatant in getCombatantGroup('enemies'):
-			CombatGlobals.addStatusEffect(combatant, initial_status_effect_enemy)
-	if initial_status_effect_player != '':
-		for combatant in getCombatantGroup('player'):
-			CombatGlobals.addStatusEffect(combatant, initial_status_effect_player)
+#	if initial_status_effect_enemy != '':
+#		for combatant in getCombatantGroup('enemies'):
+#			CombatGlobals.addStatusEffect(combatant, initial_status_effect_enemy)
+#	if initial_status_effect_player != '':
+#		for combatant in getCombatantGroup('player'):
+#			CombatGlobals.addStatusEffect(combatant, initial_status_effect_player)
 	
 	if battle_music_name != "":
 		battle_music.stream = load("res://audio/music/%s" % battle_music_name)

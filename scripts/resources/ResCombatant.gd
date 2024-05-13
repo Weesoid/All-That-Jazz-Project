@@ -26,6 +26,7 @@ class_name ResCombatant
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
 var STAT_MODIFIERS = {}
 var STATUS_EFFECTS: Array[ResStatusEffect]
+var LINGERING_STATUS_EFFECTS: Array[String]
 var BASE_STAT_VALUES: Dictionary
 var ROLLED_SPEED: int
 var ACTED: bool
