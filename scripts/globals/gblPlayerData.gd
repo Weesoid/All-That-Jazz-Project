@@ -3,7 +3,7 @@ extends Node
 
 var TEAM: Array[ResPlayerCombatant]
 var FOLLOWERS: Array[NPCFollower] = []
-var FAST_TRAVEL_LOCATIONS: Array[String] = []
+var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoomB.tscn', 'res://scenes/maps/TestRoom/TestRoomA.tscn']
 var CLEARED_MAPS = []
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
@@ -32,7 +32,6 @@ func _ready():
 	TEAM.append(preload("res://resources/combat/combatants_player/PinkBlasko.tres"))
 	TEAM.append(preload("res://resources/combat/combatants_player/Filler1.tres"))
 	TEAM.append(preload("res://resources/combat/combatants_player/Filler2.tres"))
-	FAST_TRAVEL_LOCATIONS.append('SecondMap')
 	initializeBenchedTeam()
 
 func initializeBenchedTeam():

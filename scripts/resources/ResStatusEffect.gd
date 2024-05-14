@@ -7,6 +7,7 @@ class_name ResStatusEffect
 @export var PACKED_SCENE: PackedScene # Turn this into a Node2D
 @export var TEXTURE: Texture = preload("res://images/sprites/unknown_icon.png")
 @export var MAX_DURATION: int
+@export var EXTEND_DURATION: int = 0
 @export var MAX_RANK: int
 @export var ON_HIT: bool
 @export var APPLY_ONCE: bool

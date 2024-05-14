@@ -179,8 +179,8 @@ func createItemButton(item: ResItem, value_modifier=0.0)-> CustomButton:
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
-func changeMap(map_name: String):
-	get_tree().change_scene_to_file("res://scenes/maps/%s.tscn" % map_name)
+func changeMap(map_name_path: String):
+	get_tree().change_scene_to_file(map_name_path)
 
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene

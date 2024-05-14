@@ -1,34 +1,33 @@
 extends Control
 
-@onready var travel_panel = $FastTravelAreas/ScrollContainer/VBoxContainer
-@onready var texture = $PanelContainer/TextureRect
+@onready var travel_panel = $FastTravelAreas/MarginContainer/ScrollContainer/VBoxContainer
+@onready var image = $PanelContainer/TextureRect
 @onready var description = $PanelContainer2/RichTextLabel
-@onready var travel_button = $Button
-
-var selected_map = ''
-
-func _process(_delta):
-	if selected_map == '':
-		travel_button.disabled = true
-	else:
-		travel_button.disabled = false
+var map_component_data = {}
 
 func _ready():
 	for location in PlayerGlobals.FAST_TRAVEL_LOCATIONS:
 		var button = OverworldGlobals.createCustomButton()
-		button.text = location
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size.x = 96
-		button.pressed.connect(
+		var map = load(location).instantiate()
+		var map_data = map.get_node('MapDataComponent')
+		button.text = map_data.NAME
+		map_component_data[location] = [map_data.NAME, map_data.DESCRIPTION, map_data.IMAGE]
+		button.pressed.connect(func(): travel(location))
+		button.focus_entered.connect(
 			func():
-				selected_map = location
+				description.text = map_component_data[location][1]
+				if map_component_data[location][2] != null:
+					image.texture = map_component_data[location][2]
 		)
 		travel_panel.add_child(button)
+		map.queue_free()
+	
+	OverworldGlobals.setMenuFocus(travel_panel)
 
-func _on_button_pressed():
-	if OverworldGlobals.getCurrentMap().name == selected_map:
+func travel(location):
+	if OverworldGlobals.getCurrentMap().scene_file_path == location:
 		OverworldGlobals.closeMenu(self)
 		OverworldGlobals.showPlayerPrompt("You're already here!")
 	else:
 		OverworldGlobals.closeMenu(self)
-		OverworldGlobals.changeMap(selected_map)
+		OverworldGlobals.changeMap(location)

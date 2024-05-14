@@ -210,7 +210,9 @@ func runReaction(target: ResCombatant, effectA: String, effectB: String, reactio
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.STATUS_EFFECTS:
 		if effect.NAME == status_effect.NAME:
-			effect.duration = effect.MAX_DURATION
+			if effect.duration < effect.MAX_DURATION:
+				effect.duration = effect.MAX_DURATION
+			effect.duration += status_effect.EXTEND_DURATION+1
 		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1
