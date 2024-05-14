@@ -97,9 +97,12 @@ func loadWares(array=wares_array):
 		)
 		button.mouse_exited.connect(func(): resetDescription())
 		wares.add_child(button)
+	
+	OverworldGlobals.setMenuFocus(wares)
 
 func clearButtons():
 	for child in wares.get_children():
+		wares.remove_child(child)
 		child.queue_free()
 
 func resetDescription():
@@ -145,7 +148,11 @@ func setButtonFunction(selected_item, button: Button):
 				return
 			
 			if selected_item is ResGhostStackItem:
+				OverworldGlobals.setMenuFocusMode(wares, false)
+				OverworldGlobals.setMenuFocusMode(toggle_button, false)
 				var amount = await loadSlider(selected_item)
+				OverworldGlobals.setMenuFocusMode(wares, true)
+				OverworldGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
 				PlayerGlobals.CURRENCY -= int((selected_item.VALUE * buy_modifier) * amount)
 			else:
@@ -157,16 +164,20 @@ func setButtonFunction(selected_item, button: Button):
 				OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
 				return
 			
+			OverworldGlobals.setMenuFocusMode(wares, false)
+			OverworldGlobals.setMenuFocusMode(toggle_button, false)
 			var amount = await loadSlider(selected_item)
+			OverworldGlobals.setMenuFocusMode(wares, true)
+			OverworldGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
 			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
 			loadWares(InventoryGlobals.INVENTORY)
 
 func _on_toggle_mode_pressed():
 	match mode:
+		0:
+			mode = 1
+			loadWares(wares_array)
 		1:
 			mode = 0
 			loadWares(InventoryGlobals.INVENTORY)
-		0: 
-			mode = 1
-			loadWares(wares_array)

@@ -33,6 +33,7 @@ func _ready():
 	
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		updateInfo(OverworldGlobals.getCombatantSquad('Player')[0])
+	OverworldGlobals.setMenuFocus(members)
 
 func updateInfo(member: ResCombatant):
 	inspecting_name.text = member.NAME

@@ -1,5 +1,7 @@
 extends Control
 
+@onready var base = $Craftables/CenterContainer/GridContainer
+@onready var repair_button = $Repair
 @onready var component_core = $Craftables/CenterContainer/GridContainer/CoreComp
 @onready var component_a = $Craftables/CenterContainer/GridContainer/CompA
 @onready var component_b = $Craftables/CenterContainer/GridContainer/CompB
@@ -25,6 +27,7 @@ func _on_ready():
 	component_a.pressed.connect(func(): showItems(component_a, 1))
 	component_b.pressed.connect(func(): showItems(component_b, 2))
 	craft_button.connect('pressed', craft)
+	OverworldGlobals.setMenuFocus(base)
 
 func canAddToInventory():
 	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
@@ -66,7 +69,8 @@ func updateComponentSlot(slot: int):
 
 func showItems(slot_button: Button, slot: int):
 	for child in item_select_buttons.get_children():
-		child.free()
+		item_select_buttons.remove_child(child)
+		child.queue_free()
 	
 	item_select.show()
 	var cancel_button = OverworldGlobals.createCustomButton()
@@ -77,9 +81,14 @@ func showItems(slot_button: Button, slot: int):
 			if all_components[slot] != null:
 				removeItemFromSlot(slot)
 			item_select.hide()
+			OverworldGlobals.setMenuFocusMode(base, true)
+			OverworldGlobals.setMenuFocusMode(repair_button, true)
+			OverworldGlobals.setMenuFocus(base)
 	)
 	item_select_buttons.add_child(cancel_button)
-	
+	cancel_button.grab_focus()
+	OverworldGlobals.setMenuFocusMode(base, false)
+	OverworldGlobals.setMenuFocusMode(repair_button, false)
 	for item in InventoryGlobals.INVENTORY:
 		if all_components.has(item): continue
 		var button = OverworldGlobals.createItemButton(item)
@@ -102,6 +111,9 @@ func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 		
 		all_components[slot] = item
 		item_select.hide()
+	OverworldGlobals.setMenuFocusMode(base, true)
+	OverworldGlobals.setMenuFocusMode(repair_button, true)
+	slot_button.grab_focus()
 
 func removeItemFromSlot(slot: int):
 	match slot:

@@ -10,17 +10,21 @@ extends Control
 func _ready():
 	updateInventory()
 	resetDescription()
+	if inventory_grid.get_child_count() > 0:
+		inventory_grid.get_child(0).grab_focus()
 
 func updateInventory():
 	for child in inventory_grid.get_children():
+		inventory_grid.remove_child(child)
 		child.queue_free()
 	
 	for item in InventoryGlobals.INVENTORY:
 		inventory_grid.add_child(createButton(item))
+	OverworldGlobals.setMenuFocus(inventory_grid)
 
 func createButton(item: ResItem):
 	var button = OverworldGlobals.createItemButton(item)
-	button.gui_input.connect(func(input): setButtonFunction(input, item, button))
+	button.pressed.connect(func(): setButtonFunction(item, button))
 	button.mouse_entered.connect(func(): updateItemInfo(item))
 	button.mouse_exited.connect(func(): resetDescription())
 	
@@ -38,24 +42,30 @@ func updateItemInfo(item):
 	item_general_info.text = item.getGeneralInfo()
 	item_info_panel.show()
 
-func setButtonFunction(event, item, button: Button):
+func setButtonFunction(item, button: Button):
 	item_info.text = '[center]'+ item.NAME.to_upper() + '[/center]\n'
 	item_info.text += item.getInformation()
 	item_general_info.text = item.getGeneralInfo()
 	item_info_panel.show()
 	
-	if Input.is_action_just_pressed("ui_alt_accept"):
-		if item is ResProjectileAmmo:
-			item.equip()
-		elif item is ResConsumable:
-			item.applyOverworldEffects()
-		elif item is ResUtilityCharm:
-			if PlayerGlobals.EQUIPPED_CHARM == item:
-				PlayerGlobals.EQUIPPED_CHARM.unequip()
-			else:
-				item.equip(PlayerGlobals.TEAM[0])
-		
-		updateInventory()
+	if item is ResProjectileAmmo:
+		item.equip()
+	elif item is ResConsumable:
+		item.applyOverworldEffects()
+	elif item is ResUtilityCharm:
+		if PlayerGlobals.EQUIPPED_CHARM == item:
+			PlayerGlobals.EQUIPPED_CHARM.unequip()
+		else:
+			item.equip(PlayerGlobals.TEAM[0])
+	
+	updateInventory()
+	if InventoryGlobals.hasItem(item):
+		focusItem(item)
+
+func focusItem(item: ResItem):
+	for button in inventory_grid.get_children():
+		if button.tooltip_text == item.NAME:
+			button.grab_focus()
 
 func resetDescription():
 	if PlayerGlobals.hasUtilityCharm():

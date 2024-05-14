@@ -52,8 +52,12 @@ func _on_save_pressed():
 	SaveLoadGlobals.saveGame()
 
 func disableButtons():
+	quit.hide()
+	quit.disabled = true
 	for child in base.get_children():
-		if child is Button: child.disabled = true
+		child.hide()
+		if child is Button: 
+			child.disabled = true
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):

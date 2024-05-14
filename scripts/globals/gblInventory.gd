@@ -99,7 +99,7 @@ func removeItemResource(item, count=1, prompt=true):
 	elif item is ResStackItem:
 		item.take(count)
 		if !item is ResProjectileAmmo:
-			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] removed from %s.' % [count, item.NAME])
+			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.NAME])
 		if item.STACK <= 0: 
 			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.NAME])
 			INVENTORY.erase(item)

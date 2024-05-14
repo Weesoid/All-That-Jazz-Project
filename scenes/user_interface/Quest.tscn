@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://l6g1sleppkxg"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiQuest.gd" id="1_kyse4"]
 
@@ -90,3 +90,5 @@ offset_bottom = 241.5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DescriptionPanel/Objectives"]
 layout_mode = 2
+
+[connection signal="tab_changed" from="QuestContainer" to="." method="_on_quest_container_tab_changed"]

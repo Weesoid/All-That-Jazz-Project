@@ -8,6 +8,7 @@ extends Control
 @onready var reset_brawn = $HBoxContainer/VBoxContainer/Brawn/Reset
 @onready var reset_grit = $HBoxContainer/VBoxContainer/Grit/Reset
 @onready var reset_handling = $HBoxContainer/VBoxContainer/Handling/Reset
+@onready var brawn_up = $HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Up
 
 func _ready():
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
@@ -32,6 +33,9 @@ func _process(_delta):
 		else:
 			reset_handling.hide()
 
+func focus():
+	brawn_up.grab_focus()
+
 func _on_up_brawn_pressed():
 	adjustStat(1, 0.02, 'brawn')
 
@@ -43,12 +47,15 @@ func _on_up_hand_pressed():
 
 func _on_reset_brawn_pressed():
 	resetStat('brawn', 0.02, 1)
+	focus()
 
 func _on_reset_grit_pressed():
 	resetStat('grit', 0.02, 1)
+	focus()
 
 func _on_reset_handling_pressed():
 	resetStat('handling', 1, 5)
+	focus()
 
 func adjustStat(cost: int, value, stat: String):
 	if combatant.STAT_POINTS >= cost:

@@ -11,6 +11,7 @@ func _process(_delta):
 
 func _ready():
 	loadSlider()
+	slider.grab_focus()
 
 func loadSlider():
 	slider.max_value = max_v

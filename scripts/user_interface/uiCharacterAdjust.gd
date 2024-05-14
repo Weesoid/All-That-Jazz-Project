@@ -1,5 +1,6 @@
 extends Control
 
+@onready var tabs = $TabContainer
 @onready var pool = $TabContainer/Abilities/ScrollContainer/VBoxContainer
 @onready var description = $TabContainer/Abilities/DescriptionPanel/Label
 @onready var member_container = $Members/HBoxContainer
@@ -35,6 +36,8 @@ func _ready():
 	
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
+	if member_container.get_child_count() > 0:
+		member_container.get_child(0).grab_focus()
 
 func loadMemberInfo(member: ResCombatant):
 	for child in member_preview.get_children():
@@ -85,18 +88,21 @@ func createButton(ability, location):
 				selected_combatant.ABILITY_SET.erase(ability)
 				button.remove_theme_icon_override('icon')
 	)
+	button.focus_entered.connect(
+		func updateInfo():
+			description.text = '' 
+			description.text = ability.getRichDescription()
+	)
 	button.mouse_entered.connect(
 		func updateInfo():
 			description.text = '' 
 			description.text = ability.getRichDescription()
 	)
-	button.mouse_exited.connect(
-		func():
-			description.text = '' 
-	)
 	location.add_child(button)
 
 func showCharmEquipMenu(slot_button: Button):
+	setFocusMode(equipped_charms, false)
+	setFocusMode(member_container, false)
 	clearButtons()
 	select_charms_panel.show()
 	var unequip_button = OverworldGlobals.createCustomButton()
@@ -113,8 +119,17 @@ func showCharmEquipMenu(slot_button: Button):
 			slot_button.icon = preload("res://images/sprites/icon_plus.png")
 			select_charms_panel.hide()
 			charm_info_panel.hide()
+			setFocusMode(equipped_charms, true)
+			setFocusMode(member_container, true)
+			if slot_button == charm_slot_a:
+				charm_slot_a.grab_focus()
+			elif slot_button == charm_slot_b:
+				charm_slot_b.grab_focus()
+			elif slot_button == charm_slot_c:
+				charm_slot_c.grab_focus()
 	)
 	select_charms.add_child(unequip_button)
+	unequip_button.grab_focus()
 	for charm in InventoryGlobals.INVENTORY.filter(func(item): return item is ResCharm):
 		var button = OverworldGlobals.createCustomButton()
 		button.theme = preload("res://design/ItemButtons.tres")
@@ -129,6 +144,18 @@ func showCharmEquipMenu(slot_button: Button):
 				equipCharmOnCombatant(charm, 2, charm_slot_c)
 			select_charms_panel.hide()
 			charm_info_panel.hide()
+			setFocusMode(equipped_charms, true)
+			setFocusMode(member_container, true)
+			if slot_button == charm_slot_a:
+				charm_slot_a.grab_focus()
+			elif slot_button == charm_slot_b:
+				charm_slot_b.grab_focus()
+			elif slot_button == charm_slot_c:
+				charm_slot_c.grab_focus()
+		)
+		button.focus_entered.connect(
+			func():
+				updateItemDescription(charm)
 		)
 		button.mouse_entered.connect(
 			func():
@@ -137,6 +164,8 @@ func showCharmEquipMenu(slot_button: Button):
 		select_charms.add_child(button)
 
 func showWeaponEquipMenu():
+	setFocusMode(equipped_charms, false)
+	setFocusMode(member_container, false)
 	clearButtons()
 	select_charms_panel.show()
 	var unequip_button = OverworldGlobals.createCustomButton()
@@ -149,8 +178,12 @@ func showWeaponEquipMenu():
 			weapon_button.text = 'Unarmed'
 			select_charms_panel.hide()
 			charm_info_panel.hide()
+			setFocusMode(equipped_charms, true)
+			setFocusMode(member_container, true)
+			weapon_button.grab_focus()
 	)
 	select_charms.add_child(unequip_button)
+	unequip_button.grab_focus()
 	for weapon in InventoryGlobals.INVENTORY.filter(func(item): return item is ResWeapon):
 		var button = OverworldGlobals.createCustomButton()
 		button.theme = preload("res://design/ItemButtons.tres")
@@ -165,6 +198,9 @@ func showWeaponEquipMenu():
 				OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] does not meet [color=yellow]%s[/color] requirements.' % [selected_combatant.NAME, weapon.NAME])
 			select_charms_panel.hide()
 			charm_info_panel.hide()
+			setFocusMode(equipped_charms, true)
+			setFocusMode(member_container, true)
+			weapon_button.grab_focus()
 		)
 		button.mouse_entered.connect(
 			func():
@@ -229,8 +265,26 @@ func hideItemDescription():
 
 func _on_tab_container_tab_changed(tab):
 	if tab == 0:
-		loadAbilities()
+		#loadAbilities()
 		attrib_view.hide()
 	elif tab == 1 or tab == 2:
 		attrib_view.show()
+	
+	match tab:
+		0: OverworldGlobals.setMenuFocus(pool)
+		1: OverworldGlobals.setMenuFocus(equipped_charms)
+		2: attrib_adjust.focus()
 
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed('ui_tab_right') and tabs.current_tab + 1 < tabs.get_tab_count():
+		tabs.current_tab += 1
+	elif Input.is_action_just_pressed('ui_tab_left') and tabs.current_tab - 1 >= 0:
+		tabs.current_tab -= 1
+
+func setFocusMode(container, mode):
+	for child in container.get_children():
+		if child is Button:
+			if mode:
+				child.focus_mode = Control.FOCUS_ALL
+			else:
+				child.focus_mode = Control.FOCUS_NONE

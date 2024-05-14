@@ -99,10 +99,28 @@ func closeMenu(menu: Control):
 	menu.queue_free()
 	getPlayer().player_camera.get_node('uiMenu').queue_free()
 	setPlayerInput(true)
-	#show_player_interaction = true
 
 func inMenu():
 	return getPlayer().player_camera.has_node('uiMenu')
+
+func setMenuFocus(container: Container):
+	if container.get_child_count() > 0:
+		container.get_child(0).grab_focus()
+
+func setMenuFocusMode(control_item, mode: bool):
+	if control_item is Button:
+		if mode:
+			control_item.focus_mode = Control.FOCUS_ALL
+		else:
+			control_item.focus_mode = Control.FOCUS_NONE
+	elif control_item is Container:
+		for child in control_item.get_children():
+			if child is Button:
+				if mode:
+					child.focus_mode = Control.FOCUS_ALL
+				else:
+					child.focus_mode = Control.FOCUS_NONE
+
 
 func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_description=''):
 	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
@@ -231,7 +249,6 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	
 	if combat_event_name != '':
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % combat_event_name)
-	
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	
@@ -257,7 +274,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
-	
+	PhysicsServer2D.set_active(false)
 	if getEntity(entity_name).has_node('CombatDialogue'):
 		if combat_results == 1:
 			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')

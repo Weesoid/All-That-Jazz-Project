@@ -21,9 +21,7 @@ func act():
 	enemy_turn.emit()
 
 func applyStatusEffects():
-	print('Applying!')
 	for effect in LINGERING_STATUS_EFFECTS:
-		print(effect)
 		CombatGlobals.addStatusEffect(self, effect)
 
 func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:

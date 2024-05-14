@@ -23,7 +23,7 @@ func _ready():
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = str(quest.NAME)
 		button.custom_minimum_size.x = quests_containter.size.x
-		button.mouse_entered.connect(
+		button.focus_entered.connect(
 			func setQuest():
 				selected_quest = quest
 				run_once = true
@@ -32,6 +32,7 @@ func _ready():
 			completed_quests.add_child(button)
 		else:
 			ongoing_quests.add_child(button)
+	OverworldGlobals.setMenuFocus(ongoing_quests)
 
 func setQuestInfo():
 	clearQuestInfo()
@@ -65,3 +66,14 @@ func clearQuestInfo():
 	description.text = ""
 	for child in objective_scroller.get_children():
 		child.queue_free()
+
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed('ui_tab_right') and quests_containter.current_tab + 1 < quests_containter.get_tab_count():
+		quests_containter.current_tab += 1
+	elif Input.is_action_just_pressed('ui_tab_left') and quests_containter.current_tab - 1 >= 0:
+		quests_containter.current_tab -= 1
+
+func _on_quest_container_tab_changed(tab):
+	match tab:
+		0: OverworldGlobals.setMenuFocus(ongoing_quests)
+		1: OverworldGlobals.setMenuFocus(completed_quests)
