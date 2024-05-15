@@ -36,6 +36,9 @@ func getExperience():
 	return int(out * 2.0)
 
 func getDrops():
+	if DROP_POOL.is_empty():
+		return {}
+	
 	var drops = {}
 	
 	for i in range(DROP_COUNT):
