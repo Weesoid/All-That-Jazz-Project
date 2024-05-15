@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://x07tfg1os3nj"]
+
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="1_qnko4"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsSecondWind.gd" id="1_wl626"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_wyrir"]
+
+[resource]
+script = ExtResource("2_wyrir")
+NAME = "Second Wind"
+DESCRIPTION = "Target has increased defenses."
+STATUS_SCRIPT = ExtResource("1_wl626")
+TEXTURE = ExtResource("1_qnko4")
+MAX_DURATION = 2
+EXTEND_DURATION = 0
+MAX_RANK = 0
+ON_HIT = false
+APPLY_ONCE = true
+TICK_PER_TURN = false
+PERMANENT = false
+LINGERING = false

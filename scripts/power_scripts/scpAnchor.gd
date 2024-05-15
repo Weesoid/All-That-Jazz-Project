@@ -1,6 +1,6 @@
 static func executePower(player: PlayerScene):
 	Input.action_release("ui_gambit")
-	if !OverworldGlobals.getCurrentMap().has_node("patAnchor") and !player.channeling_power:
+	if !OverworldGlobals.getCurrentMap().has_node("Anchor") and !player.channeling_power:
 		player.channeling_power = true
 		player.playCastAnimation()
 		await player.cast_animator.animation_finished

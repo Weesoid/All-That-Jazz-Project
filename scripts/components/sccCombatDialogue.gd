@@ -2,13 +2,17 @@ extends Node
 class_name CombatDialogue
 
 # Tems is a slut n whore and I hate her sm!!
-@export var dialogue_resource: DialogueResource 
+@export var dialogue_resource: DialogueResource
+@export var enabled: bool = true
 var ignored_titles: Array[String] = []
 var dialogue_triggered = false
 
 signal dialogue_finished
 
 func initialize():
+	if !enabled:
+		return
+	
 	ignored_titles.clear()
 	if !CombatGlobals.dialogue_signal.is_connected(checkTitles):
 		CombatGlobals.dialogue_signal.connect(checkTitles)

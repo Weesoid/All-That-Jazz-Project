@@ -1,7 +1,7 @@
 extends Node
 
 var INVENTORY: Array[ResItem] = []
-var KNOWN_POWERS: Array[ResPower] = []
+var KNOWN_POWERS: Array[ResPower] = [preload("res://resources/powers/Anchor.tres"), preload("res://resources/powers/Stealth.tres")]
 var RECIPES: Dictionary = {
 	# In-game name -> .tres name
 	['Scrap Salvage', null, null]: 'Arrow',

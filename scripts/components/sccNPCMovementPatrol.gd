@@ -101,7 +101,7 @@ func stunMode():
 	STATE = 3
 	updatePath()
 	
-func destroy(fancy=true):
+func destroy(fancy=true): # What the fuck does FANCY mean?
 	PATROL = false
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()

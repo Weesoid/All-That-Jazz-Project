@@ -125,6 +125,7 @@ func saveData(save_data: Array):
 	data.sprint_speed = sprint_speed
 	data.sprint_drain = sprint_drain
 	data.stamina_gain = stamina_gain
+	data.STRING_CONDITIONS = STRING_CONDITIONS
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
@@ -164,6 +165,7 @@ func loadData(save_data: PlayerSaveData):
 	sprint_speed = save_data.sprint_speed
 	sprint_drain = save_data.sprint_drain
 	stamina_gain = save_data.stamina_gain
+	STRING_CONDITIONS = save_data.STRING_CONDITIONS
 	
 	for combatant in TEAM:
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]

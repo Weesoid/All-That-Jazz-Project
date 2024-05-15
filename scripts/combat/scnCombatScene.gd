@@ -19,7 +19,6 @@ class_name CombatScene
 @onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
 @onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
 @onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
-@onready var turn_indicator = $CombatCamera/Interface/ActionPanel/TurnIndicator
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
@@ -47,7 +46,7 @@ var round_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_name: String = ""
-var combat_result: int
+var combat_result: int = -1
 
 signal confirm
 signal target_selected
@@ -61,7 +60,6 @@ signal combat_done
 func _ready():
 	transition_scene.visible = true
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
-	turn_indicator.COMBAT_SCENE = self
 	renameDuplicates()
 	
 	for combatant in COMBATANTS:
@@ -110,7 +108,6 @@ func _ready():
 		combat_dialogue.initialize()
 	
 	transition_scene.visible = false
-	turn_indicator.updateActive()
 
 func _process(_delta):
 	turn_counter.text = str(turn_count)
@@ -156,7 +153,7 @@ func on_enemy_turn():
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 0.75, true)
-	if isCombatantGroupDead(getCombatantGroup('team')):
+	if isCombatantGroupDead('team'):
 		checkWin()
 		return
 	
@@ -229,12 +226,10 @@ func end_turn(combatant_act=true):
 		end_turn()
 		return
 	
-	print('ACTING: %s | %s' % [active_combatant, combatant_turn_order])
 	checkWin()
 
 func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[0][0]
-	turn_indicator.updateActive()
 	if tick_effect:
 		tickStatusEffects(active_combatant)
 		removeDeadCombatants()
@@ -435,9 +430,7 @@ func commandExecuteAbility(target, ability: ResAbility):
 #********************************************************************************
 func moveCamera(target: Vector2, speed=0.25):
 	var tween = create_tween()
-	#tween.set_trans(Tween.TRANS_BOUNCE)
 	tween.tween_property(combat_camera, 'global_position', target, speed)
-	#combat_camera.global_position = lerp(combat_camera.global_position, target, speed)
 
 func addCombatant(combatant, container):
 	for marker in container:
@@ -515,19 +508,23 @@ func getCombatantFromTurnOrder(combatant: ResCombatant)-> ResCombatant:
 	
 	return null
 
-func getCombatantGroup(type)-> Array[ResCombatant]:
+func getCombatantGroup(type: String)-> Array[ResCombatant]:
 	match type:
 		'team': return COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
 		'enemies': return COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
 	
 	return [null]
 
-func isCombatantGroupDead(group: Array[ResCombatant]):
+func isCombatantGroupDead(type: String):
+	var group = getCombatantGroup(type)
 	for combatant in group:
 		if !combatant.isDead():
 			return false
 	
 	return true
+
+func isCombatValid()-> bool:
+	return !isCombatantGroupDead('team') and !isCombatantGroupDead('enemies')
 
 func getLivingCombatants():
 	return COMBATANTS.duplicate().filter(func(combatant: ResCombatant): return !combatant.isDead())
@@ -541,7 +538,7 @@ func renameDuplicates():
 			seen.append(combatant.NAME)
 
 func checkWin():
-	if isCombatantGroupDead(getCombatantGroup('enemies')):
+	if isCombatantGroupDead('enemies'):
 		if unique_id != null:
 			CombatGlobals.combat_won.emit(unique_id)
 			CombatGlobals.dialogue_signal.emit('win')
@@ -550,7 +547,7 @@ func checkWin():
 		
 		concludeCombat(1)
 	
-	elif isCombatantGroupDead(getCombatantGroup('team')):
+	elif isCombatantGroupDead('team'):
 		if unique_id != null:
 			CombatGlobals.combat_lost.emit(unique_id)
 			CombatGlobals.dialogue_signal.emit('lose')

@@ -29,6 +29,5 @@ static func applyEffects(caster: ResCombatant, target: ResCombatant, animation_s
 #			CombatGlobals.addStatusEffect(target, 'Poison')
 #
 #		qte.queue_free()
-	
 	CombatGlobals.playAbilityAnimation(target, animation_scene)
-	CombatGlobals.calculateRawDamage(target, 49)
+	CombatGlobals.calculateDamage(caster, target, 25)

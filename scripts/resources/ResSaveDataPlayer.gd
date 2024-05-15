@@ -17,5 +17,6 @@ class_name PlayerSaveData
 @export var sprint_speed: float
 @export var sprint_drain: float
 @export var stamina_gain: float
+@export var STRING_CONDITIONS: Array[String]
 
 @export var COMBATANT_SAVE_DATA: Dictionary

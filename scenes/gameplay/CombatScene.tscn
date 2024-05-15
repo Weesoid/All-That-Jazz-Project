@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dqax0vfpytli7"]
+[gd_scene load_steps=21 format=3 uid="uid://dqax0vfpytli7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
 [ext_resource type="AudioStream" uid="uid://b32ltjrgmftph" path="res://audio/sounds/536805__egomassive__gun_2.ogg" id="10_gi6jx"]
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
-[ext_resource type="PackedScene" uid="uid://bipsixd3gwi1r" path="res://scenes/user_interface/TurnIndicator.tscn" id="12_mnv7p"]
 
 [sub_resource type="Animation" id="Animation_morbt"]
 length = 0.001
@@ -626,13 +625,6 @@ size_flags_horizontal = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="TurnIndicator" parent="CombatCamera/Interface/ActionPanel" instance=ExtResource("12_mnv7p")]
-layout_mode = 2
-offset_left = 248.0
-offset_top = 157.0
-offset_right = 574.0
-offset_bottom = 241.0
 
 [node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface/ActionPanel"]
 z_index = 10

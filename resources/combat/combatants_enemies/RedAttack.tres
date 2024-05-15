@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=10 format=3 uid="uid://drv1o8j6wl6pf"]
 
-[ext_resource type="Resource" uid="uid://di00nscjwoc7x" path="res://resources/combat/abilities/PoisonBite.tres" id="1_3kv4s"]
+[ext_resource type="Resource" uid="uid://cjaa2rb1r3rwn" path="res://resources/combat/abilities/Punch.tres" id="1_l47y7"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="2_t0rce"]
 [ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="2_wue3c"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_tvtxk"]
@@ -27,15 +27,15 @@ PACKED_SCENE = ExtResource("8_tfinb")
 DESCRIPTION = "A striker!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 0.25,
 "crit": 0.05,
 "dodge": 0.0,
-"grit": 0.0,
+"grit": 0.1,
 "handling": 0,
 "heal mult": 1.0,
 "health": 100,
 "hustle": 1,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_3kv4s")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_l47y7")])
 MAX_TURN_CHARGES = 1

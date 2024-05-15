@@ -29,8 +29,6 @@ var is_waiting_for_input: bool = false
 var dialogue_line: DialogueLine:
 	set(next_dialogue_line):
 		if not next_dialogue_line:
-			OverworldGlobals.getPlayer().cinematic_bars.visible = false
-			OverworldGlobals.setPlayerInput(true)
 			queue_free()
 			return
 		
@@ -224,3 +222,7 @@ func _on_dialogue_label_spoke(letter: String, letter_index: int, speed: float) -
 			talk_sound.play()
 			var pitch = DIALOGUE_PITCHES.get(dialogue_line.character, 1)
 			talk_sound.pitch_scale = randf_range(pitch - 0.1, pitch + 0.1)
+
+func _exit_tree():
+	OverworldGlobals.getPlayer().cinematic_bars.visible = false
+	OverworldGlobals.setPlayerInput(true)

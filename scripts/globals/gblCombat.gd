@@ -68,7 +68,8 @@ func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: 
 
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
 	base_damage += caster.STAT_VALUES['brawn'] * base_damage
-	base_damage -= caster.STAT_VALUES['grit'] * base_damage
+	base_damage -= target.STAT_VALUES['grit'] * base_damage
+	if base_damage < 0.0: base_damage = 0
 	
 	base_damage = valueVariate(base_damage, 0.15)
 	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:

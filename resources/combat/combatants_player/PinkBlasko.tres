@@ -34,8 +34,9 @@ STAT_VALUES = {
 "grit": 0.1,
 "handling": 2,
 "heal mult": 1.0,
-"health": 999,
+"health": 10,
 "hustle": 0,
 "resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_5571v")])
+MAX_TURN_CHARGES = 1
