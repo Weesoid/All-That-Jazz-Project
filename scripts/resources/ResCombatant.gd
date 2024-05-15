@@ -24,6 +24,8 @@ class_name ResCombatant
 	'resist': 0.05
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
+@export var MAX_TURN_CHARGES = 1
+var TURN_CHARGES: int
 var STAT_MODIFIERS = {}
 var STATUS_EFFECTS: Array[ResStatusEffect]
 var LINGERING_STATUS_EFFECTS: Array[String]

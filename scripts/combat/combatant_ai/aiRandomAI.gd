@@ -7,7 +7,6 @@ static func selectAbility(abilities: Array[ResAbility]):
 	return abilities.pick_random()
 	
 static func selectTarget(combatants: Array[ResCombatant]):
-	# DO NOT ALLOW THIS TO RUN WHEN BATTLE IS DONE!! (e.g. no more targets)
+	if combatants.is_empty(): return
 	randomize()
 	return combatants.pick_random()
-	

@@ -29,12 +29,11 @@ class_name CombatScene
 @onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
 
-var combatant_turn_order: Array[ResCombatant]
+var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
 var target_state = 0 # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
-var active_index = -1
 var valid_targets
 var target_combatant
 var target_index = 0
@@ -178,11 +177,13 @@ func on_enemy_turn():
 
 func end_turn(combatant_act=true):
 	if combatant_act:
-		active_combatant.ACTED = true
+		active_combatant.TURN_CHARGES -= 1
+		combatant_turn_order.remove_at(0)
+		if active_combatant.TURN_CHARGES <= 0:
+			active_combatant.ACTED = true
 	
 	if allCombatantsActed():
 		rollTurns()
-		active_index = -1
 		end_turn(false)
 		return
 	
@@ -216,9 +217,6 @@ func end_turn(combatant_act=true):
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
 		setActiveCombatant()
-		#while active_combatant.STAT_VALUES['hustle'] < 0:
-		#	active_combatant.ACTED = true
-		#	setActiveCombatant()
 	else:
 		selected_ability.ENABLED = false
 	
@@ -231,11 +229,11 @@ func end_turn(combatant_act=true):
 		end_turn()
 		return
 	
+	print('ACTING: %s | %s' % [active_combatant, combatant_turn_order])
 	checkWin()
 
 func setActiveCombatant(tick_effect=true):
-	active_index = incrementIndex(active_index,1,combatant_turn_order.size())
-	active_combatant = combatant_turn_order[active_index]
+	active_combatant = combatant_turn_order[0][0]
 	turn_indicator.updateActive()
 	if tick_effect:
 		tickStatusEffects(active_combatant)
@@ -485,7 +483,6 @@ func addDrop(loot_drops: Dictionary):
 		else:
 			drops[loot] = loot_drops[loot]
 
-
 func rollTurns():
 	playCombatAudio("714571__matrixxx__reverse-time.ogg", 0.0, 1, true)
 	combatant_turn_order.clear()
@@ -493,22 +490,30 @@ func rollTurns():
 		if combatant.isDead() and !combatant.hasStatusEffect('Fading'): continue
 		randomize()
 		combatant.ACTED = false
-		combatant.ROLLED_SPEED = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
-		combatant_turn_order.append(combatant)
+		combatant.TURN_CHARGES = combatant.MAX_TURN_CHARGES
+		for turn_charge in range(combatant.MAX_TURN_CHARGES):
+			var rolled_speed = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
+			combatant_turn_order.append([combatant, rolled_speed])
 	
-	combatant_turn_order.sort_custom(func(a, b): return a.ROLLED_SPEED > b.ROLLED_SPEED)
+	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
 	round_count += 1
-	for combatant in combatant_turn_order:
-		await get_tree().create_timer(0.25).timeout
-		if combatant.STAT_VALUES['hustle'] >= 0:
-			CombatGlobals.manual_call_indicator.emit(combatant, "%s Hustle!" % [str(combatant.ROLLED_SPEED)], 'Show')
-		else:
-			CombatGlobals.manual_call_indicator.emit(combatant, "Immobilized!", 'Show')
+#	for combatant in combatant_turn_order:
+#		await get_tree().create_timer(0.25).timeout
+#		if combatant.STAT_VALUES['hustle'] >= 0:
+#			CombatGlobals.manual_call_indicator.emit(combatant, "%s Hustle!" % [str(combatant.ROLLED_SPEED)], 'Show')
+#		else:
+#			CombatGlobals.manual_call_indicator.emit(combatant, "Immobilized!", 'Show')
 
 func allCombatantsActed() -> bool:
-	for combatant in combatant_turn_order:
+	for combatant in COMBATANTS:
 		if !combatant.ACTED: return false
 	return true
+
+func getCombatantFromTurnOrder(combatant: ResCombatant)-> ResCombatant:
+	for data in combatant_turn_order:
+		if data[0] == combatant: return combatant
+	
+	return null
 
 func getCombatantGroup(type)-> Array[ResCombatant]:
 	match type:

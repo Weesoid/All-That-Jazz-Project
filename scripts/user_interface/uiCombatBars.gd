@@ -10,7 +10,7 @@ class_name CombatBar
 @onready var secondary_prompts = $Marker2D
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
 @onready var select_target = $SelectTarget
-
+@onready var turn_charges = $HealthBar/AbsoluteHealth/TurnCharges
 var indicator_animation = "Show"
 var received_combatant: ResCombatant
 var attached_combatant: ResCombatant
@@ -55,6 +55,8 @@ func updateBars():
 	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])
 	health_bar.value = int(attached_combatant.STAT_VALUES['health'])
 	absolute_health.text = str(health_bar.value)
+	turn_charges.value = attached_combatant.TURN_CHARGES
+	turn_charges.max_value = attached_combatant.MAX_TURN_CHARGES
 	if attached_combatant.hasStatusEffect('Knock Out'):
 		health_bar.hide()
 	else:

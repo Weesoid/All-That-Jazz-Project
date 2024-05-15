@@ -38,3 +38,4 @@ STAT_VALUES = {
 "resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_3kv4s")])
+MAX_TURN_CHARGES = 1

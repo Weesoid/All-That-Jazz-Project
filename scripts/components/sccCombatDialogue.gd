@@ -56,4 +56,5 @@ func showDialogueBox(title: String):
 			ignored_titles.append(title)
 
 func disconnectSignal():
-	CombatGlobals.dialogue_signal.disconnect(checkTitles)
+	if CombatGlobals.dialogue_signal.is_connected(checkTitles):
+		CombatGlobals.dialogue_signal.disconnect(checkTitles)

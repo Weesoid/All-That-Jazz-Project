@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://b4dlbbhtcf2f2"]
+[gd_scene load_steps=15 format=3 uid="uid://b4dlbbhtcf2f2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="Texture2D" uid="uid://tb4yrfiieksa" path="res://images/textures/bar_texture.png" id="2_by75a"]
 [ext_resource type="PackedScene" uid="uid://yuje0oodg6y2" path="res://scenes/user_interface/Indicator.tscn" id="3_2wqip"]
+[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
 [ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kau5d"]
@@ -227,6 +228,20 @@ theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 16
 text = "100"
 vertical_alignment = 2
+
+[node name="TurnCharges" parent="HealthBar/AbsoluteHealth" instance=ExtResource("3_ivcce")]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 3.0
+offset_top = -4.0
+offset_right = 3.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 2
 
 [node name="StatusEffectContainer" type="HBoxContainer" parent="HealthBar"]
 layout_mode = 0

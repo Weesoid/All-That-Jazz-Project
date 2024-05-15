@@ -52,6 +52,7 @@ offset_left = 8.0
 offset_top = 8.0
 offset_right = 336.0
 offset_bottom = 128.0
+follow_focus = true
 
 [node name="VBoxContainer" type="GridContainer" parent="TabContainer/Abilities/ScrollContainer"]
 layout_mode = 2
@@ -126,6 +127,7 @@ custom_minimum_size = Vector2(7.866, 0)
 layout_mode = 2
 offset_right = 331.0
 offset_bottom = 95.0
+follow_focus = true
 
 [node name="VBoxContainer" type="GridContainer" parent="TabContainer/Charms/Panel/SelectCharms"]
 layout_mode = 2
