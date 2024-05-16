@@ -87,7 +87,7 @@ func loadWares(array=wares_array):
 		
 		button.pressed.connect(
 			func():
-				setButtonFunction(item, button)
+				setButtonFunction(item)
 		)
 		button.mouse_entered.connect(
 			func updateDescription():
@@ -140,7 +140,7 @@ func loadSlider(item)-> int:
 	
 	return int(amount)
 
-func setButtonFunction(selected_item, button: Button):
+func setButtonFunction(selected_item):
 	match mode:
 		1:
 			if PlayerGlobals.CURRENCY < selected_item.VALUE * buy_modifier:

@@ -4,9 +4,6 @@ static func animateCast(caster: ResCombatant):
 	caster.getAnimator().play('Idle')
 	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
-	for i in range(3):
-		targets.shuffle()
-		var target = targets.pick_random()
-		CombatGlobals.playAbilityAnimation(target, animation_scene)
-		CombatGlobals.calculateRawDamage(target, 25.0)
-	
+	for i in targets:
+		CombatGlobals.playAbilityAnimation(i, animation_scene)
+		CombatGlobals.calculateRawDamage(i, 999.0)

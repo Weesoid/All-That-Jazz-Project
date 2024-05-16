@@ -5,5 +5,5 @@ Entity: Wanna fight!?
 => END
 
 ~ fight
-do changeToCombat("Fighter")
+do changeToCombat("Fighter", "Hail")
 => END

@@ -24,6 +24,12 @@ func _ready():
 		var bar = preload("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 		$Container/VBoxContainer.add_child(bar)
 		bar.combatant = combatant
+	
+	if QuestGlobals.QUESTS.is_empty():
+		quests.hide()
+	if !PlayerGlobals.hasActiveTeam():
+		party.hide()
+		exp_bar.hide()
 
 func _on_tree_exited():
 	queue_free()

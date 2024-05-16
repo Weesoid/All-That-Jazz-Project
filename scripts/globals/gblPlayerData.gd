@@ -58,6 +58,12 @@ func getRequiredExp() -> int:
 	var expMultiplier = 1.25
 	return int(baseExp * expMultiplier ** (PARTY_LEVEL - 1))
 
+func hasActiveTeam()-> bool:
+	for member in TEAM:
+		if member.active: return true
+	
+	return false
+
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
 		combatant.STAT_POINTS += 1

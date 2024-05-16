@@ -274,7 +274,6 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
-	print(getComponent(entity_name, 'CombatDialogue').enabled)
 	if getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled:
 		if combat_results == 1:
 			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')

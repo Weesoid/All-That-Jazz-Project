@@ -9,4 +9,4 @@ NAME = "Hail"
 WARNING_MESSAGE = "The air feels colder..."
 EVENT_MESSAGE = "It's a hail storm!"
 ABILITY = ExtResource("1_vpn7i")
-TURN_TRIGGER = 10
+TURN_TRIGGER = 2

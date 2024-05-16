@@ -58,6 +58,9 @@ signal combat_done
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
+	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
+		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
+	
 	transition_scene.visible = true
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
@@ -173,6 +176,7 @@ func on_enemy_turn():
 	end_turn()
 
 func end_turn(combatant_act=true):
+	combat_camera.position = Vector2(0, -40)
 	if combatant_act:
 		active_combatant.TURN_CHARGES -= 1
 		combatant_turn_order.remove_at(0)
@@ -190,9 +194,17 @@ func end_turn(combatant_act=true):
 	else:
 		enemy_turn_count += 1
 	
+	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
+		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
+		commandExecuteAbility(null, combat_event.ABILITY)
+		await get_tree().create_timer(0.5).timeout
+		if await checkWin(): return
+	elif combat_event != null and turn_count % combat_event.TURN_TRIGGER == combat_event.TURN_TRIGGER - 3:
+		combat_log.writeCombatLog(combat_event.WARNING_MESSAGE)
+	
 	var turn_title = 'turn/%s' % turn_count
 	CombatGlobals.dialogue_signal.emit(turn_title)
-	combat_camera.position = Vector2(0, -40)
+	
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		refreshInstantCasts(combatant)
@@ -205,11 +217,6 @@ func end_turn(combatant_act=true):
 	target_index = 0
 	secondary_panel.hide()
 	
-	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
-		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
-		commandExecuteAbility(null, combat_event.ABILITY)
-	elif combat_event != null and turn_count % combat_event.TURN_TRIGGER == combat_event.TURN_TRIGGER - 3:
-		combat_log.writeCombatLog(combat_event.WARNING_MESSAGE)
 	
 	# Determinte next combatant
 	if !selected_ability.INSTANT_CAST:
@@ -538,23 +545,24 @@ func renameDuplicates():
 			seen.append(combatant.NAME)
 
 func checkWin():
+	if isCombatantGroupDead('team'):
+		if unique_id != null:
+			CombatGlobals.combat_lost.emit(unique_id)
+			CombatGlobals.dialogue_signal.emit('lose')
+		if checkDialogue():
+			await DialogueManager.dialogue_ended
+		concludeCombat(0)
+		return true
 	if isCombatantGroupDead('enemies'):
 		if unique_id != null:
 			CombatGlobals.combat_won.emit(unique_id)
 			CombatGlobals.dialogue_signal.emit('win')
 		if checkDialogue():
 			await DialogueManager.dialogue_ended
-		
 		concludeCombat(1)
+		return true
 	
-	elif isCombatantGroupDead('team'):
-		if unique_id != null:
-			CombatGlobals.combat_lost.emit(unique_id)
-			CombatGlobals.dialogue_signal.emit('lose')
-		if checkDialogue():
-			await DialogueManager.dialogue_ended
-		
-		concludeCombat(0)
+	return false
 
 func checkDialogue():
 	if combat_dialogue == null:
@@ -679,6 +687,7 @@ func concludeCombat(results: int):
 	await transition.animation_finished
 	
 	combat_done.emit()
+	print('Adding stune!')
 	OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())
 	
 	if combat_dialogue != null: combat_dialogue.disconnectSignal()
