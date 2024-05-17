@@ -62,6 +62,8 @@ func adjustStat(cost: int, value, stat: String):
 		combatant.STAT_POINTS -= cost
 		combatant.STAT_POINT_ALLOCATIONS[stat] += 1
 		combatant.STAT_VALUES[stat] += value
+	else:
+		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] point(s) is required to increase [color=yellow]%s[/color].' % [str(cost), stat])
 
 func resetStat(stat: String, value, cost):
 	if combatant.STAT_POINT_ALLOCATIONS[stat] > 0:

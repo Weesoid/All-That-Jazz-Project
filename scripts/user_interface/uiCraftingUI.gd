@@ -85,6 +85,8 @@ func showItems(slot_button: Button, slot: int):
 			OverworldGlobals.setMenuFocusMode(repair_button, true)
 			OverworldGlobals.setMenuFocus(base)
 	)
+	cancel_button.connect('mouse_entered', clearItemDescription)
+	cancel_button.connect('focus_entered', clearItemDescription)
 	item_select_buttons.add_child(cancel_button)
 	cancel_button.grab_focus()
 	OverworldGlobals.setMenuFocusMode(base, false)
@@ -97,11 +99,12 @@ func showItems(slot_button: Button, slot: int):
 				addItemToSlot(item, slot, slot_button)
 		)
 		button.mouse_entered.connect(func(): updateItemDescription(item))
+		button.focus_entered.connect(func(): updateItemDescription(item))
 		item_select_buttons.add_child(button)
 
 func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 	if item.MANDATORY:
-		InventoryGlobals.removeItemResource(item) # This will show 'Cannot remove item'
+		return
 	else:
 		slot_button.icon = item.ICON
 		if item is ResStackItem:
@@ -111,6 +114,7 @@ func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 		
 		all_components[slot] = item
 		item_select.hide()
+	
 	OverworldGlobals.setMenuFocusMode(base, true)
 	OverworldGlobals.setMenuFocusMode(repair_button, true)
 	slot_button.grab_focus()
@@ -135,6 +139,10 @@ func updateItemDescription(item: ResItem):
 	item_select_info.show()
 	item_select_info_general.text = item.getGeneralInfo()
 	item_select_info_main.text = item.getInformation()
+
+func clearItemDescription():
+	item_select_info_general.text = ''
+	item_select_info_main.text = ''
 
 func _on_repair_pressed():
 	InventoryGlobals.repairAllItems()

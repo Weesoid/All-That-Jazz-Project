@@ -96,9 +96,6 @@ func resetStates():
 	ANIMATION_SPEED = 0.0
 
 func _unhandled_input(_event: InputEvent):
-	#if Input.is_action_just_pressed("ui_text_backspace"):
-	#	OverworldGlobals.showMenu("res://scenes/user_interface/AttributeView.tscn")
-	
 	if Input.is_action_just_pressed("ui_cancel"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	
@@ -107,7 +104,6 @@ func _unhandled_input(_event: InputEvent):
 		if interactables.size() > 0:
 			velocity = Vector2.ZERO
 			undrawBowAnimation()
-			#OverworldGlobals.show_player_interaction = false
 			interactables[0].interact()
 			return
 	
@@ -122,6 +118,9 @@ func _unhandled_input(_event: InputEvent):
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 	
 func canDrawBow()-> bool:
+	if OverworldGlobals.inMenu():
+		return false
+	
 	if OverworldGlobals.getCurrentMapData().SAFE:
 		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
 		return false
@@ -135,6 +134,9 @@ func canDrawBow()-> bool:
 	return true
 
 func canUsePower():
+	if OverworldGlobals.inMenu():
+		return false
+	
 	if OverworldGlobals.getCurrentMapData().SAFE:
 		prompt.showPrompt("Can't use [color=gray]Gambit[/color] right now.")
 		return false

@@ -399,7 +399,7 @@ func getStatusEffectInfo(combatant: ResCombatant):
 	
 	for effect in combatant.STATUS_EFFECTS:
 		var texture_path = effect.TEXTURE.resource_path
-		ui_status_inspect.text += "\n[img]%s[/img] %s\n" % [texture_path, effect.DESCRIPTION]
+		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION
 
 func executeAbility():
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
@@ -641,6 +641,7 @@ func concludeCombat(results: int):
 	combat_result = results
 	battle_music.stop()
 	for combatant in COMBATANTS:
+		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant)
 	action_panel.hide()
 	secondary_panel.hide()
@@ -687,7 +688,6 @@ func concludeCombat(results: int):
 	await transition.animation_finished
 	
 	combat_done.emit()
-	print('Adding stune!')
 	OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())
 	
 	if combat_dialogue != null: combat_dialogue.disconnectSignal()

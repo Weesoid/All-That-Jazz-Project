@@ -47,7 +47,7 @@ func canUse(combatant: ResCombatant):
 	return true
 
 func getInformation():
-	var out = ""
+	var out = OverworldGlobals.insertTextureCode(ICON)+' '+NAME.to_upper()+'\n'
 	out += DESCRIPTION + '\n\n'
 	out += EFFECT.getRichDescription()
 	return out

@@ -22,6 +22,7 @@ func _ready():
 					button.remove_theme_icon_override('icon')
 		)
 		button.mouse_entered.connect(func(): updateInfo(member))
+		button.focus_entered.connect(func(): updateInfo(member))
 		if member.MANDATORY and member.active: 
 			button.disabled = true
 		if member.active:

@@ -121,6 +121,8 @@ func setMenuFocusMode(control_item, mode: bool):
 				else:
 					child.focus_mode = Control.FOCUS_NONE
 
+func insertTextureCode(texture: Texture)-> String:
+	return '[img]%s[/img]' % texture.resource_path
 
 func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_description=''):
 	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
@@ -271,14 +273,22 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	get_tree().paused = false
 	battle_transition.get_node('AnimationPlayer').play('Out')
 	getCurrentMap().show()
+	if hasCombatDialogue(entity_name):
+		setPlayerInput(false)
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
-	if getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled:
+	if hasCombatDialogue(entity_name):
 		if combat_results == 1:
 			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
+			await DialogueManager.dialogue_ended
 		elif combat_results == 0:
 			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'lose_aftermath')
+			await DialogueManager.dialogue_ended
+		setPlayerInput(true)
+
+func hasCombatDialogue(entity_name: String)-> bool:
+	return getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD

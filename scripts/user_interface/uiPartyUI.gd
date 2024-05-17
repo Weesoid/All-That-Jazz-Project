@@ -1,6 +1,6 @@
-# TO-DO: GENERAL QUALITY CONTROL
 extends Control
 
+@onready var tabs = $TabContainer
 @onready var description = $Description/DescriptionLabel
 @onready var stat_panel = $TabContainer/Attributes/Attributes
 @onready var ability_pool_panel = $TabContainer/Abilities/VBoxContainer
@@ -21,26 +21,52 @@ func loadInformation():
 			func updateDesciption():
 				description.text = ability.getRichDescription()
 		)
+		ability_button.focus_entered.connect(
+			func updateDesciption():
+				description.text = ability.getRichDescription()
+		)
 		ability_pool_panel.add_child(ability_button)
+	
+	if subject_combatant.EQUIPPED_WEAPON != null:
+		var weapon_button = OverworldGlobals.createCustomButton()
+		weapon_button.text = subject_combatant.EQUIPPED_WEAPON.NAME
+		weapon_button.mouse_entered.connect(
+		func updateDesciption():
+			description.text = subject_combatant.EQUIPPED_WEAPON.getInformation()
+		)
+		weapon_button.focus_entered.connect(
+		func updateDesciption():
+			description.text = subject_combatant.EQUIPPED_WEAPON.getInformation()
+		)
+		equipment_panel.add_child(weapon_button)
 	
 	for charm in subject_combatant.CHARMS.values():
 		if charm == null:
 			continue
 		
 		var equipment_button = OverworldGlobals.createCustomButton()
-		equipment_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		equipment_button.text = charm.NAME
 		equipment_button.mouse_entered.connect(
 		func updateDesciption():
 			description.text = charm.getInformation()
 		)
+		equipment_button.focus_entered.connect(
+		func updateDesciption():
+			description.text = charm.getInformation()
+		)
 		equipment_panel.add_child(equipment_button)
+	
 	
 	for effect_name in subject_combatant.LINGERING_STATUS_EFFECTS:
 		var status_button = OverworldGlobals.createCustomButton()
 		status_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		status_button.text = effect_name
 		status_button.mouse_entered.connect(
+		func updateDesciption():
+			var effect = CombatGlobals.loadStatusEffect(effect_name)
+			description.text = "\n[img]%s[/img] %s\n" % [effect.TEXTURE.resource_path, effect.DESCRIPTION]
+		)
+		status_button.focus_entered.connect(
 		func updateDesciption():
 			var effect = CombatGlobals.loadStatusEffect(effect_name)
 			description.text = "\n[img]%s[/img] %s\n" % [effect.TEXTURE.resource_path, effect.DESCRIPTION]
@@ -53,14 +79,26 @@ func clearInformation():
 	description.text = ''
 	
 	for child in ability_pool_panel.get_children():
+		ability_pool_panel.remove_child(child)
 		child.queue_free()
 	
 	for child in equipment_panel.get_children():
+		equipment_panel.remove_child(child)
 		child.queue_free()
 	
 	for child in status_panel.get_children():
+		status_panel.remove_child(child)
 		child.queue_free()
 
-
-func _on_tab_container_tab_changed(_tab):
+func _on_tab_container_tab_changed(tab):
 	description.text = ''
+	match tab:
+		1: OverworldGlobals.setMenuFocus(ability_pool_panel)
+		2: OverworldGlobals.setMenuFocus(equipment_panel)
+		3: OverworldGlobals.setMenuFocus(status_panel)
+
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed('ui_tab_right') and tabs.current_tab + 1 < tabs.get_tab_count():
+		tabs.current_tab += 1
+	elif Input.is_action_just_pressed('ui_tab_left') and tabs.current_tab - 1 >= 0:
+		tabs.current_tab -= 1

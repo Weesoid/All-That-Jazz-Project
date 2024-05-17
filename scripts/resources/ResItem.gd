@@ -11,7 +11,9 @@ func _to_string():
 	return str(NAME)
 
 func getInformation():
-	return DESCRIPTION
+	var out = OverworldGlobals.insertTextureCode(ICON)+' '+NAME.to_upper()+'\n'
+	out += DESCRIPTION
+	return out
 
 func getGeneralInfo():
 	var out = ''

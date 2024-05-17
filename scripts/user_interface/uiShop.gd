@@ -92,10 +92,13 @@ func loadWares(array=wares_array):
 		button.mouse_entered.connect(
 			func updateDescription():
 				description.text = item.getInformation()
-				if item is ResEquippable:
-					stats.text = item.getStringStats()
+		)
+		button.focus_entered.connect(
+			func updateDescription():
+				description.text = item.getInformation()
 		)
 		button.mouse_exited.connect(func(): resetDescription())
+		button.focus_exited.connect(func(): resetDescription())
 		wares.add_child(button)
 	
 	OverworldGlobals.setMenuFocus(wares)

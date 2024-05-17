@@ -66,8 +66,10 @@ func loadAbilities():
 
 func clearButtons():
 	for chid in pool.get_children():
+		pool.remove_child(chid)
 		chid.queue_free()
 	for child in select_charms.get_children():
+		select_charms.remove_child(child)
 		child.queue_free()
 
 func createButton(ability, location):
@@ -128,6 +130,8 @@ func showCharmEquipMenu(slot_button: Button):
 			elif slot_button == charm_slot_c:
 				charm_slot_c.grab_focus()
 	)
+	unequip_button.connect('focus_entered', clearDescription)
+	unequip_button.connect('mouse_entered', clearDescription)
 	select_charms.add_child(unequip_button)
 	unequip_button.grab_focus()
 	for charm in InventoryGlobals.INVENTORY.filter(func(item): return item is ResCharm):
@@ -182,6 +186,8 @@ func showWeaponEquipMenu():
 			setFocusMode(member_container, true)
 			weapon_button.grab_focus()
 	)
+	unequip_button.connect('focus_entered', clearDescription)
+	unequip_button.connect('mouse_entered', clearDescription)
 	select_charms.add_child(unequip_button)
 	unequip_button.grab_focus()
 	for weapon in InventoryGlobals.INVENTORY.filter(func(item): return item is ResWeapon):
@@ -203,6 +209,10 @@ func showWeaponEquipMenu():
 			weapon_button.grab_focus()
 		)
 		button.mouse_entered.connect(
+			func():
+				updateItemDescription(weapon)
+		)
+		button.focus_entered.connect(
 			func():
 				updateItemDescription(weapon)
 		)
@@ -251,23 +261,50 @@ func updateItemDescription(item: ResItem):
 	charm_description_general.text = item.getGeneralInfo()
 	charm_description.text = item.getInformation()
 
+func clearDescription():
+	charm_description_general.text = ''
+	charm_description.text = ''
+
+func _on_weapon_mouse_entered():
+	if selected_combatant.EQUIPPED_WEAPON != null:
+		updateItemDescription(selected_combatant.EQUIPPED_WEAPON)
+	else:
+		charm_info_panel.hide()
+
 func _on_slot_a_mouse_entered():
-	updateItemDescription(selected_combatant.CHARMS[0])
+	if selected_combatant.CHARMS[0] != null:
+		updateItemDescription(selected_combatant.CHARMS[0])
+	else:
+		charm_info_panel.hide()
 
 func _on_slot_b_mouse_entered():
-	updateItemDescription(selected_combatant.CHARMS[1])
+	if selected_combatant.CHARMS[1] != null:
+		updateItemDescription(selected_combatant.CHARMS[1])
+	else:
+		charm_info_panel.hide()
 
 func _on_slot_c_mouse_entered():
-	updateItemDescription(selected_combatant.CHARMS[2])
+	if selected_combatant.CHARMS[2] != null:
+		updateItemDescription(selected_combatant.CHARMS[2])
+	else:
+		charm_info_panel.hide()
 
 func hideItemDescription():
 	charm_info_panel.hide()
 
 func _on_tab_container_tab_changed(tab):
+	select_charms_panel.hide()
 	if tab == 0:
-		#loadAbilities()
+		loadAbilities()
 		attrib_view.hide()
-	elif tab == 1 or tab == 2:
+	elif tab == 1:
+		select_charms_panel.hide()
+		charm_info_panel.hide()
+		setFocusMode(equipped_charms, true)
+		setFocusMode(member_container, true)
+		weapon_button.grab_focus()
+		attrib_view.show()
+	elif tab == 2:
 		attrib_view.show()
 	
 	match tab:

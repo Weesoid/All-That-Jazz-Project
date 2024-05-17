@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
 [ext_resource type="PackedScene" uid="uid://cmu5v5d578wll" path="res://scenes/status_visuals/Poison.tscn" id="1_qebaw"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsPoison.gd" id="1_t6ebe"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_63gtt"]
+[ext_resource type="Texture2D" uid="uid://doomnj5fua3n8" path="res://images/sprites/bubble.png" id="3_0bb4h"]
 
 [resource]
 script = ExtResource("1_5ugit")
@@ -11,7 +11,7 @@ NAME = "Poison"
 DESCRIPTION = "Target takes damage per turn."
 STATUS_SCRIPT = ExtResource("1_t6ebe")
 PACKED_SCENE = ExtResource("1_qebaw")
-TEXTURE = ExtResource("3_63gtt")
+TEXTURE = ExtResource("3_0bb4h")
 MAX_DURATION = 3
 EXTEND_DURATION = 2
 MAX_RANK = 0

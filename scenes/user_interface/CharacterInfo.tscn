@@ -61,6 +61,7 @@ borders = false
 [node name="Abilities" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
+follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Abilities"]
@@ -69,6 +70,7 @@ layout_mode = 2
 [node name="Equipment" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
+follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Equipment"]
@@ -77,6 +79,7 @@ layout_mode = 2
 [node name="Status Effects" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
+follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Status Effects"]
@@ -93,5 +96,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_jr4f4")
 [node name="DescriptionLabel" type="RichTextLabel" parent="Description"]
 layout_mode = 2
 bbcode_enabled = true
+scroll_following = true
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
