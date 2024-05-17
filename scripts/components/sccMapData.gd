@@ -12,6 +12,7 @@ func _ready():
 		clearPatrollers()
 
 func clearPatrollers():
-	await SaveLoadGlobals.done_loading
+	if SaveLoadGlobals.is_loading:
+		await SaveLoadGlobals.done_loading
 	if PlayerGlobals.CLEARED_MAPS.has(NAME):
 		CLEARED = true

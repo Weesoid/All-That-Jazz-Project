@@ -1,5 +1,6 @@
 extends Node
 
+var is_loading: bool
 signal done_loading
 
 #func _ready():
@@ -20,6 +21,7 @@ func saveGame():
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game saved[/color]!')
 
 func loadGame():
+	is_loading = true
 	var saved_game: SavedGame = load('res://saves/save.tres') as SavedGame
 	get_tree().change_scene_to_file(saved_game.current_map_path)
 	
@@ -43,3 +45,4 @@ func loadGame():
 	
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
 	done_loading.emit()
+	is_loading = false

@@ -398,8 +398,7 @@ func getStatusEffectInfo(combatant: ResCombatant):
 		return
 	
 	for effect in combatant.STATUS_EFFECTS:
-		var texture_path = effect.TEXTURE.resource_path
-		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION
+		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION+'\n'
 
 func executeAbility():
 	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES

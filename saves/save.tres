@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=38 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=40 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_rhsr7"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_d3ug0"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="4_a7nqn"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="4_qj0e6"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="5_t0mx6"]
+[ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="5_t87u7"]
 [ext_resource type="Resource" path="res://resources/items/WolfCold.tres" id="5_yy3h2"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="6_fn0t0"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="7_e2mtb"]
@@ -31,10 +32,11 @@
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="24_luqb2"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_exvwj"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_ad382"]
+[ext_resource type="Script" path="res://scripts/power_scripts/scpAnchor.gd" id="31_vbe8b"]
 
-[sub_resource type="Resource" id="Resource_0ij2q"]
+[sub_resource type="Resource" id="Resource_1mxq3"]
 script = ExtResource("1_rhsr7")
-position = Vector2(128.877, -69.0296)
+position = Vector2(-101.123, -89.0296)
 scene_path = "res://scenes/entities/Player.tscn"
 
 [sub_resource type="Resource" id="Resource_nmypi"]
@@ -49,19 +51,21 @@ DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
 MANDATORY = false
 
-[sub_resource type="Resource" id="Resource_jdy13"]
+[sub_resource type="Resource" id="Resource_iqa5s"]
 script = ExtResource("4_a7nqn")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([SubResource("Resource_nmypi"), ExtResource("4_7cfvt"), ExtResource("5_yy3h2")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("24_luqb2"), SubResource("Resource_nmypi"), ExtResource("5_t87u7"), ExtResource("4_7cfvt"), ExtResource("5_yy3h2")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_d3ug0"), ExtResource("3_jnf8w")])
 ITEM_DATA_INVENTORY = {
+"Arrow": 100,
 "Murder Charm": null,
+"Sleeper Arrow": 100,
 "Sprint Stone": false,
 "Wolf Cold": null
 }
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_6lxeb"]
+[sub_resource type="Resource" id="Resource_6merw"]
 script = ExtResource("5_t0mx6")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
@@ -78,7 +82,7 @@ DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
 MANDATORY = false
 
-[sub_resource type="Resource" id="Resource_im8cw"]
+[sub_resource type="Resource" id="Resource_pa5q7"]
 script = ExtResource("25_exvwj")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_fn0t0"), ExtResource("15_371lb"), ExtResource("22_nnqgl"), ExtResource("23_ih7bf")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([Object(CharacterBody2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(-10.1249, -63.0607),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"disable_mode":0,"collision_layer":1,"collision_mask":1,"collision_priority":1.0,"input_pickable":false,"motion_mode":1,"up_direction":Vector2(0, -1),"velocity":Vector2(0, 0),"slide_on_ceiling":true,"max_slides":4,"wall_min_slide_angle":0.0,"floor_stop_on_slope":true,"floor_constant_speed":false,"floor_block_on_wall":true,"floor_max_angle":0.785398,"floor_snap_length":1.0,"platform_on_leave":0,"platform_floor_layers":4294967295,"platform_wall_layers":0,"safe_margin":0.08,"script":Resource("res://scripts/entities/entNPCFollower.gd"),"ANIMATOR":Object(AnimationPlayer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"editor_description":"","root_node":NodePath(".."),"autoplay":"","reset_on_save":true,"playback_process_mode":1,"playback_default_blend_time":0.0,"speed_scale":1.0,"method_call_mode":0,"audio_max_polyphony":32,"movie_quit_on_finish":false,"libraries":{},"blend_times":[],"script":null)
@@ -88,7 +92,8 @@ FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([Object(
 ])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = []
-EQUIPPED_ARROW = ExtResource("24_luqb2")
+POWER = ExtResource("31_vbe8b")
+EQUIPPED_ARROW = ExtResource("5_t87u7")
 CURRENCY = 12448
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
@@ -234,4 +239,4 @@ ExtResource("23_ih7bf"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 [resource]
 script = ExtResource("26_ad382")
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_0ij2q"), SubResource("Resource_jdy13"), SubResource("Resource_6lxeb"), SubResource("Resource_im8cw")]
+save_data = [SubResource("Resource_1mxq3"), SubResource("Resource_iqa5s"), SubResource("Resource_6merw"), SubResource("Resource_pa5q7")]
