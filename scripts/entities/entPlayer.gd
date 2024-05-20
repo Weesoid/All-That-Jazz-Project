@@ -178,7 +178,9 @@ func drawBow():
 			bow_draw_strength = PlayerGlobals.bow_max_draw
 	
 	if Input.is_action_just_released("ui_click") and velocity == Vector2.ZERO:
-		if bow_draw_strength >= PlayerGlobals.bow_max_draw: shootProjectile()
+		if bow_draw_strength >= PlayerGlobals.bow_max_draw: 
+			shootProjectile()
+		await get_tree().create_timer(0.05).timeout
 		undrawBow()
 
 func undrawBow():
@@ -189,7 +191,7 @@ func undrawBow():
 	play_once = true
 
 func shootProjectile():
-	playAudio("178872__hanbaal__bow.ogg", -15.0, true)
+	OverworldGlobals.playSound("178872__hanbaal__bow.ogg", -15.0, true)
 	InventoryGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
 	var projectile = load("res://scenes/entities_disposable/Arrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
@@ -240,6 +242,9 @@ func updateAnimationParameters():
 		
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
+			print(bow_draw_strength)
+			print(PlayerGlobals.bow_max_draw)
+			print(bow_draw_strength >= PlayerGlobals.bow_max_draw, ' and ', velocity == Vector2.ZERO)
 			if bow_draw_strength >= PlayerGlobals.bow_max_draw and velocity == Vector2.ZERO:
 				animation_tree["parameters/conditions/shoot_bow"] = true
 				can_move = false

@@ -79,13 +79,6 @@ func _ready():
 		combat_bars.attached_combatant = combatant
 		combatant.SCENE.add_child(combat_bars)
 	
-#	if initial_status_effect_enemy != '':
-#		for combatant in getCombatantGroup('enemies'):
-#			CombatGlobals.addStatusEffect(combatant, initial_status_effect_enemy)
-#	if initial_status_effect_player != '':
-#		for combatant in getCombatantGroup('player'):
-#			CombatGlobals.addStatusEffect(combatant, initial_status_effect_player)
-	
 	if battle_music_path != "":
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
@@ -152,13 +145,10 @@ func on_player_turn():
 	end_turn()
 
 func on_enemy_turn():
-	ui_animator.play_backwards('ShowActionPanel')
-	if has_node('QTE'):
-		await CombatGlobals.qte_finished
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 0.75, true)
-	if isCombatantGroupDead('team'):
-		checkWin()
-		return
+	ui_animator.play_backwards('ShowActionPanel')
+	if has_node('QTE'): await CombatGlobals.qte_finished
+	if await checkWin(): return
 	
 	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
@@ -198,6 +188,7 @@ func end_turn(combatant_act=true):
 		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
 		commandExecuteAbility(null, combat_event.ABILITY)
 		await get_tree().create_timer(0.5).timeout
+		print('Check win on COMBAT EVENT')
 		if await checkWin(): return
 	elif combat_event != null and turn_count % combat_event.TURN_TRIGGER == combat_event.TURN_TRIGGER - 3:
 		combat_log.writeCombatLog(combat_event.WARNING_MESSAGE)
@@ -232,7 +223,7 @@ func end_turn(combatant_act=true):
 	else:
 		end_turn()
 		return
-	
+	print('Check win on END TURN')
 	if await checkWin(): return
 
 func setActiveCombatant(tick_effect=true):
@@ -637,6 +628,8 @@ func writeTopLogMessage(message: String):
 	top_log_animator.play("Show")
 
 func concludeCombat(results: int):
+	if combat_result != -1: return
+	
 	combat_result = results
 	battle_music.stop()
 	for combatant in COMBATANTS:

@@ -45,4 +45,4 @@ func loadGame():
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
 	done_loading.emit()
 	is_loading = false
-	print_orphan_nodes()
+	#print_orphan_nodes()
