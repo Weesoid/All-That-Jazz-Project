@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxkukmp8des0d"]
+
+[ext_resource type="Script" path="res://scripts/components/sccCombatantSquadEnemy.gd" id="1_vulfw"]
+
+[node name="CombatantSquadComponent" type="Node"]
+script = ExtResource("1_vulfw")

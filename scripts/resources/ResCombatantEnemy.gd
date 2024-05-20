@@ -1,6 +1,14 @@
 extends ResCombatant
 class_name ResEnemyCombatant
 
+enum Tier {
+	Easy,
+	Medium,
+	Hard,
+	Boss
+}
+@export var FACTION: CombatGlobals.Enemy_Factions
+@export var TIER: Tier
 @export var AI_PACKAGE: GDScript
 @export var CHANCE_TO_DROP = 0.50
 @export var DROP_COUNT = 1
@@ -12,9 +20,7 @@ class_name ResEnemyCombatant
 # Set the auto-attack manually.
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
-	
 	applyStatusEffects()
-	
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
 
 func act():
@@ -48,9 +54,6 @@ func getDrops():
 				drops[item] += randi_range(1, DROP_POOL[item].y)
 			else:
 				drops[item] = randi_range(1, DROP_POOL[item].y)
-	
-#	for item in drops:
-#		InventoryGlobals.addItemResource(item, drops[item])
 	
 	return drops
 

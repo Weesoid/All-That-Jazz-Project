@@ -1,6 +1,3 @@
-# Draw bow, set anchor, use anchor when drawn, get locked into void channel.
-# SOLUTION: Channel / Instant cast animation depending on power type
-
 extends CharacterBody2D
 class_name PlayerScene
 

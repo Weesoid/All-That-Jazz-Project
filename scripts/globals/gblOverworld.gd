@@ -2,9 +2,7 @@ extends Node
 
 var follow_array = []
 var player_follower_count = 0
-
 signal alert_patrollers()
-
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
@@ -244,15 +242,16 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	
 	for combatant in getCombatantSquad(entity_name):
+		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
 		for effect in getCombatantSquadComponent(entity_name).afflicted_status_effects:
 			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
 		combat_scene.COMBATANTS.append(duped_combatant)
-	
 	if combat_event_name != '':
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % combat_event_name)
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
+	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
 	
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)

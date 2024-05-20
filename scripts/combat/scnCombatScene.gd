@@ -45,7 +45,7 @@ var turn_count = 0
 var round_count = 0
 var player_turn_count = 0
 var enemy_turn_count = 0
-var battle_music_name: String = ""
+var battle_music_path: String = ""
 var combat_result: int = -1
 
 signal confirm
@@ -86,8 +86,8 @@ func _ready():
 #		for combatant in getCombatantGroup('player'):
 #			CombatGlobals.addStatusEffect(combatant, initial_status_effect_player)
 	
-	if battle_music_name != "":
-		battle_music.stream = load("res://audio/music/%s" % battle_music_name)
+	if battle_music_path != "":
+		battle_music.stream = load(battle_music_path)
 		battle_music.play()
 	
 	transition.play('Out')
@@ -233,7 +233,7 @@ func end_turn(combatant_act=true):
 		end_turn()
 		return
 	
-	checkWin()
+	if await checkWin(): return
 
 func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[0][0]

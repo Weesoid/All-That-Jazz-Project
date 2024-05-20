@@ -1,20 +1,20 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=7 format=3 uid="uid://cx7a1d4nfkjwh"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://cx7a1d4nfkjwh"]
 
 [ext_resource type="Resource" uid="uid://cxf6mle16dbom" path="res://resources/combat/abilities/Heal.tres" id="1_cydwi"]
 [ext_resource type="Resource" uid="uid://8v7wdj464tlq" path="res://resources/combat/abilities/HotHit.tres" id="2_e07fb"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="2_xgrhx"]
 [ext_resource type="PackedScene" uid="uid://dpsvf74bhpcj0" path="res://scenes/combatants/BadGuyB.tscn" id="3_dwh58"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="3_fptwa"]
-[ext_resource type="Texture2D" uid="uid://dujk7fbsungog" path="res://images/sprites/bad2.png" id="5_u6pqm"]
 
 [resource]
 script = ExtResource("3_fptwa")
+FACTION = 1
+TIER = 0
 AI_PACKAGE = ExtResource("2_xgrhx")
 CHANCE_TO_DROP = 0.5
 DROP_COUNT = 1
 DROP_POOL = {}
 NAME = "Healer"
-ICON = ExtResource("5_u6pqm")
 PACKED_SCENE = ExtResource("3_dwh58")
 DESCRIPTION = "A Healer!"
 STAT_VALUES = {

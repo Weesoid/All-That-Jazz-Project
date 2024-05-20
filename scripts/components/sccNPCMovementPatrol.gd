@@ -164,7 +164,6 @@ func moveRandom():
 	return Vector2(randf_range(PATROL_SHAPE.global_position.x, PATROL_SHAPE.global_position.x + PATROL_SHAPE.shape.get_rect().end.x),
 					randf_range(PATROL_SHAPE.global_position.y, PATROL_SHAPE.global_position.y + PATROL_SHAPE.shape.get_rect().end.y))
 
-
 func patrolToPosition(target_position: Vector2):
 	if targetReached():
 		BODY.velocity = Vector2(0,0)

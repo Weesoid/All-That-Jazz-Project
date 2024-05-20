@@ -1,11 +1,22 @@
 extends Node
 
+enum Enemy_Factions {
+	Neutral,
+	Unggboys
+}
+var FACTION_MUSIC = {
+	Enemy_Factions.Neutral: [
+		"res://audio/music/706171__timbre__atmosphere-prince-funk-via-stableaudio.ogg"
+	],
+	Enemy_Factions.Unggboys: [
+		"res://audio/music/Little Speck DV.ogg"
+	]
+}
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
 signal dialogue_signal(flag)
 signal combat_conclusion_dialogue(dialogue, result)
 signal animation_done
-
 signal exp_updated(value: float, max_value: float)
 signal received_combatant_value(combatant: ResCombatant, caster: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)

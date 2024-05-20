@@ -1,11 +1,12 @@
-[gd_scene load_steps=35 format=3 uid="uid://3xhmv62u5c1v"]
+[gd_scene load_steps=36 format=3 uid="uid://3xhmv62u5c1v"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_iet4p"]
 [ext_resource type="PackedScene" uid="uid://xfrvaohqhfml" path="res://scenes/entities/Player.tscn" id="2_03scn"]
 [ext_resource type="PackedScene" uid="uid://knc1563g65sr" path="res://scenes/entities_interactable/CraftingTable.tscn" id="5_u7bub"]
+[ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="5_v1cwg"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="7_eiq6g"]
-[ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="8_eg7gu"]
+[ext_resource type="Resource" uid="uid://cx7a1d4nfkjwh" path="res://resources/combat/combatants_enemies/YellowSupport.tres" id="7_o06ea"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="8_pga02"]
 [ext_resource type="Resource" uid="uid://drv1o8j6wl6pf" path="res://resources/combat/combatants_enemies/RedAttack.tres" id="9_ppre7"]
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://images/sprites/NPC_unknown_entity.png" id="11_othvh"]
@@ -111,9 +112,12 @@ TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomB.tscn"
 [node name="Fighter" type="CharacterBody2D" parent="."]
 position = Vector2(130, -131)
 
-[node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("8_eg7gu")]
+[node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("9_ppre7"), ExtResource("7_o06ea")])
+FILL_EMPTY = true
+RANDOM_SIZE = true
 UNIQUE_ID = "SexMasters"
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_ppre7"), ExtResource("9_ppre7")])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null, null])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("7_eiq6g")]
 dialogue_resource = ExtResource("8_pga02")
@@ -245,7 +249,7 @@ position = Vector2(-32, -225)
 [node name="NPCPatrolComponent" parent="NPCPrototype" index="2" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
-[node name="CombatDialogue" parent="NPCPrototype" instance=ExtResource("7_eiq6g")]
-dialogue_resource = ExtResource("8_pga02")
+[node name="CombatantSquadComponent" parent="NPCPrototype" index="3"]
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_ppre7")])
 
 [editable path="NPCPrototype"]

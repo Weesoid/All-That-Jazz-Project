@@ -6,6 +6,3 @@ extends Node
 
 func applyEffect():
 	HIT_SCRIPT.applyEffect(BODY, SCENE)
-	
-
-

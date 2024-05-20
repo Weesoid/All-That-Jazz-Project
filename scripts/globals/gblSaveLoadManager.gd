@@ -40,9 +40,9 @@ func loadGame():
 			QuestGlobals.loadData(item)
 		elif item is PlayerSaveData:
 			PlayerGlobals.loadData(item)
-		
 	QuestGlobals.quest_objective_completed.connect(QuestGlobals.checkQuestsForCompleted)
 	
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
 	done_loading.emit()
 	is_loading = false
+	print_orphan_nodes()
