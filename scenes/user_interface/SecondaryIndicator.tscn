@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://7v4mmrdsljtj"]
+[gd_scene load_steps=14 format=3 uid="uid://7v4mmrdsljtj"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiSecondaryIndicator.gd" id="1_1fdpo"]
 [ext_resource type="AudioStream" uid="uid://3g8lmthlik76" path="res://audio/sounds/text_default.ogg" id="2_gglqm"]
+[ext_resource type="AudioStream" uid="uid://t5i7iw5r225l" path="res://audio/sounds/611193__eminyildirim__power-up-buff-positive-level-up.ogg" id="3_fih0w"]
 
 [sub_resource type="Animation" id="Animation_d3vq7"]
 resource_name = "Crit"
@@ -41,6 +42,21 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.0, 6.28319]
 }
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../AudioStreamPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_fih0w")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/3/use_blend = true
 
 [sub_resource type="Animation" id="Animation_3myha"]
 resource_name = "Heal"

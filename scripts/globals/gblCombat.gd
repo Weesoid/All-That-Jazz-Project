@@ -41,11 +41,11 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, base_damage, can
 		else:
 			manual_call_indicator.emit(target, 'Dodged!', 'Whiff')
 			call_indicator.emit('Show', target)
-			#playDodgeAnimation(target)
+			playDodgeTween(target)
 	elif can_miss:
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		call_indicator.emit('Show', target)
-		#playDodgeAnimation(target)
+		playDodgeTween(target)
 	else:
 		damageTarget(caster, target, base_damage, can_crit)
 
@@ -63,10 +63,12 @@ func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: 
 			damage *= 2.0
 			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 			call_indicator.emit('Show', target)
+			getCombatScene().combat_camera.shake(15.0, 10.0)
 		elif crit_chance != -1.0 and randomRoll(crit_chance):
 			damage *= 2.0
 			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 			call_indicator.emit('Show', target)
+			getCombatScene().combat_camera.shake(15.0, 10.0)
 	else:
 		call_indicator.emit('Show', target)
 	
@@ -87,6 +89,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 		base_damage *= 2.0
 		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 		call_indicator.emit('Show', target)
+		getCombatScene().combat_camera.shake(15.0, 10.0)
 	else:
 		call_indicator.emit('Show', target)
 	
@@ -146,24 +149,55 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 
 func playHurtAnimation(target: ResCombatant):
 	target.getAnimator().play('Hit')
-	var tween = getCombatScene().create_tween()
-	tween.set_trans(Tween.TRANS_BOUNCE)
+	if !target.isDead():
+		playHurtTween(target)
+		await target.getAnimator().animation_finished
+		target.getAnimator().play('Idle')
+	else:
+		getCombatScene().combat_camera.shake(25.0, 10.0)
+		await get_tree().create_timer(randf_range(1.0, 5.0))
+		if target is ResEnemyCombatant:
+			OverworldGlobals.playSound('668246__eminyildirim__holy-light-impact_0.ogg')
+		else:
+			OverworldGlobals.playSound('668246__eminyildirim__holy-light-impact_1.ogg')
+
+func playDodgeTween(target: ResCombatant):
+	OverworldGlobals.playSound('607862__department64__whipstick-28.ogg')
+	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(target.getSprite(), 'position', target.getSprite().position + Vector2(128, 0), 0.15)
+	tween.tween_property(target.getSprite(), 'position', Vector2(0, 0), 0.5)
+
+func playHurtTween(target: ResCombatant):
+	OverworldGlobals.playSound('hurt.wav')
 	randomize()
+	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	var shake = Vector2(40, 0) + Vector2(randf_range(0, 40), 0)
 	var duration = 0.05 + randf_range(0, 0.05)
 	tween.tween_property(target.SCENE, 'position', target.SCENE.position + shake, duration)
 	tween.tween_property(target.SCENE, 'position', target.SCENE.position - shake, duration)
 	tween.tween_property(target.SCENE, 'position', Vector2(0, 0), duration)
-	if !target.isDead():
-		await target.getAnimator().animation_finished
-		target.getAnimator().play('Idle')
-# work on this
-func playDodgeAnimation(target: ResCombatant):
-	var tween = getCombatScene().create_tween()
-	tween.set_trans(Tween.TRANS_BOUNCE)
-	tween.tween_property(target.SCENE, 'scale', Vector2(0, 1), 0.25)
-	tween.tween_property(target.SCENE, 'scale', Vector2(-1, 1), 0.25)
-	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.25)
+
+func playFadingTween(target: ResCombatant):
+	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+	var opacity_tween = getCombatScene().create_tween()
+	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
+	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
+	opacity_tween.tween_property(target.SCENE, 'modulate', Color(Color.GRAY, 0.25), 0.75)
+
+func playSecondWindTween(target: ResCombatant):
+	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+	var opacity_tween = getCombatScene().create_tween()
+	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.05)
+	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
+	opacity_tween.tween_property(target.SCENE, 'modulate', Color(Color.WHITE, 1.0), 0.5)
+
+func playKnockOutTween(target: ResCombatant):
+	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+	var opacity_tween = getCombatScene().create_tween()
+	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
+	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
+	tween.tween_property(target.SCENE, 'position', target.SCENE.position + Vector2(0, 128), 1.0)
+	opacity_tween.tween_property(target.SCENE, 'modulate', Color(0, 0), 0.75)
 
 func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)

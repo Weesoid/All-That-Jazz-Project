@@ -3,7 +3,7 @@ class_name CombatScene
 
 @export var COMBATANTS: Array[ResCombatant]
 
-@onready var combat_camera = $CombatCamera
+@onready var combat_camera: DynamicCamera = $CombatCamera
 @onready var combat_log = $CombatCamera/Interface/LogContainer
 @onready var team_container_markers = $ParallaxBackground/ParallaxLayer2/TeamContainer.get_children()
 @onready var enemy_container_markers = $ParallaxBackground/ParallaxLayer/EnemyContainer.get_children()
@@ -233,6 +233,8 @@ func setActiveCombatant(tick_effect=true):
 		removeDeadCombatants()
 
 func removeDeadCombatants(fading=true):
+	if !isCombatValid(): return
+	
 	for combatant in getDeadCombatants():
 		if combatant is ResEnemyCombatant:
 			if !combatant.getStatusEffectNames().has('Knock Out'): 
@@ -241,7 +243,7 @@ func removeDeadCombatants(fading=true):
 				combatant.ACTED = true
 				experience_earnt += combatant.getExperience()
 				addDrop(combatant.getDrops())
-		else:
+		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
@@ -426,8 +428,7 @@ func commandExecuteAbility(target, ability: ResAbility):
 # MISCELLANEOUS
 #********************************************************************************
 func moveCamera(target: Vector2, speed=0.25):
-	var tween = create_tween()
-	tween.tween_property(combat_camera, 'global_position', target, speed)
+	create_tween().tween_property(combat_camera, 'global_position', target, speed)
 
 func addCombatant(combatant, container):
 	for marker in container:
@@ -443,10 +444,8 @@ func forceCastAbility(ability: ResAbility):
 	target_state = selected_ability.getTargetType()
 	updateDescription(ability)
 	ui_animator.play('FocusDescription')
-	#ui_animator.play_backwards('ShowOptionPanel')
 	secondary_action_panel.hide()
 	action_panel.hide()
-	#writeTopLogMessage(selected_ability.NAME)
 	await target_selected
 	runAbility()
 
@@ -487,12 +486,6 @@ func rollTurns():
 	
 	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
 	round_count += 1
-#	for combatant in combatant_turn_order:
-#		await get_tree().create_timer(0.25).timeout
-#		if combatant.STAT_VALUES['hustle'] >= 0:
-#			CombatGlobals.manual_call_indicator.emit(combatant, "%s Hustle!" % [str(combatant.ROLLED_SPEED)], 'Show')
-#		else:
-#			CombatGlobals.manual_call_indicator.emit(combatant, "Immobilized!", 'Show')
 
 func allCombatantsActed() -> bool:
 	for combatant in COMBATANTS:

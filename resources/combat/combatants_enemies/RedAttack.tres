@@ -29,7 +29,7 @@ DESCRIPTION = "A striker!"
 STAT_VALUES = {
 "accuracy": 0.95,
 "brawn": 0.25,
-"crit": 0.05,
+"crit": 1.0,
 "dodge": 0.0,
 "grit": 0.1,
 "handling": 0,

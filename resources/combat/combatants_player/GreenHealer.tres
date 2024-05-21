@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=13 format=3 uid="uid://dqq2jvicpe82l"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=12 format=3 uid="uid://dqq2jvicpe82l"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_bsdt7"]
 [ext_resource type="Resource" uid="uid://bcwc00l52dxp" path="res://resources/combat/abilities/DebugAddEffect.tres" id="1_jdoll"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_6iflm"]
 [ext_resource type="Resource" uid="uid://glgmswqt1vcu" path="res://resources/combat/abilities/BraceSelf.tres" id="8_1odh2"]
-[ext_resource type="Texture2D" uid="uid://dhqwdbu6lsyry" path="res://images/sprites/team2.png" id="8_fydt8"]
 [ext_resource type="PackedScene" uid="uid://dlvg7wwaai4ra" path="res://scenes/combatants/GoodGuyA.tscn" id="11_xa4xd"]
 
 [resource]
@@ -20,13 +19,12 @@ ABILITY_SLOT = ExtResource("8_1odh2")
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
 MANDATORY = true
 NAME = "PUFriendHealer"
-ICON = ExtResource("8_fydt8")
 PACKED_SCENE = ExtResource("11_xa4xd")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
 "accuracy": 1.0,
 "brawn": 0.1,
-"crit": 0.05,
+"crit": 1.0,
 "dodge": 0.0,
 "grit": 0.2,
 "handling": 0,

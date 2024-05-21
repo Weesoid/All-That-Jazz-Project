@@ -20,8 +20,8 @@ DESCRIPTION = "A Healer!"
 STAT_VALUES = {
 "accuracy": 0.95,
 "brawn": 0.0,
-"crit": 0.05,
-"dodge": 0.0,
+"crit": 1.0,
+"dodge": 0.5,
 "grit": 0.0,
 "handling": 9999,
 "heal mult": 1.0,
