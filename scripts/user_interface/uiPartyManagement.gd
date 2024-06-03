@@ -41,3 +41,8 @@ func updateInfo(member: ResCombatant):
 	info.subject_combatant = member
 	info.loadInformation()
 	info.show()
+
+
+func _on_tab_container_tab_changed(tab):
+	if info.tabs.current_tab == 0:
+		OverworldGlobals.setMenuFocus(members)

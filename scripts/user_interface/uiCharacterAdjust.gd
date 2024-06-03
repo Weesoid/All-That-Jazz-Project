@@ -73,7 +73,9 @@ func clearButtons():
 		child.queue_free()
 
 func createButton(ability, location):
-	var button = OverworldGlobals.createCustomButton()
+	var button: CustomButton = OverworldGlobals.createCustomButton()
+	button.focused_entered_sound = preload("res://audio/sounds/421354__jaszunio15__click_31.ogg")
+	button.click_sound = preload("res://audio/sounds/421304__jaszunio15__click_229.ogg")
 	button.text = ability.NAME
 	if selected_combatant.ABILITY_SET.has(ability):
 		button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
@@ -110,6 +112,8 @@ func showCharmEquipMenu(slot_button: Button):
 	var unequip_button = OverworldGlobals.createCustomButton()
 	unequip_button.theme = preload("res://design/ItemButtons.tres")
 	unequip_button.icon = preload('res://images/sprites/icon_cross.png')
+	unequip_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	unequip_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 	unequip_button.pressed.connect(
 		func():
 			if slot_button == charm_slot_a:
@@ -135,9 +139,7 @@ func showCharmEquipMenu(slot_button: Button):
 	select_charms.add_child(unequip_button)
 	unequip_button.grab_focus()
 	for charm in InventoryGlobals.INVENTORY.filter(func(item): return item is ResCharm):
-		var button = OverworldGlobals.createCustomButton()
-		button.theme = preload("res://design/ItemButtons.tres")
-		button.icon = charm.ICON
+		var button = OverworldGlobals.createItemButton(charm)
 		button.pressed.connect(
 			func():
 			if slot_button == charm_slot_a:
@@ -175,6 +177,8 @@ func showWeaponEquipMenu():
 	var unequip_button = OverworldGlobals.createCustomButton()
 	unequip_button.theme = preload("res://design/ItemButtons.tres")
 	unequip_button.icon = preload('res://images/sprites/icon_cross.png')
+	unequip_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	unequip_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 	unequip_button.pressed.connect(
 		func():
 			selected_combatant.unequipWeapon()
@@ -191,9 +195,7 @@ func showWeaponEquipMenu():
 	select_charms.add_child(unequip_button)
 	unequip_button.grab_focus()
 	for weapon in InventoryGlobals.INVENTORY.filter(func(item): return item is ResWeapon):
-		var button = OverworldGlobals.createCustomButton()
-		button.theme = preload("res://design/ItemButtons.tres")
-		button.icon = weapon.ICON
+		var button = OverworldGlobals.createItemButton(weapon)
 		button.pressed.connect(
 			func():
 			if weapon.canUse(selected_combatant):
@@ -222,12 +224,21 @@ func _on_weapon_pressed():
 	showWeaponEquipMenu()
 
 func _on_slot_a_pressed():
+	if selected_combatant.CHARMS[0] != null: 
+		selected_combatant.unequipCharm(0)
+		charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
 	showCharmEquipMenu(charm_slot_a)
 
 func _on_slot_b_pressed():
+	if selected_combatant.CHARMS[1] != null: 
+		selected_combatant.unequipCharm(1)
+		charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
 	showCharmEquipMenu(charm_slot_b)
 
 func _on_slot_c_pressed():
+	if selected_combatant.CHARMS[2] != null: 
+		selected_combatant.unequipCharm(2)
+		charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
 	showCharmEquipMenu(charm_slot_c)
 
 func updateEquipped():

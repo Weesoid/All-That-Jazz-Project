@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://yuje0oodg6y2"]
+[gd_scene load_steps=9 format=3 uid="uid://yuje0oodg6y2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiIndicator.gd" id="1_578rr"]
-[ext_resource type="AudioStream" uid="uid://t5i7iw5r225l" path="res://audio/sounds/611193__eminyildirim__power-up-buff-positive-level-up.ogg" id="2_xhfcd"]
 
 [sub_resource type="Animation" id="Animation_qehba"]
 resource_name = "Crit"
@@ -54,21 +53,6 @@ tracks/3/keys = {
 "update": 0,
 "values": [0.0, 6.28319]
 }
-tracks/4/type = "audio"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../SFX")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("2_xhfcd")
-}],
-"times": PackedFloat32Array(0)
-}
-tracks/4/use_blend = true
 
 [sub_resource type="Animation" id="Animation_fvg03"]
 resource_name = "KO"

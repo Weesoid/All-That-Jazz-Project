@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c7wh3ffsmrhli"]
 
 [ext_resource type="Script" path="res://scripts/quick_time_events/qteInputting.gd" id="1_eclpy"]
-[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://audio/sounds/coin.ogg" id="2_qdoxa"]
+[ext_resource type="AudioStream" uid="uid://cspa7lxtp13av" path="res://audio/sounds/542003__rob_marion__gasp_lock-and-load.ogg" id="2_x41ut"]
 
 [node name="QTE" type="Node2D"]
 script = ExtResource("1_eclpy")
@@ -31,6 +31,6 @@ grow_vertical = 2
 size_flags_horizontal = 4
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_qdoxa")
+stream = ExtResource("2_x41ut")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

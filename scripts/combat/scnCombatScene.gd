@@ -188,7 +188,6 @@ func end_turn(combatant_act=true):
 		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
 		commandExecuteAbility(null, combat_event.ABILITY)
 		await get_tree().create_timer(0.5).timeout
-		print('Check win on COMBAT EVENT')
 		if await checkWin(): return
 	elif combat_event != null and turn_count % combat_event.TURN_TRIGGER == combat_event.TURN_TRIGGER - 3:
 		combat_log.writeCombatLog(combat_event.WARNING_MESSAGE)
@@ -223,7 +222,6 @@ func end_turn(combatant_act=true):
 	else:
 		end_turn()
 		return
-	print('Check win on END TURN')
 	if await checkWin(): return
 
 func setActiveCombatant(tick_effect=true):
@@ -574,15 +572,15 @@ func browseTargetsInputs():
 		return
 	
 	if Input.is_action_just_pressed("ui_right"):
-		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.wav", -10.0, 1, true)
+		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 		target_index = incrementIndex(target_index, 1, valid_targets.size())
 	if Input.is_action_just_pressed("ui_left"):
-		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.wav", -10.0, 1, true)
+		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 		target_index = incrementIndex(target_index, -1, valid_targets.size())
 
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
-		OverworldGlobals.playSound("56243__qk__latch_01.wav")
+		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_cancel"):
 		ui_animator.play_backwards('FocusDescription')

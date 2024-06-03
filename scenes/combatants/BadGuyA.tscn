@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://boacugbos5jhe"]
+[gd_scene load_steps=8 format=3 uid="uid://boacugbos5jhe"]
 
 [ext_resource type="Texture2D" uid="uid://cwvflwff44l4r" path="res://images/animations/monky.png" id="1_j0r52"]
-[ext_resource type="AudioStream" uid="uid://71i5e22ih4si" path="res://audio/sounds/hurt.wav" id="2_mk08h"]
 
 [sub_resource type="Animation" id="Animation_5q8qb"]
 resource_name = "Cast"
@@ -211,4 +210,3 @@ libraries = {
 }
 
 [node name="AudioPlayer" type="AudioStreamPlayer" parent="Sprite"]
-stream = ExtResource("2_mk08h")

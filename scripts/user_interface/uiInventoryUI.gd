@@ -24,7 +24,7 @@ func updateInventory():
 
 func createButton(item: ResItem):
 	var button = OverworldGlobals.createItemButton(item)
-	button.pressed.connect(func(): setButtonFunction(item, button))
+	button.pressed.connect(func(): setButtonFunction(item))
 	button.focus_entered.connect(func(): updateItemInfo(item))
 	button.focus_exited.connect(func(): resetDescription())
 	button.mouse_entered.connect(func(): updateItemInfo(item))
@@ -43,7 +43,7 @@ func updateItemInfo(item):
 	item_general_info.text = item.getGeneralInfo()
 	item_info_panel.show()
 
-func setButtonFunction(item, button: Button):
+func setButtonFunction(item):
 	item_info.text = '[center]'+ item.NAME.to_upper() + '[/center]\n'
 	item_info.text += item.getInformation()
 	item_general_info.text = item.getGeneralInfo()

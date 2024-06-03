@@ -13,7 +13,6 @@ var afflicted_status_effects: Array[String]
 func _ready():
 	if FILL_EMPTY:
 		pickRandomEnemies()
-		getMusic()
 
 func addLingeringEffect(status_effect_name: String):
 	afflicted_status_effects.append(status_effect_name)
@@ -22,7 +21,6 @@ func removeLingeringEffect(status_effect_name: String):
 	afflicted_status_effects.erase(status_effect_name)
 
 func pickRandomEnemies():
-	print('BEFORE:', COMBATANT_SQUAD)
 	randomize()
 	if RANDOM_SIZE:
 		COMBATANT_SQUAD.resize(COMBATANT_SQUAD.size() - randi_range(0, COMBATANT_SQUAD.size()-2))
@@ -30,7 +28,6 @@ func pickRandomEnemies():
 	for index in range(COMBATANT_SQUAD.size()):
 		if COMBATANT_SQUAD[index] != null: continue
 		COMBATANT_SQUAD[index] = ENEMY_POOL.pick_random()
-	print('AFTER:', COMBATANT_SQUAD)
 
 func getMusic()-> int:
 	var faction_count = {}

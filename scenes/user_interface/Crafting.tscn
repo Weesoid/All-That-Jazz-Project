@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cj67wj3vrhfw7"]
+[gd_scene load_steps=8 format=3 uid="uid://cj67wj3vrhfw7"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCraftingUI.gd" id="1_y6pgg"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_3ycts"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="2_fqj8l"]
+[ext_resource type="AudioStream" uid="uid://c0g8aj1yokb81" path="res://audio/sounds/580813__silverillusionist__craft-item-3.ogg" id="3_iry6e"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="3_m17c3"]
+[ext_resource type="AudioStream" uid="uid://bngusvjprdqlt" path="res://audio/sounds/580812__silverillusionist__craft-item-2.ogg" id="5_0hxak"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6eudg"]
 bg_color = Color(0, 0, 0, 1)
@@ -35,6 +37,7 @@ offset_top = -90.0
 offset_right = 214.0
 offset_bottom = -68.0
 text = "Repair Weapons"
+click_sound = ExtResource("3_iry6e")
 
 [node name="Craftables" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -85,6 +88,7 @@ custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("2_fqj8l")
 text = "CRAFT"
+click_sound = ExtResource("5_0hxak")
 
 [node name="ItemSelect" type="Panel" parent="."]
 visible = false

@@ -143,8 +143,10 @@ func createCustomButton(theme: Theme = preload("res://design/DefaultTheme.tres")
 	button.theme = theme
 	return button
 
-func createItemButton(item: ResItem, value_modifier=0.0)-> CustomButton:
-	var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+func createItemButton(item: ResItem, value_modifier: float=0.0, _show_count: bool=true)-> CustomButton:
+	var button: CustomButton = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+	button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	button.click_sound = preload("res://audio/sounds/421461__jaszunio15__click_46.ogg")
 	button.custom_minimum_size.x = 28
 	button.custom_minimum_size.y = 28
 	button.expand_icon = true
@@ -220,7 +222,10 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=false):
 	var player = AudioStreamPlayer.new()
 	player.connect("finished", player.queue_free)
 	player.pitch_scale = pitch
-	player.stream = load("res://audio/sounds/%s" % filename)
+	if filename.begins_with('res://'):
+		player.stream = load(filename)
+	else:
+		player.stream = load("res://audio/sounds/%s" % filename)
 	player.volume_db = db
 	if random_pitch:
 		randomize()

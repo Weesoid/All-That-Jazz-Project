@@ -53,6 +53,9 @@ func craft():
 		if all_components[i] == null: continue
 		InventoryGlobals.removeItemResource(all_components[i], 1, false)
 		updateComponentSlot(i)
+	
+	if !InventoryGlobals.RECIPES.has(recipeToString()):
+		component_core.grab_focus()
 
 func updateComponentSlot(slot: int):
 	var item = all_components[slot]
@@ -76,6 +79,8 @@ func showItems(slot_button: Button, slot: int):
 	var cancel_button = OverworldGlobals.createCustomButton()
 	cancel_button.theme = preload("res://design/ItemButtons.tres")
 	cancel_button.icon = preload('res://images/sprites/icon_cross.png')
+	cancel_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	cancel_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 	cancel_button.pressed.connect(
 		func():
 			if all_components[slot] != null:

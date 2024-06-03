@@ -27,7 +27,7 @@ func generateInputs():
 		randomize()
 		inputs.append(possible_inputs.pick_random())
 	displayInputs()
-		
+	
 
 func displayInputs():
 	if inputs.is_empty():

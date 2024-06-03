@@ -70,4 +70,6 @@ text = "MEMBER NAME"
 vertical_alignment = 1
 uppercase = true
 
+[connection signal="tab_changed" from="uiCharacterInformation/TabContainer" to="." method="_on_tab_container_tab_changed"]
+
 [editable path="uiCharacterInformation"]

@@ -23,7 +23,7 @@ func _unhandled_input(_event: InputEvent):
 			target_speed += randf_range(0.25, 0.5)
 			points += 1
 			size*=-1
-			OverworldGlobals.playSound('coin.ogg', 0.0, 1.0 + (0.025 * points))
+			OverworldGlobals.playSound("res://audio/sounds/542003__rob_marion__gasp_lock-and-load.ogg", 0.0, 1.0 + (0.025 * points))
 			if points == max_points:
 				target.hide()
 				CombatGlobals.qte_finished.emit()

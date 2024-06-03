@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://b0u8unfc6s68l"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/scmPromptQuest.gd" id="1_mr51i"]
-[ext_resource type="AudioStream" uid="uid://b0i2tcoy5evhm" path="res://audio/sounds/629534__metkir__open-treasure-sound.wav" id="2_vpkar"]
-[ext_resource type="AudioStream" uid="uid://ydlx2bxjrejn" path="res://audio/sounds/641011__metkir__crying-sound.mp3" id="3_j3rpx"]
+[ext_resource type="AudioStream" uid="uid://b2i5yin14h2a5" path="res://audio/sounds/430893__gsb1039__magic-3glitterarrival.ogg" id="2_2ql0a"]
+[ext_resource type="AudioStream" uid="uid://b81a4a5kv6cwo" path="res://audio/sounds/430894__gsb1039__magic-2wouwsinepad.ogg" id="3_3hgny"]
 
 [sub_resource type="Animation" id="Animation_8gdix"]
 length = 0.001
@@ -81,7 +81,7 @@ tracks/5/keys = {
 
 [sub_resource type="Animation" id="Animation_gs2mi"]
 resource_name = "quest_complete"
-length = 4.0
+length = 6.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -137,7 +137,7 @@ tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(4),
+"times": PackedFloat32Array(6.5),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -154,7 +154,7 @@ tracks/5/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("3_j3rpx")
+"stream": ExtResource("2_2ql0a")
 }],
 "times": PackedFloat32Array(0)
 }
@@ -174,7 +174,7 @@ tracks/6/keys = {
 
 [sub_resource type="Animation" id="Animation_8aewi"]
 resource_name = "show_quest"
-length = 4.0
+length = 5.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -230,7 +230,7 @@ tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(4),
+"times": PackedFloat32Array(5.3),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -247,7 +247,7 @@ tracks/5/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("2_vpkar")
+"stream": ExtResource("3_3hgny")
 }],
 "times": PackedFloat32Array(0)
 }

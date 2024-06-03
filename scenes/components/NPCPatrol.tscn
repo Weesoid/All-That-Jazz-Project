@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b0e4gc4eq74ca"]
+[gd_scene load_steps=7 format=3 uid="uid://b0e4gc4eq74ca"]
 
 [ext_resource type="Script" path="res://scripts/components/sccNPCMovementPatrol.gd" id="1_gxlj6"]
 [ext_resource type="Texture2D" uid="uid://cvlxblusko57c" path="res://images/animations/untitled.png" id="2_qga5p"]
-[ext_resource type="AudioStream" uid="uid://cnv2ohy1bwt61" path="res://audio/sounds/413641__djlprojects__metal-gear-solid-inspired-alert-surprise-sfx.wav" id="3_a8svp"]
 
 [sub_resource type="Animation" id="Animation_r7k43"]
 resource_name = "Loop"
@@ -86,7 +85,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_scp8k"]
 resource_name = "Show"
-length = 0.5
+length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -123,21 +122,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [false, true]
 }
-tracks/3/type = "audio"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AudioStreamPlayer2D")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("3_a8svp")
-}],
-"times": PackedFloat32Array(-0.2)
-}
-tracks/3/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cqyvp"]
 _data = {

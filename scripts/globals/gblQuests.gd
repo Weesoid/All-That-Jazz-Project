@@ -24,7 +24,7 @@ func checkQuestsForCompleted(objective: ResQuestObjective):
 	
 	for quest in ongoing_quests:
 		if quest.getObjective(objective.NAME) != null and !objective.END_OBJECTIVE:
-			OverworldGlobals.getPlayer().prompt.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest.NAME, 5.0, "641011__metkir__crying-sound-0.mp3")
+			OverworldGlobals.getPlayer().prompt.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest.NAME, 5.0, "430892__gsb1039__magic-1-grainsmooth.ogg")
 		
 		quest.isCompleted()
 

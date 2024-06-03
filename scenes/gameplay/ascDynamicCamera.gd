@@ -6,8 +6,9 @@ var shake_speed: float = 0.0
 
 func _process(delta):
 	if shake_strength != 0:
-		shake_strength = lerpf(shake_strength, 0, 10.0 * delta)
+		shake_strength = lerpf(shake_strength, 0, shake_speed * delta)
 		offset = Vector2(randf_range(-shake_strength,shake_strength), randf_range(-shake_strength,shake_strength))
 
 func shake(strength: float, speed: float):
+	shake_speed = speed
 	shake_strength = strength

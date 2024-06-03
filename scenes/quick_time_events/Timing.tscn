@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/quick_time_events/qteTiming.gd" id="1_4ef8u"]
 [ext_resource type="Texture2D" uid="uid://dxw47c83a60c6" path="res://images/sprites/timing_bar.png" id="2_xo8y4"]
-[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://audio/sounds/coin.ogg" id="4_0qb72"]
+[ext_resource type="AudioStream" uid="uid://cspa7lxtp13av" path="res://audio/sounds/542003__rob_marion__gasp_lock-and-load.ogg" id="4_ugfcd"]
 [ext_resource type="Texture2D" uid="uid://d33jb5c7qwjn3" path="res://images/sprites/timing_target.png" id="4_xogn6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rxcus"]
@@ -30,4 +30,4 @@ texture = ExtResource("4_xogn6")
 shape = SubResource("RectangleShape2D_rxcus")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="TimingTarget"]
-stream = ExtResource("4_0qb72")
+stream = ExtResource("4_ugfcd")

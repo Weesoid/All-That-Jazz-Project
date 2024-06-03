@@ -88,9 +88,9 @@ bbcode_enabled = true
 [node name="ToggleMode" parent="." instance=ExtResource("2_n4cm8")]
 layout_mode = 1
 offset_left = 136.0
-offset_top = -144.0
+offset_top = -142.0
 offset_right = 216.0
-offset_bottom = -122.0
+offset_bottom = -120.0
 text = "Barter"
 
 [node name="Currency" type="Label" parent="."]

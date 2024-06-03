@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bae7aifhormuj"]
 
 [ext_resource type="Script" path="res://scripts/quick_time_events/qteMashing.gd" id="1_8qkyh"]
-[ext_resource type="AudioStream" uid="uid://cdskurtwnb2lk" path="res://audio/sounds/coin.ogg" id="2_uxgve"]
+[ext_resource type="AudioStream" uid="uid://cspa7lxtp13av" path="res://audio/sounds/542003__rob_marion__gasp_lock-and-load.ogg" id="2_mukpm"]
 
 [sub_resource type="Animation" id="Animation_k78bc"]
 resource_name = "Point"
@@ -47,7 +47,7 @@ script = ExtResource("1_8qkyh")
 autostart = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_uxgve")
+stream = ExtResource("2_mukpm")
 
 [node name="MashBar" type="ProgressBar" parent="."]
 offset_left = -81.0

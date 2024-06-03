@@ -1,14 +1,8 @@
 extends ResCombatant
 class_name ResEnemyCombatant
 
-enum Tier {
-	Easy,
-	Medium,
-	Hard,
-	Boss
-}
 @export var FACTION: CombatGlobals.Enemy_Factions
-@export var TIER: Tier
+@export var ELITE: bool = false
 @export var AI_PACKAGE: GDScript
 @export var CHANCE_TO_DROP = 0.50
 @export var DROP_COUNT = 1

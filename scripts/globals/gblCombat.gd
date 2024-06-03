@@ -64,11 +64,13 @@ func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: 
 			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 			call_indicator.emit('Show', target)
 			getCombatScene().combat_camera.shake(15.0, 10.0)
+			OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
 		elif crit_chance != -1.0 and randomRoll(crit_chance):
 			damage *= 2.0
 			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 			call_indicator.emit('Show', target)
 			getCombatScene().combat_camera.shake(15.0, 10.0)
+			OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
 	else:
 		call_indicator.emit('Show', target)
 	
@@ -90,6 +92,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 		call_indicator.emit('Show', target)
 		getCombatScene().combat_camera.shake(15.0, 10.0)
+		OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
 	else:
 		call_indicator.emit('Show', target)
 	
@@ -110,6 +113,7 @@ func calculateHealing(target:ResCombatant, base_healing):
 	
 	#received_combatant_value.emit(target, caster, int(base_healing))
 	call_indicator.emit('Show', target)
+	OverworldGlobals.playSound('02_Heal_02.ogg')
 
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
@@ -148,6 +152,8 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 		animation_done.emit()
 
 func playHurtAnimation(target: ResCombatant):
+	randomize()
+	OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2))
 	target.getAnimator().play('Hit')
 	if !target.isDead():
 		playHurtTween(target)
@@ -155,11 +161,13 @@ func playHurtAnimation(target: ResCombatant):
 		target.getAnimator().play('Idle')
 	else:
 		getCombatScene().combat_camera.shake(25.0, 10.0)
-		await get_tree().create_timer(randf_range(1.0, 5.0))
 		if target is ResEnemyCombatant:
-			OverworldGlobals.playSound('668246__eminyildirim__holy-light-impact_0.ogg')
+			if target.ELITE:
+				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
+			else:
+				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
 		else:
-			OverworldGlobals.playSound('668246__eminyildirim__holy-light-impact_1.ogg')
+			OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
 
 func playDodgeTween(target: ResCombatant):
 	OverworldGlobals.playSound('607862__department64__whipstick-28.ogg')
@@ -168,7 +176,6 @@ func playDodgeTween(target: ResCombatant):
 	tween.tween_property(target.getSprite(), 'position', Vector2(0, 0), 0.5)
 
 func playHurtTween(target: ResCombatant):
-	OverworldGlobals.playSound('hurt.wav')
 	randomize()
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	var shake = Vector2(40, 0) + Vector2(randf_range(0, 40), 0)
@@ -178,6 +185,7 @@ func playHurtTween(target: ResCombatant):
 	tween.tween_property(target.SCENE, 'position', Vector2(0, 0), duration)
 
 func playFadingTween(target: ResCombatant):
+	OverworldGlobals.playSound('woosh.ogg')
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	var opacity_tween = getCombatScene().create_tween()
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
@@ -185,6 +193,7 @@ func playFadingTween(target: ResCombatant):
 	opacity_tween.tween_property(target.SCENE, 'modulate', Color(Color.GRAY, 0.25), 0.75)
 
 func playSecondWindTween(target: ResCombatant):
+	OverworldGlobals.playSound("res://audio/sounds/458533__shyguy014__healpop.ogg")
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	var opacity_tween = getCombatScene().create_tween()
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.05)
@@ -192,6 +201,7 @@ func playSecondWindTween(target: ResCombatant):
 	opacity_tween.tween_property(target.SCENE, 'modulate', Color(Color.WHITE, 1.0), 0.5)
 
 func playKnockOutTween(target: ResCombatant):
+	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	var opacity_tween = getCombatScene().create_tween()
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
@@ -231,24 +241,27 @@ func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_a
 	checkReactions(target)
 
 func checkReactions(target: ResCombatant):
-	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
-		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Cauterize.tres"))
-		removeStatusEffect(target, 'Singed')
-		removeStatusEffect(target, 'Poison')
-	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Chilled'):
+	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Chilled'):
 		runReaction(target, 'Singed', 'Chilled', load("res://resources/combat/abilities_reactions/Scald.tres"))
 	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Jolted', 'Poison', load("res://resources/combat/abilities_reactions/Catalyze.tres"))
-	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
-		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Fulgurate.tres"))
-		removeStatusEffect(target, 'Singed')
-		removeStatusEffect(target, 'Jolted')
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Jolted'):
 		runReaction(target, 'Chilled', 'Jolted', load("res://resources/combat/abilities_reactions/Disrupt.tres"))
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Chilled', 'Poison', load("res://resources/combat/abilities_reactions/Vulnerate.tres"))
+	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
+		OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
+		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Cauterize.tres"))
+		removeStatusEffect(target, 'Singed')
+		removeStatusEffect(target, 'Poison')
+	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
+		OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
+		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Fulgurate.tres"))
+		removeStatusEffect(target, 'Singed')
+		removeStatusEffect(target, 'Jolted')
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
+	OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
 	removeStatusEffect(target, effectA)
 	removeStatusEffect(target, effectB)
 	execute_ability.emit(target, reaction)

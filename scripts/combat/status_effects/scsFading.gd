@@ -4,10 +4,18 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.playFadingTween(target)
 		CombatGlobals.modifyStat(target, {'hustle': -999.0}, status_effect.NAME)
 	
-	if CombatGlobals.randomRoll(1.0 + target.BASE_STAT_VALUES['grit']) and canAddQTE(status_effect):
+	CombatGlobals.manual_call_indicator.emit(target, 'Fading...', 'Resist')
+	var grit_normalized: float
+	if target.BASE_STAT_VALUES['grit'] > 1.0:
+		grit_normalized = 1.0
+	else:
+		grit_normalized = target.BASE_STAT_VALUES['grit']
+	
+	var grit_bonus = (grit_normalized - 0.0) / (1.0 - 0.0) * 0.5
+	if CombatGlobals.randomRoll(1.0 + grit_bonus) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
-		qte.global_position = Vector2(0, 0)
+		qte.global_position = Vector2(0, -40)
 		CombatGlobals.getCombatScene().add_child(qte)
 		OverworldGlobals.playSound('641011__metkir__crying-sound-0.mp3')
 		await CombatGlobals.qte_finished

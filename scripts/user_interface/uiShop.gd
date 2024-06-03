@@ -158,9 +158,12 @@ func setButtonFunction(selected_item):
 				OverworldGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
 				PlayerGlobals.CURRENCY -= int((selected_item.VALUE * buy_modifier) * amount)
+				if amount > 0:
+					OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			else:
 				InventoryGlobals.addItemResource(selected_item)
 				PlayerGlobals.CURRENCY -= int(selected_item.VALUE * buy_modifier)
+				OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			loadWares(wares_array)
 		0:
 			if selected_item.MANDATORY:
@@ -175,6 +178,8 @@ func setButtonFunction(selected_item):
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
 			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
 			loadWares(InventoryGlobals.INVENTORY)
+			if amount > 0:
+				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
 
 func _on_toggle_mode_pressed():
 	match mode:
@@ -184,3 +189,7 @@ func _on_toggle_mode_pressed():
 		1:
 			mode = 0
 			loadWares(InventoryGlobals.INVENTORY)
+
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed('ui_tab_right'):
+		toggle_button.pressed.emit()
