@@ -191,5 +191,5 @@ func _on_toggle_mode_pressed():
 			loadWares(InventoryGlobals.INVENTORY)
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_tab_right'):
+	if Input.is_action_just_pressed('ui_tab_right') and !has_node('AmountSlider'):
 		toggle_button.pressed.emit()

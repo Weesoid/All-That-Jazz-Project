@@ -1,0 +1,5 @@
+~ start
+
+do showMenu("res://scenes/user_interface/Saves.tscn")
+
+=> END

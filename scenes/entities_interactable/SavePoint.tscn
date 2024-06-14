@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7mg0vkj75woi"]
+
+[ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://images/sprites/table.png" id="1_2nmps"]
+[ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
+[ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cuxhy"]
+size = Vector2(46, 33)
+
+[node name="SavePoint" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0.933333, 1, 1)
+position = Vector2(0, -24)
+texture = ExtResource("1_2nmps")
+
+[node name="InteractComponent" parent="." instance=ExtResource("2_pey47")]
+position = Vector2(0, -16)
+dialogue_resource = ExtResource("3_m7jmf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_cuxhy")

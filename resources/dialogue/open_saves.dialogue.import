@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://bqr7ahia0utx"
+path="res://.godot/imported/open_saves.dialogue-304d0d90c28d27026c1d5e0fd173cf05.tres"
+
+[deps]
+
+source_file="res://resources/dialogue/open_saves.dialogue"
+dest_files=["res://.godot/imported/open_saves.dialogue-304d0d90c28d27026c1d5e0fd173cf05.tres"]
+
+[params]
+
+defaults=true

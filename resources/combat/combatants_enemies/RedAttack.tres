@@ -13,7 +13,7 @@
 [resource]
 script = ExtResource("3_tvtxk")
 FACTION = 0
-TIER = 0
+ELITE = false
 AI_PACKAGE = ExtResource("2_t0rce")
 CHANCE_TO_DROP = 1.0
 DROP_COUNT = 5

@@ -2,11 +2,18 @@ extends Node
 
 var is_loading: bool
 signal done_loading
+signal done_saving
 
-#func _ready():
-#	loadGame()
+var session_start: float
+var current_playtime: float
 
-func saveGame():
+func _ready():
+	session_start = Time.get_unix_time_from_system()
+
+func getTotalPlaytime()-> String:
+	return Time.get_time_string_from_unix_time(Time.get_unix_time_from_system() - session_start)
+
+func saveGame(save_name: String='Save 0'):
 	var saved_game: SavedGame = SavedGame.new()
 	saved_game.current_map_path = OverworldGlobals.getCurrentMap().scene_file_path
 	
@@ -16,13 +23,19 @@ func saveGame():
 	QuestGlobals.saveData(save_data)
 	PlayerGlobals.saveData(save_data)
 	saved_game.save_data = save_data
-	
-	ResourceSaver.save(saved_game, "res://saves/save.tres")
+	saved_game.PLAYTIME = current_playtime + (Time.get_unix_time_from_system() - session_start)
+	saved_game.NAME = '%s - %s\nMorale %s\n%s' % [save_name, getTotalPlaytime(), PlayerGlobals.PARTY_LEVEL, OverworldGlobals.getCurrentMapData().NAME]
+#	get_viewport().get_texture().get_image().save_jpg("user://%s.jpg" % save_name)
+#	var img =  Image.new()
+#	img.load("user://%s.jpg" % save_name)
+#	var image_texture = ImageTexture.create_from_image(img)
+#	saved_game.IMG_PREVIEW = image_texture
+	ResourceSaver.save(saved_game, "res://saves/%s.tres" % save_name)
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game saved[/color]!')
+	done_saving.emit()
 
-func loadGame():
+func loadGame(saved_game: SavedGame):
 	is_loading = true
-	var saved_game: SavedGame = load('res://saves/save.tres') as SavedGame
 	get_tree().change_scene_to_file(saved_game.current_map_path)
 	
 	await get_tree().create_timer(0.01).timeout
@@ -45,4 +58,6 @@ func loadGame():
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
 	done_loading.emit()
 	is_loading = false
-	#print_orphan_nodes()
+	
+	session_start = Time.get_unix_time_from_system()
+	current_playtime = saved_game.PLAYTIME

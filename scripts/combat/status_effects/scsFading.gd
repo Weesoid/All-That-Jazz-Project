@@ -17,7 +17,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)
 		CombatGlobals.getCombatScene().add_child(qte)
-		OverworldGlobals.playSound('641011__metkir__crying-sound-0.mp3')
+		#OverworldGlobals.playSound('641011__metkir__crying-sound-0.mp3')
 		await CombatGlobals.qte_finished
 	
 		if qte.points >= 1:
