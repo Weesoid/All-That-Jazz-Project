@@ -38,6 +38,7 @@ func _ready():
 	PlayerGlobals.loadSquad()
 	if OverworldGlobals.getCurrentMapData().SAFE:
 		OverworldGlobals.loadFollowers()
+	add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -114,6 +115,12 @@ func _unhandled_input(_event: InputEvent):
 		else:
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 	
+	if Input.is_action_pressed("ui_cheat_mode"):
+		if !has_node('DebugComponent'):
+			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
+		else:
+			get_node('DebugComponent').queue_free()
+
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false

@@ -1,48 +1,61 @@
 extends Control
 
 enum Modes {
-	OVERWRITE,
+	SAVE,
 	LOAD,
 	DELETE
 }
 
 @onready var panel = $PanelContainer/MarginContainer/VBoxContainer
-@onready var preview = $PanelContainer2/TextureRect
+@onready var dropdown = $OptionButton
 
 @export var mode: Modes
 
 func _ready():
 	createSaveButtons()
+	
+	if OverworldGlobals.getPlayer().has_node('DebugComponent'):
+		dropdown.add_item('Save', 0)
+		dropdown.add_item('Load', 1)
+		dropdown.add_item('Delete', 2)
+		dropdown.show()
 
 func createSaveButtons():
-	for i in range(4):
-		createSaveButton('Save %s' % i)
+	for i in range(3):
+		createSaveButton('Save %s' % str(i+1))
 	OverworldGlobals.setMenuFocus(panel)
 
 func createSaveButton(save_name: String):
 	var button: Button = OverworldGlobals.createCustomButton()
+	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if ResourceLoader.exists("res://saves/%s.tres" % save_name):
 		var save: SavedGame = load("res://saves/%s.tres" % save_name)
 		button.text = save.NAME
-#		button.focus_entered.connect(func(): preview.texture = save.IMG_PREVIEW)
-#		button.mouse_entered.connect(func(): preview.texture = save.IMG_PREVIEW)
 	else:
-		button.text = 'EMPTY %s' % save_name
-	match mode:
-		Modes.OVERWRITE: button.pressed.connect(func(): saveGame(save_name, button))
-		Modes.LOAD: button.pressed.connect(func(): SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name)))
-		Modes.DELETE: button.pressed.connect(func(): deleteSave(save_name))
+		button.text = 'EMPTY'
+	
+	button.gui_input.connect(func(input): slotPressed(input, save_name, button))
 	panel.add_child(button)
+
+func slotPressed(input, save_name: String, button: Button):
+	if Input.is_action_just_pressed("ui_alt_accept"):
+		deleteSave(save_name, button)
+	elif Input.is_action_just_pressed("ui_click") or Input.is_action_just_pressed('ui_accept'):
+		match mode:
+			Modes.SAVE: saveGame(save_name, button)
+			Modes.LOAD: SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name))
 
 func saveGame(save_name: String, button: Button):
 	SaveLoadGlobals.saveGame(save_name)
 	var save = load("res://saves/%s.tres" % save_name)
 	button.text = save.NAME
-	#preview.texture = save.IMG_PREVIEW
 
-func deleteSave(save_name: String):
+func deleteSave(save_name: String, button: Button):
 	DirAccess.remove_absolute("res://saves/%s.tres" % save_name)
-	for child in panel.get_children():
-		remove_child(child)
-		child.queue_free()
-	createSaveButtons()
+	button.text = 'EMPTY'
+
+func _on_option_button_item_selected(index):
+	match index:
+		0: mode = Modes.SAVE
+		1: mode = Modes.LOAD
+		2: mode = Modes.DELETE

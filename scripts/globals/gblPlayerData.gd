@@ -52,6 +52,8 @@ func addExperience(experience: int):
 		PARTY_LEVEL += 1
 		CURRENT_EXP = 0
 		levelUpCombatants()
+	elif CURRENT_EXP < 0:
+		CURRENT_EXP = 0
 
 func getRequiredExp() -> int:
 	var baseExp = 100

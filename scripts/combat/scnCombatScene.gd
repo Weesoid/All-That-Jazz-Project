@@ -230,8 +230,8 @@ func setActiveCombatant(tick_effect=true):
 		tickStatusEffects(active_combatant)
 		removeDeadCombatants()
 
-func removeDeadCombatants(fading=true):
-	if !isCombatValid(): return
+func removeDeadCombatants(fading=true, is_valid_check=true):
+	if !isCombatValid() and is_valid_check: return
 	
 	for combatant in getDeadCombatants():
 		if combatant is ResEnemyCombatant:
@@ -239,6 +239,7 @@ func removeDeadCombatants(fading=true):
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				combatant.ACTED = true
+				print('Adding experience teehee!', combatant.getExperience())
 				experience_earnt += combatant.getExperience()
 				addDrop(combatant.getDrops())
 		elif combatant is ResPlayerCombatant:
@@ -621,6 +622,7 @@ func writeTopLogMessage(message: String):
 func concludeCombat(results: int):
 	if combat_result != -1: return
 	
+	removeDeadCombatants(true, false)
 	combat_result = results
 	battle_music.stop()
 	for combatant in COMBATANTS:
@@ -634,30 +636,33 @@ func concludeCombat(results: int):
 	var loot_bonus = 0
 	var all_bonuses = ''
 	
-	if turn_count <= 6 and results == 1:
-		all_bonuses += '[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops\n'
-		morale_bonus += 1
-		loot_bonus += 1
-	if enemy_turn_count == 0 and results == 1:
-		all_bonuses += '[color=orange]RUTHLESS FINISH![/color] Increased Drops\n'
-		loot_bonus += 1
-	if round_count == 1 and results == 1:
-		all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
-		morale_bonus += 1
+	print('EXP before modifs %s' % experience_earnt)
 	if results == 1:
-		experience_earnt += (experience_earnt*0.25)*morale_bonus
-		for i in range(loot_bonus):
-			for enemy in getCombatantGroup('enemies'): addDrop(enemy.getDrops())
+		if turn_count <= 6:
+			all_bonuses += '[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops\n'
+			morale_bonus += 1
+			loot_bonus += 1
+		if enemy_turn_count == 0:
+			all_bonuses += '[color=orange]RUTHLESS FINISH![/color] Increased Drops\n'
+			loot_bonus += 1
+		if round_count == 1:
+			all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
+			morale_bonus += 1
+		if results == 1:
+			experience_earnt += (experience_earnt*0.25)*morale_bonus
+			for i in range(loot_bonus):
+				for enemy in getCombatantGroup('enemies'): addDrop(enemy.getDrops())
+	else:
+		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
+	print('EXP after modifs %s' % experience_earnt)
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
-	
 	for item in drops.keys():
 		InventoryGlobals.addItemResource(item, drops[item])
 	add_child(bc_ui)
 	if results == 1:
-		bc_ui.title.text = 'VICTORY!'
+		bc_ui.title.text = 'Foes Neutralized!'
 	else:
-		bc_ui.title.text = 'ESCAPED!'
-	
+		bc_ui.title.text = 'Escaped!'
 	bc_ui.setBonuses(all_bonuses)
 	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 	PlayerGlobals.addExperience(experience_earnt)

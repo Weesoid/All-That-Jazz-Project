@@ -25,11 +25,6 @@ func saveGame(save_name: String='Save 0'):
 	saved_game.save_data = save_data
 	saved_game.PLAYTIME = current_playtime + (Time.get_unix_time_from_system() - session_start)
 	saved_game.NAME = '%s - %s\nMorale %s\n%s' % [save_name, getTotalPlaytime(), PlayerGlobals.PARTY_LEVEL, OverworldGlobals.getCurrentMapData().NAME]
-#	get_viewport().get_texture().get_image().save_jpg("user://%s.jpg" % save_name)
-#	var img =  Image.new()
-#	img.load("user://%s.jpg" % save_name)
-#	var image_texture = ImageTexture.create_from_image(img)
-#	saved_game.IMG_PREVIEW = image_texture
 	ResourceSaver.save(saved_game, "res://saves/%s.tres" % save_name)
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game saved[/color]!')
 	done_saving.emit()

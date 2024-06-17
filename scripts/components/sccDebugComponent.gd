@@ -9,7 +9,7 @@ func _process(_delta):
 		equipped_charm.text = PlayerGlobals.EQUIPPED_CHARM.NAME
 	else:
 		equipped_charm.text = 'No charm.'
-
+	
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_quick_save"):
 		SaveLoadGlobals.saveGame()

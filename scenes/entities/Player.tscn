@@ -1,7 +1,6 @@
-[gd_scene load_steps=121 format=3 uid="uid://xfrvaohqhfml"]
+[gd_scene load_steps=120 format=3 uid="uid://xfrvaohqhfml"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_mngvk"]
-[ext_resource type="PackedScene" uid="uid://bwufa7157t4m" path="res://scenes/components/DebugComponent.tscn" id="2_ptoyi"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="3_y84xx"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/animations/player.png" id="5_nms4n"]
@@ -1875,9 +1874,6 @@ _data = {
 collision_layer = 17
 collision_mask = 17
 script = ExtResource("1_mngvk")
-
-[node name="DebugComponent" parent="." instance=ExtResource("2_ptoyi")]
-position = Vector2(0, -34)
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
 
