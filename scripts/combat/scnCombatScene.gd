@@ -207,12 +207,15 @@ func end_turn(combatant_act=true):
 	target_index = 0
 	secondary_panel.hide()
 	
-	
 	# Determinte next combatant
+	print('T.O. b4 cast ', combatant_turn_order)
 	if !selected_ability.INSTANT_CAST:
 		setActiveCombatant()
 	else:
 		selected_ability.ENABLED = false
+		active_combatant.TURN_CHARGES += 1
+		combatant_turn_order.push_front([active_combatant, 1])
+		print('T.O. After cast  ', combatant_turn_order)
 	
 	if checkDialogue():
 		await DialogueManager.dialogue_ended

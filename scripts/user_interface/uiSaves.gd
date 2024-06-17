@@ -34,10 +34,10 @@ func createSaveButton(save_name: String):
 	else:
 		button.text = 'EMPTY'
 	
-	button.gui_input.connect(func(input): slotPressed(input, save_name, button))
+	button.gui_input.connect(func(input): slotPressed(save_name, button))
 	panel.add_child(button)
 
-func slotPressed(input, save_name: String, button: Button):
+func slotPressed(save_name: String, button: Button):
 	if Input.is_action_just_pressed("ui_alt_accept"):
 		deleteSave(save_name, button)
 	elif Input.is_action_just_pressed("ui_click") or Input.is_action_just_pressed('ui_accept'):

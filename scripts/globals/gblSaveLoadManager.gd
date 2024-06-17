@@ -11,7 +11,7 @@ func _ready():
 	session_start = Time.get_unix_time_from_system()
 
 func getTotalPlaytime()-> String:
-	return Time.get_time_string_from_unix_time(Time.get_unix_time_from_system() - session_start)
+	return Time.get_time_string_from_unix_time(int(Time.get_unix_time_from_system() - session_start))
 
 func saveGame(save_name: String='Save 0'):
 	var saved_game: SavedGame = SavedGame.new()
