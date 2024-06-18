@@ -116,6 +116,7 @@ func _unhandled_input(_event: InputEvent):
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 	
 	if Input.is_action_pressed("ui_cheat_mode"):
+		OverworldGlobals.playEntityAnimation('Player','Fall')
 		if !has_node('DebugComponent'):
 			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 		else:
@@ -156,10 +157,6 @@ func animateInteract():
 		interaction_prompt_animator.play('Interact')
 	else:
 		interaction_prompt_animator.play('RESET')
-		
-	#elif !OverworldGlobals.player_can_move:
-	#else:
-	#	interaction_prompt_animator.play('RESET')
 
 func drawBow():
 	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
@@ -180,7 +177,6 @@ func drawBow():
 		else:
 			bow_line.default_color.a = 0.5
 		if bow_draw_strength >= PlayerGlobals.bow_max_draw:
-			#player_camera.zoom = lerp(player_camera.zoom, Vector2(1.75, 1.75), 0.25)
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.bow_max_draw
 	
@@ -249,9 +245,6 @@ func updateAnimationParameters():
 		
 		if Input.is_action_just_released("ui_click"):
 			animation_tree["parameters/conditions/draw_bow"] = false
-			print(bow_draw_strength)
-			print(PlayerGlobals.bow_max_draw)
-			print(bow_draw_strength >= PlayerGlobals.bow_max_draw, ' and ', velocity == Vector2.ZERO)
 			if bow_draw_strength >= PlayerGlobals.bow_max_draw and velocity == Vector2.ZERO:
 				animation_tree["parameters/conditions/shoot_bow"] = true
 				can_move = false

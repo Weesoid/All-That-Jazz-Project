@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://0tkoyt33aq20"
+path="res://.godot/imported/body fall 12.ogg-5b1d33e650fbba217728f6106ebe1e72.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/sounds/body fall 12.ogg"
+dest_files=["res://.godot/imported/body fall 12.ogg-5b1d33e650fbba217728f6106ebe1e72.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

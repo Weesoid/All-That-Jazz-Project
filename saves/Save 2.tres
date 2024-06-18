@@ -27,12 +27,12 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_mps3m"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_f7px1"]
 
-[sub_resource type="Resource" id="Resource_17gvy"]
+[sub_resource type="Resource" id="Resource_k6pd1"]
 script = ExtResource("1_42wh4")
-position = Vector2(-64.0746, -95.5093)
+position = Vector2(-83.0474, -104.999)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_tqkyk"]
+[sub_resource type="Resource" id="Resource_im6mc"]
 script = ExtResource("4_3xu4a")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -40,12 +40,12 @@ KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResour
 ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_ur1ep"]
+[sub_resource type="Resource" id="Resource_ychli"]
 script = ExtResource("5_263jo")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_qvxrp"]
+[sub_resource type="Resource" id="Resource_b6orb"]
 script = ExtResource("25_mps3m")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_2puo0"), ExtResource("15_m6jvd"), ExtResource("22_vyxks"), ExtResource("23_2lkxj")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -63,7 +63,7 @@ sprint_drain = 0.1
 stamina_gain = 0.1
 STRING_CONDITIONS = Array[String]([])
 COMBATANT_SAVE_DATA = {
-ExtResource("6_2puo0"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rerya"), ExtResource("9_esyew"), ExtResource("11_6ecnd"), ExtResource("13_5ddes")]), {
+ExtResource("6_2puo0"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rerya")]), {
 0: null,
 1: null,
 2: null
@@ -89,12 +89,12 @@ ExtResource("6_2puo0"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 100,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_boeu7"), ExtResource("7_rerya"), ExtResource("9_esyew"), ExtResource("10_8h2pf"), ExtResource("11_6ecnd"), ExtResource("12_p52yj"), ExtResource("13_5ddes")]), true, Array[String]([]), true, true, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_boeu7"), ExtResource("7_rerya"), ExtResource("9_esyew"), ExtResource("10_8h2pf"), ExtResource("11_6ecnd"), ExtResource("12_p52yj"), ExtResource("13_5ddes"), null]), true, Array[String]([]), true, false, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
 }, ExtResource("14_x0xt1")],
-ExtResource("15_m6jvd"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rerya"), ExtResource("13_5ddes"), ExtResource("16_nwvt0"), ExtResource("17_24jag")]), {
+ExtResource("15_m6jvd"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_rerya")]), {
 0: null,
 1: null,
 2: null
@@ -120,7 +120,7 @@ ExtResource("15_m6jvd"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 10,
 "hustle": 0,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_5ddes"), ExtResource("12_p52yj"), ExtResource("16_nwvt0"), ExtResource("9_esyew"), ExtResource("17_24jag"), ExtResource("18_6j8pi"), ExtResource("19_nw6mt"), ExtResource("20_r57ku"), ExtResource("21_1mixf"), ExtResource("9_esyew")]), false, Array[String]([]), true, true, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_5ddes"), ExtResource("12_p52yj"), ExtResource("16_nwvt0"), ExtResource("9_esyew"), ExtResource("17_24jag"), ExtResource("18_6j8pi"), ExtResource("19_nw6mt"), ExtResource("20_r57ku"), ExtResource("21_1mixf"), ExtResource("9_esyew")]), false, Array[String]([]), true, false, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
@@ -191,9 +191,9 @@ ExtResource("23_2lkxj"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 
 [resource]
 script = ExtResource("26_f7px1")
-NAME = "Save 2 - 00:01:43
+NAME = "Save 2 - 00:00:54
 Morale 1
 Prototype Room"
-PLAYTIME = 127.783
+PLAYTIME = 54.176
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_17gvy"), SubResource("Resource_tqkyk"), SubResource("Resource_ur1ep"), SubResource("Resource_qvxrp")]
+save_data = [SubResource("Resource_k6pd1"), SubResource("Resource_im6mc"), SubResource("Resource_ychli"), SubResource("Resource_b6orb")]
