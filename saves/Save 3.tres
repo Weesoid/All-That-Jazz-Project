@@ -27,12 +27,12 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_6wlxe"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_2gmo6"]
 
-[sub_resource type="Resource" id="Resource_paept"]
+[sub_resource type="Resource" id="Resource_w1nq0"]
 script = ExtResource("1_bj3i4")
-position = Vector2(-83.0474, -104.999)
+position = Vector2(-119.763, -225.76)
 scene_path = "res://scenes/entities/Player.tscn"
 
-[sub_resource type="Resource" id="Resource_jawkn"]
+[sub_resource type="Resource" id="Resource_3x7dr"]
 script = ExtResource("4_g8ypo")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -40,12 +40,12 @@ KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResour
 ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_6rfrc"]
+[sub_resource type="Resource" id="Resource_ssaln"]
 script = ExtResource("5_15loc")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_qm46b"]
+[sub_resource type="Resource" id="Resource_42c6i"]
 script = ExtResource("25_6wlxe")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_cogfr"), ExtResource("15_8twae"), ExtResource("22_amip7"), ExtResource("23_eas58")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -191,9 +191,9 @@ ExtResource("23_eas58"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 
 [resource]
 script = ExtResource("26_2gmo6")
-NAME = "Save 3 - 00:00:54
+NAME = "Save 3 - 00:00:20
 Morale 1
 Prototype Room"
-PLAYTIME = 54.508
+PLAYTIME = 20.896
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_paept"), SubResource("Resource_jawkn"), SubResource("Resource_6rfrc"), SubResource("Resource_qm46b")]
+save_data = [SubResource("Resource_w1nq0"), SubResource("Resource_3x7dr"), SubResource("Resource_ssaln"), SubResource("Resource_42c6i")]

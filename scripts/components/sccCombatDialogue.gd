@@ -3,6 +3,7 @@ class_name CombatDialogue
 
 # Tems is a slut n whore and I hate her sm!!
 @export var dialogue_resource: DialogueResource
+@export var end_sentence = ''
 @export var enabled: bool = true
 var ignored_titles: Array[String] = []
 var dialogue_triggered = false

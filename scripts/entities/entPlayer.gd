@@ -53,7 +53,7 @@ func _physics_process(delta):
 	else:
 		ammo_count.hide()
 	
-	if !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move:
+	if can_move and !OverworldGlobals.inMenu():
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -116,7 +116,6 @@ func _unhandled_input(_event: InputEvent):
 			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
 	
 	if Input.is_action_pressed("ui_cheat_mode"):
-		OverworldGlobals.playEntityAnimation('Player','Fall')
 		if !has_node('DebugComponent'):
 			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 		else:
@@ -152,7 +151,7 @@ func canUsePower():
 	return true
 
 func animateInteract():
-	if interaction_detector.get_overlapping_areas().size() > 0 and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and !channeling_power:
+	if interaction_detector.get_overlapping_areas().size() > 0 and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and !channeling_power and can_move:
 		interaction_prompt.visible = true
 		interaction_prompt_animator.play('Interact')
 	else:

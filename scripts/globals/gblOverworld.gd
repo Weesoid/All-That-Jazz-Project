@@ -2,7 +2,7 @@ extends Node
 
 var follow_array = []
 var player_follower_count = 0
-signal alert_patrollers()
+signal update_patroller_modes(mode:int)
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
@@ -22,6 +22,7 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool):
+	getPlayer().can_move = enabled
 	getPlayer().set_process_unhandled_input(enabled)
 
 func inDialogue() -> bool:
@@ -52,9 +53,6 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=35
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').movement_finished
 	PlayerGlobals.setFollowersMotion(true)
 
-func alertPatrollers():
-	alert_patrollers.emit()
-	
 #********************************************************************************
 # GENERAL UTILITY
 #********************************************************************************
@@ -190,6 +188,21 @@ func getCurrentMap()-> Node2D:
 func getCurrentMapData()-> MapData:
 	return get_tree().current_scene.get_node('MapDataComponent')
 
+func showGameOver(end_sentence: String):
+	update_patroller_modes.emit(0)
+	setPlayerInput(false)
+	getPlayer().set_collision_layer_value(5, false)
+	getPlayer().set_collision_mask_value(5, false)
+	getPlayer().set_collision_layer_value(1, false)
+	getPlayer().set_collision_mask_value(1, false)
+	playEntityAnimation('Player', 'Fall')
+	await getEntity('Player').get_node('AnimationPlayer').animation_finished
+	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
+	getPlayer().resetStates()
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	getPlayer().player_camera.add_child(menu)
+	menu.end_sentence.text = end_sentence
+
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES
 #********************************************************************************
@@ -286,9 +299,9 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		if combat_results == 1:
 			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 			await DialogueManager.dialogue_ended
-		elif combat_results == 0:
-			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'lose_aftermath')
-			await DialogueManager.dialogue_ended
+#		elif combat_results == 0:
+#			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'lose_aftermath')
+#			await DialogueManager.dialogue_ended
 		setPlayerInput(true)
 
 func hasCombatDialogue(entity_name: String)-> bool:

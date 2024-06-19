@@ -637,7 +637,6 @@ func concludeCombat(results: int):
 	var loot_bonus = 0
 	var all_bonuses = ''
 	
-	print('EXP before modifs %s' % experience_earnt)
 	if results == 1:
 		if turn_count <= 6:
 			all_bonuses += '[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops\n'
@@ -655,7 +654,7 @@ func concludeCombat(results: int):
 				for enemy in getCombatantGroup('enemies'): addDrop(enemy.getDrops())
 	else:
 		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
-	print('EXP after modifs %s' % experience_earnt)
+	
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 	for item in drops.keys():
 		InventoryGlobals.addItemResource(item, drops[item])
@@ -677,7 +676,13 @@ func concludeCombat(results: int):
 	await transition.animation_finished
 	
 	combat_done.emit()
-	OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())
 	
-	if combat_dialogue != null: combat_dialogue.disconnectSignal()
+	var end_sentence = 'You perished.'
+	if combat_dialogue != null: 
+		combat_dialogue.disconnectSignal()
+		end_sentence = combat_dialogue.end_sentence
 	queue_free()
+	if results == 0:
+		OverworldGlobals.showGameOver(end_sentence)
+	else:
+		OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())

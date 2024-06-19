@@ -1,0 +1,177 @@
+[gd_scene load_steps=8 format=3 uid="uid://becln3jamnyn2"]
+
+[ext_resource type="PackedScene" uid="uid://dpdurcfiprjbj" path="res://scenes/user_interface/Saves.tscn" id="1_1gutg"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiGameOver.gd" id="1_gbj7h"]
+[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_41vgo"]
+[ext_resource type="Theme" uid="uid://dlrtokrr0ap1h" path="res://design/BorderlessButton.tres" id="2_qm87n"]
+
+[sub_resource type="Animation" id="Animation_t7wvt"]
+resource_name = "Show"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EndSentence:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_17ikh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EndSentence:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pf1gt"]
+_data = {
+"RESET": SubResource("Animation_17ikh"),
+"Show": SubResource("Animation_t7wvt")
+}
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gbj7h")
+
+[node name="EndSentence" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -184.0
+offset_top = 28.0
+offset_right = 184.0
+offset_bottom = 51.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You perished."
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 44.0
+offset_right = 64.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = " Continue?"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -32.0
+offset_top = 76.0
+offset_right = 32.0
+offset_bottom = 124.0
+
+[node name="Yes" parent="VBoxContainer" instance=ExtResource("2_41vgo")]
+layout_mode = 2
+theme = ExtResource("2_qm87n")
+text = "Yes"
+
+[node name="No" parent="VBoxContainer" instance=ExtResource("2_41vgo")]
+layout_mode = 2
+theme = ExtResource("2_qm87n")
+text = "No"
+
+[node name="Saves" parent="." instance=ExtResource("1_1gutg")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.388889
+anchor_top = 0.450617
+anchor_right = 0.388889
+anchor_bottom = 0.450617
+mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_pf1gt")
+}
+
+[connection signal="pressed" from="VBoxContainer/Yes" to="." method="_on_yes_pressed"]
+[connection signal="button_down" from="VBoxContainer/No" to="." method="_on_no_button_down"]

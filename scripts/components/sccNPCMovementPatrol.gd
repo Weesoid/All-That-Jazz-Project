@@ -32,17 +32,13 @@ func _ready():
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
-	#STUCK_TIMER = Timer.new()
 	IDLE_TIMER = Timer.new()
 	STUN_TIMER = Timer.new()
-	#STUCK_TIMER.autostart = true
 	
-	#add_child(STUCK_TIMER)
 	add_child(IDLE_TIMER)
 	add_child(STUN_TIMER)
 	
-	OverworldGlobals.alert_patrollers.connect(alertPatrolMode)
-	#STUCK_TIMER.timeout.connect(updatePath)
+	OverworldGlobals.update_patroller_modes.connect(updateMode)
 	NAV_AGENT.navigation_finished.connect(updatePath)
 	NAV_AGENT.navigation_finished.emit()
 	
@@ -51,8 +47,6 @@ func _ready():
 			if id == NAME:
 				destroy()
 			)
-	
-	#STUCK_TIMER.start(10.0)
 
 func _physics_process(_delta):
 	BODY.move_and_slide()
@@ -69,7 +63,7 @@ func executeCollisionAction():
 	
 	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
 		OverworldGlobals.changeToCombat(NAME)
-		OverworldGlobals.alert_patrollers.emit()
+		OverworldGlobals.update_patroller_modes.emit(1)
 		COMBAT_SWITCH = false
 
 func patrol():
@@ -83,12 +77,8 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if !NAV_AGENT.is_target_reachable():
-		MOVE_SPEED = BASE_MOVE_SPEED
-		STATE = 0
-		updatePath()
-		if PATROL_BUBBLE_SPRITE.visible and PATROL_BUBBLE.current_animation != "Show":
-			PATROL_BUBBLE.play_backwards("Show")
-	
+		soothePatrolMode()
+
 func alertPatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * 1.25
 	STATE = 1
@@ -97,10 +87,23 @@ func alertPatrolMode():
 		await PATROL_BUBBLE.animation_finished
 		PATROL_BUBBLE.play("Loop")
 
+func soothePatrolMode():
+	MOVE_SPEED = BASE_MOVE_SPEED
+	STATE = 0
+	updatePath(true)
+	#if PATROL_BUBBLE_SPRITE.visible and PATROL_BUBBLE.current_animation != "Show":
+	PATROL_BUBBLE.play_backwards("Show")
+
 func stunMode():
 	STATE = 3
 	updatePath()
-	
+
+func updateMode(state: int):
+	match state:
+		0: soothePatrolMode()
+		1: alertPatrolMode()
+		3: stunMode()
+
 func destroy(fancy=true): # What the fuck does FANCY mean?
 	PATROL = false
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
@@ -110,7 +113,7 @@ func destroy(fancy=true): # What the fuck does FANCY mean?
 		ANIMATOR.stop()
 		ANIMATOR.play("KO")
 		await ANIMATOR.animation_finished
-		OverworldGlobals.alert_patrollers.emit()
+		OverworldGlobals.update_patroller_modes.emit(1)
 	BODY.queue_free()
 
 func isMapCleared():
@@ -119,21 +122,23 @@ func isMapCleared():
 			return
 	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMapData().NAME)
 
-func updatePath():
+func updatePath(immediate:bool=false):
 	match STATE:
 		# PATROL
 		0:
 			randomize()
-			IDLE_TIMER.start(randf_range(2.0, 5.0))
-			await IDLE_TIMER.timeout
-			IDLE_TIMER.stop()
+			if !immediate:
+				IDLE_TIMER.start(randf_range(2.0, 5.0))
+				await IDLE_TIMER.timeout
+				IDLE_TIMER.stop()
 			NAV_AGENT.target_position = moveRandom()
 		# ALERTED PATROL
 		1:
 			randomize()
-			IDLE_TIMER.start(randf_range(2.0, 3.0))
-			await IDLE_TIMER.timeout
-			IDLE_TIMER.stop()
+			if !immediate:
+				IDLE_TIMER.start(randf_range(2.0, 3.0))
+				await IDLE_TIMER.timeout
+				IDLE_TIMER.stop()
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# CHASE
 		2:

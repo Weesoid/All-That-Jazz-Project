@@ -9,7 +9,7 @@ func _process(_delta):
 func stunPatrollers():
 	for body in get_overlapping_bodies():
 		if body.has_node('NPCPatrolComponent') and body.get_node('NPCPatrolComponent').STATE != 3: 
-			body.get_node('NPCPatrolComponent').stunMode()
+			body.get_node('NPCPatrolComponent').updateMode(3)
 	animator.play("Show")
 	await animator.animation_finished
 	queue_free()

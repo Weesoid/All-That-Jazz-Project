@@ -1,7 +1,13 @@
 ~ start
 Entity: Wanna fight!?
 - YES => fight
+- Make me loose! => loose
 - Nah fam. => END
+=> END
+
+~ loose
+Entity: Erm... Okay?
+do showGameOver()
 => END
 
 ~ fight

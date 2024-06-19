@@ -34,7 +34,7 @@ func createSaveButton(save_name: String):
 	else:
 		button.text = 'EMPTY'
 	
-	button.gui_input.connect(func(input): slotPressed(save_name, button))
+	button.gui_input.connect(func(_input): slotPressed(save_name, button))
 	panel.add_child(button)
 
 func slotPressed(save_name: String, button: Button):
