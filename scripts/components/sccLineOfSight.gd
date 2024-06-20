@@ -8,7 +8,7 @@ class_name LineOfSight
 func detectPlayer():
 	RAYCAST.rotation = 0
 	
-	if overlaps_body(OverworldGlobals.getPlayer()):
+	if OverworldGlobals.getCurrentMap().has_node('Player') and overlaps_body(OverworldGlobals.getPlayer()):
 		RAYCAST.look_at(OverworldGlobals.getPlayer().global_position)
 		RAYCAST.rotation -= PI/2
 		RAYCAST.force_raycast_update()

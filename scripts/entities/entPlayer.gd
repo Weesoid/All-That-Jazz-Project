@@ -281,7 +281,8 @@ func saveData(save_data: Array):
 	var data = EntitySaveData.new()
 	data.position = global_position
 	data.scene_path = scene_file_path
-	
+	data.direction = int(player_direction.rotation_degrees)
+	print(data.direction)
 	save_data.append(data)
 
 func loadData():

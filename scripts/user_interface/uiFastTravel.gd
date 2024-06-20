@@ -25,9 +25,8 @@ func _ready():
 	OverworldGlobals.setMenuFocus(travel_panel)
 
 func travel(location):
+	OverworldGlobals.closeMenu(self)
 	if OverworldGlobals.getCurrentMap().scene_file_path == location:
-		OverworldGlobals.closeMenu(self)
 		OverworldGlobals.showPlayerPrompt("You're already here!")
 	else:
-		OverworldGlobals.closeMenu(self)
 		OverworldGlobals.changeMap(location)

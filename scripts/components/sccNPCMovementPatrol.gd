@@ -55,7 +55,11 @@ func _physics_process(_delta):
 	if COMBAT_SWITCH:
 		executeCollisionAction()
 	
-	DEBUG.text = str(int(IDLE_TIMER.time_left))
+#	if OverworldGlobals.isPlayerCheating():
+#		DEBUG.show()
+#		DEBUG.text = str(int(IDLE_TIMER.time_left))
+#	else:
+#		DEBUG.hide()
 
 func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:

@@ -1,63 +1,62 @@
 [gd_resource type="Resource" script_class="SavedGame" load_steps=31 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_tw227"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="2_n5d1g"]
-[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="3_hkg1w"]
-[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="4_bobrx"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_dn6fp"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="6_r6j7x"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="7_bx7os"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="8_ophvp"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/DebugAddEffect.tres" id="9_8l1mw"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/NeutStrike.tres" id="10_gvhs4"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/PoisonBite.tres" id="11_0n4wi"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/RandaStrike.tres" id="12_qqrsl"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="13_t6tfr"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="14_sqjof"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="15_nrtll"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/PinkBlasko.tres" id="16_qws5e"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="17_bl6jh"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/ColdSlap.tres" id="18_rvrbw"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/HotHit.tres" id="19_sobxk"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/VenoStrike.tres" id="20_ulpue"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/ShockTherapy.tres" id="21_bdvny"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/OmniStrike.tres" id="22_iaxny"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/Filler1.tres" id="23_4s5up"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/Filler2.tres" id="24_cg481"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_ccjf5"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_kh4ie"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_ge23e"]
+[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_ql0i8"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="3_ahll5"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="4_xbybi"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="5_4vdmh"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/GreenHealer.tres" id="6_edxc6"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/DebuggerStrike.tres" id="7_3drw2"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/DebugAddEffect.tres" id="8_kbrqr"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/NeutStrike.tres" id="9_wbn4q"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PoisonBite.tres" id="10_2jbrf"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/RandaStrike.tres" id="11_ehxar"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="12_1vlm6"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PumpUp.tres" id="13_7d5jg"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="14_wum6s"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/PinkBlasko.tres" id="15_1kt3c"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/AOEHeal.tres" id="16_g3nhe"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/ColdSlap.tres" id="17_k1afu"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/HotHit.tres" id="18_3q2sc"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/VenoStrike.tres" id="19_b7owk"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/ShockTherapy.tres" id="20_1wpwg"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/OmniStrike.tres" id="21_oykqs"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Filler1.tres" id="22_8r3mk"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Filler2.tres" id="23_g4xt2"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="24_mxl0u"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_5cdlu"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_4phst"]
 
-[sub_resource type="Resource" id="Resource_iae3u"]
-script = ExtResource("1_tw227")
-position = Vector2(-75.9763, -82.357)
+[sub_resource type="Resource" id="Resource_2ydc0"]
+script = ExtResource("1_ge23e")
+position = Vector2(-72.5172, -10.94)
 scene_path = "res://scenes/entities/Player.tscn"
+direction = 0
 
-[sub_resource type="Resource" id="Resource_fadqi"]
-script = ExtResource("5_dn6fp")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_n5d1g")])
+[sub_resource type="Resource" id="Resource_xq436"]
+script = ExtResource("4_xbybi")
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
-KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("3_hkg1w"), ExtResource("4_bobrx")])
-ITEM_DATA_INVENTORY = {
-"Arrow": 19
-}
+KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_ql0i8"), ExtResource("3_ahll5")])
+ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_np3vn"]
-script = ExtResource("6_r6j7x")
+[sub_resource type="Resource" id="Resource_hugnw"]
+script = ExtResource("5_4vdmh")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_bnlmi"]
-script = ExtResource("25_ccjf5")
-TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("7_bx7os"), ExtResource("16_qws5e"), ExtResource("23_4s5up"), ExtResource("24_cg481")])
+[sub_resource type="Resource" id="Resource_j80tw"]
+script = ExtResource("25_5cdlu")
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_edxc6"), ExtResource("15_1kt3c"), ExtResource("22_8r3mk"), ExtResource("23_g4xt2")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = []
-EQUIPPED_ARROW = ExtResource("2_n5d1g")
+EQUIPPED_ARROW = ExtResource("24_mxl0u")
 CURRENCY = 100
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
-stamina = 98.6
+stamina = 100.0
 bow_max_draw = 5.0
 walk_speed = 100.0
 sprint_speed = 200.0
@@ -65,7 +64,7 @@ sprint_drain = 0.1
 stamina_gain = 0.1
 STRING_CONDITIONS = Array[String]([])
 COMBATANT_SAVE_DATA = {
-ExtResource("7_bx7os"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_ophvp")]), {
+ExtResource("6_edxc6"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_3drw2")]), {
 0: null,
 1: null,
 2: null
@@ -91,12 +90,12 @@ ExtResource("7_bx7os"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 100,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("9_8l1mw"), ExtResource("8_ophvp"), ExtResource("10_gvhs4"), ExtResource("11_0n4wi"), ExtResource("12_qqrsl"), ExtResource("13_t6tfr"), ExtResource("14_sqjof"), null]), true, Array[String]([]), true, false, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_kbrqr"), ExtResource("7_3drw2"), ExtResource("9_wbn4q"), ExtResource("10_2jbrf"), ExtResource("11_ehxar"), ExtResource("12_1vlm6"), ExtResource("13_7d5jg"), null]), true, Array[String]([]), true, false, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
-}, ExtResource("15_nrtll")],
-ExtResource("16_qws5e"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_ophvp")]), {
+}, ExtResource("14_wum6s")],
+ExtResource("15_1kt3c"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_3drw2")]), {
 0: null,
 1: null,
 2: null
@@ -122,12 +121,12 @@ ExtResource("16_qws5e"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 10,
 "hustle": 0,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("14_sqjof"), ExtResource("13_t6tfr"), ExtResource("17_bl6jh"), ExtResource("10_gvhs4"), ExtResource("18_rvrbw"), ExtResource("19_sobxk"), ExtResource("20_ulpue"), ExtResource("21_bdvny"), ExtResource("22_iaxny"), ExtResource("10_gvhs4")]), false, Array[String]([]), true, false, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_7d5jg"), ExtResource("12_1vlm6"), ExtResource("16_g3nhe"), ExtResource("9_wbn4q"), ExtResource("17_k1afu"), ExtResource("18_3q2sc"), ExtResource("19_b7owk"), ExtResource("20_1wpwg"), ExtResource("21_oykqs"), ExtResource("9_wbn4q")]), false, Array[String]([]), true, false, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
-}, ExtResource("15_nrtll")],
-ExtResource("23_4s5up"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+}, ExtResource("14_wum6s")],
+ExtResource("22_8r3mk"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: null,
 1: null,
 2: null
@@ -157,8 +156,8 @@ ExtResource("23_4s5up"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "brawn": 0,
 "grit": 0,
 "handling": 0
-}, ExtResource("15_nrtll")],
-ExtResource("24_cg481"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+}, ExtResource("14_wum6s")],
+ExtResource("23_g4xt2"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: null,
 1: null,
 2: null
@@ -188,14 +187,14 @@ ExtResource("24_cg481"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "brawn": 0,
 "grit": 0,
 "handling": 0
-}, ExtResource("15_nrtll")]
+}, ExtResource("14_wum6s")]
 }
 
 [resource]
-script = ExtResource("26_kh4ie")
-NAME = "Save 0 - 00:00:14
+script = ExtResource("26_4phst")
+NAME = "Save 0 - 00:00:05
 Morale 1
 Prototype Room"
-PLAYTIME = 14.847
+PLAYTIME = 65.446
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_iae3u"), SubResource("Resource_fadqi"), SubResource("Resource_np3vn"), SubResource("Resource_bnlmi")]
+save_data = [SubResource("Resource_2ydc0"), SubResource("Resource_xq436"), SubResource("Resource_hugnw"), SubResource("Resource_j80tw")]

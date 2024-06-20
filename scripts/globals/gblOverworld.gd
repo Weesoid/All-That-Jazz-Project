@@ -179,14 +179,32 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, _show_count: boo
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
-func changeMap(map_name_path: String):
+func changeMap(map_name_path: String, coordinates: String='0,0,0'):
 	get_tree().change_scene_to_file(map_name_path)
+	await get_tree().create_timer(0.01).timeout
+	
+	if getCurrentMap().has_node('Player'):
+		getCurrentMap().get_node('Player').loadData()
+	var player = preload("res://scenes/entities/Player.tscn").instantiate()
+	var coords = coordinates.split(',')
+	getCurrentMap().add_child(player)
+	player.global_position = Vector2(float(coords[0]),float(coords[1]))
+	await get_tree().process_frame
+	
+	match int(coords[2]):
+		0: player.direction = Vector2(0,1) # Down
+		179: player.direction = Vector2(0,-1) # Up
+		-90: player.direction = Vector2(1, 0) # Right
+		90: player.direction = Vector2(-1,0) # Left
 
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 
 func getCurrentMapData()-> MapData:
 	return get_tree().current_scene.get_node('MapDataComponent')
+
+func isPlayerCheating()-> bool:
+	return getPlayer().has_node('DebugComponent')
 
 func showGameOver(end_sentence: String):
 	update_patroller_modes.emit(0)

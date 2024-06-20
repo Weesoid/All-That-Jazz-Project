@@ -24,7 +24,7 @@ func saveGame(save_name: String='Save 0'):
 	PlayerGlobals.saveData(save_data)
 	saved_game.save_data = save_data
 	saved_game.PLAYTIME = current_playtime + (Time.get_unix_time_from_system() - session_start)
-	saved_game.NAME = '%s - %s\nMorale %s\n%s' % [save_name, getTotalPlaytime(), PlayerGlobals.PARTY_LEVEL, OverworldGlobals.getCurrentMapData().NAME]
+	saved_game.NAME = '%s - %s\nMorale %s\n%s' % [save_name, Time.get_time_string_from_unix_time(current_playtime + (Time.get_unix_time_from_system() - session_start)), PlayerGlobals.PARTY_LEVEL, OverworldGlobals.getCurrentMapData().NAME]
 	ResourceSaver.save(saved_game, "res://saves/%s.tres" % save_name)
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game saved[/color]!')
 	done_saving.emit()
@@ -32,15 +32,21 @@ func saveGame(save_name: String='Save 0'):
 func loadGame(saved_game: SavedGame):
 	is_loading = true
 	get_tree().change_scene_to_file(saved_game.current_map_path)
-	
 	await get_tree().create_timer(0.01).timeout
-	get_tree().call_group('presist', 'loadData')
 	
+	get_tree().call_group('presist', 'loadData')
 	QuestGlobals.quest_objective_completed.disconnect(QuestGlobals.checkQuestsForCompleted)
+	await get_tree().process_frame
 	for item in saved_game.save_data:
 		if item is EntitySaveData:
 			var scene: Node2D = load(item.scene_path).instantiate()
 			scene.global_position = item.position
+			if scene is PlayerScene:
+				match item.direction:
+					0: scene.direction = Vector2(0,1) # Down
+					179: scene.direction = Vector2(0,-1) # Up
+					-90: scene.direction = Vector2(1, 0) # Right
+					90: scene.direction = Vector2(-1,0) # Left
 			OverworldGlobals.getCurrentMap().add_child(scene)
 		if item is InventorySaveData:
 			InventoryGlobals.loadData(item)
@@ -50,9 +56,8 @@ func loadGame(saved_game: SavedGame):
 			PlayerGlobals.loadData(item)
 	QuestGlobals.quest_objective_completed.connect(QuestGlobals.checkQuestsForCompleted)
 	
+	session_start = Time.get_unix_time_from_system()
+	current_playtime = saved_game.PLAYTIME
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
 	done_loading.emit()
 	is_loading = false
-	
-	session_start = Time.get_unix_time_from_system()
-	current_playtime = saved_game.PLAYTIME
