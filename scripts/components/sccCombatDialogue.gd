@@ -19,7 +19,6 @@ func initialize():
 		CombatGlobals.dialogue_signal.connect(checkTitles)
 
 func checkTitles(flag):
-	
 	for title in dialogue_resource.get_titles():
 		var title_data = title.split('`')
 		var base_title = title_data[0]
@@ -57,7 +56,7 @@ func showDialogueBox(title: String):
 	
 	if title.split('`').size() > 1:
 		var title_sub_data = title.split('`')[1].split('/')
-		if title_sub_data.has('once'):
+		if title_sub_data.has('once') or (title=='win' or title=='lose'):
 			ignored_titles.append(title)
 
 func disconnectSignal():

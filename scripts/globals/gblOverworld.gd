@@ -323,15 +323,17 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	get_tree().paused = false
 	battle_transition.get_node('AnimationPlayer').play('Out')
 	getCurrentMap().show()
-	if hasCombatDialogue(entity_name):
-		setPlayerInput(false)
+#	if hasCombatDialogue(entity_name):
+#		setPlayerInput(false)
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
 	if hasCombatDialogue(entity_name) and combat_results == 1:
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
-		await DialogueManager.dialogue_ended
-	setPlayerInput(true)
+		await getCurrentMap().get_node('Balloon').tree_exited
+		setPlayerInput(true)
+	elif combat_results != 0:
+		setPlayerInput(true)
 
 func hasCombatDialogue(entity_name: String)-> bool:
 	return getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled

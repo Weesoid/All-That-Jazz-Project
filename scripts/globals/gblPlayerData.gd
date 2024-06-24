@@ -2,6 +2,7 @@
 extends Node
 
 var TEAM: Array[ResPlayerCombatant]
+var TENSION: int = 0
 var FOLLOWERS: Array[NPCFollower] = []
 var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoomB.tscn', 'res://scenes/maps/TestRoom/TestRoomA.tscn']
 var CLEARED_MAPS = []

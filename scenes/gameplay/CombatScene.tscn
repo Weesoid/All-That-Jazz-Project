@@ -440,21 +440,24 @@ motion_scale = Vector2(0.5, 0.5)
 position = Vector2(-832, -456)
 
 [node name="Position1" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
-position = Vector2(384, 192)
+position = Vector2(368, 192)
 
 [node name="Position2" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
-position = Vector2(512, 192)
+position = Vector2(496, 192)
 
 [node name="Position3" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
-position = Vector2(640, 192)
+position = Vector2(656, 192)
 
 [node name="Position4" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
-position = Vector2(768, 192)
+position = Vector2(784, 192)
+
+[node name="BossPosition" type="Marker2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(-256, -272)
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
 
 [node name="TeamContainer" type="Node2D" parent="ParallaxBackground/ParallaxLayer2"]
-position = Vector2(-1088, -456)
+position = Vector2(-1088, -464)
 
 [node name="Position1" type="Marker2D" parent="ParallaxBackground/ParallaxLayer2/TeamContainer"]
 position = Vector2(384, 192)
@@ -615,6 +618,7 @@ text = "x Target cannot move!"
 scroll_active = false
 
 [node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
+visible = false
 z_index = 99
 layout_mode = 3
 anchors_preset = 0

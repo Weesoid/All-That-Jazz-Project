@@ -27,13 +27,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_60n6k"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_jeq5p"]
 
-[sub_resource type="Resource" id="Resource_gloh8"]
+[sub_resource type="Resource" id="Resource_d1stc"]
 script = ExtResource("1_6vgdu")
 position = Vector2(-75, -103)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 359
+direction = 0
 
-[sub_resource type="Resource" id="Resource_fpm21"]
+[sub_resource type="Resource" id="Resource_nhhal"]
 script = ExtResource("4_pj8it")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -41,12 +41,12 @@ KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResour
 ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_j47kg"]
+[sub_resource type="Resource" id="Resource_jmxe0"]
 script = ExtResource("5_rpgil")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_8qsuj"]
+[sub_resource type="Resource" id="Resource_jbhtg"]
 script = ExtResource("25_60n6k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_50853"), ExtResource("15_kl8oh"), ExtResource("22_1mq7g"), ExtResource("23_j5g6c")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -64,7 +64,7 @@ sprint_drain = 0.1
 stamina_gain = 0.1
 STRING_CONDITIONS = Array[String]([])
 COMBATANT_SAVE_DATA = {
-ExtResource("6_50853"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("6_50853"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_wabri"), ExtResource("10_5lujs"), ExtResource("9_kbf8k"), ExtResource("11_dupgs")]), {
 0: null,
 1: null,
 2: null
@@ -77,7 +77,7 @@ ExtResource("6_50853"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "handling": 0,
 "heal mult": 1.0,
 "health": 100,
-"hustle": 1,
+"hustle": 1.0,
 "resist": 0.05
 }, {
 "accuracy": 1.0,
@@ -90,12 +90,12 @@ ExtResource("6_50853"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 100,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_s55ld"), ExtResource("8_wabri"), ExtResource("9_kbf8k"), ExtResource("10_5lujs"), ExtResource("11_dupgs"), ExtResource("12_gbu0v"), ExtResource("13_f251q"), null]), true, Array[String]([]), true, false, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_s55ld"), ExtResource("8_wabri"), ExtResource("9_kbf8k"), ExtResource("10_5lujs"), ExtResource("11_dupgs"), ExtResource("12_gbu0v"), ExtResource("13_f251q")]), true, Array[String]([]), true, true, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
 }, ExtResource("14_us4su")],
-ExtResource("15_kl8oh"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("15_kl8oh"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_f251q"), ExtResource("12_gbu0v"), ExtResource("9_kbf8k"), ExtResource("16_u62iv")]), {
 0: null,
 1: null,
 2: null
@@ -108,7 +108,7 @@ ExtResource("15_kl8oh"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "handling": 2,
 "heal mult": 1.0,
 "health": 10,
-"hustle": 0,
+"hustle": 0.0,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
@@ -121,7 +121,7 @@ ExtResource("15_kl8oh"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 10,
 "hustle": 0,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_f251q"), ExtResource("12_gbu0v"), ExtResource("16_u62iv"), ExtResource("9_kbf8k"), ExtResource("17_gxe73"), ExtResource("18_llabn"), ExtResource("19_r6vrh"), ExtResource("20_ofwlk"), ExtResource("21_b8pvo"), ExtResource("9_kbf8k")]), false, Array[String]([]), true, false, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("13_f251q"), ExtResource("12_gbu0v"), ExtResource("16_u62iv"), ExtResource("9_kbf8k"), ExtResource("17_gxe73"), ExtResource("18_llabn"), ExtResource("19_r6vrh"), ExtResource("20_ofwlk"), ExtResource("21_b8pvo"), ExtResource("9_kbf8k")]), false, Array[String]([]), true, true, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
@@ -139,7 +139,7 @@ ExtResource("22_1mq7g"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "handling": 0,
 "heal mult": 1.0,
 "health": 20,
-"hustle": 1,
+"hustle": 1.0,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
@@ -152,7 +152,7 @@ ExtResource("22_1mq7g"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 20,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([]), false, Array[String]([]), true, false, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([]), false, Array[String]([]), true, true, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
@@ -170,7 +170,7 @@ ExtResource("23_j5g6c"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "handling": 0,
 "heal mult": 1.0,
 "health": 20,
-"hustle": 1,
+"hustle": 1.0,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
@@ -183,7 +183,7 @@ ExtResource("23_j5g6c"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 20,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([]), false, Array[String]([]), true, false, 1, {}, null, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([]), false, Array[String]([]), true, true, 1, {}, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
@@ -192,9 +192,9 @@ ExtResource("23_j5g6c"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 
 [resource]
 script = ExtResource("26_jeq5p")
-NAME = "Save - 00:00:09
+NAME = "Save - 00:00:44
 Morale 1
 Prototype Room"
-PLAYTIME = 9.705
+PLAYTIME = 45.356
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_gloh8"), SubResource("Resource_fpm21"), SubResource("Resource_j47kg"), SubResource("Resource_8qsuj")]
+save_data = [SubResource("Resource_d1stc"), SubResource("Resource_nhhal"), SubResource("Resource_jmxe0"), SubResource("Resource_jbhtg")]

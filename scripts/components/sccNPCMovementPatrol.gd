@@ -150,7 +150,7 @@ func updatePath(immediate:bool=false):
 				PATROL_BUBBLE.play("Show")
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
-		3: 
+		3:
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
