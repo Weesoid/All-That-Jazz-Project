@@ -331,7 +331,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if hasCombatDialogue(entity_name) and combat_results == 1:
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
-		setPlayerInput(true)
+	setPlayerInput(true)
 
 func hasCombatDialogue(entity_name: String)-> bool:
 	return getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled

@@ -47,7 +47,7 @@ var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
-var camera_position: Vector2 = Vector2(0, -24)
+var camera_position: Vector2 = Vector2(0, -40)
 
 signal confirm
 signal target_selected
@@ -278,7 +278,7 @@ func _on_inspect_pressed():
 
 func _on_escape_pressed():
 	CombatGlobals.combat_lost.emit(unique_id)
-	concludeCombat(0)
+	concludeCombat(2)
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:

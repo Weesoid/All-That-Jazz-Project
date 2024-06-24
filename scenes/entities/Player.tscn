@@ -2116,7 +2116,7 @@ shape = SubResource("CapsuleShape2D_8i7nm")
 [node name="PlayerCamera" type="Camera2D" parent="."]
 z_as_relative = false
 zoom = Vector2(2, 2)
-position_smoothing_speed = 6.0
+position_smoothing_speed = 32.0
 
 [node name="PlayerPrompt" parent="PlayerCamera" instance=ExtResource("6_rb4b6")]
 
@@ -2167,7 +2167,7 @@ vertical_alignment = 1
 [node name="CinematicSpotlight" type="Sprite2D" parent="PlayerCamera"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(1.19209e-07, -20)
-scale = Vector2(0.478125, 0.422222)
+scale = Vector2(0.383333, 0.362963)
 texture = ExtResource("10_wdujw")
 
 [node name="CinematicBars" type="Node2D" parent="PlayerCamera"]
@@ -2177,12 +2177,12 @@ visible = false
 offset_left = -383.0
 offset_top = -194.0
 offset_right = 379.0
-offset_bottom = -129.0
+offset_bottom = -128.0
 color = Color(0, 0, 0, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="PlayerCamera/CinematicBars"]
 offset_left = -441.0
-offset_top = 127.0
+offset_top = 64.0
 offset_right = 437.0
 offset_bottom = 209.0
 color = Color(0, 0, 0, 1)
