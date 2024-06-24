@@ -29,6 +29,7 @@ var ANIMATION_SPEED = 0.0
 
 func _ready():
 	player_camera.global_position = global_position
+	#player_camera.zoom = Vector2(3, 3)
 	SPEED = PlayerGlobals.walk_speed
 	animation_tree.active = true
 	PlayerGlobals.loadSquad()

@@ -20,12 +20,13 @@ func _ready():
 func _process(_delta):
 	currency.text = str(PlayerGlobals.CURRENCY)
 
-func loadWares(array=wares_array):
+func loadWares(array=wares_array, focus_item:ResItem=null):
 	var modifier
 	if mode == 1:
 		modifier = buy_modifier
 	else:
 		modifier = sell_modifier
+	#array.sort_custom(func(a,b): return typeof(a) < typeof(b))
 	array.sort_custom(func(a,b): return a.NAME > b.NAME)
 	array.sort_custom(func(a,b): return a.VALUE * modifier < b.VALUE * modifier)
 	clearButtons()
@@ -37,8 +38,7 @@ func loadWares(array=wares_array):
 		toggle_button.text = 'Shop'
 	
 	for item in array:
-		var button = OverworldGlobals.createItemButton(item)
-		
+		var button = OverworldGlobals.createItemButton(item, 0.0, mode!=1)
 		var label = Label.new()
 		if item.VALUE * modifier <= 0:
 			label.text = 'Free'
@@ -100,9 +100,14 @@ func loadWares(array=wares_array):
 		button.mouse_exited.connect(func(): resetDescription())
 		button.focus_exited.connect(func(): resetDescription())
 		wares.add_child(button)
-	
-	OverworldGlobals.setMenuFocus(wares)
-
+		
+		if focus_item is ResGhostStackItem and item.NAME == focus_item.NAME:
+			button.grab_focus()
+		elif item == focus_item:
+			button.grab_focus()
+		
+	if focus_item == null: 
+		OverworldGlobals.setMenuFocus(wares)
 func clearButtons():
 	for child in wares.get_children():
 		wares.remove_child(child)
@@ -136,7 +141,7 @@ func loadSlider(item)-> int:
 		a_slider.max_v = item.STACK
 	
 	add_child(a_slider)
-	a_slider.position = Vector2(0,0)
+	a_slider.global_position = OverworldGlobals.getPlayer().player_camera.global_position
 	await a_slider.amount_enter
 	var amount = a_slider.slider.value
 	a_slider.queue_free()
@@ -164,7 +169,7 @@ func setButtonFunction(selected_item):
 				InventoryGlobals.addItemResource(selected_item)
 				PlayerGlobals.CURRENCY -= int(selected_item.VALUE * buy_modifier)
 				OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
-			loadWares(wares_array)
+			loadWares(wares_array, selected_item)
 		0:
 			if selected_item.MANDATORY:
 				OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
@@ -177,7 +182,7 @@ func setButtonFunction(selected_item):
 			OverworldGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
 			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
-			loadWares(InventoryGlobals.INVENTORY)
+			loadWares(InventoryGlobals.INVENTORY, selected_item)
 			if amount > 0:
 				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
 

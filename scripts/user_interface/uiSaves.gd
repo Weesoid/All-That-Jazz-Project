@@ -37,11 +37,15 @@ func createSaveButton(save_name: String):
 	panel.add_child(button)
 
 func slotPressed(save_name: String, button: Button):
-	if Input.is_action_just_pressed("ui_alt_accept"):
-		deleteSave(save_name, button)
-	elif Input.is_action_just_pressed("ui_click") or Input.is_action_just_pressed('ui_accept'):
+#	if Input.is_action_just_pressed("ui_alt_accept"):
+#		deleteSave(save_name, button)
+	if Input.is_action_just_pressed("ui_click") or Input.is_action_just_pressed('ui_accept'):
 		match mode:
-			Modes.SAVE: saveGame(save_name, button)
+			Modes.SAVE: 
+				PlayerGlobals.healCombatants()
+				saveGame(save_name, button)
+				OverworldGlobals.playSound("542003__rob_marion__gasp_lock-and-load.ogg")
+				queue_free()
 			Modes.LOAD: SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name))
 
 func saveGame(save_name: String, button: Button):

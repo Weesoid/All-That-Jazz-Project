@@ -2167,24 +2167,24 @@ vertical_alignment = 1
 [node name="CinematicSpotlight" type="Sprite2D" parent="PlayerCamera"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(1.19209e-07, -20)
-scale = Vector2(0.413021, 0.359259)
+scale = Vector2(0.478125, 0.422222)
 texture = ExtResource("10_wdujw")
 
 [node name="CinematicBars" type="Node2D" parent="PlayerCamera"]
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="PlayerCamera/CinematicBars"]
-offset_left = -306.0
-offset_top = -177.0
-offset_right = 302.0
+offset_left = -383.0
+offset_top = -194.0
+offset_right = 379.0
 offset_bottom = -129.0
 color = Color(0, 0, 0, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="PlayerCamera/CinematicBars"]
-offset_left = -306.0
+offset_left = -441.0
 offset_top = 127.0
-offset_right = 302.0
-offset_bottom = 175.0
+offset_right = 437.0
+offset_bottom = 209.0
 color = Color(0, 0, 0, 1)
 
 [node name="PowerAnimator" type="AnimationPlayer" parent="."]

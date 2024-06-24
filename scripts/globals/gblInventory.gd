@@ -64,10 +64,12 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 func hasItem(item_name):
 	if item_name is String:
 		for combatant in PlayerGlobals.TEAM:
-			if combatant.EQUIPPED_WEAPON.NAME == item_name:
+			if combatant.EQUIPPED_WEAPON != null and combatant.EQUIPPED_WEAPON.NAME == item_name:
 				return true
 			for charm in combatant.CHARMS.values():
-				if charm.NAME == item_name:
+				if charm == null: 
+					continue
+				elif charm.NAME == item_name:
 					return true
 	elif item_name is ResItem:
 		for combatant in PlayerGlobals.TEAM:

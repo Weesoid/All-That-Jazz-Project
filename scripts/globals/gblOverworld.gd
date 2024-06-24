@@ -141,7 +141,7 @@ func createCustomButton(theme: Theme = preload("res://design/DefaultTheme.tres")
 	button.theme = theme
 	return button
 
-func createItemButton(item: ResItem, value_modifier: float=0.0, _show_count: bool=true)-> CustomButton:
+func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true)-> CustomButton:
 	var button: CustomButton = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
 	button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
 	button.click_sound = preload("res://audio/sounds/421461__jaszunio15__click_46.ogg")
@@ -151,7 +151,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, _show_count: boo
 	button.icon = item.ICON
 	button.tooltip_text = item.NAME
 	
-	if item is ResStackItem:
+	if item is ResStackItem and show_count:
 		var label = Label.new()
 		label.text = str(item.STACK)
 		label.theme = preload("res://design/OutlinedLabel.tres")

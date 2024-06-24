@@ -47,6 +47,7 @@ var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
+var camera_position: Vector2 = Vector2(0, -24)
 
 signal confirm
 signal target_selected
@@ -166,7 +167,7 @@ func on_enemy_turn():
 	end_turn()
 
 func end_turn(combatant_act=true):
-	combat_camera.position = Vector2(0, -40)
+	combat_camera.position = camera_position
 	if combatant_act:
 		active_combatant.TURN_CHARGES -= 1
 		combatant_turn_order.remove_at(0)
@@ -588,7 +589,7 @@ func confirmCancelInputs():
 		resetActionLog()
 	
 func resetActionLog():
-	moveCamera(Vector2(0, -40))
+	moveCamera(camera_position)
 	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	secondary_panel.hide()
