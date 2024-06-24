@@ -179,7 +179,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, _show_count: boo
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
-func changeMap(map_name_path: String, coordinates: String='0,0,0'):
+func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',save:bool=false):
 	get_tree().change_scene_to_file(map_name_path)
 	await get_tree().create_timer(0.01).timeout
 	
@@ -188,7 +188,10 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0'):
 	var player = preload("res://scenes/entities/Player.tscn").instantiate()
 	var coords = coordinates.split(',')
 	getCurrentMap().add_child(player)
-	player.global_position = Vector2(float(coords[0]),float(coords[1]))
+	if to_entity != '':
+		player.global_position = getEntity(to_entity).global_position + Vector2(0, 20)
+	else:
+		player.global_position = Vector2(float(coords[0]),float(coords[1]))
 	await get_tree().process_frame
 	
 	match int(coords[2]):
@@ -196,6 +199,11 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0'):
 		179: player.direction = Vector2(0,-1) # Up
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
+	
+	if OverworldGlobals.getCurrentMapData().SAFE:
+		OverworldGlobals.loadFollowers()
+	if save:
+		SaveLoadGlobals.saveGame()
 
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
@@ -272,11 +280,21 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		await get_parent().get_node('CombatScene').tree_exited
 	if getCurrentMap().has_node('Balloon'):
 		getCurrentMap().get_node('Balloon').queue_free()
+		await getCurrentMap().get_node('Balloon').tree_exited
+	
+	if getCombatantSquad('Player').is_empty():
+		showGameOver('You could not defend yourself!')
+		return
+	for member in getCombatantSquad('Player'):
+		if !member.isDead():
+			continue
+		else:
+			showGameOver('Your posse was exhausted!')
+			return
 	
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
-	
 	for combatant in getCombatantSquad(entity_name):
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
@@ -288,19 +306,16 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
-	
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
-	
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
 	if getEntity(entity_name).has_node('CombatDialogue'):
 		combat_scene.combat_dialogue = getComponent(entity_name, 'CombatDialogue')
-	
 	getCurrentMap().hide()
 	await combat_scene.combat_done
 	var combat_results = combat_scene.combat_result
@@ -313,13 +328,9 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
-	if hasCombatDialogue(entity_name):
-		if combat_results == 1:
-			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
-			await DialogueManager.dialogue_ended
-#		elif combat_results == 0:
-#			showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'lose_aftermath')
-#			await DialogueManager.dialogue_ended
+	if hasCombatDialogue(entity_name) and combat_results == 1:
+		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
+		await DialogueManager.dialogue_ended
 		setPlayerInput(true)
 
 func hasCombatDialogue(entity_name: String)-> bool:

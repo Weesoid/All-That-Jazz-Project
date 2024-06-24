@@ -21,8 +21,7 @@ func _ready():
 		dropdown.show()
 
 func createSaveButtons():
-	for i in range(3):
-		createSaveButton('Save %s' % str(i+1))
+	createSaveButton('Save')
 	OverworldGlobals.setMenuFocus(panel)
 
 func createSaveButton(save_name: String):

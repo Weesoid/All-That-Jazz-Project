@@ -63,8 +63,22 @@ func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
 
 func hasItem(item_name):
 	if item_name is String:
+		for combatant in PlayerGlobals.TEAM:
+			if combatant.EQUIPPED_WEAPON.NAME == item_name:
+				return true
+			for charm in combatant.CHARMS.values():
+				if charm.NAME == item_name:
+					return true
+	elif item_name is ResItem:
+		for combatant in PlayerGlobals.TEAM:
+			if combatant.EQUIPPED_WEAPON == item_name:
+				return true
+			elif combatant.CHARMS.values().has(item_name):
+				return true
+	
+	if item_name is String:
 		for item in INVENTORY:
-			if item.NAME == item_name: return true
+			return item.NAME == item_name
 	elif item_name is ResItem:
 		return INVENTORY.has(item_name)
 	
@@ -120,7 +134,7 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 		addItemResource(item.REFERENCE_ITEM, count)
 
 func canAdd(item, count:int=1, show_prompt=true):
-	if (item is ResWeapon or item is ResUtilityCharm) and INVENTORY.has(item):
+	if (item is ResWeapon or item is ResUtilityCharm) and hasItem(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item.NAME) and item.STACK + count > item.MAX_STACK and item.MAX_STACK > 0:
@@ -130,8 +144,6 @@ func canAdd(item, count:int=1, show_prompt=true):
 	
 	
 	return true
-#	if item is ResStackItem and count <= 0:
-#		return
 
 func calculateValidAdd(item: ResStackItem) -> int:
 	if item is ResGhostStackItem:
@@ -162,8 +174,6 @@ func getUnstackableItemNames()-> Array:
 	return out
 
 func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
-	#if getItemWithName("Scrap Salvage") == null: 
-	#	OverworldGlobals.getPlayer().prompt.showPrompt('Not enough [color=yellow]Scrap Salvage![/color]')
 	if !free_repair and getItemWithName("Scrap Salvage").STACK >= repair_amount:
 		removeItemWithName("Scrap Salvage", repair_amount)
 		item.restoreDurability(repair_amount)

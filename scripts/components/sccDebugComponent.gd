@@ -7,7 +7,7 @@ var clipboard = DisplayServer.clipboard_get()
 
 func _process(_delta):
 	coordinates.text = str(get_parent().global_position)+','+str(int(get_parent().player_direction.rotation_degrees))
-	playtime_info.text = Time.get_time_string_from_unix_time(SaveLoadGlobals.current_playtime)
+	playtime_info.text = Time.get_time_string_from_unix_time(int(SaveLoadGlobals.current_playtime))
 	if PlayerGlobals.hasUtilityCharm():
 		equipped_charm.text = PlayerGlobals.EQUIPPED_CHARM.NAME
 	else:
@@ -15,9 +15,9 @@ func _process(_delta):
 	
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_quick_save"):
-		SaveLoadGlobals.saveGame()
+		SaveLoadGlobals.saveGame('Save Debug')
 	elif Input.is_action_just_pressed("ui_quick_load"):
-		SaveLoadGlobals.loadGame(load("res://saves/Save 0.tres"))
+		SaveLoadGlobals.loadGame(load("res://saves/Save Debug.tres"))
 	elif Input.is_action_just_pressed("ui_debug_copy_coords"):
 		var copied = coordinates.text.replace('(','').replace(')','')
 		OverworldGlobals.showPlayerPrompt('Copied coordinates to clipboard! [color=yellow]%s[/color]' % copied)

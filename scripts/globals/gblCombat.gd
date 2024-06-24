@@ -111,6 +111,7 @@ func calculateHealing(target:ResCombatant, base_healing):
 		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
 		target.STAT_VALUES['health'] += int(base_healing)
 	
+	print(target, ' was healed for ', int(base_healing))
 	#received_combatant_value.emit(target, caster, int(base_healing))
 	call_indicator.emit('Show', target)
 	OverworldGlobals.playSound('02_Heal_02.ogg')

@@ -1,17 +1,15 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=16 format=3 uid="uid://ditk8hkfnmg0o"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=14 format=3 uid="uid://ditk8hkfnmg0o"]
 
 [ext_resource type="Resource" uid="uid://oxya1bn6qs8y" path="res://resources/combat/abilities/NeutStrike.tres" id="1_h6ewg"]
 [ext_resource type="Resource" uid="uid://r3xiqg0rf78c" path="res://resources/combat/abilities/AOEHeal.tres" id="3_14gbd"]
 [ext_resource type="Resource" uid="uid://dj018x62rghdm" path="res://resources/combat/abilities/PumpUp.tres" id="3_bfkjx"]
 [ext_resource type="PackedScene" uid="uid://ovdh5raaljpb" path="res://scenes/entities/followers/Pinky.tscn" id="4_fpjeh"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_4siku"]
-[ext_resource type="Resource" uid="uid://dwogklso4jeqr" path="res://resources/combat/abilities/DebuggerStrike.tres" id="5_5571v"]
 [ext_resource type="Resource" uid="uid://dlts84m2aivmo" path="res://resources/combat/abilities/ColdSlap.tres" id="5_sy720"]
 [ext_resource type="Resource" uid="uid://8v7wdj464tlq" path="res://resources/combat/abilities/HotHit.tres" id="6_lnnlb"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/VenoStrike.tres" id="7_12dc3"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_kr4q2"]
 [ext_resource type="Resource" uid="uid://dm2yej3rcmyy" path="res://resources/combat/abilities/ShockTherapy.tres" id="8_mp4jg"]
-[ext_resource type="Texture2D" uid="uid://bygumnqxcigmr" path="res://images/sprites/will_icon.png" id="8_sl7ba"]
 [ext_resource type="Resource" uid="uid://dne68qskv6g1y" path="res://resources/combat/abilities/OmniStrike.tres" id="9_1d8is"]
 [ext_resource type="Resource" uid="uid://glgmswqt1vcu" path="res://resources/combat/abilities/BraceSelf.tres" id="11_87wl6"]
 [ext_resource type="PackedScene" uid="uid://dlvg7wwaai4ra" path="res://scenes/combatants/GoodGuyA.tscn" id="14_chxsb"]
@@ -23,7 +21,6 @@ ABILITY_SLOT = ExtResource("11_87wl6")
 FOLLOWER_PACKED_SCENE = ExtResource("4_fpjeh")
 MANDATORY = false
 NAME = "PUMainBlasko"
-ICON = ExtResource("8_sl7ba")
 PACKED_SCENE = ExtResource("14_chxsb")
 DESCRIPTION = "A ruthless striker, kills on sight."
 STAT_VALUES = {
@@ -38,5 +35,5 @@ STAT_VALUES = {
 "hustle": 0,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_5571v")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 MAX_TURN_CHARGES = 1

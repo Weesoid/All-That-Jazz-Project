@@ -11,11 +11,12 @@ func _ready():
 	OverworldGlobals.setMenuFocus(buttons)
 
 func _on_yes_pressed():
-	saves.show()
-	OverworldGlobals.setMenuFocus(saves.panel)
-	for child in buttons.get_children():
-		child.focus_mode = Control.FOCUS_NONE
+	if FileAccess.file_exists("res://saves/Save.tres"):
+		var saved_game: SavedGame = load("res://saves/Save.tres")
+		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true)
+		PlayerGlobals.healCombatants()
+	else:
+		get_tree().quit()
 
-# Go to main menu!
 func _on_no_button_down():
 	get_tree().quit()

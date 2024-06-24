@@ -18,26 +18,20 @@ class_name PlayerScene
 @onready var cinematic_bars = $PlayerCamera/CinematicBars
 
 var can_move = true
-
 var direction = Vector2()
-
 var channeling_power = false
-
 var bow_mode = false
 var bow_draw_strength = 0
 var SPEED = 100.0
 var stamina_regen = true
-
-var ANIMATION_SPEED = 0.0
 var play_once = true
+var ANIMATION_SPEED = 0.0
 
 func _ready():
 	player_camera.global_position = global_position
 	SPEED = PlayerGlobals.walk_speed
 	animation_tree.active = true
 	PlayerGlobals.loadSquad()
-	if OverworldGlobals.getCurrentMapData().SAFE:
-		OverworldGlobals.loadFollowers()
 	add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 
 func _process(_delta):
@@ -282,7 +276,6 @@ func saveData(save_data: Array):
 	data.position = global_position
 	data.scene_path = scene_file_path
 	data.direction = int(player_direction.rotation_degrees)
-	print(data.direction)
 	save_data.append(data)
 
 func loadData():

@@ -115,6 +115,11 @@ func setFollowersMotion(enable:bool):
 			follower.SPEED = -1.0
 			follower.stopWalkAnimation()
 
+func healCombatants(cure: bool=true):
+	for combatant in TEAM:
+		combatant.STAT_VALUES['health'] = combatant.BASE_STAT_VALUES['health']
+		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
+
 func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
 	data.TEAM = TEAM

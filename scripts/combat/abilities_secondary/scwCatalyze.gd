@@ -13,7 +13,3 @@ static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 			var effect = effects.pick_random().NAME
 			CombatGlobals.manual_call_indicator.emit(target, 'CATALYZED! %s' % [effect.NAME], 'Reaction')
 			CombatGlobals.addStatusEffect(target, effect)
-		else:
-			print('Miss on ', target)
-	
-	

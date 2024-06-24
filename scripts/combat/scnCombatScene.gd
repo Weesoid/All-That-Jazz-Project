@@ -240,7 +240,6 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				combatant.ACTED = true
-				print('Adding experience teehee!', combatant.getExperience())
 				experience_earnt += combatant.getExperience()
 				addDrop(combatant.getDrops())
 		elif combatant is ResPlayerCombatant:
