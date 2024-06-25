@@ -1,6 +1,10 @@
 extends NPCPatrolMovement
 class_name NPCPatrolShooterMovement
 
+@export var PROJECTILE = preload("res://scenes/entities_disposable/ProjectileBullet.tscn")
+@onready var reload_timer = $ReloadTimer
+var shoot_ready: bool = true
+
 func updatePath(immediate:bool=false):
 	match STATE:
 		# PATROL
@@ -23,9 +27,6 @@ func updatePath(immediate:bool=false):
 		2:
 			if !PATROL_BUBBLE_SPRITE.visible:
 				PATROL_BUBBLE.play("Show")
-			# Shoot projectile!
-			# wait...
-			# Shoot projectile!
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
@@ -40,3 +41,38 @@ func updatePath(immediate:bool=false):
 			updatePath()
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 			COMBAT_SWITCH = true
+
+func targetReached():
+	if STATE == 2:
+		return NAV_AGENT.distance_to_target() < 125.0 and LINE_OF_SIGHT.detectPlayer()
+	else:
+		return NAV_AGENT.distance_to_target() < 1.0
+
+func patrolToPosition(target_position: Vector2):
+	if targetReached():
+		BODY.velocity = Vector2.ZERO
+		if shoot_ready:
+			updateLineOfSight()
+			shootProjectile()
+	elif !NAV_AGENT.get_current_navigation_path().is_empty() and shoot_ready:
+		updateLineOfSight()
+		BODY.velocity = target_position * MOVE_SPEED
+	
+	if BODY.velocity == Vector2.ZERO and STATE != 2:
+		ANIMATOR.seek(1, true)
+		ANIMATOR.pause()
+
+func _on_reload_timer_timeout():
+	shoot_ready = true
+
+func shootProjectile():
+	shoot_ready = false
+	ANIMATOR.play('Shoot')
+	var projectile = PROJECTILE.instantiate()
+	projectile.global_position = global_position + Vector2(0, -10)
+	projectile.SHOOTER = BODY
+	get_tree().current_scene.add_child(projectile)
+	projectile.rotation = LINE_OF_SIGHT.rotation + 1.57079994678497
+	reload_timer.start()
+	await ANIMATOR.animation_finished
+	ANIMATOR.play('Load')

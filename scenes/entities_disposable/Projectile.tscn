@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://7whprxn36miu"]
+[gd_scene load_steps=4 format=3 uid="uid://ohfoyvpoeayn"]
 
-[ext_resource type="Script" path="res://scripts/entities/entProjectileArrow.gd" id="1_jiala"]
-[ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_w2565"]
+[ext_resource type="Script" path="res://scripts/entities/entProjectile.gd" id="1_a76ag"]
+[ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_8niv0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6l46u"]
 size = Vector2(16, 2)
@@ -9,10 +9,10 @@ size = Vector2(16, 2)
 [node name="Arrow" type="Area2D"]
 collision_layer = 17
 collision_mask = 17
-script = ExtResource("1_jiala")
+script = ExtResource("1_a76ag")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_w2565")
+texture = ExtResource("2_8niv0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_6l46u")

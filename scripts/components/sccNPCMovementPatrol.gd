@@ -4,14 +4,16 @@ class_name NPCPatrolMovement
 @onready var PATROL_BUBBLE = $PatrolBubble/AnimationPlayer
 @onready var PATROL_BUBBLE_SPRITE = $PatrolBubble
 @onready var DEBUG = $Label
-@export var NAV_AGENT: NavigationAgent2D
-@export var LINE_OF_SIGHT: LineOfSight
-@export var COMBAT_SQUAD: CombatantSquad
 @export var PATROL_AREA: Area2D
-@export var BODY: CharacterBody2D
-@export var ANIMATOR: AnimationPlayer
-@export var BASE_MOVE_SPEED = 35
+@export var ALERTED_SPEED_MULTIPLIER = 1.25
+@export var CHASE_SPEED_MULTIPLIER = 8.0
 
+var NAV_AGENT: NavigationAgent2D
+var LINE_OF_SIGHT: LineOfSight
+var COMBAT_SQUAD: CombatantSquad
+var BODY: CharacterBody2D
+var ANIMATOR: AnimationPlayer
+var BASE_MOVE_SPEED = 35
 var STATE = 0
 var NAME
 var TARGET
@@ -24,6 +26,12 @@ var COMBAT_SWITCH = true
 var PATROL = true
 
 func _ready():
+	BODY = get_parent()
+	NAV_AGENT = get_parent().get_node('NavigationAgent2D')
+	LINE_OF_SIGHT = get_parent().get_node('LineOfSightComponent')
+	COMBAT_SQUAD = get_parent().get_node('CombatantSquadComponent')
+	ANIMATOR = get_parent().get_node('Animator')
+	
 	if OverworldGlobals.getCurrentMapData().CLEARED:
 		destroy(false)
 	
@@ -34,7 +42,6 @@ func _ready():
 	
 	IDLE_TIMER = Timer.new()
 	STUN_TIMER = Timer.new()
-	
 	add_child(IDLE_TIMER)
 	add_child(STUN_TIMER)
 	
@@ -75,7 +82,7 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
-		MOVE_SPEED = BASE_MOVE_SPEED * 8.0
+		MOVE_SPEED = BASE_MOVE_SPEED * CHASE_SPEED_MULTIPLIER
 		STATE = 2
 		updatePath()
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
@@ -84,7 +91,7 @@ func patrol():
 		soothePatrolMode()
 
 func alertPatrolMode():
-	MOVE_SPEED = BASE_MOVE_SPEED * 1.25
+	MOVE_SPEED = BASE_MOVE_SPEED * ALERTED_SPEED_MULTIPLIER
 	STATE = 1
 	if PATROL_BUBBLE.current_animation != "Loop":
 		PATROL_BUBBLE.play("Show")
@@ -95,7 +102,6 @@ func soothePatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED
 	STATE = 0
 	updatePath(true)
-	#if PATROL_BUBBLE_SPRITE.visible and PATROL_BUBBLE.current_animation != "Show":
 	PATROL_BUBBLE.play_backwards("Show")
 
 func stunMode():
@@ -163,10 +169,11 @@ func updatePath(immediate:bool=false):
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 			COMBAT_SWITCH = true
 
-func immobolize():
+func immobolize(disabled_los:bool=true):
 	COMBAT_SWITCH = false
 	BODY.velocity = Vector2.ZERO
-	LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
+	if disabled_los:
+		LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
 
 func moveRandom():
 	randomize()

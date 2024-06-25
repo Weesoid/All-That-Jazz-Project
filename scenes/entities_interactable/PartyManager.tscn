@@ -4,8 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_ln8c3"]
 [ext_resource type="Resource" uid="uid://c46w0s8ddqfle" path="res://resources/dialogue/open_party_menu.dialogue" id="3_x3jmw"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cuxhy"]
-size = Vector2(46, 33)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_norqa"]
+radius = 16.5
+height = 46.0
 
 [node name="PartyManager" type="CharacterBody2D"]
 
@@ -20,4 +21,5 @@ dialogue_resource = ExtResource("3_x3jmw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -16.5)
-shape = SubResource("RectangleShape2D_cuxhy")
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_norqa")

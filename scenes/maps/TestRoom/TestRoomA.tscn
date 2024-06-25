@@ -28,7 +28,7 @@
 [ext_resource type="Resource" uid="uid://dqucedvnuj2ek" path="res://scenes/maps/TestRoom/dialogue/test2.dialogue" id="17_cg6sf"]
 [ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="17_nryad"]
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="18_vkkst"]
-[ext_resource type="PackedScene" uid="uid://cfgaxedrlkql3" path="res://scenes/entities/mobs/Patroller.tscn" id="28_dbsah"]
+[ext_resource type="PackedScene" uid="uid://mfyf48hh0e2p" path="res://scenes/entities/mobs/PatrollerShooter.tscn" id="30_wfvt5"]
 [ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="31_s6lty"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
@@ -240,16 +240,13 @@ position = Vector2(77, 87)
 [node name="PartyManager" parent="." instance=ExtResource("13_ttgch")]
 position = Vector2(-127, -124)
 
-[node name="NPCPrototype" parent="." instance=ExtResource("28_dbsah")]
-position = Vector2(-32, -225)
+[node name="SavePoint" parent="." instance=ExtResource("31_s6lty")]
+position = Vector2(-75, -123)
+
+[node name="NPCPrototype" parent="." instance=ExtResource("30_wfvt5")]
+position = Vector2(-62, -239)
 
 [node name="NPCPatrolComponent" parent="NPCPrototype" index="2" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
-
-[node name="CombatantSquadComponent" parent="NPCPrototype" index="3"]
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_ppre7")])
-
-[node name="SavePoint" parent="." instance=ExtResource("31_s6lty")]
-position = Vector2(-75, -123)
 
 [editable path="NPCPrototype"]
