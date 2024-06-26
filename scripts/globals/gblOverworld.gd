@@ -272,12 +272,23 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=false):
 	add_child(player)
 	player.play()
 
+func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=false):
+	var pulse = preload("res://scenes/entities_disposable/UpdatePatrollers.tscn").instantiate()
+	pulse.radius = radius
+	pulse.mode = mode
+	pulse.trigger_others = trigger_others
+	if location is Node2D:
+		location.call_deferred('add_child', pulse)
+	elif location is Vector2:
+		pulse.global_position = location
+		getCurrentMap().call_deferred('add_child', pulse)
+
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
 func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if get_parent().has_node('CombatScene'):
-		await get_parent().get_node('CombatScene').tree_exited
+		return
 	if getCurrentMap().has_node('Balloon'):
 		getCurrentMap().get_node('Balloon').queue_free()
 		await getCurrentMap().get_node('Balloon').tree_exited
@@ -334,6 +345,9 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		setPlayerInput(true)
 	elif combat_results != 0:
 		setPlayerInput(true)
+
+func inCombat()-> bool:
+	return get_parent().has_node('CombatScene')
 
 func hasCombatDialogue(entity_name: String)-> bool:
 	return getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled

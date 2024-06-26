@@ -27,13 +27,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_60n6k"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_jeq5p"]
 
-[sub_resource type="Resource" id="Resource_00mqp"]
+[sub_resource type="Resource" id="Resource_7kmyn"]
 script = ExtResource("1_6vgdu")
-position = Vector2(-75, -103)
+position = Vector2(-136, -100)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 359
+direction = 0
 
-[sub_resource type="Resource" id="Resource_5qpup"]
+[sub_resource type="Resource" id="Resource_vsebs"]
 script = ExtResource("4_pj8it")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -41,12 +41,12 @@ KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResour
 ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_w8uxg"]
+[sub_resource type="Resource" id="Resource_a7hgi"]
 script = ExtResource("5_rpgil")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_bltbm"]
+[sub_resource type="Resource" id="Resource_kexqp"]
 script = ExtResource("25_60n6k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_50853"), ExtResource("15_kl8oh"), ExtResource("22_1mq7g"), ExtResource("23_j5g6c")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -192,9 +192,9 @@ ExtResource("23_j5g6c"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 
 [resource]
 script = ExtResource("26_jeq5p")
-NAME = "Save - 00:00:07
+NAME = "Save - 00:00:08
 Morale 1
 Prototype Room"
-PLAYTIME = 7.96
+PLAYTIME = 8.762
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_00mqp"), SubResource("Resource_5qpup"), SubResource("Resource_w8uxg"), SubResource("Resource_bltbm")]
+save_data = [SubResource("Resource_7kmyn"), SubResource("Resource_vsebs"), SubResource("Resource_a7hgi"), SubResource("Resource_kexqp")]

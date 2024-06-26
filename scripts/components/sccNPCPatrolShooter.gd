@@ -1,7 +1,7 @@
 extends NPCPatrolMovement
 class_name NPCPatrolShooterMovement
 
-@export var PROJECTILE = preload("res://scenes/entities_disposable/ProjectileBullet.tscn")
+@export var PROJECTILE: PackedScene
 @onready var reload_timer = $ReloadTimer
 var shoot_ready: bool = true
 
@@ -44,16 +44,18 @@ func updatePath(immediate:bool=false):
 
 func targetReached():
 	if STATE == 2:
-		return NAV_AGENT.distance_to_target() < 125.0 and LINE_OF_SIGHT.detectPlayer()
+		randomize()
+		return NAV_AGENT.distance_to_target() < (125.0 - randf_range(-70.0, 70.0)) and LINE_OF_SIGHT.detectPlayer()
 	else:
 		return NAV_AGENT.distance_to_target() < 1.0
 
 func patrolToPosition(target_position: Vector2):
 	if targetReached():
 		BODY.velocity = Vector2.ZERO
-		if shoot_ready:
+		if shoot_ready and STATE == 2:
 			updateLineOfSight()
 			shootProjectile()
+			OverworldGlobals.addPatrollerPulse(BODY, 100.0, 2)
 	elif !NAV_AGENT.get_current_navigation_path().is_empty() and shoot_ready:
 		updateLineOfSight()
 		BODY.velocity = target_position * MOVE_SPEED

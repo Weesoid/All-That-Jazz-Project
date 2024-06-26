@@ -681,8 +681,8 @@ func concludeCombat(results: int):
 	if combat_dialogue != null: 
 		combat_dialogue.disconnectSignal()
 		end_sentence = combat_dialogue.end_sentence
-	queue_free()
 	if results == 0:
 		OverworldGlobals.showGameOver(end_sentence)
 	else:
-		OverworldGlobals.getPlayer().add_child(preload("res://scenes/components/StunPatrollers.tscn").instantiate())
+		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 80.0, 3)
+	queue_free()

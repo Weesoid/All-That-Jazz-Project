@@ -190,7 +190,7 @@ func undrawBow():
 func shootProjectile():
 	OverworldGlobals.playSound("178872__hanbaal__bow.ogg", -15.0, true)
 	InventoryGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
-	var projectile = load("res://scenes/entities_disposable/Arrow.tscn").instantiate()
+	var projectile = load("res://scenes/entities_disposable/ProjectileArrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self
 	get_tree().current_scene.add_child(projectile)

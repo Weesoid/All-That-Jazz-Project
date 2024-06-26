@@ -54,6 +54,10 @@ func _ready():
 			if id == NAME:
 				destroy()
 			)
+	
+	for child in OverworldGlobals.getCurrentMap().get_children():
+		if child is CharacterBody2D and !child is PlayerScene and !child.has_node('NPCPatrolComponent'):
+			child.add_collision_exception_with(BODY)
 
 func _physics_process(_delta):
 	BODY.move_and_slide()
@@ -72,9 +76,9 @@ func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() == OverworldGlobals.getPlayer():
+	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
 		OverworldGlobals.changeToCombat(NAME)
-		OverworldGlobals.update_patroller_modes.emit(1)
+		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
 		COMBAT_SWITCH = false
 
 func patrol():
@@ -82,9 +86,7 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
-		MOVE_SPEED = BASE_MOVE_SPEED * CHASE_SPEED_MULTIPLIER
-		STATE = 2
-		updatePath()
+		chaseMode()
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if !NAV_AGENT.is_target_reachable():
@@ -104,15 +106,23 @@ func soothePatrolMode():
 	updatePath(true)
 	PATROL_BUBBLE.play_backwards("Show")
 
-func stunMode():
-	STATE = 3
+func chaseMode():
+	MOVE_SPEED = BASE_MOVE_SPEED * CHASE_SPEED_MULTIPLIER
+	STATE = 2
 	updatePath()
 
-func updateMode(state: int):
+func stunMode(alert_others:bool=false):
+	STATE = 3
+	updatePath()
+	if alert_others:
+		OverworldGlobals.addPatrollerPulse(BODY, 100.0, 1)
+
+func updateMode(state: int, alert_others:bool=false):
 	match state:
 		0: soothePatrolMode()
 		1: alertPatrolMode()
-		3: stunMode()
+		2: chaseMode()
+		3: stunMode(alert_others)
 
 func destroy(fancy=true): # What the fuck does FANCY mean?
 	PATROL = false
@@ -122,8 +132,8 @@ func destroy(fancy=true): # What the fuck does FANCY mean?
 		isMapCleared()
 		ANIMATOR.stop()
 		ANIMATOR.play("KO")
+		OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 		await ANIMATOR.animation_finished
-		OverworldGlobals.update_patroller_modes.emit(1)
 	BODY.queue_free()
 
 func isMapCleared():

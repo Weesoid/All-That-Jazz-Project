@@ -23,3 +23,5 @@ dialogue_resource = ExtResource("3_x3jmw")
 position = Vector2(0, -16.5)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_norqa")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]

@@ -5,4 +5,4 @@ static func applyEffect(body: CharacterBody2D):
 		combat_interact.patroller_name = body.get_node("NPCPatrolComponent").NAME
 		body.call_deferred('add_child', combat_interact)
 	
-	body.get_node("NPCPatrolComponent").updateMode(3)
+	body.get_node("NPCPatrolComponent").updateMode(3, true)

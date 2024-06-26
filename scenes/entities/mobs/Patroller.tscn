@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://cfgaxedrlkql3"]
+[gd_scene load_steps=16 format=3 uid="uid://cfgaxedrlkql3"]
 
 [ext_resource type="PackedScene" uid="uid://b0e4gc4eq74ca" path="res://scenes/components/NPCPatrol.tscn" id="1_qmtob"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="2_d6omk"]
+[ext_resource type="Resource" uid="uid://drv1o8j6wl6pf" path="res://resources/combat/combatants_enemies/RedAttack.tres" id="3_ljly7"]
 [ext_resource type="PackedScene" uid="uid://ldtj4j0l61ow" path="res://scenes/components/Hurtbox.tscn" id="4_ps25d"]
 [ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://images/animations/ent_walk.png" id="5_y0v56"]
 [ext_resource type="PackedScene" uid="uid://bahnqy0iowmdt" path="res://scenes/components/LineOfSight.tscn" id="6_3p5yl"]
@@ -172,7 +173,7 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
 radius = 11.0
 
-[node name="NPCPrototype" type="CharacterBody2D"]
+[node name="Patroller" type="CharacterBody2D"]
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
@@ -181,10 +182,15 @@ avoidance_enabled = true
 radius = 60.0
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+estimate_radius = false
+radius = 44.0
 
 [node name="NPCPatrolComponent" parent="." groups=["patroller"] instance=ExtResource("1_qmtob")]
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_d6omk")]
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("3_ljly7")])
+FILL_EMPTY = true
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
 
 [node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY") instance=ExtResource("4_ps25d")]
 BODY = NodePath("..")

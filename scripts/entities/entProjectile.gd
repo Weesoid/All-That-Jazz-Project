@@ -2,6 +2,7 @@ extends Area2D
 class_name Projectile
 
 @export var SPEED = 1500.0
+@onready var AUDIO = $AudioStreamPlayer2D
 var SHOOTER: CharacterBody2D
 var SPAWN_LOCATION: Vector2
 
@@ -14,4 +15,4 @@ func _physics_process(delta):
 		queue_free()
 
 func _on_body_entered(body):
-	pass
+	queue_free()
