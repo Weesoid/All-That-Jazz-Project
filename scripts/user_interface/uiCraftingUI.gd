@@ -88,7 +88,7 @@ func showItems(slot_button: Button, slot: int):
 			item_select.hide()
 			OverworldGlobals.setMenuFocusMode(base, true)
 			OverworldGlobals.setMenuFocusMode(repair_button, true)
-			OverworldGlobals.setMenuFocus(base)
+			slot_button.grab_focus()
 	)
 	cancel_button.connect('mouse_entered', clearItemDescription)
 	cancel_button.connect('focus_entered', clearItemDescription)

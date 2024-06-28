@@ -42,7 +42,9 @@ func updateInfo(member: ResCombatant):
 	info.loadInformation()
 	info.show()
 
-
 func _on_tab_container_tab_changed(tab):
 	if info.tabs.current_tab == 0:
-		OverworldGlobals.setMenuFocus(members)
+		for button in members.get_children():
+			if button.text == info.subject_combatant.NAME:
+				button.grab_focus()
+				return

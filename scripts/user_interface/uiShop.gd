@@ -185,6 +185,8 @@ func setButtonFunction(selected_item):
 			loadWares(InventoryGlobals.INVENTORY, selected_item)
 			if amount > 0:
 				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
+			if !InventoryGlobals.hasItem(selected_item):
+				OverworldGlobals.setMenuFocus(wares)
 
 func _on_toggle_mode_pressed():
 	match mode:
