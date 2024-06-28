@@ -29,7 +29,6 @@ var ANIMATION_SPEED = 0.0
 
 func _ready():
 	player_camera.global_position = global_position
-	#player_camera.zoom = Vector2(3, 3)
 	SPEED = PlayerGlobals.walk_speed
 	animation_tree.active = true
 	PlayerGlobals.loadSquad()
@@ -204,6 +203,9 @@ func playAudio(filename: String, db=0.0, random_pitch=false):
 		randomize()
 		audio_player.pitch_scale += randf_range(0.0, 0.25)
 	audio_player.play()
+
+func shakeCamera(strength:float, speed:float):
+	player_camera.shake(strength,speed)
 
 # Based on https://www.youtube.com/watch?v=WrMORzl3g1U
 func updateAnimationParameters():

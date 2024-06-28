@@ -229,6 +229,9 @@ func showGameOver(end_sentence: String):
 	getPlayer().player_camera.add_child(menu)
 	menu.end_sentence.text = end_sentence
 
+func shakeCamera():
+	getPlayer().player_camera.shake(30.0,20.0)
+
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES
 #********************************************************************************

@@ -47,9 +47,10 @@ func initializeBenchedTeam():
 #********************************************************************************
 # COMBATANT MANAGEMENT
 #********************************************************************************
-func addExperience(experience: int):
-	var message = '[color=yellow]%s[/color] morale added! (%s)' % [experience, int(CURRENT_EXP / getRequiredExp())]
-	OverworldGlobals.showPlayerPrompt(message)
+func addExperience(experience: int, show_message:bool=false):
+	if show_message:
+		var message = '[color=yellow]%s[/color] morale added! (%s)' % [experience, int(float(CURRENT_EXP) / getRequiredExp())]
+		OverworldGlobals.showPlayerPrompt(message)
 	CURRENT_EXP += experience
 	if CURRENT_EXP >= getRequiredExp():
 		PARTY_LEVEL += 1

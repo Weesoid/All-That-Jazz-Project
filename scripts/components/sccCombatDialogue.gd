@@ -56,8 +56,10 @@ func showDialogueBox(title: String):
 	
 	if title.split('`').size() > 1:
 		var title_sub_data = title.split('`')[1].split('/')
-		if title_sub_data.has('once') or (title=='win' or title=='lose'):
+		if title_sub_data.has('once'):
 			ignored_titles.append(title)
+	elif title=='win' or title=='lose':
+		ignored_titles.append(title)
 
 func disconnectSignal():
 	if CombatGlobals.dialogue_signal.is_connected(checkTitles):
