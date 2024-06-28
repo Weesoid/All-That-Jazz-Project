@@ -15,10 +15,10 @@ var BODY: CharacterBody2D
 var ANIMATOR: AnimationPlayer
 var BASE_MOVE_SPEED = 35
 var STATE = 0
-var NAME
-var TARGET
-var MOVE_SPEED
-var PATROL_SHAPE
+var NAME: String
+var TARGET: Vector2
+var MOVE_SPEED: float
+var PATROL_SHAPE: CollisionShape2D
 var IDLE_TIMER: Timer
 var STUN_TIMER: Timer
 
@@ -56,6 +56,7 @@ func _ready():
 			)
 	
 	for child in OverworldGlobals.getCurrentMap().get_children():
+		# and !child.has_node('NPCPatrolComponent')
 		if child is CharacterBody2D and !child is PlayerScene and !child.has_node('NPCPatrolComponent'):
 			child.add_collision_exception_with(BODY)
 
@@ -77,8 +78,8 @@ func executeCollisionAction():
 		return
 	
 	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
-		OverworldGlobals.changeToCombat(NAME)
-		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
+		#OverworldGlobals.changeToCombat(NAME)
+		#OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
 		COMBAT_SWITCH = false
 
 func patrol():
@@ -101,6 +102,7 @@ func alertPatrolMode():
 		PATROL_BUBBLE.play("Loop")
 
 func soothePatrolMode():
+	NAV_AGENT.get_current_navigation_path().clear()
 	MOVE_SPEED = BASE_MOVE_SPEED
 	STATE = 0
 	updatePath(true)
@@ -185,10 +187,17 @@ func immobolize(disabled_los:bool=true):
 	if disabled_los:
 		LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
 
-func moveRandom():
+func moveRandom()-> Vector2:
 	randomize()
-	return Vector2(randf_range(PATROL_SHAPE.global_position.x, PATROL_SHAPE.global_position.x + PATROL_SHAPE.shape.get_rect().end.x),
-					randf_range(PATROL_SHAPE.global_position.y, PATROL_SHAPE.global_position.y + PATROL_SHAPE.shape.get_rect().end.y))
+	var pos = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().position
+	var end = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().end
+#	var debugA = preload('res://scenes/entities_disposable/LootBag.tscn').instantiate()
+#	var debugB = preload('res://scenes/entities_disposable/LootBag.tscn').instantiate()
+#	debugA.global_position = pos
+#	debugB.global_position = end
+#	OverworldGlobals.getCurrentMap().add_child(debugA)
+#	OverworldGlobals.getCurrentMap().add_child(debugB)
+	return Vector2(randf_range(pos.x, end.x), randf_range(pos.y, end.y))
 
 func patrolToPosition(target_position: Vector2):
 	if targetReached():

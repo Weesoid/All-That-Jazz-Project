@@ -6,6 +6,7 @@
 size = Vector2(202, 190)
 
 [node name="LineOfSightComponent" type="Area2D"]
+visible = false
 collision_layer = 16
 collision_mask = 16
 script = ExtResource("1_5kkgs")

@@ -215,13 +215,13 @@ func isPlayerCheating()-> bool:
 	return getPlayer().has_node('DebugComponent')
 
 func showGameOver(end_sentence: String):
-	update_patroller_modes.emit(0)
 	setPlayerInput(false)
 	getPlayer().set_collision_layer_value(5, false)
 	getPlayer().set_collision_mask_value(5, false)
 	getPlayer().set_collision_layer_value(1, false)
 	getPlayer().set_collision_mask_value(1, false)
 	playEntityAnimation('Player', 'Fall')
+	update_patroller_modes.emit(0)
 	await getEntity('Player').get_node('AnimationPlayer').animation_finished
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
 	getPlayer().resetStates()
@@ -273,7 +273,7 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=false):
 	player.play()
 
 func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=false):
-	var pulse = preload("res://scenes/entities_disposable/UpdatePatrollers.tscn").instantiate()
+	var pulse = preload("res://scenes/entities_disposable/PatrollerPulse.tscn").instantiate()
 	pulse.radius = radius
 	pulse.mode = mode
 	pulse.trigger_others = trigger_others
@@ -288,20 +288,14 @@ func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=fal
 #********************************************************************************
 func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if get_parent().has_node('CombatScene'):
-		return
+		await getCurrentMap().get_node('CombatScene').tree_exited
 	if getCurrentMap().has_node('Balloon'):
 		getCurrentMap().get_node('Balloon').queue_free()
 		await getCurrentMap().get_node('Balloon').tree_exited
 	
-	if getCombatantSquad('Player').is_empty():
+	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
 		return
-	for member in getCombatantSquad('Player'):
-		if !member.isDead():
-			continue
-		else:
-			showGameOver('Your posse was exhausted!')
-			return
 	
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID

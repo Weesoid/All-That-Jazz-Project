@@ -32,6 +32,7 @@ func updatePatrollers():
 			
 			body.get_node('NPCPatrolComponent').updateMode(mode)
 	
+#	PULSE VISUALS!
 	var calculated_scale = (0.00450612244898*radius)+0.000938775510204
 	var scale_tween = get_tree().create_tween()
 	var opacity_tween = get_tree().create_tween()

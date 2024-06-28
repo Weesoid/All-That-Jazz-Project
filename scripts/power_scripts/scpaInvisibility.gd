@@ -21,7 +21,7 @@ func _unhandled_input(_event):
 
 func setInvisible():
 	player.stamina_regen = false
-	PlayerGlobals.stamina -= 0.5
+	PlayerGlobals.stamina -= 0.05
 	player.set_collision_layer_value(5, false)
 	player.set_collision_mask_value(5, false)
 	player.SPEED = 150
