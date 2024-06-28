@@ -46,4 +46,5 @@ func getRawDrops():
 
 func getExperience():
 	for member in COMBATANT_SQUAD:
+		print('ugu! ', member.getExperience())
 		PlayerGlobals.addExperience(member.getExperience())

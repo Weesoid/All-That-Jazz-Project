@@ -257,10 +257,26 @@ func loadFollowers():
 			follower_scene.global_position = getPlayer().global_position
 			getCurrentMap().add_child.call_deferred(follower_scene)
 
-func playSound(filename: String, db=0.0, pitch = 1, random_pitch=false):
+func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 	var player = AudioStreamPlayer.new()
 	player.connect("finished", player.queue_free)
 	player.pitch_scale = pitch
+	if filename.begins_with('res://'):
+		player.stream = load(filename)
+	else:
+		player.stream = load("res://audio/sounds/%s" % filename)
+	player.volume_db = db
+	if random_pitch:
+		randomize()
+		player.pitch_scale += randf_range(0.0, 0.25)
+	add_child(player)
+	player.play()
+
+func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_pitch=true):
+	var player = AudioStreamPlayer2D.new()
+	player.connect("finished", player.queue_free)
+	player.pitch_scale = pitch
+	player.global_position = position
 	if filename.begins_with('res://'):
 		player.stream = load(filename)
 	else:
