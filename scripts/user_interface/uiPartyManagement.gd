@@ -42,7 +42,7 @@ func updateInfo(member: ResCombatant):
 	info.loadInformation()
 	info.show()
 
-func _on_tab_container_tab_changed(tab):
+func _on_tab_container_tab_changed(_tab):
 	if info.tabs.current_tab == 0:
 		for button in members.get_children():
 			if button.text == info.subject_combatant.NAME:

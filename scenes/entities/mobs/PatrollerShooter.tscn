@@ -261,7 +261,6 @@ wall_min_slide_angle = 0.0
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 radius = 60.0
-debug_enabled = true
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
 estimate_radius = false
@@ -270,7 +269,7 @@ radius = 44.0
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_p2y0l")]
 PROJECTILE = ExtResource("1_v2kl0")
 ALERTED_SPEED_MULTIPLIER = 1.5
-CHASE_SPEED_MULTIPLIER = 6.0
+CHASE_SPEED_MULTIPLIER = 4.0
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_tnfqw")]
 

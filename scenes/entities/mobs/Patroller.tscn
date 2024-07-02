@@ -180,7 +180,6 @@ wall_min_slide_angle = 0.0
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 radius = 60.0
-debug_enabled = true
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
 estimate_radius = false
@@ -212,3 +211,4 @@ frame = 1
 shape = SubResource("CircleShape2D_6fsld")
 
 [node name="LineOfSightComponent" parent="." instance=ExtResource("6_3p5yl")]
+visible = true

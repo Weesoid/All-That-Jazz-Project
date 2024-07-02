@@ -46,8 +46,9 @@ physics_layer_0/collision_layer = 1
 navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_j5tc8")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_2apxe"]
-radius = 11.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hjhe1"]
+radius = 16.0
+height = 36.0
 
 [sub_resource type="Animation" id="Animation_g1n5f"]
 resource_name = "Hug"
@@ -194,8 +195,8 @@ position = Vector2(0, 8)
 dialogue_resource = ExtResource("7_cys1p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Animator"]
-position = Vector2(0, 13)
-shape = SubResource("CircleShape2D_2apxe")
+position = Vector2(0, 6)
+shape = SubResource("CapsuleShape2D_hjhe1")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Animator"]
 libraries = {
@@ -206,6 +207,7 @@ libraries = {
 position = Vector2(217, 23)
 TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomA.tscn"
 TO_COORDS = "-197.6241, -124.9434,-90"
+TOUCH_ENTER = true
 
 [node name="SavePoint" parent="." instance=ExtResource("10_ciej6")]
 position = Vector2(-63, 16)

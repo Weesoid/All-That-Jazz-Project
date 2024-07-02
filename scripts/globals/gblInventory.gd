@@ -40,26 +40,26 @@ func craftItem(item_array: Array[ResItem]):
 		else:
 			addItem(craft_data[0])
 
-func addItemResource(item: ResItem, count=1, unit=INVENTORY, show_message=true):
-	if !canAdd(item,count) or count == 0:
+func addItemResource(item: ResItem, count=1, show_message=true, check_restrictions=true):
+	if (!canAdd(item,count) or count == 0) and check_restrictions:
 		return
 	
-	if item is ResStackItem and unit.has(item):
-		unit[unit.find(item)].add(count)
+	if item is ResStackItem and INVENTORY.has(item):
+		INVENTORY[INVENTORY.find(item)].add(count)
 	elif item is ResStackItem:
 		if item.STACK <= 0: item.STACK = 1
 		item.add(count-1, false)
-		unit.append(item)
-		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
+		INVENTORY.append(item)
+		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.NAME, item.STACK])
 	elif item is ResCharm:
-		for i in range(count): unit.append(item.duplicate())
-		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
+		for i in range(count): INVENTORY.append(item.duplicate())
+		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
 	else:
-		unit.append(item)
-		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color] to %s.' % [item, getStorageUnitName(unit)])
+		INVENTORY.append(item)
+		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
 	
 	added_item_to_inventory.emit()
-	unit.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
+	INVENTORY.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
 
 func hasItem(item_name):
 	if item_name is String:
@@ -94,16 +94,16 @@ func getItemWithName(item_name: String, unit=INVENTORY):
 		if item.NAME == item_name:
 			return item
 
-func removeItemWithName(item_name: String, count=1, unit=INVENTORY, revoke_mandatory=false):
-	for item in unit:
+func removeItemWithName(item_name: String, count=1, revoke_mandatory=false):
+	for item in INVENTORY:
 		if item.NAME == item_name:
 			if revoke_mandatory: item.MANDATORY = false
 			removeItemResource(item,count)
 
-func removeItemResource(item, count=1, prompt=true):
+func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 	if count == 0:
 		return
-	elif item.MANDATORY:
+	elif item.MANDATORY and !ignore_mandatory:
 		OverworldGlobals.getPlayer().prompt.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
 		return
 	
@@ -140,10 +140,8 @@ func canAdd(item, count:int=1, show_prompt=true):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item.NAME) and item.STACK + count > item.MAX_STACK and item.MAX_STACK > 0:
-		print('cannot add this stack item')
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
-	
 	
 	return true
 

@@ -15,6 +15,7 @@ func _physics_process(delta):
 	if global_position.distance_to(SPAWN_LOCATION)>2500.0: queue_free()
 
 func _on_body_entered(body):
+	var _b = body
 	queue_free()
 
 func _exit_tree():

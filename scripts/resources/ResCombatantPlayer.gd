@@ -62,7 +62,7 @@ func equipWeapon(weapon: ResWeapon):
 		unequipWeapon()
 		
 	if InventoryGlobals.getItem(weapon) != null:
-		InventoryGlobals.removeItemResource(weapon)
+		InventoryGlobals.removeItemResource(weapon, 1, false)
 		weapon.equip(self)
 		return
 
@@ -73,7 +73,7 @@ func unequipWeapon():
 			return
 		
 		EQUIPPED_WEAPON.unequip()
-		InventoryGlobals.addItemResource(EQUIPPED_WEAPON)
+		InventoryGlobals.addItemResource(EQUIPPED_WEAPON, 1, false, false)
 		EQUIPPED_WEAPON = null
 		ABILITY_SLOT = preload("res://resources/combat/abilities/BraceSelf.tres")
 

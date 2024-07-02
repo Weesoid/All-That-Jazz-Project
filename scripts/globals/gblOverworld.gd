@@ -21,9 +21,14 @@ func initializePlayerParty():
 	
 	follow_array.resize(100)
 
-func setPlayerInput(enabled:bool):
+func setPlayerInput(enabled:bool, disable_collision=false):
 	getPlayer().can_move = enabled
 	getPlayer().set_process_unhandled_input(enabled)
+	if disable_collision:
+		getPlayer().set_collision_layer_value(5, false)
+		getPlayer().set_collision_mask_value(5, false)
+		getPlayer().set_collision_layer_value(1, false)
+		getPlayer().set_collision_mask_value(1, false)
 
 func inDialogue() -> bool:
 	return getCurrentMap().has_node('Balloon')
@@ -61,6 +66,9 @@ func getPlayer()-> PlayerScene:
 
 func getEntity(entity_name: String):
 	return get_tree().current_scene.get_node(entity_name)
+
+func hasEntity(entity_name: String):
+	return get_tree().current_scene.has_node(entity_name)
 
 func playEntityAnimation(entity_name: String, animation_name: String, wait=true):
 	getEntity(entity_name).get_node('AnimationPlayer').play(animation_name)
@@ -179,12 +187,15 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
-func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',save:bool=false):
+func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
+#	if show_transition:
+#		setPlayerInput(false, true)
+#		await showTransition('FadeIn', getPlayer())
+	await get_tree().process_frame
 	get_tree().change_scene_to_file(map_name_path)
-	await get_tree().create_timer(0.01).timeout
+	await get_tree().process_frame
 	
-	if getCurrentMap().has_node('Player'):
-		getCurrentMap().get_node('Player').loadData()
+	if getCurrentMap().has_node('Player'): getPlayer().loadData()
 	var player = preload("res://scenes/entities/Player.tscn").instantiate()
 	var coords = coordinates.split(',')
 	getCurrentMap().add_child(player)
@@ -192,18 +203,26 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		player.global_position = getEntity(to_entity).global_position + Vector2(0, 20)
 	else:
 		player.global_position = Vector2(float(coords[0]),float(coords[1]))
-	await get_tree().process_frame
-	
 	match int(coords[2]):
 		0: player.direction = Vector2(0,1) # Down
 		179: player.direction = Vector2(0,-1) # Up
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
-	
 	if OverworldGlobals.getCurrentMapData().SAFE:
 		OverworldGlobals.loadFollowers()
 	if save:
 		SaveLoadGlobals.saveGame()
+	if show_transition:
+		showTransition('FadeOut', player)
+
+func showTransition(animation: String, player_scene:PlayerScene=null):
+	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
+	if player_scene == null:
+		getPlayer().player_camera.add_child(transition)
+	else:
+		player_scene.player_camera.add_child(transition)
+	transition.get_node('AnimationPlayer').play(animation)
+	await transition.get_node('AnimationPlayer').animation_finished
 
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
@@ -214,20 +233,24 @@ func getCurrentMapData()-> MapData:
 func isPlayerCheating()-> bool:
 	return getPlayer().has_node('DebugComponent')
 
-func showGameOver(end_sentence: String):
-	setPlayerInput(false)
-	getPlayer().set_collision_layer_value(5, false)
-	getPlayer().set_collision_mask_value(5, false)
-	getPlayer().set_collision_layer_value(1, false)
-	getPlayer().set_collision_mask_value(1, false)
-	playEntityAnimation('Player', 'Fall')
+func showGameOver(end_sentence: String, animation: String='Fall'):
+	setPlayerInput(false, true)
 	update_patroller_modes.emit(0)
+	playEntityAnimation('Player', animation)
 	await getEntity('Player').get_node('AnimationPlayer').animation_finished
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
 	getPlayer().resetStates()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	getPlayer().player_camera.add_child(menu)
 	menu.end_sentence.text = end_sentence
+
+# Todo
+func moveCamera(to, wait:bool=false):
+	var tween
+	if to is Node2D:
+		pass
+	elif to is Vector2:
+		pass
 
 func shakeCamera():
 	getPlayer().player_camera.shake(30.0,20.0)
@@ -347,8 +370,6 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	get_tree().paused = false
 	battle_transition.get_node('AnimationPlayer').play('Out')
 	getCurrentMap().show()
-#	if hasCombatDialogue(entity_name):
-#		setPlayerInput(false)
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	getPlayer().resetStates()
@@ -363,7 +384,7 @@ func inCombat()-> bool:
 	return get_parent().has_node('CombatScene')
 
 func hasCombatDialogue(entity_name: String)-> bool:
-	return getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled
+	return hasEntity(entity_name) and getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD

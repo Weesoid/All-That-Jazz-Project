@@ -13,7 +13,7 @@ func _ready():
 func _on_yes_pressed():
 	if FileAccess.file_exists("res://saves/Save.tres"):
 		var saved_game: SavedGame = load("res://saves/Save.tres")
-		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true)
+		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true, true)
 		PlayerGlobals.healCombatants()
 	else:
 		get_tree().quit()

@@ -6,7 +6,7 @@ class_name NPCPatrolMovement
 @onready var DEBUG = $Label
 @export var PATROL_AREA: Area2D
 @export var ALERTED_SPEED_MULTIPLIER = 1.25
-@export var CHASE_SPEED_MULTIPLIER = 8.0
+@export var CHASE_SPEED_MULTIPLIER = 6.0
 
 var NAV_AGENT: NavigationAgent2D
 var LINE_OF_SIGHT: LineOfSight
@@ -78,8 +78,8 @@ func executeCollisionAction():
 		return
 	
 	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
-		#OverworldGlobals.changeToCombat(NAME)
-		#OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
+		OverworldGlobals.changeToCombat(NAME)
+		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
 		COMBAT_SWITCH = false
 
 func patrol():
@@ -114,10 +114,15 @@ func chaseMode():
 	updatePath()
 
 func stunMode(alert_others:bool=false):
+	var last_state = STATE
 	STATE = 3
 	updatePath()
 	if alert_others:
-		OverworldGlobals.addPatrollerPulse(BODY, 100.0, 1)
+		print(last_state)
+		if last_state == 2 or last_state == 1:
+			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
+		else:
+			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 
 func updateMode(state: int, alert_others:bool=false):
 	match state:
@@ -126,22 +131,29 @@ func updateMode(state: int, alert_others:bool=false):
 		2: chaseMode()
 		3: stunMode(alert_others)
 
-func destroy(fancy=true): # What the fuck does FANCY mean?
+func destroy(fancy=true):
+	print('wagoo?')
 	PATROL = false
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
 	if fancy:
+		print('wagoo wagoo!')
 		isMapCleared()
 		ANIMATOR.stop()
 		ANIMATOR.play("KO")
-		OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
+		if STATE == 2 or STATE == 1:
+			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
+		else:
+			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 		await ANIMATOR.animation_finished
 	BODY.queue_free()
 
 func isMapCleared():
+	print('Checking map clear!')
 	for child in OverworldGlobals.getCurrentMap().get_children():
-		if child.is_in_group('patroller'):
-			return
+		print(child, ' ', child.has_node('NPCPatrolComponent'))
+		if child.has_node('NPCPatrolComponent') and child != self: return
+	OverworldGlobals.showPlayerPrompt('Map cleared!')
 	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMapData().NAME)
 
 func updatePath(immediate:bool=false):

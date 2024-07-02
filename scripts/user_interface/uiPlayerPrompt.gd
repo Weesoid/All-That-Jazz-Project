@@ -8,7 +8,6 @@ var prompts = {}
 
 func _process(_delta):
 	if prompts.size() > 100:
-		print('Clearing prompts!')
 		prompts.clear()
 	
 	for key in prompts.keys():
@@ -33,9 +32,9 @@ func animatePrompt(action: int):
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
 	for msg in prompts.values():
-		if prompts[0] == msg: return
+		if msg[0] == message: return
 	
-	prompts[prompts.size()] = [message, time, audio_file]
+	prompts[message] = [message, time, audio_file]
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_clear_prompts"):
