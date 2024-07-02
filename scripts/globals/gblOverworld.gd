@@ -188,12 +188,13 @@ func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
-#	if show_transition:
-#		setPlayerInput(false, true)
-#		await showTransition('FadeIn', getPlayer())
-	await get_tree().process_frame
+	if show_transition:
+		getPlayer().velocity = Vector2.ZERO
+		setPlayerInput(false, true)
+		await showTransition('FadeIn', getPlayer())
 	get_tree().change_scene_to_file(map_name_path)
 	await get_tree().process_frame
+	print('is vissy: ', getCurrentMap().visible)
 	
 	if getCurrentMap().has_node('Player'): getPlayer().loadData()
 	var player = preload("res://scenes/entities/Player.tscn").instantiate()
@@ -212,6 +213,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		OverworldGlobals.loadFollowers()
 	if save:
 		SaveLoadGlobals.saveGame()
+	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
 

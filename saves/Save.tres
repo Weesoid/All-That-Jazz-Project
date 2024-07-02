@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=32 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_6vgdu"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_t2k78"]
@@ -25,16 +25,15 @@
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/Filler2.tres" id="23_j5g6c"]
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="24_6u6xt"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_60n6k"]
-[ext_resource type="Script" path="res://scripts/power_scripts/scpInvisibility.gd" id="25_ly5j5"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_jeq5p"]
 
-[sub_resource type="Resource" id="Resource_7up0e"]
+[sub_resource type="Resource" id="Resource_h048w"]
 script = ExtResource("1_6vgdu")
-position = Vector2(-63, 36)
+position = Vector2(-172.624, -124.943)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 0
+direction = -90
 
-[sub_resource type="Resource" id="Resource_063cx"]
+[sub_resource type="Resource" id="Resource_ikp8h"]
 script = ExtResource("4_pj8it")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -42,23 +41,22 @@ KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResour
 ITEM_DATA_INVENTORY = {}
 ITEM_DATA_STORAGE = {}
 
-[sub_resource type="Resource" id="Resource_koool"]
+[sub_resource type="Resource" id="Resource_wnyhf"]
 script = ExtResource("5_rpgil")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_s1p27"]
+[sub_resource type="Resource" id="Resource_lfaha"]
 script = ExtResource("25_60n6k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_50853"), ExtResource("15_kl8oh"), ExtResource("22_1mq7g"), ExtResource("23_j5g6c")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = []
-POWER = ExtResource("25_ly5j5")
 EQUIPPED_ARROW = ExtResource("24_6u6xt")
 CURRENCY = 100
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
-stamina = 1.85
+stamina = 79.9
 bow_max_draw = 5.0
 walk_speed = 100.0
 sprint_speed = 200.0
@@ -194,9 +192,9 @@ ExtResource("23_j5g6c"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 
 [resource]
 script = ExtResource("26_jeq5p")
-NAME = "Save - 00:01:41
+NAME = "Save - 00:00:39
 Morale 1
-Alt Room"
-PLAYTIME = 101.949
-current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_7up0e"), SubResource("Resource_063cx"), SubResource("Resource_koool"), SubResource("Resource_s1p27")]
+Prototype Room"
+PLAYTIME = 39.765
+current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
+save_data = [SubResource("Resource_h048w"), SubResource("Resource_ikp8h"), SubResource("Resource_wnyhf"), SubResource("Resource_lfaha")]

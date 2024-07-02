@@ -6,10 +6,12 @@
 radius = 24.0
 
 [node name="DoorInteractable" type="Area2D"]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_6ntv4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_u1b2x")
 debug_color = Color(0, 0.545098, 0.941176, 0.419608)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
