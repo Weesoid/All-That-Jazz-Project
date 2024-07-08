@@ -408,11 +408,11 @@ position = Vector2(320, 192)
 [node name="Position2" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
 position = Vector2(448, 192)
 
-[node name="Position3" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
-position = Vector2(704, 192)
-
 [node name="Position4" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
 position = Vector2(832, 192)
+
+[node name="Position3" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
+position = Vector2(704, 192)
 
 [node name="Position0" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/EnemyContainer"]
 position = Vector2(576, 192)

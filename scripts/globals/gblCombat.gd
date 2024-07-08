@@ -111,7 +111,6 @@ func calculateHealing(target:ResCombatant, base_healing):
 		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
 		target.STAT_VALUES['health'] += int(base_healing)
 	
-	print(target, ' was healed for ', int(base_healing))
 	#received_combatant_value.emit(target, caster, int(base_healing))
 	call_indicator.emit('Show', target)
 	OverworldGlobals.playSound('02_Heal_02.ogg')
@@ -120,12 +119,10 @@ func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
 	if percent_chance > 1.0:
 		percent_chance = 1.0
+	elif percent_chance < 0.0:
+		percent_chance = 0.0
 	randomize()
-	var roll = randf_range(0, 1.0)
-	if roll > percent_chance:
-		return true
-	else:
-		return false
+	return randf_range(0, 1.0) > percent_chance
 
 func valueVariate(value, percent_variance: float):
 	var variation = value * percent_variance
@@ -229,12 +226,10 @@ func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_a
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.STATUS_EFFECTS.append(status_effect)
-		if tick_on_apply:
-			status_effect.tick()
 	else:
 		rankUpStatusEffect(target, status_effect)
-		if tick_on_apply:
-			target.getStatusEffect(status_effect.NAME).tick()
+	if tick_on_apply:
+		target.getStatusEffect(status_effect.NAME).tick(false)
 	
 	if status_effect.LINGERING and target is ResPlayerCombatant and !target.LINGERING_STATUS_EFFECTS.has(status_effect.NAME):
 		target.LINGERING_STATUS_EFFECTS.append(status_effect.NAME)
@@ -272,7 +267,7 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 		if effect.NAME == status_effect.NAME:
 			if effect.duration < effect.MAX_DURATION:
 				effect.duration = effect.MAX_DURATION
-			effect.duration += status_effect.EXTEND_DURATION+1
+			effect.duration += status_effect.EXTEND_DURATION
 		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1

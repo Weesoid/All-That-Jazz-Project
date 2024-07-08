@@ -1,16 +1,16 @@
-[gd_scene load_steps=18 format=3 uid="uid://cju07dhtt56h2"]
+[gd_scene load_steps=18 format=3 uid="uid://f5686xl3as7n"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_1eg3r"]
 [ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_2jmjv"]
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="2_yo4y6"]
 [ext_resource type="PackedScene" uid="uid://xfrvaohqhfml" path="res://scenes/entities/Player.tscn" id="3_oqinw"]
-[ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravel.tscn" id="4_ryo4p"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://images/animations/ent_walker.png" id="5_n08rf"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="6_65xht"]
 [ext_resource type="Resource" uid="uid://cdl8vad57bffh" path="res://scenes/maps/TestRoom/dialogue/animate.dialogue" id="7_cys1p"]
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="8_oqijn"]
 [ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="9_jv7s8"]
 [ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="10_ciej6"]
+[ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="11_ppd0g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j5tc8"]
 texture = ExtResource("2_yo4y6")
@@ -180,9 +180,6 @@ layer_0/tile_data = PackedInt32Array(-1, 65536, 0, 65535, 0, 0, 0, 0, 0, -65536,
 [node name="Player" parent="." instance=ExtResource("3_oqinw")]
 position = Vector2(39, 28)
 
-[node name="FastTravel" parent="." instance=ExtResource("4_ryo4p")]
-position = Vector2(-112, 16)
-
 [node name="Animator" type="CharacterBody2D" parent="."]
 position = Vector2(-64, 64)
 
@@ -212,3 +209,6 @@ TO_COORDS = "-197.6241, -124.9434,-90"
 
 [node name="SavePoint" parent="." instance=ExtResource("10_ciej6")]
 position = Vector2(-63, 16)
+
+[node name="FastTravel" parent="." instance=ExtResource("11_ppd0g")]
+position = Vector2(-16, 16)

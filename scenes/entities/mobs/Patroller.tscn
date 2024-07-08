@@ -181,10 +181,6 @@ wall_min_slide_angle = 0.0
 avoidance_enabled = true
 radius = 60.0
 
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
-estimate_radius = false
-radius = 44.0
-
 [node name="NPCPatrolComponent" parent="." groups=["patroller"] instance=ExtResource("1_qmtob")]
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_d6omk")]
@@ -211,4 +207,3 @@ frame = 1
 shape = SubResource("CircleShape2D_6fsld")
 
 [node name="LineOfSightComponent" parent="." instance=ExtResource("6_3p5yl")]
-visible = true

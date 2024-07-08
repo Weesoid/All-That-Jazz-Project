@@ -6,7 +6,8 @@ var RECIPES: Dictionary = {
 	# In-game name -> .tres name
 	['Scrap Salvage', null, null]: 'Arrow',
 	['Arrow', 'Scrap Salvage', null]: 'ArrowSleeper',
-	['Murder Charm', 'Scrap Salvage', null]: 'BowStone'
+	['Murder Charm', 'Scrap Salvage', null]: 'BowStone',
+	['Scrap Salvage', 'Precious Salvage', null]: 'CharmMurder',
 }
 
 signal added_item_to_inventory

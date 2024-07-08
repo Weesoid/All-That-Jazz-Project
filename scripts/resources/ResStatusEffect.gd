@@ -51,8 +51,8 @@ func removeStatusEffect():
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
-func tick():
-	if !PERMANENT: 
+func tick(update_duration=true):
+	if !PERMANENT and update_duration: 
 		duration -= 1
 	
 	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)

@@ -1,11 +1,15 @@
 extends Node
 
+var dogpile_timer: Timer = Timer.new()
+var dogpile: int = 0
 var follow_array = []
 var player_follower_count = 0
 signal update_patroller_modes(mode:int)
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	dogpile_timer.connect('timeout', resetDogpile)
+	add_child(dogpile_timer)
 
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
@@ -218,6 +222,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		showTransition('FadeOut', player)
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
+	print('guh')
 	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	if player_scene == null:
 		getPlayer().player_camera.add_child(transition)
@@ -341,6 +346,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		showGameOver('You could not defend yourself!')
 		return
 	
+	setPlayerInput(false)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
@@ -355,8 +361,10 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
+	combat_scene.dogpile_count += dogpile
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
+	incrementDogpile()
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	get_tree().paused = true
@@ -381,6 +389,14 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		setPlayerInput(true)
 	elif combat_results != 0:
 		setPlayerInput(true)
+
+func incrementDogpile():
+	dogpile += 1
+	dogpile_timer.start(0.5)
+
+func resetDogpile():
+	dogpile = 0
+	dogpile_timer.stop()
 
 func inCombat()-> bool:
 	return get_parent().has_node('CombatScene')

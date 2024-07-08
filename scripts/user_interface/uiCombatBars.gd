@@ -18,8 +18,6 @@ var previous_value = 0
 var current_bar_value = 100
 var first_turn = true
 
-# OBJECT SPAM BUG IS HERE!!
-
 func _ready():
 	CombatGlobals.call_indicator.connect(
 		func setAnimation(anim_string, combatant):

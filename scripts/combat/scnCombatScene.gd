@@ -47,6 +47,7 @@ var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
+var dogpile_count: int = 0
 var camera_position: Vector2 = Vector2(0, -40)
 
 signal confirm
@@ -70,16 +71,17 @@ func _ready():
 		combatant.initializeCombatant()
 		combatant.player_turn.connect(on_player_turn)
 		combatant.enemy_turn.connect(on_enemy_turn)
-	
+		
 		if combatant is ResPlayerCombatant:
 			addCombatant(combatant, team_container_markers)
 		else:
 			addCombatant(combatant, enemy_container_markers)
+			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
 		
 		var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
 		combat_bars.attached_combatant = combatant
 		combatant.SCENE.add_child(combat_bars)
-	
+		
 	if battle_music_path != "":
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
@@ -105,6 +107,9 @@ func _ready():
 		combat_dialogue.initialize()
 	
 	transition_scene.visible = false
+	
+	if dogpile_count > 0:
+		writeTopLogMessage('Dogpile! (x%s)' % dogpile_count)
 
 func _process(_delta):
 	turn_counter.text = str(turn_count)
@@ -208,8 +213,8 @@ func end_turn(combatant_act=true):
 	target_index = 0
 	secondary_panel.hide()
 	
-	# Determinte next combatant
-	if !selected_ability.INSTANT_CAST:
+	# Determine next combatant
+	if selected_ability == null or !selected_ability.INSTANT_CAST:
 		setActiveCombatant()
 	else:
 		selected_ability.ENABLED = false
@@ -277,8 +282,22 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
-	CombatGlobals.combat_lost.emit(unique_id)
-	concludeCombat(2)
+	var hustle_enemies = 0
+	var hustle_allies = 0
+	for combatant in getCombatantGroup('enemies'):
+		if combatant.STAT_VALUES['hustle'] > 0:
+			hustle_enemies += combatant.STAT_VALUES['hustle']
+	for combatant in getCombatantGroup('team'):
+		if combatant.STAT_VALUES['hustle'] > 0:
+			hustle_allies += combatant.STAT_VALUES['hustle']
+	var chance_escape = 0.25 + ((hustle_allies-hustle_enemies)*0.01)
+	if CombatGlobals.randomRoll(chance_escape):
+		CombatGlobals.combat_lost.emit(unique_id)
+		concludeCombat(2)
+	else:
+		for combatant in getCombatantGroup('team'):
+			CombatGlobals.addStatusEffect(combatant, 'Dazed', true)
+		confirm.emit()
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -414,6 +433,14 @@ func executeAbility():
 		await DialogueManager.dialogue_ended
 	confirm.emit()
 
+func skipTurn():
+	target_state = 0
+	if run_once:
+		Input.action_release("ui_accept")
+		confirm.emit()
+		action_panel.hide()
+		run_once = false
+
 func commandExecuteAbility(target, ability: ResAbility):
 	ability.animateCast(active_combatant)
 	if ability.TARGET_TYPE == ability.TargetType.MULTI:
@@ -433,7 +460,6 @@ func moveCamera(target: Vector2, speed=0.25):
 func addCombatant(combatant, container):
 	for marker in container:
 		if marker.get_child_count() != 0: continue
-		
 		marker.add_child(combatant.SCENE)
 		combatant.getAnimator().play('Idle')
 		break

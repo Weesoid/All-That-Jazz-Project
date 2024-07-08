@@ -132,13 +132,10 @@ func updateMode(state: int, alert_others:bool=false):
 		3: stunMode(alert_others)
 
 func destroy(fancy=true):
-	print('wagoo?')
 	PATROL = false
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
 	if fancy:
-		print('wagoo wagoo!')
-		isMapCleared()
 		ANIMATOR.stop()
 		ANIMATOR.play("KO")
 		if STATE == 2 or STATE == 1:
@@ -146,13 +143,13 @@ func destroy(fancy=true):
 		else:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 		await ANIMATOR.animation_finished
+		isMapCleared()
 	BODY.queue_free()
 
 func isMapCleared():
-	print('Checking map clear!')
 	for child in OverworldGlobals.getCurrentMap().get_children():
-		print(child, ' ', child.has_node('NPCPatrolComponent'))
-		if child.has_node('NPCPatrolComponent') and child != self: return
+		if child.has_node('NPCPatrolComponent') and child != BODY:
+			return
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
 	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMapData().NAME)
 
@@ -203,12 +200,6 @@ func moveRandom()-> Vector2:
 	randomize()
 	var pos = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().position
 	var end = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().end
-#	var debugA = preload('res://scenes/entities_disposable/LootBag.tscn').instantiate()
-#	var debugB = preload('res://scenes/entities_disposable/LootBag.tscn').instantiate()
-#	debugA.global_position = pos
-#	debugB.global_position = end
-#	OverworldGlobals.getCurrentMap().add_child(debugA)
-#	OverworldGlobals.getCurrentMap().add_child(debugB)
 	return Vector2(randf_range(pos.x, end.x), randf_range(pos.y, end.y))
 
 func patrolToPosition(target_position: Vector2):

@@ -29,4 +29,4 @@ func travel(location):
 	if OverworldGlobals.getCurrentMap().scene_file_path == location:
 		OverworldGlobals.showPlayerPrompt("You're already here!")
 	else:
-		OverworldGlobals.changeMap(location)
+		OverworldGlobals.changeMap(location, '0,0,0', 'FastTravel')

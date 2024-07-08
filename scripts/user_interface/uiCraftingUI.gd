@@ -18,7 +18,7 @@ func _process(_delta):
 		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
 		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME	
 		craft_button.show()
-		craft_button.disabled = !canAddToInventory()
+		craft_button.disabled = canAddToInventory()
 	else:
 		craft_button.hide()
 
@@ -31,11 +31,13 @@ func _on_ready():
 
 func canAddToInventory():
 	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
-	
-	if result_data[1] != null:
+	if result_data[1] != null and result_data[0] is ResStackItem:
 		return InventoryGlobals.canAdd(result_data[0], result_data[1], false)
 	else:
-		return InventoryGlobals.canAdd(result_data[0], 1, false)
+		if result_data[0] is ResEquippable:
+			return !InventoryGlobals.canAdd(result_data[0], 1, false)
+		else:
+			return InventoryGlobals.canAdd(result_data[0], 1, false)
 
 func recipeToString()-> Array:
 	var out = [null, null, null]

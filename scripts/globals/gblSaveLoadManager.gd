@@ -62,3 +62,4 @@ func loadGame(saved_game: SavedGame):
 	OverworldGlobals.showPlayerPrompt('[color=yellow]Game loaded[/color]!')
 	done_loading.emit()
 	is_loading = false
+	OverworldGlobals.getCurrentMap().show()

@@ -17,6 +17,11 @@ layout_mode = 2
 theme = ExtResource("2_pc8b0")
 text = "(0,0)"
 
+[node name="Dogpile" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_pc8b0")
+text = "x1 (1.0)"
+
 [node name="PlaytimeInfo" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_pc8b0")

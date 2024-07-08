@@ -3,11 +3,13 @@ extends Node2D
 @onready var coordinates = $VBoxContainer/Coordinates
 @onready var playtime_info = $VBoxContainer/PlaytimeInfo
 @onready var equipped_charm = $VBoxContainer/EquippedCharm
+@onready var dogpile = $VBoxContainer/Dogpile
 var clipboard = DisplayServer.clipboard_get()
 
 func _process(_delta):
 	coordinates.text = str(get_parent().global_position)+','+str(int(get_parent().player_direction.rotation_degrees))
 	playtime_info.text = Time.get_time_string_from_unix_time(int(SaveLoadGlobals.current_playtime))
+	dogpile.text = 'x%s (%s)' % [OverworldGlobals.dogpile, OverworldGlobals.dogpile_timer.time_left]
 	if PlayerGlobals.hasUtilityCharm():
 		equipped_charm.text = PlayerGlobals.EQUIPPED_CHARM.NAME
 	else:

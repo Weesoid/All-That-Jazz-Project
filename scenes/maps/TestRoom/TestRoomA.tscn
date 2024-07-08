@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://3xhmv62u5c1v"]
+[gd_scene load_steps=37 format=3 uid="uid://dv2ijl1ntl2i6"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="PackedScene" uid="uid://dselblrcsaj5x" path="res://scenes/components/MapData.tscn" id="1_iet4p"]
@@ -6,13 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://knc1563g65sr" path="res://scenes/entities_interactable/CraftingTable.tscn" id="5_u7bub"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="5_v1cwg"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="7_eiq6g"]
-[ext_resource type="Resource" uid="uid://cx7a1d4nfkjwh" path="res://resources/combat/combatants_enemies/YellowSupport.tres" id="7_o06ea"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="8_pga02"]
 [ext_resource type="Resource" uid="uid://drv1o8j6wl6pf" path="res://resources/combat/combatants_enemies/RedAttack.tres" id="9_ppre7"]
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://images/sprites/NPC_unknown_entity.png" id="11_othvh"]
 [ext_resource type="Resource" uid="uid://csgsebj5w8hhs" path="res://scenes/maps/TestRoom/dialogue/give_quest.dialogue" id="11_qo0xo"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="12_au046"]
-[ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravel.tscn" id="12_lbsqd"]
 [ext_resource type="Resource" uid="uid://bmstsor885530" path="res://scenes/maps/TestRoom/dialogue/give_quest_end.dialogue" id="12_rfa7i"]
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="13_0fk7t"]
 [ext_resource type="Resource" uid="uid://nx5an2n2wjho" path="res://scenes/maps/TestRoom/dialogue/give_quest_fight.dialogue" id="13_aqxrw"]
@@ -32,6 +30,7 @@
 [ext_resource type="PackedScene" uid="uid://cfgaxedrlkql3" path="res://scenes/entities/mobs/Patroller.tscn" id="31_jb6j5"]
 [ext_resource type="PackedScene" uid="uid://mfyf48hh0e2p" path="res://scenes/entities/mobs/PatrollerShooter.tscn" id="31_pw13n"]
 [ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="31_s6lty"]
+[ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="32_ea2lt"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
 vertices = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
@@ -114,7 +113,7 @@ TO_COORDS = "192.3333, 28,90"
 position = Vector2(130, -131)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
-ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("7_o06ea"), ExtResource("9_ppre7")])
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("9_ppre7")])
 FILL_EMPTY = true
 UNIQUE_ID = "SexMasters"
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null, null, null, null])
@@ -227,9 +226,6 @@ shape = SubResource("CircleShape2D_yr6hg")
 [node name="CraftingTable" parent="." instance=ExtResource("5_u7bub")]
 position = Vector2(88, -120)
 
-[node name="FastTravel" parent="." instance=ExtResource("12_lbsqd")]
-position = Vector2(32, -120)
-
 [node name="ShopKeep" parent="." instance=ExtResource("13_0fk7t")]
 position = Vector2(-24, -120)
 
@@ -249,38 +245,41 @@ position = Vector2(-136, -120)
 [node name="Patroller" parent="." instance=ExtResource("31_jb6j5")]
 position = Vector2(112, -232)
 
-[node name="NPCPatrolComponent" parent="Patroller" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="Patroller" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [node name="Patroller2" parent="." instance=ExtResource("31_jb6j5")]
 position = Vector2(56, -240)
 
-[node name="NPCPatrolComponent" parent="Patroller2" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="Patroller2" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [node name="Patroller3" parent="." instance=ExtResource("31_jb6j5")]
 position = Vector2(-8, -248)
 
-[node name="NPCPatrolComponent" parent="Patroller3" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="Patroller3" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [node name="Patroller4" parent="." instance=ExtResource("31_jb6j5")]
 position = Vector2(144, -248)
 
-[node name="NPCPatrolComponent" parent="Patroller4" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="Patroller4" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [node name="Patroller5" parent="." instance=ExtResource("31_jb6j5")]
 position = Vector2(-24, -216)
 
-[node name="NPCPatrolComponent" parent="Patroller5" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="Patroller5" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
 [node name="PatrollerShooter" parent="." instance=ExtResource("31_pw13n")]
 position = Vector2(24, -256)
 
-[node name="NPCPatrolComponent" parent="PatrollerShooter" index="2" node_paths=PackedStringArray("PATROL_AREA")]
+[node name="NPCPatrolComponent" parent="PatrollerShooter" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
+
+[node name="FastTravel" parent="." instance=ExtResource("32_ea2lt")]
+position = Vector2(32, -120)
 
 [editable path="Patroller"]
 [editable path="Patroller2"]
