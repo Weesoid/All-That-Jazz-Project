@@ -155,7 +155,3 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PatrolBubble"]
-
-[node name="ReloadTimer" type="Timer" parent="."]
-
-[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

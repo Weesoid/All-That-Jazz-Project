@@ -2,7 +2,6 @@ extends NPCPatrolMovement
 class_name NPCPatrolShooterMovement
 
 @export var PROJECTILE: PackedScene
-@onready var reload_timer = $ReloadTimer
 var shoot_ready: bool = true
 
 func updatePath(immediate:bool=false):
@@ -41,6 +40,7 @@ func updatePath(immediate:bool=false):
 			updatePath()
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 			COMBAT_SWITCH = true
+			shoot_ready = true
 
 func targetReached():
 	if STATE == 2:
@@ -65,16 +65,28 @@ func patrolToPosition(target_position: Vector2):
 		ANIMATOR.pause()
 
 func _on_reload_timer_timeout():
-	shoot_ready = true
+	pass
 
 func shootProjectile():
 	shoot_ready = false
-	ANIMATOR.play('Shoot')
 	var projectile = PROJECTILE.instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = BODY
 	get_tree().current_scene.add_child(projectile)
+	animateShot()
 	projectile.rotation = LINE_OF_SIGHT.rotation + 1.57079994678497
-	reload_timer.start()
 	await ANIMATOR.animation_finished
 	ANIMATOR.play('Load')
+	await ANIMATOR.animation_finished
+	shoot_ready = true
+
+func animateShot():
+	var look_direction = LINE_OF_SIGHT.global_rotation_degrees
+	if look_direction < 135 and look_direction > 45:
+		ANIMATOR.play('Shoot_Left')
+	elif look_direction < -45 and look_direction > -135:
+		ANIMATOR.play('Shoot_Right')
+	elif look_direction < 45 and look_direction > -45:
+		ANIMATOR.play('Shoot_Down')
+	else:
+		ANIMATOR.play('Shoot_Up')

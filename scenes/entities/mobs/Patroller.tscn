@@ -181,7 +181,7 @@ wall_min_slide_angle = 0.0
 avoidance_enabled = true
 radius = 60.0
 
-[node name="NPCPatrolComponent" parent="." groups=["patroller"] instance=ExtResource("1_qmtob")]
+[node name="NPCPatrolComponent" parent="." instance=ExtResource("1_qmtob")]
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_d6omk")]
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("3_ljly7")])

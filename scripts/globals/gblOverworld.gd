@@ -6,6 +6,9 @@ var follow_array = []
 var player_follower_count = 0
 signal update_patroller_modes(mode:int)
 
+#func _process(_delta):
+#	print_orphan_nodes()
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	dogpile_timer.connect('timeout', resetDogpile)
@@ -392,7 +395,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 
 func incrementDogpile():
 	dogpile += 1
-	dogpile_timer.start(0.5)
+	dogpile_timer.start(1.0)
 
 func resetDogpile():
 	dogpile = 0

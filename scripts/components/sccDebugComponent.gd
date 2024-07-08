@@ -9,7 +9,7 @@ var clipboard = DisplayServer.clipboard_get()
 func _process(_delta):
 	coordinates.text = str(get_parent().global_position)+','+str(int(get_parent().player_direction.rotation_degrees))
 	playtime_info.text = Time.get_time_string_from_unix_time(int(SaveLoadGlobals.current_playtime))
-	dogpile.text = 'x%s (%s)' % [OverworldGlobals.dogpile, OverworldGlobals.dogpile_timer.time_left]
+	dogpile.text = 'x%s (%s)' % [OverworldGlobals.dogpile, snappedf(OverworldGlobals.dogpile_timer.time_left, 0.1)]
 	if PlayerGlobals.hasUtilityCharm():
 		equipped_charm.text = PlayerGlobals.EQUIPPED_CHARM.NAME
 	else:
