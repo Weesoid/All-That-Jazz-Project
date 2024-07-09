@@ -237,9 +237,6 @@ func showTransition(animation: String, player_scene:PlayerScene=null):
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 
-func getCurrentMapData()-> MapData:
-	return get_tree().current_scene
-
 func isPlayerCheating()-> bool:
 	return getPlayer().has_node('DebugComponent')
 

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0fiej3fa6gyj"]
+
+[ext_resource type="Texture2D" uid="uid://c8spkgaqlwrge" path="res://images/sprites/circle_sprite.png" id="1_rnstx"]
+[ext_resource type="Script" path="res://scripts/entities/entPulse.gd" id="2_4d2qi"]
+
+[node name="PulseAnimations" type="Node2D"]
+script = ExtResource("2_4d2qi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.196078)
+position = Vector2(4.76837e-07, 0)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_rnstx")
