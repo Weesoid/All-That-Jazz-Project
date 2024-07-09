@@ -423,6 +423,20 @@ func isPlayerSquadDead():
 	
 	return true
 
+func damageParty(damage:int):
+	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
+	var dead = ''
+	for member in getCombatantSquad('Player'):
+		if member.isDead(): continue
+		member.STAT_VALUES['health'] -= damage
+		if member.isDead(): dead += '[color=yellow]'+member.NAME+'[/color], '
+	if !dead == '':
+		dead = dead.trim_suffix(', ')
+		showPlayerPrompt('%s are downed!' % dead)
+		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
+	if isPlayerSquadDead():
+		showGameOver('Shot down!')
+
 func restorePlayerView():
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
