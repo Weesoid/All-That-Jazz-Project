@@ -5,7 +5,7 @@ func _on_body_entered(body):
 	if body is PlayerScene:
 		OverworldGlobals.damageParty(20)
 	
-	if body != SHOOTER:
+	if body != SHOOTER or body is PlayerScene:
 		queue_free()
 
 func _exit_tree():

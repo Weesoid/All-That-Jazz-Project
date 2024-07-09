@@ -48,8 +48,6 @@ func recipeToString()-> Array:
 	return out
 
 func craft():
-	var craft_result = InventoryGlobals.getRecipeResult(recipeToString())
-	
 	InventoryGlobals.craftItem(all_components)
 	for i in range(all_components.size()):
 		if all_components[i] == null: continue

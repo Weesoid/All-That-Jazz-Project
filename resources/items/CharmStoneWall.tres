@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="ResCharm" load_steps=2 format=3 uid="uid://drgb4ejko51ty"]
+[gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://drgb4ejko51ty"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="1_18ebx"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_i4u7q"]
 
 [resource]
 script = ExtResource("1_18ebx")
 STAT_MODIFICATIONS = {
-"grit": 500
+"grit": 0.75
 }
 NAME = "Defender"
+ICON = ExtResource("1_i4u7q")
 DESCRIPTION = "Defendicious!"
 VALUE = 150
-WEIGHT = 1
 MANDATORY = false
