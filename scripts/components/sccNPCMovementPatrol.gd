@@ -32,7 +32,7 @@ func _ready():
 	COMBAT_SQUAD = get_parent().get_node('CombatantSquadComponent')
 	ANIMATOR = get_parent().get_node('Animator')
 	
-	if OverworldGlobals.getCurrentMapData().CLEARED:
+	if OverworldGlobals.getCurrentMap().CLEARED:
 		destroy(false)
 	
 	NAME = get_parent().name
@@ -151,7 +151,7 @@ func isMapCleared():
 		if child.has_node('NPCPatrolComponent') and child != BODY:
 			return
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
-	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMapData().NAME)
+	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMap().NAME)
 
 func updatePath(immediate:bool=false):
 	match STATE:

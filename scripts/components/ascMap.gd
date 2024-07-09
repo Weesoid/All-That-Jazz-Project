@@ -1,5 +1,19 @@
 extends Node2D
 class_name MyMapData
 
+@export var NAME: String
+@export var DESCRIPTION: String
+@export var IMAGE: Texture
+@export var SAFE: bool = false
+var CLEARED: bool = false
+
 func _ready():
 	if !has_node('Player'): hide()
+	if !SAFE:
+		clearPatrollers()
+
+func clearPatrollers():
+	if SaveLoadGlobals.is_loading:
+		await SaveLoadGlobals.done_loading
+	if PlayerGlobals.CLEARED_MAPS.has(NAME):
+		CLEARED = true

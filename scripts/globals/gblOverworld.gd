@@ -23,7 +23,7 @@ func initializePlayerParty():
 			member.initializeCombatant()
 			member.SCENE.free()
 	
-	if OverworldGlobals.getCurrentMapData().SAFE:
+	if OverworldGlobals.getCurrentMap().SAFE:
 		loadFollowers()
 	
 	follow_array.resize(100)
@@ -216,7 +216,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		179: player.direction = Vector2(0,-1) # Up
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
-	if OverworldGlobals.getCurrentMapData().SAFE:
+	if OverworldGlobals.getCurrentMap().SAFE:
 		OverworldGlobals.loadFollowers()
 	if save:
 		SaveLoadGlobals.saveGame()
@@ -238,7 +238,7 @@ func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 
 func getCurrentMapData()-> MapData:
-	return get_tree().current_scene.get_node('MapDataComponent')
+	return get_tree().current_scene
 
 func isPlayerCheating()-> bool:
 	return getPlayer().has_node('DebugComponent')

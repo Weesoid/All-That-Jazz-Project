@@ -119,7 +119,7 @@ func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
 	
-	if OverworldGlobals.getCurrentMapData().SAFE:
+	if OverworldGlobals.getCurrentMap().SAFE:
 		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
 		return false
 	
@@ -135,7 +135,7 @@ func canUsePower():
 	if OverworldGlobals.inMenu():
 		return false
 	
-	if OverworldGlobals.getCurrentMapData().SAFE:
+	if OverworldGlobals.getCurrentMap().SAFE:
 		prompt.showPrompt("Can't use [color=gray]Gambit[/color] right now.")
 		return false
 	

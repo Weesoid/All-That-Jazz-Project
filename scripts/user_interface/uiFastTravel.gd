@@ -9,9 +9,8 @@ func _ready():
 	for location in PlayerGlobals.FAST_TRAVEL_LOCATIONS:
 		var button = OverworldGlobals.createCustomButton()
 		var map = load(location).instantiate()
-		var map_data = map.get_node('MapDataComponent')
-		button.text = map_data.NAME
-		map_component_data[location] = [map_data.NAME, map_data.DESCRIPTION, map_data.IMAGE]
+		button.text = map.NAME
+		map_component_data[location] = [map.NAME, map.DESCRIPTION, map.IMAGE]
 		button.pressed.connect(func(): travel(location))
 		button.focus_entered.connect(
 			func():
