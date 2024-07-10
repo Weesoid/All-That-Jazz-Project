@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://cfftuy32qslx6"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_rv82y"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_wpvfv"]
+
+[resource]
+script = ExtResource("2_wpvfv")
+STAT_MODIFICATIONS = {
+"health": 24
+}
+NAME = "Testifier"
+ICON = ExtResource("1_rv82y")
+DESCRIPTION = "Testify Candace testify!"
+VALUE = 0
+MANDATORY = false

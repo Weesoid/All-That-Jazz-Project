@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResQuestObjective" load_steps=3 format=3 uid="uid://cp3063ta04dr8"]
+[gd_resource type="Resource" script_class="ResQuestObjective" load_steps=3 format=3]
 
 [ext_resource type="Resource" uid="uid://dl4b0bu3v3s61" path="res://resources/quests/GetThatItem/objectives/0_GetItem.tres" id="1_exrsi"]
 [ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="1_vi3vw"]

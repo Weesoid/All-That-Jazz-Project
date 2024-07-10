@@ -101,6 +101,9 @@ func saveData(save_data: Array):
 	save_data.append(data)
 
 func loadData(save_data: QuestSaveData):
+#	for quest in save_data.QUESTS:
+#		if !FileAccess.file_exists(quest.resource_path):
+#			save_data.QUESTS.erase(quest)
 	QUESTS = save_data.QUESTS
 	
 	for quest in QUESTS:
@@ -108,6 +111,7 @@ func loadData(save_data: QuestSaveData):
 	
 	for quest in QUESTS:
 		for objective in quest.OBJECTIVES:
+			if !save_data.QUEST_OBJECTIVES_DATA.keys().has(objective): continue
 			objective.ENABLED = save_data.QUEST_OBJECTIVES_DATA[objective][0]
 			objective.FINISHED = save_data.QUEST_OBJECTIVES_DATA[objective][1]
 			objective.FAILED = save_data.QUEST_OBJECTIVES_DATA[objective][2]

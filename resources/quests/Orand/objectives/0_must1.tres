@@ -11,5 +11,5 @@ NAME = "Orand Neutral Weapon"
 DESCRIPTION = "Give Orand a Neutral Weapon"
 DEPENDENTS = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
 FAIL_OBJECTIVES = Array[Resource("res://scripts/resources/ResQuestObjective.gd")]([])
-OR_DEPENDENTS = false
+OR_DEPENDENTS = true
 END_OBJECTIVE = false

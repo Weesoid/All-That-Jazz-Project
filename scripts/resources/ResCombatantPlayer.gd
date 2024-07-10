@@ -53,6 +53,12 @@ func applyEquipmentModifications():
 	for charm in CHARMS:
 		charm.applyStatModifications()
 
+func getAllocationModifier()-> Dictionary:
+	var out = STAT_POINT_ALLOCATIONS.duplicate()
+	for stat in out.keys():
+		out[stat] *= 0.02
+	return out
+
 func removeEquipmentModifications():
 	for charm in CHARMS:
 		charm.removeStatModifications()
@@ -83,7 +89,7 @@ func equipCharm(charm: ResCharm, slot: int):
 		return
 	
 	if InventoryGlobals.getItem(charm) != null:
-		InventoryGlobals.removeItemResource(charm)
+		InventoryGlobals.removeItemResource(charm, 1, false)
 		charm.equip(self)
 		CHARMS[slot] = charm
 		return
@@ -94,7 +100,7 @@ func unequipCharm(slot: int):
 	
 	CHARMS[slot].unequip()
 	CombatGlobals.resetStat(self, CHARMS[slot].NAME)
-	InventoryGlobals.addItemResource(CHARMS[slot])
+	InventoryGlobals.addItemResource(CHARMS[slot], 1, false, false)
 	CHARMS[slot] = null
 
 func hasCharm(charm: ResCharm):

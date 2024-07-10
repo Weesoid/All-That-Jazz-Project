@@ -146,7 +146,7 @@ func saveData(save_data: Array):
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
-			combatant.ABILITY_SET, 
+			combatant.ABILITY_SET,
 			combatant.CHARMS,
 			combatant.STAT_VALUES,
 			combatant.BASE_STAT_VALUES,
@@ -199,6 +199,9 @@ func loadData(save_data: PlayerSaveData):
 		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][11]
 		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][12]
 		combatant.ABILITY_SLOT = save_data.COMBATANT_SAVE_DATA[combatant][13]
+		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
+		for charm in combatant.CHARMS.values():
+			if charm != null: charm.equip(combatant)
 		if combatant.active:
 			OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(combatant)
 	

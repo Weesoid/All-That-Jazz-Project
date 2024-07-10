@@ -106,6 +106,7 @@ func applyStatModifications(modifier_id: String):
 	for modifier in STAT_MODIFIERS.keys():
 		if modifier == modifier_id:
 			for stat in STAT_MODIFIERS[modifier]: 
+				print(STAT_MODIFIERS[modifier][stat])
 				STAT_VALUES[stat] += STAT_MODIFIERS[modifier][stat]
 			return
 

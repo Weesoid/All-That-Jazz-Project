@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResQuestObjective" load_steps=2 format=3 uid="uid://t6ovs1u8ej21"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="1_vpaw1"]
+
+[resource]
+script = ExtResource("1_vpaw1")
+NAME = "Become CHEESEBURGER"
+DESCRIPTION = "Simply become a cheeseburger."
+DEPENDENTS = Array[ExtResource("1_vpaw1")]([])
+FAIL_OBJECTIVES = Array[ExtResource("1_vpaw1")]([])
+OR_DEPENDENTS = false
+END_OBJECTIVE = true

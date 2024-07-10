@@ -10,6 +10,7 @@ Entity: What would you like to talk about?
 ~ gimme_quest
 Entity: Here's a quest!! Idiot!!
 do addQuest("GetThatItem")
+do addQuest("TestQuest")
 => END
 
 ~ get_that_item

@@ -201,7 +201,6 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		await showTransition('FadeIn', getPlayer())
 	get_tree().change_scene_to_file(map_name_path)
 	await get_tree().process_frame
-	print('is vissy: ', getCurrentMap().visible)
 	
 	if getCurrentMap().has_node('Player'): getPlayer().loadData()
 	var player = preload("res://scenes/entities/Player.tscn").instantiate()
@@ -225,7 +224,6 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		showTransition('FadeOut', player)
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
-	print('guh')
 	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	if player_scene == null:
 		getPlayer().player_camera.add_child(transition)
@@ -432,7 +430,10 @@ func damageParty(damage:int):
 		if member.isDead(): dead += '[color=yellow]'+member.NAME+'[/color], '
 	if !dead == '':
 		dead = dead.trim_suffix(', ')
-		showPlayerPrompt('%s are downed!' % dead)
+		if dead.split(',').size() > 1:
+			showPlayerPrompt('%s are downed!' % dead)
+		else:
+			showPlayerPrompt('%s is downed!' % dead)
 		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	if isPlayerSquadDead():
 		showGameOver('Shot down!')

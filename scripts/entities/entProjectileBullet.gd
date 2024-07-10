@@ -2,10 +2,11 @@ extends Projectile
 class_name ProjectileBullet
 
 func _on_body_entered(body):
+	print(body)
 	if body is PlayerScene:
 		OverworldGlobals.damageParty(20)
 	
-	if body != SHOOTER or body is PlayerScene:
+	if body != SHOOTER and (body is PlayerScene or body is TileMap):
 		queue_free()
 
 func _exit_tree():

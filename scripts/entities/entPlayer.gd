@@ -216,7 +216,7 @@ func updateAnimationParameters():
 		animation_tree["parameters/conditions/idle"] = false
 		animation_tree["parameters/conditions/is_moving"] = true
 	
-	if direction != Vector2.ZERO and bow_draw_strength == 0:
+	if direction != Vector2.ZERO and bow_draw_strength < 1.0:
 		animation_tree["parameters/Idle/blend_position"] = direction
 		animation_tree["parameters/Walk/blend_position"] = direction
 		animation_tree["parameters/Idle Bow/blend_position"] = direction

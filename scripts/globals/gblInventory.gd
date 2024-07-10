@@ -53,7 +53,7 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 		INVENTORY.append(item)
 		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.NAME, item.STACK])
 	elif item is ResCharm:
-		for i in range(count): INVENTORY.append(item.duplicate())
+		for i in range(count): INVENTORY.append(item)
 		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
 	else:
 		INVENTORY.append(item)
@@ -137,7 +137,7 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 		addItemResource(item.REFERENCE_ITEM, count)
 
 func canAdd(item, count:int=1, show_prompt=true):
-	if (item is ResWeapon or item is ResUtilityCharm) and hasItem(item):
+	if item is ResEquippable and hasItem(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item.NAME) and item.STACK + count > item.MAX_STACK and item.MAX_STACK > 0:
@@ -193,46 +193,36 @@ func saveData(save_data: Array):
 	var data = InventorySaveData.new()
 	data.INVENTORY = INVENTORY
 	data.KNOWN_POWERS = KNOWN_POWERS
-	#data.STORAGE = STORAGE
-	saveItemData(INVENTORY, data)
+	saveItemData(data)
 	save_data.append(data)
 
 func loadData(save_data: InventorySaveData):
 	INVENTORY = save_data.INVENTORY
 	KNOWN_POWERS = save_data.KNOWN_POWERS
-	loadItemData(INVENTORY, save_data)
+	loadItemData(save_data)
 
-func saveItemData(storage_unit: Array[ResItem], inv_save_data: InventorySaveData):
+func saveItemData(inv_save_data: InventorySaveData):
 	var item_data: Dictionary
-	if storage_unit == INVENTORY:
-		item_data = inv_save_data.ITEM_DATA_INVENTORY
-	else:
-		item_data = inv_save_data.ITEM_DATA_STORAGE
+	item_data = inv_save_data.ITEM_DATA_INVENTORY
 	
-	for item in storage_unit:
+	for item in INVENTORY:
 		if item is ResGhostStackItem:
 			item_data[item.NAME] = [item.REFERENCE_ITEM.resource_path, item.STACK]
 		elif item is ResStackItem:
 			item_data[item.NAME] = item.STACK
 		elif item is ResUtilityCharm:
 			item_data[item.NAME] = item.equipped
-		elif item is ResEquippable:
-			item_data[item.NAME] = item.EQUIPPED_COMBATANT
 
-func loadItemData(storage_unit: Array[ResItem], save_data: InventorySaveData):
+func loadItemData(save_data: InventorySaveData):
 	var item_data: Dictionary
-	if storage_unit == INVENTORY:
-		item_data = save_data.ITEM_DATA_INVENTORY
-	else:
-		item_data = save_data.ITEM_DATA_STORAGE
+	item_data = save_data.ITEM_DATA_INVENTORY
 	
-	for item in storage_unit:
+	for item in INVENTORY:
 		if item_data.keys().has(item.NAME):
+			#var test_item = load("res://resources/items/%s" % item.resource_path.get_file())
 			if item is ResGhostStackItem:
 				continue
 			elif item is ResStackItem:
 				item.STACK = item_data[item.NAME]
 			elif item is ResUtilityCharm:
 				item.equipped = item_data[item.NAME]
-			elif item is ResEquippable:
-				item.EQUIPPED_COMBATANT = item_data[item.NAME]

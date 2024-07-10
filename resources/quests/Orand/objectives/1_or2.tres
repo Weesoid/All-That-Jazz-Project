@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://2gn6c1nh0byv" path="res://resources/quests/Orand/objectives/0_must1.tres" id="1_s4sah"]
 [ext_resource type="Resource" uid="uid://cabs5ndos05x6" path="res://resources/quests/Orand/objectives/0_must2.tres" id="2_2pj44"]
-[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="3_6y5pa"]
+[ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_6y5pa"]
 [ext_resource type="Script" path="res://scripts/resources/ResQuestObjectiveItem.gd" id="4_os27j"]
 
 [resource]

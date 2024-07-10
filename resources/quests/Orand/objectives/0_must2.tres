@@ -6,8 +6,7 @@
 script = ExtResource("1_u4wp2")
 NAME = "Talk to Fightey"
 DESCRIPTION = "Tell  Fightey Hes a Hoe"
-DEPENDENT = Array[ExtResource("1_u4wp2")]([])
-FAIL_CONDITIONS = Array[ExtResource("1_u4wp2")]([])
+DEPENDENTS = Array[ExtResource("1_u4wp2")]([])
+FAIL_OBJECTIVES = Array[ExtResource("1_u4wp2")]([])
 OR_DEPENDENTS = false
-OR_FAIL_CONDITIONS = false
 END_OBJECTIVE = false
