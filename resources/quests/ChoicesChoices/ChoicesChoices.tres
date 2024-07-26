@@ -1,8 +1,28 @@
-[gd_resource type="Resource" script_class="ResQuest" load_steps=2 format=3 uid="uid://dgw5s0pmscuvr"]
+[gd_resource type="Resource" script_class="ResQuest" load_steps=5 format=3 uid="uid://dgw5s0pmscuvr"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_0uhkd"]
+[ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="1_44bjp"]
+
+[sub_resource type="Resource" id="Resource_2nqwh"]
+script = ExtResource("1_44bjp")
+NAME = ""
+DESCRIPTION = ""
+DEPENDENTS = Array[ExtResource("1_44bjp")]([])
+FAIL_OBJECTIVES = Array[ExtResource("1_44bjp")]([])
+OR_DEPENDENTS = false
+END_OBJECTIVE = false
+
+[sub_resource type="Resource" id="Resource_4by4e"]
+script = ExtResource("1_44bjp")
+NAME = ""
+DESCRIPTION = ""
+DEPENDENTS = Array[ExtResource("1_44bjp")]([SubResource("Resource_2nqwh")])
+FAIL_OBJECTIVES = Array[ExtResource("1_44bjp")]([])
+OR_DEPENDENTS = false
+END_OBJECTIVE = false
 
 [resource]
 script = ExtResource("1_0uhkd")
 NAME = "Choices Choices"
 DESCRIPTION = "Make the right choice!"
+OBJECTIVES = Array[ExtResource("1_44bjp")]([SubResource("Resource_2nqwh"), SubResource("Resource_4by4e")])

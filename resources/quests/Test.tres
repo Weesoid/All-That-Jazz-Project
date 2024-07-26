@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="RezQuest" load_steps=5 format=3 uid="uid://boyivpbqn6e0x"]
+
+[ext_resource type="Script" path="res://scripts/resources/RezQuestObjective.gd" id="1_1cu6f"]
+[ext_resource type="Script" path="res://scripts/resources/RezQuest.gd" id="1_wn176"]
+
+[sub_resource type="Resource" id="Resource_awjps"]
+script = ExtResource("1_1cu6f")
+NAME = ""
+DESCRIPTION = ""
+DEPENDENT_OUTCOME = 0
+FINAL_OBJECTIVE = false
+
+[sub_resource type="Resource" id="Resource_3b6as"]
+script = ExtResource("1_1cu6f")
+NAME = ""
+DESCRIPTION = ""
+DEPENDENT_OUTCOME = 0
+FINAL_OBJECTIVE = false
+
+[resource]
+script = ExtResource("1_wn176")
+NAME = "Test"
+DESCRIPTION = "This is a test quest."
+OBJECTIVES = Array[ExtResource("1_1cu6f")]([SubResource("Resource_awjps"), SubResource("Resource_3b6as")])
+COMPLETED = false

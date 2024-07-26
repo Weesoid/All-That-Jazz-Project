@@ -3,11 +3,11 @@ class_name ResQuest
 
 @export var NAME: String
 @export var DESCRIPTION: String
-var OBJECTIVES: Array[ResQuestObjective] = []
-
+@export var OBJECTIVES: Array[ResQuestObjective] = []
 var COMPLETED: bool = false
 
 func initializeQuest():
+	print(OBJECTIVES)
 	if !OBJECTIVES.is_empty():
 		return
 	
@@ -33,13 +33,6 @@ func getObjective(objective_name: String)-> ResQuestObjective:
 		
 	for objective in OBJECTIVES:
 		if objective.NAME.to_lower() == objective_name.to_lower():
-			return objective
-	
-	return null
-
-func getCurrentObjective()-> ResQuestObjective:
-	for objective in OBJECTIVES:
-		if !objective.FINISHED and objective.ENABLED:
 			return objective
 	
 	return null
