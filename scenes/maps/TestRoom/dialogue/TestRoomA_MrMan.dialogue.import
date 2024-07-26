@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://dpx62r3hkqksv"
+path="res://.godot/imported/TestRoomA_MrMan.dialogue-760ee4be61295b6c31e04523845d1c67.tres"
+
+[deps]
+
+source_file="res://scenes/maps/TestRoom/dialogue/TestRoomA_MrMan.dialogue"
+dest_files=["res://.godot/imported/TestRoomA_MrMan.dialogue-760ee4be61295b6c31e04523845d1c67.tres"]
+
+[params]
+
+defaults=true

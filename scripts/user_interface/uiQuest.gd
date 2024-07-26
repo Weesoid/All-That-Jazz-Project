@@ -41,22 +41,14 @@ func setQuestInfo():
 	description.text = selected_quest.DESCRIPTION
 	
 	for objectve in selected_quest.OBJECTIVES:
-		if objectve.ENABLED:
+		if objectve.ACTIVE:
 			var objective_description = Label.new()
 			objective_description.custom_minimum_size.x = objectives_container.size.x
 			objective_description.text = str("* ", objectve.DESCRIPTION)
 			objective_description.autowrap_mode = 3
-			if objectve.FINISHED:
+			if objectve.COMPLETED:
 				objective_description.self_modulate.a = 0.5
-			if run_once and objectve.ENABLED:
-				objective_scroller.add_child(objective_description)
-		elif objectve.FAILED:
-			var objective_description = Label.new()
-			objective_description.custom_minimum_size.x = objectives_container.size.x
-			objective_description.text = str("* ", objectve.DESCRIPTION)
-			objective_description.autowrap_mode = 3
-			objective_description.self_modulate =  Color(1, 0, 0, 0.3)
-			if run_once:
+			if run_once and objectve.ACTIVE:
 				objective_scroller.add_child(objective_description)
 	
 	run_once = false

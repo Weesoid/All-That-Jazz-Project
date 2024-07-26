@@ -1,9 +1,0 @@
-~ start
-Entity: Wanna have some GAY SEX?!
-- Willis: Gross!
-	Entity: Fuck you!
-- Willis: No Way!
-	Entity: Then EAT THIS!!!
-	do setEnemyCombatantSquad("NPCPrototype")
-	do changeToCombat()
-=> END

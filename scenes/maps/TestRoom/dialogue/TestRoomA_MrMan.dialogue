@@ -1,0 +1,21 @@
+~ start
+
+if !isObjectiveActive("Get That Item", "Get Scrap"):
+	Entity: Go away! I don't care about you!
+	if isObjectiveActive("Get That Item", "Tell Questy"):
+		Entity: What was that? You want to BACKSTAB Mr. Questy? That's vile!
+		Entity: However...
+		- Yeah I wanna backstab him.
+			Entity: Tell. No one!
+			do completeQuestObjective("Get That Item", "Tell Questy", 1)
+		- On second thought...
+			Entity: Whatever I don't care anyways!
+else:
+	Entity: Oh so Mr. Questy needs my help huh? Very well!
+	if !hasItem("Scrap Salvage", 8):
+		Entity: Wait a minute... You don't have enough Scrap Salvage! FUCK OFF!
+	else:
+		do completeQuestObjective("Get That Item", "Get Scrap")
+		Entity: There ya go!
+
+=> END

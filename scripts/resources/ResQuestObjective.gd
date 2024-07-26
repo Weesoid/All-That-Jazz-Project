@@ -1,58 +1,20 @@
 extends Resource
-class_name ResQuestObjective
+class_name ResObjective
 
 @export var NAME: String
 @export var DESCRIPTION: String
-@export var DEPENDENTS: Array[ResQuestObjective]
-@export var FAIL_OBJECTIVES: Array[ResQuestObjective]
-@export var OR_DEPENDENTS: bool
-@export var END_OBJECTIVE: bool
+@export var DEPENDENT: ResObjective
+@export var DEPENDENT_OUTCOME: int
+@export var FINAL_OBJECTIVE: bool
+@export var AUTO_COMPLETE: bool
 
-var ENABLED: bool
-var FINISHED: bool = false
-var FAILED: bool
+var ACTIVE: bool = false
+var COMPLETED: bool = false
+var OUTCOME: int
 
-# UGLY AND BAD, DESPERATE NEED FOR FIXING!!!
-func initializeObjective():
-	pass
+func complete(outcome:int=0):
+	COMPLETED = true
+	OUTCOME = outcome
 
-func checkComplete():
-	if FINISHED:
-		QuestGlobals.quest_objective_completed.emit(self)
-	elif FAILED:
-		QuestGlobals.quest_objective_completed.emit(self)
-	return FINISHED
-
-func attemptEnable():
-	if DEPENDENTS.is_empty() and !FAILED:
-		ENABLED = true
-	elif FAILED:
-		ENABLED = false
-	else:
-		var objectives_finished = false
-		if !OR_DEPENDENTS:
-			var done = 0
-			for objective in DEPENDENTS:
-				if objective.FINISHED:
-					done += 1
-			objectives_finished = (done == DEPENDENTS.size())
-		else:
-			for objective in DEPENDENTS:
-				if objective.FINISHED and objective.ENABLED:
-					objectives_finished = true
-					break
-		ENABLED = objectives_finished
-		
-	failObjectives()
-
-func failObjectives():
-	if FAIL_OBJECTIVES.is_empty():
-		return
-	
-	if ENABLED:
-		for objective in FAIL_OBJECTIVES:
-			objective.FAILED = true
-			objective.ENABLED = false
-
-func disconnectSignals():
-	pass
+func _to_string():
+	return "%s > Dependent:%s/%s, Active:%s, Completed:%s, Final:%s" % [NAME, DEPENDENT.NAME, DEPENDENT_OUTCOME, ACTIVE, COMPLETED, FINAL_OBJECTIVE]

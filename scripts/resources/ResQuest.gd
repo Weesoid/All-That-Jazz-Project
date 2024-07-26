@@ -3,31 +3,10 @@ class_name ResQuest
 
 @export var NAME: String
 @export var DESCRIPTION: String
-@export var OBJECTIVES: Array[ResQuestObjective] = []
-var COMPLETED: bool = false
+@export var OBJECTIVES: Array[ResObjective]
+@export var COMPLETED: bool = false
 
-func initializeQuest():
-	print(OBJECTIVES)
-	if !OBJECTIVES.is_empty():
-		return
-	
-	var path = get_path().get_base_dir()+'/objectives'
-	var dir = DirAccess.open(path)
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			OBJECTIVES.append(load(path+'/'+file_name))
-			file_name = dir.get_next()
-	else:
-		print("An error occurred when trying to access the path.")
-		print(path)
-	
-	for objective in OBJECTIVES:
-		objective.initializeObjective()
-		objective.attemptEnable()
-
-func getObjective(objective_name: String)-> ResQuestObjective:
+func getObjective(objective_name: String)-> ResObjective:
 	if !QuestGlobals.hasQuest(NAME):
 		return null
 		
@@ -37,21 +16,23 @@ func getObjective(objective_name: String)-> ResQuestObjective:
 	
 	return null
 
-func isCompleted(load_mode:bool=false):
+func completeObjective(objective_name: String, outcome:int=0):
 	for objective in OBJECTIVES:
-		objective.attemptEnable()
-		if objective.END_OBJECTIVE and objective.FINISHED:
-			COMPLETED = true
-			if !load_mode:
-				failRemainingObjectives()
-				QuestGlobals.quest_completed.emit(self)
-			return COMPLETED
+		if objective.NAME == objective_name: objective.complete(outcome)
+	
+	for objective in OBJECTIVES:
+		if objective.DEPENDENT != null and objective.DEPENDENT.COMPLETED and objective.DEPENDENT_OUTCOME == objective.DEPENDENT.OUTCOME and !objective.ACTIVE:
+			objective.ACTIVE = true
+			if objective.AUTO_COMPLETE: objective.COMPLETED = true
+	
+	isCompleted()
 
-func failRemainingObjectives():
+func isCompleted(show_prompt:bool=true):
 	for objective in OBJECTIVES:
-		if !objective.FINISHED and objective.ENABLED: 
-			objective.FAILED = true
-			objective.ENABLED = false
+		if objective.FINAL_OBJECTIVE and objective.COMPLETED:
+			COMPLETED = true
+			if show_prompt: QuestGlobals.promptQuestCompleted(self)
+			return COMPLETED
 
 func _to_string():
 	return "%s : %s" % [NAME, COMPLETED]

@@ -1,5 +1,0 @@
-~ start
-
-do PlayerGlobals.addItem("ScrapSalvage")
-
-=> END

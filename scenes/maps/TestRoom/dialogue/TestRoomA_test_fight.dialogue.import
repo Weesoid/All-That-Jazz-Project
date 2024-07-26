@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_8"
+type="Resource"
+uid="uid://crf6wo1o4pndo"
+path="res://.godot/imported/TestRoomA_test_fight.dialogue-a1abe9e6079bd078739332048bfeccd6.tres"
+
+[deps]
+
+source_file="res://scenes/maps/TestRoom/dialogue/TestRoomA_test_fight.dialogue"
+dest_files=["res://.godot/imported/TestRoomA_test_fight.dialogue-a1abe9e6079bd078739332048bfeccd6.tres"]
+
+[params]
+
+defaults=true

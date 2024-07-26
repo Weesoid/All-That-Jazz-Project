@@ -36,7 +36,6 @@ func loadGame(saved_game: SavedGame):
 	await get_tree().create_timer(0.01).timeout
 	
 	get_tree().call_group('presist', 'loadData')
-	QuestGlobals.quest_objective_completed.disconnect(QuestGlobals.checkQuestsForCompleted)
 	await get_tree().process_frame
 	for item in saved_game.save_data:
 		if item is EntitySaveData:
@@ -55,7 +54,6 @@ func loadGame(saved_game: SavedGame):
 			QuestGlobals.loadData(item)
 		elif item is PlayerSaveData:
 			PlayerGlobals.loadData(item)
-	QuestGlobals.quest_objective_completed.connect(QuestGlobals.checkQuestsForCompleted)
 	
 	session_start = Time.get_unix_time_from_system()
 	current_playtime = saved_game.PLAYTIME

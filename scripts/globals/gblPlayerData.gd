@@ -12,7 +12,7 @@ var EQUIPPED_CHARM: ResUtilityCharm
 var CURRENCY = 0
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
-var STRING_CONDITIONS: Array[String] # This'll be handly later...
+var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
 
 var stamina = 100.0
 var bow_max_draw = 5.0
@@ -142,7 +142,7 @@ func saveData(save_data: Array):
 	data.sprint_speed = sprint_speed
 	data.sprint_drain = sprint_drain
 	data.stamina_gain = stamina_gain
-	data.STRING_CONDITIONS = STRING_CONDITIONS
+	data.PROGRESSION_DATA = PROGRESSION_DATA
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
@@ -182,7 +182,7 @@ func loadData(save_data: PlayerSaveData):
 	sprint_speed = save_data.sprint_speed
 	sprint_drain = save_data.sprint_drain
 	stamina_gain = save_data.stamina_gain
-	STRING_CONDITIONS = save_data.STRING_CONDITIONS
+	PROGRESSION_DATA = save_data.PROGRESSION_DATA
 	
 	for combatant in TEAM:
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]

@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="ResQuest" load_steps=2 format=3 uid="uid://eebo6up7637c"]
-
-[ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_mh6au"]
-
-[resource]
-script = ExtResource("1_mh6au")
-NAME = "Get that item!"
-DESCRIPTION = "Get the fucking item. FUCK YOU!"

@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="ResQuest" load_steps=2 format=3 uid="uid://xb8qx06bmg6c"]
-
-[ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_awvx6"]
-
-[resource]
-script = ExtResource("1_awvx6")
-NAME = "Completion"
-DESCRIPTION = "End it all."

@@ -1,7 +1,0 @@
-~ start
-
-Entity: Hello! I'm gonna move now!
-do moveEntity("MrMovey", "U15,R25,D0")
-Entity: I have arrived God I love SEEEXX!!!
-
-=> END

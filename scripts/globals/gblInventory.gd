@@ -62,7 +62,7 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	added_item_to_inventory.emit()
 	INVENTORY.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
 
-func hasItem(item_name):
+func hasItem(item_name, count:int=0):
 	if item_name is String:
 		for combatant in PlayerGlobals.TEAM:
 			if combatant.EQUIPPED_WEAPON != null and combatant.EQUIPPED_WEAPON.NAME == item_name:
@@ -81,14 +81,20 @@ func hasItem(item_name):
 	
 	if item_name is String:
 		for item in INVENTORY:
-			return item.NAME == item_name
+			if count > 0 and item.STACK >= count and item.NAME == item_name:
+				return true
+			elif count <= 0:
+				return item.NAME == item_name
 	elif item_name is ResItem:
-		return INVENTORY.has(item_name)
+		if count > 0 and INVENTORY.has(item_name) and getItem(item_name).STACK >= count:
+			return true
+		elif count <= 0:
+			return INVENTORY.has(item_name)
 	
 	return false
 
-func getItem(item: ResItem, unit=INVENTORY):
-	return unit[unit.find(item)]
+func getItem(item: ResItem):
+	return INVENTORY[INVENTORY.find(item)]
 
 func getItemWithName(item_name: String, unit=INVENTORY):
 	for item in unit:
@@ -219,7 +225,6 @@ func loadItemData(save_data: InventorySaveData):
 	
 	for item in INVENTORY:
 		if item_data.keys().has(item.NAME):
-			#var test_item = load("res://resources/items/%s" % item.resource_path.get_file())
 			if item is ResGhostStackItem:
 				continue
 			elif item is ResStackItem:
