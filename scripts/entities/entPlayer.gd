@@ -86,6 +86,7 @@ func resetStates():
 	undrawBowAnimation()
 	SPEED = PlayerGlobals.walk_speed
 	ANIMATION_SPEED = 0.0
+	Input.action_release("ui_click")
 
 func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -156,7 +157,7 @@ func drawBow():
 		bow_mode = false
 		toggleBowAnimation()
 	
-	if Input.is_action_pressed("ui_click") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
+	if Input.is_action_pressed("ui_click") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move:
 		SPEED = 15.0
 		if play_once:
 			playAudio('bow-loading-38752.ogg',0.0,true)
@@ -249,6 +250,13 @@ func updateAnimationParameters():
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
+
+func setUIVisibility(set:bool):
+	for child in player_camera.get_children():
+		if child is Control: 
+			match set:
+				true: child.self_modulate.a = 1.0
+				false: child.self_modulate.a = 0.0
 
 func toggleVoidAnimation(enabled: bool):
 	if enabled:

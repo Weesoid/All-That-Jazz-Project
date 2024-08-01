@@ -41,7 +41,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 1, 0.235294, 0.117647)
+border_color = Color(0.8, 0.8, 0.8, 0.27451)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uux52"]
 bg_color = Color(0, 0, 0, 1)

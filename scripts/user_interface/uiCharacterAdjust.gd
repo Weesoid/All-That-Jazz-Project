@@ -202,8 +202,6 @@ func showWeaponEquipMenu():
 				selected_combatant.equipWeapon(weapon)
 				weapon_button.text = weapon.NAME
 				weapon_button.icon = weapon.ICON
-			else:
-				OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] does not meet [color=yellow]%s[/color] requirements.' % [selected_combatant.NAME, weapon.NAME])
 			select_charms_panel.hide()
 			charm_info_panel.hide()
 			setFocusMode(equipped_charms, true)
@@ -218,6 +216,7 @@ func showWeaponEquipMenu():
 			func():
 				updateItemDescription(weapon)
 		)
+		if !weapon.canUse(selected_combatant): button.disabled = true
 		select_charms.add_child(button)
 
 func _on_weapon_pressed():

@@ -239,6 +239,8 @@ func isPlayerCheating()-> bool:
 	return getPlayer().has_node('DebugComponent')
 
 func showGameOver(end_sentence: String, animation: String='Fall'):
+	getPlayer().setUIVisibility(false)
+	getPlayer().resetStates()
 	setPlayerInput(false, true)
 	update_patroller_modes.emit(0)
 	playEntityAnimation('Player', animation)

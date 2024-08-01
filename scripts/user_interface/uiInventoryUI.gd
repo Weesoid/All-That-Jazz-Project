@@ -12,6 +12,7 @@ func _ready():
 	resetDescription()
 	if inventory_grid.get_child_count() > 0:
 		inventory_grid.get_child(0).grab_focus()
+	InventoryGlobals.sortItems()
 
 func updateInventory():
 	for child in inventory_grid.get_children():
@@ -20,6 +21,7 @@ func updateInventory():
 	
 	for item in InventoryGlobals.INVENTORY:
 		inventory_grid.add_child(createButton(item))
+	
 	OverworldGlobals.setMenuFocus(inventory_grid)
 
 func createButton(item: ResItem):

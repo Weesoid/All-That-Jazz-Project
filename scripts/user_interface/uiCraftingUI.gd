@@ -105,6 +105,7 @@ func showItems(slot_button: Button, slot: int):
 		)
 		button.mouse_entered.connect(func(): updateItemDescription(item))
 		button.focus_entered.connect(func(): updateItemDescription(item))
+		if item.MANDATORY: button.disabled = true
 		item_select_buttons.add_child(button)
 
 func addItemToSlot(item: ResItem, slot:int, slot_button: Button):

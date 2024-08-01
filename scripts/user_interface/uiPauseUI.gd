@@ -30,7 +30,9 @@ func _ready():
 	if !PlayerGlobals.hasActiveTeam():
 		party.hide()
 		exp_bar.hide()
-
+	if PlayerGlobals.CURRENCY > 0:
+		currency.show()
+	
 func _on_tree_exited():
 	queue_free()
 

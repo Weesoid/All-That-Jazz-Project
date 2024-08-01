@@ -15,6 +15,7 @@ func _on_yes_pressed():
 		var saved_game: SavedGame = load("res://saves/Save.tres")
 		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true, true)
 		PlayerGlobals.healCombatants()
+		OverworldGlobals.getPlayer().setUIVisibility(true)
 	else:
 		get_tree().quit()
 

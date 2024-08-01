@@ -12,10 +12,10 @@ var RECIPES: Dictionary = {
 
 signal added_item_to_inventory
 
-func addItem(item_name: String, count=1, unit=INVENTORY):
+func addItem(item_name: String, count=1):
 	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item '%s' not found!" % item_name)
-	addItemResource(item, count, unit)
+	addItemResource(item, count, INVENTORY)
 
 func getRecipeResult(item_name_array: Array, get_raw_string=false):
 	var item = RECIPES[item_name_array].split('.')
@@ -60,7 +60,7 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
 	
 	added_item_to_inventory.emit()
-	INVENTORY.sort_custom(func sortByName(a, b): return a.NAME < b.NAME)
+	sortItems()
 
 func hasItem(item_name, count:int=0):
 	if item_name is String:
@@ -96,8 +96,8 @@ func hasItem(item_name, count:int=0):
 func getItem(item: ResItem):
 	return INVENTORY[INVENTORY.find(item)]
 
-func getItemWithName(item_name: String, unit=INVENTORY):
-	for item in unit:
+func getItemWithName(item_name: String):
+	for item in INVENTORY:
 		if item.NAME == item_name:
 			return item
 
@@ -167,10 +167,6 @@ func calculateValidAdd(item: ResStackItem) -> int:
 	else:
 		return item.MAX_STACK
 
-func getStorageUnitName(unit: Array[ResItem]):
-	match unit:
-		INVENTORY: return 'Inventory'
-
 func getUnstackableItemNames()-> Array:
 	var out = []
 	
@@ -194,6 +190,38 @@ func repairAllItems():
 	for item in INVENTORY:
 		if !item is ResWeapon: continue
 		item.restoreDurability(item.max_durability)
+
+func sortItems(items: Array[ResItem]=INVENTORY):
+	items.sort_custom(
+		func(a, b): 
+			if  a is ResStackItem and b is ResStackItem:
+				return a.STACK > b.STACK
+			elif a is ResEquippable and b is ResEquippable:
+				return getItemType(a) < getItemType(b)
+			
+			return getItemType(a) < getItemType(b)
+			)
+	#items.sort_custom(func(a, b): return a.NAME < b.NAME)
+
+func getItemType(item: ResItem)-> float:
+	if item is ResStackItem:
+		if item is ResProjectileAmmo:
+			return 0.2
+		elif item is ResConsumable:
+			return 0.1
+		else:
+			return 0.0
+	elif item is ResEquippable:
+		if item is ResWeapon:
+			return 1.1
+		elif item is ResCharm:
+			return 1.2
+		elif item is ResUtilityCharm:
+			return 1.3
+		else:
+			return 1.0
+	
+	return -1.0
 
 func saveData(save_data: Array):
 	var data = InventorySaveData.new()

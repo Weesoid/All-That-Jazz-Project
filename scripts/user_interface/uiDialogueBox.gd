@@ -108,6 +108,7 @@ func start(dialogue_resource: DialogueResource, title: String, extra_game_states
 	OverworldGlobals.getPlayer().playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(3, 3), 0.5)
 	OverworldGlobals.setPlayerInput(false)
+	OverworldGlobals.getPlayer().setUIVisibility(false)
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource
@@ -227,4 +228,5 @@ func _on_dialogue_label_spoke(letter: String, letter_index: int, speed: float) -
 func _exit_tree():
 	OverworldGlobals.getPlayer().cinematic_bars.visible = false
 	OverworldGlobals.setPlayerInput(true)
+	OverworldGlobals.getPlayer().setUIVisibility(true)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(2, 2), 0.5)
