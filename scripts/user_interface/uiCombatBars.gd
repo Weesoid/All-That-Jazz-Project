@@ -28,19 +28,13 @@ func _ready():
 	
 	select_target.attached_combatant = attached_combatant
 	previous_value = attached_combatant.getMaxHealth()
-	
-	if attached_combatant is ResPlayerCombatant:
-		health_bar.position = Vector2(-56, 128)
 
 func _process(_delta):
 	updateBars()
 	updateStatusEffects()
 	if CombatGlobals.getCombatScene().active_combatant == attached_combatant:
 		turn_gradient.get_parent().show()
-		if attached_combatant is ResPlayerCombatant:
-			turn_gradient.play('Loop')
-		else:
-			turn_gradient.play('Loop_Enemy')
+		turn_gradient.play('Loop')
 	else:
 		turn_gradient.get_parent().hide()
 	

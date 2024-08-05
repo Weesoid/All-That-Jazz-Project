@@ -2,7 +2,7 @@ extends ResCombatant
 class_name ResPlayerCombatant
 
 @export var ABILITY_POOL: Array[ResAbility]
-@export var ABILITY_SLOT: ResAbility = preload("res://resources/combat/abilities/BraceSelf.tres")
+@export var ABILITY_SLOT: ResAbility = load("res://resources/combat/abilities/BraceSelf.tres")
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 
@@ -21,8 +21,10 @@ var STAT_POINT_ALLOCATIONS = {
 var initialized = false
 var active = false
 
-func initializeCombatant():
-	SCENE = PACKED_SCENE.instantiate()
+func initializeCombatant(do_scene:bool=true):
+	if do_scene:
+		SCENE = PACKED_SCENE.instantiate()
+		SCENE.combatant_resource = self
 	
 	if !initialized:
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
@@ -81,7 +83,7 @@ func unequipWeapon():
 		EQUIPPED_WEAPON.unequip()
 		InventoryGlobals.addItemResource(EQUIPPED_WEAPON, 1, false, false)
 		EQUIPPED_WEAPON = null
-		ABILITY_SLOT = preload("res://resources/combat/abilities/BraceSelf.tres")
+		ABILITY_SLOT = load("res://resources/combat/abilities/BraceSelf.tres")
 
 func equipCharm(charm: ResCharm, slot: int):
 	if hasCharm(charm):

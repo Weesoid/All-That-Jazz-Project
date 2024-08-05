@@ -31,7 +31,7 @@ var LINGERING_STATUS_EFFECTS: Array[String]
 var BASE_STAT_VALUES: Dictionary
 var ROLLED_SPEED: int
 var ACTED: bool
-var SCENE
+var SCENE: CombatantScene
 
 signal enemy_turn
 signal player_turn
@@ -43,11 +43,11 @@ func act():
 	pass
 
 func getSprite()-> Sprite2D:
-	return SCENE.get_node('Sprite')
+	return SCENE.get_node('Sprite2D')
 
 func getAnimator()-> AnimationPlayer:
-	return getSprite().get_node('SpriteAnimator')
-	
+	return SCENE.get_node('AnimationPlayer')
+
 func getStatusEffectNames():
 	var names = []
 	for effect in STATUS_EFFECTS:
@@ -106,7 +106,6 @@ func applyStatModifications(modifier_id: String):
 	for modifier in STAT_MODIFIERS.keys():
 		if modifier == modifier_id:
 			for stat in STAT_MODIFIERS[modifier]: 
-				print(STAT_MODIFIERS[modifier][stat])
 				STAT_VALUES[stat] += STAT_MODIFIERS[modifier][stat]
 			return
 

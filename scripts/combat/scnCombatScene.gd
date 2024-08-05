@@ -5,8 +5,8 @@ class_name CombatScene
 
 @onready var combat_camera: DynamicCamera = $CombatCamera
 @onready var combat_log = $CombatCamera/Interface/LogContainer
-@onready var team_container_markers = $ParallaxBackground/ParallaxLayer2/TeamContainer.get_children()
-@onready var enemy_container_markers = $ParallaxBackground/ParallaxLayer/EnemyContainer.get_children()
+@onready var team_container_markers = $TeamContainer.get_children()
+@onready var enemy_container_markers = $EnemyContainer.get_children()
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
 @onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
@@ -48,7 +48,7 @@ var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
 var dogpile_count: int = 0
-var camera_position: Vector2 = Vector2(0, -40)
+var camera_position: Vector2 = Vector2(0, 0)
 
 signal confirm
 signal target_selected
@@ -101,7 +101,12 @@ func _ready():
 	for button in action_panel.get_children():
 		button.focus_entered.connect(func(): secondary_panel.hide())
 	battle_back.play('Show')
-	active_combatant.act()
+	#active_combatant.act()
+	var player_combatant = getCombatantGroup('team')[0].SCENE
+	var enemy_combatant = getCombatantGroup('enemies')[0]
+	await player_combatant.moveTo(enemy_combatant)
+	await player_combatant.doAttack()
+	await player_combatant.moveTo(player_combatant.get_parent())
 	
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
@@ -286,10 +291,10 @@ func _on_escape_pressed():
 	var hustle_allies = 0
 	for combatant in getCombatantGroup('enemies'):
 		if combatant.STAT_VALUES['hustle'] > 0:
-			hustle_enemies += combatant.STAT_VALUES['hustle']
+			hustle_enemies += combatant.BASE_STAT_VALUES['hustle']
 	for combatant in getCombatantGroup('team'):
 		if combatant.STAT_VALUES['hustle'] > 0:
-			hustle_allies += combatant.STAT_VALUES['hustle']
+			hustle_allies += combatant.BASE_STAT_VALUES['hustle']
 	var chance_escape = 0.25 + ((hustle_allies-hustle_enemies)*0.01)
 	if CombatGlobals.randomRoll(chance_escape):
 		CombatGlobals.combat_lost.emit(unique_id)
@@ -524,6 +529,7 @@ func getCombatantFromTurnOrder(combatant: ResCombatant)-> ResCombatant:
 	
 	return null
 
+## 'team' or 'enemies'
 func getCombatantGroup(type: String)-> Array[ResCombatant]:
 	match type:
 		'team': return COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)

@@ -66,13 +66,13 @@ _data = {
 [node name="PunchMunchie" type="Node2D"]
 script = ExtResource("1_jeg00")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_bxhel")
-}
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1.52588e-05, -3.8147e-06)
 scale = Vector2(3.85143, 6.33179)
 texture = ExtResource("1_dgpjn")
 vframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bxhel")
+}

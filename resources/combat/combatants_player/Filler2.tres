@@ -1,9 +1,7 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=5 format=3 uid="uid://c15qf8h2mf8dd"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=3 format=3 uid="uid://c15qf8h2mf8dd"]
 
 [ext_resource type="Resource" uid="uid://glgmswqt1vcu" path="res://resources/combat/abilities/BraceSelf.tres" id="1_3jsok"]
-[ext_resource type="Texture2D" uid="uid://cm0lkrky28qm1" path="res://images/sprites/bad1.png" id="2_ab0wc"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="2_dkqj8"]
-[ext_resource type="PackedScene" uid="uid://dlvg7wwaai4ra" path="res://scenes/combatants/GoodGuyA.tscn" id="2_f7t7l"]
 
 [resource]
 script = ExtResource("2_dkqj8")
@@ -11,8 +9,6 @@ ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 ABILITY_SLOT = ExtResource("1_3jsok")
 MANDATORY = false
 NAME = "Filler2"
-ICON = ExtResource("2_ab0wc")
-PACKED_SCENE = ExtResource("2_f7t7l")
 DESCRIPTION = ""
 STAT_VALUES = {
 "accuracy": 0.95,
@@ -27,3 +23,4 @@ STAT_VALUES = {
 "resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+MAX_TURN_CHARGES = 1

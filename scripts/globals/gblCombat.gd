@@ -34,26 +34,30 @@ func emit_exp_updated(value, max_value):
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
-func calculateDamage(caster: ResCombatant, target:ResCombatant, base_damage, can_miss = true, can_crit = true):
+func calculateDamage(caster: ResCombatant, target:ResCombatant, base_damage, can_miss = true, can_crit = true)-> bool:
 	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
 		if randomRoll(1.0 - target.STAT_VALUES['dodge']):
 			damageTarget(caster, target, base_damage, can_crit)
+			return true
 		else:
 			manual_call_indicator.emit(target, 'Dodged!', 'Whiff')
 			call_indicator.emit('Show', target)
 			playDodgeTween(target)
+			return false
 	elif can_miss:
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		call_indicator.emit('Show', target)
 		playDodgeTween(target)
+		return false
 	else:
 		damageTarget(caster, target, base_damage, can_crit)
+		return true
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false):
+func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false)-> bool:
 	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']):
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
-		return
+		return false
 	
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
@@ -80,6 +84,7 @@ func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: 
 	target.STAT_VALUES['health'] -= int(damage)
 	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
 	playHurtAnimation(target)
+	return true
 
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
 	base_damage += caster.STAT_VALUES['brawn'] * base_damage

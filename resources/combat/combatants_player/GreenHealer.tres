@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="5_rov6a"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/RushSpeed.tres" id="7_6iflm"]
 [ext_resource type="Resource" uid="uid://glgmswqt1vcu" path="res://resources/combat/abilities/BraceSelf.tres" id="8_1odh2"]
-[ext_resource type="PackedScene" uid="uid://dlvg7wwaai4ra" path="res://scenes/combatants/GoodGuyA.tscn" id="11_xa4xd"]
+[ext_resource type="PackedScene" uid="uid://cexmk1xeynctu" path="res://scenes/combatants/Willis.tscn" id="10_a61wb"]
 
 [resource]
 script = ExtResource("5_rov6a")
@@ -19,10 +19,10 @@ ABILITY_SLOT = ExtResource("8_1odh2")
 FOLLOWER_PACKED_SCENE = ExtResource("5_3c2l6")
 MANDATORY = true
 NAME = "PUFriendHealer"
-PACKED_SCENE = ExtResource("11_xa4xd")
+PACKED_SCENE = ExtResource("10_a61wb")
 DESCRIPTION = "A malevolent healer, first of his kind."
 STAT_VALUES = {
-"accuracy": 1.0,
+"accuracy": 0.01,
 "brawn": 0.1,
 "crit": 1.0,
 "dodge": 0.0,

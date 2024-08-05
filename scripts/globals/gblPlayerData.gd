@@ -29,10 +29,7 @@ func _ready():
 	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
 	EQUIPPED_ARROW.STACK = 0
 	
-	TEAM.append(preload("res://resources/combat/combatants_player/GreenHealer.tres"))
-	TEAM.append(preload("res://resources/combat/combatants_player/PinkBlasko.tres"))
-	TEAM.append(preload("res://resources/combat/combatants_player/Filler1.tres"))
-	TEAM.append(preload("res://resources/combat/combatants_player/Filler2.tres"))
+	TEAM.append(preload("res://resources/combat/combatants_player/Willis.tres"))
 	initializeBenchedTeam()
 
 func initializeBenchedTeam():

@@ -42,9 +42,9 @@ func _ready():
 func loadMemberInfo(member: ResCombatant):
 	for child in member_preview.get_children():
 		child.queue_free()
-	member.initializeCombatant()
-	member_preview.add_child(member.SCENE)
-	member.getAnimator().play('Idle')
+	#member.initializeCombatant()
+	#member_preview.add_child(member.SCENE)
+	#member.getAnimator().play('Idle')
 	selected_combatant = member
 	select_charms_panel.hide()
 	member_name.text = member.NAME

@@ -14,6 +14,7 @@ class_name ResEnemyCombatant
 # Set the auto-attack manually.
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
+	SCENE.combatant_resource = self
 	applyStatusEffects()
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
 

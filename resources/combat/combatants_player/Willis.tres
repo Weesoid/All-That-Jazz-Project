@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=4 format=3 uid="uid://colt86d3cbv04"]
+
+[ext_resource type="Resource" uid="uid://glgmswqt1vcu" path="res://resources/combat/abilities/BraceSelf.tres" id="1_11euk"]
+[ext_resource type="PackedScene" uid="uid://cexmk1xeynctu" path="res://scenes/combatants/Willis.tscn" id="2_38p1d"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="2_vmsk2"]
+
+[resource]
+script = ExtResource("2_vmsk2")
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ABILITY_SLOT = ExtResource("1_11euk")
+MANDATORY = false
+NAME = "Willis Flynn"
+PACKED_SCENE = ExtResource("2_38p1d")
+DESCRIPTION = "Spicey frisk undertale!"
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"dodge": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal mult": 1.0,
+"health": 20,
+"hustle": 1,
+"resist": 0.05
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+MAX_TURN_CHARGES = 1

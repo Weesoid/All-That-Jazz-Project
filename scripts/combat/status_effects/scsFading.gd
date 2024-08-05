@@ -12,7 +12,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		grit_normalized = target.BASE_STAT_VALUES['grit']
 	
 	var grit_bonus = (grit_normalized - 0.0) / (1.0 - 0.0) * 0.5
-	if CombatGlobals.randomRoll(1.0 + grit_bonus) and canAddQTE(status_effect):
+	if CombatGlobals.randomRoll(0.25 + grit_bonus) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)

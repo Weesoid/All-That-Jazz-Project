@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=2 format=3 uid="uid://cj3etighmenn7"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
+
+[resource]
+script = ExtResource("1_k0byw")
+NAME = "Basic Attack"
+DESCRIPTION = "The attack of basicness!"
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = false
+TARGET_DEAD = false
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0
