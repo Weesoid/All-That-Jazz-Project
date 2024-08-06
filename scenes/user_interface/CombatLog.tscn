@@ -56,8 +56,8 @@ script = ExtResource("1_a2ou1")
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
+text = "Hello this is test!"
 fit_content = true
 scroll_following = true
 

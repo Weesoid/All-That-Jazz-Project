@@ -101,12 +101,12 @@ func _ready():
 	for button in action_panel.get_children():
 		button.focus_entered.connect(func(): secondary_panel.hide())
 	battle_back.play('Show')
-	#active_combatant.act()
-	var player_combatant = getCombatantGroup('team')[0].SCENE
-	var enemy_combatant = getCombatantGroup('enemies')[0]
-	await player_combatant.moveTo(enemy_combatant)
-	await player_combatant.doAttack()
-	await player_combatant.moveTo(player_combatant.get_parent())
+	active_combatant.act()
+#	var player_combatant = getCombatantGroup('team')[0].SCENE
+#	var enemy_combatant = getCombatantGroup('enemies')[0]
+#	await player_combatant.moveTo(enemy_combatant)
+#	await player_combatant.doAnimation('Cast_Melee')
+#	await player_combatant.moveTo(player_combatant.get_parent())
 	
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
@@ -163,16 +163,15 @@ func on_enemy_turn():
 	
 	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
-	valid_targets = selected_ability.getValidTargets(COMBATANTS, false)
-	
-	if selected_ability.getTargetType() == 1:
-		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
-	else:
-		target_combatant = valid_targets
-	
-	if (target_combatant != null):
-		executeAbility()
-		await confirm
+	if selected_ability != null:
+		valid_targets = selected_ability.getValidTargets(COMBATANTS, false)
+		if selected_ability.getTargetType() == 1:
+			target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
+		else:
+			target_combatant = valid_targets
+		if (target_combatant != null):
+			executeAbility()
+			await confirm
 	
 	end_turn()
 
@@ -326,7 +325,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	
 	for ability in ability_set:
 		var button = OverworldGlobals.createCustomButton()
-		button.add_theme_font_size_override('font_size', 16)
+		#button.add_theme_font_size_override('font_size', 16)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = ability.NAME
 		button.pressed.connect(func(): forceCastAbility(ability))
@@ -418,16 +417,9 @@ func getStatusEffectInfo(combatant: ResCombatant):
 		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION+'\n'
 
 func executeAbility():
-	# NOTE TO SELF, PRELOAD AI PACKAGES TO AVOID LAG SPIKES
-	selected_ability.animateCast(active_combatant)
-	selected_ability.applyEffects(
-								active_combatant, 
-								target_combatant, 
-								selected_ability.ANIMATION
-								)
-	#writeTopLogMessage(selected_ability.NAME)
-	await get_tree().create_timer(0.5).timeout
-	if has_node('QTE'): 
+	selected_ability.ABILITY_SCRIPT.animate(active_combatant, target_combatant, selected_ability)
+	await active_combatant.getAnimator().animation_finished
+	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
@@ -485,6 +477,7 @@ func updateDescription(ability: ResAbility):
 	secondary_description.show()
 
 func animateSecondaryPanel(animation: String):
+	ui_animator.play('RESET')
 	if animation == 'show':
 		secondary_action_panel.show()
 		secondary_panel.show()

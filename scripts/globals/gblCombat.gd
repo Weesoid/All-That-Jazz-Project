@@ -42,12 +42,12 @@ func calculateDamage(caster: ResCombatant, target:ResCombatant, base_damage, can
 		else:
 			manual_call_indicator.emit(target, 'Dodged!', 'Whiff')
 			call_indicator.emit('Show', target)
-			playDodgeTween(target)
+			#playDodgeTween(target)
 			return false
 	elif can_miss:
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		call_indicator.emit('Show', target)
-		playDodgeTween(target)
+		#playDodgeTween(target)
 		return false
 	else:
 		damageTarget(caster, target, base_damage, can_crit)
@@ -157,7 +157,7 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 func playHurtAnimation(target: ResCombatant):
 	randomize()
 	OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2))
-	target.getAnimator().play('Hit')
+	target.getAnimator().play('Hurt')
 	if !target.isDead():
 		playHurtTween(target)
 		await target.getAnimator().animation_finished
@@ -181,8 +181,8 @@ func playDodgeTween(target: ResCombatant):
 func playHurtTween(target: ResCombatant):
 	randomize()
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	var shake = Vector2(40, 0) + Vector2(randf_range(0, 40), 0)
-	var duration = 0.05 + randf_range(0, 0.05)
+	var shake = Vector2(8, 0) + Vector2(randf_range(0, 8), 0)
+	var duration = 0.05 + randf_range(0, 0.025)
 	tween.tween_property(target.SCENE, 'position', target.SCENE.position + shake, duration)
 	tween.tween_property(target.SCENE, 'position', target.SCENE.position - shake, duration)
 	tween.tween_property(target.SCENE, 'position', Vector2(0, 0), duration)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=23 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_56rvc"]
+[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="8_kiy21"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="8_lqkpn"]
 [ext_resource type="AudioStream" uid="uid://cujwmntfbmh8b" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="9_0bsv4"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
@@ -23,7 +24,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-376, -269)]
+"values": [Vector2(-376, -83)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -40,6 +41,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_vgh37"]
 resource_name = "Show"
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -47,10 +49,10 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.8, 1),
+"times": PackedFloat32Array(0, 0.3, 1.2, 1.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(-376, -317), Vector2(-376, -243), Vector2(-376, -250), Vector2(-376, -317)]
+"values": [Vector2(-376, -83), Vector2(-376, -59), Vector2(-376, -59), Vector2(-376, -83)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -59,7 +61,7 @@ tracks/1/path = NodePath(".:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.7, 1),
+"times": PackedFloat32Array(0, 0.2, 1.3, 1.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -84,46 +86,34 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SecondaryPanel/DescriptionPanel:position")
+tracks/0/path = NodePath("ActionPanel:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
 "update": 0,
-"values": [Vector2(-129, 53), Vector2(199, 53)]
+"values": []
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("ActionPanel:position")
-tracks/1/interp = 2
+tracks/1/path = NodePath("ActionPanel/ActionPanel:modulate")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("ActionPanel/ActionPanel:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
-tracks/3/type = "audio"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../../BattleSounds")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../BattleSounds")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
@@ -135,18 +125,30 @@ tracks/3/keys = {
 }],
 "times": PackedFloat32Array(0, 0.2)
 }
-tracks/3/use_blend = true
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("SecondaryPanel/DescriptionPanel:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
+tracks/2/use_blend = true
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SecondaryPanel/DescriptionPanel:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SecondaryPanel/DescriptionPanel:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(152, 67), Vector2(40, 67)]
 }
 
 [sub_resource type="Animation" id="Animation_6ffbp"]
@@ -173,7 +175,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(199, -123)]
+"values": [Vector2(40, 53)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -209,7 +211,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-129, 53)]
+"values": [Vector2(152, 67)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -234,6 +236,30 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SecondaryPanel/OptionContainer:self_modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SecondaryPanel/DescriptionPanel:self_modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_5b8u0"]
@@ -286,10 +312,10 @@ tracks/1/path = NodePath("SecondaryPanel/DescriptionPanel:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-119, 53), Vector2(-129, 53)]
+"values": [Vector2(152, 93), Vector2(152, 67)]
 }
 
 [sub_resource type="Animation" id="Animation_u2dts"]
@@ -302,10 +328,10 @@ tracks/0/path = NodePath("SecondaryPanel/OptionContainer:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(199, -100), Vector2(199, -123)]
+"values": [Vector2(40, 67), Vector2(40, 53)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -322,50 +348,51 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_1l7kn"]
 resource_name = "ShowSecondaryPanel"
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SecondaryPanel/DescriptionPanel:modulate")
+tracks/0/path = NodePath("SecondaryPanel/OptionContainer:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+"values": [Vector2(40, 67), Vector2(40, 53)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("SecondaryPanel/DescriptionPanel:position")
-tracks/1/interp = 1
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-119, 53), Vector2(-129, 53)]
+"values": [Vector2(152, 93), Vector2(152, 67)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SecondaryPanel/OptionContainer:position")
-tracks/2/interp = 2
+tracks/2/path = NodePath("SecondaryPanel/OptionContainer:self_modulate")
+tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(199, -100), Vector2(199, -123)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SecondaryPanel/OptionContainer:modulate")
+tracks/3/path = NodePath("SecondaryPanel/DescriptionPanel:self_modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -385,6 +412,7 @@ _data = {
 process_mode = 3
 top_level = true
 z_index = 999
+z_as_relative = false
 script = ExtResource("1_kv6ut")
 
 [node name="BattleSounds" type="AudioStreamPlayer" parent="."]
@@ -394,7 +422,7 @@ max_polyphony = 16
 volume_db = -15.0
 
 [node name="TeamContainer" type="Node2D" parent="."]
-position = Vector2(-31, -32)
+position = Vector2(-32, -72)
 
 [node name="Position1" type="Marker2D" parent="TeamContainer"]
 position = Vector2(-30, 58)
@@ -409,7 +437,7 @@ position = Vector2(-94, 58)
 position = Vector2(-126, 58)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(32, -32)
+position = Vector2(32, -72)
 
 [node name="Position1" type="Marker2D" parent="EnemyContainer"]
 position = Vector2(26, 58)
@@ -501,22 +529,25 @@ text = "Turn"
 vertical_alignment = 2
 
 [node name="LogContainer" parent="CombatCamera/Interface" instance=ExtResource("11_8bne6")]
+visible = false
 layout_mode = 0
-offset_left = -488.0
-offset_top = 197.0
-offset_right = 120.0
-offset_bottom = 285.0
+offset_left = -184.0
+offset_top = -60.0
+offset_right = 183.0
+offset_bottom = 20.0
 
 [node name="Timer" type="Timer" parent="CombatCamera/Interface/LogContainer"]
 
 [node name="TopLog" type="Label" parent="CombatCamera/Interface"]
+visible = false
 layout_mode = 0
 offset_left = -376.0
-offset_top = -269.0
+offset_top = -83.0
 offset_right = 377.0
-offset_bottom = -226.0
+offset_bottom = -60.0
 theme = ExtResource("7_56rvc")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 16
+text = "Burger!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -569,115 +600,139 @@ text = "x Target cannot move!"
 scroll_active = false
 
 [node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
-visible = false
 z_index = 99
 layout_mode = 3
 anchors_preset = 0
-offset_left = -71.0
-offset_top = 144.0
-offset_right = -31.0
-offset_bottom = 184.0
+offset_left = -224.0
+offset_right = -184.0
+offset_bottom = 40.0
 
 [node name="DescriptionPanel" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
-layout_mode = 2
-offset_left = -129.0
-offset_top = 53.0
-offset_right = 191.0
-offset_bottom = 205.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 152.0
+offset_top = 67.0
+offset_right = 407.0
+offset_bottom = 163.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(184, 36)
 
 [node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/SecondaryPanel/DescriptionPanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = 3
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 text = "ASDasdas"
 
 [node name="OptionContainer" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
 layout_mode = 0
-offset_left = 199.0
-offset_top = -123.0
-offset_right = 519.0
-offset_bottom = 45.0
+offset_left = 40.0
+offset_top = 53.0
+offset_right = 144.0
+offset_bottom = 140.0
 
 [node name="Scroller" type="ScrollContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
 
 [node name="Container" type="VBoxContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller"]
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="CustomButton" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
+layout_mode = 2
+text = "Test"
+
+[node name="CustomButton2" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
+layout_mode = 2
+text = "Test"
+
+[node name="CustomButton3" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
+layout_mode = 2
+text = "Test"
+
+[node name="CustomButton4" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
+layout_mode = 2
+text = "Test"
+
 [node name="ActionPanel" type="Control" parent="CombatCamera/Interface"]
 anchors_preset = 0
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = 39.9999
 
 [node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface/ActionPanel"]
 z_index = 10
 layout_mode = 0
-offset_left = 360.0
-offset_top = 103.0
-offset_right = 480.0
-offset_bottom = 279.0
+offset_left = -128.0
+offset_top = 93.0
+offset_right = 128.0
+offset_bottom = 131.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
 
 [node name="Buttons" type="HFlowContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_force_pass_scroll_events = false
+alignment = 1
 
 [node name="Skills" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "SKILLS"
 
 [node name="Guard" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
 button_mask = 0
+text = "GUARD"
 
 [node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "INSPECT"
 
 [node name="Items" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(100, 0)
+visible = false
+custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ITEMS"
 
 [node name="Escape" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(57, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
-theme_override_font_sizes/font_size = 16
 button_mask = 0
 text = "ABSCOND"
+
+[node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface"]
+layout_mode = 0
+offset_left = -184.0
+offset_top = -83.0
+offset_right = 184.0
+offset_bottom = -69.0
+value = 50.0
 
 [node name="InterfaceAnimator" type="AnimationPlayer" parent="CombatCamera/Interface"]
 libraries = {

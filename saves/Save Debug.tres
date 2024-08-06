@@ -1,42 +1,48 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=15 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=19 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_kx6wd"]
-[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_vcjhv"]
-[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="3_kro7u"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="4_43gxt"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="5_tvyjv"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="6_v17y0"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="7_1n2pv"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="8_voj8k"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="9_cjt2b"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="10_kyswd"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_ysi28"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="2_ayebf"]
+[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_xqxs7"]
+[ext_resource type="Resource" path="res://resources/items/CharmSpeed.tres" id="3_cy7j2"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="3_wuy30"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="4_hjitn"]
+[ext_resource type="Resource" path="res://resources/items/RushDown.tres" id="4_ma7g3"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="5_evj01"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="6_u0f8c"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="7_qt8er"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="8_3rj2t"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="9_yc6v4"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="10_5igr2"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="11_a0et4"]
 
-[sub_resource type="Resource" id="Resource_iyg00"]
-script = ExtResource("1_kx6wd")
-position = Vector2(169.349, 57.1249)
+[sub_resource type="Resource" id="Resource_j21aw"]
+script = ExtResource("1_ysi28")
+position = Vector2(167.813, 62.3269)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_31yca"]
-script = ExtResource("4_43gxt")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
+[sub_resource type="Resource" id="Resource_8dbps"]
+script = ExtResource("4_hjitn")
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("2_ayebf")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
-KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_vcjhv"), ExtResource("3_kro7u")])
-ITEM_DATA_INVENTORY = {}
+KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("2_xqxs7"), ExtResource("3_wuy30")])
+ITEM_DATA_INVENTORY = {
+"Scrap Salvage": 5
+}
 
-[sub_resource type="Resource" id="Resource_pugdq"]
-script = ExtResource("5_tvyjv")
+[sub_resource type="Resource" id="Resource_5pmot"]
+script = ExtResource("5_evj01")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_8oic0"]
-script = ExtResource("9_cjt2b")
-TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_v17y0")])
+[sub_resource type="Resource" id="Resource_j42a5"]
+script = ExtResource("10_5igr2")
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_u0f8c")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = []
-EQUIPPED_ARROW = ExtResource("8_voj8k")
-CURRENCY = 100
+EQUIPPED_ARROW = ExtResource("9_yc6v4")
+CURRENCY = 12389
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
 stamina = 100.0
@@ -48,9 +54,9 @@ stamina_gain = 0.1
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 COMBATANT_SAVE_DATA = {
-ExtResource("6_v17y0"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
-0: null,
-1: null,
+ExtResource("6_u0f8c"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_qt8er")]), {
+0: ExtResource("3_cy7j2"),
+1: ExtResource("4_ma7g3"),
 2: null
 }, {
 "accuracy": 0.95,
@@ -58,10 +64,10 @@ ExtResource("6_v17y0"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "crit": 0.05,
 "dodge": 0.0,
 "grit": 0.0,
-"handling": 0.0,
+"handling": 0,
 "heal mult": 1.0,
 "health": 20,
-"hustle": 1,
+"hustle": 21,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
@@ -74,24 +80,25 @@ ExtResource("6_v17y0"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 20,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([]), false, Array[String]([]), true, true, 1, {
-"allocations": {
-"brawn": 0.0,
-"grit": 0.0,
-"handling": 0.0
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_qt8er")]), false, Array[String]([]), true, true, 1, {
+"Rushdown": {
+"hustle": 10
+},
+"Speedy Boy": {
+"hustle": 10
 }
 }, null, {
 "brawn": 0,
 "grit": 0,
 "handling": 0
-}, ExtResource("7_1n2pv")]
+}, ExtResource("8_3rj2t")]
 }
 
 [resource]
-script = ExtResource("10_kyswd")
-NAME = "Save Debug - 00:00:07
+script = ExtResource("11_a0et4")
+NAME = "Save Debug - 00:00:45
 Morale 1
 Prototype Room"
-PLAYTIME = 7.526
+PLAYTIME = 45.367
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_iyg00"), SubResource("Resource_31yca"), SubResource("Resource_pugdq"), SubResource("Resource_8oic0")]
+save_data = [SubResource("Resource_j21aw"), SubResource("Resource_8dbps"), SubResource("Resource_5pmot"), SubResource("Resource_j42a5")]
