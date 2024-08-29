@@ -2,7 +2,6 @@ extends Projectile
 class_name ProjectileBullet
 
 func _on_body_entered(body):
-	print(body)
 	if body is PlayerScene:
 		OverworldGlobals.damageParty(20)
 	

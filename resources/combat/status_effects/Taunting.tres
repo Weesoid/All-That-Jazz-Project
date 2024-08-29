@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cux4moxbaqb8e"]
+
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsTaunt.gd" id="1_43lm3"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_3rgeh"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_ftlwm"]
+
+[resource]
+script = ExtResource("3_ftlwm")
+NAME = "Taunting"
+DESCRIPTION = "Target is drawing single target fire."
+STATUS_SCRIPT = ExtResource("1_43lm3")
+TEXTURE = ExtResource("2_3rgeh")
+MAX_DURATION = 1
+EXTEND_DURATION = 0
+MAX_RANK = 0
+ON_HIT = true
+APPLY_ONCE = true
+TICK_PER_TURN = false
+TICK_ON_TURN_START = false
+PERMANENT = false
+LINGERING = false

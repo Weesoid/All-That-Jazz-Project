@@ -38,8 +38,7 @@ func initializeBenchedTeam():
 	
 	for member in TEAM:
 		if !member.initialized:
-			member.initializeCombatant()
-			member.SCENE.free()
+			member.initializeCombatant(false)
 
 #********************************************************************************
 # COMBATANT MANAGEMENT

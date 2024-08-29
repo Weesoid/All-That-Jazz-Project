@@ -11,6 +11,7 @@ DESCRIPTION = "Target is being guarded."
 STATUS_SCRIPT = ExtResource("1_3qy13")
 TEXTURE = ExtResource("2_ui7mc")
 MAX_DURATION = 10
+EXTEND_DURATION = 0
 MAX_RANK = 0
 ON_HIT = true
 APPLY_ONCE = true

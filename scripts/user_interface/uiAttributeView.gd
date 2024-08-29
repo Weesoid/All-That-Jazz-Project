@@ -17,6 +17,8 @@ extends Control
 @onready var resist_val = $HiddenAttributes/MarginContainer/VBoxContainer/Resist/ProgressBar
 @onready var healm_val = $HiddenAttributes/MarginContainer/VBoxContainer/HealMult/Value
 @onready var hp_text = $Attributes/MarginContainer/VBoxContainer/Health/ProgressBar/HealthValues
+@onready var debug_status = $Debug
+
 func _ready():
 	if !borders:
 		var stylebox:StyleBox = preload("res://design/BorderlessContiner.tres")
@@ -43,6 +45,9 @@ func _process(_delta):
 		crit_val.value = combatant.STAT_VALUES['crit'] * 100
 		resist_val.value = combatant.STAT_VALUES['crit'] * 100
 		healm_val.text = str(combatant.STAT_VALUES['heal mult'])
+		
+		if OverworldGlobals.isPlayerCheating():
+			debug_status.text = str(combatant.STAT_MODIFIERS)
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_tab") and view_hidden:

@@ -12,6 +12,7 @@ class_name ResStatusEffect
 @export var ON_HIT: bool
 @export var APPLY_ONCE: bool
 @export var TICK_PER_TURN: bool
+@export var TICK_ON_TURN_START: bool
 @export var PERMANENT: bool = false
 @export var LINGERING: bool = false
 
@@ -44,7 +45,8 @@ func removeStatusEffect():
 	if ON_HIT:
 		CombatGlobals.received_combatant_value.disconnect(onHitTick)
 	
-	STATUS_SCRIPT.endEffects(afflicted_combatant, self)
+	if STATUS_SCRIPT != null:
+		STATUS_SCRIPT.endEffects(afflicted_combatant, self)
 	if VISUALS != null:
 		VISUALS.queue_free()
 	
@@ -55,10 +57,11 @@ func tick(update_duration=true):
 	if !PERMANENT and update_duration: 
 		duration -= 1
 	
-	STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
+	if STATUS_SCRIPT != null:
+		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading'].has(NAME):
+	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading'].has(NAME) and STATUS_SCRIPT != null:
 		removeStatusEffect()
 
 func animateStatusEffect():

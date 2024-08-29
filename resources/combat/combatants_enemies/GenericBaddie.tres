@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://dxdpkpoxq1gca"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://dxdpkpoxq1gca"]
 
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_6knif"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_t4wyy"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tp2k2"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_0uutn"]
 [ext_resource type="PackedScene" uid="uid://cbk6oellobjrt" path="res://scenes/combatants/BadWillis.tscn" id="2_luqil"]
 
 [resource]
@@ -17,15 +19,15 @@ PACKED_SCENE = ExtResource("2_luqil")
 DESCRIPTION = "A non-descript baddie! Testicles!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 1.0,
 "crit": 0.05,
 "dodge": 0.0,
 "grit": 0.0,
 "handling": 0,
 "heal mult": 1.0,
-"health": 100,
+"health": 10,
 "hustle": 1,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_6knif"), ExtResource("2_0uutn")])
 MAX_TURN_CHARGES = 1

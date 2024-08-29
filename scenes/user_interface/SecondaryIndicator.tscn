@@ -307,7 +307,7 @@ _data = {
 }
 
 [node name="SecondaryIndicator" type="Node2D"]
-z_index = 2
+z_index = 100
 position = Vector2(7.62939e-06, -7.62939e-06)
 scale = Vector2(1.25, 1.25)
 script = ExtResource("1_1fdpo")
@@ -321,8 +321,7 @@ pivot_offset = Vector2(120.8, 20.8)
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 16
+theme_override_constants/outline_size = 4
 text = "10 TOXICATED"
 horizontal_alignment = 1
 vertical_alignment = 1

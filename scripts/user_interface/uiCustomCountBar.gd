@@ -1,11 +1,17 @@
 extends Control
 class_name CustomCountBar
 
-const EMPTY_CIRCLE: Texture = preload("res://images/sprites/circle_empty.png")
-const FILLED_CIRCLE: Texture = preload("res://images/sprites/circle_filled.png")
+var EMPTY_CIRCLE: Texture = preload("res://images/sprites/circle_empty.png")
+var FILLED_CIRCLE: Texture = preload("res://images/sprites/circle_filled.png")
 @onready var container = $HBoxContainer
 @export var value: int = 0
 @export var max_value: int = 0
+@export var small_sprites: bool = false
+
+func _ready():
+	if small_sprites:
+		EMPTY_CIRCLE = preload("res://images/sprites/circle_empty_small.png")
+		FILLED_CIRCLE = preload("res://images/sprites/circle_filled_small.png")
 
 func _process(_delta):
 	if !valuesCorrect():

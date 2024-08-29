@@ -41,19 +41,24 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		combatants = combatants.filter(func filterDead(combatant): return !combatant.isDead())
 	if !CAN_TARGET_SELF:
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
-	
 	if TARGET_GROUP == TargetGroup.SELF:
 		return CombatGlobals.getCombatScene().active_combatant
 	
 	if is_caster_player:
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResPlayerCombatant)
-			TargetGroup.ENEMIES:  return combatants.filter(func isEnemy(combatant): return combatant is ResEnemyCombatant)
+			TargetGroup.ENEMIES: 
+				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting')).size() > 0:
+					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting'))
+				return combatants.filter(func isEnemy(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ALL: return combatants
 	else:
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResEnemyCombatant)
-			TargetGroup.ENEMIES: return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
+			TargetGroup.ENEMIES: 
+				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting')).size() > 0:
+					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting'))
+				return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ALL: return combatants
 
 func animateCast(caster: ResCombatant):

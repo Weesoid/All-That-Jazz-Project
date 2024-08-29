@@ -52,7 +52,7 @@ func newGoal(init=false):
 			goal.position = Vector2(randf_range(target.position.x+100,size),0)
 		elif size < 0:
 			goal.position = Vector2(randf_range(target.position.x-100,size),0)
-	add_child(goal)
+	call_deferred('add_child', goal)
 
 #func debugPoints(start, end):
 #	if get_node('start') != null:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=24 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
@@ -261,6 +261,42 @@ tracks/8/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Inspect/AttributeView:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(90, 54)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Inspect/PanelContainer:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-184, -65)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Inspect:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_5b8u0"]
 resource_name = "ShowActionPanel"
@@ -316,6 +352,46 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(152, 93), Vector2(152, 67)]
+}
+
+[sub_resource type="Animation" id="Animation_03t5w"]
+resource_name = "ShowInspect"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Inspect/AttributeView:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(90, 104), Vector2(90, 54)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Inspect/PanelContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-184, -15), Vector2(-184, -65)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Inspect:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_u2dts"]
@@ -404,6 +480,7 @@ _data = {
 "RESET": SubResource("Animation_6ffbp"),
 "ShowActionPanel": SubResource("Animation_5b8u0"),
 "ShowDescriptionPanel": SubResource("Animation_fln3o"),
+"ShowInspect": SubResource("Animation_03t5w"),
 "ShowOptionPanel": SubResource("Animation_u2dts"),
 "ShowSecondaryPanel": SubResource("Animation_1l7kn")
 }
@@ -557,7 +634,7 @@ libraries = {
 }
 
 [node name="Inspect" type="Control" parent="CombatCamera/Interface"]
-visible = false
+z_index = 100
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -565,41 +642,55 @@ offset_bottom = 40.0
 [node name="AttributeView" parent="CombatCamera/Interface/Inspect" instance=ExtResource("10_60ct5")]
 z_index = 100
 layout_mode = 1
-offset_left = 271.0
-offset_top = 108.0
-offset_right = 271.0
-offset_bottom = 108.0
+offset_left = 90.0
+offset_top = 54.0
+offset_right = 90.0
+offset_bottom = 54.0
 scale = Vector2(1.1, 1.1)
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
-offset_left = -148.0
-offset_top = 47.0
-offset_right = 152.0
-offset_bottom = 144.0
+offset_left = -34.5455
+offset_top = -20.0
+offset_right = 88.4545
+offset_bottom = 75.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_cg4vr")
 
+[node name="Label" parent="CombatCamera/Interface/Inspect/AttributeView/HiddenAttributes/MarginContainer/VBoxContainer/Accuracy" index="0"]
+theme_override_font_sizes/font_size = 0
+
 [node name="Attributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="1"]
-offset_left = -148.0
-offset_right = 152.0
+offset_left = -34.5454
+offset_top = -108.182
+offset_right = 88.4546
+offset_bottom = -11.1818
+
+[node name="Label" parent="CombatCamera/Interface/Inspect/AttributeView/Attributes/MarginContainer/VBoxContainer/Health" index="0"]
+theme_override_font_sizes/font_size = 0
+
+[node name="Debug" parent="CombatCamera/Interface/Inspect/AttributeView" index="2"]
+offset_left = -150.909
+offset_top = -108.182
+offset_right = -55.9091
+offset_bottom = 67.8182
 
 [node name="PanelContainer" type="PanelContainer" parent="CombatCamera/Interface/Inspect"]
 z_index = 100
 layout_mode = 0
-offset_left = 128.0
-offset_top = -203.0
-offset_right = 458.0
-offset_bottom = 69.0
+offset_left = -184.0
+offset_top = -65.0
+offset_right = -80.0
+offset_bottom = 131.0
 
 [node name="StatusEffects" type="RichTextLabel" parent="CombatCamera/Interface/Inspect/PanelContainer"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 text = "x Target cannot move!"
 scroll_active = false
 
 [node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
+visible = false
 z_index = 99
 layout_mode = 3
 anchors_preset = 0
@@ -666,7 +757,7 @@ text = "Test"
 [node name="ActionPanel" type="Control" parent="CombatCamera/Interface"]
 anchors_preset = 0
 offset_right = 40.0
-offset_bottom = 39.9999
+offset_bottom = 39.9998
 
 [node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface/ActionPanel"]
 z_index = 10

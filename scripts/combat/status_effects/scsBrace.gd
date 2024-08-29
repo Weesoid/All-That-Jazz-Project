@@ -1,20 +1,14 @@
-static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	CombatGlobals.modifyStat(target, {'grit': 0.25}, status_effect.NAME)
+static func applyEffects(target, _status_effect):
+	target.SCENE.setBlocking(true)
 
-static func applyHitEffects(target: ResCombatant, _caster:ResCombatant, value, _status_effect: ResStatusEffect):
-#	if !CombatGlobals.getCombatScene().has_node('QTE'):
-#		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
-#		qte.global_position = target.SCENE.global_position
-#		CombatGlobals.getCombatScene().add_child(qte)
-#		await CombatGlobals.qte_finished
-#
-#		if qte.points >= 1:
-#			var heal = value * 0.25
-#			CombatGlobals.calculateHealing(target, heal)
-#
-#		qte.queue_free()
-	var heal = value * 0.25
-	CombatGlobals.calculateHealing(target, heal)
+static func applyHitEffects(target, _caster, value, status_effect):
+	var bonus = 0.1*status_effect.current_rank
+	if target.STAT_MODIFIERS.keys().has('block'):
+		if CombatGlobals.randomRoll(target.BASE_STAT_VALUES['grit'] + 0.5 + bonus):
+			var heal_bonus = 0.15 + (bonus * 0.5)
+			CombatGlobals.calculateHealing(target, target.getMaxHealth() * heal_bonus)
+		CombatGlobals.rankUpStatusEffect(target, status_effect)
 
-static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	CombatGlobals.resetStat(target, status_effect.NAME)
+static func endEffects(target, _status_effect: ResStatusEffect):
+	target.SCENE.setBlocking(false)
+	CombatGlobals.addStatusEffect(target, 'GuardBreak')

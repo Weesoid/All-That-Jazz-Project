@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://shhdhoteyxnb"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicProjectile.gd" id="1_ak08f"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yj0nf"]
+
+[resource]
+script = ExtResource("1_yj0nf")
+NAME = "Basic Projectile"
+DESCRIPTION = "Shoot a projectile!"
+ABILITY_SCRIPT = ExtResource("1_ak08f")
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = true
+TARGET_DEAD = false
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

@@ -17,6 +17,7 @@ class_name CombatScene
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
+@onready var ui_status_inspect_container = $CombatCamera/Interface/Inspect/PanelContainer
 @onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
 @onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
 @onready var transition_scene = $CombatCamera/BattleTransition
@@ -27,7 +28,7 @@ class_name CombatScene
 @onready var top_log_label = $CombatCamera/Interface/TopLog
 @onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
-
+@onready var guard_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -156,26 +157,30 @@ func on_player_turn():
 	end_turn()
 
 func on_enemy_turn():
-	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 0.75, true)
+	playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 0.75, true)
 	ui_animator.play_backwards('ShowActionPanel')
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	if await checkWin(): return
 	
 	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
-	if selected_ability != null:
-		valid_targets = selected_ability.getValidTargets(COMBATANTS, false)
-		if selected_ability.getTargetType() == 1:
-			target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
-		else:
-			target_combatant = valid_targets
-		if (target_combatant != null):
-			executeAbility()
-			await confirm
+	valid_targets = selected_ability.getValidTargets(COMBATANTS, false)
+	if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
+		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
+	else:
+		target_combatant = valid_targets
+	if (target_combatant != null):
+		executeAbility()
+		await confirm
 	
 	end_turn()
 
 func end_turn(combatant_act=true):
+	for combatant in COMBATANTS:
+		if combatant.isDead(): continue
+		tickStatusEffects(combatant, false, true)
+		CombatGlobals.dialogue_signal.emit(combatant)
+	
 	combat_camera.position = camera_position
 	if combatant_act:
 		active_combatant.TURN_CHARGES -= 1
@@ -283,6 +288,7 @@ func _on_items_pressed():
 	secondary_panel_container.get_child(0).grab_focus()
 
 func _on_inspect_pressed():
+	ui_animator.play('ShowInspect')
 	target_state = 3
 
 func _on_escape_pressed():
@@ -411,14 +417,17 @@ func playerSelectInspection():
 func getStatusEffectInfo(combatant: ResCombatant):
 	ui_status_inspect.text = ''
 	if combatant.STATUS_EFFECTS.is_empty():
+		ui_status_inspect_container.hide()
 		return
 	
+	ui_status_inspect_container.show()
 	for effect in combatant.STATUS_EFFECTS:
 		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION+'\n'
 
 func executeAbility():
-	selected_ability.ABILITY_SCRIPT.animate(active_combatant, target_combatant, selected_ability)
-	await active_combatant.getAnimator().animation_finished
+	await get_tree().create_timer(0.25).timeout
+	selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
+	await CombatGlobals.ability_finished
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
@@ -582,9 +591,9 @@ func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
 		combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
-func tickStatusEffects(combatant: ResCombatant, per_turn = false):
+func tickStatusEffects(combatant: ResCombatant, per_turn = false, on_start = false):
 	for effect in combatant.STATUS_EFFECTS:
-		if per_turn and !effect.TICK_PER_TURN: continue
+		if (per_turn and !effect.TICK_PER_TURN) or (on_start and !effect.TICK_ON_TURN_START): continue
 		effect.tick()
 
 func refreshInstantCasts(combatant: ResCombatant):
@@ -623,6 +632,7 @@ func resetActionLog():
 	action_panel.get_child(0).grab_focus()
 	action_panel.show()
 	ui_animator.play('ShowActionPanel')
+	guard_button.disabled = active_combatant is ResPlayerCombatant and active_combatant.hasStatusEffect('Guard Break')
 
 func runAbility():
 	target_state = 0

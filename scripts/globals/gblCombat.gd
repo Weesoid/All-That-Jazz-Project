@@ -23,6 +23,8 @@ signal manual_call_indicator(combatant: ResCombatant, text: String, animation: S
 signal call_indicator(animation: String, combatant: ResCombatant)
 signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
+signal ability_finished
+
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -34,57 +36,26 @@ func emit_exp_updated(value, max_value):
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
-func calculateDamage(caster: ResCombatant, target:ResCombatant, base_damage, can_miss = true, can_crit = true)-> bool:
+func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = true)-> bool:
+	if !caster is ResCombatant:
+		caster = caster.combatant_resource
+	if !target is ResCombatant:
+		target = target.combatant_resource
+	
 	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
-		if randomRoll(1.0 - target.STAT_VALUES['dodge']):
-			damageTarget(caster, target, base_damage, can_crit)
-			return true
-		else:
-			manual_call_indicator.emit(target, 'Dodged!', 'Whiff')
-			call_indicator.emit('Show', target)
-			#playDodgeTween(target)
-			return false
+		damageTarget(caster, target, base_damage, can_crit)
+		return true
 	elif can_miss:
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		call_indicator.emit('Show', target)
-		#playDodgeTween(target)
+		playDodgeTween(target)
+		if target is ResPlayerCombatant and target.SCENE.blocking:
+			CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
+			CombatGlobals.addStatusEffect(target, 'Brace')
 		return false
 	else:
 		damageTarget(caster, target, base_damage, can_crit)
 		return true
-
-## Calculate damage using custom formula and parameters
-func calculateRawDamage(target: ResCombatant, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false)-> bool:
-	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']):
-		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
-		return false
-	
-	if variation != -1.0:
-		damage = valueVariate(damage, variation)
-	
-	if can_crit:
-		if caster != null and randomRoll(caster.STAT_VALUES['crit']):
-			damage *= 2.0
-			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
-			call_indicator.emit('Show', target)
-			getCombatScene().combat_camera.shake(15.0, 10.0)
-			OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
-		elif crit_chance != -1.0 and randomRoll(crit_chance):
-			damage *= 2.0
-			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
-			call_indicator.emit('Show', target)
-			getCombatScene().combat_camera.shake(15.0, 10.0)
-			OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
-	else:
-		call_indicator.emit('Show', target)
-	
-	if message != null:
-		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')
-	
-	target.STAT_VALUES['health'] -= int(damage)
-	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
-	playHurtAnimation(target)
-	return true
 
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
 	base_damage += caster.STAT_VALUES['brawn'] * base_damage
@@ -105,12 +76,48 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	received_combatant_value.emit(target, caster, int(base_damage))
 	playHurtAnimation(target)
 
+## Calculate damage using custom formula and parameters
+func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false)-> bool:
+	if !target is ResCombatant:
+		target = target.combatant_resource
+	
+	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']):
+		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
+		playDodgeTween(target)
+		if target is ResPlayerCombatant and target.SCENE.blocking:
+			CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
+			CombatGlobals.addStatusEffect(target, 'Brace')
+		return false
+	if variation != -1.0:
+		damage = valueVariate(damage, variation)
+	if can_crit:
+		if caster != null and randomRoll(caster.STAT_VALUES['crit']):
+			damage *= 2.0
+			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
+			call_indicator.emit('Show', target)
+			getCombatScene().combat_camera.shake(15.0, 10.0)
+			OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
+		elif crit_chance != -1.0 and randomRoll(crit_chance):
+			damage *= 2.0
+			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
+			call_indicator.emit('Show', target)
+			getCombatScene().combat_camera.shake(15.0, 10.0)
+			OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
+	else:
+		call_indicator.emit('Show', target)
+	if message != null:
+		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')
+	target.STAT_VALUES['health'] -= int(damage)
+	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
+	playHurtAnimation(target)
+	return true
+
 func calculateHealing(target:ResCombatant, base_healing):
 	base_healing = valueVariate(base_healing, 0.15)
 	base_healing *= target.STAT_VALUES['heal mult']
 	
 	if target.STAT_VALUES['health'] + base_healing > target.getMaxHealth():
-		manual_call_indicator.emit(target, "FULLY HEALED!", 'Heal')
+		manual_call_indicator.emit(target, "FULL HEAL!", 'Heal')
 		target.STAT_VALUES['health'] = target.getMaxHealth()
 	else:
 		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
@@ -128,6 +135,16 @@ func randomRoll(percent_chance: float):
 		percent_chance = 0.0
 	randomize()
 	return randf_range(0, 1.0) > percent_chance
+
+# TO DO
+#func normalizeValue():
+#	var grit_normalized: float
+#	if target.BASE_STAT_VALUES['grit'] > 1.0:
+#		grit_normalized = 1.0
+#	else:
+#		grit_normalized = target.BASE_STAT_VALUES['grit']
+#
+#	var grit_bonus = (grit_normalized - 0.0) / (1.0 - 0.0) * 0.5
 
 func valueVariate(value, percent_variance: float):
 	var variation = value * percent_variance
@@ -155,27 +172,31 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 		animation_done.emit()
 
 func playHurtAnimation(target: ResCombatant):
-	randomize()
-	OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2))
-	target.getAnimator().play('Hurt')
-	if !target.isDead():
-		playHurtTween(target)
-		await target.getAnimator().animation_finished
-		target.getAnimator().play('Idle')
-	else:
-		getCombatScene().combat_camera.shake(25.0, 10.0)
-		if target is ResEnemyCombatant:
-			if target.ELITE:
-				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
-			else:
-				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
+	if !target.STAT_MODIFIERS.keys().has('block'):
+		randomize()
+		OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2))
+		if !target.isDead():
+			playHurtTween(target)
+			target.SCENE.doAnimation('Hurt')
 		else:
-			OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
+			getCombatScene().combat_camera.shake(25.0, 10.0)
+			if target is ResEnemyCombatant:
+				if target.ELITE:
+					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
+				else:
+					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
+			else:
+				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
+	else:
+		OverworldGlobals.playSound('458533__shyguy014__healpop.ogg')
+		playHurtTween(target)
 
 func playDodgeTween(target: ResCombatant):
 	OverworldGlobals.playSound('607862__department64__whipstick-28.ogg')
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(target.getSprite(), 'position', target.getSprite().position + Vector2(128, 0), 0.15)
+	var sprite_push = 16
+	if target is ResPlayerCombatant: sprite_push *= -1
+	tween.tween_property(target.getSprite(), 'position', target.getSprite().position + Vector2(sprite_push, 0), 0.15)
 	tween.tween_property(target.getSprite(), 'position', Vector2(0, 0), 0.5)
 
 func playHurtTween(target: ResCombatant):
@@ -270,9 +291,10 @@ func runReaction(target: ResCombatant, effectA: String, effectB: String, reactio
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.STATUS_EFFECTS:
 		if effect.NAME == status_effect.NAME:
-			if effect.duration < effect.MAX_DURATION:
+			if effect.duration + status_effect.EXTEND_DURATION > effect.MAX_DURATION:
 				effect.duration = effect.MAX_DURATION
-			effect.duration += status_effect.EXTEND_DURATION
+			else:
+				effect.duration += status_effect.EXTEND_DURATION
 		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1
@@ -285,3 +307,9 @@ func removeStatusEffect(target: ResCombatant, status_name: String):
 
 func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')
+
+func getCombatantType(combatant: ResCombatant):
+	if combatant is ResPlayerCombatant:
+		return 0
+	elif combatant is ResEnemyCombatant:
+		return 1
