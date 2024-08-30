@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://bhd64l6hrxjk5"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaSwordSlash.gd" id="1_deot3"]
+[ext_resource type="PackedScene" uid="uid://1k7v4461fqbm" path="res://scenes/animations/SwordSlash.tscn" id="2_xsh4e"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_yst25"]
+
+[resource]
+script = ExtResource("3_yst25")
+NAME = "Slash Blade Slash"
+DESCRIPTION = "Slash em' up!"
+ANIMATION = ExtResource("2_xsh4e")
+ABILITY_SCRIPT = ExtResource("1_deot3")
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = true
+TARGET_DEAD = false
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://bvhjr3d74seba"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_anyb2"]
-[ext_resource type="PackedScene" path="res://scenes/animations/Heal.tscn" id="1_eucjw"]
+[ext_resource type="PackedScene" uid="uid://c8hpqomh4qilw" path="res://scenes/animations/Heal.tscn" id="1_eucjw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaHustleUp.gd" id="1_oe6wr"]
 
 [resource]
@@ -10,10 +10,9 @@ NAME = "Rush Speed"
 DESCRIPTION = "Speed yourself up!"
 ANIMATION = ExtResource("1_eucjw")
 ABILITY_SCRIPT = ExtResource("1_oe6wr")
-COST = 0
-COST_RESOURCE = ""
 TARGET_TYPE = 0
 TARGET_GROUP = 0
+CAN_TARGET_SELF = true
 TARGET_DEAD = false
 INSTANT_CAST = false
-VALUE = 5
+REQUIRED_LEVEL = 0

@@ -13,7 +13,6 @@ class_name CombatScene
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
 @onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
-@onready var ability_slot_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
@@ -147,12 +146,6 @@ func on_player_turn():
 	OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play('ShowActionPanel')
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
-	if active_combatant.EQUIPPED_WEAPON != null:
-		ability_slot_button.text = 'WPN'
-		ability_slot_button.icon = active_combatant.EQUIPPED_WEAPON.ICON
-	else:
-		ability_slot_button.text = 'GUARD'
-		ability_slot_button.icon = null
 	await confirm
 	end_turn()
 
@@ -329,10 +322,18 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	for child in secondary_panel_container.get_children():
 		child.free()
 	
+	if active_combatant.EQUIPPED_WEAPON != null:
+		var button = OverworldGlobals.createCustomButton()
+		var weapon_skill = active_combatant.EQUIPPED_WEAPON.EFFECT
+		button.text = weapon_skill.NAME
+		button.pressed.connect(func(): forceCastAbility(weapon_skill))
+		button.focus_entered.connect(func():updateDescription(weapon_skill))
+		if !weapon_skill.ENABLED:
+			button.disabled = true
+		secondary_panel_container.add_child(button)
+	
 	for ability in ability_set:
 		var button = OverworldGlobals.createCustomButton()
-		#button.add_theme_font_size_override('font_size', 16)
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = ability.NAME
 		button.pressed.connect(func(): forceCastAbility(ability))
 		button.focus_entered.connect(func():updateDescription(ability))

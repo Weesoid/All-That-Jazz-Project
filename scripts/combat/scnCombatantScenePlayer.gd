@@ -2,19 +2,25 @@ extends CombatantScene
 class_name PlayerCombatantScene
 
 @onready var block_timer = $BlockCooldownBar/BlockTimer
+@onready var sheathe_point = $Sprite2D/SheathePoint
+@onready var unsheathe_point = $WeaponPoint
+
 var blocking: bool = false
-#@onready var sheathe_point = $Sprite2D/SheathePoint
-#@onready var unsheathe_point = $WeaponPoint
+var weapon: WeaponScene
+
+func _ready():
+	weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
+	weapon.equipped_combatant = self
+	#animator.play('RESET')
+	sheathe_point.add_child(weapon)
 
 func playWeaponAttack():
-	pass
-#	temp.reparent(unsheathe_point, false)
-#	temp.get_node('AnimationPlayer').play('Show')
+	weapon.reparent(unsheathe_point, false)
+	weapon.showWeapon()
 
 func sheatheWeapon():
-	pass
-#	temp.reparent(sheathe_point, false)
-#	temp.get_node('AnimationPlayer').play('RESET')
+	weapon.reparent(sheathe_point, false)
+	weapon.showWeapon(true)
 
 func setBlocking(set_to: bool):
 	blocking = set_to
@@ -40,3 +46,4 @@ func _process(_delta):
 	if combatant_resource.isDead():
 		blocking = false
 		doAnimation('KO', null, false)
+		weapon.hide()

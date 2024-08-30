@@ -46,7 +46,6 @@ func setProjectileTarget(target: CombatantScene, frame_time: float):
 	}, 0)
 
 func shootProjectile(target: CombatantScene):
-	print('Targeting: ', target)
 	var projectile = load("res://scenes/entities_disposable/ProjectileBattles.tscn").instantiate()
 	projectile.hit_script = hit_script
 	projectile.name = 'Projectile'
