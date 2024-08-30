@@ -634,6 +634,7 @@ libraries = {
 }
 
 [node name="Inspect" type="Control" parent="CombatCamera/Interface"]
+visible = false
 z_index = 100
 anchors_preset = 0
 offset_right = 40.0
@@ -642,10 +643,10 @@ offset_bottom = 40.0
 [node name="AttributeView" parent="CombatCamera/Interface/Inspect" instance=ExtResource("10_60ct5")]
 z_index = 100
 layout_mode = 1
-offset_left = 70.0
-offset_top = 34.0
-offset_right = 70.0
-offset_bottom = 34.0
+offset_left = 90.0
+offset_top = 54.0
+offset_right = 90.0
+offset_bottom = 54.0
 scale = Vector2(1.1, 1.1)
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
@@ -705,10 +706,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 132.0
-offset_top = 47.0
-offset_right = 387.0
-offset_bottom = 143.0
+offset_left = 152.0
+offset_top = 67.0
+offset_right = 407.0
+offset_bottom = 163.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(184, 36)
@@ -762,10 +763,10 @@ offset_bottom = 39.9998
 [node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface/ActionPanel"]
 z_index = 10
 layout_mode = 0
-offset_left = -128.0
-offset_top = 93.0
-offset_right = 128.0
-offset_bottom = 131.0
+offset_left = -160.0
+offset_top = 92.0
+offset_right = 160.0
+offset_bottom = 130.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel"]
 layout_mode = 2
@@ -817,6 +818,12 @@ theme = ExtResource("8_lqkpn")
 button_mask = 0
 text = "ABSCOND"
 
+[node name="Pass" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme = ExtResource("8_lqkpn")
+text = "PASS"
+
 [node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface"]
 layout_mode = 0
 offset_left = -184.0
@@ -835,5 +842,6 @@ libraries = {
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Items" to="." method="_on_items_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Pass" to="." method="_on_pass_pressed"]
 
 [editable path="CombatCamera/Interface/Inspect/AttributeView"]

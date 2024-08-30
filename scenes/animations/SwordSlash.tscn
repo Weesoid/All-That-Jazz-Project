@@ -1,9 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://1k7v4461fqbm"]
+[gd_scene load_steps=9 format=3 uid="uid://bklfhgr4jv2hf"]
 
 [ext_resource type="Script" path="res://scenes/animations/scnWeapon.gd" id="1_u1knb"]
 [ext_resource type="Texture2D" uid="uid://yle8fosxhnxt" path="res://images/sprites/sword.png" id="1_v31h6"]
+[ext_resource type="Script" path="res://scripts/combat/abilites_weapons/scaSwordSlash.gd" id="2_2kmfw"]
 [ext_resource type="Texture2D" uid="uid://c0dqtr84qdrcv" path="res://images/animations/TempSlash.png" id="2_cf86f"]
-[ext_resource type="Script" path="res://scripts/combat/abilities/scaSwordSlash.gd" id="2_egd47"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ji8kq"]
 size = Vector2(5.50002, 6)
@@ -143,7 +143,7 @@ _data = {
 
 [node name="SwordSlash" type="Node2D"]
 script = ExtResource("1_u1knb")
-hit_script = ExtResource("2_egd47")
+hit_script = ExtResource("2_2kmfw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(3, 4)
@@ -159,7 +159,6 @@ monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
 position = Vector2(24.75, -1.43051e-06)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_ji8kq")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]

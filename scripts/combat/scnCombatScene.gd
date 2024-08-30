@@ -722,3 +722,7 @@ func concludeCombat(results: int):
 	else:
 		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 80.0, 3)
 	queue_free()
+
+
+func _on_pass_pressed():
+	confirm.emit()

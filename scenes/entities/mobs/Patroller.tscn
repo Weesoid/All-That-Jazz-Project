@@ -1,8 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://cfgaxedrlkql3"]
+[gd_scene load_steps=15 format=3 uid="uid://cfgaxedrlkql3"]
 
 [ext_resource type="PackedScene" uid="uid://b0e4gc4eq74ca" path="res://scenes/components/NPCPatrol.tscn" id="1_qmtob"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="2_d6omk"]
-[ext_resource type="Resource" uid="uid://drv1o8j6wl6pf" path="res://resources/combat/combatants_enemies/RedAttack.tres" id="3_ljly7"]
 [ext_resource type="PackedScene" uid="uid://ldtj4j0l61ow" path="res://scenes/components/Hurtbox.tscn" id="4_ps25d"]
 [ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://images/animations/ent_walk.png" id="5_y0v56"]
 [ext_resource type="PackedScene" uid="uid://bahnqy0iowmdt" path="res://scenes/components/LineOfSight.tscn" id="6_3p5yl"]
@@ -184,7 +183,6 @@ radius = 60.0
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_qmtob")]
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_d6omk")]
-ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("3_ljly7")])
 FILL_EMPTY = true
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
 
