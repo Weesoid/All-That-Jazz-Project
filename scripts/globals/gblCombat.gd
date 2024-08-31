@@ -57,25 +57,6 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		damageTarget(caster, target, base_damage, can_crit)
 		return true
 
-func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
-	base_damage += caster.STAT_VALUES['brawn'] * base_damage
-	base_damage -= target.STAT_VALUES['grit'] * base_damage
-	if base_damage < 0.0: base_damage = 0
-	
-	base_damage = valueVariate(base_damage, 0.15)
-	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
-		base_damage *= 2.0
-		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
-		call_indicator.emit('Show', target)
-		getCombatScene().combat_camera.shake(15.0, 10.0)
-		OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
-	else:
-		call_indicator.emit('Show', target)
-	
-	target.STAT_VALUES['health'] -= int(base_damage)
-	received_combatant_value.emit(target, caster, int(base_damage))
-	playHurtAnimation(target)
-
 ## Calculate damage using custom formula and parameters
 func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false)-> bool:
 	if !target is ResCombatant:
@@ -92,7 +73,7 @@ func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant =
 		damage = valueVariate(damage, variation)
 	if can_crit:
 		if caster != null and randomRoll(caster.STAT_VALUES['crit']):
-			damage *= 2.0
+			damage *= 1.5
 			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 			call_indicator.emit('Show', target)
 			getCombatScene().combat_camera.shake(15.0, 10.0)
@@ -111,6 +92,26 @@ func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant =
 	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
 	playHurtAnimation(target)
 	return true
+
+## Basic damage calculations
+func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
+	base_damage += caster.STAT_VALUES['brawn'] * base_damage
+	base_damage -= target.STAT_VALUES['grit'] * base_damage
+	if base_damage < 0.0: base_damage = 0
+	
+	base_damage = valueVariate(base_damage, 0.15)
+	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
+		base_damage *= 1.5
+		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
+		call_indicator.emit('Show', target)
+		getCombatScene().combat_camera.shake(15.0, 10.0)
+		OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
+	else:
+		call_indicator.emit('Show', target)
+	
+	target.STAT_VALUES['health'] -= int(base_damage)
+	received_combatant_value.emit(target, caster, int(base_damage))
+	playHurtAnimation(target)
 
 func calculateHealing(target:ResCombatant, base_healing):
 	base_healing = valueVariate(base_healing, 0.15)
@@ -188,7 +189,7 @@ func playHurtAnimation(target: ResCombatant):
 			else:
 				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
 	else:
-		OverworldGlobals.playSound('458533__shyguy014__healpop.ogg')
+		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
 		playHurtTween(target)
 
 func playDodgeTween(target: ResCombatant):

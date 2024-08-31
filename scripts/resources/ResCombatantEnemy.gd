@@ -30,6 +30,8 @@ func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 
 func getExperience():
 	var out = 0
+	if BASE_STAT_VALUES.is_empty(): BASE_STAT_VALUES = STAT_VALUES
+	
 	for key in BASE_STAT_VALUES.keys():
 		if BASE_STAT_VALUES[key] <= 1.0:
 			out += BASE_STAT_VALUES[key]

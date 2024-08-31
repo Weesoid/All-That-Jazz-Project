@@ -21,6 +21,7 @@ var MOVE_SPEED: float
 var PATROL_SHAPE: CollisionShape2D
 var IDLE_TIMER: Timer
 var STUN_TIMER: Timer
+var DETECT_TIMER: Timer
 
 var COMBAT_SWITCH = true
 var PATROL = true
@@ -31,9 +32,9 @@ func _ready():
 	LINE_OF_SIGHT = get_parent().get_node('LineOfSightComponent')
 	COMBAT_SQUAD = get_parent().get_node('CombatantSquadComponent')
 	ANIMATOR = get_parent().get_node('Animator')
-	
-	if OverworldGlobals.getCurrentMap().CLEARED:
-		destroy(false)
+#
+#	if OverworldGlobals.getCurrentMap().CLEARED:
+#		destroy(false)
 	
 	NAME = get_parent().name
 	BODY.get_node('CombatantSquadComponent').UNIQUE_ID = NAME
@@ -42,8 +43,10 @@ func _ready():
 	
 	IDLE_TIMER = Timer.new()
 	STUN_TIMER = Timer.new()
+	DETECT_TIMER = Timer.new()
 	add_child(IDLE_TIMER)
 	add_child(STUN_TIMER)
+	add_child(DETECT_TIMER)
 	
 	OverworldGlobals.update_patroller_modes.connect(updateMode)
 	NAV_AGENT.navigation_finished.connect(updatePath)
@@ -68,8 +71,8 @@ func _physics_process(_delta):
 		executeCollisionAction()
 	
 #	if OverworldGlobals.isPlayerCheating():
-#		DEBUG.show()
-#		DEBUG.text = str(int(IDLE_TIMER.time_left))
+	DEBUG.show()
+	DEBUG.text = str(DETECT_TIMER.time_left)
 #	else:
 #		DEBUG.hide()
 
@@ -87,8 +90,14 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
-		chaseMode()
-		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
+		if DETECT_TIMER.is_stopped() and STATE != 2: 
+			DETECT_TIMER.start(0.25)
+		if !DETECT_TIMER.is_stopped():
+			await DETECT_TIMER.timeout
+			DETECT_TIMER.stop()
+		if LINE_OF_SIGHT.detectPlayer():
+			chaseMode()
+			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if !NAV_AGENT.is_target_reachable():
 		soothePatrolMode()
@@ -118,7 +127,6 @@ func stunMode(alert_others:bool=false):
 	STATE = 3
 	updatePath()
 	if alert_others:
-		print(last_state)
 		if last_state == 2 or last_state == 1:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
 		else:
@@ -152,6 +160,7 @@ func isMapCleared():
 			return
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
 	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMap().NAME)
+	OverworldGlobals.getCurrentMap().giveRewards()
 
 func updatePath(immediate:bool=false):
 	match STATE:

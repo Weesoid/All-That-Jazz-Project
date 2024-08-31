@@ -20,4 +20,4 @@ static func skillCheck(target: CombatantScene , caster: CombatantScene, _ability
 				return
 
 static func applyEffects(target: CombatantScene , caster: CombatantScene, _ability: ResAbility=null):
-	CombatGlobals.calculateDamage(caster, target, 2.0)
+	CombatGlobals.calculateDamage(caster, target, 5.0)

@@ -68,5 +68,5 @@ func disableButtons():
 			child.disabled = true
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_show_menu"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")

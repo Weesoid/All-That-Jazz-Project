@@ -25,6 +25,8 @@ var bow_draw_strength = 0
 var SPEED = 100.0
 var stamina_regen = true
 var play_once = true
+var sprinting = false
+var hiding = false
 var ANIMATION_SPEED = 0.0
 
 func _ready():
@@ -59,25 +61,24 @@ func _physics_process(delta):
 	if PlayerGlobals.stamina <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
 		Input.action_press("ui_bow")
 	
-	if Input.is_action_pressed("ui_sprint") and PlayerGlobals.stamina > 0.0 and bow_draw_strength == 0:
+	if sprinting and PlayerGlobals.stamina > 0.0 and bow_draw_strength == 0:
 		SPEED = PlayerGlobals.sprint_speed
 		ANIMATION_SPEED = 1.0
 		if velocity != Vector2.ZERO: PlayerGlobals.stamina -= PlayerGlobals.sprint_drain
 	elif bow_draw_strength >= PlayerGlobals.bow_max_draw:
 		if PlayerGlobals.stamina > 0.0:
 			PlayerGlobals.stamina -= 0.1
-	elif Input.is_action_pressed("ui_sprint") and PlayerGlobals.stamina < 0.0:
+	elif sprinting and PlayerGlobals.stamina < 0.0:
 		SPEED = PlayerGlobals.walk_speed
 		ANIMATION_SPEED = 0.0
-	elif !Input.is_action_pressed("ui_sprint") and PlayerGlobals.stamina < 100 and stamina_regen:
+	elif !sprinting and PlayerGlobals.stamina < 100 and stamina_regen:
 		PlayerGlobals.stamina += PlayerGlobals.stamina_gain
+	if !sprinting:
+		SPEED = PlayerGlobals.walk_speed
+		ANIMATION_SPEED = 0.0
 	
 	if PlayerGlobals.stamina > 100.0:
 		PlayerGlobals.stamina = 100.0
-	
-	if Input.is_action_just_released("ui_sprint"):
-		SPEED = PlayerGlobals.walk_speed
-		ANIMATION_SPEED = 0.0
 	
 	OverworldGlobals.follow_array.push_front(self.global_position)
 	OverworldGlobals.follow_array.pop_back()
@@ -86,10 +87,10 @@ func resetStates():
 	undrawBowAnimation()
 	SPEED = PlayerGlobals.walk_speed
 	ANIMATION_SPEED = 0.0
-	Input.action_release("ui_click")
+	Input.action_release("ui_bow_draw")
 
 func _unhandled_input(_event: InputEvent):
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_show_menu"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	
 	if Input.is_action_just_pressed("ui_select") and !channeling_power and !OverworldGlobals.inMenu():
@@ -99,6 +100,11 @@ func _unhandled_input(_event: InputEvent):
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
+	
+	if SettingsGlobals.doSprint():
+		sprinting = true
+	elif SettingsGlobals.stopSprint():
+		sprinting = false
 	
 	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
 		if bow_draw_strength == 0: 
@@ -157,7 +163,7 @@ func drawBow():
 		bow_mode = false
 		toggleBowAnimation()
 	
-	if Input.is_action_pressed("ui_click") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move:
+	if Input.is_action_pressed("ui_bow_draw") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move:
 		SPEED = 15.0
 		if play_once:
 			playAudio('bow-loading-38752.ogg',0.0,true)
@@ -174,7 +180,7 @@ func drawBow():
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.bow_max_draw
 	
-	if Input.is_action_just_released("ui_click") and velocity == Vector2.ZERO:
+	if Input.is_action_just_released("ui_bow_draw") and velocity == Vector2.ZERO:
 		if bow_draw_strength >= PlayerGlobals.bow_max_draw: 
 			shootProjectile()
 		await get_tree().create_timer(0.05).timeout
@@ -230,17 +236,17 @@ func updateAnimationParameters():
 		toggleBowAnimation()
 		if animation_tree["parameters/conditions/draw_bow"]:
 			bow_draw_strength = 0
-			Input.action_release("ui_click")
+			Input.action_release("ui_bow_draw")
 			animation_tree["parameters/conditions/draw_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = true
 	
 	if bow_mode:
-		if Input.is_action_pressed('ui_click') and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
+		if Input.is_action_pressed('ui_bow_draw') and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false
 		
-		if Input.is_action_just_released("ui_click"):
+		if Input.is_action_just_released("ui_bow_draw"):
 			animation_tree["parameters/conditions/draw_bow"] = false
 			if bow_draw_strength >= PlayerGlobals.bow_max_draw and velocity == Vector2.ZERO:
 				animation_tree["parameters/conditions/shoot_bow"] = true

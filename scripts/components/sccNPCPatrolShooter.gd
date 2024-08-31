@@ -64,9 +64,6 @@ func patrolToPosition(target_position: Vector2):
 		ANIMATOR.seek(1, true)
 		ANIMATOR.pause()
 
-func _on_reload_timer_timeout():
-	pass
-
 func shootProjectile():
 	shoot_ready = false
 	var projectile = PROJECTILE.instantiate()

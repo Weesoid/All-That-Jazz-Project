@@ -4,6 +4,8 @@ extends Node2D
 @onready var playtime_info = $VBoxContainer/PlaytimeInfo
 @onready var equipped_charm = $VBoxContainer/EquippedCharm
 @onready var dogpile = $VBoxContainer/Dogpile
+@onready var reward_bank = $VBoxContainer/RewardBank
+
 var clipboard = DisplayServer.clipboard_get()
 
 func _process(_delta):
@@ -14,7 +16,8 @@ func _process(_delta):
 		equipped_charm.text = PlayerGlobals.EQUIPPED_CHARM.NAME
 	else:
 		equipped_charm.text = 'No charm.'
-	
+	reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
+
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_quick_save"):
 		SaveLoadGlobals.saveGame('Save Debug')

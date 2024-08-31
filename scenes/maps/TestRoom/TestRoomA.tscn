@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://0ydr04tf70bf"]
+[gd_scene load_steps=29 format=3 uid="uid://0ydr04tf70bf"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="17_0v7bm"]
 [ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="17_nryad"]
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="18_vkkst"]
+[ext_resource type="PackedScene" uid="uid://d3uwhp7cbtt7a" path="res://scenes/entities_interactable/HidingSpot.tscn" id="23_uryqv"]
 [ext_resource type="PackedScene" uid="uid://mfyf48hh0e2p" path="res://scenes/entities/mobs/PatrollerShooter.tscn" id="31_pw13n"]
 [ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="31_s6lty"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="32_ea2lt"]
@@ -169,21 +170,13 @@ position = Vector2(24, -256)
 [node name="NPCPatrolComponent" parent="PatrollerShooter" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
-[node name="PatrollerShooter2" parent="." instance=ExtResource("31_pw13n")]
-position = Vector2(-40, -240)
-
-[node name="NPCPatrolComponent" parent="PatrollerShooter2" index="1" node_paths=PackedStringArray("PATROL_AREA")]
-PATROL_AREA = NodePath("../../Area2D")
-
-[node name="PatrollerShooter3" parent="." instance=ExtResource("31_pw13n")]
-position = Vector2(88, -248)
-
-[node name="NPCPatrolComponent" parent="PatrollerShooter3" index="1" node_paths=PackedStringArray("PATROL_AREA")]
-PATROL_AREA = NodePath("../../Area2D")
-
 [node name="FastTravel" parent="." instance=ExtResource("32_ea2lt")]
 position = Vector2(32, -120)
 
+[node name="HidingSpot" parent="." instance=ExtResource("23_uryqv")]
+position = Vector2(104, -64)
+
+[node name="HidingSpot2" parent="." instance=ExtResource("23_uryqv")]
+position = Vector2(8, -64)
+
 [editable path="PatrollerShooter"]
-[editable path="PatrollerShooter2"]
-[editable path="PatrollerShooter3"]

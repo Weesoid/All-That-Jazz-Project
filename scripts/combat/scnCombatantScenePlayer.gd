@@ -11,7 +11,6 @@ var weapon: WeaponScene
 func _ready():
 	weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
 	weapon.equipped_combatant = self
-	#animator.play('RESET')
 	sheathe_point.add_child(weapon)
 
 func playWeaponAttack():
@@ -32,7 +31,7 @@ func setBlocking(set_to: bool):
 		animator.play('Idle')
 
 func block(bonus_grit: float=0.75):
-	CombatGlobals.modifyStat(combatant_resource, {'grit': 0.75}, 'block')
+	CombatGlobals.modifyStat(combatant_resource, {'grit': 1.0}, 'block')
 	doAnimation('Block')
 	await animator.animation_finished
 	CombatGlobals.resetStat(combatant_resource, 'block')

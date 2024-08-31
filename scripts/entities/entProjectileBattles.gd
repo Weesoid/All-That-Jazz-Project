@@ -10,3 +10,6 @@ func _on_body_entered(body):
 	elif target != null and body == target:
 		hit_script.applyEffects(body, SHOOTER)
 		queue_free()
+
+func _exit_tree():
+	pass

@@ -18,8 +18,8 @@ var stamina = 100.0
 var bow_max_draw = 5.0
 var walk_speed = 100.0
 var sprint_speed = 200.0
-var sprint_drain = 0.10
-var stamina_gain = 0.10
+var sprint_drain = 0.25
+var stamina_gain = 0.15
 
 signal level_up
 

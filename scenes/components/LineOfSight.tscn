@@ -18,3 +18,5 @@ debug_color = Color(0.94902, 0, 0.568627, 0.419608)
 [node name="LineOfSight" type="RayCast2D" parent="."]
 target_position = Vector2(0, 189)
 collision_mask = 17
+
+[node name="Timer" type="Timer" parent="."]

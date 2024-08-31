@@ -28,7 +28,7 @@ func pickRandomEnemies():
 	for index in range(COMBATANT_SQUAD.size()):
 		if COMBATANT_SQUAD[index] != null: continue
 		COMBATANT_SQUAD[index] = ENEMY_POOL.pick_random()
-
+	
 func getMusic()-> int:
 	var faction_count = {}
 	for faction in range(CombatGlobals.Enemy_Factions.size()):
@@ -44,7 +44,18 @@ func getRawDrops():
 		drops.merge(member.getRawDrops())
 	return drops
 
+func addDrops():
+	var loot_drops = getRawDrops()
+	for loot in loot_drops.keys():
+		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
+			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
+		else:
+			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
+
 func getExperience():
+	var out = 0
+	print(COMBATANT_SQUAD)
 	for member in COMBATANT_SQUAD:
-		print('ugu! ', member.getExperience())
-		PlayerGlobals.addExperience(member.getExperience())
+		out += member.getExperience()
+		print(out)
+	return out

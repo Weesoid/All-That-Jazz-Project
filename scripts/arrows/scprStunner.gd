@@ -1,7 +1,7 @@
 static func applyEffect(body: CharacterBody2D):
 	# Add status effects here
 	if body.get_node("NPCPatrolComponent").STATE == 3:
-		body.get_node("NPCPatrolComponent").COMBAT_SQUAD.getExperience()
+		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += body.get_node("NPCPatrolComponent").COMBAT_SQUAD.getExperience()
 		body.get_node("NPCPatrolComponent").destroy()
 		var lootbag = preload("res://scenes/entities_disposable/LootBag.tscn").instantiate()
 		lootbag.get_node("Interaction").loot = body.get_node("NPCPatrolComponent").COMBAT_SQUAD.getRawDrops()

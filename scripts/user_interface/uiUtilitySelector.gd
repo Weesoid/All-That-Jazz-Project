@@ -23,6 +23,10 @@ func _input(event):
 			elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
 				current_index += 1
 				updateArrowSelect()
+		elif event is InputEventJoypadButton:
+			if event.button_index == JOY_BUTTON_B and event.pressed:
+				current_index += 1
+				updateArrowSelect()
 	elif Input.is_action_pressed("ui_select_gambit") and !player.channeling_power:
 		visible = true
 		if event is InputEventMouseButton:
@@ -30,6 +34,10 @@ func _input(event):
 				current_index -= 1
 				updatePowerSelect()
 			elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+				current_index += 1
+				updatePowerSelect()
+		elif event is InputEventJoypadButton:
+			if event.button_index == JOY_BUTTON_B and event.pressed:
 				current_index += 1
 				updatePowerSelect()
 	

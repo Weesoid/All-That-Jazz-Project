@@ -39,7 +39,6 @@ var target_index = 0
 var combat_event: ResCombatEvent
 var selected_ability: ResAbility
 var run_once = true
-var experience_earnt = 0
 var drops = {}
 var turn_count = 0
 var round_count = 0
@@ -248,7 +247,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				combatant.ACTED = true
-				experience_earnt += combatant.getExperience()
+				OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += combatant.getExperience()
 				addDrop(combatant.getDrops())
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
@@ -501,10 +500,10 @@ func getDeadCombatants():
 
 func addDrop(loot_drops: Dictionary):
 	for loot in loot_drops.keys():
-		if drops.keys().has(loot):
-			drops[loot] += loot_drops[loot]
+		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
+			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
 		else:
-			drops[loot] = loot_drops[loot]
+			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
 
 func rollTurns():
 	playCombatAudio("714571__matrixxx__reverse-time.ogg", 0.0, 1, true)
@@ -685,11 +684,12 @@ func concludeCombat(results: int):
 			all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
 			morale_bonus += 1
 		if results == 1:
-			experience_earnt += (experience_earnt*0.25)*morale_bonus
+			OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += (OverworldGlobals.getCurrentMap().REWARD_BANK['experience']*0.25)*morale_bonus
 			for i in range(loot_bonus):
-				for enemy in getCombatantGroup('enemies'): addDrop(enemy.getDrops())
-	else:
-		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
+				for enemy in getCombatantGroup('enemies'): 
+					addDrop(enemy.getDrops())
+#	else:
+#		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
 	
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 	for item in drops.keys():
@@ -700,9 +700,9 @@ func concludeCombat(results: int):
 	else:
 		bc_ui.title.text = 'Escaped!'
 	bc_ui.setBonuses(all_bonuses)
-	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
-	PlayerGlobals.addExperience(experience_earnt)
-	bc_ui.writeDrops(drops)
+#	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
+#	PlayerGlobals.addExperience(experience_earnt)
+#	bc_ui.writeDrops(drops)
 	
 	await bc_ui.done
 	bc_ui.queue_free()

@@ -4,7 +4,11 @@ var dogpile_timer: Timer = Timer.new()
 var dogpile: int = 0
 var follow_array = []
 var player_follower_count = 0
+
 signal update_patroller_modes(mode:int)
+signal party_damaged
+signal combat_enetered
+signal combat_exited
 
 #func _process(_delta):
 #	print_orphan_nodes()
@@ -28,14 +32,23 @@ func initializePlayerParty():
 	
 	follow_array.resize(100)
 
-func setPlayerInput(enabled:bool, disable_collision=false):
+func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
 	getPlayer().can_move = enabled
 	getPlayer().set_process_unhandled_input(enabled)
+	if enabled:
+		getPlayer().set_collision_layer_value(5, true)
+		getPlayer().set_collision_mask_value(5, true)
+		getPlayer().set_collision_layer_value(1, true)
+		getPlayer().set_collision_mask_value(1, true)
+		getPlayer().show()
+	
 	if disable_collision:
 		getPlayer().set_collision_layer_value(5, false)
 		getPlayer().set_collision_mask_value(5, false)
 		getPlayer().set_collision_layer_value(1, false)
 		getPlayer().set_collision_mask_value(1, false)
+	if hide_player:
+		getPlayer().hide()
 
 func inDialogue() -> bool:
 	return getCurrentMap().has_node('Balloon')
@@ -235,6 +248,9 @@ func showTransition(animation: String, player_scene:PlayerScene=null):
 func getCurrentMap()-> Node2D:
 	return get_tree().current_scene
 
+func getMapRewardBank(key: String):
+	return get_tree().current_scene.REWARD_BANK[key]
+
 func isPlayerCheating()-> bool:
 	return getPlayer().has_node('DebugComponent')
 
@@ -251,13 +267,16 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	getPlayer().player_camera.add_child(menu)
 	menu.end_sentence.text = end_sentence
 
-# Todo
-func moveCamera(to, wait:bool=false):
-	var tween
+func moveCamera(to, duration:float=0.25, wait:bool=false):
+	var tween = create_tween()
 	if to is Node2D:
-		pass
+		tween.tween_property(getPlayer().player_camera, 'global_position', to.global_position, duration)
 	elif to is Vector2:
-		pass
+		tween.tween_property(getPlayer().player_camera, 'global_position', to, duration)
+
+func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
+	var tween = create_tween()
+	tween.tween_property(getPlayer().player_camera, 'zoom', zoom, duration)
 
 func shakeCamera():
 	getPlayer().player_camera.shake(30.0,20.0)
@@ -336,6 +355,7 @@ func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=fal
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
 func changeToCombat(entity_name: String, combat_event_name: String=''):
+	# Check validity
 	if get_parent().has_node('CombatScene'):
 		await getCurrentMap().get_node('CombatScene').tree_exited
 	if getCurrentMap().has_node('Balloon'):
@@ -346,6 +366,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		showGameOver('You could not defend yourself!')
 		return
 	
+	# Enter combat
 	setPlayerInput(false)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
@@ -366,6 +387,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	getPlayer().player_camera.add_child(battle_transition)
 	incrementDogpile()
 	battle_transition.get_node('AnimationPlayer').play('In')
+	combat_enetered.emit()
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
@@ -375,6 +397,8 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		combat_scene.combat_dialogue = getComponent(entity_name, 'CombatDialogue')
 	getCurrentMap().hide()
 	await combat_scene.combat_done
+	
+	# Exit combat
 	var combat_results = combat_scene.combat_result
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
@@ -389,6 +413,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		setPlayerInput(true)
 	elif combat_results != 0:
 		setPlayerInput(true)
+	combat_exited.emit()
 
 func incrementDogpile():
 	dogpile += 1
@@ -439,6 +464,7 @@ func damageParty(damage:int):
 		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	if isPlayerSquadDead():
 		showGameOver('Shot down!')
+	party_damaged.emit()
 
 func restorePlayerView():
 	getPlayer().player_camera.make_current()

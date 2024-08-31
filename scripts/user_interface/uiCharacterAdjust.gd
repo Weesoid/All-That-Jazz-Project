@@ -18,6 +18,8 @@ extends Control
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
 @onready var member_preview = $Marker2D
 @onready var member_name = $Label
+
+var restrict_tabs: bool = true
 var selected_combatant: ResPlayerCombatant
 
 func _process(_delta):
@@ -38,6 +40,9 @@ func _ready():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 	if member_container.get_child_count() > 0:
 		member_container.get_child(0).grab_focus()
+	if !OverworldGlobals.getCurrentMap().SAFE and restrict_tabs:
+		tabs.set_tab_disabled(1, true)
+		tabs.set_tab_disabled(2, true)
 
 func loadMemberInfo(member: ResCombatant):
 	for child in member_preview.get_children():
@@ -323,9 +328,9 @@ func _on_tab_container_tab_changed(tab):
 		2: attrib_adjust.focus()
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_tab_right') and tabs.current_tab + 1 < tabs.get_tab_count():
+	if Input.is_action_just_pressed('ui_tab_right') and (tabs.current_tab + 1 < tabs.get_tab_count() and !tabs.is_tab_disabled(tabs.current_tab + 1)):
 		tabs.current_tab += 1
-	elif Input.is_action_just_pressed('ui_tab_left') and tabs.current_tab - 1 >= 0:
+	elif Input.is_action_just_pressed('ui_tab_left') and (tabs.current_tab - 1 >= 0 and !tabs.is_tab_disabled(tabs.current_tab - 1)):
 		tabs.current_tab -= 1
 
 func setFocusMode(container, mode):
