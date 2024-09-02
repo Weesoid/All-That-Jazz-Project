@@ -33,6 +33,7 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
+	print('setting play input! %s' % enabled)
 	getPlayer().can_move = enabled
 	getPlayer().set_process_unhandled_input(enabled)
 	if enabled:

@@ -9,9 +9,10 @@ var blocking: bool = false
 var weapon: WeaponScene
 
 func _ready():
-	weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
-	weapon.equipped_combatant = self
-	sheathe_point.add_child(weapon)
+	if combatant_resource.EQUIPPED_WEAPON != null:
+		weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
+		weapon.equipped_combatant = self
+		sheathe_point.add_child(weapon)
 
 func playWeaponAttack():
 	weapon.reparent(unsheathe_point, false)

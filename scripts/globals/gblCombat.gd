@@ -237,6 +237,31 @@ func playKnockOutTween(target: ResCombatant):
 func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
 
+func showWarning(target: CombatantScene):
+	var warning = preload("res://scenes/user_interface/TargetWarning.tscn").instantiate()
+	target.add_child(warning)
+
+func setCombatantVisibility(target: CombatantScene, set_to:bool):
+	var tween = CombatGlobals.getCombatScene().create_tween()
+	if !set_to:
+		tween.tween_property(target, 'modulate', Color(Color.TRANSPARENT, 0.5), 0.15)
+		target.z_index = -1
+	else:
+		tween.tween_property(target, 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
+		target.z_index = 0
+	target.get_node('CombatBars').visible = set_to
+
+func spawnQuickTimeEvent(target: CombatantScene, type: String):
+	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
+	var qte = load("res://scenes/quick_time_events/%s.tscn" % type).instantiate()
+	var offset = Vector2(0, -48)
+	if type == 'Holding': offset = Vector2.ZERO
+	qte.global_position = target.global_position + offset
+	qte.z_index = 101
+	getCombatScene().add_child(qte)
+	await CombatGlobals.qte_finished
+	return qte
+
 #********************************************************************************
 # STATUS EFFECT HANDLING
 #********************************************************************************

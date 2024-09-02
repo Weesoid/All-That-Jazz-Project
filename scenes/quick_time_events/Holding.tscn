@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/quick_time_events/qteHolding.gd" id="1_17ur7"]
 [ext_resource type="PackedScene" uid="uid://blrbmuyi7u6y8" path="res://scenes/quick_time_events/targets/HoldingTarget.tscn" id="2_8jteu"]
 [ext_resource type="AudioStream" uid="uid://cspa7lxtp13av" path="res://audio/sounds/542003__rob_marion__gasp_lock-and-load.ogg" id="2_byd75"]
-[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="4_6g54j"]
+[ext_resource type="Texture2D" uid="uid://dxtd513kejcer" path="res://images/sprites/qte_target.png" id="4_uvos6"]
 
 [sub_resource type="Animation" id="Animation_htf3m"]
 length = 0.001
@@ -57,9 +57,9 @@ stream = ExtResource("2_byd75")
 scale = Vector2(1.75, 1.75)
 
 [node name="Sprite2D" parent="HoldCircle" index="0"]
-modulate = Color(1, 0, 0.8, 1)
 z_index = 10
-texture = ExtResource("4_6g54j")
+scale = Vector2(0.258929, 0.249284)
+texture = ExtResource("4_uvos6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

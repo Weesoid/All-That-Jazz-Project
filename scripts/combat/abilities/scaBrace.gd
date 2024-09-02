@@ -1,5 +1,5 @@
 static func animate(caster, _target, _ability):
-	await caster.doAnimation()
+	await caster.doAnimation('Cast_Block')
 	applyEffects(caster, _target, _ability)
 
 static func applyEffects(caster, _target, _ability):

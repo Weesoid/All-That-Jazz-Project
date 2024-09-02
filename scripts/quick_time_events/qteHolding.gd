@@ -3,7 +3,7 @@ extends Node2D
 var sweet_spot
 var goal_scale = Vector2(1.0, 1.0)
 var scale_penalty = 0.1
-var base_penalty = 6.0
+var base_penalty = 4.0
 var shrink = false
 var target_speed = 2.5
 var max_points = 1
@@ -26,6 +26,7 @@ func _process(delta):
 		target.scale -= Vector2(1, 1) * target_speed * delta
 	if target.scale <= Vector2.ZERO:
 		shrink = false
+		OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")
 		CombatGlobals.qte_finished.emit()
 	
 func _unhandled_input(_event):
@@ -36,14 +37,10 @@ func _unhandled_input(_event):
 	if Input.is_action_just_released("ui_accept"):
 		shrink = false
 		if target.scale <= sweet_spot.scale:
-			ding_sound.pitch_scale += (0.025 * points)
-			ding_sound.play()
+			OverworldGlobals.playSound("res://audio/sounds/542003__rob_marion__gasp_lock-and-load.ogg", 0.0, 1.0 + (0.025 * points))
 			points += 1
 			sweet_spot.queue_free()
 			if points == max_points:
-				target.hide()
-				ding_sound.volume_db += 0.5
-				await ding_sound.finished
 				CombatGlobals.qte_finished.emit()
 			else:
 				target.scale = Vector2(1.0, 1.0)
@@ -51,6 +48,7 @@ func _unhandled_input(_event):
 				target_speed += randf_range(0.1, 0.5)
 				newSweetSpot()
 		else:
+			OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")
 			CombatGlobals.qte_finished.emit()
 
 func resetTarget():
@@ -64,4 +62,5 @@ func newSweetSpot():
 
 
 func _on_timer_timeout():
+	OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")
 	CombatGlobals.qte_finished.emit()

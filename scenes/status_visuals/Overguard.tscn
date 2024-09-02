@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdtnlc1i6gy21"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cp2nq"]
+radius = 9.0
+height = 46.0
+
+[node name="Overguard" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_cp2nq")
+debug_color = Color(0.619608, 0.352941, 1, 0.419608)

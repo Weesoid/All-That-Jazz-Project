@@ -9,14 +9,14 @@ extends Node2D
 var time
 var drain_speed = 10.0
 var mash_strength = 15.0
-var max_ponts = 3
+var max_ponts = 1
 var points = 0
 
 func _ready():
 	randomize()
 	bar.max_value = 100
 	bar.value = 0
-	time = (max_ponts * 3) - randf_range(2.0, 3.0)
+	time = (max_ponts * 4) - randf_range(2.0, 3.0)
 	time_bar.max_value = time
 	timer.start(time)
 
@@ -27,14 +27,12 @@ func _physics_process(delta):
 	if bar.value >= 99:
 		bar.value = 0
 		points += 1
-		ding_sound.pitch_scale += (0.005 * points)
-		ding_sound.play()
+		OverworldGlobals.playSound('542003__rob_marion__gasp_lock-and-load.ogg', 0.0, 1.0 + (0.005 * points), false)
 		animator.play("Point")
 		if points == max_ponts:
-			ding_sound.volume_db += 0.5
+			OverworldGlobals.playSound('542003__rob_marion__gasp_lock-and-load.ogg', 0.0, 1.0 + (0.5 * points), false)
 			time_bar.hide()
 			bar.hide()
-			await ding_sound.finished
 			CombatGlobals.qte_finished.emit()
 		else:
 			newMash()
@@ -50,4 +48,5 @@ func newMash():
 	mash_strength -= randf_range(.0, 2.0)
 
 func _on_timer_timeout():
+	OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")
 	CombatGlobals.qte_finished.emit()

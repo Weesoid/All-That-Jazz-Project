@@ -1,7 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://bae7aifhormuj"]
+[gd_scene load_steps=8 format=3 uid="uid://bae7aifhormuj"]
 
 [ext_resource type="Script" path="res://scripts/quick_time_events/qteMashing.gd" id="1_8qkyh"]
 [ext_resource type="AudioStream" uid="uid://cspa7lxtp13av" path="res://audio/sounds/542003__rob_marion__gasp_lock-and-load.ogg" id="2_mukpm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4t4ro"]
+bg_color = Color(0, 0, 0, 1)
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0i01q"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_k78bc"]
 resource_name = "Point"
@@ -50,16 +65,19 @@ autostart = true
 stream = ExtResource("2_mukpm")
 
 [node name="MashBar" type="ProgressBar" parent="."]
-offset_left = -81.0
-offset_top = -78.0
-offset_right = 82.0
-offset_bottom = 78.0
+offset_left = -47.0
+offset_top = -20.0
+offset_right = 48.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_4t4ro")
+show_percentage = false
 
 [node name="TimeBar" type="ProgressBar" parent="."]
-offset_left = -95.0
-offset_top = -78.0
-offset_right = -86.0
-offset_bottom = 78.0
+offset_left = -64.0
+offset_top = -32.0
+offset_right = -47.0
+offset_bottom = 32.0
+theme_override_styles/background = SubResource("StyleBoxFlat_0i01q")
 fill_mode = 3
 show_percentage = false
 

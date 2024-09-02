@@ -425,6 +425,14 @@ func getStatusEffectInfo(combatant: ResCombatant):
 		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION+'\n'
 
 func executeAbility():
+	active_combatant.SCENE.z_index = 100
+	for combatant in COMBATANTS:
+		if (target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant):
+			CombatGlobals.setCombatantVisibility(combatant.SCENE, false)
+			
+	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking:
+		CombatGlobals.showWarning(target_combatant.SCENE)
+	
 	await get_tree().create_timer(0.25).timeout
 	selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
 	await CombatGlobals.ability_finished
@@ -432,6 +440,9 @@ func executeAbility():
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
+	
+	for combatant in COMBATANTS:
+		CombatGlobals.setCombatantVisibility(combatant.SCENE, true)
 	
 	var ability_title = 'ability/%s' % selected_ability.resource_path.get_file().trim_suffix('.tres')
 	CombatGlobals.dialogue_signal.emit(ability_title)

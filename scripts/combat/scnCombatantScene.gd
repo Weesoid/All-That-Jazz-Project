@@ -21,7 +21,6 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0)):
 
 func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, idle:bool=true, data:Dictionary={}):
 	if script != null: hit_script = script
-	z_index = 99
 	if animation == 'Cast_Ranged': 
 		setProjectileTarget(data['target'], data['frame_time'])
 	animator.play(animation)
@@ -32,7 +31,6 @@ func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, idle:bo
 	animator.play(idle_animation)
 	await get_tree().create_timer(0.5)
 	hit_script = null
-	z_index = 0
 
 func setProjectileTarget(target: CombatantScene, frame_time: float):
 	var anim: Animation = animator.get_animation("Cast_Ranged")
@@ -56,8 +54,12 @@ func shootProjectile(target: CombatantScene):
 		projectile.rotation_degrees = 180
 	CombatGlobals.getCombatScene().add_child(projectile)
 
+func _process(_delta):
+	if combatant_resource.isDead():
+		doAnimation('KO', null, false)
+
 func _on_hit_box_body_entered(body):
-	if hit_script != null and body != self: 
+	if hit_script != null and body != self and body is CombatantScene: 
 		hit_script.applyEffects(body, self)
 
 func _to_string():

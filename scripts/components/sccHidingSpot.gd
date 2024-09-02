@@ -40,6 +40,7 @@ func interact():
 		if hide_success:
 			OverworldGlobals.setPlayerInput(false, true, true)
 			OverworldGlobals.getPlayer().hiding = true
+			OverworldGlobals.getPlayer().sprinting = false
 			OverworldGlobals.moveCamera(self)
 			OverworldGlobals.zoomCamera(Vector2(2.5, 2.5))
 			await get_tree().create_timer(0.25).timeout

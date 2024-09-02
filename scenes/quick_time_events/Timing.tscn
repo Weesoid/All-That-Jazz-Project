@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dorckpgb0hrim"]
+[gd_scene load_steps=9 format=3 uid="uid://dorckpgb0hrim"]
 
 [ext_resource type="Script" path="res://scripts/quick_time_events/qteTiming.gd" id="1_4ef8u"]
 [ext_resource type="Texture2D" uid="uid://dxw47c83a60c6" path="res://images/sprites/timing_bar.png" id="2_xo8y4"]
@@ -8,20 +8,57 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rxcus"]
 size = Vector2(6, 32)
 
+[sub_resource type="Animation" id="Animation_0odi8"]
+resource_name = "Activate"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TimingTarget:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5625, 1), Vector2(0.75, 1.332), Vector2(0.5625, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8k7j4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TimingTarget:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5625, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kd3gj"]
+_data = {
+"Activate": SubResource("Animation_0odi8"),
+"RESET": SubResource("Animation_8k7j4")
+}
+
 [node name="QTE" type="Node2D"]
 process_mode = 3
 z_index = 5
 script = ExtResource("1_4ef8u")
 
 [node name="TimingBar" type="Sprite2D" parent="."]
-scale = Vector2(0.632813, 1)
+position = Vector2(1, 0)
+scale = Vector2(0.35, 1)
 texture = ExtResource("2_xo8y4")
 
 [node name="TimingTarget" type="Area2D" parent="."]
-position = Vector2(-153, 0)
+position = Vector2(-80, 0)
 
 [node name="TimingTarget" type="Sprite2D" parent="TimingTarget"]
-modulate = Color(1, 0, 1, 1)
 z_index = 3
 scale = Vector2(0.5625, 1)
 texture = ExtResource("4_xogn6")
@@ -31,3 +68,10 @@ shape = SubResource("RectangleShape2D_rxcus")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="TimingTarget"]
 stream = ExtResource("4_ugfcd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimingTarget"]
+libraries = {
+"": SubResource("AnimationLibrary_kd3gj")
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]

@@ -9,7 +9,7 @@ var inputs: Array[String]
 
 var hit = 0
 var points = 0
-var max_points = 3
+var max_points = 1
 var input_count
 
 func _ready():
@@ -61,15 +61,16 @@ func _unhandled_key_input(_event):
 			timer.start(timer.time_left + 1.0)
 			displayInputs()
 			hit = 0
-		ding_sound.pitch_scale += (0.025 * points)
-		ding_sound.play()
+		OverworldGlobals.playSound('542003__rob_marion__gasp_lock-and-load.ogg', 0.0, 1.0 + (0.025 * points), false)
 		if points == max_points:
 			CombatGlobals.qte_finished.emit()
 		container.get_child(hit).self_modulate.a = 1.0
 	elif Input.is_action_just_pressed('ui_up') or Input.is_action_just_pressed('ui_down') or Input.is_action_just_pressed('ui_left') or Input.is_action_just_pressed('ui_right'):
+		OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")
 		timer.start(timer.time_left - 0.25)
 		if timer.wait_time < 1.0:
 			CombatGlobals.qte_finished.emit()
 
 func _on_timer_timeout():
+	OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")
 	CombatGlobals.qte_finished.emit()
