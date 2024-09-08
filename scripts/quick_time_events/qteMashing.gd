@@ -9,14 +9,14 @@ extends Node2D
 var time
 var drain_speed = 10.0
 var mash_strength = 15.0
-var max_ponts = 1
+var max_points = 1
 var points = 0
 
 func _ready():
 	randomize()
 	bar.max_value = 100
 	bar.value = 0
-	time = (max_ponts * 4) - randf_range(2.0, 3.0)
+	time = (max_points * 4) - randf_range(2.0, 3.0)
 	time_bar.max_value = time
 	timer.start(time)
 
@@ -29,7 +29,7 @@ func _physics_process(delta):
 		points += 1
 		OverworldGlobals.playSound('542003__rob_marion__gasp_lock-and-load.ogg', 0.0, 1.0 + (0.005 * points), false)
 		animator.play("Point")
-		if points == max_ponts:
+		if points == max_points:
 			OverworldGlobals.playSound('542003__rob_marion__gasp_lock-and-load.ogg', 0.0, 1.0 + (0.5 * points), false)
 			time_bar.hide()
 			bar.hide()

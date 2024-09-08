@@ -40,7 +40,7 @@ func _ready():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 	if member_container.get_child_count() > 0:
 		member_container.get_child(0).grab_focus()
-	if !OverworldGlobals.getCurrentMap().SAFE and restrict_tabs:
+	if !OverworldGlobals.getCurrentMap().SAFE and restrict_tabs and !PlayerGlobals.CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME):
 		tabs.set_tab_disabled(1, true)
 		tabs.set_tab_disabled(2, true)
 

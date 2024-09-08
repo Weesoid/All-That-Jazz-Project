@@ -8,6 +8,7 @@ if !isObjectiveActive("Get That Item", "Get Scrap"):
 		- Yeah I wanna backstab him.
 			Entity: Tell. No one!
 			do completeQuestObjective("Get That Item", "Tell Questy", 1)
+			do addCombatantToTeam("FriendA")
 		- On second thought...
 			Entity: Whatever I don't care anyways!
 else:

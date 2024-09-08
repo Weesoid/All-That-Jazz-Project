@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=5 format=3 uid="uid://m7lykq4h6axo"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="1_6x453"]
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_dm2rb"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_eqb21"]
+[ext_resource type="PackedScene" uid="uid://dna7v4bi3kfh3" path="res://scenes/combatants/FriendA.tscn" id="3_1wgab"]
+
+[resource]
+script = ExtResource("1_6x453")
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_dm2rb"), ExtResource("2_eqb21")])
+MANDATORY = false
+NAME = "Friendie"
+PACKED_SCENE = ExtResource("3_1wgab")
+DESCRIPTION = "He is a friendly friendo!"
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"dodge": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal mult": 1.0,
+"health": 40,
+"hustle": 1,
+"resist": 0.05
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+MAX_TURN_CHARGES = 1

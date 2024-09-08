@@ -164,6 +164,7 @@ func drawBow():
 		toggleBowAnimation()
 	
 	if Input.is_action_pressed("ui_bow_draw") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move:
+		sprinting = false
 		SPEED = 15.0
 		if play_once:
 			playAudio('bow-loading-38752.ogg',0.0,true)

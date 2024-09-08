@@ -6,14 +6,13 @@ class_name ResWeapon
 	'handling': 1
 }
 @export var max_durability = 100
-var durability: int = max_durability
+var durability: int
 
 func equip(combatant: ResCombatant):
 	if isEquipped():
 		unequip()
 	
 	EQUIPPED_COMBATANT = combatant
-	#EQUIPPED_COMBATANT.ABILITY_SLOT = EFFECT
 	EQUIPPED_COMBATANT.EQUIPPED_WEAPON = self
 	
 	if !STAT_MODIFICATIONS.is_empty():

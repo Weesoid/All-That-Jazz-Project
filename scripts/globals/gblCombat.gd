@@ -97,7 +97,8 @@ func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant =
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
 	base_damage += caster.STAT_VALUES['brawn'] * base_damage
 	base_damage -= target.STAT_VALUES['grit'] * base_damage
-	if base_damage < 0.0: base_damage = 0
+	if base_damage < 0.0: 
+		base_damage = 0
 	
 	base_damage = valueVariate(base_damage, 0.15)
 	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
@@ -251,9 +252,10 @@ func setCombatantVisibility(target: CombatantScene, set_to:bool):
 		target.z_index = 0
 	target.get_node('CombatBars').visible = set_to
 
-func spawnQuickTimeEvent(target: CombatantScene, type: String):
+func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1):
 	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
 	var qte = load("res://scenes/quick_time_events/%s.tscn" % type).instantiate()
+	qte.max_points = max_points
 	var offset = Vector2(0, -48)
 	if type == 'Holding': offset = Vector2.ZERO
 	qte.global_position = target.global_position + offset

@@ -55,6 +55,11 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	elif item is ResCharm:
 		for i in range(count): INVENTORY.append(item)
 		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
+	elif item is ResWeapon and check_restrictions:
+		print('Adding weap! ', item.max_durability)
+		item.durability = item.max_durability
+		INVENTORY.append(item)
+		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
 	else:
 		INVENTORY.append(item)
 		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
@@ -81,9 +86,9 @@ func hasItem(item_name, count:int=0):
 	
 	if item_name is String:
 		for item in INVENTORY:
-			if count > 0 and item.STACK >= count and item.NAME == item_name:
+			if item is ResStackItem and count > 0 and item.STACK >= count and item.NAME == item_name:
 				return true
-			elif count <= 0:
+			elif (item is ResStackItem and count <= 0) or !item is ResStackItem:
 				return item.NAME == item_name
 	elif item_name is ResItem:
 		if count > 0 and INVENTORY.has(item_name) and getItem(item_name).STACK >= count:
@@ -92,6 +97,13 @@ func hasItem(item_name, count:int=0):
 			return INVENTORY.has(item_name)
 	
 	return false
+
+func getEquippedWeapons()-> Array:
+	var out = []
+	for combatant in PlayerGlobals.TEAM:
+		if combatant.EQUIPPED_WEAPON != null:
+			out.append(combatant.EQUIPPED_WEAPON)
+	return out
 
 func getItem(item: ResItem):
 	return INVENTORY[INVENTORY.find(item)]
@@ -207,8 +219,6 @@ func getItemType(item: ResItem)-> float:
 	if item is ResStackItem:
 		if item is ResProjectileAmmo:
 			return 0.2
-		elif item is ResConsumable:
-			return 0.1
 		else:
 			return 0.0
 	elif item is ResEquippable:
@@ -241,21 +251,29 @@ func saveItemData(inv_save_data: InventorySaveData):
 	
 	for item in INVENTORY:
 		if item is ResGhostStackItem:
-			item_data[item.NAME] = [item.REFERENCE_ITEM.resource_path, item.STACK]
+			item_data[item.resource_path] = [item.REFERENCE_ITEM.resource_path, item.STACK]
 		elif item is ResStackItem:
-			item_data[item.NAME] = item.STACK
+			item_data[item.resource_path] = item.STACK
 		elif item is ResUtilityCharm:
-			item_data[item.NAME] = item.equipped
+			item_data[item.resource_path] = item.equipped
+		elif item is ResWeapon:
+			item_data[item.resource_path+'-durability'] = item.durability
+	for weapon in getEquippedWeapons():
+		item_data[weapon.resource_path+'-durability'] = weapon.durability
 
 func loadItemData(save_data: InventorySaveData):
 	var item_data: Dictionary
 	item_data = save_data.ITEM_DATA_INVENTORY
 	
 	for item in INVENTORY:
-		if item_data.keys().has(item.NAME):
+		if item_data.keys().has(item.resource_path):
 			if item is ResGhostStackItem:
 				continue
 			elif item is ResStackItem:
-				item.STACK = item_data[item.NAME]
+				item.STACK = item_data[item.resource_path]
 			elif item is ResUtilityCharm:
-				item.equipped = item_data[item.NAME]
+				item.equipped = item_data[item.resource_path]
+		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'):
+			item.durability = item_data[item.resource_path+'-durability']
+	for weapon in getEquippedWeapons():
+		weapon.durability = item_data[weapon.resource_path+'-durability']

@@ -124,7 +124,7 @@ func _process(_delta):
 		3: playerSelectInspection()
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_cancel') and secondary_panel.visible:
+	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")) and secondary_panel.visible:
 		resetActionLog()
 	
 	if Input.is_action_just_pressed('ui_home'):
@@ -273,8 +273,8 @@ func _on_guard_pressed():
 	Input.action_release("ui_accept")
 	forceCastAbility(active_combatant.ABILITY_SLOT)
 
+# REMOVE
 func _on_items_pressed():
-	getPlayerItems()
 	if secondary_panel_container.get_child_count() == 0: return
 	secondary_panel.show()
 	secondary_panel_container.get_child(0).grab_focus()
@@ -292,7 +292,8 @@ func _on_escape_pressed():
 	for combatant in getCombatantGroup('team'):
 		if combatant.STAT_VALUES['hustle'] > 0:
 			hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	var chance_escape = 0.25 + ((hustle_allies-hustle_enemies)*0.01)
+	var chance_escape = 0.5 + ((hustle_allies-hustle_enemies)*0.01)
+	print(chance_escape)
 	if CombatGlobals.randomRoll(chance_escape):
 		CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat(2)
@@ -323,11 +324,11 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	
 	if active_combatant.EQUIPPED_WEAPON != null:
 		var button = OverworldGlobals.createCustomButton()
-		var weapon_skill = active_combatant.EQUIPPED_WEAPON.EFFECT
-		button.text = weapon_skill.NAME
-		button.pressed.connect(func(): forceCastAbility(weapon_skill))
-		button.focus_entered.connect(func():updateDescription(weapon_skill))
-		if !weapon_skill.ENABLED:
+		var weapon = active_combatant.EQUIPPED_WEAPON
+		button.text = weapon.EFFECT.NAME + ' (%s/%s)' % [weapon.durability, weapon.max_durability]
+		button.pressed.connect(func(): forceCastAbility(weapon.EFFECT, weapon))
+		button.focus_entered.connect(func():updateDescription(weapon.EFFECT))
+		if !weapon.EFFECT.ENABLED or weapon.durability <= 0:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
 	
@@ -337,48 +338,6 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		button.pressed.connect(func(): forceCastAbility(ability))
 		button.focus_entered.connect(func():updateDescription(ability))
 		if !ability.ENABLED:
-			button.disabled = true
-		secondary_panel_container.add_child(button)
-
-func getPlayerItems():
-	for child in secondary_panel_container.get_children():
-		child.free()
-	
-	for item in InventoryGlobals.INVENTORY:
-		if !item is ResConsumable or item.EFFECT == null: continue
-		var button = OverworldGlobals.createCustomButton()
-		button.add_theme_font_size_override('font_size', 16)
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size.x = 240
-		button.text = str(item.NAME, ' x', item.STACK)
-		button.pressed.connect(
-			func():
-				if item.STACK > 0:
-					forceCastAbility(item.EFFECT)
-					item.take(1)
-				)
-		button.focus_entered.connect(func(): updateDescription(item.EFFECT))
-		secondary_panel_container.add_child(button)
-
-func getPlayerWeapons(inventory):
-	for child in secondary_panel_container.get_children():
-		child.free()
-		
-	for weapon in inventory:
-		if !weapon is ResWeapon: continue
-		var button = OverworldGlobals.createCustomButton()
-		button.add_theme_font_size_override('font_size', 16)
-		button.custom_minimum_size.x = 240
-		button.text = str(weapon.NAME, '(', weapon.durability, '/', weapon.max_durability,')')
-		button.pressed.connect(
-			func():
-				if weapon.durability > 0:
-					forceCastAbility(weapon.EFFECT)
-					weapon.useDurability())
-		button.focus_entered.connect(
-			func(): updateDescription(weapon.EFFECT.getRichDescription())
-		)
-		if weapon.durability <= 0 or !weapon.canUse(active_combatant): 
 			button.disabled = true
 		secondary_panel_container.add_child(button)
 
@@ -430,7 +389,7 @@ func executeAbility():
 		if (target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant):
 			CombatGlobals.setCombatantVisibility(combatant.SCENE, false)
 			
-	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking:
+	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
 		CombatGlobals.showWarning(target_combatant.SCENE)
 	
 	await get_tree().create_timer(0.25).timeout
@@ -481,7 +440,7 @@ func addCombatant(combatant, container):
 		combatant.getAnimator().play('Idle')
 		break
 
-func forceCastAbility(ability: ResAbility):
+func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
 	target_state = selected_ability.getTargetType()
@@ -491,6 +450,7 @@ func forceCastAbility(ability: ResAbility):
 	action_panel.hide()
 	await target_selected
 	runAbility()
+	if weapon != null: weapon.useDurability()
 
 func updateDescription(ability: ResAbility):
 	secondary_description.text = ability.getRichDescription()

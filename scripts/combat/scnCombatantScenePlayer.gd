@@ -32,7 +32,7 @@ func setBlocking(set_to: bool):
 		animator.play('Idle')
 
 func block(bonus_grit: float=0.75):
-	CombatGlobals.modifyStat(combatant_resource, {'grit': 1.0}, 'block')
+	CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit}, 'block')
 	doAnimation('Block')
 	await animator.animation_finished
 	CombatGlobals.resetStat(combatant_resource, 'block')
@@ -46,4 +46,4 @@ func _process(_delta):
 	if combatant_resource.isDead():
 		blocking = false
 		doAnimation('KO', null, false)
-		weapon.hide()
+		if weapon != null: weapon.hide()

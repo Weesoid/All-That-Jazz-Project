@@ -80,6 +80,12 @@ func levelUpCombatants():
 	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
+func addCombatantToTeam(combatant_name: String):
+	var combatant = load("res://resources/combat/combatants_player/%s.tres" % combatant_name)
+	combatant.STAT_POINTS = PARTY_LEVEL
+	TEAM.append(combatant)
+	OverworldGlobals.getPlayer().prompt.showPrompt('%s joined your party!!' % combatant.NAME)
+
 func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)
 	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
@@ -163,7 +169,7 @@ func saveData(save_data: Array):
 			combatant.STAT_MODIFIERS,
 			combatant.EQUIPPED_WEAPON,
 			combatant.STAT_POINT_ALLOCATIONS,
-			combatant.ABILITY_SLOT
+			combatant.ABILITY_SLOT,
 			]
 	
 	save_data.append(data)

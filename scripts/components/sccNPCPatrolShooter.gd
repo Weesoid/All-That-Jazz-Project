@@ -29,6 +29,7 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
+			ANIMATOR.animation_finished.emit()
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
@@ -73,8 +74,10 @@ func shootProjectile():
 	animateShot()
 	projectile.rotation = LINE_OF_SIGHT.rotation + 1.57079994678497
 	await ANIMATOR.animation_finished
+	print('Shoot done playin load!')
 	ANIMATOR.play('Load')
 	await ANIMATOR.animation_finished
+	print('Load done!')
 	shoot_ready = true
 
 func animateShot():

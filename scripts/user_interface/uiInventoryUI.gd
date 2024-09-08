@@ -53,8 +53,6 @@ func setButtonFunction(item):
 	
 	if item is ResProjectileAmmo:
 		item.equip()
-	elif item is ResConsumable:
-		item.applyOverworldEffects()
 	elif item is ResUtilityCharm:
 		if PlayerGlobals.EQUIPPED_CHARM == item:
 			PlayerGlobals.EQUIPPED_CHARM.unequip()

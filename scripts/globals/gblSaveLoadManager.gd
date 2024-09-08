@@ -20,9 +20,9 @@ func saveGame(save_name: String=default_save_name):
 	
 	var save_data = []
 	get_tree().call_group('presist', 'saveData', save_data)
-	InventoryGlobals.saveData(save_data)
 	QuestGlobals.saveData(save_data)
 	PlayerGlobals.saveData(save_data)
+	InventoryGlobals.saveData(save_data)
 	saved_game.save_data = save_data
 	saved_game.PLAYTIME = current_playtime + (Time.get_unix_time_from_system() - session_start)
 	saved_game.NAME = '%s - %s\nMorale %s\n%s' % [save_name, Time.get_time_string_from_unix_time(int(current_playtime) + int(Time.get_unix_time_from_system() - session_start)), PlayerGlobals.PARTY_LEVEL, OverworldGlobals.getCurrentMap().NAME]
