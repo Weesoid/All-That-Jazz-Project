@@ -211,7 +211,9 @@ func loadData(save_data: PlayerSaveData):
 		combatant.ABILITY_SLOT = save_data.COMBATANT_SAVE_DATA[combatant][13]
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.CHARMS.values():
-			if charm != null: charm.equip(combatant)
+			if charm != null:
+				charm.updateItem() 
+				charm.equip(combatant)
 		if combatant.active:
 			OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(combatant)
 	
