@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://m7lykq4h6axo"]
+
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_g8dry"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_acdde"]
+[ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="3_8phct"]
+[ext_resource type="PackedScene" uid="uid://dna7v4bi3kfh3" path="res://scenes/combatants/FriendA.tscn" id="3_dl1jr"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="4_kjlrm"]
+
+[resource]
+script = ExtResource("4_kjlrm")
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_g8dry"), ExtResource("2_acdde")])
+MANDATORY = false
+NAME = "Healer McHealer"
+PACKED_SCENE = ExtResource("3_dl1jr")
+DESCRIPTION = "He heals and shit!"
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"dodge": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal mult": 1.0,
+"health": 40,
+"hustle": 1,
+"resist": 0.05
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_8phct"), ExtResource("2_acdde")])
+MAX_TURN_CHARGES = 1

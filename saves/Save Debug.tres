@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=21 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_115ua"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_7asqd"]
@@ -7,8 +7,11 @@
 [ext_resource type="Resource" path="res://resources/items/CharmMurder.tres" id="5_f6233"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="6_utbeg"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="7_2ykyh"]
+[ext_resource type="Resource" path="res://resources/items/CharmSpeed.tres" id="7_jxk1w"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="8_qhkr2"]
+[ext_resource type="Resource" path="res://resources/items/RushDown.tres" id="8_ua7eb"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="9_0rnfh"]
+[ext_resource type="Resource" path="res://resources/items/SlashBlade.tres" id="9_1qprq"]
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="10_cqa85"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="11_o327g"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="12_xiajm"]
@@ -16,13 +19,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="14_bexcb"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="15_fo4ie"]
 
-[sub_resource type="Resource" id="Resource_tpfel"]
+[sub_resource type="Resource" id="Resource_4rnjv"]
 script = ExtResource("1_115ua")
-position = Vector2(147.131, 36.5355)
+position = Vector2(146.248, 91.9361)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 0
+direction = -90
 
-[sub_resource type="Resource" id="Resource_pnnnh"]
+[sub_resource type="Resource" id="Resource_1vadh"]
 script = ExtResource("2_7asqd")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
@@ -30,8 +33,8 @@ QUEST_OBJECTIVES_DATA = {}
 [sub_resource type="Resource" id="Resource_ykpc3"]
 script = ExtResource("6_utbeg")
 STAT_MODIFICATIONS = {
-"brawn": 1.0,
-"grit": 1.0
+"brawn": 0.25,
+"grit": 0.25
 }
 NAME = "Murder Charm"
 ICON = ExtResource("4_u0nqf")
@@ -40,17 +43,41 @@ VALUE = 100
 MANDATORY = false
 PARENT_ITEM = ExtResource("5_f6233")
 
-[sub_resource type="Resource" id="Resource_gmqko"]
+[sub_resource type="Resource" id="Resource_d88xk"]
+script = ExtResource("6_utbeg")
+STAT_MODIFICATIONS = {
+"hustle": 10
+}
+NAME = "Speedy Boy"
+ICON = ExtResource("4_u0nqf")
+DESCRIPTION = "Speedightful!"
+VALUE = 150
+MANDATORY = false
+PARENT_ITEM = ExtResource("7_jxk1w")
+
+[sub_resource type="Resource" id="Resource_vwh4v"]
+script = ExtResource("6_utbeg")
+STAT_MODIFICATIONS = {
+"hustle": 10
+}
+NAME = "Rushdown"
+ICON = ExtResource("4_u0nqf")
+DESCRIPTION = "Get speedy wagoo wagoo!"
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = ExtResource("8_ua7eb")
+
+[sub_resource type="Resource" id="Resource_h1iu4"]
 script = ExtResource("11_o327g")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_41fsl")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = []
 EQUIPPED_ARROW = ExtResource("10_cqa85")
-CURRENCY = 25
+CURRENCY = 12358
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
-stamina = 100.0
+stamina = 77.5
 bow_max_draw = 5.0
 walk_speed = 100.0
 sprint_speed = 200.0
@@ -61,18 +88,18 @@ PROGRESSION_DATA = {}
 COMBATANT_SAVE_DATA = {
 ExtResource("3_41fsl"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: SubResource("Resource_ykpc3"),
-1: null,
-2: null
+1: SubResource("Resource_d88xk"),
+2: SubResource("Resource_vwh4v")
 }, {
 "accuracy": 0.95,
-"brawn": 1.0,
+"brawn": 0.25,
 "crit": 0.05,
 "dodge": 0.0,
-"grit": 1.0,
-"handling": 0,
+"grit": 0.25,
+"handling": 0.0,
 "heal mult": 1.0,
 "health": 20,
-"hustle": 1,
+"hustle": 21,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
@@ -87,28 +114,54 @@ ExtResource("3_41fsl"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "resist": 0.05
 }, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_2ykyh"), ExtResource("8_qhkr2")]), false, Array[String]([]), true, true, 1, {
 "Murder Charm": {
-"brawn": 1.0,
-"grit": 1.0
+"brawn": 0.25,
+"grit": 0.25
+},
+"Rushdown": {
+"hustle": 10
+},
+"Speedy Boy": {
+"hustle": 10
+},
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0.0
 }
-}, null, {
+}, ExtResource("9_1qprq"), {
 "brawn": 0,
 "grit": 0,
 "handling": 0
 }, ExtResource("9_0rnfh")]
 }
 
-[sub_resource type="Resource" id="Resource_tnkv3"]
+[sub_resource type="Resource" id="Resource_inu1q"]
+script = ExtResource("6_utbeg")
+STAT_MODIFICATIONS = {
+"brawn": 0.25,
+"grit": 0.25
+}
+NAME = "Murder Charm"
+ICON = ExtResource("4_u0nqf")
+DESCRIPTION = "KILL KILL EVERYTHING!"
+VALUE = 100
+MANDATORY = false
+PARENT_ITEM = ExtResource("5_f6233")
+
+[sub_resource type="Resource" id="Resource_b7osy"]
 script = ExtResource("14_bexcb")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([SubResource("Resource_inu1q")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 KNOWN_POWERS = Array[Resource("res://scripts/resources/ResPower.gd")]([ExtResource("12_xiajm"), ExtResource("13_cdmsv")])
-ITEM_DATA_INVENTORY = {}
+ITEM_DATA_INVENTORY = {
+"res://resources/items/SlashBlade.tres-durability": 8
+}
 
 [resource]
 script = ExtResource("15_fo4ie")
-NAME = "Save Debug - 00:00:13
+NAME = "Save Debug - 00:01:49
 Morale 1
-Alt Room"
-PLAYTIME = 13.112
-current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_tpfel"), SubResource("Resource_pnnnh"), SubResource("Resource_gmqko"), SubResource("Resource_tnkv3")]
+Prototype Room"
+PLAYTIME = 109.225
+current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
+save_data = [SubResource("Resource_4rnjv"), SubResource("Resource_1vadh"), SubResource("Resource_h1iu4"), SubResource("Resource_b7osy")]

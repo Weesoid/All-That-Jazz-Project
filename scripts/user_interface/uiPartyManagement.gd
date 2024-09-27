@@ -5,6 +5,10 @@ extends Control
 @onready var info = $uiCharacterInformation
 
 func _ready():
+	if OverworldGlobals.isPlayerCheating():
+		addAllMembers()
+		await get_tree().create_timer(0.01).timeout
+	
 	for member in PlayerGlobals.TEAM:
 		if !member.initialized: member.initializeCombatant(false)
 		var button = OverworldGlobals.createCustomButton()
@@ -36,6 +40,22 @@ func _ready():
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		updateInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 	OverworldGlobals.setMenuFocus(members)
+
+func addAllMembers():
+	var path = "res://resources/combat/combatants_player/"
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			var combatant = load(path+'/'+file_name)
+			if !PlayerGlobals.TEAM.has(combatant):
+				PlayerGlobals.addCombatantToTeam(combatant)
+			file_name = dir.get_next()
+			#print(file_name)
+	else:
+		print("An error occurred when trying to access the path.")
+		print(path)
 
 func updateInfo(member: ResCombatant):
 	inspecting_name.text = member.NAME

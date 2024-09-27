@@ -386,9 +386,9 @@ func getStatusEffectInfo(combatant: ResCombatant):
 func executeAbility():
 	active_combatant.SCENE.z_index = 100
 	for combatant in COMBATANTS:
-		if (target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant):
+		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
 			CombatGlobals.setCombatantVisibility(combatant.SCENE, false)
-			
+	
 	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
 		CombatGlobals.showWarning(target_combatant.SCENE)
 	

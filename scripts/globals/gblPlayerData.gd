@@ -80,8 +80,12 @@ func levelUpCombatants():
 	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
-func addCombatantToTeam(combatant_name: String):
-	var combatant = load("res://resources/combat/combatants_player/%s.tres" % combatant_name)
+func addCombatantToTeam(combatant_id):
+	var combatant
+	if combatant_id is String:
+		combatant = load("res://resources/combat/combatants_player/%s.tres" % combatant_id)
+	elif combatant_id is ResCombatant:
+		combatant = combatant_id
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
 	OverworldGlobals.getPlayer().prompt.showPrompt('%s joined your party!!' % combatant.NAME)

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=5 format=3 uid="uid://okmv4je45gki"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="1_55iw6"]
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_iou6c"]
+[ext_resource type="PackedScene" uid="uid://dep0ou7wfy8e1" path="res://scenes/combatants/FriendC.tscn" id="1_rdqa0"]
+[ext_resource type="Resource" uid="uid://d2xuqxaf6m1gc" path="res://resources/combat/abilities/Taunt.tres" id="2_scuyw"]
+
+[resource]
+script = ExtResource("1_55iw6")
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+MANDATORY = false
+NAME = "Jacko"
+PACKED_SCENE = ExtResource("1_rdqa0")
+DESCRIPTION = "Of all trades I guess!"
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"dodge": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal mult": 1.0,
+"health": 20,
+"hustle": 1,
+"resist": 0.05
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_iou6c"), ExtResource("2_scuyw")])
+MAX_TURN_CHARGES = 1

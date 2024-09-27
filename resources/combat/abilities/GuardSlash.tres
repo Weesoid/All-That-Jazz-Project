@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://demr7cq4c8udc"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_2b6qu"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaGuardSlash.gd" id="1_5brkn"]
+
+[resource]
+script = ExtResource("1_2b6qu")
+NAME = "Guard Slash"
+DESCRIPTION = "Slash then guard!"
+ABILITY_SCRIPT = ExtResource("1_5brkn")
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = false
+TARGET_DEAD = false
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

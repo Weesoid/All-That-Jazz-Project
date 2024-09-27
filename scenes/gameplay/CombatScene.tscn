@@ -533,7 +533,6 @@ zoom = Vector2(3, 3)
 script = ExtResource("2_dcn2q")
 
 [node name="DefaultBattleParallax" parent="CombatCamera" instance=ExtResource("3_r3luu")]
-visible = false
 z_index = -2
 position = Vector2(-19, 163)
 scale = Vector2(1.5, 1.5)

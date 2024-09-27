@@ -109,6 +109,7 @@ func start(dialogue_resource: DialogueResource, title: String, extra_game_states
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(3, 3), 0.5)
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.getPlayer().setUIVisibility(false)
+	OverworldGlobals.getPlayer().sprinting = false
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource
