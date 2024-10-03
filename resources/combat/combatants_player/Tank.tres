@@ -8,7 +8,7 @@
 
 [resource]
 script = ExtResource("1_lhtfv")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_t8uty"), ExtResource("2_4cthq"), ExtResource("1_s0jvy")])
 MANDATORY = false
 NAME = "Hank"
 PACKED_SCENE = ExtResource("1_uh2xe")
@@ -25,5 +25,5 @@ STAT_VALUES = {
 "hustle": 1,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_s0jvy"), ExtResource("2_4cthq"), ExtResource("3_t8uty")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 MAX_TURN_CHARGES = 1

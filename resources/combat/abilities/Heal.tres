@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://bdhoedbmkwu7e"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://bdhoedbmkwu7e"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_l4g62"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaHeal.gd" id="1_ykbgd"]
+[ext_resource type="PackedScene" uid="uid://c8hpqomh4qilw" path="res://scenes/animations/Heal.tscn" id="2_0ft6v"]
 
 [resource]
 script = ExtResource("1_l4g62")
 NAME = "Healing Wave"
 DESCRIPTION = "Send out a healing wave!"
+ANIMATION = ExtResource("2_0ft6v")
 ABILITY_SCRIPT = ExtResource("1_ykbgd")
 TARGET_TYPE = 1
 TARGET_GROUP = 0

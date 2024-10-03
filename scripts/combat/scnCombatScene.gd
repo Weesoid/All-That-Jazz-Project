@@ -390,10 +390,14 @@ func executeAbility():
 			CombatGlobals.setCombatantVisibility(combatant.SCENE, false)
 	
 	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
+		target_combatant.SCENE.allow_block = true
 		CombatGlobals.showWarning(target_combatant.SCENE)
 	
 	await get_tree().create_timer(0.25).timeout
-	selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
+	if target_combatant is ResCombatant:
+		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
+	else:
+		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant, selected_ability)
 	await CombatGlobals.ability_finished
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
@@ -407,6 +411,8 @@ func executeAbility():
 	CombatGlobals.dialogue_signal.emit(ability_title)
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
+	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
+		target_combatant.SCENE.allow_block = false
 	confirm.emit()
 
 func skipTurn():

@@ -3,7 +3,7 @@ static func animate(caster: CombatantScene, target: CombatantScene, ability: Res
 	await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT)
 	await caster.moveTo(caster.get_parent())
 	CombatGlobals.ability_finished.emit()
+	CombatGlobals.addStatusEffect(caster.combatant_resource, 'Brace', true)
 
 static func applyEffects(target: CombatantScene , caster: CombatantScene, ability: ResAbility=null):
 	CombatGlobals.calculateDamage(caster, target, 2.0)
-	CombatGlobals.addStatusEffect(caster.combatant_resource, 'Brace', true)

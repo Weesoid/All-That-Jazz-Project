@@ -6,6 +6,7 @@ class_name PlayerCombatantScene
 @onready var unsheathe_point = $WeaponPoint
 
 var blocking: bool = false
+var allow_block: bool = false
 var weapon: WeaponScene
 
 func _ready():
@@ -39,7 +40,7 @@ func block(bonus_grit: float=0.75):
 	block_timer.start()
 
 func _unhandled_input(event):
-	if Input.is_action_just_pressed('ui_accept') and blocking and !CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant and block_timer.is_stopped():
+	if Input.is_action_just_pressed('ui_accept') and blocking and allow_block and !CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant and block_timer.is_stopped():
 		block()
 
 func _process(_delta):
