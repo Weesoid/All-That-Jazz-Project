@@ -267,14 +267,14 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	getPlayer().player_camera.add_child(menu)
 	menu.end_sentence.text = end_sentence
 
-func moveCamera(to, duration:float=0.25, wait:bool=false):
+func moveCamera(to, duration:float=0.25, wait:bool=false): # implement wait function later
 	var tween = create_tween()
 	if to is Node2D:
 		tween.tween_property(getPlayer().player_camera, 'global_position', to.global_position, duration)
 	elif to is Vector2:
 		tween.tween_property(getPlayer().player_camera, 'global_position', to, duration)
 
-func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
+func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false): # implement wait function later
 	var tween = create_tween()
 	tween.tween_property(getPlayer().player_camera, 'zoom', zoom, duration)
 

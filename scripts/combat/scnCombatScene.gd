@@ -81,7 +81,7 @@ func _ready():
 		combat_bars.attached_combatant = combatant
 		combatant.SCENE.add_child(combat_bars)
 		
-	if battle_music_path != "":
+	if battle_music_path != "" and SettingsGlobals.toggle_music:
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
 	
@@ -342,9 +342,10 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		secondary_panel_container.add_child(button)
 
 func playerSelectSingleTarget():
-	if getCombatantGroup('enemies').is_empty():
+	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
 		return
 	
+	print(valid_targets)
 	if valid_targets is Array:
 		target_combatant = valid_targets[target_index]
 	else:
@@ -618,7 +619,7 @@ func runAbility():
 		action_panel.hide()
 		run_once = false
 
-func playCombatAudio(filename: String, db=0.0, pitch = 1, random_pitch=false):
+func playCombatAudio(filename: String, db:float = 0.0, pitch:float = 1.0, random_pitch=false):
 	battle_sounds.pitch_scale = pitch
 	battle_sounds.stream = load("res://audio/sounds/%s" % filename)
 	battle_sounds.volume_db = db

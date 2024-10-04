@@ -19,7 +19,7 @@ enum TargetGroup {
 @export var ABILITY_SCRIPT: GDScript
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
-@export var CAN_TARGET_SELF: bool = true
+@export var CAN_TARGET_SELF: bool = false
 @export var TARGET_DEAD: bool = false
 @export var INSTANT_CAST: bool = false
 @export var REQUIRED_LEVEL = 0
@@ -48,7 +48,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ENEMIES: 
-				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting')).size() > 0:
+				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant).size() > 0:
 					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting'))
 				return combatants.filter(func isEnemy(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ALL: return combatants
@@ -57,7 +57,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ENEMIES: 
 				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting')).size() > 0:
-					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting'))
+					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResPlayerCombatant)
 				return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ALL: return combatants
 

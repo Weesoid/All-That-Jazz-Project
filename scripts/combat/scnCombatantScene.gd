@@ -19,7 +19,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0)):
 	tween.tween_property(self, 'global_position', target.global_position + offset, duration)
 	await tween.finished
 
-func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, idle:bool=true, data:Dictionary={}):
+func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, data:Dictionary={}):
 	if script != null: hit_script = script
 	if animation == 'Cast_Ranged': 
 		setProjectileTarget(data['target'], data['frame_time'])
@@ -29,7 +29,7 @@ func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, idle:bo
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	animator.play('RESET')
 	animator.play(idle_animation)
-	await get_tree().create_timer(0.5)
+	#await get_tree().create_timer(0.5)
 	hit_script = null
 
 func setProjectileTarget(target: CombatantScene, frame_time: float):
@@ -38,7 +38,7 @@ func setProjectileTarget(target: CombatantScene, frame_time: float):
 		anim.remove_track(anim.find_track(".", Animation.TYPE_METHOD))
 	var track_index = anim.add_track(Animation.TYPE_METHOD)
 	anim.track_set_path(track_index, ".")
-	anim.track_insert_key(track_index, .700, {
+	anim.track_insert_key(track_index, frame_time, {
 	"method": "shootProjectile",
 	"args": [target],
 	}, 0)
@@ -56,7 +56,7 @@ func shootProjectile(target: CombatantScene):
 
 func _process(_delta):
 	if combatant_resource.isDead():
-		doAnimation('KO', null, false)
+		doAnimation('KO', null)
 
 func _on_hit_box_body_entered(body):
 	if hit_script != null and body != self and body is CombatantScene: 

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://dvfusnjqax2ti"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaPiercingProjectile.gd" id="1_mqlpk"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_l7gps"]
+
+[resource]
+script = ExtResource("2_l7gps")
+NAME = "Piercing Projectile"
+DESCRIPTION = "Let loose a projectile that pierces foes!"
+ABILITY_SCRIPT = ExtResource("1_mqlpk")
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = false
+TARGET_DEAD = false
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

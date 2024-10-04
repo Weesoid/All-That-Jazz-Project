@@ -58,7 +58,10 @@ func applyEquipmentModifications():
 func getAllocationModifier()-> Dictionary:
 	var out = STAT_POINT_ALLOCATIONS.duplicate()
 	for stat in out.keys():
-		out[stat] *= 0.02
+		if stat != 'handling':
+			out[stat] *= 0.02
+		else:
+			out[stat] *= 1
 	return out
 
 func removeEquipmentModifications():

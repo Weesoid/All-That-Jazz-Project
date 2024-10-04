@@ -5,6 +5,6 @@ class_name AbilityAnimation
 
 func playAnimation(pos: Vector2):
 	position = pos
-	$AnimationPlayer.play('Execute')
-	await $AnimationPlayer.animation_finished
+	animator.play('Execute')
+	await animator.animation_finished
 	queue_free()

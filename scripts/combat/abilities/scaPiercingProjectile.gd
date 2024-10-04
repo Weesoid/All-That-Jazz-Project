@@ -1,5 +1,5 @@
-static func animate(caster: CombatantScene, target: CombatantScene, ability: ResAbility):
-	await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7})
+static func animate(caster: CombatantScene, _target: CombatantScene, ability: ResAbility):
+	await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=null,'frame_time'=0.7})
 	CombatGlobals.ability_finished.emit()
 
 static func applyEffects(target: CombatantScene , caster: CombatantScene, _ability: ResAbility=null):

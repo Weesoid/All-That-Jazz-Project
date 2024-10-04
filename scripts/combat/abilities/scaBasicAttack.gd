@@ -4,5 +4,5 @@ static func animate(caster: CombatantScene, target: CombatantScene, ability: Res
 	await caster.moveTo(caster.get_parent())
 	CombatGlobals.ability_finished.emit()
 
-static func applyEffects(target: CombatantScene , caster: CombatantScene, ability: ResAbility=null):
+static func applyEffects(target: CombatantScene , caster: CombatantScene, _ability: ResAbility=null):
 	CombatGlobals.calculateDamage(caster, target, 3.0)

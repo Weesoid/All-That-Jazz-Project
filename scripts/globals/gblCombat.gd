@@ -168,10 +168,11 @@ func resetStat(target: ResCombatant, modifier_id: String):
 func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 	var animation = animation_scene.instantiate()
 	target.SCENE.add_child(animation)
-	animation.playAnimation(target.SCENE.position)
 	if time > 0.0:
+		animation.playAnimation(target.SCENE.position)
 		await get_tree().create_timer(time).timeout
-		animation_done.emit()
+	else:
+		await animation.playAnimation(target.SCENE.position)
 
 func playHurtAnimation(target: ResCombatant):
 	if !target.STAT_MODIFIERS.keys().has('block'):

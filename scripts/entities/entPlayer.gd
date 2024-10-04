@@ -258,10 +258,10 @@ func updateAnimationParameters():
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
 
-func setUIVisibility(set:bool):
+func setUIVisibility(set_visibility:bool):
 	for child in player_camera.get_children():
 		if child is Control: 
-			match set:
+			match set_visibility:
 				true: child.self_modulate.a = 1.0
 				false: child.self_modulate.a = 0.0
 

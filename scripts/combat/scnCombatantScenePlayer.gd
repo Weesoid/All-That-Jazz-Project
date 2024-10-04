@@ -39,12 +39,12 @@ func block(bonus_grit: float=0.75):
 	CombatGlobals.resetStat(combatant_resource, 'block')
 	block_timer.start()
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_accept') and blocking and allow_block and !CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant and block_timer.is_stopped():
 		block()
 
 func _process(_delta):
 	if combatant_resource.isDead():
 		blocking = false
-		doAnimation('KO', null, false)
+		doAnimation('KO', null)
 		if weapon != null: weapon.hide()
