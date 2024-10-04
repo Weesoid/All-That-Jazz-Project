@@ -269,14 +269,18 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 
 func moveCamera(to, duration:float=0.25, wait:bool=false): # implement wait function later
 	var tween = create_tween()
-	if to is Node2D:
-		tween.tween_property(getPlayer().player_camera, 'global_position', to.global_position, duration)
+	if to is String:
+		tween.tween_property(getPlayer().player_camera, 'global_position', getEntity(to).global_position, duration)
 	elif to is Vector2:
 		tween.tween_property(getPlayer().player_camera, 'global_position', to, duration)
+	if wait:
+		await tween.finished
 
 func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false): # implement wait function later
 	var tween = create_tween()
 	tween.tween_property(getPlayer().player_camera, 'zoom', zoom, duration)
+	if wait:
+		await tween.finished
 
 func shakeCamera():
 	getPlayer().player_camera.shake(30.0,20.0)

@@ -18,6 +18,11 @@ do moveEntity("Player", "Animator", Vector2(0,-20), 35.0, false)
 do moveEntity("Animator", ">L10,R10,U10,D10")
 Entity: Nice hug!
 
+do moveCamera(Vector2(0,0), 1.0, true)
+do moveCamera("Player", 1.0)
+do zoomCamera(Vector2(3,3), 1.0, true)
+
 do moveEntity("Player", ">L10,R10,*VoidChannel,U10,w3,D2")
 Entity: Nice trick!
+do zoomCamera(Vector2(2,2), 1.0, true)
 => END
