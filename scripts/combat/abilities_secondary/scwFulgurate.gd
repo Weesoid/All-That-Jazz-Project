@@ -1,12 +1,9 @@
-static func animateCast(caster: ResCombatant):
-	caster.getAnimator().play('Cast')
-	await caster.getAnimator().animation_finished
-	caster.getAnimator().play('Idle')
+static func animateCast(_caster: ResCombatant):
+	pass
 	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	for target in targets:
-		var damage = (target.STAT_VALUES['health'] * 0.15) * ((100.0) / (100.0+target.STAT_VALUES['grit']))
-		CombatGlobals.playAbilityAnimation(target, animation_scene)
-		CombatGlobals.manual_call_indicator.emit(target, str(int(damage), ' FULGURATED!'), 'Reaction')
-		target.STAT_VALUES['health'] -= int(damage)
-	
+		CombatGlobals.calculateRawDamage(target, target.BASE_STAT_VALUES['health'] * 0.15)
+		#CombatGlobals.manual_call_indicator.emit(target, str(int(damage), ' FULGURATED!'), 'Reaction')
+		OverworldGlobals.playSound('res://audio/sounds/401609__1histori__air-explosion.ogg')
+		await CombatGlobals.playAbilityAnimation(target, animation_scene, 0.05)

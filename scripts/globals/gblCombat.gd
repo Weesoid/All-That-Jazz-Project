@@ -25,7 +25,6 @@ signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
 signal ability_finished
 
-
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
 #********************************************************************************
@@ -301,18 +300,17 @@ func checkReactions(target: ResCombatant):
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Chilled', 'Poison', load("res://resources/combat/abilities_reactions/Vulnerate.tres"))
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
-		OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
 		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Cauterize.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Poison')
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
-		OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
+		#OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
 		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Fulgurate.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Jolted')
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
-	OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
+	#OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
 	removeStatusEffect(target, effectA)
 	removeStatusEffect(target, effectB)
 	execute_ability.emit(target, reaction)

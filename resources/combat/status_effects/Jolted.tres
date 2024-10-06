@@ -1,18 +1,23 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://d2rl6tieyvwy4"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_6gnln"]
 [ext_resource type="PackedScene" uid="uid://dfke8oc4d7x0o" path="res://scenes/status_visuals/Jolted.tscn" id="1_ukk5x"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsJolt.gd" id="2_n0cly"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_wbiyr"]
 
 [resource]
 script = ExtResource("1_6gnln")
 NAME = "Jolted"
-DESCRIPTION = "Target skips turns."
+DESCRIPTION = "Target will get affected by discharge."
 STATUS_SCRIPT = ExtResource("2_n0cly")
 PACKED_SCENE = ExtResource("1_ukk5x")
+TEXTURE = ExtResource("3_wbiyr")
 MAX_DURATION = 2
+EXTEND_DURATION = 0
 MAX_RANK = 0
 ON_HIT = false
-APPLY_ONCE = false
+APPLY_ONCE = true
 TICK_PER_TURN = false
-PERMANENT = false
+TICK_ON_TURN_START = false
+PERMANENT = true
+LINGERING = false

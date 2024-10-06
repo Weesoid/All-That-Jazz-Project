@@ -1,15 +1,13 @@
-static func animateCast(caster: ResCombatant):
-	caster.getAnimator().play('Cast')
-	await caster.getAnimator().animation_finished
-	caster.getAnimator().play('Idle')
+static func animateCast(_caster: ResCombatant):
+	pass
 	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	var effects = [preload("res://resources/combat/status_effects/Chilled.tres"), preload("res://resources/combat/status_effects/Singed.tres"), preload("res://resources/combat/status_effects/Poison.tres")]
-	randomize()
 	for target in targets:
 		randomize()
 		if CombatGlobals.randomRoll(0.65):
-			CombatGlobals.playAbilityAnimation(target, animation_scene)
+			OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
 			var effect = effects.pick_random().NAME
-			CombatGlobals.manual_call_indicator.emit(target, 'CATALYZED! %s' % [effect.NAME], 'Reaction')
+			CombatGlobals.manual_call_indicator.emit(target, 'CATALYZED! %s' % [effect], 'Reaction')
 			CombatGlobals.addStatusEffect(target, effect)
+			await CombatGlobals.playAbilityAnimation(target, animation_scene, 0.1)

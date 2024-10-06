@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bklfhgr4jv2hf"]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource type="Script" path="res://scenes/animations/scnWeapon.gd" id="1_u1knb"]
+[ext_resource type="Script" path="res://scripts/combat/scnWeapon.gd" id="1_u1knb"]
 [ext_resource type="Texture2D" uid="uid://yle8fosxhnxt" path="res://images/sprites/sword.png" id="1_v31h6"]
 [ext_resource type="Script" path="res://scripts/combat/abilites_weapons/scaSwordSlash.gd" id="2_2kmfw"]
 [ext_resource type="Texture2D" uid="uid://c0dqtr84qdrcv" path="res://images/animations/TempSlash.png" id="2_cf86f"]

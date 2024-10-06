@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_bb7g0")
 NAME = "Dazed"
-DESCRIPTION = "Target cannot act and takes additional damage."
+DESCRIPTION = "Target cannot act."
 STATUS_SCRIPT = ExtResource("2_h2sbp")
 TEXTURE = ExtResource("3_mvigr")
 MAX_DURATION = 2
@@ -16,6 +16,6 @@ MAX_RANK = 0
 ON_HIT = false
 APPLY_ONCE = false
 TICK_PER_TURN = false
-TICK_ON_TURN_START = false
+TICK_ON_TURN_START = true
 PERMANENT = false
 LINGERING = false

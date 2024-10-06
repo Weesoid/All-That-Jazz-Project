@@ -106,7 +106,7 @@ position = Vector2(168, 80)
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
 FILL_EMPTY = true
 UNIQUE_ID = "SexMasters"
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null, null, null])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("7_eiq6g")]
 dialogue_resource = ExtResource("8_pga02")

@@ -293,7 +293,6 @@ func _on_escape_pressed():
 		if combatant.STAT_VALUES['hustle'] > 0:
 			hustle_allies += combatant.BASE_STAT_VALUES['hustle']
 	var chance_escape = 0.5 + ((hustle_allies-hustle_enemies)*0.01)
-	print(chance_escape)
 	if CombatGlobals.randomRoll(chance_escape):
 		CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat(2)
@@ -345,7 +344,6 @@ func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
 		return
 	
-	print(valid_targets)
 	if valid_targets is Array:
 		target_combatant = valid_targets[target_index]
 	else:
@@ -425,15 +423,13 @@ func skipTurn():
 		run_once = false
 
 func commandExecuteAbility(target, ability: ResAbility):
-	ability.animateCast(active_combatant)
 	if ability.TARGET_TYPE == ability.TargetType.MULTI:
 		target = ability.getValidTargets(COMBATANTS, active_combatant is ResPlayerCombatant)
 	ability.applyEffects(
 						null, 
 						target, 
-						selected_ability.ANIMATION
+						ability.ANIMATION
 						)
-
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
