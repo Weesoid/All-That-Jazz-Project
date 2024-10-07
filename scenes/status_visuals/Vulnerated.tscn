@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://htwq6aqom1y7"]
 
-[ext_resource type="Texture2D" uid="uid://cwc28e3703ibk" path="res://images/sprites/crack.png" id="1_5hdsr"]
+[ext_resource type="Texture2D" uid="uid://do5nn5o4fr0ju" path="res://images/sprites/vulnerate_effect.png" id="1_nfhms"]
 
 [sub_resource type="Animation" id="Animation_klck1"]
 length = 0.001
@@ -43,7 +43,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.470588), Color(1, 1, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -67,8 +67,7 @@ _data = {
 [node name="prtCold" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.282143, 0.282143)
-texture = ExtResource("1_5hdsr")
+texture = ExtResource("1_nfhms")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

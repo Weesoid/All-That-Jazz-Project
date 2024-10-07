@@ -2,16 +2,17 @@
 
 [ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwCauterize.gd" id="1_8w5rg"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
-[ext_resource type="PackedScene" uid="uid://bldcfcy8pg511" path="res://scenes/animations/AOE.tscn" id="2_0vdk1"]
+[ext_resource type="PackedScene" uid="uid://bbvp771hxhh68" path="res://scenes/animations/Cauterize.tscn" id="2_ycyl0"]
 
 [resource]
 script = ExtResource("1_yro00")
 NAME = "Cauterize"
 DESCRIPTION = ""
-ANIMATION = ExtResource("2_0vdk1")
+ANIMATION = ExtResource("2_ycyl0")
 ABILITY_SCRIPT = ExtResource("1_8w5rg")
 TARGET_TYPE = 0
 TARGET_GROUP = 1
+CAN_TARGET_SELF = false
 TARGET_DEAD = false
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0

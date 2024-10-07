@@ -3,14 +3,16 @@ static func animate(caster: CombatantScene, target: CombatantScene, _ability: Re
 	#await skillCheck(target, caster, 'Holding')
 	#await skillCheck(target, caster, 'Inputting')
 	#await skillCheck(target, caster, 'Mashing')
-	await skillCheck(target, caster, 'Timing', 4)
+	await skillCheck(target, caster, 'Holding', 4)
 	await caster.moveTo(caster.get_parent())
 	CombatGlobals.ability_finished.emit()
 
 static func skillCheck(target: CombatantScene , caster: CombatantScene, check: String, count:int=1):
 	var qte = await CombatGlobals.spawnQuickTimeEvent(target, check, count)
-	qte.target_speed = 1.0
-	match qte.points:
+	var points = qte.points
+	qte.queue_free()
+	await caster.doAnimation('Cast_Weapon')
+	match points:
 		1:
 			CombatGlobals.addStatusEffect(target.combatant_resource, 'Singed')
 		2:
@@ -19,8 +21,6 @@ static func skillCheck(target: CombatantScene , caster: CombatantScene, check: S
 			CombatGlobals.addStatusEffect(target.combatant_resource, 'Poison')
 		4:
 			CombatGlobals.addStatusEffect(target.combatant_resource, 'Chilled')
-	qte.queue_free()
-	await caster.doAnimation('Cast_Weapon')
 
 static func applyEffects(target: CombatantScene , caster: CombatantScene, _ability: ResAbility=null):
 	CombatGlobals.calculateDamage(caster, target, 5.0)

@@ -10,9 +10,9 @@ EFFECT = ExtResource("1_5kkis")
 USE_REQUIREMENT = {
 "handling": 0
 }
-max_durability = 8
+max_durability = 16
 STAT_MODIFICATIONS = {}
-NAME = "Slash Blade"
+NAME = "Alactreon"
 ICON = ExtResource("1_08b4g")
 DESCRIPTION = "It's a blade for slashin!"
 VALUE = 1

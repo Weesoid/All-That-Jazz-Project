@@ -1,7 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://cbk6oellobjrt"]
+[gd_scene load_steps=15 format=3 uid="uid://be21naj4lfhuj"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatantScene.gd" id="1_m0pn3"]
-[ext_resource type="Texture2D" uid="uid://d4gxprpisjhs" path="res://images/animations/battler_willis.png.png" id="2_da1eh"]
+[ext_resource type="Texture2D" uid="uid://d4gxprpisjhs" path="res://images/animations/battler_willis_alt.png" id="2_14c8g"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5sw1x"]
 radius = 8.0
@@ -443,7 +443,7 @@ script = ExtResource("1_m0pn3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 0.470588, 0.478431, 1)
-texture = ExtResource("2_da1eh")
+texture = ExtResource("2_14c8g")
 flip_h = true
 hframes = 10
 vframes = 5

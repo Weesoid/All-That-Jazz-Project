@@ -8,6 +8,7 @@ class_name ResStatusEffect
 @export var TEXTURE: Texture = preload("res://images/sprites/unknown_icon.png")
 @export var MAX_DURATION: int
 @export var EXTEND_DURATION: int = 0
+@export var APPLY_EXTEND_DURATION:  bool = false
 @export var MAX_RANK: int
 @export var ON_HIT: bool
 @export var APPLY_ONCE: bool
@@ -15,7 +16,6 @@ class_name ResStatusEffect
 @export var TICK_ON_TURN_START: bool
 @export var PERMANENT: bool = false
 @export var LINGERING: bool = false
-
 var duration
 var current_rank = 1
 var afflicted_combatant: ResCombatant
@@ -35,7 +35,10 @@ func initializeStatus():
 	if ON_HIT:
 		CombatGlobals.received_combatant_value.connect(onHitTick)
 	
-	duration = MAX_DURATION
+	if !APPLY_EXTEND_DURATION:
+		duration = MAX_DURATION
+	else:
+		duration = EXTEND_DURATION
 
 func onHitTick(combatant, caster, received_value):
 	if combatant == afflicted_combatant:

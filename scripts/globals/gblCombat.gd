@@ -260,7 +260,7 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1)
 	if type == 'Holding': offset = Vector2.ZERO
 	qte.global_position = target.global_position + offset
 	qte.z_index = 101
-	getCombatScene().add_child(qte)
+	getCombatScene().call_deferred('add_child',qte)
 	await CombatGlobals.qte_finished
 	return qte
 

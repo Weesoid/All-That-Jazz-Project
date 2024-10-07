@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://crvtpyb3daqtt"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Texture2D" uid="uid://bn0tlbihjq224" path="res://images/sprites/chill.png" id="1_3uak2"]
+[ext_resource type="Texture2D" uid="uid://bn0tlbihjq224" path="res://images/animations/chill.png" id="1_3uak2"]
 
 [sub_resource type="Animation" id="Animation_iv1ic"]
 length = 0.001
