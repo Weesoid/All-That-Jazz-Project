@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_56rvc"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="8_kiy21"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="8_lqkpn"]
 [ext_resource type="AudioStream" uid="uid://cujwmntfbmh8b" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="9_0bsv4"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
@@ -78,6 +77,13 @@ bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
 border_width_right = 2
 border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mejum"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
 border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_6vvqj"]
@@ -351,7 +357,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(152, 93), Vector2(152, 67)]
+"values": [Vector2(152, 93), Vector2(229, 53)]
 }
 
 [sub_resource type="Animation" id="Animation_03t5w"]
@@ -447,7 +453,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(152, 93), Vector2(152, 67)]
+"values": [Vector2(229, 67), Vector2(229, 53)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -707,8 +713,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 152.0
 offset_top = 67.0
-offset_right = 407.0
-offset_bottom = 163.0
+offset_right = 337.0
+offset_bottom = 197.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(184, 36)
@@ -725,34 +731,18 @@ text = "ASDasdas"
 layout_mode = 0
 offset_left = 40.0
 offset_top = 53.0
-offset_right = 144.0
-offset_bottom = 140.0
+offset_right = 224.0
+offset_bottom = 129.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mejum")
 
 [node name="Scroller" type="ScrollContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 3
-vertical_scroll_mode = 3
 
 [node name="Container" type="VBoxContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="CustomButton" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton2" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton3" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
-layout_mode = 2
-text = "Test"
-
-[node name="CustomButton4" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container" instance=ExtResource("8_kiy21")]
-layout_mode = 2
-text = "Test"
 
 [node name="ActionPanel" type="Control" parent="CombatCamera/Interface"]
 anchors_preset = 0

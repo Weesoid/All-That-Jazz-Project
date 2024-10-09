@@ -66,6 +66,7 @@ func _ready():
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
 	
+	print(COMBATANTS)
 	for combatant in COMBATANTS:
 		combatant.initializeCombatant()
 		combatant.player_turn.connect(on_player_turn)
@@ -101,11 +102,6 @@ func _ready():
 		button.focus_entered.connect(func(): secondary_panel.hide())
 	battle_back.play('Show')
 	active_combatant.act()
-#	var player_combatant = getCombatantGroup('team')[0].SCENE
-#	var enemy_combatant = getCombatantGroup('enemies')[0]
-#	await player_combatant.moveTo(enemy_combatant)
-#	await player_combatant.doAnimation('Cast_Melee')
-#	await player_combatant.moveTo(player_combatant.get_parent())
 	
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
@@ -192,9 +188,10 @@ func end_turn(combatant_act=true):
 		enemy_turn_count += 1
 	
 	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
+		ui_animator.play_backwards('ShowActionPanel')
 		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
 		commandExecuteAbility(null, combat_event.ABILITY)
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(2.0).timeout
 		if await checkWin(): return
 	elif combat_event != null and turn_count % combat_event.TURN_TRIGGER == combat_event.TURN_TRIGGER - 3:
 		combat_log.writeCombatLog(combat_event.WARNING_MESSAGE)
@@ -339,6 +336,8 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		if !ability.ENABLED:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
+	
+	OverworldGlobals.setMenuFocus(secondary_action_panel)
 
 func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
@@ -592,7 +591,8 @@ func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_tab"):
+		print('Blud')
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
 	

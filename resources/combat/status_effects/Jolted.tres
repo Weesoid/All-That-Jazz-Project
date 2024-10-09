@@ -8,16 +8,17 @@
 [resource]
 script = ExtResource("1_6gnln")
 NAME = "Jolted"
-DESCRIPTION = "Target will get affected by discharge."
+DESCRIPTION = "Target will be damaged upon expiration."
 STATUS_SCRIPT = ExtResource("2_n0cly")
 PACKED_SCENE = ExtResource("1_ukk5x")
 TEXTURE = ExtResource("3_wbiyr")
-MAX_DURATION = 2
-EXTEND_DURATION = 0
+MAX_DURATION = 5
+EXTEND_DURATION = 2
+APPLY_EXTEND_DURATION = true
 MAX_RANK = 0
 ON_HIT = false
 APPLY_ONCE = true
 TICK_PER_TURN = false
 TICK_ON_TURN_START = false
-PERMANENT = true
+PERMANENT = false
 LINGERING = false

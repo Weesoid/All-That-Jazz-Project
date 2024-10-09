@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://scripts/components/sccLootInteract.gd" id="3_6cfp0"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ddg2w"]
-load_path = "res://.godot/imported/lootbag.png-16feb0ba0d796ca5700ed34512911859.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cvn2j"]
 radius = 13.0

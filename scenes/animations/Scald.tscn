@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cx3tk1uy83lal"]
+[gd_scene load_steps=6 format=3 uid="uid://cx3tk1uy83lal"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnAbilityAnimations.gd" id="1_xr6kf"]
+[ext_resource type="Texture2D" uid="uid://do3hwitmif1e8" path="res://images/sprites/steam.png" id="2_pqxap"]
 
 [sub_resource type="Animation" id="Animation_pu1sl"]
 resource_name = "Execute"
@@ -92,6 +93,7 @@ script = ExtResource("1_xr6kf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.00414692, 0.00414692)
+texture = ExtResource("2_pqxap")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

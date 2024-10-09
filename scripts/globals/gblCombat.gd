@@ -95,9 +95,7 @@ func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant =
 ## Basic damage calculations
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
 	base_damage += caster.STAT_VALUES['brawn'] * base_damage
-	base_damage -= target.STAT_VALUES['grit'] * base_damage
-	if base_damage < 0.0: 
-		base_damage = 0
+	base_damage = useDamageFormula(target, base_damage)
 	
 	base_damage = valueVariate(base_damage, 0.15)
 	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
@@ -112,6 +110,14 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	target.STAT_VALUES['health'] -= int(base_damage)
 	received_combatant_value.emit(target, caster, int(base_damage))
 	playHurtAnimation(target)
+
+func useDamageFormula(target: ResCombatant, damage):
+	print('Receiving: ', damage)
+	var out_damage = damage - (target.STAT_VALUES['grit'] * damage)
+	if out_damage < 0.0: 
+		out_damage = 0
+	print('After grit: ', out_damage)
+	return out_damage
 
 func calculateHealing(target:ResCombatant, base_healing):
 	base_healing = valueVariate(base_healing, 0.15)

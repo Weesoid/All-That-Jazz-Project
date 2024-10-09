@@ -2,17 +2,17 @@
 
 [ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scaRandaStrike.gd" id="1_462hh"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_xkuih"]
-[ext_resource type="PackedScene" uid="uid://cgffo5qm33yne" path="res://scenes/animations/Random.tscn" id="2_rnjt4"]
+[ext_resource type="PackedScene" uid="uid://h4wwypopcwgp" path="res://scenes/animations/DebugEffect.tscn" id="2_7yeeu"]
 
 [resource]
 script = ExtResource("1_xkuih")
 NAME = "Randa Strike!"
 DESCRIPTION = "Randomly attack targets!"
-ANIMATION = ExtResource("2_rnjt4")
+ANIMATION = ExtResource("2_7yeeu")
 ABILITY_SCRIPT = ExtResource("1_462hh")
 TARGET_TYPE = 1
 TARGET_GROUP = 3
-CAN_TARGET_SELF = false
+CAN_TARGET_SELF = true
 TARGET_DEAD = false
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0

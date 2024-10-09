@@ -11,6 +11,7 @@ offset_left = -280.0
 offset_top = -152.0
 offset_right = -240.0
 offset_bottom = -112.0
+mouse_filter = 2
 
 [node name="Coordinates" type="Label" parent="VBoxContainer"]
 layout_mode = 2

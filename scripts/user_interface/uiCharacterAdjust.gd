@@ -16,7 +16,7 @@ extends Control
 @onready var charm_slot_a = $TabContainer/Charms/EquippedCharms/SlotA
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
-@onready var member_preview = $Marker2D
+@onready var member_preview = $Label/Marker2D
 @onready var member_name = $Label
 
 var restrict_tabs: bool = true
@@ -29,7 +29,7 @@ func _process(_delta):
 
 func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
-		var member_button = OverworldGlobals.createCustomButton()
+		var member_button = OverworldGlobals.createCustomButton(preload("res://design/CombatButtons.tres"))
 		member_button.text = member.NAME
 		member_button.pressed.connect(
 			func(): loadMemberInfo(member)
@@ -47,9 +47,9 @@ func _ready():
 func loadMemberInfo(member: ResCombatant):
 	for child in member_preview.get_children():
 		child.queue_free()
-	#member.initializeCombatant()
-	#member_preview.add_child(member.SCENE)
-	#member.getAnimator().play('Idle')
+	member.initializeCombatant()
+	member_preview.add_child(member.SCENE)
+	member.getAnimator().play('Idle')
 	selected_combatant = member
 	select_charms_panel.hide()
 	member_name.text = member.NAME

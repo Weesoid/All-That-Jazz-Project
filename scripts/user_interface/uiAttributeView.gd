@@ -48,7 +48,3 @@ func _process(_delta):
 		
 		if OverworldGlobals.isPlayerCheating():
 			debug_status.text = str(combatant.STAT_MODIFIERS)
-
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_tab") and view_hidden:
-		hidden_tab.visible = !hidden_tab.visible

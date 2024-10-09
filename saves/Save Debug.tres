@@ -26,13 +26,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="18_ikwmr"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="19_q0r6h"]
 
-[sub_resource type="Resource" id="Resource_hbr42"]
+[sub_resource type="Resource" id="Resource_13s72"]
 script = ExtResource("1_107cb")
-position = Vector2(146.248, 91.9385)
+position = Vector2(146.247, 91.9378)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = -90
 
-[sub_resource type="Resource" id="Resource_yftva"]
+[sub_resource type="Resource" id="Resource_nsbp1"]
 script = ExtResource("2_apc66")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
@@ -74,7 +74,7 @@ VALUE = 150
 MANDATORY = false
 PARENT_ITEM = ExtResource("11_ba41h")
 
-[sub_resource type="Resource" id="Resource_hc184"]
+[sub_resource type="Resource" id="Resource_p7maj"]
 script = ExtResource("15_0ff4k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_ll6ne"), ExtResource("8_2m21q"), ExtResource("10_76qpj"), ExtResource("12_mtqb5")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -84,7 +84,7 @@ EQUIPPED_ARROW = ExtResource("14_1m5y0")
 CURRENCY = 22332
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
-stamina = 83.5
+stamina = 81.2
 bow_max_draw = 5.0
 walk_speed = 100.0
 sprint_speed = 200.0
@@ -253,7 +253,7 @@ ExtResource("12_mtqb5"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 }, ExtResource("7_x0wvs")]
 }
 
-[sub_resource type="Resource" id="Resource_piw75"]
+[sub_resource type="Resource" id="Resource_i5tmi"]
 script = ExtResource("18_ikwmr")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -264,9 +264,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("19_q0r6h")
-NAME = "Save Debug - 00:02:37
+NAME = "Save Debug - 00:02:58
 Morale 1
 Prototype Room"
-PLAYTIME = 158.473
+PLAYTIME = 179.552
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_hbr42"), SubResource("Resource_yftva"), SubResource("Resource_hc184"), SubResource("Resource_piw75")]
+save_data = [SubResource("Resource_13s72"), SubResource("Resource_nsbp1"), SubResource("Resource_p7maj"), SubResource("Resource_i5tmi")]

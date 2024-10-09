@@ -136,21 +136,20 @@ layout_mode = 2
 columns = 10
 
 [node name="Infomration" type="Control" parent="TabContainer/Charms"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = 166.0
+offset_left = 192.0
 offset_top = 48.0
-offset_right = 206.0
+offset_right = 232.0
 offset_bottom = 88.0
 
 [node name="GeneralInfo" type="RichTextLabel" parent="TabContainer/Charms/Infomration"]
 z_index = 1
 layout_mode = 2
 offset_left = -168.0
-offset_top = 132.0
-offset_right = 176.0
-offset_bottom = 154.0
+offset_top = 128.0
+offset_right = 128.0
+offset_bottom = 150.0
 bbcode_enabled = true
 text = "[img]res://images/sprites/circle_filled.png[/img]"
 fit_content = true
@@ -160,7 +159,7 @@ scroll_active = false
 layout_mode = 2
 offset_left = -168.0
 offset_top = 60.0
-offset_right = 176.0
+offset_right = 128.0
 offset_bottom = 156.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ee64e")
 
@@ -175,7 +174,7 @@ text = "[center]LEFT CLICK TO USE ITEM
 visible = false
 layout_mode = 2
 
-[node name="Members" type="PanelContainer" parent="."]
+[node name="Members" type="OptionButton" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -183,14 +182,16 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -128.0
-offset_top = 128.0
+offset_top = -132.0
 offset_right = 216.0
-offset_bottom = 160.0
+offset_bottom = -108.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Members"]
+[node name="HBoxContainer" type="VBoxContainer" parent="Members"]
+visible = false
 layout_mode = 2
+offset_right = 344.0
 
 [node name="AttributeView" parent="." instance=ExtResource("5_cqrwt")]
 visible = false
@@ -215,20 +216,23 @@ offset_top = -262.0
 offset_right = 272.0
 offset_bottom = -165.0
 
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(296, 16)
+[node name="Debug" parent="AttributeView" index="2"]
+visible = false
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 224.0
-offset_top = 136.0
-offset_right = 592.0
-offset_bottom = 160.0
+offset_left = -96.0
+offset_top = 120.0
+offset_right = 272.0
+offset_bottom = 144.0
 theme = ExtResource("8_hty5i")
 theme_override_font_sizes/font_size = 16
 text = "MEMBER NAME"
 vertical_alignment = 1
 uppercase = true
+
+[node name="Marker2D" type="Marker2D" parent="Label"]
+position = Vector2(-24, 0)
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
 [connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]

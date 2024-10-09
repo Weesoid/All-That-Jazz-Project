@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResCombatEvent" load_steps=3 format=3 uid="uid://ce7bsinsjdecr"]
 
-[ext_resource type="Resource" uid="uid://cpdikl2w3exb3" path="res://resources/combat/abilities/RandaStrike.tres" id="1_vpn7i"]
+[ext_resource type="Resource" uid="uid://di6pm5nkyin6u" path="res://resources/combat/abilities/RandaStrike.tres" id="1_vpn7i"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatEvent.gd" id="1_xjvg0"]
 
 [resource]
@@ -9,4 +9,4 @@ NAME = "Hail"
 WARNING_MESSAGE = "The air feels colder..."
 EVENT_MESSAGE = "It's a hail storm!"
 ABILITY = ExtResource("1_vpn7i")
-TURN_TRIGGER = 2
+TURN_TRIGGER = 3
