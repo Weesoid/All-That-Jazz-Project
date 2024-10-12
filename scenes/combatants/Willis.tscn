@@ -549,7 +549,7 @@ func _physics_process(_delta):
 		hide()
 "
 
-[node name="Willis" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="CharacterBody2D"]
 script = ExtResource("1_y6fp3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

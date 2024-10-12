@@ -273,6 +273,8 @@ func moveCamera(to, duration:float=0.25, wait:bool=false): # implement wait func
 		tween.tween_property(getPlayer().player_camera, 'global_position', getEntity(to).global_position, duration)
 	elif to is Vector2:
 		tween.tween_property(getPlayer().player_camera, 'global_position', to, duration)
+	elif to is Node2D:
+		tween.tween_property(getPlayer().player_camera, 'global_position', to.global_position, duration)
 	if wait:
 		await tween.finished
 
@@ -374,10 +376,14 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	setPlayerInput(false)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
-	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
+	for combatant in getCombatantSquad('Player'):
+		if combatant == null: continue
+		combatant.POSITION = getCombatantSquad('Player').find(combatant)
+		combat_scene.COMBATANTS.append(combatant)
 	for combatant in getCombatantSquad(entity_name):
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
+		duped_combatant.POSITION = -1
 		for effect in getCombatantSquadComponent(entity_name).afflicted_status_effects:
 			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
 		combat_scene.COMBATANTS.append(duped_combatant)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://boubqwafllx3y"]
+[gd_scene load_steps=14 format=3 uid="uid://boubqwafllx3y"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
@@ -8,11 +8,14 @@
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="5_cqrwt"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
+[ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="9_yb56k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfwvc"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ee64e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qba66"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gup3p"]
 bg_color = Color(0, 0, 0, 1)
@@ -29,9 +32,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -112.0
-offset_top = -12.0
+offset_top = -20.0
 offset_right = -112.0
-offset_bottom = -12.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -44,6 +47,7 @@ offset_left = -128.0
 offset_top = -104.0
 offset_right = 216.0
 offset_bottom = 120.0
+tab_alignment = 2
 
 [node name="Abilities" type="Control" parent="TabContainer"]
 layout_mode = 2
@@ -174,27 +178,63 @@ text = "[center]LEFT CLICK TO USE ITEM
 visible = false
 layout_mode = 2
 
-[node name="Members" type="OptionButton" parent="."]
+[node name="Members" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = -132.0
-offset_right = 216.0
-offset_bottom = -108.0
+offset_left = -40.0
+offset_top = 136.0
+offset_right = 128.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_qba66")
 
-[node name="HBoxContainer" type="VBoxContainer" parent="Members"]
-visible = false
+[node name="HBoxContainer" type="HBoxContainer" parent="Members"]
 layout_mode = 2
-offset_right = 344.0
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Position3" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme = ExtResource("9_yb56k")
+disabled = true
+text = "EMPTY"
+alignment = 2
+text_overrun_behavior = 2
+
+[node name="Position2" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme = ExtResource("9_yb56k")
+disabled = true
+text = "EMPTY"
+alignment = 2
+text_overrun_behavior = 2
+
+[node name="Position1" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme = ExtResource("9_yb56k")
+disabled = true
+text = "EMPTY"
+alignment = 2
+text_overrun_behavior = 2
+
+[node name="Position0" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme = ExtResource("9_yb56k")
+disabled = true
+text = "EMPTY"
+alignment = 2
+text_overrun_behavior = 2
 
 [node name="AttributeView" parent="." instance=ExtResource("5_cqrwt")]
-visible = false
 z_index = 1
 layout_mode = 1
 offset_left = 96.0
@@ -207,7 +247,7 @@ view_hidden = false
 offset_left = 128.0
 offset_top = -168.0
 offset_right = 272.0
-offset_bottom = -73.0
+offset_bottom = -56.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_gup3p")
 
 [node name="Attributes" parent="AttributeView" index="1"]
@@ -221,18 +261,23 @@ visible = false
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = -96.0
-offset_top = 120.0
-offset_right = 272.0
-offset_bottom = 144.0
+offset_left = -128.0
+offset_top = -112.0
+offset_right = 240.0
+offset_bottom = -88.0
 theme = ExtResource("8_hty5i")
 theme_override_font_sizes/font_size = 16
 text = "MEMBER NAME"
-vertical_alignment = 1
-uppercase = true
+vertical_alignment = 2
 
-[node name="Marker2D" type="Marker2D" parent="Label"]
-position = Vector2(-24, 0)
+[node name="CustomButton" parent="." instance=ExtResource("2_s185n")]
+layout_mode = 1
+offset_left = 224.0
+offset_top = 128.0
+offset_right = 368.0
+offset_bottom = 150.0
+theme = ExtResource("9_yb56k")
+text = "CHANGE FORMATION"
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
 [connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]

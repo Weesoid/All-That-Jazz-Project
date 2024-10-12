@@ -3,6 +3,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.manual_call_indicator.emit(target, 'JOLTED!', 'Show')
 		CombatGlobals.addStatusEffect(target, 'Dazed')
 	if status_effect.duration == 5:
+		print('blud')
 		CombatGlobals.manual_call_indicator.emit(target, 'OVERCHARGED!', 'Show')
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):

@@ -755,7 +755,7 @@ layout_mode = 0
 offset_left = -160.0
 offset_top = 92.0
 offset_right = 160.0
-offset_bottom = 130.0
+offset_bottom = 139.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel"]
 layout_mode = 2
@@ -778,6 +778,12 @@ theme = ExtResource("8_lqkpn")
 button_mask = 0
 text = "SKILLS"
 
+[node name="Action" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme = ExtResource("8_lqkpn")
+text = "ACTION"
+
 [node name="Guard" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
@@ -792,26 +798,12 @@ theme = ExtResource("8_lqkpn")
 button_mask = 0
 text = "INSPECT"
 
-[node name="Items" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-visible = false
-custom_minimum_size = Vector2(56, 0)
-layout_mode = 2
-theme = ExtResource("8_lqkpn")
-button_mask = 0
-text = "ITEMS"
-
 [node name="Escape" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(57, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
 button_mask = 0
 text = "ABSCOND"
-
-[node name="Pass" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(56, 0)
-layout_mode = 2
-theme = ExtResource("8_lqkpn")
-text = "PASS"
 
 [node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface"]
 layout_mode = 0
@@ -827,10 +819,9 @@ libraries = {
 }
 
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Action" to="." method="getMoveAbilities"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard" to="." method="_on_guard_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Inspect" to="." method="_on_inspect_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Items" to="." method="_on_items_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Pass" to="." method="_on_pass_pressed"]
 
 [editable path="CombatCamera/Interface/Inspect/AttributeView"]

@@ -66,16 +66,13 @@ func _ready():
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
 	
-	print(COMBATANTS)
 	for combatant in COMBATANTS:
 		combatant.initializeCombatant()
 		combatant.player_turn.connect(on_player_turn)
 		combatant.enemy_turn.connect(on_enemy_turn)
+		addCombatant(combatant, combatant.POSITION)
 		
-		if combatant is ResPlayerCombatant:
-			addCombatant(combatant, team_container_markers)
-		else:
-			addCombatant(combatant, enemy_container_markers)
+		if combatant is ResEnemyCombatant:
 			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
 		
 		var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
@@ -145,14 +142,14 @@ func on_player_turn():
 	end_turn()
 
 func on_enemy_turn():
-	playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 0.75, true)
+	OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play_backwards('ShowActionPanel')
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	if await checkWin(): return
 	
 	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
-	valid_targets = selected_ability.getValidTargets(COMBATANTS, false)
+	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
 	if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 	else:
@@ -270,12 +267,6 @@ func _on_guard_pressed():
 	Input.action_release("ui_accept")
 	forceCastAbility(active_combatant.ABILITY_SLOT)
 
-# REMOVE
-func _on_items_pressed():
-	if secondary_panel_container.get_child_count() == 0: return
-	secondary_panel.show()
-	secondary_panel_container.get_child(0).grab_focus()
-
 func _on_inspect_pressed():
 	ui_animator.play('ShowInspect')
 	target_state = 3
@@ -314,7 +305,7 @@ func toggleUI(visibility: bool):
 #********************************************************************************
 # ABILITY SELECTION, TARGETING, AND EXECUTION
 #********************************************************************************
-func getPlayerAbilities(ability_set: Array[ResAbility]):	
+func getPlayerAbilities(ability_set: Array[ResAbility]):
 	for child in secondary_panel_container.get_children():
 		child.free()
 	
@@ -329,15 +320,32 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		secondary_panel_container.add_child(button)
 	
 	for ability in ability_set:
-		var button = OverworldGlobals.createCustomButton()
-		button.text = ability.NAME
-		button.pressed.connect(func(): forceCastAbility(ability))
-		button.focus_entered.connect(func():updateDescription(ability))
-		if !ability.ENABLED:
-			button.disabled = true
-		secondary_panel_container.add_child(button)
+		secondary_panel_container.add_child(createAbilityButton(ability))
+
+func getMoveAbilities():
+	for child in secondary_panel_container.get_children():
+		child.free()
 	
-	OverworldGlobals.setMenuFocus(secondary_action_panel)
+	var pass_button = OverworldGlobals.createCustomButton()
+	pass_button.text = 'Pass'
+	pass_button.pressed.connect(func(): confirm.emit())
+	pass_button.focus_entered.connect(func():updateDescription(null, 'Pass this turn.'))
+	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
+	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Recede.tres")))
+	secondary_panel_container.add_child(pass_button)
+	
+	animateSecondaryPanel('show')
+	secondary_panel_container.get_child(0).grab_focus()
+
+func createAbilityButton(ability: ResAbility)-> Button:
+	print(ability)
+	var button = OverworldGlobals.createCustomButton()
+	button.text = ability.NAME
+	button.pressed.connect(func(): forceCastAbility(ability))
+	button.focus_entered.connect(func():updateDescription(ability))
+	if !ability.ENABLED:
+		button.disabled = true
+	return button
 
 func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
@@ -361,7 +369,7 @@ func playerSelectMultiTarget():
 
 func playerSelectInspection():
 	action_panel.hide()
-	valid_targets = COMBATANTS
+	valid_targets = sortCombatantsByPosition()
 	target_combatant = valid_targets[target_index]
 	ui_inspect_target.show()
 	ui_attribute_view.combatant = target_combatant
@@ -435,16 +443,24 @@ func commandExecuteAbility(target, ability: ResAbility):
 func moveCamera(target: Vector2, speed=0.25):
 	create_tween().tween_property(combat_camera, 'global_position', target, speed)
 
-func addCombatant(combatant, container):
-	for marker in container:
-		if marker.get_child_count() != 0: continue
-		marker.add_child(combatant.SCENE)
-		combatant.getAnimator().play('Idle')
-		break
+func addCombatant(combatant:ResCombatant, pos:int):
+	var team_container
+	if combatant is ResPlayerCombatant:
+		team_container = team_container_markers
+	else:
+		team_container = enemy_container_markers
+	if pos == -1:
+		for marker in team_container:
+			if marker.get_child_count() != 0: continue
+			marker.add_child(combatant.SCENE)
+			break
+	else:
+		team_container[pos].add_child(combatant.SCENE)
+	combatant.getAnimator().play('Idle')
 
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
-	valid_targets = selected_ability.getValidTargets(COMBATANTS, true)
+	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
 	target_state = selected_ability.getTargetType()
 	updateDescription(ability)
 	ui_animator.play('FocusDescription')
@@ -454,8 +470,12 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	runAbility()
 	if weapon != null: weapon.useDurability()
 
-func updateDescription(ability: ResAbility):
-	secondary_description.text = ability.getRichDescription()
+func updateDescription(ability: ResAbility, text: String=''):
+	if ability != null:
+		secondary_description.text = ability.getRichDescription()
+	elif text != '':
+		secondary_description.text = text
+	
 	secondary_description.show()
 
 func animateSecondaryPanel(animation: String):
@@ -479,7 +499,7 @@ func addDrop(loot_drops: Dictionary):
 			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
 
 func rollTurns():
-	playCombatAudio("714571__matrixxx__reverse-time.ogg", 0.0, 1, true)
+	OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
 	combatant_turn_order.clear()
 	for combatant in COMBATANTS:
 		if combatant.isDead() and !combatant.hasStatusEffect('Fading'): continue
@@ -615,15 +635,6 @@ func runAbility():
 		action_panel.hide()
 		run_once = false
 
-func playCombatAudio(filename: String, db:float = 0.0, pitch:float = 1.0, random_pitch=false):
-	battle_sounds.pitch_scale = pitch
-	battle_sounds.stream = load("res://audio/sounds/%s" % filename)
-	battle_sounds.volume_db = db
-	if random_pitch:
-		randomize()
-		battle_sounds.pitch_scale += randf_range(0.0, 0.25)
-	battle_sounds.play()
-
 func writeTopLogMessage(message: String):
 	top_log_label.text = message
 	top_log_animator.stop()
@@ -697,6 +708,59 @@ func concludeCombat(results: int):
 		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 80.0, 3)
 	queue_free()
 
+func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.35):
+	var combatant_group
+	if combatant is ResPlayerCombatant:
+		combatant_group = team_container_markers
+	else:
+		combatant_group = enemy_container_markers
+	var current_pos = combatant_group.find(combatant.SCENE.get_parent())
+	if (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1):
+		var combatant_prev_pos = combatant.SCENE.global_position
+		var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+		match move:
+			1: 
+				var combatant_b
+				if combatant_group[current_pos-1].get_child_count() > 0:
+					combatant_b = combatant_group[current_pos-1].get_child(0)
+				else:
+					combatant_b = combatant_group[current_pos-1]
+				if combatant_b == null: combatant_b = combatant_group[current_pos-1]
+				tween_a.tween_property(combatant.SCENE, 'global_position', combatant_b.global_position, 0.18)
+				combatant.SCENE.reparent(combatant_group[current_pos-1])
+				if combatant_b is CombatantScene:
+					var tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+					tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
+					combatant_b.reparent(combatant_group[current_pos])
+			-1: 
+				var combatant_b
+				if combatant_group[current_pos+1].get_child_count() > 0:
+					combatant_b = combatant_group[current_pos+1].get_child(0)
+				else:
+					combatant_b = combatant_group[current_pos+1]
+				tween_a.tween_property(combatant.SCENE, 'global_position', combatant_b.global_position, 0.18)
+				combatant.SCENE.reparent(combatant_group[current_pos+1])
+				if combatant_b is CombatantScene:
+					var tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+					tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
+					combatant_b.reparent(combatant_group[current_pos])
+	
+	await get_tree().create_timer(wait).timeout
 
-func _on_pass_pressed():
-	confirm.emit()
+func getCombatantPosition(combatant: ResCombatant)->int:
+	if combatant is ResPlayerCombatant:
+		return team_container_markers.find(combatant.SCENE.get_parent())
+	else:
+		return enemy_container_markers.find(combatant.SCENE.get_parent())
+
+func sortCombatantsByPosition()-> Array[ResCombatant]:
+	var out: Array[ResCombatant] = []
+	var reversed_array = team_container_markers.duplicate()
+	reversed_array.reverse()
+	for combatant in reversed_array:
+		if combatant.get_child_count() == 0: continue
+		out.append(combatant.get_child(0).combatant_resource)
+	for combatant in enemy_container_markers:
+		if combatant.get_child_count() == 0: continue
+		out.append(combatant.get_child(0).combatant_resource)
+	return out

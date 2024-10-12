@@ -16,11 +16,10 @@ extends Control
 @onready var charm_slot_a = $TabContainer/Charms/EquippedCharms/SlotA
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
-@onready var member_preview = $Label/Marker2D
 @onready var member_name = $Label
 
-var restrict_tabs: bool = true
 var selected_combatant: ResPlayerCombatant
+var changing_formation: bool = false
 
 func _process(_delta):
 	if selected_combatant != null:
@@ -29,27 +28,20 @@ func _process(_delta):
 
 func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
-		var member_button = OverworldGlobals.createCustomButton(preload("res://design/CombatButtons.tres"))
+		var member_button = member_container.get_node('Position%s' % str(OverworldGlobals.getCombatantSquad('Player').find(member)))
 		member_button.text = member.NAME
-		member_button.pressed.connect(
-			func(): loadMemberInfo(member)
-		)
-		member_container.add_child(member_button)
+		member_button.pressed.connect(func(): loadMemberInfo(member))
+		member.initializeCombatant()
+		member.getAnimator().play('Idle')
+		member_button.add_child(member.SCENE)
+		member_button.disabled = false
 	
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 	if member_container.get_child_count() > 0:
 		member_container.get_child(0).grab_focus()
-	if !OverworldGlobals.getCurrentMap().SAFE and restrict_tabs and !PlayerGlobals.CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME):
-		tabs.set_tab_disabled(1, true)
-		tabs.set_tab_disabled(2, true)
 
 func loadMemberInfo(member: ResCombatant):
-	for child in member_preview.get_children():
-		child.queue_free()
-	member.initializeCombatant()
-	member_preview.add_child(member.SCENE)
-	member.getAnimator().play('Idle')
 	selected_combatant = member
 	select_charms_panel.hide()
 	member_name.text = member.NAME
@@ -311,16 +303,12 @@ func _on_tab_container_tab_changed(tab):
 	select_charms_panel.hide()
 	if tab == 0:
 		loadAbilities()
-		attrib_view.hide()
 	elif tab == 1:
 		select_charms_panel.hide()
 		charm_info_panel.hide()
 		setFocusMode(equipped_charms, true)
 		setFocusMode(member_container, true)
 		weapon_button.grab_focus()
-		attrib_view.show()
-	elif tab == 2:
-		attrib_view.show()
 	
 	match tab:
 		0: OverworldGlobals.setMenuFocus(pool)

@@ -73,7 +73,6 @@ func loadInterface(path):
 	var ui = load(path).instantiate()
 	ui.z_index = 999
 	ui.name = 'menu'
-	ui.restrict_tabs = false
 	add_child(ui)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 

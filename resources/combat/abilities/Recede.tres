@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://vedm8h64ew7u"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaMove.gd" id="1_r8ctn"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yx7md"]
+
+[resource]
+script = ExtResource("1_yx7md")
+NAME = "Recede"
+DESCRIPTION = "Move backward."
+ABILITY_SCRIPT = ExtResource("1_r8ctn")
+TARGET_TYPE = 0
+TARGET_GROUP = 2
+CAN_TARGET_SELF = true
+TARGET_DEAD = false
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

@@ -2,6 +2,7 @@
 extends Node
 
 var TEAM: Array[ResPlayerCombatant]
+var TEAM_FORMATION: Dictionary
 var TENSION: int = 0
 var FOLLOWERS: Array[NPCFollower] = []
 var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoomB.tscn', 'res://scenes/maps/TestRoom/TestRoomA.tscn']
@@ -88,7 +89,7 @@ func addCombatantToTeam(combatant_id):
 		combatant = combatant_id
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
-	OverworldGlobals.getPlayer().prompt.showPrompt('%s joined your party!!' % combatant.NAME)
+	OverworldGlobals.getPlayer().prompt.showPrompt('%s joined your party!' % combatant.NAME)
 
 func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)

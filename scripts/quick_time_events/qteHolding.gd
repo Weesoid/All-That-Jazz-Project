@@ -10,6 +10,7 @@ var max_points = 1
 var points = 0
 
 @onready var target = $HoldCircle
+@onready var target_sprite = $HoldCircle.get_node('Sprite2D')
 @onready var ding_sound = $AudioStreamPlayer2D
 @onready var timer = $Timer
 @onready var animator = $AnimationPlayer
@@ -24,6 +25,10 @@ func _process(delta):
 		target.get_node('Sprite2D').modulate.a = timer.time_left
 	if shrink:
 		target.scale -= Vector2(1, 1) * target_speed * delta
+	if sweet_spot != null and target.scale <= sweet_spot.scale:
+		sweet_spot.modulate = Color.GREEN_YELLOW
+	else:
+		sweet_spot.modulate = Color.WHITE
 	if target.scale <= Vector2.ZERO:
 		shrink = false
 		OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")

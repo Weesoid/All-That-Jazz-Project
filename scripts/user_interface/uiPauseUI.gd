@@ -32,7 +32,9 @@ func _ready():
 		exp_bar.hide()
 	if PlayerGlobals.CURRENCY > 0:
 		currency.show()
-	
+	if !OverworldGlobals.getCurrentMap().SAFE and !PlayerGlobals.CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME):
+		party.disabled = true
+
 func _on_tree_exited():
 	queue_free()
 

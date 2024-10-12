@@ -219,10 +219,8 @@ func playHurtTween(target: ResCombatant):
 func playFadingTween(target: ResCombatant):
 	OverworldGlobals.playSound('woosh.ogg')
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	var opacity_tween = getCombatScene().create_tween()
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
 	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
-	opacity_tween.tween_property(target.SCENE, 'modulate', Color(Color.GRAY, 0.25), 0.75)
 
 func playSecondWindTween(target: ResCombatant):
 	OverworldGlobals.playSound("res://audio/sounds/458533__shyguy014__healpop.ogg")
@@ -235,11 +233,8 @@ func playSecondWindTween(target: ResCombatant):
 func playKnockOutTween(target: ResCombatant):
 	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	var opacity_tween = getCombatScene().create_tween()
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
 	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
-	tween.tween_property(target.SCENE, 'position', target.SCENE.position + Vector2(0, 128), 1.0)
-	opacity_tween.tween_property(target.SCENE, 'modulate', Color(0, 0), 0.75)
 
 func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
