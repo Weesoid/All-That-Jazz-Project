@@ -112,10 +112,12 @@ func showMenu(path: String):
 	main_menu.name = 'uiMenu'
 	getPlayer().resetStates()
 	if !inMenu():
+		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		getPlayer().player_camera.add_child(main_menu)
 		setPlayerInput(false)
 	else:
+		if isPlayerCheating(): getPlayer().get_node('DebugComponent').show()
 		closeMenu(main_menu)
 
 func closeMenu(menu: Control):
@@ -235,6 +237,8 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
+	if SettingsGlobals.cheat_mode:
+		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
 	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
@@ -301,14 +305,13 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	
 	balloon.start(resource, title, extra_game_states)
 
-# REFACTOR
 func loadFollowers():
 	for follower in PlayerGlobals.FOLLOWERS:
 		if follower != null: follower.queue_free()
 	PlayerGlobals.FOLLOWERS.clear()
 	
 	for combatant in PlayerGlobals.TEAM:
-		if combatant.active and combatant.FOLLOWER_PACKED_SCENE != null:
+		if getCombatantSquad('Player').has(combatant) and combatant.FOLLOWER_PACKED_SCENE != null:
 			var follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
 			follower_scene.host_combatant = combatant
 			PlayerGlobals.addFollower(follower_scene)
@@ -376,14 +379,10 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	setPlayerInput(false)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
-	for combatant in getCombatantSquad('Player'):
-		if combatant == null: continue
-		combatant.POSITION = getCombatantSquad('Player').find(combatant)
-		combat_scene.COMBATANTS.append(combatant)
+	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad(entity_name):
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
-		duped_combatant.POSITION = -1
 		for effect in getCombatantSquadComponent(entity_name).afflicted_status_effects:
 			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
 		combat_scene.COMBATANTS.append(duped_combatant)
@@ -441,6 +440,9 @@ func hasCombatDialogue(entity_name: String)-> bool:
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
+
+func setCombatantSquad(entity_name: String, combatants: Array[ResCombatant]):
+	get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD = combatants
 
 func getCombatantSquadComponent(entity_name: String)-> CombatantSquad:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent')

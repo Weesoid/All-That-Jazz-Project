@@ -19,7 +19,6 @@ var STAT_POINT_ALLOCATIONS = {
 	'handling': 0
 }
 var initialized = false
-var active = false
 
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:

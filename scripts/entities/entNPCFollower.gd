@@ -11,7 +11,7 @@ func _ready():
 	add_collision_exception_with(OverworldGlobals.getPlayer())
 
 func _physics_process(_delta):
-	if !host_combatant.active:
+	if !OverworldGlobals.getCombatantSquad('Player').has(host_combatant):
 		queue_free()
 	
 	# Positive SPEED allows followers to move, negative SPEED stops them. See 'setFollowerMotion' function

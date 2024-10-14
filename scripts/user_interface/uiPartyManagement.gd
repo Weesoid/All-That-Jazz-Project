@@ -18,19 +18,19 @@ func _ready():
 			func addToAcitve():
 				if !OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.has(member):
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(member)
-					member.active = true
 					OverworldGlobals.initializePlayerParty()
 					button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 				else:
 					OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
-					PlayerGlobals.removeFollower(member)
+					PlayerGlobals.removeFollower()
 					button.remove_theme_icon_override('icon')
+				PlayerGlobals.TEAM_FORMATION = OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD
 		)
 		button.mouse_entered.connect(func(): updateInfo(member))
 		button.focus_entered.connect(func(): updateInfo(member))
 		if member.MANDATORY and member.active: 
 			button.disabled = true
-		if member.active:
+		if OverworldGlobals.getCombatantSquad('Player').has(member):
 			button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 		else:
 			button.remove_theme_icon_override('icon')

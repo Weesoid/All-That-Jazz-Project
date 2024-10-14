@@ -70,7 +70,7 @@ func _ready():
 		combatant.initializeCombatant()
 		combatant.player_turn.connect(on_player_turn)
 		combatant.enemy_turn.connect(on_enemy_turn)
-		addCombatant(combatant, combatant.POSITION)
+		addCombatant(combatant)
 		
 		if combatant is ResEnemyCombatant:
 			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
@@ -443,19 +443,16 @@ func commandExecuteAbility(target, ability: ResAbility):
 func moveCamera(target: Vector2, speed=0.25):
 	create_tween().tween_property(combat_camera, 'global_position', target, speed)
 
-func addCombatant(combatant:ResCombatant, pos:int):
+func addCombatant(combatant:ResCombatant):
 	var team_container
 	if combatant is ResPlayerCombatant:
 		team_container = team_container_markers
 	else:
 		team_container = enemy_container_markers
-	if pos == -1:
-		for marker in team_container:
-			if marker.get_child_count() != 0: continue
-			marker.add_child(combatant.SCENE)
-			break
-	else:
-		team_container[pos].add_child(combatant.SCENE)
+	for marker in team_container:
+		if marker.get_child_count() != 0: continue
+		marker.add_child(combatant.SCENE)
+		break
 	combatant.getAnimator().play('Idle')
 
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):

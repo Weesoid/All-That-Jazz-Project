@@ -34,7 +34,6 @@ func _ready():
 	SPEED = PlayerGlobals.walk_speed
 	animation_tree.active = true
 	PlayerGlobals.loadSquad()
-	add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 
 func _process(_delta):
 	updateAnimationParameters()

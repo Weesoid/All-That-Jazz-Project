@@ -2,7 +2,7 @@
 extends Node
 
 var TEAM: Array[ResPlayerCombatant]
-var TEAM_FORMATION: Dictionary
+var TEAM_FORMATION: Array[ResCombatant]
 var TENSION: int = 0
 var FOLLOWERS: Array[NPCFollower] = []
 var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoomB.tscn', 'res://scenes/maps/TestRoom/TestRoomA.tscn']
@@ -70,10 +70,7 @@ func getRequiredExp() -> int:
 	return int(baseExp * expMultiplier ** (PARTY_LEVEL - 1))
 
 func hasActiveTeam()-> bool:
-	for member in TEAM:
-		if member.active: return true
-	
-	return false
+	return !OverworldGlobals.getCombatantSquad('Player').is_empty()
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
@@ -95,10 +92,8 @@ func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)
 	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
 
-func removeFollower(follower_combatant: ResPlayerCombatant):
-	follower_combatant.active = false
+func removeFollower():
 	OverworldGlobals.loadFollowers()
-	
 	var index = 1
 	for f in FOLLOWERS:
 		f.FOLLOW_LOCATION = 20 * index
@@ -122,9 +117,7 @@ func isFollowerActive(follower_combatant_name: String):
 	return false
 
 func loadSquad():
-	for member in TEAM:
-		if member.active: 
-			OverworldGlobals.getCombatantSquad('Player').append(member)
+	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.TEAM_FORMATION)
 
 func setFollowersMotion(enable:bool):
 	for follower in FOLLOWERS:
@@ -158,6 +151,7 @@ func saveData(save_data: Array):
 	data.sprint_drain = sprint_drain
 	data.stamina_gain = stamina_gain
 	data.PROGRESSION_DATA = PROGRESSION_DATA
+	data.TEAM_FORMATION = TEAM_FORMATION
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
@@ -169,7 +163,6 @@ func saveData(save_data: Array):
 			combatant.MANDATORY,
 			combatant.LINGERING_STATUS_EFFECTS,
 			combatant.initialized,
-			combatant.active,
 			combatant.STAT_POINTS,
 			combatant.STAT_MODIFIERS,
 			combatant.EQUIPPED_WEAPON,
@@ -198,6 +191,7 @@ func loadData(save_data: PlayerSaveData):
 	sprint_drain = save_data.sprint_drain
 	stamina_gain = save_data.stamina_gain
 	PROGRESSION_DATA = save_data.PROGRESSION_DATA
+	TEAM_FORMATION = save_data.TEAM_FORMATION
 	
 	for combatant in TEAM:
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
@@ -208,19 +202,17 @@ func loadData(save_data: PlayerSaveData):
 		combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][5]
 		combatant.LINGERING_STATUS_EFFECTS = save_data.COMBATANT_SAVE_DATA[combatant][6]
 		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][7]
-		combatant.active = save_data.COMBATANT_SAVE_DATA[combatant][8]
-		combatant.STAT_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][9]
-		combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][10]
-		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][11]
-		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][12]
-		combatant.ABILITY_SLOT = save_data.COMBATANT_SAVE_DATA[combatant][13]
+		combatant.STAT_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][8]
+		combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][9]
+		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][10]
+		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][11]
+		combatant.ABILITY_SLOT = save_data.COMBATANT_SAVE_DATA[combatant][12]
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.CHARMS.values():
 			if charm != null:
 				charm.updateItem() 
 				charm.equip(combatant)
-		if combatant.active:
-			OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(combatant)
+		OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)
 	
 	initializeBenchedTeam()
 	OverworldGlobals.initializePlayerParty()

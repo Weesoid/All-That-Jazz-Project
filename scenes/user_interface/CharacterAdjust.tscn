@@ -198,42 +198,6 @@ layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Position3" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
-custom_minimum_size = Vector2(64, 0)
-layout_mode = 2
-theme = ExtResource("9_yb56k")
-disabled = true
-text = "EMPTY"
-alignment = 2
-text_overrun_behavior = 2
-
-[node name="Position2" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
-custom_minimum_size = Vector2(64, 0)
-layout_mode = 2
-theme = ExtResource("9_yb56k")
-disabled = true
-text = "EMPTY"
-alignment = 2
-text_overrun_behavior = 2
-
-[node name="Position1" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
-custom_minimum_size = Vector2(64, 0)
-layout_mode = 2
-theme = ExtResource("9_yb56k")
-disabled = true
-text = "EMPTY"
-alignment = 2
-text_overrun_behavior = 2
-
-[node name="Position0" parent="Members/HBoxContainer" instance=ExtResource("2_s185n")]
-custom_minimum_size = Vector2(64, 0)
-layout_mode = 2
-theme = ExtResource("9_yb56k")
-disabled = true
-text = "EMPTY"
-alignment = 2
-text_overrun_behavior = 2
-
 [node name="AttributeView" parent="." instance=ExtResource("5_cqrwt")]
 z_index = 1
 layout_mode = 1
@@ -270,12 +234,12 @@ theme_override_font_sizes/font_size = 16
 text = "MEMBER NAME"
 vertical_alignment = 2
 
-[node name="CustomButton" parent="." instance=ExtResource("2_s185n")]
+[node name="ChangeFormation" parent="." instance=ExtResource("2_s185n")]
 layout_mode = 1
 offset_left = 224.0
-offset_top = 128.0
+offset_top = 136.0
 offset_right = 368.0
-offset_bottom = 150.0
+offset_bottom = 160.0
 theme = ExtResource("9_yb56k")
 text = "CHANGE FORMATION"
 
@@ -295,6 +259,7 @@ text = "CHANGE FORMATION"
 [connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
 [connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="hideItemDescription"]
 [connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
+[connection signal="pressed" from="ChangeFormation" to="." method="_on_change_formation_pressed"]
 
 [editable path="TabContainer/Attributes"]
 [editable path="AttributeView"]

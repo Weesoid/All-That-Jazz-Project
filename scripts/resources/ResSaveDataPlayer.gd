@@ -19,5 +19,5 @@ class_name PlayerSaveData
 @export var stamina_gain: float
 @export var STRING_CONDITIONS: Array[String]
 @export var PROGRESSION_DATA: Dictionary
-
+@export var TEAM_FORMATION: Array[ResCombatant]
 @export var COMBATANT_SAVE_DATA: Dictionary

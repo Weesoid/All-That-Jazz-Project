@@ -32,7 +32,6 @@ var BASE_STAT_VALUES: Dictionary
 var ROLLED_SPEED: int
 var ACTED: bool
 var SCENE: CombatantScene
-var POSITION: int
 
 signal enemy_turn
 signal player_turn

@@ -17,7 +17,7 @@ extends Control
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
 @onready var member_name = $Label
-
+@onready var formation_button = $ChangeFormation
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
 
@@ -27,26 +27,52 @@ func _process(_delta):
 		attrib_adjust.combatant = selected_combatant
 
 func _ready():
-	for member in OverworldGlobals.getCombatantSquad('Player'):
-		var member_button = member_container.get_node('Position%s' % str(OverworldGlobals.getCombatantSquad('Player').find(member)))
-		member_button.text = member.NAME
-		member_button.pressed.connect(func(): loadMemberInfo(member))
-		member.initializeCombatant()
-		member.getAnimator().play('Idle')
-		member_button.add_child(member.SCENE)
-		member_button.disabled = false
+	loadMembers()
 	
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
-	if member_container.get_child_count() > 0:
-		member_container.get_child(0).grab_focus()
+#	if member_container.get_child_count() > 0:
+#		member_container.get_child(0).grab_focus()
 
-func loadMemberInfo(member: ResCombatant):
-	selected_combatant = member
-	select_charms_panel.hide()
-	member_name.text = member.NAME
-	loadAbilities()
-	updateEquipped()
+func loadMembers(set_focus:bool=true):
+	for child in member_container.get_children():
+		child.queue_free()
+	
+	for i in range(OverworldGlobals.getCombatantSquad('Player').size(), 0, -1):
+		var member = OverworldGlobals.getCombatantSquad('Player')[i-1]
+		var member_button = createMemberButton(member)
+		member_container.add_child(member_button)
+		if i == 1 and set_focus:
+			member_button.grab_focus()
+			selected_combatant = member
+			loadMemberInfo(selected_combatant)
+
+func loadMemberInfo(member: ResCombatant, button: Button=null):
+	if changing_formation and selected_combatant == null:
+		selected_combatant = member
+		button.add_theme_color_override('font_color', Color.YELLOW)
+		button.add_theme_color_override('border_color', Color.YELLOW)
+	elif changing_formation and selected_combatant != null:
+		swapMembers(selected_combatant, member)
+		loadMembers(false)
+		await get_tree().process_frame
+		for child in member_container.get_children():
+			if child.text == selected_combatant.NAME: 
+				child.grab_focus()
+				break
+		selected_combatant = null
+	else:
+		selected_combatant = member
+		select_charms_panel.hide()
+		member_name.text = member.NAME
+		loadAbilities()
+		updateEquipped()
+
+func swapMembers(member_a: ResCombatant, member_b: ResCombatant):
+	var team = OverworldGlobals.getCombatantSquad('Player')
+	var member_a_pos = team.find(member_a)
+	team[team.find(member_b)] = member_a
+	team[member_a_pos] = member_b
 
 func loadAbilities():
 	clearButtons()
@@ -100,6 +126,18 @@ func createButton(ability, location):
 			description.text = ability.getRichDescription()
 	)
 	location.add_child(button)
+
+func createMemberButton(member: ResCombatant):
+	var button = OverworldGlobals.createCustomButton(load("res://design/CombatButtons.tres"))
+	button.alignment =HORIZONTAL_ALIGNMENT_RIGHT
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
+	button.custom_minimum_size.x = 64
+	button.text = member.NAME
+	member.initializeCombatant()
+	member.getAnimator().play('Idle')
+	button.add_child(member.SCENE)
+	button.pressed.connect(func(): loadMemberInfo(member, button))
+	return button
 
 func showCharmEquipMenu(slot_button: Button):
 	setFocusMode(equipped_charms, false)
@@ -328,3 +366,19 @@ func setFocusMode(container, mode):
 				child.focus_mode = Control.FOCUS_ALL
 			else:
 				child.focus_mode = Control.FOCUS_NONE
+
+
+func _on_change_formation_pressed():
+	changing_formation = !changing_formation
+	if changing_formation:
+		tabs.hide()
+		attrib_view.hide()
+		member_name.hide()
+		selected_combatant = null
+		formation_button.text = 'Finish'
+	else:
+		tabs.show()
+		attrib_view.show()
+		member_name.show()
+		formation_button.text = 'Change Formation'
+		loadMembers()

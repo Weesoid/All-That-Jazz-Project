@@ -61,3 +61,5 @@ func loadGame(saved_game: SavedGame):
 	done_loading.emit()
 	is_loading = false
 	OverworldGlobals.getCurrentMap().show()
+	if SettingsGlobals.cheat_mode:
+		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
