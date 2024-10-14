@@ -148,7 +148,7 @@ func on_enemy_turn():
 	if await checkWin(): return
 	
 	action_panel.hide()
-	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET)
+	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET, active_combatant)
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
 	if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
@@ -343,7 +343,7 @@ func createAbilityButton(ability: ResAbility)-> Button:
 	button.text = ability.NAME
 	button.pressed.connect(func(): forceCastAbility(ability))
 	button.focus_entered.connect(func():updateDescription(ability))
-	if !ability.ENABLED:
+	if !ability.ENABLED or !ability.canUse(active_combatant):
 		button.disabled = true
 	return button
 

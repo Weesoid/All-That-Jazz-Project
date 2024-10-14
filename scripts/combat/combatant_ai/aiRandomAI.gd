@@ -1,7 +1,7 @@
-static func selectAbility(abilities: Array[ResAbility]):
+static func selectAbility(abilities: Array[ResAbility], caster: ResCombatant):
 	abilities = abilities.filter(
 		func getEnabled(ability):
-			return ability.ENABLED
+			return ability.ENABLED and ability.canUse(caster)
 	)
 	randomize()
 	return abilities.pick_random()

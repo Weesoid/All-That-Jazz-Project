@@ -21,6 +21,9 @@ enum TargetGroup {
 @export var TARGET_GROUP: TargetGroup
 @export var CAN_TARGET_SELF: bool = false
 @export var TARGET_DEAD: bool = false
+@export var CASTER_POSITION: Dictionary = {'min':0, 'max':3}
+@export var TARGET_POSITION: Dictionary = {'min':0, 'max':3}
+@export var TENSION_COST: int = 0
 @export var INSTANT_CAST: bool = false
 @export var REQUIRED_LEVEL = 0
 
@@ -37,12 +40,14 @@ func execute():
 		TargetType.MULTI: multi_target.emit(self, 2)
 
 func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
-	if !TARGET_DEAD:
-		combatants = combatants.filter(func filterDead(combatant): return !combatant.isDead())
-	if !CAN_TARGET_SELF:
-		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
 	if TARGET_GROUP == TargetGroup.SELF:
 		return CombatGlobals.getCombatScene().active_combatant
+	if !TARGET_DEAD:
+		combatants = combatants.filter(func(combatant): return !combatant.isDead())
+	if !CAN_TARGET_SELF:
+		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
+	if TARGET_GROUP == TargetGroup.ALLIES or TARGET_GROUP == TargetGroup.ENEMIES:
+		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
 	
 	if is_caster_player:
 		match TARGET_GROUP:
@@ -60,6 +65,17 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResPlayerCombatant)
 				return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ALL: return combatants
+
+# NEW
+func canUse(caster: ResCombatant):
+	return isCombatantInRange(caster, 'caster')
+
+func isCombatantInRange(combatant: ResCombatant, target_range: String):
+	var position = CombatGlobals.getCombatScene().getCombatantPosition(combatant)
+	if target_range == 'caster':
+		return position >= CASTER_POSITION['min'] and position <= CASTER_POSITION['max']
+	elif target_range == 'target':
+		return position >= TARGET_POSITION['min'] and position <= TARGET_POSITION['max']
 
 func animateCast(caster: ResCombatant):
 	ABILITY_SCRIPT.animateCast(caster)
