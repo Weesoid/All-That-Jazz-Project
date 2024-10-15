@@ -48,9 +48,7 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		call_indicator.emit('Show', target)
 		playDodgeTween(target)
-		if target is ResPlayerCombatant and target.SCENE.blocking:
-			CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
-			CombatGlobals.addStatusEffect(target, 'Brace')
+		checkMissCases(target, caster, base_damage)
 		return false
 	else:
 		damageTarget(caster, target, base_damage, can_crit)
@@ -64,9 +62,7 @@ func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant =
 	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']):
 		manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 		playDodgeTween(target)
-		if target is ResPlayerCombatant and target.SCENE.blocking:
-			CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
-			CombatGlobals.addStatusEffect(target, 'Brace')
+		checkMissCases(target, caster, damage)
 		return false
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
@@ -111,12 +107,17 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	received_combatant_value.emit(target, caster, int(base_damage))
 	playHurtAnimation(target)
 
+func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
+	if target is ResPlayerCombatant and target.SCENE.blocking:
+		CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
+		CombatGlobals.addStatusEffect(target, 'Brace')
+	if target.getStatusEffectNames().has('Riposte'):
+		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
+
 func useDamageFormula(target: ResCombatant, damage):
-	print('Receiving: ', damage)
 	var out_damage = damage - (target.STAT_VALUES['grit'] * damage)
 	if out_damage < 0.0: 
 		out_damage = 0
-	print('After grit: ', out_damage)
 	return out_damage
 
 func calculateHealing(target:ResCombatant, base_healing):
@@ -185,10 +186,10 @@ func playHurtAnimation(target: ResCombatant):
 		OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2))
 		if !target.isDead():
 			playHurtTween(target)
-			target.SCENE.doAnimation('Hurt')
 		else:
 			getCombatScene().combat_camera.shake(25.0, 10.0)
 			if target is ResEnemyCombatant:
+				CombatGlobals.playAnimation(target, 'KO')
 				if target.ELITE:
 					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
 				else:
@@ -197,7 +198,6 @@ func playHurtAnimation(target: ResCombatant):
 				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
 	else:
 		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
-		playHurtTween(target)
 
 func playDodgeTween(target: ResCombatant):
 	OverworldGlobals.playSound('607862__department64__whipstick-28.ogg')
@@ -209,12 +209,13 @@ func playDodgeTween(target: ResCombatant):
 
 func playHurtTween(target: ResCombatant):
 	randomize()
+	var sprite = target.SCENE.get_node('Sprite2D')
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	var shake = Vector2(8, 0) + Vector2(randf_range(0, 8), 0)
 	var duration = 0.05 + randf_range(0, 0.025)
-	tween.tween_property(target.SCENE, 'position', target.SCENE.position + shake, duration)
-	tween.tween_property(target.SCENE, 'position', target.SCENE.position - shake, duration)
-	tween.tween_property(target.SCENE, 'position', Vector2(0, 0), duration)
+	tween.tween_property(sprite, 'position', sprite.position + shake, duration)
+	tween.tween_property(sprite, 'position', sprite.position - shake, duration)
+	tween.tween_property(sprite, 'position', Vector2(0, 0), duration)
 
 func playFadingTween(target: ResCombatant):
 	OverworldGlobals.playSound('woosh.ogg')
@@ -336,7 +337,10 @@ func removeStatusEffect(target: ResCombatant, status_name: String):
 func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')
 
-func getCombatantType(combatant: ResCombatant):
+func getCombatantType(combatant):
+	if combatant is CombatantScene:
+		combatant = combatant.combatant_resource
+	
 	if combatant is ResPlayerCombatant:
 		return 0
 	elif combatant is ResEnemyCombatant:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bkr53cekkxkug"]
+[gd_scene load_steps=19 format=3 uid="uid://bkr53cekkxkug"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatantScenePlayer.gd" id="1_kggmg"]
 [ext_resource type="Texture2D" uid="uid://bbcg77hqsgne0" path="res://images/animations/battler_willis.png" id="2_2pi78"]
@@ -518,6 +518,47 @@ tracks/7/keys = {
 "values": [false]
 }
 
+[sub_resource type="Animation" id="Animation_hpequ"]
+resource_name = "Fading"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [31]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -1), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1.04167), Vector2(1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ji3ch"]
 _data = {
 "Block": SubResource("Animation_lg5r5"),
@@ -526,6 +567,7 @@ _data = {
 "Cast_Misc": SubResource("Animation_2uapo"),
 "Cast_Ranged": SubResource("Animation_qjbtp"),
 "Cast_Weapon": SubResource("Animation_gbrj0"),
+"Fading": SubResource("Animation_hpequ"),
 "Hurt": SubResource("Animation_4tu1x"),
 "Idle": SubResource("Animation_5n8ny"),
 "Idle_Block": SubResource("Animation_4gv3t"),

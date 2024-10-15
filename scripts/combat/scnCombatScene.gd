@@ -135,14 +135,14 @@ func on_player_turn():
 	resetActionLog()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
-	OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
+	#OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play('ShowActionPanel')
 	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
 	await confirm
 	end_turn()
 
 func on_enemy_turn():
-	OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
+	#OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play_backwards('ShowActionPanel')
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	if await checkWin(): return
@@ -154,7 +154,14 @@ func on_enemy_turn():
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 	else:
 		target_combatant = valid_targets
-	if (target_combatant != null):
+	
+	if target_combatant != null:
+		executeAbility()
+		await confirm
+	else:
+		selected_ability = preload("res://resources/combat/abilities/Struggle.tres")
+		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
+		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 		executeAbility()
 		await confirm
 	
@@ -241,16 +248,15 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				combatant.ACTED = true
-				OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += combatant.getExperience()
+				OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += combatant.getExperience() # DONT ADD IMMEDIATELY
 				addDrop(combatant.getDrops())
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
-				combatant.ACTED = true
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
-				combatant.ACTED = true
+			combatant.ACTED = true
 
 #********************************************************************************
 # BASE SCENE NODE CONTROL
@@ -338,7 +344,6 @@ func getMoveAbilities():
 	secondary_panel_container.get_child(0).grab_focus()
 
 func createAbilityButton(ability: ResAbility)-> Button:
-	print(ability)
 	var button = OverworldGlobals.createCustomButton()
 	button.text = ability.NAME
 	button.pressed.connect(func(): forceCastAbility(ability))
@@ -488,7 +493,7 @@ func animateSecondaryPanel(animation: String):
 func getDeadCombatants():
 	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
 
-func addDrop(loot_drops: Dictionary):
+func addDrop(loot_drops: Dictionary): # DO NOT ADD IMMEDIATELY
 	for loot in loot_drops.keys():
 		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
 			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
@@ -609,7 +614,6 @@ func confirmCancelInputs():
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_tab"):
-		print('Blud')
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
 	

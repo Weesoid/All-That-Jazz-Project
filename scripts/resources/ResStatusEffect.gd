@@ -60,7 +60,7 @@ func tick(update_duration=true):
 	if !PERMANENT and update_duration: 
 		duration -= 1
 	
-	if STATUS_SCRIPT != null:
+	if STATUS_SCRIPT != null and !['Riposte'].has(NAME):
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false

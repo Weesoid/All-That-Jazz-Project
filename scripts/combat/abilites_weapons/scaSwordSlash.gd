@@ -23,4 +23,4 @@ static func skillCheck(target: CombatantScene , caster: CombatantScene, check: S
 			CombatGlobals.addStatusEffect(target.combatant_resource, 'Chilled')
 
 static func applyEffects(target: CombatantScene , caster: CombatantScene, _ability: ResAbility=null):
-	CombatGlobals.calculateDamage(caster, target, 5.0)
+	CombatGlobals.calculateDamage(caster, target, 100.0)

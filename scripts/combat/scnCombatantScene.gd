@@ -2,12 +2,15 @@ extends Node2D
 class_name CombatantScene
 
 @onready var animator = $AnimationPlayer
+@onready var collision = $CollisionShape2D
 @export var combatant_resource: ResCombatant
 
 var idle_animation: String = 'Idle'
 var hit_script: GDScript
 
 func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0)):
+	if combatant_resource.isDead(): return
+	
 	if target is CombatantScene: target = target.combatant_resource
 	var tween = create_tween()
 	if target is ResCombatant:
@@ -20,6 +23,8 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0)):
 	await tween.finished
 
 func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, data:Dictionary={}):
+	if combatant_resource.isDead() and !['Fading, KO'].has(animation): return
+	
 	if script != null: hit_script = script
 	if animation == 'Cast_Ranged': 
 		setProjectileTarget(data['target'], data['frame_time'])
@@ -29,7 +34,6 @@ func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, data:Di
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	animator.play('RESET')
 	animator.play(idle_animation)
-	#await get_tree().create_timer(0.5)
 	hit_script = null
 
 func setProjectileTarget(target: CombatantScene, frame_time: float):
@@ -54,12 +58,8 @@ func shootProjectile(target: CombatantScene):
 		projectile.rotation_degrees = 180
 	CombatGlobals.getCombatScene().add_child(projectile)
 
-func _process(_delta):
-	if combatant_resource.isDead():
-		doAnimation('KO', null)
-
 func _on_hit_box_body_entered(body):
-	if hit_script != null and body != self and body is CombatantScene: 
+	if hit_script != null and body != self and body is CombatantScene and CombatGlobals.getCombatantType(self) != CombatGlobals.getCombatantType(body): 
 		hit_script.applyEffects(body, self)
 
 func _to_string():

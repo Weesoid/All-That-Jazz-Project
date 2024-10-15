@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://7g4v80lvkotw"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaStruggle.gd" id="1_koxyd"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_so17t"]
+
+[resource]
+script = ExtResource("1_so17t")
+NAME = "Struggle"
+DESCRIPTION = ""
+ABILITY_SCRIPT = ExtResource("1_koxyd")
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = false
+TARGET_DEAD = false
+CASTER_POSITION = {
+"max": 3,
+"min": 0
+}
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 0
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

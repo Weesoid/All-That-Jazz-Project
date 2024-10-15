@@ -54,7 +54,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ENEMIES: 
 				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant).size() > 0:
-					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting'))
+					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant)
 				return combatants.filter(func isEnemy(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ALL: return combatants
 	else:

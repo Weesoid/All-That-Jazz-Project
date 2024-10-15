@@ -1,13 +1,15 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=5 format=3 uid="uid://cc7bsbfx2mbrk"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://cc7bsbfx2mbrk"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="1_lhtfv"]
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_s0jvy"]
 [ext_resource type="PackedScene" uid="uid://bkr53cekkxkug" path="res://scenes/combatants/FriendB.tscn" id="1_uh2xe"]
+[ext_resource type="Resource" uid="uid://demr7cq4c8udc" path="res://resources/combat/abilities/GuardSlash.tres" id="3_sqwjv"]
 [ext_resource type="Resource" uid="uid://d2xuqxaf6m1gc" path="res://resources/combat/abilities/Taunt.tres" id="3_t8uty"]
+[ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="4_plhc1"]
 
 [resource]
 script = ExtResource("1_lhtfv")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_t8uty"), ExtResource("1_s0jvy")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_t8uty"), ExtResource("1_s0jvy"), ExtResource("3_sqwjv"), ExtResource("4_plhc1")])
 MANDATORY = false
 NAME = "Hank"
 PACKED_SCENE = ExtResource("1_uh2xe")

@@ -14,5 +14,14 @@ TARGET_TYPE = 1
 TARGET_GROUP = 0
 CAN_TARGET_SELF = true
 TARGET_DEAD = false
+CASTER_POSITION = {
+"max": 3,
+"min": 0
+}
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 0
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0

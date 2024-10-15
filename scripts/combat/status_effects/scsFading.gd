@@ -2,7 +2,9 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.APPLY_ONCE:
 		CombatGlobals.manual_call_indicator.emit(target, 'Fading!', 'Show')
 		CombatGlobals.playFadingTween(target)
+		CombatGlobals.playAnimation(target, 'Fading')
 		CombatGlobals.modifyStat(target, {'hustle': -999.0}, status_effect.NAME)
+		target.SCENE.blocking = false
 	
 	CombatGlobals.manual_call_indicator.emit(target, 'Fading...', 'Resist')
 	var grit_normalized: float
@@ -42,5 +44,6 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	else:
 		CombatGlobals.playSecondWindTween(target)
 		CombatGlobals.addStatusEffect(target, 'SecondWind', true)
+		CombatGlobals.playAnimation(target, 'Idle')
 	
 	CombatGlobals.resetStat(target, status_effect.NAME)
