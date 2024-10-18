@@ -6,9 +6,9 @@ class_name ProjectileBattles
 
 func _on_body_entered(body):
 	if body is CombatantScene and CombatGlobals.getCombatantType(SHOOTER.combatant_resource) != CombatGlobals.getCombatantType(body.combatant_resource) and target == null:
-		hit_script.applyEffects(body, SHOOTER)
+		hit_script.applyEffects(SHOOTER, body, CombatGlobals.getCombatScene().selected_ability)
 	elif target != null and body == target:
-		hit_script.applyEffects(body, SHOOTER)
+		hit_script.applyEffects(SHOOTER, body, CombatGlobals.getCombatScene().selected_ability)
 		queue_free()
 
 func _exit_tree():

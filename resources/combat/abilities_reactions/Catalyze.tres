@@ -9,10 +9,25 @@ script = ExtResource("1_yro00")
 NAME = "Catalyze"
 DESCRIPTION = ""
 ANIMATION = ExtResource("2_yn6e8")
+GENERIC_EFFECT = {
+"attack_type": null,
+"damage": -1,
+"healing": -1,
+"status_effect": null
+}
 ABILITY_SCRIPT = ExtResource("1_08t8i")
 TARGET_TYPE = 1
 TARGET_GROUP = 1
 CAN_TARGET_SELF = false
 TARGET_DEAD = false
+CASTER_POSITION = {
+"max": 3,
+"min": 0
+}
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 0
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0

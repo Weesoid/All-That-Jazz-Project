@@ -10,7 +10,7 @@ var CLEARED_MAPS = []
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
 var EQUIPPED_CHARM: ResUtilityCharm
-var CURRENCY = 0
+var CURRENCY = 10000
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
@@ -25,7 +25,7 @@ var stamina_gain = 0.15
 signal level_up
 
 func _ready():
-	CURRENCY = 100
+	#CURRENCY = 100
 	
 	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
 	EQUIPPED_ARROW.STACK = 0

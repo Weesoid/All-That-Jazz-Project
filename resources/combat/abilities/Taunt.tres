@@ -1,16 +1,36 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://d2xuqxaf6m1gc"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://d2xuqxaf6m1gc"]
 
-[ext_resource type="Script" path="res://scripts/combat/abilities/scaTaunt.gd" id="1_4cqt5"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_8as3a"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_rnxwi"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_p87ke"]
+[ext_resource type="Resource" uid="uid://cux4moxbaqb8e" path="res://resources/combat/status_effects/Taunting.tres" id="3_dv6lh"]
+
+[sub_resource type="Resource" id="Resource_ril8r"]
+script = ExtResource("2_p87ke")
+target = 0
+status_effect = ExtResource("3_dv6lh")
+cast_animation = "Cast_Melee"
+sound_effect = ""
+animation_time = 0.0
 
 [resource]
 script = ExtResource("1_8as3a")
 NAME = "Taunt"
 DESCRIPTION = "Taunt all opposing targets to attacking you."
-ABILITY_SCRIPT = ExtResource("1_4cqt5")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_ril8r")])
+ABILITY_SCRIPT = ExtResource("1_rnxwi")
 TARGET_TYPE = 0
 TARGET_GROUP = 2
 CAN_TARGET_SELF = true
 TARGET_DEAD = false
+CASTER_POSITION = {
+"max": 3,
+"min": 0
+}
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 0
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0

@@ -55,7 +55,7 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		return true
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target, damage, can_crit = false, caster: ResCombatant = null, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false)-> bool:
+func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false)-> bool:
 	if !target is ResCombatant:
 		target = target.combatant_resource
 	

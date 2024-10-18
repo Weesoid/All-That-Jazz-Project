@@ -9,7 +9,7 @@
 
 [resource]
 script = ExtResource("4_kjlrm")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_g8dry"), ExtResource("2_acdde")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_g8dry"), ExtResource("2_acdde"), ExtResource("3_8phct")])
 FOLLOWER_PACKED_SCENE = ExtResource("4_nl1we")
 MANDATORY = false
 NAME = "Healer McHealer"

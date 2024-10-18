@@ -23,8 +23,8 @@ NAME = "Baddie"
 PACKED_SCENE = ExtResource("2_luqil")
 DESCRIPTION = "A non-descript baddie! Testicles!"
 STAT_VALUES = {
-"accuracy": 0.0,
-"brawn": 1.0,
+"accuracy": 0.95,
+"brawn": 0.25,
 "crit": 0.05,
 "dodge": 0.0,
 "grit": 0.25,

@@ -40,5 +40,5 @@ func block(bonus_grit: float=0.75):
 	block_timer.start()
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_accept') and blocking and allow_block and !CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant and block_timer.is_stopped():
+	if Input.is_action_just_pressed('ui_accept') and blocking and allow_block and !CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant and block_timer.is_stopped() and !combatant_resource.isDead():
 		block()

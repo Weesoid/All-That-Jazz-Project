@@ -12,6 +12,7 @@ STATUS_SCRIPT = ExtResource("1_hhq1d")
 TEXTURE = ExtResource("2_34oia")
 MAX_DURATION = 1
 EXTEND_DURATION = 1
+APPLY_EXTEND_DURATION = false
 MAX_RANK = 6
 ON_HIT = true
 APPLY_ONCE = false

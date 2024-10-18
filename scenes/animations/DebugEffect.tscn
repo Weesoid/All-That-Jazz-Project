@@ -108,6 +108,7 @@ script = ExtResource("1_7j3hs")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 0.415686, 1, 1)
 texture = ExtResource("2_urul8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -16,7 +16,8 @@ enum TargetGroup {
 @export var NAME: String
 @export var DESCRIPTION: String
 @export var ANIMATION: PackedScene
-@export var ABILITY_SCRIPT: GDScript
+@export var BASIC_EFFECTS: Array[ResAbilityEffect]
+@export var ABILITY_SCRIPT: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
 @export var CAN_TARGET_SELF: bool = false
@@ -27,6 +28,7 @@ enum TargetGroup {
 @export var INSTANT_CAST: bool = false
 @export var REQUIRED_LEVEL = 0
 
+var current_effect: ResAbilityEffect
 var ENABLED: bool = true
 var TARGETABLE
 
@@ -53,7 +55,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ENEMIES: 
-				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant).size() > 0:
+				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant).size() > 0 and TARGET_TYPE == TargetType.SINGLE:
 					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant)
 				return combatants.filter(func isEnemy(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ALL: return combatants
@@ -61,14 +63,17 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		match TARGET_GROUP:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ENEMIES: 
-				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting')).size() > 0:
+				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResPlayerCombatant).size() > 0 and TARGET_TYPE == TargetType.SINGLE:
 					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResPlayerCombatant)
 				return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ALL: return combatants
 
-# NEW
-func canUse(caster: ResCombatant):
-	return isCombatantInRange(caster, 'caster')
+func canUse(caster: ResCombatant, targets=null):
+	if targets == null or targets is ResCombatant:
+		return isCombatantInRange(caster, 'caster')
+	else:
+		var valid_targets = getValidTargets(targets, caster is ResPlayerCombatant)
+		return isCombatantInRange(caster, 'caster') and ((valid_targets is Array and !valid_targets.is_empty()) or (valid_targets is ResCombatant))
 
 func isCombatantInRange(combatant: ResCombatant, target_range: String):
 	var position = CombatGlobals.getCombatScene().getCombatantPosition(combatant)
@@ -77,22 +82,10 @@ func isCombatantInRange(combatant: ResCombatant, target_range: String):
 	elif target_range == 'target':
 		return position >= TARGET_POSITION['min'] and position <= TARGET_POSITION['max']
 
-func animateCast(caster: ResCombatant):
-	ABILITY_SCRIPT.animateCast(caster)
-
-func applyEffects(caster: ResCombatant, targets, animation_scene):
-	ABILITY_SCRIPT.applyEffects(caster, targets, animation_scene)
-
-func applyOverworldEffects():
-	ABILITY_SCRIPT.applyOverworldEffects()
-
 func getTargetType():
 	match TARGET_TYPE:
 		TargetType.SINGLE: return 1
 		TargetType.MULTI: return 2
-
-func getAnimator()-> AnimationPlayer:
-	return ANIMATION.get_node('AnimationPlayer')
 
 func _to_string():
 	return NAME

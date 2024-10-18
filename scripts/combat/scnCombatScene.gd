@@ -157,13 +157,12 @@ func on_enemy_turn():
 	
 	if target_combatant != null:
 		executeAbility()
-		await confirm
 	else:
-		selected_ability = preload("res://resources/combat/abilities/Struggle.tres")
+		selected_ability = load("res://resources/combat/abilities/Struggle.tres")
 		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 		executeAbility()
-		await confirm
+	await confirm
 	
 	end_turn()
 
@@ -348,7 +347,7 @@ func createAbilityButton(ability: ResAbility)-> Button:
 	button.text = ability.NAME
 	button.pressed.connect(func(): forceCastAbility(ability))
 	button.focus_entered.connect(func():updateDescription(ability))
-	if !ability.ENABLED or !ability.canUse(active_combatant):
+	if !ability.ENABLED or !ability.canUse(active_combatant, COMBATANTS):
 		button.disabled = true
 	return button
 
@@ -437,7 +436,7 @@ func skipTurn():
 func commandExecuteAbility(target, ability: ResAbility):
 	if ability.TARGET_TYPE == ability.TargetType.MULTI:
 		target = ability.getValidTargets(COMBATANTS, active_combatant is ResPlayerCombatant)
-	ability.applyEffects(
+	ability.ABILITY_SCRIPT.applyEffects(
 						null, 
 						target, 
 						ability.ANIMATION
@@ -719,6 +718,7 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 	if (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1):
 		var combatant_prev_pos = combatant.SCENE.global_position
 		var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+		var tween_a_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC) # ROTAT
 		match move:
 			1: 
 				var combatant_b
@@ -728,11 +728,15 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 					combatant_b = combatant_group[current_pos-1]
 				if combatant_b == null: combatant_b = combatant_group[current_pos-1]
 				tween_a.tween_property(combatant.SCENE, 'global_position', combatant_b.global_position, 0.18)
+				tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0.25, 0.15) # ROTAT
 				combatant.SCENE.reparent(combatant_group[current_pos-1])
 				if combatant_b is CombatantScene:
 					var tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+					var tween_b_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 					tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
+					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', -0.25, 0.15) # ROTAT
 					combatant_b.reparent(combatant_group[current_pos])
+					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
 			-1: 
 				var combatant_b
 				if combatant_group[current_pos+1].get_child_count() > 0:
@@ -740,11 +744,17 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 				else:
 					combatant_b = combatant_group[current_pos+1]
 				tween_a.tween_property(combatant.SCENE, 'global_position', combatant_b.global_position, 0.18)
+				tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', -0.25, 0.15)
 				combatant.SCENE.reparent(combatant_group[current_pos+1])
 				if combatant_b is CombatantScene:
 					var tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+					var tween_b_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC) # ROTAT
 					tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
+					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0.25, 0.15)# ROTAT
 					combatant_b.reparent(combatant_group[current_pos])
+					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
+		
+		tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
 	
 	await get_tree().create_timer(wait).timeout
 

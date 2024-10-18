@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://cncwh7dbs8oov"]
+
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="1_c16en"]
+[ext_resource type="PackedScene" uid="uid://bdtnlc1i6gy21" path="res://scenes/status_visuals/Overwatch.tscn" id="1_sarp4"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_chney"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsOverwatch.gd" id="2_mhihr"]
+
+[resource]
+script = ExtResource("2_chney")
+NAME = "Overwatch"
+DESCRIPTION = "Target will attack combatants within melee range."
+STATUS_SCRIPT = ExtResource("2_mhihr")
+PACKED_SCENE = ExtResource("1_sarp4")
+TEXTURE = ExtResource("1_c16en")
+MAX_DURATION = 0
+EXTEND_DURATION = 0
+APPLY_EXTEND_DURATION = false
+MAX_RANK = 0
+ON_HIT = false
+APPLY_ONCE = false
+TICK_PER_TURN = false
+TICK_ON_TURN_START = false
+PERMANENT = false
+LINGERING = false

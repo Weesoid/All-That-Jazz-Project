@@ -1,6 +1,3 @@
-static func animateCast(_caster: ResCombatant):
-	pass
-	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	OverworldGlobals.playSound('res://audio/sounds/442873__euanmj__puffofsmoke.ogg')
 	for target in targets:

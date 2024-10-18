@@ -1,13 +1,31 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://demr7cq4c8udc"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://demr7cq4c8udc"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_2b6qu"]
-[ext_resource type="Script" path="res://scripts/combat/abilities/scaGuardSlash.gd" id="1_5brkn"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_j5lm3"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_np0gy"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="3_lga0h"]
+[ext_resource type="Resource" uid="uid://dxbuny7c3eoa0" path="res://resources/combat/status_effects/Brace.tres" id="4_yv15g"]
+
+[sub_resource type="Resource" id="Resource_ahhik"]
+script = ExtResource("2_np0gy")
+damage_type = 0
+damage = 5
+can_miss = true
+can_crit = true
+cast_animation = ""
+
+[sub_resource type="Resource" id="Resource_e175x"]
+script = ExtResource("3_lga0h")
+target = 1
+status_effect = ExtResource("4_yv15g")
+cast_animation = ""
 
 [resource]
 script = ExtResource("1_2b6qu")
 NAME = "Guard Slash"
 DESCRIPTION = "Slash then guard!"
-ABILITY_SCRIPT = ExtResource("1_5brkn")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_ahhik"), SubResource("Resource_e175x")])
+ABILITY_SCRIPT = ExtResource("1_j5lm3")
 TARGET_TYPE = 0
 TARGET_GROUP = 1
 CAN_TARGET_SELF = false

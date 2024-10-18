@@ -6,7 +6,7 @@
 radius = 9.0
 height = 46.0
 
-[node name="Overguard" type="Area2D"]
+[node name="Area2D" type="Area2D"]
 script = ExtResource("1_mpbd5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -22,13 +22,16 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0)):
 	tween.tween_property(self, 'global_position', target.global_position + offset, duration)
 	await tween.finished
 
-func doAnimation(animation: String='Cast_Weapon', script: GDScript=null, data:Dictionary={}):
-	if combatant_resource.isDead() and !['Fading, KO'].has(animation): return
+func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
+	if combatant_resource.isDead() and !['Fading, KO'].has(animation) or animation == '': return
 	
 	if script != null: hit_script = script
-	if animation == 'Cast_Ranged': 
+	if animation == 'Cast_Ranged':
 		setProjectileTarget(data['target'], data['frame_time'])
-	animator.play(animation)
+	if data.keys().has('anim_speed'):
+		animator.play(animation, -1, data['anim_speed'])
+	else:
+		animator.play(animation, -1)
 	await animator.animation_finished
 	if CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
@@ -60,7 +63,7 @@ func shootProjectile(target: CombatantScene):
 
 func _on_hit_box_body_entered(body):
 	if hit_script != null and body != self and body is CombatantScene and CombatGlobals.getCombatantType(self) != CombatGlobals.getCombatantType(body): 
-		hit_script.applyEffects(body, self)
+		hit_script.applyEffects(self, body, CombatGlobals.getCombatScene().selected_ability)
 
 func _to_string():
 	return combatant_resource.NAME

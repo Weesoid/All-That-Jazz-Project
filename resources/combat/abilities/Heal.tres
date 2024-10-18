@@ -1,15 +1,26 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://bdhoedbmkwu7e"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://bdhoedbmkwu7e"]
 
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_6mhw1"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_l4g62"]
-[ext_resource type="Script" path="res://scripts/combat/abilities/scaHeal.gd" id="1_ykbgd"]
 [ext_resource type="PackedScene" uid="uid://c8hpqomh4qilw" path="res://scenes/animations/Heal.tscn" id="2_0ft6v"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="3_07xaq"]
+[ext_resource type="PackedScene" uid="uid://h4wwypopcwgp" path="res://scenes/animations/DebugEffect.tscn" id="3_e2srm"]
+
+[sub_resource type="Resource" id="Resource_tqwmk"]
+script = ExtResource("3_07xaq")
+heal = 10
+cast_animation = "Cast_Misc"
+sound_effect = ""
+animation = ExtResource("3_e2srm")
+animation_time = 0.25
 
 [resource]
 script = ExtResource("1_l4g62")
 NAME = "Healing Wave"
 DESCRIPTION = "Send out a healing wave!"
 ANIMATION = ExtResource("2_0ft6v")
-ABILITY_SCRIPT = ExtResource("1_ykbgd")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_tqwmk")])
+ABILITY_SCRIPT = ExtResource("1_6mhw1")
 TARGET_TYPE = 1
 TARGET_GROUP = 0
 CAN_TARGET_SELF = true

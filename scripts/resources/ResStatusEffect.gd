@@ -72,8 +72,11 @@ func animateStatusEffect():
 		return
 	
 	VISUALS.global_position = Vector2(0, 0)
-	VISUALS.get_node('AnimationPlayer').play('Show')
 	afflicted_combatant.SCENE.add_child(VISUALS)
+	if VISUALS.has_node('AnimationPlayer'):
+		VISUALS.get_node('AnimationPlayer').play('Show')
+	if VISUALS is DynamicStatusEffect:
+		VISUALS.status_effect = self
 
 func _to_string():
 	return NAME

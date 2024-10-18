@@ -1,6 +1,3 @@
-static func animateCast(_caster: ResCombatant):
-	pass
-	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	for target in targets:
 		var damage = target.BASE_STAT_VALUES['health'] * 0.15

@@ -4,8 +4,6 @@ class_name ResCharm
 @export var STATUS_EFFECT: ResStatusEffect
 
 func updateItem():
-	print(resource_path)
-	print(PARENT_ITEM)
 	NAME = PARENT_ITEM.NAME
 	ICON = PARENT_ITEM.ICON
 	DESCRIPTION = PARENT_ITEM.DESCRIPTION

@@ -1,6 +1,3 @@
-static func animateCast(_caster: ResCombatant):
-	pass
-	
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	var effects = [preload("res://resources/combat/status_effects/Chilled.tres"), preload("res://resources/combat/status_effects/Singed.tres"), preload("res://resources/combat/status_effects/Poison.tres")]
 	for target in targets:
