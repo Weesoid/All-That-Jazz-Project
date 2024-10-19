@@ -10,7 +10,7 @@ class_name CombatBar
 @onready var secondary_prompts = $Marker2D
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
 @onready var select_target = $SelectTarget
-@onready var turn_charges = $HealthBar/AbsoluteHealth/TurnCharges
+@onready var turn_charges: CustomCountBar = $HealthBar/AbsoluteHealth/TurnCharges
 var indicator_animation = "Show"
 var received_combatant: ResCombatant
 var attached_combatant: ResCombatant
@@ -87,6 +87,6 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 		var y_placement = 0
 		for child in secondary_prompts.get_children():
-			y_placement -= 24
+			y_placement -= 16
 		secondary_prompts.add_child(secondary_indicator)
 		secondary_indicator.playAnimation(indicator.global_position + Vector2(0, y_placement), text, animation)

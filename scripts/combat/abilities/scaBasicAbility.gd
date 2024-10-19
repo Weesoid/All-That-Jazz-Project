@@ -58,10 +58,10 @@ static func applyToTarget(caster, target, ability: ResAbility):
 	
 	elif ability.current_effect is ResApplyStatusEffect:
 		if ability.current_effect.target == ability.current_effect.Target.TARGET:
-			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.status_effect.NAME, true)
+			target = target.combatant_resource
 		elif ability.current_effect.target == ability.current_effect.Target.CASTER:
-			CombatGlobals.addStatusEffect(caster.combatant_resource, ability.current_effect.status_effect.NAME, true)
-	
+			target = caster.combatant_resource
+		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect, true)
 	elif ability.current_effect is ResHealEffect:
 		CombatGlobals.calculateHealing(target, ability.current_effect.heal)
 

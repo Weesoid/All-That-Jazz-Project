@@ -24,7 +24,7 @@ ABILITY_SCRIPT = ExtResource("1_6mhw1")
 TARGET_TYPE = 1
 TARGET_GROUP = 0
 CAN_TARGET_SELF = true
-TARGET_DEAD = false
+TARGET_DEAD = true
 CASTER_POSITION = {
 "max": 3,
 "min": 0

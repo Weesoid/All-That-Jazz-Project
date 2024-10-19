@@ -121,6 +121,9 @@ func useDamageFormula(target: ResCombatant, damage):
 	return out_damage
 
 func calculateHealing(target:ResCombatant, base_healing):
+	if target.STAT_VALUES['health'] < 0:
+		target.STAT_VALUES['health'] = 0
+	
 	base_healing = valueVariate(base_healing, 0.15)
 	base_healing *= target.STAT_VALUES['heal mult']
 	
@@ -274,7 +277,7 @@ func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, _base_ch
 	if effect is String:
 		status_effect = load(str("res://resources/combat/status_effects/"+effect+".tres")).duplicate()
 	elif effect is ResStatusEffect:
-		status_effect = effect
+		status_effect = effect.duplicate()
 	
 	if !target.getStatusEffectNames().has(status_effect.NAME):
 		status_effect.afflicted_combatant = target

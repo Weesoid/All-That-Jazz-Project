@@ -1,9 +1,8 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.APPLY_ONCE:
-		CombatGlobals.manual_call_indicator.emit(target, 'Fading!', 'Show')
 		CombatGlobals.playFadingTween(target)
 		CombatGlobals.playAnimation(target, 'Fading')
-		CombatGlobals.modifyStat(target, {'hustle': -999.0}, status_effect.NAME)
+		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
 		target.SCENE.blocking = false
 	
 	CombatGlobals.manual_call_indicator.emit(target, 'Fading...', 'Resist')
@@ -12,16 +11,14 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		grit_normalized = 1.0
 	else:
 		grit_normalized = target.BASE_STAT_VALUES['grit']
-	
+	#grit_normalized = 1.0
 	var grit_bonus = (grit_normalized - 0.0) / (1.0 - 0.0) * 0.5
-	if CombatGlobals.randomRoll(0.25 + grit_bonus) and canAddQTE(status_effect):
+	if CombatGlobals.randomRoll(0.15 + grit_bonus) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)
 		CombatGlobals.getCombatScene().add_child(qte)
-		#OverworldGlobals.playSound('641011__metkir__crying-sound-0.mp3')
 		await CombatGlobals.qte_finished
-	
 		if qte.points >= 1:
 			CombatGlobals.manual_call_indicator.emit(target, 'Saved!', 'QTE')
 			target.STAT_VALUES['health'] = target.BASE_STAT_VALUES['health'] * 0.3
@@ -29,16 +26,16 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 				target.STAT_VALUES['health'] = 1
 			
 			CombatGlobals.resetStat(target, status_effect.NAME)
-	
 		qte.queue_free()
-		status_effect.duration = 0
-		status_effect.tick()
+		status_effect.removeStatusEffect()
+	elif target.STAT_VALUES['health'] > 0:
+		status_effect.removeStatusEffect()
 
 static func canAddQTE(status_effect: ResStatusEffect)-> bool:
 	return status_effect.duration != status_effect.MAX_DURATION - 1 and status_effect.duration > 0 and !CombatGlobals.getCombatScene().has_node('QTE') and CombatGlobals.getCombatScene().isCombatValid()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if target.STAT_VALUES['health'] <= 0.0:
+	if target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.manual_call_indicator.emit(target, 'Out cold!', 'Resist')
 		CombatGlobals.addStatusEffect(target, 'KnockOut', true)
 	else:
@@ -47,3 +44,5 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.playAnimation(target, 'Idle')
 	
 	CombatGlobals.resetStat(target, status_effect.NAME)
+	if CombatGlobals.getCombatScene().combat_result == 1: 
+		CombatGlobals.calculateHealing(target, target.BASE_STAT_VALUES['health']*0.25)

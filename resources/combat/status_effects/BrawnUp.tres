@@ -25,7 +25,7 @@ message = ""
 
 [resource]
 script = ExtResource("1_c8x4r")
-NAME = "BrawnUp"
+NAME = "Buff Up"
 DESCRIPTION = "Target has increased BRAWN."
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_0hi4l")])
 STATUS_SCRIPT = ExtResource("2_5nbx6")

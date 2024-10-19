@@ -168,7 +168,8 @@ func on_enemy_turn():
 
 func end_turn(combatant_act=true):
 	for combatant in COMBATANTS:
-		if combatant.isDead(): continue
+		if combatant.isDead(): 
+			continue
 		tickStatusEffects(combatant, false, true)
 		CombatGlobals.dialogue_signal.emit(combatant)
 	
@@ -203,7 +204,8 @@ func end_turn(combatant_act=true):
 	CombatGlobals.dialogue_signal.emit(turn_title)
 	
 	for combatant in COMBATANTS:
-		if combatant.isDead(): continue
+		if combatant.isDead(): 
+			continue
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
 		CombatGlobals.dialogue_signal.emit(combatant)
@@ -234,6 +236,8 @@ func end_turn(combatant_act=true):
 
 func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[0][0]
+	print('Current acc: ', active_combatant)
+	if active_combatant.isDead(): print('Ticking dead combatant!')
 	if tick_effect:
 		tickStatusEffects(active_combatant)
 		removeDeadCombatants()
@@ -255,7 +259,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
-			combatant.ACTED = true
+				combatant.ACTED = true
 
 #********************************************************************************
 # BASE SCENE NODE CONTROL

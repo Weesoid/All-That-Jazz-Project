@@ -9,10 +9,20 @@ script = ExtResource("3_yst25")
 NAME = "Slash Blade Slash"
 DESCRIPTION = "Slash em' up!"
 ANIMATION = ExtResource("2_xsh4e")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
 ABILITY_SCRIPT = ExtResource("1_deot3")
 TARGET_TYPE = 0
-TARGET_GROUP = 1
+TARGET_GROUP = 3
 CAN_TARGET_SELF = false
 TARGET_DEAD = false
+CASTER_POSITION = {
+"max": 3,
+"min": 0
+}
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 0
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0
