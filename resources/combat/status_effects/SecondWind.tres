@@ -12,7 +12,7 @@ status_change = {
 "brawn": 0.0,
 "crit": 0.0,
 "dodge": 0.0,
-"grit": 1.0,
+"grit": 0.25,
 "handling": 0,
 "heal mult": 0.0,
 "health": 0,
@@ -36,6 +36,5 @@ APPLY_EXTEND_DURATION = false
 MAX_RANK = 0
 ON_HIT = false
 TICK_PER_TURN = false
-TICK_ON_TURN_START = false
 PERMANENT = false
 LINGERING = false

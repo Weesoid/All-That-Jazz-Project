@@ -8,6 +8,7 @@
 script = ExtResource("2_8trds")
 NAME = "Brace"
 DESCRIPTION = "Target is bracing for an attack."
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("1_hhq1d")
 TEXTURE = ExtResource("2_34oia")
 MAX_DURATION = 1
@@ -15,8 +16,6 @@ EXTEND_DURATION = 1
 APPLY_EXTEND_DURATION = false
 MAX_RANK = 6
 ON_HIT = true
-APPLY_ONCE = false
 TICK_PER_TURN = false
-TICK_ON_TURN_START = false
 PERMANENT = false
 LINGERING = false

@@ -168,9 +168,7 @@ func on_enemy_turn():
 
 func end_turn(combatant_act=true):
 	for combatant in COMBATANTS:
-		if combatant.isDead(): 
-			continue
-		tickStatusEffects(combatant, false, true)
+		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
 	
 	combat_camera.position = camera_position
@@ -236,8 +234,6 @@ func end_turn(combatant_act=true):
 
 func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[0][0]
-	print('Current acc: ', active_combatant)
-	if active_combatant.isDead(): print('Ticking dead combatant!')
 	if tick_effect:
 		tickStatusEffects(active_combatant)
 		removeDeadCombatants()
@@ -589,9 +585,11 @@ func clearStatusEffects(combatant: ResCombatant):
 	while !combatant.STATUS_EFFECTS.is_empty():
 		combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
-func tickStatusEffects(combatant: ResCombatant, per_turn = false, on_start = false):
+func tickStatusEffects(combatant: ResCombatant, per_turn = false):
 	for effect in combatant.STATUS_EFFECTS:
-		if (per_turn and !effect.TICK_PER_TURN) or (on_start and !effect.TICK_ON_TURN_START): continue
+		if (per_turn and !effect.TICK_PER_TURN) or (!per_turn and effect.TICK_PER_TURN): 
+			continue
+		
 		effect.tick()
 
 func refreshInstantCasts(combatant: ResCombatant):

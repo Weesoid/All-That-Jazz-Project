@@ -19,15 +19,21 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 
 static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffect):
 	if (!effect.apply_once) or (effect.apply_once and status_effect.APPLY_ONCE):
-		var message
-		if effect.message != '':
+		var message = ''
+		if effect.message != '' and avoidMessageSpam(status_effect):
 			message = effect.message
-		else:
+		elif avoidMessageSpam(status_effect):
 			message = status_effect.NAME
-		CombatGlobals.manual_call_indicator.emit(status_effect.afflicted_combatant, message, 'Show')
+		if message != '':
+			CombatGlobals.manual_call_indicator.emit(status_effect.afflicted_combatant, message, 'Show')
+		
 		return true
 	else:
 		return false
+
+static func avoidMessageSpam(status_effect: ResStatusEffect):
+	return (status_effect.TICK_PER_TURN and status_effect.APPLY_ONCE) or !status_effect.TICK_PER_TURN
+
 
 static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffect):
 	var scale

@@ -46,7 +46,7 @@ static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
 static func applyToTarget(caster, target, ability: ResAbility):
 	if ability.current_effect is ResDamageEffect:
 		if CombatGlobals.calculateDamage(caster, target, ability.current_effect.damage, ability.current_effect.can_miss, ability.current_effect.can_crit) and ability.current_effect.apply_status != null:
-			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status.NAME, true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
 	
 	elif ability.current_effect is ResCustomDamageEffect:
 		if !ability.current_effect.use_caster:
@@ -54,7 +54,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 		else:
 			caster = caster.combatant_resource
 		if CombatGlobals.calculateRawDamage(target, ability.current_effect.damage, caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, ability.current_effect.can_miss, ability.current_effect.variation, ability.current_effect.message, ability.current_effect.trigger_on_hits) and ability.current_effect.apply_status != null:
-			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status.NAME, true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
 	
 	elif ability.current_effect is ResApplyStatusEffect:
 		if ability.current_effect.target == ability.current_effect.Target.TARGET:
@@ -62,6 +62,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 		elif ability.current_effect.target == ability.current_effect.Target.CASTER:
 			target = caster.combatant_resource
 		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect, true)
+	
 	elif ability.current_effect is ResHealEffect:
 		CombatGlobals.calculateHealing(target, ability.current_effect.heal)
 

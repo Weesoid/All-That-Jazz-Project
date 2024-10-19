@@ -22,5 +22,4 @@ func getStatChanges(current_rank: int=0):
 			out[key] = status_change[key]
 			if current_rank != 0:
 				out[key] *= current_rank
-	print(out)
 	return out

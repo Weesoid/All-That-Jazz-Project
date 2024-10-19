@@ -328,7 +328,7 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1
-			print('Rankin up!')
+			CombatGlobals.manual_call_indicator.emit(afflicted_target, '%s Rank Up!' % status_effect.NAME , 'Show')
 
 func removeStatusEffect(target: ResCombatant, status_name: String):
 	for status in target.STATUS_EFFECTS:

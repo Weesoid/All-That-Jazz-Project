@@ -1,7 +1,8 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	CombatGlobals.modifyStat(target, {'hustle': -100}, status_effect.NAME)
-	#endEffects(target, status_effect)
+	if CombatGlobals.getCombatScene().active_combatant == target:
+		CombatGlobals.manual_call_indicator.emit(target, 'Dazed!', 'Show')
+		status_effect.removeStatusEffect()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	CombatGlobals.manual_call_indicator.emit(target, 'DAZED!', 'Show')
 	CombatGlobals.resetStat(target, status_effect.NAME)
