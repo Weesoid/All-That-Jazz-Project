@@ -3,19 +3,21 @@ class_name ResStatusEffect
 
 @export var NAME: String
 @export var DESCRIPTION: String
-@export var STATUS_SCRIPT: GDScript
-@export var PACKED_SCENE: PackedScene # Turn this into a Node2D
+@export var BASIC_EFFECTS: Array[ResBasicEffect]
+@export var STATUS_SCRIPT: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
+@export var PACKED_SCENE: PackedScene
 @export var TEXTURE: Texture = preload("res://images/sprites/unknown_icon.png")
 @export var MAX_DURATION: int
 @export var EXTEND_DURATION: int = 0
 @export var APPLY_EXTEND_DURATION:  bool = false
 @export var MAX_RANK: int
 @export var ON_HIT: bool
-@export var APPLY_ONCE: bool
 @export var TICK_PER_TURN: bool
 @export var TICK_ON_TURN_START: bool
 @export var PERMANENT: bool = false
 @export var LINGERING: bool = false
+
+var APPLY_ONCE = true
 var duration
 var current_rank = 1
 var afflicted_combatant: ResCombatant

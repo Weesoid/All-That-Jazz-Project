@@ -269,16 +269,14 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1)
 #********************************************************************************
 # STATUS EFFECT HANDLING
 #********************************************************************************
-func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
-	return load(str("res://resources/combat/status_effects/"+status_effect_name+".tres")).duplicate()
-
-func addStatusEffect(target: ResCombatant, status_effect_name: String, tick_on_apply=false, _base_chance = 2.0):
-	#if base_chance != 2.0 and !randomRoll(base_chance-target.STAT_VALUES['exposure']):
-	#	manual_call_indicator.emit(target, '%s  Resisted!' % status_effect_name, 'Whiff')
-	#	return
+func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, _base_chance = 2.0):
+	var status_effect
+	if effect is String:
+		status_effect = load(str("res://resources/combat/status_effects/"+effect+".tres")).duplicate()
+	elif effect is ResStatusEffect:
+		status_effect = effect
 	
-	var status_effect: ResStatusEffect = load(str("res://resources/combat/status_effects/"+status_effect_name+".tres")).duplicate()
-	if status_effect.NAME not in target.getStatusEffectNames():
+	if !target.getStatusEffectNames().has(status_effect.NAME):
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.STATUS_EFFECTS.append(status_effect)
@@ -327,6 +325,7 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1
+			print('Rankin up!')
 
 func removeStatusEffect(target: ResCombatant, status_name: String):
 	for status in target.STATUS_EFFECTS:

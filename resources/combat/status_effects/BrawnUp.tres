@@ -1,20 +1,42 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://c31u7ngixdwo8"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://c31u7ngixdwo8"]
 
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_8nnvy"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_c8x4r"]
-[ext_resource type="Script" path="res://scripts/combat/status_effects/scsStatModifier.gd" id="1_kwaxl"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_4k4s8"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_5nbx6"]
+
+[sub_resource type="Resource" id="Resource_0hi4l"]
+script = ExtResource("1_8nnvy")
+status_change = {
+"accuracy": 0.0,
+"brawn": 0.15,
+"crit": 0.0,
+"dodge": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal mult": 0.0,
+"health": 0,
+"hustle": 0,
+"resist": 0.0
+}
+rank_scaling = true
+apply_once = false
+message = ""
 
 [resource]
 script = ExtResource("1_c8x4r")
-NAME = "Buff Up"
-DESCRIPTION = ""
-STATUS_SCRIPT = ExtResource("1_kwaxl")
+NAME = "BrawnUp"
+DESCRIPTION = "Target has increased BRAWN."
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_0hi4l")])
+STATUS_SCRIPT = ExtResource("2_5nbx6")
 TEXTURE = ExtResource("2_4k4s8")
 MAX_DURATION = 6
+EXTEND_DURATION = 0
+APPLY_EXTEND_DURATION = false
 MAX_RANK = 2
 ON_HIT = false
-APPLY_ONCE = true
 TICK_PER_TURN = false
+TICK_ON_TURN_START = false
 PERMANENT = false
 LINGERING = false
 metadata/_editor_prop_ptr_ICON = NodePath("")

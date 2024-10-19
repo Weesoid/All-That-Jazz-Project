@@ -9,7 +9,7 @@
 script = ExtResource("2_b4evy")
 target = 0
 status_effect = ExtResource("3_x40cs")
-cast_animation = ""
+cast_animation = "Cast_Block"
 sound_effect = ""
 animation_time = 0.0
 
