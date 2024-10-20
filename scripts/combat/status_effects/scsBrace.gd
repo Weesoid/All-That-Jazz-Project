@@ -2,7 +2,7 @@ static func applyEffects(target, _status_effect):
 	if !target.hasStatusEffect('Guard Break'):
 		target.SCENE.setBlocking(true)
 	else:
-		CombatGlobals.removeStatusEffect(target, 'Brace')
+		CombatGlobals.removeStatusEffect(target, 'Guard')
 
 static func applyHitEffects(target, _caster, _value, status_effect):
 	var bonus = 0.1*status_effect.current_rank

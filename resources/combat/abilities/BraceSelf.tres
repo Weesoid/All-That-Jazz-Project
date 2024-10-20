@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://glgmswqt1vcu"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://n15uy40oimtq"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_v8or2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_b4evy"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_ellp4"]
-[ext_resource type="Resource" uid="uid://dxbuny7c3eoa0" path="res://resources/combat/status_effects/Brace.tres" id="3_x40cs"]
+[ext_resource type="Resource" uid="uid://dxbuny7c3eoa0" path="res://resources/combat/status_effects/Guard.tres" id="3_x40cs"]
 
 [sub_resource type="Resource" id="Resource_3a86h"]
 script = ExtResource("2_b4evy")

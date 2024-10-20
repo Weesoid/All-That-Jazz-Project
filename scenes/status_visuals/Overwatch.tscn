@@ -3,13 +3,14 @@
 [ext_resource type="Script" path="res://scripts/combat/scnDynamicStatusEffect.gd" id="1_mpbd5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cp2nq"]
-radius = 9.0
-height = 46.0
+radius = 15.0
+height = 48.0
 
 [node name="Area2D" type="Area2D"]
 script = ExtResource("1_mpbd5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15, 0)
 shape = SubResource("CapsuleShape2D_cp2nq")
 debug_color = Color(0.619608, 0.352941, 1, 0.419608)
 

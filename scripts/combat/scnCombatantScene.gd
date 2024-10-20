@@ -38,6 +38,9 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	animator.play('RESET')
 	animator.play(idle_animation)
 	hit_script = null
+	
+	if animation.contains('Melee'):
+		await get_tree().create_timer(0.1).timeout
 
 func setProjectileTarget(target: CombatantScene, frame_time: float):
 	var anim: Animation = animator.get_animation("Cast_Ranged")

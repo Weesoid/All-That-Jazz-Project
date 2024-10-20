@@ -1,5 +1,5 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if !status_effect.ON_HIT: runEffects(target, status_effect)
+	if status_effect.EFFECT_TYPE != 1: runEffects(target, status_effect)
 
 static func applyHitEffects(target: ResCombatant, _caster: ResCombatant, _value, status_effect: ResStatusEffect):
 	runEffects(target, status_effect)

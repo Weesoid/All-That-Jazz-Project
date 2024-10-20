@@ -3,5 +3,5 @@ static func animate(caster, _target, _ability):
 	applyEffects(caster, _target, _ability)
 
 static func applyEffects(caster, _target, _ability):
-	CombatGlobals.addStatusEffect(caster.combatant_resource, 'Brace', true)
+	CombatGlobals.addStatusEffect(caster.combatant_resource, 'Guard', true)
 	CombatGlobals.ability_finished.emit()

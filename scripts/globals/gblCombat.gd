@@ -110,7 +110,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 	if target is ResPlayerCombatant and target.SCENE.blocking:
 		CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
-		CombatGlobals.addStatusEffect(target, 'Brace')
+		CombatGlobals.addStatusEffect(target, 'Guard')
 	if target.getStatusEffectNames().has('Riposte'):
 		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
 
@@ -187,6 +187,10 @@ func playHurtAnimation(target: ResCombatant):
 	if !target.STAT_MODIFIERS.keys().has('block'):
 		randomize()
 		OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2))
+		if target is ResEnemyCombatant:
+			OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
+		else:
+			OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
 		if !target.isDead():
 			playHurtTween(target)
 		else:

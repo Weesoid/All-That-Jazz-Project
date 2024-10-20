@@ -10,6 +10,7 @@ damage_type = 0
 damage = 5
 can_miss = true
 can_crit = true
+return_pos = true
 sound_effect = ""
 animation_time = 0.0
 

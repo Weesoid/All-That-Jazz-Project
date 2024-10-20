@@ -71,7 +71,7 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 	if damage_effect.damage_type == damage_effect.DamageType.MELEE:
 		await caster.moveTo(target)
 		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT)
-		await caster.moveTo(caster.get_parent())
+		if damage_effect.return_pos: await caster.moveTo(caster.get_parent())
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
 		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7})
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:

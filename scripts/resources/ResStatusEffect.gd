@@ -1,18 +1,25 @@
 extends Resource
 class_name ResStatusEffect
 
+enum EffectType {
+	STANDARD,
+	ON_HIT,
+	DYNAMIC
+}
+
 @export var NAME: String
 @export var DESCRIPTION: String
 @export var BASIC_EFFECTS: Array[ResBasicEffect]
 @export var STATUS_SCRIPT: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
 @export var PACKED_SCENE: PackedScene
+@export var EFFECT_TYPE: EffectType
 @export var TEXTURE: Texture = preload("res://images/sprites/unknown_icon.png")
 @export var MAX_DURATION: int
 @export var EXTEND_DURATION: int = 0
 @export var APPLY_EXTEND_DURATION:  bool = false
 @export var MAX_RANK: int
-@export var ON_HIT: bool
 @export var TICK_PER_TURN: bool
+@export var DO_TICKS: bool = true
 @export var PERMANENT: bool = false
 @export var LINGERING: bool = false
 
@@ -33,8 +40,10 @@ func initializeStatus():
 		VISUALS = PACKED_SCENE.instantiate()
 		animateStatusEffect()
 	
-	if ON_HIT:
+	if EFFECT_TYPE == EffectType.ON_HIT:
 		CombatGlobals.received_combatant_value.connect(onHitTick)
+	elif EFFECT_TYPE == EffectType.DYNAMIC:
+		VISUALS.status_effect = self
 	
 	if !APPLY_EXTEND_DURATION:
 		duration = MAX_DURATION
@@ -46,7 +55,7 @@ func onHitTick(combatant, caster, received_value):
 		STATUS_SCRIPT.applyHitEffects(afflicted_combatant, caster, received_value, self)
 
 func removeStatusEffect():
-	if ON_HIT:
+	if EFFECT_TYPE == EffectType.ON_HIT:
 		CombatGlobals.received_combatant_value.disconnect(onHitTick)
 	
 	if STATUS_SCRIPT != null:
@@ -61,7 +70,7 @@ func tick(update_duration=true):
 	if !PERMANENT and update_duration: 
 		duration -= 1
 	
-	if STATUS_SCRIPT != null and !['Riposte'].has(NAME):
+	if STATUS_SCRIPT != null and DO_TICKS:
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
