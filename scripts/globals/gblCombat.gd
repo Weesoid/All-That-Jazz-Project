@@ -24,6 +24,7 @@ signal call_indicator(animation: String, combatant: ResCombatant)
 signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
 signal ability_finished
+signal ability_casted(ability: ResAbility)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -351,3 +352,11 @@ func getCombatantType(combatant):
 		return 0
 	elif combatant is ResEnemyCombatant:
 		return 1
+
+func isSameCombatantType(combatant_a, combatant_b):
+	if combatant_a is CombatantScene:
+		combatant_a = combatant_a.combatant_resource
+	if combatant_b is CombatantScene:
+		combatant_b = combatant_b.combatant_resource
+	
+	return getCombatantType(combatant_a) == getCombatantType(combatant_b)

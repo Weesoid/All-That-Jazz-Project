@@ -8,8 +8,8 @@ class_name CombatantScene
 var idle_animation: String = 'Idle'
 var hit_script: GDScript
 
-func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0)):
-	if combatant_resource.isDead(): return
+func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
+	if combatant_resource.isDead() and !ignore_dead: return
 	
 	if target is CombatantScene: target = target.combatant_resource
 	var tween = create_tween()
@@ -24,6 +24,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0)):
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	if combatant_resource.isDead() and !['Fading, KO'].has(animation) or animation == '': return
+	if !animator.get_animation_list().has(animation): animation = 'Cast_Misc'
 	
 	if script != null: hit_script = script
 	if animation == 'Cast_Ranged':
@@ -65,7 +66,7 @@ func shootProjectile(target: CombatantScene):
 	CombatGlobals.getCombatScene().add_child(projectile)
 
 func _on_hit_box_body_entered(body):
-	if hit_script != null and body != self and body is CombatantScene and CombatGlobals.getCombatantType(self) != CombatGlobals.getCombatantType(body): 
+	if hit_script != null and body != self and body is CombatantScene and !CombatGlobals.isSameCombatantType(self, body): 
 		hit_script.applyEffects(self, body, CombatGlobals.getCombatScene().selected_ability)
 
 func _to_string():

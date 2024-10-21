@@ -408,6 +408,7 @@ func executeAbility():
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
 	else:
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant, selected_ability)
+	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
@@ -423,6 +424,7 @@ func executeAbility():
 		await DialogueManager.dialogue_ended
 	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
 		target_combatant.SCENE.allow_block = false
+	
 	confirm.emit()
 
 func skipTurn():

@@ -24,7 +24,7 @@ TARGET_GROUP = 2
 CAN_TARGET_SELF = false
 TARGET_DEAD = false
 CASTER_POSITION = {
-"max": 3,
+"max": 1,
 "min": 0
 }
 TARGET_POSITION = {
