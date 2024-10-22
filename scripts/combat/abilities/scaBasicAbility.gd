@@ -2,9 +2,11 @@
 static func animate(caster: CombatantScene, target, ability:ResAbility):
 	for effect in ability.BASIC_EFFECTS:
 		ability.current_effect = effect
+		if effect.animate_on == 1:
+			await playAnimation(ability, caster)
+		
 		if effect.sound_effect != '': 
 			OverworldGlobals.playSound(effect.sound_effect)
-		
 		if effect is ResDamageEffect:
 			await doAttackAnimations(caster, target, ability, effect)
 		elif effect is ResCustomDamageEffect:
@@ -31,16 +33,18 @@ static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
 	if target is Array:
 		for t in target: 
 			applyToTarget(caster, t, ability)
-			if ability.current_effect.animation != null and ability.current_effect.animation_time >= 0.0:
-				await CombatGlobals.playAbilityAnimation(t, ability.current_effect.animation, ability.current_effect.animation_time)
-			elif ability.current_effect.animation != null:
-				CombatGlobals.playAbilityAnimation(t, ability.current_effect.animation, ability.current_effect.animation_time)
+			if ability.current_effect.animate_on == 0: 
+				await playAnimation(ability, t)
 	else:
 		applyToTarget(caster, target, ability)
-		if ability.current_effect.animation != null and ability.current_effect.animation_time >= 0.0:
-			await CombatGlobals.playAbilityAnimation(target.combatant_resource, ability.current_effect.animation, ability.current_effect.animation_time)
-		elif ability.current_effect.animation != null:
-			CombatGlobals.playAbilityAnimation(target.combatant_resource, ability.current_effect.animation, ability.current_effect.animation_time)
+		if ability.current_effect.animate_on == 0: 
+			await playAnimation(ability, target)
+
+static func playAnimation(ability: ResAbility, target):
+	if ability.current_effect.animation != null and ability.current_effect.animation_time >= 0.0:
+		await CombatGlobals.playAbilityAnimation(target.combatant_resource, ability.current_effect.animation, ability.current_effect.animation_time)
+	elif ability.current_effect.animation != null:
+		CombatGlobals.playAbilityAnimation(target.combatant_resource, ability.current_effect.animation, ability.current_effect.animation_time)
 
 # Combat values calculations (damage, healing, etc.)
 static func applyToTarget(caster, target, ability: ResAbility):

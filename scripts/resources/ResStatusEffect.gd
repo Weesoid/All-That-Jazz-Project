@@ -87,6 +87,8 @@ func animateStatusEffect():
 		VISUALS.get_node('AnimationPlayer').play('Show')
 	if VISUALS is DynamicStatusEffect:
 		VISUALS.status_effect = self
+		if afflicted_combatant is ResEnemyCombatant and !afflicted_combatant.SCENE is PlayerCombatantScene:
+			VISUALS.rotation_degrees = -180
 
 func _to_string():
 	return NAME

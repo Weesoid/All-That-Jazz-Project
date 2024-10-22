@@ -13,6 +13,7 @@ can_crit = true
 return_pos = true
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("1_k0byw")

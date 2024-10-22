@@ -13,6 +13,7 @@ can_crit = true
 return_pos = true
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("1_yj0nf")
@@ -30,7 +31,7 @@ CASTER_POSITION = {
 }
 TARGET_POSITION = {
 "max": 3,
-"min": 2
+"min": 1
 }
 TENSION_COST = 0
 INSTANT_CAST = false

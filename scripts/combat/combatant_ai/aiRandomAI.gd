@@ -8,7 +8,7 @@ static func selectAbility(abilities: Array[ResAbility], caster: ResCombatant):
 	)
 	randomize()
 	return abilities.pick_random()
-	
+
 static func selectTarget(combatants: Array[ResCombatant]):
 	if combatants.is_empty(): return
 	randomize()

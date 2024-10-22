@@ -391,6 +391,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
+	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)
 	combat_scene.dogpile_count += dogpile
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
@@ -420,6 +421,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await getCurrentMap().get_node('Balloon').tree_exited
 		setPlayerInput(true)
+		for combatant in combat_scene.tamed_combatants: PlayerGlobals.addCombatantToTeam(combatant)
 	elif combat_results != 0:
 		setPlayerInput(true)
 	combat_exited.emit()

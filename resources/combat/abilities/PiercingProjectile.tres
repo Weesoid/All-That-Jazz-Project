@@ -7,12 +7,13 @@
 [sub_resource type="Resource" id="Resource_45pgf"]
 script = ExtResource("2_a54sp")
 damage_type = 2
-damage = 5
+damage = 99
 can_miss = true
 can_crit = true
 return_pos = true
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("2_l7gps")
@@ -32,6 +33,6 @@ TARGET_POSITION = {
 "max": 3,
 "min": 0
 }
-TENSION_COST = 0
+TENSION_COST = 25
 INSTANT_CAST = false
 REQUIRED_LEVEL = 0

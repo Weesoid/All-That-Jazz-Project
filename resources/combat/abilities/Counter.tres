@@ -12,6 +12,7 @@ status_effect = ExtResource("1_1kosx")
 cast_animation = "Cast_Melee"
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("1_7c88m")
@@ -24,7 +25,7 @@ TARGET_GROUP = 2
 CAN_TARGET_SELF = true
 TARGET_DEAD = false
 CASTER_POSITION = {
-"max": 2,
+"max": 1,
 "min": 0
 }
 TARGET_POSITION = {

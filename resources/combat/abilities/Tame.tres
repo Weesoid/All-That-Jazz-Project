@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://c0q6o4a2og3bs"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scsTame.gd" id="1_csy3k"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_3bphb"]
+[ext_resource type="PackedScene" uid="uid://h4wwypopcwgp" path="res://scenes/animations/DebugEffect.tscn" id="2_cfn3x"]
+
+[resource]
+script = ExtResource("2_3bphb")
+NAME = "Tame"
+DESCRIPTION = "Add a voidborne creature to your party."
+ANIMATION = ExtResource("2_cfn3x")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ABILITY_SCRIPT = ExtResource("1_csy3k")
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = false
+TARGET_DEAD = false
+CASTER_POSITION = {
+"max": 3,
+"min": 0
+}
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 25
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

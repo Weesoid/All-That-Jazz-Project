@@ -1,5 +1,6 @@
 extends Node
 
+var TENSION: int = 0
 enum Enemy_Factions {
 	Neutral,
 	Unggboys
@@ -25,6 +26,7 @@ signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
+signal active_combatant_changed(combatant: ResCombatant)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -86,6 +88,7 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')
 	target.STAT_VALUES['health'] -= int(damage)
 	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
+	if caster is ResPlayerCombatant: addTension(1+(damage * 0.15))
 	playHurtAnimation(target)
 	return true
 
@@ -106,11 +109,13 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
 	received_combatant_value.emit(target, caster, int(base_damage))
+	if caster is ResPlayerCombatant: addTension(1+(base_damage * 0.15))
 	playHurtAnimation(target)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 	if target is ResPlayerCombatant and target.SCENE.blocking:
 		CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
+		CombatGlobals.addTension(target.getMaxHealth() * 0.25)
 		CombatGlobals.addStatusEffect(target, 'Guard')
 	if target.getStatusEffectNames().has('Riposte'):
 		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
@@ -360,3 +365,9 @@ func isSameCombatantType(combatant_a, combatant_b):
 		combatant_b = combatant_b.combatant_resource
 	
 	return getCombatantType(combatant_a) == getCombatantType(combatant_b)
+
+func addTension(amount: int):
+	if TENSION + amount > 100:
+		TENSION = 100
+	else:
+		TENSION += amount

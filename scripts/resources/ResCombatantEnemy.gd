@@ -8,10 +8,11 @@ class_name ResEnemyCombatant
 @export var DROP_COUNT = 1
 ## Key: Item to be dropped; Value: Vector2 representing drop chance (x) & drop count (y)
 @export var DROP_POOL = {}
+@export var is_converted: bool
+@export var tamed_combatant: ResPlayerCombatant
 
-# NOTE: Enemy combatants don't get the stat modifications of their gear.
-# They do get the ARMOR TYPE and STATUS EFFECTS on armors and charms
-# Set the auto-attack manually.
+var SPAWN_ON_DEATH: ResCombatant
+
 func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
 	SCENE.combatant_resource = self

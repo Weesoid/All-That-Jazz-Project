@@ -12,6 +12,7 @@ class_name CombatScene
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
 @onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
+@onready var whole_action_panel = $CombatCamera/Interface/ActionPanel
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
@@ -28,6 +29,7 @@ class_name CombatScene
 @onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
 @onready var guard_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
+@onready var tension_bar = $CombatCamera/Interface/ProgressBar
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -48,6 +50,8 @@ var battle_music_path: String = ""
 var combat_result: int = -1
 var dogpile_count: int = 0
 var camera_position: Vector2 = Vector2(0, 0)
+var enemy_reinforcements: Array[ResCombatant]
+var tamed_combatants: Array[ResCombatant]
 
 signal confirm
 signal target_selected
@@ -67,17 +71,10 @@ func _ready():
 	renameDuplicates()
 	
 	for combatant in COMBATANTS:
-		combatant.initializeCombatant()
-		combatant.player_turn.connect(on_player_turn)
-		combatant.enemy_turn.connect(on_enemy_turn)
 		addCombatant(combatant)
 		
 		if combatant is ResEnemyCombatant:
 			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
-		
-		var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
-		combat_bars.attached_combatant = combatant
-		combatant.SCENE.add_child(combat_bars)
 		
 	if battle_music_path != "" and SettingsGlobals.toggle_music:
 		battle_music.stream = load(battle_music_path)
@@ -127,6 +124,8 @@ func _unhandled_input(_event):
 			toggleUI(true)
 
 func on_player_turn():
+	CombatGlobals.active_combatant_changed.emit(active_combatant)
+	whole_action_panel.show()
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 	
@@ -135,19 +134,17 @@ func on_player_turn():
 	resetActionLog()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
-	#OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
 	ui_animator.play('ShowActionPanel')
-	#playCombatAudio("658273__matrixxx__war-ready.ogg", 0.0, 1.0, true)
 	await confirm
 	end_turn()
 
 func on_enemy_turn():
-	#OverworldGlobals.playSound("658273__matrixxx__war-ready.ogg")
+	CombatGlobals.active_combatant_changed.emit(active_combatant)
+	whole_action_panel.hide()
 	ui_animator.play_backwards('ShowActionPanel')
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	if await checkWin(): return
 	
-	action_panel.hide()
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET, active_combatant)
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
 	if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
@@ -171,7 +168,7 @@ func end_turn(combatant_act=true):
 		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
 	
-	combat_camera.position = camera_position
+	#moveamera(camera_position, 0.15)
 	if combatant_act:
 		active_combatant.TURN_CHARGES -= 1
 		combatant_turn_order.remove_at(0)
@@ -208,6 +205,9 @@ func end_turn(combatant_act=true):
 		tickStatusEffects(combatant, true)
 		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
+	
+	if turn_count % 15 == 0:
+		addCombatant(enemy_reinforcements.pick_random().duplicate(), true)
 	
 	# Reset values
 	run_once = true
@@ -249,6 +249,8 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				combatant.ACTED = true
 				OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += combatant.getExperience() # DONT ADD IMMEDIATELY
 				addDrop(combatant.getDrops())
+				# if bla bla
+				await replaceCombatant(combatant, load("res://resources/combat/combatants_player/Jack.tres").convertToEnemy('Feral'))
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
@@ -398,10 +400,12 @@ func executeAbility():
 	for combatant in COMBATANTS:
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
 			CombatGlobals.setCombatantVisibility(combatant.SCENE, false)
-	
 	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
 		target_combatant.SCENE.allow_block = true
 		CombatGlobals.showWarning(target_combatant.SCENE)
+	if active_combatant is ResPlayerCombatant:
+		CombatGlobals.TENSION -= selected_ability.TENSION_COST
+	moveCamera(camera_position)
 	
 	await get_tree().create_timer(0.25).timeout
 	if target_combatant is ResCombatant:
@@ -447,10 +451,18 @@ func commandExecuteAbility(target, ability: ResAbility):
 # MISCELLANEOUS
 #********************************************************************************
 func moveCamera(target: Vector2, speed=0.25):
-	create_tween().tween_property(combat_camera, 'global_position', target, speed)
+	var tween = create_tween()
+	tween.tween_property(combat_camera, 'global_position', target, speed)
+	await tween.finished
 
-func addCombatant(combatant:ResCombatant):
+func addCombatant(combatant:ResCombatant, spawned:bool=false):
+	if !isCombatValid() or getCombatantGroup('enemies').size() == 4: 
+		return
+	print('Hurrah!')
 	var team_container
+	combatant.initializeCombatant()
+	combatant.player_turn.connect(on_player_turn)
+	combatant.enemy_turn.connect(on_enemy_turn)
 	if combatant is ResPlayerCombatant:
 		team_container = team_container_markers
 	else:
@@ -460,6 +472,29 @@ func addCombatant(combatant:ResCombatant):
 		marker.add_child(combatant.SCENE)
 		break
 	combatant.getAnimator().play('Idle')
+	var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
+	combat_bars.attached_combatant = combatant
+	combatant.SCENE.add_child(combat_bars)
+	if combatant is ResEnemyCombatant and combatant.is_converted:
+		combatant.SCENE.rotation_degrees = -180
+		combatant.SCENE.get_node('Sprite2D').flip_v = true
+		combatant.SCENE.get_node('AnimationPlayer').get_animation('Idle').track_set_key_value(1, 1, Vector2(0, 1))
+		combat_bars.rotation_degrees = 180
+	if spawned:
+		COMBATANTS.append(combatant)
+		combatant.ACTED = false
+		combatant.TURN_CHARGES = combatant.MAX_TURN_CHARGES
+		for turn_charge in range(combatant.MAX_TURN_CHARGES):
+			var rolled_speed = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
+			combatant_turn_order.append([combatant, rolled_speed])
+
+func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant):
+	COMBATANTS.erase(combatant)
+	combatant_turn_order.erase(combatant)
+	await get_tree().create_timer(0.25).timeout
+	combatant.SCENE.queue_free()
+	await combatant.SCENE.tree_exited
+	addCombatant(new_combatant, true)
 
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
@@ -630,7 +665,7 @@ func resetActionLog():
 	action_panel.get_child(0).grab_focus()
 	action_panel.show()
 	ui_animator.play('ShowActionPanel')
-	guard_button.disabled = active_combatant is ResPlayerCombatant and active_combatant.hasStatusEffect('Guard Break')
+	guard_button.disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
 
 func runAbility():
 	target_state = 0
@@ -710,6 +745,7 @@ func concludeCombat(results: int):
 		OverworldGlobals.showGameOver(end_sentence)
 	else:
 		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 80.0, 3)
+	CombatGlobals.TENSION = 0
 	queue_free()
 
 func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.35):

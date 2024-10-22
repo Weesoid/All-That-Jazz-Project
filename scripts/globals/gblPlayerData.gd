@@ -3,7 +3,6 @@ extends Node
 
 var TEAM: Array[ResPlayerCombatant]
 var TEAM_FORMATION: Array[ResCombatant]
-var TENSION: int = 0
 var FOLLOWERS: Array[NPCFollower] = []
 var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoomB.tscn', 'res://scenes/maps/TestRoom/TestRoomA.tscn']
 var CLEARED_MAPS = []
@@ -86,7 +85,7 @@ func addCombatantToTeam(combatant_id):
 		combatant = combatant_id
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
-	OverworldGlobals.getPlayer().prompt.showPrompt('%s joined your party!' % combatant.NAME)
+	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
 
 func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)
@@ -131,6 +130,8 @@ func healCombatants(cure: bool=true):
 	for combatant in TEAM:
 		combatant.STAT_VALUES['health'] = combatant.BASE_STAT_VALUES['health']
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
+
+
 
 func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()

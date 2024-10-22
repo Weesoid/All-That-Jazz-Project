@@ -12,6 +12,7 @@ status_effect = ExtResource("3_pl8gy")
 cast_animation = "Cast_Block"
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("4_jurq0")

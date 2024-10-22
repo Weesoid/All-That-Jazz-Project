@@ -10,7 +10,7 @@ var allow_block: bool = false
 var weapon: WeaponScene
 
 func _ready():
-	if combatant_resource.EQUIPPED_WEAPON != null:
+	if combatant_resource is ResPlayerCombatant and combatant_resource.EQUIPPED_WEAPON != null:
 		weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
 		weapon.equipped_combatant = self
 		sheathe_point.add_child(weapon)
@@ -40,5 +40,5 @@ func block(bonus_grit: float=0.75):
 	block_timer.start()
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_accept') and blocking and allow_block and !CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant and block_timer.is_stopped() and !combatant_resource.isDead():
+	if Input.is_action_just_pressed('ui_accept') and blocking and allow_block and !CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant and block_timer.is_stopped() and !combatant_resource.isDead() and combatant_resource is ResPlayerCombatant:
 		block()
