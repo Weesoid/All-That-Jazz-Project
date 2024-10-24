@@ -74,10 +74,8 @@ func shootProjectile():
 	animateShot()
 	projectile.rotation = LINE_OF_SIGHT.rotation + 1.57079994678497
 	await ANIMATOR.animation_finished
-	print('Shoot done playin load!')
 	ANIMATOR.play('Load')
 	await ANIMATOR.animation_finished
-	print('Load done!')
 	shoot_ready = true
 
 func animateShot():

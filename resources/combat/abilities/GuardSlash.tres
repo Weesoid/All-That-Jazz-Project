@@ -15,6 +15,7 @@ can_crit = true
 return_pos = true
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [sub_resource type="Resource" id="Resource_e175x"]
 script = ExtResource("3_lga0h")
@@ -23,6 +24,7 @@ status_effect = ExtResource("4_yv15g")
 cast_animation = ""
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("1_2b6qu")

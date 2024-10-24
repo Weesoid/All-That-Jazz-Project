@@ -23,6 +23,7 @@ DROP_POOL = {
 ExtResource("4_4awxj"): Vector2(0.25, 1),
 ExtResource("5_lryu8"): Vector2(0.25, 1)
 }
+is_converted = false
 NAME = "Baddie"
 PACKED_SCENE = ExtResource("2_luqil")
 DESCRIPTION = "A non-descript baddie! Testicles!"

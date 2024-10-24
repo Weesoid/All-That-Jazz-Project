@@ -206,7 +206,8 @@ func end_turn(combatant_act=true):
 		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
 	
-	if turn_count % 15 == 0:
+	randomize()
+	if turn_count % 100 - randi_range(0, 10) == 0:
 		addCombatant(enemy_reinforcements.pick_random().duplicate(), true)
 	
 	# Reset values
@@ -249,8 +250,8 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				combatant.ACTED = true
 				OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += combatant.getExperience() # DONT ADD IMMEDIATELY
 				addDrop(combatant.getDrops())
-				# if bla bla
-				await replaceCombatant(combatant, load("res://resources/combat/combatants_player/Jack.tres").convertToEnemy('Feral'))
+			if combatant.SPAWN_ON_DEATH != null:
+				await replaceCombatant(combatant, combatant.SPAWN_ON_DEATH)
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
@@ -458,7 +459,6 @@ func moveCamera(target: Vector2, speed=0.25):
 func addCombatant(combatant:ResCombatant, spawned:bool=false):
 	if !isCombatValid() or getCombatantGroup('enemies').size() == 4: 
 		return
-	print('Hurrah!')
 	var team_container
 	combatant.initializeCombatant()
 	combatant.player_turn.connect(on_player_turn)

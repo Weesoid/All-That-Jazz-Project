@@ -12,6 +12,7 @@ status_effect = ExtResource("3_dv6lh")
 cast_animation = "Cast_Melee"
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("1_8as3a")

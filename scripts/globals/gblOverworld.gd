@@ -370,7 +370,6 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if getCurrentMap().has_node('Balloon'):
 		getCurrentMap().get_node('Balloon').queue_free()
 		await getCurrentMap().get_node('Balloon').tree_exited
-	
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
 		return
@@ -385,6 +384,9 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		var duped_combatant = combatant.duplicate()
 		for effect in getCombatantSquadComponent(entity_name).afflicted_status_effects:
 			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
+		if CombatGlobals.randomRoll(getCombatantSquadComponent(entity_name).TAMEABLE_CHANCE):
+			randomize()
+			duped_combatant.SPAWN_ON_DEATH = getRandomTameable().pick_random().convertToEnemy('Feral')
 		combat_scene.COMBATANTS.append(duped_combatant)
 	if combat_event_name != '':
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % combat_event_name)
@@ -410,6 +412,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	
 	# Exit combat
 	var combat_results = combat_scene.combat_result
+	var tamed = combat_scene.tamed_combatants
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
 	battle_transition.get_node('AnimationPlayer').play('Out')
@@ -421,10 +424,29 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await getCurrentMap().get_node('Balloon').tree_exited
 		setPlayerInput(true)
-		for combatant in combat_scene.tamed_combatants: PlayerGlobals.addCombatantToTeam(combatant)
 	elif combat_results != 0:
 		setPlayerInput(true)
+	if combat_results == 1:
+		for combatant in tamed: PlayerGlobals.addCombatantToTeam(combatant)
 	combat_exited.emit()
+
+func getRandomTameable():
+	var path = "res://resources/combat/combatants_player/tameable/"
+	var dir = DirAccess.open(path)
+	var out = []
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			var combatant = load(path+'/'+file_name)
+			if !PlayerGlobals.TEAM.has(combatant):
+				out.append(combatant)
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+		print(path)
+	
+	return out
 
 func incrementDogpile():
 	dogpile += 1

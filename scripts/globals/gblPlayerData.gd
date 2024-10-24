@@ -51,15 +51,11 @@ func addExperience(experience: int, show_message:bool=false):
 	if CURRENT_EXP >= getRequiredExp():
 		var prev_required = getRequiredExp()
 		var prev_exp = CURRENT_EXP
-		print('Exp added: %s ; Exp req: %s' % [experience, prev_required])
-		print('Exp leftover: %s' % str(prev_exp - prev_required))
 		PARTY_LEVEL += 1
 		levelUpCombatants()
 		CURRENT_EXP = 0
 		if prev_exp - prev_required > 0:
-			print('Conditions met! Adding!')
 			addExperience(prev_exp - prev_required)
-		print('%s/%s' % [CURRENT_EXP, getRequiredExp()])
 	elif CURRENT_EXP < 0:
 		CURRENT_EXP = 0
 
@@ -86,6 +82,12 @@ func addCombatantToTeam(combatant_id):
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
 	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
+
+func getTeamMembers()-> Array[String]:
+	var out: Array[String] = []
+	for member in TEAM:
+		out.append(member.NAME)
+	return out
 
 func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)

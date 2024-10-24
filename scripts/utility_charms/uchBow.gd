@@ -3,4 +3,3 @@ static func equip():
 
 static func unequip():
 	PlayerGlobals.bow_max_draw += 2.0
-	print('blegh!')

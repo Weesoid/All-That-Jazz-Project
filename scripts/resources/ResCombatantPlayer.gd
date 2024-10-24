@@ -124,5 +124,5 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	enemy.ABILITY_SET.append(ABILITY_POOL[3])
 	enemy.AI_PACKAGE = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	enemy.is_converted = true
-	enemy.tamed_combatant = self
+	enemy.tamed_combatant = self.duplicate()
 	return enemy.duplicate()

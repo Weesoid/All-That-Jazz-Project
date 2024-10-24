@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://uv3xfyxccq3q"]
+
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="1_e0mox"]
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_t0wjm"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_xn8ci"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_frn68"]
+
+[sub_resource type="Resource" id="Resource_powab"]
+script = ExtResource("1_t0wjm")
+status_change = {
+"accuracy": 0.0,
+"brawn": 0.0,
+"crit": 0.05,
+"dodge": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal mult": 0.0,
+"health": 0,
+"hustle": 0,
+"resist": 0.0
+}
+rank_scaling = true
+apply_once = false
+message = ""
+
+[resource]
+script = ExtResource("3_frn68")
+NAME = "Critical Eye"
+DESCRIPTION = "Target has increased critical chance."
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_powab")])
+STATUS_SCRIPT = ExtResource("1_e0mox")
+EFFECT_TYPE = 0
+TEXTURE = ExtResource("2_xn8ci")
+MAX_DURATION = 2
+EXTEND_DURATION = 1
+APPLY_EXTEND_DURATION = false
+MAX_RANK = 16
+TICK_PER_TURN = false
+DO_TICKS = true
+PERMANENT = false
+LINGERING = false

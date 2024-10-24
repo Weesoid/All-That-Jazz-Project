@@ -41,10 +41,13 @@ static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
 			await playAnimation(ability, target)
 
 static func playAnimation(ability: ResAbility, target):
+	if target is CombatantScene:
+		target = target.combatant_resource
+	
 	if ability.current_effect.animation != null and ability.current_effect.animation_time >= 0.0:
-		await CombatGlobals.playAbilityAnimation(target.combatant_resource, ability.current_effect.animation, ability.current_effect.animation_time)
+		await CombatGlobals.playAbilityAnimation(target, ability.current_effect.animation, ability.current_effect.animation_time)
 	elif ability.current_effect.animation != null:
-		CombatGlobals.playAbilityAnimation(target.combatant_resource, ability.current_effect.animation, ability.current_effect.animation_time)
+		CombatGlobals.playAbilityAnimation(target, ability.current_effect.animation, ability.current_effect.animation_time)
 
 # Combat values calculations (damage, healing, etc.)
 static func applyToTarget(caster, target, ability: ResAbility):

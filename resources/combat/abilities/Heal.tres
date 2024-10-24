@@ -13,6 +13,7 @@ cast_animation = "Cast_Misc"
 sound_effect = ""
 animation = ExtResource("3_e2srm")
 animation_time = 0.25
+animate_on = 0
 
 [resource]
 script = ExtResource("1_l4g62")

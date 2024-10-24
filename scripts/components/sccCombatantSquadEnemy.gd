@@ -8,7 +8,7 @@ class_name EnemyCombatantSquad
 @export var FILL_EMPTY: bool = false
 @export var RANDOM_SIZE: bool = false
 @export var UNIQUE_ID: String
-@export var CREATURE_CHANCE: float = 0.0
+@export var TAMEABLE_CHANCE: float = 0.0
 var afflicted_status_effects: Array[String]
 
 func _ready():
@@ -29,9 +29,6 @@ func pickRandomEnemies():
 	for index in range(COMBATANT_SQUAD.size()):
 		if COMBATANT_SQUAD[index] != null: continue
 		var enemy = ENEMY_POOL.pick_random()
-		if CombatGlobals.randomRoll(CREATURE_CHANCE):
-			print('adding on death!')
-			enemy.SPAWN_ON_DEATH = load("res://resources/combat/combatants_player/Jack.tres")
 		COMBATANT_SQUAD[index] = enemy
 	
 func getMusic()-> int:
