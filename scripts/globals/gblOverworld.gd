@@ -111,6 +111,9 @@ func showMenu(path: String):
 	var main_menu: Control = load(path).instantiate()
 	main_menu.name = 'uiMenu'
 	getPlayer().resetStates()
+	getPlayer().sprinting = false
+	getPlayer().velocity = Vector2.ZERO
+	setPlayerInput(false)
 	if !inMenu():
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

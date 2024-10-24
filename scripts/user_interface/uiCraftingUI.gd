@@ -34,10 +34,8 @@ func canAddToInventory():
 	if result_data[1] != null and result_data[0] is ResStackItem:
 		return InventoryGlobals.canAdd(result_data[0], result_data[1], false)
 	else:
-		if result_data[0] is ResEquippable:
-			return !InventoryGlobals.canAdd(result_data[0], 1, false)
-		else:
-			return InventoryGlobals.canAdd(result_data[0], 1, false)
+		return !InventoryGlobals.canAdd(result_data[0], 1, false)
+
 
 func recipeToString()-> Array:
 	var out = [null, null, null]

@@ -72,7 +72,7 @@ func _physics_process(delta):
 		ANIMATION_SPEED = 0.0
 	elif !sprinting and PlayerGlobals.stamina < 100 and stamina_regen:
 		PlayerGlobals.stamina += PlayerGlobals.stamina_gain
-	if !sprinting:
+	if !sprinting or PlayerGlobals.stamina <= 0.0:
 		SPEED = PlayerGlobals.walk_speed
 		ANIMATION_SPEED = 0.0
 	

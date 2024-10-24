@@ -44,7 +44,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			label.text = 'Free'
 			label.add_theme_font_size_override('font_size', 6)
 		else:
-			label.text = str(int(item.VALUE * modifier))
+			label.text = str(floor(item.VALUE * modifier))
 		label.theme = preload("res://design/OutlinedLabel.tres")
 		label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
@@ -133,8 +133,8 @@ func loadSlider(item)-> int:
 	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
 	
 	if mode == 1:
-		if item.VALUE * buy_modifier != 0 and int(PlayerGlobals.CURRENCY / (item.VALUE * buy_modifier)) <= item.REFERENCE_ITEM.MAX_STACK:
-			a_slider.max_v = int(PlayerGlobals.CURRENCY / (item.VALUE * buy_modifier))
+		if item.VALUE * buy_modifier != 0 and floor(PlayerGlobals.CURRENCY / (item.VALUE * buy_modifier)) <= item.REFERENCE_ITEM.MAX_STACK:
+			a_slider.max_v = floor(PlayerGlobals.CURRENCY / floor(item.VALUE * buy_modifier))
 		else:
 			a_slider.max_v = InventoryGlobals.calculateValidAdd(item)
 	elif mode == 0:
@@ -146,7 +146,7 @@ func loadSlider(item)-> int:
 	var amount = a_slider.slider.value
 	a_slider.queue_free()
 	
-	return int(amount)
+	return floor(amount)
 
 func setButtonFunction(selected_item):
 	match mode:
@@ -162,12 +162,12 @@ func setButtonFunction(selected_item):
 				OverworldGlobals.setMenuFocusMode(wares, true)
 				OverworldGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
-				PlayerGlobals.CURRENCY -= int((selected_item.VALUE * buy_modifier) * amount)
+				PlayerGlobals.CURRENCY -= (floor(selected_item.VALUE * buy_modifier) * amount)
 				if amount > 0:
 					OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			else:
 				InventoryGlobals.addItemResource(selected_item)
-				PlayerGlobals.CURRENCY -= int(selected_item.VALUE * buy_modifier)
+				PlayerGlobals.CURRENCY -= floor(selected_item.VALUE * buy_modifier)
 				OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			loadWares(wares_array, selected_item)
 		0:
@@ -181,7 +181,7 @@ func setButtonFunction(selected_item):
 			OverworldGlobals.setMenuFocusMode(wares, true)
 			OverworldGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
-			PlayerGlobals.CURRENCY += int((selected_item.VALUE * sell_modifier) * amount)
+			PlayerGlobals.CURRENCY += (floor(selected_item.VALUE * sell_modifier) * amount)
 			loadWares(InventoryGlobals.INVENTORY, selected_item)
 			if amount > 0:
 				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")

@@ -172,6 +172,18 @@ position = Vector2(24, -256)
 [node name="NPCPatrolComponent" parent="PatrollerShooter" index="1" node_paths=PackedStringArray("PATROL_AREA")]
 PATROL_AREA = NodePath("../../Area2D")
 
+[node name="PatrollerShooter2" parent="." instance=ExtResource("31_pw13n")]
+position = Vector2(-56, -240)
+
+[node name="NPCPatrolComponent" parent="PatrollerShooter2" index="1" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="PatrollerShooter3" parent="." instance=ExtResource("31_pw13n")]
+position = Vector2(-144, -256)
+
+[node name="NPCPatrolComponent" parent="PatrollerShooter3" index="1" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
 [node name="FastTravel" parent="." instance=ExtResource("32_ea2lt")]
 position = Vector2(32, -120)
 
@@ -182,3 +194,5 @@ position = Vector2(104, -64)
 position = Vector2(8, -64)
 
 [editable path="PatrollerShooter"]
+[editable path="PatrollerShooter2"]
+[editable path="PatrollerShooter3"]

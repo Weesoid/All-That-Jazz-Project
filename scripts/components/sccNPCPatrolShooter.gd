@@ -29,7 +29,9 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
-			ANIMATOR.animation_finished.emit()
+			if !['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left'].has(ANIMATOR.current_animation):
+				ANIMATOR.animation_finished.emit()
+			
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()

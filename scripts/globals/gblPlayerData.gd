@@ -9,7 +9,7 @@ var CLEARED_MAPS = []
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
 var EQUIPPED_CHARM: ResUtilityCharm
-var CURRENCY = 10000
+var CURRENCY = 100
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...

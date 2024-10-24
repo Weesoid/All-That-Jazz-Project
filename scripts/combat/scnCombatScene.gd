@@ -42,6 +42,7 @@ var combat_event: ResCombatEvent
 var selected_ability: ResAbility
 var run_once = true
 var drops = {}
+var total_experience = 0
 var turn_count = 0
 var round_count = 0
 var player_turn_count = 0
@@ -63,6 +64,7 @@ signal combat_done
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
 	
@@ -248,8 +250,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				combatant.ACTED = true
-				OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += combatant.getExperience() # DONT ADD IMMEDIATELY
-				addDrop(combatant.getDrops())
+				total_experience += combatant.getExperience()
 			if combatant.SPAWN_ON_DEATH != null:
 				await replaceCombatant(combatant, combatant.SPAWN_ON_DEATH)
 		elif combatant is ResPlayerCombatant:
@@ -708,10 +709,11 @@ func concludeCombat(results: int):
 			all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
 			morale_bonus += 1
 		if results == 1:
-			OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += (OverworldGlobals.getCurrentMap().REWARD_BANK['experience']*0.25)*morale_bonus
+			OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * (morale_bonus * 0.25)
 			for i in range(loot_bonus):
 				for enemy in getCombatantGroup('enemies'): 
 					addDrop(enemy.getDrops())
+	print(OverworldGlobals.getCurrentMap().REWARD_BANK)
 #	else:
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
 	
@@ -746,6 +748,7 @@ func concludeCombat(results: int):
 	else:
 		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 80.0, 3)
 	CombatGlobals.TENSION = 0
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	queue_free()
 
 func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.35):

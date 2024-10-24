@@ -46,5 +46,5 @@ func _process(_delta):
 		resist_val.value = combatant.STAT_VALUES['crit'] * 100
 		healm_val.text = str(combatant.STAT_VALUES['heal mult'])
 		
-		if OverworldGlobals.isPlayerCheating():
-			debug_status.text = str(combatant.STAT_MODIFIERS)
+#		if OverworldGlobals.isPlayerCheating():
+#			debug_status.text = str(combatant.STAT_MODIFIERS)
