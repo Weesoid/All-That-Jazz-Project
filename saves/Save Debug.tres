@@ -14,18 +14,18 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="12_t8k7h"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="13_28dd3"]
 
-[sub_resource type="Resource" id="Resource_ogfv7"]
+[sub_resource type="Resource" id="Resource_ccgkr"]
 script = ExtResource("1_8iasi")
-position = Vector2(137.258, 33.7318)
+position = Vector2(160.75, 47.9163)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_t8uks"]
+[sub_resource type="Resource" id="Resource_ylccf"]
 script = ExtResource("2_h1iga")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_ex3g0"]
+[sub_resource type="Resource" id="Resource_pykid"]
 script = ExtResource("9_3r5gf")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_54q4y")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -45,7 +45,7 @@ STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_54q4y")])
 COMBATANT_SAVE_DATA = {
-ExtResource("3_54q4y"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("3_54q4y"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("6_eqbe5"), ExtResource("4_hysmq"), ExtResource("5_5f65w")]), {
 0: null,
 1: null,
 2: null
@@ -57,7 +57,7 @@ ExtResource("3_54q4y"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.0,
 "handling": 0,
 "heal mult": 1.0,
-"health": 351.0,
+"health": 100,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -68,7 +68,7 @@ ExtResource("3_54q4y"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.0,
 "handling": 0,
 "heal mult": 1.0,
-"health": 999,
+"health": 100,
 "hustle": 1,
 "resist": 0.05
 }, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_hysmq"), ExtResource("5_5f65w"), ExtResource("6_eqbe5")]), false, Array[String]([]), true, 1, {
@@ -84,7 +84,7 @@ ExtResource("3_54q4y"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 }, ExtResource("7_khf0k")]
 }
 
-[sub_resource type="Resource" id="Resource_ap2f4"]
+[sub_resource type="Resource" id="Resource_k7ic7"]
 script = ExtResource("12_t8k7h")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -93,9 +93,9 @@ ITEM_DATA_INVENTORY = {}
 
 [resource]
 script = ExtResource("13_28dd3")
-NAME = "Save Debug - 00:01:32
+NAME = "Save Debug - 00:02:39
 Morale 1
-Prototype Room"
-PLAYTIME = 93.119
-current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_ogfv7"), SubResource("Resource_t8uks"), SubResource("Resource_ex3g0"), SubResource("Resource_ap2f4")]
+Alt Room"
+PLAYTIME = 159.897
+current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
+save_data = [SubResource("Resource_ccgkr"), SubResource("Resource_ylccf"), SubResource("Resource_pykid"), SubResource("Resource_k7ic7")]

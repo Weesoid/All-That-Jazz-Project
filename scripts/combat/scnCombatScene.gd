@@ -150,15 +150,16 @@ func on_enemy_turn():
 	if await checkWin(): return
 	
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET, active_combatant)
-	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
-	if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
-		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
+	if selected_ability != null:
+		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
+		if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
+			target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
+		else:
+			target_combatant = valid_targets
+		if target_combatant != null:
+			executeAbility()
 	else:
-		target_combatant = valid_targets
-	
-	if target_combatant != null:
-		executeAbility()
-	else:
+		print(active_combatant, ' is flailing!')
 		selected_ability = load("res://resources/combat/abilities/Struggle.tres")
 		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)

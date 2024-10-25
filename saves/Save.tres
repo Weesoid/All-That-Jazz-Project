@@ -14,18 +14,18 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_60n6k"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_jeq5p"]
 
-[sub_resource type="Resource" id="Resource_esjt6"]
+[sub_resource type="Resource" id="Resource_nfxlv"]
 script = ExtResource("1_6vgdu")
-position = Vector2(-63, 36)
+position = Vector2(-136, -100)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_lcat6"]
+[sub_resource type="Resource" id="Resource_d06b1"]
 script = ExtResource("5_rpgil")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_5lxvd"]
+[sub_resource type="Resource" id="Resource_ig7ko"]
 script = ExtResource("25_60n6k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_b32hr")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -45,7 +45,7 @@ STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("6_b32hr")])
 COMBATANT_SAVE_DATA = {
-ExtResource("6_b32hr"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("6_b32hr"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("6_kvrh4"), ExtResource("8_jbnxg"), ExtResource("5_ksjvm")]), {
 0: null,
 1: null,
 2: null
@@ -84,7 +84,7 @@ ExtResource("6_b32hr"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 }, ExtResource("14_us4su")]
 }
 
-[sub_resource type="Resource" id="Resource_m4y2n"]
+[sub_resource type="Resource" id="Resource_e8r8b"]
 script = ExtResource("4_pj8it")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -93,9 +93,9 @@ ITEM_DATA_INVENTORY = {}
 
 [resource]
 script = ExtResource("26_jeq5p")
-NAME = "Save - 00:02:01
+NAME = "Save - 00:02:29
 Morale 1
-Alt Room"
-PLAYTIME = 121.831
-current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_esjt6"), SubResource("Resource_lcat6"), SubResource("Resource_5lxvd"), SubResource("Resource_m4y2n")]
+Prototype Room"
+PLAYTIME = 150.375
+current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
+save_data = [SubResource("Resource_nfxlv"), SubResource("Resource_d06b1"), SubResource("Resource_ig7ko"), SubResource("Resource_e8r8b")]

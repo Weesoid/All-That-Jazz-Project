@@ -17,7 +17,7 @@ static func applyHitEffects(target, _caster, value, status_effect):
 			CombatGlobals.calculateHealing(target, (target.getMaxHealth()+value) * 0.5)
 		CombatGlobals.rankUpStatusEffect(target, status_effect)
 
-static func endEffects(target, status_effect: ResStatusEffect):
+static func endEffects(target, _status_effect: ResStatusEffect):
 	target.SCENE.setBlocking(false)
 	if !target.hasStatusEffect('Guard Break'):
 		CombatGlobals.addStatusEffect(target, 'GuardBreak')
