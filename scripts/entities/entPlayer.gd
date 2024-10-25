@@ -92,7 +92,7 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_show_menu"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	
-	if Input.is_action_just_pressed("ui_select") and !channeling_power and !OverworldGlobals.inMenu():
+	if Input.is_action_just_pressed("ui_select") and !channeling_power and !OverworldGlobals.inMenu() and can_move:
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity = Vector2.ZERO

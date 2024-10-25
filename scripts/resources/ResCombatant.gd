@@ -103,17 +103,29 @@ func searchStringStats(stats: Array[String]):
 func applyStatModifications(modifier_id: String):
 	for modifier in STAT_MODIFIERS.keys():
 		if modifier == modifier_id:
-			for stat in STAT_MODIFIERS[modifier]: 
-				STAT_VALUES[stat] += STAT_MODIFIERS[modifier][stat]
+			for stat in STAT_MODIFIERS[modifier]:
+				if stat == 'health':
+					updateHealth(STAT_MODIFIERS[modifier][stat])
+				else:
+					STAT_VALUES[stat] += STAT_MODIFIERS[modifier][stat]
 			return
 
 func removeStatModification(modifier_id: String):
 	for modifier in STAT_MODIFIERS.keys():
 		if modifier == modifier_id:
-			for stat in STAT_MODIFIERS[modifier]: 
-				STAT_VALUES[stat] -= STAT_MODIFIERS[modifier][stat]
+			for stat in STAT_MODIFIERS[modifier]:
+				if stat == 'health':
+					updateHealth(-STAT_MODIFIERS[modifier][stat])
+				else:
+					STAT_VALUES[stat] -= STAT_MODIFIERS[modifier][stat]
 			STAT_MODIFIERS.erase(modifier)
 			return
+
+func updateHealth(amount: int):
+	var percent_health = float(STAT_VALUES['health']) / float(BASE_STAT_VALUES['health'])
+	BASE_STAT_VALUES['health'] += amount
+	if STAT_VALUES['health'] >= BASE_STAT_VALUES['health'] or percent_health == 1:
+		STAT_VALUES['health'] = BASE_STAT_VALUES['health']
 
 func _to_string():
 	return str(NAME)

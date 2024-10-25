@@ -418,19 +418,17 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	var tamed = combat_scene.tamed_combatants
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
-	battle_transition.get_node('AnimationPlayer').play('Out')
 	getCurrentMap().show()
-	await battle_transition.get_node('AnimationPlayer').animation_finished
-	battle_transition.queue_free()
 	getPlayer().resetStates()
 	if hasCombatDialogue(entity_name) and combat_results == 1:
-		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
-		await getCurrentMap().get_node('Balloon').tree_exited
-		setPlayerInput(true)
-	elif combat_results != 0:
-		setPlayerInput(true)
+		await CombatGlobals.getCombatScene().tree_exited
+		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')	
 	if combat_results == 1:
 		for combatant in tamed: PlayerGlobals.addCombatantToTeam(combatant)
+	setPlayerInput(true)
+	battle_transition.get_node('AnimationPlayer').play('Out')
+	await battle_transition.get_node('AnimationPlayer').animation_finished
+	battle_transition.queue_free()
 	combat_exited.emit()
 
 func getRandomTameable():
@@ -442,8 +440,7 @@ func getRandomTameable():
 		var file_name = dir.get_next()
 		while file_name != "":
 			var combatant = load(path+'/'+file_name)
-			if !PlayerGlobals.TEAM.has(combatant):
-				out.append(combatant)
+			out.append(combatant)
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")

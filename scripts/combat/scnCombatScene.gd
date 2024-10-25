@@ -30,6 +30,7 @@ class_name CombatScene
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
 @onready var guard_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
+@onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -252,7 +253,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				combatant.ACTED = true
 				total_experience += combatant.getExperience()
 			if combatant.SPAWN_ON_DEATH != null:
-				await replaceCombatant(combatant, combatant.SPAWN_ON_DEATH)
+				replaceCombatant(combatant, combatant.SPAWN_ON_DEATH)
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
@@ -281,6 +282,22 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
+	if CombatGlobals.randomRoll(calculateEscapeChance()):
+		CombatGlobals.combat_lost.emit(unique_id)
+		concludeCombat(2)
+	else:
+		for combatant in getCombatantGroup('team'):
+			CombatGlobals.addStatusEffect(combatant, 'Dazed', true)
+		confirm.emit()
+
+func _on_escape_focus_entered():
+	escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+	escape_chance_label.show()
+
+func _on_escape_focus_exited():
+	escape_chance_label.hide()
+
+func calculateEscapeChance()-> float:
 	var hustle_enemies = 0
 	var hustle_allies = 0
 	for combatant in getCombatantGroup('enemies'):
@@ -289,14 +306,7 @@ func _on_escape_pressed():
 	for combatant in getCombatantGroup('team'):
 		if combatant.STAT_VALUES['hustle'] > 0:
 			hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	var chance_escape = 0.5 + ((hustle_allies-hustle_enemies)*0.01)
-	if CombatGlobals.randomRoll(chance_escape):
-		CombatGlobals.combat_lost.emit(unique_id)
-		concludeCombat(2)
-	else:
-		for combatant in getCombatantGroup('team'):
-			CombatGlobals.addStatusEffect(combatant, 'Dazed', true)
-		confirm.emit()
+	return 0.5 + ((hustle_allies-hustle_enemies)*0.15)
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -316,7 +326,7 @@ func toggleUI(visibility: bool):
 #********************************************************************************
 func getPlayerAbilities(ability_set: Array[ResAbility]):
 	for child in secondary_panel_container.get_children():
-		child.free()
+		child.queue_free()
 	
 	if active_combatant.EQUIPPED_WEAPON != null:
 		var button = OverworldGlobals.createCustomButton()
@@ -327,9 +337,11 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		if !weapon.EFFECT.ENABLED or weapon.durability <= 0:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
-	
 	for ability in ability_set:
 		secondary_panel_container.add_child(createAbilityButton(ability))
+	
+	await get_tree().process_frame
+	OverworldGlobals.setMenuFocus(secondary_panel_container)
 
 func getMoveAbilities():
 	for child in secondary_panel_container.get_children():

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://bnxkiqhfrjpug"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_w2xow"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_ulvy6"]
+
+[resource]
+script = ExtResource("2_ulvy6")
+STAT_MODIFICATIONS = {
+"health": 10
+}
+NAME = "Healthifier"
+ICON = ExtResource("1_w2xow")
+DESCRIPTION = "Mo health!"
+VALUE = 0
+MANDATORY = false

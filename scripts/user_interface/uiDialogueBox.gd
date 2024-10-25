@@ -228,6 +228,6 @@ func _on_dialogue_label_spoke(letter: String, letter_index: int, speed: float) -
 
 func _exit_tree():
 	OverworldGlobals.getPlayer().cinematic_bars.visible = false
-	OverworldGlobals.setPlayerInput(true)
 	OverworldGlobals.getPlayer().setUIVisibility(true)
+	OverworldGlobals.setPlayerInput(true)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(2, 2), 0.5)

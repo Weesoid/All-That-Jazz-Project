@@ -181,6 +181,7 @@ func resetStat(target: ResCombatant, modifier_id: String):
 # ANIMATION HANDLING
 #********************************************************************************
 func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
+	if !is_instance_valid(target.SCENE): return
 	var animation = animation_scene.instantiate()
 	target.SCENE.add_child(animation)
 	if time > 0.0:
