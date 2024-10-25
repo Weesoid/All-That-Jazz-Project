@@ -31,6 +31,14 @@ func initializeCombatant(do_scene:bool=true):
 	
 	applyStatusEffects()
 
+func updateCombatant(save_data: PlayerSaveData):
+	var remove_abilities = ABILITY_SET.filter(func(ability): return !ABILITY_POOL.has(ability))
+	for ability in remove_abilities:
+		ABILITY_SET.erase(ability)
+	
+	var percent_health = save_data.COMBATANT_SAVE_DATA[self][2]['health'] / save_data.COMBATANT_SAVE_DATA[self][3]['health']
+	STAT_VALUES['health'] = floor(BASE_STAT_VALUES['health'] * percent_health)
+
 func act():
 	player_turn.emit()
 

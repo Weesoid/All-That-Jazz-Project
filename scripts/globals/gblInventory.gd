@@ -228,8 +228,6 @@ func getItemType(item: ResItem)-> float:
 			return 1.1
 		elif item is ResCharm:
 			return 1.2
-		elif item is ResUtilityCharm:
-			return 1.3
 		else:
 			return 1.0
 	
@@ -256,8 +254,6 @@ func saveItemData(inv_save_data: InventorySaveData):
 			item_data[item.resource_path] = [item.REFERENCE_ITEM.resource_path, item.STACK]
 		elif item is ResStackItem:
 			item_data[item.resource_path] = item.STACK
-		elif item is ResUtilityCharm:
-			item_data[item.resource_path] = item.equipped
 		elif item is ResWeapon:
 			item_data[item.resource_path+'-durability'] = item.durability
 	for weapon in getEquippedWeapons():
@@ -273,8 +269,6 @@ func loadItemData(save_data: InventorySaveData):
 				continue
 			elif item is ResStackItem:
 				item.STACK = item_data[item.resource_path]
-			elif item is ResUtilityCharm:
-				item.equipped = item_data[item.resource_path]
 		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'):
 			item.durability = item_data[item.resource_path+'-durability']
 	for weapon in getEquippedWeapons():

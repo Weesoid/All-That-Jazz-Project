@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResBlessing" load_steps=2 format=3 uid="uid://c2bgqcrbgmn8y"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResBlessing.gd" id="1_ed164"]
+
+[resource]
+script = ExtResource("1_ed164")
+blessing_name = "Sprinter"
+description = "Increases stamina gain."
+ow_stat_modifications = {
+"bow_max_draw": 0.0,
+"sprint_drain": 0.0,
+"sprint_speed": 0.0,
+"stamina": 0.0,
+"stamina_gain": 0.0,
+"walk_speed": 0.0
+}

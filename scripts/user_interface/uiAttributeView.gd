@@ -43,7 +43,7 @@ func _process(_delta):
 		acc_val.value = combatant.STAT_VALUES['accuracy'] * 100
 		dodge_val.value = combatant.STAT_VALUES['dodge'] * 100
 		crit_val.value = combatant.STAT_VALUES['crit'] * 100
-		resist_val.value = combatant.STAT_VALUES['crit'] * 100
+		resist_val.value = combatant.STAT_VALUES['resist'] * 100
 		healm_val.text = str(combatant.STAT_VALUES['heal mult'])
 		
 		if OverworldGlobals.isPlayerCheating():

@@ -1,13 +1,17 @@
 ~ start
 Entity: Wanna fight!?
 - YES => fight
-- Make me loose! => loose
+- Give me a blessing! => bless
 - Nah fam. => END
 => END
 
-~ loose
-Entity: Erm... Okay?
-do showGameOver()
+~ bless
+Entity: Sure whatever man which one?
+- The Sprinter!
+	do applyBlessing("Sprinter")
+- The Quick Draw!
+	do applyBlessing("Draw")
+
 => END
 
 ~ fight

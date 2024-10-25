@@ -1,216 +1,31 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=38 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_6vgdu"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_t2k78"]
 [ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="3_gtwk7"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="4_pj8it"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_pn423"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/Tame.tres" id="4_ymi7d"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="5_ksjvm"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="5_rpgil"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="6_b32hr"]
-[ext_resource type="Resource" path="res://resources/items/Healthifier.tres" id="7_le5id"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="8_f7655"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Watchdog.tres" id="6_kvrh4"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="8_jbnxg"]
-[ext_resource type="Resource" path="res://resources/items/Testifier.tres" id="9_bt63b"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="14_us4su"]
-[ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="20_h1v3w"]
-[ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="22_75634"]
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="24_6u6xt"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_60n6k"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_jeq5p"]
 
-[sub_resource type="Resource" id="Resource_4d7ax"]
+[sub_resource type="Resource" id="Resource_esjt6"]
 script = ExtResource("1_6vgdu")
-position = Vector2(-59.7222, 34.0012)
+position = Vector2(-63, 36)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 179
+direction = 0
 
-[sub_resource type="Resource" id="Resource_jgo61"]
+[sub_resource type="Resource" id="Resource_lcat6"]
 script = ExtResource("5_rpgil")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_u0owh"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 10
-}
-NAME = "Healthifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = ExtResource("7_le5id")
-
-[sub_resource type="Resource" id="Resource_td7sv"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 10
-}
-NAME = "Healthifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_u0owh")
-
-[sub_resource type="Resource" id="Resource_ocy8t"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 10
-}
-NAME = "Healthifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_td7sv")
-
-[sub_resource type="Resource" id="Resource_okxi4"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 10
-}
-NAME = "Healthifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_ocy8t")
-
-[sub_resource type="Resource" id="Resource_cit78"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 10
-}
-NAME = "Healthifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_okxi4")
-
-[sub_resource type="Resource" id="Resource_qmmsc"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 10
-}
-NAME = "Healthifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_cit78")
-
-[sub_resource type="Resource" id="Resource_4eese"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 10
-}
-NAME = "Healthifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_qmmsc")
-
-[sub_resource type="Resource" id="Resource_xjnpf"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = ExtResource("9_bt63b")
-
-[sub_resource type="Resource" id="Resource_0r6p8"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_xjnpf")
-
-[sub_resource type="Resource" id="Resource_csykr"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_0r6p8")
-
-[sub_resource type="Resource" id="Resource_mqamy"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_csykr")
-
-[sub_resource type="Resource" id="Resource_nmxlb"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_mqamy")
-
-[sub_resource type="Resource" id="Resource_qaobk"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_nmxlb")
-
-[sub_resource type="Resource" id="Resource_78ytc"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_qaobk")
-
-[sub_resource type="Resource" id="Resource_q8oku"]
-script = ExtResource("22_75634")
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("20_h1v3w")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = SubResource("Resource_78ytc")
-
-[sub_resource type="Resource" id="Resource_l4cbg"]
+[sub_resource type="Resource" id="Resource_5lxvd"]
 script = ExtResource("25_60n6k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_b32hr")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -220,49 +35,43 @@ EQUIPPED_ARROW = ExtResource("24_6u6xt")
 CURRENCY = 100
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
-stamina = 100.0
-bow_max_draw = 5.0
-walk_speed = 100.0
-sprint_speed = 200.0
-sprint_drain = 0.25
-stamina_gain = 0.15
+stamina = 0.0
+bow_max_draw = 0.0
+walk_speed = 0.0
+sprint_speed = 0.0
+sprint_drain = 0.0
+stamina_gain = 0.0
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("6_b32hr")])
 COMBATANT_SAVE_DATA = {
 ExtResource("6_b32hr"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
-0: SubResource("Resource_4eese"),
-1: SubResource("Resource_q8oku"),
+0: null,
+1: null,
 2: null
 }, {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 0.2,
 "crit": 0.05,
 "dodge": 0.0,
 "grit": 0.0,
 "handling": 0,
 "heal mult": 1.0,
-"health": 54,
+"health": 100,
 "hustle": 1,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 0.2,
 "crit": 0.05,
 "dodge": 0.0,
 "grit": 0.0,
 "handling": 0,
 "heal mult": 1.0,
-"health": 54,
+"health": 100,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_jbnxg"), ExtResource("8_f7655"), ExtResource("4_pn423"), ExtResource("4_ymi7d")]), false, Array[String]([]), true, 1, {
-"Healthifier": {
-"health": 10
-},
-"Testifier": {
-"health": 24
-},
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_jbnxg"), ExtResource("5_ksjvm"), ExtResource("6_kvrh4")]), false, Array[String]([]), true, 1, {
 "allocations": {
 "brawn": 0.0,
 "grit": 0.0,
@@ -275,7 +84,7 @@ ExtResource("6_b32hr"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 }, ExtResource("14_us4su")]
 }
 
-[sub_resource type="Resource" id="Resource_j4l4s"]
+[sub_resource type="Resource" id="Resource_m4y2n"]
 script = ExtResource("4_pj8it")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -284,9 +93,9 @@ ITEM_DATA_INVENTORY = {}
 
 [resource]
 script = ExtResource("26_jeq5p")
-NAME = "Save - 00:03:08
+NAME = "Save - 00:02:01
 Morale 1
 Alt Room"
-PLAYTIME = 188.587
+PLAYTIME = 121.831
 current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_4d7ax"), SubResource("Resource_jgo61"), SubResource("Resource_l4cbg"), SubResource("Resource_j4l4s")]
+save_data = [SubResource("Resource_esjt6"), SubResource("Resource_lcat6"), SubResource("Resource_5lxvd"), SubResource("Resource_m4y2n")]

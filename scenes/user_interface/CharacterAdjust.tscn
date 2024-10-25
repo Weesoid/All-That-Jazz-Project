@@ -221,7 +221,10 @@ offset_right = 272.0
 offset_bottom = -165.0
 
 [node name="Debug" parent="AttributeView" index="2"]
-visible = false
+offset_left = -224.0
+offset_top = -96.0
+offset_right = -64.0
+offset_bottom = -14.0
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0

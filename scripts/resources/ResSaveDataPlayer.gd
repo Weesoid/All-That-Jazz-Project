@@ -7,8 +7,8 @@ class_name PlayerSaveData
 @export var CLEARED_MAPS = []
 @export var POWER: GDScript
 @export var EQUIPPED_ARROW: ResProjectileAmmo
+@export var EQUIPPED_BLESSING: ResBlessing
 @export var CURRENCY: int
-@export var EQUIPPED_CHARM: ResUtilityCharm
 @export var PARTY_LEVEL: int
 @export var CURRENT_EXP: int
 @export var stamina: float

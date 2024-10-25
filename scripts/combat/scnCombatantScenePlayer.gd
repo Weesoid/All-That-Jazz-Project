@@ -33,7 +33,7 @@ func setBlocking(set_to: bool):
 		animator.play('Idle')
 
 func block(bonus_grit: float=0.75):
-	CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit}, 'block')
+	CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 1.0}, 'block')
 	doAnimation('Block')
 	await animator.animation_finished
 	CombatGlobals.resetStat(combatant_resource, 'block')

@@ -283,12 +283,15 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1)
 #********************************************************************************
 # STATUS EFFECT HANDLING
 #********************************************************************************
-func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, _base_chance = 2.0):
+func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, guaranteed:bool=false):
 	var status_effect
 	if effect is String:
 		status_effect = load(str("res://resources/combat/status_effects/"+effect+".tres")).duplicate()
 	elif effect is ResStatusEffect:
 		status_effect = effect.duplicate()
+	if (randomRoll(target.STAT_VALUES['resist']) and status_effect.RESISTABLE) or guaranteed:
+		manual_call_indicator.emit(target, '%s Resisted!' % status_effect.NAME, 'Resist')
+		return
 	
 	if !target.getStatusEffectNames().has(status_effect.NAME):
 		status_effect.afflicted_combatant = target

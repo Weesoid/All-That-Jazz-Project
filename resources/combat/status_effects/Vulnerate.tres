@@ -1,20 +1,27 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://bfv6wnotxo3tb"]
 
-[ext_resource type="PackedScene" path="res://scenes/status_visuals/Vulnerated.tscn" id="1_gkjan"]
+[ext_resource type="PackedScene" uid="uid://htwq6aqom1y7" path="res://scenes/status_visuals/Vulnerated.tscn" id="1_gkjan"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_ge1mk"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsVulnerated.gd" id="2_hfugv"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_al8xb"]
 
 [resource]
 script = ExtResource("2_ge1mk")
 NAME = "Vulnerated"
 DESCRIPTION = "Target has permanently reduced GRIT."
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("2_hfugv")
 PACKED_SCENE = ExtResource("1_gkjan")
+EFFECT_TYPE = 0
+TEXTURE = ExtResource("3_al8xb")
 MAX_DURATION = 1
+EXTEND_DURATION = 0
+APPLY_EXTEND_DURATION = false
 MAX_RANK = 10
-ON_HIT = false
-APPLY_ONCE = true
 TICK_PER_TURN = true
+DO_TICKS = true
+RESISTABLE = false
 PERMANENT = true
+LINGERING = false
 metadata/_editor_prop_ptr_ICON = NodePath("")
 metadata/_editor_prop_ptr_PARTICLES = NodePath("")

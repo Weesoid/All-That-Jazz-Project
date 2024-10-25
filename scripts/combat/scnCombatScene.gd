@@ -54,6 +54,7 @@ var dogpile_count: int = 0
 var camera_position: Vector2 = Vector2(0, 0)
 var enemy_reinforcements: Array[ResCombatant]
 var tamed_combatants: Array[ResCombatant]
+var bonus_escape_chance = 0.0
 
 signal confirm
 signal target_selected
@@ -288,6 +289,7 @@ func _on_escape_pressed():
 	else:
 		for combatant in getCombatantGroup('team'):
 			CombatGlobals.addStatusEffect(combatant, 'Dazed', true)
+		bonus_escape_chance += 0.1
 		confirm.emit()
 
 func _on_escape_focus_entered():
@@ -306,7 +308,7 @@ func calculateEscapeChance()-> float:
 	for combatant in getCombatantGroup('team'):
 		if combatant.STAT_VALUES['hustle'] > 0:
 			hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	return 0.5 + ((hustle_allies-hustle_enemies)*0.15)
+	return 0.5 + ((hustle_allies-hustle_enemies)*0.15) + bonus_escape_chance
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:

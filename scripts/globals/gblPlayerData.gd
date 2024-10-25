@@ -8,24 +8,30 @@ var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoom
 var CLEARED_MAPS = []
 var POWER: GDScript
 var EQUIPPED_ARROW: ResProjectileAmmo
-var EQUIPPED_CHARM: ResUtilityCharm
+var EQUIPPED_BLESSING: ResBlessing
 var CURRENCY = 100
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
 
-var stamina = 100.0
-var bow_max_draw = 5.0
-var walk_speed = 100.0
-var sprint_speed = 200.0
-var sprint_drain = 0.25
-var stamina_gain = 0.15
+var overworld_stats: Dictionary = {
+	'stamina': 100.0,
+	'bow_max_draw': 5.0,
+	'walk_speed': 100.0,
+	'sprint_speed': 200.0,
+	'sprint_drain': 0.25,
+	'stamina_gain': 0.15
+}
+#var stamina = 100.0
+#var bow_max_draw = 5.0
+#var walk_speed = 100.0
+#var sprint_speed = 200.0
+#var sprint_drain = 0.25
+#var stamina_gain = 0.15
 
 signal level_up
 
 func _ready():
-	#CURRENCY = 100
-	
 	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
 	EQUIPPED_ARROW.STACK = 0
 	
@@ -39,6 +45,17 @@ func initializeBenchedTeam():
 	for member in TEAM:
 		if !member.initialized:
 			member.initializeCombatant(false)
+
+func applyBlessing(blessing):
+	if blessing is String:
+		blessing = load("res://resources/blessings/%s.tres" % blessing)
+	
+	if EQUIPPED_BLESSING != null:
+		EQUIPPED_BLESSING.setBlessing(false)
+		OverworldGlobals.showPlayerPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
+	
+	blessing.setBlessing(true)
+	EQUIPPED_BLESSING = blessing
 
 #********************************************************************************
 # COMBATANT MANAGEMENT
@@ -107,9 +124,6 @@ func hasFollower(follower_combatant: ResPlayerCombatant):
 	
 	return false
 
-func hasUtilityCharm():
-	return EQUIPPED_CHARM != null
-
 func isFollowerActive(follower_combatant_name: String):
 	for f in FOLLOWERS:
 		if f.host_combatant.NAME == follower_combatant_name:
@@ -143,18 +157,18 @@ func saveData(save_data: Array):
 	data.POWER = POWER
 	data.EQUIPPED_ARROW = EQUIPPED_ARROW
 	data.CURRENCY = CURRENCY
-	data.EQUIPPED_CHARM = EQUIPPED_CHARM
 	data.PARTY_LEVEL = PARTY_LEVEL
 	data.CURRENT_EXP = CURRENT_EXP
 	data.CLEARED_MAPS = CLEARED_MAPS
-	data.stamina = stamina
-	data.bow_max_draw= bow_max_draw
-	data.walk_speed = walk_speed
-	data.sprint_speed = sprint_speed
-	data.sprint_drain = sprint_drain
-	data.stamina_gain = stamina_gain
+#	data.overworld_stats['stamina'] = stamina
+#	data.overworld_stats['bow_max_draw']= bow_max_draw
+#	data.overworld_stats['walk_speed'] = walk_speed
+#	data.sprint_speed = sprint_speed
+#	data.sprint_drain = sprint_drain
+#	data.stamina_gain = stamina_gain
 	data.PROGRESSION_DATA = PROGRESSION_DATA
 	data.TEAM_FORMATION = TEAM_FORMATION
+	data.EQUIPPED_BLESSING = EQUIPPED_BLESSING
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
@@ -183,30 +197,33 @@ func loadData(save_data: PlayerSaveData):
 	POWER = save_data.POWER
 	EQUIPPED_ARROW = save_data.EQUIPPED_ARROW
 	CURRENCY = save_data.CURRENCY
-	EQUIPPED_CHARM = save_data.EQUIPPED_CHARM
 	PARTY_LEVEL = save_data.PARTY_LEVEL
 	CURRENT_EXP = save_data.CURRENT_EXP
 	CLEARED_MAPS = save_data.CLEARED_MAPS
-	stamina = save_data.stamina
-	bow_max_draw= save_data.bow_max_draw
-	walk_speed = save_data.walk_speed
-	sprint_speed = save_data.sprint_speed
-	sprint_drain = save_data.sprint_drain
-	stamina_gain = save_data.stamina_gain
+#	stamina = save_data.stamina
+#	bow_max_draw= save_data.overworld_stats['bow_max_draw']
+#	walk_speed = save_data.overworld_stats['walk_speed']
+#	sprint_speed = save_data.sprint_speed
+#	sprint_drain = save_data.sprint_drain
+#	stamina_gain = save_data.stamina_gain
 	PROGRESSION_DATA = save_data.PROGRESSION_DATA
 	TEAM_FORMATION = save_data.TEAM_FORMATION
+	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
+	#EQUIPPED_CHARM.equip(null)
+	
+	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
 	
 	for combatant in TEAM:
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
 		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][1]
-		combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][2]
-		combatant.BASE_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][3]
-		combatant.ABILITY_POOL = save_data.COMBATANT_SAVE_DATA[combatant][4]
+		#combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][2]
+		#combatant.BASE_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][3]
+		#combatant.ABILITY_POOL = save_data.COMBATANT_SAVE_DATA[combatant][4]
 		combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][5]
 		combatant.LINGERING_STATUS_EFFECTS = save_data.COMBATANT_SAVE_DATA[combatant][6]
 		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][7]
 		combatant.STAT_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][8]
-		combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][9]
+		#combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][9]
 		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][10]
 		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][11]
 		combatant.ABILITY_SLOT = save_data.COMBATANT_SAVE_DATA[combatant][12]
@@ -215,7 +232,8 @@ func loadData(save_data: PlayerSaveData):
 			if charm != null:
 				charm.updateItem() 
 				charm.equip(combatant)
-		OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)
+		combatant.updateCombatant(save_data)
 	
 	initializeBenchedTeam()
 	OverworldGlobals.initializePlayerParty()
+	OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)

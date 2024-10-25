@@ -18,5 +18,6 @@ APPLY_EXTEND_DURATION = false
 MAX_RANK = 0
 TICK_PER_TURN = false
 DO_TICKS = true
+RESISTABLE = false
 PERMANENT = false
 LINGERING = false

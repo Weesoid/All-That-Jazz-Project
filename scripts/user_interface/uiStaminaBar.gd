@@ -5,7 +5,7 @@ func _ready():
 	min_value = 0.0
 
 func _process(_delta):
-	value = PlayerGlobals.stamina
+	value = PlayerGlobals.overworld_stats['stamina']
 	if value < 100:
 		show()
 	else:

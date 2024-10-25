@@ -489,7 +489,7 @@ func damageParty(damage:int):
 	var dead = ''
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
-		member.STAT_VALUES['health'] -= damage - damage * member.STAT_VALUES['grit']
+		member.STAT_VALUES['health'] -= floor(damage - (damage * member.STAT_VALUES['grit']))
 		if member.isDead(): dead += '[color=yellow]'+member.NAME+'[/color], '
 	if !dead == '':
 		dead = dead.trim_suffix(', ')

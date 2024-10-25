@@ -3,7 +3,7 @@ class_name ProjectileBullet
 
 func _on_body_entered(body):
 	if body is PlayerScene:
-		OverworldGlobals.damageParty(2)
+		OverworldGlobals.damageParty(10)
 	
 	if body != SHOOTER and (body is PlayerScene or body is TileMap):
 		queue_free()

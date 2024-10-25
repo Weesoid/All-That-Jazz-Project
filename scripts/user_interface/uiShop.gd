@@ -60,10 +60,6 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			item = ResGhostStackItem.new(item)
 			item.STACK = 999
 		
-		if (item is ResUtilityCharm and PlayerGlobals.EQUIPPED_CHARM == item) or (item is ResEquippable and !InventoryGlobals.canAdd(item,1,false)) and mode == 1:
-			button.disabled = true
-			label.text = ''
-		
 		if (item is ResStackItem and InventoryGlobals.calculateValidAdd(item) == 0) and mode == 1:
 			button.disabled = true
 			label.text = ''

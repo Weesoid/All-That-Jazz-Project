@@ -20,6 +20,7 @@ enum EffectType {
 @export var MAX_RANK: int
 @export var TICK_PER_TURN: bool
 @export var DO_TICKS: bool = true
+@export var RESISTABLE: bool = true
 @export var PERMANENT: bool = false
 @export var LINGERING: bool = false
 

@@ -12,10 +12,10 @@ func _process(_delta):
 	coordinates.text = str(get_parent().global_position)+','+str(int(get_parent().player_direction.rotation_degrees))
 	playtime_info.text = Time.get_time_string_from_unix_time(int(SaveLoadGlobals.current_playtime))
 	dogpile.text = 'x%s (%s)' % [OverworldGlobals.dogpile, snappedf(OverworldGlobals.dogpile_timer.time_left, 0.1)]
-	if PlayerGlobals.hasUtilityCharm():
-		equipped_charm.text = PlayerGlobals.EQUIPPED_CHARM.NAME
+	if PlayerGlobals.EQUIPPED_BLESSING != null:
+		equipped_charm.text = PlayerGlobals.EQUIPPED_BLESSING.blessing_name
 	else:
-		equipped_charm.text = 'No charm.'
+		equipped_charm.text = 'No active blessing.'
 	reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
 
 func _unhandled_input(_event):
