@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://iebdjevflk78"]
+[gd_scene load_steps=2 format=3 uid="uid://iebdjevflk78"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiInventoryUI.gd" id="1_qwj2w"]
-[ext_resource type="Script" path="res://scripts/user_interface/uiEquippedUtilityCharms.gd" id="2_rlnwg"]
 
 [node name="uiInventory" type="Control"]
 layout_mode = 3
@@ -66,16 +65,3 @@ bbcode_enabled = true
 text = "[center]LEFT CLICK TO USE ITEM
 [/center]
 "
-
-[node name="EquippedUtilityCharms" type="PanelContainer" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 88.0
-offset_top = -122.0
-offset_right = 200.0
-offset_bottom = -76.0
-script = ExtResource("2_rlnwg")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="EquippedUtilityCharms"]
-layout_mode = 2
-bbcode_enabled = true

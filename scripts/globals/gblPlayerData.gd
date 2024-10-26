@@ -47,15 +47,17 @@ func initializeBenchedTeam():
 			member.initializeCombatant(false)
 
 func applyBlessing(blessing):
-	if blessing is String:
+	if blessing is String and !blessing.contains('res://'):
 		blessing = load("res://resources/blessings/%s.tres" % blessing)
+	elif blessing is String:
+		blessing = load(blessing).instantiate()
+		OverworldGlobals.getPlayer().add_child(blessing)
 	
-	if EQUIPPED_BLESSING != null:
+	if EQUIPPED_BLESSING != null and blessing is ResBlessing:
 		EQUIPPED_BLESSING.setBlessing(false)
+		EQUIPPED_BLESSING = blessing
 		OverworldGlobals.showPlayerPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
-	
-	blessing.setBlessing(true)
-	EQUIPPED_BLESSING = blessing
+		blessing.setBlessing(true)
 
 #********************************************************************************
 # COMBATANT MANAGEMENT

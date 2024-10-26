@@ -33,6 +33,7 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
+	print('Setting to ', enabled)
 	getPlayer().can_move = enabled
 	getPlayer().set_process_unhandled_input(enabled)
 	if enabled:
@@ -82,6 +83,7 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=35
 # GENERAL UTILITY
 #********************************************************************************
 func getPlayer()-> PlayerScene:
+	#return null
 	return get_tree().current_scene.get_node('Player')
 
 func getEntity(entity_name: String):
@@ -210,6 +212,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	return button
 
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
+	print(is_inside_tree())
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):

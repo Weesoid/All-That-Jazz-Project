@@ -53,11 +53,6 @@ func setButtonFunction(item):
 	
 	if item is ResProjectileAmmo:
 		item.equip()
-	elif item is ResUtilityCharm:
-		if PlayerGlobals.EQUIPPED_CHARM == item:
-			PlayerGlobals.EQUIPPED_CHARM.unequip()
-		else:
-			item.equip(PlayerGlobals.TEAM[0])
 	
 	updateInventory()
 	if InventoryGlobals.hasItem(item):
@@ -69,9 +64,5 @@ func focusItem(item: ResItem):
 			button.grab_focus()
 
 func resetDescription():
-	if PlayerGlobals.hasUtilityCharm():
-		item_info.text = '[img]%s[/img]	%s' % [PlayerGlobals.EQUIPPED_CHARM.ICON.resource_path, PlayerGlobals.EQUIPPED_CHARM.NAME]
-	else:
-		item_info.text = ''
-	
+	item_info.text = ''
 	item_general_info.text = '[img]res://images/sprites/circle_filled.png[/img]%s' % PlayerGlobals.CURRENCY

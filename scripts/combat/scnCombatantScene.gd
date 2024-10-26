@@ -19,7 +19,8 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 			offset = Vector2(-40,0)
 		else:
 			offset = Vector2(40,0)
-	tween.tween_property(self, 'global_position', target.global_position + offset, duration)
+	
+	tween.tween_property(self, 'global_position', Vector2(target.global_position.x, -14) + offset, duration)
 	await tween.finished
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):

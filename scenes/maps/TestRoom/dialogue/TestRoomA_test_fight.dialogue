@@ -11,6 +11,8 @@ Entity: Sure whatever man which one?
 	do applyBlessing("Sprinter")
 - The Quick Draw!
 	do applyBlessing("Draw")
+- A temporary speed boost! badump!
+	do applyBlessing("res://scenes/temporary_blessings/Speed.tscn")
 
 => END
 
