@@ -11,10 +11,10 @@ static func applyHitEffects(target, _caster, value, status_effect):
 		CombatGlobals.addTension(target.getMaxHealth() * heal_bonus)
 	if (target is ResPlayerCombatant and target.STAT_MODIFIERS.keys().has('block')) or (target is ResEnemyCombatant and CombatGlobals.randomRoll(0.5+target.STAT_VALUES['grit'])):
 		if CombatGlobals.randomRoll(target.BASE_STAT_VALUES['grit'] + 0.5 + bonus) and target is ResPlayerCombatant:
-			CombatGlobals.calculateHealing(target, target.getMaxHealth() * heal_bonus)
+			CombatGlobals.calculateHealing(target, target.getMaxHealth() * heal_bonus, false)
 		elif CombatGlobals.randomRoll(target.BASE_STAT_VALUES['grit'] + 0.7 + bonus) and target is ResEnemyCombatant:
 			target.SCENE.doAnimation('Block')
-			CombatGlobals.calculateHealing(target, (target.getMaxHealth()+value) * 0.5)
+			CombatGlobals.calculateHealing(target, (target.getMaxHealth()+value) * 0.5, false)
 		CombatGlobals.rankUpStatusEffect(target, status_effect)
 
 static func endEffects(target, _status_effect: ResStatusEffect):

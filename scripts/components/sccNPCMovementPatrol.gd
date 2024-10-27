@@ -91,7 +91,7 @@ func patrol():
 	
 	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
 		if DETECT_TIMER.is_stopped() and STATE != 2: 
-			DETECT_TIMER.start(0.25)
+			DETECT_TIMER.start(0.5)
 		if !DETECT_TIMER.is_stopped():
 			await DETECT_TIMER.timeout
 			DETECT_TIMER.stop()

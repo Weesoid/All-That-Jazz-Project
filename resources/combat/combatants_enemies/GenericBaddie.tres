@@ -1,16 +1,12 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=12 format=3 uid="uid://dxdpkpoxq1gca"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=8 format=3 uid="uid://dxdpkpoxq1gca"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_6pp45"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_t4wyy"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tp2k2"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_anw3h"]
 [ext_resource type="PackedScene" uid="uid://be21naj4lfhuj" path="res://scenes/combatants/BadWillis.tscn" id="2_luqil"]
-[ext_resource type="Resource" uid="uid://dnwt562yqug8x" path="res://resources/combat/abilities/Teamwork.tres" id="3_afwce"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="4_4awxj"]
-[ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="4_djwl5"]
 [ext_resource type="Resource" uid="uid://drgb4ejko51ty" path="res://resources/items/CharmStoneWall.tres" id="5_lryu8"]
-[ext_resource type="Resource" uid="uid://demepyaovpuck" path="res://resources/combat/abilities/StandGuard.tres" id="5_qkos7"]
-[ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="6_a3mqf"]
 
 [resource]
 script = ExtResource("1_t4wyy")
@@ -39,5 +35,5 @@ STAT_VALUES = {
 "hustle": 1,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_6pp45"), ExtResource("2_anw3h"), ExtResource("3_afwce"), ExtResource("4_djwl5"), ExtResource("5_qkos7"), ExtResource("6_a3mqf")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_6pp45"), ExtResource("2_anw3h")])
 MAX_TURN_CHARGES = 1

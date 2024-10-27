@@ -125,7 +125,7 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	enemy.NAME = appended_name + ' ' +NAME
 	enemy.PACKED_SCENE = PACKED_SCENE
 	enemy.DESCRIPTION = DESCRIPTION
-	enemy.STAT_VALUES = STAT_VALUES
+	enemy.STAT_VALUES = BASE_STAT_VALUES
 	enemy.ABILITY_SET.append(ABILITY_POOL[0])
 	enemy.ABILITY_SET.append(ABILITY_POOL[1])
 	enemy.ABILITY_SET.append(ABILITY_POOL[2])

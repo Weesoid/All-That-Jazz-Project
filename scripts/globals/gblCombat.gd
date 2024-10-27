@@ -126,13 +126,15 @@ func useDamageFormula(target: ResCombatant, damage):
 		out_damage = 0
 	return out_damage
 
-func calculateHealing(target:ResCombatant, base_healing):
+func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 	if target.STAT_VALUES['health'] < 0:
 		target.STAT_VALUES['health'] = 0
-	
 	base_healing = valueVariate(base_healing, 0.15)
-	base_healing *= target.STAT_VALUES['heal mult']
-	
+	if use_mult:
+		base_healing *= target.STAT_VALUES['heal mult']
+	if base_healing <= 0: 
+		base_healing = 0
+		
 	if target.STAT_VALUES['health'] + base_healing > target.getMaxHealth():
 		manual_call_indicator.emit(target, "FULL HEAL!", 'Heal')
 		target.STAT_VALUES['health'] = target.getMaxHealth()
@@ -143,6 +145,7 @@ func calculateHealing(target:ResCombatant, base_healing):
 	#received_combatant_value.emit(target, caster, int(base_healing))
 	call_indicator.emit('Show', target)
 	OverworldGlobals.playSound('02_Heal_02.ogg')
+
 
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
@@ -286,7 +289,8 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1)
 func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, guaranteed:bool=false):
 	var status_effect
 	if effect is String:
-		status_effect = load(str("res://resources/combat/status_effects/"+effect+".tres")).duplicate()
+		#if status_effect.contains(' '): status_effect = status_effect.replace(' ', '')
+		status_effect = load(str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")).duplicate()
 	elif effect is ResStatusEffect:
 		status_effect = effect.duplicate()
 	if (randomRoll(target.STAT_VALUES['resist']) and status_effect.RESISTABLE) or guaranteed:
@@ -352,6 +356,9 @@ func removeStatusEffect(target: ResCombatant, status_name: String):
 
 func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')
+
+func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
+	return load(str("res://resources/combat/status_effects/"+status_effect_name.replace(' ', '')+".tres")).duplicate()
 
 func getCombatantType(combatant):
 	if combatant is CombatantScene:

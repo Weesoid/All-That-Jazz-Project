@@ -75,7 +75,7 @@ func tick(update_duration=true):
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading'].has(NAME) and STATUS_SCRIPT != null:
+	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading'].has(NAME) and !NAME.contains('Faded') and STATUS_SCRIPT != null:
 		removeStatusEffect()
 
 func animateStatusEffect():

@@ -41,9 +41,26 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.addStatusEffect(target, 'KnockOut', true)
 	else:
 		CombatGlobals.playSecondWindTween(target)
-		CombatGlobals.addStatusEffect(target, 'SecondWind', true)
+		#CombatGlobals.addStatusEffect(target, 'SecondWind', true)
+		applyFaded(target)
 		CombatGlobals.playAnimation(target, 'Idle')
 	
 	CombatGlobals.resetStat(target, status_effect.NAME)
 	if CombatGlobals.getCombatScene().combat_result == 1: 
 		CombatGlobals.calculateHealing(target, target.BASE_STAT_VALUES['health']*0.25)
+
+static func applyFaded(target: ResCombatant):
+	if target.hasStatusEffect('Faded I'):
+		target.LINGERING_STATUS_EFFECTS.erase('Faded I')
+		CombatGlobals.removeStatusEffect(target, 'Faded I')
+		CombatGlobals.addStatusEffect(target, 'FadedII', true)
+	elif target.hasStatusEffect('Faded II'):
+		target.LINGERING_STATUS_EFFECTS.erase('Faded II')
+		CombatGlobals.removeStatusEffect(target, 'Faded II')
+		CombatGlobals.addStatusEffect(target, 'FadedIII', true)
+	elif target.hasStatusEffect('Faded III'):
+		target.LINGERING_STATUS_EFFECTS.erase('Faded III')
+		CombatGlobals.removeStatusEffect(target, 'Faded III')
+		CombatGlobals.addStatusEffect(target, 'FadedIV', true)
+	elif !target.hasStatusEffect('Faded IV'):
+		CombatGlobals.addStatusEffect(target, 'FadedI', true)

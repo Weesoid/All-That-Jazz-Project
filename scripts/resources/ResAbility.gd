@@ -51,6 +51,8 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
 	if TARGET_GROUP == TargetGroup.ALLIES or TARGET_GROUP == TargetGroup.ENEMIES:
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
+	for combatant in combatants:
+		if combatant.isDead() and !combatant.hasStatusEffect('Fading'): combatants.erase(combatant)
 	
 	if is_caster_player:
 		match TARGET_GROUP:

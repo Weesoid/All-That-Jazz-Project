@@ -212,7 +212,7 @@ func end_turn(combatant_act=true):
 	removeDeadCombatants()
 	
 	randomize()
-	if turn_count % 100 - randi_range(0, 10) == 0:
+	if turn_count % (100 - randi_range(0, 10)) == 0:
 		addCombatant(enemy_reinforcements.pick_random().duplicate(), true)
 	
 	# Reset values
@@ -634,9 +634,15 @@ func checkDialogue():
 	
 	return combat_dialogue.dialogue_triggered
 
-func clearStatusEffects(combatant: ResCombatant):
-	while !combatant.STATUS_EFFECTS.is_empty():
-		combatant.STATUS_EFFECTS[0].removeStatusEffect()
+func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
+	if ignore_faded:
+		var effects = combatant.STATUS_EFFECTS.filter(func(effect: ResStatusEffect):return !effect.NAME.contains('Faded'))
+		while !effects.is_empty():
+			effects[0].removeStatusEffect()
+			effects.remove_at(0)
+	else:
+		while !combatant.STATUS_EFFECTS.is_empty():
+			combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
 func tickStatusEffects(combatant: ResCombatant, per_turn = false):
 	for effect in combatant.STATUS_EFFECTS:
@@ -703,7 +709,7 @@ func concludeCombat(results: int):
 	battle_music.stop()
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
-		clearStatusEffects(combatant)
+		clearStatusEffects(combatant, false)
 	action_panel.hide()
 	secondary_panel.hide()
 	target_state = 0

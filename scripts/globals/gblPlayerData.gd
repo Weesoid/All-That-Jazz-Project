@@ -212,9 +212,11 @@ func loadData(save_data: PlayerSaveData):
 	TEAM_FORMATION = save_data.TEAM_FORMATION
 	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
 	#EQUIPPED_CHARM.equip(null)
-	
 	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
 	
+	initializeBenchedTeam()
+	OverworldGlobals.initializePlayerParty()
+	OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)
 	for combatant in TEAM:
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
 		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][1]
@@ -235,7 +237,3 @@ func loadData(save_data: PlayerSaveData):
 				charm.updateItem() 
 				charm.equip(combatant)
 		combatant.updateCombatant(save_data)
-	
-	initializeBenchedTeam()
-	OverworldGlobals.initializePlayerParty()
-	OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)

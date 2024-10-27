@@ -5,9 +5,9 @@ extends Control
 @onready var info = $uiCharacterInformation
 
 func _ready():
-#	if OverworldGlobals.isPlayerCheating():
-#		addAllMembers()
-#		await get_tree().create_timer(0.01).timeout
+	if OverworldGlobals.isPlayerCheating():
+		addAllMembers("res://resources/combat/combatants_player/tameable/")
+		await get_tree().create_timer(0.01).timeout
 	#PlayerGlobals.addCombatantToTeam(load("res://resources/combat/combatants_player/Willis.tres"))
 	for member in PlayerGlobals.TEAM:
 		if !member.initialized: member.initializeCombatant(false)
@@ -41,8 +41,7 @@ func _ready():
 		updateInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 	OverworldGlobals.setMenuFocus(members)
 
-func addAllMembers():
-	var path = "res://resources/combat/combatants_player/"
+func addAllMembers(path: String):
 	var dir = DirAccess.open(path)
 	if dir:
 		dir.list_dir_begin()
