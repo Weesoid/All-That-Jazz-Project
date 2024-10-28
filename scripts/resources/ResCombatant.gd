@@ -15,8 +15,8 @@ class_name ResCombatant
 	'handling': 0,
 	'hustle': 1,
 	'accuracy': 0.95,
-	'dodge': 0.0,
 	'crit': 0.05,
+	'crit_dmg': 1.5,
 	'heal mult': 1.0,
 	'resist': 0.05
 }

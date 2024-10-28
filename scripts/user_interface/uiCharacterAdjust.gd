@@ -18,6 +18,7 @@ extends Control
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
 @onready var member_name = $Label
 @onready var formation_button = $ChangeFormation
+@onready var infliction = $Infliction
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
 
@@ -25,6 +26,14 @@ func _process(_delta):
 	if selected_combatant != null:
 		attrib_view.combatant = selected_combatant
 		attrib_adjust.combatant = selected_combatant
+		if selected_combatant.isInflicted():
+			infliction.text = 'INFLICTED!'
+			infliction.add_theme_color_override("font_color", Color.ORANGE)
+			infliction.tooltip_text = selected_combatant.getLingeringEffectsString()
+		else:
+			infliction.add_theme_color_override("font_color", Color.WHITE)
+			infliction.text = ''
+			infliction.tooltip_text = ''
 
 func _ready():
 	loadMembers()
@@ -97,6 +106,7 @@ func clearButtons():
 
 func createButton(ability, location):
 	var button: CustomButton = OverworldGlobals.createCustomButton()
+	button.custom_minimum_size.x = 130
 	button.focused_entered_sound = preload("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = preload("res://audio/sounds/421304__jaszunio15__click_229.ogg")
 	button.text = ability.NAME

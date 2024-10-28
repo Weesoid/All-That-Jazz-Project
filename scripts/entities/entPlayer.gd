@@ -79,7 +79,7 @@ func _physics_process(delta):
 	if PlayerGlobals.overworld_stats['stamina'] > 100.0:
 		PlayerGlobals.overworld_stats['stamina'] = 100.0
 	
-	OverworldGlobals.follow_array.push_front(self.global_position)
+	OverworldGlobals.follow_array.push_front(global_position)
 	OverworldGlobals.follow_array.pop_back()
 
 func resetStates():

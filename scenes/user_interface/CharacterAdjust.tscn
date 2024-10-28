@@ -232,9 +232,23 @@ offset_left = -128.0
 offset_top = -112.0
 offset_right = 240.0
 offset_bottom = -88.0
+tooltip_text = "TSETSETSETSETRWARAWR"
 theme = ExtResource("8_hty5i")
 theme_override_font_sizes/font_size = 16
 text = "MEMBER NAME"
+vertical_alignment = 2
+
+[node name="Infliction" type="Label" parent="."]
+z_index = 8
+layout_mode = 0
+offset_left = 232.0
+offset_top = -104.0
+offset_right = 360.0
+offset_bottom = -88.0
+mouse_filter = 1
+theme = ExtResource("8_hty5i")
+text = "INFLICTED!"
+horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="ChangeFormation" parent="." instance=ExtResource("2_s185n")]

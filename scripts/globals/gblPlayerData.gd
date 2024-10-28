@@ -13,7 +13,6 @@ var CURRENCY = 100
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
-
 var overworld_stats: Dictionary = {
 	'stamina': 100.0,
 	'bow_max_draw': 5.0,
@@ -109,8 +108,10 @@ func getTeamMembers()-> Array[String]:
 	return out
 
 func addFollower(follower: NPCFollower):
+	print('before: ', OverworldGlobals.follow_array)
 	FOLLOWERS.append(follower)
 	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
+	print('after: ', OverworldGlobals.follow_array)
 
 func removeFollower():
 	OverworldGlobals.loadFollowers()
@@ -149,7 +150,11 @@ func healCombatants(cure: bool=true):
 		combatant.STAT_VALUES['health'] = combatant.BASE_STAT_VALUES['health']
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
 
-
+func isMapCleared():
+	if OverworldGlobals.getCurrentMap().SAFE:
+		return true
+	else:
+		return CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME)
 
 func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
@@ -237,3 +242,5 @@ func loadData(save_data: PlayerSaveData):
 				charm.updateItem() 
 				charm.equip(combatant)
 		combatant.updateCombatant(save_data)
+	
+	overworld_stats['stamina'] = 100.0 # DO NOT TOUCH STAMINA FOR BLESSINGS!

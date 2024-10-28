@@ -18,6 +18,8 @@ func _ready():
 				if map_component_data[location][2] != null:
 					image.texture = map_component_data[location][2]
 		)
+		if location == OverworldGlobals.getCurrentMap().scene_file_path:
+			button.disabled = true
 		travel_panel.add_child(button)
 		map.queue_free()
 	
@@ -25,7 +27,4 @@ func _ready():
 
 func travel(location):
 	OverworldGlobals.closeMenu(self)
-	if OverworldGlobals.getCurrentMap().scene_file_path == location:
-		OverworldGlobals.showPlayerPrompt("You're already here!")
-	else:
-		OverworldGlobals.changeMap(location, '0,0,0', 'FastTravel')
+	OverworldGlobals.changeMap(location, '0,0,0', 'FastTravel')

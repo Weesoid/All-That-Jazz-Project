@@ -7,14 +7,8 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		target.SCENE.blocking = false
 	
 	CombatGlobals.manual_call_indicator.emit(target, 'Fading...', 'Resist')
-	var grit_normalized: float
-	if target.BASE_STAT_VALUES['grit'] > 1.0:
-		grit_normalized = 1.0
-	else:
-		grit_normalized = target.BASE_STAT_VALUES['grit']
-	#grit_normalized = 1.0
-	var grit_bonus = (grit_normalized - 0.0) / (1.0 - 0.0) * 0.5
-	if CombatGlobals.randomRoll(0.15 + grit_bonus) and canAddQTE(status_effect):
+
+	if CombatGlobals.randomRoll(1.15) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)

@@ -11,5 +11,5 @@ STAT_MODIFICATIONS = {
 NAME = "Defender"
 ICON = ExtResource("1_i4u7q")
 DESCRIPTION = "Defendicious!"
-VALUE = 150
+VALUE = 9999
 MANDATORY = false

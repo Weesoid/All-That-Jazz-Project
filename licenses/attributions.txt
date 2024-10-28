@@ -28,5 +28,7 @@ steam_burst.wav by pengo_au -- https://freesound.org/s/90143/ -- License: Creati
 1243_pressure_cooker.wav by reinsamba -- https://freesound.org/s/66364/ -- License: Attribution 4.0
 Breaking Glass.wav by Unopiate -- https://freesound.org/s/189575/ -- License: Creative Commons 0
 PuffOfSmoke.wav by euanmj -- https://freesound.org/s/442873/ -- License: Creative Commons 0
+Model/toy train set by robindouglasjohnson -- https://freesound.org/s/698992/ -- License: Creative Commons 0
+grab-item by 1bob -- https://freesound.org/s/651515/ -- License: Creative Commons 0
 
 [Bow.wav and snippets from arrow and bow in one has been combined to make the bow shoot sound in file '178872__hanbaal__bow.ogg']

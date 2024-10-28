@@ -17,7 +17,7 @@ func _physics_process(_delta):
 	# Positive SPEED allows followers to move, negative SPEED stops them. See 'setFollowerMotion' function
 	if SPEED > 0.0:
 		SPEED = OverworldGlobals.getPlayer().SPEED
-		if OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
+		if !OverworldGlobals.follow_array.is_empty() and OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
 			updateSprite()
 			velocity = lerp(velocity, global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]) * SPEED, 0.25)
 		else:

@@ -99,10 +99,11 @@ func getRichDescription(with_name=true)-> String:
 	var description = ''
 	if with_name:
 		description += NAME.to_upper()+'\n'
-	description += '[img]%s[/img]' % [getValidTargetIcon()]
+	description += getPositionIcon()
+	#description += '[img]%s[/img]' % [getValidTargetIcon()]
 	if INSTANT_CAST:
 		description += '[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
-	description += ' '+DESCRIPTION
+	description += '\n '+DESCRIPTION
 	return description
 
 func getValidTargetIcon():
@@ -118,3 +119,38 @@ func getValidTargetIcon():
 			TargetGroup.ALLIES: return "res://images/sprites/icon_multi_friend.png"
 			TargetGroup.ENEMIES:  return "res://images/sprites/icon_multi_enemy.png"
 			TargetGroup.ALL: return "res://images/sprites/icon_multi_all.png"
+
+func getPositionIcon()-> String:
+	var valid = "res://images/sprites/circle_self.png"
+	var valid_self = "res://images/sprites/circle_self_pos.png"
+	var valid_ally = "res://images/sprites/circle_ally.png"
+	var valid_enemy = "res://images/sprites/circle_enemy.png"
+	var invalid = "res://images/sprites/circle_invalid.png"
+	var postions = []
+	for i in range(3, -1, -1):
+		if i >= CASTER_POSITION['min'] and i <= CASTER_POSITION['max']:
+			if CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition():
+				postions.append(valid_self)
+			else:
+				postions.append(valid)
+		else:
+			postions.append(invalid)
+	
+	if TARGET_GROUP != TargetGroup.SELF:
+		if TARGET_GROUP == TargetGroup.ENEMIES:
+			for j in range(4):
+				if j >= TARGET_POSITION['min'] and j <= TARGET_POSITION['max']:
+					postions.append(valid_enemy)
+				else:
+					postions.append(invalid)
+		else:
+			for i in range(3, -1, -1):
+				if i >= CASTER_POSITION['min'] and i <= CASTER_POSITION['max']:
+					postions.append(valid_ally)
+				else:
+					postions.append(invalid)
+	
+	if TARGET_GROUP != TargetGroup.SELF:
+		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img] [img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
+	else:
+		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions

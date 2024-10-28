@@ -29,7 +29,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.490196)
+border_color = Color(0.815686, 0.815686, 0.815686, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uux52"]
 content_margin_left = 8.0

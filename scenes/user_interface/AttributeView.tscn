@@ -67,19 +67,19 @@ uppercase = true
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
-[node name="Dodge" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
+[node name="Resist" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
-tooltip_text = "Chance to dodge dodgeable abilities."
+tooltip_text = "Chance to resist status effects."
 split_offset = 50
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Dodge"]
+[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Resist"]
 layout_mode = 2
-text = "Dodge"
+text = "Resist"
 vertical_alignment = 1
 uppercase = true
 
-[node name="ProgressBar" type="ProgressBar" parent="HiddenAttributes/MarginContainer/VBoxContainer/Dodge"]
+[node name="ProgressBar" type="ProgressBar" parent="HiddenAttributes/MarginContainer/VBoxContainer/Resist"]
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
@@ -99,21 +99,23 @@ uppercase = true
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
-[node name="Resist" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
+[node name="Dodge" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
-tooltip_text = "Chance to resist status effects."
+tooltip_text = "Critical damage."
 split_offset = 50
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Resist"]
+[node name="Label" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Dodge"]
 layout_mode = 2
-text = "Resist"
+text = "CRIT DMG."
 vertical_alignment = 1
 uppercase = true
 
-[node name="ProgressBar" type="ProgressBar" parent="HiddenAttributes/MarginContainer/VBoxContainer/Resist"]
+[node name="Value" type="Label" parent="HiddenAttributes/MarginContainer/VBoxContainer/Dodge"]
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+text = "1.5"
+vertical_alignment = 1
+uppercase = true
 
 [node name="HealMult" type="HSplitContainer" parent="HiddenAttributes/MarginContainer/VBoxContainer"]
 layout_mode = 2

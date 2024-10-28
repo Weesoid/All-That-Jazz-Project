@@ -12,7 +12,7 @@ extends Control
 @onready var handling_val = $Attributes/MarginContainer/VBoxContainer/Handling/CustomCountBar
 @onready var hustle_val = $Attributes/MarginContainer/VBoxContainer/Hustle/Value
 @onready var acc_val = $HiddenAttributes/MarginContainer/VBoxContainer/Accuracy/ProgressBar
-@onready var dodge_val = $HiddenAttributes/MarginContainer/VBoxContainer/Dodge/ProgressBar
+@onready var crit_d_val = $HiddenAttributes/MarginContainer/VBoxContainer/Dodge/Value
 @onready var crit_val = $HiddenAttributes/MarginContainer/VBoxContainer/Crit/ProgressBar
 @onready var resist_val = $HiddenAttributes/MarginContainer/VBoxContainer/Resist/ProgressBar
 @onready var healm_val = $HiddenAttributes/MarginContainer/VBoxContainer/HealMult/Value
@@ -41,7 +41,7 @@ func _process(_delta):
 			hustle_val.text = 'IMMOBILIZED'
 		# Hidden Stats
 		acc_val.value = combatant.STAT_VALUES['accuracy'] * 100
-		dodge_val.value = combatant.STAT_VALUES['dodge'] * 100
+		crit_d_val.text = str(combatant.STAT_VALUES['crit_dmg'])
 		crit_val.value = combatant.STAT_VALUES['crit'] * 100
 		resist_val.value = combatant.STAT_VALUES['resist'] * 100
 		healm_val.text = str(combatant.STAT_VALUES['heal mult'])

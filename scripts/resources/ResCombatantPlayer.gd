@@ -95,6 +95,9 @@ func unequipWeapon():
 		EQUIPPED_WEAPON = null
 		ABILITY_SLOT = load("res://resources/combat/abilities/BraceSelf.tres")
 
+func hasEquippedWeapon()-> bool:
+	return EQUIPPED_WEAPON != null
+
 func equipCharm(charm: ResCharm, slot: int):
 	if hasCharm(charm):
 		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] already has [color=yellow]%s[/color] equipped.' % [NAME, charm.NAME])

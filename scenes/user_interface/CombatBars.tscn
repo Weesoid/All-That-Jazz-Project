@@ -197,12 +197,13 @@ grow_horizontal = 0
 grow_vertical = 2
 small_sprites = true
 
-[node name="StatusEffectContainer" type="VBoxContainer" parent="HealthBar"]
+[node name="StatusEffectContainer" type="GridContainer" parent="HealthBar"]
 layout_mode = 0
-offset_left = -8.0
-offset_top = -38.0
-offset_right = -2.0
-offset_bottom = -32.0
+offset_left = -4.0
+offset_top = -42.0
+offset_right = 12.0
+offset_bottom = -2.0
+columns = 2
 
 [node name="TurnGradient" type="Sprite2D" parent="HealthBar"]
 z_index = -1

@@ -71,7 +71,7 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 		damage = valueVariate(damage, variation)
 	if can_crit:
 		if caster != null and randomRoll(caster.STAT_VALUES['crit']):
-			damage *= 1.5
+			damage *= caster.STAT_VALUES['crit_dmg']
 			manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 			call_indicator.emit('Show', target)
 			getCombatScene().combat_camera.shake(15.0, 10.0)
@@ -99,7 +99,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	
 	base_damage = valueVariate(base_damage, 0.15)
 	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
-		base_damage *= 1.5
+		base_damage *= caster.STAT_VALUES['crit_dmg']
 		manual_call_indicator.emit(target, 'CRITICAL!!!', 'Crit')
 		call_indicator.emit('Show', target)
 		getCombatScene().combat_camera.shake(15.0, 10.0)
@@ -346,7 +346,6 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 		if effect.current_rank != effect.MAX_RANK and effect.MAX_RANK != 0:
 			effect.APPLY_ONCE = true
 			effect.current_rank += 1
-			CombatGlobals.manual_call_indicator.emit(afflicted_target, '%s Rank Up!' % status_effect.NAME , 'Show')
 
 func removeStatusEffect(target: ResCombatant, status_name: String):
 	for status in target.STATUS_EFFECTS:
@@ -356,6 +355,9 @@ func removeStatusEffect(target: ResCombatant, status_name: String):
 
 func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')
+
+func inCombat()-> bool:
+	return get_parent().has_node('CombatScene')
 
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	return load(str("res://resources/combat/status_effects/"+status_effect_name.replace(' ', '')+".tres")).duplicate()

@@ -20,10 +20,18 @@ func clearPatrollers():
 	if PlayerGlobals.CLEARED_MAPS.has(NAME):
 		for child in OverworldGlobals.getCurrentMap().get_children():
 			if child.has_node('NPCPatrolComponent'): child.queue_free()
+	
+	await get_tree().process_frame
+	if !PlayerGlobals.isMapCleared():
+		var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+		OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
 
 func giveRewards():
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+	map_clear_indicator.added_exp = REWARD_BANK['experience']
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
+	
+	print(map_clear_indicator.added_exp)
 	PlayerGlobals.CURRENCY += REWARD_BANK['currency']
 	PlayerGlobals.addExperience(REWARD_BANK['experience'], true)
 	for item in REWARD_BANK['loot'].keys():

@@ -15,8 +15,10 @@ signal combat_exited
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	dogpile_timer.name = 'DogpileTimer'
 	dogpile_timer.connect('timeout', resetDogpile)
 	add_child(dogpile_timer)
+	follow_array.resize(100)
 
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
@@ -33,7 +35,6 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
-	print('Setting to ', enabled)
 	getPlayer().can_move = enabled
 	getPlayer().set_process_unhandled_input(enabled)
 	if enabled:
@@ -223,7 +224,9 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	get_tree().change_scene_to_file(map_name_path)
 	await get_tree().process_frame
 	
-	if getCurrentMap().has_node('Player'): getPlayer().loadData()
+	if getCurrentMap().has_node('Player'): 
+		getCurrentMap().hide()
+		getPlayer().loadData()
 	var player = preload("res://scenes/entities/Player.tscn").instantiate()
 	var coords = coordinates.split(',')
 	getCurrentMap().add_child(player)

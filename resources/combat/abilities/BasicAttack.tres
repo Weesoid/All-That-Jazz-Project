@@ -1,18 +1,29 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://cj3etighmenn7"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://cj3etighmenn7"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_40w1k"]
-[ext_resource type="Resource" uid="uid://pdqg6jpfa1ma" path="res://resources/combat/status_effects/Singed.tres" id="4_qoran"]
+[ext_resource type="Resource" uid="uid://d1vaoh0tdx0nq" path="res://resources/combat/status_effects/Poison.tres" id="2_stuxp"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="4_w313l"]
+[ext_resource type="Resource" uid="uid://c31u7ngixdwo8" path="res://resources/combat/status_effects/BrawnUp.tres" id="5_m3qk6"]
 
 [sub_resource type="Resource" id="Resource_tkqu8"]
 script = ExtResource("2_40w1k")
 damage_type = 0
-damage = 999
+damage = 5
 can_miss = true
 can_crit = true
-apply_status = ExtResource("4_qoran")
+apply_status = ExtResource("2_stuxp")
 return_pos = true
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_6eab6"]
+script = ExtResource("4_w313l")
+target = 1
+status_effect = ExtResource("5_m3qk6")
+cast_animation = ""
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0
@@ -21,7 +32,7 @@ animate_on = 0
 script = ExtResource("1_k0byw")
 NAME = "Basic Attack"
 DESCRIPTION = "The attack of basicness!"
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_tkqu8")])
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_tkqu8"), SubResource("Resource_6eab6")])
 ABILITY_SCRIPT = ExtResource("1_y24xu")
 TARGET_TYPE = 0
 TARGET_GROUP = 1

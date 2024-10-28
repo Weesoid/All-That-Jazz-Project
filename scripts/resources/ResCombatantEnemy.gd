@@ -43,9 +43,9 @@ func getExperience():
 func getDrops():
 	if DROP_POOL.is_empty():
 		return {}
-	
 	var drops = {}
 	
+	print('Rolling with ', CHANCE_TO_DROP)
 	for i in range(DROP_COUNT):
 		if CombatGlobals.randomRoll(CHANCE_TO_DROP): 
 			var item = rollDrops()
@@ -53,7 +53,6 @@ func getDrops():
 				drops[item] += randi_range(1, DROP_POOL[item].y)
 			else:
 				drops[item] = randi_range(1, DROP_POOL[item].y)
-	
 	return drops
 
 func getRawDrops():

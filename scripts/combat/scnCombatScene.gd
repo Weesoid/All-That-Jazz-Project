@@ -29,6 +29,7 @@ class_name CombatScene
 @onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
 @onready var guard_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
+@onready var skills_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 var combatant_turn_order: Array
@@ -132,10 +133,13 @@ func on_player_turn():
 	whole_action_panel.show()
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
+		await get_node('QTE').tree_exited
 	
 	Input.action_release("ui_accept")
 	
 	resetActionLog()
+	print(active_combatant.hasEquippedWeapon())
+	skills_button.disabled = active_combatant.ABILITY_SET.is_empty() and !active_combatant.hasEquippedWeapon()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
 	ui_animator.play('ShowActionPanel')
@@ -222,6 +226,10 @@ func end_turn(combatant_act=true):
 	
 	# Determine next combatant
 	if selected_ability == null or !selected_ability.INSTANT_CAST:
+		if has_node('QTE'):
+			print('Awaitng before setting')
+			await CombatGlobals.qte_finished
+			await get_node('QTE').tree_exited
 		setActiveCombatant()
 	else:
 		selected_ability.ENABLED = false
@@ -715,7 +723,7 @@ func concludeCombat(results: int):
 	target_state = 0
 	target_index = 0
 	var morale_bonus = 1
-	var loot_bonus = 0
+	var loot_bonus = 1
 	var all_bonuses = ''
 	
 	if results == 1:
@@ -729,11 +737,13 @@ func concludeCombat(results: int):
 		if round_count == 1:
 			all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
 			morale_bonus += 1
-		if results == 1:
-			OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * (morale_bonus * 0.25)
-			for i in range(loot_bonus):
-				for enemy in getCombatantGroup('enemies'): 
-					addDrop(enemy.getDrops())
+		print('Boutta LOOOOOOOTTTT')
+		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * (morale_bonus * 0.25)
+		print(loot_bonus, ' < egg!')
+		for i in range(loot_bonus):
+			print(getCombatantGroup('enemies'))
+			for enemy in getCombatantGroup('enemies'): 
+				addDrop(enemy.getDrops())
 	print(OverworldGlobals.getCurrentMap().REWARD_BANK)
 #	else:
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
@@ -822,7 +832,7 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 	
 	await get_tree().create_timer(wait).timeout
 
-func getCombatantPosition(combatant: ResCombatant)->int:
+func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:
 	if combatant is ResPlayerCombatant:
 		return team_container_markers.find(combatant.SCENE.get_parent())
 	else:
