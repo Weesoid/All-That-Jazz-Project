@@ -34,9 +34,9 @@ func loadGame(saved_game: SavedGame):
 	is_loading = true
 	get_tree().change_scene_to_file(saved_game.current_map_path)
 	await get_tree().create_timer(0.01).timeout
-	
 	get_tree().call_group('presist', 'loadData')
 	await get_tree().process_frame
+	
 	for item in saved_game.save_data:
 		if item is EntitySaveData:
 			var scene: Node2D = load(item.scene_path).instantiate()
@@ -63,3 +63,8 @@ func loadGame(saved_game: SavedGame):
 	OverworldGlobals.getCurrentMap().show()
 	if SettingsGlobals.cheat_mode:
 		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
+
+func overwriteData(save_name: String=default_save_name):
+	pass
+	#var saved_game: SavedGame = load("res://saves/%s.tres") % save_name
+	#saved_game.save_data

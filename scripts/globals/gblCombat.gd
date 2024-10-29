@@ -293,7 +293,7 @@ func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, guarante
 		status_effect = load(str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")).duplicate()
 	elif effect is ResStatusEffect:
 		status_effect = effect.duplicate()
-	if (randomRoll(target.STAT_VALUES['resist']) and status_effect.RESISTABLE) or guaranteed:
+	if !guaranteed and (randomRoll(target.STAT_VALUES['resist']) and status_effect.RESISTABLE):
 		manual_call_indicator.emit(target, '%s Resisted!' % status_effect.NAME, 'Resist')
 		return
 	
@@ -325,7 +325,6 @@ func checkReactions(target: ResCombatant):
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Poison')
 	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
-		#OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
 		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Fulgurate.tres"))
 		removeStatusEffect(target, 'Singed')
 		removeStatusEffect(target, 'Jolted')

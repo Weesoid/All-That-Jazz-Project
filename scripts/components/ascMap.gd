@@ -31,7 +31,6 @@ func giveRewards():
 	map_clear_indicator.added_exp = REWARD_BANK['experience']
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
 	
-	print(map_clear_indicator.added_exp)
 	PlayerGlobals.CURRENCY += REWARD_BANK['currency']
 	PlayerGlobals.addExperience(REWARD_BANK['experience'], true)
 	for item in REWARD_BANK['loot'].keys():

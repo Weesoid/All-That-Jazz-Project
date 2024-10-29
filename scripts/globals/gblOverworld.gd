@@ -508,6 +508,12 @@ func damageParty(damage:int):
 		showGameOver('Shot down!')
 	party_damaged.emit()
 
+func isPlayerAlive()-> bool:
+	for combatant in getCombatantSquad('Player'):
+		if !combatant.isDead(): return true
+	
+	return false
+
 func restorePlayerView():
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false

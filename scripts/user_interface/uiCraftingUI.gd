@@ -14,11 +14,15 @@ extends Control
 var all_components: Array[ResItem] = [null, null, null]
 
 func _process(_delta):
-	if InventoryGlobals.RECIPES.has(recipeToString()):
+	if InventoryGlobals.RECIPES.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) != null:
 		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
 		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME	
 		craft_button.show()
 		craft_button.disabled = canAddToInventory()
+	elif InventoryGlobals.RECIPES.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) == null:
+		craft_button.text = 'UH OH! PLEASE SHOW WEES THIS INVALID RECIPE!!!'
+		craft_button.show()
+		craft_button.disabled = true
 	else:
 		craft_button.hide()
 

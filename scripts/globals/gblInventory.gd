@@ -21,6 +21,9 @@ func getRecipeResult(item_name_array: Array, get_raw_string=false):
 	var item = RECIPES[item_name_array].split('.')
 	var output = [null, null]
 	
+	if !FileAccess.file_exists("res://resources/items/"+item[0]+".tres"):
+		return null
+	
 	if get_raw_string:
 		output[0] = load("res://resources/items/"+item[0]+".tres")
 		if item.size() > 1: output[1] = int(item[1])

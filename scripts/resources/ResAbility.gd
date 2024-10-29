@@ -100,6 +100,8 @@ func getRichDescription(with_name=true)-> String:
 	if with_name:
 		description += NAME.to_upper()+'\n'
 	description += getPositionIcon()
+	if TENSION_COST > 0:
+		description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % TENSION_COST
 	#description += '[img]%s[/img]' % [getValidTargetIcon()]
 	if INSTANT_CAST:
 		description += '[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"

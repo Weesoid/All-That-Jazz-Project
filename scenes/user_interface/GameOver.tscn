@@ -1,9 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://becln3jamnyn2"]
+[gd_scene load_steps=12 format=3 uid="uid://becln3jamnyn2"]
 
 [ext_resource type="PackedScene" uid="uid://dpdurcfiprjbj" path="res://scenes/user_interface/Saves.tscn" id="1_1gutg"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameOver.gd" id="1_gbj7h"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_41vgo"]
 [ext_resource type="Theme" uid="uid://dlrtokrr0ap1h" path="res://design/BorderlessButton.tres" id="2_qm87n"]
+[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="5_hcpcc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yk5tf"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s4ps"]
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_17ikh"]
 length = 0.001
@@ -43,10 +55,46 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("VBoxContainer2/HFlowContainer/ProgressBar:theme_override_styles/fill:bg_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("VBoxContainer2/HSplitContainer/Cash:theme_override_colors/font_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("EndSentence:theme_override_colors/font_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_t7wvt"]
 resource_name = "Show"
-length = 1.8
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -66,7 +114,7 @@ tracks/1/path = NodePath("Label:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1.8),
+"times": PackedFloat32Array(2),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -78,14 +126,55 @@ tracks/2/path = NodePath("VBoxContainer:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(1.8),
+"times": PackedFloat32Array(2),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EndSentence:theme_override_colors/font_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_xrbgk"]
+resource_name = "Flash_Red"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer2/HFlowContainer/ProgressBar:theme_override_styles/fill:bg_color")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer2/HSplitContainer/Cash:theme_override_colors/font_color")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pf1gt"]
 _data = {
+"Flash_Red": SubResource("Animation_xrbgk"),
 "RESET": SubResource("Animation_17ikh"),
 "Show": SubResource("Animation_t7wvt")
 }
@@ -109,51 +198,50 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -184.0
-offset_top = 28.0
+offset_top = 66.0
 offset_right = 184.0
-offset_bottom = 51.0
+offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
 text = "You perished."
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
 visible_characters = 0
 visible_ratio = 0.0
 
 [node name="Label" type="Label" parent="."]
 visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+layout_mode = 2
 offset_left = -64.0
-offset_top = 44.0
+offset_top = 79.0
 offset_right = 64.0
-offset_bottom = 78.0
+offset_bottom = 92.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = " Continue?"
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
 uppercase = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
 visible = false
 layout_mode = 0
-offset_left = -32.0
-offset_top = 76.0
-offset_right = 32.0
-offset_bottom = 124.0
+offset_left = -88.0
+offset_top = 95.0
+offset_right = 88.0
+offset_bottom = 117.0
+alignment = 1
 
 [node name="Yes" parent="VBoxContainer" instance=ExtResource("2_41vgo")]
+custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 theme = ExtResource("2_qm87n")
 text = "Yes"
 
 [node name="No" parent="VBoxContainer" instance=ExtResource("2_41vgo")]
+custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 theme = ExtResource("2_qm87n")
 text = "No"
@@ -167,6 +255,59 @@ anchor_top = 0.450617
 anchor_right = 0.388889
 anchor_bottom = 0.450617
 mode = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = -64.0
+offset_top = 36.0
+offset_right = 64.0
+offset_bottom = 66.0
+
+[node name="HFlowContainer" type="HSplitContainer" parent="VBoxContainer2"]
+layout_mode = 2
+split_offset = 48
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="VBoxContainer2/HFlowContainer"]
+layout_mode = 2
+text = "Morale"
+horizontal_alignment = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer2/HFlowContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_yk5tf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_2s4ps")
+value = 25.0
+
+[node name="ProgressBarTrueValues" parent="VBoxContainer2/HFlowContainer/ProgressBar" instance=ExtResource("5_hcpcc")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -6.5
+offset_right = 11.0
+offset_bottom = 6.5
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer2"]
+layout_mode = 2
+split_offset = 48
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="VBoxContainer2/HSplitContainer"]
+layout_mode = 2
+text = "Currency"
+horizontal_alignment = 2
+
+[node name="Cash" type="Label" parent="VBoxContainer2/HSplitContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "100"
+vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -297,7 +297,7 @@ func _on_escape_pressed():
 		concludeCombat(2)
 	else:
 		for combatant in getCombatantGroup('team'):
-			CombatGlobals.addStatusEffect(combatant, 'Dazed', true)
+			CombatGlobals.addStatusEffect(combatant, 'Dazed', true, true)
 		bonus_escape_chance += 0.1
 		confirm.emit()
 
@@ -341,10 +341,12 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	
 	if active_combatant.EQUIPPED_WEAPON != null:
 		var button = OverworldGlobals.createCustomButton()
-		var weapon = active_combatant.EQUIPPED_WEAPON
+		var weapon: ResWeapon = active_combatant.EQUIPPED_WEAPON
 		button.text = weapon.EFFECT.NAME + ' (%s/%s)' % [weapon.durability, weapon.max_durability]
 		button.pressed.connect(func(): forceCastAbility(weapon.EFFECT, weapon))
 		button.focus_entered.connect(func():updateDescription(weapon.EFFECT))
+		button.expand_icon = true
+		button.icon = weapon.ICON
 		if !weapon.EFFECT.ENABLED or weapon.durability <= 0:
 			button.disabled = true
 		secondary_panel_container.add_child(button)

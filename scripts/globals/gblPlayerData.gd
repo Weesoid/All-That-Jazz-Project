@@ -33,9 +33,9 @@ signal level_up
 func _ready():
 	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
 	EQUIPPED_ARROW.STACK = 0
-	
 	TEAM.append(preload("res://resources/combat/combatants_player/Willis.tres"))
 	initializeBenchedTeam()
+	addExperience(99)
 
 func initializeBenchedTeam():
 	if PlayerGlobals.TEAM.is_empty():
@@ -81,6 +81,12 @@ func getRequiredExp() -> int:
 	var baseExp = 100
 	var expMultiplier = 1.25
 	return int(baseExp * expMultiplier ** (PARTY_LEVEL - 1))
+
+func addCurrency(value: int):
+	if value + CURRENCY < 0:
+		CURRENCY = 0
+	else:
+		CURRENCY += value
 
 func hasActiveTeam()-> bool:
 	return !OverworldGlobals.getCombatantSquad('Player').is_empty()
