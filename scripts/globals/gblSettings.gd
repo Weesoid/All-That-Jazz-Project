@@ -2,7 +2,7 @@ extends Node
 
 var toggle_sprint = true
 var toggle_music = false
-var cheat_mode = true
+var cheat_mode = false
 
 func _ready():
 	if cheat_mode:

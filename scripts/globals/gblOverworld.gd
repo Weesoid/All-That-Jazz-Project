@@ -265,7 +265,7 @@ func getMapRewardBank(key: String):
 	return get_tree().current_scene.REWARD_BANK[key]
 
 func isPlayerCheating()-> bool:
-	return getPlayer().has_node('DebugComponent')
+	return getCurrentMap().has_node('Player') and getPlayer().has_node('DebugComponent')
 
 func showGameOver(end_sentence: String, animation: String='Fall'):
 	getPlayer().setUIVisibility(false)
@@ -273,7 +273,7 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	setPlayerInput(false, true)
 	update_patroller_modes.emit(0)
 	playEntityAnimation('Player', animation)
-	await getEntity('Player').get_node('AnimationPlayer').animation_finished
+	#await getEntity('Player').get_node('AnimationPlayer').animation_finished
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
 	getPlayer().resetStates()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

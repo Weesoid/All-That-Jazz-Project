@@ -290,8 +290,8 @@ func undrawBowAnimation():
 
 func saveData(save_data: Array):
 	var data = EntitySaveData.new()
-	data.position = global_position
 	data.scene_path = scene_file_path
+	data.position = global_position
 	data.direction = int(player_direction.rotation_degrees)
 	save_data.append(data)
 

@@ -181,8 +181,6 @@ avoidance_enabled = true
 radius = 60.0
 
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_qmtob")]
-ALERTED_SPEED_MULTIPLIER = null
-CHASE_SPEED_MULTIPLIER = null
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_d6omk")]
 FILL_EMPTY = true

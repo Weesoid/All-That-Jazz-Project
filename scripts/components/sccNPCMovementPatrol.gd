@@ -70,9 +70,9 @@ func _physics_process(_delta):
 	if COMBAT_SWITCH:
 		executeCollisionAction()
 	
-#	if OverworldGlobals.isPlayerCheating():
-	DEBUG.show()
-	DEBUG.text = str(DETECT_TIMER.time_left)
+	if OverworldGlobals.isPlayerCheating():
+		DEBUG.show()
+		DEBUG.text = str(DETECT_TIMER.time_left)
 #	else:
 #		DEBUG.hide()
 

@@ -1,40 +1,40 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=18 format=3 uid="uid://def6fsrgg5e14"]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=18 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_6vgdu"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_0jmq8"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="2_t2k78"]
 [ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="3_gtwk7"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="4_pj8it"]
-[ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="5_ksjvm"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="5_ksjvm"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="5_rpgil"]
-[ext_resource type="Resource" uid="uid://colt86d3cbv04" path="res://resources/combat/combatants_player/Willis.tres" id="6_b32hr"]
-[ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="6_kvrh4"]
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="8_jbnxg"]
-[ext_resource type="Resource" uid="uid://n15uy40oimtq" path="res://resources/combat/abilities/BraceSelf.tres" id="14_us4su"]
-[ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="24_6u6xt"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="6_b32hr"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Watchdog.tres" id="6_kvrh4"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="8_jbnxg"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="14_us4su"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="24_6u6xt"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_60n6k"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_jeq5p"]
 
-[sub_resource type="Resource" id="Resource_8y5wh"]
-script = ExtResource("1_6vgdu")
+[sub_resource type="Resource" id="Resource_a60rk"]
+script = ExtResource("1_0jmq8")
 position = Vector2(-63, 36)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_xiu11"]
+[sub_resource type="Resource" id="Resource_p6awt"]
 script = ExtResource("5_rpgil")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_d3d8w"]
+[sub_resource type="Resource" id="Resource_hqngm"]
 script = ExtResource("25_60n6k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_b32hr")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = []
 EQUIPPED_ARROW = ExtResource("24_6u6xt")
-CURRENCY = 70
+CURRENCY = 67
 PARTY_LEVEL = 1
-CURRENT_EXP = 82
+CURRENT_EXP = 89
 stamina = 0.0
 bow_max_draw = 0.0
 walk_speed = 0.0
@@ -78,7 +78,7 @@ ExtResource("6_b32hr"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 }, ExtResource("14_us4su")]
 }
 
-[sub_resource type="Resource" id="Resource_5cxt4"]
+[sub_resource type="Resource" id="Resource_8ib0r"]
 script = ExtResource("4_pj8it")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -87,9 +87,9 @@ ITEM_DATA_INVENTORY = {}
 
 [resource]
 script = ExtResource("26_jeq5p")
-NAME = "Save - 00:00:10
+NAME = "Save - 00:00:12
 Morale 1
 Alt Room"
-PLAYTIME = 10.346
+PLAYTIME = 12.52
 current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_8y5wh"), SubResource("Resource_xiu11"), SubResource("Resource_d3d8w"), SubResource("Resource_5cxt4")]
+save_data = [SubResource("Resource_a60rk"), SubResource("Resource_p6awt"), SubResource("Resource_hqngm"), SubResource("Resource_8ib0r")]

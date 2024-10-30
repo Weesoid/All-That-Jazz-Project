@@ -14,12 +14,18 @@ func _ready():
 func getTotalPlaytime()-> String:
 	return Time.get_time_string_from_unix_time(int(Time.get_unix_time_from_system() - session_start))
 
-func saveGame(save_name: String=default_save_name):
+func saveGame(save_name: String=default_save_name, save_current_map:bool=true):
 	var saved_game: SavedGame = SavedGame.new()
-	saved_game.current_map_path = OverworldGlobals.getCurrentMap().scene_file_path
-	
 	var save_data = []
-	get_tree().call_group('presist', 'saveData', save_data)
+	
+	if save_current_map:
+		saved_game.current_map_path = OverworldGlobals.getCurrentMap().scene_file_path
+		get_tree().call_group('presist', 'saveData', save_data)
+	else:
+		var existing_game = load("res://saves/%s.tres"%save_name)
+		saved_game.current_map_path = existing_game.current_map_path
+		for data in existing_game.save_data:
+			if data is EntitySaveData and data.scene_path == "res://scenes/entities/Player.tscn": save_data.append(data)
 	QuestGlobals.saveData(save_data)
 	PlayerGlobals.saveData(save_data)
 	InventoryGlobals.saveData(save_data)
@@ -63,8 +69,3 @@ func loadGame(saved_game: SavedGame):
 	OverworldGlobals.getCurrentMap().show()
 	if SettingsGlobals.cheat_mode:
 		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
-
-func overwriteData(save_name: String=default_save_name):
-	pass
-	#var saved_game: SavedGame = load("res://saves/%s.tres") % save_name
-	#saved_game.save_data
