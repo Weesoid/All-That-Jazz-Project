@@ -82,7 +82,6 @@ func _ready():
 	renameDuplicates()
 	
 	for combatant in COMBATANTS:
-		print('Adding')
 		addCombatant(combatant)
 		if combatant is ResEnemyCombatant:
 			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
@@ -175,7 +174,8 @@ func on_enemy_turn():
 		selected_ability = load("res://resources/combat/abilities/Struggle.tres")
 		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
-		executeAbility()
+		if target_combatant != null:
+			executeAbility()
 	
 	await confirm
 	end_turn()
@@ -224,7 +224,7 @@ func end_turn(combatant_act=true):
 	removeDeadCombatants()
 	
 	randomize()
-	if turn_count % (100 - randi_range(0, 10)) == 0:
+	if turn_count % (100 - randi_range(0, 25)) == 0 and getCombatantGroup('enemies').size() < 4:
 		addCombatant(enemy_reinforcements.pick_random().duplicate(), true)
 	
 	# Reset values
@@ -441,10 +441,7 @@ func executeAbility():
 		CombatGlobals.TENSION -= selected_ability.TENSION_COST
 	moveCamera(camera_position)
 	
-	await get_tree().create_timer(0.5).timeout
-	if has_node('QTE'):
-		await CombatGlobals.qte_finished
-		await get_node('QTE').tree_exited
+	await get_tree().create_timer(0.25).timeout
 	if target_combatant is ResCombatant:
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
 	else:
@@ -754,7 +751,6 @@ func concludeCombat(results: int):
 			morale_bonus += 1
 		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * (morale_bonus * 0.25)
 		for i in range(loot_bonus):
-			print(getCombatantGroup('enemies'))
 			for enemy in getCombatantGroup('enemies'): 
 				addDrop(enemy.getDrops())
 #	else:
@@ -839,11 +835,6 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0.25, 0.15)# ROTAT
 					combatant_b.reparent(combatant_group[current_pos])
 					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
-			0:
-				tween_a.tween_property(combatant.SCENE, 'global_position', onslaught_container.get_children()[0].global_position, 0.18)
-				tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', -0.25, 0.15)
-				#await tween_a.finished
-				setOnslaught(combatant, true)
 			
 		tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
 	
@@ -859,26 +850,26 @@ func moveOnslaught(direction: int):
 	pos_tween.tween_property(onslaught_combatant.SCENE, 'global_position', onslaught_combatant.SCENE.global_position+Vector2(move, 0), 0.1)
 	await pos_tween.finished
 	tween_running = false
-	print(onslaught_combatant.SCENE.global_position)
 
 func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
-	onslaught_mode = set_to
 	combatant.SCENE.setBlocking(set_to)
 	combatant.SCENE.allow_block = set_to
 	onslaught_container.visible = set_to
 	for target in COMBATANTS:
 		if !target.hasStatusEffect('Knock Out') and target != combatant:
 			target.SCENE.collision.disabled = set_to
-		#target.
-	
 	if set_to:
+		var tween = CombatGlobals.getCombatScene().create_tween()
 		onslaught_combatant = combatant
-		await CombatGlobals.getCombatScene().zoomCamera(Vector2(0.5,0.5))
+		tween.tween_property(combatant.SCENE, 'global_position', onslaught_container.get_children()[0].global_position, 0.25)
+		await tween.finished
+		CombatGlobals.getCombatScene().zoomCamera(Vector2(0.5,0.5))
 	else:
 		onslaught_combatant = null
-		if combatant.hasStatusEffect('Guard'):
-			CombatGlobals.removeStatusEffect(combatant,'Guard')
-		await CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
+		if combatant.hasStatusEffect('Guard'): CombatGlobals.removeStatusEffect(combatant,'Guard')
+		CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
+	
+	onslaught_mode = set_to
 
 func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:
 	if combatant is ResPlayerCombatant:

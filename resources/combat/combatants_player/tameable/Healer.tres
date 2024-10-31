@@ -3,7 +3,7 @@
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_g8dry"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_acdde"]
 [ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="3_8phct"]
-[ext_resource type="PackedScene" uid="uid://dna7v4bi3kfh3" path="res://scenes/combatants/FriendA.tscn" id="3_dl1jr"]
+[ext_resource type="PackedScene" uid="uid://buy4waf3u3bir" path="res://scenes/combatants/FriendA.tscn" id="3_dl1jr"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="4_kjlrm"]
 [ext_resource type="PackedScene" uid="uid://hc8hrodt25vu" path="res://scenes/entities/followers/Greenie.tscn" id="4_nl1we"]
 [ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_vf626"]

@@ -28,7 +28,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await applyEffects(caster, target, ability)
 		elif effect is ResCommandAbilityEffect:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
-			await CombatGlobals.get_tree().create_timer(0.25).timeout
+			await CombatGlobals.get_tree().create_timer(0.5).timeout
 	
 	CombatGlobals.ability_finished.emit()
 

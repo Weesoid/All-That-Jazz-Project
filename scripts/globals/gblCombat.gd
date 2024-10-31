@@ -124,6 +124,7 @@ func useDamageFormula(target: ResCombatant, damage):
 	var out_damage = damage - (target.STAT_VALUES['grit'] * damage)
 	if out_damage < 0.0: 
 		out_damage = 0
+	print(out_damage)
 	return out_damage
 
 func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
@@ -245,10 +246,8 @@ func playFadingTween(target: ResCombatant):
 func playSecondWindTween(target: ResCombatant):
 	OverworldGlobals.playSound("res://audio/sounds/458533__shyguy014__healpop.ogg")
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	var opacity_tween = getCombatScene().create_tween()
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.05)
 	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
-	opacity_tween.tween_property(target.SCENE, 'modulate', Color(Color.WHITE, 1.0), 0.5)
 
 func playKnockOutTween(target: ResCombatant):
 	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
@@ -267,7 +266,7 @@ func setCombatantVisibility(target: CombatantScene, set_to:bool):
 	var tween = CombatGlobals.getCombatScene().create_tween()
 	if !set_to:
 		tween.tween_property(target, 'modulate', Color(Color.TRANSPARENT, 0.5), 0.15)
-		target.z_index = -1
+		target.z_index = -10
 	else:
 		tween.tween_property(target, 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
 		target.z_index = 0

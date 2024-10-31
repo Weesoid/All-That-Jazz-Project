@@ -26,7 +26,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 	animator.play(idle_animation)
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
-	animator.play("RESET")
+	#animator.play("RESET")
 	if combatant_resource.isDead() and !['Fading, KO'].has(animation) or animation == '': return
 	if !animator.get_animation_list().has(animation): animation = 'Cast_Misc'
 	
@@ -66,7 +66,6 @@ func shootProjectile(target: CombatantScene):
 	projectile.global_position = global_position
 	if combatant_resource is ResEnemyCombatant and scale.x > 0:
 		projectile.rotation_degrees = 180
-		print(projectile.rotation_degrees)
 	CombatGlobals.getCombatScene().add_child(projectile)
 
 func _on_hit_box_body_entered(body):

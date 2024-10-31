@@ -112,7 +112,7 @@ _data = {
 "RESET": SubResource("Animation_63lkm")
 }
 
-[node name="DebugEffect" type="Node2D"]
+[node name="Node2D" type="Node2D"]
 script = ExtResource("1_1mtd8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
