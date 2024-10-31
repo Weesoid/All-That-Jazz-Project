@@ -644,24 +644,28 @@ position = Vector2(-72, -72)
 position = Vector2(24, 56)
 
 [node name="Sprite2D" type="Sprite2D" parent="OnslaughtContainer/Position1"]
+visible = false
 texture = ExtResource("2_5aing")
 
 [node name="Position2" type="Marker2D" parent="OnslaughtContainer"]
 position = Vector2(56, 56)
 
 [node name="Sprite2D2" type="Sprite2D" parent="OnslaughtContainer/Position2"]
+visible = false
 texture = ExtResource("2_5aing")
 
 [node name="Position3" type="Marker2D" parent="OnslaughtContainer"]
 position = Vector2(88, 56)
 
 [node name="Sprite2D3" type="Sprite2D" parent="OnslaughtContainer/Position3"]
+visible = false
 texture = ExtResource("2_5aing")
 
 [node name="Position4" type="Marker2D" parent="OnslaughtContainer"]
 position = Vector2(120, 56)
 
 [node name="Sprite2D4" type="Sprite2D" parent="OnslaughtContainer/Position4"]
+visible = false
 texture = ExtResource("2_5aing")
 
 [node name="CombatCamera" type="Camera2D" parent="."]

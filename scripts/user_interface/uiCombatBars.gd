@@ -32,10 +32,6 @@ func _ready():
 func _process(_delta):
 	updateBars()
 	updateStatusEffects()
-	if CombatGlobals.getCombatScene().onslaught_mode:
-		hide()
-	else:
-		show()
 	if CombatGlobals.getCombatScene().active_combatant == attached_combatant:
 		turn_gradient.get_parent().show()
 		turn_gradient.play('Loop')

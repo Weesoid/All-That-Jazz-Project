@@ -441,7 +441,10 @@ func executeAbility():
 		CombatGlobals.TENSION -= selected_ability.TENSION_COST
 	moveCamera(camera_position)
 	
-	await get_tree().create_timer(0.25).timeout
+	await get_tree().create_timer(0.5).timeout
+	if has_node('QTE'):
+		await CombatGlobals.qte_finished
+		await get_node('QTE').tree_exited
 	if target_combatant is ResCombatant:
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
 	else:
@@ -839,6 +842,7 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 			0:
 				tween_a.tween_property(combatant.SCENE, 'global_position', onslaught_container.get_children()[0].global_position, 0.18)
 				tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', -0.25, 0.15)
+				#await tween_a.finished
 				setOnslaught(combatant, true)
 			
 		tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
@@ -865,6 +869,7 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 	for target in COMBATANTS:
 		if !target.hasStatusEffect('Knock Out') and target != combatant:
 			target.SCENE.collision.disabled = set_to
+		#target.
 	
 	if set_to:
 		onslaught_combatant = combatant
