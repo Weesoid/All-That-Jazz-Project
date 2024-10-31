@@ -9,6 +9,7 @@ script = ExtResource("2_3ai6d")
 direction = 0
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("1_8t8d7")

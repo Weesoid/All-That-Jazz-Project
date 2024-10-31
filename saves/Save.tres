@@ -14,27 +14,27 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="25_60n6k"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="26_jeq5p"]
 
-[sub_resource type="Resource" id="Resource_a60rk"]
+[sub_resource type="Resource" id="Resource_g51r2"]
 script = ExtResource("1_0jmq8")
-position = Vector2(-63, 36)
+position = Vector2(-70.2856, 34.0551)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 0
+direction = 179
 
-[sub_resource type="Resource" id="Resource_p6awt"]
+[sub_resource type="Resource" id="Resource_c8kn5"]
 script = ExtResource("5_rpgil")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_hqngm"]
+[sub_resource type="Resource" id="Resource_eej5p"]
 script = ExtResource("25_60n6k")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("6_b32hr")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = []
 EQUIPPED_ARROW = ExtResource("24_6u6xt")
-CURRENCY = 67
+CURRENCY = 100
 PARTY_LEVEL = 1
-CURRENT_EXP = 89
+CURRENT_EXP = 99
 stamina = 0.0
 bow_max_draw = 0.0
 walk_speed = 0.0
@@ -78,7 +78,7 @@ ExtResource("6_b32hr"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 }, ExtResource("14_us4su")]
 }
 
-[sub_resource type="Resource" id="Resource_8ib0r"]
+[sub_resource type="Resource" id="Resource_7x0ut"]
 script = ExtResource("4_pj8it")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -87,9 +87,9 @@ ITEM_DATA_INVENTORY = {}
 
 [resource]
 script = ExtResource("26_jeq5p")
-NAME = "Save - 00:00:12
+NAME = "Save - 00:00:00
 Morale 1
 Alt Room"
-PLAYTIME = 12.52
+PLAYTIME = 0.728
 current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_a60rk"), SubResource("Resource_p6awt"), SubResource("Resource_hqngm"), SubResource("Resource_8ib0r")]
+save_data = [SubResource("Resource_g51r2"), SubResource("Resource_c8kn5"), SubResource("Resource_eej5p"), SubResource("Resource_7x0ut")]

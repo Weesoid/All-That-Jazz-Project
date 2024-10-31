@@ -1,6 +1,7 @@
-[gd_scene load_steps=29 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=30 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
+[ext_resource type="Texture2D" uid="uid://bejxcs31a7uu" path="res://images/sprites/icon_single_friend.png" id="2_5aing"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
@@ -95,7 +96,6 @@ script/source = "extends ProgressBar
 @onready var animator = $AnimationPlayer
 
 func _ready():
-	#global_position = Vector2(-184, -99)
 	CombatGlobals.active_combatant_changed.connect(_on_active_combatant_changed)
 
 func _on_active_combatant_changed(combatant):
@@ -636,6 +636,34 @@ position = Vector2(90, 58)
 [node name="Position4" type="Marker2D" parent="EnemyContainer"]
 position = Vector2(122, 58)
 
+[node name="OnslaughtContainer" type="Node2D" parent="."]
+visible = false
+position = Vector2(-72, -72)
+
+[node name="Position1" type="Marker2D" parent="OnslaughtContainer"]
+position = Vector2(24, 56)
+
+[node name="Sprite2D" type="Sprite2D" parent="OnslaughtContainer/Position1"]
+texture = ExtResource("2_5aing")
+
+[node name="Position2" type="Marker2D" parent="OnslaughtContainer"]
+position = Vector2(56, 56)
+
+[node name="Sprite2D2" type="Sprite2D" parent="OnslaughtContainer/Position2"]
+texture = ExtResource("2_5aing")
+
+[node name="Position3" type="Marker2D" parent="OnslaughtContainer"]
+position = Vector2(88, 56)
+
+[node name="Sprite2D3" type="Sprite2D" parent="OnslaughtContainer/Position3"]
+texture = ExtResource("2_5aing")
+
+[node name="Position4" type="Marker2D" parent="OnslaughtContainer"]
+position = Vector2(120, 56)
+
+[node name="Sprite2D4" type="Sprite2D" parent="OnslaughtContainer/Position4"]
+texture = ExtResource("2_5aing")
+
 [node name="CombatCamera" type="Camera2D" parent="."]
 zoom = Vector2(3, 3)
 position_smoothing_enabled = true
@@ -643,7 +671,7 @@ position_smoothing_speed = 15.0
 script = ExtResource("2_dcn2q")
 
 [node name="DefaultBattleParallax" parent="CombatCamera" instance=ExtResource("3_r3luu")]
-z_index = -2
+z_index = -5
 position = Vector2(-19, 163)
 scale = Vector2(1.5, 1.5)
 

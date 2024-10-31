@@ -42,7 +42,7 @@ func _on_no_pressed():
 
 func _process(delta):
 	if PlayerGlobals.CURRENCY > 0:
-		cash.text = str(current_currency)
+		cash.text = str(int(current_currency))
 	else:
 		cash.text = 'BROKE!'
 

@@ -4,9 +4,9 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		ability.current_effect = effect
 		if effect.animate_on == 1:
 			await playAnimation(ability, caster)
-		
 		if effect.sound_effect != '': 
 			OverworldGlobals.playSound(effect.sound_effect)
+	
 		if effect is ResDamageEffect:
 			await doAttackAnimations(caster, target, ability, effect)
 		elif effect is ResCustomDamageEffect:
@@ -15,10 +15,14 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await caster.doAnimation(effect.cast_animation)
 			await applyEffects(caster, target, ability)
 		elif effect is ResMoveEffect:
+			if effect.target == effect.Target.CASTER:
+				target = caster
+			else:
+				target = target
 			if effect.direction == effect.Direction.FORWARD:
-				await CombatGlobals.getCombatScene().changeCombatantPosition(caster.combatant_resource, 1)
+				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, 1)
 			elif effect.direction == effect.Direction.BACK:
-				await CombatGlobals.getCombatScene().changeCombatantPosition(caster.combatant_resource, -1)
+				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, -1)
 		elif effect is ResHealEffect:
 			await caster.doAnimation(effect.cast_animation)
 			await applyEffects(caster, target, ability)

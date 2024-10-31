@@ -1,6 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://dep0ou7wfy8e1"]
+[gd_scene load_steps=19 format=3]
 
-[ext_resource type="Script" path="res://scripts/combat/scnCombatantScenePlayer.gd" id="1_2b5yj"]
+[ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_2b5yj"]
 [ext_resource type="Texture2D" uid="uid://bbcg77hqsgne0" path="res://images/animations/battler_willis.png" id="2_fie02"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5sw1x"]

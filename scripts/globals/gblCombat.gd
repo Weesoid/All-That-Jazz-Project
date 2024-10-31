@@ -225,6 +225,8 @@ func playDodgeTween(target: ResCombatant):
 	tween.tween_property(target.getSprite(), 'position', Vector2(0, 0), 0.5)
 
 func playHurtTween(target: ResCombatant):
+	#if getCombatScene().onslaught_mode:
+	#	return
 	randomize()
 	var sprite = target.SCENE.get_node('Sprite2D')
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)

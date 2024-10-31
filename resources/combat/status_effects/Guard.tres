@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("3_74buc")
-NAME = "Brace"
+NAME = "Guard"
 DESCRIPTION = "Target is bracing for an attack."
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("1_6alx3")

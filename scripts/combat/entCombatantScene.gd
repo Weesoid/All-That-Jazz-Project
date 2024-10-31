@@ -9,10 +9,10 @@ var idle_animation: String = 'Idle'
 var hit_script: GDScript
 
 func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
-	if combatant_resource.isDead() and !ignore_dead: return
-	
-	if target is CombatantScene: target = target.combatant_resource
-	var tween = create_tween()
+	if combatant_resource.isDead() and !ignore_dead: 
+		return
+	if target is CombatantScene: 
+		target = target.combatant_resource
 	if target is ResCombatant:
 		target = target.SCENE
 		if target.combatant_resource is ResEnemyCombatant: 
@@ -20,10 +20,13 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 		else:
 			offset = Vector2(40,0)
 	
+	var tween = create_tween()
 	tween.tween_property(self, 'global_position', Vector2(target.global_position.x, -14) + offset, duration)
 	await tween.finished
+	animator.play(idle_animation)
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
+	animator.play("RESET")
 	if combatant_resource.isDead() and !['Fading, KO'].has(animation) or animation == '': return
 	if !animator.get_animation_list().has(animation): animation = 'Cast_Misc'
 	
@@ -37,11 +40,10 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	await animator.animation_finished
 	if CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
-	animator.play('RESET')
 	animator.play(idle_animation)
 	hit_script = null
 	
-	if animation.contains('Melee'):
+	if animation.contains('Melee') and !CombatGlobals.getCombatScene().onslaught_mode:
 		await get_tree().create_timer(0.1).timeout
 
 func setProjectileTarget(target: CombatantScene, frame_time: float):
@@ -62,8 +64,9 @@ func shootProjectile(target: CombatantScene):
 	projectile.target = target
 	projectile.SHOOTER = self
 	projectile.global_position = global_position
-	if combatant_resource is ResEnemyCombatant:
+	if combatant_resource is ResEnemyCombatant and scale.x > 0:
 		projectile.rotation_degrees = 180
+		print(projectile.rotation_degrees)
 	CombatGlobals.getCombatScene().add_child(projectile)
 
 func _on_hit_box_body_entered(body):

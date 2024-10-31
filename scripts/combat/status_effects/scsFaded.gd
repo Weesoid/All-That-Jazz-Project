@@ -4,7 +4,6 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		#CombatGlobals.manual_call_indicator.emit(target, 'Disrupted!', 'Reaction')
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	print(status_effect.NAME, ' im removing mine!')
 	CombatGlobals.resetStat(target, 'Faded')
 
 static func applyFaded(target: ResCombatant, status_effect: ResStatusEffect):

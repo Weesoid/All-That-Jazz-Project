@@ -7,6 +7,7 @@ class_name CombatScene
 @onready var combat_log = $CombatCamera/Interface/LogContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
+@onready var onslaught_container = $OnslaughtContainer
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
 @onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
@@ -32,6 +33,7 @@ class_name CombatScene
 @onready var skills_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
+
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -56,6 +58,10 @@ var camera_position: Vector2 = Vector2(0, 0)
 var enemy_reinforcements: Array[ResCombatant]
 var tamed_combatants: Array[ResCombatant]
 var bonus_escape_chance = 0.0
+var onslaught_mode = false
+var onslaught_combatant: ResPlayerCombatant
+var previous_position: Vector2
+var tween_running
 
 signal confirm
 signal target_selected
@@ -76,8 +82,8 @@ func _ready():
 	renameDuplicates()
 	
 	for combatant in COMBATANTS:
+		print('Adding')
 		addCombatant(combatant)
-		
 		if combatant is ResEnemyCombatant:
 			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
 		
@@ -119,9 +125,13 @@ func _process(_delta):
 		3: playerSelectInspection()
 
 func _unhandled_input(_event):
-	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")) and secondary_panel.visible:
-		resetActionLog()
+	if onslaught_mode and Input.is_action_just_pressed('ui_left') and !tween_running:
+		moveOnslaught(-1)
+	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running:
+		moveOnslaught(1)
 	
+	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")) and secondary_panel.visible and !onslaught_mode: 
+		resetActionLog()
 	if Input.is_action_just_pressed('ui_home'):
 		if action_panel.visible == true:
 			toggleUI(false)
@@ -138,7 +148,6 @@ func on_player_turn():
 	Input.action_release("ui_accept")
 	
 	resetActionLog()
-	print(active_combatant.hasEquippedWeapon())
 	skills_button.disabled = active_combatant.ABILITY_SET.is_empty() and !active_combatant.hasEquippedWeapon()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
@@ -163,13 +172,12 @@ func on_enemy_turn():
 		if target_combatant != null:
 			executeAbility()
 	else:
-		print(active_combatant, ' is flailing!')
 		selected_ability = load("res://resources/combat/abilities/Struggle.tres")
 		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 		executeAbility()
-	await confirm
 	
+	await confirm
 	end_turn()
 
 func end_turn(combatant_act=true):
@@ -227,7 +235,6 @@ func end_turn(combatant_act=true):
 	# Determine next combatant
 	if selected_ability == null or !selected_ability.INSTANT_CAST:
 		if has_node('QTE'):
-			print('Awaitng before setting')
 			await CombatGlobals.qte_finished
 			await get_node('QTE').tree_exited
 		setActiveCombatant()
@@ -482,8 +489,13 @@ func moveCamera(target: Vector2, speed=0.25):
 	tween.tween_property(combat_camera, 'global_position', target, speed)
 	await tween.finished
 
+func zoomCamera(zoom: Vector2, speed=0.25):
+	var tween = create_tween()
+	tween.tween_property(combat_camera, 'zoom', combat_camera.zoom+zoom, speed)
+	await tween.finished
+
 func addCombatant(combatant:ResCombatant, spawned:bool=false):
-	if !isCombatValid() or getCombatantGroup('enemies').size() == 4: 
+	if !isCombatValid(): #getCombatantGroup('enemies').size() == 4: 
 		return
 	var team_container
 	combatant.initializeCombatant()
@@ -573,7 +585,6 @@ func rollTurns():
 		for turn_charge in range(combatant.MAX_TURN_CHARGES):
 			var rolled_speed = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
 			combatant_turn_order.append([combatant, rolled_speed])
-	
 	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
 	round_count += 1
 
@@ -658,7 +669,6 @@ func tickStatusEffects(combatant: ResCombatant, per_turn = false):
 	for effect in combatant.STATUS_EFFECTS:
 		if (per_turn and !effect.TICK_PER_TURN) or (!per_turn and effect.TICK_PER_TURN): 
 			continue
-		
 		effect.tick()
 
 func refreshInstantCasts(combatant: ResCombatant):
@@ -720,7 +730,7 @@ func concludeCombat(results: int):
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant, false)
-	action_panel.hide()
+	whole_action_panel.hide()
 	secondary_panel.hide()
 	target_state = 0
 	target_index = 0
@@ -739,14 +749,11 @@ func concludeCombat(results: int):
 		if round_count == 1:
 			all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
 			morale_bonus += 1
-		print('Boutta LOOOOOOOTTTT')
 		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * (morale_bonus * 0.25)
-		print(loot_bonus, ' < egg!')
 		for i in range(loot_bonus):
 			print(getCombatantGroup('enemies'))
 			for enemy in getCombatantGroup('enemies'): 
 				addDrop(enemy.getDrops())
-	print(OverworldGlobals.getCurrentMap().REWARD_BANK)
 #	else:
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
 	
@@ -791,7 +798,7 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 	else:
 		combatant_group = enemy_container_markers
 	var current_pos = combatant_group.find(combatant.SCENE.get_parent())
-	if (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1):
+	if (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1) or move == 0:
 		var combatant_prev_pos = combatant.SCENE.global_position
 		var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 		var tween_a_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC) # ROTAT
@@ -829,10 +836,44 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0.25, 0.15)# ROTAT
 					combatant_b.reparent(combatant_group[current_pos])
 					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
-		
+			0:
+				tween_a.tween_property(combatant.SCENE, 'global_position', onslaught_container.get_children()[0].global_position, 0.18)
+				tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', -0.25, 0.15)
+				setOnslaught(combatant, true)
+			
 		tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
 	
 	await get_tree().create_timer(wait).timeout
+
+func moveOnslaught(direction: int):
+	if (direction==1 and onslaught_combatant.SCENE.global_position.x+32 > 48) or (direction==-1 and onslaught_combatant.SCENE.global_position.x-32 < -48):
+		return
+	
+	tween_running = true
+	var pos_tween = create_tween().set_trans(Tween.TRANS_BOUNCE)
+	var move = 32 * direction
+	pos_tween.tween_property(onslaught_combatant.SCENE, 'global_position', onslaught_combatant.SCENE.global_position+Vector2(move, 0), 0.1)
+	await pos_tween.finished
+	tween_running = false
+	print(onslaught_combatant.SCENE.global_position)
+
+func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
+	onslaught_mode = set_to
+	combatant.SCENE.setBlocking(set_to)
+	combatant.SCENE.allow_block = set_to
+	onslaught_container.visible = set_to
+	for target in COMBATANTS:
+		if !target.hasStatusEffect('Knock Out') and target != combatant:
+			target.SCENE.collision.disabled = set_to
+	
+	if set_to:
+		onslaught_combatant = combatant
+		await CombatGlobals.getCombatScene().zoomCamera(Vector2(0.5,0.5))
+	else:
+		onslaught_combatant = null
+		if combatant.hasStatusEffect('Guard'):
+			CombatGlobals.removeStatusEffect(combatant,'Guard')
+		await CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
 
 func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:
 	if combatant is ResPlayerCombatant:
