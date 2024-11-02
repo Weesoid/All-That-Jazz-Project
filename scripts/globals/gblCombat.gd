@@ -124,7 +124,6 @@ func useDamageFormula(target: ResCombatant, damage):
 	var out_damage = damage - (target.STAT_VALUES['grit'] * damage)
 	if out_damage < 0.0: 
 		out_damage = 0
-	print(out_damage)
 	return out_damage
 
 func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
@@ -137,15 +136,22 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 		base_healing = 0
 		
 	if target.STAT_VALUES['health'] + base_healing > target.getMaxHealth():
-		manual_call_indicator.emit(target, "FULL HEAL!", 'Heal')
 		target.STAT_VALUES['health'] = target.getMaxHealth()
 	else:
-		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
 		target.STAT_VALUES['health'] += int(base_healing)
 	
+	if base_healing > 0 and target.STAT_VALUES['health'] + base_healing > target.getMaxHealth():
+		manual_call_indicator.emit(target, "FULL HEAL!", 'Heal')
+		OverworldGlobals.playSound('02_Heal_02.ogg')
+	elif base_healing > 0:
+		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
+		OverworldGlobals.playSound('02_Heal_02.ogg')
+	else:
+		manual_call_indicator.emit(target, "NO HEAL.", 'Flunk')
+		
 	#received_combatant_value.emit(target, caster, int(base_healing))
 	call_indicator.emit('Show', target)
-	OverworldGlobals.playSound('02_Heal_02.ogg')
+
 
 
 func randomRoll(percent_chance: float):
@@ -197,7 +203,7 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 func playHurtAnimation(target: ResCombatant):
 	if !target.STAT_MODIFIERS.keys().has('block'):
 		randomize()
-		OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2))
+		OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
 		if target is ResEnemyCombatant:
 			OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
 		else:

@@ -23,7 +23,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 	var tween = create_tween()
 	tween.tween_property(self, 'global_position', Vector2(target.global_position.x, -14) + offset, duration)
 	await tween.finished
-	animator.play(idle_animation)
+	playIdle()
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
@@ -40,11 +40,17 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	await animator.animation_finished
 	if CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
-	animator.play(idle_animation)
+	playIdle()
 	hit_script = null
 	
 	if animation.contains('Melee') and !CombatGlobals.getCombatScene().onslaught_mode:
 		await get_tree().create_timer(0.1).timeout
+
+func playIdle(new_idle:String=''):
+	if new_idle != '':
+		idle_animation = new_idle
+	
+	animator.play(idle_animation)
 
 func setProjectileTarget(target: CombatantScene, frame_time: float):
 	var anim: Animation = animator.get_animation("Cast_Ranged")

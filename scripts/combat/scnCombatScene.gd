@@ -8,6 +8,7 @@ class_name CombatScene
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
 @onready var onslaught_container = $OnslaughtContainer
+@onready var onslaught_container_animator = $OnslaughtContainer/AnimationPlayer
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
 @onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
@@ -33,6 +34,7 @@ class_name CombatScene
 @onready var skills_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
+@onready var team_hp_bar = $OnslaughtContainer/ProgressBar
 
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
@@ -73,6 +75,7 @@ signal combat_done
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func _ready():
+	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
@@ -124,12 +127,12 @@ func _process(_delta):
 		3: playerSelectInspection()
 
 func _unhandled_input(_event):
-	if onslaught_mode and Input.is_action_just_pressed('ui_left') and !tween_running:
+	if onslaught_mode and Input.is_action_just_pressed('ui_left') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
 		moveOnslaught(-1)
-	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running:
+	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
 		moveOnslaught(1)
 	
-	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")) and secondary_panel.visible and !onslaught_mode: 
+	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")) and secondary_action_panel.visible and !onslaught_mode: 
 		resetActionLog()
 	if Input.is_action_just_pressed('ui_home'):
 		if action_panel.visible == true:
@@ -850,26 +853,48 @@ func moveOnslaught(direction: int):
 	pos_tween.tween_property(onslaught_combatant.SCENE, 'global_position', onslaught_combatant.SCENE.global_position+Vector2(move, 0), 0.1)
 	await pos_tween.finished
 	tween_running = false
-
+	#print(onslaught_combatant.SCENE.global_positiondd)
 func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
+	active_combatant.SCENE.get_node('CombatBars').visible = false
+	await fadeCombatant(active_combatant.SCENE, false)
 	combatant.SCENE.setBlocking(set_to)
 	combatant.SCENE.allow_block = set_to
-	onslaught_container.visible = set_to
+	
 	for target in COMBATANTS:
 		if !target.hasStatusEffect('Knock Out') and target != combatant:
 			target.SCENE.collision.disabled = set_to
 	if set_to:
-		var tween = CombatGlobals.getCombatScene().create_tween()
+		team_hp_bar.process_mode = Node.PROCESS_MODE_ALWAYS
+		onslaught_container.show()
+		onslaught_container_animator.play("Show")
+		previous_position = active_combatant.SCENE.get_parent().global_position
+		active_combatant.SCENE.get_parent().global_position = Vector2(0, -16)
 		onslaught_combatant = combatant
+		var tween = CombatGlobals.getCombatScene().create_tween()
 		tween.tween_property(combatant.SCENE, 'global_position', onslaught_container.get_children()[0].global_position, 0.25)
 		await tween.finished
 		CombatGlobals.getCombatScene().zoomCamera(Vector2(0.5,0.5))
 	else:
+		team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
+		onslaught_container_animator.play_backwards("Show")
 		onslaught_combatant = null
+		active_combatant.SCENE.get_parent().global_position = previous_position
+		active_combatant.SCENE.get_node('CombatBars').visible = true
 		if combatant.hasStatusEffect('Guard'): CombatGlobals.removeStatusEffect(combatant,'Guard')
+		active_combatant.SCENE.moveTo(active_combatant.SCENE.get_parent())
+		await combatant.SCENE.moveTo(combatant.SCENE.get_parent())
+		onslaught_container.hide()
 		CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
 	
 	onslaught_mode = set_to
+
+func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
+	var tween = CombatGlobals.getCombatScene().create_tween()
+	if fade_in:
+		tween.tween_property(active_combatant.SCENE, 'modulate', Color(Color.WHITE, 1.0), duration)
+	else:
+		tween.tween_property(active_combatant.SCENE, 'modulate', Color(Color.WHITE, 0.0), duration)
+	await tween.finished
 
 func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:
 	if combatant is ResPlayerCombatant:

@@ -1,14 +1,25 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://dlan5dxt4e3mm"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=5 format=3 uid="uid://dlan5dxt4e3mm"]
 
-[ext_resource type="Script" path="res://scripts/combat/abilities/scaOnslaught.gd" id="1_pjn34"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_fgec2"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectOnslaught.gd" id="2_7lvxq"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_h6noh"]
+
+[sub_resource type="Resource" id="Resource_r2eee"]
+script = ExtResource("2_7lvxq")
+animation_name = "Onslaught"
+damage = 999
+target = 0
+projectile_frame = 2.0
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("2_h6noh")
 NAME = "Onslaught"
 DESCRIPTION = "Whack em'!"
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
-ABILITY_SCRIPT = ExtResource("1_pjn34")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_r2eee")])
+ABILITY_SCRIPT = ExtResource("1_fgec2")
 TARGET_TYPE = 0
 TARGET_GROUP = 1
 CAN_TARGET_SELF = false

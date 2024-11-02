@@ -32,7 +32,7 @@ CASTER_POSITION = {
 "min": 0
 }
 TARGET_POSITION = {
-"max": 3,
+"max": 1,
 "min": 0
 }
 TENSION_COST = 0

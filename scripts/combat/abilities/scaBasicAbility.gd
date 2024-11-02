@@ -29,6 +29,18 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		elif effect is ResCommandAbilityEffect:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 			await CombatGlobals.get_tree().create_timer(0.5).timeout
+		elif effect is ResOnslaughtEffect:
+			if effect.target == effect.Target.MULTI:
+				target.get_node('CombatBars').hide()
+				CombatGlobals.getCombatScene().team_hp_bar.show()
+			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, true)
+			CombatGlobals.getCombatScene().fadeCombatant(caster, true)
+			if effect.projectile_frame != null:
+				caster.setProjectileTarget(target, effect.projectile_frame)
+			await caster.doAnimation(effect.animation_name, ability.ABILITY_SCRIPT)
+			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)
+			CombatGlobals.getCombatScene().team_hp_bar.hide()
+			target.get_node('CombatBars').show()
 	
 	CombatGlobals.ability_finished.emit()
 
@@ -76,6 +88,15 @@ static func applyToTarget(caster, target, ability: ResAbility):
 	
 	elif ability.current_effect is ResHealEffect:
 		CombatGlobals.calculateHealing(target, ability.current_effect.heal)
+	
+	elif ability.current_effect is ResOnslaughtEffect:
+		CombatGlobals.calculateRawDamage(target.combatant_resource, CombatGlobals.useDamageFormula(target.combatant_resource, ability.current_effect.damage), caster.combatant_resource, true, -1, false, 0.15, null, false)
+		if target.combatant_resource.isDead():
+			target.animator.play('Fading')
+		if ability.current_effect.target == ability.current_effect.Target.MULTI:
+			for combatant in CombatGlobals.getCombatScene().getCombatantGroup('team'):
+				if !combatant.isDead() and !target.combatant_resource.STAT_MODIFIERS.keys().has('block') and combatant != target.combatant_resource: 
+					CombatGlobals.calculateRawDamage(combatant, CombatGlobals.useDamageFormula(combatant, ability.current_effect.damage), caster.combatant_resource, true, -1, false, 0.15, null, false)
 
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResDamageEffect):

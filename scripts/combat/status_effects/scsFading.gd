@@ -2,13 +2,14 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.APPLY_ONCE:
 		target.SCENE.moveTo(target.SCENE.get_parent(), 0.25, Vector2(0,0), true)
 		CombatGlobals.playFadingTween(target)
-		CombatGlobals.playAnimation(target, 'Fading')
+		#CombatGlobals.playAnimation(target, 'Fading')
+		target.SCENE.playIdle('Fading')
 		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
 		target.SCENE.blocking = false
 	
 	CombatGlobals.manual_call_indicator.emit(target, 'Fading...', 'Resist')
 
-	if CombatGlobals.randomRoll(1.15) and canAddQTE(status_effect):
+	if CombatGlobals.randomRoll(0.02) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)
@@ -35,9 +36,8 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.addStatusEffect(target, 'KnockOut', true)
 	else:
 		CombatGlobals.playSecondWindTween(target)
-		#CombatGlobals.addStatusEffect(target, 'SecondWind', true)
 		applyFaded(target)
-		CombatGlobals.playAnimation(target, 'Idle')
+		target.SCENE.playIdle('Idle')
 	
 	CombatGlobals.resetStat(target, status_effect.NAME)
 	if CombatGlobals.getCombatScene().combat_result == 1: 

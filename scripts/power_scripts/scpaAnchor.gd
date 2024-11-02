@@ -9,7 +9,7 @@ func _ready():
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_gambit"):
-		if PlayerGlobals.overworld_stats['stamina']>= 25.0 and !OverworldGlobals.inMenu():
+		if PlayerGlobals.overworld_stats['stamina']>= 25.0 and !OverworldGlobals.inMenu() and !player.hiding:
 			player.playCastAnimation()
 			PlayerGlobals.overworld_stats['stamina']-= 25
 			player.global_position = global_position

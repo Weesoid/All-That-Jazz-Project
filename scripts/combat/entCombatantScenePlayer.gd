@@ -26,11 +26,12 @@ func sheatheWeapon():
 func setBlocking(set_to: bool):
 	blocking = set_to
 	if blocking:
-		idle_animation = 'Idle_Block'
-		animator.play('Idle_Block')
+		playIdle('Idle_Block')
 	else:
-		idle_animation = 'Idle'
-		animator.play('Idle')
+		if (combatant_resource.isDead() or combatant_resource.hasStatusEffect('Fading')) and combatant_resource is ResPlayerCombatant:
+			playIdle('Fading')
+		else:
+			playIdle('Idle')
 
 func block(bonus_grit: float=1.0):
 	CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 1.0}, 'block')

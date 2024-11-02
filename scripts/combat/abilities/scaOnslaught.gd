@@ -1,16 +1,15 @@
 static func animate(caster: CombatantScene, target: CombatantScene, ability: ResAbility):
-	var prev_pos = caster.get_parent().global_position
-	caster.get_parent().global_position = Vector2(0, -16)
 	await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, true)
 	
+	CombatGlobals.getCombatScene().fadeCombatant(caster, true)
 	caster.setProjectileTarget(target, 2.0)
 	await caster.doAnimation('Onslaught', ability.ABILITY_SCRIPT)
-	caster.get_parent().global_position = prev_pos
 	
 	await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)
-	caster.moveTo(caster.get_parent())
-	await target.moveTo(target.get_parent())
 	CombatGlobals.ability_finished.emit()
 
-static func applyEffects(target: CombatantScene , caster: CombatantScene, _ability: ResAbility=null):
-	CombatGlobals.calculateRawDamage(caster.combatant_resource, CombatGlobals.useDamageFormula(caster.combatant_resource, 10), target.combatant_resource, true, -1, false, 0.15, null, false)
+static func applyEffects(caster: CombatantScene , target: CombatantScene, _ability: ResAbility=null):
+	CombatGlobals.calculateRawDamage(target.combatant_resource, CombatGlobals.useDamageFormula(target.combatant_resource, 10), caster.combatant_resource, true, -1, false, 0.15, null, false)
+	for combatant in CombatGlobals.getCombatScene().getCombatantGroup('team'):
+		if !combatant.isDead() and !target.combatant_resource.STAT_MODIFIERS.keys().has('block') and combatant != target.combatant_resource: 
+			CombatGlobals.calculateRawDamage(combatant, CombatGlobals.useDamageFormula(combatant, 10), caster.combatant_resource, true, -1, false, 0.15, null, false)
