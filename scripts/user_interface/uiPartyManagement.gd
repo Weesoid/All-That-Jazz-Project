@@ -10,7 +10,7 @@ func _ready():
 		await get_tree().create_timer(0.01).timeout
 	#PlayerGlobals.addCombatantToTeam(load("res://resources/combat/combatants_player/Willis.tres"))
 	for member in PlayerGlobals.TEAM:
-		if !member.initialized: member.initializeCombatant(false)
+		#if !member.initialized: member.initializeCombatant(false)
 		var button = OverworldGlobals.createCustomButton()
 		button.text = member.NAME
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT

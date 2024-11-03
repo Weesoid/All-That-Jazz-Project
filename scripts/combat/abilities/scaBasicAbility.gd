@@ -102,7 +102,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResDamageEffect):
 	if damage_effect.damage_type == damage_effect.DamageType.MELEE:
 		await caster.moveTo(target)
-		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT)
+		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT) # SPEED UP {'anim_speed':1.5}
 		if damage_effect.return_pos: await caster.moveTo(caster.get_parent())
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
 		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7})

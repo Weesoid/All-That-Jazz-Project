@@ -1,5 +1,5 @@
 ~ start
 
-do showMenu("res://scenes/user_interface/PartyManagement.tscn")
+do showMenu("res://scenes/user_interface/PartyManage.tscn")
 
 => END

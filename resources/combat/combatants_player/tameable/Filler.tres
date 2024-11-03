@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://d0xf0ckan67we"]
+
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_lne4x"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_on8gp"]
+[ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="3_hk28f"]
+[ext_resource type="Resource" uid="uid://dnwt562yqug8x" path="res://resources/combat/abilities/Teamwork.tres" id="4_qe8ya"]
+[ext_resource type="Resource" uid="uid://d2xuqxaf6m1gc" path="res://resources/combat/abilities/Taunt.tres" id="5_vyeli"]
+[ext_resource type="PackedScene" uid="uid://frfnvb50fnvm" path="res://scenes/combatants/FriendC.tscn" id="7_1ee7r"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="8_5lau2"]
+
+[resource]
+script = ExtResource("8_5lau2")
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_lne4x"), ExtResource("2_on8gp"), ExtResource("3_hk28f"), ExtResource("4_qe8ya"), ExtResource("5_vyeli")])
+MANDATORY = false
+NAME = "Filler Joe"
+PACKED_SCENE = ExtResource("7_1ee7r")
+DESCRIPTION = "FILL ME UP!!!!"
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal mult": 1.0,
+"health": 50,
+"hustle": 1,
+"resist": 0.05
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+MAX_TURN_CHARGES = 1

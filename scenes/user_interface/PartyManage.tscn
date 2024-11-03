@@ -1,0 +1,307 @@
+[gd_scene load_steps=15 format=3 uid="uid://ljv81u81w8ej"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiPartyManage.gd" id="1_i8l6p"]
+[ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_uyp8b"]
+[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="3_8lxgv"]
+[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="4_apa5i"]
+[ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="5_10rs6"]
+[ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="6_v3qmd"]
+[ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="7_y1x3a"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_4vpd7"]
+[ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="9_hyicu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1jwo"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfwvc"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ee64e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gup3p"]
+bg_color = Color(0, 0, 0, 1)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yg4ea"]
+bg_color = Color(0, 0, 0, 1)
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[node name="CharacterAdjust" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.0
+offset_top = -20.0
+offset_right = -112.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_i8l6p")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -104.0
+offset_right = 216.0
+offset_bottom = 120.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_k1jwo")
+
+[node name="Abilities" type="Control" parent="TabContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Abilities"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 214.0
+offset_bottom = 128.0
+follow_focus = true
+
+[node name="VBoxContainer" type="GridContainer" parent="TabContainer/Abilities/ScrollContainer"]
+layout_mode = 2
+
+[node name="DescriptionPanel" type="PanelContainer" parent="TabContainer/Abilities"]
+layout_mode = 2
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 214.0
+offset_bottom = 95.0
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_uyp8b")
+
+[node name="Label" type="RichTextLabel" parent="TabContainer/Abilities/DescriptionPanel"]
+layout_mode = 2
+bbcode_enabled = true
+text = "This is the item description. FEAR IT'S GLORY!"
+
+[node name="Charms" type="Panel" parent="TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bfwvc")
+
+[node name="EquippedCharms" type="HFlowContainer" parent="TabContainer/Charms"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -73.0
+offset_right = 46.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Weapon" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+theme = ExtResource("4_apa5i")
+text = "WEAPON"
+
+[node name="SlotA" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+layout_mode = 2
+theme = ExtResource("4_apa5i")
+icon = ExtResource("5_10rs6")
+
+[node name="SlotB" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+layout_mode = 2
+theme = ExtResource("4_apa5i")
+icon = ExtResource("5_10rs6")
+
+[node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+layout_mode = 2
+theme = ExtResource("4_apa5i")
+icon = ExtResource("5_10rs6")
+
+[node name="Panel" type="Panel" parent="TabContainer/Charms"]
+layout_mode = 2
+offset_left = 6.0
+offset_top = 12.0
+offset_right = 222.0
+offset_bottom = 108.0
+theme_override_styles/panel = ExtResource("2_uyp8b")
+
+[node name="SelectCharms" type="ScrollContainer" parent="TabContainer/Charms/Panel"]
+custom_minimum_size = Vector2(7.866, 0)
+layout_mode = 2
+offset_right = 208.0
+offset_bottom = 95.0
+follow_focus = true
+
+[node name="VBoxContainer" type="GridContainer" parent="TabContainer/Charms/Panel/SelectCharms"]
+layout_mode = 2
+columns = 6
+
+[node name="Infomration" type="Control" parent="TabContainer/Charms"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 48.0
+offset_right = 232.0
+offset_bottom = 88.0
+
+[node name="GeneralInfo" type="RichTextLabel" parent="TabContainer/Charms/Infomration"]
+z_index = 1
+layout_mode = 2
+offset_left = -186.0
+offset_top = 132.0
+offset_right = 30.0
+offset_bottom = 154.0
+bbcode_enabled = true
+text = "[img]res://images/sprites/circle_filled.png[/img]"
+fit_content = true
+scroll_active = false
+
+[node name="ItemInfo" type="PanelContainer" parent="TabContainer/Charms/Infomration"]
+layout_mode = 2
+offset_left = -186.0
+offset_top = 60.0
+offset_right = 30.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ee64e")
+
+[node name="DescriptionLabel2" type="RichTextLabel" parent="TabContainer/Charms/Infomration/ItemInfo"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]LEFT CLICK TO USE ITEM
+[/center]
+"
+
+[node name="Attributes" parent="TabContainer" instance=ExtResource("6_v3qmd")]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" parent="TabContainer/Attributes" index="0"]
+offset_left = -97.0
+offset_top = -65.0
+offset_right = 111.0
+offset_bottom = 24.0
+
+[node name="Available" parent="TabContainer/Attributes" index="1"]
+offset_left = -97.0
+offset_top = 23.0
+offset_right = -3.0
+offset_bottom = 36.0
+
+[node name="Members" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -88.0
+offset_right = -16.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Members"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AttributeView" parent="." instance=ExtResource("7_y1x3a")]
+z_index = 1
+layout_mode = 1
+offset_left = 88.0
+offset_top = 176.0
+offset_right = 88.0
+offset_bottom = 176.0
+view_hidden = false
+
+[node name="HiddenAttributes" parent="AttributeView" index="0"]
+offset_left = 128.0
+offset_top = -168.0
+offset_right = 272.0
+offset_bottom = -56.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gup3p")
+
+[node name="Attributes" parent="AttributeView" index="1"]
+offset_left = 128.0
+offset_top = -262.0
+offset_right = 272.0
+offset_bottom = -165.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yg4ea")
+
+[node name="Debug" parent="AttributeView" index="2"]
+offset_left = -224.0
+offset_top = -96.0
+offset_right = -64.0
+offset_bottom = -14.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 112.0
+offset_right = 172.0
+offset_bottom = 144.0
+tooltip_text = "TSETSETSETSETRWARAWR"
+theme = ExtResource("8_4vpd7")
+theme_override_font_sizes/font_size = 16
+text = "MEMBER NAME"
+vertical_alignment = 2
+
+[node name="Marker2D" type="Marker2D" parent="Label"]
+position = Vector2(-24, 16)
+
+[node name="Infliction" type="Label" parent="."]
+z_index = 8
+layout_mode = 0
+offset_left = 232.0
+offset_top = -104.0
+offset_right = 360.0
+offset_bottom = -88.0
+mouse_filter = 1
+theme = ExtResource("8_4vpd7")
+text = "INFLICTED!"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ChangeFormation" parent="." instance=ExtResource("3_8lxgv")]
+visible = false
+layout_mode = 1
+offset_left = 224.0
+offset_top = 136.0
+offset_right = 368.0
+offset_bottom = 160.0
+theme = ExtResource("9_hyicu")
+text = "CHANGE FORMATION"
+
+[connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
+[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
+[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
+[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_pressed"]
+[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
+[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="hideItemDescription"]
+[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_pressed"]
+[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
+[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="hideItemDescription"]
+[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_pressed"]
+[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
+[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="hideItemDescription"]
+[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
+[connection signal="pressed" from="ChangeFormation" to="." method="_on_change_formation_pressed"]
+
+[editable path="TabContainer/Attributes"]
+[editable path="AttributeView"]

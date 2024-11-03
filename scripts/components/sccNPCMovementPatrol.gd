@@ -155,8 +155,8 @@ func destroy(fancy=true):
 	BODY.queue_free()
 
 func isMapCleared():
-	if !OverworldGlobals.isPlayerAlive():
-		return
+#	if !OverworldGlobals.isPlayerAlive():
+#		return
 	
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		if child.has_node('NPCPatrolComponent') and child != BODY: return

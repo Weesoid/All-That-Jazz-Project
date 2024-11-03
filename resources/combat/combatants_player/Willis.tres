@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://colt86d3cbv04"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://colt86d3cbv04"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="2_nh55h"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="2_vmsk2"]
-[ext_resource type="PackedScene" uid="uid://cexmk1xeynctu" path="res://scenes/combatants/Willis.tscn" id="3_q2rry"]
+[ext_resource type="PackedScene" uid="uid://bnlcib44lcjpr" path="res://scenes/combatants/Willis.tscn" id="3_q2rry"]
 [ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="3_sh1ok"]
+[ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_2e4kc"]
 
 [resource]
 script = ExtResource("2_vmsk2")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_nh55h"), ExtResource("3_sh1ok")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_nh55h"), ExtResource("3_sh1ok"), ExtResource("4_2e4kc")])
 MANDATORY = false
 NAME = "Willis Flynn"
 PACKED_SCENE = ExtResource("3_q2rry")

@@ -21,3 +21,4 @@ class_name PlayerSaveData
 @export var PROGRESSION_DATA: Dictionary
 @export var TEAM_FORMATION: Array[ResCombatant]
 @export var COMBATANT_SAVE_DATA: Dictionary
+@export var UNLOCKED_ABILITIES: Dictionary

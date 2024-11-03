@@ -87,6 +87,11 @@ func isCombatantInRange(combatant: ResCombatant, target_range: String):
 	elif target_range == 'target':
 		return position >= TARGET_POSITION['min'] and position <= TARGET_POSITION['max']
 
+func getCost():
+#	for i in range(21):
+#		print(i, ' = ', str(snappedf(100 * pow(i, 0.25), 10)))
+	return snappedf(100 * pow(REQUIRED_LEVEL, 0.25), 10)
+
 func getTargetType():
 	match TARGET_TYPE:
 		TargetType.SINGLE: return 1

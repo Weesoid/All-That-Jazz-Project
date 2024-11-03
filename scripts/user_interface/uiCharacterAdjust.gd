@@ -1,4 +1,5 @@
 extends Control
+class_name MemberAdjustUI
 
 @onready var tabs = $TabContainer
 @onready var pool = $TabContainer/Abilities/ScrollContainer/VBoxContainer
@@ -37,11 +38,8 @@ func _process(_delta):
 
 func _ready():
 	loadMembers()
-	
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
-#	if member_container.get_child_count() > 0:
-#		member_container.get_child(0).grab_focus()
 
 func loadMembers(set_focus:bool=true):
 	for child in member_container.get_children():

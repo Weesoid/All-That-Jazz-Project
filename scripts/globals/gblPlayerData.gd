@@ -13,6 +13,7 @@ var CURRENCY = 100
 var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
+var UNLOCKED_ABILITIES: Dictionary = {}
 var overworld_stats: Dictionary = {
 	'stamina': 100.0,
 	'bow_max_draw': 5.0,
@@ -87,6 +88,16 @@ func addCurrency(value: int):
 		CURRENCY = 0
 	else:
 		CURRENCY += value
+
+func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
+	if UNLOCKED_ABILITIES.keys().has(combatant):
+		UNLOCKED_ABILITIES[combatant].append(ability)
+	else:
+		UNLOCKED_ABILITIES[combatant] = []
+		UNLOCKED_ABILITIES[combatant].append(ability)
+
+func hasUnlockedAbility(combatant: ResPlayerCombatant, ability: ResAbility):
+	return UNLOCKED_ABILITIES.keys().has(combatant) and UNLOCKED_ABILITIES[combatant].has(ability)
 
 func hasActiveTeam()-> bool:
 	return !OverworldGlobals.getCombatantSquad('Player').is_empty()
@@ -182,6 +193,7 @@ func saveData(save_data: Array):
 	data.PROGRESSION_DATA = PROGRESSION_DATA
 	data.TEAM_FORMATION = TEAM_FORMATION
 	data.EQUIPPED_BLESSING = EQUIPPED_BLESSING
+	data.UNLOCKED_ABILITIES = UNLOCKED_ABILITIES
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
@@ -222,6 +234,7 @@ func loadData(save_data: PlayerSaveData):
 	PROGRESSION_DATA = save_data.PROGRESSION_DATA
 	TEAM_FORMATION = save_data.TEAM_FORMATION
 	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
+	UNLOCKED_ABILITIES = save_data.UNLOCKED_ABILITIES
 	#EQUIPPED_CHARM.equip(null)
 	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
 	
