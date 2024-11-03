@@ -81,6 +81,8 @@ func createButton(ability:ResAbility, location):
 	elif !has_unlocked:
 		button.add_theme_icon_override('icon', preload("res://images/sprites/lock.png"))
 		button.add_theme_color_override('font_color', Color.DIM_GRAY)
+	if !has_unlocked and ability.getCost() > PlayerGlobals.CURRENCY:
+		button.add_theme_color_override('font_color', Color.RED)
 	
 	button.pressed.connect(
 		func():

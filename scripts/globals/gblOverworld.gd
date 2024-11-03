@@ -339,7 +339,11 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 	if random_pitch:
 		randomize()
 		player.pitch_scale += randf_range(0.0, 0.25)
-	add_child(player)
+	player.name = filename
+	if inCombat():
+		CombatGlobals.getCombatScene().add_child(player)
+	else:
+		add_child(player)
 	player.play()
 
 func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_pitch=true):

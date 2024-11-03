@@ -218,7 +218,7 @@ func playHurtAnimation(target: ResCombatant):
 					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
 				else:
 					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
-			else:
+			elif target is ResPlayerCombatant and getCombatScene().turn_count > 0:
 				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
 	else:
 		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
@@ -256,7 +256,7 @@ func playSecondWindTween(target: ResCombatant):
 	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
 
 func playKnockOutTween(target: ResCombatant):
-	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
+	if target is ResPlayerCombatant and getCombatScene().turn_count > 0: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
 	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
