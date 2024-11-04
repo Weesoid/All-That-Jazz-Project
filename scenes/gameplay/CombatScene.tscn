@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=44 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
@@ -12,6 +12,16 @@
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
 [ext_resource type="AudioStream" uid="uid://b32ltjrgmftph" path="res://audio/sounds/536805__egomassive__gun_2.ogg" id="10_gi6jx"]
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
+[ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="13_nptvl"]
+[ext_resource type="Texture2D" uid="uid://b1pvb5itk4qv3" path="res://images/sprites/button_right_normal.png" id="14_047l4"]
+[ext_resource type="Texture2D" uid="uid://c44vqd04q21uk" path="res://images/sprites/button_right_hover.png" id="15_i0u6l"]
+[ext_resource type="Texture2D" uid="uid://37bwnquhvb78" path="res://images/sprites/button_right_click.png" id="15_neplv"]
+[ext_resource type="Texture2D" uid="uid://cb4a7q0uwwugv" path="res://images/sprites/button_left_normal.png" id="16_1nld6"]
+[ext_resource type="Texture2D" uid="uid://bojx7yalwrpac" path="res://images/sprites/button_left_click.png" id="17_xkrpd"]
+[ext_resource type="Texture2D" uid="uid://dlvdxvwxdfb2p" path="res://images/sprites/button_left_hover.png" id="18_ed73p"]
+[ext_resource type="Texture2D" uid="uid://dxsw42r48plk5" path="res://images/sprites/button_confirm_normal.png" id="20_xbypu"]
+[ext_resource type="Texture2D" uid="uid://cs7erf471x6lh" path="res://images/sprites/button_confirm_click.png" id="21_4jrgt"]
+[ext_resource type="Texture2D" uid="uid://p82g5g6mlfd2" path="res://images/sprites/button_confirm_hover.png" id="22_3sa80"]
 
 [sub_resource type="GDScript" id="GDScript_ggh4h"]
 script/source = "extends ProgressBar
@@ -761,7 +771,7 @@ max_polyphony = 16
 volume_db = -15.0
 
 [node name="TeamContainer" type="Node2D" parent="."]
-position = Vector2(-32, -72)
+position = Vector2(-16, -72)
 
 [node name="Position1" type="Marker2D" parent="TeamContainer"]
 position = Vector2(-30, 58)
@@ -776,7 +786,7 @@ position = Vector2(-94, 58)
 position = Vector2(-126, 58)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(32, -72)
+position = Vector2(16, -72)
 
 [node name="Position1" type="Marker2D" parent="EnemyContainer"]
 position = Vector2(26, 58)
@@ -1160,13 +1170,60 @@ libraries = {
 "": SubResource("AnimationLibrary_fveyc")
 }
 
+[node name="LeftRightBrowseButtons" type="Control" parent="CombatCamera/Interface"]
+visible = false
+anchors_preset = 0
+offset_top = 21.0
+offset_bottom = 21.0
+
+[node name="Right" type="TextureButton" parent="CombatCamera/Interface/LeftRightBrowseButtons"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = -8.0
+offset_right = 32.0
+offset_bottom = 8.0
+focus_mode = 0
+theme = ExtResource("13_nptvl")
+texture_normal = ExtResource("14_047l4")
+texture_pressed = ExtResource("15_neplv")
+texture_hover = ExtResource("15_i0u6l")
+
+[node name="Left" type="TextureButton" parent="CombatCamera/Interface/LeftRightBrowseButtons"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = -8.0
+offset_right = -16.0
+offset_bottom = 8.0
+focus_mode = 0
+theme = ExtResource("13_nptvl")
+texture_normal = ExtResource("16_1nld6")
+texture_pressed = ExtResource("17_xkrpd")
+texture_hover = ExtResource("18_ed73p")
+
+[node name="Confirm" type="TextureButton" parent="CombatCamera/Interface/LeftRightBrowseButtons"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+focus_mode = 0
+theme = ExtResource("13_nptvl")
+texture_normal = ExtResource("20_xbypu")
+texture_pressed = ExtResource("21_4jrgt")
+texture_hover = ExtResource("22_3sa80")
+
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Action" to="." method="getMoveAbilities"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard" to="." method="_on_guard_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="focus_entered" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_focus_entered"]
 [connection signal="focus_exited" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_focus_exited"]
+[connection signal="mouse_entered" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_mouse_entered"]
+[connection signal="mouse_exited" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_mouse_exited"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_pressed"]
 [connection signal="value_changed" from="CombatCamera/Interface/ProgressBar" to="CombatCamera/Interface/ProgressBar" method="_on_value_changed"]
+[connection signal="pressed" from="CombatCamera/Interface/LeftRightBrowseButtons/Right" to="." method="_on_right_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/LeftRightBrowseButtons/Left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/LeftRightBrowseButtons/Confirm" to="." method="_on_confirm_pressed"]
 
 [editable path="CombatCamera/Interface/Inspect/AttributeView"]

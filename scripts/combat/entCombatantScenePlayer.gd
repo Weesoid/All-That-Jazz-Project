@@ -14,6 +14,7 @@ func _ready():
 		weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
 		weapon.equipped_combatant = self
 		sheathe_point.add_child(weapon)
+	CombatGlobals.click_block.connect(block)
 
 func playWeaponAttack():
 	weapon.reparent(unsheathe_point, false)
@@ -34,12 +35,13 @@ func setBlocking(set_to: bool):
 			playIdle('Idle')
 
 func block(bonus_grit: float=1.0):
-	CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 1.0}, 'block')
-	doAnimation('Block')
-	await animator.animation_finished
-	CombatGlobals.resetStat(combatant_resource, 'block')
-	block_timer.start()
+	if blocking and allow_block and (!CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant or CombatGlobals.getCombatScene().onslaught_mode) and block_timer.is_stopped() and !combatant_resource.isDead() and combatant_resource is ResPlayerCombatant:
+		CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 1.0}, 'block')
+		doAnimation('Block')
+		await animator.animation_finished
+		CombatGlobals.resetStat(combatant_resource, 'block')
+		block_timer.start()
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_accept') and blocking and allow_block and (!CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant or CombatGlobals.getCombatScene().onslaught_mode) and block_timer.is_stopped() and !combatant_resource.isDead() and combatant_resource is ResPlayerCombatant:
+	if Input.is_action_just_pressed('ui_accept'):
 		block()

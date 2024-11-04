@@ -35,6 +35,7 @@ class_name CombatScene
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 @onready var team_hp_bar = $OnslaughtContainer/ProgressBar
+@onready var mouse_ui = $CombatCamera/Interface/LeftRightBrowseButtons
 
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
@@ -132,7 +133,7 @@ func _unhandled_input(_event):
 	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
 		moveOnslaught(1)
 	
-	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")) and secondary_action_panel.visible and !onslaught_mode: 
+	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and secondary_action_panel.visible and !onslaught_mode: 
 		resetActionLog()
 	if Input.is_action_just_pressed('ui_home'):
 		if action_panel.visible == true:
@@ -237,16 +238,17 @@ func end_turn(combatant_act=true):
 	
 	# REINFORCEMENTS
 	randomize()
-	if turn_count % 49 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
+	if turn_count % 99 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
 		combat_log.writeCombatLog('Enemy reinforcements are incoming!')
-	if turn_count % 50 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
+	if turn_count % 100 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
 		combat_log.writeCombatLog('Enemy reinforcements arrived!')
 		bonus_escape_chance -= 0.5
 		var replace = []
 		for combatant in COMBATANTS:
 			if combatant.isDead(): replace.append(combatant)
 		for combatant in replace:
-			var replacement = enemy_reinforcements.pick_random().duplicate()
+			var replacement: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
+			replacement.DROP_POOL = {}
 			await replaceCombatant(combatant, replacement, "res://scenes/animations/Reinforcements.tscn")
 	
 	# Determine next combatant
@@ -314,6 +316,7 @@ func _on_guard_pressed():
 
 func _on_inspect_pressed():
 	ui_animator.play('ShowInspect')
+	mouse_ui.show()
 	target_state = 3
 
 func _on_escape_pressed():
@@ -330,6 +333,13 @@ func _on_escape_focus_entered():
 	escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
 	escape_chance_label.show()
 
+func _on_escape_mouse_entered():
+	escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+	escape_chance_label.show()
+
+func _on_escape_mouse_exited():
+	escape_chance_label.hide()
+
 func _on_escape_focus_exited():
 	escape_chance_label.hide()
 
@@ -340,9 +350,7 @@ func calculateEscapeChance()-> float:
 		hustle_enemies += combatant.BASE_STAT_VALUES['hustle']
 	for combatant in getCombatantGroup('team'):
 		hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	print((0.5 + ((hustle_allies-hustle_enemies)*0.15)))
-	print(bonus_escape_chance)
-	return (0.5 + ((hustle_allies-hustle_enemies)*0.15)) + bonus_escape_chance
+	return snappedf((0.5 + ((hustle_allies-hustle_enemies)*0.15)) + bonus_escape_chance, 0.01)
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -399,6 +407,7 @@ func getMoveAbilities():
 func createAbilityButton(ability: ResAbility)-> Button:
 	var button = OverworldGlobals.createCustomButton()
 	button.text = ability.NAME
+	button.custom_minimum_size.x = 180
 	button.pressed.connect(func(): forceCastAbility(ability))
 	button.focus_entered.connect(func():updateDescription(ability))
 	if !ability.ENABLED or !ability.canUse(active_combatant, COMBATANTS):
@@ -409,11 +418,11 @@ func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
 		return
 	
+	mouse_ui.show()
 	if valid_targets is Array:
 		target_combatant = valid_targets[target_index]
 	else:
 		target_combatant = valid_targets
-	
 	moveCamera(target_combatant.SCENE.global_position)
 	browseTargetsInputs()
 	confirmCancelInputs()
@@ -422,6 +431,7 @@ func playerSelectMultiTarget():
 	if getCombatantGroup('enemies').is_empty():
 		return
 	
+	mouse_ui.show()
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
 
@@ -723,11 +733,13 @@ func browseTargetsInputs():
 
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
+		mouse_ui.hide()
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
-	if Input.is_action_just_pressed("ui_tab"):
+	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse"):
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
+		mouse_ui.hide()
 	
 func resetActionLog():
 	moveCamera(camera_position)
@@ -882,7 +894,7 @@ func moveOnslaught(direction: int):
 	pos_tween.tween_property(onslaught_combatant.SCENE, 'global_position', onslaught_combatant.SCENE.global_position+Vector2(move, 0), 0.1)
 	await pos_tween.finished
 	tween_running = false
-	#print(onslaught_combatant.SCENE.global_positiondd)
+
 func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 	active_combatant.SCENE.get_node('CombatBars').visible = false
 	await fadeCombatant(active_combatant.SCENE, false)
@@ -942,3 +954,27 @@ func sortCombatantsByPosition()-> Array[ResCombatant]:
 		if combatant.get_child_count() == 0: continue
 		out.append(combatant.get_child(0).combatant_resource)
 	return out
+
+func _on_right_pressed():
+	if !valid_targets is Array:
+		return
+	
+	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+	target_index = incrementIndex(target_index, 1, valid_targets.size())
+
+func _on_left_pressed():
+	if !valid_targets is Array:
+		return
+	
+	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+	target_index = incrementIndex(target_index, -1, valid_targets.size())
+
+func _on_confirm_pressed():
+	if target_state == 3:
+		return
+	
+	OverworldGlobals.playSound("56243__qk__latch_01.ogg")
+	mouse_ui.hide()
+	target_selected.emit()
+
+

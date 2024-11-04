@@ -27,6 +27,7 @@ signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
 signal active_combatant_changed(combatant: ResCombatant)
+signal click_block
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS

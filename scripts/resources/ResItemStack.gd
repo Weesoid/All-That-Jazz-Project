@@ -2,6 +2,7 @@ extends ResItem
 class_name ResStackItem
 
 @export var MAX_STACK = 0
+@export var BARTER_ITEM:bool = false
 var STACK = 1
 
 func add(count: int, show_prompt=true):
