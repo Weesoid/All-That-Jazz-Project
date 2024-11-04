@@ -35,7 +35,6 @@ class_name CombatScene
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 @onready var team_hp_bar = $OnslaughtContainer/ProgressBar
-@onready var mouse_ui = $CombatCamera/Interface/LeftRightBrowseButtons
 
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
@@ -89,7 +88,7 @@ func _ready():
 		addCombatant(combatant)
 		if combatant is ResEnemyCombatant:
 			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
-		
+	
 	if battle_music_path != "" and SettingsGlobals.toggle_music:
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
@@ -316,7 +315,6 @@ func _on_guard_pressed():
 
 func _on_inspect_pressed():
 	ui_animator.play('ShowInspect')
-	mouse_ui.show()
 	target_state = 3
 
 func _on_escape_pressed():
@@ -407,9 +405,9 @@ func getMoveAbilities():
 func createAbilityButton(ability: ResAbility)-> Button:
 	var button = OverworldGlobals.createCustomButton()
 	button.text = ability.NAME
-	button.custom_minimum_size.x = 180
 	button.pressed.connect(func(): forceCastAbility(ability))
 	button.focus_entered.connect(func():updateDescription(ability))
+	button.mouse_entered.connect(func():updateDescription(ability))
 	if !ability.ENABLED or !ability.canUse(active_combatant, COMBATANTS):
 		button.disabled = true
 	return button
@@ -418,7 +416,6 @@ func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
 		return
 	
-	mouse_ui.show()
 	if valid_targets is Array:
 		target_combatant = valid_targets[target_index]
 	else:
@@ -431,7 +428,6 @@ func playerSelectMultiTarget():
 	if getCombatantGroup('enemies').is_empty():
 		return
 	
-	mouse_ui.show()
 	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
 	confirmCancelInputs()
 
@@ -574,6 +570,13 @@ func removeCombatant(combatant: ResCombatant):
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
+	print(valid_targets)
+	if ability.TARGET_TYPE == ability.TargetType.MULTI:
+		addTargetClickButton(active_combatant)
+	elif valid_targets is Array:
+		for target in valid_targets: addTargetClickButton(target)
+	else:
+		addTargetClickButton(valid_targets)
 	target_state = selected_ability.getTargetType()
 	updateDescription(ability)
 	ui_animator.play('FocusDescription')
@@ -596,6 +599,7 @@ func animateSecondaryPanel(animation: String):
 	if animation == 'show':
 		secondary_action_panel.show()
 		secondary_panel.show()
+		whole_action_panel.hide()
 		ui_animator.play("ShowSecondaryPanel")
 	elif animation == 'hide':
 		ui_animator.play_backwards("ShowDescriptionPanel")
@@ -733,16 +737,17 @@ func browseTargetsInputs():
 
 func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
-		mouse_ui.hide()
+		removeTargetButtons()
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse"):
+		removeTargetButtons()
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
-		mouse_ui.hide()
 	
 func resetActionLog():
 	moveCamera(camera_position)
+	whole_action_panel.show()
 	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	secondary_panel.hide()
@@ -955,26 +960,28 @@ func sortCombatantsByPosition()-> Array[ResCombatant]:
 		out.append(combatant.get_child(0).combatant_resource)
 	return out
 
-func _on_right_pressed():
-	if !valid_targets is Array:
-		return
-	
-	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
-	target_index = incrementIndex(target_index, 1, valid_targets.size())
+func addTargetClickButton(combatant: ResCombatant):
+	var button = TextureButton.new()
+	button.texture_hover = load("res://images/sprites/button_confirm_hover.png")
+	button.texture_normal = load("res://images/sprites/button_confirm_normal.png")
+	button.texture_pressed = load("res://images/sprites/button_confirm_click.png")
+	button.pressed.connect(
+		func(): 
+			removeTargetButtons()
+			if target_state == 1:
+				target_combatant = combatant
+			target_selected.emit()
+			OverworldGlobals.playSound("56243__qk__latch_01.ogg")
+	)
+	button.z_index = 999
+	button.name = 'TargetButton'
+	button.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	button.grow_vertical = Control.GROW_DIRECTION_BOTH
+	button.set_anchors_preset(Control.PRESET_CENTER)
+	combatant.SCENE.add_child(button)
+	button.position.y -= 32
 
-func _on_left_pressed():
-	if !valid_targets is Array:
-		return
-	
-	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
-	target_index = incrementIndex(target_index, -1, valid_targets.size())
-
-func _on_confirm_pressed():
-	if target_state == 3:
-		return
-	
-	OverworldGlobals.playSound("56243__qk__latch_01.ogg")
-	mouse_ui.hide()
-	target_selected.emit()
-
-
+func removeTargetButtons():
+	for combatant in COMBATANTS:
+		if combatant.SCENE.has_node('TargetButton'):
+			combatant.SCENE.get_node('TargetButton').queue_free()

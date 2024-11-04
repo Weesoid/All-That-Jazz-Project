@@ -9,12 +9,11 @@ bg_color = Color(0, 0, 0, 0.607843)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tqrcs"]
 bg_color = Color(0, 0, 0, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(1, 1, 0, 1)
-border_blend = true
 expand_margin_left = 1.0
 expand_margin_top = 1.0
 expand_margin_right = 1.0

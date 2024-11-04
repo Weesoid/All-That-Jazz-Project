@@ -165,6 +165,7 @@ offset_right = 12.0
 offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_kau5d")
 theme_override_styles/fill = SubResource("StyleBoxTexture_a2vfi")
 value = 50.0

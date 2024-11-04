@@ -31,7 +31,7 @@ static func canAddQTE(status_effect: ResStatusEffect)-> bool:
 	return status_effect.duration != status_effect.MAX_DURATION - 1 and status_effect.duration > 0 and !CombatGlobals.getCombatScene().has_node('QTE') and CombatGlobals.getCombatScene().isCombatValid()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if CombatGlobals.getCombatScene().combat_result != -1: 
+	if CombatGlobals.getCombatScene().combat_result != 0 and CombatGlobals.getCombatScene().combat_result != -1: 
 		CombatGlobals.calculateHealing(target, target.BASE_STAT_VALUES['health']*0.25)
 	if target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.manual_call_indicator.emit(target, 'Out cold!', 'Resist')
