@@ -17,7 +17,7 @@ func _ready():
 	exp_bar.value = PlayerGlobals.CURRENT_EXP
 	exp_bar.max_value = PlayerGlobals.getRequiredExp()
 	level.text = str(PlayerGlobals.PARTY_LEVEL)
-	currency.text = 'CHAINS ' + str(PlayerGlobals.CURRENCY)
+	currency.text =  '     '+str(PlayerGlobals.addCommaToNum())
 	base.get_child(0).grab_focus()
 	
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):

@@ -90,7 +90,7 @@ func loadAbilities():
 		if ability == null:
 			selected_combatant.ABILITY_POOL.erase(ability)
 			continue
-		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL: 
+		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL or !PlayerGlobals.hasUnlockedAbility(selected_combatant, ability): 
 			continue
 		createButton(ability, pool)
 

@@ -4,7 +4,6 @@ extends Control
 @onready var description = $DescriptionPanel/Label
 @onready var stats = $StatsPanel/Label
 @onready var toggle_button = $ToggleMode
-@onready var currency = $Currency
 
 var wares_array
 
@@ -16,9 +15,6 @@ var open_description: String
 func _ready():
 	loadWares()
 	resetDescription()
-
-func _process(_delta):
-	currency.text = str(PlayerGlobals.CURRENCY)
 
 func loadWares(array=wares_array, focus_item:ResItem=null):
 	var modifier

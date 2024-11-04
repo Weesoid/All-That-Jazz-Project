@@ -1,6 +1,7 @@
 extends MemberAdjustUI
 
 @onready var member_view = $Label/Marker2D
+@onready var currency = $Currency
 
 func _ready():
 	if OverworldGlobals.isPlayerCheating():
@@ -107,11 +108,19 @@ func createButton(ability:ResAbility, location):
 		func updateInfo():
 			description.text = '' 
 			description.text = ability.getRichDescription()
+			if !has_unlocked: 
+				currency.show()
+			else:
+				currency.hide()
 	)
 	button.mouse_entered.connect(
 		func updateInfo():
 			description.text = '' 
 			description.text = ability.getRichDescription()
+			if !has_unlocked: 
+				currency.show()
+			else:
+				currency.hide()
 	)
 	location.add_child(button)
 
@@ -129,6 +138,19 @@ func addToActive(member: ResCombatant, button: Button):
 		PlayerGlobals.removeFollower()
 		button.remove_theme_icon_override('icon')
 	PlayerGlobals.TEAM_FORMATION = OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD
+
+func loadAbilities():
+	clearButtons()
+	if selected_combatant.ABILITY_POOL.is_empty():
+		return
+	
+	for ability in selected_combatant.ABILITY_POOL:
+		if ability == null:
+			selected_combatant.ABILITY_POOL.erase(ability)
+			continue
+		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL: 
+			continue
+		createButton(ability, pool)
 
 func addAllMembers(path: String):
 	var dir = DirAccess.open(path)

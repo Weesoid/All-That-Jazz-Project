@@ -6,7 +6,7 @@ extends Container
 
 func writeCombatLog(text: String, lifetime=5.0):	
 	if !text.is_empty():
-		combat_log.text += text+'\n'
+		combat_log.text = text
 		timer.start(lifetime)
 	animator.play("Show")
 	

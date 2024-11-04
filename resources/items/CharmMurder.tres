@@ -7,7 +7,7 @@
 script = ExtResource("1_kre4j")
 STAT_MODIFICATIONS = {
 "brawn": 0.25,
-"grit": 0.25
+"grit": 1.0
 }
 NAME = "Murder Charm"
 ICON = ExtResource("1_8s4yt")

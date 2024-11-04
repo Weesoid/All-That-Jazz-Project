@@ -1,4 +1,4 @@
 extends Label
 
 func _ready():
-	text = 'CHAINS ' + str(PlayerGlobals.CURRENCY)
+	text = str(PlayerGlobals.addCommaToNum())

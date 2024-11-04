@@ -20,8 +20,8 @@ class_name CombatScene
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
 @onready var ui_status_inspect_container = $CombatCamera/Interface/Inspect/PanelContainer
-@onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
-@onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
+@onready var round_counter = $CombatCamera/Interface/ProgressBar/Counts/RoundCounter
+@onready var turn_counter = $CombatCamera/Interface/ProgressBar/Counts/TurnCounter
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
@@ -98,7 +98,7 @@ func _ready():
 	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
-	removeDeadCombatants(false)
+	await removeDeadCombatants(false)
 	
 	rollTurns()
 	setActiveCombatant(false)
@@ -117,7 +117,7 @@ func _ready():
 	
 	if dogpile_count > 0:
 		writeTopLogMessage('Dogpile! (x%s)' % dogpile_count)
-
+	
 func _process(_delta):
 	turn_counter.text = str(turn_count)
 	round_counter.text = str(round_count)
@@ -179,8 +179,12 @@ func on_enemy_turn():
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 		if target_combatant != null:
 			executeAbility()
-	
+	#var timer = Timer.new()
+	#timer.timeout.connect(func(): confirm.emit())
+	#add_child(timer)
+	#timer.start(10.0)
 	await confirm
+	#timer.queue_free() TIME FAIL SAFE
 	end_turn()
 
 func end_turn(combatant_act=true):
@@ -226,14 +230,24 @@ func end_turn(combatant_act=true):
 		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
 	
-	randomize()
-	if turn_count % (100 - randi_range(0, 25)) == 0 and getCombatantGroup('enemies').size() < 4:
-		addCombatant(enemy_reinforcements.pick_random().duplicate(), true)
-	
 	# Reset values
 	run_once = true
 	target_index = 0
 	secondary_panel.hide()
+	
+	# REINFORCEMENTS
+	randomize()
+	if turn_count % 49 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
+		combat_log.writeCombatLog('Enemy reinforcements are incoming!')
+	if turn_count % 50 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
+		combat_log.writeCombatLog('Enemy reinforcements arrived!')
+		bonus_escape_chance -= 0.5
+		var replace = []
+		for combatant in COMBATANTS:
+			if combatant.isDead(): replace.append(combatant)
+		for combatant in replace:
+			var replacement = enemy_reinforcements.pick_random().duplicate()
+			await replaceCombatant(combatant, replacement, "res://scenes/animations/Reinforcements.tscn")
 	
 	# Determine next combatant
 	if selected_ability == null or !selected_ability.INSTANT_CAST:
@@ -281,7 +295,8 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
 				combatant.ACTED = true
-
+			if !fading:
+				await get_tree().create_timer(0.25).timeout
 #********************************************************************************
 # BASE SCENE NODE CONTROL
 #********************************************************************************
@@ -322,12 +337,12 @@ func calculateEscapeChance()-> float:
 	var hustle_enemies = 0
 	var hustle_allies = 0
 	for combatant in getCombatantGroup('enemies'):
-		if combatant.STAT_VALUES['hustle'] > 0:
-			hustle_enemies += combatant.BASE_STAT_VALUES['hustle']
+		hustle_enemies += combatant.BASE_STAT_VALUES['hustle']
 	for combatant in getCombatantGroup('team'):
-		if combatant.STAT_VALUES['hustle'] > 0:
-			hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	return 0.5 + ((hustle_allies-hustle_enemies)*0.15) + bonus_escape_chance
+		hustle_allies += combatant.BASE_STAT_VALUES['hustle']
+	print((0.5 + ((hustle_allies-hustle_enemies)*0.15)))
+	print(bonus_escape_chance)
+	return (0.5 + ((hustle_allies-hustle_enemies)*0.15)) + bonus_escape_chance
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -458,7 +473,6 @@ func executeAbility():
 	
 	for combatant in COMBATANTS:
 		CombatGlobals.setCombatantVisibility(combatant.SCENE, true)
-	
 	var ability_title = 'ability/%s' % selected_ability.resource_path.get_file().trim_suffix('.tres')
 	CombatGlobals.dialogue_signal.emit(ability_title)
 	if checkDialogue():
@@ -512,7 +526,10 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false):
 		if marker.get_child_count() != 0: continue
 		marker.add_child(combatant.SCENE)
 		break
-	combatant.getAnimator().play('Idle')
+	if combatant is ResPlayerCombatant and combatant.isDead():
+		combatant.getAnimator().play('Fading')
+	else:
+		combatant.getAnimator().play('Idle')
 	var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
 	combat_bars.attached_combatant = combatant
 	combatant.SCENE.add_child(combat_bars)
@@ -529,13 +546,20 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false):
 			var rolled_speed = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
 			combatant_turn_order.append([combatant, rolled_speed])
 
-func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant):
+func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):
 	COMBATANTS.erase(combatant)
 	combatant_turn_order.erase(combatant)
 	await get_tree().create_timer(0.25).timeout
 	combatant.SCENE.queue_free()
 	await combatant.SCENE.tree_exited
 	addCombatant(new_combatant, true)
+	if animation_path != '':
+		await CombatGlobals.playAbilityAnimation(new_combatant, load(animation_path), 0.15)
+
+func removeCombatant(combatant: ResCombatant):
+	COMBATANTS.erase(combatant)
+	combatant_turn_order.erase(combatant)
+	combatant.SCENE.queue_free()
 
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
@@ -567,8 +591,13 @@ func animateSecondaryPanel(animation: String):
 		ui_animator.play_backwards("ShowDescriptionPanel")
 		ui_animator.play_backwards("ShowOptionPanel")
 
-func getDeadCombatants():
-	return COMBATANTS.duplicate().filter(func getDead(combatant): return combatant.isDead())
+func getDeadCombatants(type: String=''):
+	var combatants = COMBATANTS.duplicate()
+	if type == 'enemies':
+		combatants = combatants.filter(func(combatant): return combatant is ResEnemyCombatant)
+	elif type == 'team':
+		combatants = combatants.filter(func(combatant): return combatant is ResPlayerCombatant)
+	return combatants.filter(func getDead(combatant): return combatant.isDead())
 
 func addDrop(loot_drops: Dictionary): # DO NOT ADD IMMEDIATELY
 	for loot in loot_drops.keys():

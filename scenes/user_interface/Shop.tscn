@@ -1,11 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://ct1tsjeimgdbi"]
+[gd_scene load_steps=7 format=3 uid="uid://ct1tsjeimgdbi"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiShop.gd" id="1_fvlk8"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_n4cm8"]
+[ext_resource type="PackedScene" uid="uid://cshiwdcttktbe" path="res://scenes/user_interface/CurrencyView.tscn" id="3_xf0c8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eeeaa"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbvtv"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_km5yn"]
 bg_color = Color(0, 0, 0, 1)
-border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
@@ -17,8 +31,8 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 28.0
-offset_bottom = 28.0
+offset_top = 12.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(112, 28)
@@ -38,11 +52,12 @@ offset_right = 136.0
 offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eeeaa")
 
 [node name="MarginContainer" type="MarginContainer" parent="Wares"]
 layout_mode = 2
 theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
+theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
@@ -59,11 +74,12 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -152.0
-offset_top = 32.0
+offset_left = -144.0
+offset_top = 24.0
 offset_right = 72.0
 offset_bottom = 120.0
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lbvtv")
 
 [node name="Label" type="RichTextLabel" parent="DescriptionPanel"]
 layout_mode = 2
@@ -75,8 +91,8 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 62.0
-offset_top = 32.0
-offset_right = 144.0
+offset_top = 24.0
+offset_right = 136.0
 offset_bottom = 120.0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_km5yn")
@@ -93,16 +109,11 @@ offset_right = 216.0
 offset_bottom = -120.0
 text = "Barter"
 
-[node name="Currency" type="Label" parent="."]
+[node name="Currency" parent="." instance=ExtResource("3_xf0c8")]
 layout_mode = 0
-offset_left = -144.0
-offset_top = 16.0
-offset_right = 136.0
-offset_bottom = 39.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 16
-text = "10000 CHN"
-horizontal_alignment = 2
+offset_left = -126.0
+offset_top = -142.0
+offset_right = -70.0
+offset_bottom = -119.0
 
 [connection signal="pressed" from="ToggleMode" to="." method="_on_toggle_mode_pressed"]

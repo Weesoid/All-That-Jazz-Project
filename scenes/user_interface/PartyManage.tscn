@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ljv81u81w8ej"]
+[gd_scene load_steps=16 format=3 uid="uid://ljv81u81w8ej"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyManage.gd" id="1_i8l6p"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_uyp8b"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="7_y1x3a"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_4vpd7"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="9_hyicu"]
+[ext_resource type="PackedScene" uid="uid://cshiwdcttktbe" path="res://scenes/user_interface/CurrencyView.tscn" id="10_p0spm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1jwo"]
 bg_color = Color(0, 0, 0, 1)
@@ -284,6 +285,14 @@ offset_right = 368.0
 offset_bottom = 160.0
 theme = ExtResource("9_hyicu")
 text = "CHANGE FORMATION"
+
+[node name="Currency" parent="." instance=ExtResource("10_p0spm")]
+visible = false
+layout_mode = 0
+offset_left = 176.0
+offset_top = 96.0
+offset_right = 232.0
+offset_bottom = 119.0
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
 [connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://j6m3ygvp1xoj"]
+[gd_scene load_steps=9 format=3 uid="uid://j6m3ygvp1xoj"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPauseUI.gd" id="1_gyhaf"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_5ibri"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_t8o7i"]
 [ext_resource type="Texture2D" uid="uid://nyr8hffx6x17" path="res://images/sprites/icon_cross.png" id="4_osvvh"]
 [ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="5_iasgg"]
+[ext_resource type="Texture2D" uid="uid://cgo5t7wpyc38d" path="res://images/sprites/trade_slip.png" id="7_k7yvx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3hhx"]
 bg_color = Color(1, 1, 1, 1)
@@ -123,12 +124,22 @@ layout_mode = 2
 columns = 2
 
 [node name="Currency" type="Label" parent="Container"]
-visible = false
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
-text = "CASH 0"
-vertical_alignment = 2
+text = "0"
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Container/Currency"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -8.0
+offset_right = 16.0
+offset_bottom = 8.0
+grow_vertical = 2
+texture = ExtResource("7_k7yvx")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
