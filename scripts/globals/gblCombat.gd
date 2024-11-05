@@ -88,9 +88,18 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	if message != null:
 		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')
 	target.STAT_VALUES['health'] -= int(damage)
-	if trigger_on_hits: received_combatant_value.emit(target, caster, int(damage))
-	if caster is ResPlayerCombatant: addTension(randi_range(5, 10))
+	if trigger_on_hits:
+		received_combatant_value.emit(target, caster, int(damage))
+	if caster is ResPlayerCombatant: 
+		addTension(randi_range(5, 10))
+	if caster != null and target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
+		calculateHealing(caster, caster.getMaxHealth()*0.15)
+		if caster is ResPlayerCombatant:
+			addTension(25)
+			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
+	
 	playHurtAnimation(target)
+	
 	return true
 
 ## Basic damage calculations
@@ -110,7 +119,14 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
 	received_combatant_value.emit(target, caster, int(base_damage))
-	if caster is ResPlayerCombatant: addTension(1+(base_damage * 0.15))
+	if caster is ResPlayerCombatant: 
+		addTension(randi_range(5, 10))
+	if target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
+		calculateHealing(caster, caster.getMaxHealth()*0.15)
+		if caster is ResPlayerCombatant:
+			addTension(25)
+			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
+	
 	playHurtAnimation(target)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):

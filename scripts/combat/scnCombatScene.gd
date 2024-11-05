@@ -903,8 +903,9 @@ func moveOnslaught(direction: int):
 func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 	active_combatant.SCENE.get_node('CombatBars').visible = false
 	await fadeCombatant(active_combatant.SCENE, false)
-	combatant.SCENE.setBlocking(set_to)
-	combatant.SCENE.allow_block = set_to
+	if !combatant.hasStatusEffect('Guard'):
+		combatant.SCENE.setBlocking(set_to)
+		combatant.SCENE.allow_block = set_to
 	
 	for target in COMBATANTS:
 		if !target.hasStatusEffect('Knock Out') and target != combatant:
@@ -926,7 +927,6 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 		onslaught_combatant = null
 		active_combatant.SCENE.get_parent().global_position = previous_position
 		active_combatant.SCENE.get_node('CombatBars').visible = true
-		if combatant.hasStatusEffect('Guard'): CombatGlobals.removeStatusEffect(combatant,'Guard')
 		active_combatant.SCENE.moveTo(active_combatant.SCENE.get_parent())
 		await combatant.SCENE.moveTo(combatant.SCENE.get_parent())
 		onslaught_container.hide()
@@ -973,13 +973,14 @@ func addTargetClickButton(combatant: ResCombatant):
 			target_selected.emit()
 			OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 	)
+	button.mouse_entered.connect(func(): OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg"))
 	button.z_index = 999
 	button.name = 'TargetButton'
 	button.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	button.grow_vertical = Control.GROW_DIRECTION_BOTH
 	button.set_anchors_preset(Control.PRESET_CENTER)
 	combatant.SCENE.add_child(button)
-	button.position.y -= 32
+	button.position.y -= 24
 
 func removeTargetButtons():
 	for combatant in COMBATANTS:
