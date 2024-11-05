@@ -406,8 +406,10 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
-	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)
 	combat_scene.dogpile_count += dogpile
+	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)
+	combat_scene.do_reinforcements = getCombatantSquadComponent(entity_name).DO_REINFORCEMENTS
+	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
 	incrementDogpile()

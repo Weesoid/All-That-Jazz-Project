@@ -1,5 +1,6 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.APPLY_ONCE:
+		target.SCENE.moveTo(target.SCENE.get_parent(), 0.25, Vector2(0,0), true)
 		CombatGlobals.modifyStat(target, {'hustle': -100}, status_effect.NAME)
 		CombatGlobals.playAnimation(target, 'KO')
 		CombatGlobals.playKnockOutTween(target)

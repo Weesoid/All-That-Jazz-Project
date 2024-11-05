@@ -9,6 +9,8 @@ class_name EnemyCombatantSquad
 @export var RANDOM_SIZE: bool = false
 @export var UNIQUE_ID: String
 @export var TAMEABLE_CHANCE: float = 0.0
+@export var CAN_ESCAPE = true
+@export var DO_REINFORCEMENTS = true
 var afflicted_status_effects: Array[String]
 
 func _ready():

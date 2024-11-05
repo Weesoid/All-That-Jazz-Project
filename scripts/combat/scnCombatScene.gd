@@ -64,6 +64,8 @@ var onslaught_mode = false
 var onslaught_combatant: ResPlayerCombatant
 var previous_position: Vector2
 var tween_running
+var can_escape
+var do_reinforcements
 
 signal confirm
 signal target_selected
@@ -80,6 +82,7 @@ func _ready():
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
 	
+	escape_button.disabled = !can_escape
 	transition_scene.visible = true
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
@@ -117,7 +120,7 @@ func _ready():
 	
 	if dogpile_count > 0:
 		writeTopLogMessage('Dogpile! (x%s)' % dogpile_count)
-	
+
 func _process(_delta):
 	turn_counter.text = str(turn_count)
 	round_counter.text = str(round_count)
@@ -237,11 +240,11 @@ func end_turn(combatant_act=true):
 	
 	# REINFORCEMENTS
 	randomize()
-	if turn_count % 99 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
+	if turn_count % 45 == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
 		combat_log.writeCombatLog('Enemy reinforcements are incoming!')
-	if turn_count % 100 == 0 and getDeadCombatants('enemies').size() > 0 and isCombatValid():
+	if turn_count % 50 == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
 		combat_log.writeCombatLog('Enemy reinforcements arrived!')
-		bonus_escape_chance -= 0.5
+		bonus_escape_chance -= 0.25
 		var replace = []
 		for combatant in COMBATANTS:
 			if combatant.isDead(): replace.append(combatant)
@@ -249,6 +252,11 @@ func end_turn(combatant_act=true):
 			var replacement: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
 			replacement.DROP_POOL = {}
 			await replaceCombatant(combatant, replacement, "res://scenes/animations/Reinforcements.tscn")
+		if getCombatantGroup('enemies').size() < 4:
+			var size = getCombatantGroup('enemies').size()
+			for i in range(4 - size):
+				var random: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
+				await addCombatant(random, true, "res://scenes/animations/Reinforcements.tscn")
 	
 	# Determine next combatant
 	if selected_ability == null or !selected_ability.INSTANT_CAST:
@@ -328,12 +336,14 @@ func _on_escape_pressed():
 		confirm.emit()
 
 func _on_escape_focus_entered():
-	escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
-	escape_chance_label.show()
+	if can_escape:
+		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+		escape_chance_label.show()
 
 func _on_escape_mouse_entered():
-	escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
-	escape_chance_label.show()
+	if can_escape:
+		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+		escape_chance_label.show()
 
 func _on_escape_mouse_exited():
 	escape_chance_label.hide()
@@ -517,7 +527,7 @@ func zoomCamera(zoom: Vector2, speed=0.25):
 	tween.tween_property(combat_camera, 'zoom', combat_camera.zoom+zoom, speed)
 	await tween.finished
 
-func addCombatant(combatant:ResCombatant, spawned:bool=false):
+func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:String=''):
 	if !isCombatValid(): #getCombatantGroup('enemies').size() == 4: 
 		return
 	var team_container
@@ -528,14 +538,6 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false):
 		team_container = team_container_markers
 	else:
 		team_container = enemy_container_markers
-	for marker in team_container:
-		if marker.get_child_count() != 0: continue
-		marker.add_child(combatant.SCENE)
-		break
-	if combatant is ResPlayerCombatant and combatant.isDead():
-		combatant.getAnimator().play('Fading')
-	else:
-		combatant.getAnimator().play('Idle')
 	var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
 	combat_bars.attached_combatant = combatant
 	combatant.SCENE.add_child(combat_bars)
@@ -551,6 +553,17 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false):
 		for turn_charge in range(combatant.MAX_TURN_CHARGES):
 			var rolled_speed = randi_range(1, 8) + combatant.STAT_VALUES['hustle']
 			combatant_turn_order.append([combatant, rolled_speed])
+	for marker in team_container:
+		if marker.get_child_count() != 0: continue
+		marker.add_child(combatant.SCENE)
+		break
+	if combatant is ResPlayerCombatant and combatant.isDead():
+		combatant.getAnimator().play('Fading')
+	else:
+		combatant.getAnimator().play('Idle')
+	#await combatant.SCENE.ready
+	if animation_path != '':
+		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
 
 func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):
 	COMBATANTS.erase(combatant)

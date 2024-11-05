@@ -23,7 +23,10 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 	var tween = create_tween()
 	tween.tween_property(self, 'global_position', Vector2(target.global_position.x, -14) + offset, duration)
 	await tween.finished
-	playIdle()
+	if combatant_resource.isDead() and combatant_resource is ResEnemyCombatant:
+		playIdle('KO')
+	else:
+		playIdle()
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
