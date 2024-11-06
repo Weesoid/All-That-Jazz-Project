@@ -3,4 +3,4 @@ static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 		var damage = target.BASE_STAT_VALUES['health'] * 0.15
 		CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, damage))
 		OverworldGlobals.playSound('res://audio/sounds/401609__1histori__air-explosion.ogg')
-		await CombatGlobals.playAbilityAnimation(target, animation_scene, 0.05)
+		await CombatGlobals.playAbilityAnimation(target, animation_scene.ANIMATION, 0.05)

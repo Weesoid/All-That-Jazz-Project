@@ -17,5 +17,5 @@ Entity: Sure whatever man which one?
 => END
 
 ~ fight
-do changeToCombat("Fighter")
+do changeToCombat("Fighter", "Hail")
 => END

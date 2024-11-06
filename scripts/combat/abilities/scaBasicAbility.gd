@@ -76,7 +76,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			caster = null
 		else:
 			caster = caster.combatant_resource
-		if CombatGlobals.calculateRawDamage(target, ability.current_effect.damage, caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, ability.current_effect.can_miss, ability.current_effect.variation, ability.current_effect.message, ability.current_effect.trigger_on_hits) and ability.current_effect.apply_status != null:
+		if CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, ability.current_effect.damage), caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, ability.current_effect.can_miss, ability.current_effect.variation, ability.current_effect.message, ability.current_effect.trigger_on_hits) and ability.current_effect.apply_status != null:
 			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
 	
 	elif ability.current_effect is ResApplyStatusEffect:

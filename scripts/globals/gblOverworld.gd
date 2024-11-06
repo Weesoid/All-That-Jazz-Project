@@ -410,6 +410,8 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)
 	combat_scene.do_reinforcements = getCombatantSquadComponent(entity_name).DO_REINFORCEMENTS
 	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
+	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
+	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
 	incrementDogpile()

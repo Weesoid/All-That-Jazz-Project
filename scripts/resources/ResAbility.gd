@@ -161,3 +161,6 @@ func getPositionIcon()-> String:
 		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img] [img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
 	else:
 		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
+
+func isBasicAbility():
+	return BASIC_EFFECTS.size() > 0

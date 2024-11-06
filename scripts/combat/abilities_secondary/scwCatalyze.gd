@@ -7,4 +7,4 @@ static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 			var effect = effects.pick_random().NAME
 			CombatGlobals.manual_call_indicator.emit(target, 'CATALYZED! %s' % [effect], 'Reaction')
 			CombatGlobals.addStatusEffect(target, effect)
-			await CombatGlobals.playAbilityAnimation(target, animation_scene, 0.1)
+			await CombatGlobals.playAbilityAnimation(target, animation_scene.ANIMATION, 0.1)

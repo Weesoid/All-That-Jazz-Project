@@ -35,6 +35,9 @@ class_name CombatScene
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 @onready var team_hp_bar = $OnslaughtContainer/ProgressBar
+@onready var turn_timer_bar = $CombatCamera/Interface/ProgressBar/ProgressBar
+@onready var turn_timer = $TurnTimer
+@onready var turn_timer_animator = $CombatCamera/Interface/ProgressBar/AnimationPlayer2
 
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
@@ -68,6 +71,8 @@ var tween_running
 var can_escape
 var do_reinforcements
 var last_used_ability: Dictionary = {}
+var turn_time: float = 0.0
+var reinforcements_turn: int = 50
 
 signal confirm
 signal target_selected
@@ -148,6 +153,8 @@ func _unhandled_input(_event):
 func on_player_turn():
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
 	if active_combatant.AI_PACKAGE != null:
+		if has_node('QTE'): await CombatGlobals.qte_finished
+		if await checkWin(): return
 		await useAIPackage()
 		return
 	
@@ -157,12 +164,13 @@ func on_player_turn():
 		await get_node('QTE').tree_exited
 	
 	Input.action_release("ui_accept")
-	
 	resetActionLog()
 	skills_button.disabled = active_combatant.ABILITY_SET.is_empty() and !active_combatant.hasEquippedWeapon()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
 	ui_animator.play('ShowActionPanel')
+	if turn_time > 0.0:
+		startTimer()
 	await confirm
 	end_turn()
 
@@ -199,11 +207,10 @@ func useAIPackage():
 	end_turn()
 
 func end_turn(combatant_act=true):
+	if !turn_timer.is_stopped(): stopTimer()
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
-	
-	#moveamera(camera_position, 0.15)
 	if combatant_act:
 		active_combatant.TURN_CHARGES -= 1
 		combatant_turn_order.remove_at(0)
@@ -248,9 +255,9 @@ func end_turn(combatant_act=true):
 	
 	# REINFORCEMENTS
 	randomize()
-	if turn_count % 45 == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
+	if turn_count % (reinforcements_turn-1) == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
 		combat_log.writeCombatLog('Enemy reinforcements are incoming!')
-	if turn_count % 50 == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
+	if turn_count % reinforcements_turn == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
 		combat_log.writeCombatLog('Enemy reinforcements arrived!')
 		bonus_escape_chance -= 0.25
 		var replace = []
@@ -476,6 +483,7 @@ func getStatusEffectInfo(combatant: ResCombatant):
 		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION+'\n'
 
 func executeAbility():
+	if !turn_timer.is_stopped(): stopTimer()
 	active_combatant.SCENE.z_index = 100
 	for combatant in COMBATANTS:
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
@@ -522,11 +530,9 @@ func skipTurn():
 func commandExecuteAbility(target, ability: ResAbility):
 	if ability.TARGET_TYPE == ability.TargetType.MULTI:
 		target = ability.getValidTargets(COMBATANTS, active_combatant is ResPlayerCombatant)
-	ability.ABILITY_SCRIPT.applyEffects(
-						null, 
-						target, 
-						ability.ANIMATION
-						)
+	if ability.isBasicAbility():
+		ability.ABILITY_SCRIPT.animate(null, target, ability)
+	ability.ABILITY_SCRIPT.applyEffects(null, target, ability)
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
@@ -809,7 +815,7 @@ func writeTopLogMessage(message: String):
 
 func concludeCombat(results: int):
 	if combat_result != -1: return
-	
+	if !turn_timer.is_stopped(): stopTimer()
 	removeDeadCombatants(true, false)
 	combat_result = results
 	battle_music.stop()
@@ -1025,3 +1031,20 @@ func removeTargetButtons():
 	for combatant in COMBATANTS:
 		if combatant.SCENE.has_node('TargetButton'):
 			combatant.SCENE.get_node('TargetButton').queue_free()
+
+func startTimer():
+	turn_timer_bar.process_mode = Node.PROCESS_MODE_ALWAYS
+	turn_timer.start(turn_time)
+	turn_timer_animator.play("Show")
+
+func stopTimer():
+	if turn_timer.time_left > turn_time*0.9:
+		CombatGlobals.addTension(5)
+	
+	turn_timer_animator.play_backwards("Show")
+	turn_timer.stop()
+	turn_timer_bar.process_mode = Node.PROCESS_MODE_DISABLED
+
+func _on_turn_timer_timeout():
+	turn_timer_animator.play_backwards("Show")
+	confirm.emit()
