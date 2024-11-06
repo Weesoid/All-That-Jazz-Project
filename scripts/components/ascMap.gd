@@ -34,4 +34,8 @@ func giveRewards():
 	PlayerGlobals.CURRENCY += REWARD_BANK['currency']
 	PlayerGlobals.addExperience(REWARD_BANK['experience'], true)
 	for item in REWARD_BANK['loot'].keys():
-		InventoryGlobals.addItemResource(item)
+		if item is ResStackItem:
+			InventoryGlobals.addItemResource(item, REWARD_BANK['loot'][item])
+		else:
+			for i in range(REWARD_BANK['loot'][item]):
+				InventoryGlobals.addItemResource(item)

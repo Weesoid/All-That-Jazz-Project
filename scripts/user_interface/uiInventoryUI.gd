@@ -6,13 +6,16 @@ extends Control
 @onready var item_info_panel = $Infomration
 @onready var item_info = $Infomration/ItemInfo/DescriptionLabel2
 @onready var item_general_info = $Infomration/GeneralInfo
-
+@onready var space_label = $Space
 func _ready():
+	InventoryGlobals.sortItems()
 	updateInventory()
 	resetDescription()
 	if inventory_grid.get_child_count() > 0:
 		inventory_grid.get_child(0).grab_focus()
-	InventoryGlobals.sortItems()
+
+#func _process(_delta):
+#	space_label.text = '%s / %s' % [InventoryGlobals.INVENTORY.size(), InventoryGlobals.INVENTORY_SPACE]
 
 func updateInventory():
 	for child in inventory_grid.get_children():

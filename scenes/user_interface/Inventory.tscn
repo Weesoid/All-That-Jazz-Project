@@ -65,3 +65,13 @@ bbcode_enabled = true
 text = "[center]LEFT CLICK TO USE ITEM
 [/center]
 "
+
+[node name="Space" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 80.0
+offset_top = 36.0
+offset_right = 136.0
+offset_bottom = 49.0
+text = "100/100"
+horizontal_alignment = 2

@@ -4,38 +4,106 @@ class_name CombatResults
 signal done
 
 @onready var title = $PanelContainer/MarginContainer/VBoxContainer/ResultsTitle
+@onready var round_label = $PanelContainer/MarginContainer/VBoxContainer/Rounds/Criteria
+@onready var player_turns_label = $PanelContainer/MarginContainer/VBoxContainer/PlayerTurns/Criteria
+@onready var enemy_turns_label = $PanelContainer/MarginContainer/VBoxContainer/EnemyTurns/Criteria
 @onready var round_count = $PanelContainer/MarginContainer/VBoxContainer/Rounds/Value
+@onready var morale_label = $PanelContainer/MarginContainer/VBoxContainer/EnemyTurns2/Criteria
 @onready var player_turns = $PanelContainer/MarginContainer/VBoxContainer/PlayerTurns/Value
 @onready var enemy_turns = $PanelContainer/MarginContainer/VBoxContainer/EnemyTurns/Value
 @onready var morale_gained = $PanelContainer/MarginContainer/VBoxContainer/EnemyTurns2/Value
 @onready var loot_icons = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer
 @onready var animator = $AnimationPlayer
 @onready var combat_scene = CombatGlobals.getCombatScene()
+var rounds = 0
+var turns_player = 0
+var turns_enemy = 0
+var morale = PlayerGlobals.CURRENT_EXP
+var done_showing = false
 
 func _ready():
-	CombatGlobals.exp_updated.connect(startProgress)
+	var tween_rounds = combat_scene.create_tween()
+	var tween_player = combat_scene.create_tween()
+	var tween_enemy = combat_scene.create_tween()
+	var tween_morale = combat_scene.create_tween()
 	animator.play("Show")
-	OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
+	tween_rounds.tween_method(setRounds, rounds, combat_scene.round_count, 0.25)
+	tween_player.tween_method(setPlayerTurns, turns_player, combat_scene.player_turn_count, 0.25)
+	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
+	tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
+	await showLoot()
+	if rounds <= 3:
+		changeText(round_label, 'Fast Finish!')
+		bonusTween(round_label)
+		bonusTween(round_count)
+		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
+		await get_tree().create_timer(0.25).timeout
+	if turns_enemy < combat_scene.getCombatantGroup('enemies').size():
+		changeText(enemy_turns_label, 'Ruthless Finish!')
+		bonusTween(enemy_turns_label)
+		bonusTween(enemy_turns)
+		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
+		await get_tree().create_timer(0.25).timeout
+	if turns_player < combat_scene.getCombatantGroup('team').size():
+		changeText(player_turns_label, 'Stragetic Finish!')
+		bonusTween(player_turns_label)
+		bonusTween(player_turns)
+		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
+		await get_tree().create_timer(0.25).timeout
+	if morale > PlayerGlobals.getRequiredExp():
+		changeText(morale_label, 'Level Up!')
+		bonusTween(morale_label)
+		bonusTween(morale_gained)
+		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
+		await get_tree().create_timer(0.25).timeout
+	done_showing = true
 
-func startProgress(xp: int, required_exp: int):
-	CombatGlobals.exp_updated.disconnect(startProgress)
-#	experience.value = PlayerGlobals.CURRENT_EXP
-#	experience.max_value = required_exp
-#	create_tween().tween_property(experience, 'value', experience.value + xp, 1.0)
+func setMorale(value):
+	morale = value
 
-func writeDrops(item_drops: Dictionary):
-	var text = ''
-	for item in item_drops.keys():
-		text += '%s x%s\n' % [item.NAME, item_drops[item]]
-	
-#	drops.text = text
-#	create_tween().tween_property(drops, 'visible_ratio', 1, 1.25)
+func setPlayerTurns(value):
+	turns_player = value
 
-func setBonuses(bonus: String):
-	pass
-#	bonuses.text = bonus
-#	create_tween().tween_property(bonuses, 'visible_ratio', 1, 1.0)
+func setEnemyTurns(value):
+	turns_enemy = value
+
+func setRounds(value):
+	rounds = value
+
+func _process(_delta):
+	round_count.text = str(rounds)
+	player_turns.text = str(turns_player)
+	enemy_turns.text = str(turns_enemy)
+	morale_gained.text = '%s / %s' % [str(floor(morale)), str(PlayerGlobals.getRequiredExp())]
 
 func _unhandled_input(_event):
-	if Input.is_action_just_released('ui_accept'):
+	if Input.is_action_just_released('ui_accept') and done_showing:
 		done.emit()
+
+func bonusTween(label: Label):
+	var tween = combat_scene.create_tween()
+	tween.tween_property(label, 'modulate', Color(Color.YELLOW), 0.25)
+	tween.tween_property(label, 'modulate', Color(Color.WHITE), 1.5)
+
+func changeText(label: Label, new_text: String):
+	label.visible_ratio = 0
+	label.text = new_text
+	create_tween().tween_property(label, 'visible_ratio', 1, 0.25)
+
+func showLoot():
+	var bank = OverworldGlobals.getCurrentMap().REWARD_BANK['loot']
+	for drop in bank.keys():
+		var icon: TextureRect = TextureRect.new()
+		icon.texture = drop.ICON.duplicate()
+		if combat_scene.drops.has(drop):
+			var tween = create_tween()
+			var tween_b = create_tween()
+			loot_icons.add_child(icon)
+			tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
+			tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
+			tween_b.tween_property(icon, 'self_modulate', Color.YELLOW, 0.25)
+			tween_b.tween_property(icon, 'self_modulate', Color.WHITE, 1.5)
+			OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
+			await get_tree().create_timer(0.15).timeout
+		else:
+			loot_icons.add_child(icon)

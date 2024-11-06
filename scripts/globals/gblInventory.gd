@@ -160,7 +160,10 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 		addItemResource(item.REFERENCE_ITEM, count)
 
 func canAdd(item, count:int=1, show_prompt=true):
-	if item is ResEquippable and hasItem(item):
+	if INVENTORY.size() >= 500:
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=pink]You canot have more than 500 items. How did you even manage this?[/color]', 15)
+		return false
+	elif item is ResEquippable and hasItem(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item.NAME) and item.STACK + count > item.MAX_STACK and item.MAX_STACK > 0:

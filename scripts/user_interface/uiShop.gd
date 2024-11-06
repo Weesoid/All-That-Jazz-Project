@@ -26,7 +26,9 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 	else:
 		modifier = sell_modifier
 	#array.sort_custom(func(a,b): return typeof(a) < typeof(b))
-	array.sort_custom(func(a,b): return a.NAME > b.NAME)
+	
+	#array.sort_custom(func(a,b): return a.NAME > b.NAME)
+	InventoryGlobals.sortItems(array)
 	array.sort_custom(func(a,b): return a.VALUE * modifier < b.VALUE * modifier)
 	clearButtons()
 	

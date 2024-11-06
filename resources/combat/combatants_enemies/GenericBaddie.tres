@@ -14,11 +14,11 @@
 script = ExtResource("1_t4wyy")
 FACTION = 0
 ELITE = false
-CHANCE_TO_DROP = 0.5
+CHANCE_TO_DROP = 0.75
 DROP_COUNT = 1
 DROP_POOL = {
-ExtResource("4_4awxj"): Vector2(0.25, 1),
-ExtResource("5_lryu8"): Vector2(0.25, 1)
+ExtResource("4_4awxj"): Vector2(0.25, 3),
+ExtResource("5_lryu8"): Vector2(0.1, 1)
 }
 is_converted = false
 NAME = "Baddie"

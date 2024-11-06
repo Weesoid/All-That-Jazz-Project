@@ -50,8 +50,8 @@ var target_index = 0
 var combat_event: ResCombatEvent
 var selected_ability: ResAbility
 var run_once = true
-var drops = {}
 var total_experience = 0
+var drops = []
 var turn_count = 0
 var round_count = 0
 var player_turn_count = 0
@@ -662,6 +662,7 @@ func addDrop(loot_drops: Dictionary): # DO NOT ADD IMMEDIATELY
 			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
 		else:
 			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
+		drops.append(loot)
 
 func rollTurns():
 	OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
@@ -829,18 +830,17 @@ func concludeCombat(results: int):
 	var morale_bonus = 1
 	var loot_bonus = 1
 	var all_bonuses = ''
+	var morale_before = 0
 	
 	if results == 1:
-		if turn_count <= 6:
-			all_bonuses += '[color=orange]FAST BATTLE![/color] +25% Morale & Increased Drops\n'
+		if round_count <= 3:
 			morale_bonus += 1
 			loot_bonus += 1
-		if enemy_turn_count == 0:
-			all_bonuses += '[color=orange]RUTHLESS FINISH![/color] Increased Drops\n'
+		if enemy_turn_count < getCombatantGroup('enemies').size():
 			loot_bonus += 1
-		if round_count == 1:
-			all_bonuses += '[color=orange]STRAGETIC VICTORY![/color] +25% Morale\n'
+		if player_turn_count < getCombatantGroup('team').size():
 			morale_bonus += 1
+		morale_before = OverworldGlobals.getCurrentMap().REWARD_BANK['experience']
 		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * (morale_bonus * 0.25)
 		for i in range(loot_bonus):
 			for enemy in getCombatantGroup('enemies'): 
@@ -848,15 +848,14 @@ func concludeCombat(results: int):
 #	else:
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
 	
+	toggleUI(false)
 	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
-	for item in drops.keys():
-		InventoryGlobals.addItemResource(item, drops[item])
+	bc_ui.morale = morale_before
 	add_child(bc_ui)
 	if results == 1:
 		bc_ui.title.text = 'Foes Neutralized!'
 	else:
 		bc_ui.title.text = 'Escaped!'
-	bc_ui.setBonuses(all_bonuses)
 #	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
 #	PlayerGlobals.addExperience(experience_earnt)
 #	bc_ui.writeDrops(drops)
