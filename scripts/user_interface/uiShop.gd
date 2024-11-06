@@ -67,7 +67,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			button.disabled = true
 			label.text = ''
 		
-		if mode == 1:
+		if mode == 1 and item is ResWeapon:
 			button.disabled = !InventoryGlobals.canAdd(item)
 			if !InventoryGlobals.canAdd(item): label.hide()
 		

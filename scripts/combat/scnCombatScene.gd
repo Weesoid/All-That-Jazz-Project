@@ -63,9 +63,11 @@ var bonus_escape_chance = 0.0
 var onslaught_mode = false
 var onslaught_combatant: ResPlayerCombatant
 var previous_position: Vector2
+var previous_position_player: Vector2
 var tween_running
 var can_escape
 var do_reinforcements
+var last_used_ability: Dictionary = {}
 
 signal confirm
 signal target_selected
@@ -253,7 +255,7 @@ func end_turn(combatant_act=true):
 		bonus_escape_chance -= 0.25
 		var replace = []
 		for combatant in COMBATANTS:
-			if combatant.isDead(): replace.append(combatant)
+			if combatant.isDead() and combatant is ResEnemyCombatant: replace.append(combatant)
 		for combatant in replace:
 			var replacement: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
 			replacement.DROP_POOL = {}
@@ -401,7 +403,11 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		secondary_panel_container.add_child(createAbilityButton(ability))
 	
 	await get_tree().process_frame
-	OverworldGlobals.setMenuFocus(secondary_panel_container)
+	if last_used_ability.keys().has(active_combatant):
+		for child in secondary_panel_container.get_children():
+			if child.text == last_used_ability[active_combatant][0].NAME: child.grab_focus()
+	else:
+		OverworldGlobals.setMenuFocus(secondary_panel_container)
 
 func getMoveAbilities():
 	for child in secondary_panel_container.get_children():
@@ -479,6 +485,7 @@ func executeAbility():
 		CombatGlobals.showWarning(target_combatant.SCENE)
 	if active_combatant is ResPlayerCombatant:
 		CombatGlobals.TENSION -= selected_ability.TENSION_COST
+	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	moveCamera(camera_position)
 	
 	await get_tree().create_timer(0.25).timeout
@@ -589,7 +596,6 @@ func removeCombatant(combatant: ResCombatant):
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
-	print(valid_targets)
 	if ability.TARGET_TYPE == ability.TargetType.MULTI:
 		addTargetClickButton(active_combatant)
 	elif valid_targets is Array:
@@ -601,6 +607,9 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	ui_animator.play('FocusDescription')
 	secondary_action_panel.hide()
 	action_panel.hide()
+	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.TARGET_TYPE == ability.TargetType.SINGLE:
+		print('Runnig last ability target')
+		targetCombatant(last_used_ability[active_combatant][1])
 	await target_selected
 	runAbility()
 	if weapon != null: weapon.useDurability()
@@ -631,6 +640,15 @@ func getDeadCombatants(type: String=''):
 	elif type == 'team':
 		combatants = combatants.filter(func(combatant): return combatant is ResPlayerCombatant)
 	return combatants.filter(func getDead(combatant): return combatant.isDead())
+
+func targetCombatant(combatant: ResCombatant):
+	if !COMBATANTS.has(combatant) or combatant.isDead():
+		return
+	
+	if valid_targets is Array:
+		target_index = valid_targets.find(combatant)
+	else:
+		target_index = combatant
 
 func addDrop(loot_drops: Dictionary): # DO NOT ADD IMMEDIATELY
 	for loot in loot_drops.keys():
@@ -934,6 +952,7 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 		onslaught_container.show()
 		onslaught_container_animator.play("Show")
 		previous_position = active_combatant.SCENE.get_parent().global_position
+		previous_position_player = combatant.SCENE.get_parent().global_position
 		active_combatant.SCENE.get_parent().global_position = Vector2(0, -16)
 		onslaught_combatant = combatant
 		var tween = CombatGlobals.getCombatScene().create_tween()
@@ -945,6 +964,7 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 		onslaught_container_animator.play_backwards("Show")
 		onslaught_combatant = null
 		active_combatant.SCENE.get_parent().global_position = previous_position
+		combatant.SCENE.get_parent().global_position = previous_position_player
 		active_combatant.SCENE.get_node('CombatBars').visible = true
 		active_combatant.SCENE.moveTo(active_combatant.SCENE.get_parent())
 		await combatant.SCENE.moveTo(combatant.SCENE.get_parent())

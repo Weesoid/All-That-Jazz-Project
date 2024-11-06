@@ -91,7 +91,7 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
 	if caster is ResPlayerCombatant: 
-		addTension(randi_range(5, 10))
+		addTension(randi_range(1, 5))
 	if caster != null and target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
@@ -120,7 +120,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	target.STAT_VALUES['health'] -= int(base_damage)
 	received_combatant_value.emit(target, caster, int(base_damage))
 	if caster is ResPlayerCombatant: 
-		addTension(randi_range(5, 10))
+		addTension(randi_range(1, 5))
 	if target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
