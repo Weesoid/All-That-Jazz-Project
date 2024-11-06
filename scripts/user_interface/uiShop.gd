@@ -4,6 +4,7 @@ extends Control
 @onready var description = $DescriptionPanel/Label
 @onready var stats = $StatsPanel/Label
 @onready var toggle_button = $ToggleMode
+@onready var sell_barter_button = $Barter
 
 var wares_array
 
@@ -17,6 +18,8 @@ func _ready():
 	resetDescription()
 
 func loadWares(array=wares_array, focus_item:ResItem=null):
+	sell_barter_button.disabled = !hasBarterItems()
+	
 	var modifier
 	if mode == 1:
 		modifier = buy_modifier
@@ -60,9 +63,13 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			button.disabled = true
 			label.text = ''
 		
-#		if item.MANDATORY and mode == 0:
-#			button.disabled = true
-#			label.text = ''
+		if item.MANDATORY and mode == 0:
+			button.disabled = true
+			label.text = ''
+		
+		if mode == 1:
+			button.disabled = !InventoryGlobals.canAdd(item)
+			if !InventoryGlobals.canAdd(item): label.hide()
 		
 		if PlayerGlobals.CURRENCY >= item.VALUE * buy_modifier and mode == 1:
 			label.add_theme_color_override('font_color', Color.GREEN)
@@ -100,6 +107,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		
 	if focus_item == null: 
 		OverworldGlobals.setMenuFocus(wares)
+
 func clearButtons():
 	for child in wares.get_children():
 		wares.remove_child(child)
@@ -142,7 +150,7 @@ func loadSlider(item)-> int:
 
 func setButtonFunction(selected_item):
 	match mode:
-		1:
+		1: # BUY
 			if PlayerGlobals.CURRENCY < selected_item.VALUE * buy_modifier:
 				OverworldGlobals.showPlayerPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.NAME)
 				return
@@ -162,7 +170,7 @@ func setButtonFunction(selected_item):
 				PlayerGlobals.CURRENCY -= floor(selected_item.VALUE * buy_modifier)
 				OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			loadWares(wares_array, selected_item)
-		0:
+		0: # SELL
 			if selected_item.MANDATORY:
 				OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
 				return
@@ -192,3 +200,22 @@ func _on_toggle_mode_pressed():
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_tab_right') and !has_node('AmountSlider'):
 		toggle_button.pressed.emit()
+
+func _on_barter_pressed():
+	var sold = false
+	for item in InventoryGlobals.INVENTORY:
+		if item is ResStackItem and item.BARTER_ITEM:
+			var amount = item.STACK
+			InventoryGlobals.removeItemResource(item, amount, false)
+			PlayerGlobals.CURRENCY += (floor(item.VALUE) * amount)
+			if mode == 0: 
+				loadWares(InventoryGlobals.INVENTORY)
+			else:
+				loadWares(wares_array)
+			sold = true
+	if sold:
+		OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
+
+func hasBarterItems():
+	for item in InventoryGlobals.INVENTORY:
+		if item is ResStackItem and item.BARTER_ITEM: return true

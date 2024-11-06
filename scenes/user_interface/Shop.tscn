@@ -109,6 +109,14 @@ offset_right = 216.0
 offset_bottom = -120.0
 text = "Barter"
 
+[node name="Barter" parent="." instance=ExtResource("2_n4cm8")]
+layout_mode = 1
+offset_left = 136.0
+offset_top = -112.0
+offset_right = 232.0
+offset_bottom = -90.0
+text = "Sell Barter Items"
+
 [node name="Currency" parent="." instance=ExtResource("3_xf0c8")]
 layout_mode = 0
 offset_left = -126.0
@@ -117,3 +125,4 @@ offset_right = -70.0
 offset_bottom = -119.0
 
 [connection signal="pressed" from="ToggleMode" to="." method="_on_toggle_mode_pressed"]
+[connection signal="pressed" from="Barter" to="." method="_on_barter_pressed"]

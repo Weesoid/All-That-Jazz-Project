@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://m7lykq4h6axo"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=9 format=3 uid="uid://m7lykq4h6axo"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_g8dry"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_acdde"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="4_kjlrm"]
 [ext_resource type="PackedScene" uid="uid://hc8hrodt25vu" path="res://scenes/entities/followers/Greenie.tscn" id="4_nl1we"]
 [ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_vf626"]
+[ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="5_u2fre"]
 
 [resource]
 script = ExtResource("4_kjlrm")
@@ -30,3 +31,4 @@ STAT_VALUES = {
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 MAX_TURN_CHARGES = 1
+AI_PACKAGE = ExtResource("5_u2fre")

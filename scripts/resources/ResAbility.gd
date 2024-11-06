@@ -72,6 +72,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 
 func canUse(caster: ResCombatant, targets=null):
 	if caster is ResPlayerCombatant and CombatGlobals.TENSION < TENSION_COST:
+		print(CombatGlobals.TENSION < TENSION_COST)
 		return false
 	if targets == null or targets is ResCombatant:
 		return isCombatantInRange(caster, 'caster')

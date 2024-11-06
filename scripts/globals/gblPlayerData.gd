@@ -14,6 +14,7 @@ var PARTY_LEVEL = 1
 var CURRENT_EXP = 0
 var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
 var UNLOCKED_ABILITIES: Dictionary = {}
+var ADDED_ABILITIES: Dictionary = {}
 var overworld_stats: Dictionary = {
 	'stamina': 100.0,
 	'bow_max_draw': 5.0,
@@ -97,6 +98,32 @@ func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 	else:
 		UNLOCKED_ABILITIES[combatant] = []
 		UNLOCKED_ABILITIES[combatant].append(ability)
+
+func addAbility(combatant, ability):
+	if combatant is String:
+		for member in TEAM: 
+			if member.NAME == combatant:
+				combatant = member
+				break
+	if ability is String:
+		ability = load("res://resources/combat/abilities/%s.tres" % ability)
+	
+	if ADDED_ABILITIES.keys().has(combatant):
+		ADDED_ABILITIES[combatant].append(ability)
+	else:
+		ADDED_ABILITIES[combatant] = []
+		ADDED_ABILITIES[combatant].append(ability)
+	print(ADDED_ABILITIES)
+	OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.NAME, ability.NAME])
+	loadAddedAbilities()
+
+func loadAddedAbilities():
+	for member in TEAM:
+		if ADDED_ABILITIES.keys().has(member): 
+			member.ABILITY_POOL.append_array(ADDED_ABILITIES[member])
+
+func hasAbility(combatant: ResPlayerCombatant, ability: ResAbility):
+	return combatant.ABILITY_POOL.has(ability)
 
 func hasUnlockedAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 	return (UNLOCKED_ABILITIES.keys().has(combatant) and UNLOCKED_ABILITIES[combatant].has(ability)) or ability.REQUIRED_LEVEL == 0
@@ -203,6 +230,7 @@ func saveData(save_data: Array):
 	data.TEAM_FORMATION = TEAM_FORMATION
 	data.EQUIPPED_BLESSING = EQUIPPED_BLESSING
 	data.UNLOCKED_ABILITIES = UNLOCKED_ABILITIES
+	data.ADDED_ABILITIES = ADDED_ABILITIES
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
@@ -244,12 +272,14 @@ func loadData(save_data: PlayerSaveData):
 	TEAM_FORMATION = save_data.TEAM_FORMATION
 	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
 	UNLOCKED_ABILITIES = save_data.UNLOCKED_ABILITIES
+	ADDED_ABILITIES = save_data.ADDED_ABILITIES
 	#EQUIPPED_CHARM.equip(null)
 	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
 	
 	initializeBenchedTeam()
 	OverworldGlobals.initializePlayerParty()
 	OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)
+	loadAddedAbilities()
 	for combatant in TEAM:
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
 		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][1]

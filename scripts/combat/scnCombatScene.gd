@@ -145,6 +145,10 @@ func _unhandled_input(_event):
 
 func on_player_turn():
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
+	if active_combatant.AI_PACKAGE != null:
+		await useAIPackage()
+		return
+	
 	whole_action_panel.show()
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
@@ -166,10 +170,12 @@ func on_enemy_turn():
 	ui_animator.play_backwards('ShowActionPanel')
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	if await checkWin(): return
-	
+	useAIPackage()
+
+func useAIPackage():
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET, active_combatant)
 	if selected_ability != null:
-		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
+		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), active_combatant is ResPlayerCombatant)
 		if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
 			target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 		else:
@@ -178,7 +184,7 @@ func on_enemy_turn():
 			executeAbility()
 	else:
 		selected_ability = load("res://resources/combat/abilities/Struggle.tres")
-		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), false)
+		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), active_combatant is ResPlayerCombatant)
 		target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 		if target_combatant != null:
 			executeAbility()

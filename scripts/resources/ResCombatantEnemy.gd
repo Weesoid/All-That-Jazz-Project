@@ -3,7 +3,7 @@ class_name ResEnemyCombatant
 
 @export var FACTION: CombatGlobals.Enemy_Factions
 @export var ELITE: bool = false
-@export var AI_PACKAGE: GDScript
+
 @export var CHANCE_TO_DROP = 0.50
 @export var DROP_COUNT = 1
 ## Key: Item to be dropped; Value: Vector2 representing drop chance (x) & drop count (y)

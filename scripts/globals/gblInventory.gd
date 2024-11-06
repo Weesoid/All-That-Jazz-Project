@@ -173,7 +173,7 @@ func calculateValidAdd(item: ResStackItem) -> int:
 	if item is ResGhostStackItem:
 		item = item.REFERENCE_ITEM
 	
-	if item.MAX_STACK == 0:
+	if item.MAX_STACK == 0 and item.VALUE == 0:
 		return 100
 	
 	if INVENTORY.has(item):

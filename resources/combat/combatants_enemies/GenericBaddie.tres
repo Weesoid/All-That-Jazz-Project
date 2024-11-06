@@ -13,7 +13,6 @@
 script = ExtResource("1_t4wyy")
 FACTION = 0
 ELITE = false
-AI_PACKAGE = ExtResource("1_tp2k2")
 CHANCE_TO_DROP = 0.5
 DROP_COUNT = 1
 DROP_POOL = {
@@ -38,3 +37,4 @@ STAT_VALUES = {
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_4squn"), ExtResource("2_o5e4t"), ExtResource("1_af60q")])
 MAX_TURN_CHARGES = 1
+AI_PACKAGE = ExtResource("1_tp2k2")
