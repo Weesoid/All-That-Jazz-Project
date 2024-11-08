@@ -98,6 +98,7 @@ offset_right = 46.0
 offset_bottom = -11.5
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
 [node name="Weapon" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
 custom_minimum_size = Vector2(92, 0)
@@ -116,6 +117,7 @@ theme = ExtResource("5_004gj")
 icon = ExtResource("6_8ov74")
 
 [node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
+visible = false
 layout_mode = 2
 theme = ExtResource("5_004gj")
 icon = ExtResource("6_8ov74")

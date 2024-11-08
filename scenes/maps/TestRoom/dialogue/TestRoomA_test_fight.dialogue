@@ -1,6 +1,7 @@
 ~ start
 Entity: Wanna fight!?
 - YES => fight
+- Manipulate my experience => experience
 - Give me a blessing! => bless
 - Nah fam. => END
 => END
@@ -14,6 +15,14 @@ Entity: Sure whatever man which one?
 - A temporary speed boost! badump!
 	do applyBlessing("res://scenes/temporary_blessings/Speed.tscn")
 
+=> END
+
+~ experience
+Entity: Sure man wazzup?!
+- Just give me experience ya fuck.
+	do addExperience(500, true)
+- Increase muh cap.
+	do increaseLevelCap()
 => END
 
 ~ fight

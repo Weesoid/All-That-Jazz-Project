@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://j6m3ygvp1xoj"]
+[gd_scene load_steps=8 format=3 uid="uid://j6m3ygvp1xoj"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPauseUI.gd" id="1_gyhaf"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_5ibri"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="3_m3iej"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_t8o7i"]
 [ext_resource type="Texture2D" uid="uid://nyr8hffx6x17" path="res://images/sprites/icon_cross.png" id="4_osvvh"]
-[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="5_iasgg"]
 [ext_resource type="Texture2D" uid="uid://cgo5t7wpyc38d" path="res://images/sprites/trade_slip.png" id="7_k7yvx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3hhx"]
@@ -69,55 +68,58 @@ visible = false
 layout_mode = 2
 text = "SAVE"
 
-[node name="Experience" type="ProgressBar" parent="Container"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Container"]
 layout_mode = 2
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Container/HSplitContainer"]
+layout_mode = 2
+theme = ExtResource("3_t8o7i")
+text = "Morale"
+vertical_alignment = 1
+
+[node name="Experience" type="ProgressBar" parent="Container/HSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 1
 theme_override_styles/fill = SubResource("StyleBoxFlat_g3hhx")
 value = 50.0
 show_percentage = false
 
-[node name="ProgressBarTrueValues" parent="Container/Experience" instance=ExtResource("5_iasgg")]
+[node name="Label" type="Label" parent="Container/HSplitContainer/Experience"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -11.0
-offset_top = -6.5
-offset_right = 11.0
-offset_bottom = 6.5
+offset_left = -44.0
+offset_top = -5.5
+offset_right = 52.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_t8o7i")
+text = "50/100"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Level" type="Label" parent="Container/Experience"]
+[node name="Level" type="Label" parent="Container/HSplitContainer/Experience"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -32.0
-offset_top = -11.0
-offset_right = 2.0
+offset_left = -29.0
+offset_top = -15.0
+offset_right = 5.0
 offset_bottom = 2.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("3_t8o7i")
 text = "1"
 horizontal_alignment = 2
-vertical_alignment = 2
-
-[node name="Label" type="Label" parent="Container/Experience"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = -1.0
-offset_top = -11.0
-offset_right = 33.0
-offset_bottom = 2.0
-grow_vertical = 0
-theme = ExtResource("3_t8o7i")
-text = "Morale"
-vertical_alignment = 2
+vertical_alignment = 1
 
 [node name="VBoxContainer" type="GridContainer" parent="Container"]
 layout_mode = 2
@@ -125,6 +127,7 @@ columns = 2
 
 [node name="Currency" type="Label" parent="Container"]
 layout_mode = 2
+theme = ExtResource("3_t8o7i")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 text = "0"

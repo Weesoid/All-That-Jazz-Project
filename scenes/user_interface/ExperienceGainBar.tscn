@@ -1,0 +1,90 @@
+[gd_scene load_steps=6 format=3 uid="uid://dosmakh461uj5"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiExperienceGainBar.gd" id="1_xjl1s"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="2_57s6t"]
+
+[sub_resource type="Animation" id="Animation_erh3u"]
+resource_name = "Show"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_k47wn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_376bt"]
+_data = {
+"RESET": SubResource("Animation_k47wn"),
+"Show": SubResource("Animation_erh3u")
+}
+
+[node name="ExperienceGainBar" type="Node2D"]
+modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_xjl1s")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -12.0
+offset_top = -48.0
+offset_right = 22.0
+offset_bottom = -44.0
+value = 50.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="ProgressBar"]
+offset_left = -11.0
+offset_top = -3.0
+offset_right = 29.0
+offset_bottom = 10.0
+theme = ExtResource("2_57s6t")
+text = "M."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_376bt")
+}

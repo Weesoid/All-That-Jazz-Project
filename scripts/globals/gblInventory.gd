@@ -45,7 +45,7 @@ func craftItem(item_array: Array[ResItem]):
 			addItem(craft_data[0])
 
 func addItemResource(item: ResItem, count=1, show_message=true, check_restrictions=true):
-	if (!canAdd(item,count) or count == 0) and check_restrictions:
+	if (!canAdd(item,count,show_message) or count == 0) and check_restrictions:
 		return
 	
 	if item is ResStackItem and INVENTORY.has(item):

@@ -5,6 +5,7 @@ class_name ResQuest
 @export var DESCRIPTION: String
 @export var OBJECTIVES: Array[ResObjective]
 @export var COMPLETED: bool = false
+@export var EXPERIENCE_REWARD: float = 0.25
 
 func getObjective(objective_name: String)-> ResObjective:
 	if !QuestGlobals.hasQuest(NAME):
@@ -32,6 +33,7 @@ func isCompleted(show_prompt:bool=true):
 		if objective.FINAL_OBJECTIVE and objective.COMPLETED:
 			COMPLETED = true
 			if show_prompt: QuestGlobals.promptQuestCompleted(self)
+			PlayerGlobals.addExperience(PlayerGlobals.getRequiredExp()*EXPERIENCE_REWARD, true, true)
 			return COMPLETED
 
 func _to_string():

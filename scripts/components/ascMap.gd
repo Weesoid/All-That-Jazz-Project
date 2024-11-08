@@ -32,7 +32,7 @@ func giveRewards():
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
 	
 	PlayerGlobals.CURRENCY += REWARD_BANK['currency']
-	PlayerGlobals.addExperience(REWARD_BANK['experience'], true)
+	PlayerGlobals.addExperience(REWARD_BANK['experience'])
 	for item in REWARD_BANK['loot'].keys():
 		if item is ResStackItem:
 			InventoryGlobals.addItemResource(item, REWARD_BANK['loot'][item])

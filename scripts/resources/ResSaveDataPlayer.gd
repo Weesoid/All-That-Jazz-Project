@@ -11,15 +11,10 @@ class_name PlayerSaveData
 @export var CURRENCY: int
 @export var PARTY_LEVEL: int
 @export var CURRENT_EXP: int
-@export var stamina: float
-@export var bow_max_draw: float
-@export var walk_speed: float
-@export var sprint_speed: float
-@export var sprint_drain: float
-@export var stamina_gain: float
 @export var STRING_CONDITIONS: Array[String]
 @export var PROGRESSION_DATA: Dictionary
 @export var TEAM_FORMATION: Array[ResCombatant]
 @export var COMBATANT_SAVE_DATA: Dictionary
 @export var UNLOCKED_ABILITIES: Dictionary
 @export var ADDED_ABILITIES: Dictionary
+@export var MAX_PARTY_LEVEL: int

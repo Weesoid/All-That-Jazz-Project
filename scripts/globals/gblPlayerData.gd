@@ -11,6 +11,7 @@ var EQUIPPED_ARROW: ResProjectileAmmo
 var EQUIPPED_BLESSING: ResBlessing
 var CURRENCY = 100
 var PARTY_LEVEL = 1
+var MAX_PARTY_LEVEL = 5
 var CURRENT_EXP = 0
 var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
 var UNLOCKED_ABILITIES: Dictionary = {}
@@ -48,7 +49,6 @@ func initializeBenchedTeam():
 			member.initializeCombatant(false)
 
 func applyBlessing(blessing):
-	print(EQUIPPED_BLESSING != null, ' & ', blessing is ResBlessing)
 	if blessing is String and !blessing.contains('res://'):
 		blessing = load("res://resources/blessings/%s.tres" % blessing)
 	elif blessing is String:
@@ -65,26 +65,47 @@ func applyBlessing(blessing):
 #********************************************************************************
 # COMBATANT MANAGEMENT
 #********************************************************************************
-func addExperience(experience: int, show_message:bool=false):
-	if show_message:
-		var message = '[color=yellow]%s[/color] morale added! (%s/%s)' % [experience, CURRENT_EXP, getRequiredExp()]
-		OverworldGlobals.showPlayerPrompt(message)
+func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=false):
+#	if PARTY_LEVEL >= MAX_PARTY_LEVEL and !bypass_cap:
+#		OverworldGlobals.showPlayerPrompt('Max party level reached!')
+#		return
+	if show_message and !OverworldGlobals.getPlayer().has_node('ExperienceGainBar'):
+		var experience_bar_view = load("res://scenes/user_interface/ExperienceGainBar.tscn").instantiate()
+		experience_bar_view.added_exp = experience
+		OverworldGlobals.getPlayer().add_child(experience_bar_view)
 	CURRENT_EXP += experience
-	if CURRENT_EXP >= getRequiredExp():
+	if PARTY_LEVEL >= MAX_PARTY_LEVEL and CURRENT_EXP >= getRequiredExp() and !bypass_cap:
+		CURRENT_EXP = getRequiredExp()
+		OverworldGlobals.showPlayerPrompt('Max level already reached!')
+		return
+	if show_message:
+		OverworldGlobals.showPlayerPrompt('([color=yellow]%s[/color]/[color=yellow]%s[/color]) morale added!' % [CURRENT_EXP, getRequiredExp()])
+	if CURRENT_EXP >= getRequiredExp() and (PARTY_LEVEL < MAX_PARTY_LEVEL or bypass_cap):
 		var prev_required = getRequiredExp()
 		var prev_exp = CURRENT_EXP
 		PARTY_LEVEL += 1
-		levelUpCombatants()
 		CURRENT_EXP = 0
-		if prev_exp - prev_required > 0:
-			addExperience(prev_exp - prev_required)
+		if PARTY_LEVEL < MAX_PARTY_LEVEL:
+			levelUpCombatants()
+			if prev_exp - prev_required > 0:
+				addExperience(prev_exp - prev_required, show_message, bypass_cap)
+		elif PARTY_LEVEL >= MAX_PARTY_LEVEL:
+			OverworldGlobals.showPlayerPrompt('Max party level reached!')
 	elif CURRENT_EXP < 0:
 		CURRENT_EXP = 0
 
 func getRequiredExp() -> int:
-	var baseExp = 500
+	var baseExp = 500.0
 	var expMultiplier = 1.25
-	return ceil(pow(expMultiplier ** (PARTY_LEVEL - 1), 1/3) * baseExp)
+	#print(PARTY_LEVEL)
+	var gain = sqrt(expMultiplier ** (PARTY_LEVEL - 1)) * baseExp # Chng to cubrrt
+	return int(gain)
+
+func increaseLevelCap(amount:int=5):
+	MAX_PARTY_LEVEL += amount
+	if CURRENT_EXP >= getRequiredExp():
+		levelUpCombatants()
+	OverworldGlobals.showPlayerPrompt('Level cap increased to [color=yellow]%s[/color]!' % MAX_PARTY_LEVEL)
 
 func addCurrency(value: int):
 	if value + CURRENCY < 0:
@@ -231,6 +252,7 @@ func saveData(save_data: Array):
 	data.EQUIPPED_BLESSING = EQUIPPED_BLESSING
 	data.UNLOCKED_ABILITIES = UNLOCKED_ABILITIES
 	data.ADDED_ABILITIES = ADDED_ABILITIES
+	data.MAX_PARTY_LEVEL = MAX_PARTY_LEVEL
 	
 	for combatant in TEAM:
 		data.COMBATANT_SAVE_DATA[combatant] = [
@@ -273,6 +295,7 @@ func loadData(save_data: PlayerSaveData):
 	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
 	UNLOCKED_ABILITIES = save_data.UNLOCKED_ABILITIES
 	ADDED_ABILITIES = save_data.ADDED_ABILITIES
+	MAX_PARTY_LEVEL = save_data.MAX_PARTY_LEVEL
 	#EQUIPPED_CHARM.equip(null)
 	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
 	
