@@ -148,7 +148,7 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 		target.STAT_VALUES['health'] = 0
 	base_healing = valueVariate(base_healing, 0.15)
 	if use_mult:
-		base_healing *= target.STAT_VALUES['heal mult']
+		base_healing *= target.STAT_VALUES['heal_mult']
 	if base_healing <= 0: 
 		base_healing = 0
 		

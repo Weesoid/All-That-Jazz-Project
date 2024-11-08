@@ -1,13 +1,10 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=10 format=3 uid="uid://dxdpkpoxq1gca"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=7 format=3 uid="uid://dxdpkpoxq1gca"]
 
 [ext_resource type="Resource" uid="uid://dlan5dxt4e3mm" path="res://resources/combat/abilities/Onslaught.tres" id="1_4squn"]
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_af60q"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_t4wyy"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tp2k2"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="2_luqil"]
-[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_o5e4t"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="4_4awxj"]
-[ext_resource type="Resource" uid="uid://dhoel3hfuuxgr" path="res://resources/combat/abilities/AilmentStrike.tres" id="4_wxgwo"]
 [ext_resource type="Resource" uid="uid://drgb4ejko51ty" path="res://resources/items/CharmStoneWall.tres" id="5_lryu8"]
 
 [resource]
@@ -26,16 +23,16 @@ PACKED_SCENE = ExtResource("2_luqil")
 DESCRIPTION = "A non-descript baddie! Testicles!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 0.25,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"grit": 0.0,
+"grit": 0.1,
 "handling": 0,
-"heal mult": 1.0,
+"heal_mult": 1.0,
 "health": 50,
-"hustle": 1,
+"hustle": 2,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_4squn"), ExtResource("2_o5e4t"), ExtResource("1_af60q"), ExtResource("4_wxgwo")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_4squn")])
 MAX_TURN_CHARGES = 1
 AI_PACKAGE = ExtResource("1_tp2k2")

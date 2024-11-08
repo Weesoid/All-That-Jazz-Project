@@ -33,12 +33,10 @@ func getExperience():
 	var out = 0
 	if BASE_STAT_VALUES.is_empty(): 
 		BASE_STAT_VALUES = STAT_VALUES
-	
-	for key in BASE_STAT_VALUES.keys():
-#		if BASE_STAT_VALUES[key] <= 1.0:
-		out += BASE_STAT_VALUES[key]
-	
-	return int(out * 2.0)
+	var gain = (BASE_STAT_VALUES["health"] * 0.2) + (BASE_STAT_VALUES["brawn"] * 100) + (BASE_STAT_VALUES["grit"] * 100) + BASE_STAT_VALUES["handling"] + (BASE_STAT_VALUES["hustle"] * 2) + ((BASE_STAT_VALUES["crit"] * BASE_STAT_VALUES["crit_dmg"]) * 100) + (BASE_STAT_VALUES["heal_mult"] * 2) + (BASE_STAT_VALUES["resist"] * 100)
+	#CombatGlobals.manual_call_indicator.emit(self, '+%s Morale' % ceil(gain))
+	print(ceil(gain))
+	return ceil(gain)
 
 func getDrops():
 	if DROP_POOL.is_empty():

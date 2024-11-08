@@ -2,7 +2,7 @@ static func animate(caster: CombatantScene, target: CombatantScene, ability: Res
 	await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, true)
 	
 	CombatGlobals.getCombatScene().fadeCombatant(caster, true)
-	caster.setProjectileTarget(target, 2.0)
+	caster.setProjectileTarget(target, 2.0, ability)
 	await caster.doAnimation('Onslaught', ability.ABILITY_SCRIPT)
 	
 	await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)

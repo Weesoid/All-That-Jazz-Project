@@ -35,7 +35,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	
 	if script != null: hit_script = script
 	if animation == 'Cast_Ranged':
-		setProjectileTarget(data['target'], data['frame_time'])
+		setProjectileTarget(data['target'], data['frame_time'], data['ability'])
 	if data.keys().has('anim_speed'):
 		animator.play(animation, -1, data['anim_speed'])
 	else:
@@ -55,20 +55,22 @@ func playIdle(new_idle:String=''):
 	
 	animator.play(idle_animation)
 
-func setProjectileTarget(target: CombatantScene, frame_time: float):
-	var anim: Animation = animator.get_animation("Cast_Ranged")
+func setProjectileTarget(target: CombatantScene, frame_time: float, ability: ResAbility, animation:String="Cast_Ranged"):
+	var anim: Animation = animator.get_animation(animation)
+	print('Received ability ', ability)
 	if anim.find_track(".", Animation.TYPE_METHOD) != null:
 		anim.remove_track(anim.find_track(".", Animation.TYPE_METHOD))
 	var track_index = anim.add_track(Animation.TYPE_METHOD)
 	anim.track_set_path(track_index, ".")
 	anim.track_insert_key(track_index, frame_time, {
 	"method": "shootProjectile",
-	"args": [target],
+	"args": [target, ability],
 	}, 0)
 
-func shootProjectile(target: CombatantScene):
+func shootProjectile(target: CombatantScene, ability: ResAbility):
 	var projectile = load("res://scenes/entities_disposable/ProjectileBattles.tscn").instantiate()
 	projectile.hit_script = hit_script
+	projectile.ability = ability
 	projectile.name = 'Projectile'
 	projectile.target = target
 	projectile.SHOOTER = self

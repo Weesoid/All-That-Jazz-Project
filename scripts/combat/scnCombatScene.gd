@@ -153,6 +153,8 @@ func _unhandled_input(_event):
 func on_player_turn():
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
 	if active_combatant.AI_PACKAGE != null:
+		whole_action_panel.hide()
+		ui_animator.play_backwards('ShowActionPanel')
 		if has_node('QTE'): await CombatGlobals.qte_finished
 		if await checkWin(): return
 		await useAIPackage()
@@ -833,15 +835,15 @@ func concludeCombat(results: int):
 	var morale_before = 0
 	
 	if results == 1:
-		if round_count <= 3:
-			morale_bonus += 1
+		if round_count <= 2:
+			morale_bonus += 0.25
 			loot_bonus += 1
 		if enemy_turn_count < getCombatantGroup('enemies').size():
 			loot_bonus += 1
 		if player_turn_count < getCombatantGroup('team').size():
-			morale_bonus += 1
+			morale_bonus += 0.25
 		morale_before = OverworldGlobals.getCurrentMap().REWARD_BANK['experience']
-		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * (morale_bonus * 0.25)
+		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * morale_bonus
 		for i in range(loot_bonus):
 			for enemy in getCombatantGroup('enemies'): 
 				addDrop(enemy.getDrops())
@@ -849,19 +851,14 @@ func concludeCombat(results: int):
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
 	
 	toggleUI(false)
-	var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
-	bc_ui.morale = morale_before
-	add_child(bc_ui)
-	if results == 1:
-		bc_ui.title.text = 'Foes Neutralized!'
-	else:
-		bc_ui.title.text = 'Escaped!'
-#	CombatGlobals.emit_exp_updated(experience_earnt, PlayerGlobals.getRequiredExp())
-#	PlayerGlobals.addExperience(experience_earnt)
-#	bc_ui.writeDrops(drops)
 	
-	await bc_ui.done
-	bc_ui.queue_free()
+	if results == 1:
+		var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
+		bc_ui.morale = morale_before
+		add_child(bc_ui)
+		await bc_ui.done
+		bc_ui.queue_free()
+	# else: escape sfx
 	
 	transition_scene.visible = true
 	transition.play('In')

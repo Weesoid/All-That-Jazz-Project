@@ -36,7 +36,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, true)
 			CombatGlobals.getCombatScene().fadeCombatant(caster, true)
 			if effect.projectile_frame != null:
-				caster.setProjectileTarget(target, effect.projectile_frame)
+				caster.setProjectileTarget(target, effect.projectile_frame, ability, 'Onslaught')
 			await caster.doAnimation(effect.animation_name, ability.ABILITY_SCRIPT)
 			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)
 			CombatGlobals.getCombatScene().team_hp_bar.hide()
@@ -46,6 +46,9 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 
 # Determine if target(s) is single or multi
 static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
+	if ability.current_effect == null:
+		ability.current_effect = ability.BASIC_EFFECTS[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
+	
 	if target is Array:
 		for t in target: 
 			applyToTarget(caster, t, ability)
@@ -107,6 +110,6 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT) # SPEED UP {'anim_speed':1.5}
 		if damage_effect.return_pos: await caster.moveTo(caster.get_parent())
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
-		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7})
+		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7,'ability'=ability})
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
-		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=null,'frame_time'=0.7})
+		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=null,'frame_time'=0.7,'ability'=ability})

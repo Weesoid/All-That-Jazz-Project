@@ -12,6 +12,8 @@ signal done
 @onready var player_turns = $PanelContainer/MarginContainer/VBoxContainer/PlayerTurns/Value
 @onready var enemy_turns = $PanelContainer/MarginContainer/VBoxContainer/EnemyTurns/Value
 @onready var morale_gained = $PanelContainer/MarginContainer/VBoxContainer/EnemyTurns2/Value
+@onready var all_loot_label = $PanelContainer/MarginContainer/VBoxContainer/ResultsTitle3
+@onready var loot_label = $PanelContainer/MarginContainer/VBoxContainer/ResultsTitle4
 @onready var loot_icons = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer
 @onready var animator = $AnimationPlayer
 @onready var combat_scene = CombatGlobals.getCombatScene()
@@ -32,7 +34,7 @@ func _ready():
 	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
 	tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
 	await showLoot()
-	if rounds <= 3:
+	if rounds <= 2:
 		changeText(round_label, 'Fast Finish!')
 		bonusTween(round_label)
 		bonusTween(round_count)
@@ -90,11 +92,23 @@ func changeText(label: Label, new_text: String):
 	label.text = new_text
 	create_tween().tween_property(label, 'visible_ratio', 1, 0.25)
 
+func hideLoot():
+	morale_label.hide()
+	morale_gained.hide()
+	loot_icons.hide()
+	loot_label.hide()
+	all_loot_label.hide()
+
 func showLoot():
 	var bank = OverworldGlobals.getCurrentMap().REWARD_BANK['loot']
 	for drop in bank.keys():
 		var icon: TextureRect = TextureRect.new()
 		icon.texture = drop.ICON.duplicate()
+		icon.tooltip_text = drop.NAME
+		var count_label = Label.new()
+		count_label.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][drop])
+		count_label.theme = preload("res://design/OutlinedLabel.tres")
+		icon.add_child(count_label)
 		if combat_scene.drops.has(drop):
 			var tween = create_tween()
 			var tween_b = create_tween()

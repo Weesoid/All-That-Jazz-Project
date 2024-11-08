@@ -17,7 +17,7 @@ class_name ResCombatant
 	'accuracy': 0.95,
 	'crit': 0.05,
 	'crit_dmg': 1.5,
-	'heal mult': 1.0,
+	'heal_mult': 1.0,
 	'resist': 0.05
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection

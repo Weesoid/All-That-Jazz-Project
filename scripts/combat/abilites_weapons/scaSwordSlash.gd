@@ -1,11 +1,10 @@
 static func animate(caster: CombatantScene, target: CombatantScene, _ability: ResAbility):
-#	await caster.moveTo(target)
+	await caster.moveTo(target)
 	#await skillCheck(target, caster, 'Holding')
 	#await skillCheck(target, caster, 'Inputting')
 	#await skillCheck(target, caster, 'Mashing')
-#	await skillCheck(target, caster, 'Holding', 4)
-#	await caster.moveTo(caster.get_parent())
-	await CombatGlobals.getCombatScene().changeCombatantPosition(caster.combatant_resource, 0, 120)
+	await skillCheck(target, caster, 'Holding', 4)
+	await caster.moveTo(caster.get_parent())
 	CombatGlobals.ability_finished.emit()
 
 static func skillCheck(target: CombatantScene , caster: CombatantScene, check: String, count:int=1):

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://colt86d3cbv04"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=9 format=3 uid="uid://colt86d3cbv04"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="2_nh55h"]
@@ -7,10 +7,11 @@
 [ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="3_sh1ok"]
 [ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_2e4kc"]
 [ext_resource type="Resource" uid="uid://dhoel3hfuuxgr" path="res://resources/combat/abilities/AilmentStrike.tres" id="5_q55wc"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="6_86hq2"]
 
 [resource]
 script = ExtResource("2_vmsk2")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_nh55h"), ExtResource("3_sh1ok"), ExtResource("4_2e4kc"), ExtResource("5_q55wc")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_nh55h"), ExtResource("3_sh1ok"), ExtResource("4_2e4kc"), ExtResource("5_q55wc"), ExtResource("6_86hq2")])
 MANDATORY = false
 NAME = "Willis Flynn"
 PACKED_SCENE = ExtResource("3_q2rry")
@@ -18,11 +19,11 @@ DESCRIPTION = "Spicey frisk undertale!"
 STAT_VALUES = {
 "accuracy": 0.95,
 "brawn": 0.0,
-"crit": 1.0,
+"crit": 0.05,
 "crit_dmg": 1.5,
 "grit": 0.0,
 "handling": 0,
-"heal mult": 1.0,
+"heal_mult": 1.0,
 "health": 50,
 "hustle": 1,
 "resist": 0.05
