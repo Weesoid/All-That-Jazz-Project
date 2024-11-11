@@ -32,7 +32,7 @@ STAT_VALUES = {
 "handling": 0,
 "heal_mult": 1.0,
 "health": 50,
-"hustle": 2,
+"hustle": 1,
 "resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_4squn"), ExtResource("2_538jr"), ExtResource("3_7bykr")])

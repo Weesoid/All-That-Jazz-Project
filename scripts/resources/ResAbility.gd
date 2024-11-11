@@ -130,6 +130,7 @@ func getValidTargetIcon():
 func getPositionIcon()-> String:
 	var valid = "res://images/sprites/circle_self.png"
 	var valid_self = "res://images/sprites/circle_self_pos.png"
+	var invalid_self = "res://images/sprites/circle_self_pos_invalid.png"
 	var valid_ally = "res://images/sprites/circle_ally.png"
 	var valid_enemy = "res://images/sprites/circle_enemy.png"
 	var invalid = "res://images/sprites/circle_invalid.png"
@@ -140,6 +141,8 @@ func getPositionIcon()-> String:
 				postions.append(valid_self)
 			else:
 				postions.append(valid)
+		elif CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition():
+			postions.append(invalid_self)
 		else:
 			postions.append(invalid)
 	

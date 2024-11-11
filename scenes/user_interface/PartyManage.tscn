@@ -127,6 +127,7 @@ theme = ExtResource("4_apa5i")
 icon = ExtResource("5_10rs6")
 
 [node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+visible = false
 layout_mode = 2
 theme = ExtResource("4_apa5i")
 icon = ExtResource("5_10rs6")

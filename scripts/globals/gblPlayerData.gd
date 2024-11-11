@@ -78,8 +78,6 @@ func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=fal
 		CURRENT_EXP = getRequiredExp()
 		OverworldGlobals.showPlayerPrompt('Max level already reached!')
 		return
-	if show_message:
-		OverworldGlobals.showPlayerPrompt('([color=yellow]%s[/color]/[color=yellow]%s[/color]) morale added!' % [CURRENT_EXP, getRequiredExp()])
 	if CURRENT_EXP >= getRequiredExp() and (PARTY_LEVEL < MAX_PARTY_LEVEL or bypass_cap):
 		var prev_required = getRequiredExp()
 		var prev_exp = CURRENT_EXP
@@ -104,7 +102,7 @@ func getRequiredExp() -> int:
 func increaseLevelCap(amount:int=5):
 	MAX_PARTY_LEVEL += amount
 	if CURRENT_EXP >= getRequiredExp():
-		levelUpCombatants()
+		addExperience(1, true)
 	OverworldGlobals.showPlayerPrompt('Level cap increased to [color=yellow]%s[/color]!' % MAX_PARTY_LEVEL)
 
 func addCurrency(value: int):

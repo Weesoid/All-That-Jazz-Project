@@ -403,7 +403,13 @@ func isSameCombatantType(combatant_a, combatant_b):
 	return getCombatantType(combatant_a) == getCombatantType(combatant_b)
 
 func addTension(amount: int):
+#	if amount > 0:
+#		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
+#	elif amount < 0:
+#		OverworldGlobals.playSound("res://audio/sounds/220189__gameaudio__blip-squeak.ogg")
 	if TENSION + amount > 100:
 		TENSION = 100
+	elif TENSION + amount < 0:
+		TENSION = 0
 	else:
 		TENSION += amount

@@ -13,5 +13,5 @@ func interact():
 func _on_body_entered(body):
 	if TOUCH_ENTER and body is PlayerScene and PlayerGlobals.isMapCleared(): 
 		OverworldGlobals.changeMap(TO_SCENE_PATH, TO_COORDS)
-	else:
+	elif TOUCH_ENTER and body is PlayerScene:
 		OverworldGlobals.showPlayerPrompt("You can't leave yet, there's a job to be done.")

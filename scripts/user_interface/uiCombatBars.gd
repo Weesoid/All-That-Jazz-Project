@@ -59,6 +59,7 @@ func updateStatusEffects():
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
 		var icon = effect.ICON
+		icon.tooltip_text = effect.DESCRIPTION
 		icon.add_child(tick_down)
 		status_effects.add_child(icon)
 

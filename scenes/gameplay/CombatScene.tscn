@@ -1,9 +1,11 @@
-[gd_scene load_steps=38 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=45 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
 [ext_resource type="Texture2D" uid="uid://cva5tgsjq1eq1" path="res://images/sprites/spot_area.png" id="2_mvokd"]
 [ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
+[ext_resource type="Texture2D" uid="uid://bsq3n6st76j4x" path="res://images/textures/grid.png" id="4_m8l8q"]
+[ext_resource type="Texture2D" uid="uid://bytrjypgh861o" path="res://images/textures/flat.png" id="5_rh8gw"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_56rvc"]
 [ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="8_lqkpn"]
@@ -167,6 +169,100 @@ _data = {
 "Show": SubResource("Animation_tlyer")
 }
 
+[sub_resource type="Animation" id="Animation_n3qmt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background/Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlatformB/Sprite2D2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlatformC/Sprite2D2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tov16"]
+resource_name = "Show"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background/Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 10),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.9, 0.9), Vector2(1, 1), Vector2(0.9, 0.9)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlatformB/Sprite2D2:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.5, 5, 7.5, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 2), Vector2(0, 0), Vector2(0, 2), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlatformC/Sprite2D2:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.2, 3.8, 6.2, 8.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 2), Vector2(0, 0), Vector2(0, 2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cyo55"]
+_data = {
+"RESET": SubResource("Animation_n3qmt"),
+"Show": SubResource("Animation_tov16")
+}
+
+[sub_resource type="Gradient" id="Gradient_ajd4e"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j26mw"]
+gradient = SubResource("Gradient_ajd4e")
+fill_from = Vector2(0, 0.329268)
+fill_to = Vector2(0, 1)
+
 [sub_resource type="Animation" id="Animation_morbt"]
 length = 0.001
 tracks/0/type = "value"
@@ -266,6 +362,12 @@ func _process(_delta):
 	value = CombatGlobals.TENSION
 
 func _on_value_changed(value):
+	var tween = create_tween()
+	var size_tween = create_tween().set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(self, 'modulate', Color.CORAL, 0.05)
+	tween.tween_property(self, 'modulate', Color.WHITE, 0.25)
+	size_tween.tween_property(self, 'size', Vector2(368, 12), 0.025)
+	size_tween.tween_property(self, 'size', Vector2(368, 4), 0.25)
 	if !combat_scene.active_combatant is ResPlayerCombatant and !animator.is_playing() and value != 0:
 		show()
 		animator.play(\"Show\")
@@ -926,15 +1028,64 @@ libraries = {
 "": SubResource("AnimationLibrary_d3510")
 }
 
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Background" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+motion_mirroring = Vector2(640, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Background"]
+self_modulate = Color(1, 1, 1, 0.0980392)
+position = Vector2(64, 0)
+texture = ExtResource("4_m8l8q")
+
+[node name="Platform" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/Platform"]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+texture = ExtResource("5_rh8gw")
+
+[node name="PlatformB" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(0, 5)
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/PlatformB"]
+self_modulate = Color(0.501961, 0.501961, 0.501961, 0.392157)
+scale = Vector2(0.95, 0.95)
+texture = ExtResource("5_rh8gw")
+
+[node name="PlatformC" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(0, 10)
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/PlatformC"]
+self_modulate = Color(0.501961, 0.501961, 0.501961, 0.196078)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("5_rh8gw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ParallaxBackground"]
+libraries = {
+"": SubResource("AnimationLibrary_cyo55")
+}
+
 [node name="CombatCamera" type="Camera2D" parent="."]
 zoom = Vector2(3, 3)
 position_smoothing_enabled = true
 position_smoothing_speed = 15.0
 script = ExtResource("2_dcn2q")
 
+[node name="Sprite2D" type="Sprite2D" parent="CombatCamera"]
+position = Vector2(0, -89.5)
+scale = Vector2(8, 0.890625)
+texture = SubResource("GradientTexture2D_j26mw")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CombatCamera"]
+position = Vector2(3.30438e-07, 84.2202)
+rotation = 3.14159
+scale = Vector2(8.01788, 1.00874)
+texture = SubResource("GradientTexture2D_j26mw")
+
 [node name="DefaultBattleParallax" parent="CombatCamera" instance=ExtResource("3_r3luu")]
+visible = false
 z_index = -999
-position = Vector2(-19, 163)
 scale = Vector2(1.5, 1.5)
 
 [node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
@@ -1189,6 +1340,7 @@ horizontal_alignment = 1
 show_max = false
 
 [node name="Counts" type="Control" parent="CombatCamera/Interface/ProgressBar"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

@@ -94,17 +94,18 @@ func _ready():
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
 	
+	$ParallaxBackground/AnimationPlayer.play("Show")
+	transition.play('Out')
+	await transition.animation_finished
+	
 	for combatant in COMBATANTS:
-		addCombatant(combatant)
+		await addCombatant(combatant, false, '', true)
 		if combatant is ResEnemyCombatant:
 			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
 	
 	if battle_music_path != "" and SettingsGlobals.toggle_music:
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
-	
-	transition.play('Out')
-	await transition.animation_finished
 	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
@@ -117,7 +118,8 @@ func _ready():
 	
 	for button in action_panel.get_children():
 		button.focus_entered.connect(func(): secondary_panel.hide())
-	battle_back.play('Show')
+	#battle_back.play('Show')
+	
 	active_combatant.act()
 	
 	if combat_dialogue != null:
@@ -171,6 +173,8 @@ func on_player_turn():
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
 	ui_animator.play('ShowActionPanel')
+	if last_used_ability.keys().has(active_combatant) and active_combatant.ABILITY_SET.has(last_used_ability[active_combatant][0]):
+		_on_skills_pressed()
 	if turn_time > 0.0:
 		startTimer()
 	await confirm
@@ -412,7 +416,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		secondary_panel_container.add_child(createAbilityButton(ability))
 	
 	await get_tree().process_frame
-	if last_used_ability.keys().has(active_combatant):
+	if last_used_ability.keys().has(active_combatant) and ability_set.has(last_used_ability[active_combatant][0]):
 		for child in secondary_panel_container.get_children():
 			if child.text == last_used_ability[active_combatant][0].NAME: child.grab_focus()
 	else:
@@ -494,7 +498,7 @@ func executeAbility():
 		target_combatant.SCENE.allow_block = true
 		CombatGlobals.showWarning(target_combatant.SCENE)
 	if active_combatant is ResPlayerCombatant:
-		CombatGlobals.TENSION -= selected_ability.TENSION_COST
+		CombatGlobals.addTension(-selected_ability.TENSION_COST)
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	moveCamera(camera_position)
 	
@@ -548,7 +552,7 @@ func zoomCamera(zoom: Vector2, speed=0.25):
 	tween.tween_property(combat_camera, 'zoom', combat_camera.zoom+zoom, speed)
 	await tween.finished
 
-func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:String=''):
+func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:String='', do_tween:bool=false):
 	if !isCombatValid(): #getCombatantGroup('enemies').size() == 4: 
 		return
 	var team_container
@@ -562,6 +566,11 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
 	combat_bars.attached_combatant = combatant
 	combatant.SCENE.add_child(combat_bars)
+	if do_tween:
+		if combatant is ResPlayerCombatant:
+			combatant.SCENE.global_position = Vector2(-100, 0)
+		else:
+			combatant.SCENE.global_position = Vector2(100, 0)
 	if combatant is ResEnemyCombatant and combatant.is_converted:
 		combatant.SCENE.rotation_degrees = -180
 		combatant.SCENE.get_node('Sprite2D').flip_v = true
@@ -585,6 +594,12 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	#await combatant.SCENE.ready
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
+	if do_tween:
+		var tween = create_tween().tween_property(combatant.SCENE, 'global_position', combatant.SCENE.get_parent().global_position, 0.15)
+		if !combatant.isDead():
+			combatant.SCENE.doAnimation('Cast_Melee')
+		await tween.finished
+		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
 
 func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):
 	COMBATANTS.erase(combatant)
@@ -616,7 +631,6 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	secondary_action_panel.hide()
 	action_panel.hide()
 	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.TARGET_TYPE == ability.TargetType.SINGLE:
-		print('Runnig last ability target')
 		targetCombatant(last_used_ability[active_combatant][1])
 	await target_selected
 	runAbility()
@@ -791,7 +805,7 @@ func confirmCancelInputs():
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
 	
-func resetActionLog():
+func resetActionLog(show_skills:bool=false):
 	moveCamera(camera_position)
 	whole_action_panel.show()
 	#combat_camera.zoom = Vector2(1.0, 1.0)
@@ -803,6 +817,9 @@ func resetActionLog():
 	action_panel.show()
 	ui_animator.play('ShowActionPanel')
 	guard_button.disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
+	await ui_animator.animation_finished
+	if show_skills and !skills_button.disabled:
+		_on_skills_pressed()
 
 func runAbility():
 	target_state = 0
