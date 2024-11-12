@@ -1,9 +1,8 @@
-[gd_scene load_steps=45 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=44 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
 [ext_resource type="Texture2D" uid="uid://cva5tgsjq1eq1" path="res://images/sprites/spot_area.png" id="2_mvokd"]
-[ext_resource type="PackedScene" uid="uid://da3ip8d2r73kb" path="res://scenes/combat_backgrounds/DefaultBattleBack.tscn" id="3_r3luu"]
 [ext_resource type="Texture2D" uid="uid://bsq3n6st76j4x" path="res://images/textures/grid.png" id="4_m8l8q"]
 [ext_resource type="Texture2D" uid="uid://bytrjypgh861o" path="res://images/textures/flat.png" id="5_rh8gw"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
@@ -1083,11 +1082,6 @@ rotation = 3.14159
 scale = Vector2(8.01788, 1.00874)
 texture = SubResource("GradientTexture2D_j26mw")
 
-[node name="DefaultBattleParallax" parent="CombatCamera" instance=ExtResource("3_r3luu")]
-visible = false
-z_index = -999
-scale = Vector2(1.5, 1.5)
-
 [node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
 visible = false
 z_index = 1000
@@ -1136,10 +1130,10 @@ offset_bottom = 40.0
 [node name="AttributeView" parent="CombatCamera/Interface/Inspect" instance=ExtResource("10_60ct5")]
 z_index = 100
 layout_mode = 1
-offset_left = 90.0
-offset_top = 54.0
-offset_right = 90.0
-offset_bottom = 54.0
+offset_left = 70.0
+offset_top = 34.0
+offset_right = 70.0
+offset_bottom = 34.0
 scale = Vector2(1.1, 1.1)
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
@@ -1199,10 +1193,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 152.0
-offset_top = 67.0
-offset_right = 337.0
-offset_bottom = 197.0
+offset_left = 132.0
+offset_top = 47.0
+offset_right = 317.0
+offset_bottom = 177.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(184, 36)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://dnvj0a4dfm1hq"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_1exqt"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_shdbw"]
+
+[resource]
+script = ExtResource("2_shdbw")
+MAX_STACK = 999
+BARTER_ITEM = true
+NAME = "Rich Salvage"
+ICON = ExtResource("1_1exqt")
+DESCRIPTION = "Very rare and highly valuable materials."
+VALUE = 100
+MANDATORY = false

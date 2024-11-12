@@ -205,7 +205,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 		button.add_child(label)
 	
-	if item.MANDATORY:
+	if item is ResStackItem and item.BARTER_ITEM: # item.MANDATORY
 		button.theme = preload("res://design/ItemButtonsMandatory.tres")
 	else:
 		button.theme = preload("res://design/ItemButtons.tres")

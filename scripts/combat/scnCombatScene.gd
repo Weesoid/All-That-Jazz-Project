@@ -26,7 +26,7 @@ class_name CombatScene
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
 @onready var battle_sounds = $BattleSounds
-@onready var battle_back = $CombatCamera/DefaultBattleParallax.get_node('AnimationPlayer')
+@onready var battle_back = $ParallaxBackground/AnimationPlayer
 @onready var top_log_label = $CombatCamera/Interface/TopLog
 @onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
@@ -94,7 +94,7 @@ func _ready():
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
 	
-	$ParallaxBackground/AnimationPlayer.play("Show")
+	battle_back.play('Show')
 	transition.play('Out')
 	await transition.animation_finished
 	
@@ -109,16 +109,19 @@ func _ready():
 	
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant)
+		tickStatusEffects(combatant, true)
 	await removeDeadCombatants(false)
 	
 	rollTurns()
 	setActiveCombatant(false)
+	print(active_combatant.STAT_VALUES['hustle'])
 	while active_combatant.STAT_VALUES['hustle'] < 0:
+		print(active_combatant.STAT_VALUES['hustle'])
 		setActiveCombatant(false)
 	
 	for button in action_panel.get_children():
 		button.focus_entered.connect(func(): secondary_panel.hide())
-	#battle_back.play('Show')
+	
 	
 	active_combatant.act()
 	

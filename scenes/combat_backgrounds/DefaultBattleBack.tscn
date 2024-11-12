@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://da3ip8d2r73kb"]
+[gd_scene load_steps=5 format=3 uid="uid://bft21vp6djyb1"]
 
-[ext_resource type="Texture2D" uid="uid://cdp1g3yxbs3wp" path="res://images/textures/91e7c49960b010fbc3be096bab30b7c8.jpg" id="1_laqow"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fikx8"]
+load_path = "res://.godot/imported/91e7c49960b010fbc3be096bab30b7c8.jpg-99c7df8e0b50a3b05c40333a2a038276.ctex"
 
 [sub_resource type="Animation" id="Animation_s7rpp"]
 length = 0.001
@@ -22,7 +23,7 @@ texture_filter = 1
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.490196)
 scale = Vector2(0.226667, 0.2)
-texture = ExtResource("1_laqow")
+texture = SubResource("CompressedTexture2D_fikx8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

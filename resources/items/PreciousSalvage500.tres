@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://chdfrej1myhfy"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_yqrvh"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_i401e"]
+
+[resource]
+script = ExtResource("2_i401e")
+MAX_STACK = 999
+BARTER_ITEM = true
+NAME = "Precious Salvage"
+ICON = ExtResource("1_yqrvh")
+DESCRIPTION = "Extremely rare materials, highly valuable to traders and the like."
+VALUE = 500
+MANDATORY = false

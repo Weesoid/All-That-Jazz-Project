@@ -213,8 +213,8 @@ func repairAllItems():
 
 func sortItems(items: Array[ResItem]=INVENTORY):
 	items.sort_custom(
-		func(a, b): 
-			if  a is ResStackItem and b is ResStackItem:
+		func(a, b):
+			if a is ResStackItem and b is ResStackItem:
 				return a.STACK > b.STACK
 			elif a is ResEquippable and b is ResEquippable:
 				return getItemType(a) < getItemType(b)
