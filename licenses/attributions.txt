@@ -2,6 +2,7 @@ raising_phone_handset.ogg by joedeshon -- https://freesound.org/s/118228/ -- Lic
 Craft Item 2 by SilverIllusionist -- https://freesound.org/s/580812/ -- License: Attribution 4.0
 Craft Item 3 by SilverIllusionist -- https://freesound.org/s/580813/ -- License: Attribution 4.0
 WhipStick 28.wav by Department64 -- https://freesound.org/s/607862/ -- License: Attribution 4.0
+1243_pressure_cooker.wav by reinsamba -- https://freesound.org/s/66364/ -- License: Attribution 4.0
 
 arrow and bow in one by jzdnvdoosj -- https://freesound.org/s/626263/ -- License: Attribution 3.0
 Cinematic Trailer Risers 1.mp3 by original_sound -- https://freesound.org/s/494984/ -- License: Attribution 3.0
@@ -25,10 +26,12 @@ Face Punch, Body Impact, 4x by Kinoton -- https://freesound.org/s/503277/ -- Lic
 Crate Break 1.wav by kevinkace -- https://freesound.org/s/66777/ -- License: Creative Commons 0
 Air Explosion.wav by 1histori -- https://freesound.org/s/401609/ -- License: Creative Commons 0
 steam_burst.wav by pengo_au -- https://freesound.org/s/90143/ -- License: Creative Commons 0
-1243_pressure_cooker.wav by reinsamba -- https://freesound.org/s/66364/ -- License: Attribution 4.0
 Breaking Glass.wav by Unopiate -- https://freesound.org/s/189575/ -- License: Creative Commons 0
 PuffOfSmoke.wav by euanmj -- https://freesound.org/s/442873/ -- License: Creative Commons 0
 Model/toy train set by robindouglasjohnson -- https://freesound.org/s/698992/ -- License: Creative Commons 0
 grab-item by 1bob -- https://freesound.org/s/651515/ -- License: Creative Commons 0
+Alert short.wav by Soundwarf -- https://freesound.org/s/387533/ -- License: Creative Commons 0
+alarmexpdisto.wav by Soundwarf -- https://freesound.org/s/387536/ -- License: Creative Commons 0
+Stingers and Stabs 001.wav by rodincoil -- https://freesound.org/s/271945/ -- License: Creative Commons 0
 
 [Bow.wav and snippets from arrow and bow in one has been combined to make the bow shoot sound in file '178872__hanbaal__bow.ogg']

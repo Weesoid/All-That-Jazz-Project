@@ -1,7 +1,7 @@
 extends Node
 
 var toggle_sprint = true
-var toggle_music = true
+var toggle_music = false
 var cheat_mode = true
 
 func _ready():

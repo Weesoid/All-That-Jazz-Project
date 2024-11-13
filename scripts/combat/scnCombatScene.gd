@@ -867,6 +867,7 @@ func concludeCombat(results: int):
 		for i in range(loot_bonus):
 			for enemy in getCombatantGroup('enemies'): 
 				addDrop(enemy.getDrops())
+				addDrop(enemy.getBarterDrops())
 #	else:
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
 	

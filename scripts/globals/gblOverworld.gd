@@ -37,12 +37,15 @@ func initializePlayerParty():
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
 	getPlayer().can_move = enabled
 	getPlayer().set_process_unhandled_input(enabled)
+	
 	if enabled:
 		getPlayer().set_collision_layer_value(5, true)
 		getPlayer().set_collision_mask_value(5, true)
 		getPlayer().set_collision_layer_value(1, true)
 		getPlayer().set_collision_mask_value(1, true)
 		getPlayer().show()
+	else:
+		getPlayer().sprinting = false
 	
 	if disable_collision:
 		getPlayer().set_collision_layer_value(5, false)
@@ -386,9 +389,17 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
 		return
-	
+	#getComponent(entity_name, 'NPCPatrolComponent').PATROL_BUBBLE.play('Fight')
 	# Enter combat
+	OverworldGlobals.getPlayer().setUIVisibility(false)
+	await zoomCamera(Vector2(3.0,3.0), 0.0, true)
 	setPlayerInput(false)
+	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
+	getEntity(entity_name).add_child(combat_bubble)
+	get_tree().paused = true
+	PhysicsServer2D.set_active(true)
+	#shakeCamera()
+	#Engine.time_scale = 0.25
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
@@ -412,14 +423,13 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
 	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
 	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
+	incrementDogpile()
+	await combat_bubble.tree_exited
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
-	incrementDogpile()
 	battle_transition.get_node('AnimationPlayer').play('In')
-	combat_enetered.emit()
 	await battle_transition.get_node('AnimationPlayer').animation_finished
-	get_tree().paused = true
-	PhysicsServer2D.set_active(true)
+	combat_enetered.emit()
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
 	if getEntity(entity_name).has_node('CombatDialogue'):
@@ -428,6 +438,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	await combat_scene.combat_done
 	
 	# Exit combat
+	await zoomCamera(Vector2(2.0,2.0))
 	var combat_results = combat_scene.combat_result
 	var tamed = combat_scene.tamed_combatants
 	getPlayer().player_camera.make_current()
@@ -440,6 +451,7 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	if combat_results == 1:
 		for combatant in tamed: PlayerGlobals.addCombatantToTeam(combatant)
 	setPlayerInput(true)
+	OverworldGlobals.getPlayer().setUIVisibility(true)
 	battle_transition.get_node('AnimationPlayer').play('Out')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()

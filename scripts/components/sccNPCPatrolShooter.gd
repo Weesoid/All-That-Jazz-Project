@@ -24,8 +24,6 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# CHASE
 		2:
-			if !PATROL_BUBBLE_SPRITE.visible:
-				PATROL_BUBBLE.play("Show")
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:

@@ -32,7 +32,7 @@ func _ready():
 	LINE_OF_SIGHT = get_parent().get_node('LineOfSightComponent')
 	COMBAT_SQUAD = get_parent().get_node('CombatantSquadComponent')
 	ANIMATOR = get_parent().get_node('Animator')
-#
+	
 #	if OverworldGlobals.getCurrentMap().CLEARED:
 #		destroy(false)
 	
@@ -65,14 +65,14 @@ func _ready():
 
 func _physics_process(_delta):
 	BODY.move_and_slide()
-	if PATROL:
+	if PATROL :
 		patrol()
 	if COMBAT_SWITCH:
 		executeCollisionAction()
 	
-	if OverworldGlobals.isPlayerCheating():
-		DEBUG.show()
-		DEBUG.text = str(DETECT_TIMER.time_left)
+#	if OverworldGlobals.isPlayerCheating():
+#		DEBUG.show()
+#		DEBUG.text = str(DETECT_TIMER.time_left)
 #	else:
 #		DEBUG.hide()
 
@@ -81,6 +81,7 @@ func executeCollisionAction():
 		return
 	
 	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
+		immobolize()
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
 		COMBAT_SWITCH = false
@@ -105,21 +106,23 @@ func patrol():
 func alertPatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * ALERTED_SPEED_MULTIPLIER
 	STATE = 1
-	if PATROL_BUBBLE.current_animation != "Loop":
-		PATROL_BUBBLE.play("Show")
-		await PATROL_BUBBLE.animation_finished
-		PATROL_BUBBLE.play("Loop")
+	if PATROL_BUBBLE.current_animation != 'Loop_Seek':
+		OverworldGlobals.playSound2D(global_position, "387533__soundwarf__alert-short.ogg")
+		PATROL_BUBBLE.play("Loop_Seek")
 
 func soothePatrolMode():
 	NAV_AGENT.get_current_navigation_path().clear()
 	MOVE_SPEED = BASE_MOVE_SPEED
 	STATE = 0
 	updatePath(true)
-	PATROL_BUBBLE.play_backwards("Show")
+	PATROL_BUBBLE.play_backwards("Soothe")
 
 func chaseMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * CHASE_SPEED_MULTIPLIER
 	STATE = 2
+	if PATROL_BUBBLE.current_animation != 'Loop':
+		OverworldGlobals.playSound2D(global_position, "387536__soundwarf__alarmexpdisto.ogg")
+		PATROL_BUBBLE.play("Loop")
 	updatePath()
 
 func stunMode(alert_others:bool=false):
@@ -185,7 +188,7 @@ func updatePath(immediate:bool=false):
 		# CHASE
 		2:
 			if !PATROL_BUBBLE_SPRITE.visible:
-				PATROL_BUBBLE.play("Show")
+				PATROL_BUBBLE_SPRITE.visible = true
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
@@ -215,7 +218,7 @@ func moveRandom()-> Vector2:
 
 func patrolToPosition(target_position: Vector2):
 	if targetReached():
-		BODY.velocity = Vector2(0,0)
+		BODY.velocity = Vector2.ZERO
 	elif !NAV_AGENT.get_current_navigation_path().is_empty():
 		BODY.velocity = target_position * MOVE_SPEED
 		updateLineOfSight()

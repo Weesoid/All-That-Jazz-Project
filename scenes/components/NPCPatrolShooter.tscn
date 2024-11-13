@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://sogrlccaj2u0"]
+[gd_scene load_steps=9 format=3 uid="uid://sogrlccaj2u0"]
 
 [ext_resource type="Script" path="res://scripts/components/sccNPCPatrolShooter.gd" id="1_rwsgf"]
-[ext_resource type="Texture2D" uid="uid://cvlxblusko57c" path="res://images/animations/untitled.png" id="2_36gua"]
+[ext_resource type="Texture2D" uid="uid://c840dg08gd2sw" path="res://images/animations/patrol_status.png" id="2_67phk"]
 
 [sub_resource type="Animation" id="Animation_r7k43"]
 resource_name = "Loop"
-length = 0.5
 loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -14,7 +13,7 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.2, 0.5, 0.8, 1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4]
@@ -26,7 +25,47 @@ tracks/1/path = NodePath(".:scale")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.75, 0.75)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_lpgac"]
+resource_name = "Loop_Seek"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [5, 6, 7, 8, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0.5, 0.5), Vector2(0.75, 0.75)]
@@ -83,9 +122,37 @@ tracks/2/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_scp8k"]
-resource_name = "Show"
-length = 0.8
+[sub_resource type="Animation" id="Animation_fkv3g"]
+resource_name = "Soothe"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.625, 0.625), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_w0idu"]
+resource_name = "Fight"
+length = 1.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -93,10 +160,10 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [2]
+"values": [10, 11, 10, 11, 10]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -105,29 +172,19 @@ tracks/1/path = NodePath(".:scale")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1e-05), Vector2(1, 1.25), Vector2(1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cqyvp"]
 _data = {
+"Fight": SubResource("Animation_w0idu"),
 "Loop": SubResource("Animation_r7k43"),
+"Loop_Seek": SubResource("Animation_lpgac"),
 "RESET": SubResource("Animation_64vnf"),
-"Show": SubResource("Animation_scp8k")
+"Soothe": SubResource("Animation_fkv3g")
 }
 
 [node name="NPCPatrolComponent" type="Node2D"]
@@ -146,8 +203,9 @@ theme_override_constants/outline_size = 4
 visible = false
 modulate = Color(1, 0, 0.0156863, 1)
 position = Vector2(0, -44)
-texture = ExtResource("2_36gua")
+texture = ExtResource("2_67phk")
 hframes = 5
+vframes = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PatrolBubble"]
 libraries = {

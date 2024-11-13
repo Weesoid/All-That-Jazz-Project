@@ -1,7 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bft21vp6djyb1"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fikx8"]
-load_path = "res://.godot/imported/91e7c49960b010fbc3be096bab30b7c8.jpg-99c7df8e0b50a3b05c40333a2a038276.ctex"
 
 [sub_resource type="Animation" id="Animation_s7rpp"]
 length = 0.001

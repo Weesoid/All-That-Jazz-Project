@@ -20,7 +20,7 @@
 [ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="17_nryad"]
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="18_vkkst"]
 [ext_resource type="PackedScene" uid="uid://d3uwhp7cbtt7a" path="res://scenes/entities_interactable/HidingSpot.tscn" id="23_uryqv"]
-[ext_resource type="PackedScene" uid="uid://mfyf48hh0e2p" path="res://scenes/entities/mobs/PatrollerShooter.tscn" id="31_pw13n"]
+[ext_resource type="PackedScene" uid="uid://cfgaxedrlkql3" path="res://scenes/entities/mobs/Patroller.tscn" id="24_jbof6"]
 [ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="31_s6lty"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="32_ea2lt"]
 
@@ -106,7 +106,7 @@ position = Vector2(168, 80)
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
 FILL_EMPTY = true
 UNIQUE_ID = "SexMasters"
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null, null, null])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("7_eiq6g")]
 dialogue_resource = ExtResource("8_pga02")
@@ -165,12 +165,6 @@ position = Vector2(-80, -120)
 [node name="SavePoint" parent="." instance=ExtResource("31_s6lty")]
 position = Vector2(-136, -120)
 
-[node name="PatrollerShooter" parent="." instance=ExtResource("31_pw13n")]
-position = Vector2(24, -256)
-
-[node name="NPCPatrolComponent" parent="PatrollerShooter" index="1" node_paths=PackedStringArray("PATROL_AREA")]
-PATROL_AREA = NodePath("../../Area2D")
-
 [node name="FastTravel" parent="." instance=ExtResource("32_ea2lt")]
 position = Vector2(32, -120)
 
@@ -180,4 +174,33 @@ position = Vector2(104, -64)
 [node name="HidingSpot2" parent="." instance=ExtResource("23_uryqv")]
 position = Vector2(8, -64)
 
-[editable path="PatrollerShooter"]
+[node name="Patroller" parent="." instance=ExtResource("24_jbof6")]
+position = Vector2(-72, -232)
+
+[node name="NPCPatrolComponent" parent="Patroller" index="1" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="CombatantSquadComponent" parent="Patroller" index="2"]
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
+
+[node name="Patroller2" parent="." instance=ExtResource("24_jbof6")]
+position = Vector2(8, -216)
+
+[node name="NPCPatrolComponent" parent="Patroller2" index="1" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="CombatantSquadComponent" parent="Patroller2" index="2"]
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
+
+[node name="Patroller3" parent="." instance=ExtResource("24_jbof6")]
+position = Vector2(-32, -264)
+
+[node name="NPCPatrolComponent" parent="Patroller3" index="1" node_paths=PackedStringArray("PATROL_AREA")]
+PATROL_AREA = NodePath("../../Area2D")
+
+[node name="CombatantSquadComponent" parent="Patroller3" index="2"]
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
+
+[editable path="Patroller"]
+[editable path="Patroller2"]
+[editable path="Patroller3"]

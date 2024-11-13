@@ -35,7 +35,6 @@ func getExperience():
 		BASE_STAT_VALUES = STAT_VALUES
 	var gain = (BASE_STAT_VALUES["health"] * 0.2) + (BASE_STAT_VALUES["brawn"] * 100) + (BASE_STAT_VALUES["grit"] * 100) + BASE_STAT_VALUES["handling"] + (BASE_STAT_VALUES["hustle"] * 2) + ((BASE_STAT_VALUES["crit"] * BASE_STAT_VALUES["crit_dmg"]) * 100) + (BASE_STAT_VALUES["heal_mult"] * 2) + (BASE_STAT_VALUES["resist"] * 100)
 	#CombatGlobals.manual_call_indicator.emit(self, '+%s Morale' % ceil(gain))
-	print(ceil(gain))
 	return ceil(gain)
 
 func getDrops():
@@ -43,7 +42,6 @@ func getDrops():
 		return {}
 	var drops = {}
 	
-	print('Rolling with ', CHANCE_TO_DROP)
 	for i in range(DROP_COUNT):
 		if CombatGlobals.randomRoll(CHANCE_TO_DROP): 
 			var item = rollDrops()
@@ -65,6 +63,19 @@ func getRawDrops():
 				drops[item] = randi_range(1, DROP_POOL[item].y)
 	
 	return drops
+
+func getBarterDrops():
+	var out = ceil(getExperience() / 2)
+	print('out = ', out)
+	var denominations = [20, 50, 100, 500, 1000]
+	var change = {}
+	
+	for denom in denominations:
+		if out >= denom:
+			change[InventoryGlobals.loadItemResource('BarterSalvage'+str(denom))] = int(out / denom)
+			out -= int(out / denom)
+	
+	return change
 
 func rollDrops():
 	var total_weight = 0

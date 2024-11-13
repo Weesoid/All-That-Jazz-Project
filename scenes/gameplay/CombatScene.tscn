@@ -1083,9 +1083,8 @@ scale = Vector2(8.01788, 1.00874)
 texture = SubResource("GradientTexture2D_j26mw")
 
 [node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
-visible = false
 z_index = 1000
-position = Vector2(5, 19)
+position = Vector2(408, 168)
 
 [node name="Interface" type="Control" parent="CombatCamera"]
 layout_mode = 3

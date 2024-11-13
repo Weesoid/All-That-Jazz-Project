@@ -5,7 +5,7 @@ extends Control
 @onready var stats = $StatsPanel/Label
 @onready var toggle_button = $ToggleMode
 @onready var sell_barter_button = $Barter
-
+@onready var currency = $Currency
 var wares_array
 
 var mode = 1
@@ -165,11 +165,13 @@ func setButtonFunction(selected_item):
 				OverworldGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
 				PlayerGlobals.CURRENCY -= (floor(selected_item.VALUE * buy_modifier) * amount)
+				showChange(-floor(selected_item.VALUE * buy_modifier) * amount)
 				if amount > 0:
 					OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			else:
 				InventoryGlobals.addItemResource(selected_item)
 				PlayerGlobals.CURRENCY -= floor(selected_item.VALUE * buy_modifier)
+				showChange(-floor(selected_item.VALUE * buy_modifier))
 				OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			loadWares(wares_array, selected_item)
 		0: # SELL
@@ -184,6 +186,7 @@ func setButtonFunction(selected_item):
 			OverworldGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
 			PlayerGlobals.CURRENCY += (floor(selected_item.VALUE * sell_modifier) * amount)
+			showChange(floor(selected_item.VALUE * sell_modifier) * amount)
 			loadWares(InventoryGlobals.INVENTORY, selected_item)
 			if amount > 0:
 				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
@@ -205,11 +208,14 @@ func _unhandled_input(_event):
 
 func _on_barter_pressed():
 	var sold = false
+	var amount_sold
 	for item in InventoryGlobals.INVENTORY:
 		if item is ResStackItem and item.BARTER_ITEM:
 			var amount = item.STACK
 			InventoryGlobals.removeItemResource(item, amount, false)
+			amount_sold = (floor(item.VALUE) * amount)
 			PlayerGlobals.CURRENCY += (floor(item.VALUE) * amount)
+			showChange(floor(item.VALUE) * amount)
 			if mode == 0: 
 				loadWares(InventoryGlobals.INVENTORY)
 			else:
@@ -217,7 +223,22 @@ func _on_barter_pressed():
 			sold = true
 	if sold:
 		OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
+		showChange(amount_sold)
 
 func hasBarterItems():
 	for item in InventoryGlobals.INVENTORY:
 		if item is ResStackItem and item.BARTER_ITEM: return true
+
+func showChange(amount: int):
+	var sold_label: Label = Label.new()
+	sold_label.text = str(amount)
+	sold_label.theme = preload("res://design/OutlinedLabel.tres")
+	if amount > 0:
+		sold_label.modulate = Color.GREEN_YELLOW
+	else:
+		sold_label.modulate = Color.ORANGE_RED
+	currency.add_child(sold_label)
+	#sold_label.global_position = Vector2.ZERO
+	var tween = create_tween().tween_property(sold_label, 'global_position', sold_label.global_position+Vector2(0, -8), 1.5)
+	var opacity_tween = create_tween().tween_property(sold_label, 'modulate', Color.TRANSPARENT, 1.0)
+	tween.finished.connect(sold_label.queue_free)

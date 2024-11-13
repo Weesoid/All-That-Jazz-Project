@@ -12,6 +12,9 @@ var RECIPES: Dictionary = {
 
 signal added_item_to_inventory
 
+func loadItemResource(resource_name: String)-> ResItem:
+	return load("res://resources/items/"+resource_name+".tres")
+
 func addItem(item_name: String, count=1):
 	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item '%s' not found!" % item_name)
