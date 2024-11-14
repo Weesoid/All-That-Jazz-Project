@@ -24,7 +24,7 @@ func followUpCast(ability: ResAbility):
 	if ability.TARGET_TYPE == ability.TargetType.SINGLE and ability.TARGET_GROUP == ability.TargetGroup.ENEMIES and CombatGlobals.getCombatScene().active_combatant != afflicted and !CombatGlobals.isSameCombatantType(afflicted, CombatGlobals.getCombatScene().target_combatant):
 		status_effect.STATUS_SCRIPT.animate(afflicted, CombatGlobals.getCombatScene().target_combatant)
 
-func checkTriggers(afflicted: ResCombatant, body: CombatantScene)-> bool:
+func checkTriggers(afflicted: ResCombatant, body)-> bool:
 	if afflicted.SCENE == self:
 		return false
 	

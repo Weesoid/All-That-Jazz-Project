@@ -19,6 +19,11 @@ func loadMembers(set_focus:bool=true):
 	for member in PlayerGlobals.TEAM:
 		var member_button = createMemberButton(member)
 		member_container.add_child(member_button)
+		if set_focus:
+			member_button.grab_focus()
+			selected_combatant = member
+			loadMemberInfo(selected_combatant)
+			set_focus = false
 
 func createMemberButton(member: ResCombatant):
 	var button = OverworldGlobals.createCustomButton()

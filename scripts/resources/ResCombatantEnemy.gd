@@ -24,13 +24,13 @@ func act():
 
 func applyStatusEffects():
 	for effect in LINGERING_STATUS_EFFECTS:
+		print(effect)
 		CombatGlobals.addStatusEffect(self, effect)
 
 func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 	return AI_PACKAGE.selectTarget(combatant_array)
 
 func getExperience():
-	var out = 0
 	if BASE_STAT_VALUES.is_empty(): 
 		BASE_STAT_VALUES = STAT_VALUES
 	var gain = (BASE_STAT_VALUES["health"] * 0.2) + (BASE_STAT_VALUES["brawn"] * 100) + (BASE_STAT_VALUES["grit"] * 100) + BASE_STAT_VALUES["handling"] + (BASE_STAT_VALUES["hustle"] * 2) + ((BASE_STAT_VALUES["crit"] * BASE_STAT_VALUES["crit_dmg"]) * 100) + (BASE_STAT_VALUES["heal_mult"] * 2) + (BASE_STAT_VALUES["resist"] * 100)

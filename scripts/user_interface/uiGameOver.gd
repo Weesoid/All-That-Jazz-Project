@@ -40,7 +40,7 @@ func _on_yes_pressed():
 func _on_no_pressed():
 	get_tree().quit()
 
-func _process(delta):
+func _process(_delta):
 	if PlayerGlobals.CURRENCY > 0:
 		cash.text = str(int(current_currency))
 	else:

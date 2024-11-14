@@ -67,7 +67,7 @@ func _physics_process(_delta):
 	BODY.move_and_slide()
 	if PATROL :
 		patrol()
-	if COMBAT_SWITCH:
+	if COMBAT_SWITCH and STATE != 3:
 		executeCollisionAction()
 	
 #	if OverworldGlobals.isPlayerCheating():
@@ -100,7 +100,7 @@ func patrol():
 			chaseMode()
 			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
-	if !NAV_AGENT.is_target_reachable():
+	if !NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer():
 		soothePatrolMode()
 
 func alertPatrolMode():
@@ -118,11 +118,11 @@ func soothePatrolMode():
 	PATROL_BUBBLE.play_backwards("Soothe")
 
 func chaseMode():
+	if PATROL_BUBBLE.current_animation != 'Loop':
+		OverworldGlobals.playSound2D(global_position, "413641__djlprojects__metal-gear-solid-inspired-alert-surprise-sfx.ogg")
+		PATROL_BUBBLE.play("Loop")
 	MOVE_SPEED = BASE_MOVE_SPEED * CHASE_SPEED_MULTIPLIER
 	STATE = 2
-	if PATROL_BUBBLE.current_animation != 'Loop':
-		OverworldGlobals.playSound2D(global_position, "387536__soundwarf__alarmexpdisto.ogg")
-		PATROL_BUBBLE.play("Loop")
 	updatePath()
 
 func stunMode(alert_others:bool=false):
@@ -192,6 +192,7 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
+			BODY.get_node("CollisionShape2D").set_deferred('disabled', true)
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
@@ -203,6 +204,8 @@ func updatePath(immediate:bool=false):
 			updatePath()
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 			COMBAT_SWITCH = true
+			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)
+			ANIMATOR.play("RESET")
 
 func immobolize(disabled_los:bool=true):
 	COMBAT_SWITCH = false
@@ -217,7 +220,7 @@ func moveRandom()-> Vector2:
 	return Vector2(randf_range(pos.x, end.x), randf_range(pos.y, end.y))
 
 func patrolToPosition(target_position: Vector2):
-	if targetReached():
+	if targetReached() and STATE != 2:
 		BODY.velocity = Vector2.ZERO
 	elif !NAV_AGENT.get_current_navigation_path().is_empty():
 		BODY.velocity = target_position * MOVE_SPEED

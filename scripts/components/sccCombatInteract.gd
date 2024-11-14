@@ -11,6 +11,7 @@ func _ready():
 
 func interact():
 	OverworldGlobals.changeToCombat(patroller_name)
+	await OverworldGlobals.combat_enetered
 	queue_free()
 
 func _exit_tree():

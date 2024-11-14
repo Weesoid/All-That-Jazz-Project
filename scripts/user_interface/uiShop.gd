@@ -240,5 +240,5 @@ func showChange(amount: int):
 	currency.add_child(sold_label)
 	#sold_label.global_position = Vector2.ZERO
 	var tween = create_tween().tween_property(sold_label, 'global_position', sold_label.global_position+Vector2(0, -8), 1.5)
-	var opacity_tween = create_tween().tween_property(sold_label, 'modulate', Color.TRANSPARENT, 1.0)
+	#var opacity_tween = create_tween().tween_property(sold_label, 'modulate', Color.TRANSPARENT, 1.0)
 	tween.finished.connect(sold_label.queue_free)

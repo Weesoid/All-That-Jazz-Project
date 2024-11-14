@@ -357,6 +357,7 @@ func _on_escape_pressed():
 		for combatant in getCombatantGroup('team'):
 			CombatGlobals.addStatusEffect(combatant, 'Dazed', true, true)
 		bonus_escape_chance += 0.1
+		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		confirm.emit()
 
 func _on_escape_focus_entered():
@@ -851,7 +852,6 @@ func concludeCombat(results: int):
 	target_index = 0
 	var morale_bonus = 1
 	var loot_bonus = 1
-	var all_bonuses = ''
 	var morale_before = 0
 	
 	if results == 1:
@@ -879,7 +879,8 @@ func concludeCombat(results: int):
 		add_child(bc_ui)
 		await bc_ui.done
 		bc_ui.queue_free()
-	# else: escape sfx
+	else:
+		OverworldGlobals.playSound("res://audio/sounds/51_Flee_02.ogg")
 	
 	transition_scene.visible = true
 	transition.play('In')
@@ -952,7 +953,9 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 func moveOnslaught(direction: int):
 	if (direction==1 and onslaught_combatant.SCENE.global_position.x+32 > 48) or (direction==-1 and onslaught_combatant.SCENE.global_position.x-32 < -48):
 		return
-	
+	else:
+		randomize()
+		OverworldGlobals.playSound("res://audio/sounds/12_human_jump_%s.ogg" % str(randi_range(1,3)))
 	tween_running = true
 	var pos_tween = create_tween().set_trans(Tween.TRANS_BOUNCE)
 	var move = 32 * direction
@@ -999,9 +1002,9 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	var tween = CombatGlobals.getCombatScene().create_tween()
 	if fade_in:
-		tween.tween_property(active_combatant.SCENE, 'modulate', Color(Color.WHITE, 1.0), duration)
+		tween.tween_property(target, 'modulate', Color(Color.WHITE, 1.0), duration)
 	else:
-		tween.tween_property(active_combatant.SCENE, 'modulate', Color(Color.WHITE, 0.0), duration)
+		tween.tween_property(target, 'modulate', Color(Color.WHITE, 0.0), duration)
 	await tween.finished
 
 func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:

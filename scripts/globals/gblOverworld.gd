@@ -332,6 +332,7 @@ func loadFollowers():
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 	var player = AudioStreamPlayer.new()
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	player.connect("finished", player.queue_free)
 	player.pitch_scale = pitch
 	if filename.begins_with('res://'):
@@ -379,7 +380,7 @@ func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=fal
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, combat_event_name: String=''):
+func changeToCombat(entity_name: String, data: Dictionary={}):
 	# Check validity
 	if get_parent().has_node('CombatScene'):
 		await getCurrentMap().get_node('CombatScene').tree_exited
@@ -395,6 +396,13 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	await zoomCamera(Vector2(3.0,3.0), 0.0, true)
 	setPlayerInput(false)
 	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
+	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
+		combat_bubble.animation = 'Show_Surprised'
+		playSound("res://audio/sounds/39_Absorb_04.ogg")
+	elif (getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE == 2) or !getEntity(entity_name).has_node('NPCPatrolComponent'):
+		playSound("res://audio/sounds/55_Encounter_02.ogg")
+	elif data.keys().has('combat_bubble_anim'):
+		combat_bubble.animation = data['combat_bubble_anim']
 	getEntity(entity_name).add_child(combat_bubble)
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
@@ -412,8 +420,8 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 			randomize()
 			duped_combatant.SPAWN_ON_DEATH = getRandomTameable().pick_random().convertToEnemy('Feral')
 		combat_scene.COMBATANTS.append(duped_combatant)
-	if combat_event_name != '':
-		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % combat_event_name)
+	if data.keys().has('combat_event'):
+		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
@@ -424,11 +432,12 @@ func changeToCombat(entity_name: String, combat_event_name: String=''):
 	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
 	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
 	incrementDogpile()
-	await combat_bubble.tree_exited
+	await combat_bubble.animator.animation_finished
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
+	combat_bubble.queue_free()
 	combat_enetered.emit()
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()

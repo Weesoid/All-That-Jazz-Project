@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bn14wk28wyo6a"]
+[gd_scene load_steps=8 format=3 uid="uid://bn14wk28wyo6a"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatStartedBubble.gd" id="1_v5cxy"]
-[ext_resource type="Texture2D" uid="uid://c840dg08gd2sw" path="res://images/animations/patrol_status.png" id="2_hph1f"]
+[ext_resource type="Texture2D" uid="uid://blk352vnpvxv4" path="res://images/animations/combat_bubble.png" id="2_h08ep"]
 [ext_resource type="AudioStream" uid="uid://bc84cr5ehp78b" path="res://audio/sounds/271945__rodincoil__stingers-and-stabs-001.ogg" id="3_gm3r1"]
 
 [sub_resource type="Animation" id="Animation_64vnf"]
@@ -54,6 +54,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_w0idu"]
 resource_name = "Show"
@@ -68,7 +80,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.4, 0.6, 0.8, 1, 1.2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [10, 10, 11, 10, 11, 10]
+"values": [0, 1, 0, 1, 0, 1]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -110,10 +122,78 @@ tracks/3/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_v7up1"]
+resource_name = "Show_Surprised"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(2, 2), Vector2(1, 1), Vector2(1.25, 1.25), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer2D")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_gm3r1")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/2/use_blend = true
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:rotation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.139626, 0.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cqyvp"]
 _data = {
 "RESET": SubResource("Animation_64vnf"),
-"Show": SubResource("Animation_w0idu")
+"Show": SubResource("Animation_w0idu"),
+"Show_Surprised": SubResource("Animation_v7up1")
 }
 
 [node name="CombatBubble" type="Node2D"]
@@ -123,9 +203,8 @@ script = ExtResource("1_v5cxy")
 [node name="PatrolBubble" type="Sprite2D" parent="."]
 modulate = Color(1, 0, 0.0156863, 1)
 position = Vector2(0, -44)
-texture = ExtResource("2_hph1f")
+texture = ExtResource("2_h08ep")
 hframes = 5
-vframes = 3
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PatrolBubble"]
 

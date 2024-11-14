@@ -30,6 +30,7 @@ func updatePath(immediate:bool=false):
 			if !['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left'].has(ANIMATOR.current_animation):
 				ANIMATOR.animation_finished.emit()
 			
+			BODY.get_node("CollisionShape2D").set_deferred('disabled', true)
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
@@ -42,6 +43,8 @@ func updatePath(immediate:bool=false):
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
 			COMBAT_SWITCH = true
 			shoot_ready = true
+			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)
+			ANIMATOR.play("RESET")
 
 func targetReached():
 	if STATE == 2:
