@@ -18,3 +18,4 @@ class_name PlayerSaveData
 @export var UNLOCKED_ABILITIES: Dictionary
 @export var ADDED_ABILITIES: Dictionary
 @export var MAX_PARTY_LEVEL: int
+@export var KNOWN_POWERS: Array

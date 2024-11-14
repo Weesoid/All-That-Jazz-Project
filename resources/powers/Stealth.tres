@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPower" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResPower" load_steps=4 format=3 uid="uid://6g8ewkl5xa4a"]
 
 [ext_resource type="Texture2D" uid="uid://daj63f5hbitmd" path="res://images/sprites/power1.png" id="1_db1p2"]
 [ext_resource type="Script" path="res://scripts/resources/ResPower.gd" id="1_nguqf"]
@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_nguqf")
+INPUT_MAP = "aas"
 NAME = "Phase Shift"
 DESCRIPTION = "Enter the void and become invisible to the naked eye."
 ICON = ExtResource("1_db1p2")

@@ -392,6 +392,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		return
 	#getComponent(entity_name, 'NPCPatrolComponent').PATROL_BUBBLE.play('Fight')
 	# Enter combat
+	getPlayer().resetStates()
 	OverworldGlobals.getPlayer().setUIVisibility(false)
 	await zoomCamera(Vector2(3.0,3.0), 0.0, true)
 	setPlayerInput(false)

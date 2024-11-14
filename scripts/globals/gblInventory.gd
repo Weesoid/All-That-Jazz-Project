@@ -1,7 +1,6 @@
 extends Node
 
 var INVENTORY: Array[ResItem] = []
-var KNOWN_POWERS: Array[ResPower] = [preload("res://resources/powers/Anchor.tres"), preload("res://resources/powers/Stealth.tres")]
 var RECIPES: Dictionary = {
 	# In-game name -> .tres name
 	['Scrap Salvage', null, null]: 'Arrow',
@@ -245,13 +244,11 @@ func getItemType(item: ResItem)-> float:
 func saveData(save_data: Array):
 	var data = InventorySaveData.new()
 	data.INVENTORY = INVENTORY
-	data.KNOWN_POWERS = KNOWN_POWERS
 	saveItemData(data)
 	save_data.append(data)
 
 func loadData(save_data: InventorySaveData):
 	INVENTORY = save_data.INVENTORY
-	KNOWN_POWERS = save_data.KNOWN_POWERS
 	loadItemData(save_data)
 
 func saveItemData(inv_save_data: InventorySaveData):

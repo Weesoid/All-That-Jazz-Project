@@ -61,12 +61,12 @@ func getRawDrops():
 				drops[item] += randi_range(1, DROP_POOL[item].y)
 			else:
 				drops[item] = randi_range(1, DROP_POOL[item].y)
+	drops.merge(getBarterDrops())
 	
 	return drops
 
 func getBarterDrops():
 	var out = ceil(getExperience() / 2)
-	print('out = ', out)
 	var denominations = [20, 50, 100, 500, 1000]
 	var change = {}
 	

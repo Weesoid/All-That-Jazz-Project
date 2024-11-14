@@ -7,6 +7,7 @@ var FOLLOWERS: Array[NPCFollower] = []
 var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoomB.tscn', 'res://scenes/maps/TestRoom/TestRoomA.tscn']
 var CLEARED_MAPS = []
 var POWER: GDScript
+var KNOWN_POWERS: Array = [load("res://resources/powers/Stealth.tres")]
 var EQUIPPED_ARROW: ResProjectileAmmo
 var EQUIPPED_BLESSING: ResBlessing
 var CURRENCY = 100
@@ -132,9 +133,14 @@ func addAbility(combatant, ability):
 	else:
 		ADDED_ABILITIES[combatant] = []
 		ADDED_ABILITIES[combatant].append(ability)
-	print(ADDED_ABILITIES)
 	OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.NAME, ability.NAME])
 	loadAddedAbilities()
+
+func addPower(power_file_name: String):
+	if FileAccess.file_exists("res://resources/powers/%s.tres" % power_file_name):
+		var power = load("res://resources/powers/%s.tres" % power_file_name)
+		KNOWN_POWERS.append(power)
+		OverworldGlobals.showPlayerPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.NAME)
 
 func loadAddedAbilities():
 	for member in TEAM:
@@ -239,6 +245,7 @@ func saveData(save_data: Array):
 	data.PARTY_LEVEL = PARTY_LEVEL
 	data.CURRENT_EXP = CURRENT_EXP
 	data.CLEARED_MAPS = CLEARED_MAPS
+	data.KNOWN_POWERS = KNOWN_POWERS
 #	data.overworld_stats['stamina'] = stamina
 #	data.overworld_stats['bow_max_draw']= bow_max_draw
 #	data.overworld_stats['walk_speed'] = walk_speed
@@ -294,6 +301,7 @@ func loadData(save_data: PlayerSaveData):
 	UNLOCKED_ABILITIES = save_data.UNLOCKED_ABILITIES
 	ADDED_ABILITIES = save_data.ADDED_ABILITIES
 	MAX_PARTY_LEVEL = save_data.MAX_PARTY_LEVEL
+	KNOWN_POWERS = save_data.KNOWN_POWERS
 	#EQUIPPED_CHARM.equip(null)
 	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
 	

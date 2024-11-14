@@ -16,10 +16,14 @@ class_name PlayerScene
 @onready var prompt = $PlayerCamera/PlayerPrompt
 @onready var audio_player = $ScriptAudioPlayer
 @onready var cinematic_bars = $PlayerCamera/CinematicBars
+@onready var power_input_container = $PlayerCamera/PowerInputs
 
+const POWER_DOWN = preload("res://images/sprites/power_down.png")
+const POWER_UP = preload("res://images/sprites/power_up.png")
+const POWER_LEFT = preload("res://images/sprites/power_left.png")
+const POWER_RIGHT = preload("res://images/sprites/power_right.png")
 var can_move = true
 var direction = Vector2()
-var channeling_power = false
 var bow_mode = false
 var bow_draw_strength = 0
 var SPEED = 100.0
@@ -27,6 +31,9 @@ var stamina_regen = true
 var play_once = true
 var sprinting = false
 var hiding = false
+var channeling_power = false
+var power_listening = false
+var power_inputs = ''
 var ANIMATION_SPEED = 0.0
 
 func _ready():
@@ -84,8 +91,11 @@ func _physics_process(delta):
 
 func resetStates():
 	undrawBowAnimation()
+	sprinting = false
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	ANIMATION_SPEED = 0.0
+	power_inputs = ''
+	cancelPower()
 	Input.action_release("ui_bow_draw")
 
 func _unhandled_input(_event: InputEvent):
@@ -99,6 +109,20 @@ func _unhandled_input(_event: InputEvent):
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
+	if !channeling_power and power_listening and !OverworldGlobals.inMenu() and !can_move and power_input_container.get_child_count() < 3:
+		if Input.is_action_just_pressed('ui_left'):
+			power_inputs += 'a'
+			showPowerInput(POWER_LEFT)
+		elif Input.is_action_just_pressed('ui_right'):
+			power_inputs += 'd'
+			showPowerInput(POWER_RIGHT)
+		elif Input.is_action_just_pressed('ui_up'):
+			power_inputs += 'w'
+			showPowerInput(POWER_UP)
+		elif Input.is_action_just_pressed('ui_down'):
+			power_inputs += 's'
+			showPowerInput(POWER_DOWN)
+		print(power_inputs)
 	
 	if SettingsGlobals.doSprint():
 		sprinting = true
@@ -109,17 +133,56 @@ func _unhandled_input(_event: InputEvent):
 		if bow_draw_strength == 0: 
 			bow_mode = !bow_mode
 	
-	if Input.is_action_just_pressed("ui_gambit") and canUsePower():
-		if PlayerGlobals.POWER != null:
-			PlayerGlobals.POWER.executePower(self)
-		else:
-			prompt.showPrompt("No [color=gray]Gambit[/color] binded.")
+	if Input.is_action_pressed("ui_gambit") and canUsePower() and !power_listening and can_move:
+		toggleVoidAnimation(true)
+		sprinting = false
+		can_move = false
+		power_listening = true
+	elif (Input.is_action_just_released("ui_gambit") and canUsePower() and power_listening and !can_move) or (power_inputs.length() >= 3):
+		executePower()
+		cancelPower()
 	
 	if Input.is_action_pressed("ui_cheat_mode"):
 		if !has_node('DebugComponent'):
 			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 		else:
 			get_node('DebugComponent').queue_free()
+
+func showPowerInput(texture:CompressedTexture2D):
+	OverworldGlobals.playSound("res://audio/sounds/52_Dive_02.ogg")
+	var icon = TextureRect.new()
+	icon.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	icon.grow_vertical = Control.GROW_DIRECTION_BOTH
+	icon.set_anchors_preset(Control.PRESET_CENTER)
+	icon.texture = texture
+	power_input_container.add_child(icon)
+	var tween = create_tween().bind_node(icon).set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(icon, 'scale', Vector2(1.25,1.25), 0.1)
+	tween.tween_property(icon, 'scale', Vector2(1.0,1.0), 0.25)
+	tween.tween_callback(tween.kill)
+	tween.tween_callback(icon.queue_free)
+
+func executePower():
+	for power in PlayerGlobals.KNOWN_POWERS:
+		if power.INPUT_MAP == power_inputs and power.INPUT_MAP != null:
+			power.POWER_SCRIPT.executePower(self)
+			return
+
+func cancelPower():
+	Input.action_release("ui_gambit")
+	toggleVoidAnimation(false)
+	power_listening = false
+	power_inputs = ''
+	for child in power_input_container.get_children():
+		var tween = create_tween().bind_node(child).set_trans(Tween.TRANS_BOUNCE).set_parallel(true)
+		tween.tween_property(child, 'modulate', Color.TRANSPARENT, 0.15)
+		tween.tween_property(child, 'scale', Vector2(1.5,1.5), 0.25)
+		tween.tween_callback(child.queue_free)
+	await get_tree().create_timer(0.15).timeout
+	if OverworldGlobals.isPlayerAlive():
+		can_move = true
+		#await tween.finished
+		#child.queue_free()
 
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
@@ -179,6 +242,7 @@ func drawBow():
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
+	
 	
 	if Input.is_action_just_released("ui_bow_draw") and velocity == Vector2.ZERO:
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']: 
