@@ -3,7 +3,7 @@ class_name AnimationPulse
 
 @onready var sprite = $Sprite2D
 
-func showAnimation(radius:float, duration:float=0.4, color:Color=Color.RED):
+func showAnimation(radius:float, duration:float=0.4, color:Color=Color.WHITE):
 #	var color: Color
 #	match mode:
 #		0: color=Color.DARK_GRAY

@@ -7,6 +7,9 @@ var current_index = -1
 
 func _input(event):
 	var arrows = InventoryGlobals.INVENTORY.filter(func(item): return item is ResProjectileAmmo)
+	if arrows.is_empty():
+		return
+	
 	if Input.is_action_just_pressed("ui_select_arrow"):
 		if PlayerGlobals.EQUIPPED_ARROW != null:
 			updateIcon(PlayerGlobals.EQUIPPED_ARROW.ICON, PlayerGlobals.EQUIPPED_ARROW.NAME)

@@ -1,13 +1,18 @@
 extends Node2D
 
+@onready var container = $VBoxContainer
 @onready var fps = $VBoxContainer/FPS
 @onready var coordinates = $VBoxContainer/Coordinates
 @onready var playtime_info = $VBoxContainer/PlaytimeInfo
 @onready var equipped_charm = $VBoxContainer/EquippedCharm
 @onready var dogpile = $VBoxContainer/Dogpile
 @onready var reward_bank = $VBoxContainer/RewardBank
+@onready var save_name = $VBoxContainer/SaveName
 
 var clipboard = DisplayServer.clipboard_get()
+
+func _ready():
+	container.hide()
 
 func _process(_delta):
 	fps.text = str(Engine.get_frames_per_second())
@@ -19,13 +24,17 @@ func _process(_delta):
 	else:
 		equipped_charm.text = 'No active blessing.'
 	reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
+	save_name.text = 'Save Name: ' + str(PlayerGlobals.SAVE_NAME)
 
 func _unhandled_input(_event):
+	if Input.is_action_just_pressed("ui_toggle_debug"):
+		container.visible = !container.visible
+	
 	if Input.is_action_just_pressed("ui_quick_save"):
-		SaveLoadGlobals.saveGame('Save Debug')
+		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 	elif Input.is_action_just_pressed("ui_quick_load"):
-		SaveLoadGlobals.loadGame(load("res://saves/Save Debug.tres"))
+		SaveLoadGlobals.loadGame(load("res://saves/%s.tres") % PlayerGlobals.SAVE_NAME)
 	elif Input.is_action_just_pressed("ui_debug_copy_coords"):
-		var copied = coordinates.text.replace('(','').replace(')','')
+		var copied = coordinates.text.replace('(','').replace(')','').replace(' ','')
 		OverworldGlobals.showPlayerPrompt('Copied coordinates to clipboard! [color=yellow]%s[/color]' % copied)
 		DisplayServer.clipboard_set(copied)

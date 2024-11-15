@@ -8,13 +8,10 @@ var current_playtime: float
 signal done_loading
 signal done_saving
 
-func _ready():
-	session_start = Time.get_unix_time_from_system()
-
 func getTotalPlaytime()-> String:
 	return Time.get_time_string_from_unix_time(int(Time.get_unix_time_from_system() - session_start))
 
-func saveGame(save_name: String=default_save_name, save_current_map:bool=true):
+func saveGame(save_name: String, save_current_map:bool=true):
 	var saved_game: SavedGame = SavedGame.new()
 	var save_data = []
 	

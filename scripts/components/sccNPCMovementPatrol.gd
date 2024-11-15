@@ -67,7 +67,7 @@ func _physics_process(_delta):
 	BODY.move_and_slide()
 	if PATROL :
 		patrol()
-	if COMBAT_SWITCH and STATE != 3:
+	if COMBAT_SWITCH and STATE != 3 and ANIMATOR.current_animation != 'KO':
 		executeCollisionAction()
 	
 #	if OverworldGlobals.isPlayerCheating():
@@ -80,7 +80,7 @@ func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() is PlayerScene and ANIMATOR.current_animation != 'KO':
+	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
 		immobolize()
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
@@ -100,8 +100,8 @@ func patrol():
 			chaseMode()
 			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
-	if !NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer():
-		soothePatrolMode()
+	if (!NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and OverworldGlobals.getCurrentMap().has_node('Player') and BODY.global_position.distance_to(OverworldGlobals.getPlayer().global_position) > 300.0):
+		updateMode(1)
 
 func alertPatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * ALERTED_SPEED_MULTIPLIER

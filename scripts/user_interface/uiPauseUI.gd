@@ -57,7 +57,7 @@ func _on_quests_pressed():
 	loadUserInterface("res://scenes/user_interface/Quest.tscn")
 
 func _on_quit_pressed():
-	get_tree().quit()
+	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")
 
 func loadUserInterface(path):
 	var ui = load(path).instantiate()
@@ -65,7 +65,7 @@ func loadUserInterface(path):
 	add_child(ui)
 
 func _on_save_pressed():
-	SaveLoadGlobals.saveGame()
+	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 
 func disableButtons():
 	quit.hide()

@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://iebdjevflk78"]
+[gd_scene load_steps=4 format=3 uid="uid://iebdjevflk78"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiInventoryUI.gd" id="1_qwj2w"]
+[ext_resource type="StyleBox" uid="uid://f2ekr76rfqoq" path="res://design/PanelNoBottom.tres" id="2_e25q6"]
+[ext_resource type="StyleBox" uid="uid://dp2nq8lcxrsfc" path="res://design/PanelNoTop.tres" id="3_phi3h"]
 
 [node name="uiInventory" type="Control"]
 layout_mode = 3
@@ -20,6 +22,7 @@ offset_left = -144.0
 offset_top = -132.0
 offset_right = 144.0
 offset_bottom = 52.0
+theme_override_styles/panel = ExtResource("2_e25q6")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer2"]
 layout_mode = 2
@@ -54,10 +57,11 @@ scroll_active = false
 
 [node name="ItemInfo" type="PanelContainer" parent="Infomration"]
 layout_mode = 2
-offset_left = -152.0
-offset_top = 60.0
-offset_right = 152.0
-offset_bottom = 156.0
+offset_left = -144.0
+offset_top = 56.0
+offset_right = 144.0
+offset_bottom = 152.0
+theme_override_styles/panel = ExtResource("3_phi3h")
 
 [node name="DescriptionLabel2" type="RichTextLabel" parent="Infomration/ItemInfo"]
 layout_mode = 2

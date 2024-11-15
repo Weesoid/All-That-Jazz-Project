@@ -42,6 +42,6 @@ func block(bonus_grit: float=1.0):
 		CombatGlobals.resetStat(combatant_resource, 'block')
 		block_timer.start()
 
-func _unhandled_input(_event):
+func _input(_event):
 	if Input.is_action_just_pressed('ui_accept'):
 		block()

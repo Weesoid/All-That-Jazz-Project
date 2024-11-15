@@ -182,24 +182,4 @@ PATROL_AREA = NodePath("../../Area2D")
 [node name="CombatantSquadComponent" parent="Patroller" index="2"]
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
 
-[node name="Patroller2" parent="." instance=ExtResource("24_jbof6")]
-position = Vector2(8, -216)
-
-[node name="NPCPatrolComponent" parent="Patroller2" index="1" node_paths=PackedStringArray("PATROL_AREA")]
-PATROL_AREA = NodePath("../../Area2D")
-
-[node name="CombatantSquadComponent" parent="Patroller2" index="2"]
-ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
-
-[node name="Patroller3" parent="." instance=ExtResource("24_jbof6")]
-position = Vector2(-32, -264)
-
-[node name="NPCPatrolComponent" parent="Patroller3" index="1" node_paths=PackedStringArray("PATROL_AREA")]
-PATROL_AREA = NodePath("../../Area2D")
-
-[node name="CombatantSquadComponent" parent="Patroller3" index="2"]
-ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_iby86")])
-
 [editable path="Patroller"]
-[editable path="Patroller2"]
-[editable path="Patroller3"]

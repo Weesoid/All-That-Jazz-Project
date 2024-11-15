@@ -1,6 +1,7 @@
 # Rename this to gblPlayerData
 extends Node
 
+var SAVE_NAME
 var TEAM: Array[ResPlayerCombatant]
 var TEAM_FORMATION: Array[ResCombatant]
 var FOLLOWERS: Array[NPCFollower] = []
@@ -279,6 +280,7 @@ func saveData(save_data: Array):
 	save_data.append(data)
 
 func loadData(save_data: PlayerSaveData):
+	#SAVE_NAME = save_data.
 	OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.clear()
 	TEAM = save_data.TEAM
 	FOLLOWERS = save_data.FOLLOWERS

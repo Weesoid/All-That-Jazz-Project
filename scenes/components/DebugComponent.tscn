@@ -47,3 +47,8 @@ text = "Reward Bank: {}"
 layout_mode = 2
 theme = ExtResource("2_pc8b0")
 text = "Spotted: false"
+
+[node name="SaveName" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_pc8b0")
+text = "Save Name: Debug"

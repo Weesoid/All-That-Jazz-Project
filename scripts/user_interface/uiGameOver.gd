@@ -15,7 +15,7 @@ func _ready():
 	var reduced_currency = randf_range(-0.2, -0.5) * PlayerGlobals.CURRENCY
 	PlayerGlobals.addExperience(reduced_exp)
 	PlayerGlobals.addCurrency(reduced_currency)
-	SaveLoadGlobals.saveGame('Save', false)
+	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME, false)
 	
 	var tween = create_tween()
 	var tween_b = create_tween().set_trans(Tween.TRANS_EXPO)
@@ -30,8 +30,8 @@ func _ready():
 	OverworldGlobals.setMenuFocus(buttons)
 
 func _on_yes_pressed():
-	if FileAccess.file_exists("res://saves/Save.tres"):
-		var saved_game: SavedGame = load("res://saves/Save.tres")
+	if FileAccess.file_exists("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME):
+		var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
 		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true, true)
 		PlayerGlobals.healCombatants()
 		PlayerGlobals.overworld_stats['stamina'] = 100.0

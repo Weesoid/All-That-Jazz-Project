@@ -647,6 +647,8 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	if weapon != null: weapon.useDurability()
 
 func updateDescription(ability: ResAbility, text: String=''):
+	
+	
 	if ability != null:
 		secondary_description.text = ability.getRichDescription()
 	elif text != '':

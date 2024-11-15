@@ -14,7 +14,7 @@ signal combat_exited
 #	print_orphan_nodes()
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	dogpile_timer.name = 'DogpileTimer'
 	dogpile_timer.connect('timeout', resetDogpile)
 	add_child(dogpile_timer)
@@ -35,7 +35,6 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
-	print('Setting input to ', enabled)
 	getPlayer().can_move = enabled
 	getPlayer().set_process_input(enabled)
 	
@@ -57,6 +56,7 @@ func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
 		getPlayer().hide()
 
 func inDialogue() -> bool:
+	print('y')
 	return getCurrentMap().has_node('Balloon')
 
 #********************************************************************************
@@ -88,7 +88,6 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=35
 # GENERAL UTILITY
 #********************************************************************************
 func getPlayer()-> PlayerScene:
-	#return null
 	return get_tree().current_scene.get_node('Player')
 
 func getEntity(entity_name: String):
@@ -246,7 +245,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	if OverworldGlobals.getCurrentMap().SAFE:
 		OverworldGlobals.loadFollowers()
 	if save:
-		SaveLoadGlobals.saveGame()
+		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)

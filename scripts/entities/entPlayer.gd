@@ -41,6 +41,9 @@ func _ready():
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	animation_tree.active = true
 	PlayerGlobals.loadSquad()
+	SaveLoadGlobals.session_start = Time.get_unix_time_from_system()
+	if SettingsGlobals.cheat_mode:
+		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -69,7 +72,7 @@ func _physics_process(delta):
 	# Bow / sprint processes
 	if PlayerGlobals.overworld_stats['stamina'] <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
 		Input.action_press("ui_bow")
-	if sprinting and PlayerGlobals.overworld_stats['stamina'] > 0.0 and bow_draw_strength == 0:
+	if sprinting and PlayerGlobals.overworld_stats['stamina'] > 0.0 and bow_draw_strength == 0 and can_move:
 		SPEED = PlayerGlobals.overworld_stats['sprint_speed']
 		ANIMATION_SPEED = 1.0
 		if velocity != Vector2.ZERO: PlayerGlobals.overworld_stats['stamina'] -= PlayerGlobals.overworld_stats['sprint_drain']
@@ -94,15 +97,6 @@ func _physics_process(delta):
 	OverworldGlobals.follow_array.pop_back()
 
 func _input(_event):
-	# Interaction handling
-	if Input.is_action_just_pressed("ui_select") and !channeling_power and !OverworldGlobals.inMenu() and can_move:
-		var interactables = interaction_detector.get_overlapping_areas()
-		if interactables.size() > 0:
-			velocity = Vector2.ZERO
-			undrawBowAnimation()
-			interactables[0].interact()
-			return
-	
 	# Power handling
 	if !channeling_power and power_listening and !can_move and power_input_container.get_child_count() < 3:
 		if Input.is_action_just_pressed('ui_left'):
@@ -143,8 +137,18 @@ func _input(_event):
 			get_node('DebugComponent').queue_free()
 
 func _unhandled_input(_event: InputEvent):
+	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
+	
+	# Interaction handling
+	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue():
+		var interactables = interaction_detector.get_overlapping_areas()
+		if interactables.size() > 0:
+			velocity = Vector2.ZERO
+			undrawBowAnimation()
+			interactables[0].interact()
+			return
 
 func showPowerInput(texture:CompressedTexture2D):
 	OverworldGlobals.playSound("res://audio/sounds/52_Dive_02.ogg")

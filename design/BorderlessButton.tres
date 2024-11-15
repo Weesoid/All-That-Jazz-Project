@@ -9,12 +9,7 @@ bg_color = Color(0, 0, 0, 0.607843)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tqrcs"]
 bg_color = Color(0, 0, 0, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
 border_color = Color(1, 1, 0, 1)
-border_blend = true
 expand_margin_left = 1.0
 expand_margin_top = 1.0
 expand_margin_right = 1.0
@@ -26,9 +21,7 @@ content_margin_top = 6.0
 content_margin_right = 6.0
 content_margin_bottom = 6.0
 bg_color = Color(0, 0, 0, 1)
-border_width_left = 6
 border_color = Color(1, 1, 1, 1)
-border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8c56x"]
 content_margin_left = 6.0
@@ -53,7 +46,7 @@ border_color = Color(1, 1, 1, 1)
 [resource]
 default_font_size = 8
 Button/colors/font_focus_color = Color(0.94902, 0.94902, 0, 1)
-Button/colors/font_hover_color = Color(0.94902, 0.94902, 1, 1)
+Button/colors/font_hover_color = Color(0.94902, 0.94902, 0, 1)
 Button/colors/font_pressed_color = Color(1, 1, 1, 1)
 Button/styles/disabled = SubResource("StyleBoxFlat_kt3ag")
 Button/styles/focus = SubResource("StyleBoxFlat_tqrcs")
