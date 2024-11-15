@@ -108,15 +108,13 @@ func _ready():
 		battle_music.play()
 	
 	for combatant in COMBATANTS:
-		tickStatusEffects(combatant)
-		tickStatusEffects(combatant, true)
+		tickStatusEffects(combatant, false, false)
+		tickStatusEffects(combatant, true, false)
 	await removeDeadCombatants(false)
 	
 	rollTurns()
 	setActiveCombatant(false)
-	print(active_combatant.STAT_VALUES['hustle'])
 	while active_combatant.STAT_VALUES['hustle'] < 0:
-		print(active_combatant.STAT_VALUES['hustle'])
 		setActiveCombatant(false)
 	
 	for button in action_panel.get_children():
@@ -134,6 +132,7 @@ func _ready():
 		writeTopLogMessage('Dogpile! (x%s)' % dogpile_count)
 
 func _process(_delta):
+	$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
 	turn_counter.text = str(turn_count)
 	round_counter.text = str(round_count)
 	match target_state:
@@ -250,10 +249,11 @@ func end_turn(combatant_act=true):
 	CombatGlobals.dialogue_signal.emit(turn_title)
 	
 	for combatant in COMBATANTS:
-		if combatant.isDead(): 
-			continue
+		if combatant.isDead(): continue
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
+		for effect in getTickOnTurnEffects(combatant):
+			if effect.duration == 1: effect.removeStatusEffect()
 		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
 	
@@ -308,6 +308,12 @@ func setActiveCombatant(tick_effect=true):
 	if tick_effect:
 		tickStatusEffects(active_combatant)
 		removeDeadCombatants()
+
+func getTickOnTurnEffects(combatant: ResCombatant):
+	var out = []
+	for effect in combatant.STATUS_EFFECTS:
+		if !effect.TICK_PER_TURN: out.append(effect)
+	return out
 
 func removeDeadCombatants(fading=true, is_valid_check=true):
 	if !isCombatValid() and is_valid_check: return
@@ -775,11 +781,11 @@ func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
 		while !combatant.STATUS_EFFECTS.is_empty():
 			combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
-func tickStatusEffects(combatant: ResCombatant, per_turn = false):
+func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true):
 	for effect in combatant.STATUS_EFFECTS:
 		if (per_turn and !effect.TICK_PER_TURN) or (!per_turn and effect.TICK_PER_TURN): 
 			continue
-		effect.tick()
+		effect.tick(update_duration)
 
 func refreshInstantCasts(combatant: ResCombatant):
 	for ability in combatant.ABILITY_SET:

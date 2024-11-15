@@ -1,8 +1,7 @@
 static func executePower(player: PlayerScene):
-	Input.action_release("ui_gambit")
-	if !OverworldGlobals.getCurrentMap().has_node("Anchor") and !player.channeling_power:
+	if !OverworldGlobals.getCurrentMap().has_node("Anchor") and !player.channeling_power and PlayerGlobals.overworld_stats['stamina']>= 15.0:
+		PlayerGlobals.overworld_stats['stamina']-= 15
 		player.channeling_power = true
-		#player.playCastAnimation()
 		var anchor: Node2D = load("res://scenes/power_attachments/Anchor.tscn").instantiate()
 		anchor.global_position = player.global_position
 		OverworldGlobals.getCurrentMap().add_child(anchor)
@@ -17,3 +16,5 @@ static func executePower(player: PlayerScene):
 			anchor.queue_free()
 		else:
 			player.prompt.showPrompt('Not enough [color=yellow]stamina[/color].')
+	else:
+		player.prompt.showPrompt('Not enough [color=yellow]stamina[/color].')

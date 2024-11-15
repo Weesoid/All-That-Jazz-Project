@@ -27,7 +27,7 @@ var direction = Vector2()
 var bow_mode = false
 var bow_draw_strength = 0
 var SPEED = 100.0
-var stamina_regen = true
+var stamina_regen = true # MIND THIS, PREFERABLY ONLY INVI CAN DISABLE/ENABLE STAMINA REGEN
 var play_once = true
 var sprinting = false
 var hiding = false
@@ -48,14 +48,16 @@ func _process(_delta):
 
 func _physics_process(delta):
 	animation_tree.advance(ANIMATION_SPEED * delta)
-	if bow_mode and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
+	# Bow
+	if bow_mode and is_processing_input():
 		drawBow()
 		ammo_count.show()
 		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
 	else:
 		ammo_count.hide()
 	
-	if can_move and !OverworldGlobals.inMenu():
+	# Movement inputs
+	if can_move and is_processing_input():
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -64,9 +66,9 @@ func _physics_process(delta):
 		velocity = direction * SPEED
 		move_and_slide()
 	
+	# Bow / sprint processes
 	if PlayerGlobals.overworld_stats['stamina'] <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
 		Input.action_press("ui_bow")
-	
 	if sprinting and PlayerGlobals.overworld_stats['stamina'] > 0.0 and bow_draw_strength == 0:
 		SPEED = PlayerGlobals.overworld_stats['sprint_speed']
 		ANIMATION_SPEED = 1.0
@@ -83,25 +85,16 @@ func _physics_process(delta):
 		SPEED = PlayerGlobals.overworld_stats['walk_speed']
 		ANIMATION_SPEED = 0.0
 	
+	# Ensure that stamina doesn't over regen
 	if PlayerGlobals.overworld_stats['stamina'] > 100.0:
 		PlayerGlobals.overworld_stats['stamina'] = 100.0
 	
+	# Follower points
 	OverworldGlobals.follow_array.push_front(global_position)
 	OverworldGlobals.follow_array.pop_back()
 
-func resetStates():
-	undrawBowAnimation()
-	sprinting = false
-	SPEED = PlayerGlobals.overworld_stats['walk_speed']
-	ANIMATION_SPEED = 0.0
-	power_inputs = ''
-	cancelPower()
-	Input.action_release("ui_bow_draw")
-
-func _unhandled_input(_event: InputEvent):
-	if Input.is_action_just_pressed("ui_show_menu"):
-		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
-	
+func _input(_event):
+	# Interaction handling
 	if Input.is_action_just_pressed("ui_select") and !channeling_power and !OverworldGlobals.inMenu() and can_move:
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
@@ -109,7 +102,9 @@ func _unhandled_input(_event: InputEvent):
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
-	if !channeling_power and power_listening and !OverworldGlobals.inMenu() and !can_move and power_input_container.get_child_count() < 3:
+	
+	# Power handling
+	if !channeling_power and power_listening and !can_move and power_input_container.get_child_count() < 3:
 		if Input.is_action_just_pressed('ui_left'):
 			power_inputs += 'a'
 			showPowerInput(POWER_LEFT)
@@ -122,17 +117,6 @@ func _unhandled_input(_event: InputEvent):
 		elif Input.is_action_just_pressed('ui_down'):
 			power_inputs += 's'
 			showPowerInput(POWER_DOWN)
-		print(power_inputs)
-	
-	if SettingsGlobals.doSprint():
-		sprinting = true
-	elif SettingsGlobals.stopSprint():
-		sprinting = false
-	
-	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
-		if bow_draw_strength == 0: 
-			bow_mode = !bow_mode
-	
 	if Input.is_action_pressed("ui_gambit") and canUsePower() and !power_listening and can_move:
 		toggleVoidAnimation(true)
 		sprinting = false
@@ -142,11 +126,25 @@ func _unhandled_input(_event: InputEvent):
 		executePower()
 		cancelPower()
 	
+	# Sprint/bow handling
+	if SettingsGlobals.doSprint():
+		sprinting = true
+	elif SettingsGlobals.stopSprint():
+		sprinting = false
+	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
+		if bow_draw_strength == 0: 
+			bow_mode = !bow_mode
+	
+	# Debug
 	if Input.is_action_pressed("ui_cheat_mode"):
 		if !has_node('DebugComponent'):
 			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 		else:
 			get_node('DebugComponent').queue_free()
+
+func _unhandled_input(_event: InputEvent):
+	if Input.is_action_just_pressed("ui_show_menu"):
+		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 
 func showPowerInput(texture:CompressedTexture2D):
 	OverworldGlobals.playSound("res://audio/sounds/52_Dive_02.ogg")
@@ -184,6 +182,15 @@ func cancelPower():
 		#await tween.finished
 		#child.queue_free()
 
+func resetStates():
+	undrawBowAnimation()
+	sprinting = false
+	SPEED = PlayerGlobals.overworld_stats['walk_speed']
+	ANIMATION_SPEED = 0.0
+	power_inputs = ''
+	cancelPower()
+	Input.action_release("ui_bow_draw")
+
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
@@ -214,7 +221,7 @@ func canUsePower():
 	return true
 
 func animateInteract():
-	if interaction_detector.get_overlapping_areas().size() > 0 and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and !channeling_power and can_move:
+	if interaction_detector.get_overlapping_areas().size() > 0 and is_processing_input() and !channeling_power and can_move:
 		interaction_prompt.visible = true
 		interaction_prompt_animator.play('Interact')
 	else:
@@ -305,7 +312,7 @@ func updateAnimationParameters():
 			animation_tree["parameters/conditions/cancel"] = true
 	
 	if bow_mode:
-		if Input.is_action_pressed('ui_bow_draw') and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu():
+		if Input.is_action_pressed('ui_bow_draw') and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and is_processing_input():
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false

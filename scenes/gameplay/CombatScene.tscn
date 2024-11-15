@@ -1407,6 +1407,15 @@ libraries = {
 "": SubResource("AnimationLibrary_fveyc")
 }
 
+[node name="Label" type="Label" parent="CombatCamera/Interface"]
+layout_mode = 0
+offset_left = -184.0
+offset_top = -69.0
+offset_right = -144.0
+offset_bottom = -59.0
+theme = ExtResource("7_56rvc")
+text = "60"
+
 [connection signal="timeout" from="TurnTimer" to="." method="_on_turn_timer_timeout"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Action" to="." method="getMoveAbilities"]

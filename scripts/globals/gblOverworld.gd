@@ -35,8 +35,9 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
+	print('Setting input to ', enabled)
 	getPlayer().can_move = enabled
-	getPlayer().set_process_unhandled_input(enabled)
+	getPlayer().set_process_input(enabled)
 	
 	if enabled:
 		getPlayer().set_collision_layer_value(5, true)
@@ -398,6 +399,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	setPlayerInput(false)
 	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
 	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
+		for member in getCombatantSquad('Player'):
+			CombatGlobals.addStatusEffect(member, 'CriticalEye', true)
 		combat_bubble.animation = 'Show_Surprised'
 		playSound("res://audio/sounds/39_Absorb_04.ogg")
 	elif (getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE == 2) or !getEntity(entity_name).has_node('NPCPatrolComponent'):

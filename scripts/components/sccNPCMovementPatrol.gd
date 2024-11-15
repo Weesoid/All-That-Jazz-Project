@@ -80,7 +80,7 @@ func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
+	if BODY.get_last_slide_collision().get_collider() is PlayerScene and ANIMATOR.current_animation != 'KO':
 		immobolize()
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)

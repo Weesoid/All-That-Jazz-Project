@@ -70,8 +70,8 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			label.text = ''
 		
 		if mode == 1 and item is ResWeapon:
-			button.disabled = !InventoryGlobals.canAdd(item)
-			if !InventoryGlobals.canAdd(item): label.hide()
+			button.disabled = !InventoryGlobals.canAdd(item,1,false)
+			if !InventoryGlobals.canAdd(item,1,false): label.hide()
 		
 		if PlayerGlobals.CURRENCY >= item.VALUE * buy_modifier and mode == 1:
 			label.add_theme_color_override('font_color', Color.GREEN)

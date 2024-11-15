@@ -307,6 +307,28 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1)
 	await CombatGlobals.qte_finished
 	return qte
 
+func playCombatantAnimation(combatant_name: String, animation_name: String, wait=true):
+	for combatant in getCombatScene().COMBATANTS:
+		if combatant.NAME == combatant_name:
+			if wait:
+				await combatant.SCENE.doAnimation(animation_name)
+			else:
+				combatant.SCENE.doAnimation(animation_name)
+			return
+
+func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
+	var target
+	if target_name == 'RESET':
+		target = getCombatScene().camera_position
+	else:
+		for combatant in getCombatScene().COMBATANTS:
+			if combatant.NAME == target_name: target = combatant.SCENE.global_position
+	
+	if wait:
+		await getCombatScene().moveCamera(target, duration)
+	else:
+		getCombatScene().moveCamera(target, duration)
+
 #********************************************************************************
 # STATUS EFFECT HANDLING
 #********************************************************************************

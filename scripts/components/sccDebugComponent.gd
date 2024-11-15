@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var fps = $VBoxContainer/FPS
 @onready var coordinates = $VBoxContainer/Coordinates
 @onready var playtime_info = $VBoxContainer/PlaytimeInfo
 @onready var equipped_charm = $VBoxContainer/EquippedCharm
@@ -9,6 +10,7 @@ extends Node2D
 var clipboard = DisplayServer.clipboard_get()
 
 func _process(_delta):
+	fps.text = str(Engine.get_frames_per_second())
 	coordinates.text = str(get_parent().global_position)+','+str(int(get_parent().player_direction.rotation_degrees))
 	playtime_info.text = Time.get_time_string_from_unix_time(int(SaveLoadGlobals.current_playtime))
 	dogpile.text = 'x%s (%s)' % [OverworldGlobals.dogpile, snappedf(OverworldGlobals.dogpile_timer.time_left, 0.1)]

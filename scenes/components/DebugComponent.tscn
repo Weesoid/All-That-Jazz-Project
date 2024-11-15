@@ -13,6 +13,11 @@ offset_right = -240.0
 offset_bottom = -112.0
 mouse_filter = 2
 
+[node name="FPS" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_pc8b0")
+text = "60"
+
 [node name="Coordinates" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_pc8b0")
