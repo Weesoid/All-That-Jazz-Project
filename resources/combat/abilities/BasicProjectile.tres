@@ -31,7 +31,7 @@ CASTER_POSITION = {
 }
 TARGET_POSITION = {
 "max": 3,
-"min": 0
+"min": 1
 }
 TENSION_COST = 0
 INSTANT_CAST = false

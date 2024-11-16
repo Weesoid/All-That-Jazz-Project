@@ -36,9 +36,6 @@ var overworld_stats: Dictionary = {
 signal level_up
 
 func _ready():
-	EQUIPPED_ARROW = load("res://resources/items/Arrow.tres")
-	EQUIPPED_ARROW.STACK = 0
-	TEAM.append(preload("res://resources/combat/combatants_player/Willis.tres"))
 	initializeBenchedTeam()
 	#addExperience(99)
 
@@ -63,6 +60,16 @@ func applyBlessing(blessing):
 		EQUIPPED_BLESSING = blessing
 		OverworldGlobals.showPlayerPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
 		blessing.setBlessing(true)
+
+func equipNewArrowType():
+	var arrows: Array = InventoryGlobals.INVENTORY.filter(func(item): return item is ResProjectileAmmo)
+	arrows.sort_custom(func(a, b): return a.STACK > b.STACK)
+	if !InventoryGlobals.hasItem(PlayerGlobals.EQUIPPED_ARROW) and !arrows.is_empty():
+		arrows[0].equip()
+		OverworldGlobals.playSound("res://audio/sounds/709597__alexcoover__unsheath-arrow.ogg", -16.0)
+		return true
+	
+	return false
 
 #********************************************************************************
 # COMBATANT MANAGEMENT
@@ -333,3 +340,36 @@ func loadData(save_data: PlayerSaveData):
 		combatant.updateCombatant(save_data)
 	
 	overworld_stats['stamina'] = 100.0 # DO NOT TOUCH STAMINA FOR BLESSINGS!
+
+func resetVariables():
+	for member in TEAM:
+		member.reset()
+	
+	SAVE_NAME = null
+	TEAM = [preload("res://resources/combat/combatants_player/Willis.tres")]
+	TEAM_FORMATION = []
+	FOLLOWERS = []
+	FAST_TRAVEL_LOCATIONS = [
+		'res://scenes/maps/TestRoom/TestRoomB.tscn',
+		'res://scenes/maps/TestRoom/TestRoomA.tscn'
+	]
+	CLEARED_MAPS = []
+	POWER = null
+	KNOWN_POWERS = [load("res://resources/powers/Stealth.tres")]
+	EQUIPPED_ARROW = null
+	EQUIPPED_BLESSING = null
+	CURRENCY = 100
+	PARTY_LEVEL = 1
+	MAX_PARTY_LEVEL = 5
+	CURRENT_EXP = 0
+	PROGRESSION_DATA = {}
+	UNLOCKED_ABILITIES = {}
+	ADDED_ABILITIES = {}
+	overworld_stats = {
+		'stamina': 100.0,
+		'bow_max_draw': 5.0,
+		'walk_speed': 100.0,
+		'sprint_speed': 200.0,
+		'sprint_drain': 0.25,
+		'stamina_gain': 0.15
+	}

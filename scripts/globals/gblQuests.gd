@@ -71,3 +71,6 @@ func loadData(save_data: QuestSaveData):
 			objective.COMPLETED = save_data.QUEST_OBJECTIVES_DATA[quest][objective.NAME][1]
 			objective.OUTCOME = save_data.QUEST_OBJECTIVES_DATA[quest][objective.NAME][2]
 		quest.isCompleted(false)
+
+func resetVariables():
+	QUESTS = []

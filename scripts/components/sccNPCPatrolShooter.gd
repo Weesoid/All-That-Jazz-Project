@@ -27,7 +27,7 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
-			if !['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left'].has(ANIMATOR.current_animation):
+			if ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left'].has(ANIMATOR.current_animation):
 				ANIMATOR.animation_finished.emit()
 			
 			BODY.get_node("CollisionShape2D").set_deferred('disabled', true)

@@ -1,6 +1,5 @@
 extends Node
 
-var default_save_name: String = 'Save'
 var is_loading: bool
 var session_start: float
 var current_playtime: float
@@ -66,3 +65,7 @@ func loadGame(saved_game: SavedGame):
 	OverworldGlobals.getCurrentMap().show()
 	if SettingsGlobals.cheat_mode:
 		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
+
+func resetVariables():
+	is_loading = false
+	current_playtime = 0

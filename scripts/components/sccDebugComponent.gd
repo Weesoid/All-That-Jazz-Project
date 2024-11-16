@@ -5,7 +5,6 @@ extends Node2D
 @onready var coordinates = $VBoxContainer/Coordinates
 @onready var playtime_info = $VBoxContainer/PlaytimeInfo
 @onready var equipped_charm = $VBoxContainer/EquippedCharm
-@onready var dogpile = $VBoxContainer/Dogpile
 @onready var reward_bank = $VBoxContainer/RewardBank
 @onready var save_name = $VBoxContainer/SaveName
 
@@ -18,13 +17,12 @@ func _process(_delta):
 	fps.text = str(Engine.get_frames_per_second())
 	coordinates.text = str(get_parent().global_position)+','+str(int(get_parent().player_direction.rotation_degrees))
 	playtime_info.text = Time.get_time_string_from_unix_time(int(SaveLoadGlobals.current_playtime))
-	dogpile.text = 'x%s (%s)' % [OverworldGlobals.dogpile, snappedf(OverworldGlobals.dogpile_timer.time_left, 0.1)]
 	if PlayerGlobals.EQUIPPED_BLESSING != null:
 		equipped_charm.text = PlayerGlobals.EQUIPPED_BLESSING.blessing_name
 	else:
 		equipped_charm.text = 'No active blessing.'
 	reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
-	save_name.text = 'Save Name: ' + str(PlayerGlobals.SAVE_NAME)
+	save_name.text = 'Save Name: %s' + str(PlayerGlobals.SAVE_NAME)
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_toggle_debug"):

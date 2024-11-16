@@ -40,10 +40,14 @@ func _ready():
 	player_camera.global_position = global_position
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	animation_tree.active = true
+	
 	PlayerGlobals.loadSquad()
+	PlayerGlobals.initializeBenchedTeam()
 	SaveLoadGlobals.session_start = Time.get_unix_time_from_system()
-	if SettingsGlobals.cheat_mode:
-		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
+	if SettingsGlobals.cheat_mode and !has_node('DebugComponent'):
+		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -138,7 +142,7 @@ func _input(_event):
 
 func _unhandled_input(_event: InputEvent):
 	# UI Handling
-	if Input.is_action_just_pressed("ui_show_menu"):
+	if Input.is_action_just_pressed("ui_show_menu") and !hiding:
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	
 	# Interaction handling
@@ -205,7 +209,7 @@ func canDrawBow()-> bool:
 	
 	if velocity != Vector2.ZERO:
 		return false
-	elif PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
+	elif !PlayerGlobals.equipNewArrowType() and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
 		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
 		return false
 	
@@ -232,7 +236,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
+	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0 and !PlayerGlobals.equipNewArrowType():
 		bow_mode = false
 		toggleBowAnimation()
 	
@@ -274,6 +278,7 @@ func shootProjectile():
 	var projectile = load("res://scenes/entities_disposable/ProjectileArrow.tscn").instantiate()
 	projectile.global_position = global_position + Vector2(0, -10)
 	projectile.SHOOTER = self
+	projectile.name = 'PlayerArrow'
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
 

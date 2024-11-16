@@ -377,7 +377,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
-radius = 11.0
+radius = 8.0
 
 [node name="PatrollerShooter" type="CharacterBody2D"]
 motion_mode = 1

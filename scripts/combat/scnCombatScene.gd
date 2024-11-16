@@ -58,7 +58,6 @@ var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
-var dogpile_count: int = 0
 var camera_position: Vector2 = Vector2(0, 0)
 var enemy_reinforcements: Array[ResCombatant]
 var tamed_combatants: Array[ResCombatant]
@@ -100,8 +99,6 @@ func _ready():
 	
 	for combatant in COMBATANTS:
 		await addCombatant(combatant, false, '', true)
-		if combatant is ResEnemyCombatant:
-			combatant.STAT_VALUES['hustle'] += 2 * (dogpile_count+1)
 	
 	if battle_music_path != "" and SettingsGlobals.toggle_music:
 		battle_music.stream = load(battle_music_path)
@@ -127,9 +124,6 @@ func _ready():
 		combat_dialogue.initialize()
 	
 	transition_scene.visible = false
-	
-	if dogpile_count > 0:
-		writeTopLogMessage('Dogpile! (x%s)' % dogpile_count)
 
 func _process(_delta):
 	$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
@@ -389,7 +383,7 @@ func calculateEscapeChance()-> float:
 		hustle_enemies += combatant.BASE_STAT_VALUES['hustle']
 	for combatant in getCombatantGroup('team'):
 		hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	return snappedf((0.5 + ((hustle_allies-hustle_enemies)*0.15)) + bonus_escape_chance, 0.01)
+	return snappedf((0.5 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -743,7 +737,8 @@ func renameDuplicates():
 	var seen = []
 	for combatant in COMBATANTS:
 		if seen.has(combatant.NAME):
-			combatant.NAME = '%s%s' % [combatant.NAME, seen.count(combatant.NAME)]
+			seen.append(combatant.NAME)
+			combatant.NAME = '%s %s' % [combatant.NAME, seen.count(combatant.NAME)]
 		else:
 			seen.append(combatant.NAME)
 

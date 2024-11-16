@@ -137,3 +137,20 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	enemy.is_converted = true
 	enemy.tamed_combatant = self.duplicate()
 	return enemy.duplicate()
+
+func reset():
+	for modification in STAT_MODIFIERS.keys():
+		removeStatModification(modification)
+	ABILITY_SET = []
+	EQUIPPED_WEAPON = null
+	STAT_POINTS = 1
+	CHARMS = {
+		0: null,
+		1: null,
+		2: null
+	}
+	STAT_POINT_ALLOCATIONS = {
+		'brawn': 0,
+		'grit': 0,
+		'handling': 0
+	}

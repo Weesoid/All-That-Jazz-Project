@@ -35,5 +35,6 @@ Alert short.wav by Soundwarf -- https://freesound.org/s/387533/ -- License: Crea
 alarmexpdisto.wav by Soundwarf -- https://freesound.org/s/387536/ -- License: Creative Commons 0
 Stingers and Stabs 001.wav by rodincoil -- https://freesound.org/s/271945/ -- License: Creative Commons 0
 Metal Gear Solid Inspired Alert Surprise SFX by djlprojects -- https://freesound.org/s/413641/ -- License: Creative Commons 0
+Unsheath Arrow by AlexCoover -- https://freesound.org/s/709597/ -- License: Creative Commons 0
 
 [Bow.wav and snippets from arrow and bow in one has been combined to make the bow shoot sound in file '178872__hanbaal__bow.ogg']

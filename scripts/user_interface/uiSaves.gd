@@ -10,7 +10,6 @@ enum Modes {
 @onready var panel = $PanelContainer/MarginContainer/VBoxContainer
 @onready var container = $PanelContainer
 @onready var delete_label = $Label
-@onready var dropdown = $OptionButton
 @onready var timer = $Timer
 
 @export var mode: Modes
@@ -79,7 +78,6 @@ func slotPressed(save_name: String, button: Button):
 			SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name))
 		Modes.NEW_GAME:
 			PlayerGlobals.SAVE_NAME = generateSaveName()
-			SaveLoadGlobals.loadGame(load("FreshSave.tres"))
 			OverworldGlobals.changeMap(new_game_map, '25.83763,59.06633,0', '', false, true)
 		Modes.DELETE:
 			deleteSave(save_name, button)
@@ -93,12 +91,9 @@ func deleteSave(save_name: String, button: Button):
 	DirAccess.remove_absolute("res://saves/%s.tres" % save_name)
 	button.text = 'EMPTY'
 	button.disabled = initial_mode == Modes.LOAD
-
-func _on_option_button_item_selected(index):
-	match index:
-		0: mode = Modes.SAVE
-		1: mode = Modes.LOAD
-		2: mode = Modes.DELETE
+	mode = initial_mode
+	container.self_modulate = Color.WHITE
+	delete_label.text = 'Hold [SPRINT KEY] to toggle DELETE mode'
 
 func generateSaveName()-> String:
 	var path = "res://saves/"

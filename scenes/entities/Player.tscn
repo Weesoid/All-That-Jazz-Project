@@ -1,4 +1,4 @@
-[gd_scene load_steps=126 format=3 uid="uid://xfrvaohqhfml"]
+[gd_scene load_steps=125 format=3 uid="uid://xfrvaohqhfml"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
@@ -8,8 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="6_rb4b6"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="6_yjb6v"]
-[ext_resource type="Texture2D" uid="uid://ttptw1qp8wj2" path="res://images/sprites/arrow_icon.png" id="7_7jyj3"]
-[ext_resource type="Script" path="res://scripts/user_interface/uiUtilitySelector.gd" id="8_lyttf"]
+[ext_resource type="PackedScene" uid="uid://j1akjh3lc0v" path="res://scenes/user_interface/Quiver.tscn" id="9_pvbyc"]
 [ext_resource type="Texture2D" uid="uid://b2tqyyse1shv2" path="res://images/textures/cinematic_spotlight.png" id="10_wdujw"]
 [ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="10_wsxx2"]
 [ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_rb05q"]
@@ -2149,28 +2148,9 @@ offset_top = -56.0
 offset_right = 24.0
 offset_bottom = -48.0
 
-[node name="UtilitySelector" type="TextureRect" parent="PlayerCamera"]
+[node name="UtilitySelector" parent="PlayerCamera" instance=ExtResource("9_pvbyc")]
 visible = false
-offset_left = -11.0
-offset_top = -63.0
-offset_right = 29.0
-offset_bottom = -23.0
-scale = Vector2(0.55, 0.55)
-texture = ExtResource("7_7jyj3")
-script = ExtResource("8_lyttf")
-
-[node name="Name" type="Label" parent="PlayerCamera/UtilitySelector"]
-layout_mode = 0
-offset_left = -29.0909
-offset_top = -10.9091
-offset_right = 68.9091
-offset_bottom = 2.0909
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 0
-text = "ARROW"
-horizontal_alignment = 1
-vertical_alignment = 1
+position = Vector2(1, -49)
 
 [node name="CinematicSpotlight" type="Sprite2D" parent="PlayerCamera"]
 self_modulate = Color(1, 1, 1, 0)

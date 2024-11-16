@@ -69,6 +69,8 @@ func _physics_process(_delta):
 		patrol()
 	if COMBAT_SWITCH and STATE != 3 and ANIMATOR.current_animation != 'KO':
 		executeCollisionAction()
+	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0:
+		updatePath(true)
 	
 #	if OverworldGlobals.isPlayerCheating():
 #		DEBUG.show()
@@ -85,6 +87,8 @@ func executeCollisionAction():
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
 		COMBAT_SWITCH = false
+	if BODY.get_last_slide_collision().get_collider().has_node('NPCPatrolComponent') and STATE == 2:
+		BODY.get_last_slide_collision().get_collider().get_node('NPCPatrolComponent').updateMode(2)
 
 func patrol():
 	if LINE_OF_SIGHT.process_mode != Node.PROCESS_MODE_DISABLED:
@@ -101,6 +105,10 @@ func patrol():
 			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if (!NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and OverworldGlobals.getCurrentMap().has_node('Player') and BODY.global_position.distance_to(OverworldGlobals.getPlayer().global_position) > 300.0):
+		if self is NPCPatrolShooterMovement and ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left', 'Load'].has(ANIMATOR.current_animation):
+			ANIMATOR.animation_finished.emit()
+			ANIMATOR.play('RESET')
+		
 		updateMode(1)
 
 func alertPatrolMode():
@@ -136,6 +144,9 @@ func stunMode(alert_others:bool=false):
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 
 func updateMode(state: int, alert_others:bool=false):
+	if STATE == state:
+		return
+	
 	match state:
 		0: soothePatrolMode()
 		1: alertPatrolMode()

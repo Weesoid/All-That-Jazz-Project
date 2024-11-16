@@ -57,6 +57,7 @@ func cancelHiding():
 		hide_warmup.timeout.emit()
 
 func _unhandled_input(_event):
+	print(in_menu)
 	if Input.is_action_just_pressed("ui_accept") and is_hiding_player and !in_menu:
 		exitHiding(60.0, true)
 	elif Input.is_action_just_pressed("ui_show_menu") and is_hiding_player:

@@ -275,7 +275,11 @@ func loadItemData(save_data: InventorySaveData):
 				continue
 			elif item is ResStackItem:
 				item.STACK = item_data[item.resource_path]
+				if item.STACK > item.MAX_STACK: item.STACK = item.MAX_STACK
 		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'):
 			item.durability = item_data[item.resource_path+'-durability']
 	for weapon in getEquippedWeapons():
 		weapon.durability = item_data[weapon.resource_path+'-durability']
+
+func resetVariables():
+	INVENTORY = []

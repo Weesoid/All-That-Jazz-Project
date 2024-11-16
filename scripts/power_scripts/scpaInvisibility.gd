@@ -1,12 +1,14 @@
-extends Node
+extends Node2D
 
 @onready var player = OverworldGlobals.getPlayer()
+@onready var bar = $ProgressBar
 @onready var timer = $Timer
 var active = true
 
 func _physics_process(_delta):
 	if player.sprinting or player.bow_draw_strength > 0.0:
 		setVisible()
+	bar.value = timer.time_left
 #	if PlayerGlobals.overworld_stats['stamina']> 0 and active:
 #		player.channeling_power = true
 #		setInvisible()
@@ -16,11 +18,10 @@ func _physics_process(_delta):
 #		setVisible()
 
 func _ready():
+	bar.max_value = timer.wait_time
 	if PlayerGlobals.overworld_stats['stamina'] >= 50:
 		PlayerGlobals.overworld_stats['stamina'] -= 50
 		setInvisible()
-	else:
-		player.prompt.showPrompt('Not enough [color=yellow]stamina[/color].')
 
 #func _unhandled_input(_event):
 #	if Input.is_action_just_pressed("ui_gambit"):

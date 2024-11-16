@@ -7,4 +7,5 @@ func applyOverworldEffect(body: CharacterBody2D):
 	OVERWORLD_EFFECT.applyEffect(body)
 
 func equip():
-	PlayerGlobals.EQUIPPED_ARROW = self
+	if !OverworldGlobals.getCurrentMap().has_node('PlayerArrow'):
+		PlayerGlobals.EQUIPPED_ARROW = self

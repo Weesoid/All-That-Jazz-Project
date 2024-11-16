@@ -7,6 +7,12 @@ extends Node2D
 @onready var music = $AudioStreamPlayer
 
 func _ready():
+	InventoryGlobals.resetVariables()
+	OverworldGlobals.resetVariables()
+	PlayerGlobals.resetVariables()
+	QuestGlobals.resetVariables()
+	SaveLoadGlobals.resetVariables()
+	
 	new_game.grab_focus()
 	music.play()
 	animator.play("Show")

@@ -1,7 +1,5 @@
 extends Node
 
-var dogpile_timer: Timer = Timer.new()
-var dogpile: int = 0
 var follow_array = []
 var player_follower_count = 0
 
@@ -12,13 +10,6 @@ signal combat_exited
 
 #func _process(_delta):
 #	print_orphan_nodes()
-
-func _ready():
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
-	dogpile_timer.name = 'DogpileTimer'
-	dogpile_timer.connect('timeout', resetDogpile)
-	add_child(dogpile_timer)
-	follow_array.resize(100)
 
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
@@ -56,7 +47,6 @@ func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
 		getPlayer().hide()
 
 func inDialogue() -> bool:
-	print('y')
 	return getCurrentMap().has_node('Balloon')
 
 #********************************************************************************
@@ -216,7 +206,6 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	return button
 
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
-	print(is_inside_tree())
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
@@ -390,6 +379,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
 		return
+	if inMenu():
+		showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	#getComponent(entity_name, 'NPCPatrolComponent').PATROL_BUBBLE.play('Fight')
 	# Enter combat
 	getPlayer().resetStates()
@@ -428,13 +419,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
-	combat_scene.dogpile_count += dogpile
 	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)
 	combat_scene.do_reinforcements = getCombatantSquadComponent(entity_name).DO_REINFORCEMENTS
 	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
 	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
 	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
-	incrementDogpile()
 	await combat_bubble.animator.animation_finished
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
@@ -486,17 +475,9 @@ func getRandomTameable():
 	
 	return out
 
-func incrementDogpile():
-	dogpile += 1
-	dogpile_timer.start(1.0)
-
-func resetDogpile():
-	dogpile = 0
-	dogpile_timer.stop()
-
 func inCombat()-> bool:
 	return get_parent().has_node('CombatScene')
-
+	
 func hasCombatDialogue(entity_name: String)-> bool:
 	return hasEntity(entity_name) and getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled
 
@@ -556,9 +537,13 @@ func loadFromPath(path:String, key:String, exstension:String='.tres'):
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			print(file_name)
 			if file_name == key+exstension:
 				return load(path+'/'+file_name)
 	else:
 		print("An error occurred when trying to access the path.")
 		print(path)
+
+func resetVariables():
+	follow_array = []
+	player_follower_count = 0
+	follow_array.resize(100)
