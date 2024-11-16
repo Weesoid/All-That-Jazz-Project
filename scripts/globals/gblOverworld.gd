@@ -256,6 +256,12 @@ func getCurrentMap()-> Node2D:
 func getMapRewardBank(key: String):
 	return get_tree().current_scene.REWARD_BANK[key]
 
+func getTamedNames():
+	var out = []
+	for combatant in get_tree().current_scene.REWARD_BANK['tamed']:
+		out.append(combatant.NAME)
+	return out
+
 func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and getPlayer().has_node('DebugComponent')
 
@@ -451,7 +457,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		await CombatGlobals.getCombatScene().tree_exited
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')	
 	if combat_results == 1:
-		for combatant in tamed: PlayerGlobals.addCombatantToTeam(combatant)
+		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
 	setPlayerInput(true)
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	battle_transition.get_node('AnimationPlayer').play('Out')

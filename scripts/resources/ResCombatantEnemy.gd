@@ -17,7 +17,11 @@ func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
 	SCENE.combatant_resource = self
 	applyStatusEffects()
+	if NAME.contains('Feral'): print('Initing!')
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
+	if NAME.contains('Feral'): 
+		print('ST: ', STAT_VALUES)
+		print('BST: ',BASE_STAT_VALUES)
 
 func act():
 	enemy_turn.emit()

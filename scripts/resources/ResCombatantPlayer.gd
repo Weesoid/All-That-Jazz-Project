@@ -124,18 +124,22 @@ func hasCharm(charm: ResCharm):
 		if equipped_charm.NAME == charm.NAME: return true
 
 func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
+	initializeCombatant(false)
 	var enemy = ResEnemyCombatant.new()
 	enemy.NAME = appended_name + ' ' +NAME
 	enemy.PACKED_SCENE = PACKED_SCENE
 	enemy.DESCRIPTION = DESCRIPTION
 	enemy.STAT_VALUES = BASE_STAT_VALUES
-	enemy.ABILITY_SET.append(ABILITY_POOL[0])
-	enemy.ABILITY_SET.append(ABILITY_POOL[1])
-	enemy.ABILITY_SET.append(ABILITY_POOL[2])
-	enemy.ABILITY_SET.append(ABILITY_POOL[3])
+	for ability in ABILITY_POOL:
+		enemy.ABILITY_SET.append(ability)
+#	enemy.ABILITY_SET.append(ABILITY_POOL[0])
+#	enemy.ABILITY_SET.append(ABILITY_POOL[1])
+#	enemy.ABILITY_SET.append(ABILITY_POOL[2])
+#	enemy.ABILITY_SET.append(ABILITY_POOL[3])
 	enemy.AI_PACKAGE = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	enemy.is_converted = true
 	enemy.tamed_combatant = self.duplicate()
+	print('Conversion: ', enemy.STAT_VALUES)
 	return enemy.duplicate()
 
 func reset():

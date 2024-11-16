@@ -4,9 +4,9 @@ extends MemberAdjustUI
 @onready var currency = $Currency
 
 func _ready():
-	if OverworldGlobals.isPlayerCheating():
-		addAllMembers("res://resources/combat/combatants_player/tameable/")
-		await get_tree().create_timer(0.01).timeout
+#	if OverworldGlobals.isPlayerCheating():
+#		addAllMembers("res://resources/combat/combatants_player/tameable/")
+#		await get_tree().create_timer(0.01).timeout
 	
 	loadMembers()
 	if !PlayerGlobals.TEAM.is_empty():
@@ -44,8 +44,8 @@ func createMemberButton(member: ResCombatant):
 	return button
 
 func loadMemberInfo(member: ResCombatant, button: Button=null):
-	if member_view.get_children().size() > 0 and member_view.get_child(0) != null and member_view.get_child(0) != member.SCENE:
-		member_view.get_child(0).queue_free()
+	for child in member_view.get_children():
+		child.queue_free()
 	member.initializeCombatant()
 	member_view.add_child(member.SCENE)
 	member.SCENE.playIdle()

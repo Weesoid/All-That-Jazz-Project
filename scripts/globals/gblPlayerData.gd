@@ -223,6 +223,7 @@ func setFollowersMotion(enable:bool):
 
 func healCombatants(cure: bool=true):
 	for combatant in TEAM:
+		if !combatant.initialized: combatant.initializeCombatant()
 		combatant.STAT_VALUES['health'] = combatant.BASE_STAT_VALUES['health']
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
 

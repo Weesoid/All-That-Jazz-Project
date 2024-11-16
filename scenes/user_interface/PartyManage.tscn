@@ -109,6 +109,7 @@ offset_right = 46.0
 offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
 [node name="Weapon" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
 custom_minimum_size = Vector2(92, 0)

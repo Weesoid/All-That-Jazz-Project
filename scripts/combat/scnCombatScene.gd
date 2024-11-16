@@ -320,6 +320,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				combatant.ACTED = true
 				total_experience += combatant.getExperience()
 			if combatant.SPAWN_ON_DEATH != null:
+				print('SOD')
 				replaceCombatant(combatant, combatant.SPAWN_ON_DEATH)
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
@@ -581,6 +582,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		combatant.SCENE.get_node('AnimationPlayer').get_animation('Idle').track_set_key_value(1, 1, Vector2(0, 1))
 		combat_bars.rotation_degrees = 180
 	if spawned:
+		#combatant.initializeCombatant()
 		COMBATANTS.append(combatant)
 		combatant.ACTED = false
 		combatant.TURN_CHARGES = combatant.MAX_TURN_CHARGES

@@ -6,7 +6,7 @@ class_name MapData
 @export var IMAGE: Texture
 @export var SAFE: bool = false
 var CLEARED: bool = false
-var REWARD_BANK: Dictionary = {'currency': 0.0, 'experience':0.0, 'loot':{}}
+var REWARD_BANK: Dictionary = {'currency': 0.0, 'experience':0.0, 'loot':{}, 'tamed':[]}
 
 func _ready():
 	if !has_node('Player'): 
@@ -39,3 +39,5 @@ func giveRewards():
 		else:
 			for i in range(REWARD_BANK['loot'][item]):
 				InventoryGlobals.addItemResource(item)
+	for combatant in REWARD_BANK['tamed']:
+		PlayerGlobals.addCombatantToTeam(combatant)
