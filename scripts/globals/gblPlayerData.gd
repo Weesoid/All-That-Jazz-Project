@@ -66,7 +66,6 @@ func equipNewArrowType():
 	arrows.sort_custom(func(a, b): return a.STACK > b.STACK)
 	if !InventoryGlobals.hasItem(PlayerGlobals.EQUIPPED_ARROW) and !arrows.is_empty():
 		arrows[0].equip()
-		OverworldGlobals.playSound("res://audio/sounds/709597__alexcoover__unsheath-arrow.ogg", -16.0)
 		return true
 	
 	return false
@@ -187,10 +186,8 @@ func getTeamMembers()-> Array[String]:
 	return out
 
 func addFollower(follower: NPCFollower):
-	print('before: ', OverworldGlobals.follow_array)
 	FOLLOWERS.append(follower)
 	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
-	print('after: ', OverworldGlobals.follow_array)
 
 func removeFollower():
 	OverworldGlobals.loadFollowers()

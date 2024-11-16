@@ -21,6 +21,7 @@ func _ready():
 		createSaveButtons()
 		while panel.get_child_count() != 3:
 			createSaveButton('EMPTY')
+		#container.get_children().sort_custom(func(a, b): return a.text < b.text)
 	else:
 		mode = Modes.SAVE
 		createSaveButton(PlayerGlobals.SAVE_NAME)
@@ -47,6 +48,7 @@ func createSaveButtons():
 		while file_name != "":
 			createSaveButton(file_name.get_basename())
 			file_name = dir.get_next()
+			#await get_tree().process_frame
 	else:
 		print("An error occurred when trying to access the path.")
 		print(path)
@@ -57,11 +59,12 @@ func createSaveButton(save_name: String):
 	var button: Button = OverworldGlobals.createCustomButton()
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if ResourceLoader.exists("res://saves/%s.tres" % save_name):
+		#await get_tree().process_frame
 		var save: SavedGame = load("res://saves/%s.tres" % save_name)
 		button.text = save.NAME
 	else:
 		button.text = 'EMPTY'
-	button.pressed.connect(func(): slotPressed(save_name, button))
+	button.pressed.connect(func doAction(): slotPressed(save_name, button))
 	if get_tree().current_scene.name == 'StartMenu':
 		button.disabled = (mode == Modes.NEW_GAME and button.text != 'EMPTY') or (mode == Modes.LOAD and button.text == 'EMPTY')
 	panel.add_child(button)
@@ -98,6 +101,7 @@ func deleteSave(save_name: String, button: Button):
 func generateSaveName()-> String:
 	var path = "res://saves/"
 	var dir = DirAccess.open(path)
+	var save_names = ['Save 1', 'Save 2', 'Save 3']
 	var saves = []
 	if dir:
 		dir.list_dir_begin()
@@ -106,7 +110,12 @@ func generateSaveName()-> String:
 			saves.append(file_name.get_basename())
 			file_name = dir.get_next()
 	
-	return 'Save ' + str(saves.size()+1)
+	for save_name in save_names:
+		print(save_name, ' in ', saves, '?')
+		if !saves.has(save_name): 
+			return str(save_name)
+	
+	return 'ERROR'
 
 func _exit_tree():
 	if get_tree().current_scene.name != 'StartMenu':

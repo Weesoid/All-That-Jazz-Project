@@ -8,6 +8,9 @@ extends Node2D
 var current_index = -1
 
 func _input(event):
+	if !player.is_processing_input():
+		return
+	
 	var arrows: Array = InventoryGlobals.INVENTORY.filter(func(item): return item is ResProjectileAmmo)
 	arrows.sort_custom(func(a, b): return a.NAME < b.NAME)
 	if arrows.is_empty():
@@ -43,7 +46,7 @@ func _input(event):
 		select_name.text = ''
 		visible = false
 
-func updateArrowSelect(play_sound:bool=true):
+func updateArrowSelect():
 	var arrows = InventoryGlobals.INVENTORY.filter(func(item): return item is ResProjectileAmmo)
 	arrows.sort_custom(func(a, b): return a.NAME < b.NAME)
 	if arrows.size() <= 1:
@@ -61,8 +64,6 @@ func updateArrowSelect(play_sound:bool=true):
 		await child.tree_exited
 	for arrow in arrows:
 		loadOtherArrows(arrow)
-	if play_sound:
-		OverworldGlobals.playSound("res://audio/sounds/709597__alexcoover__unsheath-arrow.ogg", -16.0)
 
 func loadOtherArrows(arrow: ResProjectileAmmo):
 	var texture = TextureRect.new()

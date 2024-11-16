@@ -807,7 +807,7 @@ func confirmCancelInputs():
 		removeTargetButtons()
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
-	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse"):
+	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
 		removeTargetButtons()
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()

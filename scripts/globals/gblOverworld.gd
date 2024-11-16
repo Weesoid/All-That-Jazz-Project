@@ -263,6 +263,7 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	getPlayer().setUIVisibility(false)
 	getPlayer().resetStates()
 	setPlayerInput(false, true)
+	getPlayer().set_process_unhandled_input(false)
 	update_patroller_modes.emit(0)
 	playEntityAnimation('Player', animation)
 	#await getEntity('Player').get_node('AnimationPlayer').animation_finished

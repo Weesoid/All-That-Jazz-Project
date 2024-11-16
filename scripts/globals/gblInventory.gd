@@ -228,7 +228,7 @@ func sortItems(items: Array[ResItem]=INVENTORY):
 func getItemType(item: ResItem)-> float:
 	if item is ResStackItem:
 		if item is ResProjectileAmmo:
-			return 0.2
+			return 0.1
 		else:
 			return 0.0
 	elif item is ResEquippable:

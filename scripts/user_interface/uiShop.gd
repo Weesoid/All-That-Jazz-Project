@@ -25,10 +25,8 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		modifier = buy_modifier
 	else:
 		modifier = sell_modifier
-	#array.sort_custom(func(a,b): return typeof(a) < typeof(b))
-	
-	#array.sort_custom(func(a,b): return a.NAME > b.NAME)
-	InventoryGlobals.sortItems(array)
+	array.sort_custom(func(a,b): return a.NAME < b.NAME)
+	array.sort_custom(func(a,b): return InventoryGlobals.getItemType(a) < InventoryGlobals.getItemType(b))
 	array.sort_custom(func(a,b): return a.VALUE * modifier < b.VALUE * modifier)
 	clearButtons()
 	
@@ -231,14 +229,19 @@ func hasBarterItems():
 
 func showChange(amount: int):
 	var sold_label: Label = Label.new()
-	sold_label.text = str(amount)
+	if amount != 0:
+		sold_label.text = str(amount)
+	else:
+		sold_label.text = 'Free!'
 	sold_label.theme = preload("res://design/OutlinedLabel.tres")
-	if amount > 0:
+	if amount >= 0:
 		sold_label.modulate = Color.GREEN_YELLOW
 	else:
 		sold_label.modulate = Color.ORANGE_RED
 	currency.add_child(sold_label)
 	#sold_label.global_position = Vector2.ZERO
-	var tween = create_tween().tween_property(sold_label, 'global_position', sold_label.global_position+Vector2(0, -8), 1.5)
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(sold_label, 'global_position', sold_label.global_position+Vector2(0, -8), 1.5)
+	tween.tween_property(sold_label, 'modulate', Color.TRANSPARENT, 1.25)
 	#var opacity_tween = create_tween().tween_property(sold_label, 'modulate', Color.TRANSPARENT, 1.0)
 	tween.finished.connect(sold_label.queue_free)

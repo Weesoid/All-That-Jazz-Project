@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=38 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=39 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_h16d6"]
 [ext_resource type="Resource" path="res://resources/quests/GetThatItem.tres" id="2_pysia"]
@@ -26,19 +26,19 @@
 [ext_resource type="Resource" path="res://resources/combat/abilities/GuardSlash.tres" id="15_ammsv"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/Counter.tres" id="16_60ays"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/StandGuard.tres" id="17_j32mv"]
-[ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="20_ci6yd"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="21_adnh8"]
 [ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="21_iudtn"]
 [ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="23_cmrwe"]
-[ext_resource type="Resource" path="res://resources/items/BarterSalvage20.tres" id="28_3jkxm"]
+[ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="23_mgkik"]
+[ext_resource type="Resource" path="res://resources/blessings/Draw.tres" id="24_y37gb"]
+[ext_resource type="Resource" path="res://resources/items/Healthifier.tres" id="31_4v4ab"]
 
-[sub_resource type="Resource" id="Resource_jy7pl"]
+[sub_resource type="Resource" id="Resource_grw7e"]
 script = ExtResource("1_h16d6")
-position = Vector2(-142.42, -84.6554)
+position = Vector2(-24.8755, -101.999)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 179
 
-[sub_resource type="Resource" id="Resource_wchxv"]
+[sub_resource type="Resource" id="Resource_p4knu"]
 script = ExtResource("2_y0sn3")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_pysia")])
 QUEST_OBJECTIVES_DATA = {
@@ -76,14 +76,15 @@ VALUE = 100
 MANDATORY = false
 PARENT_ITEM = ExtResource("10_js1oe")
 
-[sub_resource type="Resource" id="Resource_ncul1"]
+[sub_resource type="Resource" id="Resource_ng8pq"]
 script = ExtResource("4_pte4i")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_1y3ia"), ExtResource("10_4jxjw"), ExtResource("12_7cjvi"), ExtResource("14_i0wbr")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 FAST_TRAVEL_LOCATIONS = Array[String](["res://scenes/maps/TestRoom/TestRoomB.tscn", "res://scenes/maps/TestRoom/TestRoomA.tscn"])
 CLEARED_MAPS = ["Prototype Room"]
-EQUIPPED_ARROW = ExtResource("21_adnh8")
-CURRENCY = 37543
+EQUIPPED_ARROW = ExtResource("23_mgkik")
+EQUIPPED_BLESSING = ExtResource("24_y37gb")
+CURRENCY = 42702
 PARTY_LEVEL = 2
 CURRENT_EXP = 16
 STRING_CONDITIONS = Array[String]([])
@@ -252,23 +253,32 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
 KNOWN_POWERS = [ExtResource("3_gmgtu"), ExtResource("21_iudtn")]
 
-[sub_resource type="Resource" id="Resource_j3qgc"]
+[sub_resource type="Resource" id="Resource_dihv3"]
+script = ExtResource("11_0b36x")
+STAT_MODIFICATIONS = {
+"health": 10
+}
+NAME = "Healthifier"
+ICON = ExtResource("9_lafh8")
+DESCRIPTION = "Mo health!"
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = ExtResource("31_4v4ab")
+
+[sub_resource type="Resource" id="Resource_d12kd"]
 script = ExtResource("5_eduu3")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("20_ci6yd"), ExtResource("28_3jkxm"), ExtResource("21_adnh8"), ExtResource("23_cmrwe")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("23_cmrwe"), SubResource("Resource_dihv3")])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 ITEM_DATA_INVENTORY = {
-"res://resources/items/Arrow.tres": 5,
-"res://resources/items/ArrowJunk.tres": 15,
-"res://resources/items/BarterSalvage20.tres": 8,
 "res://resources/items/ScrapSalvage.tres": 3,
-"res://resources/items/SlashBlade.tres-durability": 14
+"res://resources/items/SlashBlade.tres-durability": 6
 }
 
 [resource]
 script = ExtResource("6_q35oc")
-NAME = "Save 2 - 00:07:36
+NAME = "Save 2 - 00:15:59
 Morale 2
 Prototype Room"
-PLAYTIME = 456.953
+PLAYTIME = 959.551
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_jy7pl"), SubResource("Resource_wchxv"), SubResource("Resource_ncul1"), SubResource("Resource_j3qgc")]
+save_data = [SubResource("Resource_grw7e"), SubResource("Resource_p4knu"), SubResource("Resource_ng8pq"), SubResource("Resource_d12kd")]

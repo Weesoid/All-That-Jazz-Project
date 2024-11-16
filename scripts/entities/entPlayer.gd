@@ -56,7 +56,7 @@ func _process(_delta):
 func _physics_process(delta):
 	animation_tree.advance(ANIMATION_SPEED * delta)
 	# Bow
-	if bow_mode and is_processing_input():
+	if bow_mode and is_processing_input() and PlayerGlobals.EQUIPPED_ARROW != null:
 		drawBow()
 		ammo_count.show()
 		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
@@ -144,7 +144,8 @@ func _unhandled_input(_event: InputEvent):
 	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu") and !hiding:
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
-	
+	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu() and !hiding:
+		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	# Interaction handling
 	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue():
 		var interactables = interaction_detector.get_overlapping_areas()
@@ -209,7 +210,7 @@ func canDrawBow()-> bool:
 	
 	if velocity != Vector2.ZERO:
 		return false
-	elif !PlayerGlobals.equipNewArrowType() and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0:
+	elif !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
 		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
 		return false
 	
@@ -236,7 +237,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	if PlayerGlobals.EQUIPPED_ARROW.STACK <= 0 and !PlayerGlobals.equipNewArrowType():
+	if (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0) and !PlayerGlobals.equipNewArrowType():
 		bow_mode = false
 		toggleBowAnimation()
 	

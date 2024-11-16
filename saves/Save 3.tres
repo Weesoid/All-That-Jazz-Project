@@ -16,18 +16,18 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="18_hjfve"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="19_s3col"]
 
-[sub_resource type="Resource" id="Resource_iyhx5"]
+[sub_resource type="Resource" id="Resource_yrae8"]
 script = ExtResource("1_temoc")
 position = Vector2(25.8376, 59.0663)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_ju2ck"]
+[sub_resource type="Resource" id="Resource_ldlgc"]
 script = ExtResource("2_kdj7l")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_da1sl"]
+[sub_resource type="Resource" id="Resource_npyqr"]
 script = ExtResource("13_ajxf8")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_v10kl")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -77,7 +77,7 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
 KNOWN_POWERS = [ExtResource("12_815ge")]
 
-[sub_resource type="Resource" id="Resource_r42fp"]
+[sub_resource type="Resource" id="Resource_nvlc1"]
 script = ExtResource("18_hjfve")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 STORAGE = Array[Resource("res://scripts/resources/ResItem.gd")]([])
@@ -88,6 +88,6 @@ script = ExtResource("19_s3col")
 NAME = "Save 3 - 00:00:00
 Morale 1
 Alt Room"
-PLAYTIME = 0.00199986
+PLAYTIME = 0.000999928
 current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_iyhx5"), SubResource("Resource_ju2ck"), SubResource("Resource_da1sl"), SubResource("Resource_r42fp")]
+save_data = [SubResource("Resource_yrae8"), SubResource("Resource_ldlgc"), SubResource("Resource_npyqr"), SubResource("Resource_nvlc1")]
