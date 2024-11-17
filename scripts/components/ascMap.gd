@@ -5,14 +5,19 @@ class_name MapData
 @export var DESCRIPTION: String
 @export var IMAGE: Texture
 @export var SAFE: bool = false
+@export var ENEMY_FACTION: CombatGlobals.Enemy_Factions
+
 var CLEARED: bool = false
+var INITIAL_PATROLLER_COUNT: int = 0
 var REWARD_BANK: Dictionary = {'currency': 0.0, 'experience':0.0, 'loot':{}, 'tamed':[]}
+var full_alert: bool = false
 
 func _ready():
 	if !has_node('Player'): 
 		hide()
 	if !SAFE:
 		clearPatrollers()
+		INITIAL_PATROLLER_COUNT = getPatrollers().size()
 
 func clearPatrollers():
 	if SaveLoadGlobals.is_loading:
@@ -41,3 +46,21 @@ func giveRewards():
 				InventoryGlobals.addItemResource(item)
 	for combatant in REWARD_BANK['tamed']:
 		PlayerGlobals.addCombatantToTeam(combatant)
+
+func spawnPatrollers():
+	pass
+
+func getPatrollers():
+	var out = []
+	for child in get_children():
+		if child is GenericPatroller: out.append(child)
+	return out
+
+func arePatrollersAlerted():
+	for patroller in getPatrollers():
+		if patroller.get_node('NPCPatrolComponent').STATE > 0: return true
+	
+	return false
+
+func arePatrollersHalved():
+	return getPatrollers().size() <= ceil(INITIAL_PATROLLER_COUNT / 2)

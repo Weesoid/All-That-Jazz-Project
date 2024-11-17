@@ -47,4 +47,5 @@ func _process(_delta):
 		healm_val.text = str(combatant.STAT_VALUES['heal_mult'])
 		
 		if OverworldGlobals.isPlayerCheating():
+			debug_status.visible = OverworldGlobals.getPlayer().get_node('DebugComponent').visible
 			debug_status.text = str(combatant.STAT_MODIFIERS)

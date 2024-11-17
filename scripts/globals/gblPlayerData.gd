@@ -47,6 +47,12 @@ func initializeBenchedTeam():
 		if !member.initialized:
 			member.initializeCombatant(false)
 
+func getTeamMemberNames():
+	var out = []
+	for combatant in TEAM:
+		out.append(combatant.NAME)
+	return out
+
 func applyBlessing(blessing):
 	if blessing is String and !blessing.contains('res://'):
 		blessing = load("res://resources/blessings/%s.tres" % blessing)
@@ -91,7 +97,7 @@ func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=fal
 		var prev_exp = CURRENT_EXP
 		PARTY_LEVEL += 1
 		CURRENT_EXP = 0
-		if PARTY_LEVEL < MAX_PARTY_LEVEL:
+		if PARTY_LEVEL <= MAX_PARTY_LEVEL:
 			levelUpCombatants()
 			if prev_exp - prev_required > 0:
 				addExperience(prev_exp - prev_required, show_message, bypass_cap)
@@ -165,7 +171,9 @@ func hasActiveTeam()-> bool:
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
+		print('Adding SP b4! ', combatant.STAT_POINTS)
 		combatant.STAT_POINTS += 1
+		print('Adding SP af! ', combatant.STAT_POINTS)
 	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
@@ -178,12 +186,6 @@ func addCombatantToTeam(combatant_id):
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
 	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
-
-func getTeamMembers()-> Array[String]:
-	var out: Array[String] = []
-	for member in TEAM:
-		out.append(member.NAME)
-	return out
 
 func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)

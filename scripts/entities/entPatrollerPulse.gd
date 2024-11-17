@@ -23,15 +23,22 @@ func updatePatrollers():
 			elif mode == 1 and (current_state == 2 or current_state == 3):
 				continue
 			
-			body.get_node('NPCPatrolComponent').updateMode(mode)
+			if mode == 4:
+				if current_state == 0:
+					body.get_node('NPCPatrolComponent').updateMode(1)
+				elif current_state == 1:
+					body.get_node('NPCPatrolComponent').updateMode(2)
+			else:
+				body.get_node('NPCPatrolComponent').updateMode(mode)
 	
 #	PULSE VISUALS!
 	var pulse_anim = preload("res://scenes/entities_disposable/Pulse.tscn").instantiate()
 	var color: Color
 	match mode:
 		1: color = Color.WHITE
-		2: color = Color.RED
-		3: color = Color.YELLOW
+		2: color = Color.DARK_ORANGE
+		3: color = Color.SANDY_BROWN
+		4: color = Color.RED
 	pulse_anim.global_position = global_position
 	OverworldGlobals.getCurrentMap().add_child(pulse_anim)
 	pulse_anim.showAnimation(radius, 0.4,color)

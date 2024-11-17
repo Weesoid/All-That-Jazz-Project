@@ -16,6 +16,7 @@ class_name EnemyCombatantSquad
 var afflicted_status_effects: Array[String]
 
 func _ready():
+	UNIQUE_ID = get_parent().name
 	if FILL_EMPTY:
 		pickRandomEnemies()
 
@@ -28,6 +29,7 @@ func removeLingeringEffect(status_effect_name: String):
 func pickRandomEnemies():
 	randomize()
 	if RANDOM_SIZE:
+		print('Resizing!')
 		COMBATANT_SQUAD.resize(COMBATANT_SQUAD.size() - randi_range(0, COMBATANT_SQUAD.size()-2))
 	
 	for index in range(COMBATANT_SQUAD.size()):

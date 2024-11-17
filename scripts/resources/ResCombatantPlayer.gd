@@ -146,6 +146,7 @@ func reset():
 	for modification in STAT_MODIFIERS.keys():
 		removeStatModification(modification)
 	ABILITY_SET = []
+	LINGERING_STATUS_EFFECTS = []
 	EQUIPPED_WEAPON = null
 	STAT_POINTS = 1
 	CHARMS = {

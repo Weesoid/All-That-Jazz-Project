@@ -815,6 +815,9 @@ func confirmCancelInputs():
 		resetActionLog()
 	
 func resetActionLog(show_skills:bool=false):
+	if active_combatant is ResEnemyCombatant:
+		return
+	
 	moveCamera(camera_position)
 	whole_action_panel.show()
 	#combat_camera.zoom = Vector2(1.0, 1.0)
@@ -955,6 +958,11 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 	
 	await get_tree().create_timer(wait).timeout
 
+func getTamedCombatantsNames():
+	var out = []
+	for combatant in tamed_combatants: out.append(combatant.NAME)
+	return out
+
 func moveOnslaught(direction: int):
 	if (direction==1 and onslaught_combatant.SCENE.global_position.x+32 > 48) or (direction==-1 and onslaught_combatant.SCENE.global_position.x-32 < -48):
 		return
@@ -1049,6 +1057,7 @@ func addTargetClickButton(combatant: ResCombatant):
 	button.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	button.grow_vertical = Control.GROW_DIRECTION_BOTH
 	button.set_anchors_preset(Control.PRESET_CENTER)
+	button.rotation_degrees = combatant.SCENE.rotation_degrees
 	combatant.SCENE.add_child(button)
 	button.position.y -= 24
 

@@ -1,10 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://mfyf48hh0e2p"]
+[gd_scene load_steps=19 format=3 uid="uid://crl4saeub6jsd"]
 
 [ext_resource type="PackedScene" uid="uid://sogrlccaj2u0" path="res://scenes/components/NPCPatrolShooter.tscn" id="1_p2y0l"]
-[ext_resource type="PackedScene" uid="uid://c7iexier4edcx" path="res://scenes/entities_disposable/ProjectileBullet.tscn" id="1_v2kl0"]
-[ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="2_tnfqw"]
-[ext_resource type="PackedScene" uid="uid://ldtj4j0l61ow" path="res://scenes/components/Hurtbox.tscn" id="3_vqwtg"]
-[ext_resource type="Resource" uid="uid://dxdpkpoxq1gca" path="res://resources/combat/combatants_enemies/GenericBaddie.tres" id="4_2cjes"]
+[ext_resource type="Script" path="res://scripts/entities/entGenericPatrollerShooter.gd" id="1_y3dnd"]
 [ext_resource type="PackedScene" uid="uid://bahnqy0iowmdt" path="res://scenes/components/LineOfSight.tscn" id="5_j3lft"]
 [ext_resource type="Texture2D" uid="uid://x1rkx7kmua4n" path="res://images/animations/ent_walk_shooter.png" id="5_pqx67"]
 
@@ -382,23 +379,15 @@ radius = 8.0
 [node name="PatrollerShooter" type="CharacterBody2D"]
 motion_mode = 1
 wall_min_slide_angle = 0.0
+script = ExtResource("1_y3dnd")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 radius = 60.0
 
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_p2y0l")]
-PROJECTILE = ExtResource("1_v2kl0")
 ALERTED_SPEED_MULTIPLIER = 1.5
 CHASE_SPEED_MULTIPLIER = 4.0
-
-[node name="CombatantSquadComponent" parent="." instance=ExtResource("2_tnfqw")]
-ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("4_2cjes")])
-FILL_EMPTY = true
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
-
-[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY") instance=ExtResource("3_vqwtg")]
-BODY = NodePath("..")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {

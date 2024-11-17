@@ -6,7 +6,7 @@ class_name NPCPatrolMovement
 @onready var DEBUG = $Label
 @export var PATROL_AREA: Area2D
 @export var ALERTED_SPEED_MULTIPLIER = 1.25
-@export var CHASE_SPEED_MULTIPLIER = 6.0
+@export var CHASE_SPEED_MULTIPLIER = 5.0
 
 var NAV_AGENT: NavigationAgent2D
 var LINE_OF_SIGHT: LineOfSight
@@ -26,18 +26,18 @@ var DETECT_TIMER: Timer
 var COMBAT_SWITCH = true
 var PATROL = true
 
-func _ready():
+func initialize():
 	BODY = get_parent()
 	NAV_AGENT = get_parent().get_node('NavigationAgent2D')
 	LINE_OF_SIGHT = get_parent().get_node('LineOfSightComponent')
-	COMBAT_SQUAD = get_parent().get_node('CombatantSquadComponent')
+	#COMBAT_SQUAD = get_parent().get_node('CombatantSquadComponent')
 	ANIMATOR = get_parent().get_node('Animator')
 	
 #	if OverworldGlobals.getCurrentMap().CLEARED:
 #		destroy(false)
 	
 	NAME = get_parent().name
-	BODY.get_node('CombatantSquadComponent').UNIQUE_ID = NAME
+	COMBAT_SQUAD.UNIQUE_ID = NAME
 	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
@@ -67,7 +67,7 @@ func _physics_process(_delta):
 	BODY.move_and_slide()
 	if PATROL :
 		patrol()
-	if COMBAT_SWITCH and STATE != 3 and ANIMATOR.current_animation != 'KO':
+	if COMBAT_SWITCH and STATE != 3 and (ANIMATOR.current_animation != 'KO' or ANIMATOR.current_animation != 'Stun'):
 		executeCollisionAction()
 	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0:
 		updatePath(true)
@@ -104,11 +104,10 @@ func patrol():
 			chaseMode()
 			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
-	if (!NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and OverworldGlobals.getCurrentMap().has_node('Player') and BODY.global_position.distance_to(OverworldGlobals.getPlayer().global_position) > 300.0):
+	if (!NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and isPlayerTooFar(300.0)):
 		if self is NPCPatrolShooterMovement and ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left', 'Load'].has(ANIMATOR.current_animation):
 			ANIMATOR.animation_finished.emit()
 			ANIMATOR.play('RESET')
-		
 		updateMode(1)
 
 func alertPatrolMode():
@@ -166,6 +165,11 @@ func destroy(fancy=true):
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 		await ANIMATOR.animation_finished
 		isMapCleared()
+		if OverworldGlobals.getCurrentMap().arePatrollersHalved() and !OverworldGlobals.getCurrentMap().full_alert:
+			OverworldGlobals.addPatrollerPulse(BODY.global_position, 999.0, 4)
+			OverworldGlobals.getCurrentMap().full_alert = true
+			OverworldGlobals.showPlayerPrompt('Enemies have noticed your presence and are [color=red]fully alert[/color]!')
+	
 	BODY.queue_free()
 
 func isMapCleared():
@@ -174,6 +178,7 @@ func isMapCleared():
 	
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		if child.has_node('NPCPatrolComponent') and child != BODY: return
+	
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
 	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMap().NAME)
 	OverworldGlobals.getCurrentMap().giveRewards()
@@ -243,6 +248,9 @@ func patrolToPosition(target_position: Vector2):
 
 func targetReached():
 	return NAV_AGENT.distance_to_target() < 1.0
+
+func isPlayerTooFar(distance: float):
+	return OverworldGlobals.getCurrentMap().has_node('Player') and BODY.global_position.distance_to(OverworldGlobals.getPlayer().global_position) > distance
 
 func updateLineOfSight():
 	LINE_OF_SIGHT.look_at(NAV_AGENT.get_next_path_position())

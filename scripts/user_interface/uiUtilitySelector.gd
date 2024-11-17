@@ -24,6 +24,7 @@ func _input(event):
 			loadOtherArrows(arrow)
 		current_index = arrows.find(PlayerGlobals.EQUIPPED_ARROW)
 		updateIcon(arrows[current_index].ICON, arrows[current_index].NAME)
+		#Input.action_press("ui_bow")
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg")
 	if Input.is_action_pressed("ui_select_arrow"):
 		visible = true

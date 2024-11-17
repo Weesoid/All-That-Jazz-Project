@@ -1,4 +1,4 @@
-[gd_scene load_steps=125 format=3 uid="uid://xfrvaohqhfml"]
+[gd_scene load_steps=126 format=3 uid="uid://xfrvaohqhfml"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
@@ -70,6 +70,38 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
+[sub_resource type="GDScript" id="GDScript_lueap"]
+script/source = "extends VBoxContainer
+
+@onready var player = OverworldGlobals.getPlayer()
+
+func _input(event):
+	if player.is_processing_input() and player.power_inputs != '' and player.power_listening and (event is InputEventKey or event is InputEventJoypadButton):
+		for power in await getValidPowers(player.power_inputs):
+			add_child(createReference(power))
+	
+	if Input.is_action_just_released('ui_gambit'):
+		await clearReferences()
+
+func clearReferences():
+	for child in get_children():
+		child.queue_free()
+		await child.tree_exited
+
+func createReference(power: ResPower):
+	var reference = preload(\"res://scenes/user_interface/PowerReference.tscn\").instantiate()
+	reference.power = power
+	return reference
+
+func getValidPowers(inputs: String):
+	await clearReferences()
+	var valid_powers = []
+	for power in PlayerGlobals.KNOWN_POWERS:
+		if power.INPUT_MAP.begins_with(inputs): valid_powers.append(power)
+	return valid_powers
+
+"
+
 [sub_resource type="Animation" id="Animation_te3tf"]
 length = 0.001
 tracks/0/type = "value"
@@ -99,31 +131,30 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:position")
+tracks/2/path = NodePath(".:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -51)]
+"update": 1,
+"values": [false]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath(".:visible")
+tracks/3/path = NodePath(".:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_2eywy"]
 resource_name = "Show"
-length = 1.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -140,37 +171,37 @@ tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 2
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 1, 1.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(1e-05, 1), Vector2(1, 1), Vector2(1, 1), Vector2(1e-05, 1)]
+"values": [Vector2(0, 0), Vector2(1.25, 1.25), Vector2(1.3, 1.3)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:position")
+tracks/2/path = NodePath(".:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2, 1.2, 1.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, -13.753), Vector2(0, -51), Vector2(0, -51), Vector2(0, -13.753)]
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath(".:visible")
+tracks/3/path = NodePath(".:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 1.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
+"times": PackedFloat32Array(0, 0.1, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wiltc"]
@@ -2067,7 +2098,8 @@ position = Vector2(0, -21.9902)
 
 [node name="PlayerPower" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(0, -51)
+z_index = 2
+position = Vector2(0, -20)
 texture = ExtResource("3_h566x")
 hframes = 9
 
@@ -2144,9 +2176,17 @@ text = "1000"
 
 [node name="PowerInputs" type="HBoxContainer" parent="PlayerCamera"]
 offset_left = -24.0
-offset_top = -56.0
+offset_top = -59.0
 offset_right = 24.0
-offset_bottom = -48.0
+offset_bottom = -51.0
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerCamera"]
+offset_left = 144.0
+offset_top = -152.0
+offset_right = 283.0
+offset_bottom = -102.0
+script = SubResource("GDScript_lueap")
 
 [node name="UtilitySelector" parent="PlayerCamera" instance=ExtResource("9_pvbyc")]
 visible = false

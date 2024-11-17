@@ -20,7 +20,7 @@ Entity: Sure whatever man which one?
 ~ experience
 Entity: Sure man wazzup?!
 - Just give me experience ya fuck.
-	do addExperience(500, true)
+	do addExperience(11500, true)
 - Increase muh cap.
 	do increaseLevelCap()
 => END

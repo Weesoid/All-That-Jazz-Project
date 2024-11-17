@@ -31,6 +31,7 @@ func _ready():
 
 func showLoot():
 	var bank = OverworldGlobals.getCurrentMap().REWARD_BANK['loot']
+	var tamed = OverworldGlobals.getCurrentMap().REWARD_BANK['tamed']
 	for drop in bank.keys():
 		var icon: TextureRect = TextureRect.new()
 		var tween = create_tween()
@@ -44,3 +45,22 @@ func showLoot():
 		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
 		await get_tree().create_timer(0.15).timeout
+	for combatant in tamed:
+		var icon = createIcon(combatant)
+		var tween = create_tween()
+		tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
+		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.25)
+		loot.add_child(icon)
+		OverworldGlobals.playSound("res://audio/sounds/52_Dive_02.ogg", 4.0)
+		await get_tree().create_timer(0.15).timeout
+
+func createIcon(combatant: ResCombatant):
+	combatant.initializeCombatant()
+	var icon = TextureRect.new()
+	var atlas = AtlasTexture.new()
+	atlas.region = Rect2(0, 0, 48, 48)
+	atlas.atlas = combatant.SCENE.get_node('Sprite2D').texture
+	icon.texture = atlas
+	icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
+	combatant.SCENE.queue_free()
+	return icon 

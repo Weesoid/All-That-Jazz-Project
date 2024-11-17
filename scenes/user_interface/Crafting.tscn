@@ -39,6 +39,18 @@ offset_bottom = -68.0
 text = "Repair Weapons"
 click_sound = ExtResource("3_iry6e")
 
+[node name="Recipes" parent="." instance=ExtResource("2_3ycts")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 124.0
+offset_top = -66.0
+offset_right = 173.0
+offset_bottom = -44.0
+text = "Recipes"
+click_sound = ExtResource("3_iry6e")
+
 [node name="Craftables" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -147,3 +159,4 @@ text = "[center]LEFT CLICK TO USE ITEM
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="pressed" from="Repair" to="." method="_on_repair_pressed"]
+[connection signal="pressed" from="Recipes" to="." method="_on_recipes_pressed"]

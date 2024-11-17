@@ -13,11 +13,8 @@ class_name ResBlessing
 }
 
 func setBlessing(apply:bool):
-	print('receieved: ', apply)
-	print('Before: ', PlayerGlobals.overworld_stats)
 	for key in ow_stat_modifications.keys():
 		if ow_stat_modifications[key] != 0 and apply: 
 			PlayerGlobals.overworld_stats[key] += ow_stat_modifications[key]
 		elif ow_stat_modifications[key] != 0 and !apply: 
 			PlayerGlobals.overworld_stats[key] -= ow_stat_modifications[key]
-	print('Af: ', PlayerGlobals.overworld_stats)

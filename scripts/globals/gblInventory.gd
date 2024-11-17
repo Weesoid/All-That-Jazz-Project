@@ -1,9 +1,11 @@
 extends Node
 
 var INVENTORY: Array[ResItem] = []
+var CRAFTED: Array[String] = []
 var RECIPES: Dictionary = {
 	# In-game name -> .tres name
-	['Scrap Salvage', null, null]: 'Arrow',
+	['Scrap Salvage', null, null]: 'ArrowJunk.8',
+	['Junk Arrow', 'Scrap Salvage', null]: 'Arrow.2',
 	['Arrow', 'Scrap Salvage', null]: 'ArrowSleeper',
 	['Murder Charm', 'Scrap Salvage', null]: 'CharmStoneWall',
 	['Scrap Salvage', 'Precious Salvage', null]: 'CharmMurder',
@@ -45,6 +47,8 @@ func craftItem(item_array: Array[ResItem]):
 			addItem(craft_data[0], int(craft_data[1]))
 		else:
 			addItem(craft_data[0])
+		if !CRAFTED.has(craft_data[0]):
+			CRAFTED.append(craft_data[0])
 
 func addItemResource(item: ResItem, count=1, show_message=true, check_restrictions=true):
 	if (!canAdd(item,count,show_message) or count == 0) and check_restrictions:
@@ -74,8 +78,8 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	added_item_to_inventory.emit()
 	sortItems()
 
-func hasItem(item_name, count:int=0):
-	if item_name is String:
+func hasItem(item_name, count:int=0, check_equipped:bool=true):
+	if item_name is String and check_equipped:
 		for combatant in PlayerGlobals.TEAM:
 			if combatant.EQUIPPED_WEAPON != null and combatant.EQUIPPED_WEAPON.NAME == item_name:
 				return true
@@ -84,7 +88,7 @@ func hasItem(item_name, count:int=0):
 					continue
 				elif charm.NAME == item_name:
 					return true
-	elif item_name is ResItem:
+	elif item_name is ResItem and check_equipped:
 		for combatant in PlayerGlobals.TEAM:
 			if combatant.EQUIPPED_WEAPON == item_name:
 				return true
@@ -95,8 +99,11 @@ func hasItem(item_name, count:int=0):
 		for item in INVENTORY:
 			if item is ResStackItem and count > 0 and item.STACK >= count and item.NAME == item_name:
 				return true
-			elif (item is ResStackItem and count <= 0) or !item is ResStackItem:
-				return item.NAME == item_name
+			elif (item is ResStackItem and count <= 0) or (!item is ResStackItem):
+				if item.NAME == item_name:
+					return true
+				else:
+					continue
 	elif item_name is ResItem:
 		if count > 0 and INVENTORY.has(item_name) and getItem(item_name).STACK >= count:
 			return true
@@ -112,8 +119,11 @@ func getEquippedWeapons()-> Array:
 			out.append(combatant.EQUIPPED_WEAPON)
 	return out
 
-func getItem(item: ResItem):
-	return INVENTORY[INVENTORY.find(item)]
+func getItem(item):
+	if item is ResItem:
+		return INVENTORY[INVENTORY.find(item)]
+	elif item is String:
+		return getItemWithName(item)
 
 func getItemWithName(item_name: String):
 	for item in INVENTORY:
@@ -168,7 +178,7 @@ func canAdd(item, count:int=1, show_prompt=true):
 	elif item is ResEquippable and hasItem(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
-	elif item is ResStackItem and hasItem(item.NAME) and item.STACK + count > item.MAX_STACK and item.MAX_STACK > 0:
+	elif item is ResStackItem and hasItem(item.NAME) and item.STACK == item.MAX_STACK and item.MAX_STACK > 0:
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
 	
@@ -244,11 +254,13 @@ func getItemType(item: ResItem)-> float:
 func saveData(save_data: Array):
 	var data = InventorySaveData.new()
 	data.INVENTORY = INVENTORY
+	data.CRAFTED = CRAFTED
 	saveItemData(data)
 	save_data.append(data)
 
 func loadData(save_data: InventorySaveData):
 	INVENTORY = save_data.INVENTORY
+	CRAFTED = save_data.CRAFTED
 	loadItemData(save_data)
 
 func saveItemData(inv_save_data: InventorySaveData):
@@ -283,3 +295,4 @@ func loadItemData(save_data: InventorySaveData):
 
 func resetVariables():
 	INVENTORY = []
+	CRAFTED = []

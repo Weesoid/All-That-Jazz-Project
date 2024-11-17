@@ -1,10 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://cfgaxedrlkql3"]
+[gd_scene load_steps=14 format=3 uid="uid://bat6k2egemqg8"]
 
+[ext_resource type="Script" path="res://scripts/entities/entGenericPatroller.gd" id="1_khwtj"]
 [ext_resource type="PackedScene" uid="uid://b0e4gc4eq74ca" path="res://scenes/components/NPCPatrol.tscn" id="1_qmtob"]
-[ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="2_d6omk"]
-[ext_resource type="PackedScene" uid="uid://ldtj4j0l61ow" path="res://scenes/components/Hurtbox.tscn" id="4_ps25d"]
 [ext_resource type="Texture2D" uid="uid://bfhwk8vvbfvp3" path="res://images/animations/ent_walk.png" id="5_y0v56"]
 [ext_resource type="PackedScene" uid="uid://bahnqy0iowmdt" path="res://scenes/components/LineOfSight.tscn" id="6_3p5yl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
+radius = 11.0
 
 [sub_resource type="Animation" id="Animation_cg5ba"]
 resource_name = "KO"
@@ -193,30 +195,16 @@ _data = {
 "Walk_Up": SubResource("Animation_dpwad")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
-radius = 11.0
-
 [node name="Patroller" type="CharacterBody2D"]
 motion_mode = 1
 wall_min_slide_angle = 0.0
+script = ExtResource("1_khwtj")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 radius = 60.0
 
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_qmtob")]
-
-[node name="CombatantSquadComponent" parent="." instance=ExtResource("2_d6omk")]
-FILL_EMPTY = true
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
-
-[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("BODY") instance=ExtResource("4_ps25d")]
-BODY = NodePath("..")
-
-[node name="Animator" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_sx3aq")
-}
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -14)
@@ -229,3 +217,8 @@ frame = 1
 shape = SubResource("CircleShape2D_6fsld")
 
 [node name="LineOfSightComponent" parent="." instance=ExtResource("6_3p5yl")]
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sx3aq")
+}

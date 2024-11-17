@@ -36,7 +36,7 @@ func _on_ready():
 func canAddToInventory():
 	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
 	if result_data[1] != null and result_data[0] is ResStackItem:
-		return InventoryGlobals.canAdd(result_data[0], result_data[1], false)
+		return !InventoryGlobals.canAdd(result_data[0], int(result_data[1]), false)
 	else:
 		return !InventoryGlobals.canAdd(result_data[0], 1, false)
 
@@ -72,7 +72,8 @@ func updateComponentSlot(slot: int):
 			2:
 				component_b.text = '%s x%s' % [item.NAME, item.STACK]
 
-func showItems(slot_button: Button, slot: int):
+func showItems(slot_button: Button, slot: int, mode:int=0):
+	clearItemDescription()
 	for child in item_select_buttons.get_children():
 		item_select_buttons.remove_child(child)
 		child.queue_free()
@@ -101,16 +102,32 @@ func showItems(slot_button: Button, slot: int):
 	for item in InventoryGlobals.INVENTORY:
 		if all_components.has(item): continue
 		var button = OverworldGlobals.createItemButton(item)
-		button.pressed.connect(
-			func():
-				addItemToSlot(item, slot, slot_button)
-		)
+		button.pressed.connect(func(): addItemToSlot(item, slot, slot_button))
 		button.mouse_entered.connect(func(): updateItemDescription(item))
 		button.focus_entered.connect(func(): updateItemDescription(item))
 		if item.MANDATORY: button.disabled = true
 		item_select_buttons.add_child(button)
 
+func showRecipes():
+	print(InventoryGlobals.CRAFTED)
+	clearItemDescription()
+	for child in item_select_buttons.get_children():
+		item_select_buttons.remove_child(child)
+		child.queue_free()
+	
+	item_select.show()
+	InventoryGlobals.CRAFTED.sort()
+	for recipe in InventoryGlobals.CRAFTED:
+		var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+		button.icon = load("res://resources/items/%s.tres" % recipe).ICON
+		button.theme = load("res://design/ItemButtons.tres")
+		button.pressed.connect(func(): useRecipe(recipe))
+		button.mouse_entered.connect(func(): showRecipeDescription(recipe))
+		button.focus_entered.connect(func(): showRecipeDescription(recipe))
+		item_select_buttons.add_child(button)
+
 func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
+	slot_button.modulate = Color.WHITE
 	if item.MANDATORY:
 		return
 	else:
@@ -132,13 +149,35 @@ func removeItemFromSlot(slot: int):
 		0:
 			component_core.text = 'CORE COMPONENT'
 			component_core.icon = preload("res://images/sprites/icon_plus.png")
+			component_core.modulate = Color.WHITE
 		1:
 			component_a.text = 'COMPONENT A'
 			component_a.icon = preload("res://images/sprites/icon_plus.png")
+			component_a.modulate = Color.WHITE
 		2:
 			component_b.text = 'COMPONENT B'
 			component_b.icon = preload("res://images/sprites/icon_plus.png")
+			component_b.modulate = Color.WHITE
+	
 	all_components[slot] = null
+
+func useRecipe(item: String):
+	for i in range(3):
+		removeItemFromSlot(i)
+	
+#	if item.split('.').size() > 1:
+#		item = item.split('.')[0]
+	for result in InventoryGlobals.RECIPES.keys():
+		if InventoryGlobals.RECIPES[result].split('.')[0] == item:
+			var i = 0
+			for component in result:
+				if InventoryGlobals.hasItem(component, 0, false):
+					addItemToSlot(InventoryGlobals.getItem(component), i, base.get_child(i))
+				elif component != null:
+					base.get_child(i).text = '%s' % component
+					base.get_child(i).icon = preload("res://images/sprites/cross.png")
+					base.get_child(i).modulate = Color.DARK_GRAY
+				i += 1
 
 func updateItemDescription(item: ResItem):
 	if item == null:
@@ -148,9 +187,33 @@ func updateItemDescription(item: ResItem):
 	item_select_info_general.text = item.getGeneralInfo()
 	item_select_info_main.text = item.getInformation()
 
+func showRecipeDescription(item_name: String):
+	var out = ''
+	for recipe in InventoryGlobals.RECIPES.keys():
+		if InventoryGlobals.RECIPES[recipe].split('.')[0] == item_name:
+			out += load("res://resources/items/%s.tres" % item_name).getInformation()+'\n\nRecipe: '
+			var i = 1
+			for component in recipe:
+				if component != null:
+					if InventoryGlobals.hasItem(component, 0, false):
+						out += component
+					else:
+						out += '[color=red]'+component+'[/color]'
+					if i != recipe.filter(func(a): return a != null).size():
+						out += ', '
+					i += 1
+	
+	item_select_info.show()
+	item_select_info_main.text = out
+	#item_select_info_general.text = out
+
 func clearItemDescription():
 	item_select_info_general.text = ''
 	item_select_info_main.text = ''
 
 func _on_repair_pressed():
 	InventoryGlobals.repairAllItems()
+
+func _on_recipes_pressed():
+	
+	showRecipes()

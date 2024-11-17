@@ -16,4 +16,4 @@ NAME = "Alactreon"
 ICON = ExtResource("1_08b4g")
 DESCRIPTION = "It's a blade for slashin!"
 VALUE = 1
-MANDATORY = false
+MANDATORY = true

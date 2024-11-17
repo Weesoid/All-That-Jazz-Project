@@ -130,8 +130,7 @@ func _input(_event):
 	elif SettingsGlobals.stopSprint():
 		sprinting = false
 	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
-		if bow_draw_strength == 0: 
-			bow_mode = !bow_mode
+		if bow_draw_strength == 0: bow_mode = !bow_mode
 	
 	# Debug
 	if Input.is_action_pressed("ui_cheat_mode"):
@@ -193,6 +192,7 @@ func cancelPower():
 
 func resetStates():
 	undrawBowAnimation()
+	toggleVoidAnimation(false)
 	sprinting = false
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	ANIMATION_SPEED = 0.0
@@ -203,15 +203,15 @@ func resetStates():
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
-	
 	if OverworldGlobals.getCurrentMap().SAFE:
 		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
 		return false
-	
 	if velocity != Vector2.ZERO:
 		return false
-	elif !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
+	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
 		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
+		return false
+	if PlayerGlobals.EQUIPPED_ARROW == null:
 		return false
 	
 	return true
@@ -219,12 +219,12 @@ func canDrawBow()-> bool:
 func canUsePower():
 	if OverworldGlobals.inMenu():
 		return false
-	
 	if OverworldGlobals.getCurrentMap().SAFE:
 		prompt.showPrompt("Can't use [color=gray]Gambit[/color] right now.")
 		return false
-	
 	if bow_draw_strength != 0.0:
+		return false
+	if OverworldGlobals.getCombatantSquad('Player').is_empty():
 		return false
 	
 	return true

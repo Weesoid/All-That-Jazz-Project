@@ -10,7 +10,8 @@ func add(count: int, show_prompt=true):
 		STACK += count
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s (%s)[/color].' % [NAME, STACK])
 	else:
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s [color=white]cannot be added. Max stack reached.' % [NAME])
+		STACK = MAX_STACK
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[color=white] max stack reached.' % [NAME])
 
 func take(count: int):
 	STACK -= count
