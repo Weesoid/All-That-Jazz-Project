@@ -1,16 +1,17 @@
 [gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://cdpk5o3ahct04"]
 
-[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_8s4yt"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_iv4bj"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="1_kre4j"]
 
 [resource]
 script = ExtResource("1_kre4j")
 STAT_MODIFICATIONS = {
-"brawn": 2.0,
-"grit": 1.0
+"brawn": 0.25,
+"grit": -0.25
 }
 NAME = "Murder Charm"
-ICON = ExtResource("1_8s4yt")
+ICON = ExtResource("1_iv4bj")
 DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
-MANDATORY = false
+MANDATORY = null
+PARENT_ITEM = ""

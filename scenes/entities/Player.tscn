@@ -396,7 +396,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_h8s5o"]
 resource_name = "Bow_Shoot_Down"
-length = 0.5
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -436,7 +436,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_h876k"]
 resource_name = "Bow_Shoot_Left"
-length = 0.5
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -488,7 +488,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_0cepm"]
 resource_name = "Bow_Shoot_Right"
-length = 0.5
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -540,7 +540,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_8h4iq"]
 resource_name = "Bow_Shoot_Up"
-length = 0.5
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2125,6 +2125,7 @@ libraries = {
 
 [node name="PlayerDirection" type="Marker2D" parent="."]
 position = Vector2(0, -20)
+rotation = 3.14159
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 collision_layer = 0

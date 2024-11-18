@@ -64,7 +64,7 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	elif item is ResCharm:
 		for i in range(count): 
 			var dupe_item = item.duplicate()
-			dupe_item.PARENT_ITEM = item
+			dupe_item.PARENT_ITEM = item.resource_path
 			INVENTORY.append(dupe_item)
 		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
 	elif item is ResWeapon and check_restrictions:
@@ -290,6 +290,8 @@ func loadItemData(save_data: InventorySaveData):
 				if item.STACK > item.MAX_STACK: item.STACK = item.MAX_STACK
 		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'):
 			item.durability = item_data[item.resource_path+'-durability']
+		elif item is ResCharm:
+			item.updateItem()
 	for weapon in getEquippedWeapons():
 		weapon.durability = item_data[weapon.resource_path+'-durability']
 

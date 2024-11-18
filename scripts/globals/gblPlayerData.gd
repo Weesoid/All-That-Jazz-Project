@@ -110,7 +110,7 @@ func getRequiredExp() -> int:
 	var baseExp = 500.0
 	var expMultiplier = 1.25
 	#print(PARTY_LEVEL)
-	var gain = sqrt(expMultiplier ** (PARTY_LEVEL - 1)) * baseExp # Chng to cubrrt
+	var gain = pow(expMultiplier ** (PARTY_LEVEL - 1), 1.0/3.0) * baseExp # Chng to cubrrt
 	return int(gain)
 
 func increaseLevelCap(amount:int=5):
@@ -118,6 +118,16 @@ func increaseLevelCap(amount:int=5):
 	if CURRENT_EXP >= getRequiredExp():
 		addExperience(1, true)
 	OverworldGlobals.showPlayerPrompt('Level cap increased to [color=yellow]%s[/color]!' % MAX_PARTY_LEVEL)
+
+func getLevelTier():
+	if PARTY_LEVEL < 5:
+		return 1
+	elif PARTY_LEVEL >= 5 and PARTY_LEVEL < 10:
+		return 2
+	elif PARTY_LEVEL >= 10 and PARTY_LEVEL < 15:
+		return 3
+	elif PARTY_LEVEL > 15:
+		return 4
 
 func addCurrency(value: int):
 	if value + CURRENCY < 0:
@@ -335,7 +345,8 @@ func loadData(save_data: PlayerSaveData):
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.CHARMS.values():
 			if charm != null:
-				charm.updateItem() 
+				print('Updating ', charm)
+				charm.updateItem()
 				charm.equip(combatant)
 		combatant.updateCombatant(save_data)
 	

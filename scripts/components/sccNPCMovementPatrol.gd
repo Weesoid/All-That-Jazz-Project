@@ -5,6 +5,7 @@ class_name NPCPatrolMovement
 @onready var PATROL_BUBBLE_SPRITE = $PatrolBubble
 @onready var DEBUG = $Label
 @export var PATROL_AREA: Area2D
+@export var BASE_MOVE_SPEED = 35
 @export var ALERTED_SPEED_MULTIPLIER = 1.25
 @export var CHASE_SPEED_MULTIPLIER = 5.0
 
@@ -13,7 +14,6 @@ var LINE_OF_SIGHT: LineOfSight
 var COMBAT_SQUAD: CombatantSquad
 var BODY: CharacterBody2D
 var ANIMATOR: AnimationPlayer
-var BASE_MOVE_SPEED = 35
 var STATE = 0
 var NAME: String
 var TARGET: Vector2
@@ -25,6 +25,7 @@ var DETECT_TIMER: Timer
 
 var COMBAT_SWITCH = true
 var PATROL = true
+var soothe = false
 
 func initialize():
 	BODY = get_parent()
@@ -57,21 +58,24 @@ func initialize():
 			if id == NAME:
 				destroy()
 			)
-	
+	CombatGlobals.combat_lost.connect(
+		func(_id):
+			soothe = true
+	)
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		# and !child.has_node('NPCPatrolComponent')
 		if child is CharacterBody2D and !child is PlayerScene and !child.has_node('NPCPatrolComponent'):
 			child.add_collision_exception_with(BODY)
 
 func _physics_process(_delta):
+	if soothe and STATE != 0: soothePatrolMode()
 	BODY.move_and_slide()
 	if PATROL :
 		patrol()
-	if COMBAT_SWITCH and STATE != 3 and (ANIMATOR.current_animation != 'KO' or ANIMATOR.current_animation != 'Stun'):
+	if COMBAT_SWITCH and STATE != 3 and ANIMATOR.current_animation != 'KO' and ANIMATOR.current_animation != 'Stun':
 		executeCollisionAction()
 	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0:
 		updatePath(true)
-	
 #	if OverworldGlobals.isPlayerCheating():
 #		DEBUG.show()
 #		DEBUG.text = str(DETECT_TIMER.time_left)
@@ -133,14 +137,15 @@ func chaseMode():
 	updatePath()
 
 func stunMode(alert_others:bool=false):
-	var last_state = STATE
+#	var last_state = STATE
 	STATE = 3
 	updatePath()
 	if alert_others:
-		if last_state == 2 or last_state == 1:
-			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
-		else:
-			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
+		OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 4)
+#		if last_state == 2 or last_state == 1:
+#			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
+#		else:
+#			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 4)
 
 func updateMode(state: int, alert_others:bool=false):
 	if STATE == state:
@@ -165,7 +170,7 @@ func destroy(fancy=true):
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 		await ANIMATOR.animation_finished
 		isMapCleared()
-		if OverworldGlobals.getCurrentMap().arePatrollersHalved() and !OverworldGlobals.getCurrentMap().full_alert:
+		if OverworldGlobals.getCurrentMap().arePatrollersHalved() and !OverworldGlobals.getCurrentMap().full_alert and OverworldGlobals.getCurrentMap().getPatrollers().size() > 1:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 999.0, 4)
 			OverworldGlobals.getCurrentMap().full_alert = true
 			OverworldGlobals.showPlayerPrompt('Enemies have noticed your presence and are [color=red]fully alert[/color]!')
@@ -180,7 +185,9 @@ func isMapCleared():
 		if child.has_node('NPCPatrolComponent') and child != BODY: return
 	
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
-	PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMap().NAME)
+	if !PlayerGlobals.CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME):
+		PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMap().NAME)
+	#print(PlayerGlobals.CLEARED_MAPS)
 	OverworldGlobals.getCurrentMap().giveRewards()
 
 func updatePath(immediate:bool=false):

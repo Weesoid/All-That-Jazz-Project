@@ -2,6 +2,7 @@ extends Control
 
 @onready var base = $Craftables/CenterContainer/GridContainer
 @onready var repair_button = $Repair
+@onready var recipe_button = $Recipes
 @onready var component_core = $Craftables/CenterContainer/GridContainer/CoreComp
 @onready var component_a = $Craftables/CenterContainer/GridContainer/CompA
 @onready var component_b = $Craftables/CenterContainer/GridContainer/CompB
@@ -32,6 +33,8 @@ func _on_ready():
 	component_b.pressed.connect(func(): showItems(component_b, 2))
 	craft_button.connect('pressed', craft)
 	OverworldGlobals.setMenuFocus(base)
+	if InventoryGlobals.CRAFTED.is_empty():
+		recipe_button.hide()
 
 func canAddToInventory():
 	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
@@ -109,13 +112,27 @@ func showItems(slot_button: Button, slot: int, mode:int=0):
 		item_select_buttons.add_child(button)
 
 func showRecipes():
-	print(InventoryGlobals.CRAFTED)
 	clearItemDescription()
 	for child in item_select_buttons.get_children():
 		item_select_buttons.remove_child(child)
 		child.queue_free()
 	
 	item_select.show()
+	var cancel_button = OverworldGlobals.createCustomButton()
+	cancel_button.theme = preload("res://design/ItemButtons.tres")
+	cancel_button.icon = preload('res://images/sprites/icon_cross.png')
+	cancel_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	cancel_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
+	cancel_button.pressed.connect(
+		func():
+			item_select.hide()
+			OverworldGlobals.setMenuFocusMode(base, true)
+			OverworldGlobals.setMenuFocusMode(repair_button, true)
+	)
+	cancel_button.connect('mouse_entered', clearItemDescription)
+	cancel_button.connect('focus_entered', clearItemDescription)
+	item_select_buttons.add_child(cancel_button)
+	cancel_button.grab_focus()
 	InventoryGlobals.CRAFTED.sort()
 	for recipe in InventoryGlobals.CRAFTED:
 		var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()

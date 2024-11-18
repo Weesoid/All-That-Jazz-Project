@@ -21,10 +21,22 @@ func removeStatModifications():
 func getStringStats():
 	var result = ""
 	for key in STAT_MODIFICATIONS.keys():
+		var value = STAT_MODIFICATIONS[key]
+		if value is float: 
+			value *= 100.0
 		if STAT_MODIFICATIONS[key] > 0 and STAT_MODIFICATIONS[key]:
-			result += key.to_upper() + " +" + str(STAT_MODIFICATIONS[key]) + "\n"
+			result += '[color=GREEN_YELLOW]'
+			if value is float: 
+				result += "+" + str(value) + "% " +key.to_upper() + "\n"
+			else:
+				result += "+" + str(value) + " " +key.to_upper() +  "\n"
 		else:
-			result += key.to_upper() + " " + str(STAT_MODIFICATIONS[key]) + "\n"
+			result += '[color=ORANGE_RED]'
+			if value is float: 
+				result += str(value) + "% " +key.to_upper() +  "\n"
+			else:
+				result += str(value) + " " +key.to_upper() + "\n"
+		result += '[/color]'
 	return result
 
 func isEquipped():

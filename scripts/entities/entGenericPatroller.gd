@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name GenericPatroller
 
 @export var patrol_area: Area2D
+@export var base_move_speed: float
 @export var alerted_speed_multiplier: float
 @export var chase_speed_multiplier: float
 
@@ -12,6 +13,8 @@ func _ready():
 	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
 	patrol_component.PATROL_AREA = patrol_area
 	
+	if base_move_speed != 0:
+		patrol_component.BASE_MOVE_SPEED = base_move_speed
 	if alerted_speed_multiplier != 0:
 		patrol_component.ALERTED_SPEED_MULTIPLIER = alerted_speed_multiplier
 	if chase_speed_multiplier != 0:

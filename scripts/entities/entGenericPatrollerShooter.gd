@@ -1,7 +1,7 @@
 extends GenericPatroller
 class_name GenericPatrollerShooter
 
-@export var projectile: PackedScene
+@export var projectile: PackedScene = load("res://scenes/entities_disposable/ProjectileBullet.tscn")
 
 func _ready():
 	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')

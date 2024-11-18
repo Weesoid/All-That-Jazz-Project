@@ -13,6 +13,9 @@ var FACTION_MUSIC = {
 		"res://audio/music/Little Speck DV.ogg"
 	]
 }
+var FACTION_PATROLLER_PROPERTIES = {
+	Enemy_Factions.Neutral: preload("res://resources/combat/faction_patrollers/Neutral.tres")
+}
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
 signal dialogue_signal(flag)
@@ -231,10 +234,10 @@ func playHurtAnimation(target: ResCombatant):
 			getCombatScene().combat_camera.shake(25.0, 10.0)
 			if target is ResEnemyCombatant:
 				CombatGlobals.playAnimation(target, 'KO')
-				if target.ELITE:
-					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
-				else:
-					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
+#				if target.ELITE:
+#					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
+#				else:
+				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
 			elif target is ResPlayerCombatant:
 				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
 	else:
@@ -423,6 +426,64 @@ func isSameCombatantType(combatant_a, combatant_b):
 		combatant_b = combatant_b.combatant_resource
 	
 	return getCombatantType(combatant_a) == getCombatantType(combatant_b)
+
+func generateFactionPatroller(faction: Enemy_Factions, type:int)-> GenericPatroller:
+	return generateGenericPatroller(type, FACTION_PATROLLER_PROPERTIES[faction].patroller_properties[type])
+
+## 0: Chaser, 1: Shooter
+func generateGenericPatroller(type:int,data={})-> GenericPatroller:
+	var patroller: GenericPatroller
+	match type:
+		0: patroller = load("res://scenes/entities/mobs/Patroller.tscn").instantiate()
+		1: patroller = load("res://scenes/entities/mobs/PatrollerShooter.tscn").instantiate()
+	if data.keys().has('sprite_sheet'):
+		patroller.get_node('Sprite2D').texture = load(data['sprite_sheet'])
+	if data.keys().has('base_speed'):
+		patroller.base_move_speed = data['base_speed']
+	if data.keys().has('alerted_speed'):
+		patroller.alerted_speed_multiplier = data['alerted_speed']
+	if data.keys().has('chase_speed'):
+		patroller.chase_speed_multiplier = data['chase_speed']
+	if data.keys().has('projectile') and type == 1:
+		patroller.projectile = load(data['projectile'])
+	
+	return patroller
+
+func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions):
+	randomize()
+	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
+	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)
+	if squad_size > 4: squad_size = 4
+	squad.FILL_EMPTY = true
+	squad.ENEMY_POOL = getFactionEnemies(faction)
+	squad.COMBATANT_SQUAD.resize(squad_size)
+	squad.TAMEABLE_CHANCE = 0 + (0.01 * PlayerGlobals.PARTY_LEVEL) # Add story check later
+	squad.pickRandomEnemies()
+	patroller.add_child(squad)
+
+func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
+	var path
+	match faction:
+		Enemy_Factions.Neutral: path = "res://resources/combat/combatants_enemies/neutral/"
+		Enemy_Factions.Unggboys: path = "res://resources/combat/combatants_enemies/unggboys/"
+	
+	var dir = DirAccess.open(path)
+	var out: Array[ResEnemyCombatant] = []
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			var combatant = load(path+'/'+file_name)
+			out.append(combatant)
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+		print(path)
+	
+	return out
+
+func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
+	return enemy.TIER+1 <= PlayerGlobals.getLevelTier()
 
 func addTension(amount: int):
 #	if amount > 0:

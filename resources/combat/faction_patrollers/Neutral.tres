@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ResFactionPatrollerProperties" load_steps=2 format=3 uid="uid://cqifm0k8p0vg0"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResFactionPatrollerProperties.gd" id="1_83g7t"]
+
+[resource]
+script = ExtResource("1_83g7t")
+faction = 0
+patroller_properties = {
+0: {
+"alerted_speed": 0.0,
+"base_speed": 0.0,
+"chase_speed": 0.0,
+"sprite_sheet": "res://images/animations/ent_walk_alt.png"
+},
+1: {
+"alerted_speed": 0.0,
+"base_speed": 0.0,
+"chase_speed": 0.0,
+"projectile": "res://scenes/entities_disposable/ProjectileBullet.tscn",
+"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png"
+}
+}

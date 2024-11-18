@@ -6,7 +6,7 @@ class_name ResItem
 @export var DESCRIPTION: String
 @export var VALUE: int
 @export var MANDATORY = false
-@export var PARENT_ITEM: ResItem # Only for duplicated items (e.g. Charms)
+@export var PARENT_ITEM: String # A path to the original item, only for duplicated items (e.g. Charms)
 
 func _to_string():
 	return str(NAME)

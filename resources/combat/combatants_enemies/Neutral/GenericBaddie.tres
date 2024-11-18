@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=9 format=3 uid="uid://dxdpkpoxq1gca"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=8 format=3 uid="uid://dxdpkpoxq1gca"]
 
-[ext_resource type="Resource" uid="uid://dlan5dxt4e3mm" path="res://resources/combat/abilities/Onslaught.tres" id="1_4squn"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_t4wyy"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tp2k2"]
-[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_538jr"]
+[ext_resource type="Resource" uid="uid://dhoel3hfuuxgr" path="res://resources/combat/abilities/AilmentStrike.tres" id="2_eyisu"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="2_luqil"]
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="3_7bykr"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="4_4awxj"]
@@ -12,7 +11,20 @@
 [resource]
 script = ExtResource("1_t4wyy")
 FACTION = 0
-ELITE = false
+TIER = 0
+SCALE_STATS = {
+"accuracy": false,
+"brawn": true,
+"crit": true,
+"crit_dmg": false,
+"grit": true,
+"handling": false,
+"heal_mult": false,
+"health": true,
+"hustle": true,
+"resist": true
+}
+PREFERRED_POSITION = 0
 CHANCE_TO_DROP = 0.75
 DROP_COUNT = 1
 DROP_POOL = {
@@ -20,21 +32,21 @@ ExtResource("4_4awxj"): Vector2(0.25, 3),
 ExtResource("5_lryu8"): Vector2(0.1, 1)
 }
 is_converted = false
-NAME = "Baddie"
+NAME = "Bruiser"
 PACKED_SCENE = ExtResource("2_luqil")
-DESCRIPTION = "A non-descript baddie! Testicles!"
+DESCRIPTION = "He be bruisin!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.25,
+"brawn": 0.0,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"grit": 0.1,
+"grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 50,
-"hustle": 4,
+"health": 25,
+"hustle": 1,
 "resist": 0.05
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_4squn"), ExtResource("2_538jr"), ExtResource("3_7bykr")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_7bykr"), ExtResource("2_eyisu")])
 MAX_TURN_CHARGES = 1
 AI_PACKAGE = ExtResource("1_tp2k2")

@@ -1,6 +1,3 @@
-# TASKS
-# 1. Determine HOW MANY combatants should spawn (Based on morale?)
-# 2. Determine WHAT TIER combatants should spawn (Location basis?)
 extends CombatantSquad
 class_name EnemyCombatantSquad
 
@@ -17,8 +14,8 @@ var afflicted_status_effects: Array[String]
 
 func _ready():
 	UNIQUE_ID = get_parent().name
-	if FILL_EMPTY:
-		pickRandomEnemies()
+#	if FILL_EMPTY:
+#		pickRandomEnemies()
 
 func addLingeringEffect(status_effect_name: String):
 	afflicted_status_effects.append(status_effect_name)
@@ -29,14 +26,24 @@ func removeLingeringEffect(status_effect_name: String):
 func pickRandomEnemies():
 	randomize()
 	if RANDOM_SIZE:
-		print('Resizing!')
 		COMBATANT_SQUAD.resize(COMBATANT_SQUAD.size() - randi_range(0, COMBATANT_SQUAD.size()-2))
 	
 	for index in range(COMBATANT_SQUAD.size()):
 		if COMBATANT_SQUAD[index] != null: continue
-		var enemy = ENEMY_POOL.pick_random()
+		#print(index)
+		var valid_enemies = ENEMY_POOL.filter(
+			func(enemy):
+				if index <= 1:
+					return enemy.PREFERRED_POSITION == 0
+				elif index <= 3:
+					return enemy.PREFERRED_POSITION == 1
+		)
+		var enemy = valid_enemies.pick_random()
 		COMBATANT_SQUAD[index] = enemy
 	
+	#COMBATANT_SQUAD.sort_custom(func(a,b): return a.PREFERRED_POSITION < b.PREFERRED_POSITION)
+	#print(COMBATANT_SQUAD)
+
 func getMusic()-> int:
 	var faction_count = {}
 	for faction in range(CombatGlobals.Enemy_Factions.size()):

@@ -117,14 +117,14 @@ func resetDescription():
 	description.text = open_description
 	stats.text = ''
 	if buy_modifier < 1.0:
-		stats.text += '[color=green]Discounted prices[/color]\n'
+		stats.text += '[color=green]Discounted prices[/color]\n\n'
 	elif buy_modifier > 1.0:
-		stats.text += '[color=orange]Increased prices[/color]\n'
+		stats.text += '[color=orange]Increased prices[/color]\n\n'
 	
 	if sell_modifier > 0.5:
-		stats.text += '[color=green]Increased sell value[/color]\n'
+		stats.text += '[color=green]Increased sell value[/color]\n\n'
 	elif sell_modifier < 0.5:
-		stats.text += '[color=orange]Decreased sell value[/color]\n'
+		stats.text += '[color=orange]Decreased sell value[/color]\n\n'
 
 func loadSlider(item)-> int:
 	if !item is ResStackItem:

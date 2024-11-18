@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://dllvm6xbaivj"]
+
+[ext_resource type="Resource" uid="uid://dlan5dxt4e3mm" path="res://resources/combat/abilities/Onslaught.tres" id="1_sxyom"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_4vmhq"]
+[ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="4_lwf4x"]
+[ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="7_rdi4y"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="8_ryksi"]
+
+[resource]
+script = ExtResource("8_ryksi")
+FACTION = 0
+TIER = 0
+SCALE_STATS = {
+"accuracy": false,
+"brawn": true,
+"crit": true,
+"crit_dmg": false,
+"grit": true,
+"handling": false,
+"heal_mult": false,
+"health": true,
+"hustle": true,
+"resist": true
+}
+PREFERRED_POSITION = 1
+CHANCE_TO_DROP = 0.5
+DROP_COUNT = 1
+DROP_POOL = {}
+is_converted = false
+NAME = "Arbalest"
+PACKED_SCENE = ExtResource("7_rdi4y")
+DESCRIPTION = "The best off healer honestly."
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 25,
+"hustle": 1,
+"resist": 0.05
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_sxyom"), ExtResource("2_4vmhq")])
+MAX_TURN_CHARGES = 1
+AI_PACKAGE = ExtResource("4_lwf4x")

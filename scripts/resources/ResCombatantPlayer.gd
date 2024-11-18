@@ -80,7 +80,7 @@ func equipWeapon(weapon: ResWeapon):
 		unequipWeapon()
 		
 	if InventoryGlobals.getItem(weapon) != null:
-		InventoryGlobals.removeItemResource(weapon, 1, false)
+		InventoryGlobals.removeItemResource(weapon, 1, false, true)
 		weapon.equip(self)
 		return
 

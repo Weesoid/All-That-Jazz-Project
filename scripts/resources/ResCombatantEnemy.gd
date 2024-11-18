@@ -1,10 +1,33 @@
 extends ResCombatant
 class_name ResEnemyCombatant
 
-@export var FACTION: CombatGlobals.Enemy_Factions
-@export var ELITE: bool = false
+enum Tier {
+	Easy,
+	Medium,
+	Hard,
+	Very_Hard
+}
+enum PreferredPosition {
+	FRONTLINE,
+	BACKLINE
+}
 
-@export var CHANCE_TO_DROP = 0.50
+@export var FACTION: CombatGlobals.Enemy_Factions
+@export var TIER: Tier
+@export var SCALE_STATS: Dictionary = {
+	'health': true,
+	'brawn': true,
+	'grit': true,
+	'handling': false,
+	'hustle': true,
+	'accuracy': false,
+	'crit': true,
+	'crit_dmg': false,
+	'heal_mult': false,
+	'resist': true
+}
+@export var PREFERRED_POSITION: PreferredPosition
+@export var CHANCE_TO_DROP = 0.5
 @export var DROP_COUNT = 1
 ## Key: Item to be dropped; Value: Vector2 representing drop chance (x) & drop count (y)
 @export var DROP_POOL = {}
@@ -17,11 +40,7 @@ func initializeCombatant():
 	SCENE = PACKED_SCENE.instantiate()
 	SCENE.combatant_resource = self
 	applyStatusEffects()
-	if NAME.contains('Feral'): print('Initing!')
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
-	if NAME.contains('Feral'): 
-		print('ST: ', STAT_VALUES)
-		print('BST: ',BASE_STAT_VALUES)
 
 func act():
 	enemy_turn.emit()
@@ -63,14 +82,14 @@ func getRawDrops():
 			var item = rollDrops()
 			if drops.has(item):
 				drops[item] += randi_range(1, DROP_POOL[item].y)
-			else:
+			elif !drops.is_empty():
 				drops[item] = randi_range(1, DROP_POOL[item].y)
 	drops.merge(getBarterDrops())
 	
 	return drops
 
 func getBarterDrops():
-	var out = ceil(getExperience() / 2)
+	var out = ceil(getExperience())
 	var denominations = [20, 50, 100, 500, 1000]
 	var change = {}
 	
@@ -79,6 +98,7 @@ func getBarterDrops():
 			change[InventoryGlobals.loadItemResource('BarterSalvage'+str(denom))] = int(out / denom)
 			out -= int(out / denom)
 	
+	print(change)
 	return change
 
 func rollDrops():

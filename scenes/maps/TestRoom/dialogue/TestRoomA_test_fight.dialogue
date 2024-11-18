@@ -3,6 +3,7 @@ Entity: Wanna fight!?
 - YES => fight
 - Manipulate my experience => experience
 - Give me a blessing! => bless
+- Teleport me to the super secret third room! => teleport
 - Nah fam. => END
 => END
 
@@ -20,9 +21,13 @@ Entity: Sure whatever man which one?
 ~ experience
 Entity: Sure man wazzup?!
 - Just give me experience ya fuck.
-	do addExperience(11500, true)
+	do addExperience(500, true)
 - Increase muh cap.
 	do increaseLevelCap()
+=> END
+
+~ teleport
+do changeMap("res://scenes/maps/TestRoom/TestRoomC.tscn", "0,0,0", "FastTravel")
 => END
 
 ~ fight

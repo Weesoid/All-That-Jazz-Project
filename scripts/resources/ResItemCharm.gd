@@ -4,13 +4,18 @@ class_name ResCharm
 @export var STATUS_EFFECT: ResStatusEffect
 
 func updateItem():
-	NAME = PARENT_ITEM.NAME
-	ICON = PARENT_ITEM.ICON
-	DESCRIPTION = PARENT_ITEM.DESCRIPTION
-	VALUE = PARENT_ITEM.VALUE
-	MANDATORY = PARENT_ITEM.MANDATORY
-	STAT_MODIFICATIONS = PARENT_ITEM.STAT_MODIFICATIONS
-	STATUS_EFFECT = PARENT_ITEM.STATUS_EFFECT
+	if !FileAccess.file_exists(PARENT_ITEM):
+		InventoryGlobals.removeItemResource(self)
+		return
+	
+	var parent_item = load(PARENT_ITEM)
+	NAME = parent_item.NAME
+	ICON = parent_item.ICON
+	DESCRIPTION = parent_item.DESCRIPTION
+	VALUE = parent_item.VALUE
+	MANDATORY = parent_item.MANDATORY
+	STAT_MODIFICATIONS = parent_item.STAT_MODIFICATIONS
+	STATUS_EFFECT = parent_item.STATUS_EFFECT
 
 func equip(combatant: ResCombatant):
 	if isEquipped():

@@ -7,6 +7,7 @@ extends Control
 @onready var item_info = $Infomration/ItemInfo/DescriptionLabel2
 @onready var item_general_info = $Infomration/GeneralInfo
 @onready var space_label = $Space
+
 func _ready():
 	InventoryGlobals.sortItems()
 	updateInventory()
