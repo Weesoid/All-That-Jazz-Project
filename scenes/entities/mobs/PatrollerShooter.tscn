@@ -386,8 +386,6 @@ avoidance_enabled = true
 radius = 60.0
 
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_p2y0l")]
-ALERTED_SPEED_MULTIPLIER = 1.5
-CHASE_SPEED_MULTIPLIER = 4.0
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {

@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bliyjnaysqqww"]
+[gd_scene load_steps=10 format=3 uid="uid://bliyjnaysqqww"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_iudoy"]
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="2_hygkw"]
 [ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="3_ccbhy"]
+[ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="5_kyu7h"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="20_7obw5"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sva00"]
@@ -76,15 +77,6 @@ shape = SubResource("RectangleShape2D_uqnih")
 [node name="SpawnPoints" type="Marker2D" parent="Area2D"]
 position = Vector2(-72, -232)
 
-[node name="Chance 51" type="Marker2D" parent="Area2D"]
-position = Vector2(-24, -232)
-
-[node name="Chance 25" type="Marker2D" parent="Area2D"]
-position = Vector2(-158, -238)
-
-[node name="Chance 50" type="Marker2D" parent="Area2D"]
-position = Vector2(-110, -238)
-
 [node name="DoorInteractable" parent="." instance=ExtResource("3_ccbhy")]
 position = Vector2(-232, -136)
 TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomB.tscn"
@@ -92,3 +84,6 @@ TO_COORDS = "192.3333, 28,90"
 
 [node name="FastTravel" parent="." instance=ExtResource("20_7obw5")]
 position = Vector2(0, -248)
+
+[node name="SavePoint" parent="." instance=ExtResource("5_kyu7h")]
+position = Vector2(56, -224)

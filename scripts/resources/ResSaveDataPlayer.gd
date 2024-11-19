@@ -3,8 +3,7 @@ class_name PlayerSaveData
 
 @export var TEAM: Array[ResPlayerCombatant]
 @export var FOLLOWERS: Array[NPCFollower]
-@export var FAST_TRAVEL_LOCATIONS: Array[String]
-@export var CLEARED_MAPS = []
+@export var CLEARED_MAPS: Dictionary
 @export var POWER: GDScript
 @export var EQUIPPED_ARROW: ResProjectileAmmo
 @export var EQUIPPED_BLESSING: ResBlessing

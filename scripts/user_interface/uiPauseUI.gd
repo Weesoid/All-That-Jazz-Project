@@ -38,7 +38,7 @@ func _ready():
 		experience.hide()
 	if PlayerGlobals.CURRENCY > 0:
 		currency.show()
-	if !OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().arePatrollersAlerted() and !PlayerGlobals.CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME):
+	if !OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().arePatrollersAlerted() and !PlayerGlobals.CLEARED_MAPS.keys().has(OverworldGlobals.getCurrentMap().scene_file_path):
 		party.disabled = true
 
 func _on_tree_exited():

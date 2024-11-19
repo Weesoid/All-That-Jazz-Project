@@ -94,14 +94,8 @@ shape = SubResource("RectangleShape2D_uqnih")
 [node name="SpawnPoints" type="Marker2D" parent="Area2D"]
 position = Vector2(-72, -232)
 
-[node name="Marker2D" type="Marker2D" parent="Area2D"]
-position = Vector2(-24, -232)
-
-[node name="Marker2D3" type="Marker2D" parent="Area2D"]
-position = Vector2(-158, -238)
-
-[node name="Chance 50" type="Marker2D" parent="Area2D"]
-position = Vector2(-110, -238)
+[node name="SpawnPoints2" type="Marker2D" parent="Area2D"]
+position = Vector2(-8, -224)
 
 [node name="DoorInteractable" parent="." instance=ExtResource("17_0v7bm")]
 position = Vector2(-232, -136)

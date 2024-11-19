@@ -260,7 +260,6 @@ func getTamedNames():
 	var out = []
 	for combatant in get_tree().current_scene.REWARD_BANK['tamed']:
 		out.append(combatant.NAME)
-	print(out)
 	return out
 
 func isPlayerCheating()-> bool:

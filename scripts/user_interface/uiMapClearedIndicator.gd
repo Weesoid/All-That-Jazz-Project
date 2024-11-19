@@ -7,11 +7,12 @@ extends Node2D
 @onready var loot = $Loot
 @export var added_exp: int
 
-func _ready():
-	if !PlayerGlobals.CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME) and !OverworldGlobals.getCurrentMap().SAFE:
+
+func showAnimation(show_clear:bool):
+	if !show_clear:
+		print('SHOWIN STARTE!')
 		animator.play("Show_Started")
 	else:
-		# Add progressal sound!
 		var tween = create_tween()
 		animator.play("Show")
 		showLoot()

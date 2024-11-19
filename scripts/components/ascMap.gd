@@ -17,15 +17,21 @@ func _ready():
 		await SaveLoadGlobals.done_loading
 	if !has_node('Player'): 
 		hide()
-	if !SAFE and !PlayerGlobals.CLEARED_MAPS.has(NAME):
-		clearPatrollers()
+	if !SAFE and (!PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) or !PlayerGlobals.CLEARED_MAPS[scene_file_path]['cleared']):
+		await get_tree().process_frame
+		if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path):
+			ENEMY_FACTION = PlayerGlobals.CLEARED_MAPS[scene_file_path]['faction']
 		spawnPatrollers()
 		INITIAL_PATROLLER_COUNT = getPatrollers().size()
+		showStartIndicator()
+		get_node('SavePoint').hide()
+		#get_node('FastTravel').hide()
 
 func giveRewards():
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = REWARD_BANK['experience']
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
+	map_clear_indicator.showAnimation(true)
 	
 	PlayerGlobals.CURRENCY += REWARD_BANK['currency']
 	PlayerGlobals.addExperience(REWARD_BANK['experience'])
@@ -37,12 +43,13 @@ func giveRewards():
 				InventoryGlobals.addItemResource(item)
 	for combatant in REWARD_BANK['tamed']:
 		PlayerGlobals.addCombatantToTeam(combatant)
-	
+	#print('Haz it? ', has_node('FastTravel'))
+	PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
+	PlayerGlobals.randomMapUnclear(1, scene_file_path)
+	get_node('SavePoint').show()
+	#get_node('FastTravel').show()
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
-
-func unclearMaps(count: int):
-	pass
-
+	
 func spawnPatrollers():
 	randomize()
 	for area in get_children():
@@ -66,17 +73,10 @@ func spawnPatrollers():
 					CombatGlobals.generateCombatantSquad(patroller, ENEMY_FACTION)
 					add_child(patroller)
 
-func clearPatrollers():
-	if SaveLoadGlobals.is_loading:
-		await SaveLoadGlobals.done_loading
-	if PlayerGlobals.CLEARED_MAPS.has(NAME):
-		for child in OverworldGlobals.getCurrentMap().get_children():
-			if child.has_node('NPCPatrolComponent'): child.queue_free()
-	
-	await get_tree().process_frame
-	if !PlayerGlobals.isMapCleared():
-		var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
-		OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
+func showStartIndicator():
+	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
+	map_clear_indicator.showAnimation(false)
 
 func countSpawnPoints(area):
 	var out = 0

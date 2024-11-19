@@ -5,8 +5,7 @@ var SAVE_NAME
 var TEAM: Array[ResPlayerCombatant]
 var TEAM_FORMATION: Array[ResCombatant]
 var FOLLOWERS: Array[NPCFollower] = []
-var FAST_TRAVEL_LOCATIONS: Array[String] = ['res://scenes/maps/TestRoom/TestRoomB.tscn', 'res://scenes/maps/TestRoom/TestRoomA.tscn']
-var CLEARED_MAPS = []
+var CLEARED_MAPS: Dictionary = {}
 var POWER: GDScript
 var KNOWN_POWERS: Array = [load("res://resources/powers/Stealth.tres")]
 var EQUIPPED_ARROW: ResProjectileAmmo
@@ -243,7 +242,36 @@ func isMapCleared():
 	if OverworldGlobals.getCurrentMap().SAFE:
 		return true
 	else:
-		return CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME)
+		return CLEARED_MAPS.keys().has(OverworldGlobals.getCurrentMap().scene_file_path)
+
+func addFastTravelArea(map_path:String):
+	if !CLEARED_MAPS.keys().has(map_path):
+		CLEARED_MAPS[map_path] = {'cleared':true, 'fast_travel':true, 'faction':null}
+
+func addToClearedMaps(map_path:String,cleared:bool,fast_travel:bool=false, faction=null):
+	if !CLEARED_MAPS.keys().has(map_path):
+		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':fast_travel, 'faction':faction}
+
+func randomMapUnclear(count:int, ignore_map:String):
+	for map in CLEARED_MAPS.keys():
+		var location = load(map).instantiate()
+		if !location.SAFE: CLEARED_MAPS[map]['cleared'] = true
+		location.queue_free()
+	
+	var valid_maps = CLEARED_MAPS.keys().filter(
+		func(map): 
+			var location = load(map).instantiate()
+			var is_safe = location.SAFE
+			location.queue_free()
+			return map != ignore_map and !is_safe
+			)
+	if valid_maps.size() <= 0:
+		return
+	for i in range(count):
+		var map = valid_maps.pick_random()
+		CLEARED_MAPS[map]['cleared'] = false
+		CLEARED_MAPS[map]['faction'] = randi_range(0,0) # Only one faction so far
+		valid_maps.erase(map)
 
 func addCommaToNum(value: int=CURRENCY) -> String:
 	var str_value: String = str(value)
@@ -256,7 +284,6 @@ func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
 	data.TEAM = TEAM
 	data.FOLLOWERS = FOLLOWERS
-	data.FAST_TRAVEL_LOCATIONS = FAST_TRAVEL_LOCATIONS
 	data.POWER = POWER
 	data.EQUIPPED_ARROW = EQUIPPED_ARROW
 	data.CURRENCY = CURRENCY
@@ -301,7 +328,6 @@ func loadData(save_data: PlayerSaveData):
 	OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.clear()
 	TEAM = save_data.TEAM
 	FOLLOWERS = save_data.FOLLOWERS
-	FAST_TRAVEL_LOCATIONS = save_data.FAST_TRAVEL_LOCATIONS
 	POWER = save_data.POWER
 	EQUIPPED_ARROW = save_data.EQUIPPED_ARROW
 	CURRENCY = save_data.CURRENCY
@@ -360,11 +386,7 @@ func resetVariables():
 	TEAM = [preload("res://resources/combat/combatants_player/Willis.tres")]
 	TEAM_FORMATION = []
 	FOLLOWERS = []
-	FAST_TRAVEL_LOCATIONS = [
-		'res://scenes/maps/TestRoom/TestRoomB.tscn',
-		'res://scenes/maps/TestRoom/TestRoomA.tscn'
-	]
-	CLEARED_MAPS = []
+	CLEARED_MAPS = {}
 	POWER = null
 	KNOWN_POWERS = [load("res://resources/powers/Stealth.tres")]
 	EQUIPPED_ARROW = null
@@ -384,3 +406,4 @@ func resetVariables():
 		'sprint_drain': 0.25,
 		'stamina_gain': 0.15
 	}
+

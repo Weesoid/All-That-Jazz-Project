@@ -185,9 +185,6 @@ func isMapCleared():
 		if child.has_node('NPCPatrolComponent') and child != BODY: return
 	
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
-	if !PlayerGlobals.CLEARED_MAPS.has(OverworldGlobals.getCurrentMap().NAME):
-		PlayerGlobals.CLEARED_MAPS.append(OverworldGlobals.getCurrentMap().NAME)
-	#print(PlayerGlobals.CLEARED_MAPS)
 	OverworldGlobals.getCurrentMap().giveRewards()
 
 func updatePath(immediate:bool=false):
