@@ -16,7 +16,6 @@ extends Control
 
 func _ready():
 	OverworldGlobals.setPlayerInput(false)
-	print(PlayerGlobals.CURRENT_EXP)
 	exp_bar.max_value = PlayerGlobals.getRequiredExp()
 	exp_bar.value = PlayerGlobals.CURRENT_EXP
 	exp_bar_vals.text = '%s / %s' % [PlayerGlobals.CURRENT_EXP, PlayerGlobals.getRequiredExp()]

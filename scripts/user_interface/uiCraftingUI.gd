@@ -75,7 +75,7 @@ func updateComponentSlot(slot: int):
 			2:
 				component_b.text = '%s x%s' % [item.NAME, item.STACK]
 
-func showItems(slot_button: Button, slot: int, mode:int=0):
+func showItems(slot_button: Button, slot: int):
 	clearItemDescription()
 	for child in item_select_buttons.get_children():
 		item_select_buttons.remove_child(child)

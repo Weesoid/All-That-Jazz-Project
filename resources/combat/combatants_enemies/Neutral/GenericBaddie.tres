@@ -12,18 +12,6 @@
 script = ExtResource("1_t4wyy")
 FACTION = 0
 TIER = 0
-SCALE_STATS = {
-"accuracy": false,
-"brawn": true,
-"crit": true,
-"crit_dmg": false,
-"grit": true,
-"handling": false,
-"heal_mult": false,
-"health": true,
-"hustle": true,
-"resist": true
-}
 PREFERRED_POSITION = 0
 CHANCE_TO_DROP = 0.75
 DROP_COUNT = 1
@@ -37,15 +25,27 @@ PACKED_SCENE = ExtResource("2_luqil")
 DESCRIPTION = "He be bruisin!"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 0.1,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"grit": 0.0,
+"grit": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 25,
-"hustle": 1,
+"health": 20,
+"hustle": 2,
 "resist": 0.05
+}
+SCALE_STATS = {
+"accuracy": false,
+"brawn": true,
+"crit": true,
+"crit_dmg": false,
+"grit": true,
+"handling": false,
+"heal_mult": false,
+"health": true,
+"hustle": true,
+"resist": true
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_7bykr"), ExtResource("2_eyisu")])
 MAX_TURN_CHARGES = 1

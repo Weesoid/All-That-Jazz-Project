@@ -15,6 +15,5 @@ func _exit_tree():
 		randomize()
 		OverworldGlobals.playSound2D(global_position, "460509__florianreichelt__hitting-in-a-face_%s.ogg" % randi_range(1,2), 0.0)
 	else:
-		print('xx')
 		OverworldGlobals.addPatrollerPulse(global_position, 100.0, 1)
 		OverworldGlobals.playSound2D(global_position, "66777__kevinkace__crate-break-1.ogg")

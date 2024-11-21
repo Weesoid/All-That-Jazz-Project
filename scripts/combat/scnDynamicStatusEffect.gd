@@ -15,7 +15,7 @@ func _ready():
 
 func _on_body_entered(body):
 	var afflicted = status_effect.afflicted_combatant
-	if checkTriggers(afflicted, body):
+	if checkTriggers(afflicted, body) and body is CombatantScene:
 		status_effect.STATUS_SCRIPT.animate(afflicted, body)
 
 func followUpCast(ability: ResAbility):

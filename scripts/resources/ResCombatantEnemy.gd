@@ -14,18 +14,6 @@ enum PreferredPosition {
 
 @export var FACTION: CombatGlobals.Enemy_Factions
 @export var TIER: Tier
-@export var SCALE_STATS: Dictionary = {
-	'health': true,
-	'brawn': true,
-	'grit': true,
-	'handling': false,
-	'hustle': true,
-	'accuracy': false,
-	'crit': true,
-	'crit_dmg': false,
-	'heal_mult': false,
-	'resist': true
-}
 @export var PREFERRED_POSITION: PreferredPosition
 @export var CHANCE_TO_DROP = 0.5
 @export var DROP_COUNT = 1
@@ -41,13 +29,14 @@ func initializeCombatant():
 	SCENE.combatant_resource = self
 	applyStatusEffects()
 	BASE_STAT_VALUES = STAT_VALUES.duplicate()
+	scaleStats()
 
 func act():
 	enemy_turn.emit()
 
 func applyStatusEffects():
 	for effect in LINGERING_STATUS_EFFECTS:
-		print(effect)
+		print(NAME, ' applied ', effect, '!')
 		CombatGlobals.addStatusEffect(self, effect)
 
 func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
@@ -89,7 +78,7 @@ func getRawDrops():
 	return drops
 
 func getBarterDrops():
-	var out = ceil(getExperience())
+	var out = ceil(getExperience()/2)
 	var denominations = [20, 50, 100, 500, 1000]
 	var change = {}
 	
@@ -98,7 +87,6 @@ func getBarterDrops():
 			change[InventoryGlobals.loadItemResource('BarterSalvage'+str(denom))] = int(out / denom)
 			out -= int(out / denom)
 	
-	print(change)
 	return change
 
 func rollDrops():

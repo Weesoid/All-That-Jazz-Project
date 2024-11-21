@@ -24,10 +24,12 @@ func _ready():
 		spawnPatrollers()
 		INITIAL_PATROLLER_COUNT = getPatrollers().size()
 		showStartIndicator()
-		get_node('SavePoint').hide()
+		setSavePoints(false)
 		#get_node('FastTravel').hide()
 
 func giveRewards():
+	if !OverworldGlobals.isPlayerAlive(): return
+	
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = REWARD_BANK['experience']
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
@@ -43,13 +45,18 @@ func giveRewards():
 				InventoryGlobals.addItemResource(item)
 	for combatant in REWARD_BANK['tamed']:
 		PlayerGlobals.addCombatantToTeam(combatant)
-	#print('Haz it? ', has_node('FastTravel'))
 	PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
 	PlayerGlobals.randomMapUnclear(1, scene_file_path)
-	get_node('SavePoint').show()
-	#get_node('FastTravel').show()
+	setSavePoints(true)
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
-	
+
+func setSavePoints(set_to:bool):
+	get_node('SavePoint').visible = set_to
+	get_node('SavePoint').set_collision_layer_value(1, set_to)
+	get_node('SavePoint').set_collision_mask_value(1, set_to)
+	get_node('SavePoint').get_node('InteractComponent').monitoring = set_to
+	get_node('SavePoint').get_node('InteractComponent').monitorable = set_to
+
 func spawnPatrollers():
 	randomize()
 	for area in get_children():

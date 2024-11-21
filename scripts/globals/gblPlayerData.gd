@@ -105,6 +105,9 @@ func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=fal
 	elif CURRENT_EXP < 0:
 		CURRENT_EXP = 0
 
+func levelUpTeam():
+	addExperience(getRequiredExp()-CURRENT_EXP, true)
+
 func getRequiredExp() -> int:
 	var baseExp = 500.0
 	var expMultiplier = 1.25
@@ -180,16 +183,18 @@ func hasActiveTeam()-> bool:
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
-		print('Adding SP b4! ', combatant.STAT_POINTS)
 		combatant.STAT_POINTS += 1
-		print('Adding SP af! ', combatant.STAT_POINTS)
+		combatant.scaleStats()
 	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
 func addCombatantToTeam(combatant_id):
 	var combatant
 	if combatant_id is String:
-		combatant = load("res://resources/combat/combatants_player/%s.tres" % combatant_id)
+		if !combatant_id.contains('res://'):
+			combatant = load("res://resources/combat/combatants_player/%s.tres" % combatant_id)
+		else:
+			combatant = load(combatant_id)
 	elif combatant_id is ResCombatant:
 		combatant = combatant_id
 	combatant.STAT_POINTS = PARTY_LEVEL
@@ -244,9 +249,9 @@ func isMapCleared():
 	else:
 		return CLEARED_MAPS.keys().has(OverworldGlobals.getCurrentMap().scene_file_path)
 
-func addFastTravelArea(map_path:String):
+func addFastTravelArea(map_path:String, cleared:bool):
 	if !CLEARED_MAPS.keys().has(map_path):
-		CLEARED_MAPS[map_path] = {'cleared':true, 'fast_travel':true, 'faction':null}
+		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':true, 'faction':OverworldGlobals.getCurrentMap().ENEMY_FACTION}
 
 func addToClearedMaps(map_path:String,cleared:bool,fast_travel:bool=false, faction=null):
 	if !CLEARED_MAPS.keys().has(map_path):
@@ -283,7 +288,7 @@ func addCommaToNum(value: int=CURRENCY) -> String:
 func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
 	data.TEAM = TEAM
-	data.FOLLOWERS = FOLLOWERS
+	#data.FOLLOWERS = FOLLOWERS
 	data.POWER = POWER
 	data.EQUIPPED_ARROW = EQUIPPED_ARROW
 	data.CURRENCY = CURRENCY
@@ -327,7 +332,7 @@ func loadData(save_data: PlayerSaveData):
 	#SAVE_NAME = save_data.
 	OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.clear()
 	TEAM = save_data.TEAM
-	FOLLOWERS = save_data.FOLLOWERS
+	#FOLLOWERS = save_data.FOLLOWERS # HERE MOTHERFUCKER HERE HERE HERE HERE
 	POWER = save_data.POWER
 	EQUIPPED_ARROW = save_data.EQUIPPED_ARROW
 	CURRENCY = save_data.CURRENCY
@@ -355,6 +360,7 @@ func loadData(save_data: PlayerSaveData):
 	OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)
 	loadAddedAbilities()
 	for combatant in TEAM:
+		#combatant.reset()
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
 		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][1]
 		#combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][2]
@@ -371,13 +377,15 @@ func loadData(save_data: PlayerSaveData):
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.CHARMS.values():
 			if charm != null:
-				print('Updating ', charm)
 				charm.updateItem()
 				charm.equip(combatant)
 		combatant.updateCombatant(save_data)
+		combatant.initializeCombatant(false)
+	if OverworldGlobals.getCurrentMap().SAFE:
+		OverworldGlobals.loadFollowers()
 	
 	overworld_stats['stamina'] = 100.0 # DO NOT TOUCH STAMINA FOR BLESSINGS!
-
+	
 func resetVariables():
 	for member in TEAM:
 		member.reset()

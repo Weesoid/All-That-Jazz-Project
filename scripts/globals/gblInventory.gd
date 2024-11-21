@@ -64,7 +64,10 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	elif item is ResCharm:
 		for i in range(count): 
 			var dupe_item = item.duplicate()
-			dupe_item.PARENT_ITEM = item.resource_path
+			if item.PARENT_ITEM != '':
+				dupe_item.PARENT_ITEM = item.PARENT_ITEM
+			else:
+				dupe_item.PARENT_ITEM = item.resource_path
 			INVENTORY.append(dupe_item)
 		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s[/color].' % item)
 	elif item is ResWeapon and check_restrictions:

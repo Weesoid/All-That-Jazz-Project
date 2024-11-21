@@ -1,0 +1,19 @@
+extends Node2D
+
+@onready var animator = $AnimationPlayer
+@onready var main_container = $VBoxContainer
+
+func _ready():
+	loadCombatants()
+	animator.play("Show")
+	await get_tree().create_timer(1.5).timeout
+	animator.play_backwards("Show")
+	await animator.animation_finished
+	queue_free()
+
+func loadCombatants():
+	for combatant in OverworldGlobals.getCombatantSquad('Player'):
+		if combatant.isDead(): continue
+		var bar = preload("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
+		bar.combatant = combatant
+		main_container.add_child(bar)

@@ -30,7 +30,6 @@ func pickRandomEnemies():
 	
 	for index in range(COMBATANT_SQUAD.size()):
 		if COMBATANT_SQUAD[index] != null: continue
-		#print(index)
 		var valid_enemies = ENEMY_POOL.filter(
 			func(enemy):
 				if index <= 1:
@@ -40,9 +39,6 @@ func pickRandomEnemies():
 		)
 		var enemy = valid_enemies.pick_random()
 		COMBATANT_SQUAD[index] = enemy
-	
-	#COMBATANT_SQUAD.sort_custom(func(a,b): return a.PREFERRED_POSITION < b.PREFERRED_POSITION)
-	#print(COMBATANT_SQUAD)
 
 func getMusic()-> int:
 	var faction_count = {}

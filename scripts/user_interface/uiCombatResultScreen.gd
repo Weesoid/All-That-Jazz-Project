@@ -34,6 +34,7 @@ func _ready():
 	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
 	tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
 	await showLoot()
+	await tween_morale.finished
 	if rounds <= 2:
 		changeText(round_label, 'Fast Finish!')
 		bonusTween(round_label)
@@ -53,7 +54,10 @@ func _ready():
 		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
 		await get_tree().create_timer(0.25).timeout
 	if morale > PlayerGlobals.getRequiredExp():
-		changeText(morale_label, 'Level Up!')
+		if PlayerGlobals.MAX_PARTY_LEVEL <= PlayerGlobals.PARTY_LEVEL:
+			changeText(morale_label, 'Maxed!')
+		else:
+			changeText(morale_label, 'Level Up!')
 		bonusTween(morale_label)
 		bonusTween(morale_gained)
 		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
@@ -118,6 +122,6 @@ func showLoot():
 			tween_b.tween_property(icon, 'self_modulate', Color.YELLOW, 0.25)
 			tween_b.tween_property(icon, 'self_modulate', Color.WHITE, 1.5)
 			OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
-			await get_tree().create_timer(0.15).timeout
 		else:
 			loot_icons.add_child(icon)
+		await get_tree().create_timer(0.15).timeout

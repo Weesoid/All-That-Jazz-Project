@@ -28,5 +28,17 @@ STAT_VALUES = {
 "hustle": 1,
 "resist": 0.05
 }
+SCALE_STATS = {
+"accuracy": false,
+"brawn": true,
+"crit": false,
+"crit_dmg": false,
+"grit": true,
+"handling": false,
+"heal_mult": false,
+"health": true,
+"hustle": true,
+"resist": false
+}
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 MAX_TURN_CHARGES = 1

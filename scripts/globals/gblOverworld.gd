@@ -240,6 +240,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		showTransition('FadeOut', player)
 	if SettingsGlobals.cheat_mode:
 		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
+	print(getCurrentMap().NAME, ' <=========================================')
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
 	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
@@ -266,6 +267,7 @@ func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and getPlayer().has_node('DebugComponent')
 
 func showGameOver(end_sentence: String, animation: String='Fall'):
+	if OverworldGlobals.inMenu(): OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	getPlayer().setUIVisibility(false)
 	getPlayer().resetStates()
 	setPlayerInput(false, true)
@@ -464,6 +466,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	combat_exited.emit()
+	if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')
 
 func getRandomTameable():
 	var path = "res://resources/combat/combatants_player/tameable/"
@@ -512,10 +515,11 @@ func isPlayerSquadDead():
 
 func damageParty(damage:int):
 	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
+	
 	var dead = ''
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
-		member.STAT_VALUES['health'] -= floor(damage - (damage * member.STAT_VALUES['grit']))
+		member.STAT_VALUES['health'] -= CombatGlobals.useDamageFormula(member, damage)
 		if member.isDead(): dead += '[color=yellow]'+member.NAME+'[/color], '
 	if !dead == '':
 		dead = dead.trim_suffix(', ')
@@ -527,6 +531,8 @@ func damageParty(damage:int):
 	if isPlayerSquadDead():
 		showGameOver('Shot down!')
 	party_damaged.emit()
+	var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
+	OverworldGlobals.getPlayer().player_camera.get_node('Marker2D').add_child(pop_up)
 
 func isPlayerAlive()-> bool:
 	for combatant in getCombatantSquad('Player'):

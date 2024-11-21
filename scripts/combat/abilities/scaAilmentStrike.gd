@@ -6,9 +6,9 @@ static func animate(caster: CombatantScene, target: CombatantScene, ability: Res
 
 
 static func applyEffects(caster: CombatantScene , target: CombatantScene, _ability: ResAbility=null):
-	if CombatGlobals.calculateDamage(caster, target, 5):
+	if CombatGlobals.calculateDamage(caster, target, 2):
 		randomize()
-		var element = ['Singed', 'Jolted', 'Poison', 'Chilled', ''].pick_random()
+		var element = ['Poison'].pick_random()
 		if element != '':
 			CombatGlobals.addStatusEffect(target.combatant_resource, element, true)
 

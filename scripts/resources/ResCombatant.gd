@@ -9,7 +9,7 @@ class_name ResCombatant
 
 ## Frontend / Gameplay export variables
 @export var STAT_VALUES = {
-	'health': 25,
+	'health': 20,
 	'brawn': 0.0,
 	'grit': 0.0,
 	'handling': 0,
@@ -19,6 +19,18 @@ class_name ResCombatant
 	'crit_dmg': 1.5,
 	'heal_mult': 1.0,
 	'resist': 0.05
+}
+@export var SCALE_STATS: Dictionary = {
+	'health': true,
+	'brawn': true,
+	'grit': true,
+	'handling': false,
+	'hustle': true,
+	'accuracy': false,
+	'crit': false,
+	'crit_dmg': false,
+	'heal_mult': false,
+	'resist': false
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var MAX_TURN_CHARGES = 1
@@ -40,6 +52,15 @@ func initializeCombatant():
 
 func act():
 	pass
+
+func scaleStats():
+	var stat_increase = {}
+	for stat in STAT_VALUES.keys():
+		if SCALE_STATS[stat]: 
+			stat_increase[stat] = (BASE_STAT_VALUES[stat] * (1 + ((PlayerGlobals.PARTY_LEVEL-1)*0.1))) - BASE_STAT_VALUES[stat]
+#		if (stat == 'health' or  stat == 'hustle') and BASE_STAT_VALUES[stat]:
+#			stat_increase[stat] = int(stat_increase[stat])
+	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
 
 func getSprite()-> Sprite2D:
 	return SCENE.get_node('Sprite2D')
@@ -88,17 +109,6 @@ func getStringStats(current_stats=false):
 			result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]*100) + "%\n"
 		else:
 			result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
-	return result
-
-# NOT USED YET, MIGHT BE USED LATER
-func searchStringStats(stats: Array[String]):
-	var result = ""
-	for key in BASE_STAT_VALUES.keys():
-		if stats.has(key):
-			if key == 'health':
-				result += key.to_upper() + ": " + str(int(STAT_VALUES[key])) + ' / ' + str(BASE_STAT_VALUES[key]) + "\n"
-			else:
-				result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
 	return result
 
 func applyStatModifications(modifier_id: String):

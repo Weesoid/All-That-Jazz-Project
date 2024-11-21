@@ -13,7 +13,10 @@ func _ready():
 	tween.tween_property(experience, 'value', experience.value+added_exp,0.5)
 	await tween.finished
 	if experience.value >= experience.max_value:
-		label.text = 'Lvl Up!'
+		if PlayerGlobals.MAX_PARTY_LEVEL <= PlayerGlobals.PARTY_LEVEL:
+			label.text = 'Max!'
+		else:
+			label.text = 'Lvl Up!'
 		var color_tween = create_tween()
 		color_tween.tween_property(self, 'modulate', Color.YELLOW, 0.25)
 		color_tween.tween_property(self, 'modulate', Color.WHITE, 1.25)

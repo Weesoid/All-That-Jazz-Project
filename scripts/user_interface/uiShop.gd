@@ -205,20 +205,23 @@ func _unhandled_input(_event):
 		toggle_button.pressed.emit()
 
 func _on_barter_pressed():
+	var barter_items = []
 	var sold = false
 	var amount_sold
 	for item in InventoryGlobals.INVENTORY:
-		if item is ResStackItem and item.BARTER_ITEM:
-			var amount = item.STACK
-			InventoryGlobals.removeItemResource(item, amount, false)
-			amount_sold = (floor(item.VALUE) * amount)
-			PlayerGlobals.CURRENCY += (floor(item.VALUE) * amount)
-			showChange(floor(item.VALUE) * amount)
-			if mode == 0: 
-				loadWares(InventoryGlobals.INVENTORY)
-			else:
-				loadWares(wares_array)
-			sold = true
+		if item is ResStackItem and item.BARTER_ITEM: 
+			barter_items.append(item)
+	
+	for item in barter_items:
+		var amount = item.STACK
+		InventoryGlobals.removeItemResource(item, amount, false)
+		amount_sold = (floor(item.VALUE) * amount)
+		PlayerGlobals.CURRENCY += (floor(item.VALUE) * amount)
+		if mode == 0: 
+			loadWares(InventoryGlobals.INVENTORY)
+		else:
+			loadWares(wares_array)
+		sold = true
 	if sold:
 		OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
 		showChange(amount_sold)
@@ -244,4 +247,3 @@ func showChange(amount: int):
 	tween.tween_property(sold_label, 'global_position', sold_label.global_position+Vector2(0, -8), 1.5)
 	tween.tween_property(sold_label, 'modulate', Color.TRANSPARENT, 1.25)
 	#var opacity_tween = create_tween().tween_property(sold_label, 'modulate', Color.TRANSPARENT, 1.0)
-	tween.finished.connect(sold_label.queue_free)

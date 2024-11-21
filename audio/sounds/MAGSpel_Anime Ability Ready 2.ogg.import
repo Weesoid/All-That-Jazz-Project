@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://qecvu8i1upxw"
+path="res://.godot/imported/MAGSpel_Anime Ability Ready 2.ogg-c74dc278c3b7268e2e21d82094f391d3.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg"
+dest_files=["res://.godot/imported/MAGSpel_Anime Ability Ready 2.ogg-c74dc278c3b7268e2e21d82094f391d3.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

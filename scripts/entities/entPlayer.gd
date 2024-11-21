@@ -42,7 +42,7 @@ func _ready():
 	animation_tree.active = true
 	
 	PlayerGlobals.loadSquad()
-	PlayerGlobals.initializeBenchedTeam()
+	#PlayerGlobals.initializeBenchedTeam()
 	SaveLoadGlobals.session_start = Time.get_unix_time_from_system()
 	if SettingsGlobals.cheat_mode and !has_node('DebugComponent'):
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
@@ -199,6 +199,7 @@ func resetStates():
 	power_inputs = ''
 	cancelPower()
 	Input.action_release("ui_bow_draw")
+	Input.action_release("ui_select_arrow")
 
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
@@ -230,7 +231,7 @@ func canUsePower():
 	return true
 
 func animateInteract():
-	if interaction_detector.get_overlapping_areas().size() > 0 and is_processing_input() and !channeling_power and can_move:
+	if interaction_detector.get_overlapping_areas().size() > 0 and is_processing_input() and interaction_detector.get_overlapping_areas()[0].visible and !channeling_power and can_move:
 		interaction_prompt.visible = true
 		interaction_prompt_animator.play('Interact')
 	else:
@@ -255,11 +256,14 @@ func drawBow():
 			bow_line.default_color.a = 0.10
 		else:
 			bow_line.default_color.a = 0.5
+		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and bow_line.points[1].y < 275:
+			var tween = create_tween()
+			tween.tween_property(sprite, 'self_modulate', Color.INDIAN_RED,0.1)
+			tween.tween_property(sprite, 'self_modulate', Color.WHITE, 0.25)
+			OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg", -8.0)
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
-	
-	
 	if Input.is_action_just_released("ui_bow_draw") and velocity == Vector2.ZERO:
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']: 
 			shootProjectile()

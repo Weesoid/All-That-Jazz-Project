@@ -4,8 +4,8 @@ extends Control
 @onready var end_sentence = $EndSentence
 @onready var animator = $AnimationPlayer
 @onready var saves = $Saves
-@onready var experience = $VBoxContainer2/HFlowContainer/ProgressBar
-@onready var cash = $VBoxContainer2/HSplitContainer/Cash
+@onready var experience = $ProgressBar
+@onready var cash = $Label2
 var current_currency = PlayerGlobals.CURRENCY
 
 func _ready():
@@ -42,7 +42,7 @@ func _on_no_pressed():
 
 func _process(_delta):
 	if PlayerGlobals.CURRENCY > 0:
-		cash.text = str(int(current_currency))
+		cash.text = str(PlayerGlobals.addCommaToNum(current_currency))
 	else:
 		cash.text = 'BROKE!'
 

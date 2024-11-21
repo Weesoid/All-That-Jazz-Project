@@ -18,18 +18,27 @@ var STAT_POINT_ALLOCATIONS = {
 	'grit': 0,
 	'handling': 0
 }
+var BASE_HEALTH: int
 var initialized = false
 
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:
 		SCENE = PACKED_SCENE.instantiate()
+		SCENE.get_node('AnimationPlayer').get_animation('Idle').track_set_key_value(1, 1, Vector2(0, -1))
 		SCENE.combatant_resource = self
-	
 	if !initialized:
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
+		BASE_HEALTH = STAT_VALUES['health']
 		initialized = true
-	
-	applyStatusEffects()
+	if !STAT_MODIFIERS.keys().has('scaled_stats'):
+		scaleStats()
+	if CombatGlobals.inCombat():
+		applyStatusEffects()
+
+func scaleStats():
+	var stat_increase = {}
+	stat_increase['health'] = (BASE_HEALTH * (1 + ((PlayerGlobals.PARTY_LEVEL-1)*0.1))) - BASE_HEALTH
+	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
 
 func updateCombatant(save_data: PlayerSaveData):
 	var remove_abilities = ABILITY_SET.filter(func(ability): return !ABILITY_POOL.has(ability))
@@ -129,22 +138,26 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	enemy.NAME = appended_name + ' ' +NAME
 	enemy.PACKED_SCENE = PACKED_SCENE
 	enemy.DESCRIPTION = DESCRIPTION
-	enemy.STAT_VALUES = BASE_STAT_VALUES
-	for ability in ABILITY_POOL:
-		enemy.ABILITY_SET.append(ability)
-#	enemy.ABILITY_SET.append(ABILITY_POOL[0])
-#	enemy.ABILITY_SET.append(ABILITY_POOL[1])
-#	enemy.ABILITY_SET.append(ABILITY_POOL[2])
-#	enemy.ABILITY_SET.append(ABILITY_POOL[3])
+	enemy.STAT_VALUES = BASE_STAT_VALUES.duplicate()
+	enemy.STAT_VALUES['health'] = BASE_HEALTH
+	if ABILITY_POOL.size() < 4:
+		for ability in ABILITY_POOL:
+			enemy.ABILITY_SET.append(ability)
+	else:
+		enemy.ABILITY_SET.append(ABILITY_POOL[0])
+		enemy.ABILITY_SET.append(ABILITY_POOL[1])
+		enemy.ABILITY_SET.append(ABILITY_POOL[2])
+		enemy.ABILITY_SET.append(ABILITY_POOL[3])
 	enemy.AI_PACKAGE = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	enemy.is_converted = true
-	enemy.tamed_combatant = self.duplicate()
-	print('Conversion: ', enemy.STAT_VALUES)
+	enemy.tamed_combatant = self
 	return enemy.duplicate()
 
 func reset():
 	for modification in STAT_MODIFIERS.keys():
 		removeStatModification(modification)
+	if BASE_HEALTH != null:
+		STAT_VALUES['health'] = BASE_HEALTH
 	ABILITY_SET = []
 	LINGERING_STATUS_EFFECTS = []
 	EQUIPPED_WEAPON = null
@@ -159,3 +172,4 @@ func reset():
 		'grit': 0,
 		'handling': 0
 	}
+	

@@ -355,7 +355,8 @@ func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, guarante
 	if tick_on_apply:
 		target.getStatusEffect(status_effect.NAME).tick(false)
 	
-	if status_effect.LINGERING and target is ResPlayerCombatant and !target.LINGERING_STATUS_EFFECTS.has(status_effect.NAME):
+	if (!guaranteed and !CombatGlobals.randomRoll(0.15+target.STAT_VALUES['resist'])) and (status_effect.LINGERING and target is ResPlayerCombatant and !target.LINGERING_STATUS_EFFECTS.has(status_effect.NAME)):
+		manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.NAME, 'Lingering')
 		target.LINGERING_STATUS_EFFECTS.append(status_effect.NAME)
 	
 	checkReactions(target)
@@ -457,7 +458,7 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	squad.FILL_EMPTY = true
 	squad.ENEMY_POOL = getFactionEnemies(faction)
 	squad.COMBATANT_SQUAD.resize(squad_size)
-	squad.TAMEABLE_CHANCE = 0 + (0.01 * PlayerGlobals.PARTY_LEVEL) # Add story check later
+	squad.TAMEABLE_CHANCE = 1.01 * PlayerGlobals.PARTY_LEVEL # Add story check later
 	squad.pickRandomEnemies()
 	patroller.add_child(squad)
 

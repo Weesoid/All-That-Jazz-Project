@@ -60,7 +60,7 @@ var battle_music_path: String = ""
 var combat_result: int = -1
 var camera_position: Vector2 = Vector2(0, 0)
 var enemy_reinforcements: Array[ResCombatant]
-var tamed_combatants: Array[ResCombatant]
+var tamed_combatants: Array[String]
 var bonus_escape_chance = 0.0
 var onslaught_mode = false
 var onslaught_combatant: ResPlayerCombatant
@@ -116,7 +116,6 @@ func _ready():
 	
 	for button in action_panel.get_children():
 		button.focus_entered.connect(func(): secondary_panel.hide())
-	
 	
 	active_combatant.act()
 	
@@ -320,7 +319,6 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				combatant.ACTED = true
 				total_experience += combatant.getExperience()
 			if combatant.SPAWN_ON_DEATH != null:
-				print('SOD')
 				replaceCombatant(combatant, combatant.SPAWN_ON_DEATH)
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
@@ -602,8 +600,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
 	if do_tween:
 		var tween = create_tween().tween_property(combatant.SCENE, 'global_position', combatant.SCENE.get_parent().global_position, 0.15)
-		if !combatant.isDead():
-			combatant.SCENE.doAnimation('Cast_Melee')
+		if !combatant.isDead(): combatant.SCENE.doAnimation('Cast_Melee')
 		await tween.finished
 		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
 
@@ -960,7 +957,7 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 
 func getTamedCombatantsNames():
 	var out = []
-	for combatant in tamed_combatants: out.append(combatant.NAME)
+	for combatant in tamed_combatants: out.append(combatant)
 	return out
 
 func moveOnslaught(direction: int):

@@ -57,7 +57,6 @@ func playIdle(new_idle:String=''):
 
 func setProjectileTarget(target: CombatantScene, frame_time: float, ability: ResAbility, animation:String="Cast_Ranged"):
 	var anim: Animation = animator.get_animation(animation)
-	print('Received ability ', ability)
 	if anim.find_track(".", Animation.TYPE_METHOD) != null:
 		anim.remove_track(anim.find_track(".", Animation.TYPE_METHOD))
 	var track_index = anim.add_track(Animation.TYPE_METHOD)

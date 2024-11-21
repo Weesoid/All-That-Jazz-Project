@@ -10,7 +10,6 @@ extends Node2D
 
 func showAnimation(show_clear:bool):
 	if !show_clear:
-		print('SHOWIN STARTE!')
 		animator.play("Show_Started")
 	else:
 		var tween = create_tween()
@@ -46,7 +45,8 @@ func showLoot():
 		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
 		await get_tree().create_timer(0.15).timeout
-	for combatant in tamed:
+	for combatant_path in tamed:
+		var combatant = load(combatant_path)
 		var icon = createIcon(combatant)
 		var tween = create_tween()
 		tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)

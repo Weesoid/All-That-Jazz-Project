@@ -6,7 +6,7 @@ extends Control
 var map_component_data = {}
 
 func _ready():
-	PlayerGlobals.addFastTravelArea(OverworldGlobals.getCurrentMap().scene_file_path)
+	PlayerGlobals.addFastTravelArea(OverworldGlobals.getCurrentMap().scene_file_path, OverworldGlobals.getCurrentMap().getPatrollers().size()<=0)
 	for location in PlayerGlobals.CLEARED_MAPS.keys():
 		var button = OverworldGlobals.createCustomButton()
 		var map = load(location).instantiate()

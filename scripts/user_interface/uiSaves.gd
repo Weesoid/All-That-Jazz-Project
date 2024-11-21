@@ -82,6 +82,7 @@ func slotPressed(save_name: String, button: Button):
 		Modes.NEW_GAME:
 			PlayerGlobals.SAVE_NAME = generateSaveName()
 			OverworldGlobals.changeMap(new_game_map, '25.83763,59.06633,0', '', false, true)
+			for combatant in PlayerGlobals.TEAM: combatant.initializeCombatant(false)
 		Modes.DELETE:
 			deleteSave(save_name, button)
 
@@ -111,7 +112,6 @@ func generateSaveName()-> String:
 			file_name = dir.get_next()
 	
 	for save_name in save_names:
-		print(save_name, ' in ', saves, '?')
 		if !saves.has(save_name): 
 			return str(save_name)
 	

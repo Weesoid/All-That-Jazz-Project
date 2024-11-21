@@ -10,6 +10,26 @@
 script = ExtResource("8_ryksi")
 FACTION = 0
 TIER = 0
+PREFERRED_POSITION = 1
+CHANCE_TO_DROP = 0.5
+DROP_COUNT = 1
+DROP_POOL = {}
+is_converted = false
+NAME = "Arbalest"
+PACKED_SCENE = ExtResource("7_rdi4y")
+DESCRIPTION = "The best off healer honestly."
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.15,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 16,
+"hustle": 1,
+"resist": 0.05
+}
 SCALE_STATS = {
 "accuracy": false,
 "brawn": true,
@@ -21,26 +41,6 @@ SCALE_STATS = {
 "health": true,
 "hustle": true,
 "resist": true
-}
-PREFERRED_POSITION = 1
-CHANCE_TO_DROP = 0.5
-DROP_COUNT = 1
-DROP_POOL = {}
-is_converted = false
-NAME = "Arbalest"
-PACKED_SCENE = ExtResource("7_rdi4y")
-DESCRIPTION = "The best off healer honestly."
-STAT_VALUES = {
-"accuracy": 0.95,
-"brawn": 0.0,
-"crit": 0.05,
-"crit_dmg": 1.5,
-"grit": 0.0,
-"handling": 0,
-"heal_mult": 1.0,
-"health": 25,
-"hustle": 1,
-"resist": 0.05
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_sxyom"), ExtResource("2_4vmhq")])
 MAX_TURN_CHARGES = 1

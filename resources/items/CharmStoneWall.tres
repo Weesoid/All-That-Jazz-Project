@@ -13,3 +13,4 @@ ICON = ExtResource("1_i4u7q")
 DESCRIPTION = "Defendicious!"
 VALUE = 9999
 MANDATORY = false
+PARENT_ITEM = ""

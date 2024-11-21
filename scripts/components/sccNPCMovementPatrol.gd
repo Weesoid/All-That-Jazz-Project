@@ -31,11 +31,8 @@ func initialize():
 	BODY = get_parent()
 	NAV_AGENT = get_parent().get_node('NavigationAgent2D')
 	LINE_OF_SIGHT = get_parent().get_node('LineOfSightComponent')
-	#COMBAT_SQUAD = get_parent().get_node('CombatantSquadComponent')
 	ANIMATOR = get_parent().get_node('Animator')
 	
-#	if OverworldGlobals.getCurrentMap().CLEARED:
-#		destroy(false)
 	
 	NAME = get_parent().name
 	COMBAT_SQUAD.UNIQUE_ID = NAME
@@ -58,10 +55,10 @@ func initialize():
 			if id == NAME:
 				destroy()
 			)
-	CombatGlobals.combat_lost.connect(
-		func(_id):
-			soothe = true
-	)
+#	CombatGlobals.combat_lost.connect(
+#		func(_id):
+#			soothe = true
+#	)
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		# and !child.has_node('NPCPatrolComponent')
 		if child is CharacterBody2D and !child is PlayerScene and !child.has_node('NPCPatrolComponent'):
@@ -72,7 +69,7 @@ func _physics_process(_delta):
 	BODY.move_and_slide()
 	if PATROL :
 		patrol()
-	if COMBAT_SWITCH and STATE != 3 and ANIMATOR.current_animation != 'KO' and ANIMATOR.current_animation != 'Stun':
+	if COMBAT_SWITCH and STATE != 3 and OverworldGlobals.isPlayerAlive():
 		executeCollisionAction()
 	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0:
 		updatePath(true)
@@ -87,6 +84,7 @@ func executeCollisionAction():
 		return
 	
 	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
+		print(NAME, ': You touched me! I am fighting you! ', Time.get_time_dict_from_system())
 		immobolize()
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
@@ -158,6 +156,8 @@ func updateMode(state: int, alert_others:bool=false):
 		3: stunMode(alert_others)
 
 func destroy(fancy=true):
+	if ANIMATOR.current_animation == 'KO': return
+	print('* ',NAME, ' is am ded... blegh!')
 	PATROL = false
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
@@ -185,6 +185,7 @@ func isMapCleared():
 		if child.has_node('NPCPatrolComponent') and child != BODY: return
 	
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
+	print(NAME, ' giving rewards!')
 	OverworldGlobals.getCurrentMap().giveRewards()
 
 func updatePath(immediate:bool=false):

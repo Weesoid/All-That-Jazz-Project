@@ -1,4 +1,5 @@
 extends Area2D
+class_name Door
 
 @export var TO_SCENE_PATH: String
 @export var TO_COORDS: String = '0,0'
