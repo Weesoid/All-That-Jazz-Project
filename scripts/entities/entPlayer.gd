@@ -174,15 +174,17 @@ func showPowerInput(texture:CompressedTexture2D):
 
 func executePower():
 	for power in PlayerGlobals.KNOWN_POWERS:
-		if power.INPUT_MAP == power_inputs and power.INPUT_MAP != null and canCastPower(power): 
-			if power.CRYSTAL_COST > 0: InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.CRYSTAL_COST)
-			power.POWER_SCRIPT.executePower(self)
-		elif !canCastPower(power):
-			prompt.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
-		return
+		if power.INPUT_MAP == power_inputs and power.INPUT_MAP != null: 
+			if canCastPower(power): 
+				InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.CRYSTAL_COST)
+				power.POWER_SCRIPT.executePower(self)
+			elif !canCastPower(power) and power_inputs.length() >= 3:
+				prompt.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
+			return
 
 func canCastPower(power: ResPower):
-	return power.CRYSTAL_COST != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.CRYSTAL_COST) or power.CRYSTAL_COST == 0
+	print('Cost ', power.NAME, ' ', power.CRYSTAL_COST)
+	return (power.CRYSTAL_COST != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.CRYSTAL_COST)) or power.CRYSTAL_COST == 0
 
 func cancelPower():
 	Input.action_release("ui_gambit")
