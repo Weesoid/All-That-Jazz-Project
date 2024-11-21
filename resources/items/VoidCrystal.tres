@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://cxmaaovr2cyj8"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_5yspv"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_jdl7d"]
+
+[resource]
+script = ExtResource("2_jdl7d")
+MAX_STACK = 3
+BARTER_ITEM = false
+NAME = "Void Resonance Crystal"
+ICON = ExtResource("1_5yspv")
+DESCRIPTION = "Used to fuel powerful voidite abilities."
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = ""

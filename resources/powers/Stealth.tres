@@ -11,3 +11,4 @@ NAME = "Phase Shift"
 DESCRIPTION = "Enter the void and become invisible to the naked eye."
 ICON = ExtResource("1_db1p2")
 POWER_SCRIPT = ExtResource("2_x00vh")
+CRYSTAL_COST = 1

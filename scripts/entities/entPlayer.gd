@@ -13,6 +13,7 @@ class_name PlayerScene
 @onready var bow_line = $PlayerDirection/BowShotLine
 @onready var squad = $CombatantSquadComponent
 @onready var ammo_count = $PlayerCamera/Ammo
+@onready var crystal_count = $PlayerCamera/VoidCrystals
 @onready var prompt = $PlayerCamera/PlayerPrompt
 @onready var audio_player = $ScriptAudioPlayer
 @onready var cinematic_bars = $PlayerCamera/CinematicBars
@@ -120,6 +121,9 @@ func _input(_event):
 		sprinting = false
 		can_move = false
 		power_listening = true
+		if InventoryGlobals.hasItem('Void Resonance Crystal'):
+			crystal_count.show()
+			crystal_count.text = str(InventoryGlobals.getItem('Void Resonance Crystal').STACK)
 	elif (Input.is_action_just_released("ui_gambit") and canUsePower() and power_listening and !can_move) or (power_inputs.length() >= 3):
 		executePower()
 		cancelPower()
@@ -170,15 +174,22 @@ func showPowerInput(texture:CompressedTexture2D):
 
 func executePower():
 	for power in PlayerGlobals.KNOWN_POWERS:
-		if power.INPUT_MAP == power_inputs and power.INPUT_MAP != null:
+		if power.INPUT_MAP == power_inputs and power.INPUT_MAP != null and canCastPower(power): 
+			if power.CRYSTAL_COST > 0: InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.CRYSTAL_COST)
 			power.POWER_SCRIPT.executePower(self)
-			return
+		elif !canCastPower(power):
+			prompt.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
+		return
+
+func canCastPower(power: ResPower):
+	return power.CRYSTAL_COST != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.CRYSTAL_COST) or power.CRYSTAL_COST == 0
 
 func cancelPower():
 	Input.action_release("ui_gambit")
 	toggleVoidAnimation(false)
 	power_listening = false
 	power_inputs = ''
+	crystal_count.hide()
 	for child in power_input_container.get_children():
 		var tween = create_tween().bind_node(child).set_trans(Tween.TRANS_BOUNCE).set_parallel(true)
 		tween.tween_property(child, 'modulate', Color.TRANSPARENT, 0.15)
