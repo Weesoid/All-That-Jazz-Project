@@ -275,7 +275,8 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	getPlayer().resetStates()
 	setPlayerInput(false, true)
 	getPlayer().set_process_unhandled_input(false)
-	update_patroller_modes.emit(0)
+	#update_patroller_modes.emit(0)
+	getPlayer().z_index = 2
 	playEntityAnimation('Player', animation)
 	#await getEntity('Player').get_node('AnimationPlayer').animation_finished
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
@@ -522,7 +523,7 @@ func damageParty(damage:int):
 	var dead = ''
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
-		member.STAT_VALUES['health'] -= CombatGlobals.useDamageFormula(member, damage)
+		member.STAT_VALUES['health'] -= int(CombatGlobals.useDamageFormula(member, damage))
 		if member.isDead(): dead += '[color=yellow]'+member.NAME+'[/color], '
 	if !dead == '':
 		dead = dead.trim_suffix(', ')

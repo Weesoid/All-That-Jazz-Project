@@ -3,11 +3,13 @@ class_name NPCPatrolMovement
 
 @onready var PATROL_BUBBLE = $PatrolBubble/AnimationPlayer
 @onready var PATROL_BUBBLE_SPRITE = $PatrolBubble
+@onready var DETECT_BAR = $DetectBar
 @onready var DEBUG = $Label
 @export var PATROL_AREA: Area2D
 @export var BASE_MOVE_SPEED = 35
 @export var ALERTED_SPEED_MULTIPLIER = 1.25
 @export var CHASE_SPEED_MULTIPLIER = 5.0
+@export var DETECTION_TIME = 0.5
 
 var NAV_AGENT: NavigationAgent2D
 var LINE_OF_SIGHT: LineOfSight
@@ -25,7 +27,6 @@ var DETECT_TIMER: Timer
 
 var COMBAT_SWITCH = true
 var PATROL = true
-var soothe = false
 
 func initialize():
 	BODY = get_parent()
@@ -48,24 +49,18 @@ func initialize():
 	
 	OverworldGlobals.update_patroller_modes.connect(updateMode)
 	NAV_AGENT.navigation_finished.connect(updatePath)
+	#DETECT_TIMER.timeout.connect(detectBarFlash)
 	NAV_AGENT.navigation_finished.emit()
 	
-	CombatGlobals.combat_won.connect(
-		func(id):
-			if id == NAME:
-				destroy()
-			)
-#	CombatGlobals.combat_lost.connect(
-#		func(_id):
-#			soothe = true
-#	)
+	CombatGlobals.combat_won.connect(func(id): if id == NAME: destroy())
+	CombatGlobals.combat_lost.connect(func(_id): destroy(false))
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		# and !child.has_node('NPCPatrolComponent')
 		if child is CharacterBody2D and !child is PlayerScene and !child.has_node('NPCPatrolComponent'):
 			child.add_collision_exception_with(BODY)
+	DETECT_BAR.max_value = DETECTION_TIME
 
 func _physics_process(_delta):
-	if soothe and STATE != 0: soothePatrolMode()
 	BODY.move_and_slide()
 	if PATROL :
 		patrol()
@@ -73,6 +68,9 @@ func _physics_process(_delta):
 		executeCollisionAction()
 	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0:
 		updatePath(true)
+	
+	if STATE == 0 or STATE == 1:
+		DETECT_BAR.value = DETECT_TIMER.time_left
 #	if OverworldGlobals.isPlayerCheating():
 #		DEBUG.show()
 #		DEBUG.text = str(DETECT_TIMER.time_left)
@@ -84,7 +82,7 @@ func executeCollisionAction():
 		return
 	
 	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
-		print(NAME, ': You touched me! I am fighting you! ', Time.get_time_dict_from_system())
+		#print(NAME, ': You touched me! I am fighting you! ', Time.get_time_dict_from_system())
 		immobolize()
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
@@ -97,20 +95,33 @@ func patrol():
 		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
 	
 	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
+		if STATE != 2:
+			
+			DETECT_BAR.show()
 		if DETECT_TIMER.is_stopped() and STATE != 2: 
-			DETECT_TIMER.start(0.5)
+			DETECT_TIMER.start(DETECTION_TIME)
 		if !DETECT_TIMER.is_stopped():
 			await DETECT_TIMER.timeout
 			DETECT_TIMER.stop()
 		if LINE_OF_SIGHT.detectPlayer():
 			chaseMode()
 			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
+	elif (!LINE_OF_SIGHT.detectPlayer() and STATE != 2) or STATE == 2:
+		DETECT_BAR.hide()
 	
 	if (!NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and isPlayerTooFar(300.0)):
 		if self is NPCPatrolShooterMovement and ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left', 'Load'].has(ANIMATOR.current_animation):
 			ANIMATOR.animation_finished.emit()
 			ANIMATOR.play('RESET')
 		updateMode(1)
+
+#func detectResetColor():
+#	DETECT_BAR.modulate = Color.WHITE
+#
+#func detectBarFlash():
+#	var tween = create_tween().set_parallel(true)
+#	tween.tween_property(DETECT_BAR,'modulate',Color.RED,0.15)
+#	#tween.tween_property(DETECT_BAR,'modulate',Color.TRANSPARENT,0.15)
 
 func alertPatrolMode():
 	MOVE_SPEED = BASE_MOVE_SPEED * ALERTED_SPEED_MULTIPLIER
@@ -157,7 +168,7 @@ func updateMode(state: int, alert_others:bool=false):
 
 func destroy(fancy=true):
 	if ANIMATOR.current_animation == 'KO': return
-	print('* ',NAME, ' is am ded... blegh!')
+	#print('* ',NAME, ' is am ded... blegh!')
 	PATROL = false
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
@@ -185,7 +196,7 @@ func isMapCleared():
 		if child.has_node('NPCPatrolComponent') and child != BODY: return
 	
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
-	print(NAME, ' giving rewards!')
+	#print(NAME, ' giving rewards!')
 	OverworldGlobals.getCurrentMap().giveRewards()
 
 func updatePath(immediate:bool=false):
