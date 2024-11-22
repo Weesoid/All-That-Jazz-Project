@@ -111,7 +111,7 @@ func _ready():
 	
 	rollTurns()
 	setActiveCombatant(false)
-	while active_combatant.STAT_VALUES['hustle'] < 0:
+	while active_combatant.STAT_VALUES['hustle'] < -99:
 		setActiveCombatant(false)
 	
 	for button in action_panel.get_children():
@@ -164,6 +164,7 @@ func on_player_turn():
 	
 	Input.action_release("ui_accept")
 	resetActionLog()
+	escape_button.disabled = hasTameableCombatants()
 	skills_button.disabled = active_combatant.ABILITY_SET.is_empty() and !active_combatant.hasEquippedWeapon()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
@@ -361,12 +362,18 @@ func _on_escape_pressed():
 
 func _on_escape_focus_entered():
 	if can_escape:
-		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+		if hasTameableCombatants():
+			escape_chance_label.text = 'VOID LOCK'
+		else:
+			escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
 		escape_chance_label.show()
 
 func _on_escape_mouse_entered():
 	if can_escape:
-		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+		if hasTameableCombatants():
+			escape_chance_label.text = 'VOID LOCK'
+		else:
+			escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
 		escape_chance_label.show()
 
 func _on_escape_mouse_exited():
@@ -613,6 +620,7 @@ func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, anim
 	addCombatant(new_combatant, true)
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(new_combatant, load(animation_path), 0.15)
+	combat_log.writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
 	COMBATANTS.erase(combatant)
@@ -1034,6 +1042,12 @@ func sortCombatantsByPosition()-> Array[ResCombatant]:
 		if combatant.get_child_count() == 0: continue
 		out.append(combatant.get_child(0).combatant_resource)
 	return out
+
+func hasTameableCombatants()-> bool:
+	for combatant in getCombatantGroup('enemies'):
+		if combatant.tamed_combatant: return true
+	
+	return false
 
 func addTargetClickButton(combatant: ResCombatant):
 	var button = TextureButton.new()

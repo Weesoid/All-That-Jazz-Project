@@ -170,6 +170,7 @@ func destroy(fancy=true):
 	if ANIMATOR.current_animation == 'KO': return
 	#print('* ',NAME, ' is am ded... blegh!')
 	PATROL = false
+	DETECT_BAR.hide()
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
 	if fancy:

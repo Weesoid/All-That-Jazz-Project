@@ -6,6 +6,15 @@
 [resource]
 script = ExtResource("2_p3o31")
 STAT_MODIFICATIONS = {
+"accuracy": 0.0,
+"brawn": 0.0,
+"crit": 0.0,
+"crit_mult": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": -0.2,
+"health": 0,
+"hustle": 0,
 "resist": 0.75
 }
 NAME = "Resistor"

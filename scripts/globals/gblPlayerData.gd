@@ -262,7 +262,8 @@ func isMapCleared():
 	if OverworldGlobals.getCurrentMap().SAFE:
 		return true
 	else:
-		return CLEARED_MAPS.keys().has(OverworldGlobals.getCurrentMap().scene_file_path)
+		var current_map = OverworldGlobals.getCurrentMap().scene_file_path
+		return CLEARED_MAPS.keys().has(current_map) and CLEARED_MAPS[current_map]['cleared']
 
 func addFastTravelArea(map_path:String, cleared:bool):
 	if !CLEARED_MAPS.keys().has(map_path):

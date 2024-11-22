@@ -1,7 +1,7 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.APPLY_ONCE and !target.hasStatusEffect('Deathmark'):
 		target.SCENE.moveTo(target.SCENE.get_parent(), 0.25, Vector2(0,0), true)
-		CombatGlobals.modifyStat(target, {'hustle': -100}, status_effect.NAME)
+		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
 		target.SCENE.playIdle('KO')
 		CombatGlobals.playKnockOutTween(target)
 		target.SCENE.collision.disabled = true

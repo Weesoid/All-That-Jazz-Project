@@ -35,7 +35,7 @@ func _process(_delta):
 		grit_val.value = combatant.STAT_VALUES['grit'] * 100
 		handling_val.max_value = 4
 		handling_val.value = combatant.STAT_VALUES['handling']
-		if combatant.STAT_VALUES['hustle'] >= 0:
+		if combatant.STAT_VALUES['hustle'] >= -99:
 			hustle_val.text = str(combatant.STAT_VALUES['hustle'])
 		else:
 			hustle_val.text = 'IMMOBILIZED'

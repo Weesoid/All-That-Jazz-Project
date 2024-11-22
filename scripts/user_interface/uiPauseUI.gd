@@ -57,6 +57,7 @@ func _on_quests_pressed():
 	loadUserInterface("res://scenes/user_interface/Quest.tscn")
 
 func _on_quit_pressed():
+	if PlayerGlobals.isMapCleared(): SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")
 
 func loadUserInterface(path):

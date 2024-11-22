@@ -2205,7 +2205,7 @@ position = Vector2(1, -49)
 
 [node name="CinematicSpotlight" type="Sprite2D" parent="PlayerCamera"]
 self_modulate = Color(1, 1, 1, 0)
-z_index = -1
+z_index = 10
 position = Vector2(1.19209e-07, -20)
 scale = Vector2(0.383333, 0.362963)
 texture = ExtResource("10_wdujw")

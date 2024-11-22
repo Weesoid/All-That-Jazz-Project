@@ -276,10 +276,11 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	setPlayerInput(false, true)
 	getPlayer().set_process_unhandled_input(false)
 	#update_patroller_modes.emit(0)
-	getPlayer().z_index = 2
+	getPlayer().z_index = 20
 	playEntityAnimation('Player', animation)
 	#await getEntity('Player').get_node('AnimationPlayer').animation_finished
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
+	menu.z_index = 20
 	getPlayer().resetStates()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	getPlayer().player_camera.add_child(menu)

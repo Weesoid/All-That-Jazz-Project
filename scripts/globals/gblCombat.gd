@@ -459,7 +459,7 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	squad.FILL_EMPTY = true
 	squad.ENEMY_POOL = getFactionEnemies(faction)
 	squad.COMBATANT_SQUAD.resize(squad_size)
-	squad.TAMEABLE_CHANCE = 1.01 * PlayerGlobals.PARTY_LEVEL # Add story check later
+	squad.TAMEABLE_CHANCE = 0.01 * PlayerGlobals.PARTY_LEVEL # Add story check later
 	squad.pickRandomEnemies()
 	patroller.add_child(squad)
 

@@ -246,6 +246,7 @@ fill_mode = 1
 show_percentage = false
 
 [node name="TextureRect" type="TextureRect" parent="DetectBar"]
+layout_mode = 0
 offset_left = 29.0
 offset_top = -3.0
 offset_right = 41.0
