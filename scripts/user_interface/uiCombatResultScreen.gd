@@ -33,8 +33,8 @@ func _ready():
 	tween_player.tween_method(setPlayerTurns, turns_player, combat_scene.player_turn_count, 0.25)
 	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
 	tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
-	await showLoot()
-	await tween_morale.finished
+	showLoot()
+	#await tween_morale.finished
 	if rounds <= 2:
 		changeText(round_label, 'Fast Finish!')
 		bonusTween(round_label)
@@ -124,4 +124,4 @@ func showLoot():
 			OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
 		else:
 			loot_icons.add_child(icon)
-		await get_tree().create_timer(0.15).timeout
+		#await get_tree().create_timer(0.15).timeout

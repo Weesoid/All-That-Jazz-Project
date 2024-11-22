@@ -280,6 +280,7 @@ func playKnockOutTween(target: ResCombatant):
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
 	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
+	await tween.finished
 
 func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)

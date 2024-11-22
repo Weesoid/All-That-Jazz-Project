@@ -257,6 +257,9 @@ func getCurrentMap()-> Node2D:
 func getMapRewardBank(key: String):
 	return get_tree().current_scene.REWARD_BANK[key]
 
+func setMapRewardBank(key: String, value):
+	get_tree().current_scene.REWARD_BANK[key] = value
+
 func getTamedNames():
 	var out = []
 	for combatant in get_tree().current_scene.REWARD_BANK['tamed']:

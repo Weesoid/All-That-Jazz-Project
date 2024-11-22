@@ -2,15 +2,14 @@ extends MemberAdjustUI
 
 @onready var member_view = $Label/Marker2D
 @onready var currency = $Currency
+@onready var debug_button = $GetAllCombatants
 
 func _ready():
-#	if OverworldGlobals.isPlayerCheating():
-#		addAllMembers("res://resources/combat/combatants_player/tameable/")
-#		await get_tree().create_timer(0.01).timeout
-	
 	loadMembers()
 	if !PlayerGlobals.TEAM.is_empty():
 		for member in PlayerGlobals.TEAM: loadMemberInfo(member)
+	if OverworldGlobals.isPlayerCheating():
+		debug_button.show()
 
 func loadMembers(set_focus:bool=true):
 	for child in member_container.get_children():
@@ -170,3 +169,8 @@ func addAllMembers(path: String):
 	else:
 		print("An error occurred when trying to access the path.")
 		print(path)
+
+
+func _on_get_all_combatants_pressed():
+	addAllMembers("res://resources/combat/combatants_player/tameable/")
+	loadMembers(true)

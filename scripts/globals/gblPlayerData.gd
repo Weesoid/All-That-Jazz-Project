@@ -201,6 +201,21 @@ func addCombatantToTeam(combatant_id):
 	TEAM.append(combatant)
 	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
 
+func removeCombatant(combatant_id: ResPlayerCombatant):
+	#TEAM.remove_at(TEAM.find(combatant_id))
+	for member in TEAM:
+		if member == combatant_id: 
+			member.reset()
+			TEAM.erase(member)
+			break
+	var removed_combatants = []
+	for member in OverworldGlobals.getCombatantSquad('Player'):
+		if !TEAM.has(member): removed_combatants.append(member)
+	for member in removed_combatants:
+		OverworldGlobals.getCombatantSquad('Player').erase(member)
+	TEAM_FORMATION = OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD
+	overwriteTeam()
+
 func addFollower(follower: NPCFollower):
 	FOLLOWERS.append(follower)
 	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
@@ -284,6 +299,16 @@ func addCommaToNum(value: int=CURRENCY) -> String:
 	for i in range(str_value.length()-3, loop_end, -3):
 		str_value = str_value.insert(i, ",")
 	return str_value
+
+func overwriteTeam():
+	var current_save = load("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
+	for data in current_save.save_data:
+		if data is PlayerSaveData: 
+			data.TEAM = TEAM
+			data.TEAM_FORMATION = TEAM_FORMATION
+			break
+	ResourceSaver.save(current_save, "res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
+	#return sa
 
 func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
@@ -379,6 +404,7 @@ func loadData(save_data: PlayerSaveData):
 			if charm != null:
 				charm.updateItem()
 				charm.equip(combatant)
+		combatant.initializeCombatant(false)
 		combatant.updateCombatant(save_data)
 		combatant.initializeCombatant(false)
 	if OverworldGlobals.getCurrentMap().SAFE:

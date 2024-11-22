@@ -296,6 +296,16 @@ offset_top = 96.0
 offset_right = 232.0
 offset_bottom = 119.0
 
+[node name="GetAllCombatants" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -128.0
+offset_top = -112.0
+offset_right = -16.0
+offset_bottom = -90.0
+text = "Get All Combatants"
+alignment = 0
+
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
 [connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
 [connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
@@ -313,6 +323,7 @@ offset_bottom = 119.0
 [connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="hideItemDescription"]
 [connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
 [connection signal="pressed" from="ChangeFormation" to="." method="_on_change_formation_pressed"]
+[connection signal="pressed" from="GetAllCombatants" to="." method="_on_get_all_combatants_pressed"]
 
 [editable path="TabContainer/Attributes"]
 [editable path="AttributeView"]

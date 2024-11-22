@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://mrn0svae3x2r"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_yuhcs"]
+[ext_resource type="PackedScene" uid="uid://h4wwypopcwgp" path="res://scenes/animations/DebugEffect.tscn" id="2_3uboj"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_auktk"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="3_f44bn"]
+[ext_resource type="Resource" uid="uid://58kddolcxfum" path="res://resources/combat/status_effects/DeathMark.tres" id="4_wbmnl"]
+
+[sub_resource type="Resource" id="Resource_sqx5y"]
+script = ExtResource("3_f44bn")
+target = 0
+status_effect = ExtResource("4_wbmnl")
+cast_animation = "Cast_Misc"
+sound_effect = ""
+animation = ExtResource("2_3uboj")
+animation_time = 0.0
+animate_on = 0
+
+[resource]
+script = ExtResource("2_auktk")
+NAME = "Mark Of Death"
+DESCRIPTION = ""
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_sqx5y")])
+ABILITY_SCRIPT = ExtResource("1_yuhcs")
+TARGET_TYPE = 0
+TARGET_GROUP = 1
+CAN_TARGET_SELF = false
+TARGET_DEAD = true
+DEAD_TARGET_PARAMS = {
+"only_dead": true,
+"only_faded": true,
+"only_marked": false,
+"only_unmarked": true
+}
+CASTER_POSITION = {
+"max": 3,
+"min": 0
+}
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 0
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0

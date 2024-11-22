@@ -523,7 +523,7 @@ func executeAbility():
 	CombatGlobals.dialogue_signal.emit(ability_title)
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
-	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
+	if (target_combatant is  ResCombatant and is_instance_valid(target_combatant.SCENE)) and (target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant):
 		target_combatant.SCENE.allow_block = false
 	
 	confirm.emit()

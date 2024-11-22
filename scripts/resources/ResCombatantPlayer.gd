@@ -45,7 +45,14 @@ func updateCombatant(save_data: PlayerSaveData):
 	for ability in remove_abilities:
 		ABILITY_SET.erase(ability)
 	
-	var percent_health = save_data.COMBATANT_SAVE_DATA[self][2]['health'] / save_data.COMBATANT_SAVE_DATA[self][3]['health']
+	var percent_health = float(save_data.COMBATANT_SAVE_DATA[self][2]['health']) / float(save_data.COMBATANT_SAVE_DATA[self][3]['health'])
+	if NAME == 'Willis Flynn':
+		print('======= ', NAME, ' =======')
+		print('BaseHealth: ', STAT_VALUES['health'])
+		print('Dividing: ',save_data.COMBATANT_SAVE_DATA[self][2]['health'], ' / ', save_data.COMBATANT_SAVE_DATA[self][3]['health'])
+		print('% left: ', percent_health)
+		print(BASE_STAT_VALUES['health'], ' * ', percent_health, ' = ', BASE_STAT_VALUES['health'] * percent_health)
+		print('Floored: ', floor(BASE_STAT_VALUES['health'] * percent_health))
 	STAT_VALUES['health'] = floor(BASE_STAT_VALUES['health'] * percent_health)
 
 func act():

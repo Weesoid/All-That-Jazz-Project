@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://cyhy0db3choa7"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_irrdj"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_p3o31"]
+
+[resource]
+script = ExtResource("2_p3o31")
+STAT_MODIFICATIONS = {
+"resist": 0.75
+}
+NAME = "Resistor"
+ICON = ExtResource("1_irrdj")
+DESCRIPTION = "To resist nast effects, btw poo poo pee pee sex."
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = ""

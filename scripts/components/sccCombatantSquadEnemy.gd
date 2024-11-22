@@ -14,8 +14,8 @@ var afflicted_status_effects: Array[String]
 
 func _ready():
 	UNIQUE_ID = get_parent().name
-#	if FILL_EMPTY:
-#		pickRandomEnemies()
+	if FILL_EMPTY:
+		pickRandomEnemies()
 
 func addLingeringEffect(status_effect_name: String):
 	afflicted_status_effects.append(status_effect_name)

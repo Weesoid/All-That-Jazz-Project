@@ -15,7 +15,7 @@ enum EffectType {
 @export var EFFECT_TYPE: EffectType
 @export var TEXTURE: Texture = preload("res://images/sprites/unknown_icon.png")
 @export var MAX_DURATION: int
-@export var EXTEND_DURATION: int = 0
+@export var EXTEND_DURATION: int = 1
 @export var APPLY_EXTEND_DURATION:  bool = false
 @export var MAX_RANK: int
 @export var TICK_PER_TURN: bool
@@ -81,7 +81,7 @@ func tick(update_duration=true):
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading'].has(NAME) and !NAME.contains('Faded') and STATUS_SCRIPT != null:
+	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading', 'Deathmark'].has(NAME) and !NAME.contains('Faded') and STATUS_SCRIPT != null:
 		removeStatusEffect()
 
 func animateStatusEffect():

@@ -22,6 +22,7 @@ enum TargetGroup {
 @export var TARGET_GROUP: TargetGroup
 @export var CAN_TARGET_SELF: bool = false
 @export var TARGET_DEAD: bool = false
+@export var DEAD_TARGET_PARAMS = {'only_dead':false, 'only_marked':false, 'only_unmarked':false,'only_faded': true}
 @export var CASTER_POSITION: Dictionary = {'min':0, 'max':3}
 @export var TARGET_POSITION: Dictionary = {'min':0, 'max':3}
 @export var TENSION_COST: int = 0
@@ -51,7 +52,15 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
 	if TARGET_GROUP == TargetGroup.ALLIES or TARGET_GROUP == TargetGroup.ENEMIES:
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
-	combatants = combatants.filter(func(combatant): return (combatant.isDead() and combatant.hasStatusEffect('Fading') or !combatant.isDead()))
+	if DEAD_TARGET_PARAMS['only_dead']:
+		combatants = combatants.filter(func(combatant): return combatant.isDead())
+	if DEAD_TARGET_PARAMS['only_marked']:
+		combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Deathmark'))
+	elif DEAD_TARGET_PARAMS['only_unmarked']:
+		combatants = combatants.filter(func(combatant): return !combatant.hasStatusEffect('Deathmark'))
+	if DEAD_TARGET_PARAMS['only_faded']:
+		combatants = combatants.filter(func(combatant): return (combatant.isDead() and combatant.hasStatusEffect('Fading') or !combatant.isDead()))
+	#print(NAME, ' valid targets: ' ,combatants)
 	
 	if is_caster_player:
 		match TARGET_GROUP:

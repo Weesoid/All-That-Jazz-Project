@@ -1,7 +1,13 @@
 extends Door
+class_name EscapeDoor
 
 func interact():
-	PlayerGlobals.addExperience(int(-0.15 * PlayerGlobals.getRequiredExp()), true)
+	OverworldGlobals.addPatrollerPulse(global_position, 150.0, 3)
+	OverworldGlobals.getPlayer().set_collision_layer_value(5, false)
+	OverworldGlobals.getPlayer().set_collision_mask_value(5, false)
+	PlayerGlobals.addExperience(int(randf_range(-0.5,-0.25) * PlayerGlobals.getRequiredExp()), true)
+	OverworldGlobals.setMapRewardBank('experience', 0)
+	OverworldGlobals.getCurrentMap().giveRewards()
 	OverworldGlobals.changeMap(TO_SCENE_PATH, '0,0,0','SavePoint',true,true)
 
 func _on_body_entered(body):

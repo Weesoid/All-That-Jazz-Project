@@ -25,6 +25,7 @@ func _ready():
 	currency.text =  '     '+str(PlayerGlobals.addCommaToNum())
 	base.get_child(0).grab_focus()
 	
+	print(OverworldGlobals.getCombatantSquad('Player'))
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		var bar = preload("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 		$Container/VBoxContainer.add_child(bar)
