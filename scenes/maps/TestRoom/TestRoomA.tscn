@@ -114,7 +114,6 @@ position = Vector2(168, 80)
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_qyg78"), ExtResource("6_yjbx4")])
 FILL_EMPTY = true
-TAMEABLE_CHANCE = 1.0
 REINFORCEMENTS_TURN = 100
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null, null])
 

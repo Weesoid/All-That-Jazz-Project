@@ -238,8 +238,6 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
-	if SettingsGlobals.cheat_mode:
-		OverworldGlobals.getPlayer().add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	print(getCurrentMap().NAME, ' <=========================================')
 
 func showTransition(animation: String, player_scene:PlayerScene=null):

@@ -8,15 +8,12 @@ extends Node2D
 var current_index = -1
 
 func _input(event):
-	if !player.is_processing_input():
-		return
-	
 	var arrows: Array = InventoryGlobals.INVENTORY.filter(func(item): return item is ResProjectileAmmo)
 	arrows.sort_custom(func(a, b): return a.NAME < b.NAME)
 	if arrows.is_empty():
 		return
 	
-	if Input.is_action_just_pressed("ui_select_arrow"):
+	if Input.is_action_just_pressed("ui_select_arrow") and player.is_processing_input():
 		for child in other_arrows_container.get_children():
 			child.queue_free()
 			await child.tree_exited
@@ -26,7 +23,7 @@ func _input(event):
 		updateIcon(arrows[current_index].ICON, arrows[current_index].NAME)
 		#Input.action_press("ui_bow")
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg")
-	if Input.is_action_pressed("ui_select_arrow"):
+	if Input.is_action_pressed("ui_select_arrow") and player.is_processing_input():
 		visible = true
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:

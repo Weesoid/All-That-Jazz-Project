@@ -1,0 +1,98 @@
+[gd_resource type="Resource" script_class="SavedGame" load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_60mdu"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_ndwd3"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="3_wj3o1"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="4_80xtc"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="5_cxkgd"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Watchdog.tres" id="6_2pckf"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PiercingProjectile.tres" id="7_t3lx7"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/AilmentStrike.tres" id="8_2rqrs"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="9_xw0n2"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Teamwork.tres" id="10_4mc2k"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Tame.tres" id="11_3t6gx"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/KillChopAttack.tres" id="12_45qpj"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="13_5kgbp"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="14_1sxmd"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="15_u64nj"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="16_wpypw"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="17_lff17"]
+
+[sub_resource type="Resource" id="Resource_ea0v6"]
+script = ExtResource("1_60mdu")
+position = Vector2(25.8376, 59.0663)
+scene_path = "res://scenes/entities/Player.tscn"
+direction = 0
+
+[sub_resource type="Resource" id="Resource_5vnns"]
+script = ExtResource("2_ndwd3")
+QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
+QUEST_OBJECTIVES_DATA = {}
+
+[sub_resource type="Resource" id="Resource_pp2ua"]
+script = ExtResource("15_u64nj")
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_wj3o1")])
+FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
+CLEARED_MAPS = {}
+CURRENCY = 100
+PARTY_LEVEL = 1
+CURRENT_EXP = 0
+STRING_CONDITIONS = Array[String]([])
+PROGRESSION_DATA = {}
+TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([])
+COMBATANT_SAVE_DATA = {
+ExtResource("3_wj3o1"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+0: null,
+1: null,
+2: null
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 16,
+"hustle": 1,
+"resist": 0.05
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 16,
+"hustle": 1,
+"resist": 0.05
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_80xtc"), ExtResource("5_cxkgd"), ExtResource("6_2pckf"), ExtResource("7_t3lx7"), ExtResource("8_2rqrs"), ExtResource("9_xw0n2"), ExtResource("10_4mc2k"), ExtResource("11_3t6gx"), ExtResource("12_45qpj")]), false, Array[String]([]), true, 1, {
+"scaled_stats": {
+"health": 0.0
+}
+}, null, {
+"brawn": 0,
+"grit": 0,
+"handling": 0
+}, ExtResource("13_5kgbp")]
+}
+UNLOCKED_ABILITIES = {}
+ADDED_ABILITIES = {}
+MAX_PARTY_LEVEL = 5
+KNOWN_POWERS = [ExtResource("14_1sxmd")]
+
+[sub_resource type="Resource" id="Resource_qxctp"]
+script = ExtResource("16_wpypw")
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
+CRAFTED = Array[String]([])
+ITEM_DATA_INVENTORY = {}
+
+[resource]
+script = ExtResource("17_lff17")
+NAME = "Save 3 - 00:00:00
+Morale 1
+Alt Room"
+PLAYTIME = 0.000999928
+current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
+save_data = [SubResource("Resource_ea0v6"), SubResource("Resource_5vnns"), SubResource("Resource_pp2ua"), SubResource("Resource_qxctp")]

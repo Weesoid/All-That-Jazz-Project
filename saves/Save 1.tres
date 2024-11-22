@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=40 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=41 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_bkrgc"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_r6ihg"]
@@ -31,14 +31,15 @@
 [ext_resource type="Resource" path="res://resources/combat/abilities/StandGuard.tres" id="23_v264e"]
 [ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="24_ykvgr"]
 [ext_resource type="Resource" path="res://resources/items/BarterSalvage20.tres" id="25_21td1"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="30_mccxy"]
 
-[sub_resource type="Resource" id="Resource_6513x"]
+[sub_resource type="Resource" id="Resource_l7hio"]
 script = ExtResource("1_bkrgc")
-position = Vector2(-116.395, 34.0047)
+position = Vector2(-85.6617, -18.7911)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 179
 
-[sub_resource type="Resource" id="Resource_ywdfg"]
+[sub_resource type="Resource" id="Resource_6lfum"]
 script = ExtResource("2_r6ihg")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
@@ -69,9 +70,9 @@ VALUE = 0
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/Resistor.tres"
 
-[sub_resource type="Resource" id="Resource_tqrvx"]
+[sub_resource type="Resource" id="Resource_la4vc"]
 script = ExtResource("15_fpm1j")
-TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_80hkq"), ExtResource("14_e4h4o"), ExtResource("19_42od6"), ExtResource("23_soi5o"), ExtResource("20_dk5bw")])
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_80hkq"), ExtResource("14_e4h4o"), ExtResource("19_42od6"), ExtResource("20_dk5bw")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 CLEARED_MAPS = {
 "res://scenes/maps/TestRoom/TestRoomA.tscn": {
@@ -90,10 +91,10 @@ CLEARED_MAPS = {
 "fast_travel": true
 }
 }
-EQUIPPED_ARROW = ExtResource("23_2beja")
+EQUIPPED_ARROW = ExtResource("20_s2tel")
 CURRENCY = 2
 PARTY_LEVEL = 5
-CURRENT_EXP = 156
+CURRENT_EXP = 673
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_80hkq")])
@@ -110,7 +111,7 @@ ExtResource("3_80hkq"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 1.0,
 "handling": 0,
 "heal_mult": 0.8,
-"health": 22.0,
+"health": 22,
 "hustle": 1,
 "resist": 0.8
 }, {
@@ -336,22 +337,23 @@ VALUE = 150
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmSpeed.tres"
 
-[sub_resource type="Resource" id="Resource_bfn03"]
+[sub_resource type="Resource" id="Resource_pephd"]
 script = ExtResource("16_o5wri")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("23_2beja"), ExtResource("24_ykvgr"), ExtResource("25_21td1"), ExtResource("20_s2tel"), SubResource("Resource_fhldc"), SubResource("Resource_a1t5v")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("23_2beja"), ExtResource("25_21td1"), ExtResource("24_ykvgr"), ExtResource("30_mccxy"), ExtResource("20_s2tel"), SubResource("Resource_fhldc"), SubResource("Resource_a1t5v")])
 CRAFTED = Array[String]([])
 ITEM_DATA_INVENTORY = {
-"res://resources/items/Arrow.tres": 6,
+"res://resources/items/Arrow.tres": 4,
 "res://resources/items/ArrowJunk.tres": 16,
-"res://resources/items/ArrowSleeper.tres": 98,
-"res://resources/items/BarterSalvage20.tres": 12
+"res://resources/items/ArrowSleeper.tres": 95,
+"res://resources/items/BarterSalvage20.tres": 19,
+"res://resources/items/ScrapSalvage.tres": 10
 }
 
 [resource]
 script = ExtResource("17_usn0p")
-NAME = "Save 1 - 00:18:40
+NAME = "Save 1 - 00:21:04
 Morale 5
-Alt Room"
-PLAYTIME = 1120.89
-current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_6513x"), SubResource("Resource_ywdfg"), SubResource("Resource_tqrvx"), SubResource("Resource_bfn03")]
+Triple Secret"
+PLAYTIME = 1265.38
+current_map_path = "res://scenes/maps/TestRoom/TestRoomC.tscn"
+save_data = [SubResource("Resource_l7hio"), SubResource("Resource_6lfum"), SubResource("Resource_la4vc"), SubResource("Resource_pephd")]

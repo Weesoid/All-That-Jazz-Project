@@ -53,7 +53,10 @@ func initialize():
 	NAV_AGENT.navigation_finished.emit()
 	
 	CombatGlobals.combat_won.connect(func(id): if id == NAME: destroy())
-	CombatGlobals.combat_lost.connect(func(_id): destroy(false))
+	CombatGlobals.combat_lost.connect(
+		func(_id): 
+			if !OverworldGlobals.isPlayerAlive(): destroy(false)
+			)
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		# and !child.has_node('NPCPatrolComponent')
 		if child is CharacterBody2D and !child is PlayerScene and !child.has_node('NPCPatrolComponent'):
@@ -66,7 +69,7 @@ func _physics_process(_delta):
 		patrol()
 	if COMBAT_SWITCH and STATE != 3 and OverworldGlobals.isPlayerAlive():
 		executeCollisionAction()
-	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0:
+	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0 and BODY.get_slide_collision(0).get_collider() is GenericPatroller:
 		updatePath(true)
 	
 	if STATE == 0 or STATE == 1:
@@ -146,15 +149,14 @@ func chaseMode():
 	updatePath()
 
 func stunMode(alert_others:bool=false):
-#	var last_state = STATE
+	var last_state = STATE
 	STATE = 3
 	updatePath()
 	if alert_others:
-		OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 4)
-#		if last_state == 2 or last_state == 1:
-#			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
-#		else:
-#			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 4)
+		if last_state == 2 or last_state == 1:
+			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
+		else:
+			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 4)
 
 func updateMode(state: int, alert_others:bool=false):
 	if STATE == state:

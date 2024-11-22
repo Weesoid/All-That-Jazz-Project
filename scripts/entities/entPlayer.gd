@@ -18,6 +18,7 @@ class_name PlayerScene
 @onready var audio_player = $ScriptAudioPlayer
 @onready var cinematic_bars = $PlayerCamera/CinematicBars
 @onready var power_input_container = $PlayerCamera/PowerInputs
+@onready var quiver = $PlayerCamera/UtilitySelector
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -137,11 +138,11 @@ func _input(_event):
 		if bow_draw_strength == 0: bow_mode = !bow_mode
 	
 	# Debug
-	if Input.is_action_pressed("ui_cheat_mode"):
-		if !has_node('DebugComponent'):
-			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
-		else:
-			get_node('DebugComponent').queue_free()
+#	if Input.is_action_pressed("ui_cheat_mode"):
+#		if !has_node('DebugComponent'):
+#			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
+#		else:
+#			get_node('DebugComponent').queue_free()
 
 func _unhandled_input(_event: InputEvent):
 	# UI Handling
@@ -211,8 +212,10 @@ func resetStates():
 	ANIMATION_SPEED = 0.0
 	power_inputs = ''
 	cancelPower()
+	quiver.equipped_texture.texture = null
+	quiver.select_name.text = ''
+	quiver.visible = false
 	Input.action_release("ui_bow_draw")
-	Input.action_release("ui_select_arrow")
 
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
