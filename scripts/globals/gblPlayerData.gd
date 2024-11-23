@@ -202,7 +202,6 @@ func addCombatantToTeam(combatant_id):
 	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
 
 func removeCombatant(combatant_id: ResPlayerCombatant):
-	#TEAM.remove_at(TEAM.find(combatant_id))
 	for member in TEAM:
 		if member == combatant_id: 
 			member.reset()
@@ -267,16 +266,18 @@ func isMapCleared():
 
 func addFastTravelArea(map_path:String, cleared:bool):
 	if !CLEARED_MAPS.keys().has(map_path):
-		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':true, 'faction':OverworldGlobals.getCurrentMap().ENEMY_FACTION}
+		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':true, 'faction':OverworldGlobals.getCurrentMap().ENEMY_FACTION, 'events': {}}
 
 func addToClearedMaps(map_path:String,cleared:bool,fast_travel:bool=false, faction=null):
 	if !CLEARED_MAPS.keys().has(map_path):
-		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':fast_travel, 'faction':faction}
+		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':fast_travel, 'faction':faction, 'events': {}}
 
-func randomMapUnclear(count:int, ignore_map:String):
+func randomMapUnclear(count:int, ignore_map:String=''):
 	for map in CLEARED_MAPS.keys():
 		var location = load(map).instantiate()
-		if !location.SAFE: CLEARED_MAPS[map]['cleared'] = true
+		CLEARED_MAPS[map]['events'] = {}
+		if !location.SAFE: 
+			CLEARED_MAPS[map]['cleared'] = true
 		location.queue_free()
 	
 	var valid_maps = CLEARED_MAPS.keys().filter(
@@ -284,7 +285,7 @@ func randomMapUnclear(count:int, ignore_map:String):
 			var location = load(map).instantiate()
 			var is_safe = location.SAFE
 			location.queue_free()
-			return map != ignore_map and !is_safe
+			return (ignore_map == '' or map != ignore_map) and !is_safe
 			)
 	if valid_maps.size() <= 0:
 		return
@@ -292,7 +293,36 @@ func randomMapUnclear(count:int, ignore_map:String):
 		var map = valid_maps.pick_random()
 		CLEARED_MAPS[map]['cleared'] = false
 		CLEARED_MAPS[map]['faction'] = randi_range(0,0) # Only one faction so far
+		if CombatGlobals.randomRoll(1.25):
+			CLEARED_MAPS[map]['events'] = randomizeMapEvents()
+		# randomizeMapEvents()
 		valid_maps.erase(map)
+
+
+func randomizeMapEvents():
+	randomize()
+	var events = {}
+	var chance_budget = 1.0
+	var possible_events = ['combat_event', 'reward_item', 'additional_enemies', 'tameable_modifier', 'reward_multipliers', 'time_limit', 'patroller_effect']
+	var random_event
+	
+	while chance_budget > 0:
+		if CombatGlobals.randomRoll(chance_budget):
+			random_event = possible_events.pick_random()
+			possible_events.erase(random_event)
+			match random_event:
+				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
+				'time_limit': events['time_limit'] = [60.0, 90.0, 120.0].pick_random()
+				'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Mercenaries].pick_random()
+				'tameable_modifier': events['tameable_modifier'] = [0.25, 0.5].pick_random() * randi_range(-1, 1)
+				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
+				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
+				'reward_multipliers': events['reward_multipliers'] = {'experience':[1.25, 1.5, 0].pick_random(),'loot':[1.25, 1.5, 0].pick_random()}
+			chance_budget -= 0.25
+		else:
+			chance_budget = 0
+	
+	return events
 
 func addCommaToNum(value: int=CURRENCY) -> String:
 	var str_value: String = str(value)

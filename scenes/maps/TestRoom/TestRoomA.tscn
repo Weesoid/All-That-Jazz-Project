@@ -97,12 +97,6 @@ shape = SubResource("RectangleShape2D_uqnih")
 [node name="SpawnPoints" type="Marker2D" parent="Area2D"]
 position = Vector2(-72, -232)
 
-[node name="SpawnPoints2" type="Marker2D" parent="Area2D"]
-position = Vector2(0, -240)
-
-[node name="SpawnPoints3" type="Marker2D" parent="Area2D"]
-position = Vector2(80, -232)
-
 [node name="DoorInteractable" parent="." instance=ExtResource("17_0v7bm")]
 position = Vector2(-232, -136)
 TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomB.tscn"
@@ -114,7 +108,6 @@ position = Vector2(168, 80)
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_qyg78"), ExtResource("6_yjbx4")])
 FILL_EMPTY = true
-REINFORCEMENTS_TURN = 100
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null, null])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("7_eiq6g")]

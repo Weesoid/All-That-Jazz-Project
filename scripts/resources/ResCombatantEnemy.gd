@@ -36,7 +36,6 @@ func act():
 
 func applyStatusEffects():
 	for effect in LINGERING_STATUS_EFFECTS:
-		print(NAME, ' applied ', effect, '!')
 		CombatGlobals.addStatusEffect(self, effect)
 
 func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:

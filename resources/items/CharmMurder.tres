@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_kre4j")
+UNIQUE = false
 STAT_MODIFICATIONS = {
 "brawn": 1.0,
 "grit": 1.0
@@ -13,5 +14,5 @@ NAME = "Murder Charm"
 ICON = ExtResource("1_iv4bj")
 DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
-MANDATORY = null
+MANDATORY = false
 PARENT_ITEM = ""

@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_18ebx")
+UNIQUE = false
 STAT_MODIFICATIONS = {
 "grit": 0.75
 }

@@ -5,6 +5,7 @@ class_name GenericPatroller
 @export var base_move_speed: float
 @export var alerted_speed_multiplier: float
 @export var chase_speed_multiplier: float
+@export var detection_time: float
 
 @onready var patrol_component: NPCPatrolMovement = $NPCPatrolComponent
 
@@ -19,5 +20,7 @@ func _ready():
 		patrol_component.ALERTED_SPEED_MULTIPLIER = alerted_speed_multiplier
 	if chase_speed_multiplier != 0:
 		patrol_component.CHASE_SPEED_MULTIPLIER = chase_speed_multiplier
+	if detection_time != 0:
+		patrol_component.DETECTION_TIME = detection_time
 	
 	patrol_component.initialize()

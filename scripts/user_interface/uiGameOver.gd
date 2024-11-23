@@ -7,10 +7,12 @@ extends Control
 @onready var experience = $ProgressBar
 @onready var cash = $Label2
 var current_currency = PlayerGlobals.CURRENCY
+var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
 
 func _ready():
 	randomize()
 	PlayerGlobals.healCombatants()
+	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), saved_game.current_map_path)
 	var reduced_exp = randf_range(-0.2, -0.1) * PlayerGlobals.getRequiredExp()
 	var reduced_currency = randf_range(-0.2, -0.5) * PlayerGlobals.CURRENCY
 	PlayerGlobals.addExperience(reduced_exp)
@@ -31,7 +33,6 @@ func _ready():
 
 func _on_yes_pressed():
 	if FileAccess.file_exists("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME):
-		var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
 		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true, true)
 		PlayerGlobals.healCombatants()
 		PlayerGlobals.overworld_stats['stamina'] = 100.0

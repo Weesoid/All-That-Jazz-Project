@@ -2,6 +2,7 @@ extends ResEquippable
 class_name ResCharm
 
 @export var STATUS_EFFECT: ResStatusEffect
+@export var UNIQUE: bool = false
 
 func updateItem():
 	if !FileAccess.file_exists(PARENT_ITEM):

@@ -1,13 +1,15 @@
-[gd_resource type="Resource" script_class="ResStackItem" load_steps=2 format=3 uid="uid://bc3yscth1qntp"]
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://bc3yscth1qntp"]
 
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_55b5r"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="1_tfqii"]
 
 [resource]
 script = ExtResource("1_tfqii")
-PER_WEIGHT = 1
-MAX_STACK = 100
+MAX_STACK = 999
+BARTER_ITEM = false
 NAME = "Scrap Salvage"
+ICON = ExtResource("1_55b5r")
 DESCRIPTION = "Used for crafting."
 VALUE = 5
-WEIGHT = 1
 MANDATORY = false
+PARENT_ITEM = ""

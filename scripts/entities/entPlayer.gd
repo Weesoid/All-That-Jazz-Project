@@ -184,7 +184,7 @@ func executePower():
 			return
 
 func canCastPower(power: ResPower):
-	print('Cost ', power.NAME, ' ', power.CRYSTAL_COST)
+	#print('Cost ', power.NAME, ' ', power.CRYSTAL_COST)
 	return (power.CRYSTAL_COST != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.CRYSTAL_COST)) or power.CRYSTAL_COST == 0
 
 func cancelPower():

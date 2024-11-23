@@ -6,17 +6,33 @@ class_name MapData
 @export var IMAGE: Texture
 @export var SAFE: bool = false
 @export var ENEMY_FACTION: CombatGlobals.Enemy_Factions
+@export var EVENTS: Dictionary = {
+	'combat_event':null,
+	'additional_enemies':null,
+	'tameable_modifier':0.0,
+	'time_limit':0.0,
+	'reward_multipliers': {'experience':0.0, 'loot':0.0},
+	'patroller_effect': null,
+	'reward_item': null
+	}
 
 var CLEARED: bool = false
 var INITIAL_PATROLLER_COUNT: int = 0
-var REWARD_BANK: Dictionary = {'currency': 0.0, 'experience':0.0, 'loot':{}, 'tamed':[]}
+var REWARD_BANK: Dictionary = {'experience':0.0, 'loot':{}, 'tamed':[]}
+var STALKER # wooooo scary...!
 var full_alert: bool = false
+var clear_timer = Timer.new()
 
 func _ready():
 	if SaveLoadGlobals.is_loading:
 		await SaveLoadGlobals.done_loading
 	if !has_node('Player'): 
 		hide()
+	if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) and !PlayerGlobals.CLEARED_MAPS[scene_file_path]['events'].is_empty():
+		#print('Applyin events!')
+		var events: Dictionary = PlayerGlobals.CLEARED_MAPS[scene_file_path]['events']
+		for key in events.keys():
+			if events[key] != null: EVENTS[key] = events[key]
 	if !SAFE and (!PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) or !PlayerGlobals.CLEARED_MAPS[scene_file_path]['cleared']):
 		await get_tree().process_frame
 		if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path):
@@ -25,17 +41,26 @@ func _ready():
 		INITIAL_PATROLLER_COUNT = getPatrollers().size()
 		showStartIndicator()
 		setSavePoints(false)
-		#get_node('FastTravel').hide()
+		if EVENTS['time_limit'] > 0.0:
+			add_child(clear_timer)
+			clear_timer.timeout.connect(escapePatrollers)
+			clear_timer.start(EVENTS['time_limit'])
+			OverworldGlobals.getPlayer().player_camera.add_child(load("res://scenes/user_interface/TimeLimit.tscn").instantiate())
 
 func giveRewards():
+	if !clear_timer.is_stopped(): clear_timer.stop()
 	if !OverworldGlobals.isPlayerAlive(): return
 	
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = REWARD_BANK['experience']
+	if EVENTS['reward_item'] != null:
+		REWARD_BANK['loot'][EVENTS['reward_item']] = 1
+	for item in REWARD_BANK['loot'].keys():
+		REWARD_BANK['loot'][item] += ceil(REWARD_BANK['loot'][item]*EVENTS['reward_multipliers']['loot'])
+	REWARD_BANK['experience'] += ceil(REWARD_BANK['experience']*EVENTS['reward_multipliers']['experience'])
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
 	map_clear_indicator.showAnimation(true)
 	
-	PlayerGlobals.CURRENCY += REWARD_BANK['currency']
 	PlayerGlobals.addExperience(REWARD_BANK['experience'])
 	for item in REWARD_BANK['loot'].keys():
 		if item is ResStackItem:
@@ -46,7 +71,7 @@ func giveRewards():
 	for combatant in REWARD_BANK['tamed']:
 		PlayerGlobals.addCombatantToTeam(combatant)
 	PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
-	PlayerGlobals.randomMapUnclear(1, scene_file_path)
+	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), scene_file_path)
 	setSavePoints(true)
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 
@@ -108,3 +133,11 @@ func arePatrollersAlerted():
 
 func arePatrollersHalved():
 	return getPatrollers().size() <= floor(INITIAL_PATROLLER_COUNT / 2.0)
+
+func escapePatrollers():
+	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), scene_file_path)
+	for patroller in getPatrollers():
+		var animation = load("res://scenes/animations/Reinforcements.tscn").instantiate()
+		add_child(animation)
+		animation.playAnimation(patroller.global_position)
+		patroller.get_node('NPCPatrolComponent').destroy(false)

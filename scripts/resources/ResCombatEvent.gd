@@ -7,3 +7,7 @@ class_name ResCombatEvent
 ## Multi-target abilities ONLY!
 @export var ABILITY: ResAbility
 @export var TURN_TRIGGER: int
+@export var MAP_OVERLAY: Node2D
+
+func _to_string():
+	return NAME

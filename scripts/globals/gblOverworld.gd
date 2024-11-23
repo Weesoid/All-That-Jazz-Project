@@ -238,7 +238,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
-	print(getCurrentMap().NAME, ' <=========================================')
+	#print(getCurrentMap().NAME, ' <=========================================')
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
 	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
@@ -428,6 +428,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		combat_scene.COMBATANTS.append(duped_combatant)
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
+	elif getCurrentMap().EVENTS['combat_event'] != null:
+		combat_scene.combat_event = getCurrentMap().EVENTS['combat_event']
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
@@ -558,6 +560,24 @@ func loadFromPath(path:String, key:String, exstension:String='.tres'):
 	else:
 		print("An error occurred when trying to access the path.")
 		print(path)
+
+func loadArrayFromPath(path:String, filter=null, exstension:String='.tres')-> Array:
+	var out = []
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			out.append(load(path+'/'+file_name))
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+		print(path)
+	if filter != null:
+		out = out.filter(filter)
+	
+	#print('Returning: ', out)
+	return out
 
 func resetVariables():
 	follow_array = []

@@ -1,9 +1,10 @@
 extends Node
 
-var TENSION: int = 0
+
 enum Enemy_Factions {
 	Neutral,
-	Unggboys
+	Unggboys,
+	Mercenaries
 }
 var FACTION_MUSIC = {
 	Enemy_Factions.Neutral: [
@@ -11,11 +12,16 @@ var FACTION_MUSIC = {
 	],
 	Enemy_Factions.Unggboys: [
 		"res://audio/music/Little Speck DV.ogg"
+	],
+	Enemy_Factions.Mercenaries: [
+		"res://audio/music/Little Speck DV.ogg"
 	]
 }
 var FACTION_PATROLLER_PROPERTIES = {
 	Enemy_Factions.Neutral: preload("res://resources/combat/faction_patrollers/Neutral.tres")
 }
+
+var TENSION: int = 0
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
 signal dialogue_signal(flag)
@@ -455,9 +461,14 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	randomize()
 	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
 	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)
-	if squad_size > 4: squad_size = 4
+	if squad_size < 4: squad_size = 4
 	squad.FILL_EMPTY = true
 	squad.ENEMY_POOL = getFactionEnemies(faction)
+	if OverworldGlobals.getCurrentMap().EVENTS['additional_enemies'] != null:
+		squad.ENEMY_POOL.append_array(getFactionEnemies(OverworldGlobals.getCurrentMap().EVENTS['additional_enemies']))
+	if OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'] != null:
+		squad.addLingeringEffect(OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'])
+	squad.ENEMY_POOL = squad.ENEMY_POOL.filter(func(combatant): return isWithinPlayerTier(combatant))
 	squad.COMBATANT_SQUAD.resize(squad_size)
 	squad.TAMEABLE_CHANCE = 0.01 * PlayerGlobals.PARTY_LEVEL # Add story check later
 	squad.pickRandomEnemies()
@@ -468,6 +479,7 @@ func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
 	match faction:
 		Enemy_Factions.Neutral: path = "res://resources/combat/combatants_enemies/neutral/"
 		Enemy_Factions.Unggboys: path = "res://resources/combat/combatants_enemies/unggboys/"
+		Enemy_Factions.Mercenaries: path = "res://resources/combat/combatants_enemies/mercenaries/"
 	
 	var dir = DirAccess.open(path)
 	var out: Array[ResEnemyCombatant] = []
@@ -484,7 +496,14 @@ func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
 	
 	return out
 
+func getFactionName(faction_value:int):
+	return Enemy_Factions.find_key(faction_value)
+
 func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
+	if enemy.TIER+1 <= PlayerGlobals.getLevelTier():
+		print('Adding %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
+	else:
+		print('Removing %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
 	return enemy.TIER+1 <= PlayerGlobals.getLevelTier()
 
 func addTension(amount: int):
