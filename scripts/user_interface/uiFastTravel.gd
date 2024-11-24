@@ -29,9 +29,9 @@ func _ready():
 	
 	OverworldGlobals.setMenuFocus(travel_panel)
 
-func getMapInfo(location, map_component_data):
-	description.text = map_component_data[location][0].to_upper()+'\n'
-	description.text += map_component_data[location][1]+'\n\n'
+func getMapInfo(location, map_data):
+	description.text = map_data[location][0].to_upper()+'\n'
+	description.text += map_data[location][1]+'\n\n'
 	var map_event = PlayerGlobals.CLEARED_MAPS[location]
 	if !map_event['cleared']:
 		description.text += 'OCCUPIED BY: %s' % CombatGlobals.getFactionName(map_event['faction'])+'\n'
@@ -40,7 +40,7 @@ func getMapInfo(location, map_component_data):
 	if map_event['events'].has('time_limit'):
 		description.text += 'TIME_LIMIT: %s' % map_event['events']['time_limit'] + '\n'
 	if map_event['events'].has('additional_enemies'):
-		description.text += 'ADDITIONAL_ENEMIES: %s' % map_event['events']['additional_enemies'] + '\n'
+		description.text += 'ADDITIONAL_ENEMIES: %s' % CombatGlobals.getFactionName(map_event['events']['additional_enemies'])+ '\n'
 	if map_event['events'].has('tameable_modifier'):
 		description.text += 'TAMEABLE_MODIFIER: %s' % map_event['events']['tameable_modifier'] + '\n'
 	if map_event['events'].has('patroller_effect'):

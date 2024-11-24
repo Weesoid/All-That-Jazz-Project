@@ -56,7 +56,27 @@ func _on_quests_pressed():
 	loadUserInterface("res://scenes/user_interface/Quest.tscn")
 
 func _on_quit_pressed():
-	if PlayerGlobals.isMapCleared(): SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+	#confirm_dialog.connectYes(leaveToMain)
+#	confirm_dialog.dialog.confirmed.connect(leaveToMain)
+#	confirm_dialog.dialog.get_cancel_button().pressed.connect(queue_free)
+#	confirm_dialog.grow_horizontal = Control.GROW_DIRECTION_BOTH
+#	confirm_dialog.grow_vertical = Control.GROW_DIRECTION_BOTH
+#	confirm_dialog.initial_position =Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+	#await confirm_dialog.dialog.confirmed
+	if PlayerGlobals.isMapCleared(): 
+		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+		leaveToMain()
+	else:
+		disableButtons()
+		var confirm_dialog = load("res://scenes/user_interface/ConfirmationDialog.tscn").instantiate()
+		add_child(confirm_dialog)
+		confirm_dialog.text.text = 'Area is not safe so changes will not be saved.'
+		confirm_dialog.yes_button.text = 'Quit'
+		confirm_dialog.no_button.text = 'Return'
+		confirm_dialog.yes_button.pressed.connect(leaveToMain)
+		confirm_dialog.no_button.pressed.connect(func():OverworldGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
+
+func leaveToMain():
 	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")
 
 func loadUserInterface(path):
@@ -72,8 +92,7 @@ func disableButtons():
 	quit.disabled = true
 	for child in base.get_children():
 		child.hide()
-		if child is Button: 
-			child.disabled = true
+		if child is Button: child.disabled = true
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_show_menu"):

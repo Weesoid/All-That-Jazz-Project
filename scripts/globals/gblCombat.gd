@@ -48,7 +48,7 @@ func emit_exp_updated(value, max_value):
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
-func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = true)-> bool:
+func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = true, sound:String='')-> bool:
 	if !caster is ResCombatant:
 		caster = caster.combatant_resource
 	if !target is ResCombatant:
@@ -64,11 +64,11 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		checkMissCases(target, caster, base_damage)
 		return false
 	else:
-		damageTarget(caster, target, base_damage, can_crit)
+		damageTarget(caster, target, base_damage, can_crit, sound)
 		return true
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false)-> bool:
+func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false, sound:String='')-> bool:
 	if !target is ResCombatant:
 		target = target.combatant_resource
 	
@@ -107,12 +107,12 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 			addTension(25)
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
-	playHurtAnimation(target)
+	playHurtAnimation(target, sound)
 	
 	return true
 
 ## Basic damage calculations
-func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool):
+func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool, sound:String=''):
 	base_damage += caster.STAT_VALUES['brawn'] * base_damage
 	base_damage = useDamageFormula(target, base_damage)
 	
@@ -136,7 +136,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 			addTension(25)
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
-	playHurtAnimation(target)
+	playHurtAnimation(target, sound)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 	if target is ResPlayerCombatant and target.SCENE.blocking:
@@ -226,23 +226,24 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 	else:
 		await animation.playAnimation(target.SCENE.position)
 
-func playHurtAnimation(target: ResCombatant):
+func playHurtAnimation(target: ResCombatant, sound_path: String=''):
 	if !target.STAT_MODIFIERS.keys().has('block'):
 		randomize()
-		OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
-		if target is ResEnemyCombatant:
-			OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
+		if sound_path == '':
+			OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
+			if target is ResEnemyCombatant:
+				OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
+			else:
+				OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
 		else:
-			OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
+			OverworldGlobals.playSound(sound_path, -8.0)
+		
 		if !target.isDead():
 			playHurtTween(target)
 		else:
 			getCombatScene().combat_camera.shake(25.0, 10.0)
 			if target is ResEnemyCombatant:
 				CombatGlobals.playAnimation(target, 'KO')
-#				if target.ELITE:
-#					OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1_ELITE.ogg")
-#				else:
 				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
 			elif target is ResPlayerCombatant:
 				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")

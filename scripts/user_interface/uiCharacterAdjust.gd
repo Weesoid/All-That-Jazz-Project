@@ -53,6 +53,9 @@ func loadMembers(set_focus:bool=true):
 			member_button.grab_focus()
 			selected_combatant = member
 			loadMemberInfo(selected_combatant)
+	
+	for body in getOtherMemberScenes(selected_combatant.NAME):
+		body.modulate = Color(Color.WHITE, 0.25)
 
 func loadMemberInfo(member: ResCombatant, button: Button=null):
 	if changing_formation and selected_combatant == null:
@@ -67,6 +70,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 			if child.text == selected_combatant.NAME: 
 				child.grab_focus()
 				break
+		for body in getOtherMemberScenes(): body.modulate = Color(Color.WHITE, 1.0)
 		selected_combatant = null
 	else:
 		selected_combatant = member
@@ -136,7 +140,7 @@ func createButton(ability, location):
 	location.add_child(button)
 
 func createMemberButton(member: ResCombatant):
-	var button = OverworldGlobals.createCustomButton(load("res://design/CombatButtons.tres"))
+	var button = OverworldGlobals.createCustomButton(load("res://design/PartyButtons.tres"))
 	button.alignment =HORIZONTAL_ALIGNMENT_RIGHT
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
 	button.custom_minimum_size.x = 64
@@ -144,8 +148,25 @@ func createMemberButton(member: ResCombatant):
 	member.initializeCombatant()
 	member.getAnimator().play('Idle')
 	button.add_child(member.SCENE)
-	button.pressed.connect(func(): loadMemberInfo(member, button))
+	button.pressed.connect(
+		func():
+			member.SCENE.modulate = Color(Color.WHITE, 1.0)
+			for body in getOtherMemberScenes(member.NAME):
+				body.modulate = Color(Color.WHITE, 0.25)
+			loadMemberInfo(member, button)
+			)
+#	button.focus_entered.connect(func(): member.SCENE.modulate = Color.YELLOW)
+#	button.mouse_entered.connect(func(): member.SCENE.modulate = Color.YELLOW)
+#	button.focus_exited.connect(func(): member.SCENE.modulate = Color.WHITE)
+#	button.mouse_exited.connect(func(): member.SCENE.modulate = Color.WHITE)
 	return button
+
+func getOtherMemberScenes(except_name: String=''):
+	var out = []
+	for body in member_container.get_children():
+		if body.text == except_name and except_name != '': continue
+		out.append(body.get_node('CharacterBody2D'))
+	return out
 
 func showCharmEquipMenu(slot_button: Button):
 	setFocusMode(equipped_charms, false)
@@ -378,6 +399,9 @@ func setFocusMode(container, mode):
 
 func _on_change_formation_pressed():
 	changing_formation = !changing_formation
+	for member in getOtherMemberScenes():
+		member.modulate = Color(Color.WHITE, 1.0)
+	
 	if changing_formation:
 		tabs.hide()
 		attrib_view.hide()

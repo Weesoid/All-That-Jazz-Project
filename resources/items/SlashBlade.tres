@@ -8,7 +8,7 @@
 script = ExtResource("2_thh0s")
 EFFECT = ExtResource("1_5kkis")
 USE_REQUIREMENT = {
-"handling": 0
+"handling": 3
 }
 max_durability = 16
 STAT_MODIFICATIONS = {}
@@ -17,3 +17,4 @@ ICON = ExtResource("1_08b4g")
 DESCRIPTION = "It's a blade for slashin!"
 VALUE = 1
 MANDATORY = true
+PARENT_ITEM = ""

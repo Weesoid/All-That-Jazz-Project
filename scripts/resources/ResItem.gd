@@ -18,7 +18,8 @@ func getInformation():
 
 func getGeneralInfo():
 	var out = ''
-	out += '[img]res://images/sprites/icon_value.png[/img]%s' % VALUE
+	if VALUE > 0:
+		out += '[img]res://images/sprites/trade_slip.png[/img]%s	' % VALUE
 	return out
 
 func getRarity():

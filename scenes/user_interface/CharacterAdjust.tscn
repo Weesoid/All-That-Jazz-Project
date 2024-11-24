@@ -46,10 +46,11 @@ layout_mode = 0
 offset_left = -128.0
 offset_top = -104.0
 offset_right = 216.0
-offset_bottom = 120.0
+offset_bottom = 136.0
 tab_alignment = 2
 
 [node name="Abilities" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Abilities"]
@@ -81,7 +82,6 @@ bbcode_enabled = true
 text = "This is the item description. FEAR IT'S GLORY!"
 
 [node name="Charms" type="Panel" parent="TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bfwvc")
 
@@ -153,9 +153,9 @@ offset_bottom = 88.0
 z_index = 1
 layout_mode = 2
 offset_left = -168.0
-offset_top = 128.0
+offset_top = 136.0
 offset_right = 128.0
-offset_bottom = 150.0
+offset_bottom = 158.0
 bbcode_enabled = true
 text = "[img]res://images/sprites/circle_filled.png[/img]"
 fit_content = true
@@ -164,9 +164,9 @@ scroll_active = false
 [node name="ItemInfo" type="PanelContainer" parent="TabContainer/Charms/Infomration"]
 layout_mode = 2
 offset_left = -168.0
-offset_top = 60.0
+offset_top = 64.0
 offset_right = 128.0
-offset_bottom = 156.0
+offset_bottom = 136.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ee64e")
 
 [node name="DescriptionLabel2" type="RichTextLabel" parent="TabContainer/Charms/Infomration/ItemInfo"]

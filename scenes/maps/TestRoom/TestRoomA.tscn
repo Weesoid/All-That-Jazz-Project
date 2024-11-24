@@ -1,11 +1,11 @@
-[gd_scene load_steps=29 format=3 uid="uid://fpsq1iqu5p0l"]
+[gd_scene load_steps=31 format=3 uid="uid://fpsq1iqu5p0l"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]
 [ext_resource type="Resource" uid="uid://dllvm6xbaivj" path="res://resources/combat/combatants_enemies/neutral/Arbalest.tres" id="5_qyg78"]
 [ext_resource type="PackedScene" uid="uid://knc1563g65sr" path="res://scenes/entities_interactable/CraftingTable.tscn" id="5_u7bub"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="5_v1cwg"]
-[ext_resource type="Resource" uid="uid://dxdpkpoxq1gca" path="res://resources/combat/combatants_enemies/neutral/Bruiser.tres" id="6_yjbx4"]
+[ext_resource type="Resource" uid="uid://cje1jvdv275kj" path="res://resources/combat/combatants_enemies/mercenaries/Bandit.tres" id="6_xnfh2"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="7_eiq6g"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="8_pga02"]
 [ext_resource type="Resource" uid="uid://crf6wo1o4pndo" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_test_fight.dialogue" id="10_2rgfe"]
@@ -21,6 +21,8 @@
 [ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="17_nryad"]
 [ext_resource type="Resource" uid="uid://c4s6hqmd8yaqr" path="res://resources/items/ArrowSleeper.tres" id="18_vkkst"]
 [ext_resource type="PackedScene" uid="uid://c1ktb61l0lngn" path="res://scenes/entities_interactable/EscapeRoute.tscn" id="21_13frs"]
+[ext_resource type="PackedScene" uid="uid://cebsuq5hlg0pr" path="res://scenes/entities_doodads/ChancedSpawner.tscn" id="24_kiph7"]
+[ext_resource type="PackedScene" uid="uid://d3uwhp7cbtt7a" path="res://scenes/entities_interactable/HidingSpot.tscn" id="25_ba0bo"]
 [ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="31_s6lty"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="32_ea2lt"]
 
@@ -106,9 +108,9 @@ TO_COORDS = "192.3333, 28,90"
 position = Vector2(168, 80)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
-ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_qyg78"), ExtResource("6_yjbx4")])
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_qyg78"), ExtResource("6_xnfh2")])
 FILL_EMPTY = true
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null, null, null])
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("7_eiq6g")]
 dialogue_resource = ExtResource("8_pga02")
@@ -172,3 +174,8 @@ position = Vector2(32, -120)
 
 [node name="DoorInteractable2" parent="." instance=ExtResource("21_13frs")]
 position = Vector2(64, -88)
+
+[node name="ChancedSpawner" parent="." instance=ExtResource("24_kiph7")]
+position = Vector2(8, -72)
+spawn_entity = ExtResource("25_ba0bo")
+chance_to_spawn = 0.5

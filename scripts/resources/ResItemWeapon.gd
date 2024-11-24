@@ -53,5 +53,9 @@ func getInformation():
 
 func getGeneralInfo():
 	var out = ''
-	out += '[img]res://images/sprites/icon_value.png[/img]%s	[img]res://images/sprites/icon_durability.png[/img]%s/%s	[img]res://images/sprites/circle_filled.png[/img]%s' % [VALUE,durability,max_durability,USE_REQUIREMENT['handling']]
+	if VALUE > 0:
+		out += '[img]res://images/sprites/trade_slip.png[/img]%s	' % VALUE
+	out += '[img]res://images/sprites/icon_durability.png[/img]%s/%s	' % [durability,max_durability]
+	if USE_REQUIREMENT['handling'] > 0:
+		out += '[img]res://images/sprites/circle_filled.png[/img] %s' % USE_REQUIREMENT['handling']
 	return out

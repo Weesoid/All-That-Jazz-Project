@@ -561,7 +561,7 @@ func loadFromPath(path:String, key:String, exstension:String='.tres'):
 		print("An error occurred when trying to access the path.")
 		print(path)
 
-func loadArrayFromPath(path:String, filter=null, exstension:String='.tres')-> Array:
+func loadArrayFromPath(path:String, filter=null)-> Array:
 	var out = []
 	var dir = DirAccess.open(path)
 	if dir:

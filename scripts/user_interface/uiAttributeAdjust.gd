@@ -9,6 +9,7 @@ extends Control
 @onready var reset_grit = $HBoxContainer/VBoxContainer/Grit/Reset
 @onready var reset_handling = $HBoxContainer/VBoxContainer/Handling/Reset
 @onready var brawn_up = $HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Up
+@onready var handling_up = $HBoxContainer/VBoxContainer/Handling/HBoxContainer/Up
 
 func _ready():
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
@@ -17,6 +18,10 @@ func _ready():
 func _process(_delta):
 	if combatant != null:
 		points_left.text = str(combatant.STAT_POINTS)
+		if combatant.STAT_POINTS > 0:
+			points_left.add_theme_color_override("font_color", Color.YELLOW)
+		else:
+			points_left.add_theme_color_override("font_color", Color.WHITE)
 		brawn_bonus.text = '+%s' % str((0.02 * combatant.STAT_POINT_ALLOCATIONS['brawn']) * 100)+"%"
 		grit_bonus.text = '+%s' % str((0.02 * combatant.STAT_POINT_ALLOCATIONS['grit']) * 100)+"%"
 		handling_bonus.text = '+%s' % str(1 * combatant.STAT_POINT_ALLOCATIONS['handling'])
@@ -28,6 +33,12 @@ func _process(_delta):
 			reset_grit.show()
 		else:
 			reset_grit.hide()
+		if combatant.STAT_POINT_ALLOCATIONS['handling'] >= 5:
+			handling_up.show()
+			handling_bonus.show()
+		else:
+			handling_up.hide()
+			handling_bonus.hide()
 		if combatant.STAT_POINT_ALLOCATIONS['handling'] != 0:
 			reset_handling.show()
 		else:

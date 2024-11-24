@@ -39,6 +39,7 @@ func removeEmptyModifications():
 		STAT_MODIFICATIONS.erase(stat)
 
 func getStringStats():
+	removeEmptyModifications()
 	var result = ""
 	for key in STAT_MODIFICATIONS.keys():
 		var value = STAT_MODIFICATIONS[key]
@@ -47,15 +48,15 @@ func getStringStats():
 		if STAT_MODIFICATIONS[key] > 0 and STAT_MODIFICATIONS[key]:
 			result += '[color=GREEN_YELLOW]'
 			if value is float: 
-				result += "+" + str(value) + "% " +key.to_upper() + "\n"
+				result += "+" + str(value) + "% " +key.to_upper().replace('_', ' ') + "\n"
 			else:
-				result += "+" + str(value) + " " +key.to_upper() +  "\n"
+				result += "+" + str(value) + " " +key.to_upper().replace('_', ' ') +  "\n"
 		else:
 			result += '[color=ORANGE_RED]'
 			if value is float: 
-				result += str(value) + "% " +key.to_upper() +  "\n"
+				result += str(value) + "% " +key.to_upper().replace('_', ' ') +  "\n"
 			else:
-				result += str(value) + " " +key.to_upper() + "\n"
+				result += str(value) + " " +key.to_upper().replace('_', ' ') + "\n"
 		result += '[/color]'
 	return result
 

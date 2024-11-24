@@ -1,15 +1,19 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if status_effect.EFFECT_TYPE != 1: runEffects(target, status_effect)
+	if status_effect.EFFECT_TYPE != 1: 
+		runEffects(target, status_effect)
 
 static func applyHitEffects(target: ResCombatant, _caster: ResCombatant, _value, status_effect: ResStatusEffect):
 	runEffects(target, status_effect)
 
 static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in status_effect.BASIC_EFFECTS:
+		if effect.sound_effect != '': 
+			OverworldGlobals.playSound(effect.sound_effect)
+		
 		if effect is ResStatChangeEffect and checkApplyOnce(effect, status_effect):
 			changeStat(effect, status_effect)
 		elif effect is ResStatusDamageEffect and checkApplyOnce(effect, status_effect):
-			CombatGlobals.calculateRawDamage(status_effect.afflicted_combatant, CombatGlobals.useDamageFormula(status_effect.afflicted_combatant, effect.damage), null, true, effect.crit_chance, false, effect.variation, null, effect.trigger_on_hits)
+			CombatGlobals.calculateRawDamage(status_effect.afflicted_combatant, CombatGlobals.useDamageFormula(status_effect.afflicted_combatant, effect.damage), null, true, effect.crit_chance, false, effect.variation, null, effect.trigger_on_hits, effect.sound_path)
 		elif effect is ResStatusCommandAbility:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 

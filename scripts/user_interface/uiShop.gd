@@ -96,8 +96,8 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			func updateDescription():
 				description.text = item.getInformation()
 		)
-		button.mouse_exited.connect(func(): resetDescription())
-		button.focus_exited.connect(func(): resetDescription())
+		#button.mouse_exited.connect(func(): resetDescription())
+		#button.focus_exited.connect(func(): resetDescription())
 		wares.add_child(button)
 		
 		if focus_item is ResGhostStackItem and item.NAME == focus_item.NAME:
