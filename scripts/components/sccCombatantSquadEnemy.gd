@@ -10,18 +10,11 @@ class_name EnemyCombatantSquad
 @export var CAN_ESCAPE:bool = true
 @export var DO_REINFORCEMENTS:bool = true
 @export var REINFORCEMENTS_TURN:int = 50
-var afflicted_status_effects: Array[String]
 
 func _ready():
 	UNIQUE_ID = get_parent().name
 	if FILL_EMPTY:
 		pickRandomEnemies()
-
-func addLingeringEffect(status_effect_name: String):
-	afflicted_status_effects.append(status_effect_name)
-
-func removeLingeringEffect(status_effect_name: String):
-	afflicted_status_effects.erase(status_effect_name)
 
 func pickRandomEnemies():
 	randomize()

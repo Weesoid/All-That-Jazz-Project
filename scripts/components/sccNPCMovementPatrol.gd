@@ -67,7 +67,7 @@ func _physics_process(_delta):
 	BODY.move_and_slide()
 	if PATROL :
 		patrol()
-	if COMBAT_SWITCH and STATE != 3 and OverworldGlobals.isPlayerAlive():
+	if COMBAT_SWITCH and STATE != 3 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive()):
 		executeCollisionAction()
 	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0 and BODY.get_slide_collision(0).get_collider() is GenericPatroller:
 		updatePath(true)
@@ -255,7 +255,7 @@ func moveRandom()-> Vector2:
 	return Vector2(randf_range(pos.x, end.x), randf_range(pos.y, end.y))
 
 func patrolToPosition(target_position: Vector2):
-	if targetReached() and STATE != 2:
+	if targetReached(): #and STATE != 2:
 		BODY.velocity = Vector2.ZERO
 	elif !NAV_AGENT.get_current_navigation_path().is_empty():
 		BODY.velocity = target_position * MOVE_SPEED

@@ -437,14 +437,15 @@ func isSameCombatantType(combatant_a, combatant_b):
 	return getCombatantType(combatant_a) == getCombatantType(combatant_b)
 
 func generateFactionPatroller(faction: Enemy_Factions, type:int)-> GenericPatroller:
-	return generateGenericPatroller(type, FACTION_PATROLLER_PROPERTIES[faction].patroller_properties[type])
+	return generateGenericPatroller(type, FACTION_PATROLLER_PROPERTIES[faction].getType(type))
 
-## 0: Chaser, 1: Shooter
+## 0: Chaser, 1: Shooter, 2: Hybrid
 func generateGenericPatroller(type:int,data={})-> GenericPatroller:
 	var patroller: GenericPatroller
 	match type:
 		0: patroller = load("res://scenes/entities/mobs/Patroller.tscn").instantiate()
 		1: patroller = load("res://scenes/entities/mobs/PatrollerShooter.tscn").instantiate()
+		2: patroller = load("res://scenes/entities/mobs/PatrollerHybrid.tscn").instantiate()
 	if data.keys().has('sprite_sheet'):
 		patroller.get_node('Sprite2D').texture = load(data['sprite_sheet'])
 	if data.keys().has('base_speed'):
@@ -453,12 +454,14 @@ func generateGenericPatroller(type:int,data={})-> GenericPatroller:
 		patroller.alerted_speed_multiplier = data['alerted_speed']
 	if data.keys().has('chase_speed'):
 		patroller.chase_speed_multiplier = data['chase_speed']
-	if data.keys().has('projectile') and type == 1:
+	if data.keys().has('detection_time'):
+		patroller.detection_time = data['detection_time']
+	if data.keys().has('projectile') and (type == 1 or type == 2):
 		patroller.projectile = load(data['projectile'])
 	
 	return patroller
 
-func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions):
+func generateCombatantSquad(patroller, faction: Enemy_Factions):
 	randomize()
 	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
 	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)

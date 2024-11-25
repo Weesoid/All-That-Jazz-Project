@@ -10,7 +10,6 @@ class_name GenericPatroller
 @onready var patrol_component: NPCPatrolMovement = $NPCPatrolComponent
 
 func _ready():
-	#add_child(combatant_squad)
 	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
 	patrol_component.PATROL_AREA = patrol_area
 	

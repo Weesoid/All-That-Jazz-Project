@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResEnemyProjectile" load_steps=5 format=3 uid="uid://bslmhpsvdvlm7"]
+
+[ext_resource type="Script" path="res://scripts/projectiles/scpreDamage.gd" id="1_an7ld"]
+[ext_resource type="AudioStream" uid="uid://n0yoantbsc1n" path="res://audio/sounds/13_Ice_explosion_01.ogg" id="1_ipu2y"]
+[ext_resource type="Script" path="res://scripts/resources/ResEnemyProjectile.gd" id="2_oksfw"]
+[ext_resource type="Texture2D" uid="uid://c502623cutgk" path="res://images/sprites/arrow_alt.png" id="4_451ns"]
+
+[resource]
+script = ExtResource("2_oksfw")
+hit_script = ExtResource("1_an7ld")
+texture = ExtResource("4_451ns")
+speed = 800.0
+impact_sound = ExtResource("1_ipu2y")
+free_distance = 2500.0

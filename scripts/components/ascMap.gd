@@ -23,6 +23,8 @@ var STALKER # wooooo scary...!
 var full_alert: bool = false
 var clear_timer = Timer.new()
 
+signal map_cleared
+
 func _ready():
 	if SaveLoadGlobals.is_loading:
 		await SaveLoadGlobals.done_loading
@@ -51,6 +53,7 @@ func giveRewards():
 	if !clear_timer.is_stopped(): clear_timer.stop()
 	if !OverworldGlobals.isPlayerAlive(): return
 	
+	map_cleared.emit()
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = REWARD_BANK['experience']
 	if EVENTS['reward_item'] != null:
@@ -84,6 +87,8 @@ func setSavePoints(set_to:bool):
 
 func spawnPatrollers():
 	randomize()
+	var valid_specials = CombatGlobals.FACTION_PATROLLER_PROPERTIES[ENEMY_FACTION].getValidTypes(true)
+	
 	for area in get_children():
 		if area is Area2D and area.has_node('SpawnPoints'):
 			var special_count = ceil(countSpawnPoints(area)*0.25)
@@ -94,10 +99,10 @@ func spawnPatrollers():
 					if isChancedSpawn(marker) and !CombatGlobals.randomRoll(float(marker.name.split(' ')[1])*0.01): continue
 					var patroller
 					if special_count != 0:
-						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, randi_range(1,1)) # Only 1 special enemy type so far.
+						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
 						special_count -= 1
 					elif isChancedSpawn(marker):
-						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, randi_range(0,1)) # Only 1 special enemy type so far.
+						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
 					else:
 						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, 0) 
 					patroller.global_position = marker.global_position

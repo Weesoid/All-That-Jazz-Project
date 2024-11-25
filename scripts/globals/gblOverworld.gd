@@ -393,7 +393,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		return
 	if inMenu():
 		showMenu("res://scenes/user_interface/PauseMenu.tscn")
-	#getComponent(entity_name, 'NPCPatrolComponent').PATROL_BUBBLE.play('Fight')
+	
 	# Enter combat
 	getPlayer().resetStates()
 	OverworldGlobals.getPlayer().setUIVisibility(false)
@@ -412,11 +412,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	getEntity(entity_name).add_child(combat_bubble)
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
-	#shakeCamera()
-	#Engine.time_scale = 0.25
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
+	for combatant in getCombatantSquad('Player'):
+		combatant.LINGERING_STATUS_EFFECTS.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
 	for combatant in getCombatantSquad(entity_name):
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
@@ -465,6 +465,10 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')	
 	if combat_results == 1:
 		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
+	for combatant in getCombatantSquad('Player'):
+		for effect in getCombatantSquadComponent('Player').afflicted_status_effects:
+			combatant.LINGERING_STATUS_EFFECTS.erase(effect)
+	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
 	setPlayerInput(true)
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	battle_transition.get_node('AnimationPlayer').play('Out')

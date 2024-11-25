@@ -70,7 +70,7 @@ func _on_quit_pressed():
 		disableButtons()
 		var confirm_dialog = load("res://scenes/user_interface/ConfirmationDialog.tscn").instantiate()
 		add_child(confirm_dialog)
-		confirm_dialog.text.text = 'Area is not safe so changes will not be saved.'
+		confirm_dialog.text.text = 'Area is not safe. Progress will not be saved.'
 		confirm_dialog.yes_button.text = 'Quit'
 		confirm_dialog.no_button.text = 'Return'
 		confirm_dialog.yes_button.pressed.connect(leaveToMain)

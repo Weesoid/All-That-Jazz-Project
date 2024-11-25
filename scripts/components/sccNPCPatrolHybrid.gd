@@ -1,8 +1,11 @@
-extends NPCPatrolMovement
-class_name NPCPatrolShooterMovement
+extends NPCPatrolShooterMovement
+class_name NPCPatrolHybridMovement
 
-@export var PROJECTILE: ResEnemyProjectile
-var shoot_ready: bool = true
+var PATROL_MODE: int = 1 # 0 = Chaser, 1 = Shooter
+
+func executeHitAction():
+	PATROL_MODE = 0
+	updatePath(true)
 
 func updatePath(immediate:bool=false):
 	match STATE:
@@ -24,6 +27,8 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# CHASE
 		2:
+			if !PATROL_BUBBLE_SPRITE.visible:
+				PATROL_BUBBLE_SPRITE.visible = true
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
@@ -41,13 +46,14 @@ func updatePath(immediate:bool=false):
 			alertPatrolMode()
 			updatePath()
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
+			PATROL_MODE = 1
 			COMBAT_SWITCH = true
 			shoot_ready = true
 			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)
 			ANIMATOR.play("RESET")
 
 func targetReached():
-	if STATE == 2:
+	if (STATE == 2 and PATROL_MODE == 1):
 		randomize()
 		return NAV_AGENT.distance_to_target() < (125.0 - randf_range(-70.0, 70.0)) and LINE_OF_SIGHT.detectPlayer()
 	else:
@@ -56,10 +62,9 @@ func targetReached():
 func patrolToPosition(target_position: Vector2):
 	if targetReached():
 		BODY.velocity = Vector2.ZERO
-		if shoot_ready and STATE == 2:
+		if (shoot_ready and STATE == 2 and PATROL_MODE == 1):
 			updateLineOfSight()
 			shootProjectile()
-			OverworldGlobals.addPatrollerPulse(BODY, 100.0, 2)
 	elif !NAV_AGENT.get_current_navigation_path().is_empty() and shoot_ready:
 		updateLineOfSight()
 		BODY.velocity = target_position * MOVE_SPEED
@@ -67,27 +72,3 @@ func patrolToPosition(target_position: Vector2):
 	if BODY.velocity == Vector2.ZERO and STATE != 2:
 		ANIMATOR.seek(1, true)
 		ANIMATOR.pause()
-
-func shootProjectile():
-	shoot_ready = false
-	var projectile = PROJECTILE.getProjectile()
-	projectile.global_position = global_position + Vector2(0, -10)
-	projectile.SHOOTER = BODY
-	get_tree().current_scene.add_child(projectile)
-	animateShot()
-	projectile.rotation = LINE_OF_SIGHT.rotation + 1.57079994678497
-	await ANIMATOR.animation_finished
-	ANIMATOR.play('Load')
-	await ANIMATOR.animation_finished
-	shoot_ready = true
-
-func animateShot():
-	var look_direction = LINE_OF_SIGHT.global_rotation_degrees
-	if look_direction < 135 and look_direction > 45:
-		ANIMATOR.play('Shoot_Left')
-	elif look_direction < -45 and look_direction > -135:
-		ANIMATOR.play('Shoot_Right')
-	elif look_direction < 45 and look_direction > -45:
-		ANIMATOR.play('Shoot_Down')
-	else:
-		ANIMATOR.play('Shoot_Up')

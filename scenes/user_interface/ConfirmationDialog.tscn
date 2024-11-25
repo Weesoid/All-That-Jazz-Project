@@ -7,10 +7,9 @@
 [ext_resource type="StyleBox" uid="uid://f2ekr76rfqoq" path="res://design/PanelNoBottom.tres" id="5_r1w4e"]
 
 [node name="ConfirmationDialogue" type="Control"]
+z_index = 10
 layout_mode = 3
 anchors_preset = 0
-offset_top = -16.0
-offset_bottom = -16.0
 theme = ExtResource("1_fpt0h")
 script = ExtResource("1_d723q")
 

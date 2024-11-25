@@ -2,9 +2,16 @@ extends Node
 class_name CombatantSquad
  
 @export var COMBATANT_SQUAD: Array[ResCombatant]
+var afflicted_status_effects: Array[String] # Effects in this array will ALWAYS be gone after combat.
 
 func isTeamDead()->bool:
 	var dead_count = 0
 	for member in COMBATANT_SQUAD:
 		if member.isDead(): dead_count += 1
 	return dead_count == COMBATANT_SQUAD.size()
+
+func addLingeringEffect(status_effect_name: String):
+	afflicted_status_effects.append(status_effect_name)
+
+func removeLingeringEffect(status_effect_name: String):
+	afflicted_status_effects.erase(status_effect_name)

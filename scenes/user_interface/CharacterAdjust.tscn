@@ -50,7 +50,6 @@ offset_bottom = 136.0
 tab_alignment = 2
 
 [node name="Abilities" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Abilities"]
@@ -82,6 +81,7 @@ bbcode_enabled = true
 text = "This is the item description. FEAR IT'S GLORY!"
 
 [node name="Charms" type="Panel" parent="TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bfwvc")
 

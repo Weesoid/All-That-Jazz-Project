@@ -5,6 +5,7 @@ class_name PlayerScene
 @onready var sprite = $Sprite2D
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var player_animator = $WalkingAnimations
+@onready var animation_player = $AnimationPlayer
 @onready var interaction_prompt = $PlayerInteractionBubble
 @onready var interaction_prompt_animator = $PlayerInteractionBubble/BubbleAnimator
 @onready var animation_tree = $AnimationTree
@@ -66,7 +67,7 @@ func _physics_process(delta):
 		ammo_count.hide()
 	
 	# Movement inputs
-	if can_move and is_processing_input():
+	if can_move and is_processing_input() and isMobile():
 		direction = Vector2(
 			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
 			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -104,7 +105,7 @@ func _physics_process(delta):
 
 func _input(_event):
 	# Power handling
-	if !channeling_power and power_listening and !can_move and power_input_container.get_child_count() < 3:
+	if !channeling_power and power_listening and !can_move and power_input_container.get_child_count() < 3 and isMobile():
 		if Input.is_action_just_pressed('ui_left'):
 			power_inputs += 'a'
 			showPowerInput(POWER_LEFT)
@@ -117,7 +118,7 @@ func _input(_event):
 		elif Input.is_action_just_pressed('ui_down'):
 			power_inputs += 's'
 			showPowerInput(POWER_DOWN)
-	if Input.is_action_pressed("ui_gambit") and canUsePower() and !power_listening and can_move:
+	if Input.is_action_pressed("ui_gambit") and canUsePower() and !power_listening and can_move and isMobile():
 		toggleVoidAnimation(true)
 		sprinting = false
 		can_move = false
@@ -125,7 +126,7 @@ func _input(_event):
 		if InventoryGlobals.hasItem('Void Resonance Crystal'):
 			crystal_count.show()
 			crystal_count.text = str(InventoryGlobals.getItem('Void Resonance Crystal').STACK)
-	elif (Input.is_action_just_released("ui_gambit") and canUsePower() and power_listening and !can_move) or (power_inputs.length() >= 3):
+	elif (Input.is_action_just_released("ui_gambit") and canUsePower() and power_listening and !can_move) or (power_inputs.length() >= 3) and isMobile():
 		executePower()
 		cancelPower()
 	
@@ -158,6 +159,9 @@ func _unhandled_input(_event: InputEvent):
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
+
+func isMobile():
+	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0
 
 func showPowerInput(texture:CompressedTexture2D):
 	OverworldGlobals.playSound("res://audio/sounds/52_Dive_02.ogg")
@@ -217,6 +221,9 @@ func resetStates():
 	quiver.visible = false
 	Input.action_release("ui_bow_draw")
 
+func resetAnimation():
+	animation_player.play("RESET")
+
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
@@ -229,6 +236,8 @@ func canDrawBow()-> bool:
 		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
 		return false
 	if PlayerGlobals.EQUIPPED_ARROW == null:
+		return false
+	if !isMobile():
 		return false
 	
 	return true
@@ -258,7 +267,7 @@ func drawBow():
 		bow_mode = false
 		toggleBowAnimation()
 	
-	if Input.is_action_pressed("ui_bow_draw") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move:
+	if Input.is_action_pressed("ui_bow_draw") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile():
 		sprinting = false
 		SPEED = 15.0
 		if play_once:
@@ -272,6 +281,8 @@ func drawBow():
 			bow_line.default_color.a = 0.10
 		else:
 			bow_line.default_color.a = 0.5
+		if !isMobile():
+			bow_draw_strength = 0
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and bow_line.points[1].y < 275:
 			var tween = create_tween()
 			tween.tween_property(sprite, 'self_modulate', Color.INDIAN_RED,0.1)
@@ -281,7 +292,7 @@ func drawBow():
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
 	if Input.is_action_just_released("ui_bow_draw") and velocity == Vector2.ZERO:
-		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']: 
+		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile(): 
 			shootProjectile()
 		await get_tree().create_timer(0.05).timeout
 		undrawBow()

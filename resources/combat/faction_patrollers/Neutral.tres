@@ -5,18 +5,29 @@
 [resource]
 script = ExtResource("1_83g7t")
 faction = 0
-patroller_properties = {
-0: {
+chaser = {
 "alerted_speed": 0.0,
 "base_speed": 0.0,
 "chase_speed": 0.0,
-"sprite_sheet": "res://images/animations/ent_walk_alt.png"
-},
-1: {
-"alerted_speed": 0.0,
-"base_speed": 0.0,
-"chase_speed": 0.0,
-"projectile": "res://scenes/entities_disposable/ProjectileBullet.tscn",
-"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png"
+"detection_time": 0.0,
+"sprite_sheet": "res://images/animations/ent_walk_alt.png",
+"type": 0
 }
+shooter = {
+"alerted_speed": 0.0,
+"base_speed": 0.0,
+"chase_speed": 0.0,
+"detection_time": 0.0,
+"projectile": "res://resources/enemy_projectiles/DamageProjectile.tres",
+"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png",
+"type": 1
+}
+hybrid = {
+"alerted_speed": 0.0,
+"base_speed": 0.0,
+"chase_speed": 0.0,
+"detection_time": 0.0,
+"projectile": "res://resources/enemy_projectiles/StunProjectile.tres",
+"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png",
+"type": 2
 }
