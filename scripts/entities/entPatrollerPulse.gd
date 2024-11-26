@@ -15,6 +15,9 @@ func _process(_delta):
 func updatePatrollers():
 	for body in get_overlapping_bodies():
 		if body.has_node('NPCPatrolComponent'): 
+#			if body.has_node('CombatDialogue'):
+#				return
+			
 			var current_state = body.get_node('NPCPatrolComponent').STATE
 			if mode == current_state:
 				continue

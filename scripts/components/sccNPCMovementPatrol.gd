@@ -10,6 +10,9 @@ class_name NPCPatrolMovement
 @export var ALERTED_SPEED_MULTIPLIER = 1.25
 @export var CHASE_SPEED_MULTIPLIER = 5.0
 @export var DETECTION_TIME = 0.5
+@export var IDLE_TIME: Dictionary = {'patrol':5.0, 'alerted_patrol':2.0}
+@export var STUN_TIME: Dictionary = {'min':3.0, 'max':4.0}
+@export var IS_STALKER = false
 
 var NAV_AGENT: NavigationAgent2D
 var LINE_OF_SIGHT: LineOfSight
@@ -33,11 +36,12 @@ func initialize():
 	NAV_AGENT = get_parent().get_node('NavigationAgent2D')
 	LINE_OF_SIGHT = get_parent().get_node('LineOfSightComponent')
 	ANIMATOR = get_parent().get_node('Animator')
-	
+	BODY.velocity = Vector2.ZERO
 	
 	NAME = get_parent().name
 	COMBAT_SQUAD.UNIQUE_ID = NAME
-	PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
+	if PATROL_AREA != null:
+		PATROL_SHAPE = PATROL_AREA.get_node('CollisionShape2D')
 	MOVE_SPEED = BASE_MOVE_SPEED
 	
 	IDLE_TIMER = Timer.new()
@@ -99,7 +103,6 @@ func patrol():
 	
 	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
 		if STATE != 2:
-			
 			DETECT_BAR.show()
 		if DETECT_TIMER.is_stopped() and STATE != 2: 
 			DETECT_TIMER.start(DETECTION_TIME)
@@ -118,15 +121,11 @@ func patrol():
 			ANIMATOR.play('RESET')
 		updateMode(1)
 
-#func detectResetColor():
-#	DETECT_BAR.modulate = Color.WHITE
-#
-#func detectBarFlash():
-#	var tween = create_tween().set_parallel(true)
-#	tween.tween_property(DETECT_BAR,'modulate',Color.RED,0.15)
-#	#tween.tween_property(DETECT_BAR,'modulate',Color.TRANSPARENT,0.15)
-
 func alertPatrolMode():
+	if IS_STALKER:
+		chaseMode()
+		return
+	
 	MOVE_SPEED = BASE_MOVE_SPEED * ALERTED_SPEED_MULTIPLIER
 	STATE = 1
 	if PATROL_BUBBLE.current_animation != 'Loop_Seek':
@@ -171,6 +170,11 @@ func updateMode(state: int, alert_others:bool=false):
 func destroy(fancy=true):
 	if ANIMATOR.current_animation == 'KO': return
 	#print('* ',NAME, ' is am ded... blegh!')
+	if BODY.has_node('CombatDialogue'):
+		ANIMATOR.play('RESET')
+		queue_free()
+		return
+	
 	PATROL = false
 	DETECT_BAR.hide()
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
@@ -208,15 +212,15 @@ func updatePath(immediate:bool=false):
 		0:
 			randomize()
 			if !immediate:
-				IDLE_TIMER.start(randf_range(2.0, 5.0))
+				IDLE_TIMER.start(randf_range(2.0, IDLE_TIME['patrol']))
 				await IDLE_TIMER.timeout
 				IDLE_TIMER.stop()
-			NAV_AGENT.target_position = moveRandom()
+				NAV_AGENT.target_position = moveRandom()
 		# ALERTED PATROL
 		1:
 			randomize()
 			if !immediate:
-				IDLE_TIMER.start(randf_range(2.0, 3.0))
+				IDLE_TIMER.start(randf_range(1.0, IDLE_TIME['alerted_patrol']))
 				await IDLE_TIMER.timeout
 				IDLE_TIMER.stop()
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
@@ -231,7 +235,7 @@ func updatePath(immediate:bool=false):
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
-			STUN_TIMER.start(randf_range(3.0,4.0))
+			STUN_TIMER.start(randf_range(STUN_TIME['min'],STUN_TIME['max']))
 			IDLE_TIMER.stop()
 			await STUN_TIMER.timeout
 			STUN_TIMER.stop()
@@ -249,10 +253,13 @@ func immobolize(disabled_los:bool=true):
 		LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_DISABLED
 
 func moveRandom()-> Vector2:
-	randomize()
-	var pos = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().position
-	var end = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().end
-	return Vector2(randf_range(pos.x, end.x), randf_range(pos.y, end.y))
+	if PATROL_SHAPE != null:
+		randomize()
+		var pos = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().position
+		var end = PATROL_SHAPE.global_position + PATROL_SHAPE.shape.get_rect().end
+		return Vector2(randf_range(pos.x, end.x), randf_range(pos.y, end.y))
+	else:
+		return OverworldGlobals.getPlayer().global_position
 
 func patrolToPosition(target_position: Vector2):
 	if targetReached(): #and STATE != 2:

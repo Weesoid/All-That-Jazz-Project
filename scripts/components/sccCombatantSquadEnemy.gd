@@ -16,6 +16,10 @@ func _ready():
 	if FILL_EMPTY:
 		pickRandomEnemies()
 
+func setProperties(properties: Dictionary):
+	for key in properties.keys():
+		set(key, properties[key])
+
 func pickRandomEnemies():
 	randomize()
 	if RANDOM_SIZE:
@@ -41,7 +45,7 @@ func getMusic()-> int:
 		faction_count[combatant.FACTION] += 1
 	
 	return faction_count.find_key(faction_count.values().max())
-
+	
 func getRawDrops():
 	var drops = {}
 	for member in COMBATANT_SQUAD:

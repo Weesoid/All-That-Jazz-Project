@@ -27,6 +27,9 @@ func _process(_delta):
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_toggle_debug"):
 		container.visible = !container.visible
+	if Input.is_action_just_pressed('ui_cancel'):
+		var stalker = load("res://resources/combat/stalkers/GenericStalker.tres")
+		stalker.spawn()
 	
 	if Input.is_action_just_pressed("ui_quick_save"):
 		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)

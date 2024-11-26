@@ -87,9 +87,15 @@ func hasEntity(entity_name: String):
 	return get_tree().current_scene.has_node(entity_name)
 
 func playEntityAnimation(entity_name: String, animation_name: String, wait=true):
-	getEntity(entity_name).get_node('AnimationPlayer').play(animation_name)
+	getEntityAnimator(entity_name).play(animation_name)
 	if wait:
-		await getEntity(entity_name).get_node('AnimationPlayer').animation_finished
+		await getEntityAnimator(entity_name).animation_finished
+
+func getEntityAnimator(entity_name: String)-> AnimationPlayer:
+	for child in getEntity(entity_name).get_children():
+		if child is AnimationPlayer: return child
+	
+	return null
 
 func changeEntityVisibility(entity_name: String, visibility:bool):
 	if get_tree().current_scene.get_node(entity_name) is PlayerScene:
@@ -273,10 +279,8 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	getPlayer().resetStates()
 	setPlayerInput(false, true)
 	getPlayer().set_process_unhandled_input(false)
-	#update_patroller_modes.emit(0)
 	getPlayer().z_index = 20
 	playEntityAnimation('Player', animation)
-	#await getEntity('Player').get_node('AnimationPlayer').animation_finished
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
 	menu.z_index = 20
 	getPlayer().resetStates()
@@ -460,22 +464,22 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	get_tree().paused = false
 	getCurrentMap().show()
 	getPlayer().resetStates()
-	if hasCombatDialogue(entity_name) and combat_results == 1:
-		await CombatGlobals.getCombatScene().tree_exited
-		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')	
 	if combat_results == 1:
 		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
 	for combatant in getCombatantSquad('Player'):
 		for effect in getCombatantSquadComponent('Player').afflicted_status_effects:
 			combatant.LINGERING_STATUS_EFFECTS.erase(effect)
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
-	setPlayerInput(true)
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	battle_transition.get_node('AnimationPlayer').play('Out')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
+	if hasCombatDialogue(entity_name) and combat_results == 1:
+		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')	
+		await DialogueManager.dialogue_ended
+	setPlayerInput(true)
 	combat_exited.emit()
-	if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')
+	#if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')
 
 func getRandomTameable():
 	var path = "res://resources/combat/combatants_player/tameable/"

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ResStalkerEnemy" load_steps=5 format=3 uid="uid://b0q78pup8evhj"]
+
+[ext_resource type="Resource" uid="uid://2mtj5clbgxd6" path="res://resources/combat/combatants_enemies/mercenaries/Deathmarker.tres" id="1_3uv38"]
+[ext_resource type="Script" path="res://scripts/resources/ResStalkerEnemy.gd" id="1_5yvk2"]
+[ext_resource type="PackedScene" uid="uid://cnokyjeyibocv" path="res://scenes/entities/stalkers/GenericStalker.tscn" id="2_44cjq"]
+[ext_resource type="PackedScene" uid="uid://7keas4b6oewf" path="res://scenes/miscellaneous/LightFlicker.tscn" id="4_gymj3"]
+
+[resource]
+script = ExtResource("1_5yvk2")
+patroller = ExtResource("2_44cjq")
+combatant = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("1_3uv38")])
+squad_component_properties = {
+"can_escape": true,
+"do_reinforcements": false,
+"enemy_pool": [],
+"fill_empty": false,
+"random_size": false,
+"reinforcements_turn": 50,
+"tameable_chance": 0.0,
+"turn_time": 0.0,
+"unique_id": ""
+}
+warning_flash = ExtResource("4_gymj3")
+flash_on_camera = false
+spawn_time = 5.0

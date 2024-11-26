@@ -1,12 +1,6 @@
 ~ turn/5
-do moveCombatCamera("Baddie")
 Entity: Wanna see me do a little thing?!?
 Willis: No not really.
-do playCombatantAnimation("Baddie", "Cast_Melee")
-do playCombatantAnimation("Baddie", "Cast_Misc")
-do moveCombatCamera("RESET")
-Entity: OH YEAHHHHH
-Willis: Wow.
 => END
 
 ~ win
@@ -30,7 +24,14 @@ Willis: Neat..!
 => END
 
 ~ win_aftermath
-Willis: Suck it loser!
+do moveEntity("Stalker", "Player", Vector2(0,-64), 200)
+do moveEntity("Stalker", ">U2,D2,L2")
+do playEntityAnimation("Stalker", "Shoot_Down")
+do moveEntity("Player", ">U2")
+Entity: Eugh...
+Willis: Stand down.
+Entity: I'll be back you drasted brat!
+
 => END
 
 ~ lose_aftermath

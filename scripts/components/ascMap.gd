@@ -127,7 +127,7 @@ func isChancedSpawn(marker: Node2D):
 func getPatrollers():
 	var out = []
 	for child in get_children():
-		if child is GenericPatroller: out.append(child)
+		if child is GenericPatroller and child.has_node('NPCPatrolComponent'): out.append(child)
 	return out
 
 func arePatrollersAlerted():

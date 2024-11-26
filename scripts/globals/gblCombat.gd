@@ -441,11 +441,7 @@ func generateFactionPatroller(faction: Enemy_Factions, type:int)-> GenericPatrol
 
 ## 0: Chaser, 1: Shooter, 2: Hybrid
 func generateGenericPatroller(type:int,data={})-> GenericPatroller:
-	var patroller: GenericPatroller
-	match type:
-		0: patroller = load("res://scenes/entities/mobs/Patroller.tscn").instantiate()
-		1: patroller = load("res://scenes/entities/mobs/PatrollerShooter.tscn").instantiate()
-		2: patroller = load("res://scenes/entities/mobs/PatrollerHybrid.tscn").instantiate()
+	var patroller: GenericPatroller = instantiatePatroller(type)
 	if data.keys().has('sprite_sheet'):
 		patroller.get_node('Sprite2D').texture = load(data['sprite_sheet'])
 	if data.keys().has('base_speed'):
@@ -456,10 +452,22 @@ func generateGenericPatroller(type:int,data={})-> GenericPatroller:
 		patroller.chase_speed_multiplier = data['chase_speed']
 	if data.keys().has('detection_time'):
 		patroller.detection_time = data['detection_time']
+	if data['idle_time']['patrol'] > 0.0 and data['idle_time']['alerted_patrol'] > 0.0:
+		patroller.IDLE_TIME = data['idle_time']
+	if data['stun_time']['min'] > 0.0 and data['stun_time']['max'] > 0.0:
+		patroller.IDLE_TIME = data['stun_time']
 	if data.keys().has('projectile') and (type == 1 or type == 2):
 		patroller.projectile = load(data['projectile'])
 	
 	return patroller
+
+func instantiatePatroller(type:int)-> GenericPatroller:
+	match type:
+		0: return load("res://scenes/entities/mobs/Patroller.tscn").instantiate()
+		1: return load("res://scenes/entities/mobs/PatrollerShooter.tscn").instantiate()
+		2: return load("res://scenes/entities/mobs/PatrollerHybrid.tscn").instantiate()
+	
+	return null
 
 func generateCombatantSquad(patroller, faction: Enemy_Factions):
 	randomize()
@@ -477,6 +485,13 @@ func generateCombatantSquad(patroller, faction: Enemy_Factions):
 	squad.TAMEABLE_CHANCE = 0.01 * PlayerGlobals.PARTY_LEVEL # Add story check later
 	squad.pickRandomEnemies()
 	patroller.add_child(squad)
+
+func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties: Dictionary):
+	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
+	squad.COMBATANT_SQUAD = combatants
+	squad.setProperties(properties)
+	patroller.add_child(squad)
+	print('Added squab')
 
 func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
 	var path

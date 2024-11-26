@@ -13,7 +13,7 @@ func updatePath(immediate:bool=false):
 		0:
 			randomize()
 			if !immediate:
-				IDLE_TIMER.start(randf_range(2.0, 5.0))
+				IDLE_TIMER.start(randf_range(2.0, IDLE_TIME['patrol']))
 				await IDLE_TIMER.timeout
 				IDLE_TIMER.stop()
 			NAV_AGENT.target_position = moveRandom()
@@ -21,7 +21,7 @@ func updatePath(immediate:bool=false):
 		1:
 			randomize()
 			if !immediate:
-				IDLE_TIMER.start(randf_range(2.0, 3.0))
+				IDLE_TIMER.start(randf_range(1.0, IDLE_TIME['alerted_patrol']))
 				await IDLE_TIMER.timeout
 				IDLE_TIMER.stop()
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
@@ -39,7 +39,8 @@ func updatePath(immediate:bool=false):
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
-			STUN_TIMER.start(randf_range(3.0,4.0))
+			print(STUN_TIME)
+			STUN_TIMER.start(randf_range(STUN_TIME['min'],STUN_TIME['max']))
 			IDLE_TIMER.stop()
 			await STUN_TIMER.timeout
 			STUN_TIMER.stop()
@@ -55,7 +56,8 @@ func updatePath(immediate:bool=false):
 func targetReached():
 	if (STATE == 2 and PATROL_MODE == 1):
 		randomize()
-		return NAV_AGENT.distance_to_target() < (125.0 - randf_range(-70.0, 70.0)) and LINE_OF_SIGHT.detectPlayer()
+		var half_shoot_distance = ceil(SHOOT_DISTANCE / 2)
+		return NAV_AGENT.distance_to_target() < (SHOOT_DISTANCE - randf_range(-half_shoot_distance, half_shoot_distance)) and LINE_OF_SIGHT.detectPlayer()
 	else:
 		return NAV_AGENT.distance_to_target() < 1.0
 

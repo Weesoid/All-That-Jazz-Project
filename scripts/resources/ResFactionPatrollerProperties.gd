@@ -8,7 +8,9 @@ class_name ResFactionPatrollerProperties
 	'base_speed': 0.0, 
 	'alerted_speed': 0.0, 
 	'chase_speed': 0.0,
-	'detection_time': 0.0
+	'detection_time': 0.0,
+	'stun_time': {'min':0.0, 'max':0.0},
+	'idle_time': {'patrol':0.0, 'alerted_patrol':0.0}
 	}
 @export var shooter: Dictionary = {
 	'type': 1,
@@ -17,6 +19,8 @@ class_name ResFactionPatrollerProperties
 	'alerted_speed': 0.0, 
 	'chase_speed': 0.0, 
 	'detection_time': 0.0,
+	'stun_time': {'min':0.0, 'max':0.0},
+	'idle_time': {'patrol':0.0, 'alerted_patrol':0.0},
 	'projectile': ''
 	}
 @export var hybrid: Dictionary = {
@@ -26,6 +30,8 @@ class_name ResFactionPatrollerProperties
 	'alerted_speed': 0.0, 
 	'chase_speed': 0.0, 
 	'detection_time': 0.0,
+	'stun_time': {'min':0.0, 'max':0.0},
+	'idle_time': {'patrol':0.0, 'alerted_patrol':0.0},
 	'projectile': ''
 	}
 

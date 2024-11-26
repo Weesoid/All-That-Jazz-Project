@@ -112,7 +112,13 @@ func animateWalk():
 		updateSprite('U')
 
 func updateSprite(direction: String):
-	var animator = BODY.get_node('WalkingAnimations')
+	var animator 
+	if BODY is PlayerScene:
+		animator = BODY.get_node('WalkingAnimations')
+	else:
+		animator = OverworldGlobals.getEntityAnimator(BODY.name)
+		
+	
 	if direction == 'L':
 		animator.play('Walk_Left')
 	elif direction == 'R':

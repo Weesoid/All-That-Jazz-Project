@@ -10,7 +10,15 @@ chaser = {
 "base_speed": 0.0,
 "chase_speed": 0.0,
 "detection_time": 0.0,
-"sprite_sheet": "res://images/animations/ent_walk_alt.png",
+"idle_time": {
+"alerted_patrol": 0.0,
+"patrol": 0.0
+},
+"sprite_sheet": "",
+"stun_time": {
+"max": 0.0,
+"min": 0.0
+},
 "type": 0
 }
 shooter = {
@@ -18,8 +26,16 @@ shooter = {
 "base_speed": 0.0,
 "chase_speed": 0.0,
 "detection_time": 0.0,
-"projectile": "res://resources/enemy_projectiles/DamageProjectile.tres",
-"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png",
+"idle_time": {
+"alerted_patrol": 0.0,
+"patrol": 0.0
+},
+"projectile": "",
+"sprite_sheet": "",
+"stun_time": {
+"max": 0.0,
+"min": 0.0
+},
 "type": 1
 }
 hybrid = {
@@ -27,7 +43,15 @@ hybrid = {
 "base_speed": 0.0,
 "chase_speed": 0.0,
 "detection_time": 0.0,
-"projectile": "res://resources/enemy_projectiles/StunProjectile.tres",
-"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png",
+"idle_time": {
+"alerted_patrol": 0.0,
+"patrol": 0.0
+},
+"projectile": "",
+"sprite_sheet": "",
+"stun_time": {
+"max": 0.0,
+"min": 0.0
+},
 "type": 2
 }
