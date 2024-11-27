@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c1ktb61l0lngn"]
+[gd_scene load_steps=4 format=3 uid="uid://c1ktb61l0lngn"]
 
 [ext_resource type="Script" path="res://scripts/entities/entDoorEscape.gd" id="1_0rlab"]
+[ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="2_1tx3q"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u1b2x"]
 radius = 24.0
@@ -16,5 +17,9 @@ TOUCH_ENTER = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_u1b2x")
 debug_color = Color(0, 0.545098, 0.941176, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(6, 6)
+texture = ExtResource("2_1tx3q")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

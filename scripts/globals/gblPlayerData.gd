@@ -273,13 +273,7 @@ func addToClearedMaps(map_path:String,cleared:bool,fast_travel:bool=false, facti
 		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':fast_travel, 'faction':faction, 'events': {}}
 
 func randomMapUnclear(count:int, ignore_map:String=''):
-	for map in CLEARED_MAPS.keys():
-		var location = load(map).instantiate()
-		CLEARED_MAPS[map]['events'] = {}
-		if !location.SAFE: 
-			CLEARED_MAPS[map]['cleared'] = true
-		location.queue_free()
-	
+	clearMaps()
 	var valid_maps = CLEARED_MAPS.keys().filter(
 		func(map): 
 			var location = load(map).instantiate()
@@ -298,6 +292,13 @@ func randomMapUnclear(count:int, ignore_map:String=''):
 		# randomizeMapEvents()
 		valid_maps.erase(map)
 
+func clearMaps():
+	for map in CLEARED_MAPS.keys():
+		var location = load(map).instantiate()
+		CLEARED_MAPS[map]['events'] = {}
+		if !location.SAFE: 
+			CLEARED_MAPS[map]['cleared'] = true
+		location.queue_free()
 
 func randomizeMapEvents():
 	randomize()

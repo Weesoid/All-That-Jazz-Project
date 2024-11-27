@@ -992,7 +992,7 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 		if !target.hasStatusEffect('Knock Out') and target != combatant:
 			target.SCENE.collision.disabled = set_to
 	if set_to:
-		team_hp_bar.process_mode = Node.PROCESS_MODE_ALWAYS
+		team_hp_bar.process_mode = Node.PROCESS_MODE_INHERIT
 		onslaught_container.show()
 		onslaught_container_animator.play("Show")
 		previous_position = active_combatant.SCENE.get_parent().global_position
@@ -1026,6 +1026,9 @@ func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	await tween.finished
 
 func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:
+	if !is_instance_valid(combatant.SCENE.get_parent()):
+		return 5
+	
 	if combatant is ResPlayerCombatant:
 		return team_container_markers.find(combatant.SCENE.get_parent())
 	else:
@@ -1078,7 +1081,7 @@ func removeTargetButtons():
 			combatant.SCENE.get_node('TargetButton').queue_free()
 
 func startTimer():
-	turn_timer_bar.process_mode = Node.PROCESS_MODE_ALWAYS
+	turn_timer_bar.process_mode = Node.PROCESS_MODE_INHERIT
 	turn_timer.start(turn_time)
 	turn_timer_animator.play("Show")
 

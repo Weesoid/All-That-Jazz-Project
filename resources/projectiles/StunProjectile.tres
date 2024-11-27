@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResEnemyProjectile" load_steps=4 format=3 uid="uid://rufceskgdfnn"]
+[gd_resource type="Resource" script_class="ResEnemyProjectile" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/projectiles/scpreStun.gd" id="1_fmncs"]
 [ext_resource type="AudioStream" uid="uid://n0yoantbsc1n" path="res://audio/sounds/13_Ice_explosion_01.ogg" id="2_i3d6g"]
-[ext_resource type="Script" path="res://scripts/resources/ResEnemyProjectile.gd" id="3_pcwab"]
+[ext_resource type="Script" path="res://scripts/resources/ResProjectile.gd" id="3_pcwab"]
 
 [resource]
 script = ExtResource("3_pcwab")

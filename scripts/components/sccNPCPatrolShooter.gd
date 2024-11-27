@@ -1,7 +1,7 @@
 extends NPCPatrolMovement
 class_name NPCPatrolShooterMovement
 
-@export var PROJECTILE: ResEnemyProjectile
+@export var PROJECTILE: ResProjectile
 @export var SHOOT_DISTANCE: float = 125.0
 var shoot_ready: bool = true
 
@@ -41,7 +41,7 @@ func updatePath(immediate:bool=false):
 			STUN_TIMER.stop()
 			alertPatrolMode()
 			updatePath()
-			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
+			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_INHERIT
 			COMBAT_SWITCH = true
 			shoot_ready = true
 			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)

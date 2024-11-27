@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ResProjectile" load_steps=4 format=3 uid="uid://b4buqiw5hhh03"]
+
+[ext_resource type="Script" path="res://scripts/pulse_scripts/scppDisruption.gd" id="1_7xu6c"]
+[ext_resource type="AudioStream" uid="uid://n0yoantbsc1n" path="res://audio/sounds/13_Ice_explosion_01.ogg" id="1_s1msa"]
+[ext_resource type="Script" path="res://scripts/resources/ResProjectile.gd" id="2_t5ny8"]
+
+[resource]
+script = ExtResource("2_t5ny8")
+projectile_data = {
+"animation": "res://scenes/animations/Reinforcements.tscn",
+"animation_data": {
+"scale": Vector2(2, 2)
+},
+"radius": 100.0
+}
+projectile_type = 1
+hit_script = ExtResource("1_7xu6c")
+speed = 400.0
+impact_sound = ExtResource("1_s1msa")
+free_distance = 25.0
+no_clip_time = 0.0

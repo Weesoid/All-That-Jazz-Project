@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ResStalkerEnemy" load_steps=5 format=3 uid="uid://b0q78pup8evhj"]
+[gd_resource type="Resource" script_class="ResStalkerData" load_steps=6 format=3 uid="uid://dswvkpsqs1ltn"]
 
 [ext_resource type="Resource" uid="uid://2mtj5clbgxd6" path="res://resources/combat/combatants_enemies/mercenaries/Deathmarker.tres" id="1_3uv38"]
-[ext_resource type="Script" path="res://scripts/resources/ResStalkerEnemy.gd" id="1_5yvk2"]
-[ext_resource type="PackedScene" uid="uid://cnokyjeyibocv" path="res://scenes/entities/stalkers/GenericStalker.tscn" id="2_44cjq"]
+[ext_resource type="Script" path="res://scripts/resources/ResStalkerData.gd" id="1_5yvk2"]
+[ext_resource type="PackedScene" uid="uid://ckaegjqk7g4m8" path="res://scenes/entities/stalkers/GenericStalker.tscn" id="2_44cjq"]
+[ext_resource type="PackedScene" uid="uid://fky7g7yyu7dg" path="res://scenes/stalker_intros/GenericStalkerIntro.tscn" id="4_bobae"]
 [ext_resource type="PackedScene" uid="uid://7keas4b6oewf" path="res://scenes/miscellaneous/LightFlicker.tscn" id="4_gymj3"]
 
 [resource]
@@ -21,5 +22,9 @@ squad_component_properties = {
 "unique_id": ""
 }
 warning_flash = ExtResource("4_gymj3")
-flash_on_camera = false
+flash_follow = true
+stalker_intro = ExtResource("4_bobae")
+intro_follow = true
 spawn_time = 5.0
+spawn_delay = 0.5
+conditions = Array[String]([])

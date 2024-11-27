@@ -7,12 +7,16 @@ class_name Door
 
 func interact():
 	if PlayerGlobals.isMapCleared():
+		visible = true
 		OverworldGlobals.changeMap(TO_SCENE_PATH, TO_COORDS)
 	else:
+		visible = false
 		OverworldGlobals.showPlayerPrompt("You can't leave yet, there's a job to be done.")
 
 func _on_body_entered(body):
 	if TOUCH_ENTER and body is PlayerScene and PlayerGlobals.isMapCleared(): 
+		visible = true
 		OverworldGlobals.changeMap(TO_SCENE_PATH, TO_COORDS)
 	elif TOUCH_ENTER and body is PlayerScene:
+		visible = false
 		OverworldGlobals.showPlayerPrompt("You can't leave yet, there's a job to be done.")

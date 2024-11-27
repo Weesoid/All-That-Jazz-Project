@@ -46,7 +46,7 @@ func updatePath(immediate:bool=false):
 			STUN_TIMER.stop()
 			alertPatrolMode()
 			updatePath()
-			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
+			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_INHERIT
 			PATROL_MODE = 1
 			COMBAT_SWITCH = true
 			shoot_ready = true

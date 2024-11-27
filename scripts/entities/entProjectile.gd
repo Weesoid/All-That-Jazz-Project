@@ -5,6 +5,7 @@ class_name Projectile
 @export var IMPACT_SOUND: AudioStream = preload("res://audio/sounds/13_Ice_explosion_01.ogg")
 @export var FREE_DISTANCE: float = 2500.0
 @export var PROJECTILE_TEXTURE: Texture
+@export var NO_CLIP_TIME: float = 0.0
 
 @onready var sprite = $Sprite2D
 @onready var AUDIO = $AudioStreamPlayer2D
@@ -14,6 +15,12 @@ var SPAWN_LOCATION: Vector2
 func _ready():
 	SPAWN_LOCATION = global_position
 	if PROJECTILE_TEXTURE != null: sprite.texture = PROJECTILE_TEXTURE
+	if NO_CLIP_TIME > 0.0:
+		set_collision_layer_value(1, false)
+		set_collision_mask_value(1, false)
+		await get_tree().create_timer(NO_CLIP_TIME).timeout
+		set_collision_layer_value(1, true)
+		set_collision_mask_value(1, true)
 
 func _physics_process(delta):
 	global_position += Vector2(cos(rotation), sin(rotation)) * SPEED * delta

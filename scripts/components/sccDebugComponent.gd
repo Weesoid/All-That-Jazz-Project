@@ -23,13 +23,11 @@ func _process(_delta):
 		equipped_charm.text = 'No active blessing.'
 	reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
 	save_name.text = 'Save Name: ' + str(PlayerGlobals.SAVE_NAME)
-
+	
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_toggle_debug"):
 		container.visible = !container.visible
-	if Input.is_action_just_pressed('ui_cancel'):
-		var stalker = load("res://resources/combat/stalkers/GenericStalker.tres")
-		stalker.spawn()
+		print_orphan_nodes()
 	
 	if Input.is_action_just_pressed("ui_quick_save"):
 		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)

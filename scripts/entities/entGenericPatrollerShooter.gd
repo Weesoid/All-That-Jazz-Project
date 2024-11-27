@@ -1,7 +1,7 @@
 extends GenericPatroller
 class_name GenericPatrollerShooter
 
-@export var projectile: ResEnemyProjectile
+@export var projectile: ResProjectile
 @export var shoot_distance: float = 0.0
 
 func _ready():

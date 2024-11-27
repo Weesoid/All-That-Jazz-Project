@@ -15,13 +15,13 @@ class_name MapData
 	'patroller_effect': null,
 	'reward_item': null
 	}
-
 var CLEARED: bool = false
 var INITIAL_PATROLLER_COUNT: int = 0
 var REWARD_BANK: Dictionary = {'experience':0.0, 'loot':{}, 'tamed':[]}
-var STALKER # wooooo scary...!
+var STALKER: ResStalkerData
 var full_alert: bool = false
-var clear_timer = Timer.new()
+var clear_timer: Timer
+var give_on_exit:bool = false
 
 signal map_cleared
 
@@ -31,7 +31,6 @@ func _ready():
 	if !has_node('Player'): 
 		hide()
 	if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) and !PlayerGlobals.CLEARED_MAPS[scene_file_path]['events'].is_empty():
-		#print('Applyin events!')
 		var events: Dictionary = PlayerGlobals.CLEARED_MAPS[scene_file_path]['events']
 		for key in events.keys():
 			if events[key] != null: EVENTS[key] = events[key]
@@ -44,16 +43,26 @@ func _ready():
 		showStartIndicator()
 		setSavePoints(false)
 		if EVENTS['time_limit'] > 0.0:
+			clear_timer = Timer.new()
 			add_child(clear_timer)
 			clear_timer.timeout.connect(escapePatrollers)
 			clear_timer.start(EVENTS['time_limit'])
 			OverworldGlobals.getPlayer().player_camera.add_child(load("res://scenes/user_interface/TimeLimit.tscn").instantiate())
+	
+		pickStalker()
+		#print(STALKER)
 
 func giveRewards():
-	if !clear_timer.is_stopped(): clear_timer.stop()
-	if !OverworldGlobals.isPlayerAlive(): return
-	
 	map_cleared.emit()
+	if clear_timer != null and !clear_timer.is_stopped(): clear_timer.stop()
+	if !OverworldGlobals.isPlayerAlive(): return
+	if STALKER != null:
+		STALKER.spawn()
+		give_on_exit = true
+		PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
+		PlayerGlobals.clearMaps()
+		return
+	
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = REWARD_BANK['experience']
 	if EVENTS['reward_item'] != null:
@@ -146,3 +155,10 @@ func escapePatrollers():
 		add_child(animation)
 		animation.playAnimation(patroller.global_position)
 		patroller.get_node('NPCPatrolComponent').destroy(false)
+
+func pickStalker():
+	randomize()
+	var valid_stalkers = []
+	for stalker in OverworldGlobals.loadArrayFromPath("res://resources/combat/stalkers/", func(stalker): return stalker.canSpawn()):
+		valid_stalkers.append(stalker)
+	STALKER = valid_stalkers.pick_random()

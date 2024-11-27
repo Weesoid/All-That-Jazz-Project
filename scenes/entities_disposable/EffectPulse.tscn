@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b33y25bp62b6a"]
+
+[ext_resource type="Script" path="res://scripts/entities/entEffectPulse.gd" id="1_y0uxl"]
+[ext_resource type="Texture2D" uid="uid://c8spkgaqlwrge" path="res://images/sprites/circle_sprite.png" id="2_nmx0l"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vj6dw"]
+
+[node name="Pulse" type="Area2D"]
+script = ExtResource("1_y0uxl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vj6dw")
+debug_color = Color(0.6, 0.541176, 0, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.196078)
+position = Vector2(4.76837e-07, 0)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_nmx0l")

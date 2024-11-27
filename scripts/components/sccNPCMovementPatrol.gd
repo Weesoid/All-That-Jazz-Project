@@ -59,7 +59,12 @@ func initialize():
 	CombatGlobals.combat_won.connect(func(id): if id == NAME: destroy())
 	CombatGlobals.combat_lost.connect(
 		func(_id): 
-			if !OverworldGlobals.isPlayerAlive(): destroy(false)
+			if !OverworldGlobals.isPlayerAlive(): 
+				destroy(false)
+				if IS_STALKER:
+					OverworldGlobals.getCurrentMap().give_on_exit = false
+					BODY.queue_free()
+				#BODY.hide()
 			)
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		# and !child.has_node('NPCPatrolComponent')
@@ -241,7 +246,7 @@ func updatePath(immediate:bool=false):
 			STUN_TIMER.stop()
 			alertPatrolMode()
 			updatePath()
-			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_ALWAYS
+			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_INHERIT
 			COMBAT_SWITCH = true
 			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)
 			ANIMATOR.play("RESET")

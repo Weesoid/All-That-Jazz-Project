@@ -1,23 +1,12 @@
-extends Area2D
+extends EffectPulse
+class_name PatrollerPulse
 
-@onready var shape: CollisionShape2D = $CollisionShape2D
 var mode: int
-var radius: float
 var trigger_others=false
 
-func _ready():
-	shape.shape.radius = radius
-
-func _process(_delta):
-	if has_overlapping_bodies():
-		updatePatrollers()
-
-func updatePatrollers():
+func applyPulseEffect():
 	for body in get_overlapping_bodies():
-		if body.has_node('NPCPatrolComponent'): 
-#			if body.has_node('CombatDialogue'):
-#				return
-			
+		if body.has_node('NPCPatrolComponent'):
 			var current_state = body.get_node('NPCPatrolComponent').STATE
 			if mode == current_state:
 				continue
@@ -34,15 +23,10 @@ func updatePatrollers():
 			else:
 				body.get_node('NPCPatrolComponent').updateMode(mode)
 	
-#	PULSE VISUALS!
-	var pulse_anim = preload("res://scenes/entities_disposable/Pulse.tscn").instantiate()
-	var color: Color
 	match mode:
 		1: color = Color.WHITE
 		2: color = Color.DARK_ORANGE
 		3: color = Color.SANDY_BROWN
 		4: color = Color.RED
-	pulse_anim.global_position = global_position
-	OverworldGlobals.getCurrentMap().add_child(pulse_anim)
-	pulse_anim.showAnimation(radius, 0.4,color)
+	showPulse()
 	queue_free()

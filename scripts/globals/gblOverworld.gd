@@ -1,5 +1,6 @@
 extends Node
 
+var delayed_rewards: Dictionary
 var follow_array = []
 var player_follower_count = 0
 
@@ -215,6 +216,9 @@ func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
+	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit:
+		delayed_rewards = getCurrentMap().REWARD_BANK
+	
 	if show_transition:
 		getPlayer().velocity = Vector2.ZERO
 		setPlayerInput(false, true)
@@ -244,6 +248,11 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
+	if !delayed_rewards.is_empty():
+		getCurrentMap().REWARD_BANK = delayed_rewards
+		getCurrentMap().giveRewards()
+		delayed_rewards.clear()
+	
 	#print(getCurrentMap().NAME, ' <=========================================')
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
@@ -255,7 +264,7 @@ func showTransition(animation: String, player_scene:PlayerScene=null):
 	transition.get_node('AnimationPlayer').play(animation)
 	await transition.get_node('AnimationPlayer').animation_finished
 
-func getCurrentMap()-> Node2D:
+func getCurrentMap()-> MapData:
 	return get_tree().current_scene
 
 func getMapRewardBank(key: String):
@@ -368,7 +377,8 @@ func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_
 	if random_pitch:
 		randomize()
 		player.pitch_scale += randf_range(0.0, 0.25)
-	add_child(player)
+	call_deferred('add_child', player)
+	await player.ready
 	player.play()
 
 func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=false):
@@ -381,6 +391,64 @@ func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=fal
 	elif location is Vector2:
 		pulse.global_position = location
 		getCurrentMap().call_deferred('add_child', pulse)
+
+func addEffectPulse(location, radius:float, script:GDScript):
+	var pulse: EffectPulse = preload("res://scenes/entities_disposable/EffectPulse.tscn").instantiate()
+	pulse.radius = radius
+	pulse.hit_script = script
+	if location is Node2D:
+		location.call_deferred('add_child', pulse)
+	elif location is Vector2:
+		pulse.global_position = location
+		getCurrentMap().call_deferred('add_child', pulse)
+	#showQuickAnimation('res://scenes/animations/Reinforcements.tscn', 'Player')
+	#showAbilityAnimation('res://scenes/animations/Reinforcements.tscn', OverworldGlobals.getPlayer().global_position)
+
+func showQuickAnimation(animation_id, location, animation_name:String='Show', wait:bool=true):
+	var animation: QuickAnimation
+	if animation_id is String:
+		animation = load(animation_id).instantiate()
+	elif animation_id is QuickAnimation:
+		animation = animation_id
+	elif animation_id is PackedScene:
+		animation = animation_id.instantiate()
+	animation.animation_name = animation_name
+	
+	if location is Node2D:
+		location.call_deferred('add_child',animation)
+	elif location is String:
+		animation.global_position = getEntity(location).global_position
+		getCurrentMap().call_deferred('add_child',animation)
+	elif location is Vector2:
+		animation.global_position = location
+		getCurrentMap().call_deferred('add_child',animation)
+	
+	await animation.ready
+	if wait:
+		await animation.animation_player.animation_finished
+
+func showAbilityAnimation(animation_path, location, properties:Dictionary={}):
+	var animation: AbilityAnimation = load(animation_path).instantiate()
+	for property in properties.keys():
+		animation.set(property, properties[property])
+	if location is Node2D:
+		location.call_deferred('add_child', animation)
+	else:
+		getCurrentMap().call_deferred('add_child', animation)
+	await animation.ready
+	if location is Vector2:
+		animation.playAnimation(location)
+	elif location is Node2D:
+		animation.playNow()
+
+func shootProjectile(projectile: Projectile, origin, direction: float):
+	if origin is Vector2:
+		projectile.global_position = origin
+	elif origin is Node2D:
+		projectile.SHOOTER = origin
+	
+	add_child(projectile)
+	projectile.rotation_degrees = direction
 
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
@@ -526,13 +594,15 @@ func isPlayerSquadDead():
 	
 	return true
 
-func damageParty(damage:int):
+func damageParty(damage:int, lethal:bool=true):
 	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
 	
 	var dead = ''
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
 		member.STAT_VALUES['health'] -= int(CombatGlobals.useDamageFormula(member, damage))
+		if !lethal and member.isDead():
+			member.STAT_VALUES['health'] = 1
 		if member.isDead(): dead += '[color=yellow]'+member.NAME+'[/color], '
 	if !dead == '':
 		dead = dead.trim_suffix(', ')

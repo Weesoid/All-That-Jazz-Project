@@ -40,6 +40,7 @@ _data = {
 }
 
 [node name="LightFlicker" type="Node2D"]
+z_index = 99
 script = ExtResource("1_6opwb")
 
 [node name="ColorRect" type="ColorRect" parent="."]

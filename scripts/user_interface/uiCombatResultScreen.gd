@@ -124,4 +124,4 @@ func showLoot():
 			OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
 		else:
 			loot_icons.add_child(icon)
-		#await get_tree().create_timer(0.15).timeout
+		await get_tree().create_timer(0.15).timeout

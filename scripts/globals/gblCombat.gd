@@ -519,10 +519,10 @@ func getFactionName(faction_value:int):
 	return Enemy_Factions.find_key(faction_value)
 
 func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
-	if enemy.TIER+1 <= PlayerGlobals.getLevelTier():
-		print('Adding %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
-	else:
-		print('Removing %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
+#	if enemy.TIER+1 <= PlayerGlobals.getLevelTier():
+#		print('Adding %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
+#	else:
+#		print('Removing %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
 	return enemy.TIER+1 <= PlayerGlobals.getLevelTier()
 
 func addTension(amount: int):

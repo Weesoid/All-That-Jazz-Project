@@ -1,5 +1,5 @@
 extends Resource
-class_name ResStalkerEnemy
+class_name ResStalkerData
 
 @export var patroller: PackedScene
 @export var combatant: Array[ResCombatant]
@@ -15,12 +15,27 @@ class_name ResStalkerEnemy
 	"reinforcements_turn": 50,
 }
 @export var warning_flash: PackedScene
-@export var flash_on_camera: bool
+@export var flash_follow: bool
+@export var stalker_intro: PackedScene
+@export var intro_follow: bool
 @export var spawn_time: float
-@export var spawn_script: GDScript
+@export var spawn_delay: float = 0.5
+@export var conditions: Array[String]
 
 func spawn():
 	var spawner: StalkerSpawner = load("res://scenes/miscellaneous/StalkerSpawner.tscn").instantiate()
 	spawner.stalker_data = self
 	OverworldGlobals.getCurrentMap().add_child(spawner)
-	#body.doAnimation('Engage')
+
+# Handy later
+func canSpawn()-> bool:
+	if conditions.is_empty():
+		return true
+	
+	for key in conditions:
+		if !PlayerGlobals.PROGRESSION_DATA.has(key):
+			return false
+		elif !PlayerGlobals.PROGRESSION_DATA[key]:
+			return false
+	
+	return true

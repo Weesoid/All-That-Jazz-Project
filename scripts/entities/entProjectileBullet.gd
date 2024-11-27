@@ -9,6 +9,7 @@ func _on_body_entered(body):
 	
 	if body != SHOOTER and (body is PlayerScene or body is TileMap):
 		queue_free()
+
 func _exit_tree():
 	if has_overlapping_bodies() and get_overlapping_bodies()[0] is PlayerScene:
 		randomize()
