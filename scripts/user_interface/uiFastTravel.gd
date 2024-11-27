@@ -49,7 +49,8 @@ func getMapInfo(location, map_data):
 		description.text += 'REWARD_ITEM: %s' % map_event['events']['reward_item'] + '\n'
 	if map_event['events'].has('reward_multipliers'):
 		description.text += 'REWARD_MULTIPLIERS: %s' % map_event['events']['reward_multipliers'] + '\n'
-
+	if map_event['events'].has('stalker_chance'):
+		description.text += 'STALKER_CHANCE: %s' % map_event['events']['stalker_chance'] + '\n'
 
 
 func travel(location):

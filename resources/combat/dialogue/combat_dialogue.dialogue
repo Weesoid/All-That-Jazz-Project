@@ -31,7 +31,7 @@ do moveEntity("Player", ">U2")
 Entity: Eugh...
 Willis: Stand down.
 Entity: I'll be back you drasted brat!
-
+do forceGiveRewards()
 => END
 
 ~ lose_aftermath

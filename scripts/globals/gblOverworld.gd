@@ -216,7 +216,7 @@ func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
-	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit:
+	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
 		delayed_rewards = getCurrentMap().REWARD_BANK
 	
 	if show_transition:
@@ -254,6 +254,9 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		delayed_rewards.clear()
 	
 	#print(getCurrentMap().NAME, ' <=========================================')
+
+func forceGiveRewards():
+	getCurrentMap().giveRewards(true)
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
 	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()

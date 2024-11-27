@@ -56,7 +56,13 @@ func initialize():
 	#DETECT_TIMER.timeout.connect(detectBarFlash)
 	NAV_AGENT.navigation_finished.emit()
 	
-	CombatGlobals.combat_won.connect(func(id): if id == NAME: destroy())
+	CombatGlobals.combat_won.connect(
+		func(id): 
+			if id == NAME: 
+				destroy()
+			if IS_STALKER:
+				OverworldGlobals.getCurrentMap().give_on_exit = false
+				)
 	CombatGlobals.combat_lost.connect(
 		func(_id): 
 			if !OverworldGlobals.isPlayerAlive(): 

@@ -13,7 +13,8 @@ class_name MapData
 	'time_limit':0.0,
 	'reward_multipliers': {'experience':0.0, 'loot':0.0},
 	'patroller_effect': null,
-	'reward_item': null
+	'reward_item': null,
+	'stalker_chance': 0.008 * PlayerGlobals.PARTY_LEVEL
 	}
 var CLEARED: bool = false
 var INITIAL_PATROLLER_COUNT: int = 0
@@ -48,15 +49,14 @@ func _ready():
 			clear_timer.timeout.connect(escapePatrollers)
 			clear_timer.start(EVENTS['time_limit'])
 			OverworldGlobals.getPlayer().player_camera.add_child(load("res://scenes/user_interface/TimeLimit.tscn").instantiate())
-	
-		pickStalker()
-		#print(STALKER)
+		if CombatGlobals.randomRoll(EVENTS['stalker_chance']):
+			pickStalker()
 
-func giveRewards():
+func giveRewards(ignore_stalker:bool=false):
 	map_cleared.emit()
 	if clear_timer != null and !clear_timer.is_stopped(): clear_timer.stop()
 	if !OverworldGlobals.isPlayerAlive(): return
-	if STALKER != null:
+	if STALKER != null and !ignore_stalker:
 		STALKER.spawn()
 		give_on_exit = true
 		PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
@@ -85,6 +85,7 @@ func giveRewards():
 	PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
 	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), scene_file_path)
 	setSavePoints(true)
+	#REWARD_BANK.clear()
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 
 func setSavePoints(set_to:bool):

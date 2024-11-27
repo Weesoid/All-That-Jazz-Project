@@ -304,21 +304,24 @@ func randomizeMapEvents():
 	randomize()
 	var events = {}
 	var chance_budget = 1.0
-	var possible_events = ['combat_event', 'reward_item', 'additional_enemies', 'tameable_modifier', 'reward_multipliers', 'time_limit', 'patroller_effect']
+	var possible_events = [
+		'stalker_chance'
+		]
 	var random_event
 	
 	while chance_budget > 0:
-		if CombatGlobals.randomRoll(chance_budget):
+		if CombatGlobals.randomRoll(chance_budget) and !possible_events.is_empty():
 			random_event = possible_events.pick_random()
 			possible_events.erase(random_event)
 			match random_event:
 				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
-				'time_limit': events['time_limit'] = [60.0, 90.0, 120.0].pick_random()
+				'time_limit': events['time_limit'] = [90.0, 120.0].pick_random()
 				'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Mercenaries].pick_random()
-				'tameable_modifier': events['tameable_modifier'] = [0.25, 0.5].pick_random() * randi_range(-1, 1)
+				'tameable_modifier': events['tameable_modifier'] = [0.25, 0.5, 0.75].pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
 				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
 				'reward_multipliers': events['reward_multipliers'] = {'experience':[1.25, 1.5, 0].pick_random(),'loot':[1.25, 1.5, 0].pick_random()}
+				'stalker_chance': events['stalker_chance'] = 1.0
 			chance_budget -= 0.25
 		else:
 			chance_budget = 0
