@@ -473,7 +473,7 @@ func generateCombatantSquad(patroller, faction: Enemy_Factions):
 	randomize()
 	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
 	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)
-	if squad_size < 4: squad_size = 4
+	if squad_size > 4: squad_size = 4
 	squad.FILL_EMPTY = true
 	squad.ENEMY_POOL = getFactionEnemies(faction)
 	if OverworldGlobals.getCurrentMap().EVENTS['additional_enemies'] != null:
@@ -482,7 +482,7 @@ func generateCombatantSquad(patroller, faction: Enemy_Factions):
 		squad.addLingeringEffect(OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'])
 	squad.ENEMY_POOL = squad.ENEMY_POOL.filter(func(combatant): return isWithinPlayerTier(combatant))
 	squad.COMBATANT_SQUAD.resize(squad_size)
-	squad.TAMEABLE_CHANCE = 0.01 * PlayerGlobals.PARTY_LEVEL # Add story check later
+	squad.TAMEABLE_CHANCE = (0.01 * PlayerGlobals.PARTY_LEVEL) + OverworldGlobals.getCurrentMap().EVENTS['tameable_modifier']# Add story check later
 	squad.pickRandomEnemies()
 	patroller.add_child(squad)
 

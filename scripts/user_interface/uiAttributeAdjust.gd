@@ -33,7 +33,7 @@ func _process(_delta):
 			reset_grit.show()
 		else:
 			reset_grit.hide()
-		if combatant.STAT_POINT_ALLOCATIONS['handling'] >= 5:
+		if combatant.STAT_POINTS >= 5:
 			handling_up.show()
 			handling_bonus.show()
 		else:
@@ -81,3 +81,7 @@ func resetStat(stat: String, cost):
 		combatant.STAT_POINTS += combatant.STAT_POINT_ALLOCATIONS[stat] * cost
 		combatant.STAT_POINT_ALLOCATIONS[stat] = 0
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
+	
+	if combatant.hasEquippedWeapon() and !combatant.EQUIPPED_WEAPON.canUse(combatant):
+		print('UNEQUIP!')
+		combatant.unequipWeapon()

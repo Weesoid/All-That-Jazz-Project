@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3kxw4js4bdau"]
+[gd_scene load_steps=6 format=3 uid="uid://d3kxw4js4bdau"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeView.gd" id="1_5knxr"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="2_pqnlq"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_5idne"]
+[ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="4_6pxto"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -271,3 +272,62 @@ offset_bottom = -50.0
 theme = ExtResource("3_5idne")
 theme_override_font_sizes/font_size = 8
 autowrap_mode = 3
+
+[node name="Temperments" type="PanelContainer" parent="."]
+z_index = 10
+layout_mode = 0
+offset_left = 8.0
+offset_top = 52.0
+offset_right = 168.0
+offset_bottom = 120.0
+theme_override_styles/panel = ExtResource("4_6pxto")
+
+[node name="MarginContainer" type="MarginContainer" parent="Temperments"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Temperments/MarginContainer"]
+layout_mode = 2
+
+[node name="PrimaryTemperment" type="HSplitContainer" parent="Temperments/MarginContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Temperments/MarginContainer/VBoxContainer/PrimaryTemperment"]
+layout_mode = 2
+text = "Cheese"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Values" type="RichTextLabel" parent="Temperments/MarginContainer/VBoxContainer/PrimaryTemperment"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+bbcode_enabled = true
+text = "+100% GRIT
+-20% BRAWN"
+fit_content = true
+
+[node name="SecondaryTemperment" type="HSplitContainer" parent="Temperments/MarginContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Temperments/MarginContainer/VBoxContainer/SecondaryTemperment"]
+layout_mode = 2
+text = "Cheese"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Values" type="RichTextLabel" parent="Temperments/MarginContainer/VBoxContainer/SecondaryTemperment"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+bbcode_enabled = true
+text = "+100% GRIT
+-20% BRAWN"
+fit_content = true

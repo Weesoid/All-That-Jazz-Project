@@ -1,37 +1,37 @@
 [gd_resource type="Resource" script_class="SavedGame" load_steps=22 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_5bnf5"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_gqdmy"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="3_ws7vn"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="4_l1ilg"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="5_ie8lh"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/Watchdog.tres" id="6_cjvav"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/PiercingProjectile.tres" id="7_fnnd3"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/AilmentStrike.tres" id="8_1oes4"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="9_af302"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/Teamwork.tres" id="10_p1kf6"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/Tame.tres" id="11_dhc61"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/KillChopAttack.tres" id="12_g4j45"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="13_kd2ug"]
-[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="14_v3dry"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="15_faj0d"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="16_mwg72"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="17_nb4il"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_txt78"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_1i37q"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="3_46fyj"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="4_xt4sk"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="5_puw2e"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Watchdog.tres" id="6_7gfso"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PiercingProjectile.tres" id="7_pniuc"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/AilmentStrike.tres" id="8_o253o"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="9_s2gt2"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Teamwork.tres" id="10_1xvub"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Tame.tres" id="11_n1pc1"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/KillChopAttack.tres" id="12_ltbun"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="13_t8biv"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="14_akukl"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="15_mnrgx"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="16_4lfkc"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="17_d4uyq"]
 
-[sub_resource type="Resource" id="Resource_gktef"]
-script = ExtResource("1_5bnf5")
+[sub_resource type="Resource" id="Resource_4sg8t"]
+script = ExtResource("1_txt78")
 position = Vector2(25.8376, 59.0663)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_3brwu"]
-script = ExtResource("2_gqdmy")
+[sub_resource type="Resource" id="Resource_wdif3"]
+script = ExtResource("2_1i37q")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_hwcpc"]
-script = ExtResource("15_faj0d")
-TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_ws7vn")])
+[sub_resource type="Resource" id="Resource_4haq8"]
+script = ExtResource("15_mnrgx")
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_46fyj")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 CLEARED_MAPS = {}
 CURRENCY = 100
@@ -41,7 +41,7 @@ STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([])
 COMBATANT_SAVE_DATA = {
-ExtResource("3_ws7vn"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("3_46fyj"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: null,
 1: null,
 2: null
@@ -67,7 +67,7 @@ ExtResource("3_ws7vn"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 16,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_l1ilg"), ExtResource("5_ie8lh"), ExtResource("6_cjvav"), ExtResource("7_fnnd3"), ExtResource("8_1oes4"), ExtResource("9_af302"), ExtResource("10_p1kf6"), ExtResource("11_dhc61"), ExtResource("12_g4j45")]), false, Array[String]([]), true, 1, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_xt4sk"), ExtResource("5_puw2e"), ExtResource("6_7gfso"), ExtResource("7_pniuc"), ExtResource("8_o253o"), ExtResource("9_s2gt2"), ExtResource("10_1xvub"), ExtResource("11_n1pc1"), ExtResource("12_ltbun")]), false, Array[String]([]), true, 1, {
 "scaled_stats": {
 "health": 0.0
 }
@@ -75,24 +75,27 @@ ExtResource("3_ws7vn"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "brawn": 0,
 "grit": 0,
 "handling": 0
-}, ExtResource("13_kd2ug")]
+}, ExtResource("13_t8biv"), {
+"primary": "",
+"secondary": ""
+}]
 }
 UNLOCKED_ABILITIES = {}
 ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
-KNOWN_POWERS = [ExtResource("14_v3dry")]
+KNOWN_POWERS = [ExtResource("14_akukl")]
 
-[sub_resource type="Resource" id="Resource_psjdf"]
-script = ExtResource("16_mwg72")
+[sub_resource type="Resource" id="Resource_pi3wr"]
+script = ExtResource("16_4lfkc")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 CRAFTED = Array[String]([])
 ITEM_DATA_INVENTORY = {}
 
 [resource]
-script = ExtResource("17_nb4il")
+script = ExtResource("17_d4uyq")
 NAME = "Save 2 - 00:00:00
 Morale 1
 Alt Room"
 PLAYTIME = 0.000999928
 current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_gktef"), SubResource("Resource_3brwu"), SubResource("Resource_hwcpc"), SubResource("Resource_psjdf")]
+save_data = [SubResource("Resource_4sg8t"), SubResource("Resource_wdif3"), SubResource("Resource_4haq8"), SubResource("Resource_pi3wr")]

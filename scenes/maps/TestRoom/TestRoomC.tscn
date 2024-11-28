@@ -78,12 +78,6 @@ shape = SubResource("RectangleShape2D_uqnih")
 [node name="SpawnPoints" type="Marker2D" parent="Area2D"]
 position = Vector2(-72, -232)
 
-[node name="SpawnPoints2" type="Marker2D" parent="Area2D"]
-position = Vector2(-32, -232)
-
-[node name="SpawnPoints3" type="Marker2D" parent="Area2D"]
-position = Vector2(24, -224)
-
 [node name="DoorInteractable" parent="." instance=ExtResource("3_ccbhy")]
 position = Vector2(-232, -136)
 TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomB.tscn"

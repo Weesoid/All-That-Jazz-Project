@@ -3,6 +3,7 @@ class_name ResPlayerCombatant
 
 @export var ABILITY_POOL: Array[ResAbility]
 @export var ABILITY_SLOT: ResAbility = load("res://resources/combat/abilities/BraceSelf.tres")
+@export var BASE_TEMPERMENT: Dictionary = {'primary':'', 'secondary':''}
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 
@@ -18,6 +19,7 @@ var STAT_POINT_ALLOCATIONS = {
 	'grit': 0,
 	'handling': 0
 }
+var TEMPERMENT: Dictionary = {'primary':'', 'secondary':''}
 var BASE_HEALTH: int
 var initialized = false
 
@@ -34,6 +36,15 @@ func initializeCombatant(do_scene:bool=true):
 		scaleStats()
 	if CombatGlobals.inCombat():
 		applyStatusEffects()
+	if TEMPERMENT['primary'] == '' and TEMPERMENT['secondary'] == '':
+		TEMPERMENT = BASE_TEMPERMENT
+	applyTemperments()
+
+func applyTemperments():
+	if !STAT_MODIFIERS.keys().has('primary_temperment') and TEMPERMENT['primary'] != '':
+		CombatGlobals.modifyStat(self, PlayerGlobals.PRIMARY_TEMPERMENTS[TEMPERMENT['primary']], 'primary_temperment')
+	if !STAT_MODIFIERS.keys().has('secondary_temperment') and TEMPERMENT['secondary'] != '':
+		CombatGlobals.modifyStat(self, PlayerGlobals.SECONDARY_TEMPERMENTS[TEMPERMENT['secondary']], 'secondary_temperment')
 
 func scaleStats():
 	var stat_increase = {}
@@ -102,14 +113,15 @@ func equipWeapon(weapon: ResWeapon):
 
 func unequipWeapon():
 	if EQUIPPED_WEAPON != null:
-		if !EQUIPPED_WEAPON.canUse(self):
-			OverworldGlobals.showPlayerPrompt('%s does not meet %s requirements.' % [NAME, EQUIPPED_WEAPON.NAME])
-			return
+#		if !EQUIPPED_WEAPON.canUse(self):
+#			OverworldGlobals.showPlayerPrompt('%s does not meet %s requirements.' % [NAME, EQUIPPED_WEAPON.NAME])
+#			return
 		
 		EQUIPPED_WEAPON.unequip()
 		InventoryGlobals.addItemResource(EQUIPPED_WEAPON, 1, false, false)
 		EQUIPPED_WEAPON = null
 		ABILITY_SLOT = load("res://resources/combat/abilities/BraceSelf.tres")
+
 
 func hasEquippedWeapon()-> bool:
 	return EQUIPPED_WEAPON != null
@@ -169,6 +181,7 @@ func reset():
 	LINGERING_STATUS_EFFECTS = []
 	EQUIPPED_WEAPON = null
 	STAT_POINTS = 1
+	STAT_MODIFIERS = {}
 	CHARMS = {
 		0: null,
 		1: null,
@@ -179,4 +192,5 @@ func reset():
 		'grit': 0,
 		'handling': 0
 	}
-	
+	TEMPERMENT = {'primary':'', 'secondary':''}
+

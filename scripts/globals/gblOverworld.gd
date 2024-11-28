@@ -136,6 +136,8 @@ func inMenu():
 	return getPlayer().player_camera.has_node('uiMenu')
 
 func setMenuFocus(container: Container):
+	
+	
 	if container.get_child_count() > 0:
 		container.get_child(0).grab_focus()
 

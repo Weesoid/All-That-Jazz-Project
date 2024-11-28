@@ -28,7 +28,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		status_effect.removeStatusEffect()
 
 static func canAddQTE(status_effect: ResStatusEffect)-> bool:
-	return status_effect.duration != status_effect.MAX_DURATION - 1 and status_effect.duration > 0 and !CombatGlobals.getCombatScene().has_node('QTE') and CombatGlobals.getCombatScene().isCombatValid()
+	return status_effect.duration != status_effect.MAX_DURATION - 1 and status_effect.duration > 0 and !CombatGlobals.getCombatScene().has_node('QTE') and CombatGlobals.getCombatScene().isCombatValid() and status_effect.afflicted_combatant.isDead()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if CombatGlobals.getCombatScene().combat_result != 0 and CombatGlobals.getCombatScene().combat_result != -1: 

@@ -18,6 +18,11 @@ extends Control
 @onready var healm_val = $HiddenAttributes/MarginContainer/VBoxContainer/HealMult/Value
 @onready var hp_text = $Attributes/MarginContainer/VBoxContainer/Health/ProgressBar/HealthValues
 @onready var debug_status = $Debug
+@onready var temperments = $Temperments
+@onready var p_temp_name = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Label
+@onready var p_temp_val = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Values
+@onready var s_temp_name = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Label
+@onready var s_temp_val = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Values
 
 func _ready():
 	if !borders:
@@ -45,7 +50,37 @@ func _process(_delta):
 		crit_val.value = combatant.STAT_VALUES['crit'] * 100
 		resist_val.value = combatant.STAT_VALUES['resist'] * 100
 		healm_val.text = str(combatant.STAT_VALUES['heal_mult'])
-		
+		# Temperments
+		if combatant is ResPlayerCombatant and combatant.TEMPERMENT != {'primary':'', 'secondary':''}:
+			temperments.show()
+			p_temp_name.text = combatant.TEMPERMENT['primary']
+			p_temp_val.text = formatModifiers(combatant.STAT_MODIFIERS['primary_temperment'])
+			s_temp_name.text = combatant.TEMPERMENT['secondary']
+			s_temp_val.text = formatModifiers(combatant.STAT_MODIFIERS['secondary_temperment'])
+		else:
+			temperments.hide()
 		if OverworldGlobals.isPlayerCheating():
 			debug_status.visible = OverworldGlobals.getPlayer().get_node('DebugComponent').visible
 			debug_status.text = str(combatant.STAT_MODIFIERS)
+
+func formatModifiers(stat_dict: Dictionary) -> String:
+	var result = ""
+	for key in stat_dict.keys():
+		var value = stat_dict[key]
+		if value is float: 
+			value *= 100.0
+		if stat_dict[key] > 0 and stat_dict[key]:
+			result += '[color=GREEN_YELLOW]'
+			if value is float: 
+				result += "+" + str(value) + "% " +key.to_upper().replace('_', ' ') + "\n"
+			else:
+				result += "+" + str(value) + " " +key.to_upper().replace('_', ' ') +  "\n"
+		else:
+			result += '[color=ORANGE_RED]'
+			if value is float: 
+				result += str(value) + "% " +key.to_upper().replace('_', ' ') +  "\n"
+			else:
+				result += str(value) + " " +key.to_upper().replace('_', ' ') + "\n"
+		result += '[/color]'
+	return result
+

@@ -40,7 +40,8 @@ func restoreDurability(amount: int):
 
 func canUse(combatant: ResCombatant):
 	for stat in USE_REQUIREMENT.keys():
-		if USE_REQUIREMENT[stat] > combatant.BASE_STAT_VALUES[stat]:
+		if USE_REQUIREMENT[stat] > combatant.STAT_VALUES[stat]:
+			print(stat, ' ', USE_REQUIREMENT[stat], ' ? ', combatant.STAT_VALUES[stat])
 			return false
 	
 	return true

@@ -78,6 +78,8 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		member_name.text = member.NAME
 		loadAbilities()
 		updateEquipped()
+	
+	#print(selected_combatant.TEMPERMENT)
 
 func swapMembers(member_a: ResCombatant, member_b: ResCombatant):
 	var team = OverworldGlobals.getCombatantSquad('Player')
@@ -379,7 +381,11 @@ func _on_tab_container_tab_changed(tab):
 	
 	match tab:
 		0: OverworldGlobals.setMenuFocus(pool)
-		1: OverworldGlobals.setMenuFocus(equipped_charms)
+		1: 
+			OverworldGlobals.setMenuFocus(equipped_charms)
+			if !selected_combatant.hasEquippedWeapon():
+				weapon_button.icon = null
+				weapon_button.text = 'Unarmed'
 		2: attrib_adjust.focus()
 
 func _unhandled_input(_event):
@@ -395,7 +401,6 @@ func setFocusMode(container, mode):
 				child.focus_mode = Control.FOCUS_ALL
 			else:
 				child.focus_mode = Control.FOCUS_NONE
-
 
 func _on_change_formation_pressed():
 	changing_formation = !changing_formation

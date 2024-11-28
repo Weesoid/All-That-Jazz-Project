@@ -25,6 +25,53 @@ var overworld_stats: Dictionary = {
 	'sprint_drain': 0.25,
 	'stamina_gain': 0.15
 }
+# TEMPERMENTS!
+var PRIMARY_TEMPERMENTS: Dictionary = {
+	'gifted': {'handling': 1},
+	'nimble': {'hustle': 4},
+	'lucky': {'crit':0.03},
+	'deadly': {'crit_dmg': 0.15},
+	'dominant': {'brawn': 0.1},
+	'tenacious': {'grit': 0.1},
+	'fortified': {'resist': 0.1},
+	'focused': {'accuracy':0.03},
+	'unyielding': {'heal_mult':0.2}
+}
+var SECONDARY_TEMPERMENTS: Dictionary = {
+	# BUFFS
+	'all_arounder': {'hustle': 1, 'crit': 0.02, 'crit_dmg': 0.02, 'brawn': 0.02, 'grit': 0.02, 'resist': 0.02, 'accuracy': 0.02, 'heal_mult': 0.02},
+	'clever': {'handling': 1},
+	'quick': {'hustle': 2},
+	'acute': {'crit':0.02},
+	'hard_hitter': {'crit_dmg': 0.1},
+	'mighty': {'brawn': 0.05},
+	'stalwart': {'grit': 0.05},
+	'resilient': {'resist': 0.05},
+	'keen': {'accuracy':0.02},
+	'limber': {'heal_mult':0.05},
+	
+	# QUIRKS
+	'smartass': {'handling': 2, 'brawn': -0.12,'grit': -0.12},
+	'frantic': {'hustle': 4, 'accuracy': -0.1},
+	'daredevil': {'crit':0.25, 'accuracy':-0.15, 'resist':-0.15},
+	'crude': {'crit_dmg': 0.25, 'crit':-0.15},
+	'reckless': {'brawn': 0.15, 'grit': -0.15},
+	'headstrong': {'grit': 0.15, 'brawn': -0.15},
+	'hardened': {'resist': 0.35, 'crit': -0.2},
+	'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_dmg': -0.25},
+	'selfish': {'heal_mult':0.25, 'grit': -0.2},
+	
+	# DEBUFFS
+	'heavy_handed': {'handling': -1},
+	'clumsy': {'hustle': -4},
+	'bad_luck': {'crit':-0.05},
+	'dud_hitter': {'crit_dmg': -0.25},
+	'wimpy': {'brawn': -0.1},
+	'soft': {'grit': -0.1},
+	'sickly': {'resist': -0.05},
+	'oblivious': {'accuracy':-0.05},
+	'stubborn': {'heal_mult':-0.15}
+}
 #var stamina = 100.0
 #var bow_max_draw = 5.0
 #var walk_speed = 100.0
@@ -197,6 +244,10 @@ func addCombatantToTeam(combatant_id):
 			combatant = load(combatant_id)
 	elif combatant_id is ResCombatant:
 		combatant = combatant_id
+	if combatant.TEMPERMENT['primary'] == '':
+		combatant.TEMPERMENT['primary'] = PlayerGlobals.PRIMARY_TEMPERMENTS.keys().pick_random()
+	if combatant.TEMPERMENT['secondary'] == '':
+		combatant.TEMPERMENT['secondary'] = PlayerGlobals.SECONDARY_TEMPERMENTS.keys().pick_random()
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
 	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
@@ -305,7 +356,7 @@ func randomizeMapEvents():
 	var events = {}
 	var chance_budget = 1.0
 	var possible_events = [
-		'stalker_chance'
+		'tameable_modifier'
 		]
 	var random_event
 	
@@ -317,7 +368,7 @@ func randomizeMapEvents():
 				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
 				'time_limit': events['time_limit'] = [90.0, 120.0].pick_random()
 				'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Mercenaries].pick_random()
-				'tameable_modifier': events['tameable_modifier'] = [0.25, 0.5, 0.75].pick_random()
+				'tameable_modifier': events['tameable_modifier'] = [1.25, 1.5, 1.75].pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
 				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
 				'reward_multipliers': events['reward_multipliers'] = {'experience':[1.25, 1.5, 0].pick_random(),'loot':[1.25, 1.5, 0].pick_random()}
@@ -384,6 +435,7 @@ func saveData(save_data: Array):
 			combatant.EQUIPPED_WEAPON,
 			combatant.STAT_POINT_ALLOCATIONS,
 			combatant.ABILITY_SLOT,
+			combatant.TEMPERMENT
 			]
 	
 	save_data.append(data)
@@ -434,6 +486,7 @@ func loadData(save_data: PlayerSaveData):
 		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][10]
 		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][11]
 		combatant.ABILITY_SLOT = save_data.COMBATANT_SAVE_DATA[combatant][12]
+		combatant.TEMPERMENT = save_data.COMBATANT_SAVE_DATA[combatant][13]
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.CHARMS.values():
 			if charm != null:

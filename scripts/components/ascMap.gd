@@ -14,7 +14,7 @@ class_name MapData
 	'reward_multipliers': {'experience':0.0, 'loot':0.0},
 	'patroller_effect': null,
 	'reward_item': null,
-	'stalker_chance': 0.008 * PlayerGlobals.PARTY_LEVEL
+	'stalker_chance': 0.05 * PlayerGlobals.PARTY_LEVEL
 	}
 var CLEARED: bool = false
 var INITIAL_PATROLLER_COUNT: int = 0
@@ -34,7 +34,9 @@ func _ready():
 	if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) and !PlayerGlobals.CLEARED_MAPS[scene_file_path]['events'].is_empty():
 		var events: Dictionary = PlayerGlobals.CLEARED_MAPS[scene_file_path]['events']
 		for key in events.keys():
-			if events[key] != null: EVENTS[key] = events[key]
+			if events[key] != null: 
+				print(EVENTS[key], ' turn inta ', events[key])
+				EVENTS[key] = events[key]
 	if !SAFE and (!PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) or !PlayerGlobals.CLEARED_MAPS[scene_file_path]['cleared']):
 		await get_tree().process_frame
 		if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path):
