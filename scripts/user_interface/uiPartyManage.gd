@@ -3,6 +3,14 @@ extends MemberAdjustUI
 @onready var member_view = $Label/Marker2D
 @onready var currency = $Currency
 @onready var debug_button = $GetAllCombatants
+@onready var experience_bar = $TabContainer/Temperment/ProgressBar
+@onready var reroll_primary = $TabContainer/Temperment/VBoxContainer/HSplitContainer/RerollPrimary
+@onready var reroll_secondary = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/RerollSecondary
+@onready var primary_name = $TabContainer/Temperment/VBoxContainer/HSplitContainer/HBoxContainer/Label
+@onready var primary_val = $TabContainer/Temperment/VBoxContainer/HSplitContainer/HBoxContainer/Label2
+@onready var secondary_name = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label
+@onready var secondary_val = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
+@onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
 
 func _ready():
 	loadMembers()
@@ -68,6 +76,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		member_name.text = member.NAME
 		loadAbilities()
 		updateEquipped()
+	updateTemperments()
 
 func createButton(ability:ResAbility, location):
 	if ability.REQUIRED_LEVEL > PlayerGlobals.PARTY_LEVEL:
@@ -174,3 +183,98 @@ func addAllMembers(path: String):
 func _on_get_all_combatants_pressed():
 	addAllMembers("res://resources/combat/combatants_player/tameable/")
 	loadMembers(true)
+
+func _on_reroll_primary_pressed():
+	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
+	if PlayerGlobals.CURRENT_EXP >= cost:
+		rerollTemperment('primary', cost)
+	else:
+		reroll_primary.disabled = true
+
+func _on_reroll_secondary_pressed():
+	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
+	if PlayerGlobals.CURRENT_EXP >= cost:
+		rerollTemperment('secondary', cost)
+	else:
+		reroll_secondary.disabled = true
+
+func rerollTemperment(type: String, cost):
+	PlayerGlobals.addExperience(-cost, false)
+	var valid_temperments
+	if type == 'primary':
+		valid_temperments = PlayerGlobals.PRIMARY_TEMPERMENTS.keys().filter(func(temperment): return temperment != selected_combatant.TEMPERMENT[type])
+		selected_combatant.TEMPERMENT[type] = valid_temperments.pick_random()
+	elif type == 'secondary':
+		valid_temperments = PlayerGlobals.SECONDARY_TEMPERMENTS.keys().filter(func(temperment): return temperment != selected_combatant.TEMPERMENT[type])
+		selected_combatant.TEMPERMENT[type] = valid_temperments.pick_random()
+	updateExpBar(true)
+	updateTemperments()
+	reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
+	reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
+
+func updateExpBar(show_tween:bool=false):
+	experience_bar.max_value = PlayerGlobals.getRequiredExp()
+	experience_bar.value = PlayerGlobals.CURRENT_EXP
+	if show_tween:
+		var tween = create_tween()
+		tween.tween_property(experience_bar,'modulate',Color.RED,0.1)
+		tween.tween_property(experience_bar,'modulate',Color.WHITE,0.15)
+
+func updateTemperments():
+	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
+	reroll_cost.text = 'Morale Cost: %s' % str(cost)
+	reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
+	primary_name.text = selected_combatant.TEMPERMENT['primary'].capitalize().replace('_', '')
+	secondary_name.text = selected_combatant.TEMPERMENT['secondary'].capitalize().replace('_', '')
+	primary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['primary_temperment'])
+	secondary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['secondary_temperment'])
+	selected_combatant.applyTemperments(true)
+
+func formatModifiers(stat_dict: Dictionary) -> String:
+	var result = ""
+	for key in stat_dict.keys():
+		var value = stat_dict[key]
+		if value is float: 
+			value *= 100.0
+		if stat_dict[key] > 0 and stat_dict[key]:
+			result += '[color=GREEN_YELLOW]'
+			if value is float: 
+				result += "+" + str(value) + "% " +key.to_upper().replace('_', ' ') + "\n"
+			else:
+				result += "+" + str(value) + " " +key.to_upper().replace('_', ' ') +  "\n"
+		else:
+			result += '[color=ORANGE_RED]'
+			if value is float: 
+				result += str(value) + "% " +key.to_upper().replace('_', ' ') +  "\n"
+			else:
+				result += str(value) + " " +key.to_upper().replace('_', ' ') + "\n"
+		result += '[/color]'
+	return result
+
+func _on_tab_container_tab_changed(tab):
+	select_charms_panel.hide()
+	if tab == 0:
+		loadAbilities()
+	elif tab == 1:
+		select_charms_panel.hide()
+		charm_info_panel.hide()
+		setFocusMode(equipped_charms, true)
+		setFocusMode(member_container, true)
+		weapon_button.grab_focus()
+	
+	match tab:
+		0: 
+			OverworldGlobals.setMenuFocus(pool)
+		1: 
+			OverworldGlobals.setMenuFocus(equipped_charms)
+			if !selected_combatant.hasEquippedWeapon():
+				weapon_button.icon = null
+				weapon_button.text = 'Unarmed'
+		2: 
+			attrib_adjust.focus()
+		3: 
+			var cost = int(PlayerGlobals.getRequiredExp()*0.05)
+			updateExpBar()
+			updateTemperments()
+			reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
+			reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost

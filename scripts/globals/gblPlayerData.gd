@@ -35,11 +35,11 @@ var PRIMARY_TEMPERMENTS: Dictionary = {
 	'tenacious': {'grit': 0.1},
 	'fortified': {'resist': 0.1},
 	'focused': {'accuracy':0.03},
-	'unyielding': {'heal_mult':0.2}
+	'unyielding': {'heal_mult':0.2},
+	'all_arounder': {'hustle': 1, 'crit': 0.02, 'crit_dmg': 0.02, 'brawn': 0.02, 'grit': 0.02, 'resist': 0.02, 'accuracy': 0.02, 'heal_mult': 0.02}
 }
 var SECONDARY_TEMPERMENTS: Dictionary = {
 	# BUFFS
-	'all_arounder': {'hustle': 1, 'crit': 0.02, 'crit_dmg': 0.02, 'brawn': 0.02, 'grit': 0.02, 'resist': 0.02, 'accuracy': 0.02, 'heal_mult': 0.02},
 	'clever': {'handling': 1},
 	'quick': {'hustle': 2},
 	'acute': {'crit':0.02},
@@ -53,11 +53,11 @@ var SECONDARY_TEMPERMENTS: Dictionary = {
 	# QUIRKS
 	'smartass': {'handling': 2, 'brawn': -0.12,'grit': -0.12},
 	'frantic': {'hustle': 4, 'accuracy': -0.1},
-	'daredevil': {'crit':0.25, 'accuracy':-0.15, 'resist':-0.15},
+	'daredevil': {'crit':0.1, 'accuracy':-0.1},
 	'crude': {'crit_dmg': 0.25, 'crit':-0.15},
 	'reckless': {'brawn': 0.15, 'grit': -0.15},
 	'headstrong': {'grit': 0.15, 'brawn': -0.15},
-	'hardened': {'resist': 0.35, 'crit': -0.2},
+	'hardened': {'resist': 0.35, 'crit': -0.1},
 	'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_dmg': -0.25},
 	'selfish': {'heal_mult':0.25, 'grit': -0.2},
 	

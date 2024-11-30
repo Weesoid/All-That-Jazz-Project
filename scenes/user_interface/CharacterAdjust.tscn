@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://boubqwafllx3y"]
+[gd_scene load_steps=16 format=3 uid="uid://boubqwafllx3y"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="5_cqrwt"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
+[ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="9_c41m6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfwvc"]
 bg_color = Color(0, 0, 0, 1)
@@ -16,14 +17,19 @@ bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qba66"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gup3p"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esnsw"]
 bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jldq0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sre4y"]
+bg_color = Color(0, 0, 0, 1)
+border_width_top = 2
+border_width_right = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qcjn6"]
 
 [node name="CharacterAdjust" type="Control"]
 layout_mode = 3
@@ -33,9 +39,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -112.0
-offset_top = -20.0
+offset_top = -4.0
 offset_right = -112.0
-offset_bottom = -20.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -47,8 +53,7 @@ layout_mode = 0
 offset_left = -128.0
 offset_top = -128.0
 offset_right = 216.0
-offset_bottom = 136.0
-tab_alignment = 2
+offset_bottom = 104.0
 
 [node name="Abilities" type="Control" parent="TabContainer"]
 layout_mode = 2
@@ -188,10 +193,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = 136.0
-offset_right = 128.0
-offset_bottom = 160.0
+offset_left = -96.0
+offset_top = 104.0
+offset_right = 136.0
+offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qba66")
@@ -199,7 +204,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_qba66")
 [node name="HBoxContainer" type="HBoxContainer" parent="Members"]
 layout_mode = 2
 theme_override_constants/separation = 8
-alignment = 1
 
 [node name="AttributeView" parent="." instance=ExtResource("5_cqrwt")]
 z_index = 1
@@ -211,17 +215,18 @@ offset_bottom = 176.0
 view_hidden = false
 
 [node name="HiddenAttributes" parent="AttributeView" index="0"]
-offset_left = 128.0
+offset_left = 118.0
 offset_top = -200.0
-offset_right = 304.0
-offset_bottom = -40.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_gup3p")
+offset_right = 256.0
+offset_bottom = -72.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_esnsw")
 
 [node name="Attributes" parent="AttributeView" index="1"]
-offset_left = 128.0
-offset_top = -288.0
-offset_right = 304.0
+offset_left = 118.0
+offset_top = -286.0
+offset_right = 256.0
 offset_bottom = -165.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_sre4y")
 
 [node name="Debug" parent="AttributeView" index="2"]
 offset_left = -40.0
@@ -230,11 +235,12 @@ offset_right = 120.0
 offset_bottom = -46.0
 
 [node name="Temperments" parent="AttributeView" index="3"]
-offset_left = 136.0
-offset_top = -119.0
-offset_right = 296.0
-offset_bottom = -39.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_jldq0")
+visible = true
+offset_left = 118.0
+offset_top = -115.0
+offset_right = 270.0
+offset_bottom = -33.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_qcjn6")
 
 [node name="Label" type="Label" parent="."]
 visible = false
@@ -252,10 +258,10 @@ vertical_alignment = 2
 [node name="Infliction" type="Label" parent="."]
 z_index = 999
 layout_mode = 0
-offset_left = 232.0
-offset_top = 120.0
-offset_right = 392.0
-offset_bottom = 136.0
+offset_left = 208.0
+offset_top = -128.0
+offset_right = 368.0
+offset_bottom = -112.0
 mouse_filter = 1
 theme = ExtResource("8_hty5i")
 text = "INFLICTED!"
@@ -264,10 +270,11 @@ vertical_alignment = 2
 
 [node name="ChangeFormation" parent="." instance=ExtResource("2_s185n")]
 layout_mode = 1
-offset_left = 224.0
-offset_top = 144.0
-offset_right = 368.0
-offset_bottom = 168.0
+offset_left = 240.0
+offset_top = 104.0
+offset_right = 349.0
+offset_bottom = 128.0
+theme = ExtResource("9_c41m6")
 text = "CHANGE FORMATION"
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]

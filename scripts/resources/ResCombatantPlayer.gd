@@ -40,10 +40,10 @@ func initializeCombatant(do_scene:bool=true):
 		TEMPERMENT = BASE_TEMPERMENT
 	applyTemperments()
 
-func applyTemperments():
-	if !STAT_MODIFIERS.keys().has('primary_temperment') and TEMPERMENT['primary'] != '':
+func applyTemperments(update:bool = false):
+	if (!STAT_MODIFIERS.keys().has('primary_temperment') and TEMPERMENT['primary'] != '') or update:
 		CombatGlobals.modifyStat(self, PlayerGlobals.PRIMARY_TEMPERMENTS[TEMPERMENT['primary']], 'primary_temperment')
-	if !STAT_MODIFIERS.keys().has('secondary_temperment') and TEMPERMENT['secondary'] != '':
+	if (!STAT_MODIFIERS.keys().has('secondary_temperment') and TEMPERMENT['secondary'] != '') or update:
 		CombatGlobals.modifyStat(self, PlayerGlobals.SECONDARY_TEMPERMENTS[TEMPERMENT['secondary']], 'secondary_temperment')
 
 func scaleStats():

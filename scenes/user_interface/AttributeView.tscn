@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeView.gd" id="1_5knxr"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="2_pqnlq"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_5idne"]
-[ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="4_6pxto"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -16,6 +15,8 @@ expand_margin_left = 1.0
 expand_margin_top = 1.0
 expand_margin_right = 1.0
 expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jjpdh"]
 
 [node name="AttributeView" type="Control"]
 layout_mode = 3
@@ -274,13 +275,13 @@ theme_override_font_sizes/font_size = 8
 autowrap_mode = 3
 
 [node name="Temperments" type="PanelContainer" parent="."]
+visible = false
 z_index = 10
 layout_mode = 0
-offset_left = 8.0
-offset_top = 52.0
-offset_right = 168.0
-offset_bottom = 120.0
-theme_override_styles/panel = ExtResource("4_6pxto")
+offset_top = 44.0
+offset_right = 176.0
+offset_bottom = 88.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jjpdh")
 
 [node name="MarginContainer" type="MarginContainer" parent="Temperments"]
 layout_mode = 2
@@ -299,18 +300,16 @@ dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Temperments/MarginContainer/VBoxContainer/PrimaryTemperment"]
 layout_mode = 2
-text = "Cheese"
+text = "P TEMP."
 vertical_alignment = 1
-uppercase = true
 
-[node name="Values" type="RichTextLabel" parent="Temperments/MarginContainer/VBoxContainer/PrimaryTemperment"]
+[node name="Values" type="Label" parent="Temperments/MarginContainer/VBoxContainer/PrimaryTemperment"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
-bbcode_enabled = true
-text = "+100% GRIT
--20% BRAWN"
-fit_content = true
+text = "CHEESE"
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="SecondaryTemperment" type="HSplitContainer" parent="Temperments/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -319,15 +318,12 @@ dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Temperments/MarginContainer/VBoxContainer/SecondaryTemperment"]
 layout_mode = 2
-text = "Cheese"
+text = "S TEMP."
 vertical_alignment = 1
-uppercase = true
 
-[node name="Values" type="RichTextLabel" parent="Temperments/MarginContainer/VBoxContainer/SecondaryTemperment"]
+[node name="Values" type="Label" parent="Temperments/MarginContainer/VBoxContainer/SecondaryTemperment"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
-bbcode_enabled = true
-text = "+100% GRIT
--20% BRAWN"
-fit_content = true
+text = "UNYIELDING"
+autowrap_mode = 2
