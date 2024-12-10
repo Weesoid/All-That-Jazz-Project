@@ -35,7 +35,6 @@ func _ready():
 	create_tween().tween_property(body, 'modulate', Color.WHITE, 0.15)
 	await OverworldGlobals.playEntityAnimation(body.name, 'Engage')
 	OverworldGlobals.changeToCombat(body.name)
-	queue_free()
 
 func _exit_tree():
 	OverworldGlobals.combat_exited.disconnect(reactivatePatroller)
@@ -45,3 +44,4 @@ func reactivatePatroller():
 	if is_instance_valid(body) and body.has_node('NPCPatrolComponent') and OverworldGlobals.isPlayerAlive():
 		body.patrol_component.process_mode= Node.PROCESS_MODE_INHERIT
 		PlayerGlobals.CLEARED_MAPS[OverworldGlobals.getCurrentMap().scene_file_path]['cleared'] = true
+	queue_free()

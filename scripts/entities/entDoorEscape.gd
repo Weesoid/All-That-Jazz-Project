@@ -12,7 +12,6 @@ func interact():
 		PlayerGlobals.addExperience(int(randf_range(-0.5,-0.25) * PlayerGlobals.getRequiredExp()), true)
 		OverworldGlobals.setMapRewardBank('experience', 0)
 		OverworldGlobals.getCurrentMap().give_on_exit = true
-		#OverworldGlobals.getCurrentMap().giveRewards()
 	OverworldGlobals.changeMap(TO_SCENE_PATH, '0,0,0','SavePoint',true,true)
 
 func _on_body_entered(body):

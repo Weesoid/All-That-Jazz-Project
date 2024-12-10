@@ -47,8 +47,8 @@ hybrid = {
 "alerted_patrol": 0.0,
 "patrol": 0.0
 },
-"projectile": "",
-"sprite_sheet": "",
+"projectile": "res://resources/projectiles/DamageProjectile.tres",
+"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png",
 "stun_time": {
 "max": 0.0,
 "min": 0.0

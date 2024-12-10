@@ -56,3 +56,31 @@ func getMapInfo(location, map_data):
 func travel(location):
 	OverworldGlobals.closeMenu(self)
 	OverworldGlobals.changeMap(location, '0,0,0', 'FastTravel')
+
+func _on_debug_button_pressed():
+	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()))
+	for child in travel_panel.get_children():
+		child.queue_free()
+	await get_tree().process_frame
+	for location in PlayerGlobals.CLEARED_MAPS.keys():
+		var button = OverworldGlobals.createCustomButton()
+		var map = load(location).instantiate()
+		button.text = map.NAME
+		map_component_data[location] = [map.NAME, map.DESCRIPTION, map.IMAGE, map.EVENTS]
+		button.pressed.connect(func(): travel(location))
+		button.focus_entered.connect(
+			func():
+				getMapInfo(location, map_component_data)
+		)
+		button.mouse_entered.connect(
+			func():
+				getMapInfo(location, map_component_data)
+		)
+		if location == OverworldGlobals.getCurrentMap().scene_file_path or !PlayerGlobals.CLEARED_MAPS[location]['fast_travel']:
+			button.disabled = true
+		if !PlayerGlobals.CLEARED_MAPS[location]['cleared']:
+			button.icon = preload("res://images/sprites/icon_multi_enemy.png")
+		travel_panel.add_child(button)
+		map.queue_free()
+	
+	OverworldGlobals.setMenuFocus(travel_panel)

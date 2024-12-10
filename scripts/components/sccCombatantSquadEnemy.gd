@@ -49,11 +49,13 @@ func getMusic()-> int:
 func getRawDrops():
 	var drops = {}
 	for member in COMBATANT_SQUAD:
-		drops.merge(member.getRawDrops())
+		drops.merge(member.getDrops())
+		drops.merge(member.getBarterDrops())
 	return drops
 
 func addDrops():
 	var loot_drops = getRawDrops()
+	print(loot_drops)
 	for loot in loot_drops.keys():
 		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
 			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]

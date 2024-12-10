@@ -86,12 +86,12 @@ func _physics_process(_delta):
 		executeCollisionAction()
 	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0 and BODY.get_slide_collision(0).get_collider() is GenericPatroller:
 		updatePath(true)
-	
 	if STATE == 0 or STATE == 1:
 		DETECT_BAR.value = DETECT_TIMER.time_left
+	
 #	if OverworldGlobals.isPlayerCheating():
 #		DEBUG.show()
-#		DEBUG.text = str(DETECT_TIMER.time_left)
+#		DEBUG.text = str(STUN_TIMER.time_left)
 #	else:
 #		DEBUG.hide()
 
@@ -99,8 +99,8 @@ func executeCollisionAction():
 	if BODY.get_slide_collision_count() == 0:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
-		#print(NAME, ': You touched me! I am fighting you! ', Time.get_time_dict_from_system())
+	if BODY.get_last_slide_collision().get_collider() is PlayerScene and OverworldGlobals.getCurrentMap().done_loading_map:
+		print(NAME, ': You touched me! I am fighting you! ', Time.get_time_dict_from_system())
 		immobolize()
 		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
@@ -207,14 +207,10 @@ func destroy(fancy=true):
 	BODY.queue_free()
 
 func isMapCleared():
-#	if !OverworldGlobals.isPlayerAlive():
-#		return
-	
 	for child in OverworldGlobals.getCurrentMap().get_children():
 		if child.has_node('NPCPatrolComponent') and child != BODY: return
 	
 	OverworldGlobals.showPlayerPrompt('Map cleared!')
-	#print(NAME, ' giving rewards!')
 	OverworldGlobals.getCurrentMap().giveRewards()
 
 func updatePath(immediate:bool=false):

@@ -1,5 +1,4 @@
 static func applyEffect(body: CharacterBody2D):
-	#OverworldGlobals.playEntityAnimation(body.name, 'RESET')
 	body.patrol_component.process_mode = Node.PROCESS_MODE_DISABLED
 	await OverworldGlobals.playEntityAnimation(body.name, 'RESET')
 	await updateLineOfSight(body)

@@ -309,7 +309,7 @@ func healCombatants(cure: bool=true):
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
 
 func isMapCleared():
-	if OverworldGlobals.getCurrentMap().SAFE:
+	if OverworldGlobals.getCurrentMap().SAFE or (!OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().give_on_exit):
 		return true
 	else:
 		var current_map = OverworldGlobals.getCurrentMap().scene_file_path
@@ -340,8 +340,9 @@ func randomMapUnclear(count:int, ignore_map:String=''):
 		CLEARED_MAPS[map]['faction'] = randi_range(0,0) # Only one faction so far
 		if CombatGlobals.randomRoll(1.25):
 			CLEARED_MAPS[map]['events'] = randomizeMapEvents()
-		# randomizeMapEvents()
 		valid_maps.erase(map)
+
+
 
 func clearMaps():
 	for map in CLEARED_MAPS.keys():
@@ -356,7 +357,14 @@ func randomizeMapEvents():
 	var events = {}
 	var chance_budget = 1.0
 	var possible_events = [
-		'tameable_modifier'
+		"combat_event",
+		"time_limit",
+		"additional_enemies",
+		"tameable_modifier",
+		"patroller_effect",
+		"reward_item",
+		"reward_multipliers",
+		"stalker_chance"
 		]
 	var random_event
 	
@@ -366,13 +374,14 @@ func randomizeMapEvents():
 			possible_events.erase(random_event)
 			match random_event:
 				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
-				'time_limit': events['time_limit'] = [90.0, 120.0].pick_random()
+				'time_limit': events['time_limit'] = [10.0].pick_random()
 				'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Mercenaries].pick_random()
 				'tameable_modifier': events['tameable_modifier'] = [1.25, 1.5, 1.75].pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
 				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
 				'reward_multipliers': events['reward_multipliers'] = {'experience':[1.25, 1.5, 0].pick_random(),'loot':[1.25, 1.5, 0].pick_random()}
 				'stalker_chance': events['stalker_chance'] = 1.0
+				'destroy_objective': events['destroy_objective'] = true
 			chance_budget -= 0.25
 		else:
 			chance_budget = 0

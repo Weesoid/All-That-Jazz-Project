@@ -252,7 +252,9 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		showTransition('FadeOut', player)
 	if !delayed_rewards.is_empty():
 		getCurrentMap().REWARD_BANK = delayed_rewards
+		#await getCurrentMap().ready
 		getCurrentMap().giveRewards()
+		await SaveLoadGlobals.done_saving
 		delayed_rewards.clear()
 	
 	#print(getCurrentMap().NAME, ' <=========================================')

@@ -509,10 +509,6 @@ motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_a6a0o")
 projectile = ExtResource("2_odrkn")
-stun_time = {
-"max": 2.0,
-"min": 3.0
-}
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true

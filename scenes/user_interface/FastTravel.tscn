@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bm67sj0tkk1do"]
+[gd_scene load_steps=5 format=3 uid="uid://bm67sj0tkk1do"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiFastTravel.gd" id="1_vesp7"]
 [ext_resource type="StyleBox" uid="uid://dp2nq8lcxrsfc" path="res://design/PanelNoTop.tres" id="2_0i7nv"]
+[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_46a5y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xuni1"]
 bg_color = Color(0, 0, 0, 1)
@@ -21,6 +22,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 script = ExtResource("1_vesp7")
+
+[node name="DebugButton" parent="." instance=ExtResource("2_46a5y")]
+layout_mode = 1
+offset_left = 184.0
+offset_top = -140.0
+offset_right = 272.0
+offset_bottom = -118.0
+text = "REROLL"
 
 [node name="FastTravelAreas" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -61,3 +70,5 @@ theme_override_styles/panel = ExtResource("2_0i7nv")
 [node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer2"]
 layout_mode = 2
 bbcode_enabled = true
+
+[connection signal="pressed" from="DebugButton" to="." method="_on_debug_button_pressed"]

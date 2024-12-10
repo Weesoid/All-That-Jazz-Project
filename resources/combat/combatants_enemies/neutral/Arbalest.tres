@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=7 format=3 uid="uid://dllvm6xbaivj"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=9 format=3 uid="uid://dllvm6xbaivj"]
 
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_4vmhq"]
 [ext_resource type="Resource" uid="uid://mrn0svae3x2r" path="res://resources/combat/abilities/MarkOfDeath.tres" id="2_j2xpw"]
 [ext_resource type="Resource" uid="uid://bs0nmy56rk6ey" path="res://resources/combat/abilities/Eradicate.tres" id="3_ernl8"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="4_lwf4x"]
+[ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="5_wwn82"]
+[ext_resource type="Resource" uid="uid://drgb4ejko51ty" path="res://resources/items/CharmStoneWall.tres" id="6_0uwak"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="7_rdi4y"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="8_ryksi"]
 
@@ -12,9 +14,12 @@ script = ExtResource("8_ryksi")
 FACTION = 0
 TIER = 0
 PREFERRED_POSITION = 1
-CHANCE_TO_DROP = 0.5
+CHANCE_TO_DROP = 1.0
 DROP_COUNT = 1
-DROP_POOL = {}
+DROP_POOL = {
+ExtResource("5_wwn82"): Vector2(0.25, 3),
+ExtResource("6_0uwak"): Vector2(0.1, 1)
+}
 is_converted = false
 NAME = "Arbalest"
 PACKED_SCENE = ExtResource("7_rdi4y")

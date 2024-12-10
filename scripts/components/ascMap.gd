@@ -14,7 +14,8 @@ class_name MapData
 	'reward_multipliers': {'experience':0.0, 'loot':0.0},
 	'patroller_effect': null,
 	'reward_item': null,
-	'stalker_chance': 0.05 * PlayerGlobals.PARTY_LEVEL
+	'stalker_chance': 0.05 * PlayerGlobals.PARTY_LEVEL,
+	'destroy_objective': false
 	}
 var CLEARED: bool = false
 var INITIAL_PATROLLER_COUNT: int = 0
@@ -23,6 +24,7 @@ var STALKER: ResStalkerData
 var full_alert: bool = false
 var clear_timer: Timer
 var give_on_exit:bool = false
+var done_loading_map:bool = false
 
 signal map_cleared
 
@@ -35,12 +37,12 @@ func _ready():
 		var events: Dictionary = PlayerGlobals.CLEARED_MAPS[scene_file_path]['events']
 		for key in events.keys():
 			if events[key] != null: 
-				print(EVENTS[key], ' turn inta ', events[key])
 				EVENTS[key] = events[key]
 	if !SAFE and (!PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) or !PlayerGlobals.CLEARED_MAPS[scene_file_path]['cleared']):
 		await get_tree().process_frame
 		if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path):
 			ENEMY_FACTION = PlayerGlobals.CLEARED_MAPS[scene_file_path]['faction']
+		#await get_tree().create_timer(0.05).tim
 		spawnPatrollers()
 		INITIAL_PATROLLER_COUNT = getPatrollers().size()
 		showStartIndicator()
@@ -51,13 +53,20 @@ func _ready():
 			clear_timer.timeout.connect(escapePatrollers)
 			clear_timer.start(EVENTS['time_limit'])
 			OverworldGlobals.getPlayer().player_camera.add_child(load("res://scenes/user_interface/TimeLimit.tscn").instantiate())
+		if canSpawnDestructibleObjectives():
+			spawnDestructibleObjectives()
 		if CombatGlobals.randomRoll(EVENTS['stalker_chance']):
 			pickStalker()
+	
+	done_loading_map = true
 
 func giveRewards(ignore_stalker:bool=false):
+	await get_tree().process_frame
 	map_cleared.emit()
-	if clear_timer != null and !clear_timer.is_stopped(): clear_timer.stop()
-	if !OverworldGlobals.isPlayerAlive(): return
+	if clear_timer != null and !clear_timer.is_stopped(): 
+		clear_timer.stop()
+	if !OverworldGlobals.isPlayerAlive() or (canSpawnDestructibleObjectives() and getDestructibleObjectives().size() > 0): 
+		return
 	if STALKER != null and !ignore_stalker:
 		STALKER.spawn()
 		give_on_exit = true
@@ -87,7 +96,6 @@ func giveRewards(ignore_stalker:bool=false):
 	PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
 	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), scene_file_path)
 	setSavePoints(true)
-	#REWARD_BANK.clear()
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 
 func setSavePoints(set_to:bool):
@@ -122,6 +130,16 @@ func spawnPatrollers():
 					CombatGlobals.generateCombatantSquad(patroller, ENEMY_FACTION)
 					add_child(patroller)
 
+func spawnDestructibleObjectives():
+	var spawn_count = 0
+	var areas = getPatrolAreas()
+	areas.shuffle()
+	for area in areas:
+		var objective = load("res://scenes/entities_doodads/DestroyObjective.tscn").instantiate()
+		objective.global_position = area.get_children().pick_random().global_position
+		add_child(objective)
+		spawn_count += 1
+
 func showStartIndicator():
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
@@ -135,6 +153,21 @@ func countSpawnPoints(area):
 
 func isChancedSpawn(marker: Node2D):
 	return marker.name.to_lower().contains('chance')
+
+func getPatrolAreas():
+	var out = []
+	for child in get_children():
+		if child is Area2D and child.has_node('SpawnPoints'): out.append(child)
+	return out
+
+func canSpawnDestructibleObjectives():
+	return EVENTS['destroy_objective'] and getPatrolAreas().size() >= 3
+
+func getDestructibleObjectives():
+	var out = []
+	for child in get_children():
+		if child is DestroyableObjective: out.append(child)
+	return out
 
 func getPatrollers():
 	var out = []
@@ -151,13 +184,28 @@ func arePatrollersAlerted():
 func arePatrollersHalved():
 	return getPatrollers().size() <= floor(INITIAL_PATROLLER_COUNT / 2.0)
 
-func escapePatrollers():
-	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), scene_file_path)
+func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_destroyables:bool=true):
+	if random_unclear:
+		PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), scene_file_path)
+	if give_rewards:
+		for patroller in getPatrollers():
+			REWARD_BANK['experience'] += patroller.get_node("NPCPatrolComponent").COMBAT_SQUAD.getExperience()
+			patroller.get_node("NPCPatrolComponent").COMBAT_SQUAD.addDrops()
+	if remove_destroyables:
+		for destroyable in getDestructibleObjectives():
+			destroyable.active = false
+			var animation = load("res://scenes/animations/Reinforcements.tscn").instantiate()
+			call_deferred('add_child', animation)
+			await animation.ready
+			animation.playAnimation(destroyable.global_position)
+			destroyable.queue_free()
 	for patroller in getPatrollers():
 		var animation = load("res://scenes/animations/Reinforcements.tscn").instantiate()
-		add_child(animation)
+		call_deferred('add_child', animation)
+		await animation.ready
 		animation.playAnimation(patroller.global_position)
 		patroller.get_node('NPCPatrolComponent').destroy(false)
+		await get_tree().create_timer(randf_range(0.05, 0.15)).timeout
 
 func pickStalker():
 	randomize()

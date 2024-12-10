@@ -51,7 +51,7 @@ navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_2gieu")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uqnih"]
-size = Vector2(352, 76)
+size = Vector2(352, 62)
 
 [node name="TestRoomC" type="Node2D"]
 z_index = -1
@@ -72,11 +72,31 @@ layer_0/tile_data = PackedInt32Array(0, 0, 0, 65535, 0, 0, 65534, 0, 0, -2, 0, 0
 position = Vector2(-8, 184)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, -242)
+position = Vector2(8, -280)
 shape = SubResource("RectangleShape2D_uqnih")
 
 [node name="SpawnPoints" type="Marker2D" parent="Area2D"]
-position = Vector2(-72, -232)
+position = Vector2(-136, -280)
+
+[node name="Area2D2" type="Area2D" parent="."]
+position = Vector2(-8, 272)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+position = Vector2(8, -295)
+shape = SubResource("RectangleShape2D_uqnih")
+
+[node name="SpawnPoints" type="Marker2D" parent="Area2D2"]
+position = Vector2(8, -296)
+
+[node name="Area2D3" type="Area2D" parent="."]
+position = Vector2(-8, 344)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D3"]
+position = Vector2(8, -288)
+shape = SubResource("RectangleShape2D_uqnih")
+
+[node name="SpawnPoints" type="Marker2D" parent="Area2D3"]
+position = Vector2(136, -280)
 
 [node name="DoorInteractable" parent="." instance=ExtResource("3_ccbhy")]
 position = Vector2(-232, -136)

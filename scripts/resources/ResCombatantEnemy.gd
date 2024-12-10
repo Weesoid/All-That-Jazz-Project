@@ -49,6 +49,7 @@ func getExperience():
 	return ceil(gain)
 
 func getDrops():
+	print('POOL: ', DROP_POOL)
 	if DROP_POOL.is_empty():
 		return {}
 	var drops = {}
@@ -62,19 +63,19 @@ func getDrops():
 				drops[item] = randi_range(1, DROP_POOL[item].y)
 	return drops
 
-func getRawDrops():
-	var drops = {}
-	
-	for i in range(DROP_COUNT):
-		if CombatGlobals.randomRoll(CHANCE_TO_DROP): 
-			var item = rollDrops()
-			if drops.has(item):
-				drops[item] += randi_range(1, DROP_POOL[item].y)
-			elif !drops.is_empty():
-				drops[item] = randi_range(1, DROP_POOL[item].y)
-	drops.merge(getBarterDrops())
-	
-	return drops
+#func getRawDrops():
+#	var drops = {}
+#
+#	for i in range(DROP_COUNT):
+#		if CombatGlobals.randomRoll(CHANCE_TO_DROP): 
+#			var item = rollDrops()
+#			if drops.has(item):
+#				drops[item] += randi_range(1, DROP_POOL[item].y)
+#			elif !drops.is_empty():
+#				drops[item] = randi_range(1, DROP_POOL[item].y)
+#	drops.merge(getBarterDrops())
+#
+#	return drops
 
 func getBarterDrops():
 	var out = ceil(getExperience()/2)

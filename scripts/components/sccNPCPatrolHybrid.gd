@@ -39,10 +39,11 @@ func updatePath(immediate:bool=false):
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
-			print(STUN_TIME)
 			STUN_TIMER.start(randf_range(STUN_TIME['min'],STUN_TIME['max']))
 			IDLE_TIMER.stop()
+			print(STUN_TIMER.time_left)
 			await STUN_TIMER.timeout
+			print('guh')
 			STUN_TIMER.stop()
 			alertPatrolMode()
 			updatePath()

@@ -38,7 +38,7 @@ func showLoot():
 		icon.texture = drop.ICON.duplicate()
 		loot.add_child(icon)
 		var count_label = Label.new()
-		count_label.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][drop])
+		count_label.text = str(bank[drop])
 		count_label.theme = preload("res://design/OutlinedLabel.tres")
 		icon.add_child(count_label)
 		tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
