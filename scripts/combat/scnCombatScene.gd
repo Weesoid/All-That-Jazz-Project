@@ -584,7 +584,6 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	if combatant is ResEnemyCombatant and combatant.is_converted:
 		combatant.SCENE.rotation_degrees = -180
 		combatant.SCENE.get_node('Sprite2D').flip_v = true
-		combatant.SCENE.get_node('AnimationPlayer').get_animation('Idle').track_set_key_value(1, 1, Vector2(0, 1))
 		combat_bars.rotation_degrees = 180
 	if spawned:
 		#combatant.initializeCombatant()
@@ -610,6 +609,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		if !combatant.isDead(): combatant.SCENE.doAnimation('Cast_Melee')
 		await tween.finished
 		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
+	combatant.startBreatheTween(true)
 
 func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):
 	COMBATANTS.erase(combatant)
@@ -620,6 +620,7 @@ func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, anim
 	addCombatant(new_combatant, true)
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(new_combatant, load(animation_path), 0.15)
+	escape_button.disabled = true
 	combat_log.writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
@@ -1071,9 +1072,13 @@ func addTargetClickButton(combatant: ResCombatant):
 	button.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	button.grow_vertical = Control.GROW_DIRECTION_BOTH
 	button.set_anchors_preset(Control.PRESET_CENTER)
-	button.rotation_degrees = combatant.SCENE.rotation_degrees
+	#button.rotation_degrees = combatant.SCENE.rotation_degrees
 	combatant.SCENE.add_child(button)
-	button.position.y -= 24
+	if combatant is ResEnemyCombatant and combatant.is_converted:
+		button.position.y += 24
+		button.flip_v = true
+	else:
+		button.position.y -= 24
 
 func removeTargetButtons():
 	for combatant in COMBATANTS:

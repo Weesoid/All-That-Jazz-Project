@@ -12,7 +12,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		"res://audio/sounds/46_Poison_01.ogg"
 	)
 
-	OverworldGlobals.playSound2D(target.SCENE.global_position,"res://audio/sounds/46_Poison_01.ogg" )
+	#OverworldGlobals.playSound2D(target.SCENE.global_position,"res://audio/sounds/46_Poison_01.ogg" )
 
 static func endEffects(_target: ResCombatant, _status_effect: ResStatusEffect):
 	pass

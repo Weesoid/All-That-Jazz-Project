@@ -43,12 +43,59 @@ var BASE_STAT_VALUES: Dictionary
 var ROLLED_SPEED: int
 var ACTED: bool
 var SCENE: CombatantScene
+var pos_tween: Tween
+var scale_tween: Tween
 
 signal enemy_turn
 signal player_turn
 
 func initializeCombatant():
 	pass
+
+func resetSprite():
+	getSprite().position = Vector2.ZERO
+	getSprite().scale = Vector2(1.0,1.0)
+
+func startBreatheTween(await_start:bool):
+	if await_start:
+		randomize()
+		await CombatGlobals.get_tree().create_timer(randf_range(0.0,1.0)).timeout
+	if self is ResEnemyCombatant and self.is_converted:
+		setBreatheTween(1)
+	else:
+		setBreatheTween(0)
+
+func stopBreatheTween():
+	if scale_tween == null or pos_tween == null:
+		return
+	
+	scale_tween.stop()
+	pos_tween.stop()
+	resetSprite()
+
+func setBreatheTween(mode:int):
+	if is_instance_valid(SCENE) and scale_tween == null and pos_tween == null:
+		scale_tween = SCENE.create_tween().set_loops()
+		pos_tween = SCENE.create_tween().set_loops()
+		#resetSprite()
+	elif is_instance_valid(SCENE) and !scale_tween.is_running() and !pos_tween.is_running():
+		#getAnimator().play('RESET')
+		scale_tween.play()
+		pos_tween.play()
+		return
+	else:
+		return
+	match mode:
+		0: # Normal Breathing
+			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.05), 1.5)
+			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.0), 1.5)
+			pos_tween.tween_property(getSprite(), "position", Vector2(0.0,-1.0), 1.5)
+			pos_tween.tween_property(getSprite(), "position", Vector2(0.0,0.0), 1.5)
+		1: # Inverted Breathing
+			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.05), 1.5)
+			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.0), 1.5)
+			pos_tween.tween_property(getSprite(), "position", Vector2(0.0,1.0), 1.5)
+			pos_tween.tween_property(getSprite(), "position", Vector2(0.0,0.0), 1.5)
 
 func act():
 	pass

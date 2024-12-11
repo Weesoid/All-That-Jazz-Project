@@ -25,13 +25,13 @@
 [ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="21_28ilg"]
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="22_j0pty"]
 
-[sub_resource type="Resource" id="Resource_tmtrr"]
+[sub_resource type="Resource" id="Resource_nfjvh"]
 script = ExtResource("1_tgumg")
-position = Vector2(-21.1973, 34.0012)
+position = Vector2(-110.222, 34.0049)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 179
 
-[sub_resource type="Resource" id="Resource_cvkhq"]
+[sub_resource type="Resource" id="Resource_q7pgr"]
 script = ExtResource("2_at10f")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
@@ -50,7 +50,7 @@ VALUE = 100
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmMurder.tres"
 
-[sub_resource type="Resource" id="Resource_l755x"]
+[sub_resource type="Resource" id="Resource_b2xmg"]
 script = ExtResource("15_lj4qy")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_xnj61")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -416,7 +416,7 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_6b051"]
+[sub_resource type="Resource" id="Resource_87r1v"]
 script = ExtResource("16_vjsth")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("20_ky32v"), ExtResource("14_rcvrs"), ExtResource("19_ffuhh"), ExtResource("21_28ilg"), ExtResource("22_j0pty"), SubResource("Resource_t0v3c"), SubResource("Resource_qtsow"), SubResource("Resource_dif0j"), SubResource("Resource_iqi65"), SubResource("Resource_gd5q4"), SubResource("Resource_5x0c6"), SubResource("Resource_nfseo"), SubResource("Resource_wiwr6"), SubResource("Resource_5apex"), SubResource("Resource_sqavs"), SubResource("Resource_2fv82"), SubResource("Resource_f4cig"), SubResource("Resource_5clvo"), SubResource("Resource_bcop6"), SubResource("Resource_o841w"), SubResource("Resource_6w4h6"), SubResource("Resource_ji4ob"), SubResource("Resource_6mwre"), SubResource("Resource_mycik"), SubResource("Resource_ixqei"), SubResource("Resource_nb6fd")])
 CRAFTED = Array[String]([])
@@ -430,9 +430,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("17_47hut")
-NAME = "Save 3 - 00:08:23
+NAME = "Save 3 - 00:08:25
 Morale 5
 Alt Room"
-PLAYTIME = 503.305
+PLAYTIME = 506.184
 current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_tmtrr"), SubResource("Resource_cvkhq"), SubResource("Resource_l755x"), SubResource("Resource_6b051")]
+save_data = [SubResource("Resource_nfjvh"), SubResource("Resource_q7pgr"), SubResource("Resource_b2xmg"), SubResource("Resource_87r1v")]

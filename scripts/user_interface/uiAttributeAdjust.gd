@@ -83,5 +83,4 @@ func resetStat(stat: String, cost):
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 	
 	if combatant.hasEquippedWeapon() and !combatant.EQUIPPED_WEAPON.canUse(combatant):
-		print('UNEQUIP!')
 		combatant.unequipWeapon()

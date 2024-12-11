@@ -26,7 +26,6 @@ var initialized = false
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:
 		SCENE = PACKED_SCENE.instantiate()
-		SCENE.get_node('AnimationPlayer').get_animation('Idle').track_set_key_value(1, 1, Vector2(0, -1))
 		SCENE.combatant_resource = self
 	if !initialized:
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()

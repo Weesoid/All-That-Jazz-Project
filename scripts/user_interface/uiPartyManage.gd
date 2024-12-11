@@ -221,6 +221,7 @@ func updateExpBar(show_tween:bool=false):
 		tween.tween_property(experience_bar,'modulate',Color.WHITE,0.15)
 
 func updateTemperments():
+	selected_combatant.applyTemperments(true)
 	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
 	reroll_cost.text = 'Morale Cost: %s' % str(cost)
 	reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
@@ -228,7 +229,8 @@ func updateTemperments():
 	secondary_name.text = selected_combatant.TEMPERMENT['secondary'].capitalize().replace('_', '')
 	primary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['primary_temperment'])
 	secondary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['secondary_temperment'])
-	selected_combatant.applyTemperments(true)
+	if selected_combatant.hasEquippedWeapon() and !selected_combatant.EQUIPPED_WEAPON.canUse(selected_combatant):
+		selected_combatant.unequipWeapon()
 
 func formatModifiers(stat_dict: Dictionary) -> String:
 	var result = ""

@@ -58,6 +58,7 @@ func _ready():
 		if CombatGlobals.randomRoll(EVENTS['stalker_chance']):
 			pickStalker()
 	
+	await get_tree().process_frame
 	done_loading_map = true
 
 func giveRewards(ignore_stalker:bool=false):

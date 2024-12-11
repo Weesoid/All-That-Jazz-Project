@@ -374,7 +374,7 @@ func randomizeMapEvents():
 			possible_events.erase(random_event)
 			match random_event:
 				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
-				'time_limit': events['time_limit'] = [10.0].pick_random()
+				'time_limit': events['time_limit'] = [90.0, 120.0].pick_random()
 				'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Mercenaries].pick_random()
 				'tameable_modifier': events['tameable_modifier'] = [1.25, 1.5, 1.75].pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()

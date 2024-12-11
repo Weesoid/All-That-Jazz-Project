@@ -235,8 +235,6 @@ func playHurtAnimation(target: ResCombatant, sound_path: String=''):
 				OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
 			else:
 				OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
-		else:
-			OverworldGlobals.playSound(sound_path, -8.0)
 		
 		if !target.isDead():
 			playHurtTween(target)
@@ -247,6 +245,8 @@ func playHurtAnimation(target: ResCombatant, sound_path: String=''):
 				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
 			elif target is ResPlayerCombatant:
 				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
+		if inCombat() and sound_path != '':
+			OverworldGlobals.playSound(sound_path, -8.0)
 	else:
 		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
 

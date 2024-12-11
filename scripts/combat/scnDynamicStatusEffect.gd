@@ -29,6 +29,6 @@ func checkTriggers(afflicted: ResCombatant, body)-> bool:
 		return false
 	
 	if trigger_type == TriggerType.OVERWATCH:
-		return !CombatGlobals.isSameCombatantType(afflicted, body) and CombatGlobals.getCombatScene().target_combatant != status_effect.afflicted_combatant and CombatGlobals.getCombatScene().active_combatant != afflicted
+		return !CombatGlobals.isSameCombatantType(afflicted, body) and CombatGlobals.getCombatScene().target_combatant is ResCombatant and CombatGlobals.getCombatScene().target_combatant != status_effect.afflicted_combatant and CombatGlobals.getCombatScene().active_combatant != afflicted
 	else:
 		return false

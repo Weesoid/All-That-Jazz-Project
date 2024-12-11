@@ -20,6 +20,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 		else:
 			offset = Vector2(40,0)
 	
+	combatant_resource.resetSprite()
 	var tween = create_tween()
 	tween.tween_property(self, 'global_position', Vector2(target.global_position.x, -14) + offset, duration)
 	await tween.finished
@@ -32,6 +33,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
 	if combatant_resource.isDead() and !['Fading, KO'].has(animation) or animation == '': return
 	if !animator.get_animation_list().has(animation): animation = 'Cast_Misc'
+	combatant_resource.stopBreatheTween()
 	
 	if script != null: hit_script = script
 	if animation == 'Cast_Ranged':
@@ -56,7 +58,9 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 func playIdle(new_idle:String=''):
 	if new_idle != '':
 		idle_animation = new_idle
-	
+	combatant_resource.resetSprite()
+	if idle_animation != 'KO':
+		combatant_resource.startBreatheTween(false)
 	animator.play(idle_animation)
 
 func setProjectileTarget(target: CombatantScene, frame_time: float, ability: ResAbility, animation:String="Cast_Ranged"):

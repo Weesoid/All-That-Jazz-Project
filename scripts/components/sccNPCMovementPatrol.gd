@@ -96,10 +96,10 @@ func _physics_process(_delta):
 #		DEBUG.hide()
 
 func executeCollisionAction():
-	if BODY.get_slide_collision_count() == 0:
+	if BODY.get_slide_collision_count() == 0 or !OverworldGlobals.getCurrentMap().done_loading_map:
 		return
 	
-	if BODY.get_last_slide_collision().get_collider() is PlayerScene and OverworldGlobals.getCurrentMap().done_loading_map:
+	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
 		print(NAME, ': You touched me! I am fighting you! ', Time.get_time_dict_from_system())
 		immobolize()
 		OverworldGlobals.changeToCombat(NAME)
