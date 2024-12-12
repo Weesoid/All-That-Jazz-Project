@@ -119,15 +119,23 @@ func showMenu(path: String):
 	setPlayerInput(false)
 	if !inMenu():
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		setMouseController(true)
 		getPlayer().player_camera.add_child(main_menu)
 		setPlayerInput(false)
 	else:
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').show()
 		closeMenu(main_menu)
 
+
+func setMouseController(set_to:bool):
+	if set_to:
+		var mouse_controller = load("res://scenes/user_interface/MouseController.tscn").instantiate()
+		add_child(mouse_controller)
+	else:
+		if has_node('MouseController'): get_node('MouseController').queue_free()
+
 func closeMenu(menu: Control):
-	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	setMouseController(false)
 	menu.queue_free()
 	getPlayer().player_camera.get_node('uiMenu').queue_free()
 	setPlayerInput(true)
@@ -167,7 +175,7 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_descri
 	main_menu.name = 'uiMenu'
 	
 	if !inMenu():
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		setMouseController(true)
 		getPlayer().player_camera.add_child(main_menu)
 		setPlayerInput(false)
 		#show_player_interaction = false
@@ -300,7 +308,7 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
 	menu.z_index = 20
 	getPlayer().resetStates()
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	setMouseController(true)
 	getPlayer().player_camera.add_child(menu)
 	menu.end_sentence.text = end_sentence
 

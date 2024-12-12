@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ljv81u81w8ej"]
+[gd_scene load_steps=18 format=3 uid="uid://c147mkn7gfruw"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyManage.gd" id="1_i8l6p"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_uyp8b"]

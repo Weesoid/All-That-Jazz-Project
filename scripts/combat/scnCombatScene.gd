@@ -84,7 +84,7 @@ signal combat_done
 #********************************************************************************
 func _ready():
 	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	OverworldGlobals.setMouseController(true)
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
 	
@@ -911,7 +911,7 @@ func concludeCombat(results: int):
 	else:
 		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 80.0, 3)
 	CombatGlobals.TENSION = 0
-	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	OverworldGlobals.setMouseController(false)
 	queue_free()
 
 func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.35):
@@ -1027,7 +1027,7 @@ func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	await tween.finished
 
 func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:
-	if !is_instance_valid(combatant.SCENE.get_parent()):
+	if !is_instance_valid(combatant.SCENE):
 		return 5
 	
 	if combatant is ResPlayerCombatant:

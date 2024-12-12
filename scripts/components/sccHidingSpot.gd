@@ -74,7 +74,7 @@ func loadInterface(path):
 	ui.z_index = 999
 	ui.name = 'menu'
 	add_child(ui)
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	OverworldGlobals.setMouseController(true)
 
 func removeInterface():
 	get_node('menu').queue_free()

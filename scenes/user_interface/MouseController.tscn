@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://ynmrhyateoq8"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiControllerMouse.gd" id="1_imfa2"]
+
+[node name="MouseController" type="Node"]
+process_mode = 3
+script = ExtResource("1_imfa2")
+
+[node name="FadeOutTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="timeout" from="FadeOutTimer" to="." method="_on_fade_out_timer_timeout"]

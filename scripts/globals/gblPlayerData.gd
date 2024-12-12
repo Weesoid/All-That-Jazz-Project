@@ -296,6 +296,9 @@ func loadSquad():
 
 func setFollowersMotion(enable:bool):
 	for follower in FOLLOWERS:
+		if !is_instance_valid(follower):
+			return
+		
 		if enable:
 			follower.SPEED = 1.0
 		else:

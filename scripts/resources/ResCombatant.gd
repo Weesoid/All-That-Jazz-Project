@@ -78,7 +78,7 @@ func setBreatheTween(mode:int):
 		scale_tween = SCENE.create_tween().set_loops()
 		pos_tween = SCENE.create_tween().set_loops()
 		#resetSprite()
-	elif is_instance_valid(SCENE) and !scale_tween.is_running() and !pos_tween.is_running():
+	elif is_instance_valid(SCENE) and !scale_tween.is_running() and !pos_tween.is_running() and scale_tween != null and pos_tween != null:
 		#getAnimator().play('RESET')
 		scale_tween.play()
 		pos_tween.play()

@@ -59,8 +59,7 @@ func playIdle(new_idle:String=''):
 	if new_idle != '':
 		idle_animation = new_idle
 	combatant_resource.resetSprite()
-	if idle_animation != 'KO':
-		combatant_resource.startBreatheTween(false)
+	combatant_resource.startBreatheTween(false)
 	animator.play(idle_animation)
 
 func setProjectileTarget(target: CombatantScene, frame_time: float, ability: ResAbility, animation:String="Cast_Ranged"):
@@ -92,3 +91,11 @@ func _on_hit_box_body_entered(body):
 
 func _to_string():
 	return combatant_resource.NAME
+
+func _exit_tree():
+	if combatant_resource.scale_tween != null and combatant_resource.pos_tween != null:
+		combatant_resource.scale_tween.kill()
+		combatant_resource.pos_tween.kill()
+		combatant_resource.scale_tween = null
+		combatant_resource.pos_tween = null
+		combatant_resource.resetSprite()

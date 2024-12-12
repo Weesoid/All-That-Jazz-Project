@@ -34,20 +34,21 @@ func _ready():
 	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
 	tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
 	showLoot()
-	#await tween_morale.finished
-	if rounds <= 2:
+	#await get_tree().process_frame
+	await tween_morale.finished
+	if combat_scene.round_count <= 2:
 		changeText(round_label, 'Fast Finish!')
 		bonusTween(round_label)
 		bonusTween(round_count)
 		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
 		await get_tree().create_timer(0.25).timeout
-	if turns_enemy < combat_scene.getCombatantGroup('enemies').size():
+	if combat_scene.enemy_turn_count < combat_scene.getCombatantGroup('enemies').size():
 		changeText(enemy_turns_label, 'Ruthless Finish!')
 		bonusTween(enemy_turns_label)
 		bonusTween(enemy_turns)
 		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
 		await get_tree().create_timer(0.25).timeout
-	if turns_player < combat_scene.getCombatantGroup('team').size():
+	if combat_scene.player_turn_count < combat_scene.getCombatantGroup('team').size():
 		changeText(player_turns_label, 'Stragetic Finish!')
 		bonusTween(player_turns_label)
 		bonusTween(player_turns)
