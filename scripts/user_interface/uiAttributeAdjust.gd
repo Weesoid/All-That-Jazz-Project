@@ -9,6 +9,7 @@ extends Control
 @onready var reset_grit = $HBoxContainer/VBoxContainer/Grit/Reset
 @onready var reset_handling = $HBoxContainer/VBoxContainer/Handling/Reset
 @onready var brawn_up = $HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Up
+@onready var grit_up = $HBoxContainer/VBoxContainer/Grit/HBoxContainer/Up
 @onready var handling_up = $HBoxContainer/VBoxContainer/Handling/HBoxContainer/Up
 
 func _ready():
@@ -22,8 +23,8 @@ func _process(_delta):
 			points_left.add_theme_color_override("font_color", Color.YELLOW)
 		else:
 			points_left.add_theme_color_override("font_color", Color.WHITE)
-		brawn_bonus.text = '+%s' % str((0.02 * combatant.STAT_POINT_ALLOCATIONS['brawn']) * 100)+"%"
-		grit_bonus.text = '+%s' % str((0.02 * combatant.STAT_POINT_ALLOCATIONS['grit']) * 100)+"%"
+		brawn_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['brawn']) * 100)+"%"
+		grit_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['grit']) * 100)+"%"
 		handling_bonus.text = '+%s' % str(1 * combatant.STAT_POINT_ALLOCATIONS['handling'])
 		if combatant.STAT_POINT_ALLOCATIONS['brawn'] != 0:
 			reset_brawn.show()
@@ -36,7 +37,7 @@ func _process(_delta):
 		if combatant.STAT_POINTS >= 5:
 			handling_up.show()
 			handling_bonus.show()
-		else:
+		elif PlayerGlobals.PARTY_LEVEL < 5:
 			handling_up.hide()
 			handling_bonus.hide()
 		if combatant.STAT_POINT_ALLOCATIONS['handling'] != 0:
@@ -48,13 +49,13 @@ func focus():
 	brawn_up.grab_focus()
 
 func _on_up_brawn_pressed():
-	adjustStat(1, 'brawn')
+	adjustStat(1, 'brawn', brawn_up)
 
 func _on_up_grit_pressed():
-	adjustStat(1, 'grit')
+	adjustStat(1, 'grit', grit_up)
 
 func _on_up_hand_pressed():
-	adjustStat(5, 'handling')
+	adjustStat(5, 'handling', handling_up)
 
 func _on_reset_brawn_pressed():
 	resetStat('brawn', 1)
@@ -68,13 +69,16 @@ func _on_reset_handling_pressed():
 	resetStat('handling', 5)
 	focus()
 
-func adjustStat(cost: int, stat: String):
+func adjustStat(cost: int, stat: String, button: Button):
 	if combatant.STAT_POINTS >= cost:
 		combatant.STAT_POINTS -= cost
 		combatant.STAT_POINT_ALLOCATIONS[stat] += 1
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 	else:
 		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] point(s) is required to increase [color=yellow]%s[/color].' % [str(cost), stat])
+	
+	if button.visible == false:
+		focus()
 
 func resetStat(stat: String, cost):
 	if combatant.STAT_POINT_ALLOCATIONS[stat] > 0:

@@ -6,6 +6,7 @@ class_name ResPlayerCombatant
 @export var BASE_TEMPERMENT: Dictionary = {'primary':'', 'secondary':''}
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
+@export var STAT_MULTIPLIER = 0.01
 
 var EQUIPPED_WEAPON: ResWeapon
 var STAT_POINTS = 1
@@ -92,7 +93,7 @@ func getAllocationModifier()-> Dictionary:
 	var out = STAT_POINT_ALLOCATIONS.duplicate()
 	for stat in out.keys():
 		if stat != 'handling':
-			out[stat] *= 0.02
+			out[stat] *= STAT_MULTIPLIER
 		else:
 			out[stat] *= 1
 	return out

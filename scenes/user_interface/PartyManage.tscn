@@ -242,6 +242,7 @@ alignment = 1
 [node name="HSplitContainer" type="HSplitContainer" parent="TabContainer/Temperment/VBoxContainer"]
 layout_mode = 2
 split_offset = 999
+dragger_visibility = 1
 
 [node name="HBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/VBoxContainer/HSplitContainer"]
 layout_mode = 2
@@ -259,6 +260,7 @@ text = "+20% GRIT
 fit_content = true
 
 [node name="RerollPrimary" parent="TabContainer/Temperment/VBoxContainer/HSplitContainer" instance=ExtResource("3_8lxgv")]
+visible = false
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 disabled = true
@@ -267,6 +269,7 @@ text = "REROLL"
 [node name="HSplitContainer2" type="HSplitContainer" parent="TabContainer/Temperment/VBoxContainer"]
 layout_mode = 2
 split_offset = 999
+dragger_visibility = 1
 
 [node name="HBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/VBoxContainer/HSplitContainer2"]
 layout_mode = 2

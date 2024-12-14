@@ -11,6 +11,7 @@ extends MemberAdjustUI
 @onready var secondary_name = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label
 @onready var secondary_val = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
 @onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
+@onready var reroll_button = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/RerollSecondary
 
 func _ready():
 	loadMembers()
@@ -254,6 +255,7 @@ func formatModifiers(stat_dict: Dictionary) -> String:
 	return result
 
 func _on_tab_container_tab_changed(tab):
+	print(tab)
 	select_charms_panel.hide()
 	if tab == 0:
 		loadAbilities()
@@ -280,3 +282,4 @@ func _on_tab_container_tab_changed(tab):
 			updateTemperments()
 			reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
 			reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
+			reroll_button.grab_focus()

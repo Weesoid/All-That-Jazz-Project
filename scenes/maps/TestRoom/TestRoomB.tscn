@@ -15,9 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://mjs3qc7nxo7b" path="res://scenes/components/ShopWares.tscn" id="13_yxx3x"]
 [ext_resource type="Resource" uid="uid://cdpk5o3ahct04" path="res://resources/items/CharmMurder.tres" id="14_yfswc"]
 [ext_resource type="Resource" uid="uid://v8qj7oi3bvdk" path="res://resources/items/SlashBlade.tres" id="15_lbv55"]
-[ext_resource type="Resource" uid="uid://b52m2n74qc40m" path="res://resources/items/Arrow.tres" id="16_c82cd"]
-[ext_resource type="Resource" uid="uid://bg780j2u4j3bm" path="res://resources/items/ArrowJunk.tres" id="17_36s2t"]
-[ext_resource type="Resource" uid="uid://c4s6hqmd8yaqr" path="res://resources/items/ArrowSleeper.tres" id="18_l8nfl"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="16_c82cd"]
+[ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="17_36s2t"]
+[ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="18_l8nfl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j5tc8"]
 texture = ExtResource("2_yo4y6")
@@ -225,4 +225,4 @@ position = Vector2(-112, 16)
 position = Vector2(32, 16)
 
 [node name="ShopWares" parent="ShopKeep" instance=ExtResource("13_yxx3x")]
-SHOP_WARES = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("14_yfswc"), ExtResource("15_lbv55"), ExtResource("16_c82cd"), ExtResource("17_36s2t"), ExtResource("18_l8nfl")])
+SHOP_WARES = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("14_yfswc"), ExtResource("15_lbv55"), ExtResource("17_36s2t"), ExtResource("18_l8nfl"), ExtResource("16_c82cd")])

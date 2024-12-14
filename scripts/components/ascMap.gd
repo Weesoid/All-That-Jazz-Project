@@ -132,14 +132,12 @@ func spawnPatrollers():
 					add_child(patroller)
 
 func spawnDestructibleObjectives():
-	var spawn_count = 0
 	var areas = getPatrolAreas()
 	areas.shuffle()
 	for area in areas:
 		var objective = load("res://scenes/entities_doodads/DestroyObjective.tscn").instantiate()
 		objective.global_position = area.get_children().pick_random().global_position
 		add_child(objective)
-		spawn_count += 1
 
 func showStartIndicator():
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()

@@ -27,7 +27,7 @@ func _process(_delta):
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_toggle_debug"):
 		container.visible = !container.visible
-		print_orphan_nodes()
+	#	print_orphan_nodes()
 	
 	if Input.is_action_just_pressed("ui_quick_save"):
 		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
