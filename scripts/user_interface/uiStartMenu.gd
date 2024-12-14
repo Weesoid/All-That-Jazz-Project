@@ -29,7 +29,9 @@ func _on_load_game_pressed():
 	addMenu(menu)
 
 func _on_settings_pressed():
-	pass # Replace with function body.
+	var menu = load("res://scenes/user_interface/Settings.tscn").instantiate()
+	#menu.mode = menu.Modes.LOAD
+	addMenu(menu)
 
 func _on_quit_pressed():
 	get_tree().quit()
@@ -54,6 +56,9 @@ func _unhandled_input(_event):
 		camera.get_node('uiMenu').queue_free()
 		new_game.grab_focus()
 		load_game.disabled = !hasSaves()
+	if Input.is_action_just_pressed("ui_cancel"):
+		camera.get_node('uiMenu').queue_free()
+		new_game.grab_focus()
 
 func _on_audio_stream_player_finished():
 	animator.play("RESET")

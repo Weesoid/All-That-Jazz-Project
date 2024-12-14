@@ -25,13 +25,13 @@
 [ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="21_28ilg"]
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="22_j0pty"]
 
-[sub_resource type="Resource" id="Resource_nfjvh"]
+[sub_resource type="Resource" id="Resource_oo8ke"]
 script = ExtResource("1_tgumg")
-position = Vector2(-110.222, 34.0049)
+position = Vector2(7.47101, 16.3987)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 179
 
-[sub_resource type="Resource" id="Resource_q7pgr"]
+[sub_resource type="Resource" id="Resource_1s2gw"]
 script = ExtResource("2_at10f")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
@@ -50,7 +50,7 @@ VALUE = 100
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmMurder.tres"
 
-[sub_resource type="Resource" id="Resource_b2xmg"]
+[sub_resource type="Resource" id="Resource_yg6ub"]
 script = ExtResource("15_lj4qy")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_xnj61")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -70,7 +70,8 @@ CLEARED_MAPS = {
 "res://scenes/maps/TestRoom/TestRoomC.tscn": {
 "cleared": false,
 "events": {
-"time_limit": 10.0
+"stalker_chance": 1.0,
+"tameable_modifier": 1.25
 },
 "faction": 0,
 "fast_travel": true
@@ -79,7 +80,7 @@ CLEARED_MAPS = {
 EQUIPPED_ARROW = ExtResource("14_rcvrs")
 CURRENCY = 427428
 PARTY_LEVEL = 5
-CURRENT_EXP = 355
+CURRENT_EXP = 617
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_xnj61")])
@@ -416,23 +417,23 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_87r1v"]
+[sub_resource type="Resource" id="Resource_igdop"]
 script = ExtResource("16_vjsth")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("20_ky32v"), ExtResource("14_rcvrs"), ExtResource("19_ffuhh"), ExtResource("21_28ilg"), ExtResource("22_j0pty"), SubResource("Resource_t0v3c"), SubResource("Resource_qtsow"), SubResource("Resource_dif0j"), SubResource("Resource_iqi65"), SubResource("Resource_gd5q4"), SubResource("Resource_5x0c6"), SubResource("Resource_nfseo"), SubResource("Resource_wiwr6"), SubResource("Resource_5apex"), SubResource("Resource_sqavs"), SubResource("Resource_2fv82"), SubResource("Resource_f4cig"), SubResource("Resource_5clvo"), SubResource("Resource_bcop6"), SubResource("Resource_o841w"), SubResource("Resource_6w4h6"), SubResource("Resource_ji4ob"), SubResource("Resource_6mwre"), SubResource("Resource_mycik"), SubResource("Resource_ixqei"), SubResource("Resource_nb6fd")])
 CRAFTED = Array[String]([])
 ITEM_DATA_INVENTORY = {
 "res://resources/items/Arrow.tres": 6,
 "res://resources/items/ArrowJunk.tres": 16,
-"res://resources/items/ArrowSleeper.tres": 87,
-"res://resources/items/BarterSalvage20.tres": 30,
-"res://resources/items/ScrapSalvage.tres": 132
+"res://resources/items/ArrowSleeper.tres": 85,
+"res://resources/items/BarterSalvage20.tres": 31,
+"res://resources/items/ScrapSalvage.tres": 136
 }
 
 [resource]
 script = ExtResource("17_47hut")
-NAME = "Save 3 - 00:08:25
+NAME = "Save 3 - 00:12:48
 Morale 5
-Alt Room"
-PLAYTIME = 506.184
-current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_nfjvh"), SubResource("Resource_q7pgr"), SubResource("Resource_b2xmg"), SubResource("Resource_87r1v")]
+Prototype Room"
+PLAYTIME = 769.416
+current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
+save_data = [SubResource("Resource_oo8ke"), SubResource("Resource_1s2gw"), SubResource("Resource_yg6ub"), SubResource("Resource_igdop")]

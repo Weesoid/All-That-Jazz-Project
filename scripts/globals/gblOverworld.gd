@@ -128,6 +128,9 @@ func showMenu(path: String):
 
 
 func setMouseController(set_to:bool):
+	if get_parent().has_node('MouseController') and set_to:
+		return
+	
 	if set_to:
 		var mouse_controller = load("res://scenes/user_interface/MouseController.tscn").instantiate()
 		add_child(mouse_controller)
@@ -361,6 +364,7 @@ func loadFollowers():
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 	var player = AudioStreamPlayer.new()
+	player.bus = "Sounds"
 	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	player.connect("finished", player.queue_free)
 	player.pitch_scale = pitch
@@ -381,6 +385,7 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 
 func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_pitch=true):
 	var player = AudioStreamPlayer2D.new()
+	player.bus = "Sounds"
 	player.connect("finished", player.queue_free)
 	player.pitch_scale = pitch
 	player.global_position = position

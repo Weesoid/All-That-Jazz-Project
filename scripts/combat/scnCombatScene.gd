@@ -25,7 +25,6 @@ class_name CombatScene
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
-@onready var battle_sounds = $BattleSounds
 @onready var battle_back = $ParallaxBackground/AnimationPlayer
 @onready var top_log_label = $CombatCamera/Interface/TopLog
 @onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
