@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://clo0sfkt0cxws"]
+[gd_scene load_steps=6 format=3 uid="uid://clo0sfkt0cxws"]
 
 [ext_resource type="Theme" uid="uid://bph3lrtlntxys" path="res://design/Settings.tres" id="1_nyyof"]
 [ext_resource type="Script" path="res://scenes/user_interface/uiSettings.gd" id="1_xqud4"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_l6dme"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_geg3d"]
+[ext_resource type="Theme" uid="uid://bid2xvoeqgilk" path="res://design/DefaultTheme.tres" id="5_4d3oo"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -31,6 +32,7 @@ grow_vertical = 2
 tab_alignment = 1
 
 [node name="Display" type="MarginContainer" parent="PanelContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -98,7 +100,7 @@ text = "60"
 
 [node name="Option" type="HSlider" parent="PanelContainer/Display/VBoxContainer/FPSCap"]
 layout_mode = 2
-min_value = 10.0
+min_value = 1.0
 max_value = 120.0
 value = 60.0
 
@@ -177,7 +179,6 @@ max_value = 1.0
 step = 0.001
 
 [node name="Controls" type="MarginContainer" parent="PanelContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -189,224 +190,28 @@ layout_mode = 2
 follow_focus = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/Controls/ScrollContainer"]
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "KEYBINDS"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="KeyboardControls" type="GridContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-columns = 3
-
-[node name="MoveUp" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveUp"]
-layout_mode = 2
-text = "Move Up"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveUp" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="MoveDown" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveDown"]
-layout_mode = 2
-text = "Move Down"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveDown" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="MoveLeft" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveLeft"]
-layout_mode = 2
-text = "Move Left"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveLeft" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="MoveRight" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveRight"]
-layout_mode = 2
-text = "Move Right"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/MoveRight" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="EquipBow" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/EquipBow"]
-layout_mode = 2
-text = "Equip Bow"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/EquipBow" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="DrawBow" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/DrawBow"]
-layout_mode = 2
-text = "Draw Bow"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/DrawBow" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="ShowQuiver" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/ShowQuiver"]
-layout_mode = 2
-text = "Show Quiver"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/ShowQuiver" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="ScrollQuiver" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/ScrollQuiver"]
-layout_mode = 2
-text = "Scroll Quiver"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/ScrollQuiver" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="ChannelPower" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/ChannelPower"]
-layout_mode = 2
-text = "Channel Power"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/ChannelPower" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "W"
-
-[node name="Sprint" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls"]
-layout_mode = 2
-split_offset = 1000
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/Sprint"]
-layout_mode = 2
-text = "Sprint"
-
-[node name="Option" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/KeyboardControls/Sprint" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "SHIFT"
-
-[node name="Label4" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "USER INTERFACE"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="HSeparator4" type="HSeparator" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="TabRight" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-split_offset = 1617
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/TabRight"]
-layout_mode = 2
-text = "Tab Right"
-
-[node name="CustomButton" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/TabRight" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "Q"
-
-[node name="TabLeft" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-split_offset = 1617
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/TabLeft"]
-layout_mode = 2
-text = "Tab Left"
-
-[node name="CustomButton" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/TabLeft" instance=ExtResource("2_l6dme")]
-layout_mode = 2
-text = "E"
-
-[node name="Label3" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "GAMEPLAY"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="HSeparator3" type="HSeparator" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ToggleSprint" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-split_offset = 1617
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/ToggleSprint"]
-layout_mode = 2
-text = "Toggle Sprint"
-
-[node name="Option" type="CheckBox" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/ToggleSprint"]
-layout_mode = 2
-
-[node name="ToggleCheats" type="HSplitContainer" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-tooltip_text = "Don't touch me!!!"
-split_offset = 1617
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/ToggleCheats"]
-layout_mode = 2
-text = "Cheats"
-
-[node name="Option" type="CheckBox" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer/ToggleCheats"]
-layout_mode = 2
+size_flags_vertical = 3
+text = "asdasd"
 
 [node name="CustomButton" parent="." instance=ExtResource("2_l6dme")]
 layout_mode = 1
-offset_left = 416.0
-offset_top = 496.0
-offset_right = -584.0
-offset_bottom = -130.0
-text = "APPLY SETTINGS"
+offset_left = 744.0
+offset_top = 456.0
+offset_right = -256.0
+offset_bottom = -170.0
+theme = ExtResource("5_4d3oo")
+text = "Apply Settings"
+
+[node name="CustomButton2" parent="." instance=ExtResource("2_l6dme")]
+layout_mode = 1
+offset_left = 744.0
+offset_top = 432.0
+offset_right = -256.0
+offset_bottom = -194.0
+theme = ExtResource("5_4d3oo")
+text = "Default Settings"

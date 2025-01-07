@@ -4,6 +4,7 @@ extends Node2D
 @onready var new_game = $VBoxContainer/NewGame
 @onready var load_game = $VBoxContainer/LoadGame
 @onready var animator = $AnimationPlayer
+@onready var transition_animator = $TransitionMatte/AnimationPlayer
 @onready var music = $AudioStreamPlayer
 
 func _ready():
@@ -38,7 +39,10 @@ func _on_quit_pressed():
 
 func addMenu(menu: Control):
 	menu.name = 'uiMenu'
+	transition_animator.play("Slide_In")
+	await transition_animator.animation_finished
 	camera.add_child(menu)
+	transition_animator.play("Slide_Out")
 
 func hasSaves()-> bool:
 	var path = "res://saves/"
@@ -53,12 +57,18 @@ func hasSaves()-> bool:
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_show_menu") and camera.has_node('uiMenu'):
+		transition_animator.play("Slide_In")
+		await transition_animator.animation_finished
 		camera.get_node('uiMenu').queue_free()
 		new_game.grab_focus()
 		load_game.disabled = !hasSaves()
+		transition_animator.play("Slide_Out")
 	if Input.is_action_just_pressed("ui_cancel"):
+		transition_animator.play("Slide_In")
+		await transition_animator.animation_finished
 		camera.get_node('uiMenu').queue_free()
 		new_game.grab_focus()
+		transition_animator.play("Slide_Out")
 
 func _on_audio_stream_player_finished():
 	animator.play("RESET")

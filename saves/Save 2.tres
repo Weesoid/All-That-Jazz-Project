@@ -32,18 +32,18 @@
 [ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="28_bli78"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="29_k68tw"]
 
-[sub_resource type="Resource" id="Resource_87jtg"]
+[sub_resource type="Resource" id="Resource_fxqmg"]
 script = ExtResource("1_e3txt")
-position = Vector2(-29.8676, 34.0668)
+position = Vector2(5.13239, 65.7415)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = -90
+direction = 0
 
-[sub_resource type="Resource" id="Resource_f4tlj"]
+[sub_resource type="Resource" id="Resource_0xc4n"]
 script = ExtResource("2_7r5u6")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_lke2q"]
+[sub_resource type="Resource" id="Resource_g6jh1"]
 script = ExtResource("15_pye52")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_3s5td"), ExtResource("15_xhthy"), ExtResource("16_2we44"), ExtResource("17_tkuct")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -75,7 +75,7 @@ ExtResource("3_3s5td"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.0,
 "handling": 1,
 "heal_mult": 1.0,
-"health": 3,
+"health": 3.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -124,7 +124,7 @@ ExtResource("15_xhthy"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 8,
+"health": 8.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -139,6 +139,11 @@ ExtResource("15_xhthy"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "hustle": 1,
 "resist": 0.05
 }, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_dkrne"), ExtResource("9_jyrs6"), ExtResource("6_7gefu"), ExtResource("10_wtov3"), ExtResource("15_e86la")]), false, Array[String]([]), true, 1, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
 "primary_temperment": {
 "grit": 0.1
 },
@@ -168,7 +173,7 @@ ExtResource("16_2we44"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.07,
 "handling": 0,
 "heal_mult": 1.02,
-"health": 6,
+"health": 6.0,
 "hustle": 2,
 "resist": 0.07
 }, {
@@ -183,6 +188,11 @@ ExtResource("16_2we44"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "hustle": 1,
 "resist": 0.05
 }, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_t103m")]), false, Array[String]([]), true, 1, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
 "primary_temperment": {
 "accuracy": 0.02,
 "brawn": 0.02,
@@ -219,7 +229,7 @@ ExtResource("17_tkuct"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 25,
+"health": 25.0,
 "hustle": 5,
 "resist": 0.05
 }, {
@@ -234,6 +244,11 @@ ExtResource("17_tkuct"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "hustle": 1,
 "resist": 0.05
 }, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("15_e86la"), ExtResource("4_dkrne"), ExtResource("18_wtfxe"), ExtResource("19_10mxl"), ExtResource("20_dk7wh"), ExtResource("8_i08fv")]), false, Array[String]([]), true, 1, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
 "primary_temperment": {
 "grit": 0.1
 },
@@ -271,7 +286,7 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_koopy"]
+[sub_resource type="Resource" id="Resource_j6jps"]
 script = ExtResource("16_gce0j")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("24_qaay0"), ExtResource("25_2bpgt"), ExtResource("21_mqxid"), ExtResource("26_csxg2"), ExtResource("27_tejin"), SubResource("Resource_fucwr")])
 CRAFTED = Array[String]([])
@@ -285,9 +300,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("17_01qm7")
-NAME = "Save 2 - 00:00:41
+NAME = "Save 2 - 00:00:49
 Morale 1
 Alt Room"
-PLAYTIME = 42.723
+PLAYTIME = 49.855
 current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_87jtg"), SubResource("Resource_f4tlj"), SubResource("Resource_lke2q"), SubResource("Resource_koopy")]
+save_data = [SubResource("Resource_fxqmg"), SubResource("Resource_0xc4n"), SubResource("Resource_g6jh1"), SubResource("Resource_j6jps")]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cx4hmkxof37e7"]
+[gd_scene load_steps=12 format=3 uid="uid://cx4hmkxof37e7"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiStartMenu.gd" id="1_1evch"]
 [ext_resource type="Theme" uid="uid://dlrtokrr0ap1h" path="res://design/BorderlessButton.tres" id="1_6f5xk"]
@@ -41,6 +41,96 @@ tracks/0/keys = {
 _data = {
 "RESET": SubResource("Animation_d0dge"),
 "Show": SubResource("Animation_movia")
+}
+
+[sub_resource type="Animation" id="Animation_1g28q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionMatte:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(40, 384)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionMatte:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-336, -192)]
+}
+
+[sub_resource type="Animation" id="Animation_dqlyd"]
+resource_name = "Slide_Out"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionMatte:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(688, 384), Vector2(56, 384)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionMatte:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-336, -192), Vector2(296, -192)]
+}
+
+[sub_resource type="Animation" id="Animation_b8f10"]
+resource_name = "Slide_In"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionMatte:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(40, 384), Vector2(688, 384)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionMatte:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-336, -192)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h17ur"]
+_data = {
+"RESET": SubResource("Animation_1g28q"),
+"Slide_In": SubResource("Animation_b8f10"),
+"Slide_Out": SubResource("Animation_dqlyd")
 }
 
 [node name="StartMenu" type="Node2D"]
@@ -111,6 +201,20 @@ offset_top = 144.0
 offset_right = -152.0
 offset_bottom = 157.0
 text = "A game by yugmar! "
+
+[node name="TransitionMatte" type="ColorRect" parent="."]
+z_index = 999
+offset_left = -336.0
+offset_top = -192.0
+offset_right = -296.0
+offset_bottom = 192.0
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TransitionMatte"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_h17ur")
+}
 
 [connection signal="pressed" from="VBoxContainer/NewGame" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="VBoxContainer/LoadGame" to="." method="_on_load_game_pressed"]
