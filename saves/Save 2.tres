@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=37 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=38 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_e3txt"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_7r5u6"]
@@ -32,18 +32,18 @@
 [ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="28_bli78"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="29_k68tw"]
 
-[sub_resource type="Resource" id="Resource_fxqmg"]
+[sub_resource type="Resource" id="Resource_54pq2"]
 script = ExtResource("1_e3txt")
-position = Vector2(5.13239, 65.7415)
+position = Vector2(-63.4268, -22.4128)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 0
+direction = -90
 
-[sub_resource type="Resource" id="Resource_0xc4n"]
+[sub_resource type="Resource" id="Resource_amgwi"]
 script = ExtResource("2_7r5u6")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_g6jh1"]
+[sub_resource type="Resource" id="Resource_1kjg6"]
 script = ExtResource("15_pye52")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_3s5td"), ExtResource("15_xhthy"), ExtResource("16_2we44"), ExtResource("17_tkuct")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -58,12 +58,12 @@ CLEARED_MAPS = {
 EQUIPPED_ARROW = ExtResource("21_mqxid")
 CURRENCY = 100
 PARTY_LEVEL = 1
-CURRENT_EXP = 46
+CURRENT_EXP = 86
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_3s5td"), ExtResource("15_xhthy"), ExtResource("16_2we44")])
 COMBATANT_SAVE_DATA = {
-ExtResource("3_3s5td"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("11_hfvby"), ExtResource("9_jyrs6"), ExtResource("8_i08fv"), ExtResource("6_7gefu")]), {
+ExtResource("3_3s5td"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("11_hfvby"), ExtResource("9_jyrs6"), ExtResource("10_wtov3"), ExtResource("12_ilvvm")]), {
 0: null,
 1: null,
 2: null
@@ -75,7 +75,7 @@ ExtResource("3_3s5td"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.0,
 "handling": 1,
 "heal_mult": 1.0,
-"health": 3.0,
+"health": 16.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -112,7 +112,7 @@ ExtResource("3_3s5td"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "primary": "gifted",
 "secondary": "acute"
 }],
-ExtResource("15_xhthy"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("15_xhthy"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("6_7gefu"), ExtResource("4_dkrne"), ExtResource("10_wtov3"), ExtResource("15_e86la")]), {
 0: null,
 1: null,
 2: null
@@ -124,7 +124,7 @@ ExtResource("15_xhthy"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 8.0,
+"health": 50.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -173,7 +173,7 @@ ExtResource("16_2we44"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.07,
 "handling": 0,
 "heal_mult": 1.02,
-"health": 6.0,
+"health": 25.0,
 "hustle": 2,
 "resist": 0.07
 }, {
@@ -286,23 +286,36 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_j6jps"]
+[sub_resource type="Resource" id="Resource_j5enn"]
+script = ExtResource("29_k68tw")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("28_bli78")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_6smft"]
 script = ExtResource("16_gce0j")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("24_qaay0"), ExtResource("25_2bpgt"), ExtResource("21_mqxid"), ExtResource("26_csxg2"), ExtResource("27_tejin"), SubResource("Resource_fucwr")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("24_qaay0"), ExtResource("25_2bpgt"), ExtResource("21_mqxid"), ExtResource("26_csxg2"), ExtResource("27_tejin"), SubResource("Resource_fucwr"), SubResource("Resource_j5enn")])
 CRAFTED = Array[String]([])
 ITEM_DATA_INVENTORY = {
-"res://resources/items/Arrow.tres": 5,
+"res://resources/items/Arrow.tres": 2,
 "res://resources/items/ArrowJunk.tres": 16,
 "res://resources/items/ArrowSleeper.tres": 99,
-"res://resources/items/BarterSalvage20.tres": 1,
-"res://resources/items/ScrapSalvage.tres": 1
+"res://resources/items/BarterSalvage20.tres": 2,
+"res://resources/items/ScrapSalvage.tres": 2
 }
 
 [resource]
 script = ExtResource("17_01qm7")
-NAME = "Save 2 - 00:00:49
+NAME = "Save 2 - 00:03:01
 Morale 1
-Alt Room"
-PLAYTIME = 49.855
-current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_fxqmg"), SubResource("Resource_0xc4n"), SubResource("Resource_g6jh1"), SubResource("Resource_j6jps")]
+Prototype Room"
+PLAYTIME = 181.998
+current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
+save_data = [SubResource("Resource_54pq2"), SubResource("Resource_amgwi"), SubResource("Resource_1kjg6"), SubResource("Resource_6smft")]

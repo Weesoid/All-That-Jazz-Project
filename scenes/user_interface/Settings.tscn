@@ -31,64 +31,68 @@ grow_horizontal = 2
 grow_vertical = 2
 tab_alignment = 1
 
-[node name="Display" type="MarginContainer" parent="PanelContainer"]
-visible = false
+[node name="General" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/Display"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/General"]
 layout_mode = 2
+vertical_scroll_mode = 3
 
-[node name="Label" type="Label" parent="PanelContainer/Display/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/General/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 0
 text = "DISPLAY"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/Display/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Resolution" type="HSplitContainer" parent="PanelContainer/Display/VBoxContainer"]
+[node name="Resolution" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 split_offset = 70
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="PanelContainer/Display/VBoxContainer/Resolution"]
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Resolution"]
 layout_mode = 2
 text = "Resolution"
 
-[node name="Option" type="OptionButton" parent="PanelContainer/Display/VBoxContainer/Resolution"]
+[node name="Option" type="OptionButton" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Resolution"]
 layout_mode = 2
 flat = true
 
-[node name="Window" type="HSplitContainer" parent="PanelContainer/Display/VBoxContainer"]
+[node name="Window" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 70
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="PanelContainer/Display/VBoxContainer/Window"]
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Window"]
 layout_mode = 2
 text = "Window Mode"
 
-[node name="Option" type="OptionButton" parent="PanelContainer/Display/VBoxContainer/Window"]
+[node name="Option" type="OptionButton" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Window"]
 layout_mode = 2
 flat = true
 
-[node name="FPSCap" type="HSplitContainer" parent="PanelContainer/Display/VBoxContainer"]
+[node name="FPSCap" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 70
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="PanelContainer/Display/VBoxContainer/FPSCap"]
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/FPSCap"]
 layout_mode = 2
 text = "FPS Cap"
 
-[node name="FPS" type="Label" parent="PanelContainer/Display/VBoxContainer/FPSCap/Label"]
+[node name="FPS" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/FPSCap/Label"]
 z_index = 1
 layout_mode = 2
 offset_left = 71.0
@@ -98,87 +102,110 @@ offset_bottom = 15.0
 theme = ExtResource("3_geg3d")
 text = "60"
 
-[node name="Option" type="HSlider" parent="PanelContainer/Display/VBoxContainer/FPSCap"]
+[node name="Option" type="HSlider" parent="PanelContainer/General/ScrollContainer/VBoxContainer/FPSCap"]
 layout_mode = 2
 min_value = 1.0
 max_value = 120.0
 value = 60.0
 
-[node name="Vsync" type="HSplitContainer" parent="PanelContainer/Display/VBoxContainer"]
+[node name="Vsync" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 1617
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="PanelContainer/Display/VBoxContainer/Vsync"]
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Vsync"]
 layout_mode = 2
 text = "VSync"
 
-[node name="Option" type="CheckBox" parent="PanelContainer/Display/VBoxContainer/Vsync"]
+[node name="Option" type="CheckBox" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Vsync"]
 layout_mode = 2
 
-[node name="Sounds" type="MarginContainer" parent="PanelContainer"]
-visible = false
-layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/Sounds"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="PanelContainer/Sounds/VBoxContainer2"]
+[node name="Label2" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 0
 text = "SOUNDS"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/Sounds/VBoxContainer2"]
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Master" type="HSplitContainer" parent="PanelContainer/Sounds/VBoxContainer2"]
+[node name="Master" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 70
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="PanelContainer/Sounds/VBoxContainer2/Master"]
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Master"]
 layout_mode = 2
 text = "Master"
 
-[node name="Option" type="HSlider" parent="PanelContainer/Sounds/VBoxContainer2/Master"]
+[node name="Option" type="HSlider" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Master"]
 layout_mode = 2
 max_value = 1.0
 step = 0.001
 
-[node name="MusicSlider" type="HSplitContainer" parent="PanelContainer/Sounds/VBoxContainer2"]
+[node name="MusicSlider" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 70
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="PanelContainer/Sounds/VBoxContainer2/MusicSlider"]
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/MusicSlider"]
 layout_mode = 2
 text = "Music"
 
-[node name="Option" type="HSlider" parent="PanelContainer/Sounds/VBoxContainer2/MusicSlider"]
+[node name="Option" type="HSlider" parent="PanelContainer/General/ScrollContainer/VBoxContainer/MusicSlider"]
 layout_mode = 2
 max_value = 1.0
 step = 0.001
 
-[node name="SoundSlider" type="HSplitContainer" parent="PanelContainer/Sounds/VBoxContainer2"]
+[node name="SoundSlider" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 70
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="PanelContainer/Sounds/VBoxContainer2/SoundSlider"]
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/SoundSlider"]
 layout_mode = 2
 text = "Sounds"
 
-[node name="Option" type="HSlider" parent="PanelContainer/Sounds/VBoxContainer2/SoundSlider"]
+[node name="Option" type="HSlider" parent="PanelContainer/General/ScrollContainer/VBoxContainer/SoundSlider"]
 layout_mode = 2
 max_value = 1.0
 step = 0.001
 
+[node name="Label3" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 0
+text = "GAMEPLAY"
+horizontal_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ToggleSprint" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 1617
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/ToggleSprint"]
+layout_mode = 2
+text = "Toggle Sprint"
+
+[node name="Option" type="CheckBox" parent="PanelContainer/General/ScrollContainer/VBoxContainer/ToggleSprint"]
+layout_mode = 2
+
+[node name="ToggleCheats" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 1617
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/ToggleCheats"]
+layout_mode = 2
+text = "Toggle Cheats"
+
+[node name="Option" type="CheckBox" parent="PanelContainer/General/ScrollContainer/VBoxContainer/ToggleCheats"]
+layout_mode = 2
+
 [node name="Controls" type="MarginContainer" parent="PanelContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6

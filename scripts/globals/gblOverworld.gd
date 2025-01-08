@@ -489,7 +489,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	# Enter combat
 	getPlayer().resetStates()
 	OverworldGlobals.getPlayer().setUIVisibility(false)
-	await zoomCamera(Vector2(3.0,3.0), 0.0, true)
+	await zoomCamera(Vector2(3.5,3.5), 0.0, true)
 	setPlayerInput(false)
 	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
 	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
@@ -545,7 +545,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	await combat_scene.combat_done
 	
 	# Exit combat
-	await zoomCamera(Vector2(2.0,2.0))
+	await zoomCamera(Vector2(3.0,3.0))
 	var combat_results = combat_scene.combat_result
 	var tamed = combat_scene.tamed_combatants
 	getPlayer().player_camera.make_current()

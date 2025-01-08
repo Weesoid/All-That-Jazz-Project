@@ -1,14 +1,14 @@
 extends Control
 
-@onready var fps = $PanelContainer/Display/VBoxContainer/FPSCap/Label/FPS
+@onready var fps = $PanelContainer/General/ScrollContainer/VBoxContainer/FPSCap/Label/FPS
 @onready var tabs = $PanelContainer
+@onready var fps_slider = $PanelContainer/General/ScrollContainer/VBoxContainer/FPSCap/Option
+@onready var master_slider = $PanelContainer/General/ScrollContainer/VBoxContainer/Master/Option
+@onready var music_slider = $PanelContainer/General/ScrollContainer/VBoxContainer/MusicSlider/Option
+@onready var sounds_slider = $PanelContainer/General/ScrollContainer/VBoxContainer/SoundSlider/Option
+@onready var window_options = $PanelContainer/General/ScrollContainer/VBoxContainer/Window/Option
+@onready var vsync_toggle = $PanelContainer/General/ScrollContainer/VBoxContainer/Vsync/Option
 @onready var keybind_container = $PanelContainer/Controls/ScrollContainer/VBoxContainer
-@onready var fps_slider = $PanelContainer/Display/VBoxContainer/FPSCap/Option
-@onready var master_slider = $PanelContainer/Sounds/VBoxContainer2/Master/Option
-@onready var music_slider = $PanelContainer/Sounds/VBoxContainer2/MusicSlider/Option
-@onready var sounds_slider = $PanelContainer/Sounds/VBoxContainer2/SoundSlider/Option
-@onready var window_options = $PanelContainer/Display/VBoxContainer/Window/Option
-@onready var vsync_toggle = $PanelContainer/Display/VBoxContainer/Vsync/Option
 #@onready var resolution_options = $PanelContainer/Display/VBoxContainer/Resolution/Option
 #var resolutions: Dictionary = {
 #	'3840x2160': Vector2i(3840,2160),
@@ -21,12 +21,18 @@ extends Control
 
 var window_modes: Array[String] = ['Borderless Windowed', 'Windowed', 'Fullscreen']
 var editable_keybinds: Dictionary = {
-	'ui_up': 'Move Up',
-	'ui_down': 'Move Down',
-	'ui_left': 'Move Left',
-	'ui_right': 'Move Right',
-	'ui_bow': 'Equip Bow'
+	'ui_up': ['Move Up', 0],
+	'ui_down': ['Move Down', 0],
+	'ui_left': ['Move Left', 0],
+	'ui_right': ['Move Right', 0],
+	'ui_bow': ['Equip Bow', 0],
+	'ui_gambit': ['Channel Void', 0],
+	'ui_sprint': ['Sprint', 0],
+	'ui_select_arrow': ['Quiver', 0],
+	'ui_show_menu': ['Show Menu', 0]
 }
+var is_rebinding: bool = false
+var rebinding_action: StringName
 
 func _process(_delta):
 	if fps != null:
@@ -62,22 +68,29 @@ func loadKeybinds():
 		if !editable_keybinds.keys().has(action): continue
 		
 		var button: KeybindButton = load("res://scenes/user_interface/KeybindButton.tscn").instantiate()
-		button.text = str(editable_keybinds[action]) + '\n' + eventToText(InputMap.action_get_events(action))
-#		button.action_label.text = str(action)
-#		button.input_label.text = InputMap.action_get_events(action)[0].as_text()
+		button.find_child('Action').text = str(editable_keybinds[action][0])
+		button.find_child('Input').text = eventToText(InputMap.action_get_events(action), action)
 		keybind_container.add_child(button)
 
-func eventToText(events: Array[InputEvent]):
+func eventToText(events: Array[InputEvent], action):
 	var out = ''
 	var regex = RegEx.new()
 	regex.compile("\\((.*?)\\)")
 	
 	for event in events:
 		var text_event = event.as_text()
+		print(text_event)
 		if text_event.contains('(') and !text_event.contains('(Physical)'):
 			text_event = regex.search(text_event).get_string().strip_edges().split(',')[0].replace('(', '').replace(')', '')
-		out += '%s /' % text_event
-	return out
+		elif text_event.contains('(Physical)'):
+			text_event = text_event.trim_suffix('(Physical)')
+		out += '%s/' % text_event
+	return out.split('/')[editable_keybinds[action][1]]
+
+#func _input(event):
+#	if is_rebinding:
+#		InputMap.action_erase_event(rebinding_action, InputMap.action_get_events(rebinding_action)[0])
+#		InputMap.action
 
 # DISPLAY SETTINGS
 #func changeResolution(index: int):
@@ -85,7 +98,6 @@ func eventToText(events: Array[InputEvent]):
 
 func changeWindowMode(index: int):
 	var mode = window_modes[index] 
-	print(mode)
 	match mode:
 		'Borderless Windowed':
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
