@@ -33,13 +33,13 @@
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="28_j1teq"]
 [ext_resource type="Resource" path="res://resources/combat/status_effects/Jolted.tres" id="30_hg1nl"]
 
-[sub_resource type="Resource" id="Resource_tinmp"]
+[sub_resource type="Resource" id="Resource_krtue"]
 script = ExtResource("1_28705")
-position = Vector2(-78.3988, -50.0716)
+position = Vector2(145.957, 85.8832)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 0
+direction = -90
 
-[sub_resource type="Resource" id="Resource_8iyny"]
+[sub_resource type="Resource" id="Resource_ri7t3"]
 script = ExtResource("2_rchy4")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_rit2b")])
 QUEST_OBJECTIVES_DATA = {
@@ -78,7 +78,7 @@ VALUE = 0
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/RushDown.tres"
 
-[sub_resource type="Resource" id="Resource_134ow"]
+[sub_resource type="Resource" id="Resource_q8ii8"]
 script = ExtResource("15_y3wv5")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("19_8hc88"), ExtResource("21_c2arq"), ExtResource("22_j8xdc"), ExtResource("23_yij0y")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -361,7 +361,7 @@ VALUE = 150
 MANDATORY = true
 PARENT_ITEM = "res://resources/items/CharmStunning.tres"
 
-[sub_resource type="Resource" id="Resource_t1fkj"]
+[sub_resource type="Resource" id="Resource_0rgid"]
 script = ExtResource("16_yes1v")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("19_r22qg"), ExtResource("27_ep5p8"), ExtResource("22_pg2xr"), ExtResource("28_j1teq"), ExtResource("15_83f23"), SubResource("Resource_i38td"), SubResource("Resource_bpxi7")])
 CRAFTED = Array[String](["ArrowJunk"])
@@ -375,9 +375,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("17_j86ro")
-NAME = "Save 1 - 01:01:05
+NAME = "Save 1 - 01:33:55
 Morale 5
 Prototype Room"
-PLAYTIME = 3665.82
+PLAYTIME = 5635.79
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_tinmp"), SubResource("Resource_8iyny"), SubResource("Resource_134ow"), SubResource("Resource_t1fkj")]
+save_data = [SubResource("Resource_krtue"), SubResource("Resource_ri7t3"), SubResource("Resource_q8ii8"), SubResource("Resource_0rgid")]

@@ -69,29 +69,22 @@ func loadKeybinds():
 		
 		var button: KeybindButton = load("res://scenes/user_interface/KeybindButton.tscn").instantiate()
 		button.find_child('Action').text = str(editable_keybinds[action][0])
-		button.find_child('Input').text = eventToText(InputMap.action_get_events(action), action)
+		button.find_child('Input').text = InputHelper.get_keyboard_input_for_action(action).as_text().trim_suffix('(Physical)')
 		keybind_container.add_child(button)
+		button.pressed.connect(
+			func(): 
+			rebinding_action = action
+			is_rebinding = true
+			#await InputHelper.re
+			#InputHelper.replace_keyboard_input_for_action(rebinding_action, InputHelper.get_keyboard_input_for_action(rebinding_action), event)
+			print('x')
+			)
 
-func eventToText(events: Array[InputEvent], action):
-	var out = ''
-	var regex = RegEx.new()
-	regex.compile("\\((.*?)\\)")
-	
-	for event in events:
-		var text_event = event.as_text()
-		print(text_event)
-		if text_event.contains('(') and !text_event.contains('(Physical)'):
-			text_event = regex.search(text_event).get_string().strip_edges().split(',')[0].replace('(', '').replace(')', '')
-		elif text_event.contains('(Physical)'):
-			text_event = text_event.trim_suffix('(Physical)')
-		out += '%s/' % text_event
-	return out.split('/')[editable_keybinds[action][1]]
-
-#func _input(event):
-#	if is_rebinding:
-#		InputMap.action_erase_event(rebinding_action, InputMap.action_get_events(rebinding_action)[0])
-#		InputMap.action
-
+func _input(event):
+	if is_rebinding:
+		
+		print(InputHelper.get_keyboard_input_for_action(rebinding_action).as_text())
+		is_rebinding = false
 # DISPLAY SETTINGS
 #func changeResolution(index: int):
 #	get_viewport().size = resolutions[resolution_options.get_item_text(index)]

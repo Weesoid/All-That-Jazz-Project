@@ -20,6 +20,7 @@ config/icon="res://ATJ Icon.png"
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
+InputHelper="*res://addons/input_helper/input_helper.gd"
 OverworldGlobals="*res://scripts/globals/gblOverworld.gd"
 CombatGlobals="*res://scripts/globals/gblCombat.gd"
 PlayerGlobals="*res://scripts/globals/gblPlayerData.gd"
@@ -34,7 +35,11 @@ general/states=["Globals", "CombatGlobals", "OverworldGlobals", "PlayerGlobals",
 
 [display]
 
-window/size/mode=4
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/mode=2
+window/size/transparent=true
+window/stretch/mode="viewport"
 mouse_cursor/custom_image="res://images/sprites/cursor.png"
 
 [editor_plugins]
