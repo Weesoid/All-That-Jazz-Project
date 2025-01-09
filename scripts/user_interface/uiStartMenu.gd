@@ -15,7 +15,8 @@ func _ready():
 	SaveLoadGlobals.resetVariables()
 	
 	new_game.grab_focus()
-	music.play()
+	if SettingsGlobals.toggle_music:
+		music.play()
 	animator.play("Show")
 	load_game.disabled = !hasSaves()
 
@@ -31,7 +32,6 @@ func _on_load_game_pressed():
 
 func _on_settings_pressed():
 	var menu = load("res://scenes/user_interface/Settings.tscn").instantiate()
-	#menu.mode = menu.Modes.LOAD
 	addMenu(menu)
 
 func _on_quit_pressed():

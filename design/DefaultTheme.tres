@@ -1,8 +1,10 @@
-[gd_resource type="Theme" load_steps=22 format=3 uid="uid://bid2xvoeqgilk"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://bid2xvoeqgilk"]
 
 [ext_resource type="Texture2D" uid="uid://dxfjdpna7oxmx" path="res://images/sprites/grabber.png" id="1_1k802"]
 [ext_resource type="FontFile" uid="uid://cyywx7byxrbwp" path="res://design/nokiafc22.ttf" id="1_cnnh2"]
+[ext_resource type="Texture2D" uid="uid://bdrvqutswgdcn" path="res://images/sprites/check_mark.png" id="1_jkc7o"]
 [ext_resource type="Texture2D" uid="uid://d18200h2tn5i7" path="res://images/sprites/grabber_disabled.png" id="2_ghtii"]
+[ext_resource type="Texture2D" uid="uid://caxuxd2bljxnp" path="res://images/sprites/uncheck_mark.png" id="2_nr8cf"]
 [ext_resource type="Texture2D" uid="uid://bto4bkg6doi7b" path="res://images/sprites/grabber_highlight.png" id="3_ixae8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o677a"]
@@ -124,6 +126,8 @@ Button/styles/focus = SubResource("StyleBoxFlat_51i8q")
 Button/styles/hover = SubResource("StyleBoxFlat_748hm")
 Button/styles/normal = SubResource("StyleBoxFlat_8c56x")
 Button/styles/pressed = SubResource("StyleBoxFlat_uux52")
+CheckBox/icons/checked = ExtResource("1_jkc7o")
+CheckBox/icons/unchecked = ExtResource("2_nr8cf")
 HSlider/icons/grabber = ExtResource("1_1k802")
 HSlider/icons/grabber_disabled = ExtResource("2_ghtii")
 HSlider/icons/grabber_highlight = ExtResource("3_ixae8")

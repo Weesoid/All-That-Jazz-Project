@@ -21,18 +21,19 @@ extends Control
 
 var window_modes: Array[String] = ['Borderless Windowed', 'Windowed', 'Fullscreen']
 var editable_keybinds: Dictionary = {
-	'ui_up': ['Move Up', 0],
-	'ui_down': ['Move Down', 0],
-	'ui_left': ['Move Left', 0],
-	'ui_right': ['Move Right', 0],
-	'ui_bow': ['Equip Bow', 0],
-	'ui_gambit': ['Channel Void', 0],
-	'ui_sprint': ['Sprint', 0],
-	'ui_select_arrow': ['Quiver', 0],
-	'ui_show_menu': ['Show Menu', 0]
+	'ui_move_up': 'Move Up',
+	'ui_move_left': 'Move Left',
+	'ui_move_down': 'Move Down',
+	'ui_move_right': 'Move Right',
+	'ui_sprint': 'Sprint',
+	'ui_bow': 'Equip Bow',
+	'ui_select_arrow': 'Quiver',
+	'ui_gambit': 'Channel Void',
+	'ui_show_menu': 'Show Menu'
 }
 var is_rebinding: bool = false
-var rebinding_action: StringName
+var rebinding_action: String
+signal done_rebinding
 
 func _process(_delta):
 	if fps != null:
@@ -42,8 +43,6 @@ func _process(_delta):
 			fps.text = str(fps_slider.value)
 	
 func _ready():
-#	for resolution in resolutions:
-#		resolution_options.add_item(resolution)
 	for mode in window_modes:
 		window_options.add_item(mode)
 	loadKeybinds()
@@ -51,8 +50,6 @@ func _ready():
 	master_slider.value  = db_to_linear(AudioServer.get_bus_volume_db(master_slider.value))
 	music_slider.value = db_to_linear(AudioServer.get_bus_volume_db(music_slider.value))
 	sounds_slider.value = db_to_linear(AudioServer.get_bus_volume_db(sounds_slider.value))
-	
-#	resolution_options.item_selected.connect(changeResolution)
 	
 	window_options.item_selected.connect(changeWindowMode)
 	fps_slider.value_changed.connect(changeFPS)
@@ -62,29 +59,41 @@ func _ready():
 	sounds_slider.value_changed.connect(changeSoundsVolume)
 
 func loadKeybinds():
-	InputMap.load_from_project_settings()
-	
-	for action in InputMap.get_actions():
-		if !editable_keybinds.keys().has(action): continue
-		
+	for child in keybind_container.get_children():
+		child.queue_free()
+	#InputMap.load_from_project_settings()
+	for action in editable_keybinds.keys():
 		var button: KeybindButton = load("res://scenes/user_interface/KeybindButton.tscn").instantiate()
-		button.find_child('Action').text = str(editable_keybinds[action][0])
-		button.find_child('Input').text = InputHelper.get_keyboard_input_for_action(action).as_text().trim_suffix('(Physical)')
+		button.find_child('Action').text = str(editable_keybinds[action])
+		button.find_child('Input').text = InputHelper.get_label_for_input(InputHelper.get_keyboard_input_for_action(action)) 
 		keybind_container.add_child(button)
 		button.pressed.connect(
-			func(): 
-			rebinding_action = action
-			is_rebinding = true
-			#await InputHelper.re
-			#InputHelper.replace_keyboard_input_for_action(rebinding_action, InputHelper.get_keyboard_input_for_action(rebinding_action), event)
-			print('x')
-			)
+			func():
+				Input.action_release("ui_accept")
+				rebinding_action = action
+				await get_tree().process_frame
+				is_rebinding = true
+				button.find_child('Input').text = 'Awaiting input...'
+				await done_rebinding
+				loadKeybinds()
+				)
+	
+	await get_tree().process_frame
+	OverworldGlobals.setMenuFocus(keybind_container)
 
-func _input(event):
+func _unhandled_input(event) -> void:
 	if is_rebinding:
-		
-		print(InputHelper.get_keyboard_input_for_action(rebinding_action).as_text())
+		#Input.action_release("ui_accept")
+		if (event is InputEventKey or event is InputEventMouseButton) and event.is_pressed():
+			var current_action = InputHelper.get_keyboard_input_for_action(rebinding_action)
+			accept_event()
+			InputHelper.replace_keyboard_input_for_action(rebinding_action, current_action, event)
+		if event is InputEventJoypadButton and event.is_pressed():
+			var current_action = InputHelper.get_keyboard_input_for_action(rebinding_action)
+			accept_event()
+			InputHelper.replace_joypad_input_for_action(rebinding_action, current_action, event)
 		is_rebinding = false
+		done_rebinding.emit()
 # DISPLAY SETTINGS
 #func changeResolution(index: int):
 #	get_viewport().size = resolutions[resolution_options.get_item_text(index)]
@@ -125,9 +134,9 @@ func changeMusicVolume(value):
 
 func changeSoundsVolume(value):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index('Sounds'), linear_to_db(value))
-
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_tab_right') and (tabs.current_tab + 1 < tabs.get_tab_count() and !tabs.is_tab_disabled(tabs.current_tab + 1)):
-		tabs.current_tab += 1
-	elif Input.is_action_just_pressed('ui_tab_left') and (tabs.current_tab - 1 >= 0 and !tabs.is_tab_disabled(tabs.current_tab - 1)):
-		tabs.current_tab -= 1
+#
+#func _unhandled_input(_event):
+#	if Input.is_action_just_pressed('ui_tab_right') and (tabs.current_tab + 1 < tabs.get_tab_count() and !tabs.is_tab_disabled(tabs.current_tab + 1)):
+#		tabs.current_tab += 1
+#	elif Input.is_action_just_pressed('ui_tab_left') and (tabs.current_tab - 1 >= 0 and !tabs.is_tab_disabled(tabs.current_tab - 1)):
+#		tabs.current_tab -= 1

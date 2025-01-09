@@ -70,8 +70,8 @@ func _physics_process(delta):
 	# Movement inputs
 	if can_move and is_processing_input() and isMobile():
 		direction = Vector2(
-			Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
-			Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+			Input.get_action_strength("ui_move_right") - Input.get_action_strength("ui_move_left"), 
+			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
 		)
 		direction = direction.normalized()
 		velocity = direction * SPEED

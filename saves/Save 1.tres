@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=41 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=40 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_28705"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_rchy4"]
@@ -24,7 +24,6 @@
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Tank.tres" id="21_c2arq"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Filler.tres" id="22_j8xdc"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/Counter.tres" id="22_l5w2m"]
-[ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="22_pg2xr"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/StandGuard.tres" id="23_6bqqg"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Jack.tres" id="23_yij0y"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/GuardSlash.tres" id="24_eeeqi"]
@@ -33,13 +32,13 @@
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="28_j1teq"]
 [ext_resource type="Resource" path="res://resources/combat/status_effects/Jolted.tres" id="30_hg1nl"]
 
-[sub_resource type="Resource" id="Resource_krtue"]
+[sub_resource type="Resource" id="Resource_ncxyn"]
 script = ExtResource("1_28705")
-position = Vector2(145.957, 85.8832)
+position = Vector2(-129.976, 42.3696)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = -90
 
-[sub_resource type="Resource" id="Resource_ri7t3"]
+[sub_resource type="Resource" id="Resource_ee7hd"]
 script = ExtResource("2_rchy4")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_rit2b")])
 QUEST_OBJECTIVES_DATA = {
@@ -78,7 +77,7 @@ VALUE = 0
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/RushDown.tres"
 
-[sub_resource type="Resource" id="Resource_q8ii8"]
+[sub_resource type="Resource" id="Resource_ha77r"]
 script = ExtResource("15_y3wv5")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("19_8hc88"), ExtResource("21_c2arq"), ExtResource("22_j8xdc"), ExtResource("23_yij0y")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -109,7 +108,7 @@ CLEARED_MAPS = {
 "fast_travel": true
 }
 }
-EQUIPPED_ARROW = ExtResource("22_pg2xr")
+EQUIPPED_ARROW = ExtResource("28_j1teq")
 EQUIPPED_BLESSING = ExtResource("26_u6d4g")
 CURRENCY = 291333
 PARTY_LEVEL = 5
@@ -361,23 +360,22 @@ VALUE = 150
 MANDATORY = true
 PARENT_ITEM = "res://resources/items/CharmStunning.tres"
 
-[sub_resource type="Resource" id="Resource_0rgid"]
+[sub_resource type="Resource" id="Resource_wubi2"]
 script = ExtResource("16_yes1v")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("19_r22qg"), ExtResource("27_ep5p8"), ExtResource("22_pg2xr"), ExtResource("28_j1teq"), ExtResource("15_83f23"), SubResource("Resource_i38td"), SubResource("Resource_bpxi7")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("19_r22qg"), ExtResource("27_ep5p8"), ExtResource("28_j1teq"), ExtResource("15_83f23"), SubResource("Resource_i38td"), SubResource("Resource_bpxi7")])
 CRAFTED = Array[String](["ArrowJunk"])
 ITEM_DATA_INVENTORY = {
 "res://resources/items/Arrow.tres": 6,
-"res://resources/items/ArrowJunk.tres": 11,
-"res://resources/items/ArrowSleeper.tres": 99,
+"res://resources/items/ArrowSleeper.tres": 98,
 "res://resources/items/ScrapSalvage.tres": 998,
 "res://resources/items/SlashBlade.tres-durability": 16
 }
 
 [resource]
 script = ExtResource("17_j86ro")
-NAME = "Save 1 - 01:33:55
+NAME = "Save 1 - 01:35:47
 Morale 5
 Prototype Room"
-PLAYTIME = 5635.79
+PLAYTIME = 5748.68
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_krtue"), SubResource("Resource_ri7t3"), SubResource("Resource_q8ii8"), SubResource("Resource_0rgid")]
+save_data = [SubResource("Resource_ncxyn"), SubResource("Resource_ee7hd"), SubResource("Resource_ha77r"), SubResource("Resource_wubi2")]
