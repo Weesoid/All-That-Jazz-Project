@@ -99,7 +99,7 @@ func _ready():
 	for combatant in COMBATANTS:
 		await addCombatant(combatant, false, '', true)
 	
-	if battle_music_path != "" and SettingsGlobals.toggle_music:
+	if battle_music_path != "":
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
 	

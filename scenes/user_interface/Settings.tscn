@@ -1,16 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://clo0sfkt0cxws"]
+[gd_scene load_steps=8 format=3 uid="uid://clo0sfkt0cxws"]
 
 [ext_resource type="Theme" uid="uid://bph3lrtlntxys" path="res://design/Settings.tres" id="1_nyyof"]
 [ext_resource type="Script" path="res://scenes/user_interface/uiSettings.gd" id="1_xqud4"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_l6dme"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_geg3d"]
-[ext_resource type="Theme" uid="uid://bid2xvoeqgilk" path="res://design/DefaultTheme.tres" id="5_4d3oo"]
+[ext_resource type="StyleBox" uid="uid://f2ekr76rfqoq" path="res://design/PanelNoBottom.tres" id="3_n7gsw"]
+[ext_resource type="StyleBox" uid="uid://dp2nq8lcxrsfc" path="res://design/PanelNoTop.tres" id="5_3xlyu"]
+[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="7_k0hbh"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_nyyof")
@@ -23,12 +27,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -168.0
+offset_left = -176.0
 offset_top = -156.0
-offset_right = 168.0
-offset_bottom = 156.0
+offset_right = 176.0
+offset_bottom = 116.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_n7gsw")
 tab_alignment = 1
 
 [node name="General" type="MarginContainer" parent="PanelContainer"]
@@ -41,7 +46,6 @@ theme_override_constants/margin_bottom = 6
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/General"]
 layout_mode = 2
 follow_focus = true
-vertical_scroll_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/General/ScrollContainer"]
 layout_mode = 2
@@ -57,20 +61,6 @@ vertical_alignment = 1
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Resolution" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
-split_offset = 70
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Resolution"]
-layout_mode = 2
-text = "Resolution"
-
-[node name="Option" type="OptionButton" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Resolution"]
-layout_mode = 2
-flat = true
-
 [node name="Window" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 70
@@ -81,6 +71,19 @@ layout_mode = 2
 text = "Window Mode"
 
 [node name="Option" type="OptionButton" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Window"]
+layout_mode = 2
+flat = true
+
+[node name="Resolution" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+split_offset = 70
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Resolution"]
+layout_mode = 2
+text = "Resolution"
+
+[node name="Option" type="OptionButton" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Resolution"]
 layout_mode = 2
 flat = true
 
@@ -139,6 +142,16 @@ dragger_visibility = 1
 layout_mode = 2
 text = "Master"
 
+[node name="Volume" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Master/Label"]
+z_index = 1
+layout_mode = 0
+offset_left = 71.0
+offset_top = 2.0
+offset_right = 87.0
+offset_bottom = 15.0
+theme = ExtResource("3_geg3d")
+text = "60"
+
 [node name="Option" type="HSlider" parent="PanelContainer/General/ScrollContainer/VBoxContainer/Master"]
 layout_mode = 2
 max_value = 1.0
@@ -153,6 +166,16 @@ dragger_visibility = 1
 layout_mode = 2
 text = "Music"
 
+[node name="Volume" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/MusicSlider/Label"]
+z_index = 1
+layout_mode = 0
+offset_left = 71.0
+offset_top = 2.0
+offset_right = 87.0
+offset_bottom = 15.0
+theme = ExtResource("3_geg3d")
+text = "60"
+
 [node name="Option" type="HSlider" parent="PanelContainer/General/ScrollContainer/VBoxContainer/MusicSlider"]
 layout_mode = 2
 max_value = 1.0
@@ -166,6 +189,16 @@ dragger_visibility = 1
 [node name="Label" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/SoundSlider"]
 layout_mode = 2
 text = "Sounds"
+
+[node name="Volume" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer/SoundSlider/Label"]
+z_index = 1
+layout_mode = 0
+offset_left = 71.0
+offset_top = 2.0
+offset_right = 87.0
+offset_bottom = 15.0
+theme = ExtResource("3_geg3d")
+text = "60"
 
 [node name="Option" type="HSlider" parent="PanelContainer/General/ScrollContainer/VBoxContainer/SoundSlider"]
 layout_mode = 2
@@ -221,20 +254,36 @@ follow_focus = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 
-[node name="CustomButton" parent="." instance=ExtResource("2_l6dme")]
-layout_mode = 1
-offset_left = 488.0
-offset_top = 312.0
-offset_right = -71.0
-offset_bottom = -26.0
-theme = ExtResource("5_4d3oo")
-text = "Apply Settings"
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = -176.0
+offset_top = 112.0
+offset_right = 176.0
+offset_bottom = 160.0
+theme_override_styles/panel = ExtResource("5_3xlyu")
 
-[node name="CustomButton2" parent="." instance=ExtResource("2_l6dme")]
+[node name="DefaultSettings" parent="." instance=ExtResource("2_l6dme")]
+custom_minimum_size = Vector2(152, 22)
 layout_mode = 1
-offset_left = 488.0
-offset_top = 288.0
-offset_right = -63.0
-offset_bottom = -50.0
-theme = ExtResource("5_4d3oo")
-text = "Default Settings"
+offset_left = -160.0
+offset_top = 124.0
+offset_right = -8.0
+offset_bottom = 146.0
+theme = ExtResource("7_k0hbh")
+text = "DEFAULT SETTING"
+alignment = 1
+
+[node name="ApplySettings" parent="." instance=ExtResource("2_l6dme")]
+visible = false
+custom_minimum_size = Vector2(152, 22)
+layout_mode = 1
+offset_left = 8.0
+offset_top = 124.0
+offset_right = 160.0
+offset_bottom = 146.0
+theme = ExtResource("7_k0hbh")
+text = "APPLY"
+alignment = 1
+
+[connection signal="pressed" from="DefaultSettings" to="." method="_on_default_settings_pressed"]
+[connection signal="pressed" from="ApplySettings" to="." method="_on_apply_settings_pressed"]

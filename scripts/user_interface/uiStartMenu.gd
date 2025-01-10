@@ -15,10 +15,13 @@ func _ready():
 	SaveLoadGlobals.resetVariables()
 	
 	new_game.grab_focus()
-	if SettingsGlobals.toggle_music:
-		music.play()
+	music.play()
 	animator.play("Show")
 	load_game.disabled = !hasSaves()
+	if FileAccess.file_exists('saved_settings.tres'):
+		SettingsGlobals.applySettings(load('saved_settings.tres'))
+	else:
+		SettingsGlobals.applySettings(load('default_settings.tres'))
 
 func _on_new_game_pressed():
 	var menu = load("res://scenes/user_interface/Saves.tscn").instantiate()
