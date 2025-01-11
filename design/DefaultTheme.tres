@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=24 format=3 uid="uid://bid2xvoeqgilk"]
+[gd_resource type="Theme" load_steps=27 format=3 uid="uid://bid2xvoeqgilk"]
 
 [ext_resource type="Texture2D" uid="uid://dxfjdpna7oxmx" path="res://images/sprites/grabber.png" id="1_1k802"]
 [ext_resource type="FontFile" uid="uid://cyywx7byxrbwp" path="res://design/nokiafc22.ttf" id="1_cnnh2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d18200h2tn5i7" path="res://images/sprites/grabber_disabled.png" id="2_ghtii"]
 [ext_resource type="Texture2D" uid="uid://caxuxd2bljxnp" path="res://images/sprites/uncheck_mark.png" id="2_nr8cf"]
 [ext_resource type="Texture2D" uid="uid://bto4bkg6doi7b" path="res://images/sprites/grabber_highlight.png" id="3_ixae8"]
+[ext_resource type="Texture2D" uid="uid://d1u4ac8ku73qo" path="res://images/sprites/dropdown_arrow.png" id="6_r4ooh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o677a"]
 bg_color = Color(0, 0, 0, 1)
@@ -71,6 +72,22 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ep53"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khjs0"]
+bg_color = Color(0.0627451, 0.0627451, 0.0627451, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0627451, 0.0627451, 0.0627451, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pplj3"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
@@ -133,8 +150,13 @@ HSlider/icons/grabber_disabled = ExtResource("2_ghtii")
 HSlider/icons/grabber_highlight = ExtResource("3_ixae8")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_uvtdc")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_t74dk")
+OptionButton/icons/arrow = ExtResource("6_r4ooh")
 Panel/styles/panel = SubResource("StyleBoxFlat_jmchh")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_jmchh")
+PopupMenu/icons/radio_checked = ExtResource("1_jkc7o")
+PopupMenu/icons/radio_unchecked = ExtResource("2_nr8cf")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_7ep53")
+PopupPanel/styles/panel = SubResource("StyleBoxFlat_khjs0")
 ProgressBar/colors/font_color = Color(0.95, 0.95, 0.95, 1)
 ProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
 ProgressBar/constants/outline_size = 4
@@ -151,7 +173,6 @@ TooltipLabel/colors/font_shadow_color = Color(0, 0, 0, 0)
 TooltipLabel/constants/outline_size = 0
 TooltipLabel/constants/shadow_offset_x = 1
 TooltipLabel/constants/shadow_offset_y = 1
-TooltipLabel/font_sizes/font_size = 16
 TooltipLabel/fonts/font = ExtResource("1_cnnh2")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_74mkq")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_h17ev")

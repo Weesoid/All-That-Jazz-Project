@@ -38,7 +38,6 @@ func _process(delta):
 		var new_mouse_pos = get_viewport().get_mouse_position() + (Vector2(x_axis, y_axis) * sensitivity * delta)
 		get_viewport().warp_mouse(new_mouse_pos)
 	if fade_out_timer.is_stopped():
-		print('Starting!')
 		fade_out_timer.start()
 
 func _exit_tree():

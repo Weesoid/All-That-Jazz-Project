@@ -18,6 +18,7 @@ func _ready():
 	music.play()
 	animator.play("Show")
 	load_game.disabled = !hasSaves()
+	await get_tree().create_timer(0.15).timeout # Placeholder
 	if FileAccess.file_exists('saved_settings.tres'):
 		SettingsGlobals.applySettings(load('saved_settings.tres'))
 	else:

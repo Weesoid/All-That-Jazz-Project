@@ -128,7 +128,7 @@ func showMenu(path: String):
 
 
 func setMouseController(set_to:bool):
-	if get_parent().has_node('MouseController') and set_to:
+	if has_node('MouseController') and set_to:
 		return
 	
 	if set_to:

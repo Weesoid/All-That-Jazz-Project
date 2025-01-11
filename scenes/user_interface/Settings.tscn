@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://clo0sfkt0cxws"]
+[gd_scene load_steps=11 format=3 uid="uid://clo0sfkt0cxws"]
 
 [ext_resource type="Theme" uid="uid://bph3lrtlntxys" path="res://design/Settings.tres" id="1_nyyof"]
 [ext_resource type="Script" path="res://scenes/user_interface/uiSettings.gd" id="1_xqud4"]
@@ -7,6 +7,9 @@
 [ext_resource type="StyleBox" uid="uid://f2ekr76rfqoq" path="res://design/PanelNoBottom.tres" id="3_n7gsw"]
 [ext_resource type="StyleBox" uid="uid://dp2nq8lcxrsfc" path="res://design/PanelNoTop.tres" id="5_3xlyu"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="7_k0hbh"]
+[ext_resource type="AudioStream" uid="uid://b6o6mygh5d2x6" path="res://audio/sounds/421354__jaszunio15__click_31.ogg" id="8_v6srn"]
+[ext_resource type="AudioStream" uid="uid://4ywfwombwoew" path="res://audio/sounds/421442__jaszunio15__click_49.ogg" id="9_40dig"]
+[ext_resource type="AudioStream" uid="uid://8c4qku2gltn3" path="res://audio/sounds/421469__jaszunio15__click_149.ogg" id="9_wo6kj"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -37,6 +40,7 @@ theme_override_styles/panel = ExtResource("3_n7gsw")
 tab_alignment = 1
 
 [node name="General" type="MarginContainer" parent="PanelContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -111,6 +115,7 @@ layout_mode = 2
 min_value = 30.0
 max_value = 120.0
 value = 60.0
+scrollable = false
 
 [node name="Vsync" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -156,6 +161,7 @@ text = "60"
 layout_mode = 2
 max_value = 1.0
 step = 0.001
+scrollable = false
 
 [node name="MusicSlider" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -180,6 +186,7 @@ text = "60"
 layout_mode = 2
 max_value = 1.0
 step = 0.001
+scrollable = false
 
 [node name="SoundSlider" type="HSplitContainer" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -204,6 +211,7 @@ text = "60"
 layout_mode = 2
 max_value = 1.0
 step = 0.001
+scrollable = false
 
 [node name="Label3" type="Label" parent="PanelContainer/General/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -239,7 +247,6 @@ text = "Toggle Cheats"
 layout_mode = 2
 
 [node name="Controls" type="MarginContainer" parent="PanelContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -253,6 +260,10 @@ follow_focus = true
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/Controls/ScrollContainer"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
+
+[node name="SwapDevice" parent="PanelContainer/Controls/ScrollContainer/VBoxContainer" instance=ExtResource("2_l6dme")]
+layout_mode = 2
+text = "CURRENT DEVICE: KEYBOARD"
 
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 0
@@ -285,5 +296,19 @@ theme = ExtResource("7_k0hbh")
 text = "APPLY"
 alignment = 1
 
+[node name="HoverPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_v6srn")
+bus = &"Sounds"
+
+[node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_wo6kj")
+bus = &"Sounds"
+
+[node name="SlidePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_40dig")
+volume_db = -12.0
+bus = &"Sounds"
+
+[connection signal="tab_changed" from="PanelContainer" to="." method="_on_panel_container_tab_changed"]
 [connection signal="pressed" from="DefaultSettings" to="." method="_on_default_settings_pressed"]
 [connection signal="pressed" from="ApplySettings" to="." method="_on_apply_settings_pressed"]
