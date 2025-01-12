@@ -2,7 +2,7 @@ extends Node
 class_name MouseController
 
 @onready var fade_out_timer = $FadeOutTimer
-var sensitivity: float = 425.0
+var sensitivity: float = 200.0
 var x_axis: float = 0.0
 var y_axis: float = 0.0
 

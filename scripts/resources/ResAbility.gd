@@ -111,7 +111,7 @@ func _to_string():
 func getRichDescription(with_name=true)-> String:
 	var description = ''
 	if with_name:
-		description += NAME.to_upper()+'\n'
+		description += NAME.to_upper()
 	description += getPositionIcon()
 	if TENSION_COST > 0:
 		description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % TENSION_COST

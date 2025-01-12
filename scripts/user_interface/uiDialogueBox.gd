@@ -12,10 +12,10 @@ const DIALOGUE_PITCHES = {
 @onready var talk_sound: AudioStreamPlayer = $TalkSound
 @onready var balloon: ColorRect = $Balloon
 @onready var margin: MarginContainer = $Balloon/Margin
-@onready var character_portrait: Sprite2D = $Balloon/Margin/HBox/Portrait/Sprite2D
+@onready var character_portrait: Sprite2D = $Portrait/Sprite2D
 @onready var character_label: RichTextLabel = $Balloon/Margin/HBox/VBox/CharacterLabel
 @onready var dialogue_label := $Balloon/Margin/HBox/VBox/DialogueLabel
-@onready var responses_menu: VBoxContainer = $Balloon/Margin/HBox/VBox/Responses
+@onready var responses_menu = $Balloon/Responses
 ## The dialogue resource
 var resource: DialogueResource
 
@@ -71,7 +71,7 @@ var dialogue_line: DialogueLine:
 				if not response.is_allowed:
 					item.name = String(item.name) + "Disallowed"
 					item.modulate.a = 0.4
-				item.text = response.text
+				item.text = '[right]'+response.text
 				item.show()
 				responses_menu.add_child(item)
 		
@@ -110,6 +110,7 @@ func start(dialogue_resource: DialogueResource, title: String, extra_game_states
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.getPlayer().setUIVisibility(false)
 	OverworldGlobals.getPlayer().sprinting = false
+	OverworldGlobals.setMouseController(true)
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource
@@ -231,4 +232,5 @@ func _exit_tree():
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
 		OverworldGlobals.setPlayerInput(true)
+	OverworldGlobals.setMouseController(false)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(2, 2), 0.5)

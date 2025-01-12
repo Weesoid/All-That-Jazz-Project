@@ -444,6 +444,7 @@ func getMoveAbilities():
 	secondary_panel_container.add_child(pass_button)
 	
 	animateSecondaryPanel('show')
+	await get_tree().process_frame
 	secondary_panel_container.get_child(0).grab_focus()
 
 func createAbilityButton(ability: ResAbility)-> Button:
@@ -585,7 +586,6 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		combatant.SCENE.get_node('Sprite2D').flip_v = true
 		combat_bars.rotation_degrees = 180
 	if spawned:
-		#combatant.initializeCombatant()
 		COMBATANTS.append(combatant)
 		combatant.ACTED = false
 		combatant.TURN_CHARGES = combatant.MAX_TURN_CHARGES

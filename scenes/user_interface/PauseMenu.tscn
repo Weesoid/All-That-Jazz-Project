@@ -32,7 +32,7 @@ offset_left = 252.0
 offset_top = 130.0
 offset_right = 280.0
 offset_bottom = 158.0
-tooltip_text = "Quit Game"
+tooltip_text = "Quit Game?"
 theme = ExtResource("3_m3iej")
 icon = ExtResource("4_osvvh")
 

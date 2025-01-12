@@ -106,7 +106,7 @@ TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomB.tscn"
 TO_COORDS = "192.3333, 28,90"
 
 [node name="Fighter" type="CharacterBody2D" parent="."]
-position = Vector2(168, 80)
+position = Vector2(-104, -32)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("5_qyg78"), ExtResource("6_xnfh2")])
@@ -128,7 +128,7 @@ dialogue_resource = ExtResource("10_2rgfe")
 shape = SubResource("CircleShape2D_yr6hg")
 
 [node name="MrQuesty" type="CharacterBody2D" parent="."]
-position = Vector2(-168, 80)
+position = Vector2(-40, -32)
 
 [node name="Sprite2D" type="Sprite2D" parent="MrQuesty"]
 position = Vector2(0, -12)

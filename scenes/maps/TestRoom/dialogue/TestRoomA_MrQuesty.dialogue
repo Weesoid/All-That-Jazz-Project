@@ -6,7 +6,7 @@ if !hasQuest("Get That Item"):
 	Entity: You betcha!
 	do addQuest("GetThatItem")
 else:
-	Entity: Well? Get to it sonny!
+	Entity: Wees
 	- I delivered it. [if isObjectiveActive("Get That Item", "Tell Questy")]
 		Entity: Oh how delicious!
 		do completeQuestObjective("Get That Item", "Tell Questy", 0)

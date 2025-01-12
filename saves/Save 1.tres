@@ -34,13 +34,13 @@
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="27_ep5p8"]
 [ext_resource type="Resource" path="res://resources/combat/status_effects/Jolted.tres" id="30_hg1nl"]
 
-[sub_resource type="Resource" id="Resource_edejr"]
+[sub_resource type="Resource" id="Resource_vdon6"]
 script = ExtResource("1_28705")
-position = Vector2(98.7816, -53.5435)
+position = Vector2(-99.1777, -47.511)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 179
+direction = 0
 
-[sub_resource type="Resource" id="Resource_q05il"]
+[sub_resource type="Resource" id="Resource_uadqb"]
 script = ExtResource("2_rchy4")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_rit2b")])
 QUEST_OBJECTIVES_DATA = {
@@ -52,7 +52,7 @@ ExtResource("2_rit2b"): {
 }
 }
 
-[sub_resource type="Resource" id="Resource_2vaft"]
+[sub_resource type="Resource" id="Resource_gprn3"]
 script = ExtResource("15_y3wv5")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("19_8hc88"), ExtResource("22_j8xdc"), ExtResource("23_yij0y"), ExtResource("21_c2arq")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -79,7 +79,7 @@ CLEARED_MAPS = {
 "fast_travel": true
 }
 }
-EQUIPPED_ARROW = ExtResource("27_ep5p8")
+EQUIPPED_ARROW = ExtResource("27_acx8j")
 EQUIPPED_BLESSING = ExtResource("26_u6d4g")
 CURRENCY = 115579
 PARTY_LEVEL = 5
@@ -100,7 +100,7 @@ ExtResource("19_8hc88"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.15,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 11.0,
+"health": 35.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -150,7 +150,7 @@ ExtResource("22_j8xdc"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 38.0,
+"health": 70.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -199,7 +199,7 @@ ExtResource("23_yij0y"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.02,
 "handling": 0,
 "heal_mult": 1.02,
-"health": 7.0,
+"health": 35.0,
 "hustle": 2,
 "resist": 0.07
 }, {
@@ -256,7 +256,7 @@ ExtResource("21_c2arq"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.02,
 "handling": 0,
 "heal_mult": 1.02,
-"health": 1.0,
+"health": 35.0,
 "hustle": 2,
 "resist": 0.07
 }, {
@@ -415,13 +415,13 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_owov2"]
+[sub_resource type="Resource" id="Resource_ol2we"]
 script = ExtResource("16_yes1v")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("19_r22qg"), ExtResource("27_ep5p8"), ExtResource("27_acx8j"), ExtResource("27_8nofq"), ExtResource("15_83f23"), SubResource("Resource_i38td"), SubResource("Resource_bpxi7"), SubResource("Resource_v4tgx"), SubResource("Resource_2ra5y"), SubResource("Resource_uk8u2"), SubResource("Resource_rmf7v"), SubResource("Resource_k4hap"), SubResource("Resource_jyolp")])
 CRAFTED = Array[String](["ArrowJunk"])
 ITEM_DATA_INVENTORY = {
 "res://resources/items/ArrowJunk.tres": 16,
-"res://resources/items/ArrowSleeper.tres": 76,
+"res://resources/items/ArrowSleeper.tres": 73,
 "res://resources/items/BarterSalvage20.tres": 12,
 "res://resources/items/ScrapSalvage.tres": 999,
 "res://resources/items/SlashBlade.tres-durability": 16
@@ -429,9 +429,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("17_j86ro")
-NAME = "Save 1 - 01:44:16
+NAME = "Save 1 - 01:56:39
 Morale 5
 Prototype Room"
-PLAYTIME = 6257.22
+PLAYTIME = 7000.2
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_edejr"), SubResource("Resource_q05il"), SubResource("Resource_2vaft"), SubResource("Resource_owov2")]
+save_data = [SubResource("Resource_vdon6"), SubResource("Resource_uadqb"), SubResource("Resource_gprn3"), SubResource("Resource_ol2we")]

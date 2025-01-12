@@ -2306,18 +2306,18 @@ position = Vector2(-272, 136)
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="PlayerCamera/CinematicBars"]
-offset_left = -383.0
-offset_top = -194.0
-offset_right = 379.0
-offset_bottom = -128.0
-color = Color(0, 0, 0, 1)
+offset_left = -384.0
+offset_top = -136.0
+offset_right = 378.0
+offset_bottom = -70.0
+color = Color(1, 1, 1, 0)
 
 [node name="ColorRect2" type="ColorRect" parent="PlayerCamera/CinematicBars"]
 offset_left = -441.0
-offset_top = 64.0
+offset_top = 72.0
 offset_right = 437.0
 offset_bottom = 209.0
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

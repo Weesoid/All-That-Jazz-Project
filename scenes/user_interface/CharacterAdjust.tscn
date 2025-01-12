@@ -225,7 +225,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_esnsw")
 offset_left = 118.0
 offset_top = -286.0
 offset_right = 256.0
-offset_bottom = -165.0
+offset_bottom = -191.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_sre4y")
 
 [node name="Debug" parent="AttributeView" index="2"]
