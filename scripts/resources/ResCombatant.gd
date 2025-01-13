@@ -85,13 +85,14 @@ func setBreatheTween(mode:int):
 		return
 	else:
 		return
+	getSprite().position = Vector2.ZERO
 	match mode:
 		0: # Normal Breathing
 			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.05), 1.5)
 			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.0), 1.5)
 			pos_tween.tween_property(getSprite(), "position", Vector2(0.0,-1.0), 1.5)
 			pos_tween.tween_property(getSprite(), "position", Vector2(0.0,0.0), 1.5)
-		1: # Inverted Breathing
+		1: # Inverted Breathing (For converted enemies)
 			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.05), 1.5)
 			scale_tween.tween_property(getSprite(), "scale", Vector2(1.0,1.0), 1.5)
 			pos_tween.tween_property(getSprite(), "position", Vector2(0.0,1.0), 1.5)

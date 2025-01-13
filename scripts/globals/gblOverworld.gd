@@ -27,6 +27,7 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
+	print('Setting to ', enabled)
 	getPlayer().can_move = enabled
 	getPlayer().set_process_input(enabled)
 	
@@ -141,6 +142,7 @@ func closeMenu(menu: Control):
 	setMouseController(false)
 	menu.queue_free()
 	getPlayer().player_camera.get_node('uiMenu').queue_free()
+	print('Close menu setting to true!')
 	setPlayerInput(true)
 
 func inMenu():
@@ -301,6 +303,7 @@ func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and getPlayer().has_node('DebugComponent')
 
 func showGameOver(end_sentence: String, animation: String='Fall'):
+	#await get_tree().process_frame
 	if OverworldGlobals.inMenu(): OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	getPlayer().setUIVisibility(false)
 	getPlayer().resetStates()
@@ -315,7 +318,7 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	getPlayer().player_camera.add_child(menu)
 	menu.end_sentence.text = end_sentence
 
-func moveCamera(to, duration:float=0.25, wait:bool=false): # implement wait function later
+func moveCamera(to, duration:float=0.25, wait:bool=false):
 	var tween = create_tween()
 	if to is String:
 		tween.tween_property(getPlayer().player_camera, 'global_position', getEntity(to).global_position, duration)
@@ -326,8 +329,9 @@ func moveCamera(to, duration:float=0.25, wait:bool=false): # implement wait func
 	if wait:
 		await tween.finished
 
-func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false): # implement wait function later
+func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
 	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(getPlayer().player_camera, 'zoom', zoom, duration)
 	if wait:
 		await tween.finished
@@ -489,7 +493,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	# Enter combat
 	getPlayer().resetStates()
 	OverworldGlobals.getPlayer().setUIVisibility(false)
-	await zoomCamera(Vector2(2,2), 0.15, true)
+	await zoomCamera(Vector2(2,2), 0.05, true)
 	setPlayerInput(false)
 	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
 	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
@@ -545,7 +549,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	await combat_scene.combat_done
 	
 	# Exit combat
-	await zoomCamera(Vector2(1.0,1.0))
+	zoomCamera(Vector2(1.0,1.0), 0.0)
 	var combat_results = combat_scene.combat_result
 	var tamed = combat_scene.tamed_combatants
 	getPlayer().player_camera.make_current()
@@ -563,9 +567,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	if hasCombatDialogue(entity_name) and combat_results == 1:
-		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')	
+		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
-	setPlayerInput(true)
+	print('Combat change setting to true!')
+	if combat_results == 1:
+		setPlayerInput(true)
 	combat_exited.emit()
 	#if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')
 

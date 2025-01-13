@@ -1,8 +1,7 @@
 extends Node2D
 
 @onready var player = OverworldGlobals.getPlayer()
-@onready var select_name = $TextureRect/Name
-@onready var equipped_texture = $TextureRect
+@onready var select_name = $Name
 @onready var other_arrows_container = $HBoxContainer
 
 var current_index = -1
@@ -21,7 +20,6 @@ func _input(event):
 			loadOtherArrows(arrow)
 		current_index = arrows.find(PlayerGlobals.EQUIPPED_ARROW)
 		updateIcon(arrows[current_index].ICON, arrows[current_index].NAME)
-		#Input.action_press("ui_bow")
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg")
 	if Input.is_action_pressed("ui_select_arrow") and player.is_processing_input():
 		visible = true
@@ -40,7 +38,6 @@ func _input(event):
 				current_index -= 1
 				updateArrowSelect()
 	if Input.is_action_just_released('ui_select_arrow'):
-		equipped_texture.texture = null
 		select_name.text = ''
 		visible = false
 
@@ -68,11 +65,10 @@ func loadOtherArrows(arrow: ResProjectileAmmo):
 	texture.texture = arrow.ICON
 	texture.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 	if PlayerGlobals.EQUIPPED_ARROW != arrow:
-		texture.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		texture.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 		texture.modulate = Color(Color.WHITE, 0.25)
 	other_arrows_container.add_child(texture)
 
-func updateIcon(icon, display_name):
-	equipped_texture.texture = icon
+func updateIcon(_icon, display_name):
 	if display_name != '':
 		select_name.text = display_name.to_upper()

@@ -26,20 +26,6 @@ response_template = NodePath("Balloon/Margin/HBox/VBox/ResponseTemplate")
 [node name="TalkSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_guvgn")
 
-[node name="Portrait" type="Control" parent="."]
-z_index = 10
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 8.0
-offset_top = 240.0
-offset_right = 128.0
-offset_bottom = 358.0
-size_flags_horizontal = 4
-
-[node name="Sprite2D" type="Sprite2D" parent="Portrait"]
-centered = false
-
 [node name="Balloon" type="ColorRect" parent="."]
 offset_right = 640.0
 size_flags_horizontal = 3
@@ -121,6 +107,21 @@ scroll_active = false
 shortcut_keys_enabled = false
 meta_underlined = false
 hint_underlined = false
+
+[node name="Portrait" type="Control" parent="Balloon"]
+z_index = 10
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 240.0
+offset_right = 128.0
+offset_bottom = 358.0
+size_flags_horizontal = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Balloon/Portrait"]
+position = Vector2(-8, -284)
+centered = false
 
 [connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
 [connection signal="resized" from="Balloon/Margin" to="." method="_on_margin_resized"]

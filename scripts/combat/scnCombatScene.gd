@@ -18,8 +18,6 @@ class_name CombatScene
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
-@onready var ui_status_inspect = $CombatCamera/Interface/Inspect/PanelContainer/StatusEffects
-@onready var ui_status_inspect_container = $CombatCamera/Interface/Inspect/PanelContainer
 @onready var round_counter = $CombatCamera/Interface/ProgressBar/Counts/RoundCounter
 @onready var turn_counter = $CombatCamera/Interface/ProgressBar/Counts/TurnCounter
 @onready var transition_scene = $CombatCamera/BattleTransition
@@ -289,7 +287,7 @@ func end_turn(combatant_act=true):
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
 	
-	if active_combatant.STAT_VALUES['hustle'] >= 0:
+	if active_combatant.STAT_VALUES['hustle'] >= -99:
 		active_combatant.act()
 	else:
 		end_turn()
@@ -421,15 +419,31 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		if !weapon.EFFECT.ENABLED or weapon.durability <= 0:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
-	for ability in ability_set:
-		secondary_panel_container.add_child(createAbilityButton(ability))
+	if isCombatValid():
+		for ability in ability_set:
+			secondary_panel_container.add_child(createAbilityButton(ability))
 	
 	await get_tree().process_frame
+	tweenAbilityButtons(secondary_panel_container.get_children())
 	if last_used_ability.keys().has(active_combatant) and ability_set.has(last_used_ability[active_combatant][0]):
 		for child in secondary_panel_container.get_children():
 			if child.text == last_used_ability[active_combatant][0].NAME: child.grab_focus()
 	else:
 		OverworldGlobals.setMenuFocus(secondary_panel_container)
+
+func tweenAbilityButtons(buttons: Array):
+	for button in buttons:
+		button.modulate = Color.TRANSPARENT
+	await get_tree().process_frame
+	for button in buttons:
+		var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
+		tween.tween_property(button, 'scale', Vector2(1.1,1.1), 0.005)
+		tween.tween_property(button, 'scale', Vector2(1.0,1.0), 0.05)
+		tween.set_parallel(true)
+		tween.tween_property(button, 'modulate', Color.WHITE, 0.0025)
+		await tween.finished
+		OverworldGlobals.playSound('536805__egomassive__gun_2.ogg',-6.0)
+		#await get_tree().create_timer(0.025).timeout
 
 func getMoveAbilities():
 	for child in secondary_panel_container.get_children():
@@ -442,8 +456,8 @@ func getMoveAbilities():
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Recede.tres")))
 	secondary_panel_container.add_child(pass_button)
-	
 	animateSecondaryPanel('show')
+	tweenAbilityButtons(secondary_panel_container.get_children())
 	await get_tree().process_frame
 	secondary_panel_container.get_child(0).grab_focus()
 
@@ -477,26 +491,16 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 
 func playerSelectInspection():
-	action_panel.hide()
+	#action_panel.hide()
+	whole_action_panel.hide()
 	valid_targets = sortCombatantsByPosition()
 	target_combatant = valid_targets[target_index]
 	ui_inspect_target.show()
 	ui_attribute_view.combatant = target_combatant
 	
 	moveCamera(target_combatant.SCENE.global_position)
-	getStatusEffectInfo(target_combatant)
 	browseTargetsInputs()
 	confirmCancelInputs()
-
-func getStatusEffectInfo(combatant: ResCombatant):
-	ui_status_inspect.text = ''
-	if combatant.STATUS_EFFECTS.is_empty():
-		ui_status_inspect_container.hide()
-		return
-	
-	ui_status_inspect_container.show()
-	for effect in combatant.STATUS_EFFECTS:
-		ui_status_inspect.text += OverworldGlobals.insertTextureCode(effect.TEXTURE) + effect.DESCRIPTION+'\n'
 
 func executeAbility():
 	if !turn_timer.is_stopped(): stopTimer()
@@ -605,9 +609,14 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
 	if do_tween:
 		var tween = create_tween().tween_property(combatant.SCENE, 'global_position', combatant.SCENE.get_parent().global_position, 0.15)
-		if !combatant.isDead(): combatant.SCENE.doAnimation('Cast_Melee')
+		if !combatant.isDead(): 
+			combatant.SCENE.doAnimation('Cast_Melee')
+			#combatant.SCENE.position = Vector2.ZERO
 		await tween.finished
+		#await combatant.getAnimator().animation_finished 
+		#combatant.SCENE.doAnimation('RESET')
 		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
+	
 	combatant.startBreatheTween(true)
 
 func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):

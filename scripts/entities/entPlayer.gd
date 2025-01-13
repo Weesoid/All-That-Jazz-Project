@@ -153,7 +153,7 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu() and !hiding:
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	# Interaction handling
-	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue():
+	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and OverworldGlobals.isPlayerAlive():
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity = Vector2.ZERO
@@ -217,7 +217,6 @@ func resetStates():
 	ANIMATION_SPEED = 0.0
 	power_inputs = ''
 	cancelPower()
-	quiver.equipped_texture.texture = null
 	quiver.select_name.text = ''
 	quiver.visible = false
 	Input.action_release("ui_bow_draw")

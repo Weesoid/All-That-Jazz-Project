@@ -12,7 +12,7 @@ const DIALOGUE_PITCHES = {
 @onready var talk_sound: AudioStreamPlayer = $TalkSound
 @onready var balloon: ColorRect = $Balloon
 @onready var margin: MarginContainer = $Balloon/Margin
-@onready var character_portrait: Sprite2D = $Portrait/Sprite2D
+@onready var character_portrait: Sprite2D = $Balloon/Portrait/Sprite2D
 @onready var character_label: RichTextLabel = $Balloon/Margin/HBox/VBox/CharacterLabel
 @onready var dialogue_label := $Balloon/Margin/HBox/VBox/DialogueLabel
 @onready var responses_menu = $Balloon/Responses
@@ -110,7 +110,7 @@ func start(dialogue_resource: DialogueResource, title: String, extra_game_states
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.getPlayer().setUIVisibility(false)
 	OverworldGlobals.getPlayer().sprinting = false
-	OverworldGlobals.setMouseController(true)
+	#OverworldGlobals.setMouseController(true)
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource
@@ -231,6 +231,7 @@ func _exit_tree():
 	OverworldGlobals.getPlayer().cinematic_bars.visible = false
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
+		print('DBox setting to true!')
 		OverworldGlobals.setPlayerInput(true)
-	OverworldGlobals.setMouseController(false)
+	#OverworldGlobals.setMouseController(false)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(2, 2), 0.5)

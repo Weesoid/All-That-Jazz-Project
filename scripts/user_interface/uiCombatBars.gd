@@ -2,6 +2,7 @@ extends Node2D
 class_name CombatBar
 
 @onready var health_bar = $HealthBar
+@onready var health_bar_fader = $HealthBarFader
 @onready var absolute_health = $HealthBar/AbsoluteHealth
 @onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var indicator = $Indicator
@@ -64,6 +65,7 @@ func updateStatusEffects():
 		status_effects.add_child(icon)
 
 func _on_health_bar_value_changed(value):
+	animateFaderBar(previous_value, attached_combatant.STAT_VALUES['health'])
 	if first_turn: 
 		indicator.hide()
 	else:
@@ -81,6 +83,25 @@ func _on_health_bar_value_changed(value):
 	await indicator_animator.animation_finished
 	previous_value = value
 	indicator_animation = "Show"
+	
+
+func animateFaderBar(prev_val, value):
+	if prev_val == value:
+		return
+	
+	health_bar_fader.max_value = attached_combatant.getMaxHealth()
+	var tween = create_tween()
+	if prev_val > value:
+		tween.tween_property(health_bar_fader, 'modulate', Color.RED, 0.0)
+	elif prev_val < value:
+		tween.tween_property(health_bar_fader, 'modulate', Color.GREEN, 0.0)
+	tween.tween_property(health_bar_fader, 'modulate', Color.TRANSPARENT, 0.6)
+	tween.set_parallel(true)
+	tween.tween_method(setFaderBarValue, prev_val, value, 0.5)
+
+func setFaderBarValue(value):
+	health_bar_fader.value = value
+
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
 	if attached_combatant == combatant:

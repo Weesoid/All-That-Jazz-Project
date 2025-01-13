@@ -11,6 +11,7 @@ var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME
 
 func _ready():
 	randomize()
+	#OverworldGlobals.getPlayer().interaction_prompt.hide()
 	PlayerGlobals.healCombatants()
 	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), saved_game.current_map_path)
 	var reduced_exp = randf_range(-0.2, -0.1) * PlayerGlobals.getRequiredExp()

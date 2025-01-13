@@ -231,11 +231,11 @@ func hasBarterItems():
 		if item is ResStackItem and item.BARTER_ITEM: return true
 
 func showChange(amount: int):
+	if amount == 0:
+		return
+	
 	var sold_label: Label = Label.new()
-	if amount != 0:
-		sold_label.text = str(amount)
-	else:
-		sold_label.text = 'Free!'
+	sold_label.text = str(amount)
 	sold_label.theme = preload("res://design/OutlinedLabel.tres")
 	if amount >= 0:
 		sold_label.modulate = Color.GREEN_YELLOW

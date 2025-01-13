@@ -55,4 +55,3 @@ Button/styles/normal = SubResource("StyleBoxFlat_8c56x")
 Button/styles/pressed = SubResource("StyleBoxFlat_uux52")
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
 TooltipLabel/colors/font_outline_color = Color(0, 0, 0, 1)
-TooltipLabel/font_sizes/font_size = 16

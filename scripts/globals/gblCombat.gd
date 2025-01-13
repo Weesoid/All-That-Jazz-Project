@@ -36,6 +36,7 @@ signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
 signal active_combatant_changed(combatant: ResCombatant)
+signal tension_changed(previous_tension, tension)
 signal click_block
 
 #********************************************************************************
@@ -530,9 +531,11 @@ func addTension(amount: int):
 #		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
 #	elif amount < 0:
 #		OverworldGlobals.playSound("res://audio/sounds/220189__gameaudio__blip-squeak.ogg")
+	var prev_tension = TENSION
 	if TENSION + amount > 100:
 		TENSION = 100
 	elif TENSION + amount < 0:
 		TENSION = 0
 	else:
 		TENSION += amount
+	tension_changed.emit(prev_tension, TENSION)

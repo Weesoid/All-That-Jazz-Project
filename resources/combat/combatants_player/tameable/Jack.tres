@@ -13,8 +13,13 @@
 [resource]
 script = ExtResource("1_55iw6")
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_iou6c"), ExtResource("5_nuc0g"), ExtResource("3_sqspm"), ExtResource("4_fx7br"), ExtResource("2_scuyw"), ExtResource("6_1lhf1")])
+BASE_TEMPERMENT = {
+"primary": "",
+"secondary": ""
+}
 FOLLOWER_PACKED_SCENE = ExtResource("3_lntbm")
 MANDATORY = false
+STAT_MULTIPLIER = 0.01
 NAME = "Jackolero"
 PACKED_SCENE = ExtResource("1_rdqa0")
 DESCRIPTION = "Of all trades I guess!"
@@ -26,7 +31,7 @@ STAT_VALUES = {
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 25,
+"health": 1,
 "hustle": 1,
 "resist": 0.05
 }

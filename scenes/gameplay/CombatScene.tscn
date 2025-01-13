@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=44 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
 [ext_resource type="StyleBox" uid="uid://4flvvnyqrn3l" path="res://design/PanelNoLeft.tres" id="11_f3q3i"]
 [ext_resource type="StyleBox" uid="uid://c22qxunue5s3x" path="res://design/PanelNoRight.tres" id="12_oauep"]
+[ext_resource type="AudioStream" uid="uid://cujwmntfbmh8b" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="14_ykm4m"]
 
 [sub_resource type="GDScript" id="GDScript_ggh4h"]
 script/source = "extends ProgressBar
@@ -336,13 +337,15 @@ script/source = "extends ProgressBar
 
 @onready var combat_scene = CombatGlobals.getCombatScene()
 @onready var animator = $AnimationPlayer
-var initial_pos
+@onready var bar_fader = $FaderBar
+var previous_value
 
 func _ready():
 	CombatGlobals.active_combatant_changed.connect(_on_active_combatant_changed)
-	initial_pos = global_position
+	CombatGlobals.tension_changed.connect(updateValue)
 	show()
 	animator.play(\"Show\")
+	updateValue(0, CombatGlobals.TENSION)
 
 func _on_active_combatant_changed(combatant):
 	if combatant is ResPlayerCombatant and !visible:
@@ -352,19 +355,34 @@ func _on_active_combatant_changed(combatant):
 		hide()
 		animator.play_backwards(\"Show\")
 
-func _process(_delta):
-	value = CombatGlobals.TENSION
+#func _process(_delta):
+#	value = CombatGlobals.TENSION
 
 func _on_value_changed(_val):
-	var tween = create_tween()
-	var size_tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(self, 'modulate', Color.CORAL, 0.05)
-	tween.tween_property(self, 'modulate', Color.WHITE, 0.25)
-	#size_tween.tween_property(self, 'size', Vector2(368, 12), 0.025)
-	#size_tween.tween_property(self, 'size', Vector2(368, 4), 0.25)
 	if !combat_scene.active_combatant is ResPlayerCombatant and !animator.is_playing() and value != 0:
 		show()
 		animator.play(\"Show\")
+
+func updateValue(prev_tension, tension):
+	animateFaderBar(prev_tension, tension)
+	value = tension
+
+func animateFaderBar(prev_val, val):
+#	print(prev_val, ' vs ', val)
+	if prev_val == val:
+		return
+	
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
+	if prev_val > val:
+		tween.tween_property(bar_fader, 'modulate', Color.RED, 0.0)
+	elif prev_val < val:
+		tween.tween_property(bar_fader, 'modulate', Color.GREEN, 0.0)
+	tween.tween_method(setFaderBarValue, prev_val, val, 0.15)
+	tween.tween_property(bar_fader, 'modulate', Color.TRANSPARENT, 0.25)
+	#tween.set_parallel(true)
+
+func setFaderBarValue(val):
+	bar_fader.value = val
 "
 
 [sub_resource type="GDScript" id="GDScript_25yyp"]
@@ -526,6 +544,21 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(152, 67), Vector2(64, 63)]
 }
+tracks/4/type = "audio"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("InterfaceAudio")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("14_ykm4m")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/4/use_blend = true
 
 [sub_resource type="Animation" id="Animation_6ffbp"]
 length = 0.001
@@ -652,34 +685,22 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Inspect/PanelContainer:position")
+tracks/10/path = NodePath("Inspect:modulate")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-184, -65)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Inspect:modulate")
+tracks/11/path = NodePath("ActionPanel/ActionPanel/MarginContainer/Buttons:visible")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/12/type = "value"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("ActionPanel/ActionPanel/MarginContainer/Buttons:visible")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -761,33 +782,21 @@ tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("Inspect/AttributeView:position")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(90, 104)]
+"values": [Vector2(200, 104), Vector2(90, 104)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Inspect/PanelContainer:position")
+tracks/1/path = NodePath("Inspect:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-184, -15)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Inspect:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
@@ -1094,6 +1103,7 @@ libraries = {
 }
 
 [node name="Inspect" type="Control" parent="CombatCamera/Interface"]
+visible = false
 z_index = 100
 anchors_preset = 0
 offset_right = 40.0
@@ -1102,54 +1112,40 @@ offset_bottom = 40.0
 [node name="AttributeView" parent="CombatCamera/Interface/Inspect" instance=ExtResource("10_60ct5")]
 z_index = 100
 layout_mode = 1
-offset_left = 70.0
-offset_top = 34.0
-offset_right = 70.0
-offset_bottom = 34.0
-scale = Vector2(1.1, 1.1)
+offset_left = 90.0
+offset_top = 54.0
+offset_right = 90.0
+offset_bottom = 54.0
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
-offset_left = -34.5455
-offset_top = -20.0
-offset_right = 88.4545
-offset_bottom = 75.0
+offset_left = -55.0
+offset_top = -79.0
+offset_right = 68.0
+offset_bottom = 16.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_cg4vr")
 
 [node name="Label" parent="CombatCamera/Interface/Inspect/AttributeView/HiddenAttributes/MarginContainer/VBoxContainer/Accuracy" index="0"]
 theme_override_font_sizes/font_size = 0
 
 [node name="Attributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="1"]
-offset_left = -34.5455
-offset_top = -108.182
-offset_right = 88.4545
-offset_bottom = -11.1816
+offset_left = -55.0
+offset_top = -172.0
+offset_right = 68.0
+offset_bottom = -74.9996
 
 [node name="Label" parent="CombatCamera/Interface/Inspect/AttributeView/Attributes/MarginContainer/VBoxContainer/Health" index="0"]
 theme_override_font_sizes/font_size = 0
 
 [node name="Debug" parent="CombatCamera/Interface/Inspect/AttributeView" index="2"]
-offset_left = -150.909
-offset_top = -108.182
-offset_right = -55.9091
-offset_bottom = 67.8182
-
-[node name="PanelContainer" type="PanelContainer" parent="CombatCamera/Interface/Inspect"]
-z_index = 100
-layout_mode = 0
-offset_left = -184.0
-offset_top = -65.0
-offset_right = -80.0
-offset_bottom = 131.0
-
-[node name="StatusEffects" type="RichTextLabel" parent="CombatCamera/Interface/Inspect/PanelContainer"]
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-bbcode_enabled = true
-text = "x Target cannot move!"
-scroll_active = false
+visible = false
+offset_left = -242.0
+offset_top = -155.0
+offset_right = -1.99997
+offset_bottom = 21.0
+scale = Vector2(0.534, 0.534)
 
 [node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
+visible = false
 z_index = 99
 layout_mode = 3
 anchors_preset = 0
@@ -1165,10 +1161,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 132.0
-offset_top = 47.0
-offset_right = 340.0
-offset_bottom = 117.0
+offset_left = 152.0
+offset_top = 67.0
+offset_right = 360.0
+offset_bottom = 137.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(184, 36)
@@ -1280,6 +1276,14 @@ value = 50.0
 show_percentage = false
 script = SubResource("GDScript_ip03s")
 
+[node name="FaderBar" type="ProgressBar" parent="CombatCamera/Interface/ProgressBar"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 304.0
+offset_bottom = 4.0
+value = 50.0
+show_percentage = false
+
 [node name="ProgressBarTrueValues" parent="CombatCamera/Interface/ProgressBar" instance=ExtResource("9_bbc62")]
 layout_mode = 1
 horizontal_alignment = 1
@@ -1382,6 +1386,8 @@ libraries = {
 libraries = {
 "": SubResource("AnimationLibrary_fveyc")
 }
+
+[node name="InterfaceAudio" type="AudioStreamPlayer" parent="CombatCamera/Interface"]
 
 [node name="Label" type="Label" parent="CombatCamera/Interface"]
 layout_mode = 0

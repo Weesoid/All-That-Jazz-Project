@@ -67,7 +67,7 @@ func _unhandled_input(_event):
 		new_game.grab_focus()
 		load_game.disabled = !hasSaves()
 		transition_animator.play("Slide_Out")
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_cancel") and camera.has_node('uiMenu'):
 		transition_animator.play("Slide_In")
 		await transition_animator.animation_finished
 		camera.get_node('uiMenu').queue_free()
