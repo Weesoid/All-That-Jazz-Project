@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=36 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=37 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_28705"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_rchy4"]
 [ext_resource type="Resource" path="res://resources/quests/GetThatItem.tres" id="2_rit2b"]
+[ext_resource type="Resource" path="res://resources/combat/events/Hail.tres" id="4_1jno4"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="5_cfw70"]
 [ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="5_sui5c"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="6_c58ho"]
@@ -31,13 +32,13 @@
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="27_ep5p8"]
 [ext_resource type="Resource" path="res://resources/combat/status_effects/Jolted.tres" id="30_hg1nl"]
 
-[sub_resource type="Resource" id="Resource_kgraw"]
+[sub_resource type="Resource" id="Resource_4pm4b"]
 script = ExtResource("1_28705")
-position = Vector2(-138.5, -70.5)
+position = Vector2(-27.9468, -78.592)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_8ikxo"]
+[sub_resource type="Resource" id="Resource_a5wnd"]
 script = ExtResource("2_rchy4")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_rit2b")])
 QUEST_OBJECTIVES_DATA = {
@@ -49,7 +50,7 @@ ExtResource("2_rit2b"): {
 }
 }
 
-[sub_resource type="Resource" id="Resource_buxqu"]
+[sub_resource type="Resource" id="Resource_gdwj2"]
 script = ExtResource("15_y3wv5")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("19_8hc88"), ExtResource("7_3ucwk"), ExtResource("15_jih3k"), ExtResource("18_gh2gb")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -69,9 +70,7 @@ CLEARED_MAPS = {
 "res://scenes/maps/TestRoom/TestRoomC.tscn": {
 "cleared": false,
 "events": {
-"stalker_chance": 1.0,
-"tameable_modifier": 1.75,
-"time_limit": 90.0
+"combat_event": ExtResource("4_1jno4")
 },
 "faction": 0,
 "fast_travel": true
@@ -79,7 +78,7 @@ CLEARED_MAPS = {
 }
 EQUIPPED_ARROW = ExtResource("27_acx8j")
 EQUIPPED_BLESSING = ExtResource("20_fejd2")
-CURRENCY = 7
+CURRENCY = 2
 PARTY_LEVEL = 5
 CURRENT_EXP = 0
 STRING_CONDITIONS = Array[String]([])
@@ -98,7 +97,7 @@ ExtResource("19_8hc88"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.15,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 35,
+"health": 35.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -148,7 +147,7 @@ ExtResource("7_3ucwk"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 70,
+"health": 70.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -197,7 +196,7 @@ ExtResource("15_jih3k"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 35,
+"health": 35.0,
 "hustle": 5,
 "resist": 0.0
 }, {
@@ -246,7 +245,7 @@ ExtResource("18_gh2gb"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": -0.15,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 1,
+"health": 1.0,
 "hustle": 5,
 "resist": 0.05
 }, {
@@ -306,7 +305,7 @@ VALUE = 150
 MANDATORY = true
 PARENT_ITEM = "res://resources/items/CharmStunning.tres"
 
-[sub_resource type="Resource" id="Resource_h0bmi"]
+[sub_resource type="Resource" id="Resource_fibeq"]
 script = ExtResource("16_yes1v")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("20_h86r2"), ExtResource("27_acx8j"), ExtResource("27_ep5p8"), ExtResource("15_83f23"), SubResource("Resource_bpxi7")])
 CRAFTED = Array[String](["ArrowJunk"])
@@ -319,9 +318,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("17_j86ro")
-NAME = "Save 1 - 02:26:43
+NAME = "Save 1 - 02:27:50
 Morale 5
 Prototype Room"
-PLAYTIME = 8804.03
+PLAYTIME = 8871.03
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_kgraw"), SubResource("Resource_8ikxo"), SubResource("Resource_buxqu"), SubResource("Resource_h0bmi")]
+save_data = [SubResource("Resource_4pm4b"), SubResource("Resource_a5wnd"), SubResource("Resource_gdwj2"), SubResource("Resource_fibeq")]

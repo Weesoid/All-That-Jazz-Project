@@ -51,7 +51,7 @@ func _ready():
 	if SettingsGlobals.cheat_mode and !has_node('DebugComponent'):
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
-	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	OverworldGlobals.setMouseController(false)
 
 func _process(_delta):
 	updateAnimationParameters()

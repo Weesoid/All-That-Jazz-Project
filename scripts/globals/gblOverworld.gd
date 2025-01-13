@@ -135,6 +135,7 @@ func setMouseController(set_to:bool):
 	if set_to:
 		var mouse_controller = load("res://scenes/user_interface/MouseController.tscn").instantiate()
 		add_child(mouse_controller)
+		Input.warp_mouse(Vector2(DisplayServer.screen_get_size()/2))
 	else:
 		if has_node('MouseController'): get_node('MouseController').queue_free()
 
@@ -570,7 +571,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
 	print('Combat change setting to true!')
-	if combat_results == 1:
+	if combat_results != 0:
 		setPlayerInput(true)
 	combat_exited.emit()
 	#if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')

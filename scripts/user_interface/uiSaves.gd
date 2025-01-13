@@ -121,6 +121,7 @@ func _exit_tree():
 	if get_tree().current_scene.name != 'StartMenu':
 		print('Exit saves setting to true!')
 		OverworldGlobals.setPlayerInput(true)
+		OverworldGlobals.setMouseController(false)
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_sprint") and initial_mode == Modes.LOAD:

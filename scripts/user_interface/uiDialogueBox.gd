@@ -110,6 +110,7 @@ func start(dialogue_resource: DialogueResource, title: String, extra_game_states
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.getPlayer().setUIVisibility(false)
 	OverworldGlobals.getPlayer().sprinting = false
+	OverworldGlobals.setMouseController(true)
 	#OverworldGlobals.setMouseController(true)
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
@@ -232,6 +233,7 @@ func _exit_tree():
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
 		print('DBox setting to true!')
+		OverworldGlobals.setMouseController(false)
 		OverworldGlobals.setPlayerInput(true)
 	#OverworldGlobals.setMouseController(false)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(2, 2), 0.5)

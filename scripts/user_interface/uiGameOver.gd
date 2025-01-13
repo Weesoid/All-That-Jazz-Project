@@ -30,6 +30,7 @@ func _ready():
 	await tween_b.finished
 	animator.play('Show')
 	await animator.animation_finished
+	OverworldGlobals.setMouseController(true)
 	OverworldGlobals.setMenuFocus(buttons)
 
 func _on_yes_pressed():

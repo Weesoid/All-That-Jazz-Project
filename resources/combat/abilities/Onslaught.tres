@@ -26,11 +26,13 @@ CAN_TARGET_SELF = false
 TARGET_DEAD = false
 DEAD_TARGET_PARAMS = {
 "only_dead": false,
-"only_faded": true
+"only_faded": true,
+"only_marked": false,
+"only_unmarked": false
 }
 CASTER_POSITION = {
 "max": 3,
-"min": 3
+"min": 0
 }
 TARGET_POSITION = {
 "max": 3,
