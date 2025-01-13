@@ -148,15 +148,18 @@ func createMemberButton(member: ResCombatant):
 	button.custom_minimum_size.x = 64
 	button.text = member.NAME
 	member.initializeCombatant()
-	member.getAnimator().play('Idle')
-	button.add_child(member.SCENE)
 	button.pressed.connect(
 		func():
 			member.SCENE.modulate = Color(Color.WHITE, 1.0)
 			for body in getOtherMemberScenes(member.NAME):
 				body.modulate = Color(Color.WHITE, 0.25)
+				body.combatant_resource.getAnimator().play('RESET')
+				body.combatant_resource.stopBreatheTween()
 			loadMemberInfo(member, button)
+			member.SCENE.playIdle()
 			)
+	button.add_child(member.SCENE)
+	
 #	button.focus_entered.connect(func(): member.SCENE.modulate = Color.YELLOW)
 #	button.mouse_entered.connect(func(): member.SCENE.modulate = Color.YELLOW)
 #	button.focus_exited.connect(func(): member.SCENE.modulate = Color.WHITE)
@@ -406,6 +409,8 @@ func _on_change_formation_pressed():
 	changing_formation = !changing_formation
 	for member in getOtherMemberScenes():
 		member.modulate = Color(Color.WHITE, 1.0)
+		member.combatant_resource.getAnimator().play('RESET')
+		member.combatant_resource.stopBreatheTween()
 	
 	if changing_formation:
 		tabs.hide()

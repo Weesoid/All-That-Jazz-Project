@@ -35,13 +35,13 @@
 [ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="31_cav4l"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="32_rsjh5"]
 
-[sub_resource type="Resource" id="Resource_4tun2"]
+[sub_resource type="Resource" id="Resource_65mfm"]
 script = ExtResource("1_5i744")
 position = Vector2(-21.5397, -221.505)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_ea7ce"]
+[sub_resource type="Resource" id="Resource_eo8j1"]
 script = ExtResource("2_8l7tu")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_mc1ue")])
 QUEST_OBJECTIVES_DATA = {
@@ -53,7 +53,7 @@ ExtResource("2_mc1ue"): {
 }
 }
 
-[sub_resource type="Resource" id="Resource_d57k4"]
+[sub_resource type="Resource" id="Resource_qbend"]
 script = ExtResource("15_xy844")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_vkpwf"), ExtResource("15_noxl6"), ExtResource("17_v1fb7"), ExtResource("18_wxene"), ExtResource("19_cl6ec")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -240,7 +240,7 @@ ExtResource("18_wxene"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 25.0,
+"health": 1.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -251,7 +251,7 @@ ExtResource("18_wxene"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 25,
+"health": 1,
 "hustle": 1,
 "resist": 0.05
 }, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_nacsi"), ExtResource("9_i11jv"), ExtResource("6_mj7hw"), ExtResource("10_siw53"), ExtResource("16_xqc7a"), ExtResource("8_4yji3")]), false, Array[String]([]), true, 1, {
@@ -346,7 +346,7 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_nrwqn"]
+[sub_resource type="Resource" id="Resource_uic0u"]
 script = ExtResource("16_jtg1w")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("27_x3tqo"), ExtResource("17_ft8sm"), ExtResource("23_6boc1"), ExtResource("29_cw8pm"), ExtResource("30_0gevw"), SubResource("Resource_ar3u3")])
 CRAFTED = Array[String]([])
@@ -360,9 +360,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("17_3c4i2")
-NAME = "Save 2 - 00:03:37
+NAME = "Save 2 - 00:03:39
 Morale 1
 Prototype Room"
-PLAYTIME = 218.735
+PLAYTIME = 220.412
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_4tun2"), SubResource("Resource_ea7ce"), SubResource("Resource_d57k4"), SubResource("Resource_nrwqn")]
+save_data = [SubResource("Resource_65mfm"), SubResource("Resource_eo8j1"), SubResource("Resource_qbend"), SubResource("Resource_uic0u")]
