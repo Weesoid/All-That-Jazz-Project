@@ -15,7 +15,7 @@ func _ready():
 	SaveLoadGlobals.resetVariables()
 	
 	new_game.grab_focus()
-	music.play()
+	#music.play()
 	animator.play("Show")
 	load_game.disabled = !hasSaves()
 	await get_tree().create_timer(0.15).timeout # Placeholder

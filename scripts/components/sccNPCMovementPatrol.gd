@@ -102,8 +102,8 @@ func executeCollisionAction():
 	if BODY.get_last_slide_collision().get_collider() is PlayerScene:
 		print(NAME, ': You touched me! I am fighting you! ', Time.get_time_dict_from_system())
 		immobolize()
-		OverworldGlobals.changeToCombat(NAME)
 		OverworldGlobals.addPatrollerPulse(BODY, 200.0, 1)
+		OverworldGlobals.changeToCombat(NAME)
 		COMBAT_SWITCH = false
 	if BODY.get_last_slide_collision().get_collider().has_node('NPCPatrolComponent') and STATE == 2:
 		BODY.get_last_slide_collision().get_collider().get_node('NPCPatrolComponent').updateMode(2)

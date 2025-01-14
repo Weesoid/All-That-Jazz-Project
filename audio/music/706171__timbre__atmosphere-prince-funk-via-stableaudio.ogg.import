@@ -2,7 +2,7 @@
 
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
-uid="uid://vwlh00km2uge"
+uid="uid://b6lticif0jgom"
 path="res://.godot/imported/706171__timbre__atmosphere-prince-funk-via-stableaudio.ogg-486faebfcfd1451567aa56b13f83c747.oggvorbisstr"
 
 [deps]
@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/706171__timbre__atmosphere-prince-funk-via-st
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
 bpm=0
 beat_count=0

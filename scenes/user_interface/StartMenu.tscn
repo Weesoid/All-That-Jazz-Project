@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiStartMenu.gd" id="1_1evch"]
 [ext_resource type="Theme" uid="uid://dlrtokrr0ap1h" path="res://design/BorderlessButton.tres" id="1_6f5xk"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="1_102o8"]
-[ext_resource type="AudioStream" uid="uid://q4qfaj7w4l1n" path="res://audio/music/453396__oymaldonado__little-latin-jazz-intro.ogg" id="4_nvg44"]
+[ext_resource type="AudioStream" uid="uid://dvafdwjlskag4" path="res://audio/music/453396__oymaldonado__little-latin-jazz-intro.ogg" id="4_nvg44"]
 
 [sub_resource type="Animation" id="Animation_d0dge"]
 length = 0.001
@@ -186,6 +186,7 @@ horizontal_alignment = 1
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_nvg44")
 volume_db = -16.0
+autoplay = true
 bus = &"Music"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -218,4 +219,3 @@ libraries = {
 [connection signal="pressed" from="VBoxContainer/LoadGame" to="." method="_on_load_game_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
