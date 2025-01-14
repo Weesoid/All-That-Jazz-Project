@@ -17,7 +17,6 @@ class_name MemberAdjustUI
 @onready var charm_slot_a = $TabContainer/Charms/EquippedCharms/SlotA
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
-@onready var member_name = $Label
 @onready var formation_button = $ChangeFormation
 @onready var infliction = $Infliction
 var selected_combatant: ResPlayerCombatant
@@ -75,7 +74,6 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 	else:
 		selected_combatant = member
 		select_charms_panel.hide()
-		member_name.text = member.NAME
 		loadAbilities()
 		updateEquipped()
 	
@@ -415,12 +413,10 @@ func _on_change_formation_pressed():
 	if changing_formation:
 		tabs.hide()
 		attrib_view.hide()
-		member_name.hide()
 		selected_combatant = null
 		formation_button.text = 'Finish'
 	else:
 		tabs.show()
 		attrib_view.show()
-		member_name.show()
 		formation_button.text = 'Change Formation'
 		loadMembers()

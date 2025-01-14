@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=50 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
@@ -13,7 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://xiuccmt1snj8" path="res://scenes/user_interface/CombatLog.tscn" id="11_8bne6"]
 [ext_resource type="StyleBox" uid="uid://4flvvnyqrn3l" path="res://design/PanelNoLeft.tres" id="11_f3q3i"]
 [ext_resource type="StyleBox" uid="uid://c22qxunue5s3x" path="res://design/PanelNoRight.tres" id="12_oauep"]
+[ext_resource type="Texture2D" uid="uid://2672vkpjh4g6" path="res://images/sprites/button_shift_normal.png" id="13_q3mqv"]
+[ext_resource type="Texture2D" uid="uid://brdepaat3jf5w" path="res://images/sprites/button_shift_click.png" id="14_2jwe4"]
 [ext_resource type="AudioStream" uid="uid://cujwmntfbmh8b" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="14_ykm4m"]
+[ext_resource type="Texture2D" uid="uid://becu87dc4frvm" path="res://images/sprites/button_shift_hover.png" id="15_kq5xr"]
 
 [sub_resource type="GDScript" id="GDScript_ggh4h"]
 script/source = "extends ProgressBar
@@ -330,6 +333,17 @@ border_width_left = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="InputEventKey" id="InputEventKey_gp6h1"]
+pressed = true
+physical_keycode = 69
+
+[sub_resource type="InputEventJoypadButton" id="InputEventJoypadButton_i3g6u"]
+button_index = 10
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_g2m2x"]
+events = [SubResource("InputEventKey_gp6h1"), SubResource("InputEventJoypadButton_i3g6u")]
 
 [sub_resource type="GDScript" id="GDScript_ip03s"]
 resource_name = "TensionBar"
@@ -1112,10 +1126,10 @@ offset_bottom = 40.0
 [node name="AttributeView" parent="CombatCamera/Interface/Inspect" instance=ExtResource("10_60ct5")]
 z_index = 100
 layout_mode = 1
-offset_left = 90.0
-offset_top = 54.0
-offset_right = 90.0
-offset_bottom = 54.0
+offset_left = 70.0
+offset_top = 34.0
+offset_right = 70.0
+offset_bottom = 34.0
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
 offset_left = -55.0
@@ -1161,10 +1175,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 152.0
-offset_top = 67.0
-offset_right = 360.0
-offset_bottom = 137.0
+offset_left = 132.0
+offset_top = 47.0
+offset_right = 340.0
+offset_bottom = 117.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(184, 36)
@@ -1185,6 +1199,14 @@ offset_top = 53.0
 offset_right = 136.0
 offset_bottom = 113.0
 theme_override_styles/panel = ExtResource("12_oauep")
+
+[node name="ShiftActions" type="TextureButton" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
+z_index = 9
+layout_mode = 2
+shortcut = SubResource("Shortcut_g2m2x")
+texture_normal = ExtResource("13_q3mqv")
+texture_pressed = ExtResource("14_2jwe4")
+texture_hover = ExtResource("15_kq5xr")
 
 [node name="Scroller" type="ScrollContainer" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
 layout_mode = 2
@@ -1237,6 +1259,7 @@ theme = ExtResource("8_lqkpn")
 text = "ACTION"
 
 [node name="Guard" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
+visible = false
 custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 theme = ExtResource("8_lqkpn")
@@ -1399,6 +1422,7 @@ theme = ExtResource("7_56rvc")
 text = "60"
 
 [connection signal="timeout" from="TurnTimer" to="." method="_on_turn_timer_timeout"]
+[connection signal="pressed" from="CombatCamera/Interface/SecondaryPanel/OptionContainer/ShiftActions" to="." method="_on_shift_actions_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Action" to="." method="getMoveAbilities"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard" to="." method="_on_guard_pressed"]

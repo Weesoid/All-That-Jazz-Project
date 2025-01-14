@@ -1,0 +1,112 @@
+[gd_resource type="Resource" script_class="SavedGame" load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_r7dit"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_1od7n"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="3_atwga"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="4_8g0xj"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="5_ucfjg"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Watchdog.tres" id="6_l45la"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/PiercingProjectile.tres" id="7_u5rja"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/AilmentStrike.tres" id="8_o2li5"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="9_8fasv"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Teamwork.tres" id="10_r6uyt"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Tame.tres" id="11_r6x7k"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/KillChopAttack.tres" id="12_v6e5u"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BraceSelf.tres" id="13_2cgpl"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="14_che5b"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="15_hag4u"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="16_iifja"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="17_ltk5u"]
+
+[sub_resource type="Resource" id="Resource_ia2s8"]
+script = ExtResource("1_r7dit")
+position = Vector2(-65.0549, 34.0012)
+scene_path = "res://scenes/entities/Player.tscn"
+direction = 179
+
+[sub_resource type="Resource" id="Resource_ujtbg"]
+script = ExtResource("2_1od7n")
+QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
+QUEST_OBJECTIVES_DATA = {}
+
+[sub_resource type="Resource" id="Resource_qy4u1"]
+script = ExtResource("15_hag4u")
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_atwga")])
+FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
+CLEARED_MAPS = {}
+CURRENCY = 100
+PARTY_LEVEL = 1
+CURRENT_EXP = 0
+STRING_CONDITIONS = Array[String]([])
+PROGRESSION_DATA = {}
+TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([])
+COMBATANT_SAVE_DATA = {
+ExtResource("3_atwga"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+0: null,
+1: null,
+2: null
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.07,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 1,
+"heal_mult": 1.0,
+"health": 16.0,
+"hustle": 1,
+"resist": 0.05
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 16,
+"hustle": 1,
+"resist": 0.05
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_8g0xj"), ExtResource("5_ucfjg"), ExtResource("6_l45la"), ExtResource("7_u5rja"), ExtResource("8_o2li5"), ExtResource("9_8fasv"), ExtResource("10_r6uyt"), ExtResource("11_r6x7k"), ExtResource("12_v6e5u")]), false, Array[String]([]), true, 1, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
+"primary_temperment": {
+"handling": 1
+},
+"scaled_stats": {
+"health": 0.0
+},
+"secondary_temperment": {
+"crit": 0.02
+}
+}, null, {
+"brawn": 0,
+"grit": 0,
+"handling": 0
+}, ExtResource("13_2cgpl"), {
+"primary": "gifted",
+"secondary": "acute"
+}]
+}
+UNLOCKED_ABILITIES = {}
+ADDED_ABILITIES = {}
+MAX_PARTY_LEVEL = 5
+KNOWN_POWERS = [ExtResource("14_che5b")]
+
+[sub_resource type="Resource" id="Resource_er2js"]
+script = ExtResource("16_iifja")
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
+CRAFTED = Array[String]([])
+ITEM_DATA_INVENTORY = {}
+
+[resource]
+script = ExtResource("17_ltk5u")
+NAME = "Save 3 - 00:00:14
+Morale 1
+Alt Room"
+PLAYTIME = 14.587
+current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
+save_data = [SubResource("Resource_ia2s8"), SubResource("Resource_ujtbg"), SubResource("Resource_qy4u1"), SubResource("Resource_er2js")]

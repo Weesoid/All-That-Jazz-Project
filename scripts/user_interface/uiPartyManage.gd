@@ -74,7 +74,6 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 	else:
 		selected_combatant = member
 		select_charms_panel.hide()
-		member_name.text = member.NAME
 		loadAbilities()
 		updateEquipped()
 	updateTemperments()

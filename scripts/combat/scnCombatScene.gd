@@ -81,7 +81,6 @@ signal combat_done
 #********************************************************************************
 func _ready():
 	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
-	OverworldGlobals.setMouseController(true)
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
 	
@@ -120,6 +119,7 @@ func _ready():
 		combat_dialogue.initialize()
 	
 	transition_scene.visible = false
+	OverworldGlobals.setMouseController(true)
 
 func _process(_delta):
 	$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
@@ -166,6 +166,7 @@ func on_player_turn():
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
 	ui_animator.play('ShowActionPanel')
+	print(last_used_ability)
 	if last_used_ability.keys().has(active_combatant) and active_combatant.ABILITY_SET.has(last_used_ability[active_combatant][0]):
 		_on_skills_pressed()
 	if turn_time > 0.0:
@@ -453,13 +454,23 @@ func getMoveAbilities():
 	pass_button.text = 'Pass'
 	pass_button.pressed.connect(func(): confirm.emit())
 	pass_button.focus_entered.connect(func():updateDescription(null, 'Pass this turn.'))
+	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/BraceSelf.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Recede.tres")))
 	secondary_panel_container.add_child(pass_button)
+	secondary_panel_container.get_children()[0].disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
+	
 	animateSecondaryPanel('show')
 	tweenAbilityButtons(secondary_panel_container.get_children())
 	await get_tree().process_frame
-	secondary_panel_container.get_child(0).grab_focus()
+	var out = []
+	for ability in secondary_panel_container.get_children():
+		out.append(ability.text)
+	if last_used_ability.keys().has(active_combatant) and out.has(last_used_ability[active_combatant][0].NAME):
+		for child in secondary_panel_container.get_children():
+			if child.text == last_used_ability[active_combatant][0].NAME: child.grab_focus()
+	else:
+		OverworldGlobals.setMenuFocus(secondary_panel_container)
 
 func createAbilityButton(ability: ResAbility)-> Button:
 	var button = OverworldGlobals.createCustomButton()
@@ -1109,3 +1120,15 @@ func stopTimer():
 func _on_turn_timer_timeout():
 	turn_timer_animator.play_backwards("Show")
 	confirm.emit()
+
+
+func _on_shift_actions_pressed():
+	if ui_animator.is_playing() or (secondary_panel_container.get_children()[0].text == 'Brace' and active_combatant.ABILITY_SET.is_empty()):
+		return
+	
+	resetActionLog()
+	print(secondary_panel_container.get_children()[0].text)
+	if secondary_panel_container.get_children()[0].text == 'Brace':
+		_on_skills_pressed()
+	else:
+		getMoveAbilities()
