@@ -66,8 +66,9 @@ func loadMembers(set_focus:bool=true):
 			selected_combatant = member
 			loadMemberInfo(selected_combatant)
 	
-	for body in getOtherMemberScenes(selected_combatant.NAME):
-		body.modulate = Color(Color.WHITE, 0.25)
+	if getOtherMemberScenes().size() > 0: 
+		for body in getOtherMemberScenes(selected_combatant.NAME):
+			body.modulate = Color(Color.WHITE, 0.25)
 
 func loadMemberInfo(member: ResCombatant, button: Button=null):
 	if changing_formation and selected_combatant == null:

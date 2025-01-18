@@ -19,7 +19,8 @@ BASE_TEMPERMENT = {
 "primary": "gifted",
 "secondary": "acute"
 }
-MANDATORY = false
+MANDATORY = true
+STAT_MULTIPLIER = 0.01
 NAME = "Willis Flynn"
 PACKED_SCENE = ExtResource("3_q2rry")
 DESCRIPTION = "Spicey frisk undertale!"
