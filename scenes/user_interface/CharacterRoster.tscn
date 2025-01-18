@@ -1,7 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://dpnrwja6jamvn"]
+[gd_scene load_steps=4 format=3 uid="uid://dpnrwja6jamvn"]
 
 [ext_resource type="PackedScene" uid="uid://boubqwafllx3y" path="res://scenes/user_interface/CharacterAdjust.tscn" id="1_ymvan"]
 [ext_resource type="PackedScene" uid="uid://8xomgu0u202i" path="res://scenes/user_interface/RosterSelector.tscn" id="2_w1qpt"]
+
+[sub_resource type="GDScript" id="GDScript_xd62j"]
+script/source = "extends Control
+
+func _ready():
+	if OverworldGlobals.isPlayerCheating():
+		show()
+
+func _on_pressed():
+	var path = \"res://resources/combat/combatants_player/tameable/\"
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != \"\":
+			var combatant = load(path+'/'+file_name)
+			if !PlayerGlobals.TEAM.has(combatant):
+				PlayerGlobals.addCombatantToTeam(combatant)
+			file_name = dir.get_next()
+	else:
+		print(\"An error occurred when trying to access the path.\")
+		print(path)
+	await get_tree().process_frame
+	get_parent().get_node('CharacterAdjust').get_node('Members2').loadMembers()
+"
 
 [node name="Roster" type="Control"]
 layout_mode = 3
@@ -23,9 +48,21 @@ offset_right = -152.0
 offset_bottom = 4.0
 show_temperments = true
 
-[node name="Members2" parent="CharacterAdjust" instance=ExtResource("2_w1qpt")]
+[node name="Roster" parent="CharacterAdjust" instance=ExtResource("2_w1qpt")]
 layout_mode = 0
 offset_left = 352.0
 offset_top = -104.0
 offset_right = 440.0
 offset_bottom = 104.0
+
+[node name="GetAllCombatants" type="Button" parent="."]
+layout_mode = 0
+offset_left = -272.0
+offset_top = -172.0
+offset_right = -160.0
+offset_bottom = -150.0
+text = "Get All Combatants"
+alignment = 0
+script = SubResource("GDScript_xd62j")
+
+[connection signal="pressed" from="GetAllCombatants" to="GetAllCombatants" method="_on_pressed"]

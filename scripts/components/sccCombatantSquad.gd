@@ -15,3 +15,15 @@ func addLingeringEffect(status_effect_name: String):
 
 func removeLingeringEffect(status_effect_name: String):
 	afflicted_status_effects.erase(status_effect_name)
+
+func getMember(member_name: String)-> ResCombatant:
+	for member in COMBATANT_SQUAD:
+		if member.NAME == member_name: return member
+	
+	return null
+
+func hasMember(member_name: String)-> bool:
+	for member in COMBATANT_SQUAD:
+		if member.NAME == member_name: return true
+	
+	return false

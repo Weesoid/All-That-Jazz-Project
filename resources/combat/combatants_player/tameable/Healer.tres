@@ -9,8 +9,13 @@
 [resource]
 script = ExtResource("4_kjlrm")
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_8phct")])
+BASE_TEMPERMENT = {
+"primary": "",
+"secondary": ""
+}
 FOLLOWER_PACKED_SCENE = ExtResource("4_nl1we")
 MANDATORY = false
+STAT_MULTIPLIER = 0.01
 NAME = "Healer McHealer"
 PACKED_SCENE = ExtResource("3_dl1jr")
 DESCRIPTION = "He heals and shit!"

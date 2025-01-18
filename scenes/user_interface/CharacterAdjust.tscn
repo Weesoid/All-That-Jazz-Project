@@ -188,6 +188,7 @@ visible = false
 layout_mode = 2
 
 [node name="Temperment" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Temperment"]
@@ -343,16 +344,14 @@ offset_bottom = -33.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qcjn6")
 
 [node name="Label" type="Label" parent="."]
-visible = false
 layout_mode = 0
-offset_left = -128.0
-offset_top = -112.0
-offset_right = 240.0
-offset_bottom = -88.0
+offset_left = -120.0
+offset_top = -152.0
+offset_right = 248.0
+offset_bottom = -128.0
 tooltip_text = "TSETSETSETSETRWARAWR"
 theme = ExtResource("8_hty5i")
 theme_override_font_sizes/font_size = 16
-text = "MEMBER NAME"
 vertical_alignment = 2
 
 [node name="Infliction" type="Label" parent="."]

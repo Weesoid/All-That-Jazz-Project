@@ -1,18 +1,28 @@
 [gd_scene load_steps=3 format=3 uid="uid://8xomgu0u202i"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiRosterSelector.gd" id="1_kd603"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="2_d48ry"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7j85l"]
-
-[node name="Members" type="PanelContainer"]
+[node name="Roster" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 90.0
 offset_bottom = 208.0
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_7j85l")
 script = ExtResource("1_kd603")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -472.0
+offset_top = 192.0
+offset_right = -432.0
+offset_bottom = 202.0
+theme = ExtResource("2_d48ry")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
+offset_right = 90.0
+offset_bottom = 208.0
 follow_focus = true
 horizontal_scroll_mode = 0
 
@@ -20,8 +30,3 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
-
-[node name="Button" type="Button" parent="ScrollContainer/HBoxContainer"]
-visible = false
-layout_mode = 2
-text = "Test poopulon"

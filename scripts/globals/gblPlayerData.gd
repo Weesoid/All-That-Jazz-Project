@@ -99,6 +99,12 @@ func getTeamMemberNames():
 		out.append(combatant.NAME)
 	return out
 
+func getTeamMember(member_name: String)-> ResPlayerCombatant:
+	for member in TEAM:
+		if member.NAME == member_name: return member
+	
+	return null
+
 func applyBlessing(blessing):
 	if blessing is String and !blessing.contains('res://'):
 		blessing = load("res://resources/blessings/%s.tres" % blessing)
@@ -490,7 +496,7 @@ func loadData(save_data: PlayerSaveData):
 		#combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][2]
 		#combatant.BASE_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][3]
 		#combatant.ABILITY_POOL = save_data.COMBATANT_SAVE_DATA[combatant][4]
-		combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][5]
+		#combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][5]
 		combatant.LINGERING_STATUS_EFFECTS = save_data.COMBATANT_SAVE_DATA[combatant][6]
 		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][7]
 		combatant.STAT_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][8]

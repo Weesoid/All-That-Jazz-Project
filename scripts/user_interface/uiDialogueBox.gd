@@ -233,7 +233,7 @@ func _exit_tree():
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
 		print('DBox setting to true!')
-		OverworldGlobals.setMouseController(false)
+		if !OverworldGlobals.inCombat(): OverworldGlobals.setMouseController(false)
 		OverworldGlobals.setPlayerInput(true)
 	#OverworldGlobals.setMouseController(false)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(2, 2), 0.5)

@@ -29,6 +29,7 @@ class_name MemberAdjustUI
 @onready var secondary_val = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
 @onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
 @onready var reroll_button = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary
+@onready var character_name = $Label
 
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
@@ -89,7 +90,12 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		loadAbilities()
 		updateEquipped()
 		updateTemperments()
-	
+		if !OverworldGlobals.getCombatantSquadComponent('Player').hasMember(selected_combatant.NAME):
+			character_name.text = selected_combatant.NAME
+			#character_name.add_child(member.SCENE)
+		else:
+			character_name.text = ''
+			#if character_name.get_child_count() > 0: character_name.get_child(0).queue_free()
 	#print(selected_combatant.TEMPERMENT)
 
 func swapMembers(member_a: ResCombatant, member_b: ResCombatant):

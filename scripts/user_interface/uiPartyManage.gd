@@ -3,15 +3,15 @@ extends MemberAdjustUI
 @onready var member_view = $Label/Marker2D
 @onready var currency = $Currency
 @onready var debug_button = $GetAllCombatants
-@onready var experience_bar = $TabContainer/Temperment/ProgressBar
-@onready var reroll_primary = $TabContainer/Temperment/VBoxContainer/HSplitContainer/RerollPrimary
-@onready var reroll_secondary = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/RerollSecondary
-@onready var primary_name = $TabContainer/Temperment/VBoxContainer/HSplitContainer/HBoxContainer/Label
-@onready var primary_val = $TabContainer/Temperment/VBoxContainer/HSplitContainer/HBoxContainer/Label2
-@onready var secondary_name = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label
-@onready var secondary_val = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
-@onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
-@onready var reroll_button = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/RerollSecondary
+#@onready var experience_bar = $TabContainer/Temperment/ProgressBar
+#@onready var reroll_primary = $TabContainer/Temperment/VBoxContainer/HSplitContainer/RerollPrimary
+#@onready var reroll_secondary = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/RerollSecondary
+#@onready var primary_name = $TabContainer/Temperment/VBoxContainer/HSplitContainer/HBoxContainer/Label
+#@onready var primary_val = $TabContainer/Temperment/VBoxContainer/HSplitContainer/HBoxContainer/Label2
+#@onready var secondary_name = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label
+#@onready var secondary_val = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
+#@onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
+#@onready var reroll_button = $TabContainer/Temperment/VBoxContainer/HSplitContainer2/RerollSecondary
 
 func _ready():
 	loadMembers()
