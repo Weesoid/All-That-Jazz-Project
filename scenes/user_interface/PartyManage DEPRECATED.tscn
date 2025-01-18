@@ -1,18 +1,16 @@
-[gd_scene load_steps=18 format=3 uid="uid://c147mkn7gfruw"]
+[gd_scene load_steps=17 format=3 uid="uid://c147mkn7gfruw"]
 
-[ext_resource type="Script" path="res://scripts/user_interface/uiPartyManage.gd" id="1_i8l6p"]
-[ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_uyp8b"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="3_8lxgv"]
-[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="4_apa5i"]
-[ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="5_10rs6"]
-[ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="6_v3qmd"]
-[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="7_gvvbc"]
-[ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="7_y1x3a"]
-[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_4vpd7"]
-[ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="9_hyicu"]
-[ext_resource type="PackedScene" uid="uid://cshiwdcttktbe" path="res://scenes/user_interface/CurrencyView.tscn" id="10_p0spm"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7j85l"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiPartyManage.gd" id="1_11ial"]
+[ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_yttj1"]
+[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="3_tdb45"]
+[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="4_0upo0"]
+[ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="5_3hpav"]
+[ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="6_vp4pm"]
+[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="7_e8eca"]
+[ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="8_ggh3e"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="9_gflcs"]
+[ext_resource type="Theme" uid="uid://drf46n866ot17" path="res://design/CombatButtons.tres" id="10_xo8de"]
+[ext_resource type="PackedScene" uid="uid://cshiwdcttktbe" path="res://scenes/user_interface/CurrencyView.tscn" id="11_eqt0r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1jwo"]
 bg_color = Color(0, 0, 0, 1)
@@ -54,27 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-script = ExtResource("1_i8l6p")
-
-[node name="Members" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 280.0
-offset_top = -80.0
-offset_right = 368.0
-offset_bottom = 128.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_7j85l")
-
-[node name="HBoxContainer" type="VBoxContainer" parent="Members"]
-layout_mode = 2
-theme_override_constants/separation = 8
-alignment = 1
+script = ExtResource("1_11ial")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
@@ -108,7 +86,7 @@ offset_top = 24.0
 offset_right = 214.0
 offset_bottom = 95.0
 grow_vertical = 2
-theme_override_styles/panel = ExtResource("2_uyp8b")
+theme_override_styles/panel = ExtResource("2_yttj1")
 
 [node name="Label" type="RichTextLabel" parent="TabContainer/Abilities/DescriptionPanel"]
 layout_mode = 2
@@ -135,27 +113,27 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Weapon" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+[node name="Weapon" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_tdb45")]
 custom_minimum_size = Vector2(92, 0)
 layout_mode = 2
-theme = ExtResource("4_apa5i")
+theme = ExtResource("4_0upo0")
 text = "WEAPON"
 
-[node name="SlotA" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+[node name="SlotA" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_tdb45")]
 layout_mode = 2
-theme = ExtResource("4_apa5i")
-icon = ExtResource("5_10rs6")
+theme = ExtResource("4_0upo0")
+icon = ExtResource("5_3hpav")
 
-[node name="SlotB" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+[node name="SlotB" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_tdb45")]
 layout_mode = 2
-theme = ExtResource("4_apa5i")
-icon = ExtResource("5_10rs6")
+theme = ExtResource("4_0upo0")
+icon = ExtResource("5_3hpav")
 
-[node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_8lxgv")]
+[node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("3_tdb45")]
 visible = false
 layout_mode = 2
-theme = ExtResource("4_apa5i")
-icon = ExtResource("5_10rs6")
+theme = ExtResource("4_0upo0")
+icon = ExtResource("5_3hpav")
 
 [node name="Panel" type="Panel" parent="TabContainer/Charms"]
 layout_mode = 2
@@ -163,7 +141,7 @@ offset_left = 6.0
 offset_top = 12.0
 offset_right = 222.0
 offset_bottom = 108.0
-theme_override_styles/panel = ExtResource("2_uyp8b")
+theme_override_styles/panel = ExtResource("2_yttj1")
 
 [node name="SelectCharms" type="ScrollContainer" parent="TabContainer/Charms/Panel"]
 custom_minimum_size = Vector2(7.866, 0)
@@ -211,7 +189,7 @@ text = "[center]LEFT CLICK TO USE ITEM
 [/center]
 "
 
-[node name="Attributes" parent="TabContainer" instance=ExtResource("6_v3qmd")]
+[node name="Attributes" parent="TabContainer" instance=ExtResource("6_vp4pm")]
 visible = false
 layout_mode = 2
 
@@ -259,7 +237,7 @@ text = "+20% GRIT
 -10% BRAWN"
 fit_content = true
 
-[node name="RerollPrimary" parent="TabContainer/Temperment/VBoxContainer/HSplitContainer" instance=ExtResource("3_8lxgv")]
+[node name="RerollPrimary" parent="TabContainer/Temperment/VBoxContainer/HSplitContainer" instance=ExtResource("3_tdb45")]
 visible = false
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
@@ -286,7 +264,7 @@ text = "+20% GRIT
 -10% BRAWN"
 fit_content = true
 
-[node name="RerollSecondary" parent="TabContainer/Temperment/VBoxContainer/HSplitContainer2" instance=ExtResource("3_8lxgv")]
+[node name="RerollSecondary" parent="TabContainer/Temperment/VBoxContainer/HSplitContainer2" instance=ExtResource("3_tdb45")]
 layout_mode = 2
 text = "REROLL"
 
@@ -300,7 +278,7 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 value = 50.0
 show_percentage = false
 
-[node name="ProgressBarTrueValues" parent="TabContainer/Temperment/ProgressBar" instance=ExtResource("7_gvvbc")]
+[node name="ProgressBarTrueValues" parent="TabContainer/Temperment/ProgressBar" instance=ExtResource("7_e8eca")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -319,7 +297,7 @@ offset_right = 73.0
 offset_bottom = -3.0
 text = "Cost: 25"
 
-[node name="AttributeView" parent="." instance=ExtResource("7_y1x3a")]
+[node name="AttributeView" parent="." instance=ExtResource("8_ggh3e")]
 z_index = 1
 layout_mode = 2
 anchors_preset = 0
@@ -363,7 +341,7 @@ offset_top = 120.0
 offset_right = 20.0
 offset_bottom = 152.0
 tooltip_text = "TSETSETSETSETRWARAWR"
-theme = ExtResource("8_4vpd7")
+theme = ExtResource("9_gflcs")
 theme_override_font_sizes/font_size = 16
 text = "MEMBER NAME"
 vertical_alignment = 2
@@ -379,22 +357,22 @@ offset_top = -104.0
 offset_right = 280.0
 offset_bottom = -88.0
 mouse_filter = 1
-theme = ExtResource("8_4vpd7")
+theme = ExtResource("9_gflcs")
 text = "INFLICTED!"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="ChangeFormation" parent="." instance=ExtResource("3_8lxgv")]
+[node name="ChangeFormation" parent="." instance=ExtResource("3_tdb45")]
 visible = false
 layout_mode = 1
 offset_left = 136.0
 offset_top = 136.0
 offset_right = 280.0
 offset_bottom = 160.0
-theme = ExtResource("9_hyicu")
+theme = ExtResource("10_xo8de")
 text = "CHANGE FORMATION"
 
-[node name="Currency" parent="." instance=ExtResource("10_p0spm")]
+[node name="Currency" parent="." instance=ExtResource("11_eqt0r")]
 visible = false
 layout_mode = 0
 offset_left = 176.0
