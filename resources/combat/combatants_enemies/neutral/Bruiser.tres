@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=8 format=3 uid="uid://dxdpkpoxq1gca"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=9 format=3 uid="uid://dxdpkpoxq1gca"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ak3dv"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="2_4qnxp"]
 [ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="2_fs2it"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_2da0y"]
+[ext_resource type="Resource" uid="uid://dlan5dxt4e3mm" path="res://resources/combat/abilities/Onslaught.tres" id="3_v7fin"]
 [ext_resource type="Resource" uid="uid://drgb4ejko51ty" path="res://resources/items/CharmStoneWall.tres" id="4_qjtqo"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="5_tmjne"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="6_wlqpv"]
@@ -47,6 +48,6 @@ SCALE_STATS = {
 "hustle": true,
 "resist": true
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ak3dv"), ExtResource("2_fs2it")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ak3dv"), ExtResource("2_fs2it"), ExtResource("3_v7fin")])
 MAX_TURN_CHARGES = 1
 AI_PACKAGE = ExtResource("2_4qnxp")

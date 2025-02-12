@@ -101,8 +101,8 @@ func _ready():
 		battle_music.play()
 	
 	for combatant in COMBATANTS:
-		tickStatusEffects(combatant, false, false)
-		tickStatusEffects(combatant, true, false)
+		tickStatusEffects(combatant, false, false, true)
+		tickStatusEffects(combatant, true, false, true)
 	await removeDeadCombatants(false)
 	
 	rollTurns()
@@ -805,8 +805,10 @@ func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
 		while !combatant.STATUS_EFFECTS.is_empty():
 			combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
-func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true):
+func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true, only_permanent=false):
 	for effect in combatant.STATUS_EFFECTS:
+		if only_permanent and !effect.PERMANENT:
+			continue
 		if (per_turn and !effect.TICK_PER_TURN) or (!per_turn and effect.TICK_PER_TURN): 
 			continue
 		effect.tick(update_duration)
@@ -1036,6 +1038,7 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 		CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
 	
 	onslaught_mode = set_to
+	await get_tree().process_frame
 
 func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	var tween = CombatGlobals.getCombatScene().create_tween()
@@ -1073,6 +1076,7 @@ func hasTameableCombatants()-> bool:
 	return false
 
 func addTargetClickButton(combatant: ResCombatant):
+	if !is_instance_valid(combatant.SCENE): return
 	var button = TextureButton.new()
 	button.texture_hover = load("res://images/sprites/button_confirm_hover.png")
 	button.texture_normal = load("res://images/sprites/button_confirm_normal.png")

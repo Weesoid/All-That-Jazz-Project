@@ -97,5 +97,10 @@ func animateStatusEffect():
 		if afflicted_combatant is ResEnemyCombatant and !afflicted_combatant.SCENE is PlayerCombatantScene:
 			VISUALS.rotation_degrees = -180
 
+func getDescription():
+	var description = DESCRIPTION
+	if MAX_RANK > 1: description += ' (%s/%s)' % [current_rank, MAX_RANK]
+	return description
+
 func _to_string():
 	return NAME

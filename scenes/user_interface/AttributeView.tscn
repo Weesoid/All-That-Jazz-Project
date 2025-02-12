@@ -216,7 +216,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
 [node name="Grit" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
-tooltip_text = "Resistance from damage."
+tooltip_text = "Resistance from damage (caps out at 70%)."
 split_offset = 50
 dragger_visibility = 1
 

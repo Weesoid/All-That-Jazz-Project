@@ -148,9 +148,12 @@ func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
 
 func useDamageFormula(target: ResCombatant, damage):
-	var out_damage = damage - (target.STAT_VALUES['grit'] * damage)
+	var grit = target.STAT_VALUES['grit']
+	if grit > 0.7 and (CombatGlobals.inCombat() and !target.SCENE.blocking):
+		grit = 0.7
+	var out_damage = damage - (grit * damage)
 	if out_damage < 0.0: 
-		out_damage = 0
+		out_damage = 1
 	return out_damage
 
 func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):

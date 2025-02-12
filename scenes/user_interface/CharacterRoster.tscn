@@ -24,8 +24,8 @@ func _on_pressed():
 	else:
 		print(\"An error occurred when trying to access the path.\")
 		print(path)
-	await get_tree().process_frame
-	get_parent().get_node('CharacterAdjust').get_node('Members2').loadMembers()
+	#await get_tree().process_frame
+	#get_parent().get_node('CharacterAdjust').get_node('Members2').loadMembers()
 "
 
 [node name="Roster" type="Control"]

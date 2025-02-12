@@ -35,13 +35,18 @@ func setBlocking(set_to: bool):
 			playIdle('Idle')
 
 func block(bonus_grit: float=1.0):
-	if blocking and allow_block and (!CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant or CombatGlobals.getCombatScene().onslaught_mode) and block_timer.is_stopped() and !combatant_resource.isDead() and combatant_resource is ResPlayerCombatant:
+	if canBlock():
 		CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 1.0}, 'block')
 		doAnimation('Block')
 		await animator.animation_finished
 		CombatGlobals.resetStat(combatant_resource, 'block')
 		block_timer.start()
 
+func canBlock()-> bool:
+	return blocking and allow_block and (!CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant or CombatGlobals.getCombatScene().onslaught_mode) and block_timer.is_stopped() and !combatant_resource.isDead() and combatant_resource is ResPlayerCombatant
+
 func _input(_event):
 	if Input.is_action_just_pressed('ui_accept'):
 		block()
+#	if Input.is_action_just_pressed("ui_click") and canBlock():
+#		doAnimation('Cast_Melee', load("res://scripts/combat/abilities/scaRetaliate.gd"))

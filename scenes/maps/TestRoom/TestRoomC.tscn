@@ -78,12 +78,6 @@ shape = SubResource("RectangleShape2D_uqnih")
 [node name="SpawnPoints" type="Marker2D" parent="Area2D"]
 position = Vector2(-136, -280)
 
-[node name="SpawnPoints2" type="Marker2D" parent="Area2D"]
-position = Vector2(-80, -264)
-
-[node name="SpawnPoints3" type="Marker2D" parent="Area2D"]
-position = Vector2(-40, -280)
-
 [node name="Area2D2" type="Area2D" parent="."]
 position = Vector2(-8, 272)
 
@@ -93,12 +87,6 @@ shape = SubResource("RectangleShape2D_uqnih")
 
 [node name="SpawnPoints" type="Marker2D" parent="Area2D2"]
 position = Vector2(8, -296)
-
-[node name="SpawnPoints2" type="Marker2D" parent="Area2D2"]
-position = Vector2(-48, -280)
-
-[node name="SpawnPoints3" type="Marker2D" parent="Area2D2"]
-position = Vector2(-128, -304)
 
 [node name="Area2D3" type="Area2D" parent="."]
 position = Vector2(-8, 344)

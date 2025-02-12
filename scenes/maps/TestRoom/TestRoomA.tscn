@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3]
+[gd_scene load_steps=32 format=3 uid="uid://cax4ch112o5gm"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]

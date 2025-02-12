@@ -116,8 +116,8 @@ func getSprite()-> Sprite2D:
 func getAnimator()-> AnimationPlayer:
 	return SCENE.get_node('AnimationPlayer')
 
-func getStatusEffectNames():
-	var names = []
+func getStatusEffectNames()-> Array[String]:
+	var names: Array[String] = []
 	for effect in STATUS_EFFECTS:
 		names.append(effect.NAME)
 	return names

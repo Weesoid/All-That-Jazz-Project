@@ -42,8 +42,8 @@ func createMemberButton(member: ResPlayerCombatant):
 	button.pressed.connect(func(): addToActive(member, button))
 #	button.mouse_exited.connect(func(): inspecting_label.text = '')
 #	button.focus_exited.connect(func(): inspecting_label.text = '')
-	button.focus_entered.connect(func(): hoverButton(member, button))
-	button.mouse_entered.connect(func(): hoverButton(member, button))
+	button.focus_entered.connect(func(): hoverButton(member))
+	button.mouse_entered.connect(func(): hoverButton(member))
 	print(member.isInflicted())
 	if OverworldGlobals.getCombatantSquad('Player').has(member):
 		if member.isInflicted():
@@ -81,7 +81,7 @@ func addToActive(member: ResCombatant, button: Button):
 	await get_tree().process_frame
 	get_parent().loadMembers()
 
-func hoverButton(member: ResPlayerCombatant, button: Button):
+func hoverButton(member: ResPlayerCombatant):
 	if Input.is_action_pressed('ui_sprint'):
 		if OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.has(member):
 			for mem_button in get_parent().member_container.get_children():
