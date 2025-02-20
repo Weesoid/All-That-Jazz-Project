@@ -71,9 +71,16 @@ static func playAnimation(ability: ResAbility, target):
 # Combat values calculations (damage, healing, etc.)
 static func applyToTarget(caster, target, ability: ResAbility):
 	if ability.current_effect is ResDamageEffect:
-		if CombatGlobals.calculateDamage(caster, target, ability.current_effect.damage, ability.current_effect.can_miss, ability.current_effect.can_crit) and ability.current_effect.apply_status != null:
-			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
-	
+		if CombatGlobals.calculateDamage(caster, target, ability.current_effect.damage, ability.current_effect.can_miss, ability.current_effect.can_crit) and (ability.current_effect.apply_status != null or ability.current_effect.move != 0):
+			if ability.current_effect.apply_status != null:
+				CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
+			if ability.current_effect.move != 0:
+				await CombatGlobals.getCombatScene().get_tree().process_frame
+				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, ability.current_effect.move)
+				#print('Shmovin')
+				
+				#ability.current_effect.move = 0
+				#await CombatGlobals.getCombatScene().get_tree().process_frame
 	elif ability.current_effect is ResCustomDamageEffect:
 		if !ability.current_effect.use_caster:
 			caster = null

@@ -22,6 +22,7 @@ status_change = {
 rank_scaling = true
 apply_once = false
 message = ""
+sound_effect = ""
 
 [resource]
 script = ExtResource("1_c8x4r")

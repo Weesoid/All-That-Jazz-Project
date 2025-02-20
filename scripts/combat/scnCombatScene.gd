@@ -947,7 +947,7 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 		var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 		var tween_a_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC) # ROTAT
 		match move:
-			1: 
+			1:
 				var combatant_b
 				if combatant_group[current_pos-1].get_child_count() > 0:
 					combatant_b = combatant_group[current_pos-1].get_child(0)
@@ -962,7 +962,8 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 					var tween_b_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 					tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
 					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', -0.25, 0.15) # ROTAT
-					combatant_b.reparent(combatant_group[current_pos])
+					combatant_b.call_deferred('reparent', combatant_group[current_pos]) 
+					#combatant_b.reparent(combatant_group[current_pos])
 					tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
 			-1: 
 				var combatant_b
@@ -973,6 +974,7 @@ func changeCombatantPosition(combatant: ResCombatant, move: int, wait: float=0.3
 				tween_a.tween_property(combatant.SCENE, 'global_position', combatant_b.global_position, 0.18)
 				tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', -0.25, 0.15)
 				combatant.SCENE.reparent(combatant_group[current_pos+1])
+				#combatant.SCENE.call_deferred('reparent', combatant_group[current_pos+1])
 				if combatant_b is CombatantScene:
 					var tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 					var tween_b_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC) # ROTAT

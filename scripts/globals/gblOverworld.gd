@@ -27,7 +27,6 @@ func initializePlayerParty():
 	follow_array.resize(100)
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
-	print('Setting to ', enabled)
 	getPlayer().can_move = enabled
 	getPlayer().set_process_input(enabled)
 	
@@ -143,7 +142,6 @@ func closeMenu(menu: Control):
 	setMouseController(false)
 	menu.queue_free()
 	getPlayer().player_camera.get_node('uiMenu').queue_free()
-	print('Close menu setting to true!')
 	setPlayerInput(true)
 
 func inMenu():
@@ -570,7 +568,6 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	if hasCombatDialogue(entity_name) and combat_results == 1:
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
-	print('Combat change setting to true!')
 	if combat_results != 0:
 		setPlayerInput(true)
 	combat_exited.emit()

@@ -116,6 +116,7 @@ COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([nu
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("7_eiq6g")]
 dialogue_resource = ExtResource("8_pga02")
 end_sentence = "Ya idiot!"
+enabled = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Fighter"]
 position = Vector2(0, -12)

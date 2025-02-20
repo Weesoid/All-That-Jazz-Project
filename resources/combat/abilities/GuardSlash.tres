@@ -12,6 +12,7 @@ damage_type = 0
 damage = 5
 can_miss = true
 can_crit = true
+move = -1
 return_pos = true
 sound_effect = ""
 animation_time = 0.0
@@ -36,6 +37,12 @@ TARGET_TYPE = 0
 TARGET_GROUP = 1
 CAN_TARGET_SELF = false
 TARGET_DEAD = false
+DEAD_TARGET_PARAMS = {
+"only_dead": false,
+"only_faded": true,
+"only_marked": false,
+"only_unmarked": false
+}
 CASTER_POSITION = {
 "max": 1,
 "min": 0

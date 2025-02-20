@@ -32,7 +32,7 @@ DEAD_TARGET_PARAMS = {
 }
 CASTER_POSITION = {
 "max": 3,
-"min": 0
+"min": 3
 }
 TARGET_POSITION = {
 "max": 3,

@@ -153,7 +153,7 @@ func useDamageFormula(target: ResCombatant, damage):
 		grit = 0.7
 	var out_damage = damage - (grit * damage)
 	if out_damage < 0.0: 
-		out_damage = 1
+		out_damage = 0
 	return out_damage
 
 func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
