@@ -12,3 +12,4 @@ enum Direction {
 
 @export var target: Target
 @export var direction: Direction
+@export var move_count: int = 1

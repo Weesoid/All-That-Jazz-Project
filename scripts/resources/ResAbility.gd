@@ -15,6 +15,7 @@ enum TargetGroup {
 
 @export var NAME: String
 @export var DESCRIPTION: String
+@export var ICON: Texture = preload("res://images/sprites/default_ability_icon.png")
 @export var ANIMATION: PackedScene
 @export var BASIC_EFFECTS: Array[ResAbilityEffect]
 @export var ABILITY_SCRIPT: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")

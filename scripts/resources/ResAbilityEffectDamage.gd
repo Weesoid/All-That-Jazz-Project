@@ -13,4 +13,5 @@ enum DamageType {
 @export var can_crit: bool = true
 @export var apply_status: ResStatusEffect
 @export var move: int = 0
+@export var move_count: int = 1
 @export var return_pos: bool = true

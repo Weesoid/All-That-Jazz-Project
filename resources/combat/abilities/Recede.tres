@@ -6,9 +6,12 @@
 
 [sub_resource type="Resource" id="Resource_d8msw"]
 script = ExtResource("2_7nh4x")
+target = 0
 direction = 1
+move_count = 1
 sound_effect = ""
 animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("1_yx7md")
@@ -20,6 +23,12 @@ TARGET_TYPE = 0
 TARGET_GROUP = 2
 CAN_TARGET_SELF = true
 TARGET_DEAD = false
+DEAD_TARGET_PARAMS = {
+"only_dead": false,
+"only_faded": true,
+"only_marked": false,
+"only_unmarked": false
+}
 CASTER_POSITION = {
 "max": 2,
 "min": 0

@@ -69,10 +69,12 @@ var do_reinforcements
 var last_used_ability: Dictionary = {}
 var turn_time: float = 0.0
 var reinforcements_turn: int = 50
+var is_combatant_moving = false
 
 signal confirm
 signal target_selected
 signal update_exp(value: float, max_value: float)
+signal move_finished
 signal dialogue_done
 signal combat_done
 
@@ -207,7 +209,8 @@ func useAIPackage():
 	end_turn()
 
 func end_turn(combatant_act=true):
-	if !turn_timer.is_stopped(): stopTimer()
+	if !turn_timer.is_stopped(): 
+		stopTimer()
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
@@ -228,6 +231,9 @@ func end_turn(combatant_act=true):
 	else:
 		enemy_turn_count += 1
 	
+	if is_combatant_moving:
+		await get_tree().process_frame
+		if is_combatant_moving: await move_finished
 	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
 		ui_animator.play_backwards('ShowActionPanel')
 		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
@@ -473,8 +479,8 @@ func getMoveAbilities():
 		OverworldGlobals.setMenuFocus(secondary_panel_container)
 
 func createAbilityButton(ability: ResAbility)-> Button:
-	var button = OverworldGlobals.createCustomButton()
-	button.text = ability.NAME
+	var button = OverworldGlobals.createAbilityButton(ability)
+	#button.text = ability.NAME
 	button.pressed.connect(func(): forceCastAbility(ability))
 	button.focus_entered.connect(func():updateDescription(ability))
 	button.mouse_entered.connect(func():updateDescription(ability))
@@ -935,23 +941,27 @@ func concludeCombat(results: int):
 	OverworldGlobals.setMouseController(false)
 	queue_free()
 
-func changeCombatantPosition(combatant: ResCombatant, move: int, do_reparent: bool=true):
+func changeCombatantPosition(combatant: ResCombatant, move: int, do_reparent: bool=true, move_count:int=1):
+	is_combatant_moving = true
 	var combatant_group
 	if combatant is ResPlayerCombatant:
 		combatant_group = team_container_markers
 	else:
 		combatant_group = enemy_container_markers
 	var current_pos = combatant_group.find(combatant.SCENE.get_parent())
-	if (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1) or move == 0:
-		await moveCombatantPosition(combatant, combatant_group, move, do_reparent)
+	if moveValid(move, current_pos, combatant_group) or move == 0:
+		for i in range(move_count): await moveCombatantPosition(combatant, combatant_group, move, do_reparent)
 	
-	await get_tree().create_timer(0.35).timeout
+	move_finished.emit()
+	is_combatant_moving = false
 
 func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, do_reparent:bool):
-	var combatant_prev_pos = combatant.SCENE.global_position
 	var current_pos = combatant_group.find(combatant.SCENE.get_parent())
+	if !moveValid(move, current_pos, combatant_group): return
+	var combatant_prev_pos = combatant.SCENE.global_position
 	var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	var tween_a_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC) # ROTAT
+	var tween_b
 	var combatant_b
 	var move_combatant_b_pos = move * -1
 	
@@ -966,7 +976,7 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 	if do_reparent: combatant.SCENE.reparent(combatant_group[current_pos+move_combatant_b_pos])
 	
 	if combatant_b is CombatantScene:
-		var tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
+		tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 		var tween_b_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 		tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
 		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', -0.25, 0.15) # ROTAT
@@ -975,12 +985,26 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
 	
 	if !do_reparent:
-		await get_tree().create_timer(0.1).timeout
+		if tween_a.is_running():
+			await tween_a.finished
+		if tween_b != null and tween_b.is_running():
+			await tween_b.finished
+		await get_tree().process_frame
 		combatant.SCENE.reparent(combatant_group[current_pos+move_combatant_b_pos])
 		combatant.startBreatheTween(true)
 		if combatant_b is CombatantScene: 
 			combatant_b.reparent(combatant_group[current_pos])
 			combatant_b.combatant_resource.startBreatheTween(true)
+	else:
+		if tween_a.is_running():
+			await tween_a.finished
+		if tween_b != null and tween_b.is_running():
+			await tween_b.finished
+			combatant_b.combatant_resource.startBreatheTween(false)
+		combatant.startBreatheTween(false)
+
+func moveValid(move:int, current_pos:int, combatant_group)-> bool:
+	return (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1)
 
 func getTamedCombatantsNames():
 	var out = []

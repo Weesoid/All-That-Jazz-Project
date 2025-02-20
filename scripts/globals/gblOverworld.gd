@@ -226,6 +226,18 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	
 	return button
 
+func createAbilityButton(ability: ResAbility)-> CustomButton:
+	var button: CustomButton = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+	#button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	#button.click_sound = preload("res://audio/sounds/421461__jaszunio15__click_46.ogg")
+	button.custom_minimum_size.x = 32
+	button.custom_minimum_size.y = 32
+	button.expand_icon = true
+	button.icon = ability.ICON
+	button.tooltip_text = ability.NAME
+	button.theme = preload("res://design/ItemButtons.tres")
+	return button
+
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
