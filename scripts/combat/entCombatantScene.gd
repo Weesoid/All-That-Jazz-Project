@@ -6,6 +6,7 @@ class_name CombatantScene
 @export var combatant_resource: ResCombatant
 
 var idle_animation: String = 'Idle'
+#var rank_position: Vector2
 var hit_script: GDScript
 
 func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
@@ -28,6 +29,8 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 		playIdle('KO')
 	else:
 		playIdle()
+	
+	#is_
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")

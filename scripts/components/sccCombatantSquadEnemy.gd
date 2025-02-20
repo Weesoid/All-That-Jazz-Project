@@ -55,7 +55,7 @@ func getRawDrops():
 
 func addDrops():
 	var loot_drops = getRawDrops()
-	print(loot_drops)
+	#print(loot_drops)
 	for loot in loot_drops.keys():
 		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
 			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
