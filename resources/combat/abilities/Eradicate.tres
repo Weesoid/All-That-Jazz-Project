@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://bs0nmy56rk6ey"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://bs0nmy56rk6ey"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaEradicate.gd" id="1_r80j4"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="2_14v1g"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_sk2n1"]
 
 [resource]
 script = ExtResource("2_sk2n1")
 NAME = "Eradicate"
 DESCRIPTION = ""
+ICON = ExtResource("2_14v1g")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
 ABILITY_SCRIPT = ExtResource("1_r80j4")
 TARGET_TYPE = 0

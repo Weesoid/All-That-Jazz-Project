@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://dnwt562yqug8x"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://dnwt562yqug8x"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_1ak1y"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_pf0ay"]
 [ext_resource type="Resource" uid="uid://0muvkfncqxic" path="res://resources/combat/status_effects/FollowUp.tres" id="3_pl8gy"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_jurq0"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_xr7w2"]
 
 [sub_resource type="Resource" id="Resource_yxf68"]
 script = ExtResource("2_pf0ay")
@@ -18,6 +19,7 @@ animate_on = 0
 script = ExtResource("4_jurq0")
 NAME = "Teamwork"
 DESCRIPTION = "Target will follow up single target attacks."
+ICON = ExtResource("4_xr7w2")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_yxf68")])
 ABILITY_SCRIPT = ExtResource("1_1ak1y")
 TARGET_TYPE = 0

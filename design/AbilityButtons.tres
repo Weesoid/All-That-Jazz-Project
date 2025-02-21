@@ -1,0 +1,37 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://b1w4e8m2ojq6j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7viri"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h1rg0"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_odql5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_heom1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aatdg"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 0, 1)
+
+[resource]
+default_font_size = 8
+Button/colors/font_focus_color = Color(0.94902, 0.94902, 0, 1)
+Button/colors/font_hover_color = Color(0.94902, 0.94902, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/styles/disabled = SubResource("StyleBoxEmpty_7viri")
+Button/styles/focus = SubResource("StyleBoxFlat_h1rg0")
+Button/styles/hover = SubResource("StyleBoxFlat_h1rg0")
+Button/styles/normal = SubResource("StyleBoxEmpty_odql5")
+Button/styles/pressed = SubResource("StyleBoxEmpty_heom1")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_aatdg")
+TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
+TooltipLabel/colors/font_outline_color = Color(0, 0, 0, 1)

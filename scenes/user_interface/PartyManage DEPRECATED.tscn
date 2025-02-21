@@ -1,11 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://c147mkn7gfruw"]
+[gd_scene load_steps=17 format=3 uid="uid://doceb4wtfbeq7"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPartyManage.gd" id="1_11ial"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_yttj1"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="3_tdb45"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="4_0upo0"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="5_3hpav"]
-[ext_resource type="PackedScene" uid="uid://cm6aksgnbvl1o" path="res://scenes/user_interface/AttributeAdjust.tscn" id="6_vp4pm"]
+[ext_resource type="PackedScene" path="res://scenes/user_interface/AttributeAdjust.tscn" id="6_vp4pm"]
 [ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="7_e8eca"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="8_ggh3e"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="9_gflcs"]

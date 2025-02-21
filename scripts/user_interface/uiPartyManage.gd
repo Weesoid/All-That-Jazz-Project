@@ -82,11 +82,11 @@ func createButton(ability:ResAbility, location):
 	if ability.REQUIRED_LEVEL > PlayerGlobals.PARTY_LEVEL:
 		return
 	
-	var button: CustomButton = OverworldGlobals.createCustomButton()
+	var button: CustomButton = OverworldGlobals.createAbilityButton(ability)
 	var has_unlocked = PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) or ability.REQUIRED_LEVEL == 0
 	button.focused_entered_sound = preload("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = preload("res://audio/sounds/421304__jaszunio15__click_229.ogg")
-	button.text = ability.NAME
+	#button.text = ability.NAME
 	if !has_unlocked:
 		button.text += ' ('+str(ability.getCost())+')'
 	

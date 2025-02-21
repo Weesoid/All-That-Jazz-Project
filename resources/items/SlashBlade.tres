@@ -10,7 +10,7 @@ EFFECT = ExtResource("1_5kkis")
 USE_REQUIREMENT = {
 "handling": 3
 }
-max_durability = 16
+max_durability = 2
 STAT_MODIFICATIONS = {}
 NAME = "Alactreon"
 ICON = ExtResource("1_08b4g")

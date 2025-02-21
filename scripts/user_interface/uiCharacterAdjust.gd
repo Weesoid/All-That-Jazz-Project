@@ -114,7 +114,7 @@ func loadAbilities():
 		if ability == null:
 			selected_combatant.ABILITY_POOL.erase(ability)
 			continue
-		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL or !PlayerGlobals.hasUnlockedAbility(selected_combatant, ability): 
+		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL or (!PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) and PlayerGlobals.PARTY_LEVEL >= ability.REQUIRED_LEVEL and !show_temperments): 
 			continue
 		createButton(ability, pool)
 
@@ -127,22 +127,30 @@ func clearButtons():
 		child.queue_free()
 
 func createButton(ability, location):
-	var button: CustomButton = OverworldGlobals.createCustomButton()
-	button.custom_minimum_size.x = 130
+	var button: CustomButton = OverworldGlobals.createAbilityButton(ability, true)
+	var has_unlocked = PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) or ability.REQUIRED_LEVEL == 0
 	button.focused_entered_sound = preload("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = preload("res://audio/sounds/421304__jaszunio15__click_229.ogg")
-	button.text = ability.NAME
 	if selected_combatant.ABILITY_SET.has(ability):
-		button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
+		button.add_theme_icon_override('icon', preload("res://images/sprites/ability_mark.png"))
+	if !has_unlocked:
+		button.add_theme_icon_override('icon', preload("res://images/sprites/lock.png"))
+		button.tooltip_text = str(ability.getCost())
 	
 	button.pressed.connect(
 		func():
-			if !selected_combatant.ABILITY_SET.has(ability):
+			if !has_unlocked:
+				if button.has_focus() and PlayerGlobals.CURRENCY >= ability.getCost():
+					PlayerGlobals.CURRENCY -= ability.getCost()
+					PlayerGlobals.unlockAbility(selected_combatant, ability)
+					OverworldGlobals.playSound('res://audio/sounds/721774__maodin204__cash-register.ogg')
+					loadMemberInfo(selected_combatant)
+			elif !selected_combatant.ABILITY_SET.has(ability):
 				if selected_combatant.ABILITY_SET.size() >= 4:
 					OverworldGlobals.showPlayerPrompt('Max abilities enabled.')
 					return
 				selected_combatant.ABILITY_SET.append(ability)
-				button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
+				button.add_theme_icon_override('icon', preload("res://images/sprites/ability_mark.png"))
 			elif selected_combatant.ABILITY_SET.has(ability):
 				selected_combatant.ABILITY_SET.erase(ability)
 				button.remove_theme_icon_override('icon')

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dpnrwja6jamvn"]
 
-[ext_resource type="PackedScene" uid="uid://boubqwafllx3y" path="res://scenes/user_interface/CharacterAdjust.tscn" id="1_ymvan"]
+[ext_resource type="PackedScene" uid="uid://cbkybcyyxjsku" path="res://scenes/user_interface/CharacterAdjust.tscn" id="1_ymvan"]
 [ext_resource type="PackedScene" uid="uid://8xomgu0u202i" path="res://scenes/user_interface/RosterSelector.tscn" id="2_w1qpt"]
 
 [sub_resource type="GDScript" id="GDScript_xd62j"]

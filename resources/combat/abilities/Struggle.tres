@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://7g4v80lvkotw"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://7g4v80lvkotw"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaStruggle.gd" id="1_fsqyd"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_so17t"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="2_d411j"]
 
 [resource]
 script = ExtResource("1_so17t")
 NAME = "Flail"
 DESCRIPTION = ""
+ICON = ExtResource("2_d411j")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
 ABILITY_SCRIPT = ExtResource("1_fsqyd")
 TARGET_TYPE = 0

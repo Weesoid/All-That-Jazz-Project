@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://dgbuphtjfcisl"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://dgbuphtjfcisl"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_5injp"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_fyhu7"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_tenu0"]
 [ext_resource type="Resource" uid="uid://cncwh7dbs8oov" path="res://resources/combat/status_effects/Overwatch.tres" id="3_ig5xx"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_2q5cw"]
 
 [sub_resource type="Resource" id="Resource_yxf68"]
 script = ExtResource("2_tenu0")
@@ -18,6 +19,7 @@ animate_on = 0
 script = ExtResource("2_fyhu7")
 NAME = "Watch Dog"
 DESCRIPTION = "Target goes on overwatch."
+ICON = ExtResource("4_2q5cw")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_yxf68")])
 ABILITY_SCRIPT = ExtResource("1_5injp")
 TARGET_TYPE = 0

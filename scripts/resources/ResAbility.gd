@@ -15,7 +15,7 @@ enum TargetGroup {
 
 @export var NAME: String
 @export var DESCRIPTION: String
-@export var ICON: Texture = preload("res://images/sprites/default_ability_icon.png")
+@export var ICON: Texture = preload("res://images/ability_icons/default.png")
 @export var ANIMATION: PackedScene
 @export var BASIC_EFFECTS: Array[ResAbilityEffect]
 @export var ABILITY_SCRIPT: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
@@ -112,7 +112,7 @@ func _to_string():
 func getRichDescription(with_name=true)-> String:
 	var description = ''
 	if with_name:
-		description += NAME.to_upper()
+		description += NAME.to_upper()+'\n'
 	description += getPositionIcon()
 	if TENSION_COST > 0:
 		description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % TENSION_COST

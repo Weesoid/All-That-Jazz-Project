@@ -11,7 +11,7 @@ class_name CombatScene
 @onready var onslaught_container_animator = $OnslaughtContainer/AnimationPlayer
 @onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
 @onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
-@onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/Scroller/Container
+@onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/CenterContainer/HBoxContainer
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
 @onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
 @onready var whole_action_panel = $CombatCamera/Interface/ActionPanel
@@ -234,6 +234,7 @@ func end_turn(combatant_act=true):
 	if is_combatant_moving:
 		await get_tree().process_frame
 		if is_combatant_moving: await move_finished
+		await get_tree().process_frame
 	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
 		ui_animator.play_backwards('ShowActionPanel')
 		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
@@ -416,25 +417,18 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 		child.queue_free()
 	
 	if active_combatant.EQUIPPED_WEAPON != null:
-		var button = OverworldGlobals.createCustomButton()
-		var weapon: ResWeapon = active_combatant.EQUIPPED_WEAPON
-		button.text = weapon.EFFECT.NAME + ' (%s/%s)' % [weapon.durability, weapon.max_durability]
-		button.pressed.connect(func(): forceCastAbility(weapon.EFFECT, weapon))
-		button.focus_entered.connect(func():updateDescription(weapon.EFFECT))
-		button.expand_icon = true
-		button.icon = weapon.ICON
-		if !weapon.EFFECT.ENABLED or weapon.durability <= 0:
+		var button = createAbilityButton(active_combatant.EQUIPPED_WEAPON.EFFECT)
+		if !active_combatant.EQUIPPED_WEAPON.EFFECT.ENABLED or active_combatant.EQUIPPED_WEAPON.durability <= 0:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
 	if isCombatValid():
-		for ability in ability_set:
-			secondary_panel_container.add_child(createAbilityButton(ability))
+		for ability in ability_set: secondary_panel_container.add_child(createAbilityButton(ability))
 	
 	await get_tree().process_frame
 	tweenAbilityButtons(secondary_panel_container.get_children())
 	if last_used_ability.keys().has(active_combatant) and ability_set.has(last_used_ability[active_combatant][0]):
 		for child in secondary_panel_container.get_children():
-			if child.text == last_used_ability[active_combatant][0].NAME: child.grab_focus()
+			if child.ability == last_used_ability[active_combatant][0]: child.grab_focus()
 	else:
 		OverworldGlobals.setMenuFocus(secondary_panel_container)
 
@@ -456,13 +450,12 @@ func getMoveAbilities():
 	for child in secondary_panel_container.get_children():
 		child.free()
 	
-	var pass_button = OverworldGlobals.createCustomButton()
-	pass_button.text = 'Pass'
+	var pass_button = OverworldGlobals.createAbilityButton(load("res://resources/combat/abilities/Pass.tres"))
 	pass_button.pressed.connect(func(): confirm.emit())
 	pass_button.focus_entered.connect(func():updateDescription(null, 'Pass this turn.'))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/BraceSelf.tres")))
-	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Recede.tres")))
+	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
 	secondary_panel_container.add_child(pass_button)
 	secondary_panel_container.get_children()[0].disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
 	

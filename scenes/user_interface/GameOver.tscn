@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://becln3jamnyn2"]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="PackedScene" uid="uid://dpdurcfiprjbj" path="res://scenes/user_interface/Saves.tscn" id="1_1gutg"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameOver.gd" id="1_gbj7h"]

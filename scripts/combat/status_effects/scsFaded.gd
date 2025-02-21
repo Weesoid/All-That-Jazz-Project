@@ -3,7 +3,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		applyFaded(target, status_effect)
 		#CombatGlobals.manual_call_indicator.emit(target, 'Disrupted!', 'Reaction')
 
-static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
+static func endEffects(target: ResCombatant, _status_effect: ResStatusEffect):
 	CombatGlobals.resetStat(target, 'Faded')
 
 static func applyFaded(target: ResCombatant, status_effect: ResStatusEffect):

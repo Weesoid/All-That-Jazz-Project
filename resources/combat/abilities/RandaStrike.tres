@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://di6pm5nkyin6u"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://di6pm5nkyin6u"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_toep2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_xkuih"]
 [ext_resource type="PackedScene" uid="uid://h4wwypopcwgp" path="res://scenes/animations/DebugEffect.tscn" id="2_7yeeu"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectCustomDamage.gd" id="3_fy0i1"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_jm3nr"]
 
 [sub_resource type="Resource" id="Resource_s3i3q"]
 script = ExtResource("3_fy0i1")
@@ -24,6 +25,7 @@ animate_on = 0
 script = ExtResource("1_xkuih")
 NAME = "Randa Strike!"
 DESCRIPTION = "Randomly attack targets!"
+ICON = ExtResource("4_jm3nr")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_s3i3q")])
 ABILITY_SCRIPT = ExtResource("1_toep2")
 TARGET_TYPE = 1

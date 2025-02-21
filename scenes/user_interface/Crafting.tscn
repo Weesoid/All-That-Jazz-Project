@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cj67wj3vrhfw7"]
+[gd_scene load_steps=9 format=3 uid="uid://c36nhmt43udrv"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCraftingUI.gd" id="1_y6pgg"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_3ycts"]
@@ -30,9 +30,6 @@ script = ExtResource("1_y6pgg")
 
 [node name="Repair" parent="." instance=ExtResource("2_3ycts")]
 layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
 offset_left = 124.0
 offset_top = -90.0
 offset_right = 214.0
@@ -42,9 +39,6 @@ click_sound = ExtResource("3_iry6e")
 
 [node name="Recipes" parent="." instance=ExtResource("2_3ycts")]
 layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
 offset_left = 124.0
 offset_top = -66.0
 offset_right = 173.0
