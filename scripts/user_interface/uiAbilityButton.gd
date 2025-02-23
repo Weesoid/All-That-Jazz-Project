@@ -7,18 +7,27 @@ class_name CustomAbilityButton
 @onready var description_animator = $PanelContainer/AnimationPlayer
 
 @export var ability: ResAbility
+@export var descriptions: Dictionary = {
+	'title': '',
+	'description': '',
+	'icon': preload("res://images/ability_icons/default.png")
+}
 @export var outside_combat: bool = false
 
 func _ready():
-	ability_icon.texture = ability.ICON
-	description_label.text = ability.getRichDescription(true)
-	description_label.hide()
-	if disabled:
-		ability_icon.modulate = Color.DIM_GRAY
-	if outside_combat:
-		custom_minimum_size = Vector2(48,48)
-		ability_icon.size = Vector2(24,24)
-		ability_icon.set_anchors_preset(Control.PRESET_CENTER)
+	if ability != null:
+		ability_icon.texture = ability.ICON
+		description_label.text = ability.getRichDescription(true)
+		description_label.hide()
+		if disabled:
+			ability_icon.modulate = Color.DIM_GRAY
+		if outside_combat:
+			custom_minimum_size = Vector2(48,48)
+			ability_icon.size = Vector2(24,24)
+			ability_icon.set_anchors_preset(Control.PRESET_CENTER)
+	else:
+		description_label.text = descriptions['title'].to_upper()+'\n'+descriptions['description']
+		ability_icon.texture = descriptions['icon']
 	#toggle_mode = true
 
 func _on_pressed():
@@ -31,6 +40,9 @@ func _on_pressed():
 	icon_animator.play('Pressed')
 	#await icon_animator.animation_finished
 	#if has_focus(): icon_animator.play("Focus")
+
+
+
 
 func _on_focus_entered():
 	if focused_entered_sound == null: return
@@ -90,3 +102,10 @@ func _input(event):
 	if Input.is_action_just_pressed("ui_select_arrow") and !description_label.visible and has_focus() and !outside_combat:
 		description_label.show()
 		description_animator.play("ShowDescription")
+
+func dimButton():
+	ability_icon.modulate = Color.DIM_GRAY
+
+func _on_visibility_changed():
+	if ability_icon != null:
+		ability_icon.self_modulate = Color.WHITE

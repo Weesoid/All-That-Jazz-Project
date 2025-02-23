@@ -479,6 +479,9 @@ func createAbilityButton(ability: ResAbility)-> Button:
 	button.mouse_entered.connect(func():updateDescription(ability))
 	if !ability.ENABLED or !ability.canUse(active_combatant, COMBATANTS):
 		button.disabled = true
+	if ability.NAME == 'Brace' and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
+		button.disabled = true
+		button.dimButton()
 	return button
 
 func playerSelectSingleTarget():
@@ -667,14 +670,12 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	if weapon != null: weapon.useDurability()
 
 func updateDescription(ability: ResAbility, text: String=''):
-	
-	
 	if ability != null:
 		secondary_description.text = ability.getRichDescription()
 	elif text != '':
 		secondary_description.text = text
 	
-	secondary_description.show()
+	#secondary_description.show()
 
 func animateSecondaryPanel(animation: String):
 	ui_animator.play('RESET')
@@ -684,7 +685,7 @@ func animateSecondaryPanel(animation: String):
 		whole_action_panel.hide()
 		ui_animator.play("ShowSecondaryPanel")
 	elif animation == 'hide':
-		ui_animator.play_backwards("ShowDescriptionPanel")
+		#ui_animator.play_backwards("ShowDescriptionPanel")
 		ui_animator.play_backwards("ShowOptionPanel")
 
 func getDeadCombatants(type: String=''):
@@ -834,9 +835,11 @@ func confirmCancelInputs():
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
 		removeTargetButtons()
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
+		
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
 		removeTargetButtons()
+		$CombatCamera/Interface/SecondaryPanel/DescriptionPanel.hide()
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
 	

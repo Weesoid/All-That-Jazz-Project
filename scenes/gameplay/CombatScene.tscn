@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=54 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
@@ -16,6 +16,11 @@
 [ext_resource type="Texture2D" uid="uid://brdepaat3jf5w" path="res://images/sprites/button_shift_click.png" id="14_2jwe4"]
 [ext_resource type="AudioStream" uid="uid://cujwmntfbmh8b" path="res://audio/sounds/536805__egomassive__gun_1.ogg" id="14_ykm4m"]
 [ext_resource type="Texture2D" uid="uid://becu87dc4frvm" path="res://images/sprites/button_shift_hover.png" id="15_kq5xr"]
+[ext_resource type="PackedScene" uid="uid://bwa3mr1qsun1o" path="res://scenes/user_interface/AbilityButton.tscn" id="16_s3vtw"]
+[ext_resource type="Texture2D" uid="uid://uahuk1ssbtmx" path="res://images/ability_icons/skills.png" id="17_vitv8"]
+[ext_resource type="Texture2D" uid="uid://cxr5butdhw1r2" path="res://images/ability_icons/action.png" id="18_25otg"]
+[ext_resource type="Texture2D" uid="uid://27r68wkobjoi" path="res://images/ability_icons/inspect.png" id="19_d3n4k"]
+[ext_resource type="Texture2D" uid="uid://booeu7atgv18m" path="res://images/ability_icons/escape.png" id="20_3upw2"]
 
 [sub_resource type="GDScript" id="GDScript_ggh4h"]
 script/source = "extends ProgressBar
@@ -572,6 +577,18 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0)
 }
 tracks/4/use_blend = true
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SecondaryPanel/DescriptionPanel:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_6ffbp"]
 length = 0.001
@@ -674,50 +691,62 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("SecondaryPanel/DescriptionPanel:self_modulate")
+tracks/8/path = NodePath("Inspect/AttributeView:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector2(90, 54)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Inspect/AttributeView:position")
+tracks/9/path = NodePath("Inspect:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(90, 54)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Inspect:modulate")
+tracks/10/path = NodePath("ActionPanel/ActionPanel/MarginContainer/Buttons:visible")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
+"update": 1,
+"values": [true]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("ActionPanel/ActionPanel/MarginContainer/Buttons:visible")
+tracks/11/path = NodePath("SecondaryPanel/DescriptionPanel:self_modulate")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("SecondaryPanel/DescriptionPanel:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_5b8u0"]
@@ -854,34 +883,34 @@ tracks/0/path = NodePath("SecondaryPanel/OptionContainer:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(40, 67), Vector2(72, 53)]
+"values": [Vector2(141, 100), Vector2(141, 58)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SecondaryPanel/DescriptionPanel:position")
-tracks/1/interp = 2
+tracks/1/path = NodePath("SecondaryPanel/OptionContainer:self_modulate")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(229, 67), Vector2(168, 53)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SecondaryPanel/OptionContainer:self_modulate")
+tracks/2/path = NodePath("ActionPanel/ActionPanel/MarginContainer/Buttons:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -890,22 +919,10 @@ tracks/3/path = NodePath("SecondaryPanel/DescriptionPanel:self_modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("ActionPanel/ActionPanel/MarginContainer/Buttons:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fveyc"]
@@ -1125,10 +1142,10 @@ offset_bottom = 40.0
 [node name="AttributeView" parent="CombatCamera/Interface/Inspect" instance=ExtResource("10_60ct5")]
 z_index = 100
 layout_mode = 1
-offset_left = 90.0
-offset_top = 54.0
-offset_right = 90.0
-offset_bottom = 54.0
+offset_left = 70.0
+offset_top = 34.0
+offset_right = 70.0
+offset_bottom = 34.0
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
 offset_left = -55.0
@@ -1166,16 +1183,18 @@ offset_right = -184.0
 offset_bottom = 40.0
 
 [node name="DescriptionPanel" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 152.0
-offset_top = 67.0
-offset_right = 360.0
-offset_bottom = 137.0
+offset_left = 132.0
+offset_top = 47.0
+offset_right = 340.0
+offset_bottom = 117.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(184, 36)
@@ -1193,7 +1212,7 @@ text = "ASDasdas"
 layout_mode = 0
 offset_left = 40.0
 offset_top = 53.0
-offset_right = 344.0
+offset_right = 206.0
 offset_bottom = 113.0
 
 [node name="ShiftActions" type="TextureButton" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
@@ -1220,9 +1239,9 @@ offset_bottom = 141.0
 [node name="ActionPanel" type="PanelContainer" parent="CombatCamera/Interface/ActionPanel"]
 z_index = 10
 layout_mode = 0
-offset_left = -157.0
+offset_left = -66.0
 offset_top = 92.0
-offset_right = 157.0
+offset_right = 66.0
 offset_bottom = 139.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CombatCamera/Interface/ActionPanel/ActionPanel"]
@@ -1239,17 +1258,13 @@ size_flags_vertical = 3
 mouse_force_pass_scroll_events = false
 alignment = 1
 
-[node name="Skills" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(56, 0)
+[node name="Skills" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons" instance=ExtResource("16_s3vtw")]
 layout_mode = 2
-theme = ExtResource("8_lqkpn")
-text = "SKILLS"
-
-[node name="Action" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(56, 0)
-layout_mode = 2
-theme = ExtResource("8_lqkpn")
-text = "ACTION"
+descriptions = {
+"description": "Combatant's available skills.",
+"icon": ExtResource("17_vitv8"),
+"title": "Skills"
+}
 
 [node name="Guard" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
 visible = false
@@ -1258,24 +1273,41 @@ layout_mode = 2
 theme = ExtResource("8_lqkpn")
 text = "GUARD"
 
-[node name="Inspect" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(56, 0)
+[node name="Action" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons" instance=ExtResource("16_s3vtw")]
 layout_mode = 2
-theme = ExtResource("8_lqkpn")
-text = "INSPECT"
+descriptions = {
+"description": "Combatant's base actions.",
+"icon": ExtResource("18_25otg"),
+"title": "Actions"
+}
 
-[node name="Escape" type="Button" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons"]
-custom_minimum_size = Vector2(57, 0)
+[node name="Inspect" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons" instance=ExtResource("16_s3vtw")]
 layout_mode = 2
-theme = ExtResource("8_lqkpn")
-text = "ABSCOND"
+descriptions = {
+"description": "Inspect target stats and status effect ranks.",
+"icon": ExtResource("19_d3n4k"),
+"title": "Inspect"
+}
+
+[node name="Escape" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons" instance=ExtResource("16_s3vtw")]
+layout_mode = 2
+descriptions = {
+"description": "Attempt to escape.",
+"icon": ExtResource("20_3upw2"),
+"title": "Escape"
+}
 
 [node name="Label" type="Label" parent="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape"]
 visible = false
-layout_mode = 0
-offset_top = -28.0
-offset_right = 57.0
-offset_bottom = -3.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -29.0
+offset_top = -32.0
+offset_right = 29.0
+offset_bottom = -7.0
+grow_horizontal = 2
 theme = ExtResource("7_56rvc")
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 text = "100%"
@@ -1286,7 +1318,7 @@ vertical_alignment = 2
 layout_mode = 0
 offset_left = -184.0
 offset_top = -99.0
-offset_right = 120.0
+offset_right = -22.0
 offset_bottom = -95.0
 value = 50.0
 show_percentage = false
@@ -1417,8 +1449,8 @@ text = "60"
 [connection signal="timeout" from="TurnTimer" to="." method="_on_turn_timer_timeout"]
 [connection signal="pressed" from="CombatCamera/Interface/SecondaryPanel/OptionContainer/ShiftActions" to="." method="_on_shift_actions_pressed"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills" to="." method="_on_skills_pressed"]
-[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Action" to="." method="getMoveAbilities"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard" to="." method="_on_guard_pressed"]
+[connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Action" to="." method="getMoveAbilities"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Inspect" to="." method="_on_inspect_pressed"]
 [connection signal="focus_entered" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_focus_entered"]
 [connection signal="focus_exited" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_focus_exited"]
