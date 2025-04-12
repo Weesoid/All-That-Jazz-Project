@@ -124,7 +124,9 @@ func _ready():
 	OverworldGlobals.setMouseController(true)
 
 func _process(_delta):
+	#print(combatant_turn_order)
 	$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
+	#ui_attribute_view.combatant = target_combatant
 	turn_counter.text = str(turn_count)
 	round_counter.text = str(round_count)
 	match target_state:
@@ -145,6 +147,10 @@ func _unhandled_input(_event):
 			toggleUI(false)
 		else:
 			toggleUI(true)
+	if Input.is_action_pressed("ui_select_arrow") and !ui_inspect_target.visible and target_state == 1:
+		inspectTarget(true)
+	elif Input.is_action_just_released("ui_select_arrow") and target_state == 1:
+		inspectTarget(false)
 
 func on_player_turn():
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
@@ -515,6 +521,18 @@ func playerSelectInspection():
 	browseTargetsInputs()
 	confirmCancelInputs()
 
+func inspectTarget(inspect:bool):
+	if !target_combatant is ResCombatant: return
+	
+	ui_attribute_view.combatant = target_combatant
+	if inspect:
+		ui_inspect_target.show()
+		ui_animator.play('ShowInspect')
+	else:
+		ui_animator.play_backwards('ShowInspect')
+		await ui_animator.animation_finished
+		ui_inspect_target.hide()
+
 func executeAbility():
 	if !turn_timer.is_stopped(): stopTimer()
 	active_combatant.SCENE.z_index = 100
@@ -536,6 +554,7 @@ func executeAbility():
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant, selected_ability)
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
+	print('Passedd!!')
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
@@ -1021,6 +1040,7 @@ func moveOnslaught(direction: int):
 	tween_running = false
 
 func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
+	await get_tree().process_frame
 	active_combatant.SCENE.get_node('CombatBars').visible = false
 	await fadeCombatant(active_combatant.SCENE, false)
 	if !combatant.hasStatusEffect('Guard'):
@@ -1144,12 +1164,12 @@ func _on_turn_timer_timeout():
 
 
 func _on_shift_actions_pressed():
-	if ui_animator.is_playing() or (secondary_panel_container.get_children()[0].text == 'Brace' and active_combatant.ABILITY_SET.is_empty()):
+	if ui_animator.is_playing() or (secondary_panel_container.get_children()[0].ability.NAME == 'Brace' and active_combatant.ABILITY_SET.is_empty()):
 		return
 	
 	resetActionLog()
-	print(secondary_panel_container.get_children()[0].text)
-	if secondary_panel_container.get_children()[0].text == 'Brace':
+	print(secondary_panel_container.get_children()[0].ability.NAME == 'Brace')
+	if secondary_panel_container.get_children()[0].ability.NAME == 'Brace':
 		_on_skills_pressed()
 	else:
 		getMoveAbilities()

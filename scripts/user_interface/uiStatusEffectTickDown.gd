@@ -10,12 +10,12 @@ func _process(_delta):
 	text = str(attached_status.duration)
 #	if attached_status.duration <= 1 and !attached_status.TICK_PER_TURN:
 #		get_parent().hide()
-	if attached_status.PERMANENT: 
+	if attached_status.PERMANENT and attached_status.MAX_DURATION == 0: 
 		hide()
 	if attached_status.MAX_RANK != 0:
 		rank.text = str(attached_status.current_rank)
 	
-	if CombatGlobals.getCombatScene().target_state == 3:
+	if CombatGlobals.getCombatScene().ui_inspect_target.visible:
 		self_modulate = Color.TRANSPARENT
 		if attached_status.current_rank == attached_status.MAX_RANK or attached_status.MAX_RANK == 0:
 			rank.modulate = Color.YELLOW

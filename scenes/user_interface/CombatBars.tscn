@@ -164,32 +164,33 @@ theme_override_styles/background = SubResource("StyleBoxFlat_kau5d")
 value = 50.0
 show_percentage = false
 
-[node name="AbsoluteHealth" type="Label" parent="HealthBar"]
-layout_mode = 0
-offset_left = -1.0
-offset_top = -8.0
-offset_right = 31.0
-offset_bottom = 15.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 8
-text = "100"
-vertical_alignment = 2
-
-[node name="TurnCharges" parent="HealthBar/AbsoluteHealth" instance=ExtResource("3_ivcce")]
+[node name="TurnCharges" parent="HealthBar" instance=ExtResource("3_ivcce")]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -15.0
-offset_top = 3.5
-offset_right = -15.0
-offset_bottom = 3.5
+offset_left = -26.0
+offset_top = -7.0
+offset_right = -26.0
+offset_bottom = -7.0
 grow_horizontal = 0
 grow_vertical = 2
 small_sprites = true
+
+[node name="AbsoluteHealth" type="Label" parent="HealthBar"]
+layout_mode = 0
+offset_left = -6.0
+offset_top = -17.0
+offset_right = 26.0
+offset_bottom = 6.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 8
+text = "100"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="StatusEffectContainer" type="GridContainer" parent="HealthBar"]
 layout_mode = 0
@@ -197,6 +198,14 @@ offset_left = -4.0
 offset_top = -42.0
 offset_right = 20.0
 offset_bottom = -2.0
+columns = 3
+
+[node name="PermaStatusEffectContainer" type="GridContainer" parent="HealthBar"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 7.0
+offset_right = -2.0
+offset_bottom = 7.0
 columns = 3
 
 [node name="TurnGradient" type="Sprite2D" parent="HealthBar"]

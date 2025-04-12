@@ -38,6 +38,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			if effect.projectile_frame != null:
 				caster.setProjectileTarget(target, effect.projectile_frame, ability, 'Onslaught')
 			await caster.doAnimation(effect.animation_name, ability.ABILITY_SCRIPT)
+			#await CombatGlobals.getCombatScene().get_tree().process_frame # This might be stupid.
 			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)
 			CombatGlobals.getCombatScene().team_hp_bar.hide()
 			target.get_node('CombatBars').show()

@@ -5,13 +5,14 @@ class_name CombatBar
 @onready var health_bar_fader = $HealthBarFader
 @onready var absolute_health = $HealthBar/AbsoluteHealth
 @onready var status_effects = $HealthBar/StatusEffectContainer
+@onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
 @onready var indicator = $Indicator
 @onready var indicator_label = $Indicator/Label
 @onready var indicator_animator = $Indicator/AnimationPlayer
 @onready var secondary_prompts = $Marker2D
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
 @onready var select_target = $SelectTarget
-@onready var turn_charges: CustomCountBar = $HealthBar/AbsoluteHealth/TurnCharges
+@onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 var indicator_animation = "Show"
 var received_combatant: ResCombatant
 var attached_combatant: ResCombatant
@@ -42,6 +43,10 @@ func _process(_delta):
 		select_target.show()
 	else:
 		select_target.hide()
+	if CombatGlobals.getCombatScene().ui_inspect_target.visible:
+		absolute_health.show()
+	else:
+		absolute_health.hide()
 
 func updateBars():
 	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])
@@ -56,13 +61,16 @@ func updateBars():
 
 func updateStatusEffects():
 	for effect in attached_combatant.STATUS_EFFECTS:
-		if status_effects.get_children().has(effect.ICON) or effect.ICON == null: continue
+		if status_effects.get_children().has(effect.ICON) or permanent_status_effects.get_children().has(effect.ICON) or effect.ICON == null: continue
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
 		var icon = effect.ICON
 		icon.tooltip_text = effect.DESCRIPTION
 		icon.add_child(tick_down)
-		status_effects.add_child(icon)
+		if effect.PERMANENT:
+			permanent_status_effects.add_child(icon)
+		else:
+			status_effects.add_child(icon)
 
 func _on_health_bar_value_changed(value):
 	animateFaderBar(previous_value, attached_combatant.STAT_VALUES['health'])

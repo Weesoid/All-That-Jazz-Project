@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_r2eee"]
 script = ExtResource("2_7lvxq")
 animation_name = "Onslaught"
-damage = 5
+damage = 999
 target = 0
 projectile_frame = 2.0
 sound_effect = ""
@@ -34,7 +34,7 @@ DEAD_TARGET_PARAMS = {
 }
 CASTER_POSITION = {
 "max": 3,
-"min": 3
+"min": 2
 }
 TARGET_POSITION = {
 "max": 3,

@@ -104,7 +104,8 @@ func _input(event):
 		description_animator.play("ShowDescription")
 
 func dimButton():
-	ability_icon.modulate = Color.DIM_GRAY
+	if ability_icon != null:
+		ability_icon.modulate = Color.DIM_GRAY
 
 func _on_visibility_changed():
 	if ability_icon != null:

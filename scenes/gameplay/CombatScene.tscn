@@ -1216,7 +1216,6 @@ offset_right = 206.0
 offset_bottom = 113.0
 
 [node name="ShiftActions" type="TextureButton" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
-visible = false
 z_index = 9
 layout_mode = 2
 shortcut = SubResource("Shortcut_g2m2x")
