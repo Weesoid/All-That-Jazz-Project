@@ -95,8 +95,14 @@ func _ready():
 	transition.play('Out')
 	await transition.animation_finished
 	
+	var dead_combatants = []
 	for combatant in COMBATANTS:
+		if combatant.isDead(): 
+			dead_combatants.append(combatant)
+			continue
 		await addCombatant(combatant, false, '', true)
+	for combatant in dead_combatants:
+		COMBATANTS.erase(combatant)
 	
 	if battle_music_path != "":
 		battle_music.stream = load(battle_music_path)
@@ -1126,7 +1132,10 @@ func addTargetClickButton(combatant: ResCombatant):
 			target_selected.emit()
 			OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 	)
-	button.mouse_entered.connect(func(): OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg"))
+	button.mouse_entered.connect(
+		func(): 
+			OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+			)
 	button.z_index = 999
 	button.name = 'TargetButton'
 	button.grow_horizontal = Control.GROW_DIRECTION_BOTH

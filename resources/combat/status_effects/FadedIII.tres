@@ -21,3 +21,4 @@ DO_TICKS = true
 RESISTABLE = false
 PERMANENT = true
 LINGERING = true
+PERSIST_ON_DEAD = true

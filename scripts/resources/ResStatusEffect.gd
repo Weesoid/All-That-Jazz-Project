@@ -23,6 +23,7 @@ enum EffectType {
 @export var RESISTABLE: bool = true
 @export var PERMANENT: bool = false
 @export var LINGERING: bool = false
+@export var PERSIST_ON_DEAD: bool = false
 
 var APPLY_ONCE = true
 var duration
@@ -64,11 +65,11 @@ func removeStatusEffect():
 	if VISUALS != null:
 		VISUALS.queue_free()
 	
-	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.STAT_VALUES['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and LINGERING:
+	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.STAT_VALUES['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and LINGERING and !PERSIST_ON_DEAD:
 		afflicted_combatant.LINGERING_STATUS_EFFECTS.erase(NAME)
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, 'Cured %s!' % NAME, 'Heal')
 	elif afflicted_combatant is ResPlayerCombatant and LINGERING:
-		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '%s Persists!' % NAME, 'Flunk')
+		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '%s Supressed!' % NAME, 'Flunk')
 	
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
@@ -81,8 +82,9 @@ func tick(update_duration=true):
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if duration <= 0 or afflicted_combatant.isDead() and !['Knock Out', 'Fading', 'Deathmark'].has(NAME) and !NAME.contains('Faded') and STATUS_SCRIPT != null:
+	if (duration <= 0 and !PERMANENT) or afflicted_combatant.isDead() and !PERSIST_ON_DEAD and STATUS_SCRIPT != null:
 		removeStatusEffect()
+# ['Knock Out', 'Fading', 'Deathmark'].has(NAME)
 
 func animateStatusEffect():
 	if VISUALS == null:

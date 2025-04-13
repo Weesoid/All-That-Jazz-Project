@@ -19,5 +19,6 @@ MAX_RANK = 6
 TICK_PER_TURN = false
 DO_TICKS = true
 RESISTABLE = false
-PERMANENT = false
+PERMANENT = true
 LINGERING = false
+PERSIST_ON_DEAD = false

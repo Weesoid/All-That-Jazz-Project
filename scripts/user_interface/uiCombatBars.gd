@@ -3,6 +3,7 @@ class_name CombatBar
 
 @onready var health_bar = $HealthBar
 @onready var health_bar_fader = $HealthBarFader
+@onready var health_bar_fader_animator = $HealthBarFader/AnimationPlayer
 @onready var absolute_health = $HealthBar/AbsoluteHealth
 @onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
@@ -98,14 +99,26 @@ func animateFaderBar(prev_val, value):
 		return
 	
 	health_bar_fader.max_value = attached_combatant.getMaxHealth()
-	var tween = create_tween()
+	health_bar_fader.value = prev_val
+	print(prev_val, 'vs', value)
 	if prev_val > value:
-		tween.tween_property(health_bar_fader, 'modulate', Color.RED, 0.0)
+		health_bar_fader.modulate = Color.RED
 	elif prev_val < value:
-		tween.tween_property(health_bar_fader, 'modulate', Color.GREEN, 0.0)
-	tween.tween_property(health_bar_fader, 'modulate', Color.TRANSPARENT, 0.6)
-	tween.set_parallel(true)
-	tween.tween_method(setFaderBarValue, prev_val, value, 0.5)
+		health_bar_fader.modulate = Color.GREEN
+	#health_bar_fader_animator.play("FadeIn")
+	#await health_bar_fader_animator.animation_finished
+	await get_tree().create_timer(0.25).timeout
+	var tween = create_tween().set_parallel(true)
+	tween.tween_method(setFaderBarValue, prev_val, value, 0.3)
+	tween.tween_property(health_bar_fader, 'modulate', Color.BLACK, 0.4)
+	#await tween.finished
+	#health_bar_fader.hide()
+	#if prev_val > value:
+	#	tween.tween_property(health_bar_fader, 'modulate', Color.RED, 0.0)
+	#elif prev_val < value:
+	#	tween.tween_property(health_bar_fader, 'modulate', Color.GREEN, 0.0)
+	#tween.tween_property(health_bar_fader, 'modulate', Color.TRANSPARENT, 0.6)
+	#tween.set_parallel(true)
 
 func setFaderBarValue(value):
 	health_bar_fader.value = value

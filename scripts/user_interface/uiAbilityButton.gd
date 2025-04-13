@@ -76,6 +76,7 @@ func _on_mouse_entered():
 	if Input.is_action_pressed("ui_select_arrow") and !outside_combat:
 		description_label.show()
 		description_animator.play("ShowDescription")
+	grab_focus()
 
 func _on_mouse_exited():
 	z_index = 0

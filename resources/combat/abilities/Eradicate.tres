@@ -16,7 +16,7 @@ TARGET_GROUP = 1
 CAN_TARGET_SELF = false
 TARGET_DEAD = true
 DEAD_TARGET_PARAMS = {
-"only_dead": true,
+"only_dead": false,
 "only_faded": true,
 "only_marked": true,
 "only_unmarked": false
