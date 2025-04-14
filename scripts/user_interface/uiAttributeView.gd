@@ -2,6 +2,8 @@ extends Control
 
 @export var borders = true
 @export var view_hidden = true
+@export var view_abilities = false
+@export var view_debug = false
 
 @onready var combatant: ResCombatant
 @onready var attribute_tab = $Attributes
@@ -23,6 +25,7 @@ extends Control
 @onready var s_temp_name = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Label
 @onready var p_temp_val = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Values
 @onready var s_temp_val = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Values
+@onready var abilities_label = $Abilities
 
 func _ready():
 	if !borders:
@@ -56,9 +59,22 @@ func _process(_delta):
 			s_temp_val.text = combatant.TEMPERMENT['secondary'].capitalize()
 			$Temperments/MarginContainer/VBoxContainer/PrimaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['primary_temperment'])
 			$Temperments/MarginContainer/VBoxContainer/SecondaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['secondary_temperment'])
-		if OverworldGlobals.isPlayerCheating():
+		if OverworldGlobals.isPlayerCheating() and view_debug:
 			debug_status.visible = OverworldGlobals.getPlayer().get_node('DebugComponent').visible
 			debug_status.text = str(combatant.STAT_MODIFIERS)
+		# Abilities
+		if view_abilities:
+			abilities_label.text = getAbilities(combatant)
+			abilities_label.show()
+
+func getAbilities(view_combatant:ResCombatant):
+	var ability_set = '[table=2]'
+	
+	for ability in view_combatant.ABILITY_SET:
+		ability_set += '[cell][hint='+ability.DESCRIPTION+']'+ability.NAME + '[/hint][/cell][cell]' + ability.getPositionIcon(true, combatant is ResEnemyCombatant)+'[/cell]\n'
+	
+	ability_set += '[/table]'
+	return ability_set
 
 func formatModifiers(stat_dict: Dictionary) -> String:
 	var result = ""

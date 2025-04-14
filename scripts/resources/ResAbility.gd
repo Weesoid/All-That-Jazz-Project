@@ -136,7 +136,7 @@ func getValidTargetIcon():
 			TargetGroup.ENEMIES:  return "res://images/sprites/icon_multi_enemy.png"
 			TargetGroup.ALL: return "res://images/sprites/icon_multi_all.png"
 
-func getPositionIcon()-> String:
+func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String:
 	var valid = "res://images/sprites/circle_self.png"
 	var valid_self = "res://images/sprites/circle_self_pos.png"
 	var invalid_self = "res://images/sprites/circle_self_pos_invalid.png"
@@ -144,30 +144,39 @@ func getPositionIcon()-> String:
 	var valid_enemy = "res://images/sprites/circle_enemy.png"
 	var invalid = "res://images/sprites/circle_invalid.png"
 	var postions = []
+	
 	for i in range(3, -1, -1):
 		if i >= CASTER_POSITION['min'] and i <= CASTER_POSITION['max']:
-			if CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition():
+			if CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition() and !ignore_active_pos:
 				postions.append(valid_self)
 			else:
 				postions.append(valid)
-		elif CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition():
+		elif CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition() and !ignore_active_pos:
 			postions.append(invalid_self)
 		else:
 			postions.append(invalid)
 	
 	if TARGET_GROUP != TargetGroup.SELF:
 		if TARGET_GROUP == TargetGroup.ENEMIES:
+#			if is_enemy:
+#				invalid =  "res://images/sprites/circle_enemy.png"
+#				valid_enemy = "res://images/sprites/circle_invalid.png"
 			for j in range(4):
 				if j >= TARGET_POSITION['min'] and j <= TARGET_POSITION['max']:
 					postions.append(valid_enemy)
 				else:
 					postions.append(invalid)
 		else:
+#			if is_enemy:
+#				invalid =   "res://images/sprites/circle_ally.png"
+#				valid_ally = "res://images/sprites/circle_invalid.png"
 			for i in range(3, -1, -1):
 				if i >= CASTER_POSITION['min'] and i <= CASTER_POSITION['max']:
 					postions.append(valid_ally)
 				else:
 					postions.append(invalid)
+	if is_enemy:
+		postions.reverse()
 	
 	if TARGET_GROUP != TargetGroup.SELF:
 		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img] [img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
@@ -176,3 +185,9 @@ func getPositionIcon()-> String:
 
 func isBasicAbility():
 	return BASIC_EFFECTS.size() > 0
+
+func isOnslaught():
+	for effect in BASIC_EFFECTS:
+		if effect is ResOnslaughtEffect: return true
+	
+	return false

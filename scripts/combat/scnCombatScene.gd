@@ -13,13 +13,15 @@ class_name CombatScene
 @onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
 @onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/CenterContainer/HBoxContainer
 @onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
+@onready var description_panel = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel
 @onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
 @onready var whole_action_panel = $CombatCamera/Interface/ActionPanel
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
-@onready var round_counter = $CombatCamera/Interface/ProgressBar/Counts/RoundCounter
-@onready var turn_counter = $CombatCamera/Interface/ProgressBar/Counts/TurnCounter
+@onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
+@onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
+@onready var round_arrow_spinner = $CombatCamera/Interface/Counts/RoundCounter/TextureRect2/AnimationPlayer
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
@@ -30,6 +32,7 @@ class_name CombatScene
 @onready var guard_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
 @onready var skills_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills
 @onready var tension_bar = $CombatCamera/Interface/ProgressBar
+@onready var tension_bar_animator = $CombatCamera/Interface/ProgressBar/AnimationPlayer
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 @onready var team_hp_bar = $OnslaughtContainer/ProgressBar
 @onready var turn_timer_bar = $CombatCamera/Interface/ProgressBar/ProgressBar
@@ -122,6 +125,7 @@ func _ready():
 		button.focus_entered.connect(func(): secondary_panel.hide())
 	
 	active_combatant.act()
+	active_combatant.SCENE.get_node('CombatBars').pulse_gradient.play('Show')
 	
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
@@ -180,8 +184,9 @@ func on_player_turn():
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
 	ui_animator.play('ShowActionPanel')
-	print(last_used_ability)
+	#print(last_used_ability)
 	if last_used_ability.keys().has(active_combatant) and active_combatant.ABILITY_SET.has(last_used_ability[active_combatant][0]):
+		#await get_tree().process_frame
 		_on_skills_pressed()
 	if turn_time > 0.0:
 		startTimer()
@@ -308,7 +313,9 @@ func end_turn(combatant_act=true):
 		await DialogueManager.dialogue_ended
 	
 	if active_combatant.STAT_VALUES['hustle'] >= -99:
+		#moveCamera(active_combatant.SCENE.global_position, 0.1)
 		active_combatant.act()
+		active_combatant.SCENE.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
 		end_turn()
 		return
@@ -354,6 +361,7 @@ func _on_skills_pressed():
 	getPlayerAbilities(active_combatant.ABILITY_SET)
 	if secondary_panel_container.get_child_count() == 0: return
 	animateSecondaryPanel('show')
+	description_panel.hide()
 	secondary_panel_container.get_child(0).grab_focus()
 
 func _on_guard_pressed():
@@ -419,6 +427,7 @@ func toggleUI(visibility: bool):
 	for child in combat_camera.get_children():
 		if child is Control:
 			child.visible = visibility
+	
 	if visibility: resetActionLog()
 
 #********************************************************************************
@@ -518,6 +527,7 @@ func playerSelectMultiTarget():
 func playerSelectInspection():
 	#action_panel.hide()
 	whole_action_panel.hide()
+	tension_bar.hide()
 	valid_targets = sortCombatantsByPosition()
 	target_combatant = valid_targets[target_index]
 	ui_inspect_target.show()
@@ -534,8 +544,10 @@ func inspectTarget(inspect:bool):
 	if inspect:
 		ui_inspect_target.show()
 		ui_animator.play('ShowInspect')
+		zoomCamera(Vector2(0.25,0.25))
 	else:
 		ui_animator.play_backwards('ShowInspect')
+		zoomCamera(Vector2(-0.25,-0.25))
 		await ui_animator.animation_finished
 		ui_inspect_target.hide()
 
@@ -550,17 +562,30 @@ func executeAbility():
 		CombatGlobals.showWarning(target_combatant.SCENE)
 	if active_combatant is ResPlayerCombatant:
 		CombatGlobals.addTension(-selected_ability.TENSION_COST)
+	round_counter.hide()
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
-	moveCamera(camera_position)
+	
+	# EXPERIMENTAL
+	await moveCamera(active_combatant.SCENE.global_position)
+	# EXPERIMENTAL
 	
 	await get_tree().create_timer(0.25).timeout
 	if target_combatant is ResCombatant:
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
 	else:
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant, selected_ability)
+	# EXPERIMENTAL
+	await get_tree().create_timer(0.25).timeout
+	if selected_ability.TARGET_TYPE == 0 and !selected_ability.isOnslaught():
+		moveCamera(target_combatant.SCENE.global_position)
+	elif selected_ability.TARGET_TYPE == 0 and selected_ability.isOnslaught():
+		moveCamera(camera_position)
+	elif selected_ability.TARGET_TYPE == 1:
+		moveCamera(target_combatant[0].SCENE.global_position)
+	# EXPERIMENTAL
+	
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
-	print('Passedd!!')
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
@@ -685,7 +710,9 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 		addTargetClickButton(valid_targets)
 	target_state = selected_ability.getTargetType()
 	updateDescription(ability)
+	description_panel.show()
 	ui_animator.play('FocusDescription')
+	tension_bar.hide()
 	secondary_action_panel.hide()
 	action_panel.hide()
 	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.TARGET_TYPE == ability.TargetType.SINGLE:
@@ -703,12 +730,15 @@ func updateDescription(ability: ResAbility, text: String=''):
 	#secondary_description.show()
 
 func animateSecondaryPanel(animation: String):
+	await get_tree().process_frame
 	ui_animator.play('RESET')
 	if animation == 'show':
 		secondary_action_panel.show()
 		secondary_panel.show()
+		tension_bar.show()
 		whole_action_panel.hide()
 		ui_animator.play("ShowSecondaryPanel")
+		tension_bar_animator.play("Show_2")
 	elif animation == 'hide':
 		#ui_animator.play_backwards("ShowDescriptionPanel")
 		ui_animator.play_backwards("ShowOptionPanel")
@@ -751,6 +781,7 @@ func rollTurns():
 			combatant_turn_order.append([combatant, rolled_speed])
 	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
 	round_count += 1
+	round_arrow_spinner.play("Spin")
 
 func allCombatantsActed() -> bool:
 	for combatant in COMBATANTS:
@@ -846,7 +877,7 @@ func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit
 
 func browseTargetsInputs():
-	if !valid_targets is Array:
+	if !valid_targets is Array or Input.is_action_pressed('ui_select_arrow'):
 		return
 	
 	if Input.is_action_just_pressed("ui_right"):
@@ -857,23 +888,27 @@ func browseTargetsInputs():
 		target_index = incrementIndex(target_index, -1, valid_targets.size())
 
 func confirmCancelInputs():
+	if Input.is_action_pressed('ui_select_arrow'):
+		return
+	
 	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
 		removeTargetButtons()
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
-		
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
 		removeTargetButtons()
-		$CombatCamera/Interface/SecondaryPanel/DescriptionPanel.hide()
+		description_panel.hide()
 		ui_animator.play_backwards('FocusDescription')
 		resetActionLog()
-	
+
 func resetActionLog(show_skills:bool=false):
 	if active_combatant is ResEnemyCombatant:
 		return
 	
 	moveCamera(camera_position)
 	whole_action_panel.show()
+	tension_bar.show()
+	round_counter.show()
 	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	secondary_panel.hide()
@@ -882,6 +917,7 @@ func resetActionLog(show_skills:bool=false):
 	action_panel.get_child(0).grab_focus()
 	action_panel.show()
 	ui_animator.play('ShowActionPanel')
+	tension_bar_animator.play("Show")
 	guard_button.disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
 	await ui_animator.animation_finished
 	if show_skills and !skills_button.disabled:
@@ -905,11 +941,14 @@ func concludeCombat(results: int):
 	removeDeadCombatants(true, false)
 	combat_result = results
 	battle_music.stop()
+	moveCamera(camera_position)
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant, false)
 	whole_action_panel.hide()
 	secondary_panel.hide()
+	tension_bar.hide()
+	round_counter.hide()
 	target_state = 0
 	target_index = 0
 	var morale_bonus = 1
@@ -1126,6 +1165,8 @@ func addTargetClickButton(combatant: ResCombatant):
 	button.texture_pressed = load("res://images/sprites/button_confirm_click.png")
 	button.pressed.connect(
 		func(): 
+			if Input.is_action_pressed('ui_select_arrow'):
+				return
 			removeTargetButtons()
 			if target_state == 1:
 				target_combatant = combatant
@@ -1170,7 +1211,6 @@ func stopTimer():
 func _on_turn_timer_timeout():
 	turn_timer_animator.play_backwards("Show")
 	confirm.emit()
-
 
 func _on_shift_actions_pressed():
 	if ui_animator.is_playing() or (secondary_panel_container.get_children()[0].ability.NAME == 'Brace' and active_combatant.ABILITY_SET.is_empty()):

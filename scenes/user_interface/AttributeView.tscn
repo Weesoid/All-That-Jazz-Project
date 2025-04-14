@@ -28,6 +28,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5knxr")
+view_abilities = true
 
 [node name="HiddenAttributes" type="PanelContainer" parent="."]
 z_index = 1
@@ -327,3 +328,12 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 text = "UNYIELDING"
 autowrap_mode = 2
+
+[node name="Abilities" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = -176.0
+offset_top = -164.0
+offset_bottom = 172.0
+mouse_filter = 2
+theme = ExtResource("3_5idne")
+bbcode_enabled = true

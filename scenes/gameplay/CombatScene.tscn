@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=60 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
@@ -21,6 +21,8 @@
 [ext_resource type="Texture2D" uid="uid://cxr5butdhw1r2" path="res://images/ability_icons/action.png" id="18_25otg"]
 [ext_resource type="Texture2D" uid="uid://27r68wkobjoi" path="res://images/ability_icons/inspect.png" id="19_d3n4k"]
 [ext_resource type="Texture2D" uid="uid://booeu7atgv18m" path="res://images/ability_icons/escape.png" id="20_3upw2"]
+[ext_resource type="Texture2D" uid="uid://c057yn1t2726m" path="res://images/sprites/icon_tp.png" id="21_ojvx4"]
+[ext_resource type="Texture2D" uid="uid://cnycp52s07wi" path="res://images/sprites/icon_rounds.png" id="22_1a2gw"]
 
 [sub_resource type="GDScript" id="GDScript_ggh4h"]
 script/source = "extends ProgressBar
@@ -331,13 +333,6 @@ _data = {
 "Show": SubResource("Animation_vgh37")
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cg4vr"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-
 [sub_resource type="InputEventKey" id="InputEventKey_gp6h1"]
 pressed = true
 physical_keycode = 69
@@ -349,6 +344,51 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_g2m2x"]
 events = [SubResource("InputEventKey_gp6h1"), SubResource("InputEventJoypadButton_i3g6u")]
 
+[sub_resource type="Animation" id="Animation_75sun"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../Counts/RoundCounter/TextureRect2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_50ssn"]
+resource_name = "Spin"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../Counts/RoundCounter/TextureRect2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_alkfs"]
+_data = {
+"RESET": SubResource("Animation_75sun"),
+"Spin": SubResource("Animation_50ssn")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rpsqc"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
 [sub_resource type="GDScript" id="GDScript_ip03s"]
 resource_name = "TensionBar"
 script/source = "extends ProgressBar
@@ -356,17 +396,21 @@ script/source = "extends ProgressBar
 @onready var combat_scene = CombatGlobals.getCombatScene()
 @onready var animator = $AnimationPlayer
 @onready var bar_fader = $FaderBar
+@onready var bar_fader_up = $FaderBarIncrease
+
 var previous_value
+var bar_filling:bool = false
 
 func _ready():
 	CombatGlobals.active_combatant_changed.connect(_on_active_combatant_changed)
 	CombatGlobals.tension_changed.connect(updateValue)
-	show()
-	animator.play(\"Show\")
+	#show()
+	#animator.play(\"Show\")
+	#await get_tree().process_frame
 	updateValue(0, CombatGlobals.TENSION)
 
 func _on_active_combatant_changed(combatant):
-	if combatant is ResPlayerCombatant and !visible:
+	if combatant is ResPlayerCombatant and !visible and combatant.AI_PACKAGE == null:
 		show()
 		animator.play(\"Show\")
 	elif combatant is ResEnemyCombatant and !animator.is_playing():
@@ -377,31 +421,54 @@ func _on_active_combatant_changed(combatant):
 #	value = CombatGlobals.TENSION
 
 func _on_value_changed(_val):
-	if !combat_scene.active_combatant is ResPlayerCombatant and !animator.is_playing() and value != 0:
+	if (!combat_scene.active_combatant is ResPlayerCombatant or (combat_scene.active_combatant is ResPlayerCombatant and !visible)) and !animator.is_playing() and value != 0:
 		show()
 		animator.play(\"Show\")
 
 func updateValue(prev_tension, tension):
-	animateFaderBar(prev_tension, tension)
-	value = tension
+	if tension < prev_tension:
+		create_tween().tween_method(setBarValue,prev_tension,tension,0.25)
+		animateFaderBar(prev_tension, tension)
+	elif tension > prev_tension:
+		animateIncreaseFader(tension)
+		create_tween().tween_method(setBarValue,prev_tension,tension,0.25)
+	else:
+		value = tension
 
 func animateFaderBar(prev_val, val):
 #	print(prev_val, ' vs ', val)
 	if prev_val == val:
 		return
-	
-	var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-	if prev_val > val:
-		tween.tween_property(bar_fader, 'modulate', Color.RED, 0.0)
-	elif prev_val < val:
-		tween.tween_property(bar_fader, 'modulate', Color.GREEN, 0.0)
-	tween.tween_method(setFaderBarValue, prev_val, val, 0.15)
-	tween.tween_property(bar_fader, 'modulate', Color.TRANSPARENT, 0.25)
-	#tween.set_parallel(true)
+	bar_fader.value = prev_val
+	bar_fader.modulate = Color.RED
+	await get_tree().create_timer(0.25).timeout
+	var tween = create_tween().set_parallel(true)
+	tween.tween_method(setFaderBarValue, prev_val, value, 0.3)
+	tween.tween_property(bar_fader, 'modulate', Color.BLACK, 0.25)
+
+func animateIncreaseFader(val):
+	bar_fader_up.value = val
+	bar_fader_up.modulate = Color.GREEN
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(bar_fader_up, 'modulate', Color.TRANSPARENT, 0.25)
 
 func setFaderBarValue(val):
 	bar_fader.value = val
+
+func setFaderBarUpValue(val):
+	bar_fader_up.value = val
+
+func setBarValue(val):
+	value = val
 "
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xa3bg"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rfdgp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e8nrv"]
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="GDScript" id="GDScript_25yyp"]
 script/source = "extends ProgressBar
@@ -412,67 +479,6 @@ func _process(_delta):
 	max_value = combat_scene.turn_time
 	value = combat_scene.turn_timer.time_left
 "
-
-[sub_resource type="Animation" id="Animation_0uch2"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CombatCamera/Interface/ProgressBar/ProgressBar:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CombatCamera/Interface/ProgressBar/ProgressBar:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(112, 16)]
-}
-
-[sub_resource type="Animation" id="Animation_ovhm1"]
-resource_name = "Show"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CombatCamera/Interface/ProgressBar/ProgressBar:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CombatCamera/Interface/ProgressBar/ProgressBar:position")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(112, 19), Vector2(112, 16)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_7w4j3"]
-_data = {
-"RESET": SubResource("Animation_0uch2"),
-"Show": SubResource("Animation_ovhm1")
-}
 
 [sub_resource type="Animation" id="Animation_0j02p"]
 length = 0.001
@@ -486,12 +492,12 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-184, -99)]
+"values": [Vector2(-64, 64)]
 }
 
 [sub_resource type="Animation" id="Animation_nb0g3"]
 resource_name = "Show"
-length = 0.2
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -502,13 +508,30 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-152, -83), Vector2(-152, -60)]
+"values": [Vector2(-64, 70), Vector2(-64, 64)]
+}
+
+[sub_resource type="Animation" id="Animation_koduw"]
+resource_name = "Show_2"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-64, 70), Vector2(-64, 49)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wmvxy"]
 _data = {
 "RESET": SubResource("Animation_0j02p"),
-"Show": SubResource("Animation_nb0g3")
+"Show": SubResource("Animation_nb0g3"),
+"Show_2": SubResource("Animation_koduw")
 }
 
 [sub_resource type="Animation" id="Animation_6vvqj"]
@@ -560,7 +583,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(152, 67), Vector2(64, 63)]
+"values": [Vector2(152, 67), Vector2(74, 67)]
 }
 tracks/4/type = "audio"
 tracks/4/imported = false
@@ -614,7 +637,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(40, 53)]
+"values": [Vector2(141, 58)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -830,7 +853,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(200, 104), Vector2(90, 104)]
+"values": [Vector2(200, 104), Vector2(-101, 101.5)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -843,6 +866,18 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SecondaryPanel/DescriptionPanel:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_u2dts"]
@@ -1080,8 +1115,13 @@ libraries = {
 
 [node name="CombatCamera" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
+limit_left = -185
+limit_top = -185
+limit_right = 185
+limit_bottom = 185
+limit_smoothed = true
 position_smoothing_enabled = true
-position_smoothing_speed = 15.0
+position_smoothing_speed = 16.0
 script = ExtResource("2_dcn2q")
 
 [node name="Sprite2D" type="Sprite2D" parent="CombatCamera"]
@@ -1099,16 +1139,14 @@ texture = SubResource("GradientTexture2D_j26mw")
 z_index = 1000
 position = Vector2(408, 168)
 
-[node name="Interface" type="Control" parent="CombatCamera"]
-layout_mode = 3
-anchors_preset = 0
-offset_top = -21.0
-offset_right = 40.0
-offset_bottom = 19.0
+[node name="Interface" type="CanvasLayer" parent="CombatCamera"]
+offset = Vector2(300, 135)
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 300, 135)
+metadata/_edit_use_anchors_ = true
 
 [node name="LogContainer" parent="CombatCamera/Interface" instance=ExtResource("11_8bne6")]
 z_index = 0
-layout_mode = 0
 offset_left = -160.0
 offset_top = 69.0
 offset_right = 161.0
@@ -1116,7 +1154,6 @@ offset_bottom = 101.0
 
 [node name="TopLog" type="Label" parent="CombatCamera/Interface"]
 visible = false
-layout_mode = 0
 offset_left = -376.0
 offset_top = -83.0
 offset_right = 377.0
@@ -1135,6 +1172,7 @@ libraries = {
 [node name="Inspect" type="Control" parent="CombatCamera/Interface"]
 visible = false
 z_index = 100
+layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1146,33 +1184,39 @@ offset_left = 90.0
 offset_top = 54.0
 offset_right = 90.0
 offset_bottom = 54.0
+scale = Vector2(0.5, 0.5)
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
-offset_left = -55.0
-offset_top = -79.0
-offset_right = 68.0
-offset_bottom = 16.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_cg4vr")
+offset_left = 30.0
+offset_top = -73.0
+offset_right = 153.0
+offset_bottom = 24.0
+theme_override_styles/panel = ExtResource("11_f3q3i")
 
 [node name="Label" parent="CombatCamera/Interface/Inspect/AttributeView/HiddenAttributes/MarginContainer/VBoxContainer/Accuracy" index="0"]
 theme_override_font_sizes/font_size = 0
 
 [node name="Attributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="1"]
-offset_left = -55.0
-offset_top = -172.0
-offset_right = 68.0
-offset_bottom = -74.9996
+offset_left = -90.0
+offset_top = -73.0
+offset_right = 33.0
+offset_bottom = 24.0004
 
 [node name="Label" parent="CombatCamera/Interface/Inspect/AttributeView/Attributes/MarginContainer/VBoxContainer/Health" index="0"]
 theme_override_font_sizes/font_size = 0
 
 [node name="Debug" parent="CombatCamera/Interface/Inspect/AttributeView" index="2"]
-visible = false
 offset_left = -242.0
-offset_top = -155.0
+offset_top = -49.0
 offset_right = -1.99997
-offset_bottom = 21.0
+offset_bottom = 127.0
 scale = Vector2(0.534, 0.534)
+
+[node name="Abilities" parent="CombatCamera/Interface/Inspect/AttributeView" index="4"]
+offset_left = 156.0
+offset_top = -73.0
+offset_right = 343.0
+offset_bottom = 22.0
 
 [node name="SecondaryPanel" type="Control" parent="CombatCamera/Interface"]
 z_index = 99
@@ -1209,11 +1253,12 @@ bbcode_enabled = true
 text = "ASDasdas"
 
 [node name="OptionContainer" type="PanelContainer" parent="CombatCamera/Interface/SecondaryPanel"]
+visible = false
 layout_mode = 0
-offset_left = 40.0
-offset_top = 53.0
-offset_right = 206.0
-offset_bottom = 113.0
+offset_left = 141.0
+offset_top = 58.0
+offset_right = 307.0
+offset_bottom = 118.0
 
 [node name="ShiftActions" type="TextureButton" parent="CombatCamera/Interface/SecondaryPanel/OptionContainer"]
 z_index = 9
@@ -1230,6 +1275,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="ActionPanel" type="Control" parent="CombatCamera/Interface"]
+layout_mode = 3
 anchors_preset = 0
 offset_top = 101.0
 offset_right = 40.0
@@ -1313,27 +1359,133 @@ text = "100%"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface"]
+[node name="Counts" type="Control" parent="CombatCamera/Interface"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -458.0
+offset_top = -55.5
+offset_right = -458.0
+offset_bottom = -55.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RoundCounter" type="Label" parent="CombatCamera/Interface/Counts"]
+z_index = 10
 layout_mode = 0
-offset_left = -184.0
-offset_top = -99.0
-offset_right = -22.0
-offset_bottom = -95.0
+offset_left = 183.0
+offset_top = -38.0
+offset_right = 295.0
+offset_bottom = -15.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = " 100"
+horizontal_alignment = 2
+vertical_alignment = 2
+uppercase = true
+
+[node name="TextureRect2" type="TextureRect" parent="CombatCamera/Interface/Counts/RoundCounter"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -5.21739
+anchor_bottom = -5.21739
+offset_left = 113.0
+offset_top = 134.0
+offset_right = 121.0
+offset_bottom = 142.0
+rotation = 6.28319
+pivot_offset = Vector2(4, 4)
+texture = ExtResource("22_1a2gw")
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CombatCamera/Interface/Counts/RoundCounter/TextureRect2"]
+root_node = NodePath("../../../../ProgressBar/TextureRect")
+libraries = {
+"": SubResource("AnimationLibrary_alkfs")
+}
+
+[node name="Label" type="Label" parent="CombatCamera/Interface/Counts/RoundCounter"]
+visible = false
+layout_mode = 0
+offset_left = -37.0
+offset_right = 29.0
+offset_bottom = 23.0
+theme = ExtResource("7_56rvc")
+text = "Round "
+vertical_alignment = 2
+
+[node name="TurnCounter" type="Label" parent="CombatCamera/Interface/Counts"]
+visible = false
+z_index = 10
+layout_mode = 0
+offset_left = 5.0
+offset_top = -13.0
+offset_right = 111.0
+offset_bottom = 10.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = " 100"
+vertical_alignment = 2
+uppercase = true
+
+[node name="Label" type="Label" parent="CombatCamera/Interface/Counts/TurnCounter"]
+layout_mode = 0
+offset_left = -37.0
+offset_right = 11.0
+offset_bottom = 23.0
+theme = ExtResource("7_56rvc")
+text = "Turn"
+vertical_alignment = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface"]
+visible = false
+offset_left = -64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 70.0
+theme_override_styles/background = SubResource("StyleBoxFlat_rpsqc")
 value = 50.0
 show_percentage = false
 script = SubResource("GDScript_ip03s")
 
 [node name="FaderBar" type="ProgressBar" parent="CombatCamera/Interface/ProgressBar"]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(0, 0, 0, 1)
+z_index = -99
 layout_mode = 0
-offset_right = 304.0
-offset_bottom = 4.0
-value = 50.0
+offset_right = 128.0
+offset_bottom = 6.0
+theme_override_styles/background = SubResource("StyleBoxFlat_xa3bg")
 show_percentage = false
+
+[node name="FaderBarIncrease" type="ProgressBar" parent="CombatCamera/Interface/ProgressBar"]
+z_index = -99
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 6.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_rfdgp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_e8nrv")
+show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="CombatCamera/Interface/ProgressBar"]
+layout_mode = 0
+offset_left = 130.0
+offset_top = -3.0
+offset_right = 142.0
+offset_bottom = 9.0
+texture = ExtResource("21_ojvx4")
 
 [node name="ProgressBarTrueValues" parent="CombatCamera/Interface/ProgressBar" instance=ExtResource("9_bbc62")]
 layout_mode = 1
-horizontal_alignment = 1
+offset_left = -130.0
+offset_top = -4.0
+offset_right = -130.0
+offset_bottom = 5.0
+text = "100"
+horizontal_alignment = 2
+show_max = false
 
 [node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface/ProgressBar"]
 modulate = Color(1, 1, 1, 0)
@@ -1359,71 +1511,6 @@ offset_bottom = 6.5
 horizontal_alignment = 1
 show_max = false
 
-[node name="Counts" type="Control" parent="CombatCamera/Interface/ProgressBar"]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -152.0
-offset_top = 18.0
-offset_right = -152.0
-offset_bottom = 18.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="RoundCounter" type="Label" parent="CombatCamera/Interface/ProgressBar/Counts"]
-z_index = 10
-layout_mode = 0
-offset_left = 5.0
-offset_top = -25.0
-offset_right = 111.0
-offset_bottom = -2.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-text = " 100"
-vertical_alignment = 2
-uppercase = true
-
-[node name="Label" type="Label" parent="CombatCamera/Interface/ProgressBar/Counts/RoundCounter"]
-layout_mode = 0
-offset_left = -37.0
-offset_right = 29.0
-offset_bottom = 23.0
-theme = ExtResource("7_56rvc")
-text = "Round "
-vertical_alignment = 2
-
-[node name="TurnCounter" type="Label" parent="CombatCamera/Interface/ProgressBar/Counts"]
-z_index = 10
-layout_mode = 0
-offset_left = 5.0
-offset_top = -13.0
-offset_right = 111.0
-offset_bottom = 10.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-text = " 100"
-vertical_alignment = 2
-uppercase = true
-
-[node name="Label" type="Label" parent="CombatCamera/Interface/ProgressBar/Counts/TurnCounter"]
-layout_mode = 0
-offset_left = -37.0
-offset_right = 11.0
-offset_bottom = 23.0
-theme = ExtResource("7_56rvc")
-text = "Turn"
-vertical_alignment = 2
-
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="CombatCamera/Interface/ProgressBar"]
-root_node = NodePath("../../../..")
-libraries = {
-"": SubResource("AnimationLibrary_7w4j3")
-}
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CombatCamera/Interface/ProgressBar"]
 libraries = {
 "": SubResource("AnimationLibrary_wmvxy")
@@ -1437,7 +1524,6 @@ libraries = {
 [node name="InterfaceAudio" type="AudioStreamPlayer" parent="CombatCamera/Interface"]
 
 [node name="Label" type="Label" parent="CombatCamera/Interface"]
-layout_mode = 0
 offset_left = -184.0
 offset_top = -69.0
 offset_right = -144.0

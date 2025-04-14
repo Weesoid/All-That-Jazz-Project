@@ -95,7 +95,7 @@ func _on_focus_exited():
 		await description_animator.animation_finished
 		description_label.hide()
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_released("ui_select_arrow") and description_label.visible and !outside_combat:
 		description_animator.play_backwards("ShowDescription")
 		await description_animator.animation_finished

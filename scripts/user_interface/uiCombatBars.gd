@@ -12,6 +12,9 @@ class_name CombatBar
 @onready var indicator_animator = $Indicator/AnimationPlayer
 @onready var secondary_prompts = $Marker2D
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
+@onready var pulse_gradient = $HealthBar/TurnPulser/AnimationPlayer
+@onready var turn_gradient_sprite = $HealthBar/TurnGradient
+@onready var pulse_gradient_sprite = $HealthBar/TurnPulser
 @onready var select_target = $SelectTarget
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 var indicator_animation = "Show"
@@ -28,7 +31,10 @@ func _ready():
 			indicator_animation = anim_string
 			)
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
-	
+
+#	if attached_combatant is ResEnemyCombatant:
+#		pulse_gradient_sprite.self_modulate = Color.RED
+#		turn_gradient_sprite.modulate = Color.RED
 	select_target.attached_combatant = attached_combatant
 	previous_value = attached_combatant.getMaxHealth()
 
