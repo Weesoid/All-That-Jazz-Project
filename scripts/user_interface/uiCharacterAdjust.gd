@@ -262,6 +262,7 @@ func showCharmEquipMenu(slot_button: Button):
 			func():
 				updateItemDescription(charm)
 		)
+		button.disabled = !charm.canEquip(selected_combatant)
 		select_charms.add_child(button)
 
 func showWeaponEquipMenu():

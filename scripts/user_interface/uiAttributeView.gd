@@ -52,7 +52,10 @@ func _process(_delta):
 		crit_d_val.text = str(combatant.STAT_VALUES['crit_dmg'])
 		crit_val.value = combatant.STAT_VALUES['crit'] * 100
 		resist_val.value = combatant.STAT_VALUES['resist'] * 100
-		healm_val.text = str(combatant.STAT_VALUES['heal_mult'])
+		if combatant.STAT_VALUES['heal_mult'] > 0:
+			healm_val.text = str(combatant.STAT_VALUES['heal_mult'])
+		else:
+			healm_val.text = 'BROKEN'
 		# Temperments
 		if combatant is ResPlayerCombatant and combatant.TEMPERMENT != {'primary':'', 'secondary':''}:
 			p_temp_val.text = combatant.TEMPERMENT['primary'].capitalize()

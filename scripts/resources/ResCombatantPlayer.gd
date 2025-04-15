@@ -127,12 +127,8 @@ func hasEquippedWeapon()-> bool:
 	return EQUIPPED_WEAPON != null
 
 func equipCharm(charm: ResCharm, slot: int):
-	if hasCharm(charm):
-		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] already has [color=yellow]%s[/color] equipped.' % [NAME, charm.NAME])
-		return
-	
 	if InventoryGlobals.getItem(charm) != null:
-		InventoryGlobals.removeItemResource(charm, 1, false)
+		InventoryGlobals.removeItemResource(charm, 1, false, true)
 		charm.equip(self)
 		CHARMS[slot] = charm
 		return

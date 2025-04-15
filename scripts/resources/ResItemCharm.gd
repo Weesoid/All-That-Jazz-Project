@@ -33,3 +33,6 @@ func equip(combatant: ResCombatant):
 func unequip():
 	removeStatModifications()
 	EQUIPPED_COMBATANT = null
+
+func canEquip(combatant: ResPlayerCombatant)-> bool:
+	return !combatant.hasCharm(self)

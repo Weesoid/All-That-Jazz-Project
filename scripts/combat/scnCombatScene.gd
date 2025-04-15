@@ -552,7 +552,8 @@ func inspectTarget(inspect:bool):
 		ui_inspect_target.hide()
 
 func executeAbility():
-	if !turn_timer.is_stopped(): stopTimer()
+	if !turn_timer.is_stopped(): 
+		stopTimer()
 	active_combatant.SCENE.z_index = 100
 	for combatant in COMBATANTS:
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
@@ -566,7 +567,7 @@ func executeAbility():
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	
 	# EXPERIMENTAL
-	await moveCamera(active_combatant.SCENE.global_position)
+	#await moveCamera(active_combatant.SCENE.global_position)
 	# EXPERIMENTAL
 	
 	await get_tree().create_timer(0.25).timeout
@@ -575,7 +576,7 @@ func executeAbility():
 	else:
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant, selected_ability)
 	# EXPERIMENTAL
-	await get_tree().create_timer(0.25).timeout
+	#await get_tree().create_timer(0.25).timeout
 	if selected_ability.TARGET_TYPE == 0 and !selected_ability.isOnslaught():
 		moveCamera(target_combatant.SCENE.global_position)
 	elif selected_ability.TARGET_TYPE == 0 and selected_ability.isOnslaught():
@@ -586,6 +587,7 @@ func executeAbility():
 	
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
+	print('passed!')
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited

@@ -20,7 +20,7 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		fade_out_timer.stop()
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	if event is InputEventJoypadButton and event.device == 0 and event.button_index == JOY_BUTTON_RIGHT_STICK and event.pressed:
+	if event is InputEventJoypadButton and event.device == 0 and event.button_index == JOY_AXIS_TRIGGER_RIGHT and event.pressed:
 		click()
 
 func click():
