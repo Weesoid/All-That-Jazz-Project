@@ -269,7 +269,7 @@ func end_turn(combatant_act=true):
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true)
 		for effect in getTickOnTurnEffects(combatant):
-			if effect.duration == 1: effect.removeStatusEffect()
+			if effect.duration <= 1 and !effect.PERMANENT: effect.removeStatusEffect()
 		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
 	

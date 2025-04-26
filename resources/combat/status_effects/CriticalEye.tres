@@ -22,6 +22,7 @@ status_change = {
 rank_scaling = true
 apply_once = false
 message = ""
+sound_effect = ""
 
 [resource]
 script = ExtResource("3_frn68")
@@ -30,6 +31,7 @@ DESCRIPTION = "Target is guaranteed to land a critical blow."
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_powab")])
 STATUS_SCRIPT = ExtResource("1_e0mox")
 EFFECT_TYPE = 0
+REMOVE_WHEN = 1
 TEXTURE = ExtResource("2_xn8ci")
 MAX_DURATION = 2
 EXTEND_DURATION = 0
@@ -40,3 +42,4 @@ DO_TICKS = true
 RESISTABLE = false
 PERMANENT = false
 LINGERING = false
+PERSIST_ON_DEAD = false

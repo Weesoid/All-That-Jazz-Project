@@ -6,6 +6,15 @@ enum EffectType {
 	ON_HIT,
 	DYNAMIC
 }
+enum RemoveType {
+	NONE,
+	HIT,
+	GET_HIT
+}
+enum RemoveStyle {
+	REMOVE,
+	TICK_DOWN
+}
 
 @export var NAME: String
 @export var DESCRIPTION: String
@@ -13,6 +22,8 @@ enum EffectType {
 @export var STATUS_SCRIPT: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
 @export var PACKED_SCENE: PackedScene
 @export var EFFECT_TYPE: EffectType
+@export var REMOVE_WHEN: RemoveType
+@export var REMOVE_STYLE: RemoveStyle
 @export var TEXTURE: Texture = preload("res://images/sprites/unknown_icon.png")
 @export var MAX_DURATION: int
 @export var EXTEND_DURATION: int = 1
@@ -74,15 +85,15 @@ func removeStatusEffect():
 	ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
-func tick(update_duration=true):
-	if !PERMANENT and update_duration: 
+func tick(update_duration=true, override_permanent=false):
+	if (!PERMANENT and update_duration) or override_permanent: 
 		duration -= 1
 	
 	if STATUS_SCRIPT != null and DO_TICKS:
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if (duration <= 0 and !PERMANENT) or afflicted_combatant.isDead() and !PERSIST_ON_DEAD and STATUS_SCRIPT != null:
+	if ((duration <= 0 and !PERMANENT) or (duration <= 0 and REMOVE_WHEN != 0)) or afflicted_combatant.isDead() and !PERSIST_ON_DEAD and STATUS_SCRIPT != null:
 		removeStatusEffect()
 # ['Knock Out', 'Fading', 'Deathmark'].has(NAME)
 

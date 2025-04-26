@@ -98,6 +98,8 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	if message != null:
 		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')
 	target.STAT_VALUES['health'] -= int(damage)
+	target.removeStatusEffect(1)
+	caster.removeStatusEffect(2)
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
 	if caster is ResPlayerCombatant: 
@@ -128,6 +130,8 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 		call_indicator.emit('Show', target)
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
+	caster.removeStatusEffect(1)
+	target.removeStatusEffect(2)
 	received_combatant_value.emit(target, caster, int(base_damage))
 	if caster is ResPlayerCombatant: 
 		addTension(randi_range(1, 5))

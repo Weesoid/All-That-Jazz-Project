@@ -122,6 +122,14 @@ func getStatusEffectNames()-> Array[String]:
 		names.append(effect.NAME)
 	return names
 
+# On-hit = 0, Get hit = 1
+func removeStatusEffect(remove_type: int):
+	for effect in STATUS_EFFECTS:
+		if effect.REMOVE_WHEN == remove_type: 
+			match effect.REMOVE_STYLE:
+				0: effect.removeStatusEffect()
+				1: effect.tick(false, true)
+
 func getMaxHealth():
 	return BASE_STAT_VALUES['health']
 

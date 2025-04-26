@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="ResCharm" load_steps=4 format=3 uid="uid://nag3r13ljwr3"]
 
-[ext_resource type="Resource" uid="uid://d2rl6tieyvwy4" path="res://resources/combat/status_effects/Jolted.tres" id="1_4p3n5"]
 [ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_8j37j"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="1_ot8my"]
+[ext_resource type="Resource" uid="uid://uv3xfyxccq3q" path="res://resources/combat/status_effects/CriticalEye.tres" id="2_p4iue"]
 
 [resource]
 script = ExtResource("1_ot8my")
-STATUS_EFFECT = ExtResource("1_4p3n5")
+STATUS_EFFECT = ExtResource("2_p4iue")
 UNIQUE = false
 STAT_MODIFICATIONS = {
 "accuracy": 0.5,

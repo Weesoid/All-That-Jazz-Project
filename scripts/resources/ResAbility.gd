@@ -5,7 +5,6 @@ enum TargetType {
 	SINGLE,
 	MULTI
 }
-
 enum TargetGroup {
 	ALLIES,
 	ENEMIES,
@@ -21,6 +20,8 @@ enum TargetGroup {
 @export var ABILITY_SCRIPT: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
+@export var REQUIRED_STATUS_EFFECT: Dictionary = {'status_effect': null, 'rank': 0}
+
 @export var CAN_TARGET_SELF: bool = false
 @export var TARGET_DEAD: bool = false
 @export var DEAD_TARGET_PARAMS = {'only_dead':false, 'only_marked':false, 'only_unmarked':false,'only_faded': true}
@@ -53,6 +54,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
 	if TARGET_GROUP == TargetGroup.ALLIES or TARGET_GROUP == TargetGroup.ENEMIES:
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
+	print(DEAD_TARGET_PARAMS)
 	if DEAD_TARGET_PARAMS['only_dead']:
 		combatants = combatants.filter(func(combatant): return combatant.isDead())
 	if DEAD_TARGET_PARAMS['only_marked']:
@@ -82,6 +84,8 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 
 func canUse(caster: ResCombatant, targets=null):
 	if caster is ResPlayerCombatant and CombatGlobals.TENSION < TENSION_COST:
+		return false
+	if REQUIRED_STATUS_EFFECT['status_effect'] != null and !(caster.hasStatusEffect(REQUIRED_STATUS_EFFECT['status_effect'].NAME) and caster.getStatusEffect(REQUIRED_STATUS_EFFECT['status_effect'].NAME).current_rank >= REQUIRED_STATUS_EFFECT['rank']):
 		return false
 	if targets == null or targets is ResCombatant:
 		return isCombatantInRange(caster, 'caster')
