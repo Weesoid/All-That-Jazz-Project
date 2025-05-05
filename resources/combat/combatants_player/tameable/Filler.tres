@@ -11,7 +11,12 @@
 [resource]
 script = ExtResource("8_5lau2")
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_lne4x"), ExtResource("2_on8gp"), ExtResource("3_hk28f"), ExtResource("4_qe8ya"), ExtResource("5_vyeli")])
+BASE_TEMPERMENT = {
+"primary": "",
+"secondary": ""
+}
 MANDATORY = false
+STAT_MULTIPLIER = 0.01
 NAME = "Filler Joe"
 PACKED_SCENE = ExtResource("7_1ee7r")
 DESCRIPTION = "FILL ME UP!!!!"
@@ -23,7 +28,7 @@ STAT_VALUES = {
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 50,
+"health": 5,
 "hustle": 1,
 "resist": 0.05
 }

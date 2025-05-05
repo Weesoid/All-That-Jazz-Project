@@ -112,6 +112,7 @@ func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 
 func showMenu(path: String):
 	var main_menu: Control = load(path).instantiate()
+	main_menu.scale = Vector2.ZERO
 	main_menu.name = 'uiMenu'
 	getPlayer().resetStates()
 	getPlayer().sprinting = false
@@ -121,6 +122,7 @@ func showMenu(path: String):
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
 		setMouseController(true)
 		getPlayer().player_camera.add_child(main_menu)
+		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 	else:
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').show()
@@ -172,6 +174,7 @@ func insertTextureCode(texture: Texture)-> String:
 
 func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_description=''):
 	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
+	main_menu.scale = Vector2.ZERO
 	main_menu.wares_array = getComponent(shopkeeper_name, 'ShopWares').SHOP_WARES
 	main_menu.buy_modifier = buy_mult
 	main_menu.sell_modifier = sell_mult
@@ -181,6 +184,7 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_descri
 	if !inMenu():
 		setMouseController(true)
 		getPlayer().player_camera.add_child(main_menu)
+		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 		#show_player_interaction = false
 	else:
@@ -692,6 +696,11 @@ func loadArrayFromPath(path:String, filter=null)-> Array:
 	
 	#print('Returning: ', out)
 	return out
+
+func freezeFrame(time_scale: float=0.05, duration: float=1.5):
+	Engine.time_scale = time_scale
+	await get_tree().create_timer(duration * time_scale).timeout
+	Engine.time_scale = 1.0
 
 func resetVariables():
 	follow_array = []

@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://m7lykq4h6axo"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=5 format=3 uid="uid://m7lykq4h6axo"]
 
 [ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="3_8phct"]
 [ext_resource type="PackedScene" uid="uid://buy4waf3u3bir" path="res://scenes/combatants/FriendA.tscn" id="3_dl1jr"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="4_kjlrm"]
 [ext_resource type="PackedScene" uid="uid://hc8hrodt25vu" path="res://scenes/entities/followers/Greenie.tscn" id="4_nl1we"]
-[ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="5_u2fre"]
 
 [resource]
 script = ExtResource("4_kjlrm")
@@ -27,7 +26,7 @@ STAT_VALUES = {
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 25,
+"health": 5,
 "hustle": 1,
 "resist": 0.05
 }
@@ -45,4 +44,3 @@ SCALE_STATS = {
 }
 ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 MAX_TURN_CHARGES = 1
-AI_PACKAGE = ExtResource("5_u2fre")

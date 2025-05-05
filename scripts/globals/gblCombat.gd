@@ -104,6 +104,8 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 		received_combatant_value.emit(target, caster, int(damage))
 	if caster is ResPlayerCombatant: 
 		addTension(randi_range(1, 5))
+#	if target.isDead():
+#		OverworldGlobals.freezeFrame()
 	if caster != null and target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
@@ -135,6 +137,8 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	received_combatant_value.emit(target, caster, int(base_damage))
 	if caster is ResPlayerCombatant: 
 		addTension(randi_range(1, 5))
+#	if target.isDead():
+#		OverworldGlobals.freezeFrame()
 	if target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
@@ -307,13 +311,12 @@ func showWarning(target: CombatantScene):
 func setCombatantVisibility(target: CombatantScene, set_to:bool):
 	var tween = CombatGlobals.getCombatScene().create_tween()
 	if !set_to:
-		tween.tween_property(target, 'modulate', Color(Color.TRANSPARENT, 0.5), 0.15)
+		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.TRANSPARENT, 0.5), 0.15)
 		target.z_index = -10
 	else:
-		tween.tween_property(target, 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
+		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
 		target.z_index = 0
-	target.get_node('CombatBars').visible = set_to
-
+	target.get_node('CombatBars').setBarVisibility(set_to)
 func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1):
 	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
 	var qte = load("res://scenes/quick_time_events/%s.tscn" % type).instantiate()

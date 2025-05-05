@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://chc52jkp8yua1"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://chc52jkp8yua1"]
 
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_wbi87"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_m7rok"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_a7pf5"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_gul40"]
 
 [sub_resource type="Resource" id="Resource_tkqu8"]
 script = ExtResource("2_m7rok")
@@ -20,7 +22,9 @@ animate_on = 0
 script = ExtResource("3_a7pf5")
 NAME = "Kill Chop Attack"
 DESCRIPTION = "Deal a lotta fuckin damage my guy. Debug purposes."
+ICON = ExtResource("3_gul40")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_tkqu8")])
+ABILITY_SCRIPT = ExtResource("1_wbi87")
 TARGET_TYPE = null
 TARGET_GROUP = 1
 REQUIRED_STATUS_EFFECT = null

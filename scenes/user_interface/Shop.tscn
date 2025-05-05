@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://cnl74ivmm3b70"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiShop.gd" id="1_fvlk8"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_n4cm8"]
@@ -31,11 +31,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 12.0
-offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(112, 28)
+pivot_offset = Vector2(0, -12)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_fvlk8")

@@ -53,10 +53,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	hit_script = null
 	
 	if (animation.contains('Melee') or animation.contains('Ranged')) and !CombatGlobals.getCombatScene().onslaught_mode:
-		if animation.contains('Melee'):
-			await get_tree().create_timer(0.1).timeout
-		elif animation.contains('Ranged'):
-			await get_tree().create_timer(0.25).timeout
+		await get_tree().create_timer(0.5).timeout
 
 func playIdle(new_idle:String=''):
 	

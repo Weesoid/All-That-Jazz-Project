@@ -119,6 +119,7 @@ func _ready():
 	rollTurns()
 	setActiveCombatant(false)
 	while active_combatant.STAT_VALUES['hustle'] < -99:
+
 		setActiveCombatant(false)
 	
 	for button in action_panel.get_children():
@@ -317,6 +318,9 @@ func end_turn(combatant_act=true):
 		active_combatant.act()
 		active_combatant.SCENE.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
+		moveCamera(active_combatant.SCENE.global_position)
+		CombatGlobals.manual_call_indicator.emit(active_combatant, 'Immobilized!', 'Show')
+		await get_tree().create_timer(1.0).timeout
 		end_turn()
 		return
 	if await checkWin(): return
@@ -571,6 +575,7 @@ func executeAbility():
 	# EXPERIMENTAL
 	
 	await get_tree().create_timer(0.25).timeout
+	#zoomCamera(Vector2(0.15,0.15))
 	if target_combatant is ResCombatant:
 		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
 	else:
@@ -584,15 +589,15 @@ func executeAbility():
 	elif selected_ability.TARGET_TYPE == 1:
 		moveCamera(target_combatant[0].SCENE.global_position)
 	# EXPERIMENTAL
-	
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
-	print('passed!')
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
-	
+	#await OverworldGlobals.freezeFrame()
+	#await get_tree().create_timer(0.25).timeout
+	#zoomCamera(Vector2(-0.1,-0.1))
 	for combatant in COMBATANTS:
 		CombatGlobals.setCombatantVisibility(combatant.SCENE, true)
 	var ability_title = 'ability/%s' % selected_ability.resource_path.get_file().trim_suffix('.tres')
@@ -1127,9 +1132,10 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	var tween = CombatGlobals.getCombatScene().create_tween()
 	if fade_in:
-		tween.tween_property(target, 'modulate', Color(Color.WHITE, 1.0), duration)
+		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.WHITE, 1.0), duration)
 	else:
-		tween.tween_property(target, 'modulate', Color(Color.WHITE, 0.0), duration)
+		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.WHITE, 0.0), duration)
+	target.get_node('CombatBars').setBarVisibility(fade_in)
 	await tween.finished
 
 func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:

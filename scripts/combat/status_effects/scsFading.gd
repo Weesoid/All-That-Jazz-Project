@@ -9,7 +9,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	
 	CombatGlobals.manual_call_indicator.emit(target, 'Fading...', 'Resist')
 
-	if CombatGlobals.randomRoll(0.02) and canAddQTE(status_effect):
+	if CombatGlobals.randomRoll(1.02) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)
@@ -32,7 +32,7 @@ static func canAddQTE(status_effect: ResStatusEffect)-> bool:
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if CombatGlobals.getCombatScene().combat_result != 0 and CombatGlobals.getCombatScene().combat_result != -1: 
-		CombatGlobals.calculateHealing(target, target.BASE_STAT_VALUES['health']*0.25)
+		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25))
 	if target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.manual_call_indicator.emit(target, 'Out cold!', 'Resist')
 		CombatGlobals.addStatusEffect(target, 'KnockOut', true)

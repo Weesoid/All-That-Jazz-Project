@@ -1441,7 +1441,6 @@ text = "Turn"
 vertical_alignment = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface"]
-visible = false
 offset_left = -64.0
 offset_top = 64.0
 offset_right = 64.0

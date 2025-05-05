@@ -138,3 +138,11 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 			y_placement -= 16
 		secondary_prompts.add_child(secondary_indicator)
 		secondary_indicator.playAnimation(indicator.global_position + Vector2(0, y_placement), text, animation)
+
+func setBarVisibility(set_to:bool):
+	if set_to:
+		health_bar_fader.modulate = Color.WHITE
+		health_bar.modulate = Color.WHITE
+	else:
+		health_bar_fader.modulate = Color.TRANSPARENT
+		health_bar.modulate = Color.TRANSPARENT

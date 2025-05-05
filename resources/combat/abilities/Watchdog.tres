@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=5 format=3 uid="uid://dgbuphtjfcisl"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://dgbuphtjfcisl"]
 
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_essox"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_fyhu7"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_tenu0"]
-[ext_resource type="Resource" uid="uid://cncwh7dbs8oov" path="res://resources/combat/status_effects/Overwatch.tres" id="3_ig5xx"]
+[ext_resource type="Resource" uid="uid://ep6cmyt1jplk" path="res://resources/combat/status_effects/Overguard.tres" id="3_2mm41"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_wtyw5"]
 
-[sub_resource type="Resource" id="Resource_yxf68"]
+[sub_resource type="Resource" id="Resource_rqbih"]
 script = ExtResource("2_tenu0")
-target = 1
-status_effect = ExtResource("3_ig5xx")
-cast_animation = "Cast_Block"
+target = 0
+status_effect = ExtResource("3_2mm41")
+cast_animation = "Cast_Misc"
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0
@@ -17,18 +19,31 @@ animate_on = 0
 script = ExtResource("2_fyhu7")
 NAME = "Watch Dog"
 DESCRIPTION = "Target goes on overwatch."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_yxf68")])
-TARGET_TYPE = null
-TARGET_GROUP = 2
-REQUIRED_STATUS_EFFECT = null
-CAN_TARGET_SELF = null
-TARGET_DEAD = null
-DEAD_TARGET_PARAMS = null
+ICON = ExtResource("4_wtyw5")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_rqbih")])
+ABILITY_SCRIPT = ExtResource("1_essox")
+TARGET_TYPE = 0
+TARGET_GROUP = 0
+REQUIRED_STATUS_EFFECT = {
+"rank": 0,
+"status_effect": null
+}
+CAN_TARGET_SELF = false
+TARGET_DEAD = false
+DEAD_TARGET_PARAMS = {
+"only_dead": false,
+"only_faded": true,
+"only_marked": false,
+"only_unmarked": false
+}
 CASTER_POSITION = {
-"max": 1,
+"max": 3,
 "min": 0
 }
-TARGET_POSITION = null
-TENSION_COST = null
-INSTANT_CAST = null
-REQUIRED_LEVEL = null
+TARGET_POSITION = {
+"max": 3,
+"min": 0
+}
+TENSION_COST = 0
+INSTANT_CAST = false
+REQUIRED_LEVEL = 0
