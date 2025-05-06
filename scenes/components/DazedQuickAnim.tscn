@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dxscju2fli3b"]
+[gd_scene load_steps=6 format=3 uid="uid://bcilnfgnq6pe1"]
 
-[ext_resource type="Texture2D" uid="uid://bbym7fs3pbss2" path="res://images/sprites/daze_diamond.png" id="1_0ha8x"]
+[ext_resource type="Texture2D" uid="uid://bbym7fs3pbss2" path="res://images/sprites/daze_diamond.png" id="1_0dpyg"]
+[ext_resource type="Script" path="res://scripts/components/ascDisposableAnimation.gd" id="1_sp4ed"]
 
 [sub_resource type="Animation" id="Animation_jmemp"]
 length = 0.001
@@ -138,22 +139,23 @@ _data = {
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(0, 5.894)
+script = ExtResource("1_sp4ed")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -31)
-texture = ExtResource("1_0ha8x")
+texture = ExtResource("1_0dpyg")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(-4, -26)
-texture = ExtResource("1_0ha8x")
+texture = ExtResource("1_0dpyg")
 
 [node name="Sprite2D4" type="Sprite2D" parent="."]
 position = Vector2(0, -21)
-texture = ExtResource("1_0ha8x")
+texture = ExtResource("1_0dpyg")
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
 position = Vector2(4, -26)
-texture = ExtResource("1_0ha8x")
+texture = ExtResource("1_0dpyg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite2D")

@@ -119,7 +119,6 @@ func _ready():
 	rollTurns()
 	setActiveCombatant(false)
 	while active_combatant.STAT_VALUES['hustle'] < -99:
-
 		setActiveCombatant(false)
 	
 	for button in action_panel.get_children():
@@ -318,9 +317,10 @@ func end_turn(combatant_act=true):
 		active_combatant.act()
 		active_combatant.SCENE.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
-		moveCamera(active_combatant.SCENE.global_position)
-		CombatGlobals.manual_call_indicator.emit(active_combatant, 'Immobilized!', 'Show')
-		await get_tree().create_timer(1.0).timeout
+		if is_instance_valid(active_combatant.SCENE):
+			moveCamera(active_combatant.SCENE.global_position)
+			CombatGlobals.manual_call_indicator.emit(active_combatant, 'Immobilized!', 'Show')
+			await get_tree().create_timer(1.0).timeout
 		end_turn()
 		return
 	if await checkWin(): return
@@ -433,6 +433,18 @@ func toggleUI(visibility: bool):
 			child.visible = visibility
 	
 	if visibility: resetActionLog()
+
+func setUIModulation(ui_modulate: Color, duration:float=0.1):
+	for marker in enemy_container_markers:
+		if marker.get_child_count() != 0:
+			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
+	for marker in team_container_markers:
+		if marker.get_child_count() != 0:
+			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
+	
+	for child in combat_camera.get_children():
+		if child is Control:
+			create_tween().tween_property(child, 'modulate', ui_modulate, duration)
 
 #********************************************************************************
 # ABILITY SELECTION, TARGETING, AND EXECUTION

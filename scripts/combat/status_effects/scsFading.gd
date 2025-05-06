@@ -9,7 +9,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	
 	CombatGlobals.manual_call_indicator.emit(target, 'Fading...', 'Resist')
 
-	if CombatGlobals.randomRoll(1.02) and canAddQTE(status_effect):
+	if CombatGlobals.randomRoll(0.02) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)

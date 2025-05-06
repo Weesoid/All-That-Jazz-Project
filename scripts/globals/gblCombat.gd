@@ -104,8 +104,6 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 		received_combatant_value.emit(target, caster, int(damage))
 	if caster is ResPlayerCombatant: 
 		addTension(randi_range(1, 5))
-#	if target.isDead():
-#		OverworldGlobals.freezeFrame()
 	if caster != null and target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
@@ -113,7 +111,8 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	playHurtAnimation(target, sound)
-	
+	if target.isDead():
+		playKOSlowMotion()
 	return true
 
 ## Basic damage calculations
@@ -137,8 +136,6 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	received_combatant_value.emit(target, caster, int(base_damage))
 	if caster is ResPlayerCombatant: 
 		addTension(randi_range(1, 5))
-#	if target.isDead():
-#		OverworldGlobals.freezeFrame()
 	if target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
@@ -146,6 +143,16 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	playHurtAnimation(target, sound)
+	if target.isDead():
+		playKOSlowMotion()
+
+
+func playKOSlowMotion():
+	getCombatScene().zoomCamera(Vector2(0.5,0.5),0.1)
+	getCombatScene().setUIModulation(Color.TRANSPARENT)
+	await OverworldGlobals.freezeFrame()
+	await getCombatScene().zoomCamera(Vector2(-0.5,-0.5),0.25)
+	getCombatScene().setUIModulation(Color.WHITE, 1.0)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 	if target is ResPlayerCombatant and target.SCENE.blocking:

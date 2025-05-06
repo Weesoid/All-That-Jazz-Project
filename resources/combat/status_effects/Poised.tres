@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://d11ytxu3omjpw"]
+
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="1_bmjhd"]
+[ext_resource type="Texture2D" uid="uid://bcf3vg2st1t1f" path="res://images/sprites/icon_poised.png" id="2_8qiww"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_hi6ev"]
+
+[resource]
+script = ExtResource("4_hi6ev")
+NAME = "Poised"
+DESCRIPTION = "Target cannot be stunned."
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+STATUS_SCRIPT = ExtResource("1_bmjhd")
+EFFECT_TYPE = 0
+REMOVE_WHEN = 0
+REMOVE_STYLE = 0
+TEXTURE = ExtResource("2_8qiww")
+MAX_DURATION = 3
+EXTEND_DURATION = 1
+APPLY_EXTEND_DURATION = false
+MAX_RANK = 0
+TICK_PER_TURN = false
+DO_TICKS = true
+RESISTABLE = false
+PERMANENT = false
+LINGERING = false
+PERSIST_ON_DEAD = false

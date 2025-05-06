@@ -72,7 +72,8 @@ func updateStatusEffects():
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
 		var icon = effect.ICON
-		icon.tooltip_text = effect.DESCRIPTION
+		icon.tooltip_text = effect.NAME+': '+effect.DESCRIPTION
+		#icon.expand_mode = icon.EXPAND_FIT_WIDTH_PROPORTIONAL
 		icon.add_child(tick_down)
 		if effect.PERMANENT:
 			permanent_status_effects.add_child(icon)
@@ -87,10 +88,10 @@ func _on_health_bar_value_changed(value):
 		indicator.show()
 	
 	indicator_label.text = str(abs(previous_value - value))
-	if attached_combatant.isDead():
-		indicator_animator.play('KO')
-		await indicator_animator.animation_finished
-		return
+#	if attached_combatant.isDead():
+#		indicator_animator.play('KO')
+#		await indicator_animator.animation_finished
+#		return
 	
 	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
 	indicator_animator.play(indicator_animation)
@@ -131,7 +132,7 @@ func setFaderBarValue(value):
 
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
-	if attached_combatant == combatant:
+	if attached_combatant == combatant and indicator.visible:
 		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 		var y_placement = 0
 		for child in secondary_prompts.get_children():
