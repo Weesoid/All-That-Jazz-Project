@@ -8,7 +8,9 @@ script = ExtResource("1_kre4j")
 UNIQUE = false
 STAT_MODIFICATIONS = {
 "brawn": 1.0,
-"grit": 1.0
+"crit": 1.0,
+"grit": 0.1,
+"hustle": 99
 }
 NAME = "Murder Charm"
 ICON = ExtResource("1_iv4bj")

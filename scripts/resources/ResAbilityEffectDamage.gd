@@ -15,3 +15,4 @@ enum DamageType {
 @export var move: int = 0
 @export var move_count: int = 1
 @export var return_pos: bool = true
+@export var indicator_bb:  String = ''

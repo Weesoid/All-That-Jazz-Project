@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
 [ext_resource type="PackedScene" uid="uid://cmu5v5d578wll" path="res://scenes/status_visuals/Poison.tscn" id="1_qebaw"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsPoison.gd" id="1_t6ebe"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_07wcb"]
+[ext_resource type="Texture2D" uid="uid://cws4qm00g4avt" path="res://images/sprites/icon_poison.png" id="3_1sqmf"]
 
 [resource]
 script = ExtResource("1_5ugit")
@@ -13,7 +13,9 @@ BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("1_t6ebe")
 PACKED_SCENE = ExtResource("1_qebaw")
 EFFECT_TYPE = 0
-TEXTURE = ExtResource("3_07wcb")
+REMOVE_WHEN = 0
+REMOVE_STYLE = 0
+TEXTURE = ExtResource("3_1sqmf")
 MAX_DURATION = 12
 EXTEND_DURATION = 3
 APPLY_EXTEND_DURATION = true
@@ -23,3 +25,4 @@ DO_TICKS = true
 RESISTABLE = true
 PERMANENT = false
 LINGERING = true
+PERSIST_ON_DEAD = false

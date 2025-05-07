@@ -73,7 +73,7 @@ static func playAnimation(ability: ResAbility, target):
 static func applyToTarget(caster, target, ability: ResAbility):
 	#print('Applyin!')
 	if ability.current_effect is ResDamageEffect:
-		if CombatGlobals.calculateDamage(caster, target, ability.current_effect.damage, ability.current_effect.can_miss, ability.current_effect.can_crit) and (ability.current_effect.apply_status != null or ability.current_effect.move != 0):
+		if CombatGlobals.calculateDamage(caster, target, ability.current_effect.damage, ability.current_effect.can_miss, ability.current_effect.can_crit, '', ability.current_effect.indicator_bb) and (ability.current_effect.apply_status != null or ability.current_effect.move != 0):
 			if ability.current_effect.apply_status != null:
 				CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
 			if ability.current_effect.move != 0:
@@ -88,7 +88,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			caster = null
 		else:
 			caster = caster.combatant_resource
-		if CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, ability.current_effect.damage), caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, ability.current_effect.can_miss, ability.current_effect.variation, ability.current_effect.message, ability.current_effect.trigger_on_hits) and ability.current_effect.apply_status != null:
+		if CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, ability.current_effect.damage), caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, ability.current_effect.can_miss, ability.current_effect.variation, ability.current_effect.message, ability.current_effect.trigger_on_hits, '', ability.current_effect.indicator_bb) and ability.current_effect.apply_status != null:
 			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
 	
 	elif ability.current_effect is ResApplyStatusEffect:

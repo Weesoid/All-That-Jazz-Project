@@ -10,3 +10,4 @@ class_name ResCustomDamageEffect
 @export var trigger_on_hits = false
 @export var message: = ''
 @export var apply_status: ResStatusEffect
+@export var indicator_bb:  String = ''

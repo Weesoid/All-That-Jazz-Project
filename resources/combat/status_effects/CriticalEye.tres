@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="1_e0mox"]
 [ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_t0wjm"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_xn8ci"]
+[ext_resource type="Texture2D" uid="uid://cgpfext1pbx5t" path="res://images/sprites/icon_crit_eye.png" id="3_2so27"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_frn68"]
 
 [sub_resource type="Resource" id="Resource_powab"]
@@ -32,7 +32,8 @@ BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([Su
 STATUS_SCRIPT = ExtResource("1_e0mox")
 EFFECT_TYPE = 0
 REMOVE_WHEN = 1
-TEXTURE = ExtResource("2_xn8ci")
+REMOVE_STYLE = 0
+TEXTURE = ExtResource("3_2so27")
 MAX_DURATION = 2
 EXTEND_DURATION = 0
 APPLY_EXTEND_DURATION = false

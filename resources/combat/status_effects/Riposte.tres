@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://dvm5ick2m1o5b"]
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsRiposte.gd" id="1_u7a5f"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="1_xg3l6"]
+[ext_resource type="Texture2D" uid="uid://c8uhy71dk2k50" path="res://images/sprites/icon_riposte.png" id="2_dkes6"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_h6axs"]
 
 [resource]
@@ -13,7 +13,7 @@ STATUS_SCRIPT = ExtResource("1_u7a5f")
 EFFECT_TYPE = 1
 REMOVE_WHEN = 2
 REMOVE_STYLE = 1
-TEXTURE = ExtResource("1_xg3l6")
+TEXTURE = ExtResource("2_dkes6")
 MAX_DURATION = 3
 EXTEND_DURATION = 0
 APPLY_EXTEND_DURATION = false

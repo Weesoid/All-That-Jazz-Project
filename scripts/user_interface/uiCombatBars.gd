@@ -25,11 +25,11 @@ var current_bar_value = 100
 var first_turn = true
 
 func _ready():
-	CombatGlobals.call_indicator.connect(
-		func setAnimation(anim_string, combatant):
-			received_combatant = combatant
-			indicator_animation = anim_string
-			)
+#	CombatGlobals.call_indicator.connect(
+#		func setAnimation(anim_string, combatant):
+#			received_combatant = combatant
+#			indicator_animation = anim_string
+#			)
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 
 #	if attached_combatant is ResEnemyCombatant:
@@ -82,23 +82,23 @@ func updateStatusEffects():
 
 func _on_health_bar_value_changed(value):
 	animateFaderBar(previous_value, attached_combatant.STAT_VALUES['health'])
-	if first_turn: 
-		indicator.hide()
-	else:
-		indicator.show()
-	
-	indicator_label.text = str(abs(previous_value - value))
-#	if attached_combatant.isDead():
-#		indicator_animator.play('KO')
-#		await indicator_animator.animation_finished
-#		return
-	
-	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
-	indicator_animator.play(indicator_animation)
-	first_turn = false
-	await indicator_animator.animation_finished
+#	if first_turn: 
+#		indicator.hide()
+#	else:
+#		indicator.show()
+#
+#	indicator_label.text = str(abs(previous_value - value))
+##	if attached_combatant.isDead():
+##		indicator_animator.play('KO')
+##		await indicator_animator.animation_finished
+##		return
+#
+#	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
+#	indicator_animator.play(indicator_animation)
+#	first_turn = false
+#	await indicator_animator.animation_finished
 	previous_value = value
-	indicator_animation = "Show"
+#	indicator_animation = "Show"
 	
 
 func animateFaderBar(prev_val, value):
@@ -136,7 +136,7 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 		var y_placement = 0
 		for child in secondary_prompts.get_children():
-			y_placement -= 16
+			y_placement -= 8
 		secondary_prompts.add_child(secondary_indicator)
 		secondary_indicator.playAnimation(indicator.global_position + Vector2(0, y_placement), text, animation)
 

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cux4moxbaqb8e"]
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsTaunt.gd" id="1_43lm3"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_3rgeh"]
+[ext_resource type="Texture2D" uid="uid://dmararqpq7dek" path="res://images/sprites/icon_taunt.png" id="2_n11nf"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_ftlwm"]
 
 [resource]
@@ -12,7 +12,8 @@ BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("1_43lm3")
 EFFECT_TYPE = 0
 REMOVE_WHEN = 2
-TEXTURE = ExtResource("2_3rgeh")
+REMOVE_STYLE = 0
+TEXTURE = ExtResource("2_n11nf")
 MAX_DURATION = 3
 EXTEND_DURATION = 0
 APPLY_EXTEND_DURATION = false

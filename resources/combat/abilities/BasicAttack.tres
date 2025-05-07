@@ -16,6 +16,7 @@ apply_status = ExtResource("2_ehovr")
 move = 0
 move_count = 1
 return_pos = true
+indicator_bb = ""
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0

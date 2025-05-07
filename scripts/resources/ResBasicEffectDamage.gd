@@ -6,3 +6,4 @@ class_name ResStatusDamageEffect
 @export var variation: float = -1.0
 @export var trigger_on_hits:bool = false
 @export var sound_path:String = ''
+@export var indicator_bb:  String = ''

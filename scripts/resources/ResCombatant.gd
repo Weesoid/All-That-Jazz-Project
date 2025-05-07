@@ -122,7 +122,7 @@ func getStatusEffectNames()-> Array[String]:
 		names.append(effect.NAME)
 	return names
 
-# On-hit = 0, Get hit = 1
+# On-hit = 1, Get hit = 2
 func removeStatusEffect(remove_type: int):
 	for effect in STATUS_EFFECTS:
 		if effect.REMOVE_WHEN == remove_type: 

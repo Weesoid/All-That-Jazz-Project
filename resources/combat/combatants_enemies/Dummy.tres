@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://jrg6o80xiqbu"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_0advh"]
+[ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_12k4t"]
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ca8ty"]
+[ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="2_vmt8s"]
+
+[resource]
+script = ExtResource("1_0advh")
+FACTION = 0
+TIER = 0
+PREFERRED_POSITION = 0
+CHANCE_TO_DROP = 0.5
+DROP_COUNT = 1
+DROP_POOL = {}
+is_converted = false
+NAME = "Dummy!"
+PACKED_SCENE = ExtResource("1_12k4t")
+DESCRIPTION = "Knows nothing."
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 999,
+"hustle": 0,
+"resist": 0.05
+}
+SCALE_STATS = {
+"accuracy": false,
+"brawn": false,
+"crit": false,
+"crit_dmg": false,
+"grit": false,
+"handling": false,
+"heal_mult": false,
+"health": false,
+"hustle": false,
+"resist": false
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ca8ty")])
+MAX_TURN_CHARGES = 1
+AI_PACKAGE = ExtResource("2_vmt8s")

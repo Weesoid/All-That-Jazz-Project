@@ -22,6 +22,7 @@ status_change = {
 rank_scaling = true
 apply_once = true
 message = "Second Wind!"
+sound_effect = ""
 
 [resource]
 script = ExtResource("2_wyrir")
@@ -30,6 +31,8 @@ DESCRIPTION = "Target has increased defenses."
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_kpw0s")])
 STATUS_SCRIPT = ExtResource("2_f02oc")
 EFFECT_TYPE = 0
+REMOVE_WHEN = 0
+REMOVE_STYLE = 0
 TEXTURE = ExtResource("1_qnko4")
 MAX_DURATION = 1
 EXTEND_DURATION = 0
@@ -40,3 +43,4 @@ DO_TICKS = true
 RESISTABLE = false
 PERMANENT = false
 LINGERING = false
+PERSIST_ON_DEAD = false

@@ -17,7 +17,7 @@ static func applyHitEffects(target, _caster, value, status_effect):
 			target.SCENE.doAnimation('Block')
 			CombatGlobals.calculateHealing(target, (target.getMaxHealth()+value) * 0.5, false)
 		CombatGlobals.rankUpStatusEffect(target, status_effect)
-		CombatGlobals.manual_call_indicator.emit(target, 'Blocked! x%s' % str(status_effect.current_rank), 'Resist')
+		CombatGlobals.manual_call_indicator.emit(target, '[img]'+str(status_effect.TEXTURE.get_path())+'[/img] Blocked!', 'Resist')
 
 static func endEffects(target, _status_effect: ResStatusEffect):
 	target.SCENE.setBlocking(false)

@@ -319,8 +319,8 @@ func end_turn(combatant_act=true):
 	else:
 		if is_instance_valid(active_combatant.SCENE):
 			moveCamera(active_combatant.SCENE.global_position)
-			CombatGlobals.manual_call_indicator.emit(active_combatant, 'Immobilized!', 'Show')
-			await get_tree().create_timer(1.0).timeout
+			CombatGlobals.manual_call_indicator.emit(active_combatant, 'Immobile!', 'Show')
+			await get_tree().create_timer(1.25).timeout
 		end_turn()
 		return
 	if await checkWin(): return

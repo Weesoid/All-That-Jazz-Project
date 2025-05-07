@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=27 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=42 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_5i744"]
+[ext_resource type="Resource" path="res://resources/quests/GetThatItem.tres" id="2_2o16x"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_8l7tu"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="3_vkpwf"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="4_nacsi"]
@@ -18,27 +19,48 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="15_xy844"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="16_jtg1w"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="17_3c4i2"]
-[ext_resource type="Resource" path="res://resources/items/VoidCrystal.tres" id="17_xw1ct"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Filler.tres" id="18_fibxt"]
 [ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="19_1ggwk"]
+[ext_resource type="Resource" path="res://resources/powers/Anchor.tres" id="19_cm0bu"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Taunt.tres" id="19_kng74"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="20_6pyco"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Healer.tres" id="20_c051i"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="20_s11q0"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Jack.tres" id="21_xrhrr"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Tank.tres" id="22_ecqtj"]
+[ext_resource type="Resource" path="res://resources/items/BarterSalvage20.tres" id="22_gkuct"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/GuardSlash.tres" id="23_3i0hg"]
+[ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="23_j32j3"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="24_0qjmm"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Counter.tres" id="24_sln3g"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/StandGuard.tres" id="25_7svjc"]
 
-[sub_resource type="Resource" id="Resource_rj7cg"]
+[sub_resource type="Resource" id="Resource_1nxsc"]
 script = ExtResource("1_5i744")
-position = Vector2(-96.5524, -74.4396)
+position = Vector2(-111.774, -65.7741)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_3cgs7"]
+[sub_resource type="Resource" id="Resource_us6xy"]
 script = ExtResource("2_8l7tu")
-QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
-QUEST_OBJECTIVES_DATA = {}
+QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_2o16x")])
+QUEST_OBJECTIVES_DATA = {
+ExtResource("2_2o16x"): {
+"Betrayal": [false, false, 0],
+"Friends": [true, true, 0],
+"Get Scrap": [true, true, 0],
+"Tell Questy": [true, true, 0]
+}
+}
 
 [sub_resource type="Resource" id="Resource_85hug"]
 script = ExtResource("20_6pyco")
 UNIQUE = false
 STAT_MODIFICATIONS = {
 "brawn": 1.0,
-"grit": 1.0
+"crit": 1.0,
+"grit": 0.1,
+"hustle": 99
 }
 NAME = "Murder Charm"
 ICON = ExtResource("19_1ggwk")
@@ -47,15 +69,15 @@ VALUE = 100
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmMurder.tres"
 
-[sub_resource type="Resource" id="Resource_3e1n2"]
+[sub_resource type="Resource" id="Resource_h1nvw"]
 script = ExtResource("15_xy844")
-TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_vkpwf")])
+TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_vkpwf"), ExtResource("18_fibxt"), ExtResource("20_c051i"), ExtResource("21_xrhrr"), ExtResource("22_ecqtj")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 CLEARED_MAPS = {
 "res://scenes/maps/TestRoom/TestRoomA.tscn": {
 "cleared": true,
 "events": {},
-"faction": null,
+"faction": 0,
 "fast_travel": true
 },
 "res://scenes/maps/TestRoom/TestRoomB.tscn": {
@@ -63,30 +85,42 @@ CLEARED_MAPS = {
 "events": {},
 "faction": 0,
 "fast_travel": true
+},
+"res://scenes/maps/TestRoom/TestRoomC.tscn": {
+"cleared": false,
+"events": {
+"reward_multipliers": {
+"experience": 0,
+"loot": 0
+},
+"tameable_modifier": 1.75
+},
+"faction": 0,
+"fast_travel": true
 }
 }
-EQUIPPED_ARROW = ExtResource("14_idt13")
-CURRENCY = 12370
+EQUIPPED_ARROW = ExtResource("24_0qjmm")
+CURRENCY = 1914
 PARTY_LEVEL = 5
-CURRENT_EXP = 673
+CURRENT_EXP = 375
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
-TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_vkpwf")])
+TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_vkpwf"), ExtResource("20_c051i"), ExtResource("22_ecqtj"), ExtResource("21_xrhrr")])
 COMBATANT_SAVE_DATA = {
-ExtResource("3_vkpwf"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_nacsi"), ExtResource("5_08j5e"), ExtResource("6_mj7hw"), ExtResource("7_2vgwg")]), {
+ExtResource("3_vkpwf"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("10_siw53"), ExtResource("5_08j5e"), ExtResource("11_3rnn6"), ExtResource("12_fmiaq")]), {
 0: SubResource("Resource_85hug"),
 1: null,
 2: null
 }, {
 "accuracy": 0.95,
-"brawn": 1.01,
-"crit": 0.07,
+"brawn": 1.0,
+"crit": 1.07,
 "crit_dmg": 1.5,
-"grit": 1.0,
+"grit": 0.1,
 "handling": 1,
 "heal_mult": 1.0,
-"health": 22,
-"hustle": 1,
+"health": 22.0,
+"hustle": 100,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
@@ -99,13 +133,15 @@ ExtResource("3_vkpwf"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 22,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_nacsi"), ExtResource("5_08j5e"), ExtResource("6_mj7hw"), ExtResource("7_2vgwg"), ExtResource("8_4yji3"), ExtResource("9_i11jv"), ExtResource("10_siw53"), ExtResource("11_3rnn6"), ExtResource("12_fmiaq")]), true, Array[String]([]), true, 4, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_nacsi"), ExtResource("5_08j5e"), ExtResource("6_mj7hw"), ExtResource("7_2vgwg"), ExtResource("8_4yji3"), ExtResource("9_i11jv"), ExtResource("10_siw53"), ExtResource("11_3rnn6"), ExtResource("12_fmiaq")]), true, Array[String]([]), true, 5, {
 "Murder Charm": {
 "brawn": 1.0,
-"grit": 1.0
+"crit": 1.0,
+"grit": 0.1,
+"hustle": 99
 },
 "allocations": {
-"brawn": 0.01,
+"brawn": 0.0,
 "grit": 0.0,
 "handling": 0
 },
@@ -119,12 +155,211 @@ ExtResource("3_vkpwf"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "crit": 0.02
 }
 }, null, {
-"brawn": 1,
+"brawn": 0,
 "grit": 0,
 "handling": 0
 }, ExtResource("13_42xkk"), {
 "primary": "gifted",
-"secondary": "acute"
+"secondary": "quick"
+}],
+ExtResource("18_fibxt"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+0: null,
+1: null,
+2: null
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 7.0,
+"hustle": 1,
+"resist": 0.05
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 7,
+"hustle": 1,
+"resist": 0.05
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_nacsi"), ExtResource("9_i11jv"), ExtResource("6_mj7hw"), ExtResource("10_siw53"), ExtResource("19_kng74")]), false, Array[String]([]), true, 5, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
+"primary_temperment": {
+"handling": 1
+},
+"scaled_stats": {
+"health": 2.0
+},
+"secondary_temperment": {
+"handling": -1
+}
+}, null, {
+"brawn": 0,
+"grit": 0,
+"handling": 0
+}, ExtResource("13_42xkk"), {
+"primary": "gifted",
+"secondary": "heavy_handed"
+}],
+ExtResource("20_c051i"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_08j5e")]), {
+0: null,
+1: null,
+2: null
+}, {
+"accuracy": 1.1,
+"brawn": 0.0,
+"crit": 0.03,
+"crit_dmg": 1.25,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 7.0,
+"hustle": 1,
+"resist": 0.05
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 7,
+"hustle": 1,
+"resist": 0.05
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_08j5e")]), false, Array[String]([]), true, 5, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
+"primary_temperment": {
+"crit": 0.03
+},
+"scaled_stats": {
+"health": 2.0
+},
+"secondary_temperment": {
+"accuracy": 0.15,
+"crit": -0.05,
+"crit_dmg": -0.25
+}
+}, null, {
+"brawn": 0,
+"grit": 0,
+"handling": 0
+}, ExtResource("13_42xkk"), {
+"primary": "lucky",
+"secondary": "rigid"
+}],
+ExtResource("21_xrhrr"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("8_4yji3"), ExtResource("19_kng74"), ExtResource("6_mj7hw"), ExtResource("10_siw53")]), {
+0: null,
+1: null,
+2: null
+}, {
+"accuracy": 0.85,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.2,
+"health": 14.0,
+"hustle": 5,
+"resist": 0.05
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 14,
+"hustle": 1,
+"resist": 0.05
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_nacsi"), ExtResource("9_i11jv"), ExtResource("6_mj7hw"), ExtResource("10_siw53"), ExtResource("19_kng74"), ExtResource("8_4yji3")]), false, Array[String]([]), true, 5, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
+"primary_temperment": {
+"heal_mult": 0.2
+},
+"scaled_stats": {
+"health": 4.0
+},
+"secondary_temperment": {
+"accuracy": -0.1,
+"hustle": 4
+}
+}, null, {
+"brawn": 0,
+"grit": 0,
+"handling": 0
+}, ExtResource("13_42xkk"), {
+"primary": "unyielding",
+"secondary": "frantic"
+}],
+ExtResource("22_ecqtj"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("19_kng74"), ExtResource("4_nacsi"), ExtResource("23_3i0hg"), ExtResource("24_sln3g")]), {
+0: null,
+1: null,
+2: null
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.0,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.2,
+"health": 35.0,
+"hustle": 1,
+"resist": 0.05
+}, {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 35,
+"hustle": 1,
+"resist": 0.05
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("19_kng74"), ExtResource("4_nacsi"), ExtResource("23_3i0hg"), ExtResource("24_sln3g"), ExtResource("25_7svjc"), ExtResource("8_4yji3")]), false, Array[String]([]), true, 5, {
+"allocations": {
+"brawn": 0.0,
+"grit": 0.0,
+"handling": 0
+},
+"primary_temperment": {
+"heal_mult": 0.2
+},
+"scaled_stats": {
+"health": 10.0
+},
+"secondary_temperment": {
+"crit": -0.05
+}
+}, null, {
+"brawn": 0,
+"grit": 0,
+"handling": 0
+}, ExtResource("13_42xkk"), {
+"primary": "unyielding",
+"secondary": "bad_luck"
 }]
 }
 UNLOCKED_ABILITIES = {
@@ -132,22 +367,51 @@ ExtResource("3_vkpwf"): [ExtResource("7_2vgwg")]
 }
 ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
-KNOWN_POWERS = [ExtResource("14_xgg4w")]
+KNOWN_POWERS = [ExtResource("14_xgg4w"), ExtResource("19_cm0bu")]
 
-[sub_resource type="Resource" id="Resource_2s5ao"]
+[sub_resource type="Resource" id="Resource_wg7d4"]
+script = ExtResource("20_6pyco")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("19_1ggwk")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_6a678"]
+script = ExtResource("20_6pyco")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("19_1ggwk")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_3njpq"]
 script = ExtResource("16_jtg1w")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("17_xw1ct"), ExtResource("14_idt13")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("20_s11q0"), ExtResource("14_idt13"), ExtResource("23_j32j3"), ExtResource("24_0qjmm"), ExtResource("22_gkuct"), SubResource("Resource_wg7d4"), SubResource("Resource_6a678")])
 CRAFTED = Array[String]([])
 ITEM_DATA_INVENTORY = {
-"res://resources/items/ArrowSleeper.tres": 98,
-"res://resources/items/VoidCrystal.tres": 2
+"res://resources/items/Arrow.tres": 2,
+"res://resources/items/ArrowJunk.tres": 16,
+"res://resources/items/ArrowSleeper.tres": 99,
+"res://resources/items/BarterSalvage20.tres": 4,
+"res://resources/items/ScrapSalvage.tres": 999
 }
 
 [resource]
 script = ExtResource("17_3c4i2")
-NAME = "Save 2 - 00:03:56
+NAME = "Save 2 - 00:15:52
 Morale 5
 Prototype Room"
-PLAYTIME = 237.51
+PLAYTIME = 953.566
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_rj7cg"), SubResource("Resource_3cgs7"), SubResource("Resource_3e1n2"), SubResource("Resource_2s5ao")]
+save_data = [SubResource("Resource_1nxsc"), SubResource("Resource_us6xy"), SubResource("Resource_h1nvw"), SubResource("Resource_3njpq")]
