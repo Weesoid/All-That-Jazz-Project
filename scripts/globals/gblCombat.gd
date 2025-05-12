@@ -329,7 +329,7 @@ func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
 #********************************************************************************
 # STATUS EFFECT HANDLING
 #********************************************************************************
-func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, guaranteed:bool=false):
+func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	var status_effect: ResStatusEffect
 	if effect is String:
 		#if status_effect.contains(' '): status_effect = status_effect.replace(' ', '')
@@ -346,7 +346,7 @@ func addStatusEffect(target: ResCombatant, effect, tick_on_apply=false, guarante
 		target.STATUS_EFFECTS.append(status_effect)
 	else:
 		rankUpStatusEffect(target, status_effect)
-	if tick_on_apply:
+	if status_effect.TICK_ON_APPLY:
 		target.getStatusEffect(status_effect.NAME).tick(false)
 	
 	if (!guaranteed and !CombatGlobals.randomRoll(0.15+target.STAT_VALUES['resist'])) and (status_effect.LINGERING and target is ResPlayerCombatant and !target.LINGERING_STATUS_EFFECTS.has(status_effect.NAME)):

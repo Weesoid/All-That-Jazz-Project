@@ -35,7 +35,7 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25))
 	if target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.manual_call_indicator.emit(target, 'Out cold!', 'Resist')
-		CombatGlobals.addStatusEffect(target, 'KnockOut', true)
+		CombatGlobals.addStatusEffect(target, 'KnockOut')
 	else:
 		CombatGlobals.playSecondWindTween(target)
 		applyFaded(target)
@@ -47,16 +47,16 @@ static func applyFaded(target: ResCombatant):
 	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
 	
 	if target.hasStatusEffect('Faded I'):
-		CombatGlobals.addStatusEffect(target, 'FadedII', true)
+		CombatGlobals.addStatusEffect(target, 'FadedII')
 		target.LINGERING_STATUS_EFFECTS.erase('Faded I')
 		CombatGlobals.removeStatusEffect(target, 'Faded I')
 	elif target.hasStatusEffect('Faded II'):
-		CombatGlobals.addStatusEffect(target, 'FadedIII', true)
+		CombatGlobals.addStatusEffect(target, 'FadedIII')
 		target.LINGERING_STATUS_EFFECTS.erase('Faded II')
 		CombatGlobals.removeStatusEffect(target, 'Faded II')
 	elif target.hasStatusEffect('Faded III'):
-		CombatGlobals.addStatusEffect(target, 'FadedIV', true)
+		CombatGlobals.addStatusEffect(target, 'FadedIV')
 		target.LINGERING_STATUS_EFFECTS.erase('Faded III')
 		CombatGlobals.removeStatusEffect(target, 'Faded III')
 	elif !target.hasStatusEffect('Faded IV'):
-		CombatGlobals.addStatusEffect(target, 'FadedI', true)
+		CombatGlobals.addStatusEffect(target, 'FadedI')

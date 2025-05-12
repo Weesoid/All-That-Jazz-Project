@@ -20,16 +20,16 @@ static func applyFaded(target: ResCombatant):
 	if target.hasStatusEffect('Faded I'):
 		target.LINGERING_STATUS_EFFECTS.erase('Faded I')
 		CombatGlobals.removeStatusEffect(target, 'Faded I')
-		CombatGlobals.addStatusEffect(target, 'FadedII', true)
+		CombatGlobals.addStatusEffect(target, 'FadedII')
 	elif target.hasStatusEffect('Faded II'):
 		target.LINGERING_STATUS_EFFECTS.erase('Faded II')
 		CombatGlobals.removeStatusEffect(target, 'Faded II')
-		CombatGlobals.addStatusEffect(target, 'FadedIII', true)
+		CombatGlobals.addStatusEffect(target, 'FadedIII')
 	elif target.hasStatusEffect('Faded III'):
 		target.LINGERING_STATUS_EFFECTS.erase('Faded III')
 		CombatGlobals.removeStatusEffect(target, 'Faded III')
-		CombatGlobals.addStatusEffect(target, 'FadedIV', true)
+		CombatGlobals.addStatusEffect(target, 'FadedIV')
 	elif !target.hasStatusEffect('Faded IV'):
-		CombatGlobals.addStatusEffect(target, 'FadedI', true)
+		CombatGlobals.addStatusEffect(target, 'FadedI')
 	else:
 		CombatGlobals.addStatusEffect(target, 'Faded I')

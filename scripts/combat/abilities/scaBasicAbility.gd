@@ -77,7 +77,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 	if ability.current_effect is ResDamageEffect:
 		if CombatGlobals.calculateDamage(caster, target, ability.current_effect.damage, ability.current_effect.can_miss, ability.current_effect.can_crit, '', ability.current_effect.indicator_bb) and (ability.current_effect.apply_status != null or ability.current_effect.move != 0):
 			if ability.current_effect.apply_status != null:
-				CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
+				CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status)
 			if ability.current_effect.move != 0:
 				#await CombatGlobals.getCombatScene().get_tree().process_frame
 				CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, ability.current_effect.move,false, ability.current_effect.move_count)
@@ -91,14 +91,14 @@ static func applyToTarget(caster, target, ability: ResAbility):
 		else:
 			caster = caster.combatant_resource
 		if CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, ability.current_effect.damage), caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, ability.current_effect.can_miss, ability.current_effect.variation, ability.current_effect.message, ability.current_effect.trigger_on_hits, '', ability.current_effect.indicator_bb) and ability.current_effect.apply_status != null:
-			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status, true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status)
 	
 	elif ability.current_effect is ResApplyStatusEffect:
 		if ability.current_effect.target == ability.current_effect.Target.TARGET:
 			target = target.combatant_resource
 		elif ability.current_effect.target == ability.current_effect.Target.CASTER:
 			target = caster.combatant_resource
-		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect, true)
+		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect)
 	
 	elif ability.current_effect is ResHealEffect:
 		CombatGlobals.calculateHealing(target, ability.current_effect.heal)

@@ -14,13 +14,13 @@ static func skillCheck(target: CombatantScene , caster: CombatantScene, check: S
 	await caster.doAnimation('Cast_Weapon')
 	match points:
 		1:
-			CombatGlobals.addStatusEffect(target.combatant_resource, 'Singed', true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, 'Singed')
 		2:
-			CombatGlobals.addStatusEffect(target.combatant_resource, 'Jolted', true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, 'Jolted')
 		3:
-			CombatGlobals.addStatusEffect(target.combatant_resource, 'Poison', true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, 'Poison')
 		4:
-			CombatGlobals.addStatusEffect(target.combatant_resource, 'Chilled', true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, 'Chilled')
 
 static func applyEffects(target: CombatantScene , caster: CombatantScene, _ability: ResAbility=null):
 	CombatGlobals.calculateDamage(caster, target, 5)

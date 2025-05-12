@@ -10,5 +10,5 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 		randomize()
 		var element = ['Poison'].pick_random()
 		if element != '':
-			CombatGlobals.addStatusEffect(target.combatant_resource, element, true)
+			CombatGlobals.addStatusEffect(target.combatant_resource, element)
 

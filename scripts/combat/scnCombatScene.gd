@@ -347,7 +347,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 		if combatant is ResEnemyCombatant:
 			if !combatant.getStatusEffectNames().has('Knock Out'): 
 				clearStatusEffects(combatant)
-				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
+				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 				combatant.ACTED = true
 				total_experience += combatant.getExperience()
 			if combatant.SPAWN_ON_DEATH != null:
@@ -355,9 +355,9 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
-				CombatGlobals.addStatusEffect(combatant, 'Fading', true)
+				CombatGlobals.addStatusEffect(combatant, 'Fading')
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
-				CombatGlobals.addStatusEffect(combatant, 'KnockOut', true)
+				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 				combatant.ACTED = true
 			if !fading:
 				await get_tree().create_timer(0.25).timeout
@@ -387,7 +387,7 @@ func _on_escape_pressed():
 		concludeCombat(2)
 	else:
 		for combatant in getCombatantGroup('team'):
-			CombatGlobals.addStatusEffect(combatant, 'Dazed', true, true)
+			CombatGlobals.addStatusEffect(combatant, 'Dazed', true)
 		bonus_escape_chance += 0.1
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		confirm.emit()
@@ -874,8 +874,9 @@ func checkDialogue():
 	return combat_dialogue.dialogue_triggered
 
 func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
+	var effects = combatant.STATUS_EFFECTS.filter(func(effect: ResStatusEffect):return !effect.PERSIST_ON_DEAD)
 	if ignore_faded:
-		var effects = combatant.STATUS_EFFECTS.filter(func(effect: ResStatusEffect):return !effect.NAME.contains('Faded'))
+		effects.filter(func(effect: ResStatusEffect):return !effect.NAME.contains('Faded'))
 		while !effects.is_empty():
 			effects[0].removeStatusEffect()
 			effects.remove_at(0)
