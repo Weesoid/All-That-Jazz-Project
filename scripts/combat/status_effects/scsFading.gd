@@ -31,7 +31,7 @@ static func canAddQTE(status_effect: ResStatusEffect)-> bool:
 	return status_effect.duration != status_effect.MAX_DURATION - 1 and status_effect.duration > 0 and !CombatGlobals.getCombatScene().has_node('QTE') and CombatGlobals.getCombatScene().isCombatValid() and status_effect.afflicted_combatant.isDead()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if CombatGlobals.getCombatScene().combat_result != 0 and CombatGlobals.getCombatScene().combat_result != -1: 
+	if  CombatGlobals.getCombatScene().combat_result >= 1: 
 		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25))
 	if target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.manual_call_indicator.emit(target, 'Out cold!', 'Resist')
@@ -44,17 +44,19 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	CombatGlobals.resetStat(target, status_effect.NAME)
 
 static func applyFaded(target: ResCombatant):
+	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
+	
 	if target.hasStatusEffect('Faded I'):
+		CombatGlobals.addStatusEffect(target, 'FadedII', true)
 		target.LINGERING_STATUS_EFFECTS.erase('Faded I')
 		CombatGlobals.removeStatusEffect(target, 'Faded I')
-		CombatGlobals.addStatusEffect(target, 'FadedII', true)
 	elif target.hasStatusEffect('Faded II'):
+		CombatGlobals.addStatusEffect(target, 'FadedIII', true)
 		target.LINGERING_STATUS_EFFECTS.erase('Faded II')
 		CombatGlobals.removeStatusEffect(target, 'Faded II')
-		CombatGlobals.addStatusEffect(target, 'FadedIII', true)
 	elif target.hasStatusEffect('Faded III'):
+		CombatGlobals.addStatusEffect(target, 'FadedIV', true)
 		target.LINGERING_STATUS_EFFECTS.erase('Faded III')
 		CombatGlobals.removeStatusEffect(target, 'Faded III')
-		CombatGlobals.addStatusEffect(target, 'FadedIV', true)
 	elif !target.hasStatusEffect('Faded IV'):
 		CombatGlobals.addStatusEffect(target, 'FadedI', true)

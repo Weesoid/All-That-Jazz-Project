@@ -9,7 +9,7 @@ static func applyHitEffects(target, _caster, value, status_effect):
 	var heal_bonus = 0.15 + (bonus * 0.5)
 	print(heal_bonus)
 	if target is ResPlayerCombatant:
-		CombatGlobals.addTension(50 * heal_bonus)
+		CombatGlobals.addTension(1)
 	if (target is ResPlayerCombatant and target.STAT_MODIFIERS.keys().has('block')) or (target is ResEnemyCombatant and CombatGlobals.randomRoll(0.75+target.STAT_VALUES['grit'])):
 		if CombatGlobals.randomRoll(target.BASE_STAT_VALUES['grit'] + 0.5 + bonus) and target is ResPlayerCombatant:
 			CombatGlobals.calculateHealing(target, target.getMaxHealth() * heal_bonus, false)

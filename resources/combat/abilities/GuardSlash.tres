@@ -16,6 +16,7 @@ can_crit = true
 move = 1
 move_count = 4
 return_pos = true
+indicator_bb = ""
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0
@@ -38,6 +39,10 @@ BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([
 ABILITY_SCRIPT = ExtResource("1_j5lm3")
 TARGET_TYPE = 0
 TARGET_GROUP = 1
+REQUIRED_STATUS_EFFECT = {
+"rank": 0,
+"status_effect": null
+}
 CAN_TARGET_SELF = false
 TARGET_DEAD = false
 DEAD_TARGET_PARAMS = {

@@ -119,22 +119,24 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		caster.removeStatusEffect(1)
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
-	if caster is ResPlayerCombatant: 
-		addTension(randi_range(1, 5))
 	if caster != null and target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
-			addTension(25)
+			addTension(1)
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	playHurtAnimation(target, sound)
 	if target.isDead():
-		playKOSlowMotion()
+		if target is ResEnemyCombatant:
+			getCombatScene().fade_bars_animator.play('KOEnemy')
+		else:
+			getCombatScene().fade_bars_animator.play('KOAlly')
+		OverworldGlobals.freezeFrame()
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 	if target is ResPlayerCombatant and target.SCENE.blocking:
 		CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
-		CombatGlobals.addTension(target.getMaxHealth() * 0.25)
+		CombatGlobals.addTension(1)
 		CombatGlobals.addStatusEffect(target, 'Guard')
 	if target.getStatusEffectNames().has('Riposte'):
 		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
@@ -170,15 +172,10 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 		OverworldGlobals.playSound('02_Heal_02.ogg')
 	else:
 		manual_call_indicator.emit(target, "NO HEAL.", 'Flunk')
-		
+	
+	target.removeStatusEffect(3)
+	
 	#received_combatant_value.emit(target, caster, int(base_healing))
-
-func playKOSlowMotion():
-	#getCombatScene().zoomCamera(Vector2(0.5,0.5),0.1)
-	getCombatScene().setUIModulation(Color.TRANSPARENT)
-	await OverworldGlobals.freezeFrame()
-	#await getCombatScene().zoomCamera(Vector2(-0.5,-0.5),0.25)
-	getCombatScene().setUIModulation(Color.WHITE, 1.0)
 
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
@@ -520,8 +517,8 @@ func addTension(amount: int):
 #	elif amount < 0:
 #		OverworldGlobals.playSound("res://audio/sounds/220189__gameaudio__blip-squeak.ogg")
 	var prev_tension = TENSION
-	if TENSION + amount > 100:
-		TENSION = 100
+	if TENSION + amount > 8:
+		TENSION = 8
 	elif TENSION + amount < 0:
 		TENSION = 0
 	else:

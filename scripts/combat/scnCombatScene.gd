@@ -38,6 +38,7 @@ class_name CombatScene
 @onready var turn_timer_bar = $CombatCamera/Interface/ProgressBar/ProgressBar
 @onready var turn_timer = $TurnTimer
 @onready var turn_timer_animator = $CombatCamera/Interface/ProgressBar/AnimationPlayer2
+@onready var fade_bars_animator = $CombatCamera/FadeBars/AnimationPlayer
 
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
@@ -118,7 +119,7 @@ func _ready():
 	
 	rollTurns()
 	setActiveCombatant(false)
-	while active_combatant.STAT_VALUES['hustle'] < -99:
+	while active_combatant.isImmobilized():
 		setActiveCombatant(false)
 	
 	for button in action_panel.get_children():
@@ -228,6 +229,8 @@ func useAIPackage():
 func end_turn(combatant_act=true):
 	if !turn_timer.is_stopped(): 
 		stopTimer()
+	if await checkWin(): 
+		return
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
@@ -312,7 +315,7 @@ func end_turn(combatant_act=true):
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
 	
-	if active_combatant.STAT_VALUES['hustle'] >= -99:
+	if !active_combatant.isImmobilized():
 		#moveCamera(active_combatant.SCENE.global_position, 0.1)
 		active_combatant.act()
 		active_combatant.SCENE.get_node('CombatBars').pulse_gradient.play('Show')
@@ -418,7 +421,7 @@ func calculateEscapeChance()-> float:
 		hustle_enemies += combatant.BASE_STAT_VALUES['hustle']
 	for combatant in getCombatantGroup('team'):
 		hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	return snappedf((0.5 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
+	return snappedf((0.5 + ((hustle_allies-hustle_enemies)*0.1)) + bonus_escape_chance, 0.01)
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -487,9 +490,9 @@ func getMoveAbilities():
 	for child in secondary_panel_container.get_children():
 		child.free()
 	
-	var pass_button = OverworldGlobals.createAbilityButton(load("res://resources/combat/abilities/Pass.tres"))
-	pass_button.pressed.connect(func(): confirm.emit())
-	pass_button.focus_entered.connect(func():updateDescription(null, 'Pass this turn.'))
+	var pass_button = createAbilityButton(load("res://resources/combat/abilities/Pass.tres"))
+	#pass_button.pressed.connect(func(): confirm.emit())
+	#pass_button.focus_entered.connect(func():updateDescription(null, 'Pass this turn.'))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/BraceSelf.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Recede.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
@@ -961,13 +964,16 @@ func concludeCombat(results: int):
 	combat_result = results
 	battle_music.stop()
 	moveCamera(camera_position)
-	for combatant in COMBATANTS:
-		refreshInstantCasts(combatant)
-		clearStatusEffects(combatant, false)
 	whole_action_panel.hide()
 	secondary_panel.hide()
 	tension_bar.hide()
 	round_counter.hide()
+	toggleUI(false)
+	print(getDeadCombatants('team').size(), ' Msdfsdfsdf')
+	for combatant in COMBATANTS:
+		refreshInstantCasts(combatant)
+		clearStatusEffects(combatant, false)
+		if results == 0 or getDeadCombatants('team').size() > 0: await get_tree().create_timer(0.25).timeout
 	target_state = 0
 	target_index = 0
 	var morale_bonus = 1
@@ -990,8 +996,7 @@ func concludeCombat(results: int):
 				addDrop(enemy.getBarterDrops())
 #	else:
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
-	
-	toggleUI(false)
+	#resetActionLog()
 	
 	if results == 1:
 		var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
@@ -1222,7 +1227,7 @@ func startTimer():
 
 func stopTimer():
 	if turn_timer.time_left > turn_time*0.9:
-		CombatGlobals.addTension(5)
+		CombatGlobals.addTension(1)
 	
 	turn_timer_animator.play_backwards("Show")
 	turn_timer.stop()

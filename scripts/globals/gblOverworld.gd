@@ -697,7 +697,7 @@ func loadArrayFromPath(path:String, filter=null)-> Array:
 	#print('Returning: ', out)
 	return out
 
-func freezeFrame(time_scale: float=0.3, duration: float=1.0):
+func freezeFrame(time_scale: float=0.3, duration: float=1.5):
 	Engine.time_scale = time_scale
 	await get_tree().create_timer(duration * time_scale).timeout
 	Engine.time_scale = 1.0

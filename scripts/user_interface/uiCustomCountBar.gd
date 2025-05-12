@@ -15,6 +15,7 @@ func _ready():
 
 func _process(_delta):
 	if !valuesCorrect():
+		#print('x')
 		var filled = 0
 		for child in container.get_children(): child.queue_free()
 		for i in range(max_value):
@@ -25,6 +26,7 @@ func _process(_delta):
 				filled += 1
 			else:
 				rect.texture = EMPTY_CIRCLE
+				rect.scale = Vector2(1.25,1.25)
 			container.add_child(rect)
 
 func valuesCorrect()-> bool:

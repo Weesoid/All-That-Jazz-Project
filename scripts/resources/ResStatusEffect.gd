@@ -9,7 +9,8 @@ enum EffectType {
 enum RemoveType {
 	NONE,
 	HIT,
-	GET_HIT
+	GET_HIT,
+	GET_HEAL
 }
 enum RemoveStyle {
 	REMOVE,
@@ -76,13 +77,14 @@ func removeStatusEffect():
 	if VISUALS != null:
 		VISUALS.queue_free()
 	
-	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.STAT_VALUES['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and LINGERING and !PERSIST_ON_DEAD:
+	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.STAT_VALUES['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and LINGERING and !PERSIST_ON_DEAD and RESISTABLE:
 		afflicted_combatant.LINGERING_STATUS_EFFECTS.erase(NAME)
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, 'Cured %s!' % NAME, 'Heal')
 	elif afflicted_combatant is ResPlayerCombatant and LINGERING:
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '%s Supressed!' % NAME, 'Flunk')
 	
-	ICON.queue_free()
+	if is_instance_valid(ICON):
+		ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
 func tick(update_duration=true, override_permanent=false):

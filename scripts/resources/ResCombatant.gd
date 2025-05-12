@@ -150,6 +150,9 @@ func hasStatusEffect(stat_name: String)-> bool:
 func isDead()-> bool:
 	return STAT_VALUES['health'] < 1.0
 
+func isImmobilized()-> bool:
+	return STAT_VALUES['hustle'] < -99
+
 func getStringStats(current_stats=false):
 	var result = ""
 	var stats

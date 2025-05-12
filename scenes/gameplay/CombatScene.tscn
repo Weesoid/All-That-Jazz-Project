@@ -265,12 +265,174 @@ _data = {
 }
 
 [sub_resource type="Gradient" id="Gradient_ajd4e"]
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_j26mw"]
 gradient = SubResource("Gradient_ajd4e")
 fill_from = Vector2(0, 0.329268)
 fill_to = Vector2(0, 1)
+
+[sub_resource type="Animation" id="Animation_0rles"]
+resource_name = "KOAlly"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(8, 0.890625), Vector2(8.01788, 2.16753), Vector2(8, 0.890625)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(8.01788, 1.00874), Vector2(8.01788, 2.16753), Vector2(8.01788, 1.00874)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 1), Color(0, 0, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 1), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dxn4y"]
+resource_name = "KOEnemy"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(8, 0.890625), Vector2(8.01788, 2.16753), Vector2(8, 0.890625)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(8.01788, 1.00874), Vector2(8.01788, 2.16753), Vector2(8.01788, 1.00874)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0, 0, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ord6r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(8, 0.890625)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(8.01788, 1.00874)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gxsj4"]
+_data = {
+"KOAlly": SubResource("Animation_0rles"),
+"KOEnemy": SubResource("Animation_dxn4y"),
+"RESET": SubResource("Animation_ord6r")
+}
 
 [sub_resource type="Animation" id="Animation_morbt"]
 length = 0.001
@@ -381,22 +543,12 @@ _data = {
 "Spin": SubResource("Animation_50ssn")
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rpsqc"]
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-
 [sub_resource type="GDScript" id="GDScript_ip03s"]
 resource_name = "TensionBar"
-script/source = "extends ProgressBar
+script/source = "extends CustomCountBar
 
 @onready var combat_scene = CombatGlobals.getCombatScene()
 @onready var animator = $AnimationPlayer
-@onready var bar_fader = $FaderBar
-@onready var bar_fader_up = $FaderBarIncrease
 
 var previous_value
 var bar_filling:bool = false
@@ -420,55 +572,17 @@ func _on_active_combatant_changed(combatant):
 #func _process(_delta):
 #	value = CombatGlobals.TENSION
 
-func _on_value_changed(_val):
+#func _on_value_changed(_val):
+#	if (!combat_scene.active_combatant is ResPlayerCombatant or (combat_scene.active_combatant is ResPlayerCombatant and !visible)) and !animator.is_playing() and value != 0:
+#		show()
+#		animator.play(\"Show\")
+
+func updateValue(prev_tension, tension):
+	value = tension
 	if (!combat_scene.active_combatant is ResPlayerCombatant or (combat_scene.active_combatant is ResPlayerCombatant and !visible)) and !animator.is_playing() and value != 0:
 		show()
 		animator.play(\"Show\")
-
-func updateValue(prev_tension, tension):
-	if tension < prev_tension:
-		create_tween().tween_method(setBarValue,prev_tension,tension,0.25)
-		animateFaderBar(prev_tension, tension)
-	elif tension > prev_tension:
-		animateIncreaseFader(tension)
-		create_tween().tween_method(setBarValue,prev_tension,tension,0.25)
-	else:
-		value = tension
-
-func animateFaderBar(prev_val, val):
-#	print(prev_val, ' vs ', val)
-	if prev_val == val:
-		return
-	bar_fader.value = prev_val
-	bar_fader.modulate = Color.RED
-	await get_tree().create_timer(0.25).timeout
-	var tween = create_tween().set_parallel(true)
-	tween.tween_method(setFaderBarValue, prev_val, value, 0.3)
-	tween.tween_property(bar_fader, 'modulate', Color.BLACK, 0.25)
-
-func animateIncreaseFader(val):
-	bar_fader_up.value = val
-	bar_fader_up.modulate = Color.GREEN
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(bar_fader_up, 'modulate', Color.TRANSPARENT, 0.25)
-
-func setFaderBarValue(val):
-	bar_fader.value = val
-
-func setFaderBarUpValue(val):
-	bar_fader_up.value = val
-
-func setBarValue(val):
-	value = val
 "
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xa3bg"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rfdgp"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e8nrv"]
-bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="GDScript" id="GDScript_25yyp"]
 script/source = "extends ProgressBar
@@ -1124,16 +1238,25 @@ position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 script = ExtResource("2_dcn2q")
 
-[node name="Sprite2D" type="Sprite2D" parent="CombatCamera"]
+[node name="FadeBars" type="Node2D" parent="CombatCamera"]
+
+[node name="Sprite2D" type="Sprite2D" parent="CombatCamera/FadeBars"]
+modulate = Color(0, 0, 0, 1)
 position = Vector2(0, -89.5)
 scale = Vector2(8, 0.890625)
 texture = SubResource("GradientTexture2D_j26mw")
 
-[node name="Sprite2D2" type="Sprite2D" parent="CombatCamera"]
+[node name="Sprite2D2" type="Sprite2D" parent="CombatCamera/FadeBars"]
+modulate = Color(0, 0, 0, 1)
 position = Vector2(3.30438e-07, 84.2202)
 rotation = 3.14159
 scale = Vector2(8.01788, 1.00874)
 texture = SubResource("GradientTexture2D_j26mw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CombatCamera/FadeBars"]
+libraries = {
+"": SubResource("AnimationLibrary_gxsj4")
+}
 
 [node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
 z_index = 1000
@@ -1440,51 +1563,32 @@ theme = ExtResource("7_56rvc")
 text = "Turn"
 vertical_alignment = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface"]
+[node name="ProgressBar" type="Control" parent="CombatCamera/Interface"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
 offset_left = -64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 70.0
-theme_override_styles/background = SubResource("StyleBoxFlat_rpsqc")
-value = 50.0
-show_percentage = false
 script = SubResource("GDScript_ip03s")
+max_value = 8
 
-[node name="FaderBar" type="ProgressBar" parent="CombatCamera/Interface/ProgressBar"]
-modulate = Color(0, 0, 0, 1)
-z_index = -99
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatCamera/Interface/ProgressBar"]
 layout_mode = 0
+offset_top = -3.0
 offset_right = 128.0
-offset_bottom = 6.0
-theme_override_styles/background = SubResource("StyleBoxFlat_xa3bg")
-show_percentage = false
-
-[node name="FaderBarIncrease" type="ProgressBar" parent="CombatCamera/Interface/ProgressBar"]
-z_index = -99
-layout_mode = 0
-offset_right = 128.0
-offset_bottom = 6.0
-theme_override_styles/background = SubResource("StyleBoxEmpty_rfdgp")
-theme_override_styles/fill = SubResource("StyleBoxFlat_e8nrv")
-show_percentage = false
+offset_bottom = -3.0
+alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="CombatCamera/Interface/ProgressBar"]
+visible = false
 layout_mode = 0
-offset_left = 130.0
-offset_top = -3.0
-offset_right = 142.0
-offset_bottom = 9.0
+offset_left = 110.0
+offset_top = -6.0
+offset_right = 122.0
+offset_bottom = 6.0
 texture = ExtResource("21_ojvx4")
-
-[node name="ProgressBarTrueValues" parent="CombatCamera/Interface/ProgressBar" instance=ExtResource("9_bbc62")]
-layout_mode = 1
-offset_left = -130.0
-offset_top = -4.0
-offset_right = -130.0
-offset_bottom = 5.0
-text = "100"
-horizontal_alignment = 2
-show_max = false
 
 [node name="ProgressBar" type="ProgressBar" parent="CombatCamera/Interface/ProgressBar"]
 modulate = Color(1, 1, 1, 0)
@@ -1541,6 +1645,5 @@ text = "60"
 [connection signal="mouse_entered" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_mouse_entered"]
 [connection signal="mouse_exited" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_mouse_exited"]
 [connection signal="pressed" from="CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape" to="." method="_on_escape_pressed"]
-[connection signal="value_changed" from="CombatCamera/Interface/ProgressBar" to="CombatCamera/Interface/ProgressBar" method="_on_value_changed"]
 
 [editable path="CombatCamera/Interface/Inspect/AttributeView"]

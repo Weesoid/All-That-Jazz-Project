@@ -141,6 +141,7 @@ func unequipCharm(slot: int):
 	CombatGlobals.resetStat(self, CHARMS[slot].NAME)
 	InventoryGlobals.addItemResource(CHARMS[slot], 1, false, false)
 	CHARMS[slot] = null
+	OverworldGlobals.playSound("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 
 func hasCharm(charm: ResCharm):
 	for equipped_charm in CHARMS.values():

@@ -1,18 +1,32 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://cjdjo1ve4va2r"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://cjdjo1ve4va2r"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_ygsyy"]
+[ext_resource type="PackedScene" uid="uid://c8hpqomh4qilw" path="res://scenes/animations/Heal.tscn" id="2_imt1u"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectAddTP.gd" id="2_n6ysv"]
 [ext_resource type="Texture2D" uid="uid://cac4xj6cte52y" path="res://images/ability_icons/pass.png" id="3_djmm3"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_btlwk"]
+
+[sub_resource type="Resource" id="Resource_gj6cm"]
+script = ExtResource("2_n6ysv")
+add_amount = 1
+sound_effect = ""
+animation = ExtResource("2_imt1u")
+animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("4_btlwk")
 NAME = "Pass"
 DESCRIPTION = "Pass your turn."
 ICON = ExtResource("3_djmm3")
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_gj6cm")])
 ABILITY_SCRIPT = ExtResource("1_ygsyy")
 TARGET_TYPE = 0
 TARGET_GROUP = 2
+REQUIRED_STATUS_EFFECT = {
+"rank": 0,
+"status_effect": null
+}
 CAN_TARGET_SELF = true
 TARGET_DEAD = false
 DEAD_TARGET_PARAMS = {

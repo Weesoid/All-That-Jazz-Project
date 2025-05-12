@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=9 format=3 uid="uid://cc7bsbfx2mbrk"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=10 format=3 uid="uid://cc7bsbfx2mbrk"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="1_lhtfv"]
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_s0jvy"]
@@ -8,11 +8,17 @@
 [ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="4_plhc1"]
 [ext_resource type="Resource" uid="uid://demepyaovpuck" path="res://resources/combat/abilities/StandGuard.tres" id="5_udeor"]
 [ext_resource type="Resource" uid="uid://dhoel3hfuuxgr" path="res://resources/combat/abilities/AilmentStrike.tres" id="6_wucla"]
+[ext_resource type="Resource" uid="uid://di6pm5nkyin6u" path="res://resources/combat/abilities/RandaStrike.tres" id="7_db01g"]
 
 [resource]
 script = ExtResource("1_lhtfv")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_t8uty"), ExtResource("1_s0jvy"), ExtResource("3_sqwjv"), ExtResource("4_plhc1"), ExtResource("5_udeor"), ExtResource("6_wucla")])
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("3_t8uty"), ExtResource("1_s0jvy"), ExtResource("3_sqwjv"), ExtResource("4_plhc1"), ExtResource("5_udeor"), ExtResource("6_wucla"), ExtResource("7_db01g")])
+BASE_TEMPERMENT = {
+"primary": "",
+"secondary": ""
+}
 MANDATORY = false
+STAT_MULTIPLIER = 0.01
 NAME = "Hank"
 PACKED_SCENE = ExtResource("1_uh2xe")
 DESCRIPTION = "He's the tank!"

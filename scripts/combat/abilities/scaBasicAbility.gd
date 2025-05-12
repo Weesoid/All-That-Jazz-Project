@@ -42,7 +42,9 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)
 			CombatGlobals.getCombatScene().team_hp_bar.hide()
 			target.get_node('CombatBars').show()
-	
+		elif effect is ResAddTPEffect:
+			CombatGlobals.addTension(effect.add_amount)
+			await applyEffects(caster, target, ability)
 	CombatGlobals.ability_finished.emit()
 
 # Determine if target(s) is single or multi

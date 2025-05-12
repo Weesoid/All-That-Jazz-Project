@@ -10,8 +10,8 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 	)
 
 static func applyHitEffects(target, _caster, _value, status_effect: ResStatusEffect):
-	if target != CombatGlobals.getCombatScene().active_combatant:
-		target.SCENE.doAnimation('Cast_Melee', status_effect.STATUS_SCRIPT, {'anim_speed'=2.0})
+	if target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized():
+		target.SCENE.doAnimation('Cast_Melee', status_effect.STATUS_SCRIPT, {'anim_speed'=1.25})
 
 static func endEffects(target: ResCombatant, _status_effect: ResStatusEffect):
 	applyHitEffects(target, null, null, _status_effect)
