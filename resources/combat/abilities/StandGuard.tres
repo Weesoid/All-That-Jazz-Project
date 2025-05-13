@@ -11,6 +11,7 @@ script = ExtResource("2_ko4qm")
 target = 1
 status_effect = ExtResource("3_xtbwu")
 cast_animation = "Cast_Melee"
+is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0

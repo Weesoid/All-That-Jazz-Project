@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://jrg6o80xiqbu"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://jrg6o80xiqbu"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_0advh"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_12k4t"]
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ca8ty"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="2_vmt8s"]
 
 [resource]
@@ -26,7 +25,7 @@ STAT_VALUES = {
 "handling": 0,
 "heal_mult": 1.0,
 "health": 999,
-"hustle": 0,
+"hustle": -999,
 "resist": 0.05
 }
 SCALE_STATS = {
@@ -41,6 +40,6 @@ SCALE_STATS = {
 "hustle": false,
 "resist": false
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ca8ty")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 MAX_TURN_CHARGES = 1
 AI_PACKAGE = ExtResource("2_vmt8s")

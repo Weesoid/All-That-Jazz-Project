@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://b8t06uqphitmp"]
+
+[ext_resource type="Texture2D" uid="uid://c1chlf5nv15uq" path="res://images/sprites/icon_combo.png" id="2_6lvld"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_k3wc7"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_fbodu"]
+
+[resource]
+script = ExtResource("4_fbodu")
+NAME = "Combo"
+DESCRIPTION = "Effect is unique depending on ability."
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+STATUS_SCRIPT = ExtResource("2_k3wc7")
+EFFECT_TYPE = 0
+REMOVE_WHEN = 0
+REMOVE_STYLE = 0
+TEXTURE = ExtResource("2_6lvld")
+MAX_DURATION = 0
+EXTEND_DURATION = 1
+APPLY_EXTEND_DURATION = true
+MAX_RANK = 0
+TICK_ON_APPLY = false
+TICK_PER_TURN = false
+DO_TICKS = false
+RESISTABLE = false
+PERMANENT = true
+LINGERING = false
+PERSIST_ON_DEAD = false
+SOUNDS = {
+"apply": "res://audio/sounds/252078__pepingrillin__rocket_mode.ogg",
+"expire": "res://audio/sounds/252075__pepingrillin__electro_fire.ogg"
+}

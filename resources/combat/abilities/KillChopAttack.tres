@@ -8,13 +8,25 @@
 [sub_resource type="Resource" id="Resource_tkqu8"]
 script = ExtResource("2_m7rok")
 damage_type = 0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
 damage = 999
 can_miss = true
 can_crit = true
+bonus_stats = {}
 move = 0
 move_count = 1
 return_pos = true
 indicator_bb = ""
+has_combo_effects = false
+combo_properties = {
+"bonus_stats": false,
+"move": false,
+"return_pos": true
+}
+is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0

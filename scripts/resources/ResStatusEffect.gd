@@ -37,6 +37,7 @@ enum RemoveStyle {
 @export var PERMANENT: bool = false
 @export var LINGERING: bool = false
 @export var PERSIST_ON_DEAD: bool = false
+@export var SOUNDS: Dictionary = {'apply':'', 'expire':''}
 
 var APPLY_ONCE = true
 var duration
@@ -73,11 +74,12 @@ func removeStatusEffect():
 	if EFFECT_TYPE == EffectType.ON_HIT:
 		CombatGlobals.received_combatant_value.disconnect(onHitTick)
 	
+	if SOUNDS['expire'] != '':
+		OverworldGlobals.playSound(SOUNDS['expire'])
 	if STATUS_SCRIPT != null:
 		STATUS_SCRIPT.endEffects(afflicted_combatant, self)
 	if VISUALS != null:
 		VISUALS.queue_free()
-	
 	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.STAT_VALUES['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and LINGERING and !PERSIST_ON_DEAD and RESISTABLE:
 		afflicted_combatant.LINGERING_STATUS_EFFECTS.erase(NAME)
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, 'Cured %s!' % NAME, 'Heal')

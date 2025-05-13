@@ -9,6 +9,7 @@
 script = ExtResource("3_07xaq")
 heal = 10
 cast_animation = "Cast_Misc"
+is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0

@@ -48,14 +48,14 @@ func emit_exp_updated(value, max_value):
 # ABILITY EFFECTS & UTILITY
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
-func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = true, sound:String='', indicator_bb_code: String='')-> bool:
+func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = true, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary={})-> bool:
 	if !caster is ResCombatant:
 		caster = caster.combatant_resource
 	if !target is ResCombatant:
 		target = target.combatant_resource
 	
-	if randomRoll(caster.STAT_VALUES['accuracy']) and can_miss:
-		damageTarget(caster, target, base_damage, can_crit, sound, indicator_bb_code)
+	if randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy')) and can_miss:
+		damageTarget(caster, target, base_damage, can_crit, sound, indicator_bb_code, bonus_stats)
 		return true
 	elif can_miss:
 		doDodgeEffects(caster, target, base_damage)
@@ -85,25 +85,35 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	return true
 
 ## Basic damage calculations
-func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool, sound:String='', indicator_bb_code: String=''):
-	base_damage += caster.STAT_VALUES['brawn'] * base_damage
+func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary = {}):
+	base_damage += getBonusStat(bonus_stats, 'damage')
+	base_damage += (caster.STAT_VALUES['brawn']+getBonusStat(bonus_stats, 'brawn')) * base_damage
 	base_damage = useDamageFormula(target, base_damage)
 	base_damage = valueVariate(base_damage, 0.15)
-	if randomRoll(caster.STAT_VALUES['crit']) and can_crit:
-		base_damage = doCritEffects(base_damage, caster, target)
+	if randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit')) and can_crit:
+		base_damage = doCritEffects(base_damage, caster, target, getBonusStat(bonus_stats,'crit_dmg'),true)
 		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
 	doPostDamageEffects(caster, target, base_damage, sound, indicator_bb_code)
+
+func getBonusStat(bonus_stats: Dictionary, key: String):
+	if bonus_stats.has(key):
+		return bonus_stats[key]
+	else:
+		return 0
 
 func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
 	manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 	playDodgeTween(target)
 	checkMissCases(target, caster, damage)
 
-func doCritEffects(base_damage, caster: ResCombatant, target: ResCombatant, crit_damage:float=2.0):
+func doCritEffects(base_damage, caster: ResCombatant, target: ResCombatant, crit_damage:float=2.0, stack_crit_damage:bool=false):
 	if  caster != null:
-		base_damage *= caster.STAT_VALUES['crit_dmg']
+		if stack_crit_damage:
+			base_damage *= (caster.STAT_VALUES['crit_dmg']+crit_damage)
+		else:
+			base_damage *= caster.STAT_VALUES['crit_dmg']
 	else:
 		base_damage *= crit_damage
 	getCombatScene().combat_camera.shake(15.0, 10.0)
@@ -344,6 +354,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.STATUS_EFFECTS.append(status_effect)
+		if status_effect.SOUNDS['apply'] != '': OverworldGlobals.playSound(status_effect.SOUNDS['apply'])
 	else:
 		rankUpStatusEffect(target, status_effect)
 	if status_effect.TICK_ON_APPLY:

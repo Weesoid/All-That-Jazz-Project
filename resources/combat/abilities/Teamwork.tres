@@ -11,6 +11,7 @@ script = ExtResource("2_pf0ay")
 target = 0
 status_effect = ExtResource("3_pl8gy")
 cast_animation = "Cast_Misc"
+is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0

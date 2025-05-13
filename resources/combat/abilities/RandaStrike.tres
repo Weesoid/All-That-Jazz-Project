@@ -17,6 +17,7 @@ can_miss = false
 trigger_on_hits = false
 message = ""
 indicator_bb = ""
+is_combo_effect = false
 sound_effect = ""
 animation = ExtResource("2_7yeeu")
 animation_time = 0.1

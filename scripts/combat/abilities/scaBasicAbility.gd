@@ -2,6 +2,11 @@
 static func animate(caster: CombatantScene, target, ability:ResAbility):
 	for effect in ability.BASIC_EFFECTS:
 		ability.current_effect = effect
+		if effect.is_combo_effect and !canDoCombo(effect, target):
+			continue
+		elif ability.getTargetType() == 1 and canDoCombo(effect, target) and !effect is ResDamageEffect:
+			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
+		
 		if effect.animate_on == 1:
 			await playAnimation(ability, caster)
 		if effect.sound_effect != '': 
@@ -45,6 +50,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		elif effect is ResAddTPEffect:
 			CombatGlobals.addTension(effect.add_amount)
 			await applyEffects(caster, target, ability)
+	
 	CombatGlobals.ability_finished.emit()
 
 # Determine if target(s) is single or multi
@@ -75,22 +81,45 @@ static func playAnimation(ability: ResAbility, target):
 static func applyToTarget(caster, target, ability: ResAbility):
 	#print('Applyin!')
 	if ability.current_effect is ResDamageEffect:
-		if CombatGlobals.calculateDamage(caster, target, ability.current_effect.damage, ability.current_effect.can_miss, ability.current_effect.can_crit, '', ability.current_effect.indicator_bb) and (ability.current_effect.apply_status != null or ability.current_effect.move != 0):
-			if ability.current_effect.apply_status != null:
+		var bonus_stats = {}
+		if ability.current_effect.canCombo(target.combatant_resource, 'bonus_stats') or !ability.current_effect.has_combo_effects:
+			bonus_stats = ability.current_effect.bonus_stats
+		if CombatGlobals.calculateDamage(
+				caster, 
+				target, ability.current_effect.damage, 
+				ability.current_effect.can_miss, 
+				ability.current_effect.can_crit, 
+				'', 
+				ability.current_effect.indicator_bb,
+				bonus_stats
+				):
+			
+			if ability.current_effect.apply_status != null and (checkDamageCombo(target.combatant_resource, ability.current_effect, 'status_effect') or ability.current_effect.has_combo_effects):
 				CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status)
-			if ability.current_effect.move != 0:
-				#await CombatGlobals.getCombatScene().get_tree().process_frame
+			if ability.current_effect.move != 0 and (checkDamageCombo(target.combatant_resource, ability.current_effect, 'move')  or ability.current_effect.has_combo_effects):
 				CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, ability.current_effect.move,false, ability.current_effect.move_count)
-				#print('Shmovin')
-				
-				#ability.current_effect.move = 0
-				#await CombatGlobals.getCombatScene().get_tree().process_frame
+			if checkDamageCombo(target.combatant_resource, ability.current_effect, 'do_not_return_pos', false):
+				ability.current_effect.do_not_return_pos = true
+			
+		if checkDamageCombo(target.combatant_resource, ability.current_effect,'',false) and target.combatant_resource.hasStatusEffect('Combo') and !checkDamageCombo(target.combatant_resource, ability.current_effect, 'do_not_return_pos', false):
+			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
+	
 	elif ability.current_effect is ResCustomDamageEffect:
 		if !ability.current_effect.use_caster:
 			caster = null
 		else:
 			caster = caster.combatant_resource
-		if CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, ability.current_effect.damage), caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, ability.current_effect.can_miss, ability.current_effect.variation, ability.current_effect.message, ability.current_effect.trigger_on_hits, '', ability.current_effect.indicator_bb) and ability.current_effect.apply_status != null:
+		if CombatGlobals.calculateRawDamage(
+			target, 
+			CombatGlobals.useDamageFormula(target, ability.current_effect.damage),
+			caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, 
+			ability.current_effect.can_miss, 
+			ability.current_effect.variation, 
+			ability.current_effect.message, 
+			ability.current_effect.trigger_on_hits, 
+			'', 
+			ability.current_effect.indicator_bb) and ability.current_effect.apply_status != null:
+			
 			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status)
 	
 	elif ability.current_effect is ResApplyStatusEffect:
@@ -119,8 +148,27 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 	if damage_effect.damage_type == damage_effect.DamageType.MELEE:
 		await caster.moveTo(target)
 		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT) # SPEED UP {'anim_speed':1.5}
-		if damage_effect.return_pos: await caster.moveTo(caster.get_parent())
+		await returnToPosition(damage_effect, caster)
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
 		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7,'ability'=ability})
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
 		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=null,'frame_time'=0.7,'ability'=ability})
+	elif damage_effect.damage_type == damage_effect.DamageType.CUSTOM:
+		if damage_effect.cast_animation['go_to_target']:
+			await caster.moveTo(target)
+		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ABILITY_SCRIPT)
+		if damage_effect.cast_animation['go_to_target']:
+			await returnToPosition(damage_effect, caster)
+
+static func returnToPosition(damage_effect: ResDamageEffect, caster: CombatantScene):
+	if damage_effect.return_pos and !damage_effect.do_not_return_pos:
+		await caster.moveTo(caster.get_parent())
+	if damage_effect.do_not_return_pos:
+		damage_effect.do_not_return_pos = false
+
+static func canDoCombo(effect: ResAbilityEffect, target: CombatantScene)-> bool:
+	return effect.is_combo_effect and target.combatant_resource.hasStatusEffect('Combo')
+
+# Returns true if target meets combo requirements
+static func checkDamageCombo(target: ResCombatant, effect: ResDamageEffect, check_property: String='', allow_no_combo:bool=true)-> bool:
+	return (effect.has_combo_effects and effect.canCombo(target, check_property)) or (!effect.has_combo_effects and allow_no_combo)

@@ -9,6 +9,7 @@
 [sub_resource type="Resource" id="Resource_gj6cm"]
 script = ExtResource("2_n6ysv")
 add_amount = 1
+is_combo_effect = false
 sound_effect = ""
 animation = ExtResource("2_imt1u")
 animation_time = 0.0

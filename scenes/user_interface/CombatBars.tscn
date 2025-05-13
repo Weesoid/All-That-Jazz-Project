@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://b4dlbbhtcf2f2"]
+[gd_scene load_steps=22 format=3 uid="uid://b4dlbbhtcf2f2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="PackedScene" uid="uid://yuje0oodg6y2" path="res://scenes/user_interface/Indicator.tscn" id="3_2wqip"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_kl3dw"]
 [ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diu1g"]
@@ -370,21 +371,43 @@ text = "100"
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="StatusEffectContainer" type="GridContainer" parent="HealthBar"]
+[node name="StatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
 layout_mode = 0
-offset_left = -4.0
-offset_top = -42.0
-offset_right = 20.0
+offset_left = -3.0
+offset_top = -50.0
+offset_right = 27.0
 offset_bottom = -2.0
-columns = 3
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
 
-[node name="PermaStatusEffectContainer" type="GridContainer" parent="HealthBar"]
+[node name="TextureRect" type="TextureRect" parent="HealthBar/StatusEffectContainer"]
+visible = false
 layout_mode = 2
-offset_left = -2.0
-offset_top = 7.0
-offset_right = -2.0
-offset_bottom = 7.0
-columns = 3
+texture = ExtResource("3_kl3dw")
+
+[node name="TextureRect4" type="TextureRect" parent="HealthBar/StatusEffectContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_kl3dw")
+
+[node name="TextureRect2" type="TextureRect" parent="HealthBar/StatusEffectContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_kl3dw")
+
+[node name="TextureRect3" type="TextureRect" parent="HealthBar/StatusEffectContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_kl3dw")
+
+[node name="PermaStatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
+layout_mode = 2
+offset_left = -3.0
+offset_top = 4.0
+offset_right = 27.0
+offset_bottom = 36.0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
 
 [node name="TurnPulser" type="Sprite2D" parent="HealthBar"]
 modulate = Color(1, 1, 1, 0)

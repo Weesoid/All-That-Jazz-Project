@@ -54,7 +54,6 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
 	if TARGET_GROUP == TargetGroup.ALLIES or TARGET_GROUP == TargetGroup.ENEMIES:
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
-	print(DEAD_TARGET_PARAMS)
 	if DEAD_TARGET_PARAMS['only_dead']:
 		combatants = combatants.filter(func(combatant): return combatant.isDead())
 	if DEAD_TARGET_PARAMS['only_marked']:

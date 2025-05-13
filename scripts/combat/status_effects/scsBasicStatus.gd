@@ -9,7 +9,6 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in status_effect.BASIC_EFFECTS:
 		if effect.sound_effect != '': 
 			OverworldGlobals.playSound(effect.sound_effect)
-		
 		if effect is ResStatChangeEffect and checkApplyOnce(effect, status_effect):
 			changeStat(effect, status_effect)
 		elif effect is ResStatusDamageEffect and checkApplyOnce(effect, status_effect):
@@ -37,7 +36,6 @@ static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffec
 
 static func avoidMessageSpam(status_effect: ResStatusEffect):
 	return (status_effect.TICK_PER_TURN and status_effect.APPLY_ONCE) or !status_effect.TICK_PER_TURN
-
 
 static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffect):
 	var scale
