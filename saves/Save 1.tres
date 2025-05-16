@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=65 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=70 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_28705"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_rchy4"]
 [ext_resource type="Resource" path="res://resources/quests/GetThatItem.tres" id="2_rit2b"]
+[ext_resource type="Resource" path="res://resources/items/CharmMurder.tres" id="4_7llxs"]
+[ext_resource type="Resource" path="res://resources/combat/events/Hail.tres" id="4_vr1nm"]
 [ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="5_sui5c"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="6_c58ho"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="8_cte6b"]
@@ -24,7 +26,6 @@
 [ext_resource type="Resource" path="res://resources/combat/abilities/Teamwork.tres" id="18_wj4g4"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="19_abgid"]
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/tameable/Healer.tres" id="19_epdhc"]
-[ext_resource type="Resource" path="res://resources/blessings/Draw.tres" id="20_i5hf6"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/Heal.tres" id="20_jc526"]
 [ext_resource type="Texture2D" path="res://images/sprites/icon_crit_eye.png" id="20_oay12"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/StandGuard.tres" id="20_swlrd"]
@@ -32,23 +33,24 @@
 [ext_resource type="Resource" path="res://resources/items/SlashBlade.tres" id="21_e0wd2"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="22_r8o8k"]
 [ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="25_34cfg"]
-[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="27_2n680"]
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="27_ep5p8"]
 [ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="27_sjyy7"]
-[ext_resource type="Resource" path="res://resources/items/VoidCrystal.tres" id="31_208k0"]
+[ext_resource type="Resource" path="res://resources/blessings/Sprinter.tres" id="29_15amm"]
 [ext_resource type="Resource" path="res://resources/items/BarterSalvage50.tres" id="32_e78bi"]
 [ext_resource type="Resource" path="res://resources/items/BarterSalvage20.tres" id="33_n53u6"]
 [ext_resource type="Resource" path="res://resources/items/BarterSalvage100.tres" id="33_rjnt0"]
+[ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="34_c7ag5"]
 [ext_resource type="Resource" path="res://resources/items/BarterSalvage500.tres" id="35_md0bt"]
 [ext_resource type="Resource" path="res://resources/combat/status_effects/CriticalEye.tres" id="36_dd318"]
+[ext_resource type="Resource" path="res://resources/items/BarterSalvage1000.tres" id="38_bg2v2"]
 
-[sub_resource type="Resource" id="Resource_a0yci"]
+[sub_resource type="Resource" id="Resource_l6fhy"]
 script = ExtResource("1_28705")
-position = Vector2(-13.9985, 37.8325)
+position = Vector2(-115.968, 43.4851)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 179
+direction = 0
 
-[sub_resource type="Resource" id="Resource_vg75x"]
+[sub_resource type="Resource" id="Resource_4iixr"]
 script = ExtResource("2_rchy4")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_rit2b")])
 QUEST_OBJECTIVES_DATA = {
@@ -79,7 +81,7 @@ apply_once = false
 message = ""
 sound_effect = ""
 
-[sub_resource type="Resource" id="Resource_saxig"]
+[sub_resource type="Resource" id="Resource_vhq5p"]
 script = ExtResource("22_r8o8k")
 NAME = "Critical Eye"
 DESCRIPTION = "Target is guaranteed to land a critical blow."
@@ -107,7 +109,7 @@ SOUNDS = {
 
 [sub_resource type="Resource" id="Resource_g84is"]
 script = ExtResource("6_c58ho")
-STATUS_EFFECT = SubResource("Resource_saxig")
+STATUS_EFFECT = SubResource("Resource_vhq5p")
 UNIQUE = false
 STAT_MODIFICATIONS = {
 "accuracy": 0.5
@@ -197,14 +199,18 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_2i2ps"]
+[sub_resource type="Resource" id="Resource_d81pe"]
 script = ExtResource("15_y3wv5")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("15_ox3vh"), ExtResource("15_0sqh2"), ExtResource("19_epdhc"), ExtResource("21_dcglt")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 CLEARED_MAPS = {
 "res://scenes/maps/TestRoom/TestRoomA.tscn": {
-"cleared": true,
-"events": {},
+"cleared": false,
+"events": {
+"combat_event": ExtResource("4_vr1nm"),
+"reward_item": ExtResource("4_7llxs"),
+"stalker_chance": 1.0
+},
 "faction": 0,
 "fast_travel": true
 },
@@ -215,26 +221,20 @@ CLEARED_MAPS = {
 "fast_travel": true
 },
 "res://scenes/maps/TestRoom/TestRoomC.tscn": {
-"cleared": false,
-"events": {
-"reward_multipliers": {
-"experience": 1.5,
-"loot": 0
-},
-"tameable_modifier": 1.25
-},
+"cleared": true,
+"events": {},
 "faction": 0,
 "fast_travel": true
 }
 }
 EQUIPPED_ARROW = ExtResource("27_ep5p8")
-EQUIPPED_BLESSING = ExtResource("20_i5hf6")
+EQUIPPED_BLESSING = ExtResource("29_15amm")
 CURRENCY = 190
 PARTY_LEVEL = 25
-CURRENT_EXP = 2980
+CURRENT_EXP = 2435
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
-TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("15_ox3vh"), ExtResource("19_epdhc"), ExtResource("21_dcglt")])
+TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("19_epdhc")])
 COMBATANT_SAVE_DATA = {
 ExtResource("15_ox3vh"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("12_el4dl"), ExtResource("8_cte6b"), ExtResource("16_2ce5i"), ExtResource("17_v6olf")]), {
 0: SubResource("Resource_g84is"),
@@ -248,7 +248,7 @@ ExtResource("15_ox3vh"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.65,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 17,
+"health": 85.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -360,7 +360,7 @@ ExtResource("19_epdhc"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.75,
 "handling": 0,
 "heal_mult": 1.2,
-"health": 15,
+"health": 1.0,
 "hustle": 11,
 "resist": 0.05
 }, {
@@ -415,7 +415,7 @@ ExtResource("21_dcglt"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.77,
 "handling": 0,
 "heal_mult": 1.02,
-"health": 33,
+"health": 34.0,
 "hustle": 2,
 "resist": 0.07
 }, {
@@ -468,19 +468,6 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 25
 KNOWN_POWERS = [ExtResource("14_ib584")]
 
-[sub_resource type="Resource" id="Resource_lms8n"]
-script = ExtResource("6_c58ho")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("5_sui5c")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
 [sub_resource type="Resource" id="Resource_yxvy7"]
 script = ExtResource("6_c58ho")
 UNIQUE = false
@@ -496,6 +483,88 @@ DESCRIPTION = "KILL KILL EVERYTHING!"
 VALUE = 100
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmMurder.tres"
+
+[sub_resource type="Resource" id="Resource_c8oth"]
+script = ExtResource("6_c58ho")
+STATUS_EFFECT = ExtResource("36_dd318")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"accuracy": 0.5
+}
+NAME = "Stunna Charm"
+ICON = ExtResource("5_sui5c")
+DESCRIPTION = "Absolutely stunning!"
+VALUE = 150
+MANDATORY = true
+PARENT_ITEM = "res://resources/items/CharmStunning.tres"
+
+[sub_resource type="Resource" id="Resource_khxpw"]
+script = ExtResource("6_c58ho")
+STATUS_EFFECT = ExtResource("36_dd318")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"accuracy": 0.5
+}
+NAME = "Stunna Charm"
+ICON = ExtResource("5_sui5c")
+DESCRIPTION = "Absolutely stunning!"
+VALUE = 150
+MANDATORY = true
+PARENT_ITEM = "res://resources/items/CharmStunning.tres"
+
+[sub_resource type="Resource" id="Resource_4ap2y"]
+script = ExtResource("6_c58ho")
+STATUS_EFFECT = ExtResource("36_dd318")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"accuracy": 0.5
+}
+NAME = "Stunna Charm"
+ICON = ExtResource("5_sui5c")
+DESCRIPTION = "Absolutely stunning!"
+VALUE = 150
+MANDATORY = true
+PARENT_ITEM = "res://resources/items/CharmStunning.tres"
+
+[sub_resource type="Resource" id="Resource_u55s5"]
+script = ExtResource("6_c58ho")
+STATUS_EFFECT = ExtResource("36_dd318")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"accuracy": 0.5
+}
+NAME = "Stunna Charm"
+ICON = ExtResource("5_sui5c")
+DESCRIPTION = "Absolutely stunning!"
+VALUE = 150
+MANDATORY = true
+PARENT_ITEM = "res://resources/items/CharmStunning.tres"
+
+[sub_resource type="Resource" id="Resource_c0m4a"]
+script = ExtResource("6_c58ho")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("5_sui5c")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_lms8n"]
+script = ExtResource("6_c58ho")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("5_sui5c")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
 [sub_resource type="Resource" id="Resource_eakda"]
 script = ExtResource("6_c58ho")
@@ -536,19 +605,31 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_u55s5"]
+[sub_resource type="Resource" id="Resource_hugg6"]
 script = ExtResource("6_c58ho")
-STATUS_EFFECT = ExtResource("36_dd318")
 UNIQUE = false
 STAT_MODIFICATIONS = {
-"accuracy": 0.5
+"grit": 0.75
 }
-NAME = "Stunna Charm"
+NAME = "Defender"
 ICON = ExtResource("5_sui5c")
-DESCRIPTION = "Absolutely stunning!"
-VALUE = 150
-MANDATORY = true
-PARENT_ITEM = "res://resources/items/CharmStunning.tres"
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_qy2tc"]
+script = ExtResource("6_c58ho")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("5_sui5c")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
 [sub_resource type="Resource" id="Resource_cswp4"]
 script = ExtResource("6_c58ho")
@@ -563,70 +644,28 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_4ap2y"]
-script = ExtResource("6_c58ho")
-STATUS_EFFECT = ExtResource("36_dd318")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"accuracy": 0.5
-}
-NAME = "Stunna Charm"
-ICON = ExtResource("5_sui5c")
-DESCRIPTION = "Absolutely stunning!"
-VALUE = 150
-MANDATORY = true
-PARENT_ITEM = "res://resources/items/CharmStunning.tres"
-
-[sub_resource type="Resource" id="Resource_khxpw"]
-script = ExtResource("6_c58ho")
-STATUS_EFFECT = ExtResource("36_dd318")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"accuracy": 0.5
-}
-NAME = "Stunna Charm"
-ICON = ExtResource("5_sui5c")
-DESCRIPTION = "Absolutely stunning!"
-VALUE = 150
-MANDATORY = true
-PARENT_ITEM = "res://resources/items/CharmStunning.tres"
-
-[sub_resource type="Resource" id="Resource_c8oth"]
-script = ExtResource("6_c58ho")
-STATUS_EFFECT = ExtResource("36_dd318")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"accuracy": 0.5
-}
-NAME = "Stunna Charm"
-ICON = ExtResource("5_sui5c")
-DESCRIPTION = "Absolutely stunning!"
-VALUE = 150
-MANDATORY = true
-PARENT_ITEM = "res://resources/items/CharmStunning.tres"
-
-[sub_resource type="Resource" id="Resource_0iumw"]
+[sub_resource type="Resource" id="Resource_1qrck"]
 script = ExtResource("16_yes1v")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("25_34cfg"), ExtResource("33_n53u6"), ExtResource("27_ep5p8"), ExtResource("32_e78bi"), ExtResource("33_rjnt0"), ExtResource("27_sjyy7"), ExtResource("35_md0bt"), ExtResource("27_2n680"), ExtResource("31_208k0"), ExtResource("21_e0wd2"), SubResource("Resource_lms8n"), SubResource("Resource_yxvy7"), SubResource("Resource_eakda"), SubResource("Resource_tyf80"), SubResource("Resource_dvuwj"), SubResource("Resource_u55s5"), SubResource("Resource_cswp4"), SubResource("Resource_4ap2y"), SubResource("Resource_khxpw"), SubResource("Resource_c8oth")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("27_sjyy7"), ExtResource("27_ep5p8"), ExtResource("34_c7ag5"), ExtResource("21_e0wd2"), ExtResource("25_34cfg"), ExtResource("33_n53u6"), ExtResource("32_e78bi"), ExtResource("33_rjnt0"), SubResource("Resource_yxvy7"), SubResource("Resource_c8oth"), SubResource("Resource_khxpw"), SubResource("Resource_4ap2y"), SubResource("Resource_u55s5"), ExtResource("35_md0bt"), ExtResource("38_bg2v2"), SubResource("Resource_c0m4a"), SubResource("Resource_lms8n"), SubResource("Resource_eakda"), SubResource("Resource_tyf80"), SubResource("Resource_dvuwj"), SubResource("Resource_hugg6"), SubResource("Resource_qy2tc"), SubResource("Resource_cswp4")])
 CRAFTED = Array[String](["Arrow", "ArrowJunk", "ArrowSleeper"])
 ITEM_DATA_INVENTORY = {
-"res://resources/items/Arrow.tres": 2,
-"res://resources/items/ArrowJunk.tres": 13,
-"res://resources/items/ArrowSleeper.tres": 68,
-"res://resources/items/BarterSalvage100.tres": 27,
-"res://resources/items/BarterSalvage20.tres": 164,
-"res://resources/items/BarterSalvage50.tres": 57,
-"res://resources/items/BarterSalvage500.tres": 3,
+"res://resources/items/Arrow.tres": 6,
+"res://resources/items/ArrowJunk.tres": 16,
+"res://resources/items/ArrowSleeper.tres": 7,
+"res://resources/items/BarterSalvage100.tres": 37,
+"res://resources/items/BarterSalvage1000.tres": 1,
+"res://resources/items/BarterSalvage20.tres": 224,
+"res://resources/items/BarterSalvage50.tres": 78,
+"res://resources/items/BarterSalvage500.tres": 5,
 "res://resources/items/ScrapSalvage.tres": 999,
-"res://resources/items/SlashBlade.tres-durability": 2,
-"res://resources/items/VoidCrystal.tres": 1
+"res://resources/items/SlashBlade.tres-durability": 2
 }
 
 [resource]
 script = ExtResource("17_j86ro")
-NAME = "Save 1 - 06:55:09
+NAME = "Save 1 - 07:19:35
 Morale 25
-Alt Room"
-PLAYTIME = 24909.1
-current_map_path = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-save_data = [SubResource("Resource_a0yci"), SubResource("Resource_vg75x"), SubResource("Resource_2i2ps"), SubResource("Resource_0iumw")]
+Prototype Room"
+PLAYTIME = 26375.9
+current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
+save_data = [SubResource("Resource_l6fhy"), SubResource("Resource_4iixr"), SubResource("Resource_d81pe"), SubResource("Resource_1qrck")]

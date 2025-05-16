@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://b7sf6482m61u"]
+
+[ext_resource type="Texture2D" uid="uid://hd3qsbmgtnok" path="res://images/sprites/true_edge.png" id="1_ad30o"]
+
+[sub_resource type="GDScript" id="GDScript_2qo8u"]
+script/source = "extends Node2D
+
+@onready var player = OverworldGlobals.getPlayer()
+@onready var sprite = $Sprite2D
+@onready var animator = $AnimationPlayer
+
+func _process(_delta):
+	print(player.player_direction.rotation_degrees)
+	if player.player_direction.rotation_degrees > 179:
+		sprite.flip_h = true
+		z_index = 1
+	elif player.player_direction.rotation_degrees > 90:
+		sprite.flip_h = true
+		z_index = -1
+	else:
+		sprite.flip_h = false
+		z_index = -1
+		
+		
+"
+
+[sub_resource type="Animation" id="Animation_118iu"]
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_anwum"]
+resource_name = "Walk"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -2), Vector2(0, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qikie"]
+_data = {
+"RESET": SubResource("Animation_118iu"),
+"Walk": SubResource("Animation_anwum")
+}
+
+[node name="WillisSword" type="Node2D"]
+script = SubResource("GDScript_2qo8u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ad30o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qikie")
+}

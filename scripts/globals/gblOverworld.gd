@@ -1,5 +1,10 @@
 extends Node
 
+enum PlayerType {
+	WILLIS,
+	ARCHIE
+}
+var player_type: PlayerType = PlayerType.WILLIS
 var delayed_rewards: Dictionary
 var follow_array = []
 var player_follower_count = 0
@@ -259,7 +264,10 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	if getCurrentMap().has_node('Player'): 
 		getCurrentMap().hide()
 		getPlayer().loadData()
-	var player = preload("res://scenes/entities/Player.tscn").instantiate()
+	var player
+	match player_type:
+		PlayerType.WILLIS: player = load("res://scenes/entities/Player.tscn").instantiate()
+		PlayerType.ARCHIE: player = load("res://scenes/entities/PlayerAlternate.tscn").instantiate()
 	var coords = coordinates.split(',')
 	getCurrentMap().add_child(player)
 	if to_entity != '':

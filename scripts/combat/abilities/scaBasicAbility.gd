@@ -102,6 +102,8 @@ static func applyToTarget(caster, target, ability: ResAbility):
 				ability.current_effect.do_not_return_pos = true
 			
 		if checkDamageCombo(target.combatant_resource, ability.current_effect,'',false) and target.combatant_resource.hasStatusEffect('Combo') and !checkDamageCombo(target.combatant_resource, ability.current_effect, 'do_not_return_pos', false):
+			CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
+			
 			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
 	
 	elif ability.current_effect is ResCustomDamageEffect:

@@ -1,18 +1,62 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=3 format=3 uid="uid://dhoel3hfuuxgr"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://dhoel3hfuuxgr"]
 
-[ext_resource type="Script" path="res://scripts/combat/abilities/scaAilmentStrike.gd" id="1_bqvl4"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_0iqc7"]
+[ext_resource type="Resource" uid="uid://d1vaoh0tdx0nq" path="res://resources/combat/status_effects/Poison.tres" id="2_3ey14"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="3_rg67n"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_nxq7a"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_u17d8"]
+
+[sub_resource type="Resource" id="Resource_i26md"]
+script = ExtResource("3_rg67n")
+damage_type = 0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+damage = 8
+can_miss = true
+can_crit = true
+bonus_stats = {
+"crit": 0.5
+}
+apply_status = ExtResource("2_3ey14")
+move = 0
+move_count = 1
+return_pos = true
+indicator_bb = ""
+has_combo_effects = true
+combo_properties = {
+"bonus_stats": true,
+"do_not_return_pos": false,
+"move": false,
+"status_effect": false
+}
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("4_nxq7a")
 NAME = "Ailment Strike"
 DESCRIPTION = "Land a random status effect! Also for stress testing!"
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
-ABILITY_SCRIPT = ExtResource("1_bqvl4")
+ICON = ExtResource("4_u17d8")
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_i26md")])
+ABILITY_SCRIPT = ExtResource("1_0iqc7")
 TARGET_TYPE = 0
 TARGET_GROUP = 1
+REQUIRED_STATUS_EFFECT = {
+"rank": 0,
+"status_effect": null
+}
 CAN_TARGET_SELF = false
 TARGET_DEAD = false
+DEAD_TARGET_PARAMS = {
+"only_dead": false,
+"only_faded": true,
+"only_marked": false,
+"only_unmarked": false
+}
 CASTER_POSITION = {
 "max": 3,
 "min": 0

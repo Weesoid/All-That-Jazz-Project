@@ -377,8 +377,8 @@ offset_left = -3.0
 offset_top = -50.0
 offset_right = 27.0
 offset_bottom = -2.0
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 1
 
 [node name="TextureRect" type="TextureRect" parent="HealthBar/StatusEffectContainer"]
 visible = false
@@ -406,8 +406,8 @@ offset_left = -3.0
 offset_top = 4.0
 offset_right = 27.0
 offset_bottom = 36.0
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 1
 
 [node name="TurnPulser" type="Sprite2D" parent="HealthBar"]
 modulate = Color(1, 1, 1, 0)

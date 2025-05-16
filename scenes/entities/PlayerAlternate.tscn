@@ -1,19 +1,20 @@
-[gd_scene load_steps=127 format=3 uid="uid://xfrvaohqhfml"]
+[gd_scene load_steps=128 format=3 uid="uid://by1pampbgw84d"]
 
-[ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_mngvk"]
-[ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
-[ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="3_y84xx"]
-[ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/animations/player.png" id="5_nms4n"]
-[ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="6_66sfb"]
-[ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="6_rb4b6"]
-[ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
-[ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="6_yjb6v"]
-[ext_resource type="PackedScene" uid="uid://j1akjh3lc0v" path="res://scenes/user_interface/Quiver.tscn" id="9_pvbyc"]
-[ext_resource type="Texture2D" uid="uid://b2tqyyse1shv2" path="res://images/textures/cinematic_spotlight.png" id="10_wdujw"]
-[ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="10_wsxx2"]
-[ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_rb05q"]
-[ext_resource type="AudioStream" uid="uid://8gpmmtp7joq2" path="res://audio/sounds/706754__xkeril__youve-been-trapped-short-sting.ogg" id="11_x7jay"]
-[ext_resource type="AudioStream" uid="uid://0tkoyt33aq20" path="res://audio/sounds/body fall 12.ogg" id="12_flcn8"]
+[ext_resource type="Script" path="res://scripts/entities/entPlayerBowman.gd" id="1_cw77a"]
+[ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="2_vhjle"]
+[ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_vfkv7"]
+[ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/animations/player.png" id="4_5fd2s"]
+[ext_resource type="Texture2D" uid="uid://dso7nlpdot0vv" path="res://images/animations/player_alt.png" id="4_ybhti"]
+[ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="5_55s1i"]
+[ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="6_lwji6"]
+[ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="7_t7vi3"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="8_b3c1w"]
+[ext_resource type="PackedScene" uid="uid://j1akjh3lc0v" path="res://scenes/user_interface/Quiver.tscn" id="9_l6qdt"]
+[ext_resource type="Texture2D" uid="uid://b2tqyyse1shv2" path="res://images/textures/cinematic_spotlight.png" id="10_ia54s"]
+[ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_c0qfe"]
+[ext_resource type="AudioStream" uid="uid://8gpmmtp7joq2" path="res://audio/sounds/706754__xkeril__youve-been-trapped-short-sting.ogg" id="12_0iyce"]
+[ext_resource type="AudioStream" uid="uid://0tkoyt33aq20" path="res://audio/sounds/body fall 12.ogg" id="13_aseap"]
+[ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="14_4s765"]
 
 [sub_resource type="Animation" id="Animation_b30mo"]
 resource_name = "Interact"
@@ -151,7 +152,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("11_rb05q")]
+"values": [ExtResource("11_c0qfe")]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -211,11 +212,11 @@ tracks/8/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("11_x7jay")
+"stream": ExtResource("12_0iyce")
 }, {
 "end_offset": 0.0,
 "start_offset": 0.3,
-"stream": ExtResource("12_flcn8")
+"stream": ExtResource("13_aseap")
 }],
 "times": PackedFloat32Array(0, 3.3)
 }
@@ -393,7 +394,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("11_rb05q")]
+"values": [ExtResource("11_c0qfe")]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -493,7 +494,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 1.7),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [ExtResource("10_wsxx2"), null]
+"values": [ExtResource("14_4s765"), null]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1284,7 +1285,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("5_nms4n")]
+"values": [ExtResource("4_5fd2s")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -2177,9 +2178,9 @@ graph_offset = Vector2(-489.266, -100.488)
 [node name="Player" type="CharacterBody2D" groups=["presist"]]
 collision_layer = 17
 collision_mask = 17
-script = ExtResource("1_mngvk")
+script = ExtResource("1_cw77a")
 
-[node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
+[node name="CombatantSquadComponent" parent="." instance=ExtResource("2_vhjle")]
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2189,20 +2190,21 @@ position = Vector2(0, -21.9902)
 visible = false
 z_index = 2
 position = Vector2(0, -20)
-texture = ExtResource("3_h566x")
+texture = ExtResource("3_vfkv7")
 hframes = 9
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -20.8333)
-texture = ExtResource("5_nms4n")
+position = Vector2(0, -19)
+texture = ExtResource("4_ybhti")
 hframes = 9
-vframes = 8
-frame = 19
+vframes = 5
+frame = 1
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(1, -49)
 scale = Vector2(0.546875, 0.476)
-texture = ExtResource("3_y84xx")
+texture = ExtResource("5_55s1i")
 hframes = 4
 vframes = 2
 frame = 4
@@ -2216,6 +2218,7 @@ libraries = {
 position = Vector2(0, -20)
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
+position = Vector2(0, 6)
 collision_layer = 0
 collision_mask = 2
 
@@ -2231,16 +2234,16 @@ width = 1.0
 default_color = Color(1, 0, 0, 0.392157)
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
-position = Vector2(0, -7)
+position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_8i7nm")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 z_as_relative = false
 zoom = Vector2(2, 2)
 position_smoothing_speed = 32.0
-script = ExtResource("6_yjb6v")
+script = ExtResource("6_lwji6")
 
-[node name="PlayerPrompt" parent="PlayerCamera" instance=ExtResource("6_rb4b6")]
+[node name="PlayerPrompt" parent="PlayerCamera" instance=ExtResource("7_t7vi3")]
 
 [node name="StaminaBar" type="ProgressBar" parent="PlayerCamera"]
 offset_left = -24.0
@@ -2252,7 +2255,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_to3hk")
 value = 50.0
 fill_mode = 3
 show_percentage = false
-script = ExtResource("6_66sfb")
+script = ExtResource("8_b3c1w")
 
 [node name="Ammo" type="Label" parent="PlayerCamera"]
 offset_left = 17.0
@@ -2288,7 +2291,7 @@ offset_right = 283.0
 offset_bottom = -102.0
 script = SubResource("GDScript_lueap")
 
-[node name="UtilitySelector" parent="PlayerCamera" instance=ExtResource("9_pvbyc")]
+[node name="UtilitySelector" parent="PlayerCamera" instance=ExtResource("9_l6qdt")]
 visible = false
 position = Vector2(0, -56)
 scale = Vector2(1, 1)
@@ -2298,7 +2301,7 @@ self_modulate = Color(1, 1, 1, 0)
 z_index = 10
 position = Vector2(1.19209e-07, -20)
 scale = Vector2(0.383333, 0.362963)
-texture = ExtResource("10_wdujw")
+texture = ExtResource("10_ia54s")
 
 [node name="Marker2D" type="Marker2D" parent="PlayerCamera"]
 position = Vector2(-272, 136)
@@ -2361,3 +2364,5 @@ parameters/Walk/blend_position = Vector2(0.170443, -0.0128806)
 
 [node name="ScriptAudioPlayer" type="AudioStreamPlayer2D" parent="."]
 max_polyphony = 8
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]

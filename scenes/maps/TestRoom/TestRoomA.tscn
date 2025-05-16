@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cax4ch112o5gm"]
+[gd_scene load_steps=32 format=3 uid="uid://cax4ch112o5gm"]
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://knc1563g65sr" path="res://scenes/entities_interactable/CraftingTable.tscn" id="5_u7bub"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="5_v1cwg"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="7_eiq6g"]
+[ext_resource type="Texture2D" uid="uid://dnuh6xtc5w8fj" path="res://images/sprites/base_sprite.png" id="8_3ximr"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="8_pga02"]
 [ext_resource type="Resource" uid="uid://crf6wo1o4pndo" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_test_fight.dialogue" id="10_2rgfe"]
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://images/sprites/NPC_unknown_entity.png" id="11_othvh"]
@@ -81,6 +82,7 @@ y_sort_enabled = true
 script = ExtResource("1_mdfbo")
 NAME = "Prototype Room"
 DESCRIPTION = "The room of the prototypian clan."
+SAFE = true
 
 [node name="TileMap" type="TileMap" parent="."]
 texture_filter = 1
@@ -105,7 +107,7 @@ TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomB.tscn"
 TO_COORDS = "192.3333, 28,90"
 
 [node name="Fighter" type="CharacterBody2D" parent="."]
-position = Vector2(-104, -32)
+position = Vector2(-104, -40)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("5_6s6pn")])
@@ -117,12 +119,14 @@ enabled = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Fighter"]
 position = Vector2(0, -12)
-texture = ExtResource("11_othvh")
+texture = ExtResource("8_3ximr")
 
 [node name="InteractComponent" parent="Fighter" instance=ExtResource("12_au046")]
+position = Vector2(0, 8)
 dialogue_resource = ExtResource("10_2rgfe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fighter"]
+position = Vector2(0, 8)
 shape = SubResource("CircleShape2D_yr6hg")
 
 [node name="MrQuesty" type="CharacterBody2D" parent="."]

@@ -31,7 +31,7 @@ func _ready():
 #			indicator_animation = anim_string
 #			)
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
-
+	CombatGlobals.manual_call_indicator_bb.connect(manualCallIndicatorBB)
 #	if attached_combatant is ResEnemyCombatant:
 #		pulse_gradient_sprite.self_modulate = Color.RED
 #		turn_gradient_sprite.modulate = Color.RED
@@ -139,6 +139,15 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 			y_placement -= 8
 		secondary_prompts.add_child(secondary_indicator)
 		secondary_indicator.playAnimation(indicator.global_position + Vector2(0, y_placement), text, animation)
+
+func manualCallIndicatorBB(combatant: ResCombatant, text: String, animation: String, bb_code: String):
+	if attached_combatant == combatant and indicator.visible:
+		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
+		var y_placement = 0
+		for child in secondary_prompts.get_children():
+			y_placement -= 8
+		secondary_prompts.add_child(secondary_indicator)
+		secondary_indicator.playAnimation(indicator.global_position + Vector2(0, y_placement), bb_code+text, animation)
 
 func setBarVisibility(set_to:bool):
 	if set_to:

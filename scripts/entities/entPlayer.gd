@@ -291,6 +291,7 @@ func drawBow():
 			tween.tween_property(sprite, 'self_modulate', Color.INDIAN_RED,0.1)
 			tween.tween_property(sprite, 'self_modulate', Color.WHITE, 0.25)
 			OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg", -8.0)
+			OverworldGlobals.showQuickAnimation("res://scenes/animations/BowReady.tscn",player_direction)
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
