@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=12 format=3 uid="uid://rmwlfd2x1b0a"]
+
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_3wisx"]
+[ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="2_3bxjw"]
+[ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="3_nmm7m"]
+[ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_8kp3n"]
+[ext_resource type="Resource" uid="uid://dhoel3hfuuxgr" path="res://resources/combat/abilities/AilmentStrike.tres" id="5_ivo5j"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="6_0jqet"]
+[ext_resource type="Resource" uid="uid://dnwt562yqug8x" path="res://resources/combat/abilities/Teamwork.tres" id="7_r7ld8"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/Tame.tres" id="8_ug4sf"]
+[ext_resource type="Resource" uid="uid://chc52jkp8yua1" path="res://resources/combat/abilities/KillChopAttack.tres" id="9_liws1"]
+[ext_resource type="PackedScene" uid="uid://qkkfful7d77n" path="res://scenes/combatants/Archie.tscn" id="10_7xojd"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="11_avhlp"]
+
+[resource]
+script = ExtResource("11_avhlp")
+ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_3wisx"), ExtResource("2_3bxjw"), ExtResource("3_nmm7m"), ExtResource("4_8kp3n"), ExtResource("5_ivo5j"), ExtResource("6_0jqet"), ExtResource("7_r7ld8"), ExtResource("8_ug4sf"), ExtResource("9_liws1")])
+BASE_TEMPERMENT = {
+"primary": "gifted",
+"secondary": "acute"
+}
+MANDATORY = true
+STAT_MULTIPLIER = 0.01
+NAME = "Archie Flynt"
+PACKED_SCENE = ExtResource("10_7xojd")
+DESCRIPTION = "Reliable big brother!"
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 20,
+"hustle": 1,
+"resist": 0.05
+}
+SCALE_STATS = {
+"accuracy": false,
+"brawn": true,
+"crit": false,
+"crit_dmg": false,
+"grit": true,
+"handling": false,
+"heal_mult": false,
+"health": true,
+"hustle": true,
+"resist": false
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+MAX_TURN_CHARGES = 1

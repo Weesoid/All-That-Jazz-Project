@@ -1192,6 +1192,7 @@ libraries = {
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="Background" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2(0.5, 0.5)
 motion_mirroring = Vector2(640, 0)
 
@@ -1303,10 +1304,10 @@ offset_bottom = 40.0
 [node name="AttributeView" parent="CombatCamera/Interface/Inspect" instance=ExtResource("10_60ct5")]
 z_index = 100
 layout_mode = 1
-offset_left = 70.0
-offset_top = 34.0
-offset_right = 70.0
-offset_bottom = 34.0
+offset_left = 90.0
+offset_top = 54.0
+offset_right = 90.0
+offset_bottom = 54.0
 scale = Vector2(0.5, 0.5)
 
 [node name="HiddenAttributes" parent="CombatCamera/Interface/Inspect/AttributeView" index="0"]
@@ -1358,10 +1359,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 132.0
-offset_top = 47.0
-offset_right = 340.0
-offset_bottom = 117.0
+offset_left = 152.0
+offset_top = 67.0
+offset_right = 360.0
+offset_bottom = 137.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(184, 36)

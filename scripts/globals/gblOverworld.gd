@@ -4,7 +4,7 @@ enum PlayerType {
 	WILLIS,
 	ARCHIE
 }
-var player_type: PlayerType = PlayerType.WILLIS
+var player_type: PlayerType = PlayerType.ARCHIE
 var delayed_rewards: Dictionary
 var follow_array = []
 var player_follower_count = 0

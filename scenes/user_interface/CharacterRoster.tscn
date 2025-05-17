@@ -24,6 +24,12 @@ func _on_pressed():
 	else:
 		print(\"An error occurred when trying to access the path.\")
 		print(path)
+	var archie = load(\"res://resources/combat/combatants_player/Archie.tres\")
+	var willis = load(\"res://resources/combat/combatants_player/Willis.tres\")
+	if !PlayerGlobals.TEAM.has(archie):
+		PlayerGlobals.addCombatantToTeam(archie)
+	if !PlayerGlobals.TEAM.has(willis):
+		PlayerGlobals.addCombatantToTeam(willis)
 	#await get_tree().process_frame
 	#get_parent().get_node('CharacterAdjust').get_node('Members2').loadMembers()
 "
