@@ -5,9 +5,14 @@ class_name CombatantScene
 @onready var collision = $CollisionShape2D
 @export var combatant_resource: ResCombatant
 
+var offset: Vector2
 var idle_animation: String = 'Idle'
 #var rank_position: Vector2
 var hit_script: GDScript
+
+func _ready():
+	if get_node('Sprite2D').offset != Vector2.ZERO:
+		offset = get_node('Sprite2D').offset
 
 func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
 	if combatant_resource.isDead() and !ignore_dead: 

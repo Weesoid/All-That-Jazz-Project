@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_u1vuj"]
 script = ExtResource("3_07xaq")
 heal = 10
-cast_animation = "Cast_Misc"
+cast_animation = "Cast_Heal"
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0

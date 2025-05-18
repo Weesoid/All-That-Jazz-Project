@@ -1565,7 +1565,6 @@ text = "Turn"
 vertical_alignment = 2
 
 [node name="ProgressBar" type="Control" parent="CombatCamera/Interface"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -64.0
@@ -1574,13 +1573,15 @@ offset_right = 64.0
 offset_bottom = 70.0
 script = SubResource("GDScript_ip03s")
 max_value = 8
+show_max = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CombatCamera/Interface/ProgressBar"]
+[node name="HBoxContainer" type="GridContainer" parent="CombatCamera/Interface/ProgressBar"]
 layout_mode = 0
-offset_top = -3.0
-offset_right = 128.0
-offset_bottom = -3.0
-alignment = 1
+offset_left = -25.0
+offset_top = 3.0
+offset_right = -2.0
+offset_bottom = 35.0
+columns = 2
 
 [node name="TextureRect" type="TextureRect" parent="CombatCamera/Interface/ProgressBar"]
 visible = false

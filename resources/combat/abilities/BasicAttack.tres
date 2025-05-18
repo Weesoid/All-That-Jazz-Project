@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://cj3etighmenn7"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://cj3etighmenn7"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
-[ext_resource type="Resource" uid="uid://b4ors2edju8af" path="res://resources/combat/status_effects/DeepWound.tres" id="2_31ggn"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_40w1k"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
 [ext_resource type="Resource" uid="uid://d1kma7dclq2fr" path="res://resources/combat/status_effects/Dazed.tres" id="4_swy41"]
@@ -18,7 +17,7 @@ damage = 6
 can_miss = true
 can_crit = true
 bonus_stats = {}
-apply_status = ExtResource("2_31ggn")
+apply_status = ExtResource("4_swy41")
 move = 0
 move_count = 1
 return_pos = true

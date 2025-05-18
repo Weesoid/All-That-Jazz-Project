@@ -6,6 +6,7 @@ var FILLED_CIRCLE: Texture = preload("res://images/sprites/circle_filled.png")
 @onready var container = $HBoxContainer
 @export var value: int = 0
 @export var max_value: int = 0
+@export var show_max: bool = true
 @export var small_sprites: bool = false
 
 func _ready():
@@ -24,7 +25,7 @@ func _process(_delta):
 			if filled != value:
 				rect.texture = FILLED_CIRCLE
 				filled += 1
-			else:
+			elif filled == value and show_max:
 				rect.texture = EMPTY_CIRCLE
 				rect.scale = Vector2(1.25,1.25)
 			container.add_child(rect)

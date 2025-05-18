@@ -453,22 +453,14 @@ func saveData(save_data: Array):
 	save_data.append(data)
 
 func loadData(save_data: PlayerSaveData):
-	#SAVE_NAME = save_data.
 	OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.clear()
 	TEAM = save_data.TEAM
-	#FOLLOWERS = save_data.FOLLOWERS # HERE MOTHERFUCKER HERE HERE HERE HERE
 	POWER = save_data.POWER
 	EQUIPPED_ARROW = save_data.EQUIPPED_ARROW
 	CURRENCY = save_data.CURRENCY
 	PARTY_LEVEL = save_data.PARTY_LEVEL
 	CURRENT_EXP = save_data.CURRENT_EXP
 	CLEARED_MAPS = save_data.CLEARED_MAPS
-#	stamina = save_data.stamina
-#	bow_max_draw= save_data.overworld_stats['bow_max_draw']
-#	walk_speed = save_data.overworld_stats['walk_speed']
-#	sprint_speed = save_data.sprint_speed
-#	sprint_drain = save_data.sprint_drain
-#	stamina_gain = save_data.stamina_gain
 	PROGRESSION_DATA = save_data.PROGRESSION_DATA
 	TEAM_FORMATION = save_data.TEAM_FORMATION
 	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
@@ -476,7 +468,6 @@ func loadData(save_data: PlayerSaveData):
 	ADDED_ABILITIES = save_data.ADDED_ABILITIES
 	MAX_PARTY_LEVEL = save_data.MAX_PARTY_LEVEL
 	KNOWN_POWERS = save_data.KNOWN_POWERS
-	#EQUIPPED_CHARM.equip(null)
 	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
 	
 	initializeBenchedTeam()

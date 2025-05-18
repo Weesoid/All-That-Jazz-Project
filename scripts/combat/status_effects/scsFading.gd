@@ -44,7 +44,7 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	CombatGlobals.resetStat(target, status_effect.NAME)
 
 static func applyFaded(target: ResCombatant):
-	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
+#	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
 	
 	if target.hasStatusEffect('Faded I'):
 		CombatGlobals.addStatusEffect(target, 'FadedII')

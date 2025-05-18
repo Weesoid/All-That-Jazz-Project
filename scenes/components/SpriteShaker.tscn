@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://q63r1d6h06k8"]
+
+[ext_resource type="Script" path="res://scripts/components/ascSpriteShaker.gd" id="1_yotno"]
+
+[node name="SpriteShaker" type="Node"]
+script = ExtResource("1_yotno")

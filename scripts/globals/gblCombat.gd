@@ -233,7 +233,8 @@ func playHurtAnimation(target: ResCombatant, sound_path: String=''):
 				OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
 			else:
 				OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
-		
+		#getCombatScene().combat_camera.shake(50.0, 50.0)
+		playFlashTween(target, Color.RED)
 		if !target.isDead():
 			playHurtTween(target)
 		else:
@@ -261,12 +262,21 @@ func playHurtTween(target: ResCombatant):
 	#	return
 	randomize()
 	var sprite = target.SCENE.get_node('Sprite2D')
-	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	var shake = Vector2(8, 0) + Vector2(randf_range(0, 8), 0)
-	var duration = 0.05 + randf_range(0, 0.025)
-	tween.tween_property(sprite, 'position', sprite.position + shake, duration)
-	tween.tween_property(sprite, 'position', sprite.position - shake, duration)
-	tween.tween_property(sprite, 'position', Vector2(0, 0), duration)
+	var sprite_shaker: SpriteShaker = load("res://scenes/components/SpriteShaker.tscn").instantiate()
+	sprite_shaker.shake_speed = 12.0
+	sprite_shaker.shake_strength = 25.0
+	sprite.add_child(sprite_shaker)
+#	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_BOUNCE)
+#	var shake = Vector2(8, 0) + Vector2(randf_range(0, 8), 0)
+#	var duration = 0.05 + randf_range(0, 0.025)
+#	tween.tween_property(sprite, 'position', sprite.position + shake, duration)
+#	tween.tween_property(sprite, 'position', sprite.position - shake, duration)
+#	tween.tween_property(sprite, 'position', Vector2(0, 0), duration)
+
+func playFlashTween(target: ResCombatant, color:Color):
+	var tween = getCombatScene().create_tween()
+	tween.tween_property(target.getSprite(), 'modulate', color, 0.1)
+	tween.tween_property(target.getSprite(), 'modulate', Color.WHITE, 0.2)
 
 func playFadingTween(target: ResCombatant):
 	OverworldGlobals.playSound('woosh.ogg')

@@ -192,6 +192,7 @@ func on_player_turn():
 	if turn_time > 0.0:
 		startTimer()
 	await confirm
+	#await get_tree().process_frame
 	end_turn()
 
 func on_enemy_turn():
@@ -382,15 +383,17 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
-	if CombatGlobals.randomRoll(calculateEscapeChance()):
+	if CombatGlobals.randomRoll(0):
 		CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat(2)
 	else:
-		for combatant in getCombatantGroup('team'):
-			CombatGlobals.addStatusEffect(combatant, 'Dazed', true)
+		whole_action_panel.hide()
+		ui_animator.play_backwards('ShowActionPanel')
+		var previous_active = active_combatant
 		bonus_escape_chance += 0.1
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		confirm.emit()
+		CombatGlobals.addStatusEffect(previous_active, 'Dazed', true)
 
 func _on_escape_focus_entered():
 	if can_escape:

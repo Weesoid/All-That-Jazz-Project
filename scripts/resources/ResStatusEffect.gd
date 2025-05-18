@@ -98,7 +98,8 @@ func tick(update_duration=true, override_permanent=false):
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false
-	if ((duration <= 0 and !PERMANENT and REMOVE_WHEN != 0) or (afflicted_combatant.isDead() and !PERSIST_ON_DEAD)) and STATUS_SCRIPT != null:
+	if ((duration <= 0 and !PERMANENT) or (afflicted_combatant.isDead() and !PERSIST_ON_DEAD)) and STATUS_SCRIPT != null:
+		#print('Removing ', self)
 		removeStatusEffect()
 # ['Knock Out', 'Fading', 'Deathmark'].has(NAME)
 
