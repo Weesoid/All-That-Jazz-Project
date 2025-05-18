@@ -54,11 +54,11 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	if CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	#animator.play('RESET')
+	if data.has('skip_pause') or !CombatGlobals.getCombatScene().onslaught_mode:
+		await get_tree().create_timer(0.25).timeout
 	playIdle()
 	hit_script = null
 	
-	if (animation.contains('Melee') or animation.contains('Ranged')) and !CombatGlobals.getCombatScene().onslaught_mode:
-		await get_tree().create_timer(0.25).timeout
 
 func playIdle(new_idle:String=''):
 	if new_idle != '':

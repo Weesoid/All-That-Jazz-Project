@@ -39,6 +39,9 @@ class_name CombatScene
 @onready var turn_timer = $TurnTimer
 @onready var turn_timer_animator = $CombatCamera/Interface/ProgressBar/AnimationPlayer2
 @onready var fade_bars_animator = $CombatCamera/FadeBars/AnimationPlayer
+@onready var flasher = $CombatCamera/Flasher
+@onready var flasher_animator = $CombatCamera/Flasher/AnimationPlayer
+
 
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
@@ -383,13 +386,15 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
-	if CombatGlobals.randomRoll(0):
+	if CombatGlobals.randomRoll(calculateEscapeChance()):
 		CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat(2)
 	else:
 		whole_action_panel.hide()
 		ui_animator.play_backwards('ShowActionPanel')
 		var previous_active = active_combatant
+		if !previous_active.hasStatusEffect('Poised'):
+			battleFlash('Flash', Color.YELLOW)
 		bonus_escape_chance += 0.1
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		confirm.emit()
@@ -424,7 +429,7 @@ func calculateEscapeChance()-> float:
 		hustle_enemies += combatant.BASE_STAT_VALUES['hustle']
 	for combatant in getCombatantGroup('team'):
 		hustle_allies += combatant.BASE_STAT_VALUES['hustle']
-	return snappedf((0.5 + ((hustle_allies-hustle_enemies)*0.1)) + bonus_escape_chance, 0.01)
+	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -1251,3 +1256,7 @@ func _on_shift_actions_pressed():
 		_on_skills_pressed()
 	else:
 		getMoveAbilities()
+
+func battleFlash(animation: String, color: Color):
+	flasher.modulate = color
+	flasher_animator.play(animation)

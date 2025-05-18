@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://cj3etighmenn7"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://cj3etighmenn7"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
@@ -34,40 +34,12 @@ sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_dew8d"]
-script = ExtResource("2_40w1k")
-damage_type = 3
-cast_animation = {
-"animation": "Cast_Melee2",
-"go_to_target": true
-}
-damage = 99
-can_miss = true
-can_crit = true
-bonus_stats = {}
-apply_status = ExtResource("4_swy41")
-move = 0
-move_count = 1
-return_pos = true
-indicator_bb = ""
-has_combo_effects = true
-combo_properties = {
-"bonus_stats": false,
-"do_not_return_pos": false,
-"move": false,
-"status_effect": true
-}
-is_combo_effect = true
-sound_effect = ""
-animation_time = 0.0
-animate_on = 0
-
 [resource]
 script = ExtResource("1_k0byw")
 NAME = "Basic Attack"
 DESCRIPTION = "The attack of basicness!"
 ICON = ExtResource("3_aoac4")
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_tkqu8"), SubResource("Resource_dew8d")])
+BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_tkqu8")])
 ABILITY_SCRIPT = ExtResource("1_y24xu")
 TARGET_TYPE = 0
 TARGET_GROUP = 1

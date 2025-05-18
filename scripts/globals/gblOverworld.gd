@@ -4,7 +4,7 @@ enum PlayerType {
 	WILLIS,
 	ARCHIE
 }
-var player_type: PlayerType = PlayerType.WILLIS
+var player_type: PlayerType = PlayerType.ARCHIE
 var delayed_rewards: Dictionary
 var follow_array = []
 var player_follower_count = 0
@@ -460,16 +460,20 @@ func showQuickAnimation(animation_id, location, animation_name:String='Show', wa
 	elif animation_id is PackedScene:
 		animation = animation_id.instantiate()
 	animation.animation_name = animation_name
-	
-	if location is Node2D:
-		location.call_deferred('add_child',animation)
-	elif location is String:
-		animation.global_position = getEntity(location).global_position
-		getCurrentMap().call_deferred('add_child',animation)
-	elif location is Vector2:
+	#animation.process_mode = Node.PROCESS_MODE_ALWAYS
+	#animation.z_index = 999
+	if !inCombat():
+		if location is Node2D:
+			location.call_deferred('add_child',animation)
+		elif location is String:
+			animation.global_position = getEntity(location).global_position
+			getCurrentMap().call_deferred('add_child',animation)
+		elif location is Vector2:
+			animation.global_position = location
+			getCurrentMap().call_deferred('add_child',animation)
+	else:
 		animation.global_position = location
-		getCurrentMap().call_deferred('add_child',animation)
-	
+		CombatGlobals.getCombatScene().add_child(animation)
 	await animation.ready
 	if wait:
 		await animation.animation_player.animation_finished

@@ -138,11 +138,11 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	
 	playHurtAnimation(target, sound)
 	if target.isDead():
-		if target is ResEnemyCombatant:
-			getCombatScene().fade_bars_animator.play('KOEnemy')
-		else:
-			getCombatScene().fade_bars_animator.play('KOAlly')
 		OverworldGlobals.freezeFrame()
+#		if target is ResEnemyCombatant:
+#			getCombatScene().fade_bars_animator.play('KOEnemy')
+#		else:
+#			getCombatScene().fade_bars_animator.play('KOAlly')
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 	if target is ResPlayerCombatant and target.SCENE.blocking:
@@ -277,6 +277,14 @@ func playFlashTween(target: ResCombatant, color:Color):
 	var tween = getCombatScene().create_tween()
 	tween.tween_property(target.getSprite(), 'modulate', color, 0.1)
 	tween.tween_property(target.getSprite(), 'modulate', Color.WHITE, 0.2)
+	if target is ResEnemyCombatant:
+		getCombatScene().flasher.modulate = Color.WHITE
+	else:
+		getCombatScene().flasher.modulate = Color.RED
+	if !target.isDead():
+		getCombatScene().flasher_animator.play('Flash')
+	else:
+		getCombatScene().flasher_animator.play('Big_Flash')
 
 func playFadingTween(target: ResCombatant):
 	OverworldGlobals.playSound('woosh.ogg')
@@ -292,6 +300,7 @@ func playSecondWindTween(target: ResCombatant):
 
 func playKnockOutTween(target: ResCombatant):
 	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
+
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(target.SCENE, 'scale', target.SCENE.scale + Vector2(-1, 0), 0.15)
 	tween.tween_property(target.SCENE, 'scale', Vector2(1, 1), 0.15)
