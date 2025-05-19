@@ -305,10 +305,10 @@ func setFollowersMotion(enable:bool):
 			follower.SPEED = -1.0
 			follower.stopWalkAnimation()
 
-func healCombatants(cure: bool=true):
+func healCombatants(percent_heal:float=1.0,cure: bool=true):
 	for combatant in TEAM:
 		if !combatant.initialized: combatant.initializeCombatant()
-		combatant.STAT_VALUES['health'] = combatant.BASE_STAT_VALUES['health']
+		combatant.STAT_VALUES['health'] = int(combatant.BASE_STAT_VALUES['health'] * percent_heal)
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
 
 func isMapCleared():

@@ -76,7 +76,7 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
 	if can_crit and ((caster != null and randomRoll(caster.STAT_VALUES['crit'])) or (crit_chance != -1.0 and randomRoll(crit_chance))):
-		damage = doCritEffects(damage, caster, target)
+		damage = doCritEffects(damage, caster)
 		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
 	if message != null:
 		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')
@@ -92,7 +92,7 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	base_damage = useDamageFormula(target, base_damage)
 	base_damage = valueVariate(base_damage, 0.15)
 	if randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit')) and can_crit:
-		base_damage = doCritEffects(base_damage, caster, target, getBonusStat(bonus_stats,'crit_dmg'),true)
+		base_damage = doCritEffects(base_damage, caster, getBonusStat(bonus_stats,'crit_dmg'),true)
 		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
@@ -109,7 +109,7 @@ func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
 	playDodgeTween(target)
 	checkMissCases(target, caster, damage)
 
-func doCritEffects(base_damage, caster: ResCombatant, target: ResCombatant, crit_damage:float=2.0, stack_crit_damage:bool=false):
+func doCritEffects(base_damage, caster: ResCombatant, crit_damage:float=2.0, stack_crit_damage:bool=false):
 	if  caster != null:
 		if stack_crit_damage:
 			base_damage *= (caster.STAT_VALUES['crit_dmg']+crit_damage)

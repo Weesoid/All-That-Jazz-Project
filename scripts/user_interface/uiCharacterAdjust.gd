@@ -97,6 +97,9 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		else:
 			character_name.text = ''
 			#if character_name.get_child_count() > 0: character_name.get_child(0).queue_free()
+	if has_node('Roster'):
+		get_node('Roster').inspect_mark.hide()
+	
 	#print(selected_combatant.TEMPERMENT)
 
 func swapMembers(member_a: ResCombatant, member_b: ResCombatant):

@@ -325,7 +325,7 @@ func getTamedNames():
 func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and getPlayer().has_node('DebugComponent')
 
-func showGameOver(end_sentence: String, animation: String='Fall'):
+func showGameOver(end_sentence: String=''):
 	#await get_tree().process_frame
 	if OverworldGlobals.inMenu(): OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	getPlayer().setUIVisibility(false)
@@ -333,12 +333,22 @@ func showGameOver(end_sentence: String, animation: String='Fall'):
 	setPlayerInput(false, true)
 	getPlayer().set_process_unhandled_input(false)
 	getPlayer().z_index = 20
-	playEntityAnimation('Player', animation)
+	#playEntityAnimation('Player', animation)
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
 	menu.z_index = 20
 	getPlayer().resetStates()
 	setMouseController(true)
 	getPlayer().player_camera.add_child(menu)
+	if end_sentence == '': 
+		end_sentence = [
+			"You perished.", 
+			"Well that's unfortunate.",
+			"Sorry!",
+			"There is nobility in the attempt.",
+			"Don't give up!",
+			"Try again.",
+			"Let's hope the penalty isn't too high."
+		].pick_random()
 	menu.end_sentence.text = end_sentence
 
 func moveCamera(to, duration:float=0.25, wait:bool=false):
@@ -359,8 +369,9 @@ func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
 	if wait:
 		await tween.finished
 
-func shakeCamera():
-	getPlayer().player_camera.shake(30.0,20.0)
+func shakeCamera(strength=30.0, speed=20.0):
+	getPlayer().player_camera.shake(strength,speed)
+
 
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES
@@ -523,9 +534,9 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	await zoomCamera(Vector2(2,2), 0.05, true)
 	setPlayerInput(false)
 	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
+	#print(getComponent(entity_name, 'NPCPatrolComponent').STATE)
 	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
-		for member in getCombatantSquad('Player'):
-			CombatGlobals.addStatusEffect(member, 'CriticalEye')
+		for member in getCombatantSquad('Player'): CombatGlobals.addStatusEffect(member, 'CriticalEye')
 		combat_bubble.animation = 'Show_Surprised'
 		playSound("res://audio/sounds/39_Absorb_04.ogg")
 	elif (getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE == 2) or !getEntity(entity_name).has_node('NPCPatrolComponent'):

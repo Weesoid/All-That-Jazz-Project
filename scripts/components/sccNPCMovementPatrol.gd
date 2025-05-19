@@ -126,7 +126,8 @@ func patrol():
 	elif (!LINE_OF_SIGHT.detectPlayer() and STATE != 2) or STATE == 2:
 		DETECT_BAR.hide()
 	
-	if (!NAV_AGENT.is_target_reachable() and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and isPlayerTooFar(300.0)):
+	#sprint('first cond: ', !NAV_AGENT.is_target_reachable(), ' | 2nd cond ', STATE == 2 and isPlayerTooFar(300.0))
+	if ((!NAV_AGENT.is_target_reachable() and !NAV_AGENT.distance_to_target() > 10.0) and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and isPlayerTooFar(300.0)):
 		if self is NPCPatrolShooterMovement and ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left', 'Load'].has(ANIMATOR.current_animation):
 			ANIMATOR.animation_finished.emit()
 			ANIMATOR.play('RESET')

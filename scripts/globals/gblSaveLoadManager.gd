@@ -64,6 +64,11 @@ func loadGame(saved_game: SavedGame):
 	is_loading = false
 	OverworldGlobals.getCurrentMap().show()
 
+func loadSaveFile(save_name: String = PlayerGlobals.SAVE_NAME):
+	return load("res://saves/%s.tres" % save_name)
+
+
+
 func resetVariables():
 	is_loading = false
 	current_playtime = 0

@@ -4,50 +4,42 @@ extends Control
 @onready var end_sentence = $EndSentence
 @onready var animator = $AnimationPlayer
 @onready var saves = $Saves
-@onready var experience = $ProgressBar
-@onready var cash = $Label2
+@onready var penalty = $Penalty
 var current_currency = PlayerGlobals.CURRENCY
 var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
 
 func _ready():
 	randomize()
-	#OverworldGlobals.getPlayer().interaction_prompt.hide()
-	PlayerGlobals.healCombatants()
-	PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), saved_game.current_map_path)
-	var reduced_exp = randf_range(-0.2, -0.1) * PlayerGlobals.getRequiredExp()
-	var reduced_currency = randf_range(-0.2, -0.5) * PlayerGlobals.CURRENCY
-	PlayerGlobals.addExperience(reduced_exp)
-	PlayerGlobals.addCurrency(reduced_currency)
-	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME, false)
+	OverworldGlobals.shakeCamera(20,20)
+	var random_penalty = randf_range(0.2, 0.3)
+	penalty.text = '-'+str(int(random_penalty*100))+'% Slips and Morale.'
+	var reduced_currency = PlayerGlobals.CURRENCY - int(random_penalty * PlayerGlobals.CURRENCY)
+	var reduced_exp = PlayerGlobals.CURRENT_EXP - int(random_penalty * PlayerGlobals.getRequiredExp())
+	if reduced_currency < 0: reduced_currency = 0
+	if reduced_exp < 0: reduced_exp = 0
+	for data in saved_game.save_data:
+		if data is PlayerSaveData:
+			data.CURRENCY = reduced_currency
+			data.CURRENT_EXP = reduced_exp
+			PlayerGlobals.CURRENCY = reduced_currency
+			PlayerGlobals.CURRENT_EXP = reduced_exp
+			break
+	ResourceSaver.save(saved_game, "res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
 	
-	var tween = create_tween()
-	var tween_b = create_tween().set_trans(Tween.TRANS_EXPO)
-	animator.play("Flash_Red")
-	experience.max_value = PlayerGlobals.getRequiredExp()
-	experience.value = PlayerGlobals.CURRENT_EXP
-	tween.tween_property(experience, 'value', ceil(experience.value+reduced_exp),0.5)
-	tween_b.tween_method(set_number, current_currency, PlayerGlobals.CURRENCY, 1.0)
-	await tween_b.finished
 	animator.play('Show')
-	await animator.animation_finished
 	OverworldGlobals.setMouseController(true)
 	OverworldGlobals.setMenuFocus(buttons)
 
 func _on_yes_pressed():
+	buttons.hide()
+	penalty.hide()
 	if FileAccess.file_exists("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME):
 		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true, true)
-		PlayerGlobals.healCombatants()
+		PlayerGlobals.healCombatants(0.25,false)
+#		for combatant in OverworldGlobals.getCombatantSquad('Player'):
+#			combatant.LINGERING_STATUS_EFFECTS.append('Faded I')
 		PlayerGlobals.overworld_stats['stamina'] = 100.0
 		OverworldGlobals.getPlayer().setUIVisibility(true)
 
 func _on_no_pressed():
-	get_tree().quit()
-
-func _process(_delta):
-	if PlayerGlobals.CURRENCY > 0:
-		cash.text = str(PlayerGlobals.addCommaToNum(current_currency))
-	else:
-		cash.text = 'BROKE!'
-
-func set_number(value):
-	current_currency = value
+	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")

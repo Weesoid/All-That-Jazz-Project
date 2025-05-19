@@ -5,14 +5,10 @@ class_name CombatantScene
 @onready var collision = $CollisionShape2D
 @export var combatant_resource: ResCombatant
 
-var offset: Vector2
 var idle_animation: String = 'Idle'
 #var rank_position: Vector2
 var hit_script: GDScript
 
-func _ready():
-	if get_node('Sprite2D').offset != Vector2.ZERO:
-		offset = get_node('Sprite2D').offset
 
 func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
 	if combatant_resource.isDead() and !ignore_dead: 
@@ -54,7 +50,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	if CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	#animator.play('RESET')
-	if data.has('skip_pause') or !CombatGlobals.getCombatScene().onslaught_mode:
+	if (data.has('skip_pause') and data['skip_pause']) or !CombatGlobals.getCombatScene().onslaught_mode:
 		await get_tree().create_timer(0.25).timeout
 	playIdle()
 	hit_script = null

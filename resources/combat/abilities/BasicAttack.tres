@@ -13,7 +13,7 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage = 6
+damage = 999
 can_miss = true
 can_crit = true
 bonus_stats = {}
@@ -22,10 +22,10 @@ move = 0
 move_count = 1
 return_pos = true
 indicator_bb = ""
-has_combo_effects = true
+has_combo_effects = false
 combo_properties = {
 "bonus_stats": false,
-"do_not_return_pos": true,
+"do_not_return_pos": false,
 "move": false,
 "status_effect": false
 }

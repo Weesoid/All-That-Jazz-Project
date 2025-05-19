@@ -107,7 +107,6 @@ func animateFaderBar(prev_val, value):
 	
 	health_bar_fader.max_value = attached_combatant.getMaxHealth()
 	health_bar_fader.value = prev_val
-	print(prev_val, 'vs', value)
 	if prev_val > value:
 		health_bar_fader.modulate = Color.RED
 	elif prev_val < value:

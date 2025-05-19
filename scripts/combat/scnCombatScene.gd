@@ -386,7 +386,7 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
-	if CombatGlobals.randomRoll(calculateEscapeChance()):
+	if CombatGlobals.randomRoll(1):
 		CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat(2)
 	else:
@@ -702,10 +702,11 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
 	if do_tween:
 		var tween = create_tween().tween_property(combatant.SCENE, 'global_position', combatant.SCENE.get_parent().global_position, 0.15)
-		if !combatant.isDead(): 
-			combatant.SCENE.doAnimation('Cast_Melee')
+		#if !combatant.isDead(): 
+			#combatant.SCENE.doAnimation('Cast_Melee')
 			#combatant.SCENE.position = Vector2.ZERO
 		await tween.finished
+		#await combatant.SCENE.animator.finished
 		#await combatant.getAnimator().animation_finished 
 		#combatant.SCENE.doAnimation('RESET')
 		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
@@ -1022,7 +1023,7 @@ func concludeCombat(results: int):
 	
 	combat_done.emit()
 	
-	var end_sentence = 'You perished.'
+	var end_sentence = ''
 	if combat_dialogue != null: 
 		combat_dialogue.disconnectSignal()
 		end_sentence = combat_dialogue.end_sentence
