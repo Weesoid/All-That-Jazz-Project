@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://r4d1xnyarsyl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeAdjust.gd" id="1_unumd"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_il4r5"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_is7rp"]
 [ext_resource type="AudioStream" uid="uid://b5pn4wlttjtuw" path="res://audio/sounds/421364__jaszunio15__click_154.ogg" id="4_5kj7n"]
 [ext_resource type="AudioStream" uid="uid://n5da8bdbjiaf" path="res://audio/sounds/421300__jaszunio15__click_241.ogg" id="6_a57yd"]
+[ext_resource type="Theme" uid="uid://b2trsep3ukxi0" path="res://design/RightSideButtonHighlights.tres" id="6_yt3dc"]
 
 [node name="AttributeAdjust" type="Control"]
 layout_mode = 3
@@ -62,6 +63,7 @@ vertical_alignment = 1
 
 [node name="Reset" parent="HBoxContainer/VBoxContainer/Brawn" instance=ExtResource("2_il4r5")]
 layout_mode = 2
+theme = ExtResource("6_yt3dc")
 text = "RESET"
 focused_entered_sound = ExtResource("3_hucun")
 click_sound = ExtResource("6_a57yd")
@@ -93,6 +95,7 @@ vertical_alignment = 1
 
 [node name="Reset" parent="HBoxContainer/VBoxContainer/Grit" instance=ExtResource("2_il4r5")]
 layout_mode = 2
+theme = ExtResource("6_yt3dc")
 text = "RESET"
 focused_entered_sound = ExtResource("3_hucun")
 click_sound = ExtResource("6_a57yd")
@@ -122,6 +125,7 @@ vertical_alignment = 1
 
 [node name="Reset" parent="HBoxContainer/VBoxContainer/Handling" instance=ExtResource("2_il4r5")]
 layout_mode = 2
+theme = ExtResource("6_yt3dc")
 text = "RESET"
 focused_entered_sound = ExtResource("3_hucun")
 click_sound = ExtResource("6_a57yd")
@@ -133,23 +137,22 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = 36.0
-offset_right = -26.0
-offset_bottom = 49.0
+offset_left = -108.0
+offset_top = 35.0
+offset_right = -74.0
+offset_bottom = 48.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_is7rp")
-text = "POINTS AVAILABLE: "
-horizontal_alignment = 1
+text = "Points"
 vertical_alignment = 1
 
 [node name="Points" type="Label" parent="Available"]
 layout_mode = 0
-offset_left = 96.0
-offset_right = 116.0
-offset_bottom = 23.0
-theme_override_font_sizes/font_size = 16
+offset_left = 34.0
+offset_top = 1.0
+offset_right = 54.0
+offset_bottom = 24.0
 text = "10"
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Up" to="." method="_on_up_brawn_pressed"]

@@ -1,34 +1,19 @@
-[gd_scene load_steps=16 format=3 uid="uid://cbkybcyyxjsku"]
+[gd_scene load_steps=13 format=3 uid="uid://cbkybcyyxjsku"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
-[ext_resource type="PackedScene" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
+[ext_resource type="PackedScene" uid="uid://r4d1xnyarsyl" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="5_cqrwt"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
-[ext_resource type="Texture2D" uid="uid://bfe4b6fwwfpgm" path="res://images/sprites/splitter.png" id="8_n4q6r"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="9_c41m6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfwvc"]
-bg_color = Color(0, 0, 0, 1)
+[ext_resource type="StyleBox" uid="uid://c00ryk8hhxr7f" path="res://design/PanelHollow.tres" id="10_qod6t"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ee64e"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qba66"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esnsw"]
-bg_color = Color(0, 0, 0, 1)
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sre4y"]
-bg_color = Color(0, 0, 0, 1)
-border_width_top = 2
-border_width_right = 2
-border_color = Color(1, 1, 1, 1)
 
 [node name="CharacterAdjust" type="Control"]
 layout_mode = 3
@@ -47,106 +32,100 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_iqbvd")
 
-[node name="TabContainer" type="TabContainer" parent="."]
-layout_mode = 0
+[node name="MainPanel" type="Control" parent="."]
+anchors_preset = 0
 offset_left = -128.0
-offset_top = -128.0
-offset_right = 216.0
-offset_bottom = 104.0
+offset_top = -60.0
+offset_right = -88.0
+offset_bottom = -20.0
 
-[node name="Abilities" type="Control" parent="TabContainer"]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Abilities"]
+[node name="Borders" type="Panel" parent="MainPanel"]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 336.0
-offset_bottom = 128.0
-follow_focus = true
+offset_left = 6.0
+offset_top = -114.0
+offset_right = 474.0
+offset_bottom = 218.0
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("10_qod6t")
 
-[node name="VBoxContainer" type="GridContainer" parent="TabContainer/Abilities/ScrollContainer"]
+[node name="Charms" type="Control" parent="MainPanel"]
 layout_mode = 2
-columns = 6
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 720.0
+offset_top = 40.0
+offset_right = 720.0
+offset_bottom = 40.0
 
-[node name="DescriptionPanel" type="PanelContainer" parent="TabContainer/Abilities"]
-layout_mode = 2
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 8.0
-offset_top = 24.0
-offset_right = 336.0
-offset_bottom = 89.0
-grow_vertical = 2
+[node name="PanelContainer" type="PanelContainer" parent="MainPanel/Charms"]
+layout_mode = 0
+offset_left = -376.0
+offset_top = 28.0
+offset_right = -248.0
+offset_bottom = 176.0
 theme_override_styles/panel = ExtResource("2_s7p7p")
 
-[node name="Label" type="RichTextLabel" parent="TabContainer/Abilities/DescriptionPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MainPanel/Charms/PanelContainer"]
 layout_mode = 2
-bbcode_enabled = true
-text = "This is the item description. FEAR IT'S GLORY!"
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="Charms" type="Panel" parent="TabContainer"]
-visible = false
+[node name="EquippedCharms" type="HFlowContainer" parent="MainPanel/Charms/PanelContainer/MarginContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bfwvc")
-
-[node name="EquippedCharms" type="HFlowContainer" parent="TabContainer/Charms"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -46.0
-offset_top = -39.5
-offset_right = 46.0
-offset_bottom = -11.5
-grow_horizontal = 2
-grow_vertical = 2
 alignment = 1
 
-[node name="Weapon" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
-custom_minimum_size = Vector2(92, 0)
+[node name="Weapon" parent="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(100, 32)
 layout_mode = 2
 theme = ExtResource("5_004gj")
-text = "WEAPON"
+text = "GEAR"
+alignment = 1
 
-[node name="SlotA" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
-layout_mode = 2
-theme = ExtResource("5_004gj")
-icon = ExtResource("6_8ov74")
-
-[node name="SlotB" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
+[node name="SlotA" parent="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 theme = ExtResource("5_004gj")
 icon = ExtResource("6_8ov74")
+icon_alignment = 1
 
-[node name="SlotC" parent="TabContainer/Charms/EquippedCharms" instance=ExtResource("2_s185n")]
+[node name="SlotB" parent="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms" instance=ExtResource("2_s185n")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme = ExtResource("5_004gj")
+icon = ExtResource("6_8ov74")
+icon_alignment = 1
+
+[node name="SlotC" parent="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms" instance=ExtResource("2_s185n")]
 visible = false
 layout_mode = 2
 theme = ExtResource("5_004gj")
 icon = ExtResource("6_8ov74")
 
-[node name="Panel" type="Panel" parent="TabContainer/Charms"]
+[node name="Panel" type="Panel" parent="MainPanel/Charms"]
+visible = false
 layout_mode = 2
-offset_left = 6.0
-offset_top = 12.0
-offset_right = 334.0
-offset_bottom = 108.0
+offset_left = -344.0
+offset_top = 8.0
+offset_right = -184.0
+offset_bottom = 144.0
 theme_override_styles/panel = ExtResource("2_s7p7p")
 
-[node name="SelectCharms" type="ScrollContainer" parent="TabContainer/Charms/Panel"]
+[node name="SelectCharms" type="ScrollContainer" parent="MainPanel/Charms/Panel"]
 custom_minimum_size = Vector2(7.866, 0)
 layout_mode = 2
 offset_right = 331.0
 offset_bottom = 95.0
 follow_focus = true
 
-[node name="VBoxContainer" type="GridContainer" parent="TabContainer/Charms/Panel/SelectCharms"]
+[node name="VBoxContainer" type="GridContainer" parent="MainPanel/Charms/Panel/SelectCharms"]
 layout_mode = 2
 columns = 10
 
-[node name="Infomration" type="Control" parent="TabContainer/Charms"]
+[node name="Infomration" type="Control" parent="MainPanel/Charms"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 192.0
@@ -154,7 +133,7 @@ offset_top = 48.0
 offset_right = 232.0
 offset_bottom = 88.0
 
-[node name="GeneralInfo" type="RichTextLabel" parent="TabContainer/Charms/Infomration"]
+[node name="GeneralInfo" type="RichTextLabel" parent="MainPanel/Charms/Infomration"]
 z_index = 1
 layout_mode = 2
 offset_left = -168.0
@@ -166,7 +145,7 @@ text = "[img]res://images/sprites/circle_filled.png[/img]"
 fit_content = true
 scroll_active = false
 
-[node name="ItemInfo" type="PanelContainer" parent="TabContainer/Charms/Infomration"]
+[node name="ItemInfo" type="PanelContainer" parent="MainPanel/Charms/Infomration"]
 layout_mode = 2
 offset_left = -168.0
 offset_top = 64.0
@@ -174,49 +153,314 @@ offset_right = 128.0
 offset_bottom = 136.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ee64e")
 
-[node name="DescriptionLabel2" type="RichTextLabel" parent="TabContainer/Charms/Infomration/ItemInfo"]
+[node name="DescriptionLabel2" type="RichTextLabel" parent="MainPanel/Charms/Infomration/ItemInfo"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[center]LEFT CLICK TO USE ITEM
 [/center]
 "
 
-[node name="Attributes" parent="TabContainer" instance=ExtResource("2_f13wv")]
+[node name="Temperment" type="Control" parent="MainPanel"]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 256.0
+offset_top = -80.0
+offset_right = 256.0
+offset_bottom = -80.0
+
+[node name="Panel" type="Panel" parent="MainPanel/Temperment"]
+layout_mode = 0
+offset_left = 88.0
+offset_top = -32.0
+offset_right = 216.0
+offset_bottom = 152.0
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="Primary" type="ScrollContainer" parent="MainPanel/Temperment"]
+layout_mode = 2
+offset_left = 96.0
+offset_top = -24.0
+offset_right = 208.0
+offset_bottom = 56.0
+
+[node name="PrimaryTemperment" type="VBoxContainer" parent="MainPanel/Temperment/Primary"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel8" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="MainPanel/Temperment/Primary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="MainPanel/Temperment/Primary"]
+layout_mode = 2
+
+[node name="Secondary" type="ScrollContainer" parent="MainPanel/Temperment"]
+layout_mode = 2
+offset_left = 96.0
+offset_top = 64.0
+offset_right = 208.0
+offset_bottom = 144.0
+
+[node name="PrimaryTemperment" type="VBoxContainer" parent="MainPanel/Temperment/Secondary"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MainPanel/Temperment/Secondary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="MainPanel/Temperment/Secondary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="MainPanel/Temperment/Secondary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="MainPanel/Temperment/Secondary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="MainPanel/Temperment/Secondary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="MainPanel/Temperment/Secondary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="MainPanel/Temperment/Secondary/PrimaryTemperment"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="MainPanel/Temperment"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 48.0
+offset_right = 200.0
+offset_bottom = 64.0
+
+[node name="AttributeView" parent="MainPanel" instance=ExtResource("5_cqrwt")]
+z_index = 1
+layout_mode = 1
+offset_left = 68.0
+offset_top = 156.0
+offset_right = 68.0
+offset_bottom = 156.0
+pivot_offset = Vector2(176, -192)
+view_hidden = false
+view_abilities = false
+
+[node name="HiddenAttributes" parent="MainPanel/AttributeView" index="0"]
+offset_left = 128.0
+offset_top = -200.0
+offset_right = 256.0
+offset_bottom = -104.0
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="Attributes" parent="MainPanel/AttributeView" index="1"]
+offset_left = 128.0
+offset_top = -288.0
+offset_right = 256.0
+offset_bottom = -191.0
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="Debug" parent="MainPanel/AttributeView" index="2"]
+offset_left = 376.0
+offset_top = -280.0
+offset_right = 536.0
+offset_bottom = -70.0
+mouse_filter = 1
+
+[node name="Abilities" parent="MainPanel/AttributeView" index="3"]
+offset_left = 408.0
+offset_top = -56.0
+offset_right = 584.0
+offset_bottom = 32.0
+text_direction = 2
+
+[node name="Abilities" type="Control" parent="MainPanel"]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = 88.0
+offset_right = 64.0
+offset_bottom = 88.0
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPanel/Abilities"]
+layout_mode = 2
+offset_left = -56.0
+offset_top = -16.0
+offset_right = 280.0
+offset_bottom = 128.0
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPanel/Abilities/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPanel/Abilities/PanelContainer/MarginContainer"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="GridContainer" parent="MainPanel/Abilities/PanelContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+columns = 6
+
+[node name="DescriptionPanel" type="PanelContainer" parent="MainPanel/Abilities"]
 visible = false
 layout_mode = 2
+offset_left = 22.0
+offset_top = 132.0
+offset_right = 350.0
+offset_bottom = 260.0
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_s7p7p")
 
-[node name="Temperment" type="Control" parent="TabContainer"]
+[node name="Label" type="RichTextLabel" parent="MainPanel/Abilities/DescriptionPanel"]
 layout_mode = 2
+bbcode_enabled = true
+text = "This is the item description. FEAR IT'S GLORY!"
 
-[node name="Primary" type="ScrollContainer" parent="TabContainer/Temperment"]
-layout_mode = 2
-offset_left = 8.0
-offset_top = 32.0
-offset_right = 168.0
-offset_bottom = 144.0
-horizontal_scroll_mode = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/Primary"]
-layout_mode = 2
-
-[node name="Secondary" type="ScrollContainer" parent="TabContainer/Temperment"]
-layout_mode = 2
-offset_left = 184.0
-offset_top = 32.0
-offset_right = 344.0
-offset_bottom = 144.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/Secondary"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="TabContainer/Temperment"]
+[node name="Panel" type="Panel" parent="MainPanel"]
 layout_mode = 0
-offset_left = 168.0
-offset_top = 24.0
+offset_left = 8.0
+offset_top = -112.0
+offset_right = 216.0
+offset_bottom = 72.0
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="Infliction" type="Label" parent="MainPanel/Panel"]
+z_index = 999
+layout_mode = 0
+offset_left = 24.0
+offset_top = 28.0
 offset_right = 184.0
-offset_bottom = 152.0
-texture = ExtResource("8_n4q6r")
-expand_mode = 5
+offset_bottom = 44.0
+mouse_filter = 1
+theme = ExtResource("8_hty5i")
+text = "INFLICTED!"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Label" type="Label" parent="MainPanel/Panel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 16
+text = "ARCHIE FLYNT"
+horizontal_alignment = 1
+
+[node name="Marker2D" type="Marker2D" parent="MainPanel/Panel"]
+position = Vector2(104, 124)
+
+[node name="PanelContainer" type="Panel" parent="MainPanel"]
+visible = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 72.0
+offset_right = 344.0
+offset_bottom = 184.0
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="AttributesAdjust" parent="MainPanel" instance=ExtResource("2_f13wv")]
+visible = false
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 240.0
+offset_top = 112.0
+offset_right = 240.0
+offset_bottom = 112.0
 
 [node name="Members" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -225,10 +469,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -96.0
-offset_top = 104.0
-offset_right = 136.0
-offset_bottom = 128.0
+offset_left = -90.0
+offset_top = 156.0
+offset_right = 142.0
+offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qba66")
@@ -237,95 +481,31 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_qba66")
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="AttributeView" parent="." instance=ExtResource("5_cqrwt")]
-z_index = 1
-layout_mode = 1
-offset_left = 96.0
-offset_top = 176.0
-offset_right = 96.0
-offset_bottom = 176.0
-view_hidden = false
-view_abilities = false
-
-[node name="HiddenAttributes" parent="AttributeView" index="0"]
-offset_left = 118.0
-offset_top = -200.0
-offset_right = 256.0
-offset_bottom = -72.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_esnsw")
-
-[node name="Attributes" parent="AttributeView" index="1"]
-offset_left = 118.0
-offset_top = -286.0
-offset_right = 256.0
-offset_bottom = -191.0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_sre4y")
-
-[node name="Debug" parent="AttributeView" index="2"]
-offset_left = 376.0
-offset_top = -280.0
-offset_right = 536.0
-offset_bottom = -70.0
-mouse_filter = 1
-
-[node name="Abilities" parent="AttributeView" index="3"]
-offset_left = -56.0
-offset_top = -160.0
-offset_right = 120.0
-offset_bottom = -72.0
-text_direction = 2
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = -120.0
-offset_top = -152.0
-offset_right = 248.0
-offset_bottom = -128.0
-tooltip_text = "TSETSETSETSETRWARAWR"
-theme = ExtResource("8_hty5i")
-theme_override_font_sizes/font_size = 16
-vertical_alignment = 2
-
-[node name="Infliction" type="Label" parent="."]
-z_index = 999
-layout_mode = 0
-offset_left = 208.0
-offset_top = -128.0
-offset_right = 368.0
-offset_bottom = -112.0
-mouse_filter = 1
-theme = ExtResource("8_hty5i")
-text = "INFLICTED!"
-horizontal_alignment = 1
-vertical_alignment = 2
-
 [node name="ChangeFormation" parent="." instance=ExtResource("2_s185n")]
 layout_mode = 1
-offset_left = 240.0
-offset_top = 104.0
-offset_right = 349.0
-offset_bottom = 128.0
+offset_left = 320.0
+offset_top = 155.0
+offset_right = 338.0
+offset_bottom = 179.0
 theme = ExtResource("9_c41m6")
-text = "CHANGE FORMATION"
+text = "x"
 
-[connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
-[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
-[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
-[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/Weapon" to="." method="_on_weapon_pressed"]
-[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
-[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
-[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="hideItemDescription"]
-[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotA" to="." method="_on_slot_a_pressed"]
-[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
-[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
-[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="hideItemDescription"]
-[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotB" to="." method="_on_slot_b_pressed"]
-[connection signal="focus_entered" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
-[connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
-[connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="hideItemDescription"]
-[connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
+[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
+[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
+[connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon" to="." method="_on_weapon_pressed"]
+[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
+[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
+[connection signal="mouse_exited" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="hideItemDescription"]
+[connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="_on_slot_a_pressed"]
+[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
+[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
+[connection signal="mouse_exited" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="hideItemDescription"]
+[connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="_on_slot_b_pressed"]
+[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
+[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
+[connection signal="mouse_exited" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="hideItemDescription"]
+[connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
 [connection signal="pressed" from="ChangeFormation" to="." method="_on_change_formation_pressed"]
 
-[editable path="TabContainer/Attributes"]
-[editable path="AttributeView"]
+[editable path="MainPanel/AttributeView"]
+[editable path="MainPanel/AttributesAdjust"]

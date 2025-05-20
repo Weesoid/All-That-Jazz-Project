@@ -1,6 +1,7 @@
 extends Control
 
 @onready var combatant: ResPlayerCombatant
+@onready var points_left_text = $Available
 @onready var points_left = $Available/Points
 @onready var brawn_bonus = $HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Value
 @onready var grit_bonus = $HBoxContainer/VBoxContainer/Grit/HBoxContainer/Value
@@ -20,9 +21,12 @@ func _process(_delta):
 	if combatant != null:
 		points_left.text = str(combatant.STAT_POINTS)
 		if combatant.STAT_POINTS > 0:
+			points_left_text.show()
 			points_left.add_theme_color_override("font_color", Color.YELLOW)
 		else:
+			points_left_text.hide()
 			points_left.add_theme_color_override("font_color", Color.WHITE)
+			
 		brawn_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['brawn']) * 100)+"%"
 		grit_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['grit']) * 100)+"%"
 		handling_bonus.text = '+%s' % str(1 * combatant.STAT_POINT_ALLOCATIONS['handling'])

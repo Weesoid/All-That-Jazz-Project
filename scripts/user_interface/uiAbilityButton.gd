@@ -58,8 +58,7 @@ func _on_focus_entered():
 	
 	
 	if Input.is_action_pressed("ui_select_arrow"): 
-		description_label.show()
-		description_animator.play("ShowDescription")
+		showDescription()
 
 func _on_mouse_entered():
 	if focused_entered_sound == null: return
@@ -73,36 +72,42 @@ func _on_mouse_entered():
 	else:
 		icon_animator.play("Focus")
 	
-	if Input.is_action_pressed("ui_select_arrow") and !outside_combat:
-		description_label.show()
-		description_animator.play("ShowDescription")
+	if Input.is_action_pressed("ui_select_arrow"):
+		showDescription()
 	grab_focus()
 
 func _on_mouse_exited():
 	z_index = 0
 	icon_animator.play('RESET')
 	if description_label.visible: 
-		description_animator.play_backwards("ShowDescription")
-		await description_animator.animation_finished
-		description_label.hide()
+		hideDescription()
 
 
 func _on_focus_exited():
 	z_index = 0
 	icon_animator.play('RESET')
 	if description_label.visible: 
-		description_animator.play_backwards("ShowDescription")
-		await description_animator.animation_finished
-		description_label.hide()
+		hideDescription()
 
 func _input(_event):
-	if Input.is_action_just_released("ui_select_arrow") and description_label.visible and !outside_combat:
-		description_animator.play_backwards("ShowDescription")
-		await description_animator.animation_finished
-		description_label.hide()
-	if Input.is_action_just_pressed("ui_select_arrow") and !description_label.visible and has_focus() and !outside_combat:
+	if Input.is_action_just_released("ui_select_arrow") and description_label.visible:
+		hideDescription()
+	if Input.is_action_just_pressed("ui_select_arrow") and !description_label.visible and has_focus():
+		showDescription()
+
+func showDescription():
+	if outside_combat:
+		var side_description = load("res://scenes/user_interface/AbilityButtonSideDescription.tscn").instantiate()
+		add_child(side_description)
+		side_description.showDescription(ability)
+	else:
 		description_label.show()
 		description_animator.play("ShowDescription")
+
+func hideDescription():
+	description_animator.play_backwards("ShowDescription")
+	await description_animator.animation_finished
+	description_label.hide()
 
 func dimButton():
 	if ability_icon != null:

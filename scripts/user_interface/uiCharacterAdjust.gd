@@ -2,36 +2,27 @@ extends Control
 class_name MemberAdjustUI
 
 @export var show_temperments = false
-@onready var tabs = $TabContainer
-@onready var pool = $TabContainer/Abilities/ScrollContainer/VBoxContainer
-@onready var description = $TabContainer/Abilities/DescriptionPanel/Label
+@onready var pool = $MainPanel/Abilities/PanelContainer/MarginContainer/ScrollContainer/VBoxContainer
 @onready var member_container = $Members/HBoxContainer
-@onready var attrib_adjust = $TabContainer/Attributes
-@onready var attrib_view = $AttributeView
-@onready var equipped_charms = $TabContainer/Charms/EquippedCharms
+@onready var attrib_adjust = $MainPanel/AttributesAdjust
+@onready var attrib_view = $MainPanel/AttributeView
+@onready var equipped_charms = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms
 @onready var select_charms = $TabContainer/Charms/Panel/SelectCharms/VBoxContainer
 @onready var select_charms_panel = $TabContainer/Charms/Panel
 @onready var charm_info_panel = $TabContainer/Charms/Infomration
-@onready var charm_description = $TabContainer/Charms/Infomration/ItemInfo/DescriptionLabel2
-@onready var charm_description_general = $TabContainer/Charms/Infomration/GeneralInfo
+#@onready var charm_description = $TabContainer/Charms/Infomration/ItemInfo/DescriptionLabel2
+#@onready var charm_description_general = $TabContainer/Charms/Infomration/GeneralInfo
 @onready var weapon_button = $TabContainer/Charms/EquippedCharms/Weapon
 @onready var charm_slot_a = $TabContainer/Charms/EquippedCharms/SlotA
 @onready var charm_slot_b = $TabContainer/Charms/EquippedCharms/SlotB
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
 @onready var formation_button = $ChangeFormation
-@onready var infliction = $Infliction
-#@onready var experience_bar = $TabContainer/Temperment/ProgressBar
-@onready var primary_temperments = $TabContainer/Temperment/Primary/VBoxContainer
-@onready var secondary_temperments = $TabContainer/Temperment/Secondary/VBoxContainer
-#@onready var reroll_primary = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/RerollPrimary
-#@onready var reroll_secondary = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary
-#@onready var primary_name = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer/Label
-#@onready var primary_val = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer/Label2
-#@onready var secondary_name = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer/Label
-#@onready var secondary_val = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
-#@onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
-#@onready var reroll_button = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary
-@onready var character_name = $Label
+@onready var infliction = $MainPanel/Panel/Infliction
+@onready var primary_temperments = $MainPanel/Temperment/Primary/PrimaryTemperment
+@onready var secondary_temperments = $MainPanel/Temperment/Secondary/PrimaryTemperment
+@onready var character_view = $MainPanel/Panel/Marker2D
+
+@onready var character_name = $MainPanel/Panel/Label
 
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
@@ -53,7 +44,6 @@ func _ready():
 	loadMembers()
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
-	tabs.set_tab_hidden(3, !show_temperments)
 
 func loadMembers(set_focus:bool=true):
 	for child in member_container.get_children():
@@ -68,11 +58,15 @@ func loadMembers(set_focus:bool=true):
 			selected_combatant = member
 			loadMemberInfo(selected_combatant)
 	
-	if getOtherMemberScenes().size() > 0: 
-		for body in getOtherMemberScenes(selected_combatant.NAME):
-			body.modulate = Color(Color.WHITE, 0.25)
+#	if getOtherMemberScenes().size() > 0: 
+#		for body in getOtherMemberScenes(selected_combatant.NAME):
+#			body.modulate = Color(Color.WHITE, 0.25)
 
 func loadMemberInfo(member: ResCombatant, button: Button=null):
+	#attrib_adjust.show()
+	character_name.text = member.NAME.to_upper()
+	updateCharacterView(member)
+	
 	if changing_formation and selected_combatant == null:
 		selected_combatant = member
 		button.add_theme_color_override('font_color', Color.YELLOW)
@@ -89,20 +83,39 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		selected_combatant = null
 	else:
 		selected_combatant = member
-		select_charms_panel.hide()
+		#select_charms_panel.hide()
 		loadAbilities()
-		updateEquipped()
+		#updateEquipped()
 		updateTemperments()
-		if !OverworldGlobals.getCombatantSquadComponent('Player').hasMember(selected_combatant.NAME):
-			character_name.text = selected_combatant.NAME
+		#if !OverworldGlobals.getCombatantSquadComponent('Player').hasMember(selected_combatant.NAME):
+			#character_name.text = selected_combatant.NAME
 			#character_name.add_child(member.SCENE)
-		else:
-			character_name.text = ''
+#		else:
+#			character_name.text = ''
 			#if character_name.get_child_count() > 0: character_name.get_child(0).queue_free()
 	if has_node('Roster'):
 		get_node('Roster').inspect_mark.hide()
 	
 	#print(selected_combatant.TEMPERMENT)
+
+func updateCharacterView(member: ResPlayerCombatant):
+	if character_view.get_child(0) != null:
+		var last_member = character_view.get_child(0)
+		character_view.remove_child(last_member)
+		last_member.queue_free()
+		#await last_member.tree_exited
+		#await get_tree().process_frame
+#		print('blud')
+	#await get_tree().process_frame
+	member.initializeCombatant()
+	var character_scene = member.SCENE
+	#character_scene.instantiate()
+	if character_scene:
+		character_scene.scale = Vector2(2,2)
+		character_view.add_child(character_scene)
+		character_scene.combatant_resource.getAnimator().play('RESET')
+		#await character_scene.doAnimation('Cast_Misc')
+		character_scene.playIdle()
 
 func swapMembers(member_a: ResCombatant, member_b: ResCombatant):
 	var team = OverworldGlobals.getCombatantSquad('Player')
@@ -127,9 +140,9 @@ func clearButtons():
 	for chid in pool.get_children():
 		pool.remove_child(chid)
 		chid.queue_free()
-	for child in select_charms.get_children():
-		select_charms.remove_child(child)
-		child.queue_free()
+#	for child in select_charms.get_children():
+#		select_charms.remove_child(child)
+#		child.queue_free()
 
 func clearChildren(parent):
 	for child in parent.get_children():
@@ -165,16 +178,16 @@ func createButton(ability, location):
 				selected_combatant.ABILITY_SET.erase(ability)
 				button.remove_theme_icon_override('icon')
 	)
-	button.focus_entered.connect(
-		func updateInfo():
-			description.text = '' 
-			description.text = ability.getRichDescription()
-	)
-	button.mouse_entered.connect(
-		func updateInfo():
-			description.text = '' 
-			description.text = ability.getRichDescription()
-	)
+#	button.focus_entered.connect(
+#		func updateInfo():
+#			description.text = '' 
+#			description.text = ability.getRichDescription()
+#	)
+#	button.mouse_entered.connect(
+#		func updateInfo():
+#			description.text = '' 
+#			description.text = ability.getRichDescription()
+#	)
 	location.add_child(button)
 
 func createMemberButton(member: ResCombatant):
@@ -183,18 +196,17 @@ func createMemberButton(member: ResCombatant):
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
 	button.custom_minimum_size.x = 64
 	button.text = member.NAME
-	member.initializeCombatant()
+	#member.initializeCombatant()
 	button.pressed.connect(
 		func():
-			member.SCENE.modulate = Color(Color.WHITE, 1.0)
-			for body in getOtherMemberScenes(member.NAME):
-				body.modulate = Color(Color.WHITE, 0.25)
-				body.combatant_resource.getAnimator().play('RESET')
-				body.combatant_resource.stopBreatheTween()
+#			member.SCENE.modulate = Color(Color.WHITE, 1.0)
+#			for body in getOtherMemberScenes(member.NAME):
+#				body.modulate = Color(Color.WHITE, 0.25)
+#				body.combatant_resource.getAnimator().play('RESET')
+#				body.combatant_resource.stopBreatheTween()
 			loadMemberInfo(member, button)
-			member.SCENE.playIdle()
+#			member.SCENE.playIdle()
 			)
-	button.add_child(member.SCENE)
 	
 #	button.focus_entered.connect(func(): member.SCENE.modulate = Color.YELLOW)
 #	button.mouse_entered.connect(func(): member.SCENE.modulate = Color.YELLOW)
@@ -347,22 +359,23 @@ func _on_slot_c_pressed():
 	showCharmEquipMenu(charm_slot_c)
 
 func updateEquipped():
-	if selected_combatant.EQUIPPED_WEAPON != null:
-		weapon_button.text = selected_combatant.EQUIPPED_WEAPON.NAME
-		weapon_button.icon = selected_combatant.EQUIPPED_WEAPON.ICON
-	else:
-		weapon_button.icon = null
-		weapon_button.text = 'Unarmed'
-	
-	charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
-	charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
-	charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
-	if selected_combatant.CHARMS[0] != null:
-		charm_slot_a.icon = selected_combatant.CHARMS[0].ICON
-	if selected_combatant.CHARMS[1] != null:
-		charm_slot_b.icon = selected_combatant.CHARMS[1].ICON
-	if selected_combatant.CHARMS[2] != null:
-		charm_slot_c.icon = selected_combatant.CHARMS[2].ICON
+	pass
+#	if selected_combatant.EQUIPPED_WEAPON != null:
+#		weapon_button.text = selected_combatant.EQUIPPED_WEAPON.NAME
+#		weapon_button.icon = selected_combatant.EQUIPPED_WEAPON.ICON
+#	else:
+#		weapon_button.icon = null
+#		weapon_button.text = 'Unarmed'
+#
+#	charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
+#	charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
+#	charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
+#	if selected_combatant.CHARMS[0] != null:
+#		charm_slot_a.icon = selected_combatant.CHARMS[0].ICON
+#	if selected_combatant.CHARMS[1] != null:
+#		charm_slot_b.icon = selected_combatant.CHARMS[1].ICON
+#	if selected_combatant.CHARMS[2] != null:
+#		charm_slot_c.icon = selected_combatant.CHARMS[2].ICON
 
 func equipCharmOnCombatant(charm: ResCharm, slot: int, slot_button):
 	selected_combatant.equipCharm(charm, slot)
@@ -370,78 +383,71 @@ func equipCharmOnCombatant(charm: ResCharm, slot: int, slot_button):
 		slot_button.icon = charm.ICON
 
 func updateItemDescription(item: ResItem):
-	if item == null:
-		return
-	
-	charm_info_panel.show()
-	charm_description_general.text = item.getGeneralInfo()
-	charm_description.text = item.getInformation()
+	pass
 
 func clearDescription():
-	charm_description_general.text = ''
-	charm_description.text = ''
+	pass
 
 func _on_weapon_mouse_entered():
-	if selected_combatant.EQUIPPED_WEAPON != null:
-		updateItemDescription(selected_combatant.EQUIPPED_WEAPON)
-	else:
-		charm_info_panel.hide()
+	pass
+#	if selected_combatant.EQUIPPED_WEAPON != null:
+#		updateItemDescription(selected_combatant.EQUIPPED_WEAPON)
+#	else:
+#		charm_info_panel.hide()
 
 func _on_slot_a_mouse_entered():
-	if selected_combatant.CHARMS[0] != null:
-		updateItemDescription(selected_combatant.CHARMS[0])
-	else:
-		charm_info_panel.hide()
+	pass
+#	if selected_combatant.CHARMS[0] != null:
+#		updateItemDescription(selected_combatant.CHARMS[0])
+#	else:
+#		charm_info_panel.hide()
 
 func _on_slot_b_mouse_entered():
-	if selected_combatant.CHARMS[1] != null:
-		updateItemDescription(selected_combatant.CHARMS[1])
-	else:
-		charm_info_panel.hide()
+	pass
+#	if selected_combatant.CHARMS[1] != null:
+#		updateItemDescription(selected_combatant.CHARMS[1])
+#	else:
+#		charm_info_panel.hide()
 
 func _on_slot_c_mouse_entered():
-	if selected_combatant.CHARMS[2] != null:
-		updateItemDescription(selected_combatant.CHARMS[2])
-	else:
-		charm_info_panel.hide()
+	pass
+#	if selected_combatant.CHARMS[2] != null:
+#		updateItemDescription(selected_combatant.CHARMS[2])
+#	else:
+#		charm_info_panel.hide()
 
 func hideItemDescription():
-	charm_info_panel.hide()
+	pass
+#	charm_info_panel.hide()
 
-func _on_tab_container_tab_changed(tab):
-	if selected_combatant == null:
-		return
-	select_charms_panel.hide()
-	if tab == 0:
-		loadAbilities()
-	elif tab == 1:
-		select_charms_panel.hide()
-		charm_info_panel.hide()
-		setFocusMode(equipped_charms, true)
-		setFocusMode(member_container, true)
-		weapon_button.grab_focus()
-	
-	match tab:
-		0: OverworldGlobals.setMenuFocus(pool)
-		1: 
-			OverworldGlobals.setMenuFocus(equipped_charms)
-			if !selected_combatant.hasEquippedWeapon():
-				weapon_button.icon = null
-				weapon_button.text = 'Unarmed'
-		2: attrib_adjust.focus()
-		3: 
-			var cost = int(PlayerGlobals.getRequiredExp()*0.05)
-			#updateExpBar()
-			updateTemperments()
-#			reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
-#			reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
-#			reroll_button.grab_focus()
-
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_tab_right') and (tabs.current_tab + 1 < tabs.get_tab_count() and !tabs.is_tab_disabled(tabs.current_tab + 1)):
-		tabs.current_tab += 1
-	elif Input.is_action_just_pressed('ui_tab_left') and (tabs.current_tab - 1 >= 0 and !tabs.is_tab_disabled(tabs.current_tab - 1)):
-		tabs.current_tab -= 1
+#func _on_tab_container_tab_changed(tab):
+#	if selected_combatant == null:
+#		return
+#	select_charms_panel.hide()
+#	if tab == 0:
+#		loadAbilities()
+#	elif tab == 1:
+#		select_charms_panel.hide()
+#		charm_info_panel.hide()
+#		setFocusMode(equipped_charms, true)
+#		setFocusMode(member_container, true)
+#		weapon_button.grab_focus()
+#
+#	match tab:
+#		0: OverworldGlobals.setMenuFocus(pool)
+#		1: 
+#			OverworldGlobals.setMenuFocus(equipped_charms)
+#			if !selected_combatant.hasEquippedWeapon():
+#				weapon_button.icon = null
+#				weapon_button.text = 'Unarmed'
+#		2: attrib_adjust.focus()
+#		3: 
+#			var cost = int(PlayerGlobals.getRequiredExp()*0.05)
+#			#updateExpBar()
+#			updateTemperments()
+##			reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
+##			reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
+##			reroll_button.grab_focus()
 
 func setFocusMode(container, mode):
 	for child in container.get_children():
@@ -453,32 +459,22 @@ func setFocusMode(container, mode):
 
 func _on_change_formation_pressed():
 	changing_formation = !changing_formation
-	for member in getOtherMemberScenes():
-		member.modulate = Color(Color.WHITE, 1.0)
-		member.combatant_resource.getAnimator().play('RESET')
-		member.combatant_resource.stopBreatheTween()
+#	for member in getOtherMemberScenes():
+#		member.modulate = Color(Color.WHITE, 1.0)
+#		member.combatant_resource.getAnimator().play('RESET')
+#		member.combatant_resource.stopBreatheTween()
 	
 	if changing_formation:
 #		tabs.hide()
 #		attrib_view.hide()
-		setTabAccess(true)
 		selected_combatant = null
 		formation_button.text = 'Finish'
 	else:
 #		tabs.show()
 #		attrib_view.show()
-		setTabAccess(false)
 		formation_button.text = 'Change Formation'
 		loadMembers()
 
-func setTabAccess(disabled:bool):
-	for i in tabs.get_child_count():
-		tabs.set_tab_disabled(i, disabled)
-	
-	if disabled:
-		tabs.get_current_tab_control().hide()
-	else:
-		tabs.get_current_tab_control().show()
 #	for child in tabs.get_child(tabs.current_tab).get_children():
 #		child.disabled = disabled
 
@@ -487,16 +483,10 @@ func updateTemperments():
 	clearChildren(secondary_temperments)
 	selected_combatant.applyTemperments(true)
 	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
-	#reroll_cost.text = 'Morale Cost: %s' % str(cost)
-	#reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
-	clearButtons()
-	print(selected_combatant.TEMPERMENT['primary'])
-	print(selected_combatant.TEMPERMENT['secondary']	)
 	for temperment in selected_combatant.TEMPERMENT['primary']:
 		primary_temperments.add_child(createTempermentLabel(temperment, 'primary'))
 	for temperment in selected_combatant.TEMPERMENT['secondary']:
 		secondary_temperments.add_child(createTempermentLabel(temperment, 'secondary'))
-	#asecondary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['secondary_temperment'])
 	if selected_combatant.hasEquippedWeapon() and !selected_combatant.EQUIPPED_WEAPON.canUse(selected_combatant):
 		selected_combatant.unequipWeapon()
 

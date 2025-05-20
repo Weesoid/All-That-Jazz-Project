@@ -86,7 +86,7 @@ func hoverButton(member: ResPlayerCombatant, button: Button):
 			get_parent().loadMemberInfo(member)
 			inspect_mark.show()
 			inspect_mark.global_position = button.global_position+Vector2(button.size.x-2, button.size.y/8)
-			for body in get_parent().getOtherMemberScenes():
-				body.modulate = Color(Color.WHITE, 0.25)
-				body.combatant_resource.getAnimator().play('RESET')
-				body.combatant_resource.stopBreatheTween()
+#			for body in get_parent().getOtherMemberScenes():
+#				body.modulate = Color(Color.WHITE, 0.25)
+#				body.combatant_resource.getAnimator().play('RESET')
+#				body.combatant_resource.stopBreatheTween()
