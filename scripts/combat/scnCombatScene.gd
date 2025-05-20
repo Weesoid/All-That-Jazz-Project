@@ -359,7 +359,13 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
-				CombatGlobals.addStatusEffect(combatant, 'Fading')
+				if (combatant.hasStatusEffect('Faded IV') and CombatGlobals.randomRoll(0.5)):
+					CombatGlobals.addStatusEffect(combatant, 'Fading')
+				elif combatant.hasStatusEffect('Faded IV'):
+					CombatGlobals.addStatusEffect(combatant, 'KnockOut')
+					combatant.ACTED = true
+				else:
+					CombatGlobals.addStatusEffect(combatant, 'Fading')
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 				combatant.ACTED = true

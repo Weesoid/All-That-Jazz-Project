@@ -93,7 +93,7 @@ func isInflicted()-> bool:
 	return !LINGERING_STATUS_EFFECTS.is_empty()
 
 func getLingeringEffectsString():
-	var out = '%s is afflicted with:\n' % NAME
+	var out = 'During combat:\n'
 	for effect in LINGERING_STATUS_EFFECTS:
 		out += '%s - %s\n' % [effect, CombatGlobals.loadStatusEffect(effect).DESCRIPTION]
 	return out

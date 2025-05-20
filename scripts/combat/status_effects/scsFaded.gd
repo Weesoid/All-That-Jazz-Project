@@ -15,4 +15,4 @@ static func applyFaded(target: ResCombatant, status_effect: ResStatusEffect):
 		'Faded III':
 			CombatGlobals.modifyStat(target, {'heal_mult': -0.75, 'resist': -0.2, 'accuracy': -0.1}, 'Faded')
 		'Faded IV':
-			CombatGlobals.modifyStat(target, {'heal_mult': -100.0, 'resist': -0.5, 'accuracy': -0.2, 'crit': -0.5}, 'Faded')
+			CombatGlobals.modifyStat(target, {'heal_mult': -0.9, 'resist': -0.25, 'accuracy': -0.25, 'crit': -0.25}, 'Faded')

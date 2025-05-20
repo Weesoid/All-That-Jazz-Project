@@ -124,7 +124,8 @@ func doCritEffects(base_damage, caster: ResCombatant, crit_damage:float=2.0, sta
 func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sound: String, indicator_bb_code: String='', trigger_on_hits: bool=true, ):
 	var message = str(int(damage))
 	message = indicator_bb_code+'[outline_size=8] '+message
-	manual_call_indicator.emit(target, message, 'Damage')
+	if damage > 0:
+		manual_call_indicator.emit(target, message, 'Damage')
 	target.removeStatusEffect(2)
 	if caster != null:
 		caster.removeStatusEffect(1)
@@ -179,7 +180,7 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 		manual_call_indicator.emit(target, '[color=green]'+str(int(base_healing)), 'Damage')
 		OverworldGlobals.playSound('02_Heal_02.ogg')
 	else:
-		manual_call_indicator.emit(target, "NO HEAL.", 'Flunk')
+		manual_call_indicator.emit(target, "Broken.", 'Flunk')
 	
 	target.removeStatusEffect(3)
 	

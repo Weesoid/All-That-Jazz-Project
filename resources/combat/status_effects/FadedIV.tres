@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("3_kgjj4")
 NAME = "Faded IV"
-DESCRIPTION = "Target cannot heal and has reduced resistance, accuracy, and crit rate."
+DESCRIPTION = "Reduced HEALS, RES, ACC, and CRIT. May skip Fading state."
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("1_nay4v")
 EFFECT_TYPE = 0

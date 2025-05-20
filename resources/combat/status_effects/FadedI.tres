@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("3_hr814")
 NAME = "Faded I"
-DESCRIPTION = "Target has reduced healing."
+DESCRIPTION = "Reduced HEALS."
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("1_xh4a1")
 EFFECT_TYPE = 0
