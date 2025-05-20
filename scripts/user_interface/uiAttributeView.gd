@@ -20,11 +20,11 @@ extends Control
 @onready var healm_val = $HiddenAttributes/MarginContainer/VBoxContainer/HealMult/Value
 @onready var hp_text = $Attributes/MarginContainer/VBoxContainer/Health/ProgressBar/HealthValues
 @onready var debug_status = $Debug
-@onready var temperments = $Temperments
-@onready var p_temp_name = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Label
-@onready var s_temp_name = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Label
-@onready var p_temp_val = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Values
-@onready var s_temp_val = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Values
+#@onready var temperments = $Temperments
+#@onready var p_temp_name = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Label
+#@onready var s_temp_name = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Label
+#@onready var p_temp_val = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Values
+#@onready var s_temp_val = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Values
 @onready var abilities_label = $Abilities
 
 func _ready():
@@ -57,14 +57,14 @@ func _process(_delta):
 		else:
 			healm_val.text = 'BROKEN'
 		# Temperments
-		if combatant is ResPlayerCombatant and combatant.TEMPERMENT != {'primary':'', 'secondary':''}:
-			p_temp_val.text = combatant.TEMPERMENT['primary'].capitalize()
-			s_temp_val.text = combatant.TEMPERMENT['secondary'].capitalize()
-			$Temperments/MarginContainer/VBoxContainer/PrimaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['primary_temperment'])
-			$Temperments/MarginContainer/VBoxContainer/SecondaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['secondary_temperment'])
-		if OverworldGlobals.isPlayerCheating() and view_debug:
-			debug_status.visible = OverworldGlobals.getPlayer().get_node('DebugComponent').visible
-			debug_status.text = str(combatant.STAT_MODIFIERS)
+#		if combatant is ResPlayerCombatant and combatant.TEMPERMENT != {'primary':'', 'secondary':''}:
+#			p_temp_val.text = combatant.TEMPERMENT['primary'].capitalize()
+#			s_temp_val.text = combatant.TEMPERMENT['secondary'].capitalize()
+#			$Temperments/MarginContainer/VBoxContainer/PrimaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['primary_temperment'])
+#			$Temperments/MarginContainer/VBoxContainer/SecondaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['secondary_temperment'])
+#		if OverworldGlobals.isPlayerCheating() and view_debug:
+#			debug_status.visible = OverworldGlobals.getPlayer().get_node('DebugComponent').visible
+#			debug_status.text = str(combatant.STAT_MODIFIERS)
 		# Abilities
 		if view_abilities:
 			abilities_label.text = getAbilities(combatant)

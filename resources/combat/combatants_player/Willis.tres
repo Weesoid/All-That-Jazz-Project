@@ -17,8 +17,8 @@
 script = ExtResource("2_vmsk2")
 ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_nh55h"), ExtResource("3_sh1ok"), ExtResource("4_2e4kc"), ExtResource("5_q55wc"), ExtResource("6_86hq2"), ExtResource("7_owu2i"), ExtResource("8_lphuw"), ExtResource("9_w6lwr"), ExtResource("10_27uu3")])
 BASE_TEMPERMENT = {
-"primary": "gifted",
-"secondary": "acute"
+"primary": ["gifted", "deadly", "all_arounder"],
+"secondary": ["acute", "clumsy", "stalwart"]
 }
 MANDATORY = true
 STAT_MULTIPLIER = 0.01

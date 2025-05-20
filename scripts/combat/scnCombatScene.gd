@@ -386,7 +386,7 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
-	if CombatGlobals.randomRoll(1):
+	if CombatGlobals.randomRoll(calculateEscapeChance()):
 		CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat(2)
 	else:
@@ -399,6 +399,8 @@ func _on_escape_pressed():
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		confirm.emit()
 		CombatGlobals.addStatusEffect(previous_active, 'Dazed', true)
+
+
 
 func _on_escape_focus_entered():
 	if can_escape:

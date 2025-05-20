@@ -244,10 +244,10 @@ func addCombatantToTeam(combatant_id):
 			combatant = load(combatant_id)
 	elif combatant_id is ResCombatant:
 		combatant = combatant_id
-	if combatant.TEMPERMENT['primary'] == '':
-		combatant.TEMPERMENT['primary'] = PlayerGlobals.PRIMARY_TEMPERMENTS.keys().pick_random()
-	if combatant.TEMPERMENT['secondary'] == '':
-		combatant.TEMPERMENT['secondary'] = PlayerGlobals.SECONDARY_TEMPERMENTS.keys().pick_random()
+	if combatant.TEMPERMENT['primary'] == []:
+		combatant.TEMPERMENT['primary'].append(PlayerGlobals.PRIMARY_TEMPERMENTS.keys().pick_random())
+	if combatant.TEMPERMENT['secondary'] == []:
+		combatant.TEMPERMENT['secondary'].append(PlayerGlobals.SECONDARY_TEMPERMENTS.keys().pick_random())
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
 	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)

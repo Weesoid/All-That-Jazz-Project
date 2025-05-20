@@ -3,7 +3,7 @@ class_name ResPlayerCombatant
 
 @export var ABILITY_POOL: Array[ResAbility]
 @export var ABILITY_SLOT: ResAbility = load("res://resources/combat/abilities/BraceSelf.tres")
-@export var BASE_TEMPERMENT: Dictionary = {'primary':'', 'secondary':''}
+@export var BASE_TEMPERMENT: Dictionary = {'primary':[], 'secondary':[]}
 @export var FOLLOWER_PACKED_SCENE: PackedScene
 @export var MANDATORY = false
 @export var STAT_MULTIPLIER = 0.01
@@ -20,7 +20,7 @@ var STAT_POINT_ALLOCATIONS = {
 	'grit': 0,
 	'handling': 0
 }
-var TEMPERMENT: Dictionary = {'primary':'', 'secondary':''}
+var TEMPERMENT: Dictionary = {'primary':[], 'secondary':[]}
 var BASE_HEALTH: int
 var initialized = false
 
@@ -36,15 +36,28 @@ func initializeCombatant(do_scene:bool=true):
 		scaleStats()
 	if CombatGlobals.inCombat():
 		applyStatusEffects()
-	if TEMPERMENT['primary'] == '' and TEMPERMENT['secondary'] == '':
+	if !TEMPERMENT['primary'] is Array:
+		TEMPERMENT['primary'] = []
+		TEMPERMENT['secondary'] = []
+	if TEMPERMENT['primary'] == [] and TEMPERMENT['secondary'] == []:
 		TEMPERMENT = BASE_TEMPERMENT
 	applyTemperments()
 
 func applyTemperments(update:bool = false):
-	if (!STAT_MODIFIERS.keys().has('primary_temperment') and TEMPERMENT['primary'] != '') or update:
-		CombatGlobals.modifyStat(self, PlayerGlobals.PRIMARY_TEMPERMENTS[TEMPERMENT['primary']], 'primary_temperment')
-	if (!STAT_MODIFIERS.keys().has('secondary_temperment') and TEMPERMENT['secondary'] != '') or update:
-		CombatGlobals.modifyStat(self, PlayerGlobals.SECONDARY_TEMPERMENTS[TEMPERMENT['secondary']], 'secondary_temperment')
+	if TEMPERMENT['primary'].is_empty():
+		return
+	if !TEMPERMENT['primary'] is Array:
+		TEMPERMENT['primary'] = []
+		TEMPERMENT['secondary'] = []
+		applyTemperments()
+		return
+	
+	for temperment in TEMPERMENT['primary']:
+		if !STAT_MODIFIERS.keys().has('pt_'+temperment) or update:
+			CombatGlobals.modifyStat(self, PlayerGlobals.PRIMARY_TEMPERMENTS[temperment], 'pt_'+temperment)
+	for temperment in TEMPERMENT['secondary']:
+		if !STAT_MODIFIERS.keys().has('st_'+temperment) or update:
+			CombatGlobals.modifyStat(self, PlayerGlobals.SECONDARY_TEMPERMENTS[temperment], 'st_'+temperment)
 
 func scaleStats():
 	var stat_increase = {}
@@ -92,9 +105,9 @@ func applyEquipmentModifications():
 func getAllocationModifier()-> Dictionary:
 	var out = STAT_POINT_ALLOCATIONS.duplicate()
 	for stat in out.keys():
-		if stat != 'handling':
+		if stat != 'handling' and out.has(stat):
 			out[stat] *= STAT_MULTIPLIER
-		else:
+		elif out.has(stat):
 			out[stat] *= 1
 	return out
 

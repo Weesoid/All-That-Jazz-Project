@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cbkybcyyxjsku"]
+[gd_scene load_steps=16 format=3 uid="uid://cbkybcyyxjsku"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="PackedScene" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
@@ -7,8 +7,8 @@
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="5_cqrwt"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]
-[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="7_e0uh0"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
+[ext_resource type="Texture2D" uid="uid://bfe4b6fwwfpgm" path="res://images/sprites/splitter.png" id="8_n4q6r"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="9_c41m6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfwvc"]
@@ -29,8 +29,6 @@ bg_color = Color(0, 0, 0, 1)
 border_width_top = 2
 border_width_right = 2
 border_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qcjn6"]
 
 [node name="CharacterAdjust" type="Control"]
 layout_mode = 3
@@ -188,103 +186,37 @@ visible = false
 layout_mode = 2
 
 [node name="Temperment" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Temperment"]
-layout_mode = 0
-offset_left = 88.0
-offset_top = 32.0
-offset_right = 240.0
-offset_bottom = 144.0
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/ScrollContainer"]
+[node name="Primary" type="ScrollContainer" parent="TabContainer/Temperment"]
 layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="HSplitContainer" type="HSplitContainer" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-split_offset = 999
-dragger_visibility = 1
-
-[node name="HBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="Label" type="Label" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer"]
-layout_mode = 2
-text = "PRIMARY"
-
-[node name="Label2" type="RichTextLabel" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer"]
-layout_mode = 2
-bbcode_enabled = true
-text = "+20% GRIT
--10% BRAWN"
-fit_content = true
-
-[node name="RerollPrimary" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer" instance=ExtResource("2_s185n")]
-visible = false
-modulate = Color(1, 1, 1, 0)
-layout_mode = 2
-disabled = true
-text = "REROLL"
-
-[node name="HSplitContainer2" type="HSplitContainer" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-dragger_visibility = 1
-
-[node name="HBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="Label" type="Label" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer"]
-layout_mode = 2
-text = "SECONDARY"
-
-[node name="Label2" type="RichTextLabel" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer"]
-layout_mode = 2
-bbcode_enabled = true
-text = "+20% GRIT
--10% BRAWN"
-fit_content = true
-
-[node name="RerollSecondary" parent="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2" instance=ExtResource("2_s185n")]
-layout_mode = 2
-text = "REROLL"
-
-[node name="ProgressBar" type="ProgressBar" parent="TabContainer/Temperment"]
-layout_mode = 0
 offset_left = 8.0
-offset_top = 168.0
-offset_right = 280.0
-offset_bottom = 182.0
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-value = 50.0
-show_percentage = false
+offset_top = 32.0
+offset_right = 168.0
+offset_bottom = 144.0
+horizontal_scroll_mode = 3
 
-[node name="ProgressBarTrueValues" parent="TabContainer/Temperment/ProgressBar" instance=ExtResource("7_e0uh0")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -11.0
-offset_top = -6.5
-offset_right = 11.0
-offset_bottom = 6.5
-
-[node name="Label" type="Label" parent="TabContainer/Temperment/ProgressBar"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/Primary"]
 layout_mode = 2
-offset_top = -16.0
-offset_right = 73.0
-offset_bottom = -3.0
-text = "Cost: 25"
+
+[node name="Secondary" type="ScrollContainer" parent="TabContainer/Temperment"]
+layout_mode = 2
+offset_left = 184.0
+offset_top = 32.0
+offset_right = 344.0
+offset_bottom = 144.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Temperment/Secondary"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Temperment"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 24.0
+offset_right = 184.0
+offset_bottom = 152.0
+texture = ExtResource("8_n4q6r")
+expand_mode = 5
 
 [node name="Members" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -331,20 +263,13 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_sre4y")
 
 [node name="Debug" parent="AttributeView" index="2"]
-offset_left = -40.0
-offset_top = -256.0
-offset_right = 120.0
-offset_bottom = -46.0
+offset_left = 376.0
+offset_top = -280.0
+offset_right = 536.0
+offset_bottom = -70.0
+mouse_filter = 1
 
-[node name="Temperments" parent="AttributeView" index="3"]
-visible = true
-offset_left = 118.0
-offset_top = -115.0
-offset_right = 270.0
-offset_bottom = -33.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_qcjn6")
-
-[node name="Abilities" parent="AttributeView" index="4"]
+[node name="Abilities" parent="AttributeView" index="3"]
 offset_left = -56.0
 offset_top = -160.0
 offset_right = 120.0
@@ -400,8 +325,6 @@ text = "CHANGE FORMATION"
 [connection signal="mouse_entered" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
 [connection signal="mouse_exited" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="hideItemDescription"]
 [connection signal="pressed" from="TabContainer/Charms/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
-[connection signal="pressed" from="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/RerollPrimary" to="." method="_on_reroll_primary_pressed"]
-[connection signal="pressed" from="TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary" to="." method="_on_reroll_secondary_pressed"]
 [connection signal="pressed" from="ChangeFormation" to="." method="_on_change_formation_pressed"]
 
 [editable path="TabContainer/Attributes"]

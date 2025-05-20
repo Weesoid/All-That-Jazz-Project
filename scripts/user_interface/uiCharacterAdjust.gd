@@ -20,15 +20,17 @@ class_name MemberAdjustUI
 @onready var charm_slot_c = $TabContainer/Charms/EquippedCharms/SlotC
 @onready var formation_button = $ChangeFormation
 @onready var infliction = $Infliction
-@onready var experience_bar = $TabContainer/Temperment/ProgressBar
-@onready var reroll_primary = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/RerollPrimary
-@onready var reroll_secondary = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary
-@onready var primary_name = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer/Label
-@onready var primary_val = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer/Label2
-@onready var secondary_name = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer/Label
-@onready var secondary_val = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
-@onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
-@onready var reroll_button = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary
+#@onready var experience_bar = $TabContainer/Temperment/ProgressBar
+@onready var primary_temperments = $TabContainer/Temperment/Primary/VBoxContainer
+@onready var secondary_temperments = $TabContainer/Temperment/Secondary/VBoxContainer
+#@onready var reroll_primary = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/RerollPrimary
+#@onready var reroll_secondary = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary
+#@onready var primary_name = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer/Label
+#@onready var primary_val = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer/HBoxContainer/Label2
+#@onready var secondary_name = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer/Label
+#@onready var secondary_val = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/HBoxContainer/Label2
+#@onready var reroll_cost = $TabContainer/Temperment/ProgressBar/Label
+#@onready var reroll_button = $TabContainer/Temperment/ScrollContainer/VBoxContainer/HSplitContainer2/RerollSecondary
 @onready var character_name = $Label
 
 var selected_combatant: ResPlayerCombatant
@@ -127,6 +129,11 @@ func clearButtons():
 		chid.queue_free()
 	for child in select_charms.get_children():
 		select_charms.remove_child(child)
+		child.queue_free()
+
+func clearChildren(parent):
+	for child in parent.get_children():
+		parent.remove_child(child)
 		child.queue_free()
 
 func createButton(ability, location):
@@ -402,6 +409,8 @@ func hideItemDescription():
 	charm_info_panel.hide()
 
 func _on_tab_container_tab_changed(tab):
+	if selected_combatant == null:
+		return
 	select_charms_panel.hide()
 	if tab == 0:
 		loadAbilities()
@@ -422,11 +431,11 @@ func _on_tab_container_tab_changed(tab):
 		2: attrib_adjust.focus()
 		3: 
 			var cost = int(PlayerGlobals.getRequiredExp()*0.05)
-			updateExpBar()
+			#updateExpBar()
 			updateTemperments()
-			reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
-			reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
-			reroll_button.grab_focus()
+#			reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
+#			reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
+#			reroll_button.grab_focus()
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_tab_right') and (tabs.current_tab + 1 < tabs.get_tab_count() and !tabs.is_tab_disabled(tabs.current_tab + 1)):
@@ -474,51 +483,72 @@ func setTabAccess(disabled:bool):
 #		child.disabled = disabled
 
 func updateTemperments():
+	clearChildren(primary_temperments)
+	clearChildren(secondary_temperments)
 	selected_combatant.applyTemperments(true)
 	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
-	reroll_cost.text = 'Morale Cost: %s' % str(cost)
-	reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
-	primary_name.text = selected_combatant.TEMPERMENT['primary'].capitalize().replace('_', '')
-	secondary_name.text = selected_combatant.TEMPERMENT['secondary'].capitalize().replace('_', '')
-	primary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['primary_temperment'])
-	secondary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['secondary_temperment'])
+	#reroll_cost.text = 'Morale Cost: %s' % str(cost)
+	#reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
+	clearButtons()
+	print(selected_combatant.TEMPERMENT['primary'])
+	print(selected_combatant.TEMPERMENT['secondary']	)
+	for temperment in selected_combatant.TEMPERMENT['primary']:
+		primary_temperments.add_child(createTempermentLabel(temperment, 'primary'))
+	for temperment in selected_combatant.TEMPERMENT['secondary']:
+		secondary_temperments.add_child(createTempermentLabel(temperment, 'secondary'))
+	#asecondary_val.text = formatModifiers(selected_combatant.STAT_MODIFIERS['secondary_temperment'])
 	if selected_combatant.hasEquippedWeapon() and !selected_combatant.EQUIPPED_WEAPON.canUse(selected_combatant):
 		selected_combatant.unequipWeapon()
 
-func formatModifiers(stat_dict: Dictionary) -> String:
+func createTempermentLabel(temperment: String, type: String):
+	var stat_tag
+	var bb='[center]'
+	if type == 'primary':
+		stat_tag = 'pt_'
+	elif type == 'secondary':
+		stat_tag = 'st_'
+	var temperment_label = RichTextLabel.new()
+	temperment_label.bbcode_enabled = true
+	temperment_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	temperment_label.fit_content = true
+	temperment_label.text = bb+temperment.capitalize()
+	temperment_label.tooltip_text = formatModifiers(selected_combatant.STAT_MODIFIERS[stat_tag+temperment], false)
+	return temperment_label
+
+func formatModifiers(stat_dict: Dictionary, bb_code:bool=true) -> String:
 	var result = ""
 	for key in stat_dict.keys():
 		var value = stat_dict[key]
 		if value is float: 
 			value *= 100.0
 		if stat_dict[key] > 0 and stat_dict[key]:
-			result += '[color=GREEN_YELLOW]'
+			if bb_code: result += '[color=GREEN_YELLOW]'
 			if value is float: 
 				result += "+" + str(value) + "% " +key.to_upper().replace('_', ' ') + "\n"
 			else:
 				result += "+" + str(value) + " " +key.to_upper().replace('_', ' ') +  "\n"
 		else:
-			result += '[color=ORANGE_RED]'
+			if bb_code: result += '[color=ORANGE_RED]'
 			if value is float: 
 				result += str(value) + "% " +key.to_upper().replace('_', ' ') +  "\n"
 			else:
 				result += str(value) + " " +key.to_upper().replace('_', ' ') + "\n"
-		result += '[/color]'
+		if bb_code: result += '[/color]'
 	return result
 
 func _on_reroll_primary_pressed():
 	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
 	if PlayerGlobals.CURRENT_EXP >= cost:
 		rerollTemperment('primary', cost)
-	else:
-		reroll_primary.disabled = true
+	#else:
+		#reroll_primary.disabled = true
 
 func _on_reroll_secondary_pressed():
 	var cost = int(PlayerGlobals.getRequiredExp()*0.05)
 	if PlayerGlobals.CURRENT_EXP >= cost:
 		rerollTemperment('secondary', cost)
-	else:
-		reroll_secondary.disabled = true
+	#else:
+		#reroll_secondary.disabled = true
 
 func rerollTemperment(type: String, cost):
 	PlayerGlobals.addExperience(-cost, false)
@@ -529,15 +559,15 @@ func rerollTemperment(type: String, cost):
 	elif type == 'secondary':
 		valid_temperments = PlayerGlobals.SECONDARY_TEMPERMENTS.keys().filter(func(temperment): return temperment != selected_combatant.TEMPERMENT[type])
 		selected_combatant.TEMPERMENT[type] = valid_temperments.pick_random()
-	updateExpBar(true)
+	#updateExpBar(true)
 	updateTemperments()
-	reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
-	reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
-
-func updateExpBar(show_tween:bool=false):
-	experience_bar.max_value = PlayerGlobals.getRequiredExp()
-	experience_bar.value = PlayerGlobals.CURRENT_EXP
-	if show_tween:
-		var tween = create_tween()
-		tween.tween_property(experience_bar,'modulate',Color.RED,0.1)
-		tween.tween_property(experience_bar,'modulate',Color.WHITE,0.15)
+#	reroll_primary.disabled = PlayerGlobals.CURRENT_EXP < cost
+#	reroll_secondary.disabled = PlayerGlobals.CURRENT_EXP < cost
+#
+#func updateExpBar(show_tween:bool=false):
+#	experience_bar.max_value = PlayerGlobals.getRequiredExp()
+#	experience_bar.value = PlayerGlobals.CURRENT_EXP
+#	if show_tween:
+#		var tween = create_tween()
+#		tween.tween_property(experience_bar,'modulate',Color.RED,0.1)
+#		tween.tween_property(experience_bar,'modulate',Color.WHITE,0.15)

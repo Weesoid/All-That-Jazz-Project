@@ -136,7 +136,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			addTension(1)
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
-	playHurtAnimation(target, sound)
+	playHurtAnimation(target, damage, sound)
 	if target.isDead():
 		OverworldGlobals.freezeFrame()
 #		if target is ResEnemyCombatant:
@@ -175,11 +175,8 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 	else:
 		target.STAT_VALUES['health'] += int(base_healing)
 	
-	manual_call_indicator.emit(target, '[color=green]'+str(int(base_healing)), 'Damage')
-	if base_healing > 0 and target.STAT_VALUES['health'] + base_healing > target.getMaxHealth():
-		OverworldGlobals.playSound('02_Heal_02.ogg')
-	elif base_healing > 0:
-		manual_call_indicator.emit(target, "%s HEALED!" % [int(base_healing)], 'Heal')
+	if base_healing > 0:
+		manual_call_indicator.emit(target, '[color=green]'+str(int(base_healing)), 'Damage')
 		OverworldGlobals.playSound('02_Heal_02.ogg')
 	else:
 		manual_call_indicator.emit(target, "NO HEAL.", 'Flunk')
@@ -224,7 +221,7 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 	else:
 		await animation.playAnimation(target.SCENE.position)
 
-func playHurtAnimation(target: ResCombatant, sound_path: String=''):
+func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 	if !target.STAT_MODIFIERS.keys().has('block'):
 		randomize()
 		if sound_path == '':
@@ -234,10 +231,9 @@ func playHurtAnimation(target: ResCombatant, sound_path: String=''):
 			else:
 				OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
 		#getCombatScene().combat_camera.shake(50.0, 50.0)
+		playHurtTween(target, damage)
 		playFlashTween(target, Color.RED)
-		if !target.isDead():
-			playHurtTween(target)
-		else:
+		if target.isDead():
 			getCombatScene().combat_camera.shake(25.0, 10.0)
 			if target is ResEnemyCombatant:
 				CombatGlobals.playAnimation(target, 'KO')
@@ -257,14 +253,14 @@ func playDodgeTween(target: ResCombatant):
 	tween.tween_property(target.getSprite(), 'position', target.getSprite().position + Vector2(sprite_push, 0), 0.15)
 	tween.tween_property(target.getSprite(), 'position', Vector2(0, 0), 0.5)
 
-func playHurtTween(target: ResCombatant):
+func playHurtTween(target: ResCombatant, damage):
 	#if getCombatScene().onslaught_mode:
 	#	return
 	randomize()
 	var sprite = target.SCENE.get_node('Sprite2D')
 	var sprite_shaker: SpriteShaker = load("res://scenes/components/SpriteShaker.tscn").instantiate()
 	sprite_shaker.shake_speed = 12.0
-	sprite_shaker.shake_strength = 25.0
+	sprite_shaker.shake_strength = 25.0 + (damage*0.1)
 	sprite.add_child(sprite_shaker)
 #	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_BOUNCE)
 #	var shake = Vector2(8, 0) + Vector2(randf_range(0, 8), 0)

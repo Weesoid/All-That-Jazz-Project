@@ -57,7 +57,7 @@ func _on_focus_entered():
 		icon_animator.play("Focus")
 	
 	
-	if Input.is_action_pressed("ui_select_arrow") and !outside_combat: 
+	if Input.is_action_pressed("ui_select_arrow"): 
 		description_label.show()
 		description_animator.play("ShowDescription")
 
