@@ -41,13 +41,17 @@ func restoreDurability(amount: int):
 func canUse(combatant: ResCombatant):
 	for stat in USE_REQUIREMENT.keys():
 		if USE_REQUIREMENT[stat] > combatant.STAT_VALUES[stat]:
-			print(stat, ' ', USE_REQUIREMENT[stat], ' ? ', combatant.STAT_VALUES[stat])
 			return false
 	
 	return true
 
 func getInformation():
+	var handling_bb = '[img]res://images/sprites/circle_filled.png[/img]'
+	var handling_requirement = ''
 	var out = OverworldGlobals.insertTextureCode(ICON)+' '+NAME.to_upper()+'\n'
+	for i in USE_REQUIREMENT['handling']:
+		handling_requirement += handling_bb
+	out += handling_requirement+'\n'
 	out += DESCRIPTION + '\n\n'
 	out += EFFECT.getRichDescription()
 	return out

@@ -209,7 +209,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	button.expand_icon = true
 	button.icon = item.ICON
 	button.tooltip_text = item.NAME
-	
+	button.description_text = item.getInformation()
 	if item is ResStackItem and show_count:
 		var label = Label.new()
 		label.text = str(item.STACK)
@@ -232,6 +232,8 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		button.theme = preload("res://design/ItemButtonsMandatory.tres")
 	else:
 		button.theme = preload("res://design/ItemButtons.tres")
+	#TEMP
+	
 	
 	return button
 
@@ -637,6 +639,15 @@ func hasCombatDialogue(entity_name: String)-> bool:
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
+
+func getCombatant(entity_name: String, combatant_name: String)-> ResCombatant:
+	for combatant in getCombatantSquad(entity_name):
+		print('Comp ', combatant, ' vs ', combatant_name)
+		if combatant.NAME == combatant_name:
+			print(combatant)
+			return combatant
+	
+	return null
 
 func setCombatantSquad(entity_name: String, combatants: Array[ResCombatant]):
 	get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD = combatants

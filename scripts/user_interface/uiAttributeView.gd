@@ -35,7 +35,6 @@ func _ready():
 
 func _process(_delta):
 	if combatant != null:
-		# Stats
 		hp_text.text = '%s/%s' % [combatant.STAT_VALUES['health'], combatant.BASE_STAT_VALUES['health']]
 		hp_val.value = combatant.STAT_VALUES['health']
 		hp_val.max_value = combatant.BASE_STAT_VALUES['health']
@@ -47,7 +46,6 @@ func _process(_delta):
 			hustle_val.text = str(combatant.STAT_VALUES['hustle'])
 		else:
 			hustle_val.text = 'IMMOBILIZED'
-		# Hidden Stats
 		acc_val.value = combatant.STAT_VALUES['accuracy'] * 100
 		crit_d_val.text = str(combatant.STAT_VALUES['crit_dmg'])
 		crit_val.value = combatant.STAT_VALUES['crit'] * 100
@@ -56,19 +54,29 @@ func _process(_delta):
 			healm_val.text = str(combatant.STAT_VALUES['heal_mult'])
 		else:
 			healm_val.text = 'BROKEN'
-		# Temperments
-#		if combatant is ResPlayerCombatant and combatant.TEMPERMENT != {'primary':'', 'secondary':''}:
-#			p_temp_val.text = combatant.TEMPERMENT['primary'].capitalize()
-#			s_temp_val.text = combatant.TEMPERMENT['secondary'].capitalize()
-#			$Temperments/MarginContainer/VBoxContainer/PrimaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['primary_temperment'])
-#			$Temperments/MarginContainer/VBoxContainer/SecondaryTemperment.tooltip_text = formatModifiers(combatant.STAT_MODIFIERS['secondary_temperment'])
-#		if OverworldGlobals.isPlayerCheating() and view_debug:
-#			debug_status.visible = OverworldGlobals.getPlayer().get_node('DebugComponent').visible
-#			debug_status.text = str(combatant.STAT_MODIFIERS)
 		# Abilities
 		if view_abilities:
 			abilities_label.text = getAbilities(combatant)
 			abilities_label.show()
+	
+		highlightModifiedStats(hp_val, 'health')
+		highlightModifiedStats(brawn_val, 'brawn')
+		highlightModifiedStats(grit_val, 'grit')
+		highlightModifiedStats(handling_val, 'handling')
+		highlightModifiedStats(hustle_val, 'hustle')
+		highlightModifiedStats(acc_val, 'accuracy')
+		highlightModifiedStats(crit_d_val, 'crit_dmg')
+		highlightModifiedStats(crit_val, 'crit')
+		highlightModifiedStats(resist_val, 'resist')
+		highlightModifiedStats(healm_val, 'heal_mult')
+
+func highlightModifiedStats(value_node, stat):
+	if combatant.STAT_VALUES[stat] > combatant.BASE_STAT_VALUES[stat]:
+		value_node.modulate = Color.PALE_GREEN
+	elif combatant.STAT_VALUES[stat] < combatant.BASE_STAT_VALUES[stat]:
+		value_node.modulate = Color.PALE_VIOLET_RED
+	else:
+		value_node.modulate = Color.WHITE
 
 func getAbilities(view_combatant:ResCombatant):
 	var ability_set = '[table=2]'

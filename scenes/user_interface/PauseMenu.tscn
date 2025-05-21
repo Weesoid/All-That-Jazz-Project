@@ -51,6 +51,7 @@ alignment = 1
 [node name="Inventory" parent="Container" instance=ExtResource("2_5ibri")]
 layout_mode = 2
 text = "INVENTORY"
+description_text = "BOOBS"
 
 [node name="Posse" parent="Container" instance=ExtResource("2_5ibri")]
 layout_mode = 2

@@ -1,17 +1,16 @@
 extends Control
 
 @onready var combatant: ResPlayerCombatant
-@onready var points_left_text = $Available
-@onready var points_left = $Available/Points
-@onready var brawn_bonus = $HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Value
-@onready var grit_bonus = $HBoxContainer/VBoxContainer/Grit/HBoxContainer/Value
-@onready var handling_bonus = $HBoxContainer/VBoxContainer/Handling/HBoxContainer/Value
-@onready var reset_brawn = $HBoxContainer/VBoxContainer/Brawn/Reset
-@onready var reset_grit = $HBoxContainer/VBoxContainer/Grit/Reset
-@onready var reset_handling = $HBoxContainer/VBoxContainer/Handling/Reset
-@onready var brawn_up = $HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Up
-@onready var grit_up = $HBoxContainer/VBoxContainer/Grit/HBoxContainer/Up
-@onready var handling_up = $HBoxContainer/VBoxContainer/Handling/HBoxContainer/Up
+@onready var brawn_bonus = $StatAdjustPanel/BrawnVal
+@onready var grit_bonus = $StatAdjustPanel/GritVal
+@onready var handling_bonus = $StatAdjustPanel/HandVal
+@onready var brawn_up = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn/Up
+@onready var grit_up = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit/Up
+@onready var handling_up = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling/Up
+@onready var reset_brawn = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn/Reset
+@onready var reset_grit = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit/Reset
+@onready var reset_handling = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling/Reset
+@onready var animator = $AnimationPlayer
 
 func _ready():
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
@@ -19,14 +18,6 @@ func _ready():
 
 func _process(_delta):
 	if combatant != null:
-		points_left.text = str(combatant.STAT_POINTS)
-		if combatant.STAT_POINTS > 0:
-			points_left_text.show()
-			points_left.add_theme_color_override("font_color", Color.YELLOW)
-		else:
-			points_left_text.hide()
-			points_left.add_theme_color_override("font_color", Color.WHITE)
-			
 		brawn_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['brawn']) * 100)+"%"
 		grit_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['grit']) * 100)+"%"
 		handling_bonus.text = '+%s' % str(1 * combatant.STAT_POINT_ALLOCATIONS['handling'])
@@ -49,17 +40,32 @@ func _process(_delta):
 		else:
 			reset_handling.hide()
 
+func showPanel():
+	show()
+	animator.play("Show")
+
+func hidePanel():
+	animator.play_backwards("Show")
+	await animator.animation_finished
+	hide()
+
 func focus():
 	brawn_up.grab_focus()
 
 func _on_up_brawn_pressed():
 	adjustStat(1, 'brawn', brawn_up)
+	if combatant.STAT_POINTS <= 0:
+		hidePanel()
 
 func _on_up_grit_pressed():
 	adjustStat(1, 'grit', grit_up)
+	if combatant.STAT_POINTS <= 0:
+		hidePanel()
 
 func _on_up_hand_pressed():
 	adjustStat(5, 'handling', handling_up)
+	if combatant.STAT_POINTS <= 0:
+		hidePanel()
 
 func _on_reset_brawn_pressed():
 	resetStat('brawn', 1)

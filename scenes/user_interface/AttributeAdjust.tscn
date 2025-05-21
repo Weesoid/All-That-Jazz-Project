@@ -1,12 +1,72 @@
-[gd_scene load_steps=8 format=3 uid="uid://r4d1xnyarsyl"]
+[gd_scene load_steps=10 format=3 uid="uid://r4d1xnyarsyl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeAdjust.gd" id="1_unumd"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_il4r5"]
-[ext_resource type="AudioStream" uid="uid://bpjr8c8h4tx7y" path="res://audio/sounds/421275__jaszunio15__click_126.ogg" id="3_hucun"]
+[ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtons.tres" id="2_yecu6"]
+[ext_resource type="Theme" uid="uid://b2trsep3ukxi0" path="res://design/RightSideButtonHighlights.tres" id="3_ffloy"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_is7rp"]
-[ext_resource type="AudioStream" uid="uid://b5pn4wlttjtuw" path="res://audio/sounds/421364__jaszunio15__click_154.ogg" id="4_5kj7n"]
-[ext_resource type="AudioStream" uid="uid://n5da8bdbjiaf" path="res://audio/sounds/421300__jaszunio15__click_241.ogg" id="6_a57yd"]
-[ext_resource type="Theme" uid="uid://b2trsep3ukxi0" path="res://design/RightSideButtonHighlights.tres" id="6_yt3dc"]
+[ext_resource type="Theme" uid="uid://bid2xvoeqgilk" path="res://design/DefaultTheme.tres" id="4_2j15m"]
+
+[sub_resource type="Animation" id="Animation_7rwox"]
+resource_name = "Show"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StatAdjustPanel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-96, 0), Vector2(-96, -4)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StatAdjustPanel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nxntp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StatAdjustPanel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-96, -4)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StatAdjustPanel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gosiy"]
+_data = {
+"RESET": SubResource("Animation_nxntp"),
+"Show": SubResource("Animation_7rwox")
+}
 
 [node name="AttributeAdjust" type="Control"]
 layout_mode = 3
@@ -19,145 +79,114 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_unumd")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -44.5
-offset_right = 120.0
-offset_bottom = 44.5
-grow_horizontal = 2
-grow_vertical = 2
+[node name="StatAdjustPanel" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -96.0
+offset_top = -4.0
+offset_right = -56.0
+offset_bottom = 36.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="Brawn" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 2
-split_offset = 100
-dragger_visibility = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Brawn"]
-layout_mode = 2
-
-[node name="Up" parent="HBoxContainer/VBoxContainer/Brawn/HBoxContainer" instance=ExtResource("2_il4r5")]
-custom_minimum_size = Vector2(58, 0)
-layout_mode = 2
-text = "BRAWN"
-focused_entered_sound = ExtResource("3_hucun")
-click_sound = ExtResource("4_5kj7n")
-
-[node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Brawn/HBoxContainer"]
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-theme = ExtResource("3_is7rp")
-theme_override_font_sizes/font_size = 16
-text = "+0%"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Reset" parent="HBoxContainer/VBoxContainer/Brawn" instance=ExtResource("2_il4r5")]
-layout_mode = 2
-theme = ExtResource("6_yt3dc")
-text = "RESET"
-focused_entered_sound = ExtResource("3_hucun")
-click_sound = ExtResource("6_a57yd")
-
-[node name="Grit" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
-layout_mode = 2
-split_offset = 100
-dragger_visibility = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Grit"]
-layout_mode = 2
-
-[node name="Up" parent="HBoxContainer/VBoxContainer/Grit/HBoxContainer" instance=ExtResource("2_il4r5")]
-custom_minimum_size = Vector2(58, 0)
-layout_mode = 2
-focus_neighbor_top = NodePath("../../../Brawn/HBoxContainer/Up")
-text = "GRIT"
-focused_entered_sound = ExtResource("3_hucun")
-click_sound = ExtResource("4_5kj7n")
-
-[node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Grit/HBoxContainer"]
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-theme = ExtResource("3_is7rp")
-theme_override_font_sizes/font_size = 16
-text = "+10%"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Reset" parent="HBoxContainer/VBoxContainer/Grit" instance=ExtResource("2_il4r5")]
-layout_mode = 2
-theme = ExtResource("6_yt3dc")
-text = "RESET"
-focused_entered_sound = ExtResource("3_hucun")
-click_sound = ExtResource("6_a57yd")
-
-[node name="Handling" type="HSplitContainer" parent="HBoxContainer/VBoxContainer"]
-layout_mode = 2
-split_offset = 100
-dragger_visibility = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Handling"]
-layout_mode = 2
-
-[node name="Up" parent="HBoxContainer/VBoxContainer/Handling/HBoxContainer" instance=ExtResource("2_il4r5")]
-layout_mode = 2
-text = "HANDLING"
-focused_entered_sound = ExtResource("3_hucun")
-click_sound = ExtResource("4_5kj7n")
-
-[node name="Value" type="Label" parent="HBoxContainer/VBoxContainer/Handling/HBoxContainer"]
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-theme = ExtResource("3_is7rp")
-theme_override_font_sizes/font_size = 16
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Reset" parent="HBoxContainer/VBoxContainer/Handling" instance=ExtResource("2_il4r5")]
-layout_mode = 2
-theme = ExtResource("6_yt3dc")
-text = "RESET"
-focused_entered_sound = ExtResource("3_hucun")
-click_sound = ExtResource("6_a57yd")
-
-[node name="Available" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -108.0
-offset_top = 35.0
-offset_right = -74.0
-offset_bottom = 48.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("3_is7rp")
-text = "Points"
-vertical_alignment = 1
-
-[node name="Points" type="Label" parent="Available"]
+[node name="PanelContainer" type="PanelContainer" parent="StatAdjustPanel"]
 layout_mode = 0
-offset_left = 34.0
-offset_top = 1.0
-offset_right = 54.0
-offset_bottom = 24.0
-text = "10"
+offset_left = 16.0
+offset_top = -60.0
+offset_right = 176.0
+offset_bottom = 30.0
+theme = ExtResource("2_yecu6")
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Brawn/HBoxContainer/Up" to="." method="_on_up_brawn_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Brawn/Reset" to="." method="_on_reset_brawn_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Grit/HBoxContainer/Up" to="." method="_on_up_grit_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Grit/Reset" to="." method="_on_reset_grit_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Handling/HBoxContainer/Up" to="." method="_on_up_hand_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Handling/Reset" to="." method="_on_reset_handling_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="StatAdjustPanel/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VFlowContainer" type="VBoxContainer" parent="StatAdjustPanel/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Brawn" type="HSplitContainer" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer"]
+layout_mode = 2
+split_offset = 1596
+
+[node name="Up" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn" instance=ExtResource("2_il4r5")]
+layout_mode = 2
+theme = ExtResource("4_2j15m")
+text = "BRAWN"
+
+[node name="Reset" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn" instance=ExtResource("2_il4r5")]
+layout_mode = 2
+theme = ExtResource("3_ffloy")
+text = "X"
+
+[node name="Grit" type="HSplitContainer" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer"]
+layout_mode = 2
+split_offset = 1596
+
+[node name="Up" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit" instance=ExtResource("2_il4r5")]
+layout_mode = 2
+theme = ExtResource("4_2j15m")
+text = "GRIT"
+
+[node name="Reset" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit" instance=ExtResource("2_il4r5")]
+layout_mode = 2
+theme = ExtResource("3_ffloy")
+text = "X"
+
+[node name="Handling" type="HSplitContainer" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer"]
+layout_mode = 2
+split_offset = 1596
+
+[node name="Up" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling" instance=ExtResource("2_il4r5")]
+layout_mode = 2
+theme = ExtResource("4_2j15m")
+text = "HANDLING"
+
+[node name="Reset" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling" instance=ExtResource("2_il4r5")]
+layout_mode = 2
+theme = ExtResource("3_ffloy")
+text = "X"
+
+[node name="BrawnVal" type="Label" parent="StatAdjustPanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = -53.0
+offset_right = 128.0
+offset_bottom = -29.0
+theme = ExtResource("3_is7rp")
+text = "10%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GritVal" type="Label" parent="StatAdjustPanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = -27.0
+offset_right = 128.0
+offset_bottom = -3.0
+theme = ExtResource("3_is7rp")
+text = "10%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HandVal" type="Label" parent="StatAdjustPanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = -1.0
+offset_right = 128.0
+offset_bottom = 23.0
+theme = ExtResource("3_is7rp")
+text = "10%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_gosiy")
+}
+
+[connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn/Up" to="." method="_on_up_brawn_pressed"]
+[connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn/Reset" to="." method="_on_reset_brawn_pressed"]
+[connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit/Up" to="." method="_on_up_grit_pressed"]
+[connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit/Reset" to="." method="_on_reset_grit_pressed"]
+[connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling/Up" to="." method="_on_up_hand_pressed"]
+[connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling/Reset" to="." method="_on_reset_handling_pressed"]

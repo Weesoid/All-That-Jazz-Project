@@ -97,9 +97,9 @@ func _input(_event):
 
 func showDescription():
 	if outside_combat:
-		var side_description = load("res://scenes/user_interface/AbilityButtonSideDescription.tscn").instantiate()
+		var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
 		add_child(side_description)
-		side_description.showDescription(ability)
+		side_description.showDescription(ability.getRichDescription(), Vector2(12,-28))
 	else:
 		description_label.show()
 		description_animator.play("ShowDescription")

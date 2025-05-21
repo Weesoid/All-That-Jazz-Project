@@ -7,9 +7,9 @@ func _enter_tree():
 	get_parent().focus_exited.connect(remove)
 	get_parent().mouse_exited.connect(remove)
 
-func showDescription(ability: ResAbility):
-	global_position = get_parent().global_position+Vector2(-72,-96)
-	text.text = ability.getRichDescription(true)
+func showDescription(show_text: String, cust_offset:Vector2=Vector2.ZERO):
+	global_position = get_parent().global_position+cust_offset
+	text.text = '[center]'+show_text
 	animator.play('Show')
 
 func remove():

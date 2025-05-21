@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cbkybcyyxjsku"]
+[gd_scene load_steps=19 format=3 uid="uid://cbkybcyyxjsku"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="PackedScene" uid="uid://r4d1xnyarsyl" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
@@ -9,9 +9,48 @@
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="9_c41m6"]
+[ext_resource type="Texture2D" uid="uid://b5g6jj3vikya6" path="res://images/sprites/button_stat_up_normal.png" id="9_tpi3e"]
+[ext_resource type="Texture2D" uid="uid://1mlve38nj36f" path="res://images/sprites/button_stat_up_click.png" id="10_4r0fd"]
 [ext_resource type="StyleBox" uid="uid://c00ryk8hhxr7f" path="res://design/PanelHollow.tres" id="10_qod6t"]
+[ext_resource type="Texture2D" uid="uid://cch30a3qwm6ow" path="res://images/sprites/button_stat_up_hover.png" id="11_wmyvu"]
+[ext_resource type="Texture2D" uid="uid://bei8dr7bb8bfq" path="res://images/sprites/icon_rotating_arrows.png" id="14_dhwtn"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ee64e"]
+[sub_resource type="Animation" id="Animation_1kugb"]
+resource_name = "UnspentPoints"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainPanel/Button:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.05, 1.05)]
+}
+
+[sub_resource type="Animation" id="Animation_03mv4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainPanel/Button:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qdvwu"]
+_data = {
+"RESET": SubResource("Animation_03mv4"),
+"UnspentPoints": SubResource("Animation_1kugb")
+}
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qba66"]
 
@@ -35,14 +74,15 @@ script = ExtResource("1_iqbvd")
 [node name="MainPanel" type="Control" parent="."]
 anchors_preset = 0
 offset_left = -128.0
-offset_top = -60.0
+offset_top = -64.0
 offset_right = -88.0
-offset_bottom = -20.0
+offset_bottom = -24.0
+pivot_offset = Vector2(240, 212)
 
 [node name="Borders" type="Panel" parent="MainPanel"]
 layout_mode = 0
 offset_left = 6.0
-offset_top = -114.0
+offset_top = -102.0
 offset_right = 474.0
 offset_bottom = 218.0
 mouse_filter = 1
@@ -81,7 +121,7 @@ alignment = 1
 custom_minimum_size = Vector2(100, 32)
 layout_mode = 2
 theme = ExtResource("5_004gj")
-text = "GEAR"
+text = "NO  GEAR"
 alignment = 1
 
 [node name="SlotA" parent="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms" instance=ExtResource("2_s185n")]
@@ -104,71 +144,15 @@ layout_mode = 2
 theme = ExtResource("5_004gj")
 icon = ExtResource("6_8ov74")
 
-[node name="Panel" type="Panel" parent="MainPanel/Charms"]
-visible = false
-layout_mode = 2
-offset_left = -344.0
-offset_top = 8.0
-offset_right = -184.0
-offset_bottom = 144.0
-theme_override_styles/panel = ExtResource("2_s7p7p")
-
-[node name="SelectCharms" type="ScrollContainer" parent="MainPanel/Charms/Panel"]
-custom_minimum_size = Vector2(7.866, 0)
-layout_mode = 2
-offset_right = 331.0
-offset_bottom = 95.0
-follow_focus = true
-
-[node name="VBoxContainer" type="GridContainer" parent="MainPanel/Charms/Panel/SelectCharms"]
-layout_mode = 2
-columns = 10
-
-[node name="Infomration" type="Control" parent="MainPanel/Charms"]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_left = 192.0
-offset_top = 48.0
-offset_right = 232.0
-offset_bottom = 88.0
-
-[node name="GeneralInfo" type="RichTextLabel" parent="MainPanel/Charms/Infomration"]
-z_index = 1
-layout_mode = 2
-offset_left = -168.0
-offset_top = 136.0
-offset_right = 128.0
-offset_bottom = 158.0
-bbcode_enabled = true
-text = "[img]res://images/sprites/circle_filled.png[/img]"
-fit_content = true
-scroll_active = false
-
-[node name="ItemInfo" type="PanelContainer" parent="MainPanel/Charms/Infomration"]
-layout_mode = 2
-offset_left = -168.0
-offset_top = 64.0
-offset_right = 128.0
-offset_bottom = 136.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_ee64e")
-
-[node name="DescriptionLabel2" type="RichTextLabel" parent="MainPanel/Charms/Infomration/ItemInfo"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]LEFT CLICK TO USE ITEM
-[/center]
-"
-
 [node name="Temperment" type="Control" parent="MainPanel"]
 layout_mode = 2
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 256.0
-offset_top = -80.0
+offset_top = -68.0
 offset_right = 256.0
-offset_bottom = -80.0
+offset_bottom = -68.0
 
 [node name="Panel" type="Panel" parent="MainPanel/Temperment"]
 layout_mode = 0
@@ -316,12 +300,11 @@ offset_right = 200.0
 offset_bottom = 64.0
 
 [node name="AttributeView" parent="MainPanel" instance=ExtResource("5_cqrwt")]
-z_index = 1
 layout_mode = 1
 offset_left = 68.0
-offset_top = 156.0
+offset_top = 168.0
 offset_right = 68.0
-offset_bottom = 156.0
+offset_bottom = 168.0
 pivot_offset = Vector2(176, -192)
 view_hidden = false
 view_abilities = false
@@ -408,9 +391,9 @@ text = "This is the item description. FEAR IT'S GLORY!"
 [node name="Panel" type="Panel" parent="MainPanel"]
 layout_mode = 0
 offset_left = 8.0
-offset_top = -112.0
+offset_top = -100.0
 offset_right = 216.0
-offset_bottom = 72.0
+offset_bottom = 84.0
 theme_override_styles/panel = ExtResource("2_s7p7p")
 
 [node name="Infliction" type="Label" parent="MainPanel/Panel"]
@@ -439,15 +422,32 @@ horizontal_alignment = 1
 [node name="Marker2D" type="Marker2D" parent="MainPanel/Panel"]
 position = Vector2(104, 124)
 
-[node name="PanelContainer" type="Panel" parent="MainPanel"]
-visible = false
+[node name="Button" type="TextureButton" parent="MainPanel"]
 layout_mode = 0
-offset_left = 128.0
-offset_top = 72.0
-offset_right = 344.0
-offset_bottom = 184.0
-mouse_filter = 1
-theme_override_styles/panel = ExtResource("2_s7p7p")
+offset_left = 457.0
+offset_top = 187.0
+offset_right = 489.0
+offset_bottom = 219.0
+pivot_offset = Vector2(16, 15)
+texture_normal = ExtResource("9_tpi3e")
+texture_pressed = ExtResource("10_4r0fd")
+texture_hover = ExtResource("11_wmyvu")
+texture_focused = ExtResource("10_4r0fd")
+
+[node name="Label" type="Label" parent="MainPanel/Button"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 2.0
+offset_right = 61.0
+offset_bottom = 25.0
+theme = ExtResource("8_hty5i")
+text = "25"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MainPanel/Button"]
+root_node = NodePath("../../..")
+libraries = {
+"": SubResource("AnimationLibrary_qdvwu")
+}
 
 [node name="AttributesAdjust" parent="MainPanel" instance=ExtResource("2_f13wv")]
 visible = false
@@ -457,10 +457,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 240.0
-offset_top = 112.0
-offset_right = 240.0
-offset_bottom = 112.0
+offset_left = 400.0
+offset_top = 159.0
+offset_right = 400.0
+offset_bottom = 159.0
 
 [node name="Members" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -470,9 +470,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -90.0
-offset_top = 156.0
+offset_top = 152.0
 offset_right = 142.0
-offset_bottom = 180.0
+offset_bottom = 176.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qba66")
@@ -483,29 +483,23 @@ theme_override_constants/separation = 8
 
 [node name="ChangeFormation" parent="." instance=ExtResource("2_s185n")]
 layout_mode = 1
-offset_left = 320.0
-offset_top = 155.0
-offset_right = 338.0
-offset_bottom = 179.0
+offset_left = 230.0
+offset_top = 152.0
+offset_right = 258.0
+offset_bottom = 180.0
+tooltip_text = "Change formation."
 theme = ExtResource("9_c41m6")
-text = "x"
+icon = ExtResource("14_dhwtn")
+icon_alignment = 1
 
-[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
-[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon" to="." method="_on_weapon_mouse_entered"]
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(280, 128)
+
 [connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon" to="." method="_on_weapon_pressed"]
-[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
-[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="_on_slot_a_mouse_entered"]
-[connection signal="mouse_exited" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="hideItemDescription"]
 [connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA" to="." method="_on_slot_a_pressed"]
-[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
-[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="_on_slot_b_mouse_entered"]
-[connection signal="mouse_exited" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="hideItemDescription"]
 [connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB" to="." method="_on_slot_b_pressed"]
-[connection signal="focus_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
-[connection signal="mouse_entered" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="_on_slot_c_mouse_entered"]
-[connection signal="mouse_exited" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="hideItemDescription"]
 [connection signal="pressed" from="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC" to="." method="_on_slot_c_pressed"]
+[connection signal="pressed" from="MainPanel/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="ChangeFormation" to="." method="_on_change_formation_pressed"]
 
 [editable path="MainPanel/AttributeView"]
-[editable path="MainPanel/AttributesAdjust"]
