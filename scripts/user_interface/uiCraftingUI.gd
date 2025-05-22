@@ -8,10 +8,7 @@ extends Control
 @onready var component_b = $Craftables/CenterContainer/GridContainer/CompB
 @onready var craft_button = $Craftables/CenterContainer/GridContainer/Craft
 @onready var item_select = $ItemSelect
-@onready var item_select_buttons = $ItemSelect/SelectCharms/VBoxContainer
-@onready var item_select_info = $ItemSelect/Infomration
-@onready var item_select_info_main = $ItemSelect/Infomration/ItemInfo/DescriptionLabel2
-@onready var item_select_info_general = $ItemSelect/Infomration/GeneralInfo
+@onready var item_select_buttons = $ItemSelect/MarginContainer/SelectCharms/VBoxContainer
 var all_components: Array[ResItem] = [null, null, null]
 
 func _process(_delta):
@@ -76,7 +73,6 @@ func updateComponentSlot(slot: int):
 				component_b.text = '%s x%s' % [item.NAME, item.STACK]
 
 func showItems(slot_button: Button, slot: int):
-	clearItemDescription()
 	for child in item_select_buttons.get_children():
 		item_select_buttons.remove_child(child)
 		child.queue_free()
@@ -96,8 +92,6 @@ func showItems(slot_button: Button, slot: int):
 			OverworldGlobals.setMenuFocusMode(repair_button, true)
 			slot_button.grab_focus()
 	)
-	cancel_button.connect('mouse_entered', clearItemDescription)
-	cancel_button.connect('focus_entered', clearItemDescription)
 	item_select_buttons.add_child(cancel_button)
 	cancel_button.grab_focus()
 	OverworldGlobals.setMenuFocusMode(base, false)
@@ -106,13 +100,10 @@ func showItems(slot_button: Button, slot: int):
 		if all_components.has(item): continue
 		var button = OverworldGlobals.createItemButton(item)
 		button.pressed.connect(func(): addItemToSlot(item, slot, slot_button))
-		button.mouse_entered.connect(func(): updateItemDescription(item))
-		button.focus_entered.connect(func(): updateItemDescription(item))
 		if item.MANDATORY: button.disabled = true
 		item_select_buttons.add_child(button)
 
 func showRecipes():
-	clearItemDescription()
 	for child in item_select_buttons.get_children():
 		item_select_buttons.remove_child(child)
 		child.queue_free()
@@ -129,13 +120,13 @@ func showRecipes():
 			OverworldGlobals.setMenuFocusMode(base, true)
 			OverworldGlobals.setMenuFocusMode(repair_button, true)
 	)
-	cancel_button.connect('mouse_entered', clearItemDescription)
-	cancel_button.connect('focus_entered', clearItemDescription)
 	item_select_buttons.add_child(cancel_button)
 	cancel_button.grab_focus()
 	InventoryGlobals.CRAFTED.sort()
 	for recipe in InventoryGlobals.CRAFTED:
 		var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+		button.custom_minimum_size = Vector2(32, 32)
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		button.icon = load("res://resources/items/%s.tres" % recipe).ICON
 		button.theme = load("res://design/ItemButtons.tres")
 		button.pressed.connect(func(): useRecipe(recipe))
@@ -196,14 +187,6 @@ func useRecipe(item: String):
 					base.get_child(i).modulate = Color.DARK_GRAY
 				i += 1
 
-func updateItemDescription(item: ResItem):
-	if item == null:
-		return
-	
-	item_select_info.show()
-	item_select_info_general.text = item.getGeneralInfo()
-	item_select_info_main.text = item.getInformation()
-
 func showRecipeDescription(item_name: String):
 	var out = ''
 	for recipe in InventoryGlobals.RECIPES.keys():
@@ -220,13 +203,7 @@ func showRecipeDescription(item_name: String):
 						out += ', '
 					i += 1
 	
-	item_select_info.show()
-	item_select_info_main.text = out
 	#item_select_info_general.text = out
-
-func clearItemDescription():
-	item_select_info_general.text = ''
-	item_select_info_main.text = ''
 
 func _on_repair_pressed():
 	InventoryGlobals.repairAllItems()

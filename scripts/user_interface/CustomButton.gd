@@ -3,6 +3,7 @@ class_name CustomButton
 
 @onready var audio_player = $AudioStreamPlayer
 @export var description_text: String
+@export var description_offset: Vector2= Vector2.ZERO
 @export var focused_entered_sound: AudioStream = preload("res://audio/sounds/421465__jaszunio15__click_5.ogg")
 @export var click_sound: AudioStream = preload("res://audio/sounds/421469__jaszunio15__click_149.ogg")
 
@@ -14,6 +15,9 @@ func _on_focus_entered():
 	audio_player.stop()
 	audio_player.stream = focused_entered_sound
 	audio_player.play()
+	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
+		print('blud')
+		showDescription()
 
 func _on_pressed():
 	if click_sound == null: return
@@ -29,8 +33,12 @@ func _on_mouse_entered():
 	audio_player.stream = focused_entered_sound
 	audio_player.play()
 	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
-		grab_focus()
 		showDescription()
+	grab_focus()
+
+func _on_mouse_exited():
+	if has_node('ButtonDescription'):
+		get_node('ButtonDescription').remove()
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_select_arrow") and has_focus() and description_text != '':
@@ -39,4 +47,7 @@ func _input(_event):
 func showDescription():
 	var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
 	add_child(side_description)
-	side_description.showDescription(description_text)
+	side_description.showDescription(description_text, description_offset)
+
+
+

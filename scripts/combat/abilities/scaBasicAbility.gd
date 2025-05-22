@@ -15,6 +15,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		if effect is ResDamageEffect:
 			await doAttackAnimations(caster, target, ability, effect)
 		elif effect is ResCustomDamageEffect:
+			if effect.cast_animation != '': await caster.doAnimation(effect.cast_animation)
 			await applyEffects(caster, target, ability)
 		elif effect is ResApplyStatusEffect:
 			await caster.doAnimation(effect.cast_animation)
@@ -58,6 +59,8 @@ static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
 	if ability.current_effect == null:
 		ability.current_effect = ability.BASIC_EFFECTS[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
 	
+	if target is Array and ability.current_effect.is_combo_effect and ability.current_effect.effect_only_combo_targets:
+		target = target.filter(func(combatant): return combatant.hasStatusEffect('Combo'))
 	if target is Array:
 		for t in target: 
 			applyToTarget(caster, t, ability)
@@ -103,10 +106,12 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			
 		if checkDamageCombo(target.combatant_resource, ability.current_effect,'',false) and target.combatant_resource.hasStatusEffect('Combo') and !checkDamageCombo(target.combatant_resource, ability.current_effect, 'do_not_return_pos', false):
 			CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
-			
 			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
 	
 	elif ability.current_effect is ResCustomDamageEffect:
+		var bonus_stats = {}
+		if ability.current_effect.canCombo(target, 'bonus_stats') or !ability.current_effect.has_combo_effects:
+			bonus_stats = ability.current_effect.bonus_stats
 		if !ability.current_effect.use_caster:
 			caster = null
 		else:
@@ -120,9 +125,16 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			ability.current_effect.message, 
 			ability.current_effect.trigger_on_hits, 
 			'', 
-			ability.current_effect.indicator_bb) and ability.current_effect.apply_status != null:
-			
-			CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status)
+			ability.current_effect.indicator_bb,
+			bonus_stats,
+			ability.current_effect.use_damage_formula
+			) and ability.current_effect.apply_status != null:
+			if ability.current_effect.apply_status != null and (checkDamageCombo(target, ability.current_effect, 'status_effect') or ability.current_effect.has_combo_effects):
+				CombatGlobals.addStatusEffect(target, ability.current_effect.apply_status)
+	
+		if checkDamageCombo(target, ability.current_effect,'',false) and target.hasStatusEffect('Combo'):
+			CombatGlobals.manual_call_indicator_bb.emit(target, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
+			target.getStatusEffect('Combo').removeStatusEffect()
 	
 	elif ability.current_effect is ResApplyStatusEffect:
 		if ability.current_effect.target == ability.current_effect.Target.TARGET:
@@ -168,9 +180,15 @@ static func returnToPosition(damage_effect: ResDamageEffect, caster: CombatantSc
 	if damage_effect.do_not_return_pos:
 		damage_effect.do_not_return_pos = false
 
-static func canDoCombo(effect: ResAbilityEffect, target: CombatantScene)-> bool:
-	return effect.is_combo_effect and target.combatant_resource.hasStatusEffect('Combo')
+static func canDoCombo(effect: ResAbilityEffect, target)-> bool:
+	if target is CombatantScene:
+		return effect.is_combo_effect and target.combatant_resource.hasStatusEffect('Combo')
+	elif target is  Array:
+		target = target.filter(func(combatant): return combatant.hasStatusEffect('Combo'))
+		return effect.is_combo_effect and target.size() > 0
+	
+	return false
 
 # Returns true if target meets combo requirements
-static func checkDamageCombo(target: ResCombatant, effect: ResDamageEffect, check_property: String='', allow_no_combo:bool=true)-> bool:
+static func checkDamageCombo(target: ResCombatant, effect, check_property: String='', allow_no_combo:bool=true)-> bool:
 	return (effect.has_combo_effects and effect.canCombo(target, check_property)) or (!effect.has_combo_effects and allow_no_combo)

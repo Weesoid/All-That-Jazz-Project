@@ -41,7 +41,8 @@ func getMusic()-> int:
 	var faction_count = {}
 	for faction in range(CombatGlobals.Enemy_Factions.size()):
 		faction_count[faction] = 0
-	for combatant in COMBATANT_SQUAD:
+	var combatants = COMBATANT_SQUAD.filter(func(combatant): return combatant != null)
+	for combatant in combatants:
 		faction_count[combatant.FACTION] += 1
 	
 	return faction_count.find_key(faction_count.values().max())

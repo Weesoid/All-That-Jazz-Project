@@ -204,12 +204,14 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	var button: CustomButton = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
 	button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
 	button.click_sound = preload("res://audio/sounds/421461__jaszunio15__click_46.ogg")
-	button.custom_minimum_size.x = 28
-	button.custom_minimum_size.y = 28
-	button.expand_icon = true
+	button.custom_minimum_size.x = 32
+	button.custom_minimum_size.y = 32
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	#button.expand_icon = true
 	button.icon = item.ICON
 	button.tooltip_text = item.NAME
 	button.description_text = item.getInformation()
+	button.description_offset = Vector2(0, -28)
 	if item is ResStackItem and show_count:
 		var label = Label.new()
 		label.text = str(item.STACK)
@@ -568,12 +570,12 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		combat_scene.combat_event = getCurrentMap().EVENTS['combat_event']
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
-	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
 	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)
 	combat_scene.do_reinforcements = getCombatantSquadComponent(entity_name).DO_REINFORCEMENTS
 	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
 	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
 	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
+	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
 	await combat_bubble.animator.animation_finished
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)

@@ -40,7 +40,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	combatant_resource.stopBreatheTween()
 	
 	if script != null: hit_script = script
-	if animation == 'Cast_Ranged' and CombatGlobals.inCombat():
+	if animation == 'Cast_Ranged' and data.has('target') and CombatGlobals.inCombat():
 		setProjectileTarget(data['target'], data['frame_time'], data['ability'])
 	if data.keys().has('anim_speed'):
 		animator.play(animation, -1, data['anim_speed'])

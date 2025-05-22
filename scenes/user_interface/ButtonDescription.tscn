@@ -40,7 +40,7 @@ _data = {
 "Show": SubResource("Animation_kso1y")
 }
 
-[node name="CustomButton" type="Control"]
+[node name="ButtonDescription" type="Control"]
 top_level = true
 z_index = 999
 layout_mode = 3

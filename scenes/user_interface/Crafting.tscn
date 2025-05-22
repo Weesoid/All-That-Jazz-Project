@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c36nhmt43udrv"]
+[gd_scene load_steps=8 format=3 uid="uid://c36nhmt43udrv"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCraftingUI.gd" id="1_y6pgg"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_3ycts"]
@@ -6,14 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://c0g8aj1yokb81" path="res://audio/sounds/580813__silverillusionist__craft-item-3.ogg" id="3_iry6e"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="3_m17c3"]
 [ext_resource type="AudioStream" uid="uid://bngusvjprdqlt" path="res://audio/sounds/580812__silverillusionist__craft-item-2.ogg" id="5_0hxak"]
-[ext_resource type="StyleBox" uid="uid://dp2nq8lcxrsfc" path="res://design/PanelNoTop.tres" id="7_xwk43"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6eudg"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_color = Color(1, 1, 1, 1)
+[ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="6_yxexq"]
 
 [node name="uiCrafting" type="Control"]
 layout_mode = 3
@@ -24,27 +17,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 script = ExtResource("1_y6pgg")
-
-[node name="Repair" parent="." instance=ExtResource("2_3ycts")]
-layout_mode = 2
-offset_left = 124.0
-offset_top = -90.0
-offset_right = 214.0
-offset_bottom = -68.0
-text = "Repair Weapons"
-click_sound = ExtResource("3_iry6e")
-
-[node name="Recipes" parent="." instance=ExtResource("2_3ycts")]
-layout_mode = 2
-offset_left = 124.0
-offset_top = -66.0
-offset_right = 173.0
-offset_bottom = -44.0
-text = "Recipes"
-click_sound = ExtResource("3_iry6e")
 
 [node name="Craftables" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -97,61 +70,48 @@ theme = ExtResource("2_fqj8l")
 text = "CRAFT"
 click_sound = ExtResource("5_0hxak")
 
-[node name="ItemSelect" type="Panel" parent="."]
+[node name="Repair" parent="." instance=ExtResource("2_3ycts")]
+layout_mode = 2
+offset_left = -120.0
+offset_top = 89.0
+offset_right = -50.0
+offset_bottom = 111.0
+theme = ExtResource("6_yxexq")
+text = "REPAIR GEAR"
+click_sound = ExtResource("3_iry6e")
+
+[node name="Recipes" parent="." instance=ExtResource("2_3ycts")]
+layout_mode = 2
+offset_left = -40.0
+offset_top = 89.0
+offset_right = 9.0
+offset_bottom = 111.0
+theme = ExtResource("6_yxexq")
+text = "RECIPES"
+click_sound = ExtResource("3_iry6e")
+
+[node name="ItemSelect" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 0
-offset_left = -168.0
-offset_top = -132.0
-offset_right = 168.0
-offset_bottom = 20.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_6eudg")
+offset_left = -160.0
+offset_top = -114.0
+offset_right = 160.0
+offset_bottom = 116.0
 
-[node name="SelectCharms" type="ScrollContainer" parent="ItemSelect"]
+[node name="MarginContainer" type="MarginContainer" parent="ItemSelect"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="SelectCharms" type="ScrollContainer" parent="ItemSelect/MarginContainer"]
 custom_minimum_size = Vector2(7.866, 0)
 layout_mode = 2
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 328.0
-offset_bottom = 96.0
 
-[node name="VBoxContainer" type="GridContainer" parent="ItemSelect/SelectCharms"]
+[node name="VBoxContainer" type="GridContainer" parent="ItemSelect/MarginContainer/SelectCharms"]
 layout_mode = 2
-columns = 10
-
-[node name="Infomration" type="Control" parent="ItemSelect"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 168.0
-offset_top = 88.0
-offset_right = 208.0
-offset_bottom = 128.0
-
-[node name="GeneralInfo" type="RichTextLabel" parent="ItemSelect/Infomration"]
-z_index = 1
-layout_mode = 2
-offset_left = -168.0
-offset_top = 132.0
-offset_right = 168.0
-offset_bottom = 154.0
-bbcode_enabled = true
-text = "[img]res://images/sprites/circle_filled.png[/img]"
-fit_content = true
-scroll_active = false
-
-[node name="ItemInfo" type="PanelContainer" parent="ItemSelect/Infomration"]
-layout_mode = 2
-offset_left = -168.0
-offset_top = 64.0
-offset_right = 168.0
-offset_bottom = 164.0
-theme_override_styles/panel = ExtResource("7_xwk43")
-
-[node name="DescriptionLabel2" type="RichTextLabel" parent="ItemSelect/Infomration/ItemInfo"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]LEFT CLICK TO USE ITEM
-[/center]
-"
+columns = 8
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="pressed" from="Repair" to="." method="_on_repair_pressed"]

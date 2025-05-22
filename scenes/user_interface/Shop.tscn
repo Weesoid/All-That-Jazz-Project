@@ -1,28 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cnl74ivmm3b70"]
+[gd_scene load_steps=5 format=3 uid="uid://cnl74ivmm3b70"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiShop.gd" id="1_fvlk8"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_n4cm8"]
+[ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="3_4lwis"]
 [ext_resource type="PackedScene" uid="uid://cshiwdcttktbe" path="res://scenes/user_interface/CurrencyView.tscn" id="3_xf0c8"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eeeaa"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbvtv"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_km5yn"]
-bg_color = Color(0, 0, 0, 1)
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
 
 [node name="Shop" type="Control"]
 layout_mode = 3
@@ -44,13 +25,12 @@ anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -144.0
-offset_top = -144.0
-offset_right = 136.0
-offset_bottom = 24.0
+offset_left = -160.0
+offset_top = -100.0
+offset_right = 152.0
+offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_eeeaa")
 
 [node name="MarginContainer" type="MarginContainer" parent="Wares"]
 layout_mode = 2
@@ -67,60 +47,30 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 columns = 8
 
-[node name="DescriptionPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -144.0
-offset_top = 24.0
-offset_right = 72.0
-offset_bottom = 120.0
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_lbvtv")
-
-[node name="Label" type="RichTextLabel" parent="DescriptionPanel"]
-layout_mode = 2
-bbcode_enabled = true
-
-[node name="StatsPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 62.0
-offset_top = 24.0
-offset_right = 136.0
-offset_bottom = 120.0
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_km5yn")
-
-[node name="Label" type="RichTextLabel" parent="StatsPanel"]
-layout_mode = 2
-bbcode_enabled = true
-
 [node name="ToggleMode" parent="." instance=ExtResource("2_n4cm8")]
 layout_mode = 1
-offset_left = 136.0
-offset_top = -142.0
-offset_right = 216.0
-offset_bottom = -120.0
+offset_left = -152.0
+offset_top = 74.0
+offset_right = -104.0
+offset_bottom = 98.0
+theme = ExtResource("3_4lwis")
 text = "Barter"
 
 [node name="Barter" parent="." instance=ExtResource("2_n4cm8")]
 layout_mode = 1
-offset_left = 136.0
-offset_top = -112.0
-offset_right = 232.0
-offset_bottom = -90.0
+offset_left = -96.0
+offset_top = 74.0
+offset_right = 0.0
+offset_bottom = 98.0
+theme = ExtResource("3_4lwis")
 text = "Sell Barter Items"
 
 [node name="Currency" parent="." instance=ExtResource("3_xf0c8")]
 layout_mode = 0
-offset_left = -126.0
-offset_top = -142.0
-offset_right = -70.0
-offset_bottom = -119.0
+offset_left = -142.0
+offset_top = -96.0
+offset_right = -86.0
+offset_bottom = -73.0
 
 [connection signal="pressed" from="ToggleMode" to="." method="_on_toggle_mode_pressed"]
 [connection signal="pressed" from="Barter" to="." method="_on_barter_pressed"]

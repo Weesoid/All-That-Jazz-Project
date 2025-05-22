@@ -66,17 +66,19 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		return true
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false, sound:String='', indicator_bb_code:String='')-> bool:
+func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', bonus_stats:Dictionary={}, use_damage_formula:bool=false)-> bool:
 	if !target is ResCombatant:
 		target = target.combatant_resource
-	
-	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']):
+	damage += getBonusStat(bonus_stats, 'damage')
+	if use_damage_formula:
+		damage = useDamageFormula(target, damage)
+	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy')):
 		doDodgeEffects(caster, target, damage)
 		return false
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
-	if can_crit and ((caster != null and randomRoll(caster.STAT_VALUES['crit'])) or (crit_chance != -1.0 and randomRoll(crit_chance))):
-		damage = doCritEffects(damage, caster)
+	if can_crit and ((caster != null and randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit'))) or (crit_chance != -1.0 and randomRoll(crit_chance+getBonusStat(bonus_stats, 'crit')))):
+		damage = doCritEffects(damage, caster, 2.0+getBonusStat(bonus_stats,'crit_dmg'), true)
 		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
 	if message != null:
 		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')

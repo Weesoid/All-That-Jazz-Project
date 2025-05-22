@@ -1,8 +1,6 @@
 extends Control
 
 @onready var wares = $Wares/MarginContainer/Scroll/VBoxContainer
-@onready var description = $DescriptionPanel/Label
-@onready var stats = $StatsPanel/Label
 @onready var toggle_button = $ToggleMode
 @onready var sell_barter_button = $Barter
 @onready var currency = $Currency
@@ -15,7 +13,6 @@ var open_description: String
 
 func _ready():
 	loadWares()
-	resetDescription()
 
 func loadWares(array=wares_array, focus_item:ResItem=null):
 	sell_barter_button.disabled = !hasBarterItems()
@@ -88,14 +85,6 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			func():
 				setButtonFunction(item)
 		)
-		button.mouse_entered.connect(
-			func updateDescription():
-				description.text = item.getInformation()
-		)
-		button.focus_entered.connect(
-			func updateDescription():
-				description.text = item.getInformation()
-		)
 		#button.mouse_exited.connect(func(): resetDescription())
 		#button.focus_exited.connect(func(): resetDescription())
 		wares.add_child(button)
@@ -112,19 +101,6 @@ func clearButtons():
 	for child in wares.get_children():
 		wares.remove_child(child)
 		child.queue_free()
-
-func resetDescription():
-	description.text = open_description
-	stats.text = ''
-	if buy_modifier < 1.0:
-		stats.text += '[color=green]Discounted prices[/color]\n\n'
-	elif buy_modifier > 1.0:
-		stats.text += '[color=orange]Increased prices[/color]\n\n'
-	
-	if sell_modifier > 0.5:
-		stats.text += '[color=green]Increased sell value[/color]\n\n'
-	elif sell_modifier < 0.5:
-		stats.text += '[color=orange]Decreased sell value[/color]\n\n'
 
 func loadSlider(item)-> int:
 	if !item is ResStackItem:
