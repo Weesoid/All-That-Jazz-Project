@@ -25,6 +25,8 @@ enum PreferredPosition {
 var SPAWN_ON_DEATH: ResCombatant
 
 func initializeCombatant():
+	if AI_PACKAGE == null: 
+		AI_PACKAGE = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	SCENE = PACKED_SCENE.instantiate()
 	SCENE.combatant_resource = self
 	applyStatusEffects()
@@ -44,7 +46,12 @@ func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 func getExperience():
 	if BASE_STAT_VALUES.is_empty(): 
 		BASE_STAT_VALUES = STAT_VALUES
-	var gain = (BASE_STAT_VALUES["health"] * 0.2) + (BASE_STAT_VALUES["brawn"] * 100) + (BASE_STAT_VALUES["grit"] * 100) + BASE_STAT_VALUES["handling"] + abs(BASE_STAT_VALUES["hustle"] * 2) + ((BASE_STAT_VALUES["crit"] * BASE_STAT_VALUES["crit_dmg"]) * 100) + (BASE_STAT_VALUES["heal_mult"] * 2) + (BASE_STAT_VALUES["resist"] * 100)
+	var hustle
+	if BASE_STAT_VALUES['hustle'] < 0:
+		hustle = 0
+	else:
+		hustle = BASE_STAT_VALUES['hustle']*2
+	var gain = (BASE_STAT_VALUES["health"] * 0.2) + (BASE_STAT_VALUES["brawn"] * 100) + (BASE_STAT_VALUES["grit"] * 100) + BASE_STAT_VALUES["handling"] + hustle + ((BASE_STAT_VALUES["crit"] * BASE_STAT_VALUES["crit_dmg"]) * 100) + (BASE_STAT_VALUES["heal_mult"] * 1.5) + (BASE_STAT_VALUES["resist"] * 100)
 	#CombatGlobals.manual_call_indicator.emit(self, '+%s Morale' % ceil(gain))
 	return ceil(gain)
 

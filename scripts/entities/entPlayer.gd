@@ -163,6 +163,8 @@ func _unhandled_input(_event: InputEvent):
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
+#	if Input.is_action_just_pressed('ui_accept'):
+#		PlayerGlobals.addCombatantTemperment(OverworldGlobals.getCombatantSquad('Player').pick_random())
 
 func isMobile():
 	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0

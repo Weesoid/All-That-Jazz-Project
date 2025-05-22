@@ -16,16 +16,9 @@ damage = 999
 can_miss = true
 can_crit = true
 bonus_stats = {}
-move = 0
-move_count = 1
 return_pos = true
 indicator_bb = ""
-has_combo_effects = false
-combo_properties = {
-"bonus_stats": false,
-"move": false,
-"return_pos": true
-}
+plant_self_on_combo = false
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0

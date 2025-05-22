@@ -18,17 +18,9 @@ damage = 99
 can_miss = true
 can_crit = true
 bonus_stats = {}
-move = 1
-move_count = 4
 return_pos = true
 indicator_bb = ""
-has_combo_effects = false
-combo_properties = {
-"bonus_stats": false,
-"do_not_return_pos": false,
-"move": false,
-"status_effect": false
-}
+plant_self_on_combo = false
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0

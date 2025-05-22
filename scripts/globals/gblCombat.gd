@@ -55,7 +55,7 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 	if !target is ResCombatant:
 		target = target.combatant_resource
 	
-	if randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy')) and can_miss:
+	if randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy', target)) and can_miss:
 		damageTarget(caster, target, base_damage, can_crit, sound, indicator_bb_code, bonus_stats)
 		return true
 	elif can_miss:
@@ -66,45 +66,88 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		return true
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, message = null, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', bonus_stats:Dictionary={}, use_damage_formula:bool=false)-> bool:
+func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, _message = null, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', bonus_stats:Dictionary={}, use_damage_formula:bool=false)-> bool:
 	if !target is ResCombatant:
 		target = target.combatant_resource
-	damage += getBonusStat(bonus_stats, 'damage')
+	damage += getBonusStat(bonus_stats, 'damage', target)
 	if use_damage_formula:
 		damage = useDamageFormula(target, damage)
-	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy')):
+	if can_miss and !randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy', target)):
 		doDodgeEffects(caster, target, damage)
 		return false
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
-	if can_crit and ((caster != null and randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit'))) or (crit_chance != -1.0 and randomRoll(crit_chance+getBonusStat(bonus_stats, 'crit')))):
-		damage = doCritEffects(damage, caster, 2.0+getBonusStat(bonus_stats,'crit_dmg'), true)
+	if can_crit and ((caster != null and randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit', target))) or (crit_chance != -1.0 and randomRoll(crit_chance+getBonusStat(bonus_stats, 'crit', target)))):
+		damage = doCritEffects(damage, caster, 2.0+getBonusStat(bonus_stats,'crit_dmg', target), true)
 		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
-	if message != null:
-		manual_call_indicator.emit(target, "%s %s" % [int(damage), message], 'Show')
 	target.STAT_VALUES['health'] -= int(damage)
-	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits)
+	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits, bonus_stats)
 	
 	return true
 
 ## Basic damage calculations
 func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary = {}):
-	base_damage += getBonusStat(bonus_stats, 'damage')
-	base_damage += (caster.STAT_VALUES['brawn']+getBonusStat(bonus_stats, 'brawn')) * base_damage
+	base_damage += getBonusStat(bonus_stats, 'damage', target)
+	base_damage += (caster.STAT_VALUES['brawn']+getBonusStat(bonus_stats, 'brawn', target)) * base_damage
 	base_damage = useDamageFormula(target, base_damage)
 	base_damage = valueVariate(base_damage, 0.15)
-	if randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit')) and can_crit:
-		base_damage = doCritEffects(base_damage, caster, getBonusStat(bonus_stats,'crit_dmg'),true)
+	if randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit', target)) and can_crit:
+		base_damage = doCritEffects(base_damage, caster, getBonusStat(bonus_stats,'crit_dmg', target),true)
 		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
-	doPostDamageEffects(caster, target, base_damage, sound, indicator_bb_code)
+	doPostDamageEffects(caster, target, base_damage, sound, indicator_bb_code, true, bonus_stats)
 
-func getBonusStat(bonus_stats: Dictionary, key: String):
-	if bonus_stats.has(key):
-		return bonus_stats[key]
+func getBonusStat(bonus_stats: Dictionary, key: String, target: ResCombatant):
+	if hasBonusStat(bonus_stats, key) and checkBonusStatConditions(bonus_stats, key, target):
+		return getBonusStatValue(bonus_stats, key)
 	else:
 		return 0
+
+func hasBonusStat(bonus_stats: Dictionary, key: String)-> bool:
+	var out = []
+	for stat in bonus_stats.keys():
+		out.append(stat.split('/')[0])
+	
+	return out.has(key)
+
+func getBonusStatValue(bonus_stats: Dictionary, key: String):
+	for stat in bonus_stats.keys():
+		if stat.split('/')[0] == key: 
+			if bonus_stats[stat] is String and bonus_stats[stat].is_valid_float():
+				return float(bonus_stats[stat])
+			elif bonus_stats[stat] is String and bonus_stats[stat].is_valid_int():
+				return int(bonus_stats[stat])
+			else:
+				return bonus_stats[stat]
+
+func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResCombatant):
+	var base_bonus_stats = []
+	var conditions: Array
+	for stat in bonus_stats.keys():
+		if key == stat.split('/')[0] and (stat.split('/').size() > 1):
+			conditions = stat.split('/')
+			conditions.remove_at(0)
+			break
+		elif key == stat.split('/')[0]:
+			return true
+	
+	for condition in conditions:
+		var condition_data = condition.split(':')
+		match condition_data[0]:
+			's': # ex. s:bleed
+				return target.hasStatusEffect(condition_data[1]) 
+			'hp': # ex. hp:>:0.5 ; hp:<:0.45
+				if condition_data[1] == '>':
+					return target.STAT_VALUES['health'] >= float(condition_data[2])*target.getMaxHealth()
+				if condition_data[1] == '<':
+					return target.STAT_VALUES['health'] <= float(condition_data[2])*target.getMaxHealth()
+			'combo': # ex crit/combo
+				if target.hasStatusEffect('Combo'):
+					target.getStatusEffect('Combo').removeStatusEffect()
+					return true
+			'combo!': # ex. crit/combo!
+				return target.hasStatusEffect('Combo')
 
 func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
 	manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
@@ -123,7 +166,7 @@ func doCritEffects(base_damage, caster: ResCombatant, crit_damage:float=2.0, sta
 	OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
 	return base_damage
 
-func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sound: String, indicator_bb_code: String='', trigger_on_hits: bool=true, ):
+func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sound: String, indicator_bb_code: String='', trigger_on_hits: bool=true, bonus_stats: Dictionary={}):
 	var message = str(int(damage))
 	message = indicator_bb_code+'[outline_size=8] '+message
 	if damage > 0:
@@ -140,12 +183,34 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	playHurtAnimation(target, damage, sound)
+	
+	# The wall of post damage effects
+	if hasBonusStat(bonus_stats, 'execute') and target.STAT_VALUES['health'] <= getBonusStat(bonus_stats, 'execute', target)*target.getMaxHealth():
+		OverworldGlobals.showQuickAnimation("res://scenes/animations/SkullKill.tscn", target.SCENE.global_position)
+		target.STAT_VALUES['health'] -= 999
+		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
+	if checkSpecialStat('status_effect', bonus_stats, target):
+		var status_effects = getBonusStatValue(bonus_stats, 'status_effect').split(',')
+		for effect in status_effects:
+			CombatGlobals.addStatusEffect(target, effect)
+	if checkSpecialStat('move', bonus_stats, target):
+		var move_data = getBonusStatValue(bonus_stats, 'move').split(',')
+		var direction
+		match move_data[0]:
+			'f': direction = 1
+			'b': direction = -1
+		CombatGlobals.getCombatScene().changeCombatantPosition(target, direction,false,int(move_data[1]))
+#	if checkSpecialStat('plant', bonus_stats, target):
+#
 	if target.isDead():
 		OverworldGlobals.freezeFrame()
 #		if target is ResEnemyCombatant:
 #			getCombatScene().fade_bars_animator.play('KOEnemy')
 #		else:
 #			getCombatScene().fade_bars_animator.play('KOAlly')
+
+func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
+	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 	if target is ResPlayerCombatant and target.SCENE.blocking:

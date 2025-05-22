@@ -294,6 +294,22 @@ func isFollowerActive(follower_combatant_name: String):
 func loadSquad():
 	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.TEAM_FORMATION)
 
+func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/random'):
+	if combatant.TEMPERMENT['secondary'].size() >= 6:
+		var removed_temperment = combatant.TEMPERMENT['secondary'][0]
+		combatant.TEMPERMENT['secondary'].remove_at(0)
+		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] lost [color=yellow]%s[/color]' % [combatant, removed_temperment.capitalize()])
+	
+	if temperment == '/random':
+		randomize()
+		var random_temperment = SECONDARY_TEMPERMENTS.keys().filter(func(key): return !combatant.TEMPERMENT['secondary'].has(key)).pick_random()
+		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
+		combatant.TEMPERMENT['secondary'].append(random_temperment)
+	else:
+		combatant.TEMPERMENT['secondary'].append(temperment)
+	
+	combatant.applyTemperments(true)
+
 func setFollowersMotion(enable:bool):
 	for follower in FOLLOWERS:
 		if !is_instance_valid(follower):
@@ -345,8 +361,6 @@ func randomMapUnclear(count:int, ignore_map:String=''):
 			CLEARED_MAPS[map]['events'] = randomizeMapEvents()
 		valid_maps.erase(map)
 
-
-
 func clearMaps():
 	for map in CLEARED_MAPS.keys():
 		var location = load(map).instantiate()
@@ -390,6 +404,8 @@ func randomizeMapEvents():
 			chance_budget = 0
 	
 	return events
+
+
 
 func addCommaToNum(value: int=CURRENCY) -> String:
 	var str_value: String = str(value)

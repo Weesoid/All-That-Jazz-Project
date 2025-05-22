@@ -135,14 +135,14 @@ func getMaxHealth():
 
 func getStatusEffect(stat_name: String)-> ResStatusEffect:
 	for status in STATUS_EFFECTS:
-		if status.NAME == stat_name:
+		if status.NAME.to_lower() == stat_name.to_lower():
 			return status
 	
 	return null
 
 func hasStatusEffect(stat_name: String)-> bool:
 	for status in STATUS_EFFECTS:
-		if status.NAME == stat_name:
+		if status.NAME.to_lower() == stat_name.to_lower():
 			return true
 	
 	return false

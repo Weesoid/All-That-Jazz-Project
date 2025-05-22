@@ -1,3 +1,4 @@
+# A more general Damage effect. Does not need a caster. Best for independent damage or AoE attacks.
 extends ResAbilityEffect
 class_name ResCustomDamageEffect
 
@@ -11,15 +12,5 @@ class_name ResCustomDamageEffect
 @export var bonus_stats: Dictionary
 @export var can_miss: bool = false
 @export var trigger_on_hits = false
-@export var message: = ''
-@export var apply_status: ResStatusEffect
+@export var message: String = ''
 @export var indicator_bb:  String = ''
-@export var has_combo_effects: bool 
-@export var combo_properties: Dictionary = {
-	'status_effect': false,
-	'bonus_stats': false
-}
-@export var effect_only_combo_targets: bool
-
-func canCombo(target: ResCombatant, check_property:String='')-> bool:
-	return has_combo_effects and target.hasStatusEffect('Combo') and (check_property == '' or combo_properties[check_property])

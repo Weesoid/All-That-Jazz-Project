@@ -1,6 +1,5 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.APPLY_ONCE and !target.hasStatusEffect('Deathmark'):
-		OverworldGlobals.showQuickAnimation("res://scenes/animations/SkullKill.tscn", target.SCENE.global_position)
 		target.SCENE.moveTo(target.SCENE.get_parent(), 0.25, Vector2(0,0), true)
 		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
 		target.SCENE.playIdle('KO')
@@ -19,7 +18,6 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
-	print(target,'| FL= ', getFadedLevel(target))
 	if getFadedLevel(target) == 0:
 		target.LINGERING_STATUS_EFFECTS.append('Faded I')
 	elif getFadedLevel(target) < 4:

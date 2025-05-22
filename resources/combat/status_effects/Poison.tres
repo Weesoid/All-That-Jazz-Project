@@ -20,9 +20,14 @@ MAX_DURATION = 12
 EXTEND_DURATION = 3
 APPLY_EXTEND_DURATION = true
 MAX_RANK = 10
+TICK_ON_APPLY = false
 TICK_PER_TURN = false
 DO_TICKS = true
 RESISTABLE = true
 PERMANENT = false
 LINGERING = true
 PERSIST_ON_DEAD = false
+SOUNDS = {
+"apply": "",
+"expire": ""
+}

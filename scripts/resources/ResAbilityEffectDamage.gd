@@ -1,3 +1,4 @@
+## Basically the "Attack" action. Requires a caster to execute.
 extends ResAbilityEffect
 class_name ResDamageEffect
 
@@ -15,22 +16,18 @@ enum DamageType {
 @export var damage := 0
 @export var can_miss: bool = true
 @export var can_crit: bool = true
+## Additional stats to be applied on usage.
+## Conditions:
+## 		hp = Health threshold ex. crit/hp:>:0.5 or crit/hp:<:0.75
+## 		s = Status effect ex. crit/s:bleed
+##		combo =  Only execute if target has combo token. Combo token is consumed. ex. crit/combo
+##			combo! = The same as combo but it will not consume the combo token. ex. crit/combo!
+## 	Special stats:
+## 		execute = Execute combatant on a certain health threshold ex. "execute": 0.5 (executes at 50% health)
+##		status_effect = Apply status effect ex. "status_effect": "Poison" (Must use file sys name) ("Poison,Riposte" will add an array of status effects)
+##		move = Move the target combatant. e.g. "move": "f,1" (Means forward one space) (b,2 would mean backward 2 spaces)
 @export var bonus_stats: Dictionary
-@export var apply_status: ResStatusEffect
-@export var move: int = 0
-@export var move_count: int = 1
 @export var return_pos: bool = true
 @export var indicator_bb:  String = ''
-## Unlike "is_combo_effect" this effect will execute even without the target having a combo token. Token is consumed once the effect is done.
-@export var has_combo_effects: bool 
-## Which variables will be applied if the target has a combo token.
-@export var combo_properties: Dictionary = {
-	'do_not_return_pos': false,
-	'move': false,
-	'status_effect': false,
-	'bonus_stats': false
-}
+@export var plant_self_on_combo: bool
 var do_not_return_pos: bool=false
-
-func canCombo(target: ResCombatant, check_property:String='')-> bool:
-	return has_combo_effects and target.hasStatusEffect('Combo') and (check_property == '' or combo_properties[check_property])

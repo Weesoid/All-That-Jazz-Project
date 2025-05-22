@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://by64nwqh4pcxe" path="res://images/tiles/tiles1.png" id="1_i41ui"]
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]
-[ext_resource type="Resource" uid="uid://jrg6o80xiqbu" path="res://resources/combat/combatants_enemies/Dummy.tres" id="5_6s6pn"]
+[ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/Dummy.tres" id="5_1fwk0"]
 [ext_resource type="PackedScene" uid="uid://knc1563g65sr" path="res://scenes/entities_interactable/CraftingTable.tscn" id="5_u7bub"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="5_v1cwg"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="7_eiq6g"]
@@ -111,7 +111,8 @@ position = Vector2(-104, -40)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("5_v1cwg")]
 FILL_EMPTY = true
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("5_6s6pn"), ExtResource("5_6s6pn"), ExtResource("5_6s6pn"), ExtResource("5_6s6pn")])
+DO_REINFORCEMENTS = false
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("5_1fwk0")])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("7_eiq6g")]
 dialogue_resource = ExtResource("8_pga02")

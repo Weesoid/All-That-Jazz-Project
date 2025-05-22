@@ -255,10 +255,12 @@ func end_turn(combatant_act=true):
 	else:
 		enemy_turn_count += 1
 	
-	if is_combatant_moving:
+	if is_combatant_moving: # The "is_moving" sandwhich
 		await get_tree().process_frame
 		if is_combatant_moving: await move_finished
 		await get_tree().process_frame
+		print('is moving')
+	
 	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
 		ui_animator.play_backwards('ShowActionPanel')
 		combat_log.writeCombatLog(combat_event.EVENT_MESSAGE)
@@ -705,18 +707,11 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		combatant.getAnimator().play('Fading')
 	else:
 		combatant.getAnimator().play('Idle')
-	#await combatant.SCENE.ready
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
 	if do_tween:
 		var tween = create_tween().tween_property(combatant.SCENE, 'global_position', combatant.SCENE.get_parent().global_position, 0.15)
-		#if !combatant.isDead(): 
-			#combatant.SCENE.doAnimation('Cast_Melee')
-			#combatant.SCENE.position = Vector2.ZERO
 		await tween.finished
-		#await combatant.SCENE.animator.finished
-		#await combatant.getAnimator().animation_finished 
-		#combatant.SCENE.doAnimation('RESET')
 		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
 	
 	combatant.startBreatheTween(true)
@@ -1043,6 +1038,7 @@ func concludeCombat(results: int):
 	OverworldGlobals.setMouseController(false)
 	queue_free()
 
+## NOTE: If do_reparent is false, the combatant scene will be reparented AFTER the moving action based on their current position.
 func changeCombatantPosition(combatant: ResCombatant, move: int, do_reparent: bool=true, move_count:int=1):
 	is_combatant_moving = true
 	var combatant_group
@@ -1073,7 +1069,7 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 		combatant_b = combatant_group[current_pos+move_combatant_b_pos]
 	if combatant_b == null: combatant_b = combatant_group[current_pos+move_combatant_b_pos]
 	tween_a.tween_property(combatant.SCENE, 'global_position', combatant_b.global_position, 0.18)
-	tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0.25, 0.15) # ROTAT
+	tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0.25, 0.15)
 	tween_a_rotation.tween_property(combatant.SCENE.get_node('Sprite2D'), 'rotation', 0, 0.15)
 	if do_reparent: combatant.SCENE.reparent(combatant_group[current_pos+move_combatant_b_pos])
 	
@@ -1081,10 +1077,9 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 		tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 		var tween_b_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 		tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
-		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', -0.25, 0.15) # ROTAT
-		#combatant_b.call_deferred('reparent', combatant_group[current_pos]) 
+		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', -0.25, 0.15)
 		if do_reparent: combatant_b.reparent(combatant_group[current_pos])
-		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)# ROTAT
+		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)
 	
 	if !do_reparent:
 		if tween_a.is_running():

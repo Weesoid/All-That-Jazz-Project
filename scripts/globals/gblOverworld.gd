@@ -612,6 +612,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
 	if combat_results != 0:
+		await get_tree().process_frame
 		setPlayerInput(true)
 	combat_exited.emit()
 	#if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')

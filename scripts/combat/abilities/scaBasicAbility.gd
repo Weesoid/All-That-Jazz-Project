@@ -82,11 +82,7 @@ static func playAnimation(ability: ResAbility, target):
 
 # Combat values calculations (damage, healing, etc.)
 static func applyToTarget(caster, target, ability: ResAbility):
-	#print('Applyin!')
 	if ability.current_effect is ResDamageEffect:
-		var bonus_stats = {}
-		if ability.current_effect.canCombo(target.combatant_resource, 'bonus_stats') or !ability.current_effect.has_combo_effects:
-			bonus_stats = ability.current_effect.bonus_stats
 		if CombatGlobals.calculateDamage(
 				caster, 
 				target, ability.current_effect.damage, 
@@ -94,47 +90,37 @@ static func applyToTarget(caster, target, ability: ResAbility):
 				ability.current_effect.can_crit, 
 				'', 
 				ability.current_effect.indicator_bb,
-				bonus_stats
+				ability.current_effect.bonus_stats
 				):
-			
-			if ability.current_effect.apply_status != null and (checkDamageCombo(target.combatant_resource, ability.current_effect, 'status_effect') or ability.current_effect.has_combo_effects):
-				CombatGlobals.addStatusEffect(target.combatant_resource, ability.current_effect.apply_status)
-			if ability.current_effect.move != 0 and (checkDamageCombo(target.combatant_resource, ability.current_effect, 'move')  or ability.current_effect.has_combo_effects):
-				CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, ability.current_effect.move,false, ability.current_effect.move_count)
-			if checkDamageCombo(target.combatant_resource, ability.current_effect, 'do_not_return_pos', false):
-				ability.current_effect.do_not_return_pos = true
-			
-		if checkDamageCombo(target.combatant_resource, ability.current_effect,'',false) and target.combatant_resource.hasStatusEffect('Combo') and !checkDamageCombo(target.combatant_resource, ability.current_effect, 'do_not_return_pos', false):
+				if ability.current_effect.plant_self_on_combo and target.combatant_resource.hasStatusEffect('Combo'):
+					ability.current_effect.do_not_return_pos = true
+		
+		if (target.combatant_resource.hasStatusEffect('Combo') and ability.current_effect.is_combo_effect) and !ability.current_effect.plant_self_on_combo:
 			CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
 			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
 	
 	elif ability.current_effect is ResCustomDamageEffect:
-		var bonus_stats = {}
-		if ability.current_effect.canCombo(target, 'bonus_stats') or !ability.current_effect.has_combo_effects:
-			bonus_stats = ability.current_effect.bonus_stats
 		if !ability.current_effect.use_caster:
 			caster = null
 		else:
 			caster = caster.combatant_resource
-		if CombatGlobals.calculateRawDamage(
+		if target is CombatantScene:
+			target = target.combatant_resource
+		CombatGlobals.calculateRawDamage(
 			target, 
-			CombatGlobals.useDamageFormula(target, ability.current_effect.damage),
-			caster, ability.current_effect.can_crit, ability.current_effect.crit_chance, 
+			ability.current_effect.damage,
+			caster, 
+			ability.current_effect.can_crit, 
+			ability.current_effect.crit_chance, 
 			ability.current_effect.can_miss, 
 			ability.current_effect.variation, 
 			ability.current_effect.message, 
 			ability.current_effect.trigger_on_hits, 
 			'', 
 			ability.current_effect.indicator_bb,
-			bonus_stats,
+			ability.current_effect.bonus_stats,
 			ability.current_effect.use_damage_formula
-			) and ability.current_effect.apply_status != null:
-			if ability.current_effect.apply_status != null and (checkDamageCombo(target, ability.current_effect, 'status_effect') or ability.current_effect.has_combo_effects):
-				CombatGlobals.addStatusEffect(target, ability.current_effect.apply_status)
-	
-		if checkDamageCombo(target, ability.current_effect,'',false) and target.hasStatusEffect('Combo'):
-			CombatGlobals.manual_call_indicator_bb.emit(target, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
-			target.getStatusEffect('Combo').removeStatusEffect()
+			)
 	
 	elif ability.current_effect is ResApplyStatusEffect:
 		if ability.current_effect.target == ability.current_effect.Target.TARGET:
@@ -190,5 +176,5 @@ static func canDoCombo(effect: ResAbilityEffect, target)-> bool:
 	return false
 
 # Returns true if target meets combo requirements
-static func checkDamageCombo(target: ResCombatant, effect, check_property: String='', allow_no_combo:bool=true)-> bool:
-	return (effect.has_combo_effects and effect.canCombo(target, check_property)) or (!effect.has_combo_effects and allow_no_combo)
+#static func checkDamageCombo(target: ResCombatant, effect, check_property: String='', allow_no_combo:bool=true)-> bool:
+#	return (effect.has_combo_effects and effect.canCombo(target, check_property)) or (!effect.has_combo_effects and allow_no_combo)

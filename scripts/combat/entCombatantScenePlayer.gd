@@ -1,7 +1,7 @@
 extends CombatantScene
 class_name PlayerCombatantScene
 
-@onready var block_timer = $BlockCooldownBar/BlockTimer
+@onready var block_timer:Timer = $BlockCooldownBar/BlockTimer
 @onready var sheathe_point = $Sprite2D/SheathePoint
 @onready var unsheathe_point = $WeaponPoint
 
@@ -15,6 +15,15 @@ func _ready():
 		weapon.equipped_combatant = self
 		sheathe_point.add_child(weapon)
 	CombatGlobals.click_block.connect(block)
+	block_timer.timeout.connect(checkHasBlockModifier)
+
+func _exit_tree():
+	if combatant_resource.STAT_MODIFIERS.has('block'):
+		CombatGlobals.resetStat(combatant_resource, 'block')
+
+func checkHasBlockModifier():
+	if combatant_resource.STAT_MODIFIERS.has('block'):
+		CombatGlobals.resetStat(combatant_resource, 'block')
 
 func playWeaponAttack():
 	weapon.reparent(unsheathe_point, false)
