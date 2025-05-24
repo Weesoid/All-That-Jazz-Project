@@ -414,7 +414,7 @@ func _on_escape_pressed():
 			battleFlash('Flash', Color.YELLOW)
 		bonus_escape_chance += 0.1
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
-		if selected_ability.INSTANT_CAST: selected_ability = null
+		if selected_ability != null and selected_ability.INSTANT_CAST: selected_ability = null
 		confirm.emit()
 		CombatGlobals.addStatusEffect(previous_active, 'Dazed', true)
 
