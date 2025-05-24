@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResStalkerData" load_steps=6 format=3 uid="uid://dswvkpsqs1ltn"]
 
-[ext_resource type="Resource" uid="uid://2mtj5clbgxd6" path="res://resources/combat/combatants_enemies/mercenaries/Deathmarker.tres" id="1_3uv38"]
 [ext_resource type="Script" path="res://scripts/resources/ResStalkerData.gd" id="1_5yvk2"]
+[ext_resource type="Resource" uid="uid://dxdpkpoxq1gca" path="res://resources/combat/combatants_enemies/neutral/Bruiser.tres" id="1_273mx"]
 [ext_resource type="PackedScene" uid="uid://ckaegjqk7g4m8" path="res://scenes/entities/stalkers/GenericStalker.tscn" id="2_44cjq"]
 [ext_resource type="PackedScene" uid="uid://fky7g7yyu7dg" path="res://scenes/stalker_intros/GenericStalkerIntro.tscn" id="4_bobae"]
 [ext_resource type="PackedScene" uid="uid://7keas4b6oewf" path="res://scenes/miscellaneous/LightFlicker.tscn" id="4_gymj3"]
@@ -9,7 +9,7 @@
 [resource]
 script = ExtResource("1_5yvk2")
 patroller = ExtResource("2_44cjq")
-combatant = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("1_3uv38")])
+combatant = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("1_273mx")])
 squad_component_properties = {
 "can_escape": true,
 "do_reinforcements": false,
