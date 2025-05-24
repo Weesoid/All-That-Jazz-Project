@@ -3,7 +3,7 @@ class_name ResItem
 
 @export var NAME: String
 @export var ICON: Texture = preload("res://images/sprites/item_unknown.png")
-@export var DESCRIPTION: String
+@export_multiline var DESCRIPTION: String
 @export var VALUE: int
 @export var MANDATORY = false
 @export var PARENT_ITEM: String # A path to the original item, only for duplicated items (e.g. Charms)

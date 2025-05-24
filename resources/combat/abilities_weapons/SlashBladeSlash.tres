@@ -8,7 +8,11 @@
 [resource]
 script = ExtResource("3_yst25")
 NAME = "Slash Blade Slash"
-DESCRIPTION = "This is a pretty long description. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. Sex. "
+DESCRIPTION = "Cause an elemental effect based on your score in the QTE.
+1: Poison
+2: Electric
+3: Iced
+4: Fire"
 ICON = ExtResource("3_76x4d")
 ANIMATION = ExtResource("2_xsh4e")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
@@ -19,6 +23,7 @@ REQUIRED_STATUS_EFFECT = {
 "rank": 0,
 "status_effect": null
 }
+CHARGES = 0
 CAN_TARGET_SELF = false
 TARGET_DEAD = false
 DEAD_TARGET_PARAMS = {

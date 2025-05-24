@@ -122,7 +122,21 @@ custom_minimum_size = Vector2(100, 32)
 layout_mode = 2
 theme = ExtResource("5_004gj")
 text = "NO  GEAR"
-alignment = 1
+alignment = 2
+
+[node name="Label" type="Label" parent="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon"]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -13.0
+offset_right = 98.0
+grow_vertical = 0
+mouse_filter = 1
+theme = ExtResource("8_hty5i")
+text = "2 / 2"
+vertical_alignment = 2
 
 [node name="SlotA" parent="MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms" instance=ExtResource("2_s185n")]
 custom_minimum_size = Vector2(48, 48)
@@ -440,6 +454,7 @@ offset_left = 21.0
 offset_top = 2.0
 offset_right = 61.0
 offset_bottom = 25.0
+mouse_filter = 1
 theme = ExtResource("8_hty5i")
 text = "25"
 

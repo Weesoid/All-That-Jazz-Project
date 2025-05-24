@@ -2,7 +2,7 @@ extends Resource
 class_name ResBlessing
 
 @export var blessing_name: String
-@export var description: String
+@export_multiline var description: String
 @export var ow_stat_modifications: Dictionary = {
 	'stamina': 0.0,
 	'bow_max_draw': 0.0,

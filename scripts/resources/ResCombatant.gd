@@ -5,7 +5,7 @@ class_name ResCombatant
 ## Backend export variables
 @export var NAME: String
 @export var PACKED_SCENE: PackedScene
-@export var DESCRIPTION: String
+@export_multiline var DESCRIPTION: String
 
 ## Frontend / Gameplay export variables
 @export var STAT_VALUES = {
@@ -74,12 +74,10 @@ func stopBreatheTween():
 	resetSprite()
 
 func setBreatheTween(mode:int):
-	if is_instance_valid(SCENE) and scale_tween == null and pos_tween == null:
+	if is_instance_valid(SCENE) and (scale_tween == null and pos_tween == null or !scale_tween.is_valid() and !pos_tween.is_valid()):
 		scale_tween = SCENE.create_tween().set_loops()
 		pos_tween = SCENE.create_tween().set_loops()
-		#resetSprite()
 	elif is_instance_valid(SCENE) and !scale_tween.is_running() and !pos_tween.is_running() and scale_tween != null and pos_tween != null:
-		#getAnimator().play('RESET')
 		scale_tween.play()
 		pos_tween.play()
 		return
@@ -123,7 +121,7 @@ func getStatusEffectNames()-> Array[String]:
 	return names
 
 # On-hit = 1, Get hit = 2
-func removeStatusEffect(remove_type: int):
+func removeTokens(remove_type: int):
 	for effect in STATUS_EFFECTS:
 		if effect.REMOVE_WHEN == remove_type: 
 			match effect.REMOVE_STYLE:

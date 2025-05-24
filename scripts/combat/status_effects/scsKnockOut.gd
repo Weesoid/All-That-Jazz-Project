@@ -9,16 +9,21 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 			if target.SCENE.weapon != null: target.SCENE.weapon.hide()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
+	print('Plah')
 	if CombatGlobals.getCombatScene().combat_result >= 1 and (target is ResPlayerCombatant and target.MANDATORY): 
 		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25))
 		CombatGlobals.playSecondWindTween(target)
 		target.SCENE.playIdle('Idle')
-	applyFaded(target)
+		applyFaded(target)
+	elif CombatGlobals.getCombatScene().combat_result == 0:
+		applyFaded(target)
 	CombatGlobals.resetStat(target, status_effect.NAME)
 
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
+	print(getFadedLevel(target))
 	if getFadedLevel(target) == 0:
+		print('Plah')
 		target.LINGERING_STATUS_EFFECTS.append('Faded I')
 	elif getFadedLevel(target) < 4:
 		var escalated_level = getFadedLevel(target)+1

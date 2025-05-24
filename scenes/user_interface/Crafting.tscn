@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c36nhmt43udrv"]
+[gd_scene load_steps=9 format=3 uid="uid://c36nhmt43udrv"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCraftingUI.gd" id="1_y6pgg"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_3ycts"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="3_m17c3"]
 [ext_resource type="AudioStream" uid="uid://bngusvjprdqlt" path="res://audio/sounds/580812__silverillusionist__craft-item-2.ogg" id="5_0hxak"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="6_yxexq"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_6vwdi"]
 
 [node name="uiCrafting" type="Control"]
 layout_mode = 3
@@ -113,6 +114,47 @@ layout_mode = 2
 layout_mode = 2
 columns = 8
 
+[node name="RepairButtons" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RepairAll" parent="RepairButtons" instance=ExtResource("2_3ycts")]
+visible = false
+layout_mode = 0
+offset_left = -152.0
+offset_top = 114.0
+offset_right = -88.0
+offset_bottom = 136.0
+theme = ExtResource("6_yxexq")
+text = "REPAIR ALL"
+click_sound = ExtResource("3_iry6e")
+
+[node name="RepairEquipped" parent="RepairButtons" instance=ExtResource("2_3ycts")]
+visible = false
+layout_mode = 0
+offset_left = -80.0
+offset_top = 114.0
+offset_right = -30.0
+offset_bottom = 136.0
+theme = ExtResource("6_yxexq")
+text = "REPAIR ACTIVE"
+click_sound = ExtResource("3_iry6e")
+
+[node name="ScrapLeft" type="RichTextLabel" parent="RepairButtons"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 111.0
+offset_right = 168.0
+offset_bottom = 139.0
+theme = ExtResource("8_6vwdi")
+bbcode_enabled = true
+text = "[img]res://images/sprites/item_unknown.png[/img] 25"
+fit_content = true
+
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="pressed" from="Repair" to="." method="_on_repair_pressed"]
 [connection signal="pressed" from="Recipes" to="." method="_on_recipes_pressed"]
+[connection signal="pressed" from="RepairButtons/RepairAll" to="." method="_on_repair_all_pressed"]
+[connection signal="pressed" from="RepairButtons/RepairEquipped" to="." method="_on_repair_equipped_pressed"]

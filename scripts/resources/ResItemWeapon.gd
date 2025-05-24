@@ -54,6 +54,7 @@ func getInformation():
 	out += handling_requirement+'\n'
 	out += DESCRIPTION + '\n\n'
 	out += EFFECT.getRichDescription()
+	out += ' [color=yellow] Uses: %s/%s' % [durability,max_durability]
 	return out
 
 func getGeneralInfo():

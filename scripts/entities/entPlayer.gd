@@ -20,6 +20,7 @@ class_name PlayerScene
 @onready var cinematic_bars = $PlayerCamera/CinematicBars
 @onready var power_input_container = $PlayerCamera/PowerInputs
 @onready var quiver = $PlayerCamera/UtilitySelector
+@onready var color_overlay = $PlayerCamera/ColorOverlay
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -328,6 +329,16 @@ func playAudio(filename: String, db=0.0, random_pitch=false):
 		randomize()
 		audio_player.pitch_scale += randf_range(0.0, 0.25)
 	audio_player.play()
+
+func showOverlay(color: Color, alpha:float, duration:float=0.25):
+	color_overlay.modulate = Color.TRANSPARENT
+	color_overlay.show()
+	await create_tween().tween_property(color_overlay, 'modulate', Color(color, alpha), duration).finished
+
+func hideOverlay(duration:float=0.25):
+	await create_tween().tween_property(color_overlay, 'modulate', Color.TRANSPARENT, duration).finished
+	color_overlay.hide()
+	color_overlay.modulate = Color.WHITE
 
 func shakeCamera(strength:float, speed:float):
 	player_camera.shake(strength,speed)

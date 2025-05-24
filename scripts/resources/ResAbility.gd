@@ -13,7 +13,7 @@ enum TargetGroup {
 }
 
 @export var NAME: String
-@export var DESCRIPTION: String
+@export_multiline var DESCRIPTION: String
 @export var ICON: Texture = preload("res://images/ability_icons/default.png")
 @export var ANIMATION: PackedScene
 @export var BASIC_EFFECTS: Array[ResAbilityEffect]
@@ -21,6 +21,7 @@ enum TargetGroup {
 @export var TARGET_TYPE: TargetType
 @export var TARGET_GROUP: TargetGroup
 @export var REQUIRED_STATUS_EFFECT: Dictionary = {'status_effect': null, 'rank': 0}
+@export var CHARGES: int = 0
 
 @export var CAN_TARGET_SELF: bool = false
 @export var TARGET_DEAD: bool = false
@@ -32,6 +33,7 @@ enum TargetGroup {
 @export var REQUIRED_LEVEL = 0
 
 var current_effect: ResAbilityEffect
+var current_charge: int
 var ENABLED: bool = true
 var TARGETABLE
 
@@ -86,6 +88,9 @@ func canUse(caster: ResCombatant, targets=null):
 		return false
 	if REQUIRED_STATUS_EFFECT['status_effect'] != null and !(caster.hasStatusEffect(REQUIRED_STATUS_EFFECT['status_effect'].NAME) and caster.getStatusEffect(REQUIRED_STATUS_EFFECT['status_effect'].NAME).current_rank >= REQUIRED_STATUS_EFFECT['rank']):
 		return false
+	if CHARGES > 0:
+		return CombatGlobals.getCombatScene().getChargesLeft(caster, self) > 0
+	
 	if targets == null or targets is ResCombatant:
 		return isCombatantInRange(caster, 'caster')
 	else:
@@ -121,8 +126,10 @@ func getRichDescription(with_name=true)-> String:
 		description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % TENSION_COST
 	#description += '[img]%s[/img]' % [getValidTargetIcon()]
 	if INSTANT_CAST:
-		description += '[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
+		description += '	[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
 	description += '\n '+DESCRIPTION
+	if CHARGES > 0 and !OverworldGlobals.inCombat():
+		description += '[color=yellow] Uses: '+str(CHARGES)
 	return description
 
 func getValidTargetIcon():

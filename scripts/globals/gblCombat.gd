@@ -50,9 +50,9 @@ func emit_exp_updated(value, max_value):
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
 func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = true, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary={})-> bool:
-	if !caster is ResCombatant:
+	if caster is CombatantScene:
 		caster = caster.combatant_resource
-	if !target is ResCombatant:
+	if target is CombatantScene:
 		target = target.combatant_resource
 	
 	if randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy', target)) and can_miss:
@@ -90,10 +90,12 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_c
 	base_damage += getBonusStat(bonus_stats, 'damage', target)
 	base_damage += (caster.STAT_VALUES['brawn']+getBonusStat(bonus_stats, 'brawn', target)) * base_damage
 	base_damage = useDamageFormula(target, base_damage)
-	base_damage = valueVariate(base_damage, 0.15)
+	base_damage = valueVariate(base_damage, 0.1)
 	if randomRoll(caster.STAT_VALUES['crit']+getBonusStat(bonus_stats, 'crit', target)) and can_crit:
 		base_damage = doCritEffects(base_damage, caster, getBonusStat(bonus_stats,'crit_dmg', target),true)
 		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
+	if checkSpecialStat('non-lethal', bonus_stats, target) and target.STAT_VALUES['health']-base_damage <= 0:
+		base_damage = 0
 	
 	target.STAT_VALUES['health'] -= int(base_damage)
 	doPostDamageEffects(caster, target, base_damage, sound, indicator_bb_code, true, bonus_stats)
@@ -171,9 +173,9 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	message = indicator_bb_code+'[outline_size=8] '+message
 	if damage > 0:
 		manual_call_indicator.emit(target, message, 'Damage')
-	target.removeStatusEffect(2)
+	target.removeTokens(2)
 	if caster != null:
-		caster.removeStatusEffect(1)
+		caster.removeTokens(1)
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
 	if caster != null and target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
@@ -249,7 +251,7 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 	else:
 		manual_call_indicator.emit(target, "Broken.", 'Flunk')
 	
-	target.removeStatusEffect(3)
+	target.removeTokens(3)
 	
 	#received_combatant_value.emit(target, caster, int(base_healing))
 
@@ -386,6 +388,7 @@ func setCombatantVisibility(target: CombatantScene, set_to:bool):
 		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
 		target.z_index = 0
 	target.get_node('CombatBars').setBarVisibility(set_to)
+
 func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1):
 	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
 	var qte = load("res://scenes/quick_time_events/%s.tscn" % type).instantiate()

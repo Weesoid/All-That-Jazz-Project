@@ -2240,6 +2240,21 @@ zoom = Vector2(2, 2)
 position_smoothing_speed = 32.0
 script = ExtResource("6_yjb6v")
 
+[node name="ColorOverlay" type="ColorRect" parent="PlayerCamera"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -211.0
+offset_top = -110.0
+offset_right = 211.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
 [node name="PlayerPrompt" parent="PlayerCamera" instance=ExtResource("6_rb4b6")]
 
 [node name="StaminaBar" type="ProgressBar" parent="PlayerCamera"]

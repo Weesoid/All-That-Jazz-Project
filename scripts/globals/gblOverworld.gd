@@ -124,6 +124,7 @@ func showMenu(path: String):
 	getPlayer().velocity = Vector2.ZERO
 	setPlayerInput(false)
 	if !inMenu():
+		getPlayer().showOverlay(Color.BLACK, 0.5)
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
 		setMouseController(true)
 		getPlayer().player_camera.add_child(main_menu)
@@ -146,6 +147,7 @@ func setMouseController(set_to:bool):
 		if has_node('MouseController'): get_node('MouseController').queue_free()
 
 func closeMenu(menu: Control):
+	getPlayer().hideOverlay()
 	setMouseController(false)
 	menu.queue_free()
 	getPlayer().player_camera.get_node('uiMenu').queue_free()

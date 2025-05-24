@@ -33,7 +33,7 @@ func _process(delta):
 		shrink = false
 		OverworldGlobals.playSound("542041__rob_marion__gasp_weapon-slash_1.ogg")
 		CombatGlobals.qte_finished.emit()
-	
+
 func _unhandled_input(_event):
 	if Input.is_action_pressed("ui_accept"):
 		target.get_node('Sprite2D').modulate.a = 1.0

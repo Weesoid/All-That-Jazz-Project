@@ -21,6 +21,7 @@ class_name MemberAdjustUI
 @onready var character_view = $MainPanel/Panel/Marker2D
 @onready var attrib_view_animator = $MainPanel/Button/AnimationPlayer
 @onready var character_name = $MainPanel/Panel/Label
+@onready var weapon_durability = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon/Label
 
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
@@ -190,7 +191,11 @@ func getOtherMemberScenes(except_name: String=''):
 	return out
 
 func _on_weapon_pressed():
-	await showEquipment(1, -1)
+	await showEquipment(1, -1, 
+	func(): 
+		if selected_combatant.hasEquippedWeapon():
+			selected_combatant.unequipWeapon()
+		)
 	updateEquipped()
 	weapon_button.grab_focus()
 
@@ -218,11 +223,12 @@ func _on_slot_c_pressed():
 	updateEquipped()
 	charm_slot_c.grab_focus()
 
-func showEquipment(type:int, slot:int):
+func showEquipment(type:int, slot:int, unequip_button_function: Callable=func():pass):
 	var equipment: EquipmentInterface = load("res://scenes/user_interface/CharacterEquip.tscn").instantiate()
 	equipment_select_point.add_child(equipment)
 	equipment.z_index = 10
 	equipment.showEquipment(type, selected_combatant, slot)
+	equipment.unequip_button.pressed.connect(unequip_button_function)
 	await equipment.equipped_item
 
 func updateEquipped():
@@ -236,9 +242,15 @@ func updateEquipped():
 	if selected_combatant.EQUIPPED_WEAPON != null:
 		weapon_button.text = selected_combatant.EQUIPPED_WEAPON.NAME
 		weapon_button.icon = selected_combatant.EQUIPPED_WEAPON.ICON
+		weapon_durability.text = '%s / %s' % [selected_combatant.EQUIPPED_WEAPON.durability, selected_combatant.EQUIPPED_WEAPON.max_durability]
+		if selected_combatant.EQUIPPED_WEAPON.durability <= 0:
+			weapon_durability.modulate = Color.RED
+		weapon_durability.show()
 	else:
 		weapon_button.icon = null
 		weapon_button.text = 'NO  GEAR'
+		weapon_durability.modulate = Color.WHITE
+		weapon_durability.hide()
 	
 	charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
 	charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")

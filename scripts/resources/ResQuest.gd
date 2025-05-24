@@ -2,7 +2,7 @@ extends Resource
 class_name ResQuest
 
 @export var NAME: String
-@export var DESCRIPTION: String
+@export_multiline var DESCRIPTION: String
 @export var OBJECTIVES: Array[ResObjective]
 @export var COMPLETED: bool = false
 @export var EXPERIENCE_REWARD: float = 0.25

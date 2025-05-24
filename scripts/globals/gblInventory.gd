@@ -222,7 +222,12 @@ func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
 		OverworldGlobals.getPlayer().prompt.showPrompt('Not enough [color=yellow]Scrap Salvage![/color]')
 		return
 
-func repairAllItems():
+func repairAllItems(only_active_members: bool=false):
+	for member in OverworldGlobals.getCombatantSquad('Player'):
+		if member.hasEquippedWeapon(): 
+			var weapon = member.EQUIPPED_WEAPON
+			weapon.restoreDurability(weapon.max_durability)
+	if only_active_members: return
 	for item in INVENTORY:
 		if !item is ResWeapon: continue
 		item.restoreDurability(item.max_durability)

@@ -2291,6 +2291,21 @@ offset_right = 283.0
 offset_bottom = -102.0
 script = SubResource("GDScript_lueap")
 
+[node name="ColorOverlay" type="ColorRect" parent="PlayerCamera"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -414.0
+offset_top = -182.0
+offset_right = -16.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+
 [node name="UtilitySelector" parent="PlayerCamera" instance=ExtResource("9_l6qdt")]
 visible = false
 position = Vector2(0, -56)

@@ -2,7 +2,7 @@ extends Node2D
 class_name MapData
 
 @export var NAME: String
-@export var DESCRIPTION: String
+@export_multiline var DESCRIPTION: String
 @export var IMAGE: Texture
 @export var SAFE: bool = false
 @export var ENEMY_FACTION: CombatGlobals.Enemy_Factions

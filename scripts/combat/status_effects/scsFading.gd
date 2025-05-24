@@ -31,9 +31,9 @@ static func canAddQTE(status_effect: ResStatusEffect)-> bool:
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if  CombatGlobals.getCombatScene().combat_result >= 1:
-		#applyFaded(target)
+		applyFaded(target)
 		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25))
-	if target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
+	elif target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.manual_call_indicator.emit(target, 'Out cold!', 'Resist')
 		CombatGlobals.addStatusEffect(target, 'KnockOut')
 	else:
@@ -45,8 +45,11 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
-	print(target,'| FL= ', getFadedLevel(target))
-	if getFadedLevel(target) < 4:
+	print(target,' FL studio ', getFadedLevel(target))
+	if getFadedLevel(target) == 0:
+		print('Plah!')
+		target.LINGERING_STATUS_EFFECTS.append('Faded I')
+	elif getFadedLevel(target) < 4:
 		var escalated_level = getFadedLevel(target)+1
 		CombatGlobals.addStatusEffect(target, applyFadedStatus(escalated_level))
 		target.LINGERING_STATUS_EFFECTS.erase(applyFadedStatus(escalated_level-1, true))

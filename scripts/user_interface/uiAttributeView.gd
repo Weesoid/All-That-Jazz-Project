@@ -59,7 +59,7 @@ func _process(_delta):
 			abilities_label.text = getAbilities(combatant)
 			abilities_label.show()
 	
-		highlightModifiedStats(hp_val, 'health')
+		#highlightModifiedStats(hp_val, 'health')
 		highlightModifiedStats(brawn_val, 'brawn')
 		highlightModifiedStats(grit_val, 'grit')
 		highlightModifiedStats(handling_val, 'handling')

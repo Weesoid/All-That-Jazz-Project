@@ -202,5 +202,5 @@ func reset():
 		'grit': 0,
 		'handling': 0
 	}
-	TEMPERMENT = {'primary':'', 'secondary':''}
+	TEMPERMENT = {'primary':[], 'secondary':[]}
 

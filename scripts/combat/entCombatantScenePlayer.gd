@@ -10,10 +10,10 @@ var allow_block: bool = false
 var weapon: WeaponScene
 
 func _ready():
-	if combatant_resource is ResPlayerCombatant and combatant_resource.EQUIPPED_WEAPON != null:
-		weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
-		weapon.equipped_combatant = self
-		sheathe_point.add_child(weapon)
+#	if combatant_resource is ResPlayerCombatant and combatant_resource.EQUIPPED_WEAPON != null:
+#		weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
+#		weapon.equipped_combatant = self
+#		sheathe_point.add_child(weapon)
 	CombatGlobals.click_block.connect(block)
 	block_timer.timeout.connect(checkHasBlockModifier)
 

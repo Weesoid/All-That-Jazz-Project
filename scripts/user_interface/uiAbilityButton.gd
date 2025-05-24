@@ -5,6 +5,7 @@ class_name CustomAbilityButton
 @onready var icon_animator = $TextureRect/AnimationPlayer
 @onready var description_label = $PanelContainer/RichTextLabel
 @onready var description_animator = $PanelContainer/AnimationPlayer
+@onready var charges = $TextureRect/Charges
 
 @export var ability: ResAbility
 @export var descriptions: Dictionary = {
@@ -12,6 +13,7 @@ class_name CustomAbilityButton
 	'description': '',
 	'icon': preload("res://images/ability_icons/default.png")
 }
+@export var custom_charge: int = -1
 @export var outside_combat: bool = false
 
 func _ready():
@@ -19,6 +21,16 @@ func _ready():
 		ability_icon.texture = ability.ICON
 		description_label.text = ability.getRichDescription(true)
 		description_label.hide()
+		#print('Cust charge on ', ability, ': ', custom_charge)
+		if custom_charge > -1:
+			charges.text = str(custom_charge)
+			charges.show()
+		elif ability.CHARGES > 0:
+			if !outside_combat:
+				charges.text = str(CombatGlobals.getCombatScene().getChargesLeft(CombatGlobals.getCombatScene().active_combatant, ability))
+			else:
+				charges.text = str(ability.CHARGES)
+			charges.show()
 		if disabled:
 			ability_icon.modulate = Color.DIM_GRAY
 		if outside_combat:
@@ -55,7 +67,6 @@ func _on_focus_entered():
 		ability_icon.self_modulate = Color.YELLOW
 	else:
 		icon_animator.play("Focus")
-	
 	
 	if Input.is_action_pressed("ui_select_arrow"): 
 		showDescription()

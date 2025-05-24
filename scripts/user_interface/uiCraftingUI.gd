@@ -9,6 +9,7 @@ extends Control
 @onready var craft_button = $Craftables/CenterContainer/GridContainer/Craft
 @onready var item_select = $ItemSelect
 @onready var item_select_buttons = $ItemSelect/MarginContainer/SelectCharms/VBoxContainer
+@onready var additional_repair_buttons = $RepairButtons
 var all_components: Array[ResItem] = [null, null, null]
 
 func _process(_delta):
@@ -23,6 +24,9 @@ func _process(_delta):
 		craft_button.disabled = true
 	else:
 		craft_button.hide()
+
+func canRepair(min_scrap: int):
+	return !InventoryGlobals.hasItem('Scrap Salvage') or InventoryGlobals.getItem('Scrap Salvage').STACK < min_scrap
 
 func _on_ready():
 	component_core.pressed.connect(func(): showItems(component_core, 0))
@@ -134,6 +138,58 @@ func showRecipes():
 		button.focus_entered.connect(func(): showRecipeDescription(recipe))
 		item_select_buttons.add_child(button)
 
+func showWeaponRepair():
+	for child in item_select_buttons.get_children():
+		item_select_buttons.remove_child(child)
+		child.queue_free()
+	
+	item_select.show()
+	#additional_repair_buttons.show()
+	var cancel_button = OverworldGlobals.createCustomButton()
+	cancel_button.name = 'CancelButton'
+	cancel_button.theme = preload("res://design/ItemButtons.tres")
+	cancel_button.icon = preload('res://images/sprites/icon_cross.png')
+	cancel_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	cancel_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
+	cancel_button.pressed.connect(
+		func():
+			additional_repair_buttons.hide()
+			item_select.hide()
+			OverworldGlobals.setMenuFocusMode(base, true)
+			OverworldGlobals.setMenuFocusMode(repair_button, true)
+	)
+	var weapons = InventoryGlobals.INVENTORY.filter(func(item): return item is ResWeapon)
+	var active_weapons = []
+	checkCanRepair(weapons, active_weapons)
+	for member in OverworldGlobals.getCombatantSquad('Player'):
+		if member.hasEquippedWeapon(): active_weapons.append(member.EQUIPPED_WEAPON)
+	weapons.append_array(active_weapons)
+	
+	item_select_buttons.add_child(cancel_button)
+	cancel_button.grab_focus()
+	OverworldGlobals.setMenuFocusMode(base, false)
+	OverworldGlobals.setMenuFocusMode(repair_button, false)
+	for weapon in weapons:
+		var button = OverworldGlobals.createItemButton(weapon)
+		button.pressed.connect(
+			func(): 
+				InventoryGlobals.removeItemWithName('Scrap Salvage')
+				weapon.restoreDurability(weapon.max_durability)
+				button.disabled = true
+				checkCanRepair(weapons, active_weapons)
+				)
+		if weapon.durability >= weapon.max_durability or !InventoryGlobals.hasItem('Scrap Salvage'): 
+			button.disabled = true
+		item_select_buttons.add_child(button)
+
+func checkCanRepair(weapons: Array, active_weapons: Array):
+	if !InventoryGlobals.hasItem('Scrap Salvage'): 
+		for button in item_select_buttons.get_children(): 
+			if button.name == 'CancelButton': continue
+			button.disabled = true
+	#$RepairButtons/RepairAll.disabled = canRepair(weapons.size())
+	#$RepairButtons/RepairEquipped.disabled = canRepair(active_weapons.size())
+
 func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 	slot_button.modulate = Color.WHITE
 	if item.MANDATORY:
@@ -206,8 +262,13 @@ func showRecipeDescription(item_name: String):
 	#item_select_info_general.text = out
 
 func _on_repair_pressed():
-	InventoryGlobals.repairAllItems()
+	showWeaponRepair()
 
 func _on_recipes_pressed():
-	
 	showRecipes()
+
+func _on_repair_all_pressed():
+	InventoryGlobals.repairAllItems()
+
+func _on_repair_equipped_pressed():
+	InventoryGlobals.repairAllItems(true)

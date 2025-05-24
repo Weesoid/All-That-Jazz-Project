@@ -19,13 +19,13 @@ PACKED_SCENE = ExtResource("1_dehdw")
 DESCRIPTION = "Debuggicus Maximum Aurelius"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 0.0,
+"brawn": 999.0,
 "crit": 0.05,
 "crit_dmg": 1.5,
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 999,
+"health": 25,
 "hustle": -8,
 "resist": 0.05
 }

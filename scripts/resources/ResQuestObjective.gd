@@ -2,7 +2,7 @@ extends Resource
 class_name ResObjective
 
 @export var NAME: String
-@export var DESCRIPTION: String
+@export_multiline var DESCRIPTION: String
 @export var DEPENDENT: ResObjective
 @export var DEPENDENT_OUTCOME: int
 @export var FINAL_OBJECTIVE: bool
