@@ -395,6 +395,8 @@ _data = {
 radius = 8.0
 
 [node name="Patroller" type="CharacterBody2D"]
+collision_layer = 33
+collision_mask = 33
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_sf0pt")

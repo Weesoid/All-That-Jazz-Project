@@ -9,7 +9,6 @@ class_name GenericPatroller
 @export var idle_time: Dictionary = {'patrol':0.0, 'alerted_patrol':0.0}
 @export var stun_time: Dictionary = {'min':0.0, 'max':0.0}
 
-
 @onready var patrol_component: NPCPatrolMovement = $NPCPatrolComponent
 
 func _ready():
@@ -30,3 +29,7 @@ func _ready():
 		patrol_component.STUN_TIME = stun_time
 	
 	patrol_component.initialize()
+
+## 0: soothePatrolMode() 1: alertPatrolMode() 2: chaseMode()3: stunMode(alert_others)
+func getState():
+	return patrol_component.STATE

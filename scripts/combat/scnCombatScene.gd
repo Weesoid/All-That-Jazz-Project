@@ -78,6 +78,7 @@ var ability_charge_tracker: Dictionary = {}
 var turn_time: float = 0.0
 var reinforcements_turn: int = 50
 var is_combatant_moving = false
+var initial_damage: int = 0
 
 signal confirm
 signal target_selected
@@ -119,6 +120,10 @@ func _ready():
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant, false, false, true)
 		tickStatusEffects(combatant, true, false, true)
+	if initial_damage > 0:
+		for combatant in getCombatantGroup('enemies'):
+			CombatGlobals.calculateRawDamage(combatant, CombatGlobals.useDamageFormula(combatant, initial_damage))
+	
 	await removeDeadCombatants(false)
 	
 	rollTurns()
@@ -323,10 +328,15 @@ func end_turn(combatant_act=true):
 			await CombatGlobals.qte_finished
 			await get_node('QTE').tree_exited
 		setActiveCombatant()
-	else:
+	elif !active_combatant.isImmobilized():
 		selected_ability.ENABLED = false
 		active_combatant.TURN_CHARGES += 1
 		combatant_turn_order.push_front([active_combatant, 1])
+	else:
+		if has_node('QTE'):
+			await CombatGlobals.qte_finished
+			await get_node('QTE').tree_exited
+		setActiveCombatant()
 	
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
@@ -403,7 +413,7 @@ func _on_inspect_pressed():
 	target_state = 3
 
 func _on_escape_pressed():
-	if CombatGlobals.randomRoll(0):
+	if CombatGlobals.randomRoll(calculateEscapeChance()*100):
 		CombatGlobals.combat_lost.emit(unique_id)
 		concludeCombat(2)
 	else:

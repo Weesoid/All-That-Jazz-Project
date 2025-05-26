@@ -10,6 +10,7 @@ var follow_array = []
 var player_follower_count = 0
 
 signal update_patroller_modes(mode:int)
+signal patroller_destroyed
 signal party_damaged
 signal combat_enetered
 signal combat_exited
@@ -108,6 +109,15 @@ func changeEntityVisibility(entity_name: String, visibility:bool):
 		getPlayer().sprite.visible = visibility
 	else:
 		get_tree().current_scene.get_node(entity_name).visible = visibility
+
+func shakeSprite(entity: Node2D, sprite_name: String='Sprite2D'):
+	if !entity.has_node(sprite_name):
+		return
+	var sprite = entity.get_node(sprite_name)
+	var sprite_shaker: SpriteShaker = load("res://scenes/components/SpriteShaker.tscn").instantiate()
+	sprite_shaker.shake_speed = 15.0
+	sprite_shaker.shake_strength = 50.0
+	sprite.add_child(sprite_shaker)
 
 func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 	if teleport_to is Vector2:
@@ -570,6 +580,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
 	elif getCurrentMap().EVENTS['combat_event'] != null:
 		combat_scene.combat_event = getCurrentMap().EVENTS['combat_event']
+	if data.keys().has('initial_damage'):
+		combat_scene.initial_damage = data['initial_damage']
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
 	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)

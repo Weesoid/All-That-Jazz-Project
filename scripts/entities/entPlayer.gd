@@ -141,7 +141,10 @@ func _input(_event):
 	elif SettingsGlobals.stopSprint():
 		sprinting = false
 	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
-		if bow_draw_strength == 0: bow_mode = !bow_mode
+		if bow_draw_strength == 0: 
+			bow_mode = !bow_mode
+		elif bow_draw_strength > 0:
+			undrawBow()
 	
 	# Debug
 #	if Input.is_action_pressed("ui_cheat_mode"):
@@ -195,7 +198,6 @@ func executePower():
 			return
 
 func canCastPower(power: ResPower):
-	#print('Cost ', power.NAME, ' ', power.CRYSTAL_COST)
 	return (power.CRYSTAL_COST != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.CRYSTAL_COST)) or power.CRYSTAL_COST == 0
 
 func cancelPower():
@@ -235,8 +237,6 @@ func canDrawBow()-> bool:
 		return false
 	if OverworldGlobals.getCurrentMap().SAFE:
 		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
-		return false
-	if velocity != Vector2.ZERO:
 		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
 		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
@@ -298,10 +298,12 @@ func drawBow():
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
-	if Input.is_action_just_released("ui_bow_draw") and velocity == Vector2.ZERO:
+	if Input.is_action_just_released("ui_bow_draw") and can_move:
+		suddenStop()
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile(): 
 			shootProjectile()
-		await get_tree().create_timer(0.05).timeout
+		await animation_tree.animation_finished
+		can_move = true
 		undrawBow()
 
 func undrawBow():
@@ -360,17 +362,20 @@ func updateAnimationParameters():
 		animation_tree["parameters/Shoot Bow/blend_position"] = direction
 		animation_tree["parameters/Draw Bow/blend_position"] = direction
 		animation_tree["parameters/Draw Bow Walk/blend_position"] = direction
-	
+		animation_tree["parameters/Melee/blend_position"] = direction
 	if Input.is_action_just_pressed('ui_bow') and !animation_tree["parameters/conditions/void_call"]:
+		suddenStop()
 		toggleBowAnimation()
 		if animation_tree["parameters/conditions/draw_bow"]:
 			bow_draw_strength = 0
 			Input.action_release("ui_bow_draw")
 			animation_tree["parameters/conditions/draw_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = true
+		await get_tree().process_frame
+		can_move = true
 	
 	if bow_mode:
-		if Input.is_action_pressed('ui_bow_draw') and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and is_processing_input():
+		if Input.is_action_pressed('ui_bow_draw') and !animation_tree["parameters/conditions/void_call"] and !animation_tree["parameters/conditions/melee"] and !OverworldGlobals.inDialogue() and is_processing_input():
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false
@@ -382,9 +387,22 @@ func updateAnimationParameters():
 				can_move = false
 				await animation_tree.animation_finished
 				can_move = true
+				animation_tree["parameters/conditions/shoot_bow"] = false
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
+	if Input.is_action_just_pressed("ui_melee") and can_move and !animation_tree["parameters/conditions/shoot_bow"]:
+		undrawBowAnimation()
+		suddenStop()
+		animation_tree["parameters/conditions/melee"] = true
+		await animation_tree.animation_finished
+		animation_tree["parameters/conditions/melee"] = false
+		can_move = true 
+
+func suddenStop():
+	velocity = Vector2.ZERO
+	sprinting = false
+	can_move = false
 
 func setUIVisibility(set_visibility:bool):
 	for child in player_camera.get_children():

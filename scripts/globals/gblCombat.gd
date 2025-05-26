@@ -324,20 +324,11 @@ func playDodgeTween(target: ResCombatant):
 	tween.tween_property(target.getSprite(), 'position', Vector2(0, 0), 0.5)
 
 func playHurtTween(target: ResCombatant, damage):
-	#if getCombatScene().onslaught_mode:
-	#	return
-	randomize()
 	var sprite = target.SCENE.get_node('Sprite2D')
 	var sprite_shaker: SpriteShaker = load("res://scenes/components/SpriteShaker.tscn").instantiate()
 	sprite_shaker.shake_speed = 12.0
 	sprite_shaker.shake_strength = 25.0 + (damage*0.1)
 	sprite.add_child(sprite_shaker)
-#	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_BOUNCE)
-#	var shake = Vector2(8, 0) + Vector2(randf_range(0, 8), 0)
-#	var duration = 0.05 + randf_range(0, 0.025)
-#	tween.tween_property(sprite, 'position', sprite.position + shake, duration)
-#	tween.tween_property(sprite, 'position', sprite.position - shake, duration)
-#	tween.tween_property(sprite, 'position', Vector2(0, 0), duration)
 
 func playFlashTween(target: ResCombatant, color:Color):
 	var tween = getCombatScene().create_tween()
@@ -433,8 +424,9 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		status_effect = load(str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")).duplicate()
 	elif effect is ResStatusEffect:
 		status_effect = effect.duplicate()
+	var icon_path = str(status_effect.TEXTURE.get_path())
 	if !guaranteed and (randomRoll(target.STAT_VALUES['resist']) and status_effect.RESISTABLE):
-		manual_call_indicator.emit(target, '[img]'+str(status_effect.TEXTURE.get_path())+'[/img] Resisted!', 'Resist')
+		manual_call_indicator.emit(target, '[img]'+icon_path+'[/img] Resisted!', 'Resist')
 		return
 	
 	if !target.getStatusEffectNames().has(status_effect.NAME):
@@ -446,6 +438,8 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		rankUpStatusEffect(target, status_effect)
 	if status_effect.TICK_ON_APPLY:
 		target.getStatusEffect(status_effect.NAME).tick(false)
+	else:
+		manual_call_indicator.emit(target, 'Applied [img]'+icon_path+'[/img]!', 'Show')
 	
 	if (!guaranteed and !CombatGlobals.randomRoll(0.15+target.STAT_VALUES['resist'])) and (status_effect.LINGERING and target is ResPlayerCombatant and !target.LINGERING_STATUS_EFFECTS.has(status_effect.NAME)):
 		manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.NAME, 'Lingering')

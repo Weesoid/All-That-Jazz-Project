@@ -80,7 +80,6 @@ y_sort_enabled = true
 script = ExtResource("1_mdfbo")
 NAME = "Prototype Room"
 DESCRIPTION = "The room of the prototypian clan."
-SAFE = true
 
 [node name="TileMap" type="TileMap" parent="."]
 texture_filter = 1

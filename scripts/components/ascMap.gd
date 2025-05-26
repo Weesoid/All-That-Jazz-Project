@@ -57,6 +57,7 @@ func _ready():
 			spawnDestructibleObjectives()
 		if CombatGlobals.randomRoll(EVENTS['stalker_chance']):
 			pickStalker()
+		OverworldGlobals.patroller_destroyed.connect(checkGiveRewards)
 	
 	await get_tree().process_frame
 	done_loading_map = true
@@ -130,6 +131,18 @@ func spawnPatrollers():
 					patroller.patrol_area = area
 					CombatGlobals.generateCombatantSquad(patroller, ENEMY_FACTION)
 					add_child(patroller)
+
+func destroyPatroller(patroller: GenericPatroller):
+	OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += patroller.get_node("NPCPatrolComponent").COMBAT_SQUAD.getExperience()
+	patroller.get_node("NPCPatrolComponent").COMBAT_SQUAD.addDrops()
+	patroller.get_node("NPCPatrolComponent").destroy()
+
+func checkGiveRewards():
+	print('pluh')
+	print(getPatrollers().size())
+	if getPatrollers().size() == 0:
+		OverworldGlobals.showPlayerPrompt('Map cleared!')
+		giveRewards()
 
 func spawnDestructibleObjectives():
 	var areas = getPatrolAreas()

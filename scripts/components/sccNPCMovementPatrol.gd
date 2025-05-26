@@ -181,7 +181,6 @@ func updateMode(state: int, alert_others:bool=false):
 
 func destroy(fancy=true):
 	if ANIMATOR.current_animation == 'KO': return
-	#print('* ',NAME, ' is am ded... blegh!')
 	if BODY.has_node('CombatDialogue'):
 		ANIMATOR.play('RESET')
 		queue_free()
@@ -199,20 +198,15 @@ func destroy(fancy=true):
 		else:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
 		await ANIMATOR.animation_finished
-		isMapCleared()
+		#isMapCleared()
 		if OverworldGlobals.getCurrentMap().arePatrollersHalved() and !OverworldGlobals.getCurrentMap().full_alert and OverworldGlobals.getCurrentMap().getPatrollers().size() > 1:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 999.0, 4)
 			OverworldGlobals.getCurrentMap().full_alert = true
 			OverworldGlobals.showPlayerPrompt('Enemies have noticed your presence and are [color=red]fully alert[/color]!')
 	
 	BODY.queue_free()
-
-func isMapCleared():
-	for child in OverworldGlobals.getCurrentMap().get_children():
-		if child.has_node('NPCPatrolComponent') and child != BODY: return
-	
-	OverworldGlobals.showPlayerPrompt('Map cleared!')
-	OverworldGlobals.getCurrentMap().giveRewards()
+	await tree_exited
+	OverworldGlobals.patroller_destroyed.emit()
 
 func updatePath(immediate:bool=false):
 	match STATE:
@@ -239,7 +233,7 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
-			BODY.get_node("CollisionShape2D").set_deferred('disabled', true)
+			BODY.set_collision_layer_value(1, false)
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
@@ -251,7 +245,7 @@ func updatePath(immediate:bool=false):
 			updatePath()
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_INHERIT
 			COMBAT_SWITCH = true
-			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)
+			BODY.set_collision_layer_value(1, true)
 			ANIMATOR.play("RESET")
 
 func immobolize(disabled_los:bool=true):

@@ -35,7 +35,7 @@ func updatePath(immediate:bool=false):
 			if ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left'].has(ANIMATOR.current_animation):
 				ANIMATOR.animation_finished.emit()
 			
-			BODY.get_node("CollisionShape2D").set_deferred('disabled', true)
+			BODY.set_collision_layer_value(1, false)
 			immobolize()
 			ANIMATOR.play("Stun")
 			randomize()
@@ -51,7 +51,7 @@ func updatePath(immediate:bool=false):
 			PATROL_MODE = 1
 			COMBAT_SWITCH = true
 			shoot_ready = true
-			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)
+			BODY.set_collision_layer_value(1, true)
 			ANIMATOR.play("RESET")
 
 func targetReached():
