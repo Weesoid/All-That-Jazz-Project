@@ -16,7 +16,7 @@ class_name PlayerScene
 @onready var ammo_count = $PlayerCamera/Ammo
 @onready var crystal_count = $PlayerCamera/VoidCrystals
 @onready var prompt = $PlayerCamera/PlayerPrompt
-@onready var audio_player = $ScriptAudioPlayer
+@onready var audio_player = $AudioStreamPlayer2D
 @onready var cinematic_bars = $PlayerCamera/CinematicBars
 @onready var power_input_container = $PlayerCamera/PowerInputs
 @onready var quiver = $PlayerCamera/UtilitySelector
@@ -32,7 +32,6 @@ var bow_mode = false
 var bow_draw_strength = 0
 var SPEED = 100.0
 var stamina_regen = true # MIND THIS, PREFERABLY ONLY INVI CAN DISABLE/ENABLE STAMINA REGEN
-var play_once = true
 var sprinting = false
 var hiding = false
 var channeling_power = false
@@ -41,7 +40,7 @@ var power_inputs = ''
 var ANIMATION_SPEED = 0.0
 
 func _ready():
-	player_camera.global_position = global_position
+	player_camera.global_position = global_position+sprite.offset
 	player_camera.zoom = Vector2(1,1)
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	animation_tree.active = true
@@ -276,11 +275,8 @@ func drawBow():
 	if Input.is_action_pressed("ui_bow_draw") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile():
 		sprinting = false
 		SPEED = 15.0
-		if play_once:
-			playAudio('bow-loading-38752.ogg',0.0,true)
-			play_once = false
 		bow_line.show()
-		bow_line.global_position = global_position + Vector2(0, -10)
+		bow_line.global_position = global_position + Vector2(0, -10) + sprite.offset
 		bow_draw_strength += 0.1
 		bow_line.points[1].y += 1
 		if velocity != Vector2.ZERO:
@@ -298,39 +294,32 @@ func drawBow():
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
-	if Input.is_action_just_released("ui_bow_draw") and can_move:
+	if Input.is_action_just_released("ui_bow_draw") and canShootBow(): 
 		suddenStop()
-		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile(): 
-			shootProjectile()
+		playShootAnimation()
+		shootProjectile()
 		await animation_tree.animation_finished
 		can_move = true
 		undrawBow()
+
+func canShootBow()-> bool:
+	return can_move and bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile()
 
 func undrawBow():
 	bow_line.hide()
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
-	play_once = true
 
 func shootProjectile():
 	OverworldGlobals.playSound("178872__hanbaal__bow.ogg", -15.0, true)
 	InventoryGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
 	var projectile = load("res://scenes/entities_disposable/ProjectileArrow.tscn").instantiate()
-	projectile.global_position = global_position + Vector2(0, -10)
+	projectile.global_position = bow_line.global_position
 	projectile.SHOOTER = self
 	projectile.name = 'PlayerArrow'
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
-
-func playAudio(filename: String, db=0.0, random_pitch=false):
-	audio_player.pitch_scale = 1
-	audio_player.stream = load("res://audio/sounds/%s" % filename)
-	audio_player.volume_db = db
-	if random_pitch:
-		randomize()
-		audio_player.pitch_scale += randf_range(0.0, 0.25)
-	audio_player.play()
 
 func showOverlay(color: Color, alpha:float, duration:float=0.25):
 	color_overlay.modulate = Color.TRANSPARENT
@@ -371,6 +360,7 @@ func updateAnimationParameters():
 			Input.action_release("ui_bow_draw")
 			animation_tree["parameters/conditions/draw_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = true
+			undrawBow()
 		await get_tree().process_frame
 		can_move = true
 	
@@ -391,13 +381,20 @@ func updateAnimationParameters():
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
-	if Input.is_action_just_pressed("ui_melee") and can_move and !animation_tree["parameters/conditions/shoot_bow"]:
+	if Input.is_action_just_pressed("ui_melee") and canMelee():
 		undrawBowAnimation()
 		suddenStop()
 		animation_tree["parameters/conditions/melee"] = true
 		await animation_tree.animation_finished
 		animation_tree["parameters/conditions/melee"] = false
 		can_move = true 
+
+func playDrawSound():
+	if bow_draw_strength < 1:
+		OverworldGlobals.playSound("res://audio/sounds/bow-loading-38752.ogg")
+
+func canMelee():
+	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and bow_mode
 
 func suddenStop():
 	velocity = Vector2.ZERO

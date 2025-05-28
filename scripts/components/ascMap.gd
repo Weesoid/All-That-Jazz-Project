@@ -138,11 +138,10 @@ func destroyPatroller(patroller: GenericPatroller):
 	patroller.get_node("NPCPatrolComponent").destroy()
 
 func checkGiveRewards():
-	print('pluh')
-	print(getPatrollers().size())
 	if getPatrollers().size() == 0:
 		OverworldGlobals.showPlayerPrompt('Map cleared!')
 		giveRewards()
+		#PlayerGlobals.rer
 
 func spawnDestructibleObjectives():
 	var areas = getPatrolAreas()

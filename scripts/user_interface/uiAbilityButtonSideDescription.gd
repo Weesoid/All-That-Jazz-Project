@@ -9,6 +9,7 @@ func _enter_tree():
 
 func showDescription(show_text: String, cust_offset:Vector2=Vector2.ZERO):
 	global_position = get_parent().global_position+cust_offset
+	
 	text.text = '[center]'+show_text
 	animator.play('Show')
 

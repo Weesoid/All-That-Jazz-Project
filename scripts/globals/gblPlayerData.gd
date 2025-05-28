@@ -374,10 +374,10 @@ func randomizeMapEvents():
 	var events = {}
 	var chance_budget = 1.0
 	var possible_events = [
-		"combat_event",
+		#"combat_event",
 		"time_limit",
 		"additional_enemies",
-		"tameable_modifier",
+		#"tameable_modifier",
 		"patroller_effect",
 		"reward_item",
 		"reward_multipliers",

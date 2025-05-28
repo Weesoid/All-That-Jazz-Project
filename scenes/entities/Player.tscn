@@ -204,7 +204,7 @@ tracks/7/keys = {
 tracks/8/type = "audio"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("ScriptAudioPlayer")
+tracks/8/path = NodePath("AudioStreamPlayer2D")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -2375,5 +2375,5 @@ parameters/Idle/blend_position = Vector2(-0.00813007, -0.0117096)
 parameters/Walk/blend_position = Vector2(0.170443, -0.0128806)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
 
-[node name="ScriptAudioPlayer" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 max_polyphony = 8

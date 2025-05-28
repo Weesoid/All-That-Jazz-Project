@@ -8,6 +8,7 @@ func _on_body_entered(body):
 		PlayerGlobals.EQUIPPED_ARROW.applyOverworldEffect(body)
 	
 	if body != SHOOTER:
+		OverworldGlobals.shakeSprite(body, 5.0, 10.0)
 		queue_free()
 
 func _exit_tree():
@@ -18,3 +19,7 @@ func _exit_tree():
 	else:
 		OverworldGlobals.addPatrollerPulse(global_position, 150.0, 4)
 		OverworldGlobals.playSound2D(global_position, "66777__kevinkace__crate-break-1.ogg")
+
+
+func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	pass

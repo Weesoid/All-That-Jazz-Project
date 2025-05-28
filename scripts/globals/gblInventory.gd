@@ -10,6 +10,7 @@ var RECIPES: Dictionary = {
 	['Murder Charm', 'Scrap Salvage', null]: 'CharmStoneWall',
 	['Scrap Salvage', 'Precious Salvage', null]: 'CharmMurder',
 }
+var MAX_INVENTORY: int = 200
 
 signal added_item_to_inventory
 
@@ -176,8 +177,8 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 		addItemResource(item.REFERENCE_ITEM, count)
 
 func canAdd(item, count:int=1, show_prompt=true):
-	if INVENTORY.size() >= 500:
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=pink]You canot have more than 500 items. How did you even manage this?[/color]', 15)
+	if INVENTORY.size() >= MAX_INVENTORY:
+		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=pink]You canot have more than %s items. How did you even manage this?[/color]' % MAX_INVENTORY, 15)
 		return false
 	elif item is ResEquippable and hasItem(item):
 		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])

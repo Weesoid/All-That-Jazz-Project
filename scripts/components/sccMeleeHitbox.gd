@@ -7,13 +7,20 @@ func _on_body_entered(body):
 	if body is GenericPatroller and is_instance_valid(body):
 		if body.has_node('CombatInteractComponent'):
 			OverworldGlobals.getCurrentMap().destroyPatroller(body)
+			PlayerGlobals.overworld_stats['stamina'] -= 50
 			OverworldGlobals.shakeCamera()
 			await OverworldGlobals.getPlayer().showOverlay(Color.RED, 0.025)
 			OverworldGlobals.getPlayer().hideOverlay()
 		elif body.getState() != 3:
-			OverworldGlobals.shakeSprite(body)
 			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=10})
-
+	if body.has_node('Sprite2D') and body != player:
+		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
+	
 func _unhandled_input(event):
-	if Input.is_action_just_pressed('ui_melee') and player.can_move and !player.animation_tree["parameters/conditions/shoot_bow"]:
+	if Input.is_action_just_pressed('ui_melee') and player.canMelee():
 		smear.play('Show')
+
+func getTileTexture(tile_set):
+	for tile_set_id in tile_set.get_source_count():
+		var atlas: TileSetAtlasSource = tile_set.get_source(tile_set_id)
+		print(atlas.texture.resource_path)

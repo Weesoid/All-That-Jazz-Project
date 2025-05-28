@@ -105,7 +105,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 ## Start some dialogue
 func start(dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []) -> void:
 	OverworldGlobals.getPlayer().cinematic_bars.visible = true
-	OverworldGlobals.getPlayer().playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
+	#OverworldGlobals.getPlayer().playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(3, 3), 0.5)
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.getPlayer().setUIVisibility(false)

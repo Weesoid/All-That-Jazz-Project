@@ -13,15 +13,23 @@ BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("2_r45kn")
 PACKED_SCENE = ExtResource("1_smq3a")
 EFFECT_TYPE = 0
+REMOVE_WHEN = 1
+REMOVE_STYLE = 0
 TEXTURE = ExtResource("3_lpmcj")
 MAX_DURATION = 3
 EXTEND_DURATION = 0
 APPLY_EXTEND_DURATION = false
 MAX_RANK = 0
+TICK_ON_APPLY = true
 TICK_PER_TURN = false
 DO_TICKS = true
 RESISTABLE = false
 PERMANENT = false
 LINGERING = false
+PERSIST_ON_DEAD = false
+SOUNDS = {
+"apply": "",
+"expire": ""
+}
 metadata/_editor_prop_ptr_ICON = NodePath("")
 metadata/_editor_prop_ptr_PARTICLES = NodePath("")

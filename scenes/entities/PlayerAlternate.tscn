@@ -1,4 +1,4 @@
-[gd_scene load_steps=141 format=3 uid="uid://by1pampbgw84d"]
+[gd_scene load_steps=139 format=3 uid="uid://by1pampbgw84d"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayerBowman.gd" id="1_cw77a"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="2_vhjle"]
@@ -58,7 +58,8 @@ _data = {
 size = Vector2(17, 22)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
-height = 22.0
+radius = 6.0
+height = 24.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_846aw"]
 bg_color = Color(0, 0, 0, 1)
@@ -205,7 +206,7 @@ tracks/7/keys = {
 tracks/8/type = "audio"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("ScriptAudioPlayer")
+tracks/8/path = NodePath("AudioStreamPlayer2D")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -664,6 +665,20 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector2(0, -20), Vector2(0, -21)]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"playDrawSound"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_aaa36"]
 resource_name = "Bow_Draw_Left"
@@ -715,6 +730,20 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0, -20), Vector2(1, -20)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("..")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"playDrawSound"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_1pxju"]
@@ -768,6 +797,20 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(0, -20), Vector2(-1, -20)]
 }
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("..")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"playDrawSound"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_3cxfv"]
 resource_name = "Bow_Draw_Up"
@@ -807,6 +850,20 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0, -20), Vector2(0, -19)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"playDrawSound"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_h8s5o"]
@@ -2393,14 +2450,6 @@ advance_condition = &"melee"
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7d48a"]
-advance_mode = 2
-advance_condition = &"melee"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dtsm8"]
-switch_mode = 2
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_uxbxm"]
 "states/Draw Bow/node" = SubResource("AnimationNodeBlendSpace2D_am7tc")
 "states/Draw Bow/position" = Vector2(422.017, 6.774)
@@ -2425,21 +2474,31 @@ states/Walk/node = SubResource("AnimationNodeBlendSpace2D_hjgg8")
 states/Walk/position = Vector2(-168, 149)
 "states/Walk Bow/node" = SubResource("AnimationNodeBlendSpace2D_v7p5t")
 "states/Walk Bow/position" = Vector2(-168, -81.226)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_tus5o"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_vn7n0"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_ivvpp"), "Idle", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_d4yll"), "Idle Bow", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_pwvh3"), "Walk Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_di8f5"), "Idle Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_xc2fq"), "Idle Bow", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_yyjk8"), "Draw Bow", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_f5ypq"), "Shoot Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_13w0k"), "Idle Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_052le"), "Idle", "Void_Call", SubResource("AnimationNodeStateMachineTransition_7rfp5"), "Void_Call", "Void_Charge", SubResource("AnimationNodeStateMachineTransition_ctdd1"), "Void_Charge", "Void_Calm", SubResource("AnimationNodeStateMachineTransition_sxu5c"), "Void_Calm", "Idle", SubResource("AnimationNodeStateMachineTransition_t3elc"), "Draw Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_87fsc"), "Walk Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_n3d2h"), "Walk", "Void_Call", SubResource("AnimationNodeStateMachineTransition_c2w6y"), "Draw Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_a12pg"), "Draw Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_dkf3g"), "Draw Bow Walk", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_j2agf"), "Draw Bow Walk", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_46kqf"), "Draw Bow Walk", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_rwk1u"), "Walk Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_imlol"), "Idle Bow", "Melee", SubResource("AnimationNodeStateMachineTransition_iq35y"), "Melee", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_wm4dt"), "Idle", "Melee", SubResource("AnimationNodeStateMachineTransition_7d48a"), "Melee", "Idle", SubResource("AnimationNodeStateMachineTransition_dtsm8")]
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_tus5o"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_vn7n0"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_ivvpp"), "Idle", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_d4yll"), "Idle Bow", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_pwvh3"), "Walk Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_di8f5"), "Idle Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_xc2fq"), "Idle Bow", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_yyjk8"), "Draw Bow", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_f5ypq"), "Shoot Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_13w0k"), "Idle Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_052le"), "Idle", "Void_Call", SubResource("AnimationNodeStateMachineTransition_7rfp5"), "Void_Call", "Void_Charge", SubResource("AnimationNodeStateMachineTransition_ctdd1"), "Void_Charge", "Void_Calm", SubResource("AnimationNodeStateMachineTransition_sxu5c"), "Void_Calm", "Idle", SubResource("AnimationNodeStateMachineTransition_t3elc"), "Draw Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_87fsc"), "Walk Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_n3d2h"), "Walk", "Void_Call", SubResource("AnimationNodeStateMachineTransition_c2w6y"), "Draw Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_a12pg"), "Draw Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_dkf3g"), "Draw Bow Walk", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_j2agf"), "Draw Bow Walk", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_46kqf"), "Draw Bow Walk", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_rwk1u"), "Walk Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_imlol"), "Idle Bow", "Melee", SubResource("AnimationNodeStateMachineTransition_iq35y"), "Melee", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_wm4dt")]
 graph_offset = Vector2(-381.775, -184.015)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_7ym7e"]
 
 [node name="Player" type="CharacterBody2D" groups=["presist"]]
+y_sort_enabled = true
 collision_layer = 17
 collision_mask = 17
 script = ExtResource("1_cw77a")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_vhjle")]
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -20)
+texture = ExtResource("4_ybhti")
+offset = Vector2(0, -32)
+hframes = 9
+vframes = 5
+frame = 19
+
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(0, -21.9902)
+offset = Vector2(0, -32)
 
 [node name="PlayerPower" type="Sprite2D" parent="."]
 visible = false
@@ -2448,18 +2507,11 @@ position = Vector2(0, -20)
 texture = ExtResource("3_vfkv7")
 hframes = 9
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -20)
-texture = ExtResource("4_ybhti")
-hframes = 9
-vframes = 5
-frame = 37
-
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(1, -49)
 scale = Vector2(0.546875, 0.476)
 texture = ExtResource("5_55s1i")
+offset = Vector2(0, -64)
 hframes = 4
 vframes = 2
 frame = 4
@@ -2470,8 +2522,8 @@ libraries = {
 }
 
 [node name="PlayerDirection" type="Marker2D" parent="."]
-position = Vector2(0, -20)
-rotation = 1.5708
+z_index = 1
+position = Vector2(0, -42)
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)
@@ -2484,7 +2536,7 @@ shape = SubResource("RectangleShape2D_b8rwl")
 debug_color = Color(0.917647, 0.996078, 0, 0.419608)
 
 [node name="BowShotLine" type="Line2D" parent="PlayerDirection"]
-position = Vector2(-10, 0)
+position = Vector2(0, -33)
 points = PackedVector2Array(0, 0, 0, 0)
 width = 1.0
 default_color = Color(1, 0, 0, 0.392157)
@@ -2492,11 +2544,13 @@ default_color = Color(1, 0, 0, 0.392157)
 [node name="MeleeHitbox" parent="PlayerDirection" instance=ExtResource("6_l557x")]
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1)
+z_index = 2
+position = Vector2(0, -33)
 shape = SubResource("CapsuleShape2D_8i7nm")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 z_as_relative = false
+position = Vector2(0, -32)
 zoom = Vector2(2, 2)
 position_smoothing_speed = 32.0
 script = ExtResource("6_lwji6")
@@ -2637,7 +2691,7 @@ parameters/Melee/blend_position = Vector2(-0.0637838, 0.260187)
 parameters/Walk/blend_position = Vector2(0.170443, -0.0128806)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
 
-[node name="ScriptAudioPlayer" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 max_polyphony = 8
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]

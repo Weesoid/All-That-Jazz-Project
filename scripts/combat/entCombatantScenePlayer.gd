@@ -43,7 +43,7 @@ func setBlocking(set_to: bool):
 		else:
 			playIdle('Idle')
 
-func block(bonus_grit: float=1.0):
+func block(bonus_grit: float=10.0):
 	if canBlock():
 		CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 1.0}, 'block')
 		doAnimation('Block', null, {'skip_pause'=true})

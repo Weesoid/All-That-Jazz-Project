@@ -110,13 +110,14 @@ func changeEntityVisibility(entity_name: String, visibility:bool):
 	else:
 		get_tree().current_scene.get_node(entity_name).visible = visibility
 
-func shakeSprite(entity: Node2D, sprite_name: String='Sprite2D'):
+func shakeSprite(entity: Node2D, strength:float=15.0, speed:float=50.0, sprite_name:String='Sprite2D'):
 	if !entity.has_node(sprite_name):
 		return
+	
 	var sprite = entity.get_node(sprite_name)
 	var sprite_shaker: SpriteShaker = load("res://scenes/components/SpriteShaker.tscn").instantiate()
-	sprite_shaker.shake_speed = 15.0
-	sprite_shaker.shake_strength = 50.0
+	sprite_shaker.shake_speed = speed
+	sprite_shaker.shake_strength = strength
 	sprite.add_child(sprite_shaker)
 
 func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
@@ -564,15 +565,16 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	PhysicsServer2D.set_active(true)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
+	var enemy_squad = getCombatantSquadComponent(entity_name)
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad('Player'):
 		combatant.LINGERING_STATUS_EFFECTS.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
-	for combatant in getCombatantSquad(entity_name):
+	for combatant in enemy_squad.COMBATANT_SQUAD:
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
-		for effect in getCombatantSquadComponent(entity_name).afflicted_status_effects:
+		for effect in enemy_squad.afflicted_status_effects:
 			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
-		if CombatGlobals.randomRoll(getCombatantSquadComponent(entity_name).TAMEABLE_CHANCE):
+		if CombatGlobals.randomRoll(enemy_squad.TAMEABLE_CHANCE):
 			randomize()
 			duped_combatant.SPAWN_ON_DEATH = getRandomTameable().pick_random().convertToEnemy('Feral')
 		combat_scene.COMBATANTS.append(duped_combatant)

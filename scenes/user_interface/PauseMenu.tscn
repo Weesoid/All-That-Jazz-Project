@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cycghsdmxq0ps"]
+[gd_scene load_steps=9 format=3 uid="uid://cycghsdmxq0ps"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPauseUI.gd" id="1_gyhaf"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_5ibri"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="3_m3iej"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_t8o7i"]
 [ext_resource type="Texture2D" uid="uid://nyr8hffx6x17" path="res://images/sprites/icon_cross.png" id="4_osvvh"]
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="5_i8qhb"]
 [ext_resource type="Texture2D" uid="uid://cgo5t7wpyc38d" path="res://images/sprites/trade_slip.png" id="7_k7yvx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3hhx"]
@@ -72,7 +73,7 @@ dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Container/HSplitContainer"]
 layout_mode = 2
-theme = ExtResource("3_t8o7i")
+theme = ExtResource("5_i8qhb")
 text = "Morale"
 vertical_alignment = 1
 
@@ -96,7 +97,7 @@ offset_right = 52.0
 offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_t8o7i")
+theme = ExtResource("5_i8qhb")
 text = "50/100"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -114,7 +115,7 @@ offset_right = 5.0
 offset_bottom = 6.0
 grow_horizontal = 0
 grow_vertical = 0
-theme = ExtResource("3_t8o7i")
+theme = ExtResource("5_i8qhb")
 theme_override_font_sizes/font_size = 16
 text = "20"
 horizontal_alignment = 2
