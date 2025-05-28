@@ -173,9 +173,9 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	message = indicator_bb_code+'[outline_size=8] '+message
 	if damage > 0:
 		manual_call_indicator.emit(target, message, 'Damage')
-	target.removeTokens(2)
+	target.removeTokens(1)
 	if caster != null:
-		caster.removeTokens(1)
+		caster.removeTokens(0)
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
 	if caster != null and target.isDead() and abs(target.STAT_VALUES['health']) >= target.getMaxHealth() * 0.25:
@@ -231,7 +231,7 @@ func useDamageFormula(target: ResCombatant, damage):
 		out_damage = 0
 	return out_damage
 
-func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
+func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true, trigger_on_heal:bool=true):
 	if target.STAT_VALUES['health'] < 0:
 		target.STAT_VALUES['health'] = 0
 	base_healing = valueVariate(base_healing, 0.15)
@@ -251,9 +251,11 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true):
 	else:
 		manual_call_indicator.emit(target, "Broken.", 'Flunk')
 	
-	target.removeTokens(3)
-	
-	#received_combatant_value.emit(target, caster, int(base_healing))
+	if trigger_on_heal:
+		target.removeTokens(2)
+	print(target.SCENE.idle_animation)
+	if target.SCENE.animator.current_animation == 'Fading' and !target.isDead():
+		target.SCENE.playIdle('Idle')
 
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance

@@ -36,13 +36,13 @@
 [ext_resource type="Texture2D" path="res://images/sprites/item_unknown.png" id="32_1e34r"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="33_ldicy"]
 
-[sub_resource type="Resource" id="Resource_2njji"]
+[sub_resource type="Resource" id="Resource_61n0s"]
 script = ExtResource("1_0hc8s")
-position = Vector2(-85.3852, -75.4064)
+position = Vector2(-94.0238, -135.241)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
 direction = 0
 
-[sub_resource type="Resource" id="Resource_ckwdb"]
+[sub_resource type="Resource" id="Resource_my2gm"]
 script = ExtResource("2_bx27b")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([ExtResource("2_jdlov")])
 QUEST_OBJECTIVES_DATA = {
@@ -80,7 +80,7 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_uex0n"]
+[sub_resource type="Resource" id="Resource_2pvfn"]
 script = ExtResource("20_atcmh")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_n2h25"), ExtResource("3_ys0c6"), ExtResource("20_vcbb6"), ExtResource("21_fy0h7"), ExtResource("23_vd5mn"), ExtResource("24_sl74i")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -107,12 +107,12 @@ CLEARED_MAPS = {
 }
 }
 EQUIPPED_ARROW = ExtResource("28_vnjcq")
-CURRENCY = 210810
+CURRENCY = 58098
 PARTY_LEVEL = 5
-CURRENT_EXP = 673
+CURRENT_EXP = 0
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
-TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_ys0c6"), ExtResource("24_sl74i"), ExtResource("23_vd5mn"), ExtResource("3_n2h25")])
+TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_ys0c6"), ExtResource("3_n2h25")])
 COMBATANT_SAVE_DATA = {
 ExtResource("3_n2h25"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("5_qy244"), ExtResource("6_kndlg"), ExtResource("7_52n12"), ExtResource("8_vyobm")]), {
 0: SubResource("Resource_pwlpu"),
@@ -126,7 +126,7 @@ ExtResource("3_n2h25"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.57,
 "handling": 1,
 "heal_mult": 1.27,
-"health": 38.0,
+"health": 20.0,
 "hustle": 2,
 "resist": 0.07
 }, {
@@ -140,7 +140,7 @@ ExtResource("3_n2h25"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 38,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_l6hty"), ExtResource("5_qy244"), ExtResource("6_kndlg"), ExtResource("7_52n12"), ExtResource("8_vyobm"), ExtResource("9_o3sov"), ExtResource("10_cn2kg"), ExtResource("11_utotw"), ExtResource("12_uta0m")]), true, Array[String]([]), true, 0, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_l6hty"), ExtResource("5_qy244"), ExtResource("6_kndlg"), ExtResource("7_52n12"), ExtResource("8_vyobm"), ExtResource("9_o3sov"), ExtResource("10_cn2kg"), ExtResource("11_utotw"), ExtResource("12_uta0m")]), true, Array[String](["Faded I"]), true, 0, {
 "Defender": {
 "grit": 0.75
 },
@@ -189,7 +189,7 @@ ExtResource("3_ys0c6"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.12,
 "handling": 1,
 "heal_mult": 1.02,
-"health": 22.0,
+"health": 3,
 "hustle": -2,
 "resist": 0.07
 }, {
@@ -203,7 +203,7 @@ ExtResource("3_ys0c6"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 22,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_l6hty"), ExtResource("5_qy244"), ExtResource("6_kndlg"), ExtResource("7_52n12"), ExtResource("8_vyobm"), ExtResource("9_o3sov"), ExtResource("10_cn2kg"), ExtResource("11_utotw"), ExtResource("12_uta0m"), ExtResource("13_e0gnh"), ExtResource("14_7neoa"), ExtResource("15_r4q1h"), ExtResource("5_qy244"), ExtResource("16_q34eh"), ExtResource("17_hhogl")]), true, Array[String]([]), true, 0, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_l6hty"), ExtResource("5_qy244"), ExtResource("6_kndlg"), ExtResource("7_52n12"), ExtResource("8_vyobm"), ExtResource("9_o3sov"), ExtResource("10_cn2kg"), ExtResource("11_utotw"), ExtResource("12_uta0m"), ExtResource("13_e0gnh"), ExtResource("14_7neoa"), ExtResource("15_r4q1h"), ExtResource("5_qy244"), ExtResource("16_q34eh"), ExtResource("17_hhogl")]), true, Array[String](["Faded III"]), true, 0, {
 "allocations": {
 "brawn": 0.0,
 "grit": 0.05,
@@ -257,7 +257,7 @@ ExtResource("20_vcbb6"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 7.0,
+"health": 1.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -307,7 +307,7 @@ ExtResource("21_fy0h7"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.0,
 "handling": 1,
 "heal_mult": 1.0,
-"health": 35.0,
+"health": 8.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -358,7 +358,7 @@ ExtResource("23_vd5mn"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 7.0,
+"health": 1.0,
 "hustle": 1,
 "resist": 0.05
 }, {
@@ -408,7 +408,7 @@ ExtResource("24_sl74i"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "grit": 0.02,
 "handling": 0,
 "heal_mult": 1.02,
-"health": 14.0,
+"health": 3.0,
 "hustle": 2,
 "resist": 0.07
 }, {
@@ -461,218 +461,7 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
 KNOWN_POWERS = [ExtResource("19_6sgck")]
 
-[sub_resource type="Resource" id="Resource_wq3yu"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/Testifier.tres"
-
-[sub_resource type="Resource" id="Resource_7bw5o"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/Testifier.tres"
-
-[sub_resource type="Resource" id="Resource_0oisx"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"health": 24
-}
-NAME = "Testifier"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/Testifier.tres"
-
-[sub_resource type="Resource" id="Resource_l73d2"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"hustle": 10
-}
-NAME = "Speedy Boy"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Speedightful!"
-VALUE = 150
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmSpeed.tres"
-
-[sub_resource type="Resource" id="Resource_tsacu"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"hustle": 10
-}
-NAME = "Rushdown"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Get speedy wagoo wagoo!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/RushDown.tres"
-
-[sub_resource type="Resource" id="Resource_ubgq7"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"hustle": 10
-}
-NAME = "Rushdown"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Get speedy wagoo wagoo!"
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/RushDown.tres"
-
-[sub_resource type="Resource" id="Resource_sker1"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"brawn": 1.0,
-"crit": 1.0,
-"grit": 0.1,
-"hustle": 99
-}
-NAME = "Murder Charm"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "KILL KILL EVERYTHING!"
-VALUE = 100
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmMurder.tres"
-
-[sub_resource type="Resource" id="Resource_nbwo5"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_6ea0j"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_snsec"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_bv21g"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_ut2mk"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_3yy77"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_uyj12"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_06p8l"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_vvswn"]
-script = ExtResource("33_ldicy")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"grit": 0.75
-}
-NAME = "Defender"
-ICON = ExtResource("32_1e34r")
-DESCRIPTION = "Defendicious!"
-VALUE = 9999
-MANDATORY = false
-PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
-
-[sub_resource type="Resource" id="Resource_ahb12"]
+[sub_resource type="Resource" id="Resource_lw7qc"]
 script = ExtResource("33_ldicy")
 UNIQUE = false
 STAT_MODIFICATIONS = {
@@ -698,7 +487,7 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_lw7qc"]
+[sub_resource type="Resource" id="Resource_ahb12"]
 script = ExtResource("33_ldicy")
 UNIQUE = false
 STAT_MODIFICATIONS = {
@@ -711,9 +500,220 @@ VALUE = 9999
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
 
-[sub_resource type="Resource" id="Resource_nyruk"]
+[sub_resource type="Resource" id="Resource_vvswn"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_06p8l"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_uyj12"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_3yy77"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_ut2mk"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_bv21g"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_snsec"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_6ea0j"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_nbwo5"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"grit": 0.75
+}
+NAME = "Defender"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Defendicious!"
+VALUE = 9999
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmStoneWall.tres"
+
+[sub_resource type="Resource" id="Resource_sker1"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"brawn": 1.0,
+"crit": 1.0,
+"grit": 0.1,
+"hustle": 99
+}
+NAME = "Murder Charm"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "KILL KILL EVERYTHING!"
+VALUE = 100
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmMurder.tres"
+
+[sub_resource type="Resource" id="Resource_ubgq7"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"hustle": 10
+}
+NAME = "Rushdown"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Get speedy wagoo wagoo!"
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/RushDown.tres"
+
+[sub_resource type="Resource" id="Resource_tsacu"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"hustle": 10
+}
+NAME = "Rushdown"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Get speedy wagoo wagoo!"
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/RushDown.tres"
+
+[sub_resource type="Resource" id="Resource_l73d2"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"hustle": 10
+}
+NAME = "Speedy Boy"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Speedightful!"
+VALUE = 150
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/CharmSpeed.tres"
+
+[sub_resource type="Resource" id="Resource_0oisx"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"health": 24
+}
+NAME = "Testifier"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Testify Candace testify!"
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/Testifier.tres"
+
+[sub_resource type="Resource" id="Resource_7bw5o"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"health": 24
+}
+NAME = "Testifier"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Testify Candace testify!"
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/Testifier.tres"
+
+[sub_resource type="Resource" id="Resource_wq3yu"]
+script = ExtResource("33_ldicy")
+UNIQUE = false
+STAT_MODIFICATIONS = {
+"health": 24
+}
+NAME = "Testifier"
+ICON = ExtResource("32_1e34r")
+DESCRIPTION = "Testify Candace testify!"
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = "res://resources/items/Testifier.tres"
+
+[sub_resource type="Resource" id="Resource_ki54i"]
 script = ExtResource("21_4utdy")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("30_buic6"), ExtResource("28_vnjcq"), ExtResource("29_0sygs"), ExtResource("27_3xvyg"), SubResource("Resource_wq3yu"), SubResource("Resource_7bw5o"), SubResource("Resource_0oisx"), SubResource("Resource_l73d2"), SubResource("Resource_tsacu"), SubResource("Resource_ubgq7"), SubResource("Resource_sker1"), SubResource("Resource_nbwo5"), SubResource("Resource_6ea0j"), SubResource("Resource_snsec"), SubResource("Resource_bv21g"), SubResource("Resource_ut2mk"), SubResource("Resource_3yy77"), SubResource("Resource_uyj12"), SubResource("Resource_06p8l"), SubResource("Resource_vvswn"), SubResource("Resource_ahb12"), SubResource("Resource_4qn5u"), SubResource("Resource_lw7qc")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("27_3xvyg"), SubResource("Resource_lw7qc"), SubResource("Resource_4qn5u"), SubResource("Resource_ahb12"), SubResource("Resource_vvswn"), SubResource("Resource_06p8l"), SubResource("Resource_uyj12"), SubResource("Resource_3yy77"), SubResource("Resource_ut2mk"), SubResource("Resource_bv21g"), SubResource("Resource_snsec"), SubResource("Resource_6ea0j"), SubResource("Resource_nbwo5"), ExtResource("29_0sygs"), SubResource("Resource_sker1"), SubResource("Resource_ubgq7"), SubResource("Resource_tsacu"), ExtResource("30_buic6"), ExtResource("28_vnjcq"), SubResource("Resource_l73d2"), SubResource("Resource_0oisx"), SubResource("Resource_7bw5o"), SubResource("Resource_wq3yu")])
 CRAFTED = Array[String](["ArrowJunk", "ArrowSleeper"])
 ITEM_DATA_INVENTORY = {
 "res://resources/items/ArrowJunk.tres": 16,
@@ -724,9 +724,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("22_kgx23")
-NAME = "Save 1 - 01:17:16
+NAME = "Save 1 - 01:19:53
 Morale 5
 Prototype Room"
-PLAYTIME = 4637.15
+PLAYTIME = 4793.68
 current_map_path = "res://scenes/maps/TestRoom/TestRoomA.tscn"
-save_data = [SubResource("Resource_2njji"), SubResource("Resource_ckwdb"), SubResource("Resource_uex0n"), SubResource("Resource_nyruk")]
+save_data = [SubResource("Resource_61n0s"), SubResource("Resource_my2gm"), SubResource("Resource_2pvfn"), SubResource("Resource_ki54i")]

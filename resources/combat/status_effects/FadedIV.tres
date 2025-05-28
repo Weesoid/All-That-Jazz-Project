@@ -13,6 +13,7 @@ STATUS_SCRIPT = ExtResource("1_nay4v")
 EFFECT_TYPE = 0
 REMOVE_WHEN = 0
 REMOVE_STYLE = 0
+RE = Array[int]([])
 TEXTURE = ExtResource("2_3y4gj")
 MAX_DURATION = 0
 EXTEND_DURATION = 1

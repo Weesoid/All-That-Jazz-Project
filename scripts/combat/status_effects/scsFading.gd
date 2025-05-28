@@ -3,6 +3,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		target.SCENE.moveTo(target.SCENE.get_parent(), 0.25, Vector2(0,0), true)
 		CombatGlobals.playFadingTween(target)
 		#CombatGlobals.playAnimation(target, 'Fading')
+		print('bruh')
 		target.SCENE.playIdle('Fading')
 		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
 		target.SCENE.blocking = false
@@ -15,11 +16,8 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.getCombatScene().add_child(qte)
 		await CombatGlobals.qte_finished
 		if qte.points >= 1:
+			CombatGlobals.calculateHealing(target, target.BASE_STAT_VALUES['health']*0.2, true, false)
 			CombatGlobals.manual_call_indicator.emit(target, 'Saved!', 'QTE')
-			target.STAT_VALUES['health'] = target.BASE_STAT_VALUES['health'] * 0.3
-			if target.STAT_VALUES['health'] <= 0:
-				target.STAT_VALUES['health'] = 1
-			
 			CombatGlobals.resetStat(target, status_effect.NAME)
 		qte.queue_free()
 		status_effect.removeStatusEffect()
@@ -32,14 +30,14 @@ static func canAddQTE(status_effect: ResStatusEffect)-> bool:
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if  CombatGlobals.getCombatScene().combat_result >= 1:
 		applyFaded(target)
-		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25))
+		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25),true,false)
 	elif target.STAT_VALUES['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.manual_call_indicator.emit(target, 'Out cold!', 'Resist')
 		CombatGlobals.addStatusEffect(target, 'KnockOut')
 	else:
 		CombatGlobals.playSecondWindTween(target)
 		applyFaded(target)
-		target.SCENE.playIdle('Idle')
+		target.SCENE.idle_animation = 'Idle'
 	
 	CombatGlobals.resetStat(target, status_effect.NAME)
 
