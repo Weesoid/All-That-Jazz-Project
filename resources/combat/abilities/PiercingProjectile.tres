@@ -12,7 +12,7 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage = 99
+damage = 1
 can_miss = true
 can_crit = true
 bonus_stats = {}
@@ -31,7 +31,7 @@ DESCRIPTION = "Let loose a projectile that pierces foes!"
 ICON = ExtResource("3_8hyhm")
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_45pgf")])
 ABILITY_SCRIPT = ExtResource("1_05jt0")
-TARGET_TYPE = 0
+TARGET_TYPE = 1
 TARGET_GROUP = 1
 REQUIRED_STATUS_EFFECT = {
 "rank": 0,

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://ewb80noaamii"]
 
-[ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="1_2xnl3"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_dehdw"]
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_g3fl5"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="2_0oq23"]
+[ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="2_3l3b0"]
 
 [resource]
 script = ExtResource("1_hgql2")
@@ -19,7 +19,7 @@ PACKED_SCENE = ExtResource("1_dehdw")
 DESCRIPTION = "Debuggicus Maximum Aurelius"
 STAT_VALUES = {
 "accuracy": 0.95,
-"brawn": 999.0,
+"brawn": 0.0,
 "crit": 0.05,
 "crit_dmg": 1.5,
 "grit": 0.0,
@@ -41,5 +41,5 @@ SCALE_STATS = {
 "hustle": true,
 "resist": false
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_2xnl3"), ExtResource("2_0oq23")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_g3fl5"), ExtResource("2_3l3b0")])
 MAX_TURN_CHARGES = 1

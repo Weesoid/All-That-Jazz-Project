@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_essox"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_fyhu7"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_tenu0"]
-[ext_resource type="Resource" uid="uid://ep6cmyt1jplk" path="res://resources/combat/status_effects/Overguard.tres" id="3_2mm41"]
+[ext_resource type="Resource" uid="uid://nggpuuho017e" path="res://resources/combat/status_effects/Overguard.tres" id="3_2mm41"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_wtyw5"]
 
 [sub_resource type="Resource" id="Resource_rqbih"]

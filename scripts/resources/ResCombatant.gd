@@ -34,6 +34,7 @@ class_name ResCombatant
 }
 @export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var MAX_TURN_CHARGES = 1
+@export var RIPOSTE_EFFECT: ResDamageEffect
 @export var AI_PACKAGE: GDScript
 var TURN_CHARGES: int
 var STAT_MODIFIERS = {}

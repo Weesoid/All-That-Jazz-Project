@@ -5,7 +5,6 @@ static func animate(caster: CombatantScene, target: CombatantScene, ability: Res
 	CombatGlobals.ability_finished.emit()
 
 static func skillCheck(target: CombatantScene , caster: CombatantScene, check: String, ability: ResAbility, count:int=1):
-	print(caster.combatant_resource, ' <- ')
 	var qte = await CombatGlobals.spawnQuickTimeEvent(target, check, count)
 	var points = qte.points
 	qte.queue_free()

@@ -273,7 +273,8 @@ func drawBow():
 		toggleBowAnimation()
 	
 	if Input.is_action_pressed("ui_bow_draw") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile():
-		sprinting = false
+		if bow_draw_strength < 1.5: suddenStop(false)
+		#sprinting = false
 		SPEED = 15.0
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10) + sprite.offset
@@ -290,7 +291,7 @@ func drawBow():
 			tween.tween_property(sprite, 'self_modulate', Color.INDIAN_RED,0.1)
 			tween.tween_property(sprite, 'self_modulate', Color.WHITE, 0.25)
 			OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg", -8.0)
-			OverworldGlobals.showQuickAnimation("res://scenes/animations/BowReady.tscn",player_direction)
+			OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/BowReady.tscn",player_direction)
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
 			bow_line.points[1].y = 275
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
@@ -396,10 +397,15 @@ func playDrawSound():
 func canMelee():
 	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and bow_mode
 
-func suddenStop():
+func suddenStop(stop_move:bool=true):
 	velocity = Vector2.ZERO
 	sprinting = false
-	can_move = false
+	Input.action_release('ui_move_down')
+	Input.action_release('ui_move_up')
+	Input.action_release('ui_move_left')
+	Input.action_release('ui_move_right')
+	if stop_move:
+		can_move = false
 
 func setUIVisibility(set_visibility:bool):
 	for child in player_camera.get_children():

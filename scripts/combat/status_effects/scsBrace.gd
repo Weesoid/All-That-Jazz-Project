@@ -1,23 +1,28 @@
 static func applyEffects(target, status_effect:ResStatusEffect):
+	if status_effect.APPLY_ONCE:
+		CombatGlobals.addStatusEffect(target, target.GUARD_EFFECT)
 	if !target.hasStatusEffect('Guard Break'):
 		target.SCENE.setBlocking(true)
+		status_effect.current_rank = 1
 	else:
 		status_effect.removeStatusEffect()
 
-static func applyHitEffects(target, _caster, value, status_effect):
-	var bonus = 0.1*status_effect.current_rank
-	var heal_bonus = 0.15 + (bonus * 0.5)
-	print(heal_bonus)
-	if target is ResPlayerCombatant:
-		CombatGlobals.addTension(1)
-	if (target is ResPlayerCombatant and target.STAT_MODIFIERS.keys().has('block')) or (target is ResEnemyCombatant and CombatGlobals.randomRoll(0.75+target.STAT_VALUES['grit'])):
-		if CombatGlobals.randomRoll(target.BASE_STAT_VALUES['grit'] + 0.5 + bonus) and target is ResPlayerCombatant:
-			CombatGlobals.calculateHealing(target, target.getMaxHealth() * heal_bonus, false)
-		elif CombatGlobals.randomRoll(target.BASE_STAT_VALUES['grit'] + 0.7 + bonus) and target is ResEnemyCombatant:
-			target.SCENE.doAnimation('Block')
-			CombatGlobals.calculateHealing(target, (target.getMaxHealth()+value) * 0.5, false)
-		CombatGlobals.rankUpStatusEffect(target, status_effect)
+static func applyHitEffects(target, caster, value, status_effect):
+	if target is ResPlayerCombatant and target.STAT_MODIFIERS.keys().has('block'):
+		CombatGlobals.getCombatScene().battleFlash('Flash', Color.WHITE)
 		CombatGlobals.manual_call_indicator.emit(target, '[img]'+str(status_effect.TEXTURE.get_path())+'[/img] Blocked!', 'Resist')
+		if target is ResPlayerCombatant and status_effect.current_rank == 1:
+			CombatGlobals.addTension(1)
+			status_effect.current_rank = 0
+	else:
+		target.SCENE.block_timer.start(0.8)
+
+static func skillCheck(target: CombatantScene , caster: CombatantScene, check: String, count:int=1):
+	var qte = await CombatGlobals.spawnQuickTimeEvent(target, check, count)
+	var points = qte.points
+	qte.queue_free()
+	if points > 0:
+		CombatGlobals.calculateDamage(target, caster, 2)
 
 static func endEffects(target, _status_effect: ResStatusEffect):
 	target.SCENE.setBlocking(false)
@@ -25,3 +30,4 @@ static func endEffects(target, _status_effect: ResStatusEffect):
 		CombatGlobals.addStatusEffect(target, 'GuardBreak')
 	else:
 		CombatGlobals.removeStatusEffect(target, 'Guard Break')
+	CombatGlobals.removeStatusEffect(target, 'Riposte')

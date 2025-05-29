@@ -11,6 +11,7 @@ script = ExtResource("2_b4evy")
 target = 0
 status_effect = ExtResource("3_x40cs")
 cast_animation = "Cast_Block"
+is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0
@@ -24,6 +25,11 @@ BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([
 ABILITY_SCRIPT = ExtResource("1_v8or2")
 TARGET_TYPE = 0
 TARGET_GROUP = 2
+REQUIRED_STATUS_EFFECT = {
+"rank": 0,
+"status_effect": null
+}
+CHARGES = 0
 CAN_TARGET_SELF = true
 TARGET_DEAD = false
 DEAD_TARGET_PARAMS = {

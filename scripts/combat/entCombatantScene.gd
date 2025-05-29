@@ -13,6 +13,10 @@ var hit_script: GDScript
 func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
 	if cannotAct() and !ignore_dead: 
 		return
+#	await get_tree().process_frame
+#	if CombatGlobals.getCombatScene().has_node('QTE'):
+#		await CombatGlobals.qte_finished
+#		await CombatGlobals.getCombatScene().get_node('QTE').tree_exited
 	if target is CombatantScene: 
 		target = target.combatant_resource
 	if target is ResCombatant:
@@ -35,7 +39,11 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
-	if cannotAct() and !['Fading, KO'].has(animation) or animation == '': return
+	if cannotAct() and !['Fading, KO'].has(animation) or animation == '': 
+		return
+#	if CombatGlobals.getCombatScene().has_node('QTE'):
+#		await CombatGlobals.qte_finished
+#		await CombatGlobals.getCombatScene().get_node('QTE').tree_exited
 	if !animator.get_animation_list().has(animation): animation = 'Cast_Misc'
 	combatant_resource.stopBreatheTween()
 	
@@ -52,7 +60,8 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play('RESET')
 	if !data.has('skip_pause') or (CombatGlobals.inCombat() and !CombatGlobals.getCombatScene().onslaught_mode):
 		await get_tree().create_timer(0.25).timeout
-	playIdle()
+	if !data.has('skip_idle'):
+		playIdle()
 	hit_script = null
 
 func cannotAct()-> bool:

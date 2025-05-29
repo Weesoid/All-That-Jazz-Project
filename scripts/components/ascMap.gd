@@ -205,13 +205,13 @@ func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_
 	if remove_destroyables:
 		for destroyable in getDestructibleObjectives():
 			destroyable.active = false
-			var animation = load("res://scenes/animations/Reinforcements.tscn").instantiate()
+			var animation = load("res://scenes/animations_abilities/Reinforcements.tscn").instantiate()
 			call_deferred('add_child', animation)
 			await animation.ready
 			animation.playAnimation(destroyable.global_position)
 			destroyable.queue_free()
 	for patroller in getPatrollers():
-		var animation = load("res://scenes/animations/Reinforcements.tscn").instantiate()
+		var animation = load("res://scenes/animations_abilities/Reinforcements.tscn").instantiate()
 		call_deferred('add_child', animation)
 		await animation.ready
 		animation.playAnimation(patroller.global_position)

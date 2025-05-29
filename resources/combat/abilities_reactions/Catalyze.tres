@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://wawebo1rsryp"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwCatalyze.gd" id="1_08t8i"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
-[ext_resource type="PackedScene" uid="uid://bkuph8emlan71" path="res://scenes/animations/Catalyze.tscn" id="2_yn6e8"]
+[ext_resource type="PackedScene" uid="uid://bkuph8emlan71" path="res://scenes/animations_abilities/Catalyze.tscn" id="2_yn6e8"]
 
 [resource]
 script = ExtResource("1_yro00")

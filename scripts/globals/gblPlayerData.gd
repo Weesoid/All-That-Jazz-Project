@@ -462,7 +462,7 @@ func saveData(save_data: Array):
 			combatant.STAT_MODIFIERS,
 			combatant.EQUIPPED_WEAPON,
 			combatant.STAT_POINT_ALLOCATIONS,
-			combatant.ABILITY_SLOT,
+			combatant.GUARD_EFFECT,
 			combatant.TEMPERMENT
 			]
 	
@@ -504,7 +504,7 @@ func loadData(save_data: PlayerSaveData):
 		#combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][9]
 		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][10]
 		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][11]
-		combatant.ABILITY_SLOT = save_data.COMBATANT_SAVE_DATA[combatant][12]
+		combatant.GUARD_EFFECT = save_data.COMBATANT_SAVE_DATA[combatant][12]
 		combatant.TEMPERMENT = save_data.COMBATANT_SAVE_DATA[combatant][13]
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.CHARMS.values():

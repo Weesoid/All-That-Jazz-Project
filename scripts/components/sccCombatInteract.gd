@@ -12,7 +12,7 @@ func _ready():
 		PlayerGlobals.applyBlessing("res://scenes/temporary_blessings/Stun.tscn")
 		visible = false
 	else:
-		var stun_stars = preload("res://scenes/components/DazedQuickAnim.tscn").instantiate()
+		var stun_stars = preload("res://scenes/animations_quick/Dazed.tscn").instantiate()
 		stun_stars.global_position = Vector2(0,0)
 		add_child(stun_stars)
 	timer.timeout.connect(queue_free)

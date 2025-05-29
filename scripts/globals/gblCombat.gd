@@ -55,6 +55,9 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 	if target is CombatantScene:
 		target = target.combatant_resource
 	
+	if target is ResPlayerCombatant and target.SCENE.blocking:
+		can_miss=false
+	
 	if randomRoll(caster.STAT_VALUES['accuracy']+getBonusStat(bonus_stats, 'accuracy', target)) and can_miss:
 		damageTarget(caster, target, base_damage, can_crit, sound, indicator_bb_code, bonus_stats)
 		return true
@@ -69,6 +72,9 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, _message = null, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', bonus_stats:Dictionary={}, use_damage_formula:bool=false)-> bool:
 	if !target is ResCombatant:
 		target = target.combatant_resource
+	if target is ResPlayerCombatant and target.SCENE.blocking:
+		can_miss=false
+	
 	damage += getBonusStat(bonus_stats, 'damage', target)
 	if use_damage_formula:
 		damage = useDamageFormula(target, damage)
@@ -185,10 +191,9 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	playHurtAnimation(target, damage, sound)
-	
 	# The wall of post damage effects
 	if hasBonusStat(bonus_stats, 'execute') and target.STAT_VALUES['health'] <= getBonusStat(bonus_stats, 'execute', target)*target.getMaxHealth():
-		OverworldGlobals.showQuickAnimation("res://scenes/animations/SkullKill.tscn", target.SCENE.global_position)
+		OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", target.SCENE.global_position)
 		target.STAT_VALUES['health'] -= 999
 		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
 	if checkSpecialStat('status_effect', bonus_stats, target):
@@ -215,10 +220,6 @@ func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: Res
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
-	if target is ResPlayerCombatant and target.SCENE.blocking:
-		CombatGlobals.calculateHealing(target, target.getMaxHealth() * 0.25)
-		CombatGlobals.addTension(1)
-		CombatGlobals.addStatusEffect(target, 'Guard')
 	if target.getStatusEffectNames().has('Riposte'):
 		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
 
@@ -253,7 +254,7 @@ func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true, tri
 	
 	if trigger_on_heal:
 		target.removeTokens(2)
-	print(target.SCENE.idle_animation)
+	#print(target.SCENE.idle_animation)
 	if target.SCENE.animator.current_animation == 'Fading' and !target.isDead():
 		target.SCENE.playIdle('Idle')
 
@@ -382,11 +383,10 @@ func setCombatantVisibility(target: CombatantScene, set_to:bool):
 		target.z_index = 0
 	target.get_node('CombatBars').setBarVisibility(set_to)
 
-func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1):
+func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1, offset:Vector2=Vector2.ZERO):
 	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
 	var qte = load("res://scenes/quick_time_events/%s.tscn" % type).instantiate()
 	qte.max_points = max_points
-	var offset = Vector2(0, -48)
 	if type == 'Holding': offset = Vector2.ZERO
 	qte.global_position = target.global_position + offset
 	qte.z_index = 101

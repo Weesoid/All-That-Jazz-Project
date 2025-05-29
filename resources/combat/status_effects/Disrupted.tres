@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://ct0vl0hk3k0vi"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
 
-[ext_resource type="PackedScene" uid="uid://0ppcd1mqxfsw" path="res://scenes/status_visuals/Disrupted.tscn" id="1_smq3a"]
+[ext_resource type="PackedScene" uid="uid://0ppcd1mqxfsw" path="res://scenes/animations_status_effects/Disrupted.tscn" id="1_smq3a"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsDisrupted.gd" id="2_r45kn"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_lpmcj"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_rcuq1"]

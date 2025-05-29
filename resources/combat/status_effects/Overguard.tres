@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://ep6cmyt1jplk"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://nggpuuho017e"]
 
-[ext_resource type="PackedScene" uid="uid://cdqrjk5sniec5" path="res://scenes/status_visuals/Overguard.tscn" id="1_tnsmc"]
+[ext_resource type="PackedScene" uid="uid://cdqrjk5sniec5" path="res://scenes/animations_status_effects/Overguard.tscn" id="1_m5u3q"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_8ekwr"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_kmvdv"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_7lkja"]
@@ -11,9 +11,9 @@ NAME = "Overguard"
 DESCRIPTION = "Target will block incoming projectiles."
 BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("2_8ekwr")
-PACKED_SCENE = ExtResource("1_tnsmc")
+PACKED_SCENE = ExtResource("1_m5u3q")
 EFFECT_TYPE = 2
-REMOVE_WHEN = 0
+REMOVE_WHEN = Array[int]([])
 REMOVE_STYLE = 0
 TEXTURE = ExtResource("3_kmvdv")
 MAX_DURATION = 3

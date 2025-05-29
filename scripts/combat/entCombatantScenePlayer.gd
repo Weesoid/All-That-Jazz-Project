@@ -6,17 +6,13 @@ class_name PlayerCombatantScene
 @onready var unsheathe_point = $WeaponPoint
 
 var blocking: bool = false
+var perfect_block: bool =false
 var allow_block: bool = false
 var weapon: WeaponScene
 
 func _ready():
-#	if combatant_resource is ResPlayerCombatant and combatant_resource.EQUIPPED_WEAPON != null:
-#		weapon = combatant_resource.EQUIPPED_WEAPON.EFFECT.ANIMATION.instantiate()
-#		weapon.equipped_combatant = self
-#		sheathe_point.add_child(weapon)
 	CombatGlobals.click_block.connect(block)
 	block_timer.timeout.connect(checkHasBlockModifier)
-
 func _exit_tree():
 	if combatant_resource.STAT_MODIFIERS.has('block'):
 		CombatGlobals.resetStat(combatant_resource, 'block')
@@ -45,11 +41,10 @@ func setBlocking(set_to: bool):
 
 func block(bonus_grit: float=10.0):
 	if canBlock():
-		CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 1.0}, 'block')
+		CombatGlobals.modifyStat(combatant_resource, {'grit': bonus_grit, 'resist': 10.0}, 'block')
 		doAnimation('Block', null, {'skip_pause'=true})
 		await animator.animation_finished
 		CombatGlobals.resetStat(combatant_resource, 'block')
-		block_timer.start()
 
 func canBlock()-> bool:
 	return blocking and allow_block and (!CombatGlobals.getCombatScene().active_combatant is ResPlayerCombatant or CombatGlobals.getCombatScene().onslaught_mode) and block_timer.is_stopped() and !combatant_resource.isDead() and combatant_resource is ResPlayerCombatant
@@ -57,5 +52,3 @@ func canBlock()-> bool:
 func _input(_event):
 	if Input.is_action_just_pressed('ui_accept'):
 		block()
-#	if Input.is_action_just_pressed("ui_click") and canBlock():
-#		doAnimation('Cast_Melee', load("res://scripts/combat/abilities/scaRetaliate.gd"))

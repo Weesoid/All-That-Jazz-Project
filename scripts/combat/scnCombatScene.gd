@@ -274,7 +274,6 @@ func end_turn(combatant_act=true):
 		await get_tree().process_frame
 		if is_combatant_moving: await move_finished
 		await get_tree().process_frame
-		print('is moving')
 	
 	if combat_event != null and turn_count % combat_event.TURN_TRIGGER == 0:
 		ui_animator.play_backwards('ShowActionPanel')
@@ -315,12 +314,12 @@ func end_turn(combatant_act=true):
 		for combatant in replace:
 			var replacement: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
 			replacement.DROP_POOL = {}
-			await replaceCombatant(combatant, replacement, "res://scenes/animations/Reinforcements.tscn")
+			await replaceCombatant(combatant, replacement, "res://scenes/animations_abilities/Reinforcements.tscn")
 		if getCombatantGroup('enemies').size() < 4:
 			var size = getCombatantGroup('enemies').size()
 			for i in range(4 - size):
 				var random: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
-				await addCombatant(random, true, "res://scenes/animations/Reinforcements.tscn")
+				await addCombatant(random, true, "res://scenes/animations_abilities/Reinforcements.tscn")
 	
 	# Determine next combatant
 	if selected_ability == null or !selected_ability.INSTANT_CAST:
@@ -406,7 +405,7 @@ func _on_guard_pressed():
 	resetActionLog()
 	animateSecondaryPanel('show')
 	Input.action_release("ui_accept")
-	forceCastAbility(active_combatant.ABILITY_SLOT)
+	forceCastAbility(load("res://resources/combat/abilities/BraceSelf.tres"))
 
 func _on_inspect_pressed():
 	ui_animator.play('ShowInspect')
@@ -614,9 +613,11 @@ func executeAbility():
 	for combatant in COMBATANTS:
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
 			CombatGlobals.setCombatantVisibility(combatant.SCENE, false)
-	if target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant:
-		target_combatant.SCENE.allow_block = true
-		CombatGlobals.showWarning(target_combatant.SCENE)
+	if target_combatant is ResPlayerCombatant:
+		allowBlocking(target_combatant)
+	elif target_combatant is Array:
+		for target in target_combatant: allowBlocking(target)
+	
 	if active_combatant is ResPlayerCombatant:
 		CombatGlobals.addTension(-selected_ability.TENSION_COST)
 	round_counter.hide()
@@ -645,11 +646,23 @@ func executeAbility():
 	CombatGlobals.dialogue_signal.emit(ability_title)
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
-	if (target_combatant is  ResCombatant and is_instance_valid(target_combatant.SCENE)) and (target_combatant is ResPlayerCombatant and target_combatant.SCENE.blocking and active_combatant is ResEnemyCombatant):
-		target_combatant.SCENE.allow_block = false
+	if (target_combatant is  ResCombatant and is_instance_valid(target_combatant.SCENE)):
+		revokeBlocking(target_combatant)
+	elif target_combatant is Array:
+		for target in target_combatant:
+			revokeBlocking(target)
 	await get_tree().process_frame # Attempt to fix combatants standing there like idiots, keep an eye out
 	
 	confirm.emit()
+
+func allowBlocking(target: ResCombatant):
+	if target is ResPlayerCombatant and target.SCENE.blocking and active_combatant is ResEnemyCombatant:
+		target.SCENE.allow_block = true
+		CombatGlobals.showWarning(target.SCENE)
+
+func revokeBlocking(target: ResCombatant):
+	if target is ResPlayerCombatant and target.SCENE.blocking and active_combatant is ResEnemyCombatant:
+		target.SCENE.allow_block = false
 
 func skipTurn():
 	target_state = 0
@@ -778,7 +791,6 @@ func updateAbilityChargeTracker(caster: ResCombatant, ability: ResAbility):
 		ability_charge_tracker[caster] = {ability:ability.CHARGES-1}
 
 func getChargesLeft(combatant: ResCombatant, ability: ResAbility):
-	print(ability_charge_tracker)
 	if ability_charge_tracker.has(combatant) and ability_charge_tracker[combatant].has(ability):
 		return ability_charge_tracker[combatant][ability]
 	else:
@@ -1293,7 +1305,6 @@ func _on_shift_actions_pressed():
 		return
 	
 	resetActionLog()
-	print(secondary_panel_container.get_children()[0].ability.NAME == 'Brace')
 	if secondary_panel_container.get_children()[0].ability.NAME == 'Brace':
 		_on_skills_pressed()
 	else:

@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://ba57885nxpj4g"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwCauterize.gd" id="1_8w5rg"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
-[ext_resource type="PackedScene" uid="uid://bbvp771hxhh68" path="res://scenes/animations/Cauterize.tscn" id="2_ycyl0"]
+[ext_resource type="PackedScene" uid="uid://bbvp771hxhh68" path="res://scenes/animations_abilities/Cauterize.tscn" id="2_ycyl0"]
 
 [resource]
 script = ExtResource("1_yro00")

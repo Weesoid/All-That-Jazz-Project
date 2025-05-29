@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaTame.gd" id="1_csy3k"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="2_3bphb"]
-[ext_resource type="PackedScene" uid="uid://h4wwypopcwgp" path="res://scenes/animations/DebugEffect.tscn" id="2_cfn3x"]
+[ext_resource type="PackedScene" uid="uid://h4wwypopcwgp" path="res://scenes/animations_abilities/DebugEffect.tscn" id="2_cfn3x"]
 
 [resource]
 script = ExtResource("2_3bphb")

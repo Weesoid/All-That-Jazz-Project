@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdqrjk5sniec5"]
 
-[ext_resource type="Script" path="res://scripts/combat/scnDynamicStatusEffect.gd" id="1_kqxhw"]
+[ext_resource type="Script" path="res://scripts/combat/scnDynamicStatusEffect.gd" id="1_p23mn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cp2nq"]
 height = 48.0
 
 [node name="Area2D" type="Area2D"]
 position = Vector2(-15, 0)
-script = ExtResource("1_kqxhw")
+script = ExtResource("1_p23mn")
 trigger_type = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

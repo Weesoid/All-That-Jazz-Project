@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://c1fh4jajwc1p2"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwVulnerate.gd" id="1_pqqsh"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
-[ext_resource type="PackedScene" uid="uid://dule4kp7h5laf" path="res://scenes/animations/Vulnerate.tscn" id="2_rqqrm"]
+[ext_resource type="PackedScene" uid="uid://dule4kp7h5laf" path="res://scenes/animations_abilities/Vulnerate.tscn" id="2_rqqrm"]
 
 [resource]
 script = ExtResource("1_yro00")

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_vsc6k"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_pf0ay"]
-[ext_resource type="Resource" uid="uid://0muvkfncqxic" path="res://resources/combat/status_effects/FollowUp.tres" id="3_pl8gy"]
+[ext_resource type="Resource" path="res://resources/combat/status_effects/FollowUp.tres" id="3_pl8gy"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_fatol"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_jurq0"]
 

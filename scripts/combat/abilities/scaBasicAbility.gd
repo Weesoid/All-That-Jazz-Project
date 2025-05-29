@@ -52,6 +52,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			CombatGlobals.addTension(effect.add_amount)
 			await applyEffects(caster, target, ability)
 	
+	#if caster == CombatGlobals.getCombatScene().active_combatant:
 	CombatGlobals.ability_finished.emit()
 
 # Determine if target(s) is single or multi
