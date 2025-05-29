@@ -43,10 +43,10 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
-	print(target,' FL studio ', getFadedLevel(target))
 	if getFadedLevel(target) == 0:
-		print('Plah!')
-		target.LINGERING_STATUS_EFFECTS.append('Faded I')
+		CombatGlobals.addStatusEffect(target, applyFadedStatus(1))
+		target.LINGERING_STATUS_EFFECTS.erase(applyFadedStatus(1, true))
+		#CombatGlobals.removeStatusEffect(target, applyFadedStatus(1, true))
 	elif getFadedLevel(target) < 4:
 		var escalated_level = getFadedLevel(target)+1
 		CombatGlobals.addStatusEffect(target, applyFadedStatus(escalated_level))

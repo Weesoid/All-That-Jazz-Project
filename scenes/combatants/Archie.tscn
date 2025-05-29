@@ -411,6 +411,8 @@ _data = {
 }
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
+collision_layer = 17
+collision_mask = 17
 script = ExtResource("1_uwi2q")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
