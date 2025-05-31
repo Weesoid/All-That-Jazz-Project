@@ -34,6 +34,7 @@ bonus_stats = {
 return_pos = true
 indicator_bb = ""
 plant_self_on_combo = false
+condition = ""
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0

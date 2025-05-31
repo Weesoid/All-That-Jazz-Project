@@ -117,6 +117,7 @@ func _ready():
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
 	
+	# ACTIVATE COMBAT START STATUSES!
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant, false, false, true)
 		tickStatusEffects(combatant, true, false, true)
@@ -250,6 +251,8 @@ func end_turn(combatant_act=true):
 		stopTimer()
 	if await checkWin(): 
 		return
+	if combatant_act:
+		tickStatusEffects(active_combatant, false, true, false, false) # Tick down ON TURN statuses
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
@@ -290,9 +293,7 @@ func end_turn(combatant_act=true):
 	for combatant in COMBATANTS:
 		if combatant.isDead(): continue
 		refreshInstantCasts(combatant)
-		tickStatusEffects(combatant, true)
-		for effect in getTickOnTurnEffects(combatant):
-			if effect.duration <= 1 and !effect.PERMANENT: effect.removeStatusEffect()
+		tickStatusEffects(combatant, true) # Tick PER TURN statuses (e.g. tick even tho its not the combatant's)
 		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
 	
@@ -355,7 +356,7 @@ func end_turn(combatant_act=true):
 func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[0][0]
 	if tick_effect:
-		tickStatusEffects(active_combatant)
+		tickStatusEffects(active_combatant, false, false, false) # Tick ON TURN statuses (e.g. tick only on combatant's turn)
 		removeDeadCombatants()
 
 func getTickOnTurnEffects(combatant: ResCombatant):
@@ -555,7 +556,7 @@ func createAbilityButton(ability: ResAbility, weapon:ResWeapon=null)-> Button:
 	button.mouse_entered.connect(func():updateDescription(ability))
 	if !ability.ENABLED or !ability.canUse(active_combatant, COMBATANTS):
 		button.disabled = true
-	if ability.NAME == 'Brace' and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
+	if ability == load("res://resources/combat/abilities/BraceSelf.tres") and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
 		button.disabled = true
 		button.dimButton()
 	return button
@@ -937,13 +938,15 @@ func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
 		while !combatant.STATUS_EFFECTS.is_empty():
 			combatant.STATUS_EFFECTS[0].removeStatusEffect()
 
-func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true, only_permanent=false):
+func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true, only_permanent=false, do_tick=true):
 	for effect in combatant.STATUS_EFFECTS:
 		if only_permanent and !effect.PERMANENT:
 			continue
 		if (per_turn and !effect.TICK_PER_TURN) or (!per_turn and effect.TICK_PER_TURN): 
 			continue
-		effect.tick(update_duration)
+		effect.tick(update_duration, false, do_tick)
+		if effect.NAME == 'Fading' and update_duration: 
+			CombatGlobals.manual_call_indicator.emit(combatant, 'Fading...', 'Resist')
 
 func refreshInstantCasts(combatant: ResCombatant):
 	for ability in combatant.ABILITY_SET:
@@ -994,7 +997,7 @@ func resetActionLog(show_skills:bool=false):
 	action_panel.show()
 	ui_animator.play('ShowActionPanel')
 	tension_bar_animator.play("Show")
-	guard_button.disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
+	#guard_button.disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
 	await ui_animator.animation_finished
 	if show_skills and !skills_button.disabled:
 		_on_skills_pressed()

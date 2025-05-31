@@ -30,6 +30,8 @@ enum RemoveStyle {
 @export var APPLY_EXTEND_DURATION:  bool = false
 @export var MAX_RANK: int
 @export var TICK_ON_APPLY: bool = true
+@export var GIVE_EXTRA_DURATION: bool = true
+## Do ticks even though it's not the afflicted combatant's turn.
 @export var TICK_PER_TURN: bool
 @export var DO_TICKS: bool = true
 @export var RESISTABLE: bool = true
@@ -46,6 +48,7 @@ var attached_data
 var VISUALS
 var ICON: TextureRect
 var TARGETABLE
+
 
 func initializeStatus():
 	ICON = TextureRect.new()
@@ -89,11 +92,11 @@ func removeStatusEffect():
 		ICON.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
-func tick(update_duration=true, override_permanent=false):
+func tick(update_duration=true, override_permanent=false, apply_effects=true):
 	if (!PERMANENT and update_duration) or override_permanent: 
 		duration -= 1
 	
-	if STATUS_SCRIPT != null and DO_TICKS:
+	if STATUS_SCRIPT != null and DO_TICKS and apply_effects:
 		STATUS_SCRIPT.applyEffects(afflicted_combatant, self)
 	
 	APPLY_ONCE = false

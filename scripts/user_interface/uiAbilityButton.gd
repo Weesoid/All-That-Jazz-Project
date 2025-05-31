@@ -53,9 +53,6 @@ func _on_pressed():
 	#await icon_animator.animation_finished
 	#if has_focus(): icon_animator.play("Focus")
 
-
-
-
 func _on_focus_entered():
 	if focused_entered_sound == null: return
 	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)

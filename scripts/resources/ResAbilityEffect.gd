@@ -7,8 +7,26 @@ enum AnimateOn {
 }
 
 ## This effect will not execute unless the target has a combo token
+@export var condition: String
 @export var is_combo_effect: bool
 @export var sound_effect: String = ''
 @export var animation: PackedScene
 @export var animation_time: float = 0.0
 @export var animate_on: AnimateOn
+
+func checkConditions(target: ResCombatant, caster: ResCombatant)-> bool:
+	if condition == '':
+		return true
+	
+	var condition_data = condition.split('/')
+	var combatant
+	match condition_data[0]:
+		't': combatant = target
+		'c': combatant = caster
+	condition_data.remove_at(0)
+	
+	for i in condition_data.size():
+		if !CombatGlobals.checkConditions(condition_data[i].split('/'), combatant):
+			return false
+	
+	return true

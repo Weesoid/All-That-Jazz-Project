@@ -20,7 +20,7 @@ func _process(_delta):
 		hide()
 	if attached_status.MAX_RANK != 0:
 		rank.text = str(attached_status.current_rank)
-	if attached_status.duration == 1 and !attached_status.PERMANENT and !flicker_tween.is_running():
+	if attached_status.duration == 1 and !attached_status.PERMANENT and CombatGlobals.getCombatScene().active_combatant == attached_status.afflicted_combatant and !flicker_tween.is_running():
 		flicker_tween.tween_property(get_parent(),'self_modulate', Color.TRANSPARENT, 1.5).from(Color.WHITE)
 		flicker_tween.play()
 	elif flicker_tween.is_running() and attached_status.duration > 1 and !attached_status.PERMANENT:

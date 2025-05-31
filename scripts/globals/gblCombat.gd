@@ -140,12 +140,29 @@ func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResC
 		elif key == stat.split('/')[0]:
 			return true
 	
+	return checkConditions(conditions, target)
+
+func checkConditions(conditions: Array, target: ResCombatant):
 	for condition in conditions:
+		print('deep checking: ', condition)
 		var condition_data = condition.split(':')
 		match condition_data[0]:
-			's': # ex. s:bleed
-				return target.hasStatusEffect(condition_data[1]) 
-			'hp': # ex. hp:>:0.5 ; hp:<:0.45
+			's': # ex. s:bleed or s:guard:2,=
+				if !target.hasStatusEffect(condition_data[1]): 
+					return false
+				
+				var rank_condition = true
+				if condition_data.size() > 2:
+					var operator = '>'
+					if condition_data[2].split(',').size() > 1:
+						operator = condition_data[2].split(',')[1]
+					match operator:
+						'>': rank_condition = target.getStatusEffect(condition_data[1]).current_rank >= int(condition_data[2])
+						'<': rank_condition = target.getStatusEffect(condition_data[1]).current_rank <= int(condition_data[2])
+						'=': rank_condition = target.getStatusEffect(condition_data[1]).current_rank == int(condition_data[2])
+				
+				return target.hasStatusEffect(condition_data[1]) and rank_condition
+			'hp': # ex. hp:>:0.5 or hp:<:0.45
 				if condition_data[1] == '>':
 					return target.STAT_VALUES['health'] >= float(condition_data[2])*target.getMaxHealth()
 				if condition_data[1] == '<':
@@ -156,6 +173,8 @@ func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResC
 					return true
 			'combo!': # ex. crit/combo!
 				return target.hasStatusEffect('Combo')
+			'%': # ex. crit/%:0.50
+				return randomRoll(float(condition_data[1]))
 
 func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
 	manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
@@ -232,7 +251,9 @@ func useDamageFormula(target: ResCombatant, damage):
 		out_damage = 0
 	return out_damage
 
-func calculateHealing(target:ResCombatant, base_healing, use_mult:bool=true, trigger_on_heal:bool=true):
+func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:bool=true):
+	if target is CombatantScene:
+		target = target.combatant_resource
 	if target.STAT_VALUES['health'] < 0:
 		target.STAT_VALUES['health'] = 0
 	base_healing = valueVariate(base_healing, 0.15)

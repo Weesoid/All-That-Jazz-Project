@@ -2,7 +2,8 @@
 static func animate(caster: CombatantScene, target, ability:ResAbility):
 	for effect in ability.BASIC_EFFECTS:
 		ability.current_effect = effect
-		if effect.is_combo_effect and !canDoCombo(effect, target):
+		#print(ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource))
+		if (target is CombatantScene and !ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource)) or (effect.is_combo_effect and !canDoCombo(effect, target)):
 			continue
 		elif ability.getTargetType() == 1 and canDoCombo(effect, target) and !effect is ResDamageEffect:
 			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
@@ -53,6 +54,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await applyEffects(caster, target, ability)
 	
 	#if caster == CombatGlobals.getCombatScene().active_combatant:
+	await CombatGlobals.getCombatScene().get_tree().process_frame
 	CombatGlobals.ability_finished.emit()
 
 # Determine if target(s) is single or multi
@@ -128,7 +130,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			target = target.combatant_resource
 		elif ability.current_effect.target == ability.current_effect.Target.CASTER:
 			target = caster.combatant_resource
-		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect)
+		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect,true)
 	
 	elif ability.current_effect is ResHealEffect:
 		CombatGlobals.calculateHealing(target, ability.current_effect.heal)
