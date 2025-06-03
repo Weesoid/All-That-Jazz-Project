@@ -11,6 +11,7 @@ animation_name = "Onslaught"
 damage = 999
 target = 0
 projectile_frame = 2.0
+condition = ""
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0

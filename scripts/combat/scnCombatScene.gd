@@ -1025,7 +1025,6 @@ func concludeCombat(results: int):
 	secondary_panel.hide()
 	tension_bar.hide()
 	round_counter.hide()
-	toggleUI(false)
 	for combatant in COMBATANTS:
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant, false)
@@ -1035,6 +1034,9 @@ func concludeCombat(results: int):
 	var morale_bonus = 1
 	var loot_bonus = 1
 	var morale_before = 0
+	
+	await get_tree().create_timer(1.0).timeout
+	toggleUI(false)
 	
 	if results == 1:
 		if round_count <= 2:

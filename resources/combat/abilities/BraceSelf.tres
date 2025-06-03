@@ -11,7 +11,7 @@
 script = ExtResource("4_0d74q")
 heal = 2
 cast_animation = ""
-condition = "t/hp:<:0.0/%:0.5"
+condition = "t/hp:<:0.0"
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0

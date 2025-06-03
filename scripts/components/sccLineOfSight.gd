@@ -9,7 +9,7 @@ func detectPlayer():
 	RAYCAST.rotation = 0
 	
 	if OverworldGlobals.getCurrentMap().has_node('Player') and overlaps_body(OverworldGlobals.getPlayer()):
-		RAYCAST.look_at(OverworldGlobals.getPlayer().global_position)
+		RAYCAST.look_at(OverworldGlobals.getPlayer().global_position+OverworldGlobals.getPlayer().get_node('Sprite2D').offset)
 		RAYCAST.rotation -= PI/2
 		RAYCAST.force_raycast_update()
 		return RAYCAST.get_collider() == OverworldGlobals.getPlayer()

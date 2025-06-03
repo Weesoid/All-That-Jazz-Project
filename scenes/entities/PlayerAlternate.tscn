@@ -2481,8 +2481,8 @@ graph_offset = Vector2(-381.775, -184.015)
 
 [node name="Player" type="CharacterBody2D" groups=["presist"]]
 y_sort_enabled = true
-collision_layer = 17
-collision_mask = 17
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_cw77a")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_vhjle")]

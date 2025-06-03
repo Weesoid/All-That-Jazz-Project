@@ -33,7 +33,6 @@ func updatePath(immediate:bool=false):
 			
 			BODY.set_collision_layer_value(1, false)
 			immobolize()
-			ANIMATOR.play("Stun")
 			randomize()
 			STUN_TIMER.start(randf_range(STUN_TIME['min'],STUN_TIME['max']))
 			IDLE_TIMER.stop()

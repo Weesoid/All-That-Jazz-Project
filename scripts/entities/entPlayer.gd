@@ -52,6 +52,10 @@ func _ready():
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
 	OverworldGlobals.setMouseController(false)
+	await get_tree().process_frame
+	if !OverworldGlobals.getCurrentMap().SAFE:
+		print('pluh')
+		Input.action_press('ui_bow')
 
 func _process(_delta):
 	updateAnimationParameters()

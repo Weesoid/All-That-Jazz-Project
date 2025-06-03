@@ -14,7 +14,7 @@ chaser = {
 "alerted_patrol": 0.0,
 "patrol": 0.0
 },
-"sprite_sheet": "res://images/animations/ent_walk_alt.png",
+"sprite_sheet": "res://images/animations/brigand_walker.png",
 "stun_time": {
 "max": 0.0,
 "min": 0.0
@@ -30,8 +30,8 @@ shooter = {
 "alerted_patrol": 0.0,
 "patrol": 0.0
 },
-"projectile": "res://resources/projectiles/DamageProjectile.tres",
-"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png",
+"projectile": "",
+"sprite_sheet": "",
 "stun_time": {
 "max": 0.0,
 "min": 0.0
@@ -47,8 +47,8 @@ hybrid = {
 "alerted_patrol": 0.0,
 "patrol": 0.0
 },
-"projectile": "res://resources/projectiles/DamageProjectile.tres",
-"sprite_sheet": "res://images/animations/ent_walk_shoote_alt.png",
+"projectile": "",
+"sprite_sheet": "",
 "stun_time": {
 "max": 0.0,
 "min": 0.0

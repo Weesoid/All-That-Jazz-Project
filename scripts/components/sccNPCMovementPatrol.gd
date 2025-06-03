@@ -84,7 +84,7 @@ func _physics_process(_delta):
 		patrol()
 	if COMBAT_SWITCH and STATE != 3 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive()):
 		executeCollisionAction()
-	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0 and BODY.get_slide_collision(0).get_collider() is GenericPatroller:
+	if BODY.velocity != Vector2.ZERO and BODY.get_slide_collision_count() > 0 and (BODY.get_slide_collision(0).get_collider() is GenericPatroller or BODY.get_slide_collision(0).get_collider() is TileMap):
 		updatePath(true)
 	if STATE == 0 or STATE == 1:
 		DETECT_BAR.value = DETECT_TIMER.time_left
@@ -110,7 +110,7 @@ func executeCollisionAction():
 
 func patrol():
 	if LINE_OF_SIGHT.process_mode != Node.PROCESS_MODE_DISABLED:
-		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
+		patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()))
 	
 	if LINE_OF_SIGHT.detectPlayer() and STATE != 3:
 		if STATE != 2:
@@ -122,7 +122,7 @@ func patrol():
 			DETECT_TIMER.stop()
 		if LINE_OF_SIGHT.detectPlayer():
 			chaseMode()
-			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()).normalized())
+			patrolToPosition(BODY.to_local(NAV_AGENT.get_next_path_position()))
 	elif (!LINE_OF_SIGHT.detectPlayer() and STATE != 2) or STATE == 2:
 		DETECT_BAR.hide()
 	
@@ -180,7 +180,7 @@ func updateMode(state: int, alert_others:bool=false):
 		3: stunMode(alert_others)
 
 func destroy(fancy=true):
-	if ANIMATOR.current_animation == 'KO': return
+#	if ANIMATOR.current_animation == 'KO': return
 	if BODY.has_node('CombatDialogue'):
 		ANIMATOR.play('RESET')
 		queue_free()
@@ -191,19 +191,19 @@ func destroy(fancy=true):
 	BODY.get_node('CollisionShape2D').set_deferred("disabled", true)
 	immobolize()
 	if fancy:
-		ANIMATOR.stop()
-		ANIMATOR.play("KO")
+#		ANIMATOR.stop()
+#		ANIMATOR.play("KO")
 		if STATE == 2 or STATE == 1:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
 		else:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
-		await ANIMATOR.animation_finished
 		#isMapCleared()
 		if OverworldGlobals.getCurrentMap().arePatrollersHalved() and !OverworldGlobals.getCurrentMap().full_alert and OverworldGlobals.getCurrentMap().getPatrollers().size() > 1:
 			OverworldGlobals.addPatrollerPulse(BODY.global_position, 999.0, 4)
 			OverworldGlobals.getCurrentMap().full_alert = true
 			OverworldGlobals.showPlayerPrompt('Enemies have noticed your presence and are [color=red]fully alert[/color]!')
 	
+	await get_tree().process_frame
 	BODY.queue_free()
 	await tree_exited
 	OverworldGlobals.patroller_destroyed.emit()
@@ -217,7 +217,7 @@ func updatePath(immediate:bool=false):
 				IDLE_TIMER.start(randf_range(2.0, IDLE_TIME['patrol']))
 				await IDLE_TIMER.timeout
 				IDLE_TIMER.stop()
-				NAV_AGENT.target_position = moveRandom()
+			NAV_AGENT.target_position = moveRandom()
 		# ALERTED PATROL
 		1:
 			randomize()
@@ -235,7 +235,7 @@ func updatePath(immediate:bool=false):
 		3:
 			BODY.set_collision_layer_value(1, false)
 			immobolize()
-			ANIMATOR.play("Stun")
+			#ANIMATOR.play("Stun")
 			randomize()
 			STUN_TIMER.start(randf_range(STUN_TIME['min'],STUN_TIME['max']))
 			IDLE_TIMER.stop()
@@ -267,7 +267,7 @@ func patrolToPosition(target_position: Vector2):
 	if targetReached(): #and STATE != 2:
 		BODY.velocity = Vector2.ZERO
 	elif !NAV_AGENT.get_current_navigation_path().is_empty():
-		BODY.velocity = target_position * MOVE_SPEED
+		BODY.velocity = BODY.global_position.direction_to(target_position) * MOVE_SPEED
 		updateLineOfSight()
 	
 	if BODY.velocity == Vector2.ZERO:
@@ -281,7 +281,7 @@ func isPlayerTooFar(distance: float):
 	return OverworldGlobals.getCurrentMap().has_node('Player') and BODY.global_position.distance_to(OverworldGlobals.getPlayer().global_position) > distance
 
 func updateLineOfSight():
-	LINE_OF_SIGHT.look_at(NAV_AGENT.get_next_path_position())
+	LINE_OF_SIGHT.look_at(NAV_AGENT.target_position)
 	LINE_OF_SIGHT.rotation -= PI/2
 	var look_direction = LINE_OF_SIGHT.global_rotation_degrees
 	

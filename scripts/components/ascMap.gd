@@ -120,7 +120,7 @@ func spawnPatrollers():
 				if marker is Marker2D:
 					if isChancedSpawn(marker) and !CombatGlobals.randomRoll(float(marker.name.split(' ')[1])*0.01): continue
 					var patroller
-					if special_count != 0:
+					if special_count != 0 and valid_specials.size() > 0:
 						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
 						special_count -= 1
 					elif isChancedSpawn(marker):
