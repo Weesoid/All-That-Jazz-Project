@@ -58,7 +58,7 @@ _data = {
 size = Vector2(17, 22)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
-radius = 6.0
+radius = 9.0
 height = 24.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_846aw"]

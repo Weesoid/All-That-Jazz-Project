@@ -13,7 +13,10 @@ class_name GenericPatroller
 
 func _ready():
 	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
-	patrol_component.PATROL_AREA = patrol_area
+	var area = createPatrolArea()
+	OverworldGlobals.getCurrentMap().add_child(area)
+	area.global_position = global_position
+	patrol_component.PATROL_AREA = area
 	
 	if base_move_speed != 0:
 		patrol_component.BASE_MOVE_SPEED = base_move_speed
@@ -29,6 +32,25 @@ func _ready():
 		patrol_component.STUN_TIME = stun_time
 	
 	patrol_component.initialize()
+	patrol_component.get_node('DetectBar').initialize()
+
+func createPatrolArea():
+#	var area: Area2D = Area2D.new()
+#	var collision: CollisionShape2D = CollisionShape2D.new()
+#	var circle_shape = CircleShape2D.new()
+#	collision.name = 'CollisionShape2D'
+#	circle_shape.radius = 100
+#	collision.shape = circle_shape
+#	area.add_child(collision)
+#	return area
+	var area: Area2D = Area2D.new()
+	var collision: CollisionShape2D = CollisionShape2D.new()
+	var circle_shape = RectangleShape2D.new()
+	collision.name = 'CollisionShape2D'
+	circle_shape.size = Vector2(256,128)
+	collision.shape = circle_shape
+	area.add_child(collision)
+	return area
 
 ## 0: soothePatrolMode() 1: alertPatrolMode() 2: chaseMode()3: stunMode(alert_others)
 func getState():

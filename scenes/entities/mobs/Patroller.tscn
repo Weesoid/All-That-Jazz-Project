@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bahnqy0iowmdt" path="res://scenes/components/LineOfSight.tscn" id="6_3p5yl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g3tnj"]
+radius = 13.0384
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -156,9 +157,10 @@ script = ExtResource("1_khwtj")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
-radius = 60.0
+debug_enabled = true
 
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_qmtob")]
+position = Vector2(-3, -68)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -33)
@@ -167,7 +169,7 @@ hframes = 9
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -11)
+position = Vector2(1, -14)
 shape = SubResource("CircleShape2D_g3tnj")
 
 [node name="LineOfSightComponent" parent="." instance=ExtResource("6_3p5yl")]

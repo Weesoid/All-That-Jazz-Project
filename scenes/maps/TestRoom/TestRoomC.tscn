@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_iudoy"]
 [ext_resource type="Texture2D" uid="uid://cgfgu0tnsg1uo" path="res://images/tiles/desert.png" id="2_tl6xp"]
+[ext_resource type="Script" path="res://scripts/components/ascTileMapNavDecoRemover.gd" id="3_8tjrj"]
 [ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="3_ccbhy"]
 [ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="5_kyu7h"]
 [ext_resource type="PackedScene" uid="uid://c1ktb61l0lngn" path="res://scenes/entities_interactable/EscapeRoute.tscn" id="6_cttlp"]
@@ -1135,9 +1136,6 @@ navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_ago46")
 pattern_0 = SubResource("TileMapPattern_fh67p")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_uqnih"]
-size = Vector2(384, 256)
-
 [node name="TestRoomC" type="Node2D"]
 z_index = -1
 y_sort_enabled = true
@@ -1176,19 +1174,16 @@ layer_3/y_sort_enabled = true
 layer_3/y_sort_origin = 1
 layer_3/z_index = 0
 layer_3/tile_data = PackedInt32Array(-327678, 786432, 4, -65539, 983040, 5, 1, 851968, 6, -524286, 851968, 6, -458757, 917504, 5, -131073, 786432, 4)
+script = ExtResource("3_8tjrj")
 
-[node name="Area2D2" type="Area2D" parent="."]
-position = Vector2(-8, 272)
+[node name="SpawnPoints" type="Marker2D" parent="."]
+position = Vector2(160, 56)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
-position = Vector2(-8, -312)
-shape = SubResource("RectangleShape2D_uqnih")
+[node name="SpawnPoints2" type="Marker2D" parent="."]
+position = Vector2(-112, -144)
 
-[node name="SpawnPoints" type="Marker2D" parent="Area2D2"]
-position = Vector2(8, -296)
-
-[node name="SpawnPoints2" type="Marker2D" parent="Area2D2"]
-position = Vector2(-120, -280)
+[node name="SpawnPoints3" type="Marker2D" parent="."]
+position = Vector2(112, -136)
 
 [node name="DoorInteractable" parent="." instance=ExtResource("3_ccbhy")]
 position = Vector2(-232, -136)

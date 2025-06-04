@@ -34,4 +34,7 @@ static func endEffects(target, _status_effect: ResStatusEffect):
 		CombatGlobals.addStatusEffect(target, 'GuardBreak')
 	else:
 		CombatGlobals.removeStatusEffect(target, 'Guard Break')
-	CombatGlobals.removeStatusEffect(target, 'Riposte')
+	if target.STAT_MODIFIERS.keys().has('block') and !target.SCENE.allow_block:
+		CombatGlobals.resetStat(target, 'block')
+	
+	#CombatGlobals.removeStatusEffect(target, 'Riposte')

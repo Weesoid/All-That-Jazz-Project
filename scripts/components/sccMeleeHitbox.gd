@@ -4,6 +4,9 @@ extends Area2D
 @onready var smear = $AnimationPlayer
 
 func _on_body_entered(body):
+	if OverworldGlobals.entering_combat:
+		return
+	
 	if body is GenericPatroller and is_instance_valid(body):
 		if body.has_node('CombatInteractComponent'):
 			OverworldGlobals.getCurrentMap().destroyPatroller(body)
@@ -12,7 +15,8 @@ func _on_body_entered(body):
 			await OverworldGlobals.getPlayer().showOverlay(Color.RED, 0.025)
 			OverworldGlobals.getPlayer().hideOverlay()
 		elif body.getState() != 3:
-			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=10})
+			body.patrol_component.immobolize()
+			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=float(0.2)})
 	if body.has_node('Sprite2D') and body != player:
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
 	

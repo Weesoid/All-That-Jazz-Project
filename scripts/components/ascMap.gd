@@ -25,7 +25,6 @@ var full_alert: bool = false
 var clear_timer: Timer
 var give_on_exit:bool = false
 var done_loading_map:bool = false
-
 signal map_cleared
 
 func _ready():
@@ -58,6 +57,7 @@ func _ready():
 		if CombatGlobals.randomRoll(EVENTS['stalker_chance']):
 			pickStalker()
 		OverworldGlobals.patroller_destroyed.connect(checkGiveRewards)
+	#get_node('TileMap').set_script(load("res://scripts/components/ascTileMapNavDecoRemover.gd"))
 	
 	await get_tree().process_frame
 	done_loading_map = true
@@ -111,26 +111,22 @@ func spawnPatrollers():
 	randomize()
 	var valid_specials = CombatGlobals.FACTION_PATROLLER_PROPERTIES[ENEMY_FACTION].getValidTypes(true)
 	
-	for area in get_children():
-		if area is Area2D and area.has_node('SpawnPoints'):
-			var special_count = ceil(countSpawnPoints(area)*0.25)
-			var shuffled_area = area.get_children()
-			shuffled_area.shuffle()
-			for marker in shuffled_area:
-				if marker is Marker2D:
-					if isChancedSpawn(marker) and !CombatGlobals.randomRoll(float(marker.name.split(' ')[1])*0.01): continue
-					var patroller
-					if special_count != 0 and valid_specials.size() > 0:
-						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
-						special_count -= 1
-					elif isChancedSpawn(marker):
-						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
-					else:
-						patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, 0) 
-					patroller.global_position = marker.global_position
-					patroller.patrol_area = area
-					CombatGlobals.generateCombatantSquad(patroller, ENEMY_FACTION)
-					add_child(patroller)
+	for spawn_point in getSpawnPoints():
+		var special_count = ceil(countSpawnPoints()*0.25)
+		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
+			continue
+		var patroller
+		if special_count != 0 and valid_specials.size() > 0:
+			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
+			special_count -= 1
+		elif isChancedSpawn(spawn_point):
+			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
+		else:
+			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, 0) 
+		patroller.global_position = spawn_point.global_position
+		#patroller.patrol_area = area
+		CombatGlobals.generateCombatantSquad(patroller, ENEMY_FACTION)
+		add_child(patroller)
 
 func destroyPatroller(patroller: GenericPatroller):
 	OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += patroller.get_node("NPCPatrolComponent").COMBAT_SQUAD.getExperience()
@@ -144,7 +140,7 @@ func checkGiveRewards():
 		#PlayerGlobals.rer
 
 func spawnDestructibleObjectives():
-	var areas = getPatrolAreas()
+	var areas = getSpawnPoints()
 	areas.shuffle()
 	for area in areas:
 		var objective = load("res://scenes/entities_doodads/DestroyObjective.tscn").instantiate()
@@ -156,23 +152,23 @@ func showStartIndicator():
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
 	map_clear_indicator.showAnimation(false)
 
-func countSpawnPoints(area):
+func countSpawnPoints():
 	var out = 0
-	for child in area.get_children():
-		if child is Marker2D and !isChancedSpawn(child): out += 1
+	for child in getSpawnPoints():
+		if !isChancedSpawn(child): out += 1
 	return out
 
 func isChancedSpawn(marker: Node2D):
 	return marker.name.to_lower().contains('chance')
 
-func getPatrolAreas():
+func getSpawnPoints():
 	var out = []
 	for child in get_children():
-		if child is Area2D and child.has_node('SpawnPoints'): out.append(child)
+		if child is Marker2D and child.name.contains('SpawnPoint'): out.append(child)
 	return out
 
 func canSpawnDestructibleObjectives():
-	return EVENTS['destroy_objective'] and getPatrolAreas().size() >= 3
+	return EVENTS['destroy_objective'] and getSpawnPoints().size() >= 3
 
 func getDestructibleObjectives():
 	var out = []

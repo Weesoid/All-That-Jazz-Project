@@ -1681,10 +1681,10 @@ libraries = {
 [node name="InterfaceAudio" type="AudioStreamPlayer" parent="CombatCamera/Interface"]
 
 [node name="Label" type="Label" parent="CombatCamera/Interface"]
-offset_left = -184.0
-offset_top = -69.0
-offset_right = -144.0
-offset_bottom = -59.0
+offset_left = -134.0
+offset_top = -51.5
+offset_right = -94.0
+offset_bottom = -38.5
 theme = ExtResource("7_56rvc")
 text = "60"
 

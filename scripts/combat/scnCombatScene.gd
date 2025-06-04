@@ -78,7 +78,7 @@ var ability_charge_tracker: Dictionary = {}
 var turn_time: float = 0.0
 var reinforcements_turn: int = 50
 var is_combatant_moving = false
-var initial_damage: int = 0
+var initial_damage: float = 0.0
 
 signal confirm
 signal target_selected
@@ -121,9 +121,12 @@ func _ready():
 	for combatant in COMBATANTS:
 		tickStatusEffects(combatant, false, false, true)
 		tickStatusEffects(combatant, true, false, true)
-	if initial_damage > 0:
+	print(initial_damage)
+	if initial_damage > 0.0:
+		print('do')
 		for combatant in getCombatantGroup('enemies'):
-			CombatGlobals.calculateRawDamage(combatant, CombatGlobals.useDamageFormula(combatant, initial_damage))
+			await get_tree().create_timer(0.05).timeout
+			CombatGlobals.calculateRawDamage(combatant, combatant.getMaxHealth()*initial_damage)
 	
 	await removeDeadCombatants(false)
 	

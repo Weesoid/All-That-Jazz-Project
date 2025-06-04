@@ -7,7 +7,7 @@ func executeHitAction():
 	PATROL_MODE = 0
 	updatePath(true)
 
-func updatePath(immediate:bool=false):
+func updatePath(immediate:bool=false, target:Vector2=Vector2.ZERO):
 	match STATE:
 		# PATROL
 		0:
@@ -27,8 +27,8 @@ func updatePath(immediate:bool=false):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# CHASE
 		2:
-			if !PATROL_BUBBLE_SPRITE.visible:
-				PATROL_BUBBLE_SPRITE.visible = true
+#			if !PATROL_BUBBLE_SPRITE.visible:
+#				PATROL_BUBBLE_SPRITE.visible = true
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position
 		# STUNNED
 		3:
@@ -40,9 +40,7 @@ func updatePath(immediate:bool=false):
 			randomize()
 			STUN_TIMER.start(randf_range(STUN_TIME['min'],STUN_TIME['max']))
 			IDLE_TIMER.stop()
-			print(STUN_TIMER.time_left)
 			await STUN_TIMER.timeout
-			print('guh')
 			STUN_TIMER.stop()
 			alertPatrolMode()
 			updatePath()

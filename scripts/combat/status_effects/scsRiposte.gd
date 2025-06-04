@@ -29,7 +29,10 @@ static func applyHitEffects(target,caster, _value, status_effect: ResStatusEffec
 			target.SCENE.doAnimation(riposte_anim, status_effect.STATUS_SCRIPT, {'anim_speed'=1.5})
 		else:
 			target.SCENE.doAnimation(riposte_anim, status_effect.STATUS_SCRIPT, {'target'=caster.SCENE,'frame_time'=0.7,'ability'=null,'anim_speed'=2.0})
-
+	if !target.hasStatusEffect('Guard'):
+		print('bluh')
+		CombatGlobals.removeStatusEffect(target, 'Riposte')
+	
 static func determineRiposte(target, caster):
 	var distance = target.SCENE.global_position.distance_to(caster.SCENE.global_position)
 	if distance > 40:

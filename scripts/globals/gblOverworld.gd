@@ -4,6 +4,7 @@ enum PlayerType {
 	WILLIS,
 	ARCHIE
 }
+var entering_combat:bool=false
 var player_type: PlayerType = PlayerType.ARCHIE
 var delayed_rewards: Dictionary
 var follow_array = []
@@ -368,14 +369,14 @@ func showGameOver(end_sentence: String=''):
 		].pick_random()
 	menu.end_sentence.text = end_sentence
 
-func moveCamera(to, duration:float=0.25, wait:bool=false):
+func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=false):
 	var tween = create_tween()
 	if to is String:
-		tween.tween_property(getPlayer().player_camera, 'global_position', getEntity(to).global_position, duration)
+		tween.tween_property(getPlayer().player_camera, 'global_position', getEntity(to).global_position+offset, duration)
 	elif to is Vector2:
-		tween.tween_property(getPlayer().player_camera, 'global_position', to, duration)
+		tween.tween_property(getPlayer().player_camera, 'global_position', to+offset, duration)
 	elif to is Node2D:
-		tween.tween_property(getPlayer().player_camera, 'global_position', to.global_position, duration)
+		tween.tween_property(getPlayer().player_camera, 'global_position', to.global_position+offset, duration)
 	if wait:
 		await tween.finished
 
@@ -544,13 +545,16 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		return
 	if inMenu():
 		showMenu("res://scenes/user_interface/PauseMenu.tscn")
-	
+	entering_combat=true
 	# Enter combat
 	getPlayer().resetStates()
 	OverworldGlobals.getPlayer().setUIVisibility(false)
-	await zoomCamera(Vector2(2,2), 0.05, true)
+	moveCamera(getEntity(entity_name).get_node('Sprite2D'), 0.05, Vector2.ZERO, true)
+	await zoomCamera(Vector2(2,2), 0.1, true)
 	setPlayerInput(false)
 	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
+	combat_bubble.hide()
+	showCombatStartBars()
 	#print(getComponent(entity_name, 'NPCPatrolComponent').STATE)
 	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
 		for member in getCombatantSquad('Player'): CombatGlobals.addStatusEffect(member, 'CriticalEye')
@@ -597,6 +601,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	getPlayer().player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
+	#getPlayer().player_camera.remove_child('BattleStart')
+	getPlayer().player_camera.get_node('BattleStart').queue_free()
 	combat_bubble.queue_free()
 	combat_enetered.emit()
 	get_parent().add_child(combat_scene)
@@ -607,6 +613,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	await combat_scene.combat_done
 	
 	# Exit combat
+	moveCamera('Player', 0.0, getPlayer().sprite.offset)
 	zoomCamera(Vector2(1.0,1.0), 0.0)
 	var combat_results = combat_scene.combat_result
 	var tamed = combat_scene.tamed_combatants
@@ -631,7 +638,15 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		await get_tree().process_frame
 		setPlayerInput(true)
 	combat_exited.emit()
+	entering_combat=false
 	#if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')
+
+func showCombatStartBars():
+	var bars = load("res://scenes/user_interface/BattleStart.tscn").instantiate()
+	getPlayer().player_camera.add_child(bars)
+	bars.position = Vector2.ZERO
+	bars.get_node('AnimationPlayer').play('Show')
+	
 
 func getRandomTameable():
 	var path = "res://resources/combat/combatants_player/tameable/"

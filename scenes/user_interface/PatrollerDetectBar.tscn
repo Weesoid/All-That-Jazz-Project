@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://c4tte42jxqyy"]
+
+[ext_resource type="Texture2D" uid="uid://dulu8vuv7dd2r" path="res://images/sprites/small_eye.png" id="1_1sp0i"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiPatrollerDetectBar.gd" id="1_3yehe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4exbq"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 7
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x6gfa"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[node name="DetectBar" type="ProgressBar"]
+z_index = 6
+offset_left = -16.0
+offset_top = -48.0
+offset_right = 16.0
+offset_bottom = -42.0
+theme_override_styles/background = SubResource("StyleBoxFlat_4exbq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_x6gfa")
+value = 50.0
+fill_mode = 1
+show_percentage = false
+script = ExtResource("1_3yehe")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = -3.0
+offset_right = 41.0
+offset_bottom = 9.0
+texture = ExtResource("1_1sp0i")

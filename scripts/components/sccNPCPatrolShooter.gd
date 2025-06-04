@@ -5,7 +5,7 @@ class_name NPCPatrolShooterMovement
 @export var SHOOT_DISTANCE: float = 125.0
 var shoot_ready: bool = true
 
-func updatePath(immediate:bool=false):
+func updatePath(immediate:bool=false, target:Vector2=Vector2.ZERO):
 	match STATE:
 		# PATROL
 		0:
