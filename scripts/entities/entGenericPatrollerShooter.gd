@@ -6,8 +6,7 @@ class_name GenericPatrollerShooter
 
 func _ready():
 	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
-	print(name)
-	patrol_component.PATROL_AREA = patrol_area
+	spawnPatrolArea()
 	patrol_component.PROJECTILE = projectile
 	
 	if base_move_speed != 0:
@@ -30,3 +29,5 @@ func _ready():
 		patrol_component.STUN_TIME = stun_time
 	
 	patrol_component.initialize()
+	await get_tree().process_frame
+	patrol_component.get_node('DetectBar').initialize()

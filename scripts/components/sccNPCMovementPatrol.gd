@@ -78,6 +78,7 @@ func initialize():
 	flicker_tween = create_tween().set_loops()
 	flicker_tween.tween_property(get_parent().get_node('Sprite2D'),'self_modulate', Color(Color.WHITE, 0.5), 0.5).from(Color.WHITE)
 	flickerTween(false)
+
 func _physics_process(_delta):
 	if PATROL:
 		patrol()
@@ -121,10 +122,9 @@ func patrol():
 	if targetReached() or STATE == 3:
 		setLastTargetPosition()
 		BODY.velocity = Vector2.ZERO
-		ANIMATOR.seek(1, true)
-		ANIMATOR.pause()
+		doTargetReachedAction()
 		return
-
+	
 	var current_pos = BODY.global_position
 	var next_path_pos = NAV_AGENT.get_next_path_position()
 	var new_velocity = current_pos.direction_to(next_path_pos) * MOVE_SPEED
@@ -136,11 +136,15 @@ func patrol():
 		velocityComputed(new_velocity)
 	
 	# Target unreachable fallback
-	if ((!NAV_AGENT.is_target_reachable() and !NAV_AGENT.distance_to_target() > 10.0) and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and isPlayerTooFar(300.0)):
+	if ((!NAV_AGENT.is_target_reachable() and !NAV_AGENT.distance_to_target() > 10.0) and !LINE_OF_SIGHT.detectPlayer()) or (STATE == 2 and isPlayerTooFar()):
 		if self is NPCPatrolShooterMovement and ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left', 'Load'].has(ANIMATOR.current_animation):
 			ANIMATOR.animation_finished.emit()
 			ANIMATOR.play('RESET')
 		updateMode(1)
+
+func doTargetReachedAction():
+	ANIMATOR.seek(1, true)
+	ANIMATOR.pause()
 
 func startDetectTimer():
 	if (!LINE_OF_SIGHT.detectPlayer() and STATE == 3) or !DETECT_TIMER.is_stopped():
@@ -157,12 +161,12 @@ func alertPatrolMode():
 		chaseMode()
 		return
 	PATROLLER_BUBBLE.playBubbleAnimation('Loop_Seek', "387533__soundwarf__alert-short.ogg")
-	ANIMATOR.speed_scale = 1.0
+	#ANIMATOR.speed_scale = 1.0
 	STATE = 1
 
 func soothePatrolMode():
 	NAV_AGENT.get_current_navigation_path().clear()
-	ANIMATOR.speed_scale = 1.0
+	#ANIMATOR.speed_scale = 1.0
 	STATE = 0
 	updatePath(true)
 	PATROLLER_BUBBLE.animator.play_backwards("Soothe")
@@ -170,13 +174,13 @@ func soothePatrolMode():
 func chaseMode():
 	PATROLLER_BUBBLE.show()
 	PATROLLER_BUBBLE.playBubbleAnimation('Loop', "413641__djlprojects__metal-gear-solid-inspired-alert-surprise-sfx.ogg")
-	ANIMATOR.speed_scale = 2.5
+	#ANIMATOR.speed_scale = 2.5
 	STATE = 2
 	updatePath()
 
 func stunMode(alert_others:bool=false):
 	var last_state = STATE
-	ANIMATOR.speed_scale = 1.0
+	#ANIMATOR.speed_scale = 1.0
 	STATE = 3
 	updatePath()
 	if alert_others:
@@ -246,6 +250,9 @@ func updatePath(immediate:bool=false, target:Vector2=Vector2.ZERO):
 			NAV_AGENT.target_position = OverworldGlobals.getPlayer().global_position+OverworldGlobals.getPlayer().get_node('Sprite2D').offset
 		# STUNNED
 		3:
+			if ['Shoot_Up', 'Shoot_Down', 'Shoot_Right', 'Shoot_Left'].has(ANIMATOR.current_animation):
+				ANIMATOR.animation_finished.emit()
+			
 			BODY.get_node("CollisionShape2D").set_deferred('disabled', true)
 			immobolize()
 			flickerTween(true)
@@ -255,12 +262,15 @@ func updatePath(immediate:bool=false, target:Vector2=Vector2.ZERO):
 			await STUN_TIMER.timeout
 			flickerTween(false)
 			STUN_TIMER.stop()
-			alertPatrolMode()
-			updatePath()
+			doStunRecoveryAction()
 			LINE_OF_SIGHT.process_mode = Node.PROCESS_MODE_INHERIT
 			COMBAT_SWITCH = true
 			BODY.get_node("CollisionShape2D").set_deferred('disabled', false)
 			ANIMATOR.play("RESET")
+
+func doStunRecoveryAction():
+	alertPatrolMode()
+	updatePath()
 
 func flickerTween(play:bool):
 	var sprite = get_parent().get_node('Sprite2D')
@@ -293,8 +303,8 @@ func moveRandom()-> Vector2:
 func targetReached():
 	return NAV_AGENT.distance_to_target() < 2.0
 
-func isPlayerTooFar(distance: float):
-	return OverworldGlobals.getCurrentMap().has_node('Player') and BODY.global_position.distance_to(OverworldGlobals.getPlayer().global_position) > distance
+func isPlayerTooFar():
+	return OverworldGlobals.getCurrentMap().has_node('Player') and BODY.global_position.distance_to(OverworldGlobals.getPlayer().global_position) > 300.0
 
 func updateLineOfSight():
 	LINE_OF_SIGHT.look_at(NAV_AGENT.target_position)

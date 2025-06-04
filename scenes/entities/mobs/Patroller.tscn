@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://bat6k2egemqg8"]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatroller.gd" id="1_khwtj"]
-[ext_resource type="PackedScene" uid="uid://b0e4gc4eq74ca" path="res://scenes/components/NPCPatrol.tscn" id="1_qmtob"]
+[ext_resource type="PackedScene" uid="uid://c0dlkap3b6jp8" path="res://scenes/components/NPCPatrol.tscn" id="1_qmtob"]
 [ext_resource type="Texture2D" uid="uid://jkcya11d77up" path="res://images/animations/brigand_patroller.png" id="3_567ek"]
 [ext_resource type="PackedScene" uid="uid://bahnqy0iowmdt" path="res://scenes/components/LineOfSight.tscn" id="6_3p5yl"]
 
@@ -157,7 +157,6 @@ script = ExtResource("1_khwtj")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
-debug_enabled = true
 
 [node name="NPCPatrolComponent" parent="." instance=ExtResource("1_qmtob")]
 position = Vector2(-3, -68)

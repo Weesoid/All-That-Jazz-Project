@@ -10,6 +10,9 @@ func initialize():
 	detect_timer = patrol_component.DETECT_TIMER
 
 func _process(_delta):
+	if detect_timer == null:
+		return
+	
 	if !detect_timer.is_stopped():
 		show()
 	else:

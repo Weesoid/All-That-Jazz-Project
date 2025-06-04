@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0e4gc4eq74ca"]
+[gd_scene load_steps=4 format=3 uid="uid://c0dlkap3b6jp8"]
 
 [ext_resource type="Script" path="res://scripts/components/sccNPCMovementPatrol.gd" id="1_gxlj6"]
-[ext_resource type="PackedScene" uid="uid://lil5k63gg7w3" path="res://scenes/user_interface/uiPatrollerBubble.tscn" id="2_qsj1f"]
+[ext_resource type="PackedScene" uid="uid://lil5k63gg7w3" path="res://scenes/user_interface/PatrollerBubble.tscn" id="2_qsj1f"]
 [ext_resource type="PackedScene" uid="uid://c4tte42jxqyy" path="res://scenes/user_interface/PatrollerDetectBar.tscn" id="3_p0uis"]
 
 [node name="NPCPatrolComponent" type="Node2D"]

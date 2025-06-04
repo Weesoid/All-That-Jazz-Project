@@ -14,7 +14,7 @@ chaser = {
 "alerted_patrol": 0.0,
 "patrol": 0.0
 },
-"sprite_sheet": "res://images/animations/brigand_walker.png",
+"sprite_sheet": "",
 "stun_time": {
 "max": 0.0,
 "min": 0.0
@@ -47,8 +47,8 @@ hybrid = {
 "alerted_patrol": 0.0,
 "patrol": 0.0
 },
-"projectile": "",
-"sprite_sheet": "",
+"projectile": "res://resources/projectiles/StunProjectile.tres",
+"sprite_sheet": "res://images/animations/ent_walk_shooter.png",
 "stun_time": {
 "max": 0.0,
 "min": 0.0

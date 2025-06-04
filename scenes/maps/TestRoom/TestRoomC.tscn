@@ -1177,13 +1177,7 @@ layer_3/tile_data = PackedInt32Array(-327678, 786432, 4, -65539, 983040, 5, 1, 8
 script = ExtResource("3_8tjrj")
 
 [node name="SpawnPoints" type="Marker2D" parent="."]
-position = Vector2(160, 56)
-
-[node name="SpawnPoints2" type="Marker2D" parent="."]
-position = Vector2(-112, -144)
-
-[node name="SpawnPoints3" type="Marker2D" parent="."]
-position = Vector2(112, -136)
+position = Vector2(120, -8)
 
 [node name="DoorInteractable" parent="." instance=ExtResource("3_ccbhy")]
 position = Vector2(-232, -136)

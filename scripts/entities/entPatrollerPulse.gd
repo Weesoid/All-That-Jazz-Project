@@ -18,7 +18,7 @@ func applyPulseEffect():
 			if mode == 4:
 				if current_state == 0:
 					body.get_node('NPCPatrolComponent').updateMode(1)
-				elif current_state == 1:
+				elif current_state == 1 or current_state == 2:
 					body.get_node('NPCPatrolComponent').updateMode(2)
 			else:
 				body.get_node('NPCPatrolComponent').updateMode(mode)

@@ -111,8 +111,8 @@ func spawnPatrollers():
 	randomize()
 	var valid_specials = CombatGlobals.FACTION_PATROLLER_PROPERTIES[ENEMY_FACTION].getValidTypes(true)
 	
+	var special_count = ceil(countSpawnPoints()*0.25)
 	for spawn_point in getSpawnPoints():
-		var special_count = ceil(countSpawnPoints()*0.25)
 		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
 			continue
 		var patroller

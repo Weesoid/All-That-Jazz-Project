@@ -13,10 +13,7 @@ class_name GenericPatroller
 
 func _ready():
 	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
-	var area = createPatrolArea()
-	OverworldGlobals.getCurrentMap().add_child(area)
-	area.global_position = global_position
-	patrol_component.PATROL_AREA = area
+	spawnPatrolArea()
 	
 	if base_move_speed != 0:
 		patrol_component.BASE_MOVE_SPEED = base_move_speed
@@ -51,6 +48,12 @@ func createPatrolArea():
 	collision.shape = circle_shape
 	area.add_child(collision)
 	return area
+
+func spawnPatrolArea():
+	var area = createPatrolArea()
+	OverworldGlobals.getCurrentMap().add_child(area)
+	area.global_position = global_position
+	patrol_component.PATROL_AREA = area
 
 ## 0: soothePatrolMode() 1: alertPatrolMode() 2: chaseMode()3: stunMode(alert_others)
 func getState():

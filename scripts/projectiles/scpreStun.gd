@@ -1,5 +1,5 @@
 static func applyEffect(body: CharacterBody2D):
-	OverworldGlobals.damageParty(5)
+	#OverworldGlobals.damageParty(5)
 	var combat_interact = preload("res://scenes/components/CombatInteract.tscn").instantiate()
 	body.call_deferred('add_child', combat_interact)
 	var stun_stars = preload("res://scenes/miscellaneous/StunStars.tscn").instantiate()
