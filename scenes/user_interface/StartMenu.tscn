@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=12 format=3 uid="uid://blnelhub50qpp"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiStartMenu.gd" id="1_1evch"]
 [ext_resource type="Theme" uid="uid://dlrtokrr0ap1h" path="res://design/BorderlessButton.tres" id="1_6f5xk"]

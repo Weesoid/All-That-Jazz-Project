@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://lv57kynsvloe"]
+
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_3vd3r"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_3nbg0"]
+[ext_resource type="PackedScene" uid="uid://bighj081tmg0v" path="res://scenes/combatants/ScavSpearman.tscn" id="3_mjl7f"]
+[ext_resource type="Texture2D" uid="uid://deiif7ti1tve7" path="res://images/sprites/projectile_spear.png" id="4_7swfh"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="4_jkl04"]
+
+[resource]
+script = ExtResource("4_jkl04")
+FACTION = 3
+TIER = 0
+PREFERRED_POSITION = 0
+CHANCE_TO_DROP = 0.5
+DROP_COUNT = 1
+DROP_POOL = {}
+is_converted = false
+NAME = "Scav Spearman"
+PACKED_SCENE = ExtResource("3_mjl7f")
+RANGED_BULLET_TEXTURE = ExtResource("4_7swfh")
+DESCRIPTION = ""
+STAT_VALUES = {
+"accuracy": 0.95,
+"brawn": 0.0,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 20,
+"hustle": 1,
+"resist": 0.05
+}
+SCALE_STATS = {
+"accuracy": false,
+"brawn": true,
+"crit": false,
+"crit_dmg": false,
+"grit": true,
+"handling": false,
+"heal_mult": false,
+"health": true,
+"hustle": true,
+"resist": false
+}
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_3vd3r"), ExtResource("2_3nbg0")])
+MAX_TURN_CHARGES = 1

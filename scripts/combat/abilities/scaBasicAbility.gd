@@ -153,9 +153,9 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT) # SPEED UP {'anim_speed':1.5}
 		await returnToPosition(damage_effect, caster)
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
-		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7,'ability'=ability})
+		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.4,'ability'=ability})
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
-		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=null,'frame_time'=0.7,'ability'=ability})
+		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=null,'frame_time'=0.4,'ability'=ability})
 	elif damage_effect.damage_type == damage_effect.DamageType.CUSTOM:
 		if damage_effect.cast_animation['go_to_target']:
 			await caster.moveTo(target)

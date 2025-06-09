@@ -37,6 +37,7 @@ var hiding = false
 var channeling_power = false
 var power_listening = false
 var power_inputs = ''
+var fall_damage: int = 0
 var ANIMATION_SPEED = 0.0
 
 func _ready():
@@ -62,6 +63,33 @@ func _process(_delta):
 	animateInteract()
 
 func _physics_process(delta):
+	if not is_on_floor():
+		sprinting = false
+		velocity.x = 0
+		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
+		fall_damage += 1
+	if fall_damage != 0 and get_node('CombatantSquadComponent').COMBATANT_SQUAD.size() > 0 and is_on_floor():
+		
+		var damage = floor(fall_damage/4)
+		print(damage)
+		OverworldGlobals.damageParty(damage)
+		fall_damage = 0
+	
+	# Movement inputs
+	if can_move and is_processing_input() and isMobile() and is_on_floor():
+		direction = Vector2(
+			Input.get_action_strength("ui_move_right") - Input.get_action_strength("ui_move_left"), 
+			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
+			#Input.get_action_strength("ui_move_down")
+		)
+		direction = direction.normalized()
+	if can_move and is_processing_input() and isMobile() and direction:
+		velocity.x = direction.x * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+	
+	move_and_slide()
+	
 	animation_tree.advance(ANIMATION_SPEED * delta)
 	# Bow
 	if bow_mode and is_processing_input() and PlayerGlobals.EQUIPPED_ARROW != null:
@@ -70,16 +98,6 @@ func _physics_process(delta):
 		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
 	else:
 		ammo_count.hide()
-	
-	# Movement inputs
-	if can_move and is_processing_input() and isMobile():
-		direction = Vector2(
-			Input.get_action_strength("ui_move_right") - Input.get_action_strength("ui_move_left"), 
-			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
-		)
-		direction = direction.normalized()
-		velocity = direction * SPEED
-		move_and_slide()
 	
 	# Bow / sprint processes
 	if PlayerGlobals.overworld_stats['stamina'] <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
@@ -96,7 +114,7 @@ func _physics_process(delta):
 		ANIMATION_SPEED = 0.0
 	elif !sprinting and PlayerGlobals.overworld_stats['stamina'] < 100 and stamina_regen:
 		PlayerGlobals.overworld_stats['stamina'] += PlayerGlobals.overworld_stats['stamina_gain']
-	if !sprinting or PlayerGlobals.overworld_stats['stamina'] <= 0.0:
+	if (!sprinting or PlayerGlobals.overworld_stats['stamina'] <= 0.0) and bow_draw_strength == 0.0:
 		SPEED = PlayerGlobals.overworld_stats['walk_speed']
 		ANIMATION_SPEED = 0.0
 	
@@ -155,6 +173,12 @@ func _input(_event):
 #			add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 #		else:
 #			get_node('DebugComponent').queue_free()
+
+func isFacingSide():
+	return floor(player_direction.rotation_degrees) == 90 or ceil(player_direction.rotation_degrees) == -90
+
+func isFacingUp():
+	return ceil(player_direction.rotation_degrees) == 180
 
 func _unhandled_input(_event: InputEvent):
 	# UI Handling
@@ -276,9 +300,10 @@ func drawBow():
 		bow_mode = false
 		toggleBowAnimation()
 	
-	if Input.is_action_pressed("ui_bow_draw") and !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile():
+	if Input.is_action_pressed("ui_bow_draw") and canPullBow():
 		if bow_draw_strength < 1.5: suddenStop(false)
 		#sprinting = false
+		#print('Setting speed!')
 		SPEED = 15.0
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10) + sprite.offset
@@ -306,6 +331,9 @@ func drawBow():
 		await animation_tree.animation_finished
 		can_move = true
 		undrawBow()
+
+func canPullBow():
+	return !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile() and (isFacingSide() or isFacingUp())
 
 func canShootBow()-> bool:
 	return can_move and bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile()
@@ -370,7 +398,7 @@ func updateAnimationParameters():
 		can_move = true
 	
 	if bow_mode:
-		if Input.is_action_pressed('ui_bow_draw') and !animation_tree["parameters/conditions/void_call"] and !animation_tree["parameters/conditions/melee"] and !OverworldGlobals.inDialogue() and is_processing_input():
+		if Input.is_action_pressed('ui_bow_draw') and  canPullBow(): # !animation_tree["parameters/conditions/void_call"] and !animation_tree["parameters/conditions/melee"] and !OverworldGlobals.inDialogue() and is_processing_input() and
 			animation_tree["parameters/conditions/draw_bow"] = true
 			animation_tree["parameters/conditions/shoot_bow"] = false
 			animation_tree["parameters/conditions/cancel"] = false
@@ -386,7 +414,7 @@ func updateAnimationParameters():
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
-	if Input.is_action_just_pressed("ui_melee") and canMelee():
+	if Input.is_action_just_pressed("ui_melee") and canMelee(): 
 		undrawBowAnimation()
 		suddenStop()
 		animation_tree["parameters/conditions/melee"] = true
@@ -399,7 +427,7 @@ func playDrawSound():
 		OverworldGlobals.playSound("res://audio/sounds/bow-loading-38752.ogg")
 
 func canMelee():
-	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and bow_mode
+	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and bow_mode and isFacingSide()
 
 func suddenStop(stop_move:bool=true):
 	velocity = Vector2.ZERO

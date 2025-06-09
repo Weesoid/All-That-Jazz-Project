@@ -5,6 +5,7 @@ extends Control
 var map_component_data = {}
 
 func _ready():
+	addAllFastTravelPoints()
 	PlayerGlobals.addFastTravelArea(OverworldGlobals.getCurrentMap().scene_file_path, OverworldGlobals.getCurrentMap().getPatrollers().size()<=0)
 	for location in PlayerGlobals.CLEARED_MAPS.keys():
 		var button = OverworldGlobals.createCustomButton()
@@ -84,3 +85,11 @@ func _on_debug_button_pressed():
 		map.queue_free()
 	
 	OverworldGlobals.setMenuFocus(travel_panel)
+
+func addAllFastTravelPoints():
+	var maps = OverworldGlobals.loadArrayFromPath("res://scenes/maps/")
+	for map in maps:
+		if map == null: continue
+		var data = map.instantiate()
+		PlayerGlobals.addFastTravelArea(data.scene_file_path, false)
+		data.queue_free()

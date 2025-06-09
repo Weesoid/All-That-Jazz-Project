@@ -41,7 +41,7 @@ AUTO_COMPLETE = true
 [resource]
 script = ExtResource("1_ayys1")
 NAME = "Get That Item"
-DESCRIPTION = "Mr Questy wants me to get that item. I wonder what he means by this."
+DESCRIPTION = "Mr Questy wants me to get that item. I wonder what he means by this.     "
 OBJECTIVES = Array[ExtResource("1_5s5hl")]([SubResource("Resource_f45us"), SubResource("Resource_u6be8"), SubResource("Resource_ci8bd"), SubResource("Resource_rgqkl")])
 COMPLETED = false
 EXPERIENCE_REWARD = 0.25

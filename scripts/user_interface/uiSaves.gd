@@ -13,7 +13,7 @@ enum Modes {
 @onready var timer = $Timer
 
 @export var mode: Modes
-@export var new_game_map = "res://scenes/maps/TestRoom/TestRoomB.tscn"
+@export var new_game_map = "res://scenes/maps/Sidescroller.tscn"
 var initial_mode
 
 func _ready():
@@ -81,7 +81,7 @@ func slotPressed(save_name: String, button: Button):
 			SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name))
 		Modes.NEW_GAME:
 			PlayerGlobals.SAVE_NAME = generateSaveName()
-			OverworldGlobals.changeMap(new_game_map, '25.83763,59.06633,0', '', false, true)
+			OverworldGlobals.changeMap(new_game_map, '0,0,0', 'FastTravel', false, true)
 			for combatant in PlayerGlobals.TEAM: combatant.initializeCombatant(false)
 		Modes.DELETE:
 			deleteSave(save_name, button)

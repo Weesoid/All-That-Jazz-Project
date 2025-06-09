@@ -5,6 +5,7 @@ class_name ResCombatant
 ## Backend export variables
 @export var NAME: String
 @export var PACKED_SCENE: PackedScene
+@export var RANGED_BULLET_TEXTURE: Texture2D
 @export_multiline var DESCRIPTION: String
 
 ## Frontend / Gameplay export variables

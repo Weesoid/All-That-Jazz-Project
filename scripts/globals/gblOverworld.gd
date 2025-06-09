@@ -287,7 +287,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		PlayerType.WILLIS: player = load("res://scenes/entities/Player.tscn").instantiate()
 		PlayerType.ARCHIE: player = load("res://scenes/entities/PlayerAlternate.tscn").instantiate()
 	var coords = coordinates.split(',')
-	getCurrentMap().add_child(player)
+	getCurrentMap().add_child(player) 
 	if to_entity != '':
 		player.global_position = getEntity(to_entity).global_position + Vector2(0, 20)
 	else:
@@ -595,7 +595,9 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
 	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
 	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
-	combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[getCombatantSquadComponent(entity_name).getMusic()].pick_random()
+	var combat_music = getCombatantSquadComponent(entity_name).getMusic()
+	if CombatGlobals.FACTION_MUSIC.has(combat_music):
+		combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[combat_music].pick_random()
 	await combat_bubble.animator.animation_finished
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
@@ -721,6 +723,7 @@ func damageParty(damage:int, lethal:bool=true):
 		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	if isPlayerSquadDead():
 		showGameOver('Shot down!')
+	playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
 	party_damaged.emit()
 	var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
 	OverworldGlobals.getPlayer().player_camera.get_node('Marker2D').add_child(pop_up)

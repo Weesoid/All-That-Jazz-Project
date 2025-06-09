@@ -101,6 +101,9 @@ func giveRewards(ignore_stalker:bool=false):
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 
 func setSavePoints(set_to:bool):
+	if !has_node('SavePoint'):
+		return
+	
 	get_node('SavePoint').visible = set_to
 	get_node('SavePoint').set_collision_layer_value(1, set_to)
 	get_node('SavePoint').set_collision_mask_value(1, set_to)

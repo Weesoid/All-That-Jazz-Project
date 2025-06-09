@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://ewb80noaamii"]
 
-[ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_dehdw"]
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_g3fl5"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_dwdml"]
+[ext_resource type="PackedScene" uid="uid://bighj081tmg0v" path="res://scenes/combatants/ScavSpearman.tscn" id="3_0hrxk"]
+[ext_resource type="Texture2D" uid="uid://deiif7ti1tve7" path="res://images/sprites/projectile_spear.png" id="4_cpyeg"]
 
 [resource]
 script = ExtResource("1_hgql2")
@@ -14,7 +16,8 @@ DROP_COUNT = 1
 DROP_POOL = {}
 is_converted = false
 NAME = "Dummy"
-PACKED_SCENE = ExtResource("1_dehdw")
+PACKED_SCENE = ExtResource("3_0hrxk")
+RANGED_BULLET_TEXTURE = ExtResource("4_cpyeg")
 DESCRIPTION = "Debuggicus Maximum Aurelius"
 STAT_VALUES = {
 "accuracy": 0.95,
@@ -40,5 +43,5 @@ SCALE_STATS = {
 "hustle": true,
 "resist": false
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_g3fl5")])
+ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_g3fl5"), ExtResource("2_dwdml")])
 MAX_TURN_CHARGES = 1

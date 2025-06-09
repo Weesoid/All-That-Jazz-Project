@@ -4,7 +4,8 @@ extends Node
 enum Enemy_Factions {
 	Neutral,
 	Unggboys,
-	Mercenaries
+	Mercenaries,
+	Scavs
 }
 var FACTION_MUSIC = {
 	Enemy_Factions.Neutral: [

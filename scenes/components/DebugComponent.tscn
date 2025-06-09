@@ -23,6 +23,11 @@ layout_mode = 2
 theme = ExtResource("2_pc8b0")
 text = "(0,0)"
 
+[node name="Speed" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_pc8b0")
+text = "Speed: "
+
 [node name="PlaytimeInfo" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_pc8b0")

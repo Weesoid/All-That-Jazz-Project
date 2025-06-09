@@ -40,6 +40,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
 	if cannotAct() and !['Fading, KO'].has(animation) or animation == '': 
+		await get_tree().create_timer(0.25).timeout
 		return
 #	if CombatGlobals.getCombatScene().has_node('QTE'):
 #		await CombatGlobals.qte_finished
@@ -92,6 +93,9 @@ func shootProjectile(target: CombatantScene, ability: ResAbility):
 	projectile.name = 'Projectile'
 	projectile.target = target
 	projectile.SHOOTER = self
+	#projectile.SPEED = 1250.0
+	if combatant_resource.RANGED_BULLET_TEXTURE != null:
+		projectile.get_node('Sprite2D').texture = combatant_resource.RANGED_BULLET_TEXTURE
 	projectile.global_position = global_position
 	if combatant_resource is ResEnemyCombatant and scale.x > 0:
 		projectile.rotation_degrees = 180
