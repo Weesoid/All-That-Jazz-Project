@@ -33,6 +33,7 @@ var bow_draw_strength = 0
 var SPEED = 100.0
 var stamina_regen = true # MIND THIS, PREFERABLY ONLY INVI CAN DISABLE/ENABLE STAMINA REGEN
 var sprinting = false
+var climbing = false
 var hiding = false
 var channeling_power = false
 var power_listening = false
@@ -53,40 +54,64 @@ func _ready():
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
 	OverworldGlobals.setMouseController(false)
-	await get_tree().process_frame
-	if !OverworldGlobals.getCurrentMap().SAFE:
-		print('pluh')
-		Input.action_press('ui_bow')
+#	await get_tree().process_frame
+#	if !OverworldGlobals.getCurrentMap().SAFE:
+#		#print('pluh')
+#		Input.action_press('ui_bow')
 
 func _process(_delta):
 	updateAnimationParameters()
 	animateInteract()
 
 func _physics_process(delta):
-	if not is_on_floor():
+	# Gravity
+	if not is_on_floor() and !climbing:
 		sprinting = false
+		#player_animator.play('Walk_Down')
 		velocity.x = 0
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 		fall_damage += 1
-	if fall_damage != 0 and get_node('CombatantSquadComponent').COMBATANT_SQUAD.size() > 0 and is_on_floor():
-		
-		var damage = floor(fall_damage/4)
-		print(damage)
-		OverworldGlobals.damageParty(damage)
-		fall_damage = 0
+	
+	# Fall damage
+#	if fall_damage != 0 and get_node('CombatantSquadComponent').COMBATANT_SQUAD.size() > 0 and is_on_floor():
+#		var damage = floor(fall_damage/6)
+#		OverworldGlobals.damageParty(damage)
+#		fall_damage = 0
+#		suddenStop()
+#		animation_player.play('Faceplant')
+#		await animation_player.animation_finished
+#		can_move = true
+#		resetAnimation()
+#	elif is_on_floor():
+#		fall_damage = 0
 	
 	# Movement inputs
-	if can_move and is_processing_input() and isMobile() and is_on_floor():
+	if can_move and is_processing_input() and isMobile() and (is_on_floor() or climbing):
 		direction = Vector2(
 			Input.get_action_strength("ui_move_right") - Input.get_action_strength("ui_move_left"), 
 			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
 			#Input.get_action_strength("ui_move_down")
 		)
 		direction = direction.normalized()
+	
+	# Climbing no-clip
+#	if climbing:
+#		print(get_slide_collision_count())
+#		if get_slide_collision_count() > 0 and get_last_slide_collision().get_collider() is TileMap:
+#			set_collision_mask_value(1, false)
+#		else:
+#			set_collision_mask_value(1, true)
+	
+	# Physical movement
 	if can_move and is_processing_input() and isMobile() and direction:
-		velocity.x = direction.x * SPEED
+		if climbing and (isFacingUp() or isFacingDown()): # Climbing
+			velocity.y = direction.y * 100.0
+		else:
+			velocity.x = direction.x * SPEED # Walking
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		if climbing:
+			velocity.y = 0.0 # Stop climbing
+		velocity.x = move_toward(velocity.x, 0, SPEED) # Stop walking
 	
 	move_and_slide()
 	
@@ -179,6 +204,9 @@ func isFacingSide():
 
 func isFacingUp():
 	return ceil(player_direction.rotation_degrees) == 180
+
+func isFacingDown():
+	return ceil(player_direction.rotation_degrees) == 0
 
 func _unhandled_input(_event: InputEvent):
 	# UI Handling

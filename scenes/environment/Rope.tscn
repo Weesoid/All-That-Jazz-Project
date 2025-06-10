@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://q2yw0qfkcrxm"]
+
+[ext_resource type="Script" path="res://scenes/environment/escRope.gd" id="1_84snj"]
+[ext_resource type="Texture2D" uid="uid://cwx0im48bdj7u" path="res://images/sprites/rope_pin.png" id="1_e2jga"]
+[ext_resource type="Script" path="res://scenes/environment/escRopeClimber.gd" id="4_wh5ae"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pfrpv"]
+size = Vector2(32, 48)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lyarx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aygm4"]
+
+[node name="Rope" type="Node2D"]
+script = ExtResource("1_84snj")
+
+[node name="PinArea" type="Area2D" parent="."]
+position = Vector2(64, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PinArea"]
+position = Vector2(-64, -8)
+shape = SubResource("RectangleShape2D_pfrpv")
+debug_color = Color(0.92549, 0.27451, 0, 0.419608)
+
+[node name="Pin" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pin"]
+shape = SubResource("CircleShape2D_lyarx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Pin"]
+texture = ExtResource("1_e2jga")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("4_wh5ae")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_aygm4")
+debug_color = Color(0.701961, 0.52549, 0, 0.419608)
+
+[connection signal="body_entered" from="PinArea" to="PinArea" method="_on_body_entered"]
+[connection signal="body_exited" from="PinArea" to="PinArea" method="_on_body_exited"]
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

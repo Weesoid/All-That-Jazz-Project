@@ -35,7 +35,6 @@ y_sort_enabled = true
 script = ExtResource("1_mdfbo")
 NAME = "Prototype Room"
 DESCRIPTION = "The room of the prototypian clan."
-SAFE = true
 metadata/_edit_horizontal_guides_ = []
 
 [node name="TileMap" type="TileMap" parent="."]

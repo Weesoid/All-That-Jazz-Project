@@ -415,7 +415,7 @@ func loadFollowers():
 			var follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
 			follower_scene.host_combatant = combatant
 			PlayerGlobals.addFollower(follower_scene)
-			follower_scene.global_position = getPlayer().global_position
+			follower_scene.global_position = getPlayer().global_position+Vector2(0, -24)
 			getCurrentMap().add_child.call_deferred(follower_scene)
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):

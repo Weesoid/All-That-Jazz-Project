@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=20 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="Texture2D" uid="uid://daxud1xycrykp" path="res://images/tiles/wastes.png" id="2_u3kds"]
+[ext_resource type="PackedScene" uid="uid://q2yw0qfkcrxm" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="3_t6mhi"]
 [ext_resource type="PackedScene" uid="uid://by1pampbgw84d" path="res://scenes/entities/PlayerAlternate.tscn" id="4_iibdi"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="5_rwctp"]
@@ -15,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://lmmr2dkcaseq" path="res://images/animations/antelope.png" id="13_s8kga"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="14_ie3ty"]
 [ext_resource type="Resource" uid="uid://crf6wo1o4pndo" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_test_fight.dialogue" id="15_21t34"]
+[ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="16_jpex5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tkg2w"]
 texture = ExtResource("2_u3kds")
@@ -22,15 +24,18 @@ texture_region_size = Vector2i(48, 48)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, -13, -24, -13)
+0:0/0/physics_layer_0/polygon_0/one_way = true
 1:0/0 = 0
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, -13, -24, -13)
+1:0/0/physics_layer_0/polygon_0/one_way = true
 2:0/0 = 0
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, -13, -24, -13)
+2:0/0/physics_layer_0/polygon_0/one_way = true
 3:0/0 = 0
 3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:0/0/physics_layer_0/angular_velocity = 0.0
@@ -52,15 +57,12 @@ texture_region_size = Vector2i(48, 48)
 0:1/0 = 0
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:1/0/physics_layer_0/angular_velocity = 0.0
-0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
 1:1/0 = 0
 1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:1/0/physics_layer_0/angular_velocity = 0.0
-1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
 2:1/0 = 0
 2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:1/0/physics_layer_0/angular_velocity = 0.0
-2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
 3:1/0 = 0
 3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:1/0/physics_layer_0/angular_velocity = 0.0
@@ -82,15 +84,12 @@ texture_region_size = Vector2i(48, 48)
 0:2/0 = 0
 0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:2/0/physics_layer_0/angular_velocity = 0.0
-0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
 1:2/0 = 0
 1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:2/0/physics_layer_0/angular_velocity = 0.0
-1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
 2:2/0 = 0
 2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:2/0/physics_layer_0/angular_velocity = 0.0
-2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -24, 24, -24, 24, 24, -24, 24)
 3:2/0 = 0
 3:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:2/0/physics_layer_0/angular_velocity = 0.0
@@ -286,6 +285,9 @@ cell_quadrant_size = 48
 format = 2
 layer_0/tile_data = PackedInt32Array(65532, 0, 0, 65533, 65536, 0, 65534, 65536, 0, 65535, 65536, 0, 0, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 131072, 0, 65539, 131072, 1, 65538, 65536, 1, 65537, 65536, 1, 65536, 65536, 1, 131071, 65536, 1, 131070, 65536, 1, 131069, 65536, 1, 131068, 0, 1, -131070, 0, 0, -131069, 131072, 0, -65534, 131072, 0, -65533, 131072, 1, -65535, 0, 0, 327673, 65536, 0, 327674, 65536, 0, 327675, 65536, 0, 327676, 65536, 0, 327677, 65536, 0, 327678, 65536, 0, 327671, 65536, 0, 327672, 65536, 0, 327667, 65536, 0, 327668, 65536, 0, 327669, 65536, 0, 327670, 65536, 0, 327679, 65536, 0, 262144, 65536, 0, 262145, 65536, 0, 262146, 65536, 0, 262147, 65536, 0)
 
+[node name="Rope" parent="." instance=ExtResource("3_gkab1")]
+position = Vector2(-34, -4)
+
 [node name="FastTravel" parent="." instance=ExtResource("3_t6mhi")]
 position = Vector2(-88, -48)
 
@@ -321,3 +323,6 @@ vframes = 2
 [node name="InteractComponent" parent="Fighter" instance=ExtResource("14_ie3ty")]
 position = Vector2(0, 8)
 dialogue_resource = ExtResource("15_21t34")
+
+[node name="SavePoint" parent="." instance=ExtResource("16_jpex5")]
+position = Vector2(5, -22)

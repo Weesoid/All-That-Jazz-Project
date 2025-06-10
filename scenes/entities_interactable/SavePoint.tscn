@@ -1,12 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7mg0vkj75woi"]
+[gd_scene load_steps=4 format=3 uid="uid://c7mg0vkj75woi"]
 
 [ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://images/sprites/table.png" id="1_2nmps"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
 [ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_at4nt"]
-radius = 16.5
-height = 46.0
 
 [node name="SavePoint" type="CharacterBody2D"]
 
@@ -18,10 +14,5 @@ texture = ExtResource("1_2nmps")
 [node name="InteractComponent" parent="." instance=ExtResource("2_pey47")]
 position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_m7jmf")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -16.5)
-rotation = 1.5708
-shape = SubResource("CapsuleShape2D_at4nt")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]

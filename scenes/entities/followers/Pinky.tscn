@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://ovdh5raaljpb"]
 
 [ext_resource type="Script" path="res://scripts/entities/entNPCFollower.gd" id="1_g5p1e"]
-[ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://images/animations/ent_walker.png" id="4_5vdgd"]
+[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/animations/willis_follower.png" id="2_7qm4j"]
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -145,9 +145,8 @@ libraries = {
 }
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-self_modulate = Color(1, 0, 1, 1)
 position = Vector2(0, -20)
-texture = ExtResource("4_5vdgd")
+texture = ExtResource("2_7qm4j")
 hframes = 3
 vframes = 3
 frame = 1

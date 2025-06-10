@@ -10,17 +10,20 @@ var SPEED = 1.0
 func _ready():
 	add_collision_exception_with(OverworldGlobals.getPlayer())
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	if !OverworldGlobals.getCombatantSquad('Player').has(host_combatant):
 		queue_free()
+	if not is_on_floor():
+		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 	
 	# Positive SPEED allows followers to move, negative SPEED stops them. See 'setFollowerMotion' function
 	if SPEED > 0.0:
 		SPEED = OverworldGlobals.getPlayer().SPEED
 		if !OverworldGlobals.follow_array.is_empty() and OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
 			updateSprite()
-			velocity = lerp(velocity, global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]) * SPEED, 0.25)
-		else:
+			velocity.x = lerp(velocity, global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]).x * SPEED, 0.25)
+		elif OverworldGlobals.follow_array[FOLLOW_LOCATION] == global_position:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 			stopWalkAnimation()
 	
 	move_and_slide()
