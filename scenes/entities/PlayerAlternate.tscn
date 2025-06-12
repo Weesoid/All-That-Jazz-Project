@@ -1,4 +1,4 @@
-[gd_scene load_steps=150 format=3 uid="uid://by1pampbgw84d"]
+[gd_scene load_steps=151 format=3 uid="uid://by1pampbgw84d"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayerBowman.gd" id="1_cw77a"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="2_vhjle"]
@@ -56,6 +56,9 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b8rwl"]
 size = Vector2(17, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ul7c"]
+size = Vector2(22, 4)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
 radius = 9.0
@@ -2507,7 +2510,6 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)
@@ -2526,6 +2528,14 @@ width = 1.0
 default_color = Color(1, 0, 0, 0.392157)
 
 [node name="MeleeHitbox" parent="PlayerDirection" instance=ExtResource("6_l557x")]
+
+[node name="Area2D" type="Area2D" parent="PlayerDirection"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDirection/Area2D"]
+position = Vector2(0, 45)
+shape = SubResource("RectangleShape2D_6ul7c")
+debug_color = Color(0.490196, 0.584314, 0, 0.419608)
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 z_index = 2

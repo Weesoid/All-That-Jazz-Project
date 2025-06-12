@@ -21,6 +21,7 @@ class_name PlayerScene
 @onready var power_input_container = $PlayerCamera/PowerInputs
 @onready var quiver = $PlayerCamera/UtilitySelector
 @onready var color_overlay = $PlayerCamera/ColorOverlay
+@onready var drop_detector: Area2D = $PlayerDirection/Area2D
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -66,9 +67,16 @@ func _process(_delta):
 	animateInteract()
 
 func jump(jump_velocity:float=-200.0):
+	Input.action_release('ui_move_left') # DUCT TAPE
+	Input.action_release('ui_move_right') # DUCT TAPE
 	if climbing:
 		toggleClimbAnimation(false)
 	velocity.y = jump_velocity
+
+func phase():
+	set_collision_mask_value(1, false)
+	await get_tree().create_timer(0.1).timeout
+	set_collision_mask_value(1, true)
 
 func _physics_process(delta):
 	# Gravity
@@ -103,6 +111,11 @@ func _physics_process(delta):
 		)
 		direction = direction.normalized()
 	
+	# Jump detector
+	if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO:
+		jump(-225.0)
+	elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
+		phase()
 	# Physical movement
 	if can_move and is_processing_input() and isMobile() and direction:
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing

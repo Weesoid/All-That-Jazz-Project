@@ -1,4 +1,4 @@
-[gd_scene load_steps=127 format=3 uid="uid://xfrvaohqhfml"]
+[gd_scene load_steps=128 format=3 uid="uid://xfrvaohqhfml"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_mngvk"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
@@ -55,6 +55,8 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b8rwl"]
 size = Vector2(17, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d8er2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
 height = 22.0
@@ -2229,6 +2231,11 @@ position = Vector2(-10, 0)
 points = PackedVector2Array(0, 0, 0, 0)
 width = 1.0
 default_color = Color(1, 0, 0, 0.392157)
+
+[node name="Area2D" type="Area2D" parent="PlayerDirection"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDirection/Area2D"]
+shape = SubResource("RectangleShape2D_d8er2")
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7)
