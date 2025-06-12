@@ -323,7 +323,7 @@ func setFollowersMotion(enable:bool):
 
 func healCombatants(percent_heal:float=1.0,cure: bool=true):
 	for combatant in TEAM:
-		if !combatant.initialized: combatant.initializeCombatant()
+		if !combatant.initialized: combatant.initializeCombatant(false)
 		combatant.STAT_VALUES['health'] = int(combatant.BASE_STAT_VALUES['health'] * percent_heal)
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
 

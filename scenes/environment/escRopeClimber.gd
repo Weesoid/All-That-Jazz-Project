@@ -1,14 +1,14 @@
 extends Area2D
 class_name ClimberArea
 
-func _on_body_entered(body):
-	pass
-
 func _on_body_exited(body):
 	if body is PlayerScene:
 		setClimbingFalse()
 
 func _input(event):
+	if OverworldGlobals.getPlayer() == null:
+		return
+	
 	if playerInClimbable() and inputtedMovement():
 		OverworldGlobals.getPlayer().fall_damage = 0
 		OverworldGlobals.getPlayer().climbing = true

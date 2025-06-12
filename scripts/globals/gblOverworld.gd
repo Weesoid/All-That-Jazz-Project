@@ -86,6 +86,9 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=35
 # GENERAL UTILITY
 #********************************************************************************
 func getPlayer()-> PlayerScene:
+	if !get_tree().current_scene.has_node('Player'):
+		return null
+	
 	return get_tree().current_scene.get_node('Player')
 
 func getEntity(entity_name: String):

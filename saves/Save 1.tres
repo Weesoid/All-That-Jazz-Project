@@ -24,18 +24,18 @@
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="21_gervv"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="22_ce883"]
 
-[sub_resource type="Resource" id="Resource_gebmo"]
+[sub_resource type="Resource" id="Resource_ok4lp"]
 script = ExtResource("1_fwgqy")
 position = Vector2(5, -2)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
-direction = -90
+direction = 90
 
-[sub_resource type="Resource" id="Resource_nmngl"]
+[sub_resource type="Resource" id="Resource_h71dk"]
 script = ExtResource("2_3ggq0")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_oox7o"]
+[sub_resource type="Resource" id="Resource_8ufrv"]
 script = ExtResource("20_48ocw")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_84hel")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -122,12 +122,12 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
 KNOWN_POWERS = [ExtResource("19_l6nd8")]
 
-[sub_resource type="Resource" id="Resource_o3twj"]
+[sub_resource type="Resource" id="Resource_ha1ft"]
 script = ExtResource("21_c5u2k")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("21_gervv")])
 CRAFTED = Array[String]([])
 ITEM_DATA_INVENTORY = {
-"res://resources/items/ArrowSleeper.tres": 36
+"res://resources/items/ArrowSleeper.tres": 1
 }
 
 [resource]
@@ -135,6 +135,6 @@ script = ExtResource("22_ce883")
 NAME = "Save 1 - 00:00:59
 Morale 1
 "
-PLAYTIME = 59.268
+PLAYTIME = 59.274
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_gebmo"), SubResource("Resource_nmngl"), SubResource("Resource_oox7o"), SubResource("Resource_o3twj")]
+save_data = [SubResource("Resource_ok4lp"), SubResource("Resource_h71dk"), SubResource("Resource_8ufrv"), SubResource("Resource_ha1ft")]

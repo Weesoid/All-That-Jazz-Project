@@ -19,7 +19,3 @@ func _exit_tree():
 	else:
 		OverworldGlobals.addPatrollerPulse(global_position, 150.0, 4)
 		OverworldGlobals.playSound2D(global_position, "66777__kevinkace__crate-break-1.ogg")
-
-
-func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	pass
