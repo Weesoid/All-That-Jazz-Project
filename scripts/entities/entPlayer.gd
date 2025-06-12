@@ -42,8 +42,8 @@ var fall_damage: int = 0
 var ANIMATION_SPEED = 0.0
 
 func _ready():
-	player_camera.global_position = global_position+sprite.offset
-	player_camera.zoom = Vector2(1,1)
+	#player_camera.global_position = global_position+sprite.offset
+	#player_camera.zoom = Vector2(1,1)
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	animation_tree.active = true
 	
@@ -54,6 +54,8 @@ func _ready():
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
 	OverworldGlobals.setMouseController(false)
+	await get_tree().process_frame
+	PlayerGlobals.healCombatants()
 #	await get_tree().process_frame
 #	if !OverworldGlobals.getCurrentMap().SAFE:
 #		#print('pluh')
@@ -62,6 +64,11 @@ func _ready():
 func _process(_delta):
 	updateAnimationParameters()
 	animateInteract()
+
+func jump(jump_velocity:float=-200.0):
+	if climbing:
+		toggleClimbAnimation(false)
+	velocity.y = jump_velocity
 
 func _physics_process(delta):
 	# Gravity
@@ -73,46 +80,39 @@ func _physics_process(delta):
 		fall_damage += 1
 	
 	# Fall damage
-#	if fall_damage != 0 and get_node('CombatantSquadComponent').COMBATANT_SQUAD.size() > 0 and is_on_floor():
-#		var damage = floor(fall_damage/6)
-#		OverworldGlobals.damageParty(damage)
-#		fall_damage = 0
-#		suddenStop()
-#		animation_player.play('Faceplant')
-#		await animation_player.animation_finished
-#		can_move = true
-#		resetAnimation()
-#	elif is_on_floor():
-#		fall_damage = 0
+	if fall_damage != 0 and get_node('CombatantSquadComponent').COMBATANT_SQUAD.size() > 0 and is_on_floor():
+		var damage = floor(fall_damage/6)
+		if damage < 5:
+			fall_damage = 0
+			return
+		OverworldGlobals.damageParty(damage, ['Faceplant!', "That's gotta hurt.", 'Watch your step!'])
+		fall_damage = 0
+		suddenStop()
+		animation_player.play('Faceplant')
+		await animation_player.animation_finished
+		can_move = true
+		resetAnimation()
+	elif is_on_floor():
+		fall_damage = 0
 	
 	# Movement inputs
 	if can_move and is_processing_input() and isMobile() and (is_on_floor() or climbing):
 		direction = Vector2(
 			Input.get_action_strength("ui_move_right") - Input.get_action_strength("ui_move_left"), 
 			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
-			#Input.get_action_strength("ui_move_down")
 		)
 		direction = direction.normalized()
-	
-	# Climbing no-clip
-#	if climbing:
-#		print(get_slide_collision_count())
-#		if get_slide_collision_count() > 0 and get_last_slide_collision().get_collider() is TileMap:
-#			set_collision_mask_value(1, false)
-#		else:
-#			set_collision_mask_value(1, true)
 	
 	# Physical movement
 	if can_move and is_processing_input() and isMobile() and direction:
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing
+			sprinting = false
 			velocity.y = direction.y * 100.0
-		else:
-			velocity.x = direction.x * SPEED # Walking
+		velocity.x = direction.x * SPEED # Walking
 	else:
 		if climbing:
 			velocity.y = 0.0 # Stop climbing
 		velocity.x = move_toward(velocity.x, 0, SPEED) # Stop walking
-	
 	move_and_slide()
 	
 	animation_tree.advance(ANIMATION_SPEED * delta)
@@ -413,6 +413,7 @@ func updateAnimationParameters():
 		animation_tree["parameters/Draw Bow/blend_position"] = direction
 		animation_tree["parameters/Draw Bow Walk/blend_position"] = direction
 		animation_tree["parameters/Melee/blend_position"] = direction
+		animation_tree["parameters/Climb/blend_position"] = direction
 	if Input.is_action_just_pressed('ui_bow') and !animation_tree["parameters/conditions/void_call"]:
 		suddenStop()
 		toggleBowAnimation()
@@ -481,6 +482,19 @@ func toggleVoidAnimation(enabled: bool):
 	else:
 		animation_tree["parameters/conditions/void_call"] = false
 		animation_tree["parameters/conditions/void_release"] = true
+
+func toggleClimbAnimation(enabled: bool):
+	if (enabled and animation_tree["parameters/conditions/climb"]) or (!enabled and animation_tree["parameters/conditions/unclimb"]):
+		return
+	
+	if enabled:
+		animation_tree["parameters/conditions/climb"] = true
+		animation_tree["parameters/conditions/unclimb"] = false
+	else:
+		animation_tree["parameters/conditions/climb"] = false
+		animation_tree["parameters/conditions/unclimb"] = true
+	animation_tree["parameters/conditions/is_moving"] = false
+	animation_tree["parameters/conditions/idle"] = true
 
 func toggleBowAnimation():
 	animation_tree["parameters/conditions/equip_bow"] = bow_mode

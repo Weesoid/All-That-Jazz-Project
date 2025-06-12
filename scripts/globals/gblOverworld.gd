@@ -704,7 +704,7 @@ func isPlayerSquadDead():
 	
 	return true
 
-func damageParty(damage:int, lethal:bool=true):
+func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
 	
 	var dead = ''
@@ -721,8 +721,12 @@ func damageParty(damage:int, lethal:bool=true):
 		else:
 			showPlayerPrompt('%s is downed!' % dead)
 		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
-	if isPlayerSquadDead():
-		showGameOver('Shot down!')
+	if isPlayerSquadDead() and !death_message.is_empty():
+		print('x!!!!')
+		randomize()
+		showGameOver(death_message.pick_random())
+	elif isPlayerSquadDead():
+		showGameOver('')
 	playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
 	party_damaged.emit()
 	var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()

@@ -518,7 +518,7 @@ func tweenAbilityButtons(buttons: Array):
 	await get_tree().process_frame
 	for button in buttons:
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-		tween.ty(button, 'scale', Vector2(1.1,1.1), 0.005)
+		tween.tween_property(button, 'scale', Vector2(1.1,1.1), 0.005)
 		tween.tween_property(button, 'scale', Vector2(1.0,1.0), 0.05)
 		tween.set_parallel(true)
 		tween.tween_property(button, 'modulate', Color.WHITE, 0.0025)

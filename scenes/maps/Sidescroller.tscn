@@ -287,6 +287,7 @@ layer_0/tile_data = PackedInt32Array(65532, 0, 0, 65533, 65536, 0, 65534, 65536,
 
 [node name="Rope" parent="." instance=ExtResource("3_gkab1")]
 position = Vector2(-34, -4)
+segment_count = 3
 
 [node name="FastTravel" parent="." instance=ExtResource("3_t6mhi")]
 position = Vector2(-88, -48)
@@ -326,3 +327,7 @@ dialogue_resource = ExtResource("15_21t34")
 
 [node name="SavePoint" parent="." instance=ExtResource("16_jpex5")]
 position = Vector2(5, -22)
+
+[node name="Rope2" parent="." instance=ExtResource("3_gkab1")]
+position = Vector2(13, -5)
+segment_count = 3

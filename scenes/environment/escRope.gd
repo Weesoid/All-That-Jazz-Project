@@ -4,11 +4,12 @@ class_name DynamicRope
 
 @export var segment_count: int:
 	set(seg_count):
-		segment_count = seg_count
-		if Engine.is_editor_hint():
+		if seg_count >= 0:
+			segment_count = seg_count
+		if Engine.is_editor_hint() and seg_count >= 0:
 			initializeRope()
-@onready var pin = $PinArea
-@onready var top_pin = $Pin
+@onready var top_pin = $PinArea
+@onready var top_pin_tex = $Pin
 @onready var climber_area: Area2D = $Area2D
 @onready var climber_shape = $Area2D/CollisionShape2D
 var rope_length = 0
@@ -18,8 +19,14 @@ var segments: Array
 func _ready():
 	initializeRope()
 
-func isPlayerOnPin():
-	return pin.get_overlapping_bodies().has(OverworldGlobals.getPlayer())
+func moveEnterArea(pos: Vector2):
+	top_pin.position = pos
+
+func isPlayerOnEnterArea():
+	return top_pin.get_overlapping_bodies().has(OverworldGlobals.getPlayer())
+
+func isPlayerOnTop():
+	return top_pin.get_overlapping_bodies().has(OverworldGlobals.getPlayer()) and top_pin.position == Vector2.ZERO
 
 func createSegment():
 	var segment = load("res://scenes/environment/RopeSegment.tscn").instantiate()
@@ -60,10 +67,8 @@ func initializeRope():
 	while segments.size() != segment_count+1:
 		createSegment()
 		if segments.size() == 1 and !Engine.is_editor_hint():
-			createPinJoint(top_pin.get_path(), segments[0].get_path())
+			createPinJoint(top_pin_tex.get_path(), segments[0].get_path())
 		elif segments.size() >= 2 and segments.size() and !Engine.is_editor_hint():
 			createPinJoint(segments[segments.size()-2].get_path(), segments[segments.size()-1].get_path())
 	if !Engine.is_editor_hint():
 		resizeClimbArea()
-
-
