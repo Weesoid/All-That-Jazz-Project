@@ -1,4 +1,5 @@
 extends Area2D
+class_name MeleeHitbox
 
 @onready var player = OverworldGlobals.getPlayer()
 @onready var smear = $AnimationPlayer

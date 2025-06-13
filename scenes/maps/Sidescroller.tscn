@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
-[ext_resource type="PackedScene" uid="uid://q2yw0qfkcrxm" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
+[ext_resource type="PackedScene" uid="uid://dvstysplrop1t" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="3_t6mhi"]
 [ext_resource type="PackedScene" uid="uid://by1pampbgw84d" path="res://scenes/entities/PlayerAlternate.tscn" id="4_iibdi"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="5_rwctp"]
@@ -78,5 +78,6 @@ dialogue_resource = ExtResource("15_21t34")
 position = Vector2(5, -22)
 
 [node name="Rope2" parent="." instance=ExtResource("3_gkab1")]
-position = Vector2(13, -5)
+position = Vector2(14, -5)
 segment_count = 3
+must_shoot = true

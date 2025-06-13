@@ -8,6 +8,7 @@ class_name DynamicRope
 			segment_count = seg_count
 		if Engine.is_editor_hint() and seg_count >= 0:
 			initializeRope()
+@export var must_shoot: bool = false
 @onready var top_pin = $PinArea
 @onready var top_pin_tex = $Pin
 @onready var climber_area: Area2D = $Area2D
@@ -17,7 +18,8 @@ var segments: Array
 
 
 func _ready():
-	initializeRope()
+	if !must_shoot:
+		initializeRope()
 
 func moveEnterArea(pos: Vector2):
 	top_pin.position = pos
@@ -67,5 +69,15 @@ func initializeRope():
 			createPinJoint(top_pin_tex.get_path(), segments[0].get_path())
 		elif segments.size() >= 2 and segments.size() and !Engine.is_editor_hint():
 			createPinJoint(segments[segments.size()-2].get_path(), segments[segments.size()-1].get_path())
+		if must_shoot:
+			await get_tree().create_timer(0.08).timeout
+	
+	if must_shoot and !Engine.is_editor_hint():
+		must_shoot = false
 	if !Engine.is_editor_hint():
 		resizeClimbArea()
+
+func _on_area_2d_area_entered(area):
+	if area is Projectile and must_shoot:
+		print('plah')
+		initializeRope()

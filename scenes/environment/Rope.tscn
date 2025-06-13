@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://q2yw0qfkcrxm"]
+[gd_scene load_steps=7 format=3 uid="uid://dvstysplrop1t"]
 
-[ext_resource type="Script" path="res://scenes/environment/escRope.gd" id="1_84snj"]
 [ext_resource type="Texture2D" uid="uid://cwx0im48bdj7u" path="res://images/sprites/rope_pin.png" id="1_e2jga"]
-[ext_resource type="Script" path="res://scenes/environment/escRopeClimber.gd" id="4_wh5ae"]
+[ext_resource type="Script" path="res://scripts/environment/escRope.gd" id="1_phgfu"]
+[ext_resource type="Script" path="res://scripts/environment/escRopeClimber.gd" id="3_6su88"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pfrpv"]
 size = Vector2(32, 48)
@@ -10,10 +10,10 @@ size = Vector2(32, 48)
 [sub_resource type="CircleShape2D" id="CircleShape2D_lyarx"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aygm4"]
-radius = 5.0
+radius = 8.0
 
 [node name="Rope" type="Node2D"]
-script = ExtResource("1_84snj")
+script = ExtResource("1_phgfu")
 
 [node name="PinArea" type="Area2D" parent="."]
 
@@ -32,7 +32,7 @@ shape = SubResource("CircleShape2D_lyarx")
 texture = ExtResource("1_e2jga")
 
 [node name="Area2D" type="Area2D" parent="."]
-script = ExtResource("4_wh5ae")
+script = ExtResource("3_6su88")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_aygm4")
@@ -41,4 +41,5 @@ debug_color = Color(0.701961, 0.52549, 0, 0.419608)
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0, 16)
 
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

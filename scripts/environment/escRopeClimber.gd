@@ -6,7 +6,7 @@ func _on_body_exited(body):
 		setClimbingFalse()
 
 func _input(event):
-	if OverworldGlobals.getPlayer() == null:
+	if OverworldGlobals.getPlayer() == null or get_parent().must_shoot:
 		return
 	
 	if playerInClimbable() and inputtedMovement():
