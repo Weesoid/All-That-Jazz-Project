@@ -7,7 +7,6 @@ enum PlayerType {
 var entering_combat:bool=false
 var player_type: PlayerType = PlayerType.ARCHIE
 var delayed_rewards: Dictionary
-var follow_array = []
 var player_follower_count = 0
 
 signal update_patroller_modes(mode:int)
@@ -28,10 +27,7 @@ func initializePlayerParty():
 			member.initializeCombatant()
 			member.SCENE.free()
 	
-	if OverworldGlobals.getCurrentMap().SAFE:
-		loadFollowers()
-	
-	follow_array.resize(100)
+	loadFollowers()
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
 	getPlayer().can_move = enabled
@@ -409,16 +405,17 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	balloon.start(resource, title, extra_game_states)
 
 func loadFollowers():
-	for follower in PlayerGlobals.FOLLOWERS:
-		if follower != null: follower.queue_free()
-	PlayerGlobals.FOLLOWERS.clear()
+	for follower in OverworldGlobals.getCurrentMap().get_children().filter(func(child): return child is NPCFollower):
+		follower.queue_free()
+	player_follower_count = 0
 	
 	for combatant in PlayerGlobals.TEAM:
 		if getCombatantSquad('Player').has(combatant) and combatant.FOLLOWER_PACKED_SCENE != null:
+			player_follower_count += 1
 			var follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
 			follower_scene.host_combatant = combatant
-			PlayerGlobals.addFollower(follower_scene)
-			follower_scene.global_position = getPlayer().global_position+Vector2(0, -24)
+			follower_scene.follow_index = player_follower_count
+			follower_scene.global_position = getPlayer().global_position+Vector2(0, -32)
 			getCurrentMap().add_child.call_deferred(follower_scene)
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
@@ -781,6 +778,4 @@ func freezeFrame(time_scale: float=0.3, duration: float=1.5):
 	Engine.time_scale = 1.0
 
 func resetVariables():
-	follow_array = []
-	player_follower_count = 0
-	follow_array.resize(100)
+	pass

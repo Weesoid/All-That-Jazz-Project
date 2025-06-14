@@ -4,7 +4,7 @@ extends Node
 var SAVE_NAME
 var TEAM: Array[ResPlayerCombatant]
 var TEAM_FORMATION: Array[ResCombatant]
-var FOLLOWERS: Array[NPCFollower] = []
+#var FOLLOWERS: Array[NPCFollower] = []
 var CLEARED_MAPS: Dictionary = {}
 var POWER: GDScript
 var KNOWN_POWERS: Array = [load("res://resources/powers/Stealth.tres")]
@@ -266,31 +266,6 @@ func removeCombatant(combatant_id: ResPlayerCombatant):
 	TEAM_FORMATION = OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD
 	overwriteTeam()
 
-func addFollower(follower: NPCFollower):
-	FOLLOWERS.append(follower)
-	follower.FOLLOW_LOCATION = 20 * FOLLOWERS.size()
-
-func removeFollower():
-	OverworldGlobals.loadFollowers()
-	var index = 1
-	for f in FOLLOWERS:
-		f.FOLLOW_LOCATION = 20 * index
-		index += 1
-
-func hasFollower(follower_combatant: ResPlayerCombatant):
-	for f in FOLLOWERS:
-		if f.host_combatant == follower_combatant:
-			return true
-	
-	return false
-
-func isFollowerActive(follower_combatant_name: String):
-	for f in FOLLOWERS:
-		if f.host_combatant.NAME == follower_combatant_name:
-			return true
-	
-	return false
-
 func loadSquad():
 	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.TEAM_FORMATION)
 
@@ -311,14 +286,13 @@ func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/
 	combatant.applyTemperments(true)
 
 func setFollowersMotion(enable:bool):
-	for follower in FOLLOWERS:
+	for follower in OverworldGlobals.getCurrentMap().get_children().filter(func(child): return child is NPCFollower):
 		if !is_instance_valid(follower):
 			return
-		
 		if enable:
-			follower.SPEED = 1.0
+			follower.speed_multiplier = 1.1
 		else:
-			follower.SPEED = -1.0
+			follower.speed_multiplier = 0.0
 			follower.stopWalkAnimation()
 
 func healCombatants(percent_heal:float=1.0,cure: bool=true):
@@ -526,7 +500,7 @@ func resetVariables():
 	SAVE_NAME = null
 	TEAM = [preload("res://resources/combat/combatants_player/Willis.tres")]
 	TEAM_FORMATION = []
-	FOLLOWERS = []
+	#FOLLOWERS = []
 	CLEARED_MAPS = {}
 	POWER = null
 	KNOWN_POWERS = [load("res://resources/powers/Stealth.tres")]

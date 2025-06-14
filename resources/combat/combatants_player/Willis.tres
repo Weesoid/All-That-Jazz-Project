@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=19 format=3 uid="uid://colt86d3cbv04"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=20 format=3 uid="uid://colt86d3cbv04"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="2_nh55h"]
@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="12_diau4"]
 [ext_resource type="Resource" uid="uid://bl545ivx2u5hk" path="res://resources/combat/abilities/GuardSlash.tres" id="13_8mffv"]
 [ext_resource type="Resource" uid="uid://nljovo4vpket" path="res://resources/combat/abilities/Pass.tres" id="15_6s5it"]
+[ext_resource type="PackedScene" uid="uid://ovdh5raaljpb" path="res://scenes/entities/followers/Pinky.tscn" id="15_t4jhn"]
 [ext_resource type="Resource" uid="uid://cg2y4a201ihl0" path="res://resources/combat/abilities/RandaStrike.tres" id="16_4yism"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="16_cg6aq"]
 
@@ -47,6 +48,7 @@ BASE_TEMPERMENT = {
 "primary": ["gifted", "deadly", "all_arounder"],
 "secondary": ["acute", "clumsy", "stalwart"]
 }
+FOLLOWER_PACKED_SCENE = ExtResource("15_t4jhn")
 MANDATORY = true
 STAT_MULTIPLIER = 0.01
 NAME = "Willis Flynt"

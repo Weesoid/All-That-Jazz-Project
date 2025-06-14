@@ -42,6 +42,9 @@ var power_inputs = ''
 var fall_damage: int = 0
 var ANIMATION_SPEED = 0.0
 
+signal jumped(jump_velocity)
+signal phased
+
 func _ready():
 	#player_camera.global_position = global_position+sprite.offset
 	#player_camera.zoom = Vector2(1,1)
@@ -72,8 +75,10 @@ func jump(jump_velocity:float=-200.0):
 	if climbing:
 		toggleClimbAnimation(false)
 	velocity.y = jump_velocity
+	jumped.emit(jump_velocity)
 
 func phase():
+	phased.emit()
 	set_collision_mask_value(1, false)
 	await get_tree().create_timer(0.1).timeout
 	set_collision_mask_value(1, true)
@@ -82,7 +87,6 @@ func _physics_process(delta):
 	# Gravity
 	if not is_on_floor() and !climbing:
 		sprinting = false
-		#player_animator.play('Walk_Down')
 		velocity.x = 0
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 		fall_damage += 1
@@ -90,7 +94,7 @@ func _physics_process(delta):
 	# Fall damage
 	if fall_damage != 0 and get_node('CombatantSquadComponent').COMBATANT_SQUAD.size() > 0 and is_on_floor():
 		var damage = floor(fall_damage/6)
-		if damage < 5:
+		if damage < 6:
 			fall_damage = 0
 			return
 		OverworldGlobals.damageParty(damage, ['Faceplant!', "That's gotta hurt.", 'Watch your step!'])
@@ -161,8 +165,8 @@ func _physics_process(delta):
 		PlayerGlobals.overworld_stats['stamina'] = 100.0
 	
 	# Follower points
-	OverworldGlobals.follow_array.push_front(global_position)
-	OverworldGlobals.follow_array.pop_back()
+	#OverworldGlobals.follow_array.push_front(global_position)
+	#OverworldGlobals.follow_array.pop_back()
 
 func _input(_event):
 	# Power handling
@@ -386,6 +390,7 @@ func undrawBow():
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 
 func shootProjectile():
+	bow_line.hide()
 	OverworldGlobals.playSound("178872__hanbaal__bow.ogg", -15.0, true)
 	InventoryGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
 	var projectile = load("res://scenes/entities_disposable/ProjectileArrow.tscn").instantiate()

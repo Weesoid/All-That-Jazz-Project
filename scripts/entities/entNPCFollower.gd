@@ -2,31 +2,87 @@ extends CharacterBody2D
 class_name NPCFollower
 
 @onready var ANIMATOR = $WalkingAnimations
+@onready var player = OverworldGlobals.getPlayer()
 
-var FOLLOW_LOCATION: int
 var host_combatant: ResPlayerCombatant
-var SPEED = 1.0
+var speed_multiplier:float = 1.1
+var follow_index:int
 
 func _ready():
+	#follow_index = OverworldGlobals.player_follower_count
 	add_collision_exception_with(OverworldGlobals.getPlayer())
+	player.jumped.connect(jump)
+	player.phased.connect(phase)
+
+func jump(jump_velocity):
+	if !player.is_on_floor():
+		return
+	z_index = 99
+	updateSprite()
+	if checkSameXPos():
+		fadeInOut()
+	global_position = player.global_position+Vector2(0,-32)
+	await get_tree().create_timer(0.1).timeout
+	velocity.y = jump_velocity
+
+func phase():
+	if z_index != 0:
+		z_index = 0
+	updateSprite()
+	if checkSameXPos():
+		fadeInOut()
+	global_position.x = player.global_position.x
+	await get_tree().create_timer(0.05).timeout
+	set_collision_mask_value(1, false)
+	await get_tree().create_timer(0.1).timeout
+	set_collision_mask_value(1, true)
+
+func checkSameXPos():
+	return ceil(global_position.x) != ceil(player.global_position.x)
+
+func fadeInOut():
+	await fade(Color.TRANSPARENT,0.0)
+	fade(Color.WHITE)
+
+func fade(color: Color,duration:float=0.25):
+	if color == modulate:
+		return
+	updateSprite()
+	var tween = create_tween().tween_property(self, 'modulate', color, duration)
+	await tween.finished
 
 func _physics_process(delta):
-	if !OverworldGlobals.getCombatantSquad('Player').has(host_combatant):
-		queue_free()
+#	if !OverworldGlobals.getCombatantSquad('Player').has(host_combatant):
+#		queue_free()
 	if not is_on_floor():
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 	
-	# Positive SPEED allows followers to move, negative SPEED stops them. See 'setFollowerMotion' function
-	if SPEED > 0.0:
-		SPEED = OverworldGlobals.getPlayer().SPEED
-		if !OverworldGlobals.follow_array.is_empty() and OverworldGlobals.follow_array[FOLLOW_LOCATION] != null and OverworldGlobals.getPlayer().velocity != Vector2.ZERO:
-			updateSprite()
-			velocity.x = lerp(velocity, global_position.direction_to(OverworldGlobals.follow_array[FOLLOW_LOCATION]).x * SPEED, 0.25)
-		elif OverworldGlobals.follow_array[FOLLOW_LOCATION] == global_position:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-			stopWalkAnimation()
+	if player.climbing:
+		fade(Color.TRANSPARENT)
+	elif modulate == Color.TRANSPARENT and (player.velocity.y == 0 and player.is_on_floor()):
+		teleportToTarget()
+	
+	if global_position.distance_to(player.global_position) > 50*follow_index:
+		if z_index != 0: z_index = 0
+		var direction = (player.position-position).normalized()
+		velocity.x = snappedf(direction.x*(player.SPEED),100.0)
+		print(velocity.x)
+		#print('my velo: ', velocity, ' vs player velo', player.velocity)
+		updateSprite()
+	else:
+		velocity.x = move_toward(velocity.x, 0, (player.SPEED*speed_multiplier)) # Stop walking
+		stopWalkAnimation()
+	if global_position.distance_to(player.global_position) > 300 and !player.climbing:
+		fadeInOut()
+		teleportToTarget()
+		
+	
 	
 	move_and_slide()
+
+func teleportToTarget():
+	global_position = player.global_position+Vector2(0,-32)
+	fade(Color.WHITE)
 
 func updateSprite():
 	var player_direction: int = OverworldGlobals.getPlayer().player_direction.rotation_degrees
@@ -41,6 +97,5 @@ func updateSprite():
 		ANIMATOR.play('Walk_Up')
 
 func stopWalkAnimation():
-	velocity = Vector2.ZERO
 	ANIMATOR.seek(1, true)
 	ANIMATOR.pause()

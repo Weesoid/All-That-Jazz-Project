@@ -2466,7 +2466,6 @@ graph_offset = Vector2(-515.482, -63.5901)
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_7ym7e"]
 
 [node name="Player" type="CharacterBody2D" groups=["presist"]]
-y_sort_enabled = true
 collision_layer = 17
 collision_mask = 17
 script = ExtResource("1_cw77a")
@@ -2479,7 +2478,7 @@ texture = ExtResource("4_ybhti")
 offset = Vector2(0, -32)
 hframes = 9
 vframes = 6
-frame = 19
+frame = 1
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false

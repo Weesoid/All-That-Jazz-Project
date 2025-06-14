@@ -65,7 +65,8 @@ func addToActive(member: ResCombatant, button: Button):
 			button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 	elif button != null:
 		OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
-		PlayerGlobals.removeFollower()
+		#PlayerGlobals.removeFollower()
+		OverworldGlobals.loadFollowers()
 		if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
 			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_icon.png"))
 		else:

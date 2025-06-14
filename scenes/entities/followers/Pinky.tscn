@@ -131,11 +131,10 @@ _data = {
 "Walk_Up": SubResource("Animation_dpwad")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6fsld"]
-radius = 11.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nnd2o"]
 
 [node name="NPCPrototypeFollower" type="CharacterBody2D"]
-motion_mode = 1
+collision_layer = 0
 wall_min_slide_angle = 0.0
 script = ExtResource("1_g5p1e")
 
@@ -145,12 +144,16 @@ libraries = {
 }
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-position = Vector2(0, -20)
+position = Vector2(0, -24)
 texture = ExtResource("2_7qm4j")
 hframes = 3
 vframes = 3
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -6)
-shape = SubResource("CircleShape2D_6fsld")
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_nnd2o")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
