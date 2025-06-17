@@ -6,26 +6,41 @@ var BODY: CharacterBody2D
 # w = Wait (ex. w10.5)
 # ^ = Direction (ex. ^U) (Only applicable to non-player scenes)
 var TARGET_POSITIONS = []
-var MOVE_SPEED = 35
+var MOVE_SPEED = 100.0
 var ANIMATE_DIRECTION: bool
+var jumping:bool=false
 
+signal landed
 signal movement_finished
 signal animation_done
 
 func _ready():
 	BODY = get_parent()
 	BODY.set_physics_process(false)
-	BODY.set_collision_layer_value(1, false)
-	BODY.set_collision_mask_value(1, false)
+	for body in getBodies():
+		BODY.add_collision_exception_with(body)
 
-func _physics_process(_delta):
-	BODY.move_and_slide()
+func getBodies():
+	var out = []
+	for child in OverworldGlobals.getCurrentMap().get_children().filter(func(chimp): return chimp is CharacterBody2D):
+		out.append(child)
+	return out
+
+func _physics_process(delta):
+	if not BODY.is_on_floor():
+		BODY.velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
+	elif BODY.is_on_floor() and jumping:
+		jumping=false
+		if TARGET_POSITIONS[0] is float: TARGET_POSITIONS.remove_at(0)
 	
 	if !TARGET_POSITIONS.is_empty():
 		if TARGET_POSITIONS[0] is Vector2:
-			BODY.velocity = BODY.global_position.direction_to(TARGET_POSITIONS[0]) * MOVE_SPEED
-			if BODY.global_position.distance_to(TARGET_POSITIONS[0]) < 1.0:
+			BODY.velocity.x = (flattenY(BODY.global_position).direction_to(flattenY(TARGET_POSITIONS[0]))).x * MOVE_SPEED 
+			#OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", TARGET_POSITIONS[0])
+			if distanceX(BODY.global_position, TARGET_POSITIONS[0]) < 1.0:
 				TARGET_POSITIONS.remove_at(0)
+		elif TARGET_POSITIONS[0] is float:
+			jumpBody(TARGET_POSITIONS[0])
 		elif TARGET_POSITIONS[0] is String and TARGET_POSITIONS[0].substr(0,1) == '*':
 			var animation = TARGET_POSITIONS[0]
 			playAnimation(animation.replace('*', ''))
@@ -46,7 +61,6 @@ func _physics_process(_delta):
 				OverworldGlobals.getPlayer().direction = BODY.velocity.normalized()
 			elif BODY.has_node('WalkingAnimations'):
 				animateWalk()
-	
 	elif TARGET_POSITIONS.is_empty():
 		BODY.velocity = Vector2.ZERO
 		BODY.set_collision_layer_value(1, true)
@@ -54,6 +68,14 @@ func _physics_process(_delta):
 		movement_finished.emit()
 		BODY.set_physics_process(true)
 		queue_free()
+	
+	BODY.move_and_slide()
+
+func flattenY(vector):
+	return Vector2(vector.x,0)
+
+func distanceX(position_a, position_b):
+	return flattenY(position_a).distance_to(flattenY(position_b))
 
 func moveBody(move_sequence: String):
 	if move_sequence.contains('v>'):
@@ -75,13 +97,26 @@ func setMoveSequence(movements: Array[String]):
 			"R": direction = Vector2(1, 0) * Vector2(int(movements[i].substr(1,2)), 0)
 			"U": direction = Vector2(0, -1) * Vector2(0, int(movements[i].substr(1,2)))
 			"D": direction = Vector2(0, 1) * Vector2(0, int(movements[i].substr(1,2)))
-		
-		if i == 0:
-			TARGET_POSITIONS.append(BODY.global_position + direction)
-			previous_position = BODY.global_position + direction
+			"J": 
+				if movements[i].replace('J','') != '':
+					direction = float(movements[i].replace('J',''))
+				else:
+					direction = 200.0
+		if direction is Vector2:
+			if i == 0:
+				TARGET_POSITIONS.append(BODY.global_position + direction)
+				previous_position = BODY.global_position + direction
+			else:
+				TARGET_POSITIONS.append(previous_position + direction)
+				previous_position = previous_position + direction
 		else:
-			TARGET_POSITIONS.append(previous_position + direction)
-			previous_position = previous_position + direction
+			TARGET_POSITIONS.append(-direction)
+
+func jumpBody(jump_velocity:float):
+	if BODY.is_on_floor():
+		BODY.velocity.x = 0.0
+		BODY.velocity.y = jump_velocity
+		jumping=true
 
 func setVectorMoveSequence(movements: Array[String]):
 	for pos in movements:
@@ -134,3 +169,7 @@ func playAnimation(animation_name: String, animation_player_name: String = 'Anim
 	animator.play(animation_name)
 	await animator.animation_finished
 	animation_done.emit()
+
+
+func _on_tree_exited():
+	BODY.velocity = Vector2.ZERO

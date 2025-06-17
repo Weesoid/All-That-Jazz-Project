@@ -4,7 +4,7 @@ class_name ResPlayerCombatant
 @export var ABILITY_POOL: Array[ResAbility]
 @export var GUARD_EFFECT: ResStatusEffect = load("res://resources/combat/status_effects/Riposte.tres")
 @export var BASE_TEMPERMENT: Dictionary = {'primary':[], 'secondary':[]}
-@export var FOLLOWER_PACKED_SCENE: PackedScene
+@export var FOLLOWER_TEXTURE: Texture
 @export var MANDATORY = false
 @export var STAT_MULTIPLIER = 0.01
 

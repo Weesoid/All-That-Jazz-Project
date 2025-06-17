@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=3 uid="uid://by1pampbgw84d"]
+[gd_scene load_steps=152 format=3 uid="uid://by1pampbgw84d"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayerBowman.gd" id="1_cw77a"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="2_vhjle"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_c0qfe"]
 [ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="14_4s765"]
 [ext_resource type="Texture2D" uid="uid://emh44pfnyck" path="res://images/animations/player_alt_fall.png" id="15_jrgcy"]
+[ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="16_pcysk"]
 [ext_resource type="Texture2D" uid="uid://btxgpkjknsc7a" path="res://images/sprites/faceplant_archie.png" id="16_ty47e"]
 
 [sub_resource type="Animation" id="Animation_b30mo"]
@@ -2544,7 +2545,8 @@ shape = SubResource("CapsuleShape2D_8i7nm")
 [node name="PlayerCamera" type="Camera2D" parent="."]
 z_index = 99
 position = Vector2(0, -96)
-position_smoothing_speed = 32.0
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
 script = ExtResource("6_lwji6")
 
 [node name="PlayerPrompt" parent="PlayerCamera" instance=ExtResource("7_t7vi3")]
@@ -2690,3 +2692,10 @@ parameters/Walk/blend_position = Vector2(-0.0708502, 0.086921)
 max_polyphony = 8
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
+
+[node name="CircleFilled" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("16_pcysk")
+
+[node name="Toes" type="Marker2D" parent="."]
+position = Vector2(0, -21)

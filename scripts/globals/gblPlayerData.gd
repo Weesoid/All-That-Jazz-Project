@@ -285,8 +285,25 @@ func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/
 	
 	combatant.applyTemperments(true)
 
+func hasFollower(follower_combatant: ResPlayerCombatant):
+	for f in getActiveFollowers():
+		if f.host_combatant == follower_combatant:
+			return true
+	
+	return false
+
+func isFollowerActive(follower_combatant_name: String):
+	for f in getActiveFollowers():
+		if f.host_combatant.NAME == follower_combatant_name:
+			return true
+	
+	return false
+
+func getActiveFollowers():
+	return OverworldGlobals.getCurrentMap().get_children().filter(func(child): return child is NPCFollower)
+
 func setFollowersMotion(enable:bool):
-	for follower in OverworldGlobals.getCurrentMap().get_children().filter(func(child): return child is NPCFollower):
+	for follower in getActiveFollowers():
 		if !is_instance_valid(follower):
 			return
 		if enable:

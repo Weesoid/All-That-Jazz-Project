@@ -22,6 +22,7 @@ class_name PlayerScene
 @onready var quiver = $PlayerCamera/UtilitySelector
 @onready var color_overlay = $PlayerCamera/ColorOverlay
 @onready var drop_detector: Area2D = $PlayerDirection/Area2D
+@onready var collision = $Toes
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -41,6 +42,7 @@ var power_listening = false
 var power_inputs = ''
 var fall_damage: int = 0
 var ANIMATION_SPEED = 0.0
+var default_camera_pos: Vector2
 
 signal jumped(jump_velocity)
 signal phased
@@ -57,6 +59,7 @@ func _ready():
 	if SettingsGlobals.cheat_mode and !has_node('DebugComponent'):
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
+	default_camera_pos = player_camera.position
 	OverworldGlobals.setMouseController(false)
 	await get_tree().process_frame
 	PlayerGlobals.healCombatants()
@@ -108,20 +111,21 @@ func _physics_process(delta):
 		fall_damage = 0
 	
 	# Movement inputs
-	if can_move and is_processing_input() and isMobile() and (is_on_floor() or climbing):
+	if isMovementAllowed() and (is_on_floor() or climbing):
 		direction = Vector2(
 			Input.get_action_strength("ui_move_right") - Input.get_action_strength("ui_move_left"), 
 			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
 		)
 		direction = direction.normalized()
 	
-	# Jump detector
-	if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO:
-		jump(-225.0)
-	elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
-		phase()
+		# Jump detector
+		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO:
+			jump(-225.0)
+		elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
+			phase()
+	
 	# Physical movement
-	if can_move and is_processing_input() and isMobile() and direction:
+	if isMovementAllowed() and direction:
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing
 			sprinting = false
 			velocity.y = direction.y * 100.0
@@ -167,6 +171,10 @@ func _physics_process(delta):
 	# Follower points
 	#OverworldGlobals.follow_array.push_front(global_position)
 	#OverworldGlobals.follow_array.pop_back()
+
+
+func isMovementAllowed():
+	return can_move and is_processing_input() and isMobile()
 
 func _input(_event):
 	# Power handling

@@ -13,7 +13,8 @@ func _ready():
 
 func loadCombatants():
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
-		if combatant.isDead(): continue
 		var bar = preload("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 		bar.combatant = combatant
+		if combatant.isDead(): 
+			bar.modulate = Color.RED
 		main_container.add_child(bar)

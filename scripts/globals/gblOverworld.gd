@@ -56,27 +56,26 @@ func inDialogue() -> bool:
 #********************************************************************************
 # SIGNALS
 #********************************************************************************
-func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=35.0, animate_direction=true, wait=true):
+func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=100.0, animate_direction=true, wait=true):
 	if getEntity(entity_body_name).has_node('ScriptedMovementComponent'):
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').tree_exited
 	
-	PlayerGlobals.setFollowersMotion(false)
 	getEntity(entity_body_name).add_child(preload("res://scenes/components/ScriptedMovement.tscn").instantiate())
 	getEntity(entity_body_name).get_node('ScriptedMovementComponent').ANIMATE_DIRECTION = animate_direction
 	getEntity(entity_body_name).get_node('ScriptedMovementComponent').MOVE_SPEED = speed
-	
 	if move_to is Vector2:
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_POSITIONS.append(move_to + offset)
 	elif move_to is String and move_to.contains('>'):
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').moveBody(move_to)
 	elif move_to is String:
+		print('pleebus')
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_POSITIONS.append(getEntity(move_to).global_position + offset)
 	else:
-		print('Invalid move_to parameter.')
+		print('Invalid move_to parameter "', move_to, '"')
 	
 	if wait:
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').movement_finished
-	PlayerGlobals.setFollowersMotion(true)
+		print('Emitus maximus')
 
 #********************************************************************************
 # GENERAL UTILITY
@@ -93,8 +92,11 @@ func getEntity(entity_name: String):
 func hasEntity(entity_name: String):
 	return get_tree().current_scene.has_node(entity_name)
 
-func playEntityAnimation(entity_name: String, animation_name: String, wait=true):
+func playEntityAnimation(entity_name: String, animation_name: String, reset:bool=false,wait=true):
 	getEntityAnimator(entity_name).play(animation_name)
+	if reset:
+		await getEntityAnimator(entity_name).animation_finished
+		getEntityAnimator(entity_name).play('RESET')
 	if wait:
 		await getEntityAnimator(entity_name).animation_finished
 
@@ -370,7 +372,9 @@ func showGameOver(end_sentence: String=''):
 
 func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=false):
 	var tween = create_tween()
-	if to is String:
+	if to is String and to.to_upper() == 'RESET':
+		tween.tween_property(getPlayer().player_camera, 'position', getPlayer().default_camera_pos, duration)
+	elif to is String:
 		tween.tween_property(getPlayer().player_camera, 'global_position', getEntity(to).global_position+offset, duration)
 	elif to is Vector2:
 		tween.tween_property(getPlayer().player_camera, 'global_position', to+offset, duration)
@@ -410,9 +414,10 @@ func loadFollowers():
 	player_follower_count = 0
 	
 	for combatant in PlayerGlobals.TEAM:
-		if getCombatantSquad('Player').has(combatant) and combatant.FOLLOWER_PACKED_SCENE != null:
+		if getCombatantSquad('Player').has(combatant) and combatant.FOLLOWER_TEXTURE != null:
 			player_follower_count += 1
-			var follower_scene = combatant.FOLLOWER_PACKED_SCENE.instantiate()
+			var follower_scene = load("res://scenes/entities/mobs/Follower.tscn").instantiate()
+			follower_scene.texture = combatant.FOLLOWER_TEXTURE
 			follower_scene.host_combatant = combatant
 			follower_scene.follow_index = player_follower_count
 			follower_scene.global_position = getPlayer().global_position+Vector2(0, -32)
@@ -707,22 +712,14 @@ func isPlayerSquadDead():
 func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
 	
-	var dead = ''
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
 		member.STAT_VALUES['health'] -= int(CombatGlobals.useDamageFormula(member, damage))
 		if !lethal and member.isDead():
 			member.STAT_VALUES['health'] = 1
-		if member.isDead(): dead += '[color=yellow]'+member.NAME+'[/color], '
-	if !dead == '':
-		dead = dead.trim_suffix(', ')
-		if dead.split(',').size() > 1:
-			showPlayerPrompt('%s are downed!' % dead)
-		else:
-			showPlayerPrompt('%s is downed!' % dead)
-		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
+		if member.isDead():
+			OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	if isPlayerSquadDead() and !death_message.is_empty():
-		print('x!!!!')
 		randomize()
 		showGameOver(death_message.pick_random())
 	elif isPlayerSquadDead():

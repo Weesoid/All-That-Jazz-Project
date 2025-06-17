@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=5 format=3 uid="uid://m7lykq4h6axo"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=4 format=3 uid="uid://m7lykq4h6axo"]
 
 [ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="3_8phct"]
 [ext_resource type="PackedScene" uid="uid://buy4waf3u3bir" path="res://scenes/combatants/FriendA.tscn" id="3_dl1jr"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="4_kjlrm"]
-[ext_resource type="PackedScene" uid="uid://hc8hrodt25vu" path="res://scenes/entities/followers/Greenie.tscn" id="4_nl1we"]
 
 [resource]
 script = ExtResource("4_kjlrm")
@@ -12,7 +11,6 @@ BASE_TEMPERMENT = {
 "primary": "",
 "secondary": ""
 }
-FOLLOWER_PACKED_SCENE = ExtResource("4_nl1we")
 MANDATORY = false
 STAT_MULTIPLIER = 0.01
 NAME = "Healer McHealer"

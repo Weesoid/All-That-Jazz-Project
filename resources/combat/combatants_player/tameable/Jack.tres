@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=10 format=3 uid="uid://okmv4je45gki"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="1_55iw6"]
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_iou6c"]
 [ext_resource type="PackedScene" uid="uid://frfnvb50fnvm" path="res://scenes/combatants/FriendC.tscn" id="1_rdqa0"]
 [ext_resource type="Resource" uid="uid://d2xuqxaf6m1gc" path="res://resources/combat/abilities/Taunt.tres" id="2_scuyw"]
-[ext_resource type="PackedScene" uid="uid://ovdh5raaljpb" path="res://scenes/entities/followers/Pinky.tscn" id="3_lntbm"]
+[ext_resource type="PackedScene" uid="uid://ovdh5raaljpb" path="res://scenes/entities/mobs/Follower.tscn" id="3_lntbm"]
 [ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="3_sqspm"]
 [ext_resource type="Resource" uid="uid://dnwt562yqug8x" path="res://resources/combat/abilities/Teamwork.tres" id="4_fx7br"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="5_nuc0g"]
