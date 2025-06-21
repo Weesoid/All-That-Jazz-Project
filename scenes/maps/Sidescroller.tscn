@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=27 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
@@ -20,6 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://images/animations/ent_walker.png" id="18_hpo7g"]
 [ext_resource type="Resource" uid="uid://cdl8vad57bffh" path="res://scenes/maps/TestRoom/dialogue/TestRoomB_animate.dialogue" id="19_hkcb8"]
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="20_1s302"]
+[ext_resource type="PackedScene" uid="uid://cmvvapgedbg4q" path="res://scenes/entities/GenericNPC.tscn" id="21_cchwb"]
+[ext_resource type="Texture2D" uid="uid://bgfd4prdnyfft" path="res://images/animations/base_battler.png" id="22_b8a2s"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j63u4"]
 radius = 16.0
@@ -203,6 +205,7 @@ must_shoot = true
 
 [node name="Animator" type="CharacterBody2D" parent="."]
 position = Vector2(-97, 168)
+collision_layer = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="Animator"]
 texture = ExtResource("18_hpo7g")
@@ -222,3 +225,9 @@ shape = SubResource("CapsuleShape2D_j63u4")
 libraries = {
 "": SubResource("AnimationLibrary_2ni2q")
 }
+
+[node name="GenericNPC" parent="." instance=ExtResource("21_cchwb")]
+position = Vector2(57, -48)
+texture = ExtResource("22_b8a2s")
+
+[node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]

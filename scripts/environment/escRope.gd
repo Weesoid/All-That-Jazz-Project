@@ -69,7 +69,7 @@ func initializeRope():
 			createPinJoint(top_pin_tex.get_path(), segments[0].get_path())
 		elif segments.size() >= 2 and segments.size() and !Engine.is_editor_hint():
 			createPinJoint(segments[segments.size()-2].get_path(), segments[segments.size()-1].get_path())
-		if must_shoot:
+		if must_shoot and !Engine.is_editor_hint():
 			await get_tree().create_timer(0.08).timeout
 	
 	if must_shoot and !Engine.is_editor_hint():

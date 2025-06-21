@@ -5,10 +5,11 @@ var BODY: CharacterBody2D
 # * = Animation (ex. *Spin)
 # w = Wait (ex. w10.5)
 # ^ = Direction (ex. ^U) (Only applicable to non-player scenes)
-var TARGET_POSITIONS = []
-var MOVE_SPEED = 100.0
-var ANIMATE_DIRECTION: bool
+@export var TARGET_POSITIONS = []
+@export var MOVE_SPEED = 100.0
+@export var ANIMATE_DIRECTION: bool
 var jumping:bool=false
+var body_shape_disabled:bool
 
 signal landed
 signal movement_finished
@@ -17,14 +18,11 @@ signal animation_done
 func _ready():
 	BODY = get_parent()
 	BODY.set_physics_process(false)
-	for body in getBodies():
-		BODY.add_collision_exception_with(body)
+	#setCollisionExceptions()
 
-func getBodies():
-	var out = []
+func setCollisionExceptions():
 	for child in OverworldGlobals.getCurrentMap().get_children().filter(func(chimp): return chimp is CharacterBody2D):
-		out.append(child)
-	return out
+		BODY.add_collision_exception_with(child)
 
 func _physics_process(delta):
 	if not BODY.is_on_floor():
@@ -36,7 +34,6 @@ func _physics_process(delta):
 	if !TARGET_POSITIONS.is_empty():
 		if TARGET_POSITIONS[0] is Vector2:
 			BODY.velocity.x = (flattenY(BODY.global_position).direction_to(flattenY(TARGET_POSITIONS[0]))).x * MOVE_SPEED 
-			#OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", TARGET_POSITIONS[0])
 			if distanceX(BODY.global_position, TARGET_POSITIONS[0]) < 1.0:
 				TARGET_POSITIONS.remove_at(0)
 		elif TARGET_POSITIONS[0] is float:
@@ -63,8 +60,8 @@ func _physics_process(delta):
 				animateWalk()
 	elif TARGET_POSITIONS.is_empty():
 		BODY.velocity = Vector2.ZERO
-		BODY.set_collision_layer_value(1, true)
-		BODY.set_collision_mask_value(1, true)
+		#BODY.set_collision_layer_value(1, true)
+		#BODY.set_collision_mask_value(1, true)
 		movement_finished.emit()
 		BODY.set_physics_process(true)
 		queue_free()

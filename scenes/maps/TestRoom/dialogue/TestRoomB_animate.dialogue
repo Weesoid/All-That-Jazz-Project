@@ -14,7 +14,7 @@ do playEntityAnimation("Animator", "Hug",true)
 #do changeEntityVisibility("Player", true)
 #do playEntityAnimation("Animator", "RESET", false)
 #do moveEntity("Player", ">L100", Vector2(0,0), 35.0, false)
-do moveEntity("Animator", ">L10,R10,L10,R10")
+do moveEntity("Animator", ">L10,R10,L10,R10,J400")
 Entity: Nice hug!
 
 do moveCamera(Vector2(0,0))

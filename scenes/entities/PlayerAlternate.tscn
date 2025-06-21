@@ -2696,6 +2696,3 @@ max_polyphony = 8
 [node name="CircleFilled" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("16_pcysk")
-
-[node name="Toes" type="Marker2D" parent="."]
-position = Vector2(0, -21)

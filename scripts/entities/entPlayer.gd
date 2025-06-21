@@ -22,7 +22,6 @@ class_name PlayerScene
 @onready var quiver = $PlayerCamera/UtilitySelector
 @onready var color_overlay = $PlayerCamera/ColorOverlay
 @onready var drop_detector: Area2D = $PlayerDirection/Area2D
-@onready var collision = $Toes
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -61,6 +60,7 @@ func _ready():
 	
 	default_camera_pos = player_camera.position
 	OverworldGlobals.setMouseController(false)
+	# For testing only del later...
 	await get_tree().process_frame
 	PlayerGlobals.healCombatants()
 #	await get_tree().process_frame

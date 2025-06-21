@@ -11,6 +11,12 @@ var direction:int=1
 func _ready():
 	if go_left:
 		direction = -1
+	centerSelf()
+
+func centerSelf():
+	if get_parent().has_node('CollisionShape2D'):
+		position.x = 0
+		position.y = -(get_parent().get_node('CollisionShape2D').shape.height/2)
 
 func interact():
 	PlayerGlobals.setFollowersMotion(false)
@@ -48,3 +54,4 @@ func moveFollowers():
 func fadeFollowers(color: Color):
 	for follower in PlayerGlobals.getActiveFollowers():
 		follower.fade(color)
+

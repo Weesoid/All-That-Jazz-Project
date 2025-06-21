@@ -68,14 +68,12 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=10
 	elif move_to is String and move_to.contains('>'):
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').moveBody(move_to)
 	elif move_to is String:
-		print('pleebus')
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_POSITIONS.append(getEntity(move_to).global_position + offset)
 	else:
 		print('Invalid move_to parameter "', move_to, '"')
 	
 	if wait:
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').movement_finished
-		print('Emitus maximus')
 
 #********************************************************************************
 # GENERAL UTILITY

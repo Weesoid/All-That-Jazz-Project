@@ -2384,6 +2384,3 @@ parameters/Walk/blend_position = Vector2(0.170443, -0.0128806)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 max_polyphony = 8
-
-[node name="Toes" type="Marker2D" parent="."]
-position = Vector2(0, 4)
