@@ -132,8 +132,10 @@ func spawnPatrollers():
 		add_child(patroller)
 
 func destroyPatroller(patroller: GenericPatroller):
-	OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += patroller.get_node("NPCPatrolComponent").COMBAT_SQUAD.getExperience()
-	patroller.get_node("NPCPatrolComponent").COMBAT_SQUAD.addDrops()
+	# REFACTOR LATER
+	var combatant_squad: EnemyCombatantSquad = patroller.get_node("CombatantSquadComponent")
+	OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += combatant_squad.getExperience()
+	combatant_squad.COMBAT_SQUAD.addDrops()
 	patroller.get_node("NPCPatrolComponent").destroy()
 
 func checkGiveRewards():

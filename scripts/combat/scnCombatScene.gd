@@ -1081,7 +1081,7 @@ func concludeCombat(results: int):
 	if results == 0:
 		OverworldGlobals.showGameOver(end_sentence)
 	else:
-		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 80.0, 3)
+		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 180.0, 2)
 	CombatGlobals.TENSION = 0
 	OverworldGlobals.setMouseController(false)
 	queue_free()

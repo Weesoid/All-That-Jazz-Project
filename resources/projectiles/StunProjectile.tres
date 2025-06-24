@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResEnemyProjectile" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResProjectile" load_steps=4 format=3 uid="uid://cmc0vw047kavg"]
 
 [ext_resource type="Script" path="res://scripts/projectiles/scpreStun.gd" id="1_fmncs"]
 [ext_resource type="AudioStream" uid="uid://n0yoantbsc1n" path="res://audio/sounds/13_Ice_explosion_01.ogg" id="2_i3d6g"]
@@ -6,7 +6,10 @@
 
 [resource]
 script = ExtResource("3_pcwab")
+projectile_data = {}
+projectile_type = 0
 hit_script = ExtResource("1_fmncs")
 speed = 800.0
 impact_sound = ExtResource("2_i3d6g")
 free_distance = 2500.0
+no_clip_time = 0.0

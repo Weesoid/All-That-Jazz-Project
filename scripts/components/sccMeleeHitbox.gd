@@ -15,12 +15,12 @@ func _on_body_entered(body):
 			OverworldGlobals.shakeCamera()
 			await OverworldGlobals.getPlayer().showOverlay(Color.RED, 0.025)
 			OverworldGlobals.getPlayer().hideOverlay()
-		elif body.getState() != 3:
-			body.patrol_component.immobolize()
+		elif body.state != 3:
+			body.combat_switch = false
 			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=float(0.2)})
 	if body.has_node('Sprite2D') and body != player:
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
-	
+
 func _unhandled_input(event):
 	if Input.is_action_just_pressed('ui_melee') and player.canMelee():
 		smear.play('Show')

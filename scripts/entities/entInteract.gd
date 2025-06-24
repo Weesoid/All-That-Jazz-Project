@@ -19,6 +19,10 @@ func centerSelf():
 		position.y = -(get_parent().get_node('CollisionShape2D').shape.height/2)
 
 func interact():
+	if dialogue_resource == null:
+		OverworldGlobals.showPlayerPrompt('YOU FORGOT TO PUT IN DIALOGUE STUPID!!!!!!!!!!!!!!!')
+		return
+	
 	PlayerGlobals.setFollowersMotion(false)
 	OverworldGlobals.getPlayer().sprinting = false
 	if move_player:

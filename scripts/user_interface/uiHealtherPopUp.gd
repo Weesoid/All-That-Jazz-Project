@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasLayer
 
 @onready var animator = $AnimationPlayer
 @onready var main_container = $VBoxContainer

@@ -1,13 +1,14 @@
 extends ProgressBar
 class_name PatrollerDetectBar
 
-@onready var patrol_component: NPCPatrolMovement
+@onready var patroller: GenericPatroller
 var detect_timer: Timer
 
-func initialize():
-	patrol_component = get_parent()
-	max_value = patrol_component.DETECTION_TIME
-	detect_timer = patrol_component.DETECT_TIMER
+func _ready():
+	detect_timer = get_parent().get_node('DetectTimer')
+	max_value = detect_timer.wait_time
+	patroller = get_parent()
+	#detect_timer = patrol_component.DETECT_TIMER
 
 func _process(_delta):
 	if detect_timer == null:
@@ -17,6 +18,5 @@ func _process(_delta):
 		show()
 	else:
 		hide()
-	if patrol_component.STATE == 0 or patrol_component.STATE == 1:
+	if patroller.state == 0:
 		value = detect_timer.time_left
-	

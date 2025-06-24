@@ -84,6 +84,12 @@ func getPlayer()-> PlayerScene:
 	
 	return get_tree().current_scene.get_node('Player')
 
+func flattenY(vector)-> Vector2:
+	return Vector2(vector.x,0)
+
+func distanceX(position_a, position_b):
+	return flattenY(position_a).distance_to(flattenY(position_b))
+
 func getEntity(entity_name: String):
 	return get_tree().current_scene.get_node(entity_name)
 

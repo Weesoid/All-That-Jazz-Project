@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=29 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
@@ -22,6 +22,8 @@
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="20_1s302"]
 [ext_resource type="PackedScene" uid="uid://cmvvapgedbg4q" path="res://scenes/entities/GenericNPC.tscn" id="21_cchwb"]
 [ext_resource type="Texture2D" uid="uid://bgfd4prdnyfft" path="res://images/animations/base_battler.png" id="22_b8a2s"]
+[ext_resource type="PackedScene" uid="uid://bat6k2egemqg8" path="res://scenes/entities/mobs/Patroller.tscn" id="23_gpp4i"]
+[ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/Dummy.tres" id="24_jiwda"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j63u4"]
 radius = 16.0
@@ -139,7 +141,6 @@ _data = {
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
-SAFE = true
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
@@ -231,3 +232,20 @@ position = Vector2(57, -48)
 texture = ExtResource("22_b8a2s")
 
 [node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]
+
+[node name="Patroller" parent="." instance=ExtResource("23_gpp4i")]
+position = Vector2(213, -97)
+direction = 1
+
+[node name="CombatantSquadComponent" parent="Patroller" instance=ExtResource("8_5ag6f")]
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("24_jiwda")])
+FILL_EMPTY = true
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
+
+[node name="Patroller2" parent="." instance=ExtResource("23_gpp4i")]
+position = Vector2(294, -90)
+
+[node name="CombatantSquadComponent" parent="Patroller2" instance=ExtResource("8_5ag6f")]
+ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("24_jiwda")])
+FILL_EMPTY = true
+COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])

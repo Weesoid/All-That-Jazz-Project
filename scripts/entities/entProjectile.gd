@@ -14,7 +14,8 @@ var SPAWN_LOCATION: Vector2
 
 func _ready():
 	SPAWN_LOCATION = global_position
-	if PROJECTILE_TEXTURE != null: sprite.texture = PROJECTILE_TEXTURE
+	if PROJECTILE_TEXTURE != null: 
+		sprite.texture = PROJECTILE_TEXTURE
 	if NO_CLIP_TIME > 0.0:
 		set_collision_layer_value(1, false)
 		set_collision_mask_value(1, false)

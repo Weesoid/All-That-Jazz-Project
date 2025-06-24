@@ -1,12 +1,125 @@
-[gd_scene load_steps=12 format=3 uid="uid://bat6k2egemqg8"]
+[gd_scene load_steps=14 format=3 uid="uid://bat6k2egemqg8"]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatroller.gd" id="1_khwtj"]
-[ext_resource type="PackedScene" uid="uid://c0dlkap3b6jp8" path="res://scenes/components/NPCPatrol.tscn" id="1_qmtob"]
-[ext_resource type="Texture2D" uid="uid://jkcya11d77up" path="res://images/animations/brigand_patroller.png" id="3_567ek"]
-[ext_resource type="PackedScene" uid="uid://bahnqy0iowmdt" path="res://scenes/components/LineOfSight.tscn" id="6_3p5yl"]
+[ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/animations/scav_patrol_chaser.png" id="2_1ek2d"]
+[ext_resource type="PackedScene" uid="uid://c4tte42jxqyy" path="res://scenes/user_interface/PatrollerDetectBar.tscn" id="2_8gvrl"]
+[ext_resource type="Texture2D" uid="uid://oqxgdnxhjr2c" path="res://images/sprites/exclamation.png" id="2_p0bs2"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_g3tnj"]
-radius = 13.0384
+[sub_resource type="Animation" id="Animation_hqt10"]
+resource_name = "Show"
+length = 0.6
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.139626, -0.139626]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_54o4m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ta2lt"]
+_data = {
+"RESET": SubResource("Animation_54o4m"),
+"Show": SubResource("Animation_hqt10")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xy57u"]
+
+[sub_resource type="Animation" id="Animation_jhjch"]
+resource_name = "Action"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [4, 5, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:z_index")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -46,22 +159,41 @@ tracks/2/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
-
-[sub_resource type="Animation" id="Animation_31icp"]
-resource_name = "Walk_Down"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LineOfSight:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:z_index")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [2, 1, 0, 1]
+"values": [1000]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("LineOfSight:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-28, -16)]
 }
 
 [sub_resource type="Animation" id="Animation_6sc3m"]
@@ -78,7 +210,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [3, 4, 5, 4]
+"values": [0, 1, 2, 1]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -92,8 +224,44 @@ tracks/1/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LineOfSight:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.5708]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LineOfSight:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-32, -16)]
+}
 
-[sub_resource type="Animation" id="Animation_2te08"]
+[sub_resource type="Animation" id="Animation_pf8d5"]
 resource_name = "Walk_Right"
 length = 1.2
 loop_mode = 1
@@ -107,7 +275,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [3, 4, 5, 4]
+"values": [0, 1, 2, 1]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -121,59 +289,114 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
-
-[sub_resource type="Animation" id="Animation_dpwad"]
-resource_name = "Walk_Up"
-length = 1.2
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LineOfSight:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [8, 7, 6, 7]
+"values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LineOfSight:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(32, -16)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sx3aq"]
 _data = {
+"Action": SubResource("Animation_jhjch"),
 "RESET": SubResource("Animation_jaucr"),
-"Walk_Down": SubResource("Animation_31icp"),
 "Walk_Left": SubResource("Animation_6sc3m"),
-"Walk_Right": SubResource("Animation_2te08"),
-"Walk_Up": SubResource("Animation_dpwad")
+"Walk_Right": SubResource("Animation_pf8d5")
 }
 
 [node name="Patroller" type="CharacterBody2D"]
 collision_layer = 33
-collision_mask = 33
-motion_mode = 1
+collision_mask = 17
 wall_min_slide_angle = 0.0
 script = ExtResource("1_khwtj")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-avoidance_enabled = true
+[node name="ChaseIndicator" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(0, -65)
+texture = ExtResource("2_p0bs2")
+offset = Vector2(0, -14.3636)
 
-[node name="NPCPatrolComponent" parent="." instance=ExtResource("1_qmtob")]
-position = Vector2(-3, -68)
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ChaseIndicator"]
+libraries = {
+"": SubResource("AnimationLibrary_ta2lt")
+}
+
+[node name="DetectBar" parent="." instance=ExtResource("2_8gvrl")]
+visible = false
+offset_top = -69.0
+offset_bottom = -63.0
+
+[node name="DetectTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="ActionCooldown" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="StunTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -33)
-texture = ExtResource("3_567ek")
-hframes = 9
+z_index = 1000
+position = Vector2(0, -32)
+texture = ExtResource("2_1ek2d")
+hframes = 3
+vframes = 2
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -14)
-shape = SubResource("CircleShape2D_g3tnj")
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_xy57u")
 
-[node name="LineOfSightComponent" parent="." instance=ExtResource("6_3p5yl")]
+[node name="LineOfSight" type="RayCast2D" parent="."]
+position = Vector2(-28, -16)
+rotation = 1.5708
+target_position = Vector2(0, 200)
 
-[node name="Animator" type="AnimationPlayer" parent="."]
+[node name="EdgeCheckRight" type="RayCast2D" parent="."]
+position = Vector2(11, -10)
+target_position = Vector2(0, 14)
+
+[node name="EdgeCheckLeft" type="RayCast2D" parent="."]
+position = Vector2(-11, -10)
+target_position = Vector2(0, 14)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_sx3aq")
 }
+
+[connection signal="timeout" from="DetectTimer" to="." method="_on_detect_timer_timeout"]
+[connection signal="timeout" from="StunTimer" to="." method="_on_stun_timer_timeout"]

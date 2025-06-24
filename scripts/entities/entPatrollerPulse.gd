@@ -5,28 +5,28 @@ var mode: int
 var trigger_others=false
 
 func applyPulseEffect():
+	print(get_overlapping_bodies())
 	for body in get_overlapping_bodies():
-		if body.has_node('NPCPatrolComponent'):
-			var current_state = body.get_node('NPCPatrolComponent').STATE
-			if mode == current_state:
+		if body is GenericPatroller:
+			if mode == body.state:
 				continue
-			elif mode == 0 and current_state == 3:
+			elif mode == 0 and body.state == 2:
 				continue
-			elif mode == 1 and (current_state == 2 or current_state == 3):
-				continue
+#			elif mode == 1 and (body.state == 2 or body.state == 3):
+#				continue
 			
-			if mode == 4:
-				if current_state == 0:
+			if mode == 4: # Dynamic pulse
+				if body.state == 0: # If patroller is patrolling (soothe), alert patrol
 					body.get_node('NPCPatrolComponent').updateMode(1)
-				elif current_state == 1 or current_state == 2:
+				elif body.state == 1 or body.state == 2: # Patroller is chasing or alert patrolling, CHASE
 					body.get_node('NPCPatrolComponent').updateMode(2)
 			else:
-				body.get_node('NPCPatrolComponent').updateMode(mode)
+				body.updateState(mode)
 	
-	match mode:
-		1: color = Color.WHITE
-		2: color = Color.DARK_ORANGE
-		3: color = Color.SANDY_BROWN
-		4: color = Color.RED
+#	match mode:
+#		1: color = Color.WHITE
+#		2: color = Color.DARK_ORANGE
+#		3: color = Color.SANDY_BROWN
+#		4: color = Color.RED
 	showPulse()
 	queue_free()
