@@ -7,7 +7,7 @@ class_name GenericNPC
 		if tex != null and Engine.is_editor_hint() :
 			texture = tex
 			setSprite()
-		elif Engine.is_editor_hint() :
+		elif Engine.is_editor_hint():
 			texture = null
 			setSprite(true)
 @export var gravity = false

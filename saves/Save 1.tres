@@ -32,18 +32,18 @@
 [ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="28_18aiy"]
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="29_1aj4w"]
 
-[sub_resource type="Resource" id="Resource_7bj3u"]
+[sub_resource type="Resource" id="Resource_011oy"]
 script = ExtResource("1_fwgqy")
 position = Vector2(5, -2)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
-direction = 0
+direction = 90
 
-[sub_resource type="Resource" id="Resource_olfiy"]
+[sub_resource type="Resource" id="Resource_m3h0o"]
 script = ExtResource("2_3ggq0")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_hmld6"]
+[sub_resource type="Resource" id="Resource_omje6"]
 script = ExtResource("20_48ocw")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("24_lheah"), ExtResource("3_84hel"), ExtResource("19_8x1yi"), ExtResource("22_d3k5p"), ExtResource("20_4hgrw"), ExtResource("21_2uiwd")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -383,7 +383,7 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 10
 KNOWN_POWERS = [ExtResource("19_l6nd8")]
 
-[sub_resource type="Resource" id="Resource_4jass"]
+[sub_resource type="Resource" id="Resource_cf3k5"]
 script = ExtResource("21_c5u2k")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("27_bjs36"), ExtResource("28_18aiy"), ExtResource("29_1aj4w")])
 CRAFTED = Array[String]([])
@@ -395,9 +395,9 @@ ITEM_DATA_INVENTORY = {
 
 [resource]
 script = ExtResource("22_ce883")
-NAME = "Save 1 - 00:27:11
+NAME = "Save 1 - 00:27:29
 Morale 4
 "
-PLAYTIME = 1631.4
+PLAYTIME = 1649.8
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_7bj3u"), SubResource("Resource_olfiy"), SubResource("Resource_hmld6"), SubResource("Resource_4jass")]
+save_data = [SubResource("Resource_011oy"), SubResource("Resource_m3h0o"), SubResource("Resource_omje6"), SubResource("Resource_cf3k5")]

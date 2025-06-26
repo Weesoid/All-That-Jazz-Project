@@ -22,6 +22,8 @@ class_name PlayerScene
 @onready var quiver = $PlayerCamera/UtilitySelector
 @onready var color_overlay = $PlayerCamera/ColorOverlay
 @onready var drop_detector: Area2D = $PlayerDirection/Area2D
+@onready var animation_sprite = $AnimationSprite
+@onready var collision_shape: CollisionShape2D = $PlayerCollision
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -42,6 +44,7 @@ var power_inputs = ''
 var fall_damage: int = 0
 var ANIMATION_SPEED = 0.0
 var default_camera_pos: Vector2
+var diving = false
 
 signal jumped(jump_velocity)
 signal phased
@@ -72,12 +75,17 @@ func _process(_delta):
 	updateAnimationParameters()
 	animateInteract()
 
-func jump(jump_velocity:float=-200.0):
-	Input.action_release('ui_move_left') # DUCT TAPE
-	Input.action_release('ui_move_right') # DUCT TAPE
+func jump(jump_velocity:float=-200.0, x_velocity:float=0.0):
+	#Input.action_release('ui_move_left') # DUCT TAPE
+	#Input.action_release('ui_move_right') # DUCT TAPE
 	if climbing:
 		toggleClimbAnimation(false)
 	velocity.y = jump_velocity
+	#velocity.x += x_velocity*direction.x
+	if direction.x > 0:
+		animation_sprite.flip_h = true
+	else:
+		animation_sprite.flip_h = false
 	jumped.emit(jump_velocity)
 
 func phase():
@@ -85,6 +93,12 @@ func phase():
 	set_collision_mask_value(1, false)
 	await get_tree().create_timer(0.1).timeout
 	set_collision_mask_value(1, true)
+
+func dodge():
+	#phased.emit()
+	collision_shape.set_deferred('disabled', true)
+	await get_tree().create_timer(0.2).timeout
+	collision_shape.set_deferred('disabled', false)
 
 func _physics_process(delta):
 	# Gravity
@@ -119,17 +133,37 @@ func _physics_process(delta):
 		direction = direction.normalized()
 	
 		# Jump detector
+		if Input.is_action_just_pressed("ui_accept") and PlayerGlobals.overworld_stats['stamina'] >= 30:
+			#PlayerGlobals.overworld_stats['stamina'] -= 30.0
+			jump(-100.0)
+			animation_player.play('Dive_2')
+			diving=true
+			dodge()
+			#set_collision_layer_value(1,false)
+			await animation_player.animation_finished
+			#set_collision_layer_value(1,true)
+			collision_shape.set_deferred('disabled', false)
+			animation_player.play('RESET')
+			diving=false
+			can_move=true
 		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO:
 			jump(-225.0)
 		elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
 			phase()
 	
+	# Dive
+	if diving and not is_on_floor():
+		velocity.x = direction.x * 500.0
+	elif diving and is_on_floor():
+		velocity.x = move_toward(velocity.x, 0, 500.0)
+	
 	# Physical movement
-	if isMovementAllowed() and direction:
+	if isMovementAllowed() and direction and !diving:
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing
 			sprinting = false
 			velocity.y = direction.y * 100.0
-		velocity.x = direction.x * SPEED # Walking
+		else:
+			velocity.x = direction.x * SPEED # Walking
 	else:
 		if climbing:
 			velocity.y = 0.0 # Stop climbing
@@ -243,7 +277,7 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing:
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
-			velocity = Vector2.ZERO
+			#velocity = Vector2.ZERO CHANGE LATER
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
@@ -485,7 +519,7 @@ func canMelee():
 	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and bow_mode and isFacingSide()
 
 func suddenStop(stop_move:bool=true):
-	velocity = Vector2.ZERO
+	#velocity = Vector2.ZERO CHANGE LATER
 	sprinting = false
 	Input.action_release('ui_move_down')
 	Input.action_release('ui_move_up')

@@ -7,10 +7,11 @@ class_name GenericPatroller
 @onready var detect_timer = $DetectTimer
 @onready var detect_bar = $DetectBar
 @onready var action_cooldown = $ActionCooldown
-@onready var animator = $AnimationPlayer
+@onready var animator: AnimationPlayer = $AnimationPlayer
 @onready var chase_indicator_animator = $ChaseIndicator/AnimationPlayer
 @onready var edge_check_right = $EdgeCheckRight
 @onready var edge_check_left = $EdgeCheckLeft
+@onready var melee_hitbox = $MeleeHitbox
 #@export var patrol_area: Area2D
 @export var base_move_speed: float = 20.0
 @export var alerted_speed_multiplier: float = 5.0
@@ -24,6 +25,7 @@ var state: int
 var speed: float = 15.0
 var combat_switch: bool = true
 var flicker_tween: Tween
+
 #func _ready():
 #	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
 #	spawnPatrolArea()
@@ -51,6 +53,7 @@ func updateState(new_state:int):
 		state = new_state
 	elif new_state == 1:
 		chase_indicator_animator.play("Show")
+		OverworldGlobals.playSound2D(global_position, "res://audio/sounds/413641__djlprojects__metal-gear-solid-inspired-alert-surprise-sfx.ogg")
 		state = new_state
 	elif new_state == 2:
 		chase_indicator_animator.play("RESET")
@@ -128,6 +131,8 @@ func _on_stun_timer_timeout():
 func animateWalk():
 	if animator.current_animation == 'Action':
 		return
+	if state == 1:
+		animator.advance(get_physics_process_delta_time()*1.5)
 	
 	if direction == -1 and velocity.x != 0:
 		animator.play('Walk_Right')
@@ -143,14 +148,19 @@ func doCollisionAction():
 	
 	# REFINE LATER, GET IN RANGE THEN SWING TYPE SHI
 	if get_last_slide_collision().get_collider() is PlayerScene:
-		if canDoAction():
-			action_cooldown.start()
-			animator.stop()
-			animator.play('Action')
-			OverworldGlobals.damageParty(5)
+
 		chase_indicator_animator.play("RESET")
 		combat_switch = false
 		OverworldGlobals.changeToCombat(str(name))
+
+func doAction():
+	if canDoAction():
+		action_cooldown.start()
+		animator.stop()
+		animator.play('Action')
+		for body in melee_hitbox.get_overlapping_bodies():
+			if body is PlayerScene: OverworldGlobals.damageParty(5)
+			
 
 func canDoAction():
 	return action_cooldown.is_stopped() and animator.current_animation != 'Action'
@@ -171,27 +181,3 @@ func flickerTween(play:bool):
 		flicker_tween.stop()
 		sprite.modulate = Color.WHITE
 		sprite.self_modulate = Color.WHITE
-
-# Kewl
-#func createPatrolArea():
-#	var area: Area2D = Area2D.new()
-#	var collision: CollisionShape2D = CollisionShape2D.new()
-#	var circle_shape = RectangleShape2D.new()
-#	collision.name = 'CollisionShape2D'
-#	circle_shape.size = Vector2(256,128)
-#	collision.shape = circle_shape
-#	area.add_child(collision)
-#	return area
-
-#func spawnPatrolArea():
-#	var area = createPatrolArea()
-#	OverworldGlobals.getCurrentMap().add_child(area)
-#	area.global_position = global_position
-#	patrol_component.PATROL_AREA = area
-
-## 0: soothePatrolMode() 1: alertPatrolMode() 2: chaseMode()3: stunMode(alert_others)
-#func getState():
-#	return patrol_component.STATE
-
-
-

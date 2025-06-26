@@ -23,23 +23,23 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="21_fte55"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="22_3e5qv"]
 
-[sub_resource type="Resource" id="Resource_f0cvl"]
+[sub_resource type="Resource" id="Resource_jsn5u"]
 script = ExtResource("1_pn1lt")
-position = Vector2(-342.801, 212.925)
+position = Vector2(5, -2)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
-direction = 90
+direction = 0
 
-[sub_resource type="Resource" id="Resource_ikjci"]
+[sub_resource type="Resource" id="Resource_xsrne"]
 script = ExtResource("2_a4fdo")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_6kn3d"]
+[sub_resource type="Resource" id="Resource_rtppa"]
 script = ExtResource("20_31i0r")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_nt88n")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 CLEARED_MAPS = {}
-CURRENCY = 100
+CURRENCY = 24
 PARTY_LEVEL = 1
 CURRENT_EXP = 0
 STRING_CONDITIONS = Array[String]([])
@@ -58,7 +58,7 @@ ExtResource("3_nt88n"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.07,
 "handling": 1,
 "heal_mult": 1.02,
-"health": 11,
+"health": 4,
 "hustle": -2,
 "resist": 0.07
 }, {
@@ -120,7 +120,7 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
 KNOWN_POWERS = [ExtResource("19_r1lph")]
 
-[sub_resource type="Resource" id="Resource_kbb8f"]
+[sub_resource type="Resource" id="Resource_kckeh"]
 script = ExtResource("21_fte55")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 CRAFTED = Array[String]([])
@@ -131,6 +131,6 @@ script = ExtResource("22_3e5qv")
 NAME = "Save 2 - 00:02:25
 Morale 1
 "
-PLAYTIME = 145.576
+PLAYTIME = 145.577
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_f0cvl"), SubResource("Resource_ikjci"), SubResource("Resource_6kn3d"), SubResource("Resource_kbb8f")]
+save_data = [SubResource("Resource_jsn5u"), SubResource("Resource_xsrne"), SubResource("Resource_rtppa"), SubResource("Resource_kckeh")]

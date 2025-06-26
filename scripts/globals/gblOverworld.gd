@@ -568,9 +568,9 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
 		for member in getCombatantSquad('Player'): CombatGlobals.addStatusEffect(member, 'CriticalEye')
 		combat_bubble.animation = 'Show_Surprised'
-		playSound("res://audio/sounds/39_Absorb_04.ogg")
+		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_3.ogg")
 	elif (getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE == 2) or !getEntity(entity_name).has_node('NPCPatrolComponent'):
-		playSound("res://audio/sounds/55_Encounter_02.ogg")
+		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_1.ogg")
 	elif data.keys().has('combat_bubble_anim'):
 		combat_bubble.animation = data['combat_bubble_anim']
 	getEntity(entity_name).add_child(combat_bubble)

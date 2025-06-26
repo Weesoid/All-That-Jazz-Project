@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=30 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
@@ -138,6 +138,17 @@ _data = {
 "RESET": SubResource("Animation_j4r3k")
 }
 
+[sub_resource type="GDScript" id="GDScript_ti72s"]
+script/source = "extends Node2D
+@export var enabled=true
+@onready var timeout = $Timer
+
+func _on_timer_timeout():
+	if enabled:
+		var projectile = load(\"res://resources/projectiles/DamageProjectile.tres\")
+		OverworldGlobals.shootProjectile(projectile.getProjectile(),global_position,1)
+"
+
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
@@ -234,7 +245,7 @@ texture = ExtResource("22_b8a2s")
 [node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]
 
 [node name="Patroller" parent="." instance=ExtResource("23_gpp4i")]
-position = Vector2(213, -97)
+position = Vector2(435, 98)
 direction = 1
 
 [node name="CombatantSquadComponent" parent="Patroller" instance=ExtResource("8_5ag6f")]
@@ -243,9 +254,20 @@ FILL_EMPTY = true
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
 
 [node name="Patroller2" parent="." instance=ExtResource("23_gpp4i")]
-position = Vector2(294, -90)
+position = Vector2(468, 114)
 
 [node name="CombatantSquadComponent" parent="Patroller2" instance=ExtResource("8_5ag6f")]
 ENEMY_POOL = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("24_jiwda")])
 FILL_EMPTY = true
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([null])
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(261, 175)
+script = SubResource("GDScript_ti72s")
+enabled = false
+
+[node name="Timer" type="Timer" parent="Node2D"]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="Node2D/Timer" to="Node2D" method="_on_timer_timeout"]

@@ -15,7 +15,7 @@ enum Projectile_Type {
 @export var free_distance: float = 2500.0
 @export var no_clip_time: float = 0.0
 
-func getProjectile():
+func getProjectile()-> Projectile:
 	var projectile: Projectile 
 	match projectile_type:
 		Projectile_Type.Enemy: 
