@@ -5,7 +5,6 @@ var mode: int
 var trigger_others=false
 
 func applyPulseEffect():
-	print(get_overlapping_bodies())
 	for body in get_overlapping_bodies():
 		if body is GenericPatroller:
 			if mode == body.state:

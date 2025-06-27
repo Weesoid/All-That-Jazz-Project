@@ -245,7 +245,7 @@ texture = ExtResource("22_b8a2s")
 [node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]
 
 [node name="Patroller" parent="." instance=ExtResource("23_gpp4i")]
-position = Vector2(435, 98)
+position = Vector2(-333, 164)
 direction = 1
 
 [node name="CombatantSquadComponent" parent="Patroller" instance=ExtResource("8_5ag6f")]

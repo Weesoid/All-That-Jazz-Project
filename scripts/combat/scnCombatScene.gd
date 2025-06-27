@@ -123,7 +123,6 @@ func _ready():
 		tickStatusEffects(combatant, true, false, true)
 	print(initial_damage)
 	if initial_damage > 0.0:
-		print('do')
 		for combatant in getCombatantGroup('enemies'):
 			await get_tree().create_timer(0.05).timeout
 			CombatGlobals.calculateRawDamage(combatant, combatant.getMaxHealth()*initial_damage)

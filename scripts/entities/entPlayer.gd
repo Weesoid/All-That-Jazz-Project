@@ -131,21 +131,20 @@ func _physics_process(delta):
 			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
 		)
 		direction = direction.normalized()
-	
-		# Jump detector
-		if Input.is_action_just_pressed("ui_accept") and PlayerGlobals.overworld_stats['stamina'] >= 30:
-			#PlayerGlobals.overworld_stats['stamina'] -= 30.0
+		
+		if Input.is_action_just_pressed("ui_accept") and PlayerGlobals.overworld_stats['stamina'] >= 20 and canDive():
+			PlayerGlobals.overworld_stats['stamina'] -= 20.0
+			diving=true
 			jump(-100.0)
 			animation_player.play('Dive_2')
-			diving=true
 			dodge()
-			#set_collision_layer_value(1,false)
 			await animation_player.animation_finished
-			#set_collision_layer_value(1,true)
 			collision_shape.set_deferred('disabled', false)
 			animation_player.play('RESET')
 			diving=false
 			can_move=true
+		
+		# Jump detector
 		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO:
 			jump(-225.0)
 		elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
@@ -162,8 +161,7 @@ func _physics_process(delta):
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing
 			sprinting = false
 			velocity.y = direction.y * 100.0
-		else:
-			velocity.x = direction.x * SPEED # Walking
+		velocity.x = direction.x * SPEED # Walking
 	else:
 		if climbing:
 			velocity.y = 0.0 # Stop climbing
@@ -209,6 +207,9 @@ func _physics_process(delta):
 
 func isMovementAllowed():
 	return can_move and is_processing_input() and isMobile()
+
+func canDive():
+	return sprinting and !interaction_detector.has_overlapping_areas()
 
 func _input(_event):
 	# Power handling
@@ -358,6 +359,8 @@ func canDrawBow()-> bool:
 	if PlayerGlobals.EQUIPPED_ARROW == null:
 		return false
 	if !isMobile():
+		return false
+	if diving:
 		return false
 	
 	return true
@@ -518,15 +521,14 @@ func playDrawSound():
 func canMelee():
 	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and bow_mode and isFacingSide()
 
-func suddenStop(stop_move:bool=true):
+func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	#velocity = Vector2.ZERO CHANGE LATER
-	sprinting = false
+	sprinting = !stop_sprint
 	Input.action_release('ui_move_down')
 	Input.action_release('ui_move_up')
 	Input.action_release('ui_move_left')
 	Input.action_release('ui_move_right')
-	if stop_move:
-		can_move = false
+	can_move = !stop_move
 
 func setUIVisibility(set_visibility:bool):
 	for child in player_camera.get_children():

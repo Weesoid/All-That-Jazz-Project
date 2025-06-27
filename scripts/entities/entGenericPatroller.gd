@@ -12,13 +12,13 @@ class_name GenericPatroller
 @onready var edge_check_right = $EdgeCheckRight
 @onready var edge_check_left = $EdgeCheckLeft
 @onready var melee_hitbox = $MeleeHitbox
-#@export var patrol_area: Area2D
+@onready var sprite = $Sprite2D
+
 @export var base_move_speed: float = 20.0
 @export var alerted_speed_multiplier: float = 5.0
 @export var chase_speed_multiplier: float = 13.0
 @export var detection_time: float
-@export var idle_time: Dictionary = {'patrol':0.0, 'alerted_patrol':0.0}
-@export var stun_time: Dictionary = {'min':0.0, 'max':0.0}
+@export var min_action_distance: float = 25
 @export var direction: int = -1
 
 var state: int
@@ -96,17 +96,20 @@ func checkPlayer():
 		detect_timer.stop()
 
 func _on_detect_timer_timeout():
-	updateState(1)
+	if state != 2:
+		updateState(1)
 
 func patrol():
 	# Direction changing
 	checkEdges()
 	checkPatrollerCollision()
+	
 	# Player in line of sight
 	checkPlayer()
 	velocity.x = direction*speed
 
 func chase():
+	# check y
 	var y_pos = snappedf(shape.global_position.y,100.0)
 	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
 	if y_pos != y_pos_player:
@@ -114,9 +117,13 @@ func chase():
 	
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
 	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position)
-	
-	direction = (flat_pos.direction_to(flat_palyer_pos)).x
-	velocity.x = (direction * speed) * chase_speed_multiplier
+	# action
+	if flat_pos.distance_to(flat_palyer_pos) <= min_action_distance and canDoAction():
+		doAction()
+	elif combat_switch:
+		# chase!
+		direction = (flat_pos.direction_to(flat_palyer_pos)).x
+		velocity.x = (direction * speed) * chase_speed_multiplier
 
 func stun():
 	velocity = Vector2.ZERO
@@ -146,24 +153,26 @@ func doCollisionAction():
 	if get_slide_collision_count() == 0 or !OverworldGlobals.getCurrentMap().done_loading_map or !canEnterCombat():
 		return
 	
-	# REFINE LATER, GET IN RANGE THEN SWING TYPE SHI
 	if get_last_slide_collision().get_collider() is PlayerScene:
-
 		chase_indicator_animator.play("RESET")
 		combat_switch = false
 		OverworldGlobals.changeToCombat(str(name))
 
 func doAction():
-	if canDoAction():
-		action_cooldown.start()
-		animator.stop()
-		animator.play('Action')
-		for body in melee_hitbox.get_overlapping_bodies():
-			if body is PlayerScene: OverworldGlobals.damageParty(5)
-			
+	combat_switch = false
+	velocity.x = 0
+	action_cooldown.start()
+	if sprite.flip_h:
+		melee_hitbox.position = Vector2(-22,-23)
+	else:
+		melee_hitbox.position = Vector2(22,-23)
+	animator.stop()
+	animator.play('Action')
+	await animator.animation_finished
+	combat_switch = true
 
 func canDoAction():
-	return action_cooldown.is_stopped() and animator.current_animation != 'Action'
+	return action_cooldown.is_stopped() and animator.current_animation != 'Action' and state != 2
 
 func canEnterCombat()-> bool:
 	return combat_switch and state != 2 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive())
@@ -181,3 +190,8 @@ func flickerTween(play:bool):
 		flicker_tween.stop()
 		sprite.modulate = Color.WHITE
 		sprite.self_modulate = Color.WHITE
+
+func _on_melee_hitbox_body_entered(body):
+	if body is PlayerScene and state != 2: 
+		OverworldGlobals.damageParty(5)
+		OverworldGlobals.changeToCombat(str(name))
