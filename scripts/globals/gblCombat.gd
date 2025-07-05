@@ -601,6 +601,7 @@ func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
 		Enemy_Factions.Neutral: path = "res://resources/combat/combatants_enemies/neutral/"
 		Enemy_Factions.Unggboys: path = "res://resources/combat/combatants_enemies/unggboys/"
 		Enemy_Factions.Mercenaries: path = "res://resources/combat/combatants_enemies/mercenaries/"
+		Enemy_Factions.Scavs: path = "res://resources/combat/combatants_enemies/scavs/"
 	
 	var dir = DirAccess.open(path)
 	var out: Array[ResEnemyCombatant] = []

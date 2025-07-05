@@ -15,7 +15,7 @@ func _exit_tree():
 		randomize()
 		OverworldGlobals.playSound2D(global_position, "460509__florianreichelt__hitting-in-a-face_%s.ogg" % randi_range(1,2), 0.0)
 		OverworldGlobals.playSound2D(global_position, "522091__magnuswaker__pound-of-flesh-%s.ogg" % randi_range(1,2), 0.0)
-		if is_instance_valid(SHOOTER) and SHOOTER is HybridPatroller: 
-			SHOOTER.executeHitAction()
+#		if is_instance_valid(SHOOTER) and SHOOTER is HybridPatroller: 
+#			SHOOTER.executeHitAction()
 	else:
 		OverworldGlobals.playSound2D(global_position, "66777__kevinkace__crate-break-1.ogg")

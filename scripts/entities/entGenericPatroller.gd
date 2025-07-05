@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name GenericPatroller
 
 @onready var shape = $CollisionShape2D
-@onready var line_of_sight = $LineOfSight
+@onready var line_of_sight: RayCast2D = $LineOfSight
 @onready var stun_timer = $StunTimer
 @onready var detect_timer = $DetectTimer
 @onready var detect_bar = $DetectBar
@@ -46,6 +46,9 @@ var flicker_tween: Tween
 #	patrol_component.initialize()
 #	patrol_component.get_node('DetectBar').initialize()
 
+func _ready():
+	if !has_node('CombatantSquadComponent'):
+		CombatGlobals.generateCombatantSquad(self, CombatGlobals.Enemy_Factions.Scavs)
 
 func updateState(new_state:int):
 	if new_state == 0:
@@ -57,6 +60,7 @@ func updateState(new_state:int):
 		state = new_state
 	elif new_state == 2:
 		chase_indicator_animator.play("RESET")
+		animator.play("RESET")
 		shape.set_deferred('disabled', true)
 		state = new_state
 		stun_timer.start()
@@ -120,7 +124,7 @@ func chase():
 	# action
 	if flat_pos.distance_to(flat_palyer_pos) <= min_action_distance and canDoAction():
 		doAction()
-	elif combat_switch:
+	elif combat_switch and !animator.current_animation.contains('Action'):
 		# chase!
 		direction = (flat_pos.direction_to(flat_palyer_pos)).x
 		velocity.x = (direction * speed) * chase_speed_multiplier
@@ -136,7 +140,7 @@ func _on_stun_timer_timeout():
 	flickerTween(false)
 
 func animateWalk():
-	if animator.current_animation == 'Action':
+	if animator.current_animation.contains('Action'):
 		return
 	if state == 1:
 		animator.advance(get_physics_process_delta_time()*1.5)
@@ -172,7 +176,7 @@ func doAction():
 	combat_switch = true
 
 func canDoAction():
-	return action_cooldown.is_stopped() and animator.current_animation != 'Action' and state != 2
+	return action_cooldown.is_stopped() and !animator.current_animation.contains('Action') and state != 2
 
 func canEnterCombat()-> bool:
 	return combat_switch and state != 2 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive())

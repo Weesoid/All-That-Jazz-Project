@@ -2,32 +2,37 @@ extends GenericPatroller
 class_name GenericPatrollerShooter
 
 @export var projectile: ResProjectile
-@export var shoot_distance: float = 0.0
 
-#func _ready():
-#	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
-#	spawnPatrolArea()
-#	patrol_component.PROJECTILE = projectile
-#
-#	if base_move_speed != 0:
-#		patrol_component.BASE_MOVE_SPEED = base_move_speed
-#	if alerted_speed_multiplier != 0:
-#		patrol_component.ALERTED_SPEED_MULTIPLIER = alerted_speed_multiplier
-#	if chase_speed_multiplier != 0:
-#		patrol_component.CHASE_SPEED_MULTIPLIER = chase_speed_multiplier
-#	if detection_time != 0:
-#		patrol_component.DETECTION_TIME = detection_time
-#	if alerted_speed_multiplier != 0:
-#		patrol_component.ALERTED_SPEED_MULTIPLIER = alerted_speed_multiplier
-#	if chase_speed_multiplier != 0:
-#		patrol_component.CHASE_SPEED_MULTIPLIER = chase_speed_multiplier
-#	if shoot_distance != 0:
-#		patrol_component.SHOOT_DISTANCE = shoot_distance
-#	if idle_time['patrol'] > 0.0 and idle_time['alerted_patrol'] > 0.0:
-#		patrol_component.IDLE_TIME = idle_time
-#	if stun_time['min'] > 0.0 and stun_time['max'] > 0.0:
-#		patrol_component.STUN_TIME = stun_time
-#
-#	patrol_component.initialize()
-#	await get_tree().process_frame
-#	patrol_component.get_node('DetectBar').initialize()
+func doAction():
+	if direction == 1:
+		line_of_sight.rotation_degrees = -90
+		sprite.flip_h = false
+	elif direction == -1:
+		line_of_sight.rotation_degrees = 90
+		sprite.flip_h = true
+	velocity.x = move_toward(velocity.x, 0, speed)
+	action_cooldown.start()
+	var shot = projectile.getProjectile()
+	shot.global_position = global_position + Vector2(0, -10)
+	shot.SHOOTER = self
+	get_tree().current_scene.add_child(shot)
+	shot.rotation = line_of_sight.rotation + 1.57079994678497
+	animator.play('Action')
+
+func chase():
+	# check y
+	var y_pos = snappedf(shape.global_position.y,100.0)
+	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
+	if y_pos != y_pos_player:
+		updateState(0)
+	
+	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
+	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position)
+	# action
+	direction = (flat_pos.direction_to(flat_palyer_pos)).x
+	if flat_pos.distance_to(flat_palyer_pos) <= min_action_distance and canDoAction():
+		doAction()
+	elif flat_pos.distance_to(flat_palyer_pos) > min_action_distance and combat_switch and !animator.current_animation.contains('Action'):
+		velocity.x = (direction * speed) * chase_speed_multiplier # chase!
+	else:
+		velocity.x = move_toward(velocity.x, 0, speed)
