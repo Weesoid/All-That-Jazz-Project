@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=28 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
@@ -22,9 +22,6 @@
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="20_1s302"]
 [ext_resource type="PackedScene" uid="uid://cmvvapgedbg4q" path="res://scenes/entities/GenericNPC.tscn" id="21_cchwb"]
 [ext_resource type="Texture2D" uid="uid://bgfd4prdnyfft" path="res://images/animations/base_battler.png" id="22_b8a2s"]
-[ext_resource type="PackedScene" uid="uid://j4tshp0xgo2n" path="res://scenes/entities/mobs/PatrollerShooter.tscn" id="23_cqw0u"]
-[ext_resource type="PackedScene" uid="uid://bat6k2egemqg8" path="res://scenes/entities/mobs/Patroller.tscn" id="24_fpcjo"]
-[ext_resource type="PackedScene" uid="uid://dy1dlxpvkvbul" path="res://scenes/entities/mobs/PatrollerHybrid.tscn" id="25_imoel"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j63u4"]
 radius = 16.0
@@ -153,6 +150,7 @@ func _on_timer_timeout():
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
+ENEMY_FACTION = 3
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
@@ -254,13 +252,13 @@ enabled = false
 wait_time = 3.0
 autostart = true
 
-[node name="Patroller" parent="." instance=ExtResource("23_cqw0u")]
-position = Vector2(147, -123)
+[node name="Chance 50" type="Marker2D" parent="."]
+position = Vector2(163, -50)
 
-[node name="Patroller2" parent="." instance=ExtResource("24_fpcjo")]
-position = Vector2(119, -108)
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(214, 150)
 
-[node name="Patroller3" parent="." instance=ExtResource("25_imoel")]
-position = Vector2(230, 179)
+[node name="SpawnPoint2" type="Marker2D" parent="."]
+position = Vector2(295, 130)
 
 [connection signal="timeout" from="Node2D/Timer" to="Node2D" method="_on_timer_timeout"]

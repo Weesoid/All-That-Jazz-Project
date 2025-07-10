@@ -1,49 +1,42 @@
 extends Resource
-class_name ResFactionPatrollerProperties
+class_name ResFactionProperties
 
 @export var faction: CombatGlobals.Enemy_Factions
-@export var chaser: Dictionary = {
-	'type': 0,
-	'sprite_sheet': '', 
-	'base_speed': 0.0, 
-	'alerted_speed': 0.0, 
-	'chase_speed': 0.0,
-	'detection_time': 0.0,
-	'stun_time': {'min':0.0, 'max':0.0},
-	'idle_time': {'patrol':0.0, 'alerted_patrol':0.0}
-	}
-@export var shooter: Dictionary = {
-	'type': 1,
-	'sprite_sheet': '', 
-	'base_speed': 0.0, 
-	'alerted_speed': 0.0, 
-	'chase_speed': 0.0, 
-	'detection_time': 0.0,
-	'stun_time': {'min':0.0, 'max':0.0},
-	'idle_time': {'patrol':0.0, 'alerted_patrol':0.0},
-	'projectile': ''
-	}
-@export var hybrid: Dictionary = {
-	'type': 2,
-	'sprite_sheet': '', 
-	'base_speed': 0.0, 
-	'alerted_speed': 0.0, 
-	'chase_speed': 0.0, 
-	'detection_time': 0.0,
-	'stun_time': {'min':0.0, 'max':0.0},
-	'idle_time': {'patrol':0.0, 'alerted_patrol':0.0},
-	'projectile': ''
-	}
+@export var patroller_properties: Array[ResPatrollerProperties]
+@export var music: Array[String] = []
+#func getValidTypes(specials_only:bool=false)-> Array[int]:
+#	var specials: Array[int] = []
+#	for patroller in patroller_properties:
+#		if patroller is ResPatrollerPropertiesShooter or patroller is ResPatrollerPropertiesHybrid:
+#			specials.append(patroller)
+#	return specials
 
-func getValidTypes(specials_only:bool=false)-> Array[int]:
-	var specials: Array[int] = []
-	if chaser['sprite_sheet'] != '' and !specials_only: specials.append(chaser['type'])
-	if shooter['sprite_sheet'] != '': specials.append(shooter['type'])
-	if hybrid['sprite_sheet'] != '': specials.append(hybrid['type'])
-	return specials
+func pickRandomSpecial():
+	var specials = []
+	for patroller in patroller_properties:
+		if patroller is ResPatrollerPropertiesShooter and !specials.has(1):
+			specials.append(1)
+		elif patroller is ResPatrollerPropertiesHybrid and !specials.has(2):
+			specials.append(2)
+	
+	print(specials)
+	randomize()
+	return specials.pick_random()
 
-func getType(type:int):
+func getSpecials():
+	return patroller_properties.filter(func(patroller): return patroller is ResPatrollerPropertiesShooter or patroller is ResPatrollerPropertiesHybrid)
+
+func getPatrollerType(type:int):
 	match type:
-		0: return chaser
-		1: return shooter
-		2: return hybrid
+		0:return patroller_properties.filter(func(patroller): return !patroller is ResPatrollerPropertiesShooter and !patroller is ResPatrollerPropertiesHybrid)
+		1:return patroller_properties.filter(func(patroller): return patroller is ResPatrollerPropertiesShooter)
+		2:return patroller_properties.filter(func(patroller): return patroller is ResPatrollerPropertiesHybrid)
+
+func getPatrollerProperties(type:int):
+	return getPatrollerType(type).pick_random()
+
+#func getType(type:int):
+#	match type:
+#		0: return chaser
+#		1: return shooter
+#		2: return hybrid

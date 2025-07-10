@@ -37,7 +37,7 @@ func pickRandomEnemies():
 		var enemy = valid_enemies.pick_random()
 		COMBATANT_SQUAD[index] = enemy
 
-func getMusic()-> int:
+func getMajorityFaction()-> int:
 	var faction_count = {}
 	for faction in range(CombatGlobals.Enemy_Factions.size()):
 		faction_count[faction] = 0

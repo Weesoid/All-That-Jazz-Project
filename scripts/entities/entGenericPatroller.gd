@@ -17,38 +17,27 @@ class_name GenericPatroller
 @export var base_move_speed: float = 20.0
 @export var alerted_speed_multiplier: float = 5.0
 @export var chase_speed_multiplier: float = 13.0
-@export var detection_time: float
 @export var min_action_distance: float = 25
 @export var direction: int = -1
+@export var detection_time: float
+@export var action_cooldown_time: float
+@export var stun_time: float
 
 var state: int
 var speed: float = 15.0
 var combat_switch: bool = true
 var flicker_tween: Tween
 
-#func _ready():
-#	patrol_component.COMBAT_SQUAD = get_node('CombatantSquadComponent')
-#	spawnPatrolArea()
-#
-#	if base_move_speed != 0:
-#		patrol_component.BASE_MOVE_SPEED = base_move_speed
-#	if alerted_speed_multiplier != 0:
-#		patrol_component.ALERTED_SPEED_MULTIPLIER = alerted_speed_multiplier
-#	if chase_speed_multiplier != 0:
-#		patrol_component.CHASE_SPEED_MULTIPLIER = chase_speed_multiplier
-#	if detection_time != 0:
-#		patrol_component.DETECTION_TIME = detection_time
-#	if idle_time['patrol'] > 0.0 and idle_time['alerted_patrol'] > 0.0:
-#		patrol_component.IDLE_TIME = idle_time
-#	if stun_time['min'] > 0.0 and stun_time['max'] > 0.0:
-#		patrol_component.STUN_TIME = stun_time
-#
-#	patrol_component.initialize()
-#	patrol_component.get_node('DetectBar').initialize()
-
 func _ready():
 	if !has_node('CombatantSquadComponent'):
 		CombatGlobals.generateCombatantSquad(self, CombatGlobals.Enemy_Factions.Scavs)
+	
+	if detection_time > 0:
+		detect_timer.wait_time = detection_time
+	if action_cooldown_time > 0:
+		action_cooldown.wait_time = action_cooldown_time
+	if stun_time > 0:
+		stun_timer.wait_time = stun_time
 
 func updateState(new_state:int):
 	if new_state == 0:
@@ -196,6 +185,6 @@ func flickerTween(play:bool):
 		sprite.self_modulate = Color.WHITE
 
 func _on_melee_hitbox_body_entered(body):
-	if body is PlayerScene and state != 2: 
+	if body is PlayerScene and canEnterCombat(): 
 		OverworldGlobals.damageParty(5)
 		OverworldGlobals.changeToCombat(str(name))

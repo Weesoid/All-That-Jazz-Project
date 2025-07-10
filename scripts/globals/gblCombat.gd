@@ -7,19 +7,9 @@ enum Enemy_Factions {
 	Mercenaries,
 	Scavs
 }
-var FACTION_MUSIC = {
-	Enemy_Factions.Neutral: [
-		"res://audio/music/706171__timbre__atmosphere-prince-funk-via-stableaudio.ogg"
-	],
-	Enemy_Factions.Unggboys: [
-		"res://audio/music/Little Speck DV.ogg"
-	],
-	Enemy_Factions.Mercenaries: [
-		"res://audio/music/Little Speck DV.ogg"
-	]
-}
 var FACTION_PATROLLER_PROPERTIES = {
-	Enemy_Factions.Neutral: preload("res://resources/combat/faction_patrollers/Neutral.tres")
+	Enemy_Factions.Neutral: preload("res://resources/combat/faction_patrollers/Neutral.tres"),
+	Enemy_Factions.Scavs: preload("res://resources/combat/faction_patrollers/Scavs.tres")
 }
 
 var TENSION: int = 0
@@ -538,29 +528,13 @@ func isSameCombatantType(combatant_a, combatant_b):
 	
 	return getCombatantType(combatant_a) == getCombatantType(combatant_b)
 
+## -1: Random Special, 0: Chaser, 1: Shooter, 2: Hybrid
 func generateFactionPatroller(faction: Enemy_Factions, type:int)-> GenericPatroller:
-	return generateGenericPatroller(type, FACTION_PATROLLER_PROPERTIES[faction].getType(type))
-
-## 0: Chaser, 1: Shooter, 2: Hybrid
-func generateGenericPatroller(type:int,data={})-> GenericPatroller:
+	var faction_properties: ResFactionProperties = FACTION_PATROLLER_PROPERTIES[faction]
+	if type == -1:
+		type = faction_properties.pickRandomSpecial()
 	var patroller: GenericPatroller = instantiatePatroller(type)
-	if data.keys().has('sprite_sheet'):
-		patroller.get_node('Sprite2D').texture = load(data['sprite_sheet'])
-	if data.keys().has('base_speed'):
-		patroller.base_move_speed = data['base_speed']
-	if data.keys().has('alerted_speed'):
-		patroller.alerted_speed_multiplier = data['alerted_speed']
-	if data.keys().has('chase_speed'):
-		patroller.chase_speed_multiplier = data['chase_speed']
-	if data.keys().has('detection_time'):
-		patroller.detection_time = data['detection_time']
-	if data['idle_time']['patrol'] > 0.0 and data['idle_time']['alerted_patrol'] > 0.0:
-		patroller.IDLE_TIME = data['idle_time']
-	if data['stun_time']['min'] > 0.0 and data['stun_time']['max'] > 0.0:
-		patroller.IDLE_TIME = data['stun_time']
-	if data.keys().has('projectile') and (type == 1 or type == 2):
-		patroller.projectile = load(data['projectile'])
-	
+	faction_properties.getPatrollerProperties(type).setPatrollerProperties(patroller)
 	return patroller
 
 func instantiatePatroller(type:int)-> GenericPatroller:

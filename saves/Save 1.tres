@@ -32,18 +32,18 @@
 [ext_resource type="Resource" path="res://resources/items/ArrowJunk.tres" id="28_18aiy"]
 [ext_resource type="Resource" path="res://resources/items/Arrow.tres" id="29_1aj4w"]
 
-[sub_resource type="Resource" id="Resource_5dt4k"]
+[sub_resource type="Resource" id="Resource_hx1ly"]
 script = ExtResource("1_fwgqy")
 position = Vector2(5, -2)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_mfsby"]
+[sub_resource type="Resource" id="Resource_y4jps"]
 script = ExtResource("2_3ggq0")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
 
-[sub_resource type="Resource" id="Resource_s1ti1"]
+[sub_resource type="Resource" id="Resource_nhcbe"]
 script = ExtResource("20_48ocw")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("24_lheah"), ExtResource("3_84hel"), ExtResource("19_8x1yi"), ExtResource("22_d3k5p"), ExtResource("20_4hgrw"), ExtResource("21_2uiwd")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
@@ -82,7 +82,7 @@ ExtResource("24_lheah"): [Array[Resource("res://scripts/resources/ResAbility.gd"
 "health": 26,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_hmqd0"), ExtResource("5_ifpem"), ExtResource("6_nib60"), ExtResource("7_ssxph"), ExtResource("8_8njj1"), ExtResource("9_mwksg"), ExtResource("10_kjmy4"), ExtResource("11_yypgm"), ExtResource("12_yv00x")]), true, Array[String](["Faded I"]), true, 0, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_hmqd0"), ExtResource("5_ifpem"), ExtResource("6_nib60"), ExtResource("7_ssxph"), ExtResource("8_8njj1"), ExtResource("9_mwksg"), ExtResource("10_kjmy4"), ExtResource("11_yypgm"), ExtResource("12_yv00x")]), true, Array[String]([]), true, 0, {
 "allocations": {
 "brawn": 0.04,
 "grit": 0.0,
@@ -383,7 +383,7 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 10
 KNOWN_POWERS = [ExtResource("19_l6nd8")]
 
-[sub_resource type="Resource" id="Resource_fd1o7"]
+[sub_resource type="Resource" id="Resource_3tq30"]
 script = ExtResource("21_c5u2k")
 INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("27_bjs36"), ExtResource("28_18aiy"), ExtResource("29_1aj4w")])
 CRAFTED = Array[String]([])
@@ -400,4 +400,4 @@ Morale 4
 "
 PLAYTIME = 1649.8
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_5dt4k"), SubResource("Resource_mfsby"), SubResource("Resource_s1ti1"), SubResource("Resource_fd1o7")]
+save_data = [SubResource("Resource_hx1ly"), SubResource("Resource_y4jps"), SubResource("Resource_nhcbe"), SubResource("Resource_3tq30")]

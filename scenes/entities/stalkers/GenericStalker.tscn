@@ -1,9 +1,8 @@
-[gd_scene load_steps=31 format=3 uid="uid://ckaegjqk7g4m8"]
+[gd_scene load_steps=30 format=3 uid="uid://ckaegjqk7g4m8"]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatrollerHybrid.gd" id="1_a6a0o"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="2_l4smj"]
-[ext_resource type="Resource" path="res://resources/projectiles/StunProjectile.tres" id="2_odrkn"]
-[ext_resource type="PackedScene" uid="uid://bc7oiayuon1st" path="res://scenes/components/NPCPatrolHybrid.tscn" id="2_xghdk"]
+[ext_resource type="Resource" uid="uid://cmc0vw047kavg" path="res://resources/projectiles/StunProjectile.tres" id="2_odrkn"]
 [ext_resource type="Resource" uid="uid://dxdpkpoxq1gca" path="res://resources/combat/combatants_enemies/neutral/Bruiser.tres" id="3_6v3vs"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="5_pd3s1"]
 [ext_resource type="Texture2D" uid="uid://x1rkx7kmua4n" path="res://images/animations/ent_walk_shooter.png" id="5_qw00g"]
@@ -510,10 +509,6 @@ wall_min_slide_angle = 0.0
 script = ExtResource("1_a6a0o")
 projectile = ExtResource("2_odrkn")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-avoidance_enabled = true
-radius = 60.0
-
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_l4smj")]
 DO_REINFORCEMENTS = false
 COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_6v3vs")])
@@ -524,9 +519,6 @@ end_sentence = "Foolish..!"
 
 [node name="HurtBoxComponent" parent="." instance=ExtResource("7_u7bsn")]
 HIT_SCRIPT = ExtResource("8_o4rhb")
-
-[node name="NPCPatrolComponent" parent="." instance=ExtResource("2_xghdk")]
-IS_STALKER = true
 
 [node name="WalkingAnimations" type="Node" parent="."]
 

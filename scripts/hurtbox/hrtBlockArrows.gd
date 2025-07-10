@@ -15,3 +15,4 @@ static func updateLineOfSight(patroller: GenericPatroller):
 		await OverworldGlobals.playEntityAnimation(patroller.name, 'Block_Down')
 	else:
 		await OverworldGlobals.playEntityAnimation(patroller.name, 'Block_Up')
+	

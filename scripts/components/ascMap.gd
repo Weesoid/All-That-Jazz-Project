@@ -112,22 +112,16 @@ func setSavePoints(set_to:bool):
 
 func spawnPatrollers():
 	randomize()
-	var valid_specials = CombatGlobals.FACTION_PATROLLER_PROPERTIES[ENEMY_FACTION].getValidTypes(true)
-	
-	var special_count = ceil(countSpawnPoints()*0.25)
 	for spawn_point in getSpawnPoints():
 		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
 			continue
 		var patroller
-		if special_count != 0 and valid_specials.size() > 0:
-			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
-			special_count -= 1
-		elif isChancedSpawn(spawn_point):
-			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, valid_specials.pick_random())
+		if CombatGlobals.randomRoll(0.75):
+			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, 0)
 		else:
-			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, 0) 
+			patroller = CombatGlobals.generateFactionPatroller(ENEMY_FACTION, -1)
+		
 		patroller.global_position = spawn_point.global_position
-		#patroller.patrol_area = area
 		CombatGlobals.generateCombatantSquad(patroller, ENEMY_FACTION)
 		add_child(patroller)
 
@@ -169,7 +163,7 @@ func isChancedSpawn(marker: Node2D):
 func getSpawnPoints():
 	var out = []
 	for child in get_children():
-		if child is Marker2D and child.name.contains('SpawnPoint'): out.append(child)
+		if child is Marker2D and child.name.contains('SpawnPoint') or child.name.contains('Chance'): out.append(child)
 	return out
 
 func canSpawnDestructibleObjectives():

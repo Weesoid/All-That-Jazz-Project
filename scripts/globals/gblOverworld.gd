@@ -604,9 +604,9 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
 	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
 	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
-	var combat_music = getCombatantSquadComponent(entity_name).getMusic()
-	if CombatGlobals.FACTION_MUSIC.has(combat_music):
-		combat_scene.battle_music_path = CombatGlobals.FACTION_MUSIC[combat_music].pick_random()
+	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[getCombatantSquadComponent(entity_name).getMajorityFaction()].music
+	if !combat_music.is_empty():
+		combat_scene.battle_music_path = combat_music.pick_random()
 	await combat_bubble.animator.animation_finished
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	getPlayer().player_camera.add_child(battle_transition)
