@@ -16,7 +16,6 @@ class_name DynamicRope
 var rope_length = 0
 var segments: Array
 
-
 func _ready():
 	if !must_shoot:
 		initializeRope()

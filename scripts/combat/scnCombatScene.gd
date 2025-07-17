@@ -42,7 +42,6 @@ class_name CombatScene
 @onready var flasher = $CombatCamera/Flasher
 @onready var flasher_animator = $CombatCamera/Flasher/AnimationPlayer
 
-
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -145,7 +144,12 @@ func _ready():
 	
 	transition_scene.visible = false
 	OverworldGlobals.setMouseController(true)
-
+	
+	# Handle overworld stalker
+	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
+		OverworldGlobals.getCurrentMap().get_node('StalkerEngage').queue_free()
+	if OverworldGlobals.getCurrentMap().has_node('Stalker'):
+		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
 func _process(_delta):
 	#print(combatant_turn_order)
 	$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())

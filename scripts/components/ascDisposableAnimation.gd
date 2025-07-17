@@ -1,6 +1,7 @@
 extends Node2D
 class_name QuickAnimation
 
+## '' == Pick random
 @export var animation_name = 'Show'
 @export var invisible_frame_zero: bool = false
 @export var free_after:bool = true

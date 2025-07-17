@@ -21,9 +21,9 @@ func setProperties(properties: Dictionary):
 		set(key, properties[key])
 
 func pickRandomEnemies():
-	randomize()
 	if RANDOM_SIZE:
-		COMBATANT_SQUAD.resize(COMBATANT_SQUAD.size() - randi_range(0, COMBATANT_SQUAD.size()-2))
+		randomize()
+		COMBATANT_SQUAD.resize(randi_range(1,4))
 	
 	for index in range(COMBATANT_SQUAD.size()):
 		if COMBATANT_SQUAD[index] != null: continue

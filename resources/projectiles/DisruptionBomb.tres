@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("2_t5ny8")
 projectile_data = {
-"animation": "res://scenes/animations/Reinforcements.tscn",
+"animation": "res://scenes/animations_abilities/Reinforcements.tscn",
 "animation_data": {
 "scale": Vector2(2, 2)
 },

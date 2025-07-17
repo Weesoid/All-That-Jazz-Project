@@ -1,12 +1,33 @@
-[gd_resource type="Resource" script_class="ResStalkerData" load_steps=5 format=3 uid="uid://dswvkpsqs1ltn"]
+[gd_resource type="Resource" script_class="ResStalkerData" load_steps=11 format=3 uid="uid://dswvkpsqs1ltn"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStalkerData.gd" id="1_5yvk2"]
 [ext_resource type="Resource" uid="uid://dxdpkpoxq1gca" path="res://resources/combat/combatants_enemies/neutral/Bruiser.tres" id="1_273mx"]
+[ext_resource type="Script" path="res://scripts/resources/ResPatrollerPropertiesHybrid.gd" id="2_8ej5p"]
+[ext_resource type="Resource" uid="uid://dmk3rgyjgpgy6" path="res://resources/projectiles/DamageProjectile.tres" id="2_h8a5w"]
+[ext_resource type="PackedScene" uid="uid://dxkovbrj8brlp" path="res://scenes/animations_quick/EngageStalker.tscn" id="2_h347k"]
+[ext_resource type="Script" path="res://scripts/hurtbox/hrtBlockArrows.gd" id="2_o2n2q"]
 [ext_resource type="PackedScene" uid="uid://fky7g7yyu7dg" path="res://scenes/stalker_intros/GenericStalkerIntro.tscn" id="4_bobae"]
 [ext_resource type="PackedScene" uid="uid://7keas4b6oewf" path="res://scenes/miscellaneous/LightFlicker.tscn" id="4_gymj3"]
+[ext_resource type="Texture2D" uid="uid://kxcgvq52uy64" path="res://images/animations/scav_patrol_hybrid.png" id="4_ha3nk"]
+
+[sub_resource type="Resource" id="Resource_qjrgh"]
+script = ExtResource("2_8ej5p")
+min_melee_action_distance = 25.0
+projectile = ExtResource("2_h8a5w")
+sprite = ExtResource("4_ha3nk")
+base_move_speed = 20.0
+alerted_speed_multiplier = 5.0
+chase_speed_multiplier = 13.0
+min_action_distance = 25.0
+direction = -1
+detection_time = 0.0
+action_cooldown_time = 0.0
+stun_time = 0.0
+hurt_script = ExtResource("2_o2n2q")
 
 [resource]
 script = ExtResource("1_5yvk2")
+patroller = SubResource("Resource_qjrgh")
 combatant = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("1_273mx")])
 squad_component_properties = {
 "can_escape": true,
@@ -22,6 +43,7 @@ squad_component_properties = {
 warning_flash = ExtResource("4_gymj3")
 flash_follow = true
 stalker_intro = ExtResource("4_bobae")
+engage_animation = ExtResource("2_h347k")
 intro_follow = true
 spawn_time = 5.0
 spawn_delay = 0.5

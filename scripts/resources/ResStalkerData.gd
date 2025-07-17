@@ -1,7 +1,7 @@
 extends Resource
 class_name ResStalkerData
 
-@export var patroller: PackedScene
+@export var patroller: ResPatrollerProperties
 @export var combatant: Array[ResCombatant]
 @export var squad_component_properties: Dictionary = {
 	"enemy_pool": [],
@@ -12,11 +12,12 @@ class_name ResStalkerData
 	"turn_time": 0.0,
 	"can_escape": true,
 	"do_reinforcements": true,
-	"reinforcements_turn": 50,
+	"reinforcements_turn": 50
 }
 @export var warning_flash: PackedScene
 @export var flash_follow: bool
 @export var stalker_intro: PackedScene
+@export var engage_animation: PackedScene
 @export var intro_follow: bool
 @export var spawn_time: float
 @export var spawn_delay: float = 0.5

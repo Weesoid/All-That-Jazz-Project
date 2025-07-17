@@ -312,6 +312,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	if !delayed_rewards.is_empty():
 		getCurrentMap().REWARD_BANK = delayed_rewards
 		#await getCurrentMap().ready
+		print('Givin from delayed!')
 		getCurrentMap().giveRewards()
 		await SaveLoadGlobals.done_saving
 		delayed_rewards.clear()
@@ -489,7 +490,7 @@ func addEffectPulse(location, radius:float, script:GDScript):
 	#showQuickAnimation('res://scenes/animations/Reinforcements.tscn', 'Player')
 	#showAbilityAnimation('res://scenes/animations/Reinforcements.tscn', OverworldGlobals.getPlayer().global_position)
 
-func showQuickAnimation(animation_id, location, animation_name:String='Show', wait:bool=true):
+func showQuickAnimation(animation_id, location, animation_name:String='Show', hide_scene:bool=false,wait:bool=true):
 	var animation: QuickAnimation
 	if animation_id is String:
 		animation = load(animation_id).instantiate()
@@ -502,6 +503,7 @@ func showQuickAnimation(animation_id, location, animation_name:String='Show', wa
 	#animation.z_index = 999
 	if !inCombat():
 		if location is Node2D:
+			if hide_scene: location.hide()
 			location.call_deferred('add_child',animation)
 		elif location is String:
 			animation.global_position = getEntity(location).global_position
@@ -515,6 +517,8 @@ func showQuickAnimation(animation_id, location, animation_name:String='Show', wa
 	await animation.ready
 	if wait:
 		await animation.animation_player.animation_finished
+	if hide_scene and location is Node2D:
+		location.show()
 
 func showAbilityAnimation(animation_path, location, properties:Dictionary={}):
 	var animation: AbilityAnimation = load(animation_path).instantiate()
@@ -625,7 +629,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	
 	# Exit combat
 	moveCamera('Player', 0.0, getPlayer().sprite.offset)
-	zoomCamera(Vector2(1.0,1.0), 0.0)
+	OverworldGlobals.moveCamera('RESET',0.25)
+	OverworldGlobals.zoomCamera(Vector2(1,1),0.25)
 	var combat_results = combat_scene.combat_result
 	var tamed = combat_scene.tamed_combatants
 	getPlayer().player_camera.make_current()
@@ -657,7 +662,7 @@ func showCombatStartBars():
 	getPlayer().player_camera.add_child(bars)
 	bars.position = Vector2.ZERO
 	bars.get_node('AnimationPlayer').play('Show')
-	
+
 
 func getRandomTameable():
 	var path = "res://resources/combat/combatants_player/tameable/"

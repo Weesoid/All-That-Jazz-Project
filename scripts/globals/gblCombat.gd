@@ -8,7 +8,6 @@ enum Enemy_Factions {
 	Scavs
 }
 var FACTION_PATROLLER_PROPERTIES = {
-	Enemy_Factions.Neutral: preload("res://resources/combat/faction_patrollers/Neutral.tres"),
 	Enemy_Factions.Scavs: preload("res://resources/combat/faction_patrollers/Scavs.tres")
 }
 
@@ -535,6 +534,11 @@ func generateFactionPatroller(faction: Enemy_Factions, type:int)-> GenericPatrol
 		type = faction_properties.pickRandomSpecial()
 	var patroller: GenericPatroller = instantiatePatroller(type)
 	faction_properties.getPatrollerProperties(type).setPatrollerProperties(patroller)
+	return patroller
+
+func generatePatroller(properties: ResPatrollerProperties)-> GenericPatroller:
+	var patroller: GenericPatroller = instantiatePatroller(properties.getType())
+	properties.setPatrollerProperties(patroller)
 	return patroller
 
 func instantiatePatroller(type:int)-> GenericPatroller:

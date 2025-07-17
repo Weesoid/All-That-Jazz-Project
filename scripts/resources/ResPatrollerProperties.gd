@@ -10,6 +10,7 @@ class_name ResPatrollerProperties
 @export var detection_time: float
 @export var action_cooldown_time: float
 @export var stun_time: float
+@export var hurt_script: GDScript
 
 func setPatrollerProperties(patroller: GenericPatroller):
 	patroller.base_move_speed = base_move_speed
@@ -23,8 +24,20 @@ func setPatrollerProperties(patroller: GenericPatroller):
 		patroller.detection_time = detection_time
 	if stun_time > 0:
 		patroller.stun_time = stun_time
+	if hurt_script != null:
+		var hurt_box = load("res://scenes/components/Hurtbox.tscn").instantiate()
+		hurt_box.HIT_SCRIPT = hurt_script
+		patroller.add_child(hurt_box)
 	setExtendedProperties(patroller)
 	patroller.get_node('Sprite2D').texture = sprite
 
 func setExtendedProperties(patroller):
 	pass
+
+func getType():
+	if self is ResPatrollerPropertiesHybrid:
+		return 2
+	elif self is ResPatrollerPropertiesShooter: 
+		return 1
+	elif self is ResPatrollerProperties: 
+		return 0

@@ -16,9 +16,9 @@ func applyPulseEffect():
 			
 			if mode == 4: # Dynamic pulse
 				if body.state == 0: # If patroller is patrolling (soothe), alert patrol
-					body.get_node('NPCPatrolComponent').updateMode(1)
+					body.updateState(1)
 				elif body.state == 1 or body.state == 2: # Patroller is chasing or alert patrolling, CHASE
-					body.get_node('NPCPatrolComponent').updateMode(2)
+					body.updateState(2)
 			else:
 				body.updateState(mode)
 	

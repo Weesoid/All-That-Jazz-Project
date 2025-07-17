@@ -17,10 +17,10 @@ class_name MapData
 	'stalker_chance': 0.05 * PlayerGlobals.PARTY_LEVEL,
 	'destroy_objective': false
 	}
+@export var STALKER: ResStalkerData
 var CLEARED: bool = false
 var INITIAL_PATROLLER_COUNT: int = 0
 var REWARD_BANK: Dictionary = {'experience':0.0, 'loot':{}, 'tamed':[]}
-var STALKER: ResStalkerData
 var full_alert: bool = false
 var clear_timer: Timer
 var give_on_exit:bool = false
@@ -35,13 +35,12 @@ func _ready():
 	if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) and !PlayerGlobals.CLEARED_MAPS[scene_file_path]['events'].is_empty():
 		var events: Dictionary = PlayerGlobals.CLEARED_MAPS[scene_file_path]['events']
 		for key in events.keys():
-			if events[key] != null: 
-				EVENTS[key] = events[key]
+			if events[key] != null: EVENTS[key] = events[key]
 	if !SAFE and (!PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) or !PlayerGlobals.CLEARED_MAPS[scene_file_path]['cleared']):
 		await get_tree().process_frame
-		if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path):
+		if PlayerGlobals.CLEARED_MAPS.keys().has(scene_file_path) and PlayerGlobals.CLEARED_MAPS[scene_file_path]['faction'] != null:
 			ENEMY_FACTION = PlayerGlobals.CLEARED_MAPS[scene_file_path]['faction']
-		#await get_tree().create_timer(0.05).tim
+#		#await get_tree().create_timer(0.05).tim
 		spawnPatrollers()
 		INITIAL_PATROLLER_COUNT = getPatrollers().size()
 		showStartIndicator()
@@ -54,10 +53,12 @@ func _ready():
 			OverworldGlobals.getPlayer().player_camera.add_child(load("res://scenes/user_interface/TimeLimit.tscn").instantiate())
 		if canSpawnDestructibleObjectives():
 			spawnDestructibleObjectives()
-		if CombatGlobals.randomRoll(EVENTS['stalker_chance']):
+		if CombatGlobals.randomRoll(EVENTS['stalker_chance']) or STALKER != null:
 			pickStalker()
 		OverworldGlobals.patroller_destroyed.connect(checkGiveRewards)
 	#get_node('TileMap').set_script(load("res://scripts/components/ascTileMapNavDecoRemover.gd"))
+	if REWARD_BANK.is_empty():
+		REWARD_BANK = {'experience':0.0, 'loot':{}, 'tamed':[]}
 	
 	await get_tree().process_frame
 	done_loading_map = true
@@ -69,7 +70,7 @@ func giveRewards(ignore_stalker:bool=false):
 		clear_timer.stop()
 	if !OverworldGlobals.isPlayerAlive() or (canSpawnDestructibleObjectives() and getDestructibleObjectives().size() > 0): 
 		return
-	if STALKER != null and !ignore_stalker:
+	if STALKER != null and !ignore_stalker and getPatrollers().size() == 0:
 		STALKER.spawn()
 		give_on_exit = true
 		PlayerGlobals.addToClearedMaps(scene_file_path, true, has_node('FastTravel'))
@@ -178,12 +179,12 @@ func getDestructibleObjectives():
 func getPatrollers():
 	var out = []
 	for child in get_children():
-		if child is GenericPatroller and child.has_node('NPCPatrolComponent'): out.append(child)
+		if child is GenericPatroller: out.append(child)
 	return out
 
 func arePatrollersAlerted():
 	for patroller in getPatrollers():
-		if patroller.get_node('NPCPatrolComponent').STATE > 0: return true
+		if patroller.state > 0: return true
 	
 	return false
 

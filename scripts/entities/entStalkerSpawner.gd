@@ -18,7 +18,8 @@ func _ready():
 	await get_tree().create_timer(stalker_data.spawn_time+randf_range(-quarter_time,quarter_time)).timeout
 	
 	# SPAWN
-	body = stalker_data.patroller.instantiate()
+	body = CombatGlobals.generatePatroller(stalker_data.patroller)
+	body.name = 'Stalker'
 	body.modulate = Color.TRANSPARENT
 	PlayerGlobals.CLEARED_MAPS[OverworldGlobals.getCurrentMap().scene_file_path]['cleared'] = false
 	quarter_time = stalker_data.spawn_delay*0.25
@@ -28,20 +29,20 @@ func _ready():
 		await OverworldGlobals.showQuickAnimation(stalker_data.stalker_intro, 'Player','')
 	await get_tree().create_timer(stalker_data.spawn_delay+randf_range(-quarter_time,quarter_time)).timeout
 	OverworldGlobals.setPlayerInput(false)
-	body.global_position = OverworldGlobals.getPlayer().global_position
+	var player_pos=OverworldGlobals.getPlayer().global_position+OverworldGlobals.getPlayer().sprite.offset
+	body.global_position = player_pos+Vector2(0,10)
+	body.process_mode= Node.PROCESS_MODE_DISABLED
 	OverworldGlobals.getCurrentMap().add_child(body)
-	body.patrol_component.process_mode= Node.PROCESS_MODE_DISABLED
-	body.patrol_component.STATE = 2
-	create_tween().tween_property(body, 'modulate', Color.WHITE, 0.15)
-	await OverworldGlobals.playEntityAnimation(body.name, 'Engage')
+	await OverworldGlobals.showQuickAnimation(stalker_data.engage_animation, player_pos)
 	OverworldGlobals.changeToCombat(body.name)
 
-func _exit_tree():
-	OverworldGlobals.combat_exited.disconnect(reactivatePatroller)
-	#body.queue_free()
-
 func reactivatePatroller():
-	if is_instance_valid(body) and body.has_node('NPCPatrolComponent') and OverworldGlobals.isPlayerAlive():
-		body.patrol_component.process_mode= Node.PROCESS_MODE_INHERIT
+	if is_instance_valid(body) and body is GenericPatroller and OverworldGlobals.isPlayerAlive():
+		body.updateState(2)
+		body.process_mode= Node.PROCESS_MODE_INHERIT
 		PlayerGlobals.CLEARED_MAPS[OverworldGlobals.getCurrentMap().scene_file_path]['cleared'] = true
+	elif !OverworldGlobals.isPlayerAlive():
+		OverworldGlobals.getCurrentMap().give_on_exit = false
+	
+	OverworldGlobals.combat_exited.disconnect(reactivatePatroller)
 	queue_free()

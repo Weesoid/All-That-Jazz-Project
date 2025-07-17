@@ -150,6 +150,7 @@ func _on_timer_timeout():
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
+NAME = "Wump"
 ENEMY_FACTION = 3
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -171,7 +172,7 @@ position = Vector2(-34, -4)
 segment_count = 3
 
 [node name="FastTravel" parent="." instance=ExtResource("3_t6mhi")]
-position = Vector2(-88, -48)
+position = Vector2(-92, -26)
 
 [node name="Player" parent="." instance=ExtResource("4_iibdi")]
 position = Vector2(-32, 0)
@@ -252,13 +253,10 @@ enabled = false
 wait_time = 3.0
 autostart = true
 
-[node name="Chance 50" type="Marker2D" parent="."]
+[node name="Chance 1" type="Marker2D" parent="."]
 position = Vector2(163, -50)
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(214, 150)
-
-[node name="SpawnPoint2" type="Marker2D" parent="."]
-position = Vector2(295, 130)
 
 [connection signal="timeout" from="Node2D/Timer" to="Node2D" method="_on_timer_timeout"]
