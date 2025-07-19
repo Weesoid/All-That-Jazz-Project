@@ -8,13 +8,13 @@ extends Node2D
 @export var added_exp: int
 
 
-func showAnimation(show_clear:bool):
+func showAnimation(show_clear:bool, patroller_group: PatrollerGroup):
 	if !show_clear:
 		animator.play("Show_Started")
 	else:
 		var tween = create_tween()
 		animator.play("Show")
-		showLoot()
+		showLoot(patroller_group)
 		level.text = str(PlayerGlobals.PARTY_LEVEL)
 		experience.max_value = PlayerGlobals.getRequiredExp()
 		experience.value = PlayerGlobals.CURRENT_EXP
@@ -29,9 +29,9 @@ func showAnimation(show_clear:bool):
 	await animator.animation_finished
 	queue_free()
 
-func showLoot():
-	var bank = OverworldGlobals.getCurrentMap().REWARD_BANK['loot']
-	var tamed = OverworldGlobals.getCurrentMap().REWARD_BANK['tamed']
+func showLoot(patroller_group: PatrollerGroup):
+	var bank = patroller_group.reward_bank['loot']
+#	var tamed = OverworldGlobals.getCurrentMap().REWARD_BANK['tamed']
 	for drop in bank.keys():
 		var icon: TextureRect = TextureRect.new()
 		var tween = create_tween()
@@ -45,15 +45,15 @@ func showLoot():
 		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
 		await get_tree().create_timer(0.15).timeout
-	for combatant_path in tamed:
-		var combatant = load(combatant_path)
-		var icon = createIcon(combatant)
-		var tween = create_tween()
-		tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
-		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.25)
-		loot.add_child(icon)
-		OverworldGlobals.playSound("res://audio/sounds/52_Dive_02.ogg", 4.0)
-		await get_tree().create_timer(0.15).timeout
+#	for combatant_path in tamed:
+#		var combatant = load(combatant_path)
+#		var icon = createIcon(combatant)
+#		var tween = create_tween()
+#		tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
+#		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.25)
+#		loot.add_child(icon)
+#		OverworldGlobals.playSound("res://audio/sounds/52_Dive_02.ogg", 4.0)
+#		await get_tree().create_timer(0.15).timeout
 
 func createIcon(combatant: ResCombatant):
 	combatant.initializeCombatant()

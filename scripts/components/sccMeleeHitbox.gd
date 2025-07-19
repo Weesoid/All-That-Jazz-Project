@@ -7,10 +7,9 @@ class_name MeleeHitbox
 func _on_body_entered(body):
 	if OverworldGlobals.entering_combat:
 		return
-	
 	if body is GenericPatroller and is_instance_valid(body):
 		if body.has_node('CombatInteractComponent'):
-			OverworldGlobals.getCurrentMap().destroyPatroller(body)
+			body.destroy(true)
 			PlayerGlobals.overworld_stats['stamina'] -= 50
 			OverworldGlobals.shakeCamera()
 			await OverworldGlobals.getPlayer().showOverlay(Color.RED, 0.025)

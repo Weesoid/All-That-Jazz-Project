@@ -125,8 +125,10 @@ func _exit_tree():
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_sprint") and initial_mode == Modes.LOAD:
+		#container.self_modulate += Color(0.1, 0, 0, 0)
 		timer.start(1.0)
 	if Input.is_action_just_released("ui_sprint") and initial_mode == Modes.LOAD:
+		#container.self_modulate = Color.WHITE
 		timer.stop()
 
 func _on_timer_timeout():

@@ -26,7 +26,7 @@ func _ready():
 func interact():
 	if !interacted and visible:
 		interacted = true
-		OverworldGlobals.changeToCombat(patroller_name)
+		OverworldGlobals.changeToCombat(patroller_name,{},get_parent())
 		await OverworldGlobals.combat_enetered
 		queue_free()
 

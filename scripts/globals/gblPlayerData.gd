@@ -6,6 +6,7 @@ var TEAM: Array[ResPlayerCombatant]
 var TEAM_FORMATION: Array[ResCombatant]
 #var FOLLOWERS: Array[NPCFollower] = []
 var CLEARED_MAPS: Dictionary = {}
+var CLEARED_PATROL_GROUPS: Dictionary = {}
 var POWER: GDScript
 var KNOWN_POWERS: Array = [load("res://resources/powers/Stealth.tres")]
 var EQUIPPED_ARROW: ResProjectileAmmo
@@ -72,7 +73,7 @@ var SECONDARY_TEMPERMENTS: Dictionary = {
 	'oblivious': {'accuracy':-0.05},
 	'stubborn': {'heal_mult':-0.15}
 }
-
+var current_stalker: ResStalkerData
 signal level_up
 
 func _ready():
@@ -333,6 +334,10 @@ func addToClearedMaps(map_path:String,cleared:bool,fast_travel:bool=false, facti
 	if !CLEARED_MAPS.keys().has(map_path):
 		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':fast_travel, 'faction':faction, 'events': {}}
 
+func addClearedPatrolGroup(group:PatrollerGroup,cleared:bool=true):
+	if !CLEARED_PATROL_GROUPS.has(group):
+		CLEARED_PATROL_GROUPS[group] = {'cleared':cleared,'faction':null,'events':{}}
+
 func randomMapUnclear(count:int, ignore_map:String=''):
 	clearMaps()
 	var valid_maps = CLEARED_MAPS.keys().filter(
@@ -505,8 +510,9 @@ func loadData(save_data: PlayerSaveData):
 		combatant.initializeCombatant(false)
 		combatant.updateCombatant(save_data)
 		combatant.initializeCombatant(false)
-	if OverworldGlobals.getCurrentMap().SAFE:
-		OverworldGlobals.loadFollowers()
+	# TO DO: Fade followers based on interaction instead...?
+#	if OverworldGlobals.getCurrentMap().SAFE:
+#		OverworldGlobals.loadFollowers()
 	
 	overworld_stats['stamina'] = 100.0 # DO NOT TOUCH STAMINA FOR BLESSINGS!
 	

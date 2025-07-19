@@ -8,7 +8,7 @@ func _ready():
 	bar.max_value = OverworldGlobals.getCurrentMap().EVENTS['time_limit']
 	timer = OverworldGlobals.getCurrentMap().clear_timer
 	timer.timeout.connect(queue_free)
-	OverworldGlobals.getCurrentMap().map_cleared.connect(queue_free)
+	OverworldGlobals.group_cleared.connect(queue_free)
 
 func _process(_delta):
 	bar.value = OverworldGlobals.getCurrentMap().clear_timer.time_left

@@ -23,7 +23,7 @@ func _process(_delta):
 		equipped_charm.text = PlayerGlobals.EQUIPPED_BLESSING.blessing_name
 	else:
 		equipped_charm.text = 'No active blessing.'
-	reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
+	#reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
 	save_name.text = 'Save Name: ' + str(PlayerGlobals.SAVE_NAME)
 	speed.text = 'Speed: ' + str(player.SPEED)
 

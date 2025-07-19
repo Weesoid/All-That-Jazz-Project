@@ -26,11 +26,14 @@ class_name GenericPatroller
 var state: int
 var speed: float = 15.0
 var combat_switch: bool = true
+var patroller_group: PatrollerGroup
 var flicker_tween: Tween
 
 func _ready():
 	if !has_node('CombatantSquadComponent'):
 		CombatGlobals.generateCombatantSquad(self, CombatGlobals.Enemy_Factions.Scavs)
+	if get_parent() is PatrollerGroup:
+		patroller_group = get_parent()
 	
 	if detection_time > 0:
 		detect_timer.wait_time = detection_time
@@ -149,7 +152,7 @@ func doCollisionAction():
 	if get_last_slide_collision().get_collider() is PlayerScene:
 		combat_switch = false
 		chase_indicator_animator.play("RESET")
-		OverworldGlobals.changeToCombat(str(name))
+		OverworldGlobals.changeToCombat(str(name),{},self)
 
 func doAction():
 	combat_switch = false
@@ -168,7 +171,7 @@ func canDoAction():
 	return action_cooldown.is_stopped() and !animator.current_animation.contains('Action') and state != 2
 
 func canEnterCombat(check_switch:bool=true)-> bool:
-	return (combat_switch  or !check_switch) and state != 2 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive())
+	return (combat_switch  or !check_switch) and is_instance_valid(self) and state != 2 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive())
 
 func flickerTween(play:bool):
 	if flicker_tween == null:
@@ -187,27 +190,14 @@ func flickerTween(play:bool):
 func _on_melee_hitbox_body_entered(body):
 	if body is PlayerScene and canEnterCombat(false): 
 		OverworldGlobals.damageParty(5)
-		OverworldGlobals.changeToCombat(str(name))
+		OverworldGlobals.changeToCombat(str(name),{},self)
 
-func destroy(fancy=true):
-#	if ANIMATOR.current_animation == 'KO': return
-#	if BODY.has_node('CombatDialogue'):
-#		ANIMATOR.play('RESET')
-#		queue_free()
-#		return
-	
+func destroy(give_drops=false):
+	if give_drops:
+		var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
+		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
+		combatant_squad.addDrops()
 	updateState(3)
-#	if fancy:
-#		if STATE == 2 or STATE == 1:
-#			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 2)
-#		else:
-#			OverworldGlobals.addPatrollerPulse(BODY.global_position, 150.0, 1)
-#		await get_tree().process_frame
-#		if OverworldGlobals.getCurrentMap().arePatrollersHalved() and !OverworldGlobals.getCurrentMap().full_alert and OverworldGlobals.getCurrentMap().getPatrollers().size() > 1:
-#			OverworldGlobals.addPatrollerPulse(BODY.global_position, 999.0, 4)
-#			OverworldGlobals.getCurrentMap().full_alert = true
-#			OverworldGlobals.showPlayerPrompt('Enemies have noticed your presence and are [color=red]fully alert[/color]!')
-	
 	queue_free()
 	await tree_exited
 	OverworldGlobals.patroller_destroyed.emit()

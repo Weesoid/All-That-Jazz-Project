@@ -24,7 +24,7 @@ class_name ResStalkerData
 @export var conditions: Array[String]
 
 func spawn():
-	var spawner: StalkerSpawner = load("res://scenes/miscellaneous/StalkerSpawner.tscn").instantiate()
+	var spawner: StalkerSpawner = load("res://scenes/environment/StalkerSpawner.tscn").instantiate()
 	spawner.stalker_data = self
 	OverworldGlobals.getCurrentMap().call_deferred('add_child', spawner)
 

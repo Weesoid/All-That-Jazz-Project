@@ -52,7 +52,6 @@ func getExperience():
 	else:
 		hustle = BASE_STAT_VALUES['hustle']*2
 	var gain = (BASE_STAT_VALUES["health"] * 0.2) + (BASE_STAT_VALUES["brawn"] * 100) + (BASE_STAT_VALUES["grit"] * 100) + BASE_STAT_VALUES["handling"] + hustle + ((BASE_STAT_VALUES["crit"] * BASE_STAT_VALUES["crit_dmg"]) * 100) + (BASE_STAT_VALUES["heal_mult"] * 1.5) + (BASE_STAT_VALUES["resist"] * 100)
-	#CombatGlobals.manual_call_indicator.emit(self, '+%s Morale' % ceil(gain))
 	return ceil(gain)
 
 func getDrops():

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=31 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=32 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_jdtt4"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_pnidc"]
@@ -25,14 +25,15 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="21_fd3qj"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="22_1a06w"]
 [ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="23_gg3u2"]
+[ext_resource type="Resource" path="res://resources/items/ScrapSalvage.tres" id="24_82goo"]
 
-[sub_resource type="Resource" id="Resource_er5er"]
+[sub_resource type="Resource" id="Resource_hr53j"]
 script = ExtResource("1_jdtt4")
-position = Vector2(99.6649, 20.929)
+position = Vector2(128.936, 212.925)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_k86l8"]
+[sub_resource type="Resource" id="Resource_sj863"]
 script = ExtResource("2_pnidc")
 QUESTS = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 QUEST_OBJECTIVES_DATA = {}
@@ -53,14 +54,15 @@ VALUE = 100
 MANDATORY = false
 PARENT_ITEM = "res://resources/items/CharmMurder.tres"
 
-[sub_resource type="Resource" id="Resource_35j0b"]
+[sub_resource type="Resource" id="Resource_c8s8s"]
 script = ExtResource("20_s6ife")
 TEAM = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_gvaef")])
 FOLLOWERS = Array[Resource("res://scripts/entities/entNPCFollower.gd")]([])
 CLEARED_MAPS = {}
+EQUIPPED_ARROW = ExtResource("23_gg3u2")
 CURRENCY = 6
-PARTY_LEVEL = 1
-CURRENT_EXP = 0
+PARTY_LEVEL = 5
+CURRENT_EXP = 673
 STRING_CONDITIONS = Array[String]([])
 PROGRESSION_DATA = {}
 TEAM_FORMATION = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_gvaef")])
@@ -77,7 +79,7 @@ ExtResource("3_gvaef"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "grit": 0.17,
 "handling": 1,
 "heal_mult": 1.02,
-"health": 16,
+"health": 12,
 "hustle": 97,
 "resist": 0.07
 }, {
@@ -91,7 +93,7 @@ ExtResource("3_gvaef"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 16,
 "hustle": 1,
 "resist": 0.05
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_kjhwg"), ExtResource("5_1rsm5"), ExtResource("6_t6f6o"), ExtResource("7_lxmys"), ExtResource("8_sy7x6"), ExtResource("9_5f83f"), ExtResource("10_8pqfq"), ExtResource("11_wi8b8"), ExtResource("12_qp2xc"), ExtResource("13_dk6og"), ExtResource("14_l8rfa"), ExtResource("15_n31s8"), ExtResource("5_1rsm5"), ExtResource("16_tg6xs"), ExtResource("17_w7wec")]), true, Array[String]([]), true, 1, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_kjhwg"), ExtResource("5_1rsm5"), ExtResource("6_t6f6o"), ExtResource("7_lxmys"), ExtResource("8_sy7x6"), ExtResource("9_5f83f"), ExtResource("10_8pqfq"), ExtResource("11_wi8b8"), ExtResource("12_qp2xc"), ExtResource("13_dk6og"), ExtResource("14_l8rfa"), ExtResource("15_n31s8"), ExtResource("5_1rsm5"), ExtResource("16_tg6xs"), ExtResource("17_w7wec")]), true, Array[String]([]), true, 5, {
 "Murder Charm": {
 "brawn": 1.0,
 "crit": 1.0,
@@ -145,19 +147,20 @@ ADDED_ABILITIES = {}
 MAX_PARTY_LEVEL = 5
 KNOWN_POWERS = [ExtResource("19_jsvv2")]
 
-[sub_resource type="Resource" id="Resource_yaoos"]
+[sub_resource type="Resource" id="Resource_bcqsr"]
 script = ExtResource("21_fd3qj")
-INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("23_gg3u2")])
+INVENTORY = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("24_82goo"), ExtResource("23_gg3u2")])
 CRAFTED = Array[String]([])
 ITEM_DATA_INVENTORY = {
-"res://resources/items/ArrowSleeper.tres": 71
+"res://resources/items/ArrowSleeper.tres": 42,
+"res://resources/items/ScrapSalvage.tres": 264
 }
 
 [resource]
 script = ExtResource("22_1a06w")
-NAME = "Save 2 - 00:00:51
-Morale 1
+NAME = "Save 2 - 00:02:29
+Morale 5
 Wump"
-PLAYTIME = 51.481
+PLAYTIME = 150.251
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_er5er"), SubResource("Resource_k86l8"), SubResource("Resource_35j0b"), SubResource("Resource_yaoos")]
+save_data = [SubResource("Resource_hr53j"), SubResource("Resource_sj863"), SubResource("Resource_c8s8s"), SubResource("Resource_bcqsr")]

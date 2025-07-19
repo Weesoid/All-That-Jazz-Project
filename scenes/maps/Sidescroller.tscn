@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="20_1s302"]
 [ext_resource type="PackedScene" uid="uid://cmvvapgedbg4q" path="res://scenes/entities/GenericNPC.tscn" id="21_cchwb"]
 [ext_resource type="Texture2D" uid="uid://bgfd4prdnyfft" path="res://images/animations/base_battler.png" id="22_b8a2s"]
+[ext_resource type="PackedScene" uid="uid://bnh7ste0fc6w4" path="res://scenes/environment/PatrollerGroup.tscn" id="23_1rrnk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j63u4"]
 radius = 16.0
@@ -136,22 +137,10 @@ _data = {
 "RESET": SubResource("Animation_j4r3k")
 }
 
-[sub_resource type="GDScript" id="GDScript_ti72s"]
-script/source = "extends Node2D
-@export var enabled=true
-@onready var timeout = $Timer
-
-func _on_timer_timeout():
-	if enabled:
-		var projectile = load(\"res://resources/projectiles/DamageProjectile.tres\")
-		OverworldGlobals.shootProjectile(projectile.getProjectile(),global_position,1)
-"
-
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
 NAME = "Wump"
-ENEMY_FACTION = 3
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
@@ -166,6 +155,31 @@ layer_1/y_sort_enabled = false
 layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array(-65534, 0, 3, -65533, 131072, 3)
+
+[node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
+enemy_faction = 3
+max_spawns = 1
+events = {
+"destroy_objective": true
+}
+
+[node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
+position = Vector2(214, 150)
+
+[node name="SpawnPoint2" type="Marker2D" parent="PatrollerGroup"]
+position = Vector2(123, 153)
+
+[node name="SpawnPoint3" type="Marker2D" parent="PatrollerGroup"]
+position = Vector2(105, -43)
+
+[node name="SpawnPoint5" type="Marker2D" parent="PatrollerGroup"]
+position = Vector2(178, -45)
+
+[node name="SpawnPoint4" type="Marker2D" parent="PatrollerGroup"]
+position = Vector2(141, -42)
+
+[node name="Chance 1" type="Marker2D" parent="PatrollerGroup"]
+position = Vector2(163, -50)
 
 [node name="Rope" parent="." instance=ExtResource("3_gkab1")]
 position = Vector2(-34, -4)
@@ -243,20 +257,3 @@ position = Vector2(57, -48)
 texture = ExtResource("22_b8a2s")
 
 [node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]
-
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2(261, 175)
-script = SubResource("GDScript_ti72s")
-enabled = false
-
-[node name="Timer" type="Timer" parent="Node2D"]
-wait_time = 3.0
-autostart = true
-
-[node name="Chance 1" type="Marker2D" parent="."]
-position = Vector2(163, -50)
-
-[node name="SpawnPoint" type="Marker2D" parent="."]
-position = Vector2(214, 150)
-
-[connection signal="timeout" from="Node2D/Timer" to="Node2D" method="_on_timer_timeout"]

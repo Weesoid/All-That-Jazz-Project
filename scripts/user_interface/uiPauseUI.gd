@@ -1,4 +1,3 @@
-# TO-DO: GENERAL QUALITY CONTROL
 extends Control
 
 @onready var base = $Container
@@ -37,8 +36,9 @@ func _ready():
 		experience.hide()
 	if PlayerGlobals.CURRENCY > 0:
 		currency.show()
-	if !OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().arePatrollersAlerted() and !PlayerGlobals.CLEARED_MAPS.keys().has(OverworldGlobals.getCurrentMap().scene_file_path):
-		party.disabled = true
+	# TO DO: ...Need some sort of flag to determine whether or not player is interacting with combatant group...!
+#	if !OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().arePatrollersAlerted() and !PlayerGlobals.CLEARED_MAPS.keys().has(OverworldGlobals.getCurrentMap().scene_file_path):
+#		party.disabled = true
 
 func _on_tree_exited():
 	queue_free()

@@ -556,13 +556,14 @@ func generateCombatantSquad(patroller, faction: Enemy_Factions):
 	if squad_size > 4: squad_size = 4
 	squad.FILL_EMPTY = true
 	squad.ENEMY_POOL = getFactionEnemies(faction)
-	if OverworldGlobals.getCurrentMap().EVENTS['additional_enemies'] != null:
-		squad.ENEMY_POOL.append_array(getFactionEnemies(OverworldGlobals.getCurrentMap().EVENTS['additional_enemies']))
-	if OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'] != null:
-		squad.addLingeringEffect(OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'])
+	# TO DO: Move this to PatrollerGroup!
+#	if OverworldGlobals.getCurrentMap().EVENTS['additional_enemies'] != null:
+#		squad.ENEMY_POOL.append_array(getFactionEnemies(OverworldGlobals.getCurrentMap().EVENTS['additional_enemies']))
+#	if OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'] != null:
+#		squad.addLingeringEffect(OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'])
+#	squad.TAMEABLE_CHANCE = (0.01 * PlayerGlobals.PARTY_LEVEL) + OverworldGlobals.getCurrentMap().EVENTS['tameable_modifier']# Add story check later
 	squad.ENEMY_POOL = squad.ENEMY_POOL.filter(func(combatant): return isWithinPlayerTier(combatant))
 	squad.COMBATANT_SQUAD.resize(squad_size)
-	squad.TAMEABLE_CHANCE = (0.01 * PlayerGlobals.PARTY_LEVEL) + OverworldGlobals.getCurrentMap().EVENTS['tameable_modifier']# Add story check later
 	squad.pickRandomEnemies()
 	patroller.add_child(squad)
 

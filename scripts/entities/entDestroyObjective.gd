@@ -5,6 +5,7 @@ class_name DestroyableObjective
 @onready var destroy_bar = $ProgressBar
 @onready var destroy_timer = $Timer
 
+var patroller_group: PatrollerGroup
 var active = true
 
 func _ready():
@@ -15,12 +16,12 @@ func _process(_delta):
 	destroy_bar.value = destroy_timer.time_left
 
 func _exit_tree():
-	for child in OverworldGlobals.getCurrentMap().get_children():
+	for child in patroller_group.get_children():
 		if child is DestroyableObjective and child != self: return
 	
 	if active:
-		OverworldGlobals.getCurrentMap().escapePatrollers(false, true, false)
-		OverworldGlobals.getCurrentMap().giveRewards()
+		patroller_group.escapePatrollers(false, true, false)
+		patroller_group.giveRewards()
 
 func _on_area_2d_body_entered(body):
 	if body is PlayerScene:

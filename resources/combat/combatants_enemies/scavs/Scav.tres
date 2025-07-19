@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://541ffogrb12k"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=7 format=3 uid="uid://541ffogrb12k"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_gyudi"]
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_vqfeb"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_47i5o"]
 [ext_resource type="Texture2D" uid="uid://7snnagis6dkd" path="res://images/sprites/projectile_knife.png" id="3_dvm8p"]
+[ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_ipbjf"]
 [ext_resource type="PackedScene" uid="uid://r0toat4qsmnb" path="res://scenes/combatants/Scav.tscn" id="3_lb1qm"]
 
 [resource]
@@ -11,9 +12,11 @@ script = ExtResource("1_gyudi")
 FACTION = 3
 TIER = 0
 PREFERRED_POSITION = 0
-CHANCE_TO_DROP = 0.5
+CHANCE_TO_DROP = 1.0
 DROP_COUNT = 1
-DROP_POOL = {}
+DROP_POOL = {
+ExtResource("3_ipbjf"): Vector2(1, 6)
+}
 is_converted = false
 NAME = "Scav"
 PACKED_SCENE = ExtResource("3_lb1qm")

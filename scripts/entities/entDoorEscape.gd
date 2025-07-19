@@ -2,7 +2,7 @@ extends Door
 class_name EscapeDoor
 
 func _ready():
-	OverworldGlobals.getCurrentMap().map_cleared.connect(func():queue_free())
+	OverworldGlobals.group_cleared.connect(func():queue_free())
 
 func interact():
 	OverworldGlobals.addPatrollerPulse(global_position, 150.0, 3)

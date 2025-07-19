@@ -34,7 +34,7 @@ func _ready():
 	body.process_mode= Node.PROCESS_MODE_DISABLED
 	OverworldGlobals.getCurrentMap().add_child(body)
 	await OverworldGlobals.showQuickAnimation(stalker_data.engage_animation, player_pos)
-	OverworldGlobals.changeToCombat(body.name)
+	OverworldGlobals.changeToCombat(body.name,{},body)
 
 func reactivatePatroller():
 	if is_instance_valid(body) and body is GenericPatroller and OverworldGlobals.isPlayerAlive():

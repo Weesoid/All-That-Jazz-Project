@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnh7ste0fc6w4"]
+
+[ext_resource type="Script" path="res://scripts/environment/escPatrollerGroup.gd" id="1_rgr07"]
+
+[node name="PatrollerGroup" type="Node"]
+script = ExtResource("1_rgr07")

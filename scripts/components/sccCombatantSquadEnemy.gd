@@ -56,12 +56,11 @@ func getRawDrops():
 
 func addDrops():
 	var loot_drops = getRawDrops()
-	#print(loot_drops)"UNIQUE_ID"
 	for loot in loot_drops.keys():
-		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
-			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
+		if get_parent().patroller_group.reward_bank['loot'].keys().has(loot):
+			get_parent().patroller_group.reward_bank['loot'][loot] += loot_drops[loot]
 		else:
-			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
+			get_parent().patroller_group.reward_bank['loot'][loot] = loot_drops[loot]
 
 func getExperience():
 	var out = 0

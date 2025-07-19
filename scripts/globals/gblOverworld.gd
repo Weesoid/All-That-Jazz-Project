@@ -14,6 +14,7 @@ signal patroller_destroyed
 signal party_damaged
 signal combat_enetered
 signal combat_exited
+signal group_cleared
 
 #func _process(_delta):
 #	print_orphan_nodes()
@@ -546,7 +547,7 @@ func shootProjectile(projectile: Projectile, origin, direction: float):
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
-func changeToCombat(entity_name: String, data: Dictionary={}):
+func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericPatroller=null):
 	# Check validity
 	if get_parent().has_node('CombatScene'):
 		await getCurrentMap().get_node('CombatScene').tree_exited
@@ -559,30 +560,35 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	if inMenu():
 		showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	entering_combat=true
+	
 	# Enter combat
+	var combat_entity
+	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
+	if patroller == null:
+		combat_entity = getEntity(entity_name)
+	else:
+		combat_entity = patroller
 	getPlayer().resetStates()
 	OverworldGlobals.getPlayer().setUIVisibility(false)
-	moveCamera(getEntity(entity_name).get_node('Sprite2D'), 0.05, Vector2.ZERO, true)
+	moveCamera(combat_entity.get_node('Sprite2D'), 0.05, Vector2.ZERO, true)
 	await zoomCamera(Vector2(2,2), 0.1, true)
 	setPlayerInput(false)
-	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
 	combat_bubble.hide()
 	showCombatStartBars()
-	#print(getComponent(entity_name, 'NPCPatrolComponent').STATE)
-	if getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE != 2:
+	if combat_entity is GenericPatroller and combat_entity.state != 1:
 		for member in getCombatantSquad('Player'): CombatGlobals.addStatusEffect(member, 'CriticalEye')
 		combat_bubble.animation = 'Show_Surprised'
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_3.ogg")
-	elif (getEntity(entity_name).has_node('NPCPatrolComponent') and getComponent(entity_name, 'NPCPatrolComponent').STATE == 2) or !getEntity(entity_name).has_node('NPCPatrolComponent'):
+	else:
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_1.ogg")
-	elif data.keys().has('combat_bubble_anim'):
+	if data.keys().has('combat_bubble_anim'):
 		combat_bubble.animation = data['combat_bubble_anim']
-	getEntity(entity_name).add_child(combat_bubble)
+	combat_entity.add_child(combat_bubble)
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
-	var combat_id = getCombatantSquadComponent(entity_name).UNIQUE_ID
-	var enemy_squad = getCombatantSquadComponent(entity_name)
+	var combat_id = combat_entity.get_node('CombatantSquadComponent').UNIQUE_ID
+	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad('Player'):
 		combatant.LINGERING_STATUS_EFFECTS.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
@@ -597,18 +603,19 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 		combat_scene.COMBATANTS.append(duped_combatant)
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
-	elif getCurrentMap().EVENTS['combat_event'] != null:
-		combat_scene.combat_event = getCurrentMap().EVENTS['combat_event']
+	# TO DO: move to PatrollerGroup
+#	elif getCurrentMap().EVENTS['combat_event'] != null:
+#		combat_scene.combat_event = getCurrentMap().EVENTS['combat_event']
 	if data.keys().has('initial_damage'):
 		combat_scene.initial_damage = data['initial_damage']
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
-	combat_scene.enemy_reinforcements = getCombatantSquad(entity_name)
-	combat_scene.do_reinforcements = getCombatantSquadComponent(entity_name).DO_REINFORCEMENTS
-	combat_scene.can_escape = getCombatantSquadComponent(entity_name).CAN_ESCAPE
-	combat_scene.turn_time = getCombatantSquadComponent(entity_name).TURN_TIME
-	combat_scene.reinforcements_turn = getCombatantSquadComponent(entity_name).REINFORCEMENTS_TURN
-	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[getCombatantSquadComponent(entity_name).getMajorityFaction()].music
+	combat_scene.enemy_reinforcements = enemy_squad.COMBATANT_SQUAD
+	combat_scene.do_reinforcements = enemy_squad.DO_REINFORCEMENTS
+	combat_scene.can_escape = enemy_squad.CAN_ESCAPE
+	combat_scene.turn_time = enemy_squad.TURN_TIME
+	combat_scene.reinforcements_turn = enemy_squad.REINFORCEMENTS_TURN
+	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
 	await combat_bubble.animator.animation_finished
@@ -622,7 +629,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}):
 	combat_enetered.emit()
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
-	if getEntity(entity_name).has_node('CombatDialogue'):
+	if combat_entity.has_node('CombatDialogue'):
 		combat_scene.combat_dialogue = getComponent(entity_name, 'CombatDialogue')
 	getCurrentMap().hide()
 	await combat_scene.combat_done

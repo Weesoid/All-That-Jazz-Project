@@ -51,8 +51,6 @@ func getQuest(quest_name: String)-> ResQuest:
 	
 	return null
 
-
-# REMEMBER TO DO THIS
 func saveData(save_data: Array):
 	var data: QuestSaveData = QuestSaveData.new()
 	data.QUESTS = QUESTS
