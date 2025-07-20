@@ -5,8 +5,8 @@ var SAVE_NAME
 var TEAM: Array[ResPlayerCombatant]
 var TEAM_FORMATION: Array[ResCombatant]
 #var FOLLOWERS: Array[NPCFollower] = []
-var CLEARED_MAPS: Dictionary = {}
-var CLEARED_PATROL_GROUPS: Dictionary = {}
+#var CLEARED_MAPS: Dictionary = {}
+var cleared_patrol_groups: Dictionary = {}
 var POWER: GDScript
 var KNOWN_POWERS: Array = [load("res://resources/powers/Stealth.tres")]
 var EQUIPPED_ARROW: ResProjectileAmmo
@@ -319,87 +319,91 @@ func healCombatants(percent_heal:float=1.0,cure: bool=true):
 		combatant.STAT_VALUES['health'] = int(combatant.BASE_STAT_VALUES['health'] * percent_heal)
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
 
-func isMapCleared():
-	if OverworldGlobals.getCurrentMap().SAFE or (!OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().give_on_exit):
-		return true
-	else:
-		var current_map = OverworldGlobals.getCurrentMap().scene_file_path
-		return CLEARED_MAPS.keys().has(current_map) and CLEARED_MAPS[current_map]['cleared']
-
-func addFastTravelArea(map_path:String, cleared:bool):
-	if !CLEARED_MAPS.keys().has(map_path):
-		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':true, 'faction':OverworldGlobals.getCurrentMap().ENEMY_FACTION, 'events': {}}
-
-func addToClearedMaps(map_path:String,cleared:bool,fast_travel:bool=false, faction=null):
-	if !CLEARED_MAPS.keys().has(map_path):
-		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':fast_travel, 'faction':faction, 'events': {}}
+#func isMapCleared():
+#	if OverworldGlobals.getCurrentMap().SAFE or (!OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().give_on_exit):
+#		return true
+#	else:
+#		var current_map = OverworldGlobals.getCurrentMap().scene_file_path
+#		return CLEARED_MAPS.keys().has(current_map) and CLEARED_MAPS[current_map]['cleared']
+#
+#func addFastTravelArea(map_path:String, cleared:bool):
+#	if !CLEARED_MAPS.keys().has(map_path):
+#		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':true, 'faction':OverworldGlobals.getCurrentMap().ENEMY_FACTION, 'events': {}}
+#
+#func addToClearedMaps(map_path:String,cleared:bool,fast_travel:bool=false, faction=null):
+#	if !CLEARED_MAPS.keys().has(map_path):
+#		CLEARED_MAPS[map_path] = {'cleared':cleared, 'fast_travel':fast_travel, 'faction':faction, 'events': {}}
 
 func addClearedPatrolGroup(group:PatrollerGroup,cleared:bool=true):
-	if !CLEARED_PATROL_GROUPS.has(group):
-		CLEARED_PATROL_GROUPS[group] = {'cleared':cleared,'faction':null,'events':{}}
-
-func randomMapUnclear(count:int, ignore_map:String=''):
-	clearMaps()
-	var valid_maps = CLEARED_MAPS.keys().filter(
-		func(map): 
-			var location = load(map).instantiate()
-			var is_safe = location.SAFE
-			location.queue_free()
-			return (ignore_map == '' or map != ignore_map) and !is_safe
-			)
-	if valid_maps.size() <= 0:
-		return
-	for i in range(count):
-		var map = valid_maps.pick_random()
-		CLEARED_MAPS[map]['cleared'] = false
-		CLEARED_MAPS[map]['faction'] = randi_range(0,0) # Only one faction so far
-		if CombatGlobals.randomRoll(1.25):
-			CLEARED_MAPS[map]['events'] = randomizeMapEvents()
-		valid_maps.erase(map)
-
-func clearMaps():
-	for map in CLEARED_MAPS.keys():
-		var location = load(map).instantiate()
-		CLEARED_MAPS[map]['events'] = {}
-		if !location.SAFE: 
-			CLEARED_MAPS[map]['cleared'] = true
-		location.queue_free()
-
-func randomizeMapEvents():
-	randomize()
-	var events = {}
-	var chance_budget = 1.0
-	var possible_events = [
-		#"combat_event",
-		"time_limit",
-		"additional_enemies",
-		#"tameable_modifier",
-		"patroller_effect",
-		"reward_item",
-		"reward_multipliers",
-		"stalker_chance"
-		]
-	var random_event
+	var map = group.get_parent().scene_file_path
+	if !cleared_patrol_groups.has(map):
+		cleared_patrol_groups[map] = [group.name]
+	else:
+		cleared_patrol_groups[map].append(group.name)
 	
-	while chance_budget > 0:
-		if CombatGlobals.randomRoll(chance_budget) and !possible_events.is_empty():
-			random_event = possible_events.pick_random()
-			possible_events.erase(random_event)
-			match random_event:
-				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
-				'time_limit': events['time_limit'] = [90.0, 120.0].pick_random()
-				'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Mercenaries].pick_random()
-				'tameable_modifier': events['tameable_modifier'] = [1.25, 1.5, 1.75].pick_random()
-				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
-				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
-				'reward_multipliers': events['reward_multipliers'] = {'experience':[1.25, 1.5, 0].pick_random(),'loot':[1.25, 1.5, 0].pick_random()}
-				'stalker_chance': events['stalker_chance'] = 1.0
-				'destroy_objective': events['destroy_objective'] = true
-			chance_budget -= 0.25
-		else:
-			chance_budget = 0
-	
-	return events
+	print(cleared_patrol_groups)
+#func randomMapUnclear(count:int, ignore_map:String=''):
+#	clearMaps()
+#	var valid_maps = CLEARED_MAPS.keys().filter(
+#		func(map): 
+#			var location = load(map).instantiate()
+#			var is_safe = location.SAFE
+#			location.queue_free()
+#			return (ignore_map == '' or map != ignore_map) and !is_safe
+#			)
+#	if valid_maps.size() <= 0:
+#		return
+#	for i in range(count):
+#		var map = valid_maps.pick_random()
+#		CLEARED_MAPS[map]['cleared'] = false
+#		CLEARED_MAPS[map]['faction'] = randi_range(0,0) # Only one faction so far
+#		if CombatGlobals.randomRoll(1.25):
+#			CLEARED_MAPS[map]['events'] = randomizeMapEvents()
+#		valid_maps.erase(map)
+#
+#func clearMaps():
+#	for map in CLEARED_MAPS.keys():
+#		var location = load(map).instantiate()
+#		CLEARED_MAPS[map]['events'] = {}
+#		if !location.SAFE: 
+#			CLEARED_MAPS[map]['cleared'] = true
+#		location.queue_free()
+
+#func randomizeMapEvents():
+#	randomize()
+#	var events = {}
+#	var chance_budget = 1.0
+#	var possible_events = [
+#		#"combat_event",
+#		"time_limit",
+#		"additional_enemies",
+#		#"tameable_modifier",
+#		"patroller_effect",
+#		"reward_item",
+#		"reward_multipliers",
+#		"stalker_chance"
+#		]
+#	var random_event
+#
+#	while chance_budget > 0:
+#		if CombatGlobals.randomRoll(chance_budget) and !possible_events.is_empty():
+#			random_event = possible_events.pick_random()
+#			possible_events.erase(random_event)
+#			match random_event:
+#				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
+#				'time_limit': events['time_limit'] = [90.0, 120.0].pick_random()
+#				'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Scavs].pick_random()
+#				'tameable_modifier': events['tameable_modifier'] = [1.25, 1.5, 1.75].pick_random()
+#				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
+#				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
+#				'reward_multipliers': events['reward_multipliers'] = {'experience':[1.25, 1.5, 0].pick_random(),'loot':[1.25, 1.5, 0].pick_random()}
+#				'stalker_chance': events['stalker_chance'] = 1.0
+#				'destroy_objective': events['destroy_objective'] = true
+#			chance_budget -= 0.25
+#		else:
+#			chance_budget = 0
+#
+#	return events
 
 
 
@@ -429,7 +433,7 @@ func saveData(save_data: Array):
 	data.CURRENCY = CURRENCY
 	data.PARTY_LEVEL = PARTY_LEVEL
 	data.CURRENT_EXP = CURRENT_EXP
-	data.CLEARED_MAPS = CLEARED_MAPS
+	data.cleared_patrol_groups = cleared_patrol_groups
 	data.KNOWN_POWERS = KNOWN_POWERS
 #	data.overworld_stats['stamina'] = stamina
 #	data.overworld_stats['bow_max_draw']= bow_max_draw
@@ -472,7 +476,7 @@ func loadData(save_data: PlayerSaveData):
 	CURRENCY = save_data.CURRENCY
 	PARTY_LEVEL = save_data.PARTY_LEVEL
 	CURRENT_EXP = save_data.CURRENT_EXP
-	CLEARED_MAPS = save_data.CLEARED_MAPS
+	cleared_patrol_groups = save_data.cleared_patrol_groups
 	PROGRESSION_DATA = save_data.PROGRESSION_DATA
 	TEAM_FORMATION = save_data.TEAM_FORMATION
 	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
@@ -524,7 +528,7 @@ func resetVariables():
 	TEAM = [preload("res://resources/combat/combatants_player/Willis.tres")]
 	TEAM_FORMATION = []
 	#FOLLOWERS = []
-	CLEARED_MAPS = {}
+	cleared_patrol_groups = {}
 	POWER = null
 	KNOWN_POWERS = [load("res://resources/powers/Stealth.tres")]
 	EQUIPPED_ARROW = null

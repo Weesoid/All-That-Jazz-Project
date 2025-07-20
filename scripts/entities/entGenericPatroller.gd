@@ -34,6 +34,7 @@ func _ready():
 		CombatGlobals.generateCombatantSquad(self, CombatGlobals.Enemy_Factions.Scavs)
 	if get_parent() is PatrollerGroup:
 		patroller_group = get_parent()
+		print(patroller_group)
 	
 	if detection_time > 0:
 		detect_timer.wait_time = detection_time
@@ -200,4 +201,4 @@ func destroy(give_drops=false):
 	updateState(3)
 	queue_free()
 	await tree_exited
-	OverworldGlobals.patroller_destroyed.emit()
+	patroller_group.checkGiveRewards()

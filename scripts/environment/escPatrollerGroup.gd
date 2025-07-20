@@ -3,17 +3,23 @@ class_name PatrollerGroup
 
 @export var enemy_faction: CombatGlobals.Enemy_Factions
 @export var max_spawns: int = 4
-@export var events: Dictionary
+@export var destroy_objectives: bool = false
+
 var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
+var map_events:Dictionary
 
 func _ready():
-	OverworldGlobals.patroller_destroyed.connect(checkGiveRewards)
+	if SaveLoadGlobals.is_loading:
+		await SaveLoadGlobals.done_loading
 	if !isCleared(): 
-		if canSpawnDestructibleObjectives(): spawnDestructibleObjectives()
+		if canSpawnDestructibleObjectives(): 
+			spawnDestructibleObjectives()
 		spawnPatrollers()
+		map_events = OverworldGlobals.getCurrentMap().events
 
 func isCleared():
-	return PlayerGlobals.CLEARED_PATROL_GROUPS.has(self) or (PlayerGlobals.CLEARED_PATROL_GROUPS.has(self) and PlayerGlobals.CLEARED_PATROL_GROUPS[self]['cleared'])
+	var map = get_parent().scene_file_path
+	return PlayerGlobals.cleared_patrol_groups.has(map) and PlayerGlobals.cleared_patrol_groups[map].has(name)
 
 func spawnPatrollers():
 	randomize()
@@ -22,7 +28,7 @@ func spawnPatrollers():
 		
 		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
 			continue
-		var patroller
+		var patroller: GenericPatroller
 		if CombatGlobals.randomRoll(0.75):
 			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, 0)
 		else:
@@ -64,11 +70,9 @@ func giveRewards(ignore_stalker:bool=false):
 	# UI Map clear indicator handling
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = reward_bank['experience']
-	if events.has('reward_item'):
-		reward_bank['loot'][events['reward_item']] = 1
 	for item in reward_bank['loot'].keys():
-		reward_bank['loot'][item] += ceil(reward_bank['loot'][item])#*events['reward_multipliers']['loot'])
-	reward_bank['experience'] += ceil(reward_bank['experience'])#*events['reward_multipliers']['experience'])
+		reward_bank['loot'][item] += ceil(reward_bank['loot'][item])
+	reward_bank['experience'] += ceil(reward_bank['experience'])
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
 	map_clear_indicator.showAnimation(true, self)
 	
@@ -82,7 +86,7 @@ func giveRewards(ignore_stalker:bool=false):
 #	for combatant in reward_bank['tamed']:
 #		PlayerGlobals.addCombatantToTeam(combatant)
 	PlayerGlobals.addClearedPatrolGroup(self)
-	#PlayerGlobals.randomMapUnclear(ceil(0.25*PlayerGlobals.CLEARED_MAPS.size()), scene_file_path)
+	OverworldGlobals.getCurrentMap().checkGiveClearRewards()
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 
 func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_destroyables:bool=true):
@@ -113,12 +117,10 @@ func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_
 		await get_tree().create_timer(randf_range(0.05, 0.15)).timeout
 
 func checkGiveRewards():
-	if getPatrollers().size() == 0:
-		OverworldGlobals.showPlayerPrompt('Map cleared!')
-		giveRewards()
+	if getPatrollers().size() == 0: giveRewards()
 
 func canSpawnDestructibleObjectives():
-	return events.has('destroy_objective') and getSpawnPoints().size() >= 3
+	return destroy_objectives and getSpawnPoints().size() >= 3
 
 func getDestructibleObjectives():
 	return get_children().filter(func(child): return child is DestroyableObjective)

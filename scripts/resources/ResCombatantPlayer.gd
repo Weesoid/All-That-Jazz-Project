@@ -69,6 +69,7 @@ func updateCombatant(save_data: PlayerSaveData):
 	for ability in remove_abilities:
 		ABILITY_SET.erase(ability)
 	
+	# Debug code.!
 	#var percent_health = float(save_data.COMBATANT_SAVE_DATA[self][2]['health']) / float(save_data.COMBATANT_SAVE_DATA[self][3]['health'])
 #	if NAME == 'Willis Flynn':
 #		print('======= ', NAME, ' =======')

@@ -63,18 +63,18 @@ func _on_quit_pressed():
 #	confirm_dialog.grow_vertical = Control.GROW_DIRECTION_BOTH
 #	confirm_dialog.initial_position =Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 	#await confirm_dialog.dialog.confirmed
-	if PlayerGlobals.isMapCleared(): 
-		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
-		leaveToMain()
-	else:
-		disableButtons()
-		var confirm_dialog = load("res://scenes/user_interface/ConfirmationDialog.tscn").instantiate()
-		add_child(confirm_dialog)
-		confirm_dialog.text.text = 'Area is not safe. Progress will not be saved.'
-		confirm_dialog.yes_button.text = 'Quit'
-		confirm_dialog.no_button.text = 'Return'
-		confirm_dialog.yes_button.pressed.connect(leaveToMain)
-		confirm_dialog.no_button.pressed.connect(func():OverworldGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
+	#if PlayerGlobals.isMapCleared(): 
+	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+	leaveToMain()
+#	else:
+#		disableButtons()
+#		var confirm_dialog = load("res://scenes/user_interface/ConfirmationDialog.tscn").instantiate()
+#		add_child(confirm_dialog)
+#		confirm_dialog.text.text = 'Area is not safe. Progress will not be saved.'
+#		confirm_dialog.yes_button.text = 'Quit'
+#		confirm_dialog.no_button.text = 'Return'
+#		confirm_dialog.yes_button.pressed.connect(leaveToMain)
+#		confirm_dialog.no_button.pressed.connect(func():OverworldGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
 
 func leaveToMain():
 	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")

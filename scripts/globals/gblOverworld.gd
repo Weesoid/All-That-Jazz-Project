@@ -10,7 +10,6 @@ var delayed_rewards: Dictionary
 var player_follower_count = 0
 
 signal update_patroller_modes(mode:int)
-signal patroller_destroyed
 signal party_damaged
 signal combat_enetered
 signal combat_exited
@@ -275,8 +274,8 @@ func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
-	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
-		delayed_rewards = getCurrentMap().REWARD_BANK
+#	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
+#		delayed_rewards = getCurrentMap().REWARD_BANK
 	
 	if show_transition:
 		getPlayer().velocity = Vector2.ZERO
@@ -303,8 +302,8 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		179: player.direction = Vector2(0,-1) # Up
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
-	if OverworldGlobals.getCurrentMap().SAFE:
-		OverworldGlobals.loadFollowers()
+#	if OverworldGlobals.getCurrentMap().SAFE:
+#		OverworldGlobals.loadFollowers()
 	if save:
 		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 	getCurrentMap().show()
@@ -589,6 +588,9 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = combat_entity.get_node('CombatantSquadComponent').UNIQUE_ID
 	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
+	var map_events = getCurrentMap().events
+	if map_events.has('patroller_effect'):
+		enemy_squad.addLingeringEffect(map_events['patroller_effect'].NAME)
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad('Player'):
 		combatant.LINGERING_STATUS_EFFECTS.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
@@ -603,9 +605,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		combat_scene.COMBATANTS.append(duped_combatant)
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
-	# TO DO: move to PatrollerGroup
-#	elif getCurrentMap().EVENTS['combat_event'] != null:
-#		combat_scene.combat_event = getCurrentMap().EVENTS['combat_event']
+	elif map_events.has('combat_event'):
+		combat_scene.combat_event = map_events['combat_event']
 	if data.keys().has('initial_damage'):
 		combat_scene.initial_damage = data['initial_damage']
 	if combat_id != null:
@@ -784,6 +785,9 @@ func loadArrayFromPath(path:String, filter=null)-> Array:
 	
 	#print('Returning: ', out)
 	return out
+
+func isResourcePlaceholder(resource: Resource):
+	return resource.resource_path.get_file()[0] == '_'
 
 func freezeFrame(time_scale: float=0.3, duration: float=1.5):
 	Engine.time_scale = time_scale

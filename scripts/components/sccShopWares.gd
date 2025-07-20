@@ -9,14 +9,5 @@ func _ready():
 
 func enableGodShop():
 	SHOP_WARES.clear()
-	var path = "res://resources/items/"
-	var dir = DirAccess.open(path)
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			SHOP_WARES.append(load(path+'/'+file_name))
-			file_name = dir.get_next()
-	else:
-		print("An error occurred when trying to access the path.")
-		print(path)
+	var wares = OverworldGlobals.loadArrayFromPath("res://resources/items/").filter(func(item): return !OverworldGlobals.isResourcePlaceholder(item))
+	SHOP_WARES.assign(wares)

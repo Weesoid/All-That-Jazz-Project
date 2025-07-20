@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResItem" load_steps=3 format=3 uid="uid://6mr5iuhys50h"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_8fvvg"]
+[ext_resource type="Script" path="res://scripts/resources/ResItem.gd" id="2_i2ft5"]
+
+[resource]
+script = ExtResource("2_i2ft5")
+NAME = ""
+ICON = ExtResource("1_8fvvg")
+DESCRIPTION = ""
+VALUE = 0
+MANDATORY = false
+PARENT_ITEM = ""

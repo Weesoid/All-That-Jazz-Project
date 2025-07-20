@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResCombatEvent" load_steps=3 format=3 uid="uid://ce7bsinsjdecr"]
 
-[ext_resource type="Resource" uid="uid://di6pm5nkyin6u" path="res://resources/combat/abilities/RandaStrike.tres" id="1_vpn7i"]
+[ext_resource type="Resource" uid="uid://cg2y4a201ihl0" path="res://resources/combat/abilities/RandaStrike.tres" id="1_vpn7i"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatEvent.gd" id="1_xjvg0"]
 
 [resource]

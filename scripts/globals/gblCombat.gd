@@ -2,9 +2,6 @@ extends Node
 
 
 enum Enemy_Factions {
-	Neutral,
-	Unggboys,
-	Mercenaries,
 	Scavs
 }
 var FACTION_PATROLLER_PROPERTIES = {
@@ -556,7 +553,7 @@ func generateCombatantSquad(patroller, faction: Enemy_Factions):
 	if squad_size > 4: squad_size = 4
 	squad.FILL_EMPTY = true
 	squad.ENEMY_POOL = getFactionEnemies(faction)
-	# TO DO: Move this to PatrollerGroup!
+	# TO DO: Move this to PatrollerGroup! Definitely.
 #	if OverworldGlobals.getCurrentMap().EVENTS['additional_enemies'] != null:
 #		squad.ENEMY_POOL.append_array(getFactionEnemies(OverworldGlobals.getCurrentMap().EVENTS['additional_enemies']))
 #	if OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'] != null:
@@ -572,30 +569,15 @@ func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties
 	squad.COMBATANT_SQUAD = combatants
 	squad.setProperties(properties)
 	patroller.add_child(squad)
-	print('Added squab')
 
 func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
 	var path
 	match faction:
-		Enemy_Factions.Neutral: path = "res://resources/combat/combatants_enemies/neutral/"
-		Enemy_Factions.Unggboys: path = "res://resources/combat/combatants_enemies/unggboys/"
-		Enemy_Factions.Mercenaries: path = "res://resources/combat/combatants_enemies/mercenaries/"
 		Enemy_Factions.Scavs: path = "res://resources/combat/combatants_enemies/scavs/"
-	
-	var dir = DirAccess.open(path)
-	var out: Array[ResEnemyCombatant] = []
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			var combatant = load(path+'/'+file_name)
-			out.append(combatant)
-			file_name = dir.get_next()
-	else:
-		print("An error occurred when trying to access the path.")
-		print(path)
-	
-	return out
+	var out = OverworldGlobals.loadArrayFromPath(path)
+	var array_of_combatants: Array[ResEnemyCombatant]
+	array_of_combatants.assign(out)
+	return array_of_combatants
 
 func getFactionName(faction_value:int):
 	return Enemy_Factions.find_key(faction_value)

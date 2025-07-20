@@ -9,7 +9,7 @@
 
 [resource]
 script = ExtResource("1_gyudi")
-FACTION = 3
+FACTION = 0
 TIER = 0
 PREFERRED_POSITION = 0
 CHANCE_TO_DROP = 1.0

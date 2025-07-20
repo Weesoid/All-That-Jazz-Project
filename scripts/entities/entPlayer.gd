@@ -350,9 +350,9 @@ func resetAnimation():
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
-	if OverworldGlobals.getCurrentMap().SAFE:
-		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
-		return false
+#	if OverworldGlobals.getCurrentMap().SAFE:
+#		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
+#		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
 		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
 		return false
