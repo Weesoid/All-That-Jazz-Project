@@ -9,6 +9,8 @@ radius = 16.5
 height = 46.0
 
 [node name="FastTravel" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0.831373, 1)

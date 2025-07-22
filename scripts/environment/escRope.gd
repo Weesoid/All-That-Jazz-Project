@@ -78,5 +78,5 @@ func initializeRope():
 
 func _on_area_2d_area_entered(area):
 	if area is Projectile and must_shoot:
-		print('plah')
+		#print('plah')
 		initializeRope()

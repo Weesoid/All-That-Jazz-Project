@@ -1,12 +1,9 @@
-[gd_scene load_steps=31 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=28 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
-[ext_resource type="Resource" uid="uid://ce7bsinsjdecr" path="res://resources/combat/events/Hail.tres" id="2_qv405"]
-[ext_resource type="Resource" uid="uid://6mr5iuhys50h" path="res://resources/items/_Item.tres" id="3_1e2s0"]
 [ext_resource type="PackedScene" uid="uid://dvstysplrop1t" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="3_t6mhi"]
-[ext_resource type="Resource" path="res://resources/combat/status_effects/Singed.tres" id="3_y17ji"]
 [ext_resource type="PackedScene" uid="uid://by1pampbgw84d" path="res://scenes/entities/PlayerAlternate.tscn" id="4_iibdi"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="5_rwctp"]
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="6_8oxsm"]
@@ -144,12 +141,9 @@ _data = {
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
 NAME = "Wump"
-events = {
-"additional_enemies": null,
-"combat_event": ExtResource("2_qv405"),
-"patroller_effect": ExtResource("3_y17ji"),
-"reward_item": ExtResource("3_1e2s0")
-}
+DESCRIPTION = null
+occupying_faction = null
+events = null
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
@@ -200,7 +194,7 @@ position = Vector2(-34, -4)
 segment_count = 3
 
 [node name="FastTravel" parent="." instance=ExtResource("3_t6mhi")]
-position = Vector2(-92, -26)
+position = Vector2(133, 0)
 
 [node name="Player" parent="." instance=ExtResource("4_iibdi")]
 position = Vector2(-32, 0)

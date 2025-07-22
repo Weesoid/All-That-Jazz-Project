@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
 [ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
 
-[node name="SavePoint" type="CharacterBody2D"]
+[node name="SavePoint" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0, 0.933333, 1, 1)
@@ -14,5 +14,3 @@ texture = ExtResource("1_2nmps")
 [node name="InteractComponent" parent="." instance=ExtResource("2_pey47")]
 position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_m7jmf")
-
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]

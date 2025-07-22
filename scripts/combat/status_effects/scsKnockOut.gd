@@ -21,7 +21,7 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
 	if getFadedLevel(target) == 0:
-		print('Plah')
+		#print('Plah')
 		target.LINGERING_STATUS_EFFECTS.append('Faded I')
 	elif getFadedLevel(target) < 4:
 		var escalated_level = getFadedLevel(target)+1

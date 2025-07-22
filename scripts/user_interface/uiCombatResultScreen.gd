@@ -32,7 +32,7 @@ func _ready():
 	tween_rounds.tween_method(setRounds, rounds, combat_scene.round_count, 0.25)
 	tween_player.tween_method(setPlayerTurns, turns_player, combat_scene.player_turn_count, 0.25)
 	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
-	tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
+	#tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
 	showLoot()
 	#await get_tree().process_frame
 	await tween_morale.finished

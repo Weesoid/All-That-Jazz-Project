@@ -1,15 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cw0gvoxm7mdqr"]
+[gd_scene load_steps=4 format=3 uid="uid://cw0gvoxm7mdqr"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiFastTravel.gd" id="1_vesp7"]
-[ext_resource type="StyleBox" uid="uid://dp2nq8lcxrsfc" path="res://design/PanelNoTop.tres" id="2_0i7nv"]
 [ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_46a5y"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xuni1"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_color = Color(1, 1, 1, 1)
+[ext_resource type="StyleBox" uid="uid://c22qxunue5s3x" path="res://design/PanelNoRight.tres" id="3_l4lig"]
 
 [node name="FastTravel" type="Control"]
 layout_mode = 3
@@ -25,24 +18,47 @@ script = ExtResource("1_vesp7")
 
 [node name="DebugButton" parent="." instance=ExtResource("2_46a5y")]
 layout_mode = 1
-offset_left = 184.0
+offset_left = 80.0
 offset_top = -140.0
-offset_right = 272.0
+offset_right = 168.0
 offset_bottom = -118.0
 text = "REROLL"
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = -240.0
+offset_top = -140.0
+offset_right = -80.0
+offset_bottom = -100.0
+theme_override_styles/panel = ExtResource("3_l4lig")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer2"]
+layout_mode = 2
+bbcode_enabled = true
+
+[node name="PanelContainer3" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = -240.0
+offset_top = -92.0
+offset_right = -80.0
+offset_bottom = -52.0
+theme_override_styles/panel = ExtResource("3_l4lig")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer3"]
+layout_mode = 2
+bbcode_enabled = true
 
 [node name="FastTravelAreas" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -184.0
+offset_left = -80.0
 offset_top = -148.0
-offset_right = 184.0
-offset_bottom = 36.0
+offset_right = 80.0
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xuni1")
 
 [node name="MarginContainer" type="MarginContainer" parent="FastTravelAreas"]
 layout_mode = 2
@@ -56,19 +72,6 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="FastTravelAreas/MarginContainer/ScrollContainer"]
-custom_minimum_size = Vector2(248, 0)
 layout_mode = 2
-
-[node name="PanelContainer2" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = -184.0
-offset_top = 36.0
-offset_right = 184.0
-offset_bottom = 132.0
-theme_override_styles/panel = ExtResource("2_0i7nv")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer2"]
-layout_mode = 2
-bbcode_enabled = true
 
 [connection signal="pressed" from="DebugButton" to="." method="_on_debug_button_pressed"]

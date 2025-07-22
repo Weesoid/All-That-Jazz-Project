@@ -16,7 +16,7 @@ func _on_body_entered(body):
 			OverworldGlobals.getPlayer().hideOverlay()
 		elif body.state != 3:
 			body.combat_switch = false
-			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=float(0.2)})
+			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=float(0.2)},body)
 	if body.has_node('Sprite2D') and body != player:
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
 

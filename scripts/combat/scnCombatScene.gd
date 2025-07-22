@@ -842,13 +842,13 @@ func targetCombatant(combatant: ResCombatant):
 	else:
 		target_index = combatant
 
-func addDrop(loot_drops: Dictionary): # DO NOT ADD IMMEDIATELY
-	for loot in loot_drops.keys():
-		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
-			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
-		else:
-			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
-		drops.append(loot)
+#func addDrop(loot_drops: Dictionary): # DO NOT ADD IMMEDIATELY
+#	for loot in loot_drops.keys():
+#		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
+#			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
+#		else:
+#			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
+#		drops.append(loot)
 
 func rollTurns():
 	OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
@@ -1052,12 +1052,12 @@ func concludeCombat(results: int):
 			loot_bonus += 1
 		if player_turn_count < getCombatantGroup('team').size():
 			morale_bonus += 0.25
-		morale_before = OverworldGlobals.getCurrentMap().REWARD_BANK['experience']
-		OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * morale_bonus
-		for i in range(loot_bonus):
-			for enemy in getCombatantGroup('enemies'): 
-				addDrop(enemy.getDrops())
-				addDrop(enemy.getBarterDrops())
+		#morale_before = OverworldGlobals.getCurrentMap().REWARD_BANK['experience']
+		#OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * morale_bonus
+#		for i in range(loot_bonus):
+#			for enemy in getCombatantGroup('enemies'): 
+#				addDrop(enemy.getDrops())
+#				addDrop(enemy.getBarterDrops())
 #	else:
 #		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
 	#resetActionLog()

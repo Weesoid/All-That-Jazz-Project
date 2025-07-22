@@ -292,7 +292,8 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		PlayerType.WILLIS: player = load("res://scenes/entities/Player.tscn").instantiate()
 		PlayerType.ARCHIE: player = load("res://scenes/entities/PlayerAlternate.tscn").instantiate()
 	var coords = coordinates.split(',')
-	getCurrentMap().add_child(player) 
+	getCurrentMap().add_child(player)
+	#await player.tree_entered
 	if to_entity != '':
 		player.global_position = getEntity(to_entity).global_position + Vector2(0, 20)
 	else:
@@ -590,7 +591,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
 	var map_events = getCurrentMap().events
 	if map_events.has('patroller_effect'):
-		enemy_squad.addLingeringEffect(map_events['patroller_effect'].NAME)
+		enemy_squad.addLingeringEffect(map_events['patroller_effect'])
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad('Player'):
 		combatant.LINGERING_STATUS_EFFECTS.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
