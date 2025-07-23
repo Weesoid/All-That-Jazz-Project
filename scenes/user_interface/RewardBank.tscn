@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1ex761xsrf4u"]
+
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="1_mj3yi"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiRewardBank.gd" id="1_xglhm"]
+
+[node name="RewardBank" type="Control"]
+z_index = 4096
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xglhm")
+
+[node name="Patrol" type="HSplitContainer" parent="."]
+layout_mode = 0
+offset_right = 51.0
+offset_bottom = 13.0
+
+[node name="Label" type="Label" parent="Patrol"]
+layout_mode = 2
+theme = ExtResource("1_mj3yi")
+text = "Patrol A
+"
+vertical_alignment = 1
+
+[node name="Rewards" type="Control" parent="Patrol"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Patrol/Rewards"]
+layout_mode = 2
+offset_right = 56.0
+offset_bottom = 16.0
+
+[node name="Label" type="Label" parent="Patrol/Rewards"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_right = 65.0
+offset_bottom = 14.0
+grow_vertical = 0
+theme = ExtResource("1_mj3yi")
+text = "Morale: 100.0"
+vertical_alignment = 2

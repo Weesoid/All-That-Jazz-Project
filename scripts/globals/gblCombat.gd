@@ -7,6 +7,9 @@ enum Enemy_Factions {
 var FACTION_PATROLLER_PROPERTIES = {
 	Enemy_Factions.Scavs: preload("res://resources/combat/faction_patrollers/Scavs.tres")
 }
+var back_up_enemies = [
+	'res://resources/combat/combatants_enemies/mercenaries/'
+]
 
 var TENSION: int = 0
 signal combat_won(unique_id)
@@ -546,19 +549,21 @@ func instantiatePatroller(type:int)-> GenericPatroller:
 	
 	return null
 
-func generateCombatantSquad(patroller, faction: Enemy_Factions):
+func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions):
 	randomize()
 	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
 	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)
+	var map_events = OverworldGlobals.getCurrentMap().events
 	if squad_size > 4: squad_size = 4
 	squad.FILL_EMPTY = true
 	squad.ENEMY_POOL = getFactionEnemies(faction)
 	# TO DO: Move this to PatrollerGroup! Definitely.
 #	if OverworldGlobals.getCurrentMap().EVENTS['additional_enemies'] != null:
 #		squad.ENEMY_POOL.append_array(getFactionEnemies(OverworldGlobals.getCurrentMap().EVENTS['additional_enemies']))
-#	if OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'] != null:
-#		squad.addLingeringEffect(OverworldGlobals.getCurrentMap().EVENTS['patroller_effect'])
-#	squad.TAMEABLE_CHANCE = (0.01 * PlayerGlobals.PARTY_LEVEL) + OverworldGlobals.getCurrentMap().EVENTS['tameable_modifier']# Add story check later
+	print(map_events)
+	if map_events.has('additional_enemies'):
+		print('zoinks')
+		squad.ENEMY_POOL.append_array(OverworldGlobals.loadArrayFromPath(map_events['additional_enemies']))
 	squad.ENEMY_POOL = squad.ENEMY_POOL.filter(func(combatant): return isWithinPlayerTier(combatant))
 	squad.COMBATANT_SQUAD.resize(squad_size)
 	squad.pickRandomEnemies()
@@ -571,10 +576,7 @@ func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties
 	patroller.add_child(squad)
 
 func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
-	var path
-	match faction:
-		Enemy_Factions.Scavs: path = "res://resources/combat/combatants_enemies/scavs/"
-	var out = OverworldGlobals.loadArrayFromPath(path)
+	var out = OverworldGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
 	var array_of_combatants: Array[ResEnemyCombatant]
 	array_of_combatants.assign(out)
 	return array_of_combatants
@@ -583,17 +585,9 @@ func getFactionName(faction_value:int):
 	return Enemy_Factions.find_key(faction_value)
 
 func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
-#	if enemy.TIER+1 <= PlayerGlobals.getLevelTier():
-#		print('Adding %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
-#	else:
-#		print('Removing %s [%s / %s]' % [enemy, enemy.TIER+1, PlayerGlobals.getLevelTier()])
 	return enemy.TIER+1 <= PlayerGlobals.getLevelTier()
 
 func addTension(amount: int):
-#	if amount > 0:
-#		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
-#	elif amount < 0:
-#		OverworldGlobals.playSound("res://audio/sounds/220189__gameaudio__blip-squeak.ogg")
 	var prev_tension = TENSION
 	if TENSION + amount > 8:
 		TENSION = 8

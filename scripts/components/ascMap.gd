@@ -12,10 +12,11 @@ enum PatrollerClearState {
 @export var IMAGE: Texture
 @export var occupying_faction: CombatGlobals.Enemy_Factions
 @export var events: Dictionary = {
-	'combat_event':preload("res://resources/combat/events/_CombatEvent.tres"),
 	'additional_enemies':null,
+	'bonus_loot':null,
+	'bonus_experience':null,
+	'combat_event':preload("res://resources/combat/events/_CombatEvent.tres"),
 	'patroller_effect': preload("res://_Resource.tres"),
-	#'additional_rewards': {'experience':0, 'loot':{}},
 	'reward_item': preload("res://resources/items/_Item.tres")
 }
 var done_loading_map:bool = false
@@ -30,6 +31,8 @@ func _ready():
 	removeEmptyEvents()
 	await get_tree().process_frame
 	done_loading_map = true
+	for group in getPatrolGroups():
+		group.spawn()
 
 func getLogMapEvent():
 	for log in PlayerGlobals.map_logs[scene_file_path]:
@@ -69,6 +72,11 @@ func checkGiveClearRewards():
 	
 	if events.has('reward_item'):
 		InventoryGlobals.addItemResource(events['reward_item'])
+	if events.has('bonus_loot'):
+		print('Add bonus loot')
+	if events.has('bonus_experience'):
+		print('Add bonus experience')
+	
 	PlayerGlobals.randomizeMapEvents(scene_file_path)
 
 func clearPatrollers():

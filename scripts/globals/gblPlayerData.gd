@@ -4,8 +4,6 @@ extends Node
 var SAVE_NAME
 var TEAM: Array[ResPlayerCombatant]
 var TEAM_FORMATION: Array[ResCombatant]
-#var FOLLOWERS: Array[NPCFollower] = []
-#var CLEARED_MAPS: Dictionary = {}
 var map_logs: Dictionary = {}
 var POWER: GDScript
 var KNOWN_POWERS: Array = [load("res://resources/powers/Stealth.tres")]
@@ -362,11 +360,12 @@ func generateMapEvent():
 	var events = {}
 	var chance_budget = 1.0
 	var possible_events = [
-		'combat_event',
-		'additional_enemies',
-		'patroller_effect',
-		#'additional_rewards': {'experience':0, 'loot':{}},
-		'reward_item'
+#		'combat_event',
+#		'additional_enemies',
+#		'patroller_effect',
+#		'reward_item',
+		'bonus_loot',
+		'bonus_experience'
 		]
 	var random_event
 	
@@ -376,11 +375,11 @@ func generateMapEvent():
 			possible_events.erase(random_event)
 			match random_event:
 				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
-				#'additional_enemies': events['additional_enemies'] = [CombatGlobals.Enemy_Factions.Mercenaries].pick_random()
+				'additional_enemies': events['additional_enemies'] = CombatGlobals.back_up_enemies.pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
 				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
-				#'reward_multipliers': events['reward_multipliers'] = {'experience':[1.25, 1.5, 0].pick_random(),'loot':[1.25, 1.5, 0].pick_random()}
-				#'stalker_chance': events['stalker_chance'] = 1.0
+				'bonus_loot': events['bonus_loot'] = {}
+				'bonus_experience': events['bonus_experience'] = 0
 				#'destroy_objective': events['destroy_objective'] = true
 			chance_budget -= 0.25
 		else:

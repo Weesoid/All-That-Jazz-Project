@@ -3,13 +3,8 @@ class_name ResFactionProperties
 
 @export var faction: CombatGlobals.Enemy_Factions
 @export var patroller_properties: Array[ResPatrollerProperties]
+@export var combatants_path: String
 @export var music: Array[String] = []
-#func getValidTypes(specials_only:bool=false)-> Array[int]:
-#	var specials: Array[int] = []
-#	for patroller in patroller_properties:
-#		if patroller is ResPatrollerPropertiesShooter or patroller is ResPatrollerPropertiesHybrid:
-#			specials.append(patroller)
-#	return specials
 
 func pickRandomSpecial():
 	var specials = []
@@ -34,9 +29,3 @@ func getPatrollerType(type:int):
 
 func getPatrollerProperties(type:int):
 	return getPatrollerType(type).pick_random()
-
-#func getType(type:int):
-#	match type:
-#		0: return chaser
-#		1: return shooter
-#		2: return hybrid

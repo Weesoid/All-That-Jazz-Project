@@ -6,9 +6,7 @@ class_name PatrollerGroup
 @export var destroy_objectives: bool = false
 var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
 
-func _ready():
-	if SaveLoadGlobals.is_loading:
-		await SaveLoadGlobals.done_loading
+func spawn():
 	if !isCleared(): 
 		if canSpawnDestructibleObjectives(): 
 			spawnDestructibleObjectives()
@@ -57,6 +55,7 @@ func isChancedSpawn(marker: Node2D):
 func giveRewards(ignore_stalker:bool=false):
 	await get_tree().process_frame
 	OverworldGlobals.group_cleared.emit()
+	# Stalker handling
 	if !OverworldGlobals.isPlayerAlive() or (canSpawnDestructibleObjectives() and getDestructibleObjectives().size() > 0): 
 		return
 	if PlayerGlobals.current_stalker != null and !ignore_stalker and getPatrollers().size() == 0:
@@ -67,9 +66,6 @@ func giveRewards(ignore_stalker:bool=false):
 	# UI Map clear indicator handling
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = reward_bank['experience']
-	for item in reward_bank['loot'].keys():
-		reward_bank['loot'][item] += ceil(reward_bank['loot'][item])
-	reward_bank['experience'] += ceil(reward_bank['experience'])
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
 	map_clear_indicator.showAnimation(true, self)
 	
@@ -80,11 +76,26 @@ func giveRewards(ignore_stalker:bool=false):
 			InventoryGlobals.addItemResource(item, reward_bank['loot'][item])
 		else:
 			for i in range(reward_bank['loot'][item]): InventoryGlobals.addItemResource(item)
-#	for combatant in reward_bank['tamed']:
-#		PlayerGlobals.addCombatantToTeam(combatant)
+	
+	# Current map handling
+	var map = OverworldGlobals.getCurrentMap()
+	if map.events.has('bonus_loot'): # Add generated multipliers later
+		appendBonusLoot(reward_bank['loot'])
+	if map.events.has('bonus_experience'):
+		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
+	map.checkGiveClearRewards()
 	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
-	OverworldGlobals.getCurrentMap().checkGiveClearRewards()
 	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+
+func appendBonusLoot(loot_dict: Dictionary, stack_multiplier:float=0.25):
+	var map = OverworldGlobals.getCurrentMap()
+	
+	for item in loot_dict.keys():
+		var stack = int(loot_dict[item]*stack_multiplier)
+		if map.events['bonus_loot'].has(item):
+			map.events['bonus_loot'][item] += stack
+		else:
+			map.events['bonus_loot'][item] = stack
 
 func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_destroyables:bool=true):
 	if random_unclear:

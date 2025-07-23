@@ -8,7 +8,7 @@
 
 [resource]
 script = ExtResource("6_i3h8h")
-FACTION = 2
+FACTION = 0
 TIER = 0
 PREFERRED_POSITION = 0
 CHANCE_TO_DROP = 0.5

@@ -255,8 +255,18 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		button.theme = preload("res://design/ItemButtons.tres")
 	#TEMP
 	
-	
 	return button
+
+func createItemIcon(item: ResItem, count:int):
+	var icon: TextureRect = TextureRect.new()
+	icon.texture = item.ICON.duplicate()
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	var count_label = Label.new()
+	count_label.text = str(count)
+	count_label.theme = preload("res://design/OutlinedLabel.tres")
+	count_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	icon.add_child(count_label)
+	return icon
 
 func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbilityButton:
 	var button: CustomAbilityButton = preload("res://scenes/user_interface/AbilityButton.tscn").instantiate()
@@ -556,6 +566,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		await getCurrentMap().get_node('Balloon').tree_exited
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
+		return
+	if patroller != null and !is_instance_valid(patroller):
 		return
 	if inMenu():
 		showMenu("res://scenes/user_interface/PauseMenu.tscn")

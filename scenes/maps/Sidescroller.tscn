@@ -141,9 +141,6 @@ _data = {
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
 NAME = "Wump"
-DESCRIPTION = null
-occupying_faction = null
-events = null
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1

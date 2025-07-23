@@ -1,4 +1,4 @@
-[gd_scene load_steps=156 format=3 uid="uid://by1pampbgw84d"]
+[gd_scene load_steps=149 format=3 uid="uid://by1pampbgw84d"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayerBowman.gd" id="1_cw77a"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="2_vhjle"]
@@ -6,11 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dso7nlpdot0vv" path="res://images/animations/player_alt.png" id="4_ybhti"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="5_55s1i"]
 [ext_resource type="PackedScene" uid="uid://cdkunqmsd5yml" path="res://scenes/components/MeleeHitbox.tscn" id="6_l557x"]
-[ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="6_lwji6"]
-[ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="7_t7vi3"]
-[ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="8_b3c1w"]
-[ext_resource type="PackedScene" uid="uid://j1akjh3lc0v" path="res://scenes/user_interface/Quiver.tscn" id="9_l6qdt"]
-[ext_resource type="Texture2D" uid="uid://b2tqyyse1shv2" path="res://images/textures/cinematic_spotlight.png" id="10_ia54s"]
+[ext_resource type="PackedScene" uid="uid://crqkcqks48t2k" path="res://scenes/components/PlayerCamera.tscn" id="7_qu8h1"]
 [ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_c0qfe"]
 [ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="14_4s765"]
 [ext_resource type="Texture2D" uid="uid://emh44pfnyck" path="res://images/animations/player_alt_fall.png" id="15_jrgcy"]
@@ -65,49 +61,6 @@ size = Vector2(22, 4)
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
 radius = 9.0
 height = 24.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_846aw"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_to3hk"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="GDScript" id="GDScript_lueap"]
-script/source = "extends VBoxContainer
-
-@onready var player = OverworldGlobals.getPlayer()
-
-func _input(event):
-	if player.is_processing_input() and player.power_inputs != '' and player.power_listening and (event is InputEventKey or event is InputEventJoypadButton):
-		for power in await getValidPowers(player.power_inputs):
-			add_child(createReference(power))
-	
-	if Input.is_action_just_released('ui_gambit'):
-		await clearReferences()
-
-func clearReferences():
-	for child in get_children():
-		child.queue_free()
-		await child.tree_exited
-
-func createReference(power: ResPower):
-	var reference = preload(\"res://scenes/user_interface/PowerReference.tscn\").instantiate()
-	reference.power = power
-	return reference
-
-func getValidPowers(inputs: String):
-	await clearReferences()
-	var valid_powers = []
-	for power in PlayerGlobals.KNOWN_POWERS:
-		if power.INPUT_MAP.begins_with(inputs): valid_powers.append(power)
-	return valid_powers
-
-"
 
 [sub_resource type="Animation" id="Animation_5j7ww"]
 resource_name = "Dive"
@@ -2823,107 +2776,7 @@ z_index = 2
 position = Vector2(0, -33)
 shape = SubResource("CapsuleShape2D_8i7nm")
 
-[node name="PlayerCamera" type="Camera2D" parent="."]
-z_index = 99
-position = Vector2(0, -96)
-position_smoothing_enabled = true
-position_smoothing_speed = 10.0
-script = ExtResource("6_lwji6")
-
-[node name="PlayerPrompt" parent="PlayerCamera" instance=ExtResource("7_t7vi3")]
-
-[node name="StaminaBar" type="ProgressBar" parent="PlayerCamera"]
-offset_left = -24.0
-offset_top = -37.0
-offset_right = -20.0
-offset_bottom = -1.0
-theme_override_styles/background = SubResource("StyleBoxFlat_846aw")
-theme_override_styles/fill = SubResource("StyleBoxFlat_to3hk")
-value = 50.0
-fill_mode = 3
-show_percentage = false
-script = ExtResource("8_b3c1w")
-
-[node name="Ammo" type="Label" parent="PlayerCamera"]
-offset_left = 17.0
-offset_top = -32.0
-offset_right = 57.0
-offset_bottom = -19.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-text = "1000"
-
-[node name="VoidCrystals" type="Label" parent="PlayerCamera"]
-visible = false
-offset_left = 19.0
-offset_top = -20.0
-offset_right = 59.0
-offset_bottom = -7.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 4
-text = "3"
-
-[node name="PowerInputs" type="HBoxContainer" parent="PlayerCamera"]
-offset_left = -24.0
-offset_top = -59.0
-offset_right = 24.0
-offset_bottom = -51.0
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PlayerCamera"]
-offset_left = 144.0
-offset_top = -152.0
-offset_right = 283.0
-offset_bottom = -102.0
-script = SubResource("GDScript_lueap")
-
-[node name="ColorOverlay" type="ColorRect" parent="PlayerCamera"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -414.0
-offset_top = -182.0
-offset_right = -16.0
-offset_bottom = 24.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(2, 2)
-
-[node name="UtilitySelector" parent="PlayerCamera" instance=ExtResource("9_l6qdt")]
-visible = false
-position = Vector2(0, -56)
-scale = Vector2(1, 1)
-
-[node name="CinematicSpotlight" type="Sprite2D" parent="PlayerCamera"]
-self_modulate = Color(1, 1, 1, 0)
-z_index = 10
-position = Vector2(1.19209e-07, -20)
-scale = Vector2(0.383333, 0.362963)
-texture = ExtResource("10_ia54s")
-
-[node name="Marker2D" type="Marker2D" parent="PlayerCamera"]
-position = Vector2(-272, 136)
-
-[node name="CinematicBars" type="Node2D" parent="PlayerCamera"]
-visible = false
-
-[node name="ColorRect" type="ColorRect" parent="PlayerCamera/CinematicBars"]
-offset_left = -384.0
-offset_top = -136.0
-offset_right = 378.0
-offset_bottom = -70.0
-color = Color(1, 1, 1, 0)
-
-[node name="ColorRect2" type="ColorRect" parent="PlayerCamera/CinematicBars"]
-offset_left = -441.0
-offset_top = 72.0
-offset_right = 437.0
-offset_bottom = 209.0
-color = Color(0, 0, 0, 0)
+[node name="PlayerCamera" parent="." instance=ExtResource("7_qu8h1")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

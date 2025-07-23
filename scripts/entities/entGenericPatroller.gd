@@ -198,6 +198,13 @@ func destroy(give_drops=false):
 		var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
 		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
 		combatant_squad.addDrops()
+		
+		print('banke: ',patroller_group.reward_bank)
+		var bank_ui = load("res://scenes/user_interface/RewardBank.tscn").instantiate()
+		bank_ui.patroller_group = patroller_group
+		OverworldGlobals.getPlayer().player_camera.add_child(bank_ui)
+		bank_ui.updateBank(patroller_group.reward_bank)
+	
 	updateState(3)
 	queue_free()
 	await tree_exited

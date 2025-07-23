@@ -36,4 +36,5 @@ stun_time = 0.0
 script = ExtResource("1_iulig")
 faction = 0
 patroller_properties = Array[ExtResource("1_wjv6f")]([SubResource("Resource_swyfo"), SubResource("Resource_s7enw")])
+combatants_path = "res://resources/combat/combatants_enemies/scavs/"
 music = Array[String](["res://audio/music/706171__timbre__atmosphere-prince-funk-via-stableaudio.ogg", "res://audio/music/Little Speck DV.ogg"])
