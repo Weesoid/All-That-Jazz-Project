@@ -16,4 +16,4 @@ func _ready():
 #			OverworldGlobals.addPatrollerPulse(player, 80.0, 3)
 #			queue_free()
 #		else:
-#			player.prompt.showPrompt('Not enough [color=yellow]stamina[/color].')
+#			player.prompt.('Not enough [color=yellow]stamina[/color].')

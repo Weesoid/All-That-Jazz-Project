@@ -109,7 +109,7 @@ func applyBlessing(blessing):
 		EQUIPPED_BLESSING.setBlessing(false)
 	if blessing is ResBlessing:
 		EQUIPPED_BLESSING = blessing
-		OverworldGlobals.showPlayerPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
+		OverworldGlobals.showPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
 		blessing.setBlessing(true)
 
 func equipNewArrowType():
@@ -126,7 +126,7 @@ func equipNewArrowType():
 #********************************************************************************
 func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=false):
 #	if PARTY_LEVEL >= MAX_PARTY_LEVEL and !bypass_cap:
-#		OverworldGlobals.showPlayerPrompt('Max party level reached!')
+#		OverworldGlobals.showPrompt('Max party level reached!')
 #		return
 	if show_message and !OverworldGlobals.getPlayer().has_node('ExperienceGainBar'):
 		var experience_bar_view = load("res://scenes/user_interface/ExperienceGainBar.tscn").instantiate()
@@ -135,7 +135,7 @@ func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=fal
 	CURRENT_EXP += experience
 	if PARTY_LEVEL >= MAX_PARTY_LEVEL and CURRENT_EXP >= getRequiredExp() and !bypass_cap:
 		CURRENT_EXP = getRequiredExp()
-		OverworldGlobals.showPlayerPrompt('Max level already reached!')
+		OverworldGlobals.showPrompt('Max level already reached!')
 		return
 	if CURRENT_EXP >= getRequiredExp() and (PARTY_LEVEL < MAX_PARTY_LEVEL or bypass_cap):
 		var prev_required = getRequiredExp()
@@ -147,7 +147,7 @@ func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=fal
 			if prev_exp - prev_required > 0:
 				addExperience(prev_exp - prev_required, show_message, bypass_cap)
 		elif PARTY_LEVEL >= MAX_PARTY_LEVEL:
-			OverworldGlobals.showPlayerPrompt('Max party level reached!')
+			OverworldGlobals.showPrompt('Max party level reached!')
 	elif CURRENT_EXP < 0:
 		CURRENT_EXP = 0
 
@@ -165,7 +165,7 @@ func increaseLevelCap(amount:int=5):
 	MAX_PARTY_LEVEL += amount
 	if CURRENT_EXP >= getRequiredExp():
 		addExperience(1, true)
-	OverworldGlobals.showPlayerPrompt('Level cap increased to [color=yellow]%s[/color]!' % MAX_PARTY_LEVEL)
+	OverworldGlobals.showPrompt('Level cap increased to [color=yellow]%s[/color]!' % MAX_PARTY_LEVEL)
 
 func getLevelTier():
 	if PARTY_LEVEL < 5:
@@ -204,14 +204,14 @@ func addAbility(combatant, ability):
 	else:
 		ADDED_ABILITIES[combatant] = []
 		ADDED_ABILITIES[combatant].append(ability)
-	OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.NAME, ability.NAME])
+	OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.NAME, ability.NAME])
 	loadAddedAbilities()
 
 func addPower(power_file_name: String):
 	if FileAccess.file_exists("res://resources/powers/%s.tres" % power_file_name):
 		var power = load("res://resources/powers/%s.tres" % power_file_name)
 		KNOWN_POWERS.append(power)
-		OverworldGlobals.showPlayerPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.NAME)
+		OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.NAME)
 
 func loadAddedAbilities():
 	for member in TEAM:
@@ -231,7 +231,7 @@ func levelUpCombatants():
 	for combatant in PlayerGlobals.TEAM:
 		combatant.STAT_POINTS += 1
 		combatant.scaleStats()
-	OverworldGlobals.getPlayer().prompt.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
+	OverworldGlobals.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
 	level_up.emit()
 
 func addCombatantToTeam(combatant_id):
@@ -249,7 +249,7 @@ func addCombatantToTeam(combatant_id):
 		combatant.TEMPERMENT['secondary'].append(PlayerGlobals.SECONDARY_TEMPERMENTS.keys().pick_random())
 	combatant.STAT_POINTS = PARTY_LEVEL
 	TEAM.append(combatant)
-	OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
+	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
 
 func removeCombatant(combatant_id: ResPlayerCombatant):
 	for member in TEAM:
@@ -272,12 +272,12 @@ func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/
 	if combatant.TEMPERMENT['secondary'].size() >= 6:
 		var removed_temperment = combatant.TEMPERMENT['secondary'][0]
 		combatant.TEMPERMENT['secondary'].remove_at(0)
-		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] lost [color=yellow]%s[/color]' % [combatant, removed_temperment.capitalize()])
+		OverworldGlobals.showPrompt('[color=yellow]%s[/color] lost [color=yellow]%s[/color]' % [combatant, removed_temperment.capitalize()])
 	
 	if temperment == '/random':
 		randomize()
 		var random_temperment = SECONDARY_TEMPERMENTS.keys().filter(func(key): return !combatant.TEMPERMENT['secondary'].has(key)).pick_random()
-		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
+		OverworldGlobals.showPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
 		combatant.TEMPERMENT['secondary'].append(random_temperment)
 	else:
 		combatant.TEMPERMENT['secondary'].append(temperment)

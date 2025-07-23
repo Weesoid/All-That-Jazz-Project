@@ -3,4 +3,4 @@ static func executePower(player: PlayerScene):
 		player.playCastAnimation()
 		player.add_child(preload("res://scenes/power_attachments/Invisibility.tscn").instantiate())
 	elif PlayerGlobals.overworld_stats['stamina'] < 50:
-		player.prompt.showPrompt('Not enough [color=yellow]stamina[/color].')
+		player.prompt.('Not enough [color=yellow]stamina[/color].')

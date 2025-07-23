@@ -61,7 +61,7 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 		if item.STACK <= 0: item.STACK = 1
 		item.add(count-1, false)
 		INVENTORY.append(item)
-		if show_message: OverworldGlobals.getPlayer().prompt.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.NAME, item.STACK])
+		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.NAME, item.STACK])
 	elif item is ResCharm:
 		for i in range(count): 
 			var dupe_item = item.duplicate()
@@ -71,14 +71,14 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 				dupe_item.PARENT_ITEM = item.resource_path
 			dupe_item.removeEmptyModifications()
 			INVENTORY.append(dupe_item)
-		if show_message: OverworldGlobals.showPlayerPrompt('Added [color=yellow]%s[/color].' % item)
+		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
 	elif item is ResWeapon and check_restrictions:
 		item.durability = item.max_durability
 		INVENTORY.append(item)
-		if show_message: OverworldGlobals.showPlayerPrompt('Added [color=yellow]%s[/color].' % item)
+		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
 	else:
 		INVENTORY.append(item)
-		if show_message: OverworldGlobals.showPlayerPrompt('Added [color=yellow]%s[/color].' % item)
+		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
 	
 	added_item_to_inventory.emit()
 	sortItems()
@@ -145,20 +145,20 @@ func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 	if count == 0:
 		return
 	elif item.MANDATORY and !ignore_mandatory:
-		OverworldGlobals.getPlayer().prompt.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
+		OverworldGlobals.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
 		return
 	
 	if item is ResEquippable:
 		if item.isEquipped(): item.unequip()
 		INVENTORY.erase(item)
-		if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] removed.' % item)
+		if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] removed.' % item)
 	
 	elif item is ResStackItem:
 		item.take(count)
 		if !item is ResProjectileAmmo:
-			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.NAME])
+			if prompt: OverworldGlobals.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.NAME])
 		if item.STACK <= 0: 
-			if prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.NAME])
+			if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.NAME])
 			INVENTORY.erase(item)
 
 func incrementStackItem(item_name: String, count):
@@ -178,13 +178,13 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 
 func canAdd(item, count:int=1, show_prompt=true):
 	if INVENTORY.size() >= MAX_INVENTORY:
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('[color=pink]You canot have more than %s items. How did you even manage this?[/color]' % MAX_INVENTORY, 15)
+		if show_prompt: OverworldGlobals.showPrompt('[color=pink]You canot have more than %s items. How did you even manage this?[/color]' % MAX_INVENTORY, 15)
 		return false
 	elif item is ResEquippable and hasItem(item):
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Already have [color=yellow]%s[/color].' % [item])
+		if show_prompt: OverworldGlobals.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item.NAME) and item.STACK == item.MAX_STACK and item.MAX_STACK > 0:
-		if show_prompt: OverworldGlobals.getPlayer().prompt.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
+		if show_prompt: OverworldGlobals.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
 	
 	return true
@@ -220,7 +220,7 @@ func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
 	elif free_repair:
 		item.restoreDurability(repair_amount)
 	else:
-		OverworldGlobals.getPlayer().prompt.showPrompt('Not enough [color=yellow]Scrap Salvage![/color]')
+		OverworldGlobals.showPrompt('Not enough [color=yellow]Scrap Salvage![/color]')
 		return
 
 func repairAllItems(only_active_members: bool=false):

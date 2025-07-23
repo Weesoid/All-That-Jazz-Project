@@ -36,7 +36,7 @@ func isObjectiveActive(quest_name: String, quest_objective_name: String)-> bool:
 
 func completeQuestObjective(quest_name: String, quest_objective_name: String, outcome:int=0):
 	getQuest(quest_name).completeObjective(quest_objective_name, outcome)
-	OverworldGlobals.getPlayer().prompt.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest_name, 5.0, "430892__gsb1039__magic-1-grainsmooth.ogg")
+	OverworldGlobals.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest_name, 5.0, "430892__gsb1039__magic-1-grainsmooth.ogg")
 
 
 func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String) -> bool:

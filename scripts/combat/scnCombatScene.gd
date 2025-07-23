@@ -63,7 +63,7 @@ var battle_music_path: String = ""
 var combat_result: int = -1
 var camera_position: Vector2 = Vector2(0, 0)
 var enemy_reinforcements: Array[ResCombatant]
-var tamed_combatants: Array[String]
+#var tamed_combatants: Array[String]
 var bonus_escape_chance = 0.0
 var onslaught_mode = false
 var onslaught_combatant: ResPlayerCombatant
@@ -196,7 +196,7 @@ func on_player_turn():
 	
 	Input.action_release("ui_accept")
 	resetActionLog()
-	escape_button.disabled = hasTameableCombatants()
+	#escape_button.disabled = hasTameableCombatants()
 	skills_button.disabled = active_combatant.ABILITY_SET.is_empty() and !active_combatant.hasEquippedWeapon()
 	action_panel.show()
 	action_panel.get_child(0).grab_focus()
@@ -382,7 +382,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				combatant.ACTED = true
 				total_experience += combatant.getExperience()
 			if combatant.SPAWN_ON_DEATH != null:
-				replaceCombatant(combatant, combatant.SPAWN_ON_DEATH)
+				replaceCombatant(combatant, combatant.SPAWN_ON_DEATH) ## Also keeping this!
 		elif combatant is ResPlayerCombatant:
 			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
 				clearStatusEffects(combatant)
@@ -436,18 +436,18 @@ func _on_escape_pressed():
 
 func _on_escape_focus_entered():
 	if can_escape:
-		if hasTameableCombatants():
-			escape_chance_label.text = 'VOID LOCK'
-		else:
-			escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+#		if hasTameableCombatants():
+#			escape_chance_label.text = 'VOID LOCK'
+#		else:
+		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
 		escape_chance_label.show()
 
 func _on_escape_mouse_entered():
 	if can_escape:
-		if hasTameableCombatants():
-			escape_chance_label.text = 'VOID LOCK'
-		else:
-			escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
+#		if hasTameableCombatants():
+#			escape_chance_label.text = 'VOID LOCK'
+#		else:
+		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
 		escape_chance_label.show()
 
 func _on_escape_mouse_exited():
@@ -1164,10 +1164,10 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 func moveValid(move:int, current_pos:int, combatant_group)-> bool:
 	return (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1)
 
-func getTamedCombatantsNames():
-	var out = []
-	for combatant in tamed_combatants: out.append(combatant)
-	return out
+#func getTamedCombatantsNames():
+#	var out = []
+#	for combatant in tamed_combatants: out.append(combatant)
+#	return out
 
 func moveOnslaught(direction: int):
 	if (direction==1 and onslaught_combatant.SCENE.global_position.x+32 > 48) or (direction==-1 and onslaught_combatant.SCENE.global_position.x-32 < -48):
@@ -1250,11 +1250,11 @@ func sortCombatantsByPosition()-> Array[ResCombatant]:
 		out.append(combatant.get_child(0).combatant_resource)
 	return out
 
-func hasTameableCombatants()-> bool:
-	for combatant in getCombatantGroup('enemies'):
-		if combatant.tamed_combatant: return true
-	
-	return false
+#func hasTameableCombatants()-> bool:
+#	for combatant in getCombatantGroup('enemies'):
+#		if combatant.tamed_combatant: return true
+#
+#	return false
 
 func addTargetClickButton(combatant: ResCombatant):
 	if !is_instance_valid(combatant.SCENE): return

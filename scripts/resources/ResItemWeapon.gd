@@ -36,7 +36,7 @@ func restoreDurability(amount: int):
 		durability += amount
 	
 	if durability == max_durability:
-		OverworldGlobals.getPlayer().prompt.showPrompt('[color=yellow]%s[/color] fully repaired.' % NAME)
+		OverworldGlobals.showPrompt('[color=yellow]%s[/color] fully repaired.' % NAME)
 
 func canUse(combatant: ResCombatant):
 	for stat in USE_REQUIREMENT.keys():

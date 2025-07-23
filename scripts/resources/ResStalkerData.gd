@@ -8,7 +8,6 @@ class_name ResStalkerData
 	"fill_empty": false,
 	"random_size": false,
 	"unique_id": "",
-	"tameable_chance": 0.0,
 	"turn_time": 0.0,
 	"can_escape": true,
 	"do_reinforcements": true,

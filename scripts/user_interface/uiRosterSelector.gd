@@ -53,7 +53,7 @@ func createMemberButton(member: ResPlayerCombatant):
 
 func addToActive(member: ResCombatant, button: Button):
 	if OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.size() == 4 and !OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.has(member):
-		OverworldGlobals.showPlayerPrompt('You have a full party!')
+		OverworldGlobals.showPrompt('You have a full party!')
 		return
 	
 	if !OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.has(member) and button != null:

@@ -291,7 +291,7 @@ func executePower():
 				InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.CRYSTAL_COST)
 				power.POWER_SCRIPT.executePower(self)
 			elif !canCastPower(power) and power_inputs.length() >= 3:
-				player_camera.prompt.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
+				OverworldGlobals.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
 			return
 
 func canCastPower(power: ResPower):
@@ -333,10 +333,10 @@ func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
 #	if OverworldGlobals.getCurrentMap().SAFE:
-#		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
+#		prompt.("Can't use [color=yellow]Bow[/color] right now.")
 #		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
-		player_camera.prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
+		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
 		return false
 	if PlayerGlobals.EQUIPPED_ARROW == null:
 		return false
@@ -351,7 +351,7 @@ func canUsePower():
 	if OverworldGlobals.inMenu():
 		return false
 #	if OverworldGlobals.getCurrentMap().SAFE:
-#		player_camera.prompt.showPrompt("Can't use [color=gray]Gambit[/color] right now.")
+#		player_camera.prompt.("Can't use [color=gray]Gambit[/color] right now.")
 #		return false
 	if bow_draw_strength != 0.0:
 		return false

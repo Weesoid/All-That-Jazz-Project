@@ -20,7 +20,7 @@ func centerSelf():
 
 func interact():
 	if dialogue_resource == null:
-		OverworldGlobals.showPlayerPrompt('YOU FORGOT TO PUT IN DIALOGUE STUPID!!!!!!!!!!!!!!!')
+		OverworldGlobals.showPrompt('YOU FORGOT TO PUT IN DIALOGUE STUPID!!!!!!!!!!!!!!!')
 		return
 	
 	PlayerGlobals.setFollowersMotion(false)

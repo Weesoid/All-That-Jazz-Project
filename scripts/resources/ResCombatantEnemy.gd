@@ -20,7 +20,7 @@ enum PreferredPosition {
 ## Key: Item to be dropped; Value: Vector2 representing drop chance (x) & drop count (y)
 @export var DROP_POOL = {}
 @export var is_converted: bool
-@export var tamed_combatant: ResCombatant
+# @export var tamed_combatant: ResCombatant
 
 var SPAWN_ON_DEATH: ResCombatant
 

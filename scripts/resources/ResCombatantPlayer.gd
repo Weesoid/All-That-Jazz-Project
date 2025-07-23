@@ -128,7 +128,7 @@ func equipWeapon(weapon: ResWeapon):
 func unequipWeapon():
 	if EQUIPPED_WEAPON != null:
 #		if !EQUIPPED_WEAPON.canUse(self):
-#			OverworldGlobals.showPlayerPrompt('%s does not meet %s requirements.' % [NAME, EQUIPPED_WEAPON.NAME])
+#			OverworldGlobals.showPrompt('%s does not meet %s requirements.' % [NAME, EQUIPPED_WEAPON.NAME])
 #			return
 		
 		EQUIPPED_WEAPON.unequip()
@@ -160,6 +160,7 @@ func hasCharm(charm: ResCharm):
 		if equipped_charm == null: continue
 		if equipped_charm.NAME == charm.NAME: return true
 
+## This function is pretty cool. Keeping it!
 func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	initializeCombatant(false)
 	var enemy = ResEnemyCombatant.new()
@@ -178,7 +179,7 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 		enemy.ABILITY_SET.append(ABILITY_POOL[3])
 	enemy.AI_PACKAGE = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	enemy.is_converted = true
-	enemy.tamed_combatant = self
+#	enemy.tamed_combatant = self
 	return enemy.duplicate()
 
 func reset():

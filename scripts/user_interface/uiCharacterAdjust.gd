@@ -152,7 +152,7 @@ func createAbilityButton(ability, location):
 					loadMemberInfo(selected_combatant)
 			elif !selected_combatant.ABILITY_SET.has(ability):
 				if selected_combatant.ABILITY_SET.size() >= 4:
-					OverworldGlobals.showPlayerPrompt('Max abilities enabled.')
+					OverworldGlobals.showPrompt('Max abilities enabled.')
 					return
 				selected_combatant.ABILITY_SET.append(ability)
 				button.add_theme_icon_override('icon', preload("res://images/sprites/ability_mark.png"))

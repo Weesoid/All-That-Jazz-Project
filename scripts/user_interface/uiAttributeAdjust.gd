@@ -85,7 +85,7 @@ func adjustStat(cost: int, stat: String, button: Button):
 		combatant.STAT_POINT_ALLOCATIONS[stat] += 1
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 	else:
-		OverworldGlobals.showPlayerPrompt('[color=yellow]%s[/color] point(s) is required to increase [color=yellow]%s[/color].' % [str(cost), stat])
+		OverworldGlobals.showPrompt('[color=yellow]%s[/color] point(s) is required to increase [color=yellow]%s[/color].' % [str(cost), stat])
 	
 	if button.visible == false:
 		focus()

@@ -281,7 +281,7 @@ func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbi
 	#button.initialize()
 	return button
 
-func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
+func showPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.getPlayer().player_camera.prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
@@ -352,11 +352,11 @@ func getMapRewardBank(key: String):
 func setMapRewardBank(key: String, value):
 	get_tree().current_scene.REWARD_BANK[key] = value
 
-func getTamedNames():
-	var out = []
-	for combatant in get_tree().current_scene.REWARD_BANK['tamed']:
-		out.append(combatant.NAME)
-	return out
+#func getTamedNames():
+#	var out = []
+#	for combatant in get_tree().current_scene.REWARD_BANK['tamed']:
+#		out.append(combatant.NAME)
+#	return out
 
 func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and getPlayer().has_node('DebugComponent')
@@ -613,9 +613,9 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		var duped_combatant = combatant.duplicate()
 		for effect in enemy_squad.afflicted_status_effects:
 			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
-		if CombatGlobals.randomRoll(enemy_squad.TAMEABLE_CHANCE):
-			randomize()
-			duped_combatant.SPAWN_ON_DEATH = getRandomTameable().pick_random().convertToEnemy('Feral')
+#		if CombatGlobals.randomRoll(enemy_squad.TAMEABLE_CHANCE):
+#			randomize()
+#			duped_combatant.SPAWN_ON_DEATH = getRandomTameable().pick_random().convertToEnemy('Feral')
 		combat_scene.COMBATANTS.append(duped_combatant)
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
@@ -654,13 +654,13 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	OverworldGlobals.moveCamera('RESET',0.25)
 	OverworldGlobals.zoomCamera(Vector2(1,1),0.25)
 	var combat_results = combat_scene.combat_result
-	var tamed = combat_scene.tamed_combatants
+#	var tamed = combat_scene.tamed_combatants
 	getPlayer().player_camera.make_current()
 	get_tree().paused = false
 	getCurrentMap().show()
 	getPlayer().resetStates()
-	if combat_results == 1:
-		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
+#	if combat_results == 1:
+#		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
 	for combatant in getCombatantSquad('Player'):
 		for effect in getCombatantSquadComponent('Player').afflicted_status_effects:
 			combatant.LINGERING_STATUS_EFFECTS.erase(effect)
@@ -684,24 +684,6 @@ func showCombatStartBars():
 	getPlayer().player_camera.add_child(bars)
 	bars.position = Vector2.ZERO
 	bars.get_node('AnimationPlayer').play('Show')
-
-
-func getRandomTameable():
-	var path = "res://resources/combat/combatants_player/tameable/"
-	var dir = DirAccess.open(path)
-	var out = []
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			var combatant = load(path+'/'+file_name)
-			out.append(combatant)
-			file_name = dir.get_next()
-	else:
-		print("An error occurred when trying to access the path.")
-		print(path)
-	
-	return out
 
 func inCombat()-> bool:
 	return get_parent().has_node('CombatScene')
