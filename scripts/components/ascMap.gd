@@ -13,10 +13,10 @@ enum PatrollerClearState {
 @export var occupying_faction: CombatGlobals.Enemy_Factions
 @export var events: Dictionary = {
 	'additional_enemies':null,
-	'bonus_loot':null,
-	'bonus_experience':null,
 	'combat_event':preload("res://resources/combat/events/_CombatEvent.tres"),
 	'patroller_effect': preload("res://_Resource.tres"),
+	'bonus_loot':null,
+	'bonus_experience':null,
 	'reward_item': preload("res://resources/items/_Item.tres")
 }
 var done_loading_map:bool = false
@@ -62,7 +62,7 @@ func getVerbalClearState():
 		return '[color=green]Safe[/color]'
 	
 	match getClearState():
-		0: return '[color=red]Unsafe[/color]'
+		0: return '[color=red]Hostiles Active[/color]'
 		1: return '[color=orange]Partially Cleared[/color]'
 		2: return '[color=green]Fully Cleared[/color]'
 
@@ -70,6 +70,7 @@ func checkGiveClearRewards():
 	if getClearState() != PatrollerClearState.FULL_CLEAR:
 		return
 	
+	print('zoinks!')
 	if events.has('reward_item'):
 		InventoryGlobals.addItemResource(events['reward_item'])
 	if events.has('bonus_loot'):

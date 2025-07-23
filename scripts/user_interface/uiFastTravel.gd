@@ -6,9 +6,7 @@ extends Control
 var map_component_data = {}
 
 func _ready():
-	#print(PlayerGlobals.map_logs)
 	addAllFastTravelPoints()
-	#PlayerGlobals.addFastTravelArea(OverworldGlobals.getCurrentMap().scene_file_path, OverworldGlobals.getCurrentMap().getPatrollers().size()<=0)
 	loadFastTravelButtons()
 
 func loadFastTravelButtons():
@@ -16,8 +14,13 @@ func loadFastTravelButtons():
 		var button = OverworldGlobals.createCustomButton()
 		var map:MapData = load(location).instantiate()
 		button.text = map.NAME
-		#map_component_data[location] = [map.NAME, map.DESCRIPTION, map.IMAGE, map.EVENTS]
-		button.pressed.connect(func(): travel(location))
+		button.pressed.connect(
+			func(): 
+				if PlayerGlobals.hasMapEvent(OverworldGlobals.getCurrentMap().scene_file_path):
+					checkTravel(location)
+				else:
+					travel(location)
+				)
 		button.focus_entered.connect(
 			func():
 				getMapInfo(location)
@@ -34,10 +37,6 @@ func loadFastTravelButtons():
 			
 		if OverworldGlobals.getCurrentMap().scene_file_path == location:
 			button.disabled = true
-#		if location == OverworldGlobals.getCurrentMap().scene_file_path or !PlayerGlobals.CLEARED_MAPS[location]['fast_travel']:
-#			button.disabled = true
-#		if !PlayerGlobals.CLEARED_MAPS[location]['cleared']:
-#			button.icon = preload("res://images/sprites/icon_multi_enemy.png")
 		travel_panel.add_child(button)
 		map.queue_free()
 	
@@ -65,6 +64,19 @@ func getMapEventInfo(map_log: Array):
 			event_description.text = str(log)
 			event_description.show()
 			return
+
+func checkTravel(location):
+	var confirm_dialog: CustomConfirmationDialogue = load("res://scenes/user_interface/ConfirmationDialog.tscn").instantiate()
+	add_child(confirm_dialog)
+	confirm_dialog.text.text = 'Leaving the area will forfeit clear rewards. Are you sure?'
+	confirm_dialog.yes_button.text = 'Leave'
+	confirm_dialog.no_button.text = 'Return'
+	confirm_dialog.yes_button.pressed.connect(
+		func():
+			PlayerGlobals.randomizeMapEvents(location)
+			travel(location)
+			)
+	confirm_dialog.no_button.pressed.connect(func():OverworldGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
 
 func travel(location):
 	OverworldGlobals.closeMenu(self)

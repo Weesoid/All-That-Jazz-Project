@@ -12,8 +12,8 @@ func _on_body_entered(body):
 			body.destroy(true)
 			PlayerGlobals.overworld_stats['stamina'] -= 50
 			OverworldGlobals.shakeCamera()
-			await OverworldGlobals.getPlayer().showOverlay(Color.RED, 0.025)
-			OverworldGlobals.getPlayer().hideOverlay()
+			await OverworldGlobals.getPlayer().player_camera.showOverlay(Color.RED, 0.025)
+			OverworldGlobals.getPlayer().player_camera.hideOverlay()
 		elif body.state != 3:
 			body.combat_switch = false
 			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=float(0.2)},body)

@@ -5,16 +5,29 @@ extends Node2D
 @onready var experience = $ProgressBar
 @onready var level = $ProgressBar/Label
 @onready var loot = $Loot
+@onready var message = $Label
+@onready var bonus_exp = $BonusExp
+@onready var bonus_loot = $BonusLoot
+@onready var bonuses_animator = $AnimationPlayerBonus
 @export var added_exp: int
 
-
 func showAnimation(show_clear:bool, patroller_group: PatrollerGroup):
+	if OverworldGlobals.getCurrentMap().getClearState() == MapData.PatrollerClearState.FULL_CLEAR and hasBonuses():
+		var map_events = OverworldGlobals.getCurrentMap().events
+		if map_events.has('bonus_experience'):
+			bonus_exp.text = ' + %s.0' % str(OverworldGlobals.getCurrentMap().events['bonus_experience'])
+		else:
+			bonus_exp.hide()
+		bonuses_animator.play('Show')
+		if map_events.has('bonus_loot'):
+			showLoot(OverworldGlobals.getCurrentMap().events['bonus_loot'], bonus_loot)
+	
 	if !show_clear:
 		animator.play("Show_Started")
 	else:
 		var tween = create_tween()
 		animator.play("Show")
-		showLoot(patroller_group)
+		showLoot(patroller_group.reward_bank['loot'])
 		level.text = str(PlayerGlobals.PARTY_LEVEL)
 		experience.max_value = PlayerGlobals.getRequiredExp()
 		experience.value = PlayerGlobals.CURRENT_EXP
@@ -29,17 +42,19 @@ func showAnimation(show_clear:bool, patroller_group: PatrollerGroup):
 	await animator.animation_finished
 	queue_free()
 
-func showLoot(patroller_group: PatrollerGroup):
-	var bank = patroller_group.reward_bank['loot']
-	for drop in bank.keys():
-		var icon = OverworldGlobals.createItemIcon(drop, bank[drop])
+func hasBonuses():
+	var map_events = OverworldGlobals.getCurrentMap().events
+	return map_events.has('bonus_experience') or map_events.has('bonus_loot')
+	
+func showLoot(loot_dict,container=loot):
+	for drop in loot_dict.keys():
+		var icon = OverworldGlobals.createItemIcon(drop, loot_dict[drop])
+		container.add_child(icon)
 		var tween = create_tween()
-		loot.add_child(icon)
 		tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
 		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
 		await get_tree().create_timer(0.15).timeout
-
 
 func createIcon(combatant: ResCombatant):
 	combatant.initializeCombatant()

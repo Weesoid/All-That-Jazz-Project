@@ -1,7 +1,6 @@
 extends CharacterBody2D
 class_name PlayerScene
 
-@onready var player_camera = $PlayerCamera
 @onready var sprite = $Sprite2D
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var player_animator = $WalkingAnimations
@@ -13,14 +12,8 @@ class_name PlayerScene
 @onready var player_direction = $PlayerDirection
 @onready var bow_line = $PlayerDirection/BowShotLine
 @onready var squad = $CombatantSquadComponent
-@onready var ammo_count = $PlayerCamera/Ammo
-@onready var crystal_count = $PlayerCamera/VoidCrystals
-@onready var prompt = $PlayerCamera/PlayerPrompt
+@onready var player_camera = $PlayerCamera
 @onready var audio_player = $AudioStreamPlayer2D
-@onready var cinematic_bars = $PlayerCamera/CinematicBars
-@onready var power_input_container = $PlayerCamera/PowerInputs
-@onready var quiver = $PlayerCamera/UtilitySelector
-@onready var color_overlay = $PlayerCamera/ColorOverlay
 @onready var drop_detector: Area2D = $PlayerDirection/Area2D
 @onready var animation_sprite = $AnimationSprite
 @onready var collision_shape: CollisionShape2D = $PlayerCollision
@@ -50,8 +43,6 @@ signal jumped(jump_velocity)
 signal phased
 
 func _ready():
-	#player_camera.global_position = global_position+sprite.offset
-	#player_camera.zoom = Vector2(1,1)
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	animation_tree.active = true
 	
@@ -172,10 +163,7 @@ func _physics_process(delta):
 	# Bow
 	if bow_mode and is_processing_input() and PlayerGlobals.EQUIPPED_ARROW != null:
 		drawBow()
-		ammo_count.show()
-		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
-	else:
-		ammo_count.hide()
+
 	
 	# Bow / sprint processes
 	if PlayerGlobals.overworld_stats['stamina'] <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
@@ -213,7 +201,7 @@ func canDive():
 
 func _input(_event):
 	# Power handling
-	if !channeling_power and power_listening and !can_move and power_input_container.get_child_count() < 3 and isMobile():
+	if !channeling_power and power_listening and !can_move and isMobile() and player_camera.power_input_container.get_child_count() < 3:
 		if Input.is_action_just_pressed('ui_left'):
 			power_inputs += 'a'
 			showPowerInput(POWER_LEFT)
@@ -226,16 +214,14 @@ func _input(_event):
 		elif Input.is_action_just_pressed('ui_down'):
 			power_inputs += 's'
 			showPowerInput(POWER_DOWN)
-	if Input.is_action_pressed("ui_gambit") and canUsePower() and !power_listening and can_move and isMobile():
+	if Input.is_action_pressed("ui_gambit") and canUsePower():
 		OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg")
 		OverworldGlobals.zoomCamera(Vector2(1.01,1.01))
 		toggleVoidAnimation(true)
 		sprinting = false
 		can_move = false
 		power_listening = true
-		if InventoryGlobals.hasItem('Void Resonance Crystal'):
-			crystal_count.show()
-			crystal_count.text = str(InventoryGlobals.getItem('Void Resonance Crystal').STACK)
+
 	elif (Input.is_action_just_released("ui_gambit") and canUsePower() and power_listening and !can_move) or (power_inputs.length() >= 3) and isMobile():
 		OverworldGlobals.zoomCamera(Vector2(1.0,1.0))
 		executePower()
@@ -251,6 +237,7 @@ func _input(_event):
 			bow_mode = !bow_mode
 		elif bow_draw_strength > 0:
 			undrawBow()
+
 	
 	# Debug
 #	if Input.is_action_pressed("ui_cheat_mode"):
@@ -295,12 +282,7 @@ func showPowerInput(texture:CompressedTexture2D):
 	icon.grow_vertical = Control.GROW_DIRECTION_BOTH
 	icon.set_anchors_preset(Control.PRESET_CENTER)
 	icon.texture = texture
-	power_input_container.add_child(icon)
-	var tween = create_tween().bind_node(icon).set_trans(Tween.TRANS_BOUNCE)
-	tween.tween_property(icon, 'scale', Vector2(1.25,1.25), 0.1)
-	tween.tween_property(icon, 'scale', Vector2(1.0,1.0), 0.25)
-	tween.tween_callback(tween.kill)
-	tween.tween_callback(icon.queue_free)
+	player_camera.addPowerInput(icon)
 
 func executePower():
 	for power in PlayerGlobals.KNOWN_POWERS:
@@ -309,7 +291,7 @@ func executePower():
 				InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.CRYSTAL_COST)
 				power.POWER_SCRIPT.executePower(self)
 			elif !canCastPower(power) and power_inputs.length() >= 3:
-				prompt.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
+				player_camera.prompt.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
 			return
 
 func canCastPower(power: ResPower):
@@ -320,8 +302,8 @@ func cancelPower():
 	toggleVoidAnimation(false)
 	power_listening = false
 	power_inputs = ''
-	crystal_count.hide()
-	for child in power_input_container.get_children():
+	player_camera.crystal_count.hide()
+	for child in player_camera.power_input_container.get_children():
 		var tween = create_tween().bind_node(child).set_trans(Tween.TRANS_BOUNCE).set_parallel(true)
 		tween.tween_property(child, 'modulate', Color.TRANSPARENT, 0.15)
 		tween.tween_property(child, 'scale', Vector2(1.5,1.5), 0.25)
@@ -340,8 +322,8 @@ func resetStates():
 	ANIMATION_SPEED = 0.0
 	power_inputs = ''
 	cancelPower()
-	quiver.select_name.text = ''
-	quiver.visible = false
+	player_camera.quiver.select_name.text = ''
+	player_camera.quiver.visible = false
 	Input.action_release("ui_bow_draw")
 
 func resetAnimation():
@@ -354,7 +336,7 @@ func canDrawBow()-> bool:
 #		prompt.showPrompt("Can't use [color=yellow]Bow[/color] right now.")
 #		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
-		prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
+		player_camera.prompt.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
 		return false
 	if PlayerGlobals.EQUIPPED_ARROW == null:
 		return false
@@ -368,15 +350,15 @@ func canDrawBow()-> bool:
 func canUsePower():
 	if OverworldGlobals.inMenu():
 		return false
-	if OverworldGlobals.getCurrentMap().SAFE:
-		prompt.showPrompt("Can't use [color=gray]Gambit[/color] right now.")
-		return false
+#	if OverworldGlobals.getCurrentMap().SAFE:
+#		player_camera.prompt.showPrompt("Can't use [color=gray]Gambit[/color] right now.")
+#		return false
 	if bow_draw_strength != 0.0:
 		return false
 	if OverworldGlobals.getCombatantSquad('Player').is_empty():
 		return false
 	
-	return true
+	return !power_listening and can_move and isMobile()
 
 func animateInteract():
 	if interaction_detector.get_overlapping_areas().size() > 0 and is_processing_input() and interaction_detector.get_overlapping_areas()[0].visible and !channeling_power and can_move:
@@ -444,16 +426,6 @@ func shootProjectile():
 	projectile.name = 'PlayerArrow'
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
-
-func showOverlay(color: Color, alpha:float, duration:float=0.25):
-	color_overlay.modulate = Color.TRANSPARENT
-	color_overlay.show()
-	await create_tween().tween_property(color_overlay, 'modulate', Color(color, alpha), duration).finished
-
-func hideOverlay(duration:float=0.25):
-	await create_tween().tween_property(color_overlay, 'modulate', Color.TRANSPARENT, duration).finished
-	color_overlay.hide()
-	color_overlay.modulate = Color.WHITE
 
 func shakeCamera(strength:float, speed:float):
 	player_camera.shake(strength,speed)

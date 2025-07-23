@@ -3,14 +3,19 @@ class_name PatrollerGroup
 
 @export var enemy_faction: CombatGlobals.Enemy_Factions
 @export var max_spawns: int = 4
+@export var destroy_objectives_chance:float= 0.0 # Chance to spawn destroyable objectives on patroller respawn.
 @export var destroy_objectives: bool = false
 var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
 
 func spawn():
-	if !isCleared(): 
+	if !isCleared():
+		destroy_objectives = rollDestroyObjectives()
 		if canSpawnDestructibleObjectives(): 
 			spawnDestructibleObjectives()
 		spawnPatrollers()
+
+func rollDestroyObjectives():
+	return PlayerGlobals.hasMapEvent(get_parent().scene_file_path) and CombatGlobals.randomRoll(destroy_objectives_chance)
 
 func isCleared():
 	var map = get_parent().scene_file_path
@@ -53,8 +58,9 @@ func isChancedSpawn(marker: Node2D):
 	return marker.name.to_lower().contains('chance')
 
 func giveRewards(ignore_stalker:bool=false):
+	var map: MapData = OverworldGlobals.getCurrentMap()
 	await get_tree().process_frame
-	OverworldGlobals.group_cleared.emit()
+	OverworldGlobals.group_cleared.emit(self)
 	# Stalker handling
 	if !OverworldGlobals.isPlayerAlive() or (canSpawnDestructibleObjectives() and getDestructibleObjectives().size() > 0): 
 		return
@@ -63,10 +69,14 @@ func giveRewards(ignore_stalker:bool=false):
 		PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
 		return
 	
+	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
 	# UI Map clear indicator handling
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+	print(map.getVerbalClearState())
 	map_clear_indicator.added_exp = reward_bank['experience']
 	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
+	if map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
+		map_clear_indicator.message.text = 'AREA CLEARED !'
 	map_clear_indicator.showAnimation(true, self)
 	
 	# Actual giving of rewards
@@ -78,20 +88,19 @@ func giveRewards(ignore_stalker:bool=false):
 			for i in range(reward_bank['loot'][item]): InventoryGlobals.addItemResource(item)
 	
 	# Current map handling
-	var map = OverworldGlobals.getCurrentMap()
+	
 	if map.events.has('bonus_loot'): # Add generated multipliers later
 		appendBonusLoot(reward_bank['loot'])
 	if map.events.has('bonus_experience'):
 		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
 	map.checkGiveClearRewards()
-	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
-	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+	#SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 
 func appendBonusLoot(loot_dict: Dictionary, stack_multiplier:float=0.25):
 	var map = OverworldGlobals.getCurrentMap()
 	
 	for item in loot_dict.keys():
-		var stack = int(loot_dict[item]*stack_multiplier)
+		var stack = ceil(loot_dict[item]*stack_multiplier)
 		if map.events['bonus_loot'].has(item):
 			map.events['bonus_loot'][item] += stack
 		else:

@@ -13,7 +13,7 @@ signal update_patroller_modes(mode:int)
 signal party_damaged
 signal combat_enetered
 signal combat_exited
-signal group_cleared
+signal group_cleared(group:PatrollerGroup)
 
 #func _process(_delta):
 #	print_orphan_nodes()
@@ -141,7 +141,7 @@ func showMenu(path: String):
 	getPlayer().velocity = Vector2.ZERO
 	setPlayerInput(false)
 	if !inMenu():
-		getPlayer().showOverlay(Color.BLACK, 0.5)
+		getPlayer().player_camera.showOverlay(Color.BLACK, 0.5)
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
 		setMouseController(true)
 		getPlayer().player_camera.add_child(main_menu)
@@ -164,7 +164,7 @@ func setMouseController(set_to:bool):
 		if has_node('MouseController'): get_node('MouseController').queue_free()
 
 func closeMenu(menu: Control):
-	getPlayer().hideOverlay()
+	getPlayer().player_camera.hideOverlay()
 	setMouseController(false)
 	menu.queue_free()
 	getPlayer().player_camera.get_node('uiMenu').queue_free()
@@ -261,9 +261,10 @@ func createItemIcon(item: ResItem, count:int):
 	var icon: TextureRect = TextureRect.new()
 	icon.texture = item.ICON.duplicate()
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	icon.pivot_offset = Vector2(icon.size.x/2,icon.size.y/2)
 	var count_label = Label.new()
 	count_label.text = str(count)
-	count_label.theme = preload("res://design/OutlinedLabel.tres")
+	count_label.theme = preload("res://design/OutlinedLabelThin.tres")
 	count_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	icon.add_child(count_label)
 	return icon
@@ -281,7 +282,7 @@ func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbi
 	return button
 
 func showPlayerPrompt(message: String, time=5.0, audio_file = ''):
-	OverworldGlobals.getPlayer().prompt.showPrompt(message, time, audio_file)
+	OverworldGlobals.getPlayer().player_camera.prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():

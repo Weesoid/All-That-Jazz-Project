@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://crqkcqks48t2k"]
 
-[ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="1_1bspd"]
+[ext_resource type="Script" path="res://scripts/components/ascPlayerCamera.gd" id="1_1hnbr"]
 [ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="2_wxyfx"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="3_e80uh"]
 [ext_resource type="PackedScene" uid="uid://j1akjh3lc0v" path="res://scenes/user_interface/Quiver.tscn" id="4_2483m"]
@@ -54,17 +54,19 @@ z_index = 99
 position = Vector2(0, -96)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
-script = ExtResource("1_1bspd")
+script = ExtResource("1_1hnbr")
 
 [node name="PlayerPrompt" parent="." instance=ExtResource("2_wxyfx")]
 
-[node name="ClearProgress" type="HBoxContainer" parent="."]
-offset_left = -264.0
-offset_top = 72.0
-offset_right = -168.0
-offset_bottom = 96.0
+[node name="ClearProgress" type="VBoxContainer" parent="."]
+offset_left = -288.0
+offset_top = -168.0
+offset_right = -172.0
+offset_bottom = 161.0
+alignment = 2
 
 [node name="StaminaBar" type="ProgressBar" parent="."]
+visible = false
 offset_left = -24.0
 offset_top = 30.0
 offset_right = -20.0
@@ -77,6 +79,7 @@ show_percentage = false
 script = ExtResource("3_e80uh")
 
 [node name="Ammo" type="Label" parent="."]
+visible = false
 offset_left = 17.0
 offset_top = 35.0
 offset_right = 57.0
@@ -126,6 +129,7 @@ grow_vertical = 2
 scale = Vector2(2, 2)
 
 [node name="UtilitySelector" parent="." instance=ExtResource("4_2483m")]
+visible = false
 position = Vector2(0, 8)
 scale = Vector2(1, 1)
 

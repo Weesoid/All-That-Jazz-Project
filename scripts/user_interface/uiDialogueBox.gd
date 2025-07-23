@@ -104,7 +104,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 ## Start some dialogue
 func start(dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []) -> void:
-	OverworldGlobals.getPlayer().cinematic_bars.visible = true
+	OverworldGlobals.getPlayer().player_camera.cinematic_bars.visible = true
 	#OverworldGlobals.getPlayer().playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(3, 3), 0.5)
 	OverworldGlobals.setPlayerInput(false)
@@ -229,7 +229,7 @@ func _on_dialogue_label_spoke(letter: String, letter_index: int, speed: float) -
 			talk_sound.pitch_scale = randf_range(pitch - 0.1, pitch + 0.1)
 
 func _exit_tree():
-	OverworldGlobals.getPlayer().cinematic_bars.visible = false
+	OverworldGlobals.getPlayer().player_camera.cinematic_bars.visible = false
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
 		print('DBox setting to true!')

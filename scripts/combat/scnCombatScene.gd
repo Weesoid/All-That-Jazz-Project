@@ -3,7 +3,7 @@ class_name CombatScene
 
 @export var COMBATANTS: Array[ResCombatant]
 
-@onready var combat_camera: DynamicCamera = $CombatCamera
+@onready var combat_camera = $CombatCamera
 @onready var combat_log = $CombatCamera/Interface/LogContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()

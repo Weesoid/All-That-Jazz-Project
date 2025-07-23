@@ -36,9 +36,6 @@ func _ready():
 		experience.hide()
 	if PlayerGlobals.CURRENCY > 0:
 		currency.show()
-	# TO DO: ...Need some sort of flag to determine whether or not player is interacting with combatant group...!
-#	if !OverworldGlobals.getCurrentMap().SAFE and OverworldGlobals.getCurrentMap().arePatrollersAlerted() and !PlayerGlobals.CLEARED_MAPS.keys().has(OverworldGlobals.getCurrentMap().scene_file_path):
-#		party.disabled = true
 
 func _on_tree_exited():
 	queue_free()
@@ -56,6 +53,7 @@ func _on_quests_pressed():
 	loadUserInterface("res://scenes/user_interface/Quest.tscn")
 
 func _on_quit_pressed():
+	
 	#confirm_dialog.connectYes(leaveToMain)
 #	confirm_dialog.dialog.confirmed.connect(leaveToMain)
 #	confirm_dialog.dialog.get_cancel_button().pressed.connect(queue_free)
@@ -64,7 +62,7 @@ func _on_quit_pressed():
 #	confirm_dialog.initial_position =Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 	#await confirm_dialog.dialog.confirmed
 	#if PlayerGlobals.isMapCleared(): 
-	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+	#SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
 	leaveToMain()
 #	else:
 #		disableButtons()
