@@ -1,10 +1,10 @@
 extends Node
 
-@export var HIT_SCRIPT: GDScript
-var BODY: CharacterBody2D
+@export var hit_script: GDScript
+var body: CharacterBody2D
 
 func _ready():
-	BODY = get_parent()
+	body = get_parent()
 
 func applyEffect():
-	HIT_SCRIPT.applyEffect(BODY)
+	hit_script.applyEffect(body)

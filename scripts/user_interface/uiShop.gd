@@ -68,7 +68,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			button.disabled = !InventoryGlobals.canAdd(item,1,false)
 			if !InventoryGlobals.canAdd(item,1,false): label.hide()
 		
-		if PlayerGlobals.CURRENCY >= item.VALUE * buy_modifier and mode == 1:
+		if PlayerGlobals.currency >= item.VALUE * buy_modifier and mode == 1:
 			label.add_theme_color_override('font_color', Color.GREEN)
 		elif mode == 1:
 			label.add_theme_color_override('font_color', Color.RED)
@@ -109,8 +109,8 @@ func loadSlider(item)-> int:
 	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
 	
 	if mode == 1:
-		if item.VALUE * buy_modifier != 0 and floor(PlayerGlobals.CURRENCY / (item.VALUE * buy_modifier)) <= item.REFERENCE_ITEM.MAX_STACK:
-			a_slider.max_v = floor(PlayerGlobals.CURRENCY / floor(item.VALUE * buy_modifier))
+		if item.VALUE * buy_modifier != 0 and floor(PlayerGlobals.currency / (item.VALUE * buy_modifier)) <= item.REFERENCE_ITEM.MAX_STACK:
+			a_slider.max_v = floor(PlayerGlobals.currency / floor(item.VALUE * buy_modifier))
 		else:
 			a_slider.max_v = InventoryGlobals.calculateValidAdd(item)
 	elif mode == 0:
@@ -127,7 +127,7 @@ func loadSlider(item)-> int:
 func setButtonFunction(selected_item):
 	match mode:
 		1: # BUY
-			if PlayerGlobals.CURRENCY < selected_item.VALUE * buy_modifier:
+			if PlayerGlobals.currency < selected_item.VALUE * buy_modifier:
 				OverworldGlobals.showPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.NAME)
 				return
 			
@@ -138,13 +138,13 @@ func setButtonFunction(selected_item):
 				OverworldGlobals.setMenuFocusMode(wares, true)
 				OverworldGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
-				PlayerGlobals.CURRENCY -= (floor(selected_item.VALUE * buy_modifier) * amount)
+				PlayerGlobals.currency -= (floor(selected_item.VALUE * buy_modifier) * amount)
 				showChange(-floor(selected_item.VALUE * buy_modifier) * amount)
 				if amount > 0:
 					OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			else:
 				InventoryGlobals.addItemResource(selected_item)
-				PlayerGlobals.CURRENCY -= floor(selected_item.VALUE * buy_modifier)
+				PlayerGlobals.currency -= floor(selected_item.VALUE * buy_modifier)
 				showChange(-floor(selected_item.VALUE * buy_modifier))
 				OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			loadWares(wares_array, selected_item)
@@ -159,9 +159,9 @@ func setButtonFunction(selected_item):
 			OverworldGlobals.setMenuFocusMode(wares, true)
 			OverworldGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
-			PlayerGlobals.CURRENCY += (floor(selected_item.VALUE * sell_modifier) * amount)
+			PlayerGlobals.currency += (floor(selected_item.VALUE * sell_modifier) * amount)
 			showChange(floor(selected_item.VALUE * sell_modifier) * amount)
-			loadWares(InventoryGlobals.INVENTORY, selected_item)
+			loadWares(InventoryGlobals.inventory, selected_item)
 			if amount > 0:
 				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
 			if !InventoryGlobals.hasItem(selected_item):
@@ -174,7 +174,7 @@ func _on_toggle_mode_pressed():
 			loadWares(wares_array)
 		1:
 			mode = 0
-			loadWares(InventoryGlobals.INVENTORY)
+			loadWares(InventoryGlobals.inventory)
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_tab_right') and !has_node('AmountSlider'):
@@ -184,7 +184,7 @@ func _on_barter_pressed():
 	var barter_items = []
 	var sold = false
 	var amount_sold
-	for item in InventoryGlobals.INVENTORY:
+	for item in InventoryGlobals.inventory:
 		if item is ResStackItem and item.BARTER_ITEM: 
 			barter_items.append(item)
 	
@@ -192,9 +192,9 @@ func _on_barter_pressed():
 		var amount = item.STACK
 		InventoryGlobals.removeItemResource(item, amount, false)
 		amount_sold = (floor(item.VALUE) * amount)
-		PlayerGlobals.CURRENCY += (floor(item.VALUE) * amount)
+		PlayerGlobals.currency += (floor(item.VALUE) * amount)
 		if mode == 0: 
-			loadWares(InventoryGlobals.INVENTORY)
+			loadWares(InventoryGlobals.inventory)
 		else:
 			loadWares(wares_array)
 		sold = true
@@ -203,7 +203,7 @@ func _on_barter_pressed():
 		showChange(amount_sold)
 
 func hasBarterItems():
-	for item in InventoryGlobals.INVENTORY:
+	for item in InventoryGlobals.inventory:
 		if item is ResStackItem and item.BARTER_ITEM: return true
 
 func showChange(amount: int):

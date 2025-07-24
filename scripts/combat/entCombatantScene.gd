@@ -92,10 +92,10 @@ func shootProjectile(target: CombatantScene, ability: ResAbility):
 	projectile.ability = ability
 	projectile.name = 'Projectile'
 	projectile.target = target
-	projectile.SHOOTER = self
+	projectile.shooter = self
 	#projectile.SPEED = 1250.0
-	if combatant_resource.RANGED_BULLET_TEXTURE != null:
-		projectile.get_node('Sprite2D').texture = combatant_resource.RANGED_BULLET_TEXTURE
+	if combatant_resource.bullet_texture != null:
+		projectile.get_node('Sprite2D').texture = combatant_resource.bullet_texture
 	projectile.global_position = global_position
 	if combatant_resource is ResEnemyCombatant and scale.x > 0:
 		projectile.rotation_degrees = 180

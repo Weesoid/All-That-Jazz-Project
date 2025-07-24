@@ -4,8 +4,8 @@ class_name ResCombatant
 
 ## Backend export variables
 @export var NAME: String
-@export var PACKED_SCENE: PackedScene
-@export var RANGED_BULLET_TEXTURE: Texture2D
+@export var packed_scene: PackedScene
+@export var bullet_texture: Texture2D
 @export_multiline var DESCRIPTION: String
 
 ## Frontend / Gameplay export variables
@@ -105,7 +105,7 @@ func scaleStats():
 	var stat_increase = {}
 	for stat in STAT_VALUES.keys():
 		if SCALE_STATS[stat]: 
-			stat_increase[stat] = (BASE_STAT_VALUES[stat] * (1 + ((PlayerGlobals.PARTY_LEVEL-1)*0.1))) - BASE_STAT_VALUES[stat]
+			stat_increase[stat] = (BASE_STAT_VALUES[stat] * (1 + ((PlayerGlobals.team_level-1)*0.1))) - BASE_STAT_VALUES[stat]
 #		if (stat == 'health' or  stat == 'hustle') and BASE_STAT_VALUES[stat]:
 #			stat_increase[stat] = int(stat_increase[stat])
 	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')

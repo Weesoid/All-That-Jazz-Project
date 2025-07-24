@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0f85fb7fa5hj"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://scripts/user_interface/CustomButton.gd" id="1_nr25w"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiCustomButton.gd" id="1_nr25w"]
 
 [node name="CustomButton" type="Button"]
 offset_right = 48.0

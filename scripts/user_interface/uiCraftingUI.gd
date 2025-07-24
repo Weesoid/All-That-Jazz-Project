@@ -13,12 +13,12 @@ extends Control
 var all_components: Array[ResItem] = [null, null, null]
 
 func _process(_delta):
-	if InventoryGlobals.RECIPES.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) != null:
-		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).ICON
+	if InventoryGlobals.recipes.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) != null:
+		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).icon
 		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME	
 		craft_button.show()
 		craft_button.disabled = canAddToInventory()
-	elif InventoryGlobals.RECIPES.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) == null:
+	elif InventoryGlobals.recipes.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) == null:
 		craft_button.text = 'UH OH! PLEASE SHOW WEES THIS INVALID RECIPE!!!'
 		craft_button.show()
 		craft_button.disabled = true
@@ -34,7 +34,7 @@ func _on_ready():
 	component_b.pressed.connect(func(): showItems(component_b, 2))
 	craft_button.connect('pressed', craft)
 	OverworldGlobals.setMenuFocus(base)
-	if InventoryGlobals.CRAFTED.is_empty():
+	if InventoryGlobals.crafted_items.is_empty():
 		recipe_button.hide()
 
 func canAddToInventory():
@@ -60,7 +60,7 @@ func craft():
 		InventoryGlobals.removeItemResource(all_components[i], 1, false)
 		updateComponentSlot(i)
 	
-	if !InventoryGlobals.RECIPES.has(recipeToString()):
+	if !InventoryGlobals.recipes.has(recipeToString()):
 		component_core.grab_focus()
 
 func updateComponentSlot(slot: int):
@@ -100,7 +100,7 @@ func showItems(slot_button: Button, slot: int):
 	cancel_button.grab_focus()
 	OverworldGlobals.setMenuFocusMode(base, false)
 	OverworldGlobals.setMenuFocusMode(repair_button, false)
-	for item in InventoryGlobals.INVENTORY:
+	for item in InventoryGlobals.inventory:
 		if all_components.has(item): continue
 		var button = OverworldGlobals.createItemButton(item)
 		button.pressed.connect(func(): addItemToSlot(item, slot, slot_button))
@@ -126,12 +126,12 @@ func showRecipes():
 	)
 	item_select_buttons.add_child(cancel_button)
 	cancel_button.grab_focus()
-	InventoryGlobals.CRAFTED.sort()
-	for recipe in InventoryGlobals.CRAFTED:
+	InventoryGlobals.crafted_items.sort()
+	for recipe in InventoryGlobals.crafted_items:
 		var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
 		button.custom_minimum_size = Vector2(32, 32)
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		button.icon = load("res://resources/items/%s.tres" % recipe).ICON
+		button.icon = load("res://resources/items/%s.tres" % recipe).icon
 		button.theme = load("res://design/ItemButtons.tres")
 		button.pressed.connect(func(): useRecipe(recipe))
 		button.mouse_entered.connect(func(): showRecipeDescription(recipe))
@@ -158,7 +158,7 @@ func showWeaponRepair():
 			OverworldGlobals.setMenuFocusMode(base, true)
 			OverworldGlobals.setMenuFocusMode(repair_button, true)
 	)
-	var weapons = InventoryGlobals.INVENTORY.filter(func(item): return item is ResWeapon)
+	var weapons = InventoryGlobals.inventory.filter(func(item): return item is ResWeapon)
 	var active_weapons = []
 	checkCanRepair(weapons, active_weapons)
 	for member in OverworldGlobals.getCombatantSquad('Player'):
@@ -195,7 +195,7 @@ func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 	if item.MANDATORY:
 		return
 	else:
-		slot_button.icon = item.ICON
+		slot_button.icon = item.icon
 		if item is ResStackItem:
 			slot_button.text = '%s x%s' % [item.NAME, item.STACK]
 		else:
@@ -231,8 +231,8 @@ func useRecipe(item: String):
 	
 #	if item.split('.').size() > 1:
 #		item = item.split('.')[0]
-	for result in InventoryGlobals.RECIPES.keys():
-		if InventoryGlobals.RECIPES[result].split('.')[0] == item:
+	for result in InventoryGlobals.recipes.keys():
+		if InventoryGlobals.recipes[result].split('.')[0] == item:
 			var i = 0
 			for component in result:
 				if InventoryGlobals.hasItem(component, 0, false):
@@ -245,8 +245,8 @@ func useRecipe(item: String):
 
 func showRecipeDescription(item_name: String):
 	var out = ''
-	for recipe in InventoryGlobals.RECIPES.keys():
-		if InventoryGlobals.RECIPES[recipe].split('.')[0] == item_name:
+	for recipe in InventoryGlobals.recipes.keys():
+		if InventoryGlobals.recipes[recipe].split('.')[0] == item_name:
 			out += load("res://resources/items/%s.tres" % item_name).getInformation()+'\n\nRecipe: '
 			var i = 1
 			for component in recipe:

@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0u8unfc6s68l"]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource type="Script" path="res://scripts/user_interface/scmPromptQuest.gd" id="1_mr51i"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiPromptQuest.gd" id="1_mr51i"]
 [ext_resource type="AudioStream" uid="uid://b2i5yin14h2a5" path="res://audio/sounds/430893__gsb1039__magic-3glitterarrival.ogg" id="2_2ql0a"]
 [ext_resource type="AudioStream" uid="uid://b81a4a5kv6cwo" path="res://audio/sounds/430894__gsb1039__magic-2wouwsinepad.ogg" id="3_3hgny"]
 

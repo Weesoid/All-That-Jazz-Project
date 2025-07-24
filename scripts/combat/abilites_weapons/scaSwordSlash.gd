@@ -8,7 +8,7 @@ static func skillCheck(target: CombatantScene , caster: CombatantScene, check: S
 	var qte = await CombatGlobals.spawnQuickTimeEvent(target, check, count)
 	var points = qte.points
 	qte.queue_free()
-	await CombatGlobals.playAbilityAnimation(caster.combatant_resource, ability.ANIMATION)
+	await CombatGlobals.playAbilityAnimation(caster.combatant_resource, ability.animation)
 	match points:
 		1:
 			CombatGlobals.addStatusEffect(target.combatant_resource, 'Singed')

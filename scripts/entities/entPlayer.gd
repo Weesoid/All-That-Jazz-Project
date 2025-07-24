@@ -100,7 +100,7 @@ func _physics_process(delta):
 		fall_damage += 1
 	
 	# Fall damage
-	if fall_damage != 0 and get_node('CombatantSquadComponent').COMBATANT_SQUAD.size() > 0 and is_on_floor():
+	if fall_damage != 0 and get_node('CombatantSquadComponent').combatant_squad.size() > 0 and is_on_floor():
 		var damage = floor(fall_damage/6)
 		if damage < 6:
 			fall_damage = 0
@@ -161,7 +161,7 @@ func _physics_process(delta):
 	
 	animation_tree.advance(ANIMATION_SPEED * delta)
 	# Bow
-	if bow_mode and is_processing_input() and PlayerGlobals.EQUIPPED_ARROW != null:
+	if bow_mode and is_processing_input() and PlayerGlobals.equipped_arrow != null:
 		drawBow()
 
 	
@@ -285,7 +285,7 @@ func showPowerInput(texture:CompressedTexture2D):
 	player_camera.addPowerInput(icon)
 
 func executePower():
-	for power in PlayerGlobals.KNOWN_POWERS:
+	for power in PlayerGlobals.known_powers:
 		if power.INPUT_MAP == power_inputs and power.INPUT_MAP != null: 
 			if canCastPower(power): 
 				InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.CRYSTAL_COST)
@@ -335,10 +335,10 @@ func canDrawBow()-> bool:
 #	if OverworldGlobals.getCurrentMap().SAFE:
 #		prompt.("Can't use [color=yellow]Bow[/color] right now.")
 #		return false
-	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0):
-		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.EQUIPPED_ARROW.NAME)
+	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.STACK <= 0):
+		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.NAME)
 		return false
-	if PlayerGlobals.EQUIPPED_ARROW == null:
+	if PlayerGlobals.equipped_arrow == null:
 		return false
 	if !isMobile():
 		return false
@@ -368,7 +368,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	if (PlayerGlobals.EQUIPPED_ARROW != null and PlayerGlobals.EQUIPPED_ARROW.STACK <= 0) and !PlayerGlobals.equipNewArrowType():
+	if (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.STACK <= 0) and !PlayerGlobals.equipNewArrowType():
 		bow_mode = false
 		toggleBowAnimation()
 	
@@ -419,10 +419,10 @@ func undrawBow():
 func shootProjectile():
 	bow_line.hide()
 	OverworldGlobals.playSound("178872__hanbaal__bow.ogg", -15.0, true)
-	InventoryGlobals.removeItemResource(PlayerGlobals.EQUIPPED_ARROW)
+	InventoryGlobals.removeItemResource(PlayerGlobals.equipped_arrow)
 	var projectile = load("res://scenes/entities_disposable/ProjectileArrow.tscn").instantiate()
 	projectile.global_position = bow_line.global_position
-	projectile.SHOOTER = self
+	projectile.shooter = self
 	projectile.name = 'PlayerArrow'
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497

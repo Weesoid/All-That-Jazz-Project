@@ -4,14 +4,14 @@ static func animate(caster: CombatantScene, target: CombatantScene, ability: Res
 			0:
 				CombatGlobals.getCombatScene().changeCombatantPosition(caster.combatant_resource, 1, false)
 				await caster.moveTo(target)
-				await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT)
+				await caster.doAnimation('Cast_Melee', ability.ability_script)
 				await caster.moveTo(caster.get_parent())
 			1:
 				CombatGlobals.getCombatScene().changeCombatantPosition(caster.combatant_resource, -1)
-				await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.7, 'ability'=ability})
+				await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=target,'frame_time'=0.7, 'ability'=ability})
 	else:
 		await caster.moveTo(target)
-		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT)
+		await caster.doAnimation('Cast_Melee', ability.ability_script)
 		await caster.moveTo(caster.get_parent())
 	
 	CombatGlobals.ability_finished.emit()

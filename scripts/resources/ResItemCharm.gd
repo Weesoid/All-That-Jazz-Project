@@ -11,7 +11,7 @@ func updateItem():
 	
 	var parent_item = load(PARENT_ITEM)
 	NAME = parent_item.NAME
-	ICON = parent_item.ICON
+	icon = parent_item.icon
 	DESCRIPTION = parent_item.DESCRIPTION
 	VALUE = parent_item.VALUE
 	MANDATORY = parent_item.MANDATORY

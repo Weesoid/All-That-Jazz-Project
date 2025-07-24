@@ -8,8 +8,7 @@ enum PatrollerClearState {
 }
 
 @export var NAME: String
-@export_multiline var DESCRIPTION: String
-@export var IMAGE: Texture
+@export_multiline var description: String
 @export var occupying_faction: CombatGlobals.Enemy_Factions
 @export var events: Dictionary = {
 	'additional_enemies':null,
@@ -74,9 +73,9 @@ func checkGiveClearRewards():
 	if events.has('reward_item'):
 		InventoryGlobals.addItemResource(events['reward_item'])
 	if events.has('bonus_loot'):
-		print('Add bonus loot')
+		InventoryGlobals.giveItemDict(events['bonus_loot'])
 	if events.has('bonus_experience'):
-		print('Add bonus experience')
+		PlayerGlobals.addExperience(events['bonus_experience'])
 	
 	PlayerGlobals.randomizeMapEvents(scene_file_path)
 

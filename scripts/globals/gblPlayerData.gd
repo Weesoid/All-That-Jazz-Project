@@ -1,21 +1,22 @@
 # Rename this to gblPlayerData
 extends Node
 
-var SAVE_NAME
-var TEAM: Array[ResPlayerCombatant]
-var TEAM_FORMATION: Array[ResCombatant]
+var save_name
+var team: Array[ResPlayerCombatant]
+var team_formation: Array[ResCombatant]
 var map_logs: Dictionary = {}
-var POWER: GDScript
-var KNOWN_POWERS: Array = [load("res://resources/powers/Stealth.tres")]
-var EQUIPPED_ARROW: ResProjectileAmmo
-var EQUIPPED_BLESSING: ResBlessing
-var CURRENCY = 100
-var PARTY_LEVEL = 1
-var MAX_PARTY_LEVEL = 5
-var CURRENT_EXP = 0
-var PROGRESSION_DATA: Dictionary = {} # This'll be handy later...
-var UNLOCKED_ABILITIES: Dictionary = {}
-var ADDED_ABILITIES: Dictionary = {}
+var power: GDScript
+var known_powers: Array = [load("res://resources/powers/Stealth.tres")]
+var equipped_arrow: ResProjectileAmmo
+var equipped_blessing: ResBlessing
+var currency = 100
+var team_level = 1
+var max_team_level = 5
+var current_exp = 0
+var progression_data: Dictionary = {} # This'll be handy later...
+var unlocked_abilities: Dictionary = {}
+var added_abilities: Dictionary = {}
+var current_stalker: ResStalkerData
 var overworld_stats: Dictionary = {
 	'stamina': 100.0,
 	'bow_max_draw': 5.0,
@@ -25,7 +26,7 @@ var overworld_stats: Dictionary = {
 	'stamina_gain': 0.15
 }
 # TEMPERMENTS!
-var PRIMARY_TEMPERMENTS: Dictionary = {
+var primary_temperments: Dictionary = {
 	'gifted': {'handling': 1},
 	'nimble': {'hustle': 4},
 	'lucky': {'crit':0.03},
@@ -37,7 +38,7 @@ var PRIMARY_TEMPERMENTS: Dictionary = {
 	'unyielding': {'heal_mult':0.2},
 	'all_arounder': {'hustle': 1, 'crit': 0.02, 'crit_dmg': 0.02, 'brawn': 0.02, 'grit': 0.02, 'resist': 0.02, 'accuracy': 0.02, 'heal_mult': 0.02}
 }
-var SECONDARY_TEMPERMENTS: Dictionary = {
+var secondary_temperments: Dictionary = {
 	# BUFFS
 	'clever': {'handling': 1},
 	'quick': {'hustle': 2},
@@ -71,7 +72,7 @@ var SECONDARY_TEMPERMENTS: Dictionary = {
 	'oblivious': {'accuracy':-0.05},
 	'stubborn': {'heal_mult':-0.15}
 }
-var current_stalker: ResStalkerData
+
 signal level_up
 
 func _ready():
@@ -79,21 +80,21 @@ func _ready():
 	#addExperience(99)
 
 func initializeBenchedTeam():
-	if PlayerGlobals.TEAM.is_empty():
+	if PlayerGlobals.team.is_empty():
 		return
 	
-	for member in TEAM:
+	for member in team:
 		if !member.initialized:
 			member.initializeCombatant(false)
 
 func getTeamMemberNames():
 	var out = []
-	for combatant in TEAM:
+	for combatant in team:
 		out.append(combatant.NAME)
 	return out
 
 func getTeamMember(member_name: String)-> ResPlayerCombatant:
-	for member in TEAM:
+	for member in team:
 		if member.NAME == member_name: return member
 	
 	return null
@@ -105,17 +106,17 @@ func applyBlessing(blessing):
 		blessing = load(blessing).instantiate()
 		OverworldGlobals.getPlayer().add_child(blessing)
 	
-	if EQUIPPED_BLESSING != null and blessing is ResBlessing:
-		EQUIPPED_BLESSING.setBlessing(false)
+	if equipped_blessing != null and blessing is ResBlessing:
+		equipped_blessing.setBlessing(false)
 	if blessing is ResBlessing:
-		EQUIPPED_BLESSING = blessing
+		equipped_blessing = blessing
 		OverworldGlobals.showPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
 		blessing.setBlessing(true)
 
 func equipNewArrowType():
-	var arrows: Array = InventoryGlobals.INVENTORY.filter(func(item): return item is ResProjectileAmmo)
+	var arrows: Array = InventoryGlobals.inventory.filter(func(item): return item is ResProjectileAmmo)
 	arrows.sort_custom(func(a, b): return a.STACK > b.STACK)
-	if !InventoryGlobals.hasItem(PlayerGlobals.EQUIPPED_ARROW) and !arrows.is_empty():
+	if !InventoryGlobals.hasItem(PlayerGlobals.equipped_arrow) and !arrows.is_empty():
 		arrows[0].equip()
 		return true
 	
@@ -125,113 +126,113 @@ func equipNewArrowType():
 # COMBATANT MANAGEMENT
 #********************************************************************************
 func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=false):
-#	if PARTY_LEVEL >= MAX_PARTY_LEVEL and !bypass_cap:
+#	if team_level >= max_team_level and !bypass_cap:
 #		OverworldGlobals.showPrompt('Max party level reached!')
 #		return
 	if show_message and !OverworldGlobals.getPlayer().has_node('ExperienceGainBar'):
 		var experience_bar_view = load("res://scenes/user_interface/ExperienceGainBar.tscn").instantiate()
 		experience_bar_view.added_exp = experience
 		OverworldGlobals.getPlayer().add_child(experience_bar_view)
-	CURRENT_EXP += experience
-	if PARTY_LEVEL >= MAX_PARTY_LEVEL and CURRENT_EXP >= getRequiredExp() and !bypass_cap:
-		CURRENT_EXP = getRequiredExp()
+	current_exp += experience
+	if team_level >= max_team_level and current_exp >= getRequiredExp() and !bypass_cap:
+		current_exp = getRequiredExp()
 		OverworldGlobals.showPrompt('Max level already reached!')
 		return
-	if CURRENT_EXP >= getRequiredExp() and (PARTY_LEVEL < MAX_PARTY_LEVEL or bypass_cap):
+	if current_exp >= getRequiredExp() and (team_level < max_team_level or bypass_cap):
 		var prev_required = getRequiredExp()
-		var prev_exp = CURRENT_EXP
-		PARTY_LEVEL += 1
-		CURRENT_EXP = 0
-		if PARTY_LEVEL <= MAX_PARTY_LEVEL:
+		var prev_exp = current_exp
+		team_level += 1
+		current_exp = 0
+		if team_level <= max_team_level:
 			levelUpCombatants()
 			if prev_exp - prev_required > 0:
 				addExperience(prev_exp - prev_required, show_message, bypass_cap)
-		elif PARTY_LEVEL >= MAX_PARTY_LEVEL:
+		elif team_level >= max_team_level:
 			OverworldGlobals.showPrompt('Max party level reached!')
-	elif CURRENT_EXP < 0:
-		CURRENT_EXP = 0
+	elif current_exp < 0:
+		current_exp = 0
 
 func levelUpTeam():
-	addExperience(getRequiredExp()-CURRENT_EXP, true)
+	addExperience(getRequiredExp()-current_exp, true)
 
 func getRequiredExp() -> int:
 	var baseExp = 500.0
 	var expMultiplier = 1.25
-	#print(PARTY_LEVEL)
-	var gain = pow(expMultiplier ** (PARTY_LEVEL - 1), 1.0/3.0) * baseExp # Chng to cubrrt
+	#print(team_level)
+	var gain = pow(expMultiplier ** (team_level - 1), 1.0/3.0) * baseExp # Chng to cubrrt
 	return int(gain)
 
 func increaseLevelCap(amount:int=5):
-	MAX_PARTY_LEVEL += amount
-	if CURRENT_EXP >= getRequiredExp():
+	max_team_level += amount
+	if current_exp >= getRequiredExp():
 		addExperience(1, true)
-	OverworldGlobals.showPrompt('Level cap increased to [color=yellow]%s[/color]!' % MAX_PARTY_LEVEL)
+	OverworldGlobals.showPrompt('Level cap increased to [color=yellow]%s[/color]!' % max_team_level)
 
 func getLevelTier():
-	if PARTY_LEVEL < 5:
+	if team_level < 5:
 		return 1
-	elif PARTY_LEVEL >= 5 and PARTY_LEVEL < 10:
+	elif team_level >= 5 and team_level < 10:
 		return 2
-	elif PARTY_LEVEL >= 10 and PARTY_LEVEL < 15:
+	elif team_level >= 10 and team_level < 15:
 		return 3
-	elif PARTY_LEVEL > 15:
+	elif team_level > 15:
 		return 4
 
 func addCurrency(value: int):
-	if value + CURRENCY < 0:
-		CURRENCY = 0
+	if value + currency < 0:
+		currency = 0
 	else:
-		CURRENCY += value
+		currency += value
 
 func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
-	if UNLOCKED_ABILITIES.keys().has(combatant):
-		UNLOCKED_ABILITIES[combatant].append(ability)
+	if unlocked_abilities.keys().has(combatant):
+		unlocked_abilities[combatant].append(ability)
 	else:
-		UNLOCKED_ABILITIES[combatant] = []
-		UNLOCKED_ABILITIES[combatant].append(ability)
+		unlocked_abilities[combatant] = []
+		unlocked_abilities[combatant].append(ability)
 
 func addAbility(combatant, ability):
 	if combatant is String:
-		for member in TEAM: 
+		for member in team: 
 			if member.NAME == combatant:
 				combatant = member
 				break
 	if ability is String:
 		ability = load("res://resources/combat/abilities/%s.tres" % ability)
 	
-	if ADDED_ABILITIES.keys().has(combatant):
-		ADDED_ABILITIES[combatant].append(ability)
+	if added_abilities.keys().has(combatant):
+		added_abilities[combatant].append(ability)
 	else:
-		ADDED_ABILITIES[combatant] = []
-		ADDED_ABILITIES[combatant].append(ability)
+		added_abilities[combatant] = []
+		added_abilities[combatant].append(ability)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.NAME, ability.NAME])
 	loadAddedAbilities()
 
 func addPower(power_file_name: String):
 	if FileAccess.file_exists("res://resources/powers/%s.tres" % power_file_name):
 		var power = load("res://resources/powers/%s.tres" % power_file_name)
-		KNOWN_POWERS.append(power)
+		known_powers.append(power)
 		OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.NAME)
 
 func loadAddedAbilities():
-	for member in TEAM:
-		if ADDED_ABILITIES.keys().has(member): 
-			member.ABILITY_POOL.append_array(ADDED_ABILITIES[member])
+	for member in team:
+		if added_abilities.keys().has(member): 
+			member.ABILITY_POOL.append_array(added_abilities[member])
 
 func hasAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 	return combatant.ABILITY_POOL.has(ability)
 
 func hasUnlockedAbility(combatant: ResPlayerCombatant, ability: ResAbility):
-	return (UNLOCKED_ABILITIES.keys().has(combatant) and UNLOCKED_ABILITIES[combatant].has(ability)) or ability.REQUIRED_LEVEL == 0
+	return (unlocked_abilities.keys().has(combatant) and unlocked_abilities[combatant].has(ability)) or ability.required_level == 0
 
 func hasActiveTeam()-> bool:
 	return !OverworldGlobals.getCombatantSquad('Player').is_empty()
 
 func levelUpCombatants():
-	for combatant in PlayerGlobals.TEAM:
+	for combatant in PlayerGlobals.team:
 		combatant.STAT_POINTS += 1
 		combatant.scaleStats()
-	OverworldGlobals.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [PARTY_LEVEL])
+	OverworldGlobals.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [team_level])
 	level_up.emit()
 
 func addCombatantToTeam(combatant_id):
@@ -244,29 +245,29 @@ func addCombatantToTeam(combatant_id):
 	elif combatant_id is ResCombatant:
 		combatant = combatant_id
 	if combatant.TEMPERMENT['primary'] == []:
-		combatant.TEMPERMENT['primary'].append(PlayerGlobals.PRIMARY_TEMPERMENTS.keys().pick_random())
+		combatant.TEMPERMENT['primary'].append(PlayerGlobals.primary_temperments.keys().pick_random())
 	if combatant.TEMPERMENT['secondary'] == []:
-		combatant.TEMPERMENT['secondary'].append(PlayerGlobals.SECONDARY_TEMPERMENTS.keys().pick_random())
-	combatant.STAT_POINTS = PARTY_LEVEL
-	TEAM.append(combatant)
+		combatant.TEMPERMENT['secondary'].append(PlayerGlobals.secondary_temperments.keys().pick_random())
+	combatant.STAT_POINTS = team_level
+	team.append(combatant)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
 
 func removeCombatant(combatant_id: ResPlayerCombatant):
-	for member in TEAM:
+	for member in team:
 		if member == combatant_id: 
 			member.reset()
-			TEAM.erase(member)
+			team.erase(member)
 			break
 	var removed_combatants = []
 	for member in OverworldGlobals.getCombatantSquad('Player'):
-		if !TEAM.has(member): removed_combatants.append(member)
+		if !team.has(member): removed_combatants.append(member)
 	for member in removed_combatants:
 		OverworldGlobals.getCombatantSquad('Player').erase(member)
-	TEAM_FORMATION = OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD
+	team_formation = OverworldGlobals.getPlayer().squad.combatant_squad
 	overwriteTeam()
 
 func loadSquad():
-	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.TEAM_FORMATION)
+	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.team_formation)
 
 func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/random'):
 	if combatant.TEMPERMENT['secondary'].size() >= 6:
@@ -276,7 +277,7 @@ func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/
 	
 	if temperment == '/random':
 		randomize()
-		var random_temperment = SECONDARY_TEMPERMENTS.keys().filter(func(key): return !combatant.TEMPERMENT['secondary'].has(key)).pick_random()
+		var random_temperment = secondary_temperments.keys().filter(func(key): return !combatant.TEMPERMENT['secondary'].has(key)).pick_random()
 		OverworldGlobals.showPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
 		combatant.TEMPERMENT['secondary'].append(random_temperment)
 	else:
@@ -312,7 +313,7 @@ func setFollowersMotion(enable:bool):
 			follower.stopWalkAnimation()
 
 func healCombatants(percent_heal:float=1.0,cure: bool=true):
-	for combatant in TEAM:
+	for combatant in team:
 		if !combatant.initialized: combatant.initializeCombatant(false)
 		combatant.STAT_VALUES['health'] = int(combatant.BASE_STAT_VALUES['health'] * percent_heal)
 		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
@@ -413,7 +414,7 @@ func hasClearedPatrolGroups(map_path):
 #func hasRespawnedPatrols(map_path):
 #	return map_logs[map_path].has('respawned')
 
-func addCommaToNum(value: int=CURRENCY) -> String:
+func addCommaToNum(value: int=currency) -> String:
 	var str_value: String = str(value)
 	var loop_end: int = 0 if value > -1 else 1
 	for i in range(str_value.length()-3, loop_end, -3):
@@ -421,40 +422,40 @@ func addCommaToNum(value: int=CURRENCY) -> String:
 	return str_value
 
 func overwriteTeam():
-	var current_save = load("res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
+	var current_save = load("res://saves/%s.tres" % PlayerGlobals.save_name)
 	for data in current_save.save_data:
 		if data is PlayerSaveData: 
-			data.TEAM = TEAM
-			data.TEAM_FORMATION = TEAM_FORMATION
+			data.team = team
+			data.team_formation = team_formation
 			break
-	ResourceSaver.save(current_save, "res://saves/%s.tres" % PlayerGlobals.SAVE_NAME)
+	ResourceSaver.save(current_save, "res://saves/%s.tres" % PlayerGlobals.save_name)
 	#return sa
 
 func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
-	data.TEAM = TEAM
+	data.team = team
 	#data.FOLLOWERS = FOLLOWERS
-	data.POWER = POWER
-	data.EQUIPPED_ARROW = EQUIPPED_ARROW
-	data.CURRENCY = CURRENCY
-	data.PARTY_LEVEL = PARTY_LEVEL
-	data.CURRENT_EXP = CURRENT_EXP
+	data.power = power
+	data.equipped_arrow = equipped_arrow
+	data.currency = currency
+	data.team_level = team_level
+	data.current_exp = current_exp
 	data.map_logs = map_logs
-	data.KNOWN_POWERS = KNOWN_POWERS
+	data.known_powers = known_powers
 #	data.overworld_stats['stamina'] = stamina
 #	data.overworld_stats['bow_max_draw']= bow_max_draw
 #	data.overworld_stats['walk_speed'] = walk_speed
 #	data.sprint_speed = sprint_speed
 #	data.sprint_drain = sprint_drain
 #	data.stamina_gain = stamina_gain
-	data.PROGRESSION_DATA = PROGRESSION_DATA
-	data.TEAM_FORMATION = TEAM_FORMATION
-	data.EQUIPPED_BLESSING = EQUIPPED_BLESSING
-	data.UNLOCKED_ABILITIES = UNLOCKED_ABILITIES
-	data.ADDED_ABILITIES = ADDED_ABILITIES
-	data.MAX_PARTY_LEVEL = MAX_PARTY_LEVEL
+	data.progression_data = progression_data
+	data.team_formation = team_formation
+	data.equipped_blessing = equipped_blessing
+	data.unlocked_abilities = unlocked_abilities
+	data.added_abilities = added_abilities
+	data.max_team_level = max_team_level
 	
-	for combatant in TEAM:
+	for combatant in team:
 		data.COMBATANT_SAVE_DATA[combatant] = [
 			combatant.ABILITY_SET,
 			combatant.CHARMS,
@@ -475,28 +476,28 @@ func saveData(save_data: Array):
 	save_data.append(data)
 
 func loadData(save_data: PlayerSaveData):
-	OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.clear()
-	TEAM = save_data.TEAM
-	POWER = save_data.POWER
-	EQUIPPED_ARROW = save_data.EQUIPPED_ARROW
-	CURRENCY = save_data.CURRENCY
-	PARTY_LEVEL = save_data.PARTY_LEVEL
-	CURRENT_EXP = save_data.CURRENT_EXP
+	OverworldGlobals.getPlayer().squad.combatant_squad.clear()
+	team = save_data.team
+	power = save_data.power
+	equipped_arrow = save_data.equipped_arrow
+	currency = save_data.currency
+	team_level = save_data.team_level
+	current_exp = save_data.current_exp
 	map_logs = save_data.map_logs
-	PROGRESSION_DATA = save_data.PROGRESSION_DATA
-	TEAM_FORMATION = save_data.TEAM_FORMATION
-	EQUIPPED_BLESSING = save_data.EQUIPPED_BLESSING
-	UNLOCKED_ABILITIES = save_data.UNLOCKED_ABILITIES
-	ADDED_ABILITIES = save_data.ADDED_ABILITIES
-	MAX_PARTY_LEVEL = save_data.MAX_PARTY_LEVEL
-	KNOWN_POWERS = save_data.KNOWN_POWERS
-	if EQUIPPED_BLESSING != null: EQUIPPED_BLESSING.setBlessing(true)
+	progression_data = save_data.progression_data
+	team_formation = save_data.team_formation
+	equipped_blessing = save_data.equipped_blessing
+	unlocked_abilities = save_data.unlocked_abilities
+	added_abilities = save_data.added_abilities
+	max_team_level = save_data.max_team_level
+	known_powers = save_data.known_powers
+	if equipped_blessing != null: equipped_blessing.setBlessing(true)
 	
 	initializeBenchedTeam()
 	OverworldGlobals.initializePlayerParty()
-	OverworldGlobals.setCombatantSquad('Player', TEAM_FORMATION)
+	OverworldGlobals.setCombatantSquad('Player', team_formation)
 	loadAddedAbilities()
-	for combatant in TEAM:
+	for combatant in team:
 		#combatant.reset()
 		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
 		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][1]
@@ -527,25 +528,25 @@ func loadData(save_data: PlayerSaveData):
 	overworld_stats['stamina'] = 100.0 # DO NOT TOUCH STAMINA FOR BLESSINGS!
 	
 func resetVariables():
-	for member in TEAM:
+	for member in team:
 		member.reset()
 	
-	SAVE_NAME = null
-	TEAM = [preload("res://resources/combat/combatants_player/Willis.tres")]
-	TEAM_FORMATION = []
+	save_name = null
+	team = [preload("res://resources/combat/combatants_player/Willis.tres")]
+	team_formation = []
 	#FOLLOWERS = []
 	map_logs = {}
-	POWER = null
-	KNOWN_POWERS = [load("res://resources/powers/Stealth.tres")]
-	EQUIPPED_ARROW = null
-	EQUIPPED_BLESSING = null
-	CURRENCY = 100
-	PARTY_LEVEL = 1
-	MAX_PARTY_LEVEL = 5
-	CURRENT_EXP = 0
-	PROGRESSION_DATA = {}
-	UNLOCKED_ABILITIES = {}
-	ADDED_ABILITIES = {}
+	power = null
+	known_powers = [load("res://resources/powers/Stealth.tres")]
+	equipped_arrow = null
+	equipped_blessing = null
+	currency = 100
+	team_level = 1
+	max_team_level = 5
+	current_exp = 0
+	progression_data = {}
+	unlocked_abilities = {}
+	added_abilities = {}
 	overworld_stats = {
 		'stamina': 100.0,
 		'bow_max_draw': 5.0,

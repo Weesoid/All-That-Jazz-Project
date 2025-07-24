@@ -1,6 +1,6 @@
 # Cast animations, gap closing, etc.
 static func animate(caster: CombatantScene, target, ability:ResAbility):
-	for effect in ability.BASIC_EFFECTS:
+	for effect in ability.basic_effects:
 		ability.current_effect = effect
 		#print(ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource))
 		if (target is CombatantScene and !ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource)) or (effect.is_combo_effect and !canDoCombo(effect, target)):
@@ -44,7 +44,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			CombatGlobals.getCombatScene().fadeCombatant(caster, true)
 			if effect.projectile_frame != null:
 				caster.setProjectileTarget(target, effect.projectile_frame, ability, 'Onslaught')
-			await caster.doAnimation(effect.animation_name, ability.ABILITY_SCRIPT)
+			await caster.doAnimation(effect.animation_name, ability.ability_script)
 			#await CombatGlobals.getCombatScene().get_tree().process_frame # This might be stupid.
 			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)
 			CombatGlobals.getCombatScene().team_hp_bar.hide()
@@ -60,7 +60,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 # Determine if target(s) is single or multi
 static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
 	if ability.current_effect == null:
-		ability.current_effect = ability.BASIC_EFFECTS[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
+		ability.current_effect = ability.basic_effects[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
 	
 	if target is Array and ability.current_effect.is_combo_effect and ability.current_effect.effect_only_combo_targets:
 		target = target.filter(func(combatant): return combatant.hasStatusEffect('Combo'))
@@ -150,16 +150,16 @@ static func applyToTarget(caster, target, ability: ResAbility):
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResDamageEffect):
 	if damage_effect.damage_type == damage_effect.DamageType.MELEE:
 		await caster.moveTo(target)
-		await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT) # SPEED UP {'anim_speed':1.5}
+		await caster.doAnimation('Cast_Melee', ability.ability_script) # SPEED UP {'anim_speed':1.5}
 		await returnToPosition(damage_effect, caster)
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
-		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=target,'frame_time'=0.4,'ability'=ability})
+		await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=target,'frame_time'=0.4,'ability'=ability})
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
-		await caster.doAnimation('Cast_Ranged', ability.ABILITY_SCRIPT, {'target'=null,'frame_time'=0.4,'ability'=ability})
+		await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=null,'frame_time'=0.4,'ability'=ability})
 	elif damage_effect.damage_type == damage_effect.DamageType.CUSTOM:
 		if damage_effect.cast_animation['go_to_target']:
 			await caster.moveTo(target)
-		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ABILITY_SCRIPT)
+		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ability_script)
 		if damage_effect.cast_animation['go_to_target']:
 			await returnToPosition(damage_effect, caster)
 

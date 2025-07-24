@@ -9,11 +9,11 @@ func _ready():
 	var tween = create_tween()
 	animator.play('Show')
 	experience.max_value = PlayerGlobals.getRequiredExp()
-	experience.value = PlayerGlobals.CURRENT_EXP
+	experience.value = PlayerGlobals.current_exp
 	tween.tween_property(experience, 'value', experience.value+added_exp,0.5)
 	await tween.finished
 	if experience.value >= experience.max_value:
-		if PlayerGlobals.MAX_PARTY_LEVEL <= PlayerGlobals.PARTY_LEVEL:
+		if PlayerGlobals.max_team_level <= PlayerGlobals.team_level:
 			label.text = 'Max!'
 		else:
 			label.text = 'Lvl Up!'

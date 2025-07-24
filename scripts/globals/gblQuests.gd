@@ -1,6 +1,6 @@
 extends Node
 
-var QUESTS: Array[ResQuest]
+var quests: Array[ResQuest]
 
 func promptQuestCompleted(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
@@ -11,25 +11,25 @@ func promptQuestCompleted(quest: ResQuest):
 
 func addQuest(quest_name: String):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
-	var quest = load("res://resources/quests/%s.tres" % quest_name)
+	var out_quest = load("res://resources/quests/%s.tres" % quest_name)
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
-	prompt.setTitle(quest.NAME)
+	prompt.setTitle(out_quest.NAME)
 	prompt.playAnimation('show_quest')
 	
-	quest.OBJECTIVES[0].ACTIVE = true
-	QUESTS.append(quest)
+	out_quest.OBJECTIVES[0].ACTIVE = true
+	quests.append(out_quest)
 
 func hasQuest(quest_name: String):
-	if QUESTS.is_empty() or getQuest(quest_name) == null: 
+	if quests.is_empty() or getQuest(quest_name) == null: 
 		return false
 	
-	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
-	return quest != null
+	var out_quest = quests[quests.find(getQuest(quest_name))]
+	return out_quest != null
 
 func isQuestCompleted(quest_name: String):
-	if QUESTS.is_empty(): return false
-	var quest = QUESTS[QUESTS.find(getQuest(quest_name))]
-	return quest.COMPLETED
+	if quests.is_empty(): return false
+	var out_quest = quests[quests.find(getQuest(quest_name))]
+	return out_quest.COMPLETED
 
 func isObjectiveActive(quest_name: String, quest_objective_name: String)-> bool:
 	return hasQuest(quest_name) and getQuest(quest_name).getObjective(quest_objective_name).ACTIVE and !getQuest(quest_name).getObjective(quest_objective_name).COMPLETED
@@ -40,21 +40,21 @@ func completeQuestObjective(quest_name: String, quest_objective_name: String, ou
 
 
 func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String) -> bool:
-	if QUESTS.is_empty() or getQuest(quest_name) == null: 
+	if quests.is_empty() or getQuest(quest_name) == null: 
 		return false
 	
 	return getQuest(quest_name).getObjective(quest_objective_name).COMPLETED
 
 func getQuest(quest_name: String)-> ResQuest:
-	for quest in QUESTS:
+	for quest in quests:
 		if quest.NAME.to_lower() == quest_name.to_lower(): return quest
 	
 	return null
 
 func saveData(save_data: Array):
 	var data: QuestSaveData = QuestSaveData.new()
-	data.QUESTS = QUESTS
-	for quest in QUESTS:
+	data.quests = quests
+	for quest in quests:
 		var objectives_data = {}
 		for objective in quest.OBJECTIVES:
 			objectives_data[objective.NAME] = [objective.ACTIVE, objective.COMPLETED, objective.OUTCOME]
@@ -62,8 +62,8 @@ func saveData(save_data: Array):
 	save_data.append(data)
 
 func loadData(save_data: QuestSaveData):
-	QUESTS = save_data.QUESTS
-	for quest in QUESTS:
+	quests = save_data.quests
+	for quest in quests:
 		for objective in quest.OBJECTIVES:
 			objective.ACTIVE = save_data.QUEST_OBJECTIVES_DATA[quest][objective.NAME][0]
 			objective.COMPLETED = save_data.QUEST_OBJECTIVES_DATA[quest][objective.NAME][1]
@@ -71,4 +71,4 @@ func loadData(save_data: QuestSaveData):
 		quest.isCompleted(false)
 
 func resetVariables():
-	QUESTS = []
+	quests = []

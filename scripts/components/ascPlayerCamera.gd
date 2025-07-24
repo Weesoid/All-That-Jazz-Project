@@ -22,7 +22,7 @@ func _process(_delta):
 	# TO DO: Move this to input..!
 	if player.bow_mode:
 		ammo_count.show()
-		ammo_count.text = str(PlayerGlobals.EQUIPPED_ARROW.STACK)
+		ammo_count.text = str(PlayerGlobals.equipped_arrow.STACK)
 	else:
 		ammo_count.hide()
 

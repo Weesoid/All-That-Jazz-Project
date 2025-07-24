@@ -32,7 +32,7 @@ func _process(_delta):
 		if combatant.STAT_POINTS >= 5:
 			handling_up.show()
 			handling_bonus.show()
-		elif PlayerGlobals.PARTY_LEVEL < 5:
+		elif PlayerGlobals.team_level < 5:
 			handling_up.hide()
 			handling_bonus.hide()
 		if combatant.STAT_POINT_ALLOCATIONS['handling'] != 0:

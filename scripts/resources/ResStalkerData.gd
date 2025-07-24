@@ -33,9 +33,9 @@ func canSpawn()-> bool:
 		return true
 	
 	for key in conditions:
-		if !PlayerGlobals.PROGRESSION_DATA.has(key):
+		if !PlayerGlobals.progression_data.has(key):
 			return false
-		elif !PlayerGlobals.PROGRESSION_DATA[key]:
+		elif !PlayerGlobals.progression_data[key]:
 			return false
 	
 	return true

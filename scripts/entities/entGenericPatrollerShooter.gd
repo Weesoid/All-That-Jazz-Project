@@ -14,7 +14,7 @@ func doAction():
 	action_cooldown.start()
 	var shot = projectile.getProjectile()
 	shot.global_position = global_position + Vector2(0, -10)
-	shot.SHOOTER = self
+	shot.shooter = self
 	get_tree().current_scene.add_child(shot)
 	shot.rotation = line_of_sight.rotation + 1.57079994678497
 	animator.play('Action')

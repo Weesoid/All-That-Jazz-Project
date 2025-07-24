@@ -16,4 +16,4 @@ func add(count: int, show_prompt=true):
 func take(count: int):
 	STACK -= count
 	if STACK <= 0:
-		InventoryGlobals.INVENTORY.erase(self)
+		InventoryGlobals.inventory.erase(self)

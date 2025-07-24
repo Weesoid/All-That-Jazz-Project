@@ -223,12 +223,12 @@ func useAIPackage():
 	selected_ability = active_combatant.AI_PACKAGE.selectAbility(active_combatant.ABILITY_SET, active_combatant)
 	if selected_ability != null:
 		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), active_combatant is ResPlayerCombatant)
-		if selected_ability.getTargetType() == 1 and selected_ability.TARGET_GROUP != 2:
+		if selected_ability.getTargetType() == 1 and selected_ability.target_group != 2:
 			target_combatant = active_combatant.AI_PACKAGE.selectTarget(valid_targets)
 		else:
 			target_combatant = valid_targets
 		if target_combatant != null:
-			if selected_ability.CHARGES > 0: updateAbilityChargeTracker(active_combatant, selected_ability)
+			if selected_ability.charges > 0: updateAbilityChargeTracker(active_combatant, selected_ability)
 			executeAbility()
 	else:
 		selected_ability = load("res://resources/combat/abilities/Struggle.tres")
@@ -329,13 +329,13 @@ func end_turn(combatant_act=true):
 				await addCombatant(random, true, "res://scenes/animations_abilities/Reinforcements.tscn")
 	
 	# Determine next combatant
-	if selected_ability == null or !selected_ability.INSTANT_CAST:
+	if selected_ability == null or !selected_ability.instant_cast:
 		if has_node('QTE'):
 			await CombatGlobals.qte_finished
 			await get_node('QTE').tree_exited
 		setActiveCombatant()
 	elif !active_combatant.isImmobilized():
-		selected_ability.ENABLED = false
+		selected_ability.enabled = false
 		active_combatant.TURN_CHARGES += 1
 		combatant_turn_order.push_front([active_combatant, 1])
 	else:
@@ -430,7 +430,7 @@ func _on_escape_pressed():
 			battleFlash('Flash', Color.YELLOW)
 		bonus_escape_chance += 0.1
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
-		if selected_ability != null and selected_ability.INSTANT_CAST: selected_ability = null
+		if selected_ability != null and selected_ability.instant_cast: selected_ability = null
 		confirm.emit()
 		CombatGlobals.addStatusEffect(previous_active, 'Dazed', true)
 
@@ -501,7 +501,7 @@ func getPlayerAbilities(ability_set: Array[ResAbility]):
 	if active_combatant.EQUIPPED_WEAPON != null:
 		var button = createAbilityButton(active_combatant.EQUIPPED_WEAPON.EFFECT, active_combatant.EQUIPPED_WEAPON)
 		button.custom_charge = active_combatant.EQUIPPED_WEAPON.durability
-		if !active_combatant.EQUIPPED_WEAPON.EFFECT.ENABLED or active_combatant.EQUIPPED_WEAPON.durability <= 0:
+		if !active_combatant.EQUIPPED_WEAPON.EFFECT.enabled or active_combatant.EQUIPPED_WEAPON.durability <= 0:
 			button.disabled = true
 		secondary_panel_container.add_child(button)
 	if isCombatValid():
@@ -560,7 +560,7 @@ func createAbilityButton(ability: ResAbility, weapon:ResWeapon=null)-> Button:
 	button.pressed.connect(func(): forceCastAbility(ability, weapon))
 	button.focus_entered.connect(func():updateDescription(ability))
 	button.mouse_entered.connect(func():updateDescription(ability))
-	if !ability.ENABLED or !ability.canUse(active_combatant, COMBATANTS):
+	if !ability.enabled or !ability.canUse(active_combatant, COMBATANTS):
 		button.disabled = true
 	if ability == load("res://resources/combat/abilities/BraceSelf.tres") and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
 		button.disabled = true
@@ -632,14 +632,14 @@ func executeAbility():
 	
 	await get_tree().create_timer(0.25).timeout
 	if target_combatant is ResCombatant:
-		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
+		selected_ability.ability_script.animate(active_combatant.SCENE, target_combatant.SCENE, selected_ability)
 	else:
-		selected_ability.ABILITY_SCRIPT.animate(active_combatant.SCENE, target_combatant, selected_ability)
-	if selected_ability.TARGET_TYPE == 0 and !selected_ability.isOnslaught():
+		selected_ability.ability_script.animate(active_combatant.SCENE, target_combatant, selected_ability)
+	if selected_ability.target_type == 0 and !selected_ability.isOnslaught():
 		moveCamera(target_combatant.SCENE.global_position)
-	elif selected_ability.TARGET_TYPE == 0 and selected_ability.isOnslaught():
+	elif selected_ability.target_type == 0 and selected_ability.isOnslaught():
 		moveCamera(camera_position)
-	elif selected_ability.TARGET_TYPE == 1:
+	elif selected_ability.target_type == 1:
 		moveCamera(target_combatant[0].SCENE.global_position)
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
@@ -681,11 +681,11 @@ func skipTurn():
 
 # For executing combat events and such.
 func commandExecuteAbility(target, ability: ResAbility):
-	if ability.TARGET_TYPE == ability.TargetType.MULTI:
+	if ability.target_type == ability.TargetType.MULTI:
 		target = ability.getValidTargets(COMBATANTS, active_combatant is ResPlayerCombatant)
 	if ability.isBasicAbility():
-		ability.ABILITY_SCRIPT.animate(null, target, ability)
-	ability.ABILITY_SCRIPT.applyEffects(null, target, ability)
+		ability.ability_script.animate(null, target, ability)
+	ability.ability_script.applyEffects(null, target, ability)
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
@@ -767,7 +767,7 @@ func removeCombatant(combatant: ResCombatant):
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
-	if ability.TARGET_TYPE == ability.TargetType.MULTI:
+	if ability.target_type == ability.TargetType.MULTI:
 		addTargetClickButton(active_combatant)
 	elif valid_targets is Array:
 		for target in valid_targets: addTargetClickButton(target)
@@ -780,28 +780,28 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	tension_bar.hide()
 	secondary_action_panel.hide()
 	action_panel.hide()
-	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.TARGET_TYPE == ability.TargetType.SINGLE:
+	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.target_type == ability.TargetType.SINGLE:
 		targetCombatant(last_used_ability[active_combatant][1])
 	await target_selected
 	runAbility()
 	if weapon != null: 
 		weapon.useDurability()
-	if ability.CHARGES > 0:
+	if ability.charges > 0:
 		updateAbilityChargeTracker(active_combatant, ability)
 
 func updateAbilityChargeTracker(caster: ResCombatant, ability: ResAbility):
 	if ability_charge_tracker.has(caster) and ability_charge_tracker[caster].has(ability):
 		ability_charge_tracker[caster][ability] -= 1
 	elif ability_charge_tracker.has(caster) and !ability_charge_tracker[caster].has(ability):
-		ability_charge_tracker[caster][ability] = ability.CHARGES-1
+		ability_charge_tracker[caster][ability] = ability.charges-1
 	else:
-		ability_charge_tracker[caster] = {ability:ability.CHARGES-1}
+		ability_charge_tracker[caster] = {ability:ability.charges-1}
 
 func getChargesLeft(combatant: ResCombatant, ability: ResAbility):
 	if ability_charge_tracker.has(combatant) and ability_charge_tracker[combatant].has(ability):
 		return ability_charge_tracker[combatant][ability]
 	else:
-		return ability.CHARGES
+		return ability.charges
 
 func updateDescription(ability: ResAbility, text: String=''):
 	if ability != null:
@@ -956,7 +956,7 @@ func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duratio
 
 func refreshInstantCasts(combatant: ResCombatant):
 	for ability in combatant.ABILITY_SET:
-		if !ability.ENABLED and ability.INSTANT_CAST: ability.ENABLED = true
+		if !ability.enabled and ability.instant_cast: ability.enabled = true
 
 func incrementIndex(index:int, increment: int, limit: int):
 	return (index + increment) % limit
@@ -1085,7 +1085,7 @@ func concludeCombat(results: int):
 		OverworldGlobals.showGameOver(end_sentence)
 	else:
 		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 180.0, 2)
-	CombatGlobals.TENSION = 0
+	CombatGlobals.tension = 0
 	OverworldGlobals.setMouseController(false)
 	queue_free()
 

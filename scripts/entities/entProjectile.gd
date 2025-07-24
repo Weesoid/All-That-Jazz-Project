@@ -1,31 +1,31 @@
 extends Area2D
 class_name Projectile
 
-@export var SPEED = 1500.0
-@export var IMPACT_SOUND: AudioStream = preload("res://audio/sounds/13_Ice_explosion_01.ogg")
-@export var FREE_DISTANCE: float = 325.0
-@export var PROJECTILE_TEXTURE: Texture
-@export var NO_CLIP_TIME: float = 0.0
+@export var speed = 1500.0
+@export var impact_sound: AudioStream = preload("res://audio/sounds/13_Ice_explosion_01.ogg")
+@export var free_distance: float = 325.0
+@export var projectile_texture: Texture
+@export var no_clip_time: float = 0.0
 
 @onready var sprite = $Sprite2D
-@onready var AUDIO = $AudioStreamPlayer2D
-var SHOOTER: CharacterBody2D
-var SPAWN_LOCATION: Vector2
+@onready var audio = $AudioStreamPlayer2D
+var shooter: CharacterBody2D
+var spawn_location: Vector2
 
 func _ready():
-	SPAWN_LOCATION = global_position
-	if PROJECTILE_TEXTURE != null: 
-		sprite.texture = PROJECTILE_TEXTURE
-	if NO_CLIP_TIME > 0.0:
+	spawn_location = global_position
+	if projectile_texture != null: 
+		sprite.texture = projectile_texture
+	if no_clip_time > 0.0:
 		set_collision_layer_value(1, false)
 		set_collision_mask_value(1, false)
-		await get_tree().create_timer(NO_CLIP_TIME).timeout
+		await get_tree().create_timer(no_clip_time).timeout
 		set_collision_layer_value(1, true)
 		set_collision_mask_value(1, true)
 
 func _physics_process(delta):
-	global_position += Vector2(cos(rotation), sin(rotation)) * SPEED * delta
-	if global_position.distance_to(SPAWN_LOCATION)>FREE_DISTANCE: queue_free()
+	global_position += Vector2(cos(rotation), sin(rotation)) * speed * delta
+	if global_position.distance_to(spawn_location)>free_distance: queue_free()
 
 func _on_body_entered(body):
 	var _b = body

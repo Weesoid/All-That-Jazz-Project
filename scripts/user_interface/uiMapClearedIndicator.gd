@@ -28,14 +28,14 @@ func showAnimation(show_clear:bool, patroller_group: PatrollerGroup):
 		var tween = create_tween()
 		animator.play("Show")
 		showLoot(patroller_group.reward_bank['loot'])
-		level.text = str(PlayerGlobals.PARTY_LEVEL)
+		level.text = str(PlayerGlobals.team_level)
 		experience.max_value = PlayerGlobals.getRequiredExp()
-		experience.value = PlayerGlobals.CURRENT_EXP
+		experience.value = PlayerGlobals.current_exp
 		OverworldGlobals.playSound("res://audio/sounds/698992__robindouglasjohnson__modeltoy-train-set.ogg",4.0)
 		tween.tween_property(experience, 'value', experience.value+added_exp,0.5)
 		await tween.finished
 		if experience.value >= experience.max_value:
-			level.text = str(PlayerGlobals.PARTY_LEVEL)
+			level.text = str(PlayerGlobals.team_level)
 			bar_animator.play("Level_Up")
 			OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
 	

@@ -26,7 +26,7 @@ var initialized = false
 
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:
-		SCENE = PACKED_SCENE.instantiate()
+		SCENE = packed_scene.instantiate()
 		SCENE.combatant_resource = self
 	if !initialized:
 		BASE_STAT_VALUES = STAT_VALUES.duplicate()
@@ -54,14 +54,14 @@ func applyTemperments(update:bool = false):
 	
 	for temperment in TEMPERMENT['primary']:
 		if !STAT_MODIFIERS.keys().has('pt_'+temperment) or update:
-			CombatGlobals.modifyStat(self, PlayerGlobals.PRIMARY_TEMPERMENTS[temperment], 'pt_'+temperment)
+			CombatGlobals.modifyStat(self, PlayerGlobals.primary_temperments[temperment], 'pt_'+temperment)
 	for temperment in TEMPERMENT['secondary']:
 		if !STAT_MODIFIERS.keys().has('st_'+temperment) or update:
-			CombatGlobals.modifyStat(self, PlayerGlobals.SECONDARY_TEMPERMENTS[temperment], 'st_'+temperment)
+			CombatGlobals.modifyStat(self, PlayerGlobals.secondary_temperments[temperment], 'st_'+temperment)
 
 func scaleStats():
 	var stat_increase = {}
-	stat_increase['health'] = (BASE_HEALTH * (1 + ((PlayerGlobals.PARTY_LEVEL-1)*0.1))) - BASE_HEALTH
+	stat_increase['health'] = (BASE_HEALTH * (1 + ((PlayerGlobals.team_level-1)*0.1))) - BASE_HEALTH
 	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
 
 func updateCombatant(save_data: PlayerSaveData):
@@ -165,7 +165,7 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	initializeCombatant(false)
 	var enemy = ResEnemyCombatant.new()
 	enemy.NAME = appended_name + ' ' +NAME
-	enemy.PACKED_SCENE = PACKED_SCENE
+	enemy.packed_scene = packed_scene
 	enemy.DESCRIPTION = DESCRIPTION
 	enemy.STAT_VALUES = BASE_STAT_VALUES.duplicate()
 	enemy.STAT_VALUES['health'] = BASE_HEALTH

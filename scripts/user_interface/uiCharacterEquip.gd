@@ -8,7 +8,7 @@ signal equipped_item
 ## 0 = Charms, 1 = Weapons
 func showEquipment(type:int, combatant: ResPlayerCombatant, slot: int):
 	clearButtons()
-	var inventory = InventoryGlobals.INVENTORY
+	var inventory = InventoryGlobals.inventory
 	inventory.sort_custom(func(a,b): return a.NAME < b.NAME)
 	if type == 0:
 		for item in inventory.filter(func(item): return item is ResCharm):

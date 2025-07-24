@@ -26,7 +26,7 @@ func setPatrollerProperties(patroller: GenericPatroller):
 		patroller.stun_time = stun_time
 	if hurt_script != null:
 		var hurt_box = load("res://scenes/components/Hurtbox.tscn").instantiate()
-		hurt_box.HIT_SCRIPT = hurt_script
+		hurt_box.hit_script = hurt_script
 		patroller.add_child(hurt_box)
 	setExtendedProperties(patroller)
 	patroller.get_node('Sprite2D').texture = sprite

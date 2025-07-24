@@ -13,82 +13,79 @@ enum TargetGroup {
 }
 
 @export var NAME: String
-@export_multiline var DESCRIPTION: String
-@export var ICON: Texture = preload("res://images/ability_icons/default.png")
-@export var ANIMATION: PackedScene
-@export var BASIC_EFFECTS: Array[ResAbilityEffect]
-@export var ABILITY_SCRIPT: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
-@export var TARGET_TYPE: TargetType
-@export var TARGET_GROUP: TargetGroup
-@export var REQUIRED_STATUS_EFFECT: Dictionary = {'status_effect': null, 'rank': 0}
-@export var CHARGES: int = 0
-
-@export var CAN_TARGET_SELF: bool = false
-@export var TARGET_DEAD: bool = false
-@export var DEAD_TARGET_PARAMS = {'only_dead':false, 'only_marked':false, 'only_unmarked':false,'only_faded': true}
-@export var CASTER_POSITION: Dictionary = {'min':0, 'max':3}
-@export var TARGET_POSITION: Dictionary = {'min':0, 'max':3}
-@export var TENSION_COST: int = 0
-@export var INSTANT_CAST: bool = false
-@export var REQUIRED_LEVEL = 0
+@export_multiline var description: String
+@export var icon: Texture = preload("res://images/ability_icons/default.png")
+@export var animation: PackedScene
+@export var basic_effects: Array[ResAbilityEffect]
+@export var ability_script: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
+@export var target_type: TargetType
+@export var target_group: TargetGroup
+@export var required_effect: Dictionary = {'status_effect': null, 'rank': 0}
+@export var charges: int = 0
+@export var can_target_self: bool = false
+@export var can_target_dead: bool = false
+@export var dead_target_params = {'only_dead':false, 'only_marked':false, 'only_unmarked':false,'only_faded': true}
+@export var caster_position: Dictionary = {'min':0, 'max':3}
+@export var target_position: Dictionary = {'min':0, 'max':3}
+@export var tension_cost: int = 0
+@export var instant_cast: bool = false
+@export var required_level = 0
 
 var current_effect: ResAbilityEffect
 var current_charge: int
-var ENABLED: bool = true
-var TARGETABLE
+var enabled: bool = true
 
 signal single_target(type)
 signal multi_target(type)
 signal random_target(type)
 
 func execute():
-	match TARGET_TYPE:
+	match target_type:
 		TargetType.SINGLE: single_target.emit(self, 1)
 		TargetType.MULTI: multi_target.emit(self, 2)
 
 func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 	combatants = combatants.filter(func(combatant: ResCombatant): return is_instance_valid(combatant.SCENE))
-	if TARGET_GROUP == TargetGroup.SELF:
+	if target_group == TargetGroup.SELF:
 		return CombatGlobals.getCombatScene().active_combatant
-	if !TARGET_DEAD:
+	if !can_target_dead:
 		combatants = combatants.filter(func(combatant): return !combatant.isDead())
-	if !CAN_TARGET_SELF:
+	if !can_target_self:
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
-	if TARGET_GROUP == TargetGroup.ALLIES or TARGET_GROUP == TargetGroup.ENEMIES:
+	if target_group == TargetGroup.ALLIES or target_group == TargetGroup.ENEMIES:
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
-	if DEAD_TARGET_PARAMS['only_dead']:
+	if dead_target_params['only_dead']:
 		combatants = combatants.filter(func(combatant): return combatant.isDead())
-	if DEAD_TARGET_PARAMS['only_marked']:
+	if dead_target_params['only_marked']:
 		combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Deathmark'))
-	elif DEAD_TARGET_PARAMS['only_unmarked']:
+	elif dead_target_params['only_unmarked']:
 		combatants = combatants.filter(func(combatant): return !combatant.hasStatusEffect('Deathmark'))
-	if DEAD_TARGET_PARAMS['only_faded']:
+	if dead_target_params['only_faded']:
 		combatants = combatants.filter(func(combatant): return (combatant.isDead() and combatant.hasStatusEffect('Fading') or !combatant.isDead()))
-	#print(NAME, ' valid targets: ' ,combatants)
 	
 	if is_caster_player:
-		match TARGET_GROUP:
+		match target_group:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ENEMIES: 
-				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant).size() > 0 and TARGET_TYPE == TargetType.SINGLE:
+				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant).size() > 0 and target_type == TargetType.SINGLE:
 					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResEnemyCombatant)
 				return combatants.filter(func isEnemy(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ALL: return combatants
 	else:
-		match TARGET_GROUP:
+		match target_group:
 			TargetGroup.ALLIES: return combatants.filter(func isTeamate(combatant): return combatant is ResEnemyCombatant)
 			TargetGroup.ENEMIES: 
-				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResPlayerCombatant).size() > 0 and TARGET_TYPE == TargetType.SINGLE:
+				if combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResPlayerCombatant).size() > 0 and target_type == TargetType.SINGLE:
 					combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Taunting') and combatant is ResPlayerCombatant)
 				return combatants.filter(func isEnemy(combatant): return combatant is ResPlayerCombatant)
 			TargetGroup.ALL: return combatants
 
 func canUse(caster: ResCombatant, targets=null):
-	if caster is ResPlayerCombatant and CombatGlobals.TENSION < TENSION_COST:
+	if caster is ResPlayerCombatant and CombatGlobals.tension < tension_cost:
 		return false
-	if REQUIRED_STATUS_EFFECT['status_effect'] != null and !(caster.hasStatusEffect(REQUIRED_STATUS_EFFECT['status_effect'].NAME) and caster.getStatusEffect(REQUIRED_STATUS_EFFECT['status_effect'].NAME).current_rank >= REQUIRED_STATUS_EFFECT['rank']):
+	if required_effect['status_effect'] != null and !(caster.hasStatusEffect(required_effect['status_effect'].NAME) and caster.getStatusEffect(required_effect['status_effect'].NAME).current_rank >= required_effect['rank']):
 		return false
-	if CHARGES > 0:
+	if charges > 0:
 		return CombatGlobals.getCombatScene().getChargesLeft(caster, self) > 0
 	
 	if targets == null or targets is ResCombatant:
@@ -100,17 +97,17 @@ func canUse(caster: ResCombatant, targets=null):
 func isCombatantInRange(combatant: ResCombatant, target_range: String):
 	var position = CombatGlobals.getCombatScene().getCombatantPosition(combatant)
 	if target_range == 'caster':
-		return position >= CASTER_POSITION['min'] and position <= CASTER_POSITION['max']
+		return position >= caster_position['min'] and position <= caster_position['max']
 	elif target_range == 'target':
-		return position >= TARGET_POSITION['min'] and position <= TARGET_POSITION['max']
+		return position >= target_position['min'] and position <= target_position['max']
 
 func getCost():
 #	for i in range(21):
 #		print(i, ' = ', str(snappedf(100 * pow(i, 0.25), 10)))
-	return snappedf(100 * pow(REQUIRED_LEVEL, 0.25), 10)
+	return snappedf(100 * pow(required_level, 0.25), 10)
 
 func getTargetType():
-	match TARGET_TYPE:
+	match target_type:
 		TargetType.SINGLE: return 1
 		TargetType.MULTI: return 2
 
@@ -118,30 +115,30 @@ func _to_string():
 	return NAME
 
 func getRichDescription(with_name=true)-> String:
-	var description = ''
+	var rich_description = ''
 	if with_name:
-		description += NAME.to_upper()+'\n'
-	description += getPositionIcon()
-	if TENSION_COST > 0:
-		description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % TENSION_COST
+		rich_description += NAME.to_upper()+'\n'
+	rich_description += getPositionIcon()
+	if tension_cost > 0:
+		rich_description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % tension_cost
 	#description += '[img]%s[/img]' % [getValidTargetIcon()]
-	if INSTANT_CAST:
-		description += '	[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
-	description += '\n '+DESCRIPTION
-	if CHARGES > 0 and !OverworldGlobals.inCombat():
-		description += '[color=yellow] Uses: '+str(CHARGES)
-	return description
+	if instant_cast:
+		rich_description += '	[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
+	rich_description += '\n '+ description
+	if charges > 0 and !OverworldGlobals.inCombat():
+		rich_description += '[color=yellow] Uses: '+str(charges)
+	return rich_description
 
 func getValidTargetIcon():
-	if TARGET_GROUP == TargetGroup.SELF:
+	if target_group == TargetGroup.SELF:
 		return "res://images/sprites/icon_single_friend.png"
-	if TARGET_TYPE == TargetType.SINGLE:
-		match TARGET_GROUP:
+	if target_type == TargetType.SINGLE:
+		match target_group:
 			TargetGroup.ALLIES: return "res://images/sprites/icon_single_friend.png"
 			TargetGroup.ENEMIES:  return "res://images/sprites/icon_single_enemy.png"
 			TargetGroup.ALL: return "res://images/sprites/icon_single_all.png"
-	if TARGET_TYPE == TargetType.MULTI:
-		match TARGET_GROUP:
+	if target_type == TargetType.MULTI:
+		match target_group:
 			TargetGroup.ALLIES: return "res://images/sprites/icon_multi_friend.png"
 			TargetGroup.ENEMIES:  return "res://images/sprites/icon_multi_enemy.png"
 			TargetGroup.ALL: return "res://images/sprites/icon_multi_all.png"
@@ -156,7 +153,7 @@ func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String
 	var postions = []
 	
 	for i in range(3, -1, -1):
-		if i >= CASTER_POSITION['min'] and i <= CASTER_POSITION['max']:
+		if i >= caster_position['min'] and i <= caster_position['max']:
 			if CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition() and !ignore_active_pos:
 				postions.append(valid_self)
 			else:
@@ -166,13 +163,13 @@ func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String
 		else:
 			postions.append(invalid)
 	
-	if TARGET_GROUP != TargetGroup.SELF:
-		if TARGET_GROUP == TargetGroup.ENEMIES:
+	if target_group != TargetGroup.SELF:
+		if target_group == TargetGroup.ENEMIES:
 #			if is_enemy:
 #				invalid =  "res://images/sprites/circle_enemy.png"
 #				valid_enemy = "res://images/sprites/circle_invalid.png"
 			for j in range(4):
-				if j >= TARGET_POSITION['min'] and j <= TARGET_POSITION['max']:
+				if j >= target_position['min'] and j <= target_position['max']:
 					postions.append(valid_enemy)
 				else:
 					postions.append(invalid)
@@ -181,23 +178,23 @@ func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String
 #				invalid =   "res://images/sprites/circle_ally.png"
 #				valid_ally = "res://images/sprites/circle_invalid.png"
 			for i in range(3, -1, -1):
-				if i >= CASTER_POSITION['min'] and i <= CASTER_POSITION['max']:
+				if i >= caster_position['min'] and i <= caster_position['max']:
 					postions.append(valid_ally)
 				else:
 					postions.append(invalid)
 	if is_enemy:
 		postions.reverse()
 	
-	if TARGET_GROUP != TargetGroup.SELF:
+	if target_group != TargetGroup.SELF:
 		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img] [img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
 	else:
 		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
 
 func isBasicAbility():
-	return BASIC_EFFECTS.size() > 0
+	return basic_effects.size() > 0
 
 func isOnslaught():
-	for effect in BASIC_EFFECTS:
+	for effect in basic_effects:
 		if effect is ResOnslaughtEffect: return true
 	
 	return false

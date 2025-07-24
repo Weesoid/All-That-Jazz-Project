@@ -7,7 +7,7 @@ func _ready():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		var member_button = OverworldGlobals.createCustomButton()
 		member_button.text = member.NAME
-		member_button.icon = member.ICON
+		member_button.icon = member.icon
 		member_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		member_button.custom_minimum_size.x = 96
 		member_button.mouse_entered.connect(

@@ -68,10 +68,10 @@ func updateBars():
 
 func updateStatusEffects():
 	for effect in attached_combatant.STATUS_EFFECTS:
-		if status_effects.get_children().has(effect.ICON) or permanent_status_effects.get_children().has(effect.ICON) or effect.ICON == null: continue
+		if status_effects.get_children().has(effect.icon) or permanent_status_effects.get_children().has(effect.icon) or effect.icon == null: continue
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
-		var icon = effect.ICON
+		var icon = effect.icon
 		icon.tooltip_text = effect.NAME+': '+effect.DESCRIPTION
 		#icon.expand_mode = icon.EXPAND_FIT_WIDTH_PROPORTIONAL
 		icon.add_child(tick_down)

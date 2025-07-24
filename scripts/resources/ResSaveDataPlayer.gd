@@ -1,20 +1,20 @@
 extends Resource
 class_name PlayerSaveData
 
-@export var TEAM: Array[ResPlayerCombatant]
+@export var team: Array[ResPlayerCombatant]
 @export var FOLLOWERS: Array[NPCFollower]
 @export var map_logs: Dictionary
-@export var POWER: GDScript
-@export var EQUIPPED_ARROW: ResProjectileAmmo
-@export var EQUIPPED_BLESSING: ResBlessing
-@export var CURRENCY: int
-@export var PARTY_LEVEL: int
-@export var CURRENT_EXP: int
+@export var power: GDScript
+@export var equipped_arrow: ResProjectileAmmo
+@export var equipped_blessing: ResBlessing
+@export var currency: int
+@export var team_level: int
+@export var current_exp: int
 @export var STRING_CONDITIONS: Array[String]
-@export var PROGRESSION_DATA: Dictionary
-@export var TEAM_FORMATION: Array[ResCombatant]
+@export var progression_data: Dictionary
+@export var team_formation: Array[ResCombatant]
 @export var COMBATANT_SAVE_DATA: Dictionary
-@export var UNLOCKED_ABILITIES: Dictionary
-@export var ADDED_ABILITIES: Dictionary
-@export var MAX_PARTY_LEVEL: int
-@export var KNOWN_POWERS: Array
+@export var unlocked_abilities: Dictionary
+@export var added_abilities: Dictionary
+@export var max_team_level: int
+@export var known_powers: Array

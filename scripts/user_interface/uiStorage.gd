@@ -15,7 +15,7 @@ func loadStorage():
 	clearButtons(inventory)
 	for item in InventoryGlobals.STORAGE:
 		createButton(item, storage)
-	for item in InventoryGlobals.INVENTORY:
+	for item in InventoryGlobals.inventory:
 		if item.WEIGHT > 0.0:
 			createButton(item, inventory)
 
@@ -30,11 +30,11 @@ func createButton(item, location):
 		return
 	button.pressed.connect(
 		func transferItem():
-			if InventoryGlobals.INVENTORY.has(item):
-				InventoryGlobals.transferItem(item, await loadSlider(item), InventoryGlobals.INVENTORY, InventoryGlobals.STORAGE)
+			if InventoryGlobals.inventory.has(item):
+				InventoryGlobals.transferItem(item, await loadSlider(item), InventoryGlobals.inventory, InventoryGlobals.STORAGE)
 				loadStorage()
 			elif InventoryGlobals.STORAGE.has(item):
-				InventoryGlobals.transferItem(item, await loadSlider(item), InventoryGlobals.STORAGE, InventoryGlobals.INVENTORY)
+				InventoryGlobals.transferItem(item, await loadSlider(item), InventoryGlobals.STORAGE, InventoryGlobals.inventory)
 				loadStorage()
 	)
 	button.mouse_entered.connect(

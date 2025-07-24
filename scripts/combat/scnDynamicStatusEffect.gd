@@ -21,7 +21,7 @@ func _on_body_entered(body):
 func followUpCast(ability: ResAbility):
 	await get_tree().create_timer(0.05).timeout
 	var afflicted = status_effect.afflicted_combatant
-	if ability.TARGET_TYPE == ability.TargetType.SINGLE and ability.TARGET_GROUP == ability.TargetGroup.ENEMIES and CombatGlobals.getCombatScene().active_combatant != afflicted and !CombatGlobals.isSameCombatantType(afflicted, CombatGlobals.getCombatScene().target_combatant):
+	if ability.target_type == ability.TargetType.SINGLE and ability.target_group == ability.TargetGroup.ENEMIES and CombatGlobals.getCombatScene().active_combatant != afflicted and !CombatGlobals.isSameCombatantType(afflicted, CombatGlobals.getCombatScene().target_combatant):
 		status_effect.STATUS_SCRIPT.animate(afflicted, CombatGlobals.getCombatScene().target_combatant)
 
 func checkTriggers(afflicted: ResCombatant, body)-> bool:

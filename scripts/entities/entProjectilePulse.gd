@@ -7,7 +7,7 @@ class_name ProjectilePulse
 @export var animation_data: Dictionary = {}
 
 func _on_body_entered(body):
-	if SHOOTER != null and body != SHOOTER:
+	if shooter != null and body != shooter:
 		queue_free()
 
 func _exit_tree():

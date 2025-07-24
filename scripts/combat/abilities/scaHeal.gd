@@ -5,6 +5,6 @@ static func animate(caster, target, ability):
 static func applyEffects(_caster, target, ability):
 	for combatant in target:
 		CombatGlobals.calculateHealing(combatant, 5)
-		await CombatGlobals.playAbilityAnimation(combatant, ability.ANIMATION, 0.25)
+		await CombatGlobals.playAbilityAnimation(combatant, ability.animation, 0.25)
 	
 	CombatGlobals.ability_finished.emit()

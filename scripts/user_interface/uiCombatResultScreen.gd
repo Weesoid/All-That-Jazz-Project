@@ -20,7 +20,7 @@ signal done
 var rounds = 0
 var turns_player = 0
 var turns_enemy = 0
-var morale = PlayerGlobals.CURRENT_EXP
+var morale = PlayerGlobals.current_exp
 var done_showing = false
 
 func _ready():
@@ -32,7 +32,7 @@ func _ready():
 	tween_rounds.tween_method(setRounds, rounds, combat_scene.round_count, 0.25)
 	tween_player.tween_method(setPlayerTurns, turns_player, combat_scene.player_turn_count, 0.25)
 	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
-	#tween_morale.tween_method(setMorale, morale, PlayerGlobals.CURRENT_EXP+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
+	#tween_morale.tween_method(setMorale, morale, PlayerGlobals.current_exp+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
 	showLoot()
 	#await get_tree().process_frame
 	await tween_morale.finished
@@ -55,7 +55,7 @@ func _ready():
 		OverworldGlobals.playSound("494984__original_sound__cinematic-trailer-risers-1.ogg")
 		await get_tree().create_timer(0.25).timeout
 	if morale > PlayerGlobals.getRequiredExp():
-		if PlayerGlobals.MAX_PARTY_LEVEL <= PlayerGlobals.PARTY_LEVEL:
+		if PlayerGlobals.max_team_level <= PlayerGlobals.team_level:
 			changeText(morale_label, 'Maxed!')
 		else:
 			changeText(morale_label, 'Level Up!')
@@ -108,7 +108,7 @@ func showLoot():
 	var bank = OverworldGlobals.getCurrentMap().REWARD_BANK['loot']
 	for drop in bank.keys():
 		var icon: TextureRect = TextureRect.new()
-		icon.texture = drop.ICON.duplicate()
+		icon.texture = drop.icon.duplicate()
 		icon.tooltip_text = drop.NAME
 		var count_label = Label.new()
 		count_label.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][drop])

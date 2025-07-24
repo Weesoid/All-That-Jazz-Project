@@ -6,7 +6,7 @@ static func applyHitEffects(target: ResCombatant, _caster: ResCombatant, _value,
 	runEffects(target, status_effect)
 
 static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	for effect in status_effect.BASIC_EFFECTS:
+	for effect in status_effect.basic_effects:
 		if effect.sound_effect != '': 
 			OverworldGlobals.playSound(effect.sound_effect)
 		if effect is ResStatChangeEffect and checkApplyOnce(effect, status_effect):

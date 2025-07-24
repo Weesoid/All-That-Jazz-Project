@@ -122,7 +122,7 @@ func loadAbilities():
 		if ability == null:
 			selected_combatant.ABILITY_POOL.erase(ability)
 			continue
-		if PlayerGlobals.PARTY_LEVEL < ability.REQUIRED_LEVEL or (!PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) and PlayerGlobals.PARTY_LEVEL >= ability.REQUIRED_LEVEL and !show_temperments): 
+		if PlayerGlobals.team_level < ability.required_level or (!PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) and PlayerGlobals.team_level >= ability.required_level and !show_temperments): 
 			continue
 		createAbilityButton(ability, pool)
 
@@ -133,7 +133,7 @@ func clearChildren(parent):
 
 func createAbilityButton(ability, location):
 	var button: CustomButton = OverworldGlobals.createAbilityButton(ability, true)
-	var has_unlocked = PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) or ability.REQUIRED_LEVEL == 0
+	var has_unlocked = PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) or ability.required_level == 0
 	button.focused_entered_sound = preload("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = preload("res://audio/sounds/421304__jaszunio15__click_229.ogg")
 	if selected_combatant.ABILITY_SET.has(ability):
@@ -145,8 +145,8 @@ func createAbilityButton(ability, location):
 	button.pressed.connect(
 		func():
 			if !has_unlocked:
-				if button.has_focus() and PlayerGlobals.CURRENCY >= ability.getCost():
-					PlayerGlobals.CURRENCY -= ability.getCost()
+				if button.has_focus() and PlayerGlobals.currency >= ability.getCost():
+					PlayerGlobals.currency -= ability.getCost()
 					PlayerGlobals.unlockAbility(selected_combatant, ability)
 					OverworldGlobals.playSound('res://audio/sounds/721774__maodin204__cash-register.ogg')
 					loadMemberInfo(selected_combatant)
@@ -241,7 +241,7 @@ func updateEquipped():
 	
 	if selected_combatant.EQUIPPED_WEAPON != null:
 		weapon_button.text = selected_combatant.EQUIPPED_WEAPON.NAME
-		weapon_button.icon = selected_combatant.EQUIPPED_WEAPON.ICON
+		weapon_button.icon = selected_combatant.EQUIPPED_WEAPON.icon
 		weapon_durability.text = '%s / %s' % [selected_combatant.EQUIPPED_WEAPON.durability, selected_combatant.EQUIPPED_WEAPON.max_durability]
 		if selected_combatant.EQUIPPED_WEAPON.durability <= 0:
 			weapon_durability.modulate = Color.RED
@@ -256,16 +256,16 @@ func updateEquipped():
 	charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
 	charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
 	if selected_combatant.CHARMS[0] != null:
-		charm_slot_a.icon = selected_combatant.CHARMS[0].ICON
+		charm_slot_a.icon = selected_combatant.CHARMS[0].icon
 	if selected_combatant.CHARMS[1] != null:
-		charm_slot_b.icon = selected_combatant.CHARMS[1].ICON
+		charm_slot_b.icon = selected_combatant.CHARMS[1].icon
 	if selected_combatant.CHARMS[2] != null:
-		charm_slot_c.icon = selected_combatant.CHARMS[2].ICON
+		charm_slot_c.icon = selected_combatant.CHARMS[2].icon
 
 func equipCharmOnCombatant(charm: ResCharm, slot: int, slot_button):
 	selected_combatant.equipCharm(charm, slot)
 	if selected_combatant.CHARMS[slot] != null:
-		slot_button.icon = charm.ICON
+		slot_button.icon = charm.icon
 
 func _on_change_formation_pressed():
 	if equipment_select_point.has_node('CharacterEquip'):

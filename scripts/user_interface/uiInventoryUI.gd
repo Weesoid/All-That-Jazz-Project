@@ -12,14 +12,14 @@ func _ready():
 		inventory_grid.get_child(0).grab_focus()
 
 func _process(_delta):
-	space_label.text = '%s / %s' % [InventoryGlobals.INVENTORY.size(), InventoryGlobals.MAX_INVENTORY]
+	space_label.text = '%s / %s' % [InventoryGlobals.inventory.size(), InventoryGlobals.max_inventory]
 
 func updateInventory():
 	for child in inventory_grid.get_children():
 		inventory_grid.remove_child(child)
 		child.queue_free()
 	
-	for item in InventoryGlobals.INVENTORY:
+	for item in InventoryGlobals.inventory:
 		inventory_grid.add_child(createButton(item))
 	
 	OverworldGlobals.setMenuFocus(inventory_grid)

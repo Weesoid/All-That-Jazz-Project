@@ -67,7 +67,7 @@ func getStatModifications():
 	return STAT_MODIFICATIONS
 
 func getInformation():
-	var out = OverworldGlobals.insertTextureCode(ICON)+' '+NAME.to_upper()+'\n'
+	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
 	out += getStringStats()+"\n"
 	out += DESCRIPTION
 	return out

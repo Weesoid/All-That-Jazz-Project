@@ -18,7 +18,7 @@ func _process(_delta):
 		setQuestInfo()
 
 func _ready():
-	for quest in QuestGlobals.QUESTS:
+	for quest in QuestGlobals.quests:
 		var button = OverworldGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = str(quest.NAME)

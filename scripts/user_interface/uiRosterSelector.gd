@@ -15,7 +15,7 @@ func _ready():
 	loadMembers()
 
 func loadMembers():
-	var team = PlayerGlobals.TEAM
+	var team = PlayerGlobals.team
 	team.sort_custom(func(a,b): return a.NAME < b.NAME)
 	team.sort_custom(func(a,b): return isMemberMandatory(a) > isMemberMandatory(b))
 	for member in team:
@@ -52,32 +52,32 @@ func createMemberButton(member: ResPlayerCombatant):
 	return button
 
 func addToActive(member: ResCombatant, button: Button):
-	if OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.size() == 4 and !OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.has(member):
+	if OverworldGlobals.getPlayer().squad.combatant_squad.size() == 4 and !OverworldGlobals.getPlayer().squad.combatant_squad.has(member):
 		OverworldGlobals.showPrompt('You have a full party!')
 		return
 	
-	if !OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.has(member) and button != null:
-		OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.append(member)
+	if !OverworldGlobals.getPlayer().squad.combatant_squad.has(member) and button != null:
+		OverworldGlobals.getPlayer().squad.combatant_squad.append(member)
 		OverworldGlobals.initializePlayerParty()
 		if member.isInflicted():
 			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_mark.png"))
 		else:
 			button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 	elif button != null:
-		OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.erase(member)
+		OverworldGlobals.getPlayer().squad.combatant_squad.erase(member)
 		#PlayerGlobals.removeFollower()
 		OverworldGlobals.loadFollowers()
 		if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
 			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_icon.png"))
 		else:
 			button.remove_theme_icon_override('icon')
-	PlayerGlobals.TEAM_FORMATION = OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD
+	PlayerGlobals.team_formation = OverworldGlobals.getPlayer().squad.combatant_squad
 	await get_tree().process_frame
 	get_parent().loadMembers()
 
 func hoverButton(member: ResPlayerCombatant, button: Button):
 	if Input.is_action_pressed('ui_sprint'):
-		if OverworldGlobals.getPlayer().squad.COMBATANT_SQUAD.has(member):
+		if OverworldGlobals.getPlayer().squad.combatant_squad.has(member):
 			for mem_button in get_parent().member_container.get_children():
 				if mem_button.text == member.NAME:
 					inspect_mark.hide()

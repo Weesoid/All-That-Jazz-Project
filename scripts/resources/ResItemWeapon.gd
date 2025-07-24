@@ -48,7 +48,7 @@ func canUse(combatant: ResCombatant):
 func getInformation():
 	var handling_bb = '[img]res://images/sprites/circle_filled.png[/img]'
 	var handling_requirement = ''
-	var out = OverworldGlobals.insertTextureCode(ICON)+' '+NAME.to_upper()+'\n'
+	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
 	for i in USE_REQUIREMENT['handling']:
 		handling_requirement += handling_bb
 	out += handling_requirement+'\n'

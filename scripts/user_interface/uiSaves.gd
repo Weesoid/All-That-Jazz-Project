@@ -24,7 +24,7 @@ func _ready():
 		#container.get_children().sort_custom(func(a, b): return a.text < b.text)
 	else:
 		mode = Modes.SAVE
-		createSaveButton(PlayerGlobals.SAVE_NAME)
+		createSaveButton(PlayerGlobals.save_name)
 	OverworldGlobals.setMenuFocus(panel)
 	initial_mode = mode
 	if mode != Modes.LOAD:
@@ -77,12 +77,12 @@ func slotPressed(save_name: String, button: Button):
 			OverworldGlobals.playSound("542003__rob_marion__gasp_lock-and-load.ogg")
 			queue_free()
 		Modes.LOAD: 
-			PlayerGlobals.SAVE_NAME = save_name.get_basename()
+			PlayerGlobals.save_name = save_name.get_basename()
 			SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name))
 		Modes.NEW_GAME:
-			PlayerGlobals.SAVE_NAME = generateSaveName()
+			PlayerGlobals.save_name = generateSaveName()
 			OverworldGlobals.changeMap(new_game_map, '0,0,0', 'FastTravel', false, true)
-			for combatant in PlayerGlobals.TEAM: combatant.initializeCombatant(false)
+			for combatant in PlayerGlobals.team: combatant.initializeCombatant(false)
 		Modes.DELETE:
 			deleteSave(save_name, button)
 

@@ -11,7 +11,7 @@ var back_up_enemies = [
 	'res://resources/combat/combatants_enemies/mercenaries/'
 ]
 
-var TENSION: int = 0
+var tension: int = 0
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
 signal dialogue_signal(flag)
@@ -555,23 +555,18 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)
 	var map_events = OverworldGlobals.getCurrentMap().events
 	if squad_size > 4: squad_size = 4
-	squad.FILL_EMPTY = true
-	squad.ENEMY_POOL = getFactionEnemies(faction)
-	# TO DO: Move this to PatrollerGroup! Definitely.
-#	if OverworldGlobals.getCurrentMap().EVENTS['additional_enemies'] != null:
-#		squad.ENEMY_POOL.append_array(getFactionEnemies(OverworldGlobals.getCurrentMap().EVENTS['additional_enemies']))
-	print(map_events)
+	squad.fill_empty = true
+	squad.enemy_pool = getFactionEnemies(faction)
 	if map_events.has('additional_enemies'):
-		print('zoinks')
-		squad.ENEMY_POOL.append_array(OverworldGlobals.loadArrayFromPath(map_events['additional_enemies']))
-	squad.ENEMY_POOL = squad.ENEMY_POOL.filter(func(combatant): return isWithinPlayerTier(combatant))
-	squad.COMBATANT_SQUAD.resize(squad_size)
+		squad.enemy_pool.append_array(OverworldGlobals.loadArrayFromPath(map_events['additional_enemies']))
+	squad.enemy_pool = squad.enemy_pool.filter(func(combatant): return isWithinPlayerTier(combatant))
+	squad.combatant_squad.resize(squad_size)
 	squad.pickRandomEnemies()
 	patroller.add_child(squad)
 
 func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties: Dictionary):
 	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
-	squad.COMBATANT_SQUAD = combatants
+	squad.combatant_squad = combatants
 	squad.setProperties(properties)
 	patroller.add_child(squad)
 
@@ -588,11 +583,11 @@ func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
 	return enemy.TIER+1 <= PlayerGlobals.getLevelTier()
 
 func addTension(amount: int):
-	var prev_tension = TENSION
-	if TENSION + amount > 8:
-		TENSION = 8
-	elif TENSION + amount < 0:
-		TENSION = 0
+	var prev_tension = tension
+	if tension + amount > 8:
+		tension = 8
+	elif tension + amount < 0:
+		tension = 0
 	else:
-		TENSION += amount
-	tension_changed.emit(prev_tension, TENSION)
+		tension += amount
+	tension_changed.emit(prev_tension, tension)

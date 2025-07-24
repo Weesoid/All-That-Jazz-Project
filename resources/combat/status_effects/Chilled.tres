@@ -9,7 +9,7 @@
 script = ExtResource("1_fe3a6")
 NAME = "Chilled"
 DESCRIPTION = "Target has reduced GRIT."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 STATUS_SCRIPT = ExtResource("2_x06er")
 PACKED_SCENE = ExtResource("1_58yo2")
 EFFECT_TYPE = 0

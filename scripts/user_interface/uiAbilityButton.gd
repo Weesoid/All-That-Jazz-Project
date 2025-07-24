@@ -18,18 +18,18 @@ class_name CustomAbilityButton
 
 func _ready():
 	if ability != null:
-		ability_icon.texture = ability.ICON
+		ability_icon.texture = ability.icon
 		description_label.text = ability.getRichDescription(true)
 		description_label.hide()
 		#print('Cust charge on ', ability, ': ', custom_charge)
 		if custom_charge > -1:
 			charges.text = str(custom_charge)
 			charges.show()
-		elif ability.CHARGES > 0:
+		elif ability.charges > 0:
 			if !outside_combat:
 				charges.text = str(CombatGlobals.getCombatScene().getChargesLeft(CombatGlobals.getCombatScene().active_combatant, ability))
 			else:
-				charges.text = str(ability.CHARGES)
+				charges.text = str(ability.charges)
 			charges.show()
 		if disabled:
 			ability_icon.modulate = Color.DIM_GRAY

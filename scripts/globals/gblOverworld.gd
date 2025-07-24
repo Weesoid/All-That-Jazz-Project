@@ -61,14 +61,14 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=10
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').tree_exited
 	
 	getEntity(entity_body_name).add_child(preload("res://scenes/components/ScriptedMovement.tscn").instantiate())
-	getEntity(entity_body_name).get_node('ScriptedMovementComponent').ANIMATE_DIRECTION = animate_direction
-	getEntity(entity_body_name).get_node('ScriptedMovementComponent').MOVE_SPEED = speed
+	getEntity(entity_body_name).get_node('ScriptedMovementComponent').animate_direction = animate_direction
+	getEntity(entity_body_name).get_node('ScriptedMovementComponent').move_speed = speed
 	if move_to is Vector2:
-		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_POSITIONS.append(move_to + offset)
+		getEntity(entity_body_name).get_node('ScriptedMovementComponent').target_positions.append(move_to + offset)
 	elif move_to is String and move_to.contains('>'):
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').moveBody(move_to)
 	elif move_to is String:
-		getEntity(entity_body_name).get_node('ScriptedMovementComponent').TARGET_POSITIONS.append(getEntity(move_to).global_position + offset)
+		getEntity(entity_body_name).get_node('ScriptedMovementComponent').target_positions.append(getEntity(move_to).global_position + offset)
 	else:
 		print('Invalid move_to parameter "', move_to, '"')
 	
@@ -199,7 +199,7 @@ func insertTextureCode(texture: Texture)-> String:
 func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_description=''):
 	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
 	main_menu.scale = Vector2.ZERO
-	main_menu.wares_array = getComponent(shopkeeper_name, 'ShopWares').SHOP_WARES
+	main_menu.wares_array = getComponent(shopkeeper_name, 'ShopWares').shop_wares
 	main_menu.buy_modifier = buy_mult
 	main_menu.sell_modifier = sell_mult
 	main_menu.open_description = entry_description
@@ -227,7 +227,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	button.custom_minimum_size.y = 32
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	#button.expand_icon = true
-	button.icon = item.ICON
+	button.icon = item.icon
 	button.tooltip_text = item.NAME
 	button.description_text = item.getInformation()
 	button.description_offset = Vector2(0, -28)
@@ -259,7 +259,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 
 func createItemIcon(item: ResItem, count:int):
 	var icon: TextureRect = TextureRect.new()
-	icon.texture = item.ICON.duplicate()
+	icon.texture = item.icon.duplicate()
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	icon.pivot_offset = Vector2(icon.size.x/2,icon.size.y/2)
 	var count_label = Label.new()
@@ -276,7 +276,7 @@ func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbi
 	#button.custom_minimum_size.x = 32
 	#button.custom_minimum_size.y = 32
 	#button.expand_icon = true
-	#button.icon = ability.ICON
+	#button.icon = ability.icon
 	#button.tooltip_text = ability.NAME
 	#button.initialize()
 	return button
@@ -317,7 +317,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 #	if OverworldGlobals.getCurrentMap().SAFE:
 #		OverworldGlobals.loadFollowers()
 	if save:
-		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+		SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
@@ -430,7 +430,7 @@ func loadFollowers():
 		follower.queue_free()
 	player_follower_count = 0
 	
-	for combatant in PlayerGlobals.TEAM:
+	for combatant in PlayerGlobals.team:
 		if getCombatantSquad('Player').has(combatant) and combatant.FOLLOWER_TEXTURE != null:
 			player_follower_count += 1
 			var follower_scene = load("res://scenes/entities/mobs/Follower.tscn").instantiate()
@@ -550,7 +550,7 @@ func shootProjectile(projectile: Projectile, origin, direction: float):
 	if origin is Vector2:
 		projectile.global_position = origin
 	elif origin is Node2D:
-		projectile.SHOOTER = origin
+		projectile.shooter = origin
 	
 	add_child(projectile)
 	projectile.rotation_degrees = direction
@@ -600,7 +600,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
-	var combat_id = combat_entity.get_node('CombatantSquadComponent').UNIQUE_ID
+	var combat_id = combat_entity.get_node('CombatantSquadComponent').unique_id
 	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
 	var map_events = getCurrentMap().events
 	if map_events.has('patroller_effect'):
@@ -608,7 +608,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad('Player'):
 		combatant.LINGERING_STATUS_EFFECTS.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
-	for combatant in enemy_squad.COMBATANT_SQUAD:
+	for combatant in enemy_squad.combatant_squad:
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
 		for effect in enemy_squad.afflicted_status_effects:
@@ -625,11 +625,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		combat_scene.initial_damage = data['initial_damage']
 	if combat_id != null:
 		combat_scene.unique_id = combat_id
-	combat_scene.enemy_reinforcements = enemy_squad.COMBATANT_SQUAD
-	combat_scene.do_reinforcements = enemy_squad.DO_REINFORCEMENTS
-	combat_scene.can_escape = enemy_squad.CAN_ESCAPE
-	combat_scene.turn_time = enemy_squad.TURN_TIME
-	combat_scene.reinforcements_turn = enemy_squad.REINFORCEMENTS_TURN
+	combat_scene.enemy_reinforcements = enemy_squad.combatant_squad
+	combat_scene.do_reinforcements = enemy_squad.do_reinforcements
+	combat_scene.can_escape = enemy_squad.can_escape
+	combat_scene.turn_time = enemy_squad.turn_time
+	combat_scene.reinforcements_turn = enemy_squad.reinforcements_turn
 	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
@@ -692,7 +692,7 @@ func hasCombatDialogue(entity_name: String)-> bool:
 	return hasEntity(entity_name) and getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
-	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD
+	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').combatant_squad
 
 func getCombatant(entity_name: String, combatant_name: String)-> ResCombatant:
 	for combatant in getCombatantSquad(entity_name):
@@ -704,7 +704,7 @@ func getCombatant(entity_name: String, combatant_name: String)-> ResCombatant:
 	return null
 
 func setCombatantSquad(entity_name: String, combatants: Array[ResCombatant]):
-	get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').COMBATANT_SQUAD = combatants
+	get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').combatant_squad = combatants
 
 func getCombatantSquadComponent(entity_name: String)-> CombatantSquad:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent')

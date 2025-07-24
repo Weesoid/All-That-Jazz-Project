@@ -18,9 +18,9 @@ enum RemoveStyle {
 
 @export var NAME: String
 @export_multiline var DESCRIPTION: String
-@export var BASIC_EFFECTS: Array[ResBasicEffect]
+@export var basic_effects: Array[ResBasicEffect]
 @export var STATUS_SCRIPT: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
-@export var PACKED_SCENE: PackedScene
+@export var packed_scene: PackedScene
 @export var EFFECT_TYPE: EffectType
 @export var REMOVE_WHEN: Array[RemoveType]
 @export var REMOVE_STYLE: RemoveStyle
@@ -46,16 +46,15 @@ var current_rank = 1
 var afflicted_combatant: ResCombatant
 var attached_data
 var VISUALS
-var ICON: TextureRect
-var TARGETABLE
+var icon: TextureRect
 
 
 func initializeStatus():
-	ICON = TextureRect.new()
-	ICON.texture = TEXTURE
+	icon = TextureRect.new()
+	icon.texture = TEXTURE
 	
-	if PACKED_SCENE != null:
-		VISUALS = PACKED_SCENE.instantiate()
+	if packed_scene != null:
+		VISUALS = packed_scene.instantiate()
 		animateStatusEffect()
 	
 	if EFFECT_TYPE == EffectType.ON_HIT:
@@ -88,8 +87,8 @@ func removeStatusEffect():
 	elif afflicted_combatant is ResPlayerCombatant and LINGERING:
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '%s Supressed!' % NAME, 'Flunk')
 	
-	if is_instance_valid(ICON):
-		ICON.queue_free()
+	if is_instance_valid(icon):
+		icon.queue_free()
 	afflicted_combatant.STATUS_EFFECTS.erase(self)
 
 func tick(update_duration=true, override_permanent=false, apply_effects=true):

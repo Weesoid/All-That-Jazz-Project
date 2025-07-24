@@ -12,10 +12,10 @@ func interact():
 		PlayerGlobals.addExperience(int(randf_range(-0.5,-0.25) * PlayerGlobals.getRequiredExp()), true)
 		OverworldGlobals.setMapRewardBank('experience', 0)
 		OverworldGlobals.getCurrentMap().give_on_exit = true
-	OverworldGlobals.changeMap(TO_SCENE_PATH, '0,0,0','SavePoint',true,true)
+	OverworldGlobals.changeMap(to_scene_path, '0,0,0','SavePoint',true,true)
 
 func _on_body_entered(body):
-	if TOUCH_ENTER and body is PlayerScene and PlayerGlobals.isMapCleared(): 
-		OverworldGlobals.changeMap(TO_SCENE_PATH, TO_COORDS)
-	elif TOUCH_ENTER and body is PlayerScene:
+	if touch_enter and body is PlayerScene and PlayerGlobals.isMapCleared(): 
+		OverworldGlobals.changeMap(to_scene_path, to_coords)
+	elif touch_enter and body is PlayerScene:
 		OverworldGlobals.showPrompt("You can't leave yet, there's a job to be done.")

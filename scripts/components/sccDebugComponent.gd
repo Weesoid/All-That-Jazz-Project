@@ -19,12 +19,12 @@ func _process(_delta):
 	fps.text = str(Engine.get_frames_per_second())
 	coordinates.text = str(get_parent().global_position)+','+str(int(get_parent().player_direction.rotation_degrees))
 	playtime_info.text = Time.get_time_string_from_unix_time(int(SaveLoadGlobals.current_playtime))
-	if PlayerGlobals.EQUIPPED_BLESSING != null:
-		equipped_charm.text = PlayerGlobals.EQUIPPED_BLESSING.blessing_name
+	if PlayerGlobals.equipped_blessing != null:
+		equipped_charm.text = PlayerGlobals.equipped_blessing.blessing_name
 	else:
 		equipped_charm.text = 'No active blessing.'
 	#reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
-	save_name.text = 'Save Name: ' + str(PlayerGlobals.SAVE_NAME)
+	save_name.text = 'Save Name: ' + str(PlayerGlobals.save_name)
 	speed.text = 'Speed: ' + str(player.SPEED)
 
 func _unhandled_input(_event):
@@ -33,9 +33,9 @@ func _unhandled_input(_event):
 	#	print_orphan_nodes()
 	
 	if Input.is_action_just_pressed("ui_quick_save"):
-		SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+		SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	elif Input.is_action_just_pressed("ui_quick_load"):
-		SaveLoadGlobals.loadGame(load("res://saves/%s.tres") % PlayerGlobals.SAVE_NAME)
+		SaveLoadGlobals.loadGame(load("res://saves/%s.tres") % PlayerGlobals.save_name)
 	elif Input.is_action_just_pressed("ui_debug_copy_coords"):
 		var copied = coordinates.text.replace('(','').replace(')','').replace(' ','')
 		OverworldGlobals.showPrompt('Copied coordinates to clipboard! [color=yellow]%s[/color]' % copied)

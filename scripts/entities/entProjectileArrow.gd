@@ -6,9 +6,9 @@ func _on_body_entered(body):
 		body.get_node('HurtBoxComponent').applyEffect()
 	elif body is GenericPatroller:
 		OverworldGlobals.playSound2D(global_position, "460509__florianreichelt__hitting-in-a-face_%s.ogg" % randi_range(1,2), 0.0)
-		PlayerGlobals.EQUIPPED_ARROW.applyOverworldEffect(body)
+		PlayerGlobals.equipped_arrow.applyOverworldEffect(body)
 	
-	if body != SHOOTER:
+	if body != shooter:
 		OverworldGlobals.shakeSprite(body, 5.0, 10.0)
 		queue_free()
 

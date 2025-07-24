@@ -16,10 +16,10 @@ extends Control
 func _ready():
 	OverworldGlobals.setPlayerInput(false)
 	exp_bar.max_value = PlayerGlobals.getRequiredExp()
-	exp_bar.value = PlayerGlobals.CURRENT_EXP
-	exp_bar_vals.text = '%s / %s' % [PlayerGlobals.CURRENT_EXP, PlayerGlobals.getRequiredExp()]
-	level.text = str(PlayerGlobals.PARTY_LEVEL)
-	if PlayerGlobals.PARTY_LEVEL == PlayerGlobals.MAX_PARTY_LEVEL:
+	exp_bar.value = PlayerGlobals.current_exp
+	exp_bar_vals.text = '%s / %s' % [PlayerGlobals.current_exp, PlayerGlobals.getRequiredExp()]
+	level.text = str(PlayerGlobals.team_level)
+	if PlayerGlobals.team_level == PlayerGlobals.max_team_level:
 		morale_label.text = 'Max'
 	currency.text =  '     '+str(PlayerGlobals.addCommaToNum())
 	base.get_child(0).grab_focus()
@@ -29,12 +29,12 @@ func _ready():
 		$Container/VBoxContainer.add_child(bar)
 		bar.combatant = combatant
 	
-	if QuestGlobals.QUESTS.is_empty():
+	if QuestGlobals.quests.is_empty():
 		quests.hide()
 	if !PlayerGlobals.hasActiveTeam():
 		party.hide()
 		experience.hide()
-	if PlayerGlobals.CURRENCY > 0:
+	if PlayerGlobals.currency > 0:
 		currency.show()
 
 func _on_tree_exited():
@@ -62,7 +62,7 @@ func _on_quit_pressed():
 #	confirm_dialog.initial_position =Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 	#await confirm_dialog.dialog.confirmed
 	#if PlayerGlobals.isMapCleared(): 
-	#SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+	#SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	leaveToMain()
 #	else:
 #		disableButtons()
@@ -83,7 +83,7 @@ func loadUserInterface(path):
 	add_child(ui)
 
 func _on_save_pressed():
-	SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 
 func disableButtons():
 	quit.hide()

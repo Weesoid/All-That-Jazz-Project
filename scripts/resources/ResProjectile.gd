@@ -28,9 +28,9 @@ func getProjectile()-> Projectile:
 				projectile.animation_data = projectile_data['animation_data']
 			
 	projectile.hit_script = hit_script
-	projectile.PROJECTILE_TEXTURE = texture
+	projectile.projectile_texture = texture
 	projectile.SPEED = speed
-	projectile.IMPACT_SOUND = impact_sound
-	projectile.FREE_DISTANCE = free_distance
-	projectile.NO_CLIP_TIME = no_clip_time
+	projectile.impact_sound = impact_sound
+	projectile.free_distance = free_distance
+	projectile.no_clip_time = no_clip_time
 	return projectile

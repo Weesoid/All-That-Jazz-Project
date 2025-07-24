@@ -1,6 +1,6 @@
 static func animate(caster: CombatantScene, target: CombatantScene, ability: ResAbility):
 	await caster.moveTo(target)
-	await caster.doAnimation('Cast_Melee', ability.ABILITY_SCRIPT)
+	await caster.doAnimation('Cast_Melee', ability.ability_script)
 	await caster.moveTo(caster.get_parent())
 	CombatGlobals.ability_finished.emit()
 

@@ -2,7 +2,7 @@ extends Resource
 class_name ResItem
 
 @export var NAME: String
-@export var ICON: Texture = preload("res://images/sprites/item_unknown.png")
+@export var icon: Texture = preload("res://images/sprites/item_unknown.png")
 @export_multiline var DESCRIPTION: String
 @export var VALUE: int
 @export var MANDATORY = false
@@ -12,7 +12,7 @@ func _to_string():
 	return str(NAME)
 
 func getInformation():
-	var out = OverworldGlobals.insertTextureCode(ICON)+' '+NAME.to_upper()+'\n'
+	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
 	out += DESCRIPTION
 	return out
 

@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name NPCFollower
 
-@onready var ANIMATOR = $WalkingAnimations
+@onready var animator = $WalkingAnimations
 @onready var sprite = $Sprite2D
 @onready var player = OverworldGlobals.getPlayer()
 var texture: Texture
@@ -98,14 +98,14 @@ func updateSprite():
 	var player_direction: int = OverworldGlobals.getPlayer().player_direction.rotation_degrees
 	
 	if player_direction == 90:
-		ANIMATOR.play('Walk_Left')
+		animator.play('Walk_Left')
 	elif player_direction == -90:
-		ANIMATOR.play('Walk_Right')
+		animator.play('Walk_Right')
 	elif player_direction == 0:
-		ANIMATOR.play('Walk_Down')
+		animator.play('Walk_Down')
 	elif player_direction == 179:
-		ANIMATOR.play('Walk_Up')
+		animator.play('Walk_Up')
 
 func stopWalkAnimation():
-	ANIMATOR.seek(1, true)
-	ANIMATOR.pause()
+	animator.seek(1, true)
+	animator.pause()

@@ -1,13 +1,13 @@
 extends Node
 
-@export var SHOP_WARES: Array[ResItem]
-@export var GOD_SHOP: bool = false
+@export var shop_wares: Array[ResItem]
+@export var god_shop: bool = false
 
 func _ready():
-	if GOD_SHOP:
+	if god_shop:
 		enableGodShop()
 
 func enableGodShop():
-	SHOP_WARES.clear()
+	shop_wares.clear()
 	var wares = OverworldGlobals.loadArrayFromPath("res://resources/items/").filter(func(item): return !OverworldGlobals.isResourcePlaceholder(item))
-	SHOP_WARES.assign(wares)
+	shop_wares.assign(wares)

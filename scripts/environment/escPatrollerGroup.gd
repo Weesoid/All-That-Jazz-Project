@@ -81,20 +81,15 @@ func giveRewards(ignore_stalker:bool=false):
 	
 	# Actual giving of rewards
 	PlayerGlobals.addExperience(reward_bank['experience'])
-	for item in reward_bank['loot'].keys():
-		if item is ResStackItem:
-			InventoryGlobals.addItemResource(item, reward_bank['loot'][item])
-		else:
-			for i in range(reward_bank['loot'][item]): InventoryGlobals.addItemResource(item)
+	InventoryGlobals.giveItemDict(reward_bank['loot'])
 	
 	# Current map handling
-	
 	if map.events.has('bonus_loot'): # Add generated multipliers later
 		appendBonusLoot(reward_bank['loot'])
 	if map.events.has('bonus_experience'):
 		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
 	map.checkGiveClearRewards()
-	#SaveLoadGlobals.saveGame(PlayerGlobals.SAVE_NAME)
+	#SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 
 func appendBonusLoot(loot_dict: Dictionary, stack_multiplier:float=0.25):
 	var map = OverworldGlobals.getCurrentMap()

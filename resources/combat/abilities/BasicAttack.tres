@@ -1,62 +1,39 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://cj3etighmenn7"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://cj3etighmenn7"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_nsnnn"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
-
-[sub_resource type="Resource" id="Resource_meipj"]
-script = ExtResource("2_nsnnn")
-damage_type = 0
-cast_animation = {
-"animation": "",
-"go_to_target": false
-}
-damage = 5
-can_miss = true
-can_crit = true
-bonus_stats = {
-"crit/combo": 1.0
-}
-return_pos = true
-indicator_bb = ""
-plant_self_on_combo = false
-condition = ""
-is_combo_effect = false
-sound_effect = ""
-animation_time = 0.0
-animate_on = 0
 
 [resource]
 script = ExtResource("1_k0byw")
 NAME = "Basic Attack"
-DESCRIPTION = "The attack of basicness!"
-ICON = ExtResource("3_aoac4")
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_meipj")])
-ABILITY_SCRIPT = ExtResource("1_y24xu")
-TARGET_TYPE = 0
-TARGET_GROUP = 1
-REQUIRED_STATUS_EFFECT = {
+description = ""
+icon = ExtResource("3_aoac4")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("1_y24xu")
+target_type = 0
+target_group = 0
+required_effect = {
 "rank": 0,
 "status_effect": null
 }
-CHARGES = 0
-CAN_TARGET_SELF = false
-TARGET_DEAD = false
-DEAD_TARGET_PARAMS = {
+charges = 0
+can_target_self = false
+can_target_dead = false
+dead_target_params = {
 "only_dead": false,
 "only_faded": true,
 "only_marked": false,
 "only_unmarked": false
 }
-CASTER_POSITION = {
-"max": 1,
-"min": 0
-}
-TARGET_POSITION = {
+caster_position = {
 "max": 3,
 "min": 0
 }
-TENSION_COST = 0
-INSTANT_CAST = false
-REQUIRED_LEVEL = 0
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0
