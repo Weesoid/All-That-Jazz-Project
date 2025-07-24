@@ -1,5 +1,5 @@
 static func applyEffects(caster: CombatantScene , target: CombatantScene, _ability: ResAbility=null):
-	var caster_riposte = caster.combatant_resource.RIPOSTE_EFFECT
+	var caster_riposte = caster.combatant_resource.riposte_effect
 	if caster_riposte != null:
 		CombatGlobals.calculateDamage(
 			caster, 
@@ -23,18 +23,18 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 		)
 
 static func applyHitEffects(target,caster, _value, status_effect: ResStatusEffect):
-	if target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized() and ((target is ResPlayerCombatant and target.STAT_MODIFIERS.has('block')) or target is ResEnemyCombatant):
+	if target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized() and ((target is ResPlayerCombatant and target.stat_modifiers.has('block')) or target is ResEnemyCombatant):
 		var riposte_anim = determineRiposte(target, caster)
 		if riposte_anim == 'Cast_Melee':
-			target.SCENE.doAnimation(riposte_anim, status_effect.STATUS_SCRIPT, {'anim_speed'=1.5})
+			target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'anim_speed'=1.5})
 		else:
-			target.SCENE.doAnimation(riposte_anim, status_effect.STATUS_SCRIPT, {'target'=caster.SCENE,'frame_time'=0.7,'ability'=null,'anim_speed'=2.0})
+			target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'target'=caster.combatant_scene,'frame_time'=0.7,'ability'=null,'anim_speed'=2.0})
 	if !target.hasStatusEffect('Guard'):
 		print('bluh')
 		CombatGlobals.removeStatusEffect(target, 'Riposte')
 	
 static func determineRiposte(target, caster):
-	var distance = target.SCENE.global_position.distance_to(caster.SCENE.global_position)
+	var distance = target.combatant_scene.global_position.distance_to(caster.combatant_scene.global_position)
 	if distance > 40:
 		return 'Cast_Ranged'
 	else:

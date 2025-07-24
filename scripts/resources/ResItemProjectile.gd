@@ -1,10 +1,10 @@
 extends ResStackItem
 class_name ResProjectileAmmo
 
-@export var OVERWORLD_EFFECT: GDScript
+@export var overworld_effect: GDScript
 
 func applyOverworldEffect(body: CharacterBody2D):
-	OVERWORLD_EFFECT.applyEffect(body)
+	overworld_effect.applyEffect(body)
 
 func equip():
 	if !OverworldGlobals.getCurrentMap().has_node('PlayerArrow'):

@@ -137,13 +137,13 @@ static func applyToTarget(caster, target, ability: ResAbility):
 	
 	elif ability.current_effect is ResOnslaughtEffect:
 		CombatGlobals.calculateRawDamage(target.combatant_resource, CombatGlobals.useDamageFormula(target.combatant_resource, ability.current_effect.damage), caster.combatant_resource, true, -1, false, 0.15, null, false)
-		if target.combatant_resource.STAT_MODIFIERS.keys().has('block') and target.combatant_resource.hasStatusEffect('Guard') and target.combatant_resource.getStatusEffect('Guard').duration+1 <= target.combatant_resource.getStatusEffect('Guard').MAX_DURATION:
+		if target.combatant_resource.stat_modifiers.keys().has('block') and target.combatant_resource.hasStatusEffect('Guard') and target.combatant_resource.getStatusEffect('Guard').duration+1 <= target.combatant_resource.getStatusEffect('Guard').max_duration:
 			target.combatant_resource.getStatusEffect('Guard').duration += 1
 		if target.combatant_resource.isDead():
 			target.animator.play('Fading')
 		if ability.current_effect.target == ability.current_effect.Target.MULTI:
 			for combatant in CombatGlobals.getCombatScene().getCombatantGroup('team'):
-				if !combatant.isDead() and !target.combatant_resource.STAT_MODIFIERS.keys().has('block') and combatant != target.combatant_resource: 
+				if !combatant.isDead() and !target.combatant_resource.stat_modifiers.keys().has('block') and combatant != target.combatant_resource: 
 					CombatGlobals.calculateRawDamage(combatant, CombatGlobals.useDamageFormula(combatant, ability.current_effect.damage), caster.combatant_resource, true, -1, false, 0.15, null, false)
 
 # Attack animations (Ranged, melee)

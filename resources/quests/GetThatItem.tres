@@ -6,42 +6,39 @@
 [sub_resource type="Resource" id="Resource_f45us"]
 script = ExtResource("1_5s5hl")
 NAME = "Get Scrap"
-DESCRIPTION = "Get 8 pieces of scrap and talk to the man."
-DEPENDENT_OUTCOME = 0
-FINAL_OBJECTIVE = false
-AUTO_COMPLETE = false
+description = ""
+dependent_outcome = 0
+final_objective = false
+auto_complete = false
 
 [sub_resource type="Resource" id="Resource_u6be8"]
 script = ExtResource("1_5s5hl")
 NAME = "Tell Questy"
-DESCRIPTION = "Tell Mr. Questy you have delivered the items OR talk the man about scamming him."
-DEPENDENT = SubResource("Resource_f45us")
-DEPENDENT_OUTCOME = 0
-FINAL_OBJECTIVE = false
-AUTO_COMPLETE = false
+description = ""
+dependent_outcome = 0
+final_objective = false
+auto_complete = false
 
 [sub_resource type="Resource" id="Resource_ci8bd"]
 script = ExtResource("1_5s5hl")
 NAME = "Betrayal"
-DESCRIPTION = "You backstabbing little cunt!"
-DEPENDENT = SubResource("Resource_u6be8")
-DEPENDENT_OUTCOME = 1
-FINAL_OBJECTIVE = true
-AUTO_COMPLETE = true
+description = ""
+dependent_outcome = 0
+final_objective = false
+auto_complete = false
 
 [sub_resource type="Resource" id="Resource_rgqkl"]
 script = ExtResource("1_5s5hl")
 NAME = "Friends"
-DESCRIPTION = "You told the truth! Aintcha such a good boy!"
-DEPENDENT = SubResource("Resource_u6be8")
-DEPENDENT_OUTCOME = 0
-FINAL_OBJECTIVE = true
-AUTO_COMPLETE = true
+description = ""
+dependent_outcome = 0
+final_objective = false
+auto_complete = false
 
 [resource]
 script = ExtResource("1_ayys1")
 NAME = "Get That Item"
-DESCRIPTION = "Mr Questy wants me to get that item. I wonder what he means by this.     "
+description = ""
 OBJECTIVES = Array[ExtResource("1_5s5hl")]([SubResource("Resource_f45us"), SubResource("Resource_u6be8"), SubResource("Resource_ci8bd"), SubResource("Resource_rgqkl")])
-COMPLETED = false
+completed = false
 EXPERIENCE_REWARD = 0.25

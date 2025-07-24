@@ -56,32 +56,32 @@ func _process(_delta):
 		absolute_health.hide()
 
 func updateBars():
-	health_bar.max_value = int(attached_combatant.BASE_STAT_VALUES['health'])
-	health_bar.value = int(attached_combatant.STAT_VALUES['health'])
+	health_bar.max_value = int(attached_combatant.base_stat_values['health'])
+	health_bar.value = int(attached_combatant.stat_values['health'])
 	absolute_health.text = str(health_bar.value)
-	turn_charges.value = attached_combatant.TURN_CHARGES
-	turn_charges.max_value = attached_combatant.MAX_TURN_CHARGES
+	turn_charges.value = attached_combatant.turn_charges
+	turn_charges.max_value = attached_combatant.max_turn_charges
 	if attached_combatant.hasStatusEffect('Knock Out'):
 		health_bar.hide()
 	else:
 		health_bar.show()
 
 func updateStatusEffects():
-	for effect in attached_combatant.STATUS_EFFECTS:
+	for effect in attached_combatant.status_effects:
 		if status_effects.get_children().has(effect.icon) or permanent_status_effects.get_children().has(effect.icon) or effect.icon == null: continue
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
 		var icon = effect.icon
-		icon.tooltip_text = effect.NAME+': '+effect.DESCRIPTION
+		icon.tooltip_text = effect.NAME+': '+effect.description
 		#icon.expand_mode = icon.EXPAND_FIT_WIDTH_PROPORTIONAL
 		icon.add_child(tick_down)
-		if effect.PERMANENT:
+		if effect.permanent:
 			permanent_status_effects.add_child(icon)
 		else:
 			status_effects.add_child(icon)
 
 func _on_health_bar_value_changed(value):
-	animateFaderBar(previous_value, attached_combatant.STAT_VALUES['health'])
+	animateFaderBar(previous_value, attached_combatant.stat_values['health'])
 #	if first_turn: 
 #		indicator.hide()
 #	else:

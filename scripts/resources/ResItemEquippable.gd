@@ -1,7 +1,7 @@
 extends ResItem
 class_name ResEquippable
 
-@export var STAT_MODIFICATIONS = {
+@export var stat_modifications = {
 	'health': 0,
 	'brawn': 0.0,
 	'grit': 0.0,
@@ -13,7 +13,7 @@ class_name ResEquippable
 	'heal_mult': 0.0,
 	'resist': 0.0
 }
-var EQUIPPED_COMBATANT: ResCombatant
+var equipped_combatant: ResCombatant
 
 func equip(_combatant: ResCombatant):
 	pass
@@ -23,29 +23,29 @@ func unequip():
 
 func applyStatModifications():
 	removeEmptyModifications()
-	if STAT_MODIFICATIONS.is_empty() or !isEquipped(): return
-	CombatGlobals.modifyStat(EQUIPPED_COMBATANT, STAT_MODIFICATIONS, NAME)
+	if stat_modifications.is_empty() or !isEquipped(): return
+	CombatGlobals.modifyStat(equipped_combatant, stat_modifications, NAME)
 
 func removeStatModifications():
 	removeEmptyModifications()
-	if STAT_MODIFICATIONS.is_empty() or !isEquipped(): return
-	CombatGlobals.resetStat(EQUIPPED_COMBATANT, NAME)
+	if stat_modifications.is_empty() or !isEquipped(): return
+	CombatGlobals.resetStat(equipped_combatant, NAME)
 
 func removeEmptyModifications():
 	var remove = []
-	for stat in STAT_MODIFICATIONS.keys():
-		if STAT_MODIFICATIONS[stat] == 0.0: remove.append(stat)
+	for stat in stat_modifications.keys():
+		if stat_modifications[stat] == 0.0: remove.append(stat)
 	for stat in remove:
-		STAT_MODIFICATIONS.erase(stat)
+		stat_modifications.erase(stat)
 
 func getStringStats():
 	removeEmptyModifications()
 	var result = ""
-	for key in STAT_MODIFICATIONS.keys():
-		var value = STAT_MODIFICATIONS[key]
+	for key in stat_modifications.keys():
+		var value = stat_modifications[key]
 		if value is float: 
 			value *= 100.0
-		if STAT_MODIFICATIONS[key] > 0 and STAT_MODIFICATIONS[key]:
+		if stat_modifications[key] > 0 and stat_modifications[key]:
 			result += '[color=GREEN_YELLOW]'
 			if value is float: 
 				result += "+" + str(value) + "% " +key.to_upper().replace('_', ' ') + "\n"
@@ -61,13 +61,13 @@ func getStringStats():
 	return result
 
 func isEquipped():
-	return EQUIPPED_COMBATANT != null
+	return equipped_combatant != null
 
 func getStatModifications():
-	return STAT_MODIFICATIONS
+	return stat_modifications
 
 func getInformation():
 	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
 	out += getStringStats()+"\n"
-	out += DESCRIPTION
+	out += description
 	return out

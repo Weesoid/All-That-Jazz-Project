@@ -16,7 +16,7 @@ func addQuest(quest_name: String):
 	prompt.setTitle(out_quest.NAME)
 	prompt.playAnimation('show_quest')
 	
-	out_quest.OBJECTIVES[0].ACTIVE = true
+	out_quest.OBJECTIVES[0].active = true
 	quests.append(out_quest)
 
 func hasQuest(quest_name: String):
@@ -29,10 +29,10 @@ func hasQuest(quest_name: String):
 func isQuestCompleted(quest_name: String):
 	if quests.is_empty(): return false
 	var out_quest = quests[quests.find(getQuest(quest_name))]
-	return out_quest.COMPLETED
+	return out_quest.completed
 
 func isObjectiveActive(quest_name: String, quest_objective_name: String)-> bool:
-	return hasQuest(quest_name) and getQuest(quest_name).getObjective(quest_objective_name).ACTIVE and !getQuest(quest_name).getObjective(quest_objective_name).COMPLETED
+	return hasQuest(quest_name) and getQuest(quest_name).getObjective(quest_objective_name).active and !getQuest(quest_name).getObjective(quest_objective_name).completed
 
 func completeQuestObjective(quest_name: String, quest_objective_name: String, outcome:int=0):
 	getQuest(quest_name).completeObjective(quest_objective_name, outcome)
@@ -43,7 +43,7 @@ func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String)
 	if quests.is_empty() or getQuest(quest_name) == null: 
 		return false
 	
-	return getQuest(quest_name).getObjective(quest_objective_name).COMPLETED
+	return getQuest(quest_name).getObjective(quest_objective_name).completed
 
 func getQuest(quest_name: String)-> ResQuest:
 	for quest in quests:
@@ -57,17 +57,17 @@ func saveData(save_data: Array):
 	for quest in quests:
 		var objectives_data = {}
 		for objective in quest.OBJECTIVES:
-			objectives_data[objective.NAME] = [objective.ACTIVE, objective.COMPLETED, objective.OUTCOME]
-		data.QUEST_OBJECTIVES_DATA[quest] = objectives_data
+			objectives_data[objective.NAME] = [objective.active, objective.completed, objective.outcome]
+		data.quest_objectives_data[quest] = objectives_data
 	save_data.append(data)
 
 func loadData(save_data: QuestSaveData):
 	quests = save_data.quests
 	for quest in quests:
 		for objective in quest.OBJECTIVES:
-			objective.ACTIVE = save_data.QUEST_OBJECTIVES_DATA[quest][objective.NAME][0]
-			objective.COMPLETED = save_data.QUEST_OBJECTIVES_DATA[quest][objective.NAME][1]
-			objective.OUTCOME = save_data.QUEST_OBJECTIVES_DATA[quest][objective.NAME][2]
+			objective.active = save_data.quest_objectives_data[quest][objective.NAME][0]
+			objective.completed = save_data.quest_objectives_data[quest][objective.NAME][1]
+			objective.outcome = save_data.quest_objectives_data[quest][objective.NAME][2]
 		quest.isCompleted(false)
 
 func resetVariables():

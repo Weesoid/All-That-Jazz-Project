@@ -1,38 +1,38 @@
 extends ResEquippable
 class_name ResCharm
 
-@export var STATUS_EFFECT: ResStatusEffect
-@export var UNIQUE: bool = false
+@export var status_effect: ResStatusEffect
+@export var unique: bool = false
 
 func updateItem():
-	if !FileAccess.file_exists(PARENT_ITEM):
+	if !FileAccess.file_exists(parent_item):
 		InventoryGlobals.removeItemResource(self)
 		return
 	
-	var parent_item = load(PARENT_ITEM)
+	var parent_item = load(parent_item)
 	NAME = parent_item.NAME
 	icon = parent_item.icon
-	DESCRIPTION = parent_item.DESCRIPTION
-	VALUE = parent_item.VALUE
-	MANDATORY = parent_item.MANDATORY
-	STAT_MODIFICATIONS = parent_item.STAT_MODIFICATIONS
-	STATUS_EFFECT = parent_item.STATUS_EFFECT
+	description = parent_item.description
+	value = parent_item.value
+	mandatory = parent_item.mandatory
+	stat_modifications = parent_item.stat_modifications
+	status_effect = parent_item.status_effect
 
 func equip(combatant: ResCombatant):
 	if isEquipped():
 		unequip()
 	
-	EQUIPPED_COMBATANT = combatant
+	equipped_combatant = combatant
 	if combatant is ResPlayerCombatant:
-		if STATUS_EFFECT != null:
-			STATUS_EFFECT = STATUS_EFFECT.duplicate()
+		if status_effect != null:
+			status_effect = status_effect.duplicate()
 	
-	EQUIPPED_COMBATANT = combatant
+	equipped_combatant = combatant
 	applyStatModifications()
 
 func unequip():
 	removeStatModifications()
-	EQUIPPED_COMBATANT = null
+	equipped_combatant = null
 
 func canEquip(combatant: ResPlayerCombatant)-> bool:
 	return !combatant.hasCharm(self)

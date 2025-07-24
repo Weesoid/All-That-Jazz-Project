@@ -24,7 +24,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		modifier = sell_modifier
 	array.sort_custom(func(a,b): return a.NAME < b.NAME)
 	array.sort_custom(func(a,b): return InventoryGlobals.getItemType(a) < InventoryGlobals.getItemType(b))
-	array.sort_custom(func(a,b): return a.VALUE * modifier < b.VALUE * modifier)
+	array.sort_custom(func(a,b): return a.value * modifier < b.value * modifier)
 	clearButtons()
 	
 	toggle_button.disabled = false
@@ -36,11 +36,11 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 	for item in array:
 		var button = OverworldGlobals.createItemButton(item, 0.0, mode!=1)
 		var label = Label.new()
-		if item.VALUE * modifier <= 0:
+		if item.value * modifier <= 0:
 			label.text = 'Free'
 			label.add_theme_font_size_override('font_size', 6)
 		else:
-			label.text = str(floor(item.VALUE * modifier))
+			label.text = str(floor(item.value * modifier))
 		label.theme = preload("res://design/OutlinedLabel.tres")
 		label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
@@ -48,19 +48,19 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		
 		if mode == 0 and item is ResStackItem:
 			var count_label = Label.new()
-			count_label.text = str(item.STACK)
+			count_label.text = str(item.stack)
 			count_label.theme = preload("res://design/OutlinedLabel.tres")
 			button.add_child(count_label)
 		
 		if item is ResStackItem and mode == 1:
 			item = ResGhostStackItem.new(item)
-			item.STACK = 999
+			item.stack = 999
 		
 		if (item is ResStackItem and InventoryGlobals.calculateValidAdd(item) == 0) and mode == 1:
 			button.disabled = true
 			label.text = ''
 		
-		if item.MANDATORY and mode == 0:
+		if item.mandatory and mode == 0:
 			button.disabled = true
 			label.text = ''
 		
@@ -68,7 +68,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			button.disabled = !InventoryGlobals.canAdd(item,1,false)
 			if !InventoryGlobals.canAdd(item,1,false): label.hide()
 		
-		if PlayerGlobals.currency >= item.VALUE * buy_modifier and mode == 1:
+		if PlayerGlobals.currency >= item.value * buy_modifier and mode == 1:
 			label.add_theme_color_override('font_color', Color.GREEN)
 		elif mode == 1:
 			label.add_theme_color_override('font_color', Color.RED)
@@ -78,7 +78,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		elif sell_modifier < 0.5 and mode == 0:
 			label.add_theme_color_override('font_color', Color.ORANGE)
 		
-		if item.VALUE * buy_modifier == 0:
+		if item.value * buy_modifier == 0:
 			label.add_theme_color_override('font_color', Color.WHITE)
 		
 		button.pressed.connect(
@@ -109,12 +109,12 @@ func loadSlider(item)-> int:
 	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
 	
 	if mode == 1:
-		if item.VALUE * buy_modifier != 0 and floor(PlayerGlobals.currency / (item.VALUE * buy_modifier)) <= item.REFERENCE_ITEM.MAX_STACK:
-			a_slider.max_v = floor(PlayerGlobals.currency / floor(item.VALUE * buy_modifier))
+		if item.value * buy_modifier != 0 and floor(PlayerGlobals.currency / (item.value * buy_modifier)) <= item.reference_item.max_stack:
+			a_slider.max_v = floor(PlayerGlobals.currency / floor(item.value * buy_modifier))
 		else:
 			a_slider.max_v = InventoryGlobals.calculateValidAdd(item)
 	elif mode == 0:
-		a_slider.max_v = item.STACK
+		a_slider.max_v = item.stack
 	
 	add_child(a_slider)
 	a_slider.global_position = OverworldGlobals.getPlayer().player_camera.global_position
@@ -127,7 +127,7 @@ func loadSlider(item)-> int:
 func setButtonFunction(selected_item):
 	match mode:
 		1: # BUY
-			if PlayerGlobals.currency < selected_item.VALUE * buy_modifier:
+			if PlayerGlobals.currency < selected_item.value * buy_modifier:
 				OverworldGlobals.showPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.NAME)
 				return
 			
@@ -138,18 +138,18 @@ func setButtonFunction(selected_item):
 				OverworldGlobals.setMenuFocusMode(wares, true)
 				OverworldGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
-				PlayerGlobals.currency -= (floor(selected_item.VALUE * buy_modifier) * amount)
-				showChange(-floor(selected_item.VALUE * buy_modifier) * amount)
+				PlayerGlobals.currency -= (floor(selected_item.value * buy_modifier) * amount)
+				showChange(-floor(selected_item.value * buy_modifier) * amount)
 				if amount > 0:
 					OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			else:
 				InventoryGlobals.addItemResource(selected_item)
-				PlayerGlobals.currency -= floor(selected_item.VALUE * buy_modifier)
-				showChange(-floor(selected_item.VALUE * buy_modifier))
+				PlayerGlobals.currency -= floor(selected_item.value * buy_modifier)
+				showChange(-floor(selected_item.value * buy_modifier))
 				OverworldGlobals.playSound("res://audio/sounds/721774__maodin204__cash-register.ogg")
 			loadWares(wares_array, selected_item)
 		0: # SELL
-			if selected_item.MANDATORY:
+			if selected_item.mandatory:
 				OverworldGlobals.showPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
 				return
 			
@@ -159,8 +159,8 @@ func setButtonFunction(selected_item):
 			OverworldGlobals.setMenuFocusMode(wares, true)
 			OverworldGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
-			PlayerGlobals.currency += (floor(selected_item.VALUE * sell_modifier) * amount)
-			showChange(floor(selected_item.VALUE * sell_modifier) * amount)
+			PlayerGlobals.currency += (floor(selected_item.value * sell_modifier) * amount)
+			showChange(floor(selected_item.value * sell_modifier) * amount)
 			loadWares(InventoryGlobals.inventory, selected_item)
 			if amount > 0:
 				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
@@ -185,14 +185,14 @@ func _on_barter_pressed():
 	var sold = false
 	var amount_sold
 	for item in InventoryGlobals.inventory:
-		if item is ResStackItem and item.BARTER_ITEM: 
+		if item is ResStackItem and item.barter_item: 
 			barter_items.append(item)
 	
 	for item in barter_items:
-		var amount = item.STACK
+		var amount = item.stack
 		InventoryGlobals.removeItemResource(item, amount, false)
-		amount_sold = (floor(item.VALUE) * amount)
-		PlayerGlobals.currency += (floor(item.VALUE) * amount)
+		amount_sold = (floor(item.value) * amount)
+		PlayerGlobals.currency += (floor(item.value) * amount)
 		if mode == 0: 
 			loadWares(InventoryGlobals.inventory)
 		else:
@@ -204,7 +204,7 @@ func _on_barter_pressed():
 
 func hasBarterItems():
 	for item in InventoryGlobals.inventory:
-		if item is ResStackItem and item.BARTER_ITEM: return true
+		if item is ResStackItem and item.barter_item: return true
 
 func showChange(amount: int):
 	if amount == 0:

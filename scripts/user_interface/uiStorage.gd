@@ -24,7 +24,7 @@ func createButton(item, location):
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.custom_minimum_size.x = 170
 	button.text = item._to_string()
-	if item.MANDATORY:
+	if item.mandatory:
 		button.disabled = true
 		location.add_child(button)
 		return
@@ -49,7 +49,7 @@ func loadSlider(item)-> int:
 		return 1
 	
 	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
-	a_slider.max_v = item.STACK
+	a_slider.max_v = item.stack
 	add_child(a_slider)
 	await a_slider.amount_enter
 	var amount = a_slider.slider.value

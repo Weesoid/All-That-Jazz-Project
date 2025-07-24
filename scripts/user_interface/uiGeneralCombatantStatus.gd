@@ -7,9 +7,9 @@ var combatant: ResPlayerCombatant
 
 func _process(_delta):
 	char_name.text = combatant.NAME
-	char_health.value = combatant.STAT_VALUES['health']
+	char_health.value = combatant.stat_values['health']
 	char_health.max_value = combatant.getMaxHealth()
-#	for status_effect in combatant.LINGERING_STATUS_EFFECTS:
+#	for status_effect in combatant.lingering_effects:
 #		char_effects.add_child(CombatGlobals.getStatusEffect(status_effect).icon)
 	if combatant.isInflicted():
 		char_name.add_theme_color_override("font_color", Color.ORANGE)

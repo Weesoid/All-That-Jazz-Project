@@ -25,7 +25,7 @@ func initializePlayerParty():
 	for member in getCombatantSquad('Player'):
 		if !member.initialized:
 			member.initializeCombatant()
-			member.SCENE.free()
+			member.combatant_scene.free()
 	
 	loadFollowers()
 
@@ -233,23 +233,23 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	button.description_offset = Vector2(0, -28)
 	if item is ResStackItem and show_count:
 		var label = Label.new()
-		label.text = str(item.STACK)
+		label.text = str(item.stack)
 		label.theme = preload("res://design/OutlinedLabel.tres")
 		button.add_child(label)
 	
 	if value_modifier != 0.0:
 		var label = Label.new()
-		if item.VALUE * value_modifier <= 0:
+		if item.value * value_modifier <= 0:
 			label.text = 'Free'
 			label.add_theme_font_size_override('font_size', 6)
 		else:
-			label.text = str(int(item.VALUE * value_modifier))
+			label.text = str(int(item.value * value_modifier))
 		label.theme = preload("res://design/OutlinedLabel.tres")
 		label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 		button.add_child(label)
 	
-	if item is ResStackItem and item.BARTER_ITEM: # item.MANDATORY
+	if item is ResStackItem and item.barter_item: # item.mandatory
 		button.theme = preload("res://design/ItemButtonsMandatory.tres")
 	else:
 		button.theme = preload("res://design/ItemButtons.tres")
@@ -431,10 +431,10 @@ func loadFollowers():
 	player_follower_count = 0
 	
 	for combatant in PlayerGlobals.team:
-		if getCombatantSquad('Player').has(combatant) and combatant.FOLLOWER_TEXTURE != null:
+		if getCombatantSquad('Player').has(combatant) and combatant.follower_texture != null:
 			player_follower_count += 1
 			var follower_scene = load("res://scenes/entities/mobs/Follower.tscn").instantiate()
-			follower_scene.texture = combatant.FOLLOWER_TEXTURE
+			follower_scene.texture = combatant.follower_texture
 			follower_scene.host_combatant = combatant
 			follower_scene.follow_index = player_follower_count
 			follower_scene.global_position = getPlayer().global_position+Vector2(0, -32)
@@ -607,15 +607,15 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		enemy_squad.addLingeringEffect(map_events['patroller_effect'])
 	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad('Player'):
-		combatant.LINGERING_STATUS_EFFECTS.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
+		combatant.lingering_effects.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
 	for combatant in enemy_squad.combatant_squad:
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
 		for effect in enemy_squad.afflicted_status_effects:
-			duped_combatant.LINGERING_STATUS_EFFECTS.append(effect)
+			duped_combatant.lingering_effects.append(effect)
 #		if CombatGlobals.randomRoll(enemy_squad.TAMEABLE_CHANCE):
 #			randomize()
-#			duped_combatant.SPAWN_ON_DEATH = getRandomTameable().pick_random().convertToEnemy('Feral')
+#			duped_combatant.spawn_on_death = getRandomTameable().pick_random().convertToEnemy('Feral')
 		combat_scene.COMBATANTS.append(duped_combatant)
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
@@ -663,7 +663,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 #		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
 	for combatant in getCombatantSquad('Player'):
 		for effect in getCombatantSquadComponent('Player').afflicted_status_effects:
-			combatant.LINGERING_STATUS_EFFECTS.erase(effect)
+			combatant.lingering_effects.erase(effect)
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
 	OverworldGlobals.getPlayer().setUIVisibility(true)
 	battle_transition.get_node('AnimationPlayer').play('Out')
@@ -727,9 +727,9 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
-		member.STAT_VALUES['health'] -= int(CombatGlobals.useDamageFormula(member, damage))
+		member.stat_values['health'] -= int(CombatGlobals.useDamageFormula(member, damage))
 		if !lethal and member.isDead():
-			member.STAT_VALUES['health'] = 1
+			member.stat_values['health'] = 1
 		if member.isDead():
 			OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	if isPlayerSquadDead() and !death_message.is_empty():

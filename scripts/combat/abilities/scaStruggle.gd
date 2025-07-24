@@ -1,6 +1,6 @@
 static func animate(caster: CombatantScene, target: CombatantScene, ability: ResAbility):
 	if caster.combatant_resource is ResEnemyCombatant:
-		match caster.combatant_resource.PREFERRED_POSITION:
+		match caster.combatant_resource.preferred_position:
 			0:
 				CombatGlobals.getCombatScene().changeCombatantPosition(caster.combatant_resource, 1, false)
 				await caster.moveTo(target)

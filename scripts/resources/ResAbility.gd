@@ -45,7 +45,7 @@ func execute():
 		TargetType.MULTI: multi_target.emit(self, 2)
 
 func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
-	combatants = combatants.filter(func(combatant: ResCombatant): return is_instance_valid(combatant.SCENE))
+	combatants = combatants.filter(func(combatant: ResCombatant): return is_instance_valid(combatant.combatant_scene))
 	if target_group == TargetGroup.SELF:
 		return CombatGlobals.getCombatScene().active_combatant
 	if !can_target_dead:

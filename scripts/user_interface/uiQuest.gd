@@ -28,7 +28,7 @@ func _ready():
 				selected_quest = quest
 				run_once = true
 				)
-		if quest.COMPLETED:
+		if quest.completed:
 			completed_quests.add_child(button)
 		else:
 			ongoing_quests.add_child(button)
@@ -38,17 +38,17 @@ func setQuestInfo():
 	clearQuestInfo()
 	
 	title.text = selected_quest.NAME
-	description.text = selected_quest.DESCRIPTION
+	description.text = selected_quest.description
 	
 	for objectve in selected_quest.OBJECTIVES:
-		if objectve.ACTIVE:
+		if objectve.active:
 			var objective_description = Label.new()
 			objective_description.custom_minimum_size.x = objectives_container.size.x
-			objective_description.text = str("* ", objectve.DESCRIPTION)
+			objective_description.text = str("* ", objectve.description)
 			objective_description.autowrap_mode = 3
-			if objectve.COMPLETED:
+			if objectve.completed:
 				objective_description.self_modulate.a = 0.5
-			if run_once and objectve.ACTIVE:
+			if run_once and objectve.active:
 				objective_scroller.add_child(objective_description)
 	
 	run_once = false

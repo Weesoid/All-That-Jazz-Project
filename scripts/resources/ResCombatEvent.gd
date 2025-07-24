@@ -2,12 +2,12 @@ extends Resource
 class_name ResCombatEvent
 
 @export var NAME: String
-@export var WARNING_MESSAGE: String
-@export var EVENT_MESSAGE: String
+@export var warning_message: String
+@export var event_message: String
 ## Multi-target abilities ONLY!
-@export var ABILITY: ResAbility
-@export var TURN_TRIGGER: int
-@export var MAP_OVERLAY: Node2D
+@export var ability: ResAbility
+@export var turn_trigger: int
+@export var map_overlay: Node2D
 
 func _to_string():
 	return NAME

@@ -14,11 +14,11 @@ func _ready():
 	CombatGlobals.click_block.connect(block)
 	block_timer.timeout.connect(checkHasBlockModifier)
 func _exit_tree():
-	if combatant_resource.STAT_MODIFIERS.has('block'):
+	if combatant_resource.stat_modifiers.has('block'):
 		CombatGlobals.resetStat(combatant_resource, 'block')
 
 func checkHasBlockModifier():
-	if combatant_resource.STAT_MODIFIERS.has('block'):
+	if combatant_resource.stat_modifiers.has('block'):
 		CombatGlobals.resetStat(combatant_resource, 'block')
 
 func playWeaponAttack():

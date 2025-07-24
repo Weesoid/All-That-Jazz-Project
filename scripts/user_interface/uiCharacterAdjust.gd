@@ -38,8 +38,8 @@ func _process(_delta):
 			infliction.add_theme_color_override("font_color", Color.WHITE)
 			infliction.text = ''
 			infliction.tooltip_text = ''
-		if selected_combatant.STAT_POINTS > 0:
-			stat_points.text = str(selected_combatant.STAT_POINTS)
+		if selected_combatant.stat_points > 0:
+			stat_points.text = str(selected_combatant.stat_points)
 #			if !attrib_view_animator.is_playing():
 #				attrib_view_animator.play('UnspentPoints')
 		else:
@@ -97,7 +97,7 @@ func updateCharacterView(member: ResPlayerCombatant):
 		last_member.queue_free()
 	
 	member.initializeCombatant()
-	var character_scene = member.SCENE
+	var character_scene = member.combatant_scene
 	if character_scene:
 		character_scene.scale = Vector2(2,2)
 		character_view.add_child(character_scene)
@@ -115,12 +115,12 @@ func swapMembers(member_a: ResCombatant, member_b: ResCombatant):
 
 func loadAbilities():
 	clearChildren(pool)
-	if selected_combatant.ABILITY_POOL.is_empty():
+	if selected_combatant.ability_pool.is_empty():
 		return
 	
-	for ability in selected_combatant.ABILITY_POOL:
+	for ability in selected_combatant.ability_pool:
 		if ability == null:
-			selected_combatant.ABILITY_POOL.erase(ability)
+			selected_combatant.ability_pool.erase(ability)
 			continue
 		if PlayerGlobals.team_level < ability.required_level or (!PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) and PlayerGlobals.team_level >= ability.required_level and !show_temperments): 
 			continue
@@ -136,7 +136,7 @@ func createAbilityButton(ability, location):
 	var has_unlocked = PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) or ability.required_level == 0
 	button.focused_entered_sound = preload("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = preload("res://audio/sounds/421304__jaszunio15__click_229.ogg")
-	if selected_combatant.ABILITY_SET.has(ability):
+	if selected_combatant.ability_set.has(ability):
 		button.add_theme_icon_override('icon', preload("res://images/sprites/ability_mark.png"))
 	if !has_unlocked:
 		button.add_theme_icon_override('icon', preload("res://images/sprites/lock.png"))
@@ -150,14 +150,14 @@ func createAbilityButton(ability, location):
 					PlayerGlobals.unlockAbility(selected_combatant, ability)
 					OverworldGlobals.playSound('res://audio/sounds/721774__maodin204__cash-register.ogg')
 					loadMemberInfo(selected_combatant)
-			elif !selected_combatant.ABILITY_SET.has(ability):
-				if selected_combatant.ABILITY_SET.size() >= 4:
+			elif !selected_combatant.ability_set.has(ability):
+				if selected_combatant.ability_set.size() >= 4:
 					OverworldGlobals.showPrompt('Max abilities enabled.')
 					return
-				selected_combatant.ABILITY_SET.append(ability)
+				selected_combatant.ability_set.append(ability)
 				button.add_theme_icon_override('icon', preload("res://images/sprites/ability_mark.png"))
-			elif selected_combatant.ABILITY_SET.has(ability):
-				selected_combatant.ABILITY_SET.erase(ability)
+			elif selected_combatant.ability_set.has(ability):
+				selected_combatant.ability_set.erase(ability)
 				button.remove_theme_icon_override('icon')
 	)
 	location.add_child(button)
@@ -179,7 +179,7 @@ func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
 	button.pressed.connect(func(): loadMemberInfo(member, button))
 	if preview_combatant:
 		member.initializeCombatant()
-		button.add_child(member.SCENE)
+		button.add_child(member.combatant_scene)
 	
 	return button
 
@@ -200,7 +200,7 @@ func _on_weapon_pressed():
 	weapon_button.grab_focus()
 
 func _on_slot_a_pressed():
-	if selected_combatant.CHARMS[0] != null: 
+	if selected_combatant.charms[0] != null: 
 		selected_combatant.unequipCharm(0)
 		charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
 	await showEquipment(0, 0)
@@ -208,7 +208,7 @@ func _on_slot_a_pressed():
 	charm_slot_a.grab_focus()
 
 func _on_slot_b_pressed():
-	if selected_combatant.CHARMS[1] != null: 
+	if selected_combatant.charms[1] != null: 
 		selected_combatant.unequipCharm(1)
 		charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
 	await showEquipment(0, 1)
@@ -216,7 +216,7 @@ func _on_slot_b_pressed():
 	charm_slot_b.grab_focus()
 
 func _on_slot_c_pressed():
-	if selected_combatant.CHARMS[2] != null: 
+	if selected_combatant.charms[2] != null: 
 		selected_combatant.unequipCharm(2)
 		charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
 	await showEquipment(0, 2)
@@ -239,11 +239,11 @@ func updateEquipped():
 	if selected_combatant == null:
 		return
 	
-	if selected_combatant.EQUIPPED_WEAPON != null:
-		weapon_button.text = selected_combatant.EQUIPPED_WEAPON.NAME
-		weapon_button.icon = selected_combatant.EQUIPPED_WEAPON.icon
-		weapon_durability.text = '%s / %s' % [selected_combatant.EQUIPPED_WEAPON.durability, selected_combatant.EQUIPPED_WEAPON.max_durability]
-		if selected_combatant.EQUIPPED_WEAPON.durability <= 0:
+	if selected_combatant.equipped_weapon != null:
+		weapon_button.text = selected_combatant.equipped_weapon.NAME
+		weapon_button.icon = selected_combatant.equipped_weapon.icon
+		weapon_durability.text = '%s / %s' % [selected_combatant.equipped_weapon.durability, selected_combatant.equipped_weapon.max_durability]
+		if selected_combatant.equipped_weapon.durability <= 0:
 			weapon_durability.modulate = Color.RED
 		weapon_durability.show()
 	else:
@@ -255,16 +255,16 @@ func updateEquipped():
 	charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
 	charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
 	charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
-	if selected_combatant.CHARMS[0] != null:
-		charm_slot_a.icon = selected_combatant.CHARMS[0].icon
-	if selected_combatant.CHARMS[1] != null:
-		charm_slot_b.icon = selected_combatant.CHARMS[1].icon
-	if selected_combatant.CHARMS[2] != null:
-		charm_slot_c.icon = selected_combatant.CHARMS[2].icon
+	if selected_combatant.charms[0] != null:
+		charm_slot_a.icon = selected_combatant.charms[0].icon
+	if selected_combatant.charms[1] != null:
+		charm_slot_b.icon = selected_combatant.charms[1].icon
+	if selected_combatant.charms[2] != null:
+		charm_slot_c.icon = selected_combatant.charms[2].icon
 
 func equipCharmOnCombatant(charm: ResCharm, slot: int, slot_button):
 	selected_combatant.equipCharm(charm, slot)
-	if selected_combatant.CHARMS[slot] != null:
+	if selected_combatant.charms[slot] != null:
 		slot_button.icon = charm.icon
 
 func _on_change_formation_pressed():
@@ -290,17 +290,17 @@ func showCombatantsOnButtons():
 	for child in member_container.get_children():
 		var combatant = OverworldGlobals.getCombatant('Player', child.text)
 		combatant.initializeCombatant()
-		child.add_child(combatant.SCENE)
+		child.add_child(combatant.combatant_scene)
 
 func updateTemperments():
 	clearChildren(primary_temperments)
 	clearChildren(secondary_temperments)
 	selected_combatant.applyTemperments(true)
-	for temperment in selected_combatant.TEMPERMENT['primary']:
+	for temperment in selected_combatant.temperment['primary']:
 		primary_temperments.add_child(createTempermentLabel(temperment, 'primary'))
-	for temperment in selected_combatant.TEMPERMENT['secondary']:
+	for temperment in selected_combatant.temperment['secondary']:
 		secondary_temperments.add_child(createTempermentLabel(temperment, 'secondary'))
-	if selected_combatant.hasEquippedWeapon() and !selected_combatant.EQUIPPED_WEAPON.canUse(selected_combatant):
+	if selected_combatant.hasEquippedWeapon() and !selected_combatant.equipped_weapon.canUse(selected_combatant):
 		selected_combatant.unequipWeapon()
 
 func createTempermentLabel(temperment: String, type: String):
@@ -315,7 +315,7 @@ func createTempermentLabel(temperment: String, type: String):
 	temperment_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	temperment_label.fit_content = true
 	temperment_label.text = bb+temperment.capitalize()
-	temperment_label.tooltip_text = formatModifiers(selected_combatant.STAT_MODIFIERS[stat_tag+temperment], false)
+	temperment_label.tooltip_text = formatModifiers(selected_combatant.stat_modifiers[stat_tag+temperment], false)
 	return temperment_label
 
 func formatModifiers(stat_dict: Dictionary, bb_code:bool=true) -> String:

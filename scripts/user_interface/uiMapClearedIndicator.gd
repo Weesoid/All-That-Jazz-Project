@@ -61,8 +61,8 @@ func createIcon(combatant: ResCombatant):
 	var icon = TextureRect.new()
 	var atlas = AtlasTexture.new()
 	atlas.region = Rect2(0, 0, 48, 48)
-	atlas.atlas = combatant.SCENE.get_node('Sprite2D').texture
+	atlas.atlas = combatant.combatant_scene.get_node('Sprite2D').texture
 	icon.texture = atlas
 	icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
-	combatant.SCENE.queue_free()
+	combatant.combatant_scene.queue_free()
 	return icon 

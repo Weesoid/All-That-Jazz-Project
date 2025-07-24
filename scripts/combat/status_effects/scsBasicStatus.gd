@@ -1,5 +1,5 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if status_effect.EFFECT_TYPE != 1: 
+	if status_effect.effect_type != 1: 
 		runEffects(target, status_effect)
 
 static func applyHitEffects(target: ResCombatant, _caster: ResCombatant, _value, status_effect: ResStatusEffect):
@@ -17,11 +17,11 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if target.STAT_MODIFIERS.has(status_effect.NAME):
+	if target.stat_modifiers.has(status_effect.NAME):
 		CombatGlobals.resetStat(target, status_effect.NAME)
 
 static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffect):
-	if (!effect.apply_once) or (effect.apply_once and status_effect.APPLY_ONCE):
+	if (!effect.apply_once) or (effect.apply_once and status_effect.apply_once):
 		var message = ''
 		if effect.message != '' and avoidMessageSpam(status_effect):
 			message = effect.message
@@ -35,7 +35,7 @@ static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffec
 		return false
 
 static func avoidMessageSpam(status_effect: ResStatusEffect):
-	return (status_effect.TICK_PER_TURN and status_effect.APPLY_ONCE) or !status_effect.TICK_PER_TURN
+	return (status_effect.tick_any_turn and status_effect.apply_once) or !status_effect.tick_any_turn
 
 static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffect):
 	var scale

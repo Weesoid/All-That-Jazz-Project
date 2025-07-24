@@ -1,12 +1,12 @@
 extends ResStackItem
 class_name ResGhostStackItem
 
-var REFERENCE_ITEM: ResStackItem
+var reference_item: ResStackItem
 
 func _init(ref_item: ResStackItem):
-	REFERENCE_ITEM = ref_item
-	NAME = REFERENCE_ITEM.NAME
-	VALUE = REFERENCE_ITEM.VALUE
-	DESCRIPTION = REFERENCE_ITEM.DESCRIPTION
-	icon = REFERENCE_ITEM.icon
-	STACK = 1
+	reference_item = ref_item
+	NAME = reference_item.NAME
+	value = reference_item.value
+	description = reference_item.description
+	icon = reference_item.icon
+	stack = 1

@@ -35,23 +35,23 @@ func _ready():
 
 func _process(_delta):
 	if combatant != null:
-		hp_text.text = '%s/%s' % [combatant.STAT_VALUES['health'], combatant.BASE_STAT_VALUES['health']]
-		hp_val.value = combatant.STAT_VALUES['health']
-		hp_val.max_value = combatant.BASE_STAT_VALUES['health']
-		brawn_val.value = combatant.STAT_VALUES['brawn'] * 100
-		grit_val.value = combatant.STAT_VALUES['grit'] * 100
+		hp_text.text = '%s/%s' % [combatant.stat_values['health'], combatant.base_stat_values['health']]
+		hp_val.value = combatant.stat_values['health']
+		hp_val.max_value = combatant.base_stat_values['health']
+		brawn_val.value = combatant.stat_values['brawn'] * 100
+		grit_val.value = combatant.stat_values['grit'] * 100
 		handling_val.max_value = 4
-		handling_val.value = combatant.STAT_VALUES['handling']
-		if combatant.STAT_VALUES['hustle'] >= -99:
-			hustle_val.text = str(combatant.STAT_VALUES['hustle'])
+		handling_val.value = combatant.stat_values['handling']
+		if combatant.stat_values['hustle'] >= -99:
+			hustle_val.text = str(combatant.stat_values['hustle'])
 		else:
 			hustle_val.text = 'IMMOBILIZED'
-		acc_val.value = combatant.STAT_VALUES['accuracy'] * 100
-		crit_d_val.text = str(combatant.STAT_VALUES['crit_dmg'])
-		crit_val.value = combatant.STAT_VALUES['crit'] * 100
-		resist_val.value = combatant.STAT_VALUES['resist'] * 100
-		if combatant.STAT_VALUES['heal_mult'] > 0:
-			healm_val.text = str(combatant.STAT_VALUES['heal_mult'])
+		acc_val.value = combatant.stat_values['accuracy'] * 100
+		crit_d_val.text = str(combatant.stat_values['crit_dmg'])
+		crit_val.value = combatant.stat_values['crit'] * 100
+		resist_val.value = combatant.stat_values['resist'] * 100
+		if combatant.stat_values['heal_mult'] > 0:
+			healm_val.text = str(combatant.stat_values['heal_mult'])
 		else:
 			healm_val.text = 'BROKEN'
 		# Abilities
@@ -71,9 +71,9 @@ func _process(_delta):
 		highlightModifiedStats(healm_val, 'heal_mult')
 
 func highlightModifiedStats(value_node, stat):
-	if combatant.STAT_VALUES[stat] > combatant.BASE_STAT_VALUES[stat]:
+	if combatant.stat_values[stat] > combatant.base_stat_values[stat]:
 		value_node.modulate = Color.PALE_GREEN
-	elif combatant.STAT_VALUES[stat] < combatant.BASE_STAT_VALUES[stat]:
+	elif combatant.stat_values[stat] < combatant.base_stat_values[stat]:
 		value_node.modulate = Color.PALE_VIOLET_RED
 	else:
 		value_node.modulate = Color.WHITE
@@ -81,7 +81,7 @@ func highlightModifiedStats(value_node, stat):
 func getAbilities(view_combatant:ResCombatant):
 	var ability_set = '[table=2]'
 	
-	for ability in view_combatant.ABILITY_SET:
+	for ability in view_combatant.ability_set:
 		ability_set += '[cell][hint='+ability.description+']'+ability.NAME + '[/hint][/cell][cell]' + ability.getPositionIcon(true, combatant is ResEnemyCombatant)+'[/cell]\n'
 	
 	ability_set += '[/table]'

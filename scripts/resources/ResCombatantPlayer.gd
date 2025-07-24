@@ -1,123 +1,123 @@
 extends ResCombatant
 class_name ResPlayerCombatant
 
-@export var ABILITY_POOL: Array[ResAbility]
-@export var GUARD_EFFECT: ResStatusEffect = load("res://resources/combat/status_effects/Riposte.tres")
-@export var BASE_TEMPERMENT: Dictionary = {'primary':[], 'secondary':[]}
-@export var FOLLOWER_TEXTURE: Texture
-@export var MANDATORY = false
-@export var STAT_MULTIPLIER = 0.01
+@export var ability_pool: Array[ResAbility]
+@export var guard_effect: ResStatusEffect = load("res://resources/combat/status_effects/Riposte.tres")
+@export var base_temperment: Dictionary = {'primary':[], 'secondary':[]}
+@export var follower_texture: Texture
+@export var mandatory = false
+@export var stat_multiplier = 0.01
 
-var EQUIPPED_WEAPON: ResWeapon
-var STAT_POINTS = 1
-var CHARMS = {
+var equipped_weapon: ResWeapon
+var stat_points = 1
+var charms = {
 	0: null,
 	1: null,
 	2: null
 }
-var STAT_POINT_ALLOCATIONS = {
+var stat_point_allocations = {
 	'brawn': 0,
 	'grit': 0,
 	'handling': 0
 }
-var TEMPERMENT: Dictionary = {'primary':[], 'secondary':[]}
-var BASE_HEALTH: int
+var temperment: Dictionary = {'primary':[], 'secondary':[]}
+var base_health: int
 var initialized = false
 
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:
-		SCENE = packed_scene.instantiate()
-		SCENE.combatant_resource = self
+		combatant_scene = packed_scene.instantiate()
+		combatant_scene.combatant_resource = self
 	if !initialized:
-		BASE_STAT_VALUES = STAT_VALUES.duplicate()
-		BASE_HEALTH = STAT_VALUES['health']
+		base_stat_values = stat_values.duplicate()
+		base_health = stat_values['health']
 		initialized = true
-	if !STAT_MODIFIERS.keys().has('scaled_stats'):
+	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
 	if CombatGlobals.inCombat():
 		applyStatusEffects()
-	if !TEMPERMENT['primary'] is Array:
-		TEMPERMENT['primary'] = []
-		TEMPERMENT['secondary'] = []
-	if TEMPERMENT['primary'] == [] and TEMPERMENT['secondary'] == []:
-		TEMPERMENT = BASE_TEMPERMENT
+	if !temperment['primary'] is Array:
+		temperment['primary'] = []
+		temperment['secondary'] = []
+	if temperment['primary'] == [] and temperment['secondary'] == []:
+		temperment = base_temperment
 	applyTemperments()
 
 func applyTemperments(update:bool = false):
-	if TEMPERMENT['primary'].is_empty():
+	if temperment['primary'].is_empty():
 		return
-	if !TEMPERMENT['primary'] is Array:
-		TEMPERMENT['primary'] = []
-		TEMPERMENT['secondary'] = []
+	if !temperment['primary'] is Array:
+		temperment['primary'] = []
+		temperment['secondary'] = []
 		applyTemperments()
 		return
 	
-	for temperment in TEMPERMENT['primary']:
-		if !STAT_MODIFIERS.keys().has('pt_'+temperment) or update:
+	for temperment in temperment['primary']:
+		if !stat_modifiers.keys().has('pt_'+temperment) or update:
 			CombatGlobals.modifyStat(self, PlayerGlobals.primary_temperments[temperment], 'pt_'+temperment)
-	for temperment in TEMPERMENT['secondary']:
-		if !STAT_MODIFIERS.keys().has('st_'+temperment) or update:
+	for temperment in temperment['secondary']:
+		if !stat_modifiers.keys().has('st_'+temperment) or update:
 			CombatGlobals.modifyStat(self, PlayerGlobals.secondary_temperments[temperment], 'st_'+temperment)
 
 func scaleStats():
 	var stat_increase = {}
-	stat_increase['health'] = (BASE_HEALTH * (1 + ((PlayerGlobals.team_level-1)*0.1))) - BASE_HEALTH
+	stat_increase['health'] = (base_health * (1 + ((PlayerGlobals.team_level-1)*0.1))) - base_health
 	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
 
 func updateCombatant(save_data: PlayerSaveData):
-	var remove_abilities = ABILITY_SET.filter(func(ability): return !ABILITY_POOL.has(ability))
+	var remove_abilities = ability_set.filter(func(ability): return !ability_pool.has(ability))
 	for ability in remove_abilities:
-		ABILITY_SET.erase(ability)
+		ability_set.erase(ability)
 	
 	# Debug code.!
-	#var percent_health = float(save_data.COMBATANT_SAVE_DATA[self][2]['health']) / float(save_data.COMBATANT_SAVE_DATA[self][3]['health'])
+	#var percent_health = float(save_data.combatant_save_data[self][2]['health']) / float(save_data.combatant_save_data[self][3]['health'])
 #	if NAME == 'Willis Flynn':
 #		print('======= ', NAME, ' =======')
-#		print('BaseHealth: ', STAT_VALUES['health'])
-#		print('Dividing: ',save_data.COMBATANT_SAVE_DATA[self][2]['health'], ' / ', save_data.COMBATANT_SAVE_DATA[self][3]['health'])
+#		print('BaseHealth: ', stat_values['health'])
+#		print('Dividing: ',save_data.combatant_save_data[self][2]['health'], ' / ', save_data.combatant_save_data[self][3]['health'])
 #		print('% left: ', percent_health)
-#		print(BASE_STAT_VALUES['health'], ' * ', percent_health, ' = ', BASE_STAT_VALUES['health'] * percent_health)
-#		print('Floored: ', floor(BASE_STAT_VALUES['health'] * percent_health))
-	STAT_VALUES['health'] = floor(BASE_STAT_VALUES['health']) #* percent_health)
+#		print(base_stat_values['health'], ' * ', percent_health, ' = ', base_stat_values['health'] * percent_health)
+#		print('Floored: ', floor(base_stat_values['health'] * percent_health))
+	stat_values['health'] = floor(base_stat_values['health']) #* percent_health)
 
 func act():
 	player_turn.emit()
 
 func applyStatusEffects():
-	for charm in CHARMS.values():
-		if charm == null or charm.STATUS_EFFECT == null: continue
-		CombatGlobals.addStatusEffect(self, charm.STATUS_EFFECT.NAME)
-	for effect in LINGERING_STATUS_EFFECTS:
+	for charm in charms.values():
+		if charm == null or charm.status_effect == null: continue
+		CombatGlobals.addStatusEffect(self, charm.status_effect.NAME)
+	for effect in lingering_effects:
 		CombatGlobals.addStatusEffect(self, effect)
 
 func isInflicted()-> bool:
-	return !LINGERING_STATUS_EFFECTS.is_empty()
+	return !lingering_effects.is_empty()
 
 func getLingeringEffectsString():
 	var out = 'During combat:\n'
-	for effect in LINGERING_STATUS_EFFECTS:
-		out += '%s - %s\n' % [effect, CombatGlobals.loadStatusEffect(effect).DESCRIPTION]
+	for effect in lingering_effects:
+		out += '%s - %s\n' % [effect, CombatGlobals.loadStatusEffect(effect).description]
 	return out
 
 func applyEquipmentModifications():
-	for charm in CHARMS:
+	for charm in charms:
 		charm.applyStatModifications()
 
 func getAllocationModifier()-> Dictionary:
-	var out = STAT_POINT_ALLOCATIONS.duplicate()
+	var out = stat_point_allocations.duplicate()
 	for stat in out.keys():
 		if stat != 'handling' and out.has(stat):
-			out[stat] *= STAT_MULTIPLIER
+			out[stat] *= stat_multiplier
 		elif out.has(stat):
 			out[stat] *= 1
 	return out
 
 func removeEquipmentModifications():
-	for charm in CHARMS:
+	for charm in charms:
 		charm.removeStatModifications()
 
 func equipWeapon(weapon: ResWeapon):
-	if EQUIPPED_WEAPON != null:
+	if equipped_weapon != null:
 		unequipWeapon()
 		
 	if InventoryGlobals.getItem(weapon) != null:
@@ -126,37 +126,37 @@ func equipWeapon(weapon: ResWeapon):
 		return
 
 func unequipWeapon():
-	if EQUIPPED_WEAPON != null:
-#		if !EQUIPPED_WEAPON.canUse(self):
-#			OverworldGlobals.showPrompt('%s does not meet %s requirements.' % [NAME, EQUIPPED_WEAPON.NAME])
+	if equipped_weapon != null:
+#		if !equipped_weapon.canUse(self):
+#			OverworldGlobals.showPrompt('%s does not meet %s requirements.' % [NAME, equipped_weapon.NAME])
 #			return
 		
-		EQUIPPED_WEAPON.unequip()
-		InventoryGlobals.addItemResource(EQUIPPED_WEAPON, 1, false, false)
-		EQUIPPED_WEAPON = null
+		equipped_weapon.unequip()
+		InventoryGlobals.addItemResource(equipped_weapon, 1, false, false)
+		equipped_weapon = null
 
 func hasEquippedWeapon()-> bool:
-	return EQUIPPED_WEAPON != null
+	return equipped_weapon != null
 
 func equipCharm(charm: ResCharm, slot: int):
 	if InventoryGlobals.getItem(charm) != null:
 		InventoryGlobals.removeItemResource(charm, 1, false, true)
 		charm.equip(self)
-		CHARMS[slot] = charm
+		charms[slot] = charm
 		return
 
 func unequipCharm(slot: int):
-	if CHARMS[slot] == null:
+	if charms[slot] == null:
 		return
 	
-	CHARMS[slot].unequip()
-	CombatGlobals.resetStat(self, CHARMS[slot].NAME)
-	InventoryGlobals.addItemResource(CHARMS[slot], 1, false, false)
-	CHARMS[slot] = null
+	charms[slot].unequip()
+	CombatGlobals.resetStat(self, charms[slot].NAME)
+	InventoryGlobals.addItemResource(charms[slot], 1, false, false)
+	charms[slot] = null
 	OverworldGlobals.playSound("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 
 func hasCharm(charm: ResCharm):
-	for equipped_charm in CHARMS.values():
+	for equipped_charm in charms.values():
 		if equipped_charm == null: continue
 		if equipped_charm.NAME == charm.NAME: return true
 
@@ -166,41 +166,41 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	var enemy = ResEnemyCombatant.new()
 	enemy.NAME = appended_name + ' ' +NAME
 	enemy.packed_scene = packed_scene
-	enemy.DESCRIPTION = DESCRIPTION
-	enemy.STAT_VALUES = BASE_STAT_VALUES.duplicate()
-	enemy.STAT_VALUES['health'] = BASE_HEALTH
-	if ABILITY_POOL.size() < 4:
-		for ability in ABILITY_POOL:
-			enemy.ABILITY_SET.append(ability)
+	enemy.description = description
+	enemy.stat_values = base_stat_values.duplicate()
+	enemy.stat_values['health'] = base_health
+	if ability_pool.size() < 4:
+		for ability in ability_pool:
+			enemy.ability_set.append(ability)
 	else:
-		enemy.ABILITY_SET.append(ABILITY_POOL[0])
-		enemy.ABILITY_SET.append(ABILITY_POOL[1])
-		enemy.ABILITY_SET.append(ABILITY_POOL[2])
-		enemy.ABILITY_SET.append(ABILITY_POOL[3])
-	enemy.AI_PACKAGE = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
+		enemy.ability_set.append(ability_pool[0])
+		enemy.ability_set.append(ability_pool[1])
+		enemy.ability_set.append(ability_pool[2])
+		enemy.ability_set.append(ability_pool[3])
+	enemy.ai_package = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	enemy.is_converted = true
 #	enemy.tamed_combatant = self
 	return enemy.duplicate()
 
 func reset():
-	for modification in STAT_MODIFIERS.keys():
+	for modification in stat_modifiers.keys():
 		removeStatModification(modification)
-	if BASE_HEALTH != null:
-		STAT_VALUES['health'] = BASE_HEALTH
-	ABILITY_SET = []
-	LINGERING_STATUS_EFFECTS = []
-	EQUIPPED_WEAPON = null
-	STAT_POINTS = 1
-	STAT_MODIFIERS = {}
-	CHARMS = {
+	if base_health != null:
+		stat_values['health'] = base_health
+	ability_set = []
+	lingering_effects = []
+	equipped_weapon = null
+	stat_points = 1
+	stat_modifiers = {}
+	charms = {
 		0: null,
 		1: null,
 		2: null
 	}
-	STAT_POINT_ALLOCATIONS = {
+	stat_point_allocations = {
 		'brawn': 0,
 		'grit': 0,
 		'handling': 0
 	}
-	TEMPERMENT = {'primary':[], 'secondary':[]}
+	temperment = {'primary':[], 'secondary':[]}
 

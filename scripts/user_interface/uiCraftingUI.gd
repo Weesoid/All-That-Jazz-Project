@@ -26,7 +26,7 @@ func _process(_delta):
 		craft_button.hide()
 
 func canRepair(min_scrap: int):
-	return !InventoryGlobals.hasItem('Scrap Salvage') or InventoryGlobals.getItem('Scrap Salvage').STACK < min_scrap
+	return !InventoryGlobals.hasItem('Scrap Salvage') or InventoryGlobals.getItem('Scrap Salvage').stack < min_scrap
 
 func _on_ready():
 	component_core.pressed.connect(func(): showItems(component_core, 0))
@@ -70,11 +70,11 @@ func updateComponentSlot(slot: int):
 	elif item is ResStackItem:
 		match slot:
 			0: 
-				component_core.text = '%s x%s' % [item.NAME, item.STACK]
+				component_core.text = '%s x%s' % [item.NAME, item.stack]
 			1:
-				component_a.text = '%s x%s' % [item.NAME, item.STACK]
+				component_a.text = '%s x%s' % [item.NAME, item.stack]
 			2:
-				component_b.text = '%s x%s' % [item.NAME, item.STACK]
+				component_b.text = '%s x%s' % [item.NAME, item.stack]
 
 func showItems(slot_button: Button, slot: int):
 	for child in item_select_buttons.get_children():
@@ -104,7 +104,7 @@ func showItems(slot_button: Button, slot: int):
 		if all_components.has(item): continue
 		var button = OverworldGlobals.createItemButton(item)
 		button.pressed.connect(func(): addItemToSlot(item, slot, slot_button))
-		if item.MANDATORY: button.disabled = true
+		if item.mandatory: button.disabled = true
 		item_select_buttons.add_child(button)
 
 func showRecipes():
@@ -162,7 +162,7 @@ func showWeaponRepair():
 	var active_weapons = []
 	checkCanRepair(weapons, active_weapons)
 	for member in OverworldGlobals.getCombatantSquad('Player'):
-		if member.hasEquippedWeapon(): active_weapons.append(member.EQUIPPED_WEAPON)
+		if member.hasEquippedWeapon(): active_weapons.append(member.equipped_weapon)
 	weapons.append_array(active_weapons)
 	
 	item_select_buttons.add_child(cancel_button)
@@ -192,12 +192,12 @@ func checkCanRepair(weapons: Array, active_weapons: Array):
 
 func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 	slot_button.modulate = Color.WHITE
-	if item.MANDATORY:
+	if item.mandatory:
 		return
 	else:
 		slot_button.icon = item.icon
 		if item is ResStackItem:
-			slot_button.text = '%s x%s' % [item.NAME, item.STACK]
+			slot_button.text = '%s x%s' % [item.NAME, item.stack]
 		else:
 			slot_button.text = item.NAME
 		

@@ -1,8 +1,8 @@
 extends ResEquippable
 class_name ResWeapon
 
-@export var EFFECT: ResAbility
-@export var USE_REQUIREMENT: Dictionary = {
+@export var effect: ResAbility
+@export var use_requirement: Dictionary = {
 	'handling': 1
 }
 @export var max_durability = 100
@@ -12,17 +12,17 @@ func equip(combatant: ResCombatant):
 	if isEquipped():
 		unequip()
 	
-	EQUIPPED_COMBATANT = combatant
-	EQUIPPED_COMBATANT.EQUIPPED_WEAPON = self
+	equipped_combatant = combatant
+	equipped_combatant.equipped_weapon = self
 	
-	if !STAT_MODIFICATIONS.is_empty():
+	if !stat_modifications.is_empty():
 		applyStatModifications()
 
 func unequip():
-	if !STAT_MODIFICATIONS.is_empty():
+	if !stat_modifications.is_empty():
 		removeStatModifications()
 	
-	EQUIPPED_COMBATANT = null
+	equipped_combatant = null
 
 func useDurability():
 	durability -= 1
@@ -39,8 +39,8 @@ func restoreDurability(amount: int):
 		OverworldGlobals.showPrompt('[color=yellow]%s[/color] fully repaired.' % NAME)
 
 func canUse(combatant: ResCombatant):
-	for stat in USE_REQUIREMENT.keys():
-		if USE_REQUIREMENT[stat] > combatant.STAT_VALUES[stat]:
+	for stat in use_requirement.keys():
+		if use_requirement[stat] > combatant.stat_values[stat]:
 			return false
 	
 	return true
@@ -49,19 +49,19 @@ func getInformation():
 	var handling_bb = '[img]res://images/sprites/circle_filled.png[/img]'
 	var handling_requirement = ''
 	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
-	for i in USE_REQUIREMENT['handling']:
+	for i in use_requirement['handling']:
 		handling_requirement += handling_bb
 	out += handling_requirement+'\n'
-	out += DESCRIPTION + '\n\n'
-	out += EFFECT.getRichDescription()
+	out += description + '\n\n'
+	out += effect.getRichDescription()
 	out += ' [color=yellow] Uses: %s/%s' % [durability,max_durability]
 	return out
 
 func getGeneralInfo():
 	var out = ''
-	if VALUE > 0:
-		out += '[img]res://images/sprites/trade_slip.png[/img]%s	' % VALUE
+	if value > 0:
+		out += '[img]res://images/sprites/trade_slip.png[/img]%s	' % value
 	out += '[img]res://images/sprites/icon_durability.png[/img]%s/%s	' % [durability,max_durability]
-	if USE_REQUIREMENT['handling'] > 0:
-		out += '[img]res://images/sprites/circle_filled.png[/img] %s' % USE_REQUIREMENT['handling']
+	if use_requirement['handling'] > 0:
+		out += '[img]res://images/sprites/circle_filled.png[/img] %s' % use_requirement['handling']
 	return out

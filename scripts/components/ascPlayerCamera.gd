@@ -22,7 +22,7 @@ func _process(_delta):
 	# TO DO: Move this to input..!
 	if player.bow_mode:
 		ammo_count.show()
-		ammo_count.text = str(PlayerGlobals.equipped_arrow.STACK)
+		ammo_count.text = str(PlayerGlobals.equipped_arrow.stack)
 	else:
 		ammo_count.hide()
 
@@ -32,7 +32,7 @@ func _input(_event):
 	
 	if player.canUsePower() and InventoryGlobals.hasItem('Void Resonance Crystal'):
 		crystal_count.show()
-		crystal_count.text = str(InventoryGlobals.getItem('Void Resonance Crystal').STACK)
+		crystal_count.text = str(InventoryGlobals.getItem('Void Resonance Crystal').stack)
 
 func addPowerInput(icon: TextureRect):
 	power_input_container.add_child(icon)

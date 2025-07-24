@@ -37,7 +37,7 @@ func _on_yes_pressed():
 		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true, true)
 		PlayerGlobals.healCombatants(0.25,false)
 #		for combatant in OverworldGlobals.getCombatantSquad('Player'):
-#			combatant.LINGERING_STATUS_EFFECTS.append('Faded I')
+#			combatant.lingering_effects.append('Faded I')
 		PlayerGlobals.overworld_stats['stamina'] = 100.0
 		OverworldGlobals.getPlayer().setUIVisibility(true)
 

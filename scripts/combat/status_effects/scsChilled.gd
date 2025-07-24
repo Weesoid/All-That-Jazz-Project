@@ -1,6 +1,6 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if status_effect.APPLY_ONCE:
-		var damage = (target.STAT_VALUES['health'] * 0.025) + 1
+	if status_effect.apply_once:
+		var damage = (target.stat_values['health'] * 0.025) + 1
 		CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, damage))
 		CombatGlobals.modifyStat(target, {'grit': -0.01}, status_effect.NAME)
 

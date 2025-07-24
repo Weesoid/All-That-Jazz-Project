@@ -58,17 +58,17 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	if item is ResStackItem and inventory.has(item):
 		inventory[inventory.find(item)].add(count)
 	elif item is ResStackItem:
-		if item.STACK <= 0: item.STACK = 1
+		if item.stack <= 0: item.stack = 1
 		item.add(count-1, false)
 		inventory.append(item)
-		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.NAME, item.STACK])
+		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.NAME, item.stack])
 	elif item is ResCharm:
 		for i in range(count): 
 			var dupe_item = item.duplicate()
-			if item.PARENT_ITEM != '':
-				dupe_item.PARENT_ITEM = item.PARENT_ITEM
+			if item.parent_item != '':
+				dupe_item.parent_item = item.parent_item
 			else:
-				dupe_item.PARENT_ITEM = item.resource_path
+				dupe_item.parent_item = item.resource_path
 			dupe_item.removeEmptyModifications()
 			inventory.append(dupe_item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
@@ -94,23 +94,23 @@ func giveItemDict(item_dict:Dictionary):
 func hasItem(item_name, count:int=0, check_equipped:bool=true):
 	if item_name is String and check_equipped:
 		for combatant in PlayerGlobals.team:
-			if combatant.EQUIPPED_WEAPON != null and combatant.EQUIPPED_WEAPON.NAME == item_name:
+			if combatant.equipped_weapon != null and combatant.equipped_weapon.NAME == item_name:
 				return true
-			for charm in combatant.CHARMS.values():
+			for charm in combatant.charms.values():
 				if charm == null: 
 					continue
 				elif charm.NAME == item_name:
 					return true
 	elif item_name is ResItem and check_equipped:
 		for combatant in PlayerGlobals.team:
-			if combatant.EQUIPPED_WEAPON == item_name:
+			if combatant.equipped_weapon == item_name:
 				return true
-			elif combatant.CHARMS.values().has(item_name):
+			elif combatant.charms.values().has(item_name):
 				return true
 	
 	if item_name is String:
 		for item in inventory:
-			if item is ResStackItem and count > 0 and item.STACK >= count and item.NAME == item_name:
+			if item is ResStackItem and count > 0 and item.stack >= count and item.NAME == item_name:
 				return true
 			elif (item is ResStackItem and count <= 0) or (!item is ResStackItem):
 				if item.NAME == item_name:
@@ -118,7 +118,7 @@ func hasItem(item_name, count:int=0, check_equipped:bool=true):
 				else:
 					continue
 	elif item_name is ResItem:
-		if count > 0 and inventory.has(item_name) and getItem(item_name).STACK >= count:
+		if count > 0 and inventory.has(item_name) and getItem(item_name).stack >= count:
 			return true
 		elif count <= 0:
 			return inventory.has(item_name)
@@ -128,8 +128,8 @@ func hasItem(item_name, count:int=0, check_equipped:bool=true):
 func getEquippedWeapons()-> Array:
 	var out = []
 	for combatant in PlayerGlobals.team:
-		if combatant.EQUIPPED_WEAPON != null:
-			out.append(combatant.EQUIPPED_WEAPON)
+		if combatant.equipped_weapon != null:
+			out.append(combatant.equipped_weapon)
 	return out
 
 func getItem(item):
@@ -146,13 +146,13 @@ func getItemWithName(item_name: String):
 func removeItemWithName(item_name: String, count=1, revoke_mandatory=false):
 	for item in inventory:
 		if item.NAME == item_name:
-			if revoke_mandatory: item.MANDATORY = false
+			if revoke_mandatory: item.mandatory = false
 			removeItemResource(item,count)
 
 func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 	if count == 0:
 		return
-	elif item.MANDATORY and !ignore_mandatory:
+	elif item.mandatory and !ignore_mandatory:
 		OverworldGlobals.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
 		return
 	
@@ -165,7 +165,7 @@ func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 		item.take(count)
 		if !item is ResProjectileAmmo:
 			if prompt: OverworldGlobals.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.NAME])
-		if item.STACK <= 0: 
+		if item.stack <= 0: 
 			if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.NAME])
 			inventory.erase(item)
 
@@ -176,13 +176,13 @@ func incrementStackItem(item_name: String, count):
 			added_item_to_inventory.emit()
 
 func takeFromGhostStack(item: ResGhostStackItem, count):
-	if !canAdd(item.REFERENCE_ITEM, count) or count <= 0:
+	if !canAdd(item.reference_item, count) or count <= 0:
 		return
 	
 	if hasItem(item.NAME):
 		incrementStackItem(item.NAME, count)
 	else:
-		addItemResource(item.REFERENCE_ITEM, count)
+		addItemResource(item.reference_item, count)
 
 func canAdd(item, count:int=1, show_prompt=true):
 	if inventory.size() >= max_inventory:
@@ -191,7 +191,7 @@ func canAdd(item, count:int=1, show_prompt=true):
 	elif item is ResEquippable and hasItem(item):
 		if show_prompt: OverworldGlobals.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
-	elif item is ResStackItem and hasItem(item.NAME) and item.STACK == item.MAX_STACK and item.MAX_STACK > 0:
+	elif item is ResStackItem and hasItem(item.NAME) and item.stack == item.max_stack and item.max_stack > 0:
 		if show_prompt: OverworldGlobals.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
 	
@@ -199,18 +199,18 @@ func canAdd(item, count:int=1, show_prompt=true):
 
 func calculateValidAdd(item: ResStackItem) -> int:
 	if item is ResGhostStackItem:
-		item = item.REFERENCE_ITEM
+		item = item.reference_item
 	
-	if item.MAX_STACK == 0 and item.VALUE == 0:
+	if item.max_stack == 0 and item.value == 0:
 		return 100
 	
 	if inventory.has(item):
-		if item.MAX_STACK - getItem(item).STACK > 0:
-			return item.MAX_STACK - getItem(item).STACK
+		if item.max_stack - getItem(item).stack > 0:
+			return item.max_stack - getItem(item).stack
 		else:
 			return 0
 	else:
-		return item.MAX_STACK
+		return item.max_stack
 
 func getUnstackableItemNames()-> Array:
 	var out = []
@@ -222,7 +222,7 @@ func getUnstackableItemNames()-> Array:
 	return out
 
 func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
-	if !free_repair and getItemWithName("Scrap Salvage").STACK >= repair_amount:
+	if !free_repair and getItemWithName("Scrap Salvage").stack >= repair_amount:
 		removeItemWithName("Scrap Salvage", repair_amount)
 		item.restoreDurability(repair_amount)
 	elif free_repair:
@@ -234,7 +234,7 @@ func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
 func repairAllItems(only_active_members: bool=false):
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		if member.hasEquippedWeapon(): 
-			var weapon = member.EQUIPPED_WEAPON
+			var weapon = member.equipped_weapon
 			weapon.restoreDurability(weapon.max_durability)
 	if only_active_members: return
 	for item in inventory:
@@ -245,7 +245,7 @@ func sortItems(items: Array[ResItem]=inventory):
 	items.sort_custom(
 		func(a, b):
 			if a is ResStackItem and b is ResStackItem:
-				return a.STACK > b.STACK
+				return a.stack > b.stack
 			elif a is ResEquippable and b is ResEquippable:
 				return getItemType(a) < getItemType(b)
 			
@@ -283,13 +283,13 @@ func loadData(save_data: InventorySaveData):
 
 func saveItemData(inv_save_data: InventorySaveData):
 	var item_data: Dictionary
-	item_data = inv_save_data.ITEM_DATA_INVENTORY
+	item_data = inv_save_data.item_data_inventory
 	
 	for item in inventory:
 		if item is ResGhostStackItem:
-			item_data[item.resource_path] = [item.REFERENCE_ITEM.resource_path, item.STACK]
+			item_data[item.resource_path] = [item.reference_item.resource_path, item.stack]
 		elif item is ResStackItem:
-			item_data[item.resource_path] = item.STACK
+			item_data[item.resource_path] = item.stack
 		elif item is ResWeapon:
 			item_data[item.resource_path+'-durability'] = item.durability
 	for weapon in getEquippedWeapons():
@@ -297,15 +297,15 @@ func saveItemData(inv_save_data: InventorySaveData):
 
 func loadItemData(save_data: InventorySaveData):
 	var item_data: Dictionary
-	item_data = save_data.ITEM_DATA_INVENTORY
+	item_data = save_data.item_data_inventory
 	
 	for item in inventory:
 		if item_data.keys().has(item.resource_path):
 			if item is ResGhostStackItem:
 				continue
 			elif item is ResStackItem:
-				item.STACK = item_data[item.resource_path]
-				if item.STACK > item.MAX_STACK: item.STACK = item.MAX_STACK
+				item.stack = item_data[item.resource_path]
+				if item.stack > item.max_stack: item.stack = item.max_stack
 		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'):
 			item.durability = item_data[item.resource_path+'-durability']
 		elif item is ResCharm:

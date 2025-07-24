@@ -1,5 +1,5 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if status_effect.APPLY_ONCE:
+	if status_effect.apply_once:
 		applyFaded(target, status_effect)
 		#CombatGlobals.manual_call_indicator.emit(target, 'Disrupted!', 'Reaction')
 

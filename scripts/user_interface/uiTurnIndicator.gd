@@ -9,7 +9,7 @@ func updateActive():
 	
 	for data in combat_scene.combatant_turn_order:
 		var combatant = data[0]
-		if combatant.ACTED: continue
+		if combatant.acted: continue
 		var icon = createIcon(combatant)
 		turn_container.add_child(icon)
 
@@ -17,7 +17,7 @@ func createIcon(combatant: ResCombatant):
 	var icon = TextureRect.new()
 	var atlas = AtlasTexture.new()
 	atlas.region = Rect2(0, 0, 256, 256)
-	atlas.atlas = combatant.SCENE.get_node('Sprite').texture
+	atlas.atlas = combatant.combatant_scene.get_node('Sprite').texture
 	icon.texture = atlas
 	icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
 	if combatant.hasStatusEffect('Fading'):

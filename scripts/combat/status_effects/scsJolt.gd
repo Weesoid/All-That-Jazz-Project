@@ -1,5 +1,5 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if status_effect.APPLY_ONCE:
+	if status_effect.apply_once:
 		CombatGlobals.manual_call_indicator.emit(target, 'JOLTED!', 'Show')
 		CombatGlobals.addStatusEffect(target, 'Dazed')
 	if status_effect.duration == 5:
@@ -7,5 +7,5 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	CombatGlobals.resetStat(target, status_effect.NAME)
-	var damage = (target.STAT_VALUES['health'] * 0.05) * status_effect.duration
+	var damage = (target.stat_values['health'] * 0.05) * status_effect.duration
 	CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, damage))

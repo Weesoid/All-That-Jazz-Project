@@ -23,7 +23,7 @@ func loadMembers():
 		member_container.add_child(member_button)
 
 func isMemberMandatory(member: ResPlayerCombatant):
-	match member.MANDATORY:
+	match member.mandatory:
 		true: return 1
 		false: return 0
 
@@ -47,7 +47,7 @@ func createMemberButton(member: ResPlayerCombatant):
 		button.remove_theme_icon_override('icon')
 	if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
 		button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_icon.png"))
-	if member.MANDATORY and OverworldGlobals.getCombatantSquadComponent('Player').hasMember(member.NAME): 
+	if member.mandatory and OverworldGlobals.getCombatantSquadComponent('Player').hasMember(member.NAME): 
 		button.disabled = true
 	return button
 

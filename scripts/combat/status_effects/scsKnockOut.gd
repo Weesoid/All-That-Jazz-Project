@@ -1,18 +1,18 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if status_effect.APPLY_ONCE and !target.hasStatusEffect('Deathmark'):
-		target.SCENE.moveTo(target.SCENE.get_parent(), 0.25, Vector2(0,0), true)
+	if status_effect.apply_once and !target.hasStatusEffect('Deathmark'):
+		target.combatant_scene.moveTo(target.combatant_scene.get_parent(), 0.25, Vector2(0,0), true)
 		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
 		CombatGlobals.playKnockOutTween(target)
-		target.SCENE.collision.disabled = true
+		target.combatant_scene.collision.disabled = true
 		if target is ResPlayerCombatant:
-			if target.SCENE.weapon != null: target.SCENE.weapon.hide()
-		target.SCENE.playIdle('KO')
+			if target.combatant_scene.weapon != null: target.combatant_scene.weapon.hide()
+		target.combatant_scene.playIdle('KO')
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if CombatGlobals.getCombatScene().combat_result >= 1 and (target is ResPlayerCombatant and target.MANDATORY): 
-		CombatGlobals.calculateHealing(target, int(target.BASE_STAT_VALUES['health']*0.25))
+	if CombatGlobals.getCombatScene().combat_result >= 1 and (target is ResPlayerCombatant and target.mandatory): 
+		CombatGlobals.calculateHealing(target, int(target.base_stat_values['health']*0.25))
 		CombatGlobals.playSecondWindTween(target)
-		target.SCENE.playIdle('Idle')
+		target.combatant_scene.playIdle('Idle')
 		applyFaded(target)
 	elif CombatGlobals.getCombatScene().combat_result == 0:
 		applyFaded(target)
@@ -22,21 +22,21 @@ static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
 	if getFadedLevel(target) == 0:
 		#print('Plah')
-		target.LINGERING_STATUS_EFFECTS.append('Faded I')
+		target.lingering_effects.append('Faded I')
 	elif getFadedLevel(target) < 4:
 		var escalated_level = getFadedLevel(target)+1
 		CombatGlobals.addStatusEffect(target, applyFadedStatus(escalated_level))
-		target.LINGERING_STATUS_EFFECTS.erase(applyFadedStatus(escalated_level-1, true))
+		target.lingering_effects.erase(applyFadedStatus(escalated_level-1, true))
 		CombatGlobals.removeStatusEffect(target, applyFadedStatus(escalated_level-1, true))
 
 static func getFadedLevel(target: ResCombatant):
-	if target.hasStatusEffect('Faded I') or target.LINGERING_STATUS_EFFECTS.has('Faded I'):
+	if target.hasStatusEffect('Faded I') or target.lingering_effects.has('Faded I'):
 		return 1
-	elif target.hasStatusEffect('Faded II') or target.LINGERING_STATUS_EFFECTS.has('Faded II'):
+	elif target.hasStatusEffect('Faded II') or target.lingering_effects.has('Faded II'):
 		return 2
-	elif target.hasStatusEffect('Faded III') or target.LINGERING_STATUS_EFFECTS.has('Faded III'):
+	elif target.hasStatusEffect('Faded III') or target.lingering_effects.has('Faded III'):
 		return 3
-	elif target.hasStatusEffect('Faded IV') or target.LINGERING_STATUS_EFFECTS.has('Faded IV'):
+	elif target.hasStatusEffect('Faded IV') or target.lingering_effects.has('Faded IV'):
 		return 4
 	else:
 		return 0

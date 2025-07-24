@@ -11,9 +11,9 @@ var subject_combatant: ResPlayerCombatant
 func loadInformation():
 	clearInformation()
 	stat_panel.combatant = subject_combatant
-	description.text = subject_combatant.DESCRIPTION
+	description.text = subject_combatant.description
 	
-	for ability in subject_combatant.ABILITY_POOL:
+	for ability in subject_combatant.ability_pool:
 		if ability == null: continue
 		var ability_button = OverworldGlobals.createCustomButton()
 		ability_button.text = ability.NAME
@@ -27,20 +27,20 @@ func loadInformation():
 		)
 		ability_pool_panel.add_child(ability_button)
 	
-	if subject_combatant.EQUIPPED_WEAPON != null:
+	if subject_combatant.equipped_weapon != null:
 		var weapon_button = OverworldGlobals.createCustomButton()
-		weapon_button.text = subject_combatant.EQUIPPED_WEAPON.NAME
+		weapon_button.text = subject_combatant.equipped_weapon.NAME
 		weapon_button.mouse_entered.connect(
 		func updateDesciption():
-			description.text = subject_combatant.EQUIPPED_WEAPON.getInformation()
+			description.text = subject_combatant.equipped_weapon.getInformation()
 		)
 		weapon_button.focus_entered.connect(
 		func updateDesciption():
-			description.text = subject_combatant.EQUIPPED_WEAPON.getInformation()
+			description.text = subject_combatant.equipped_weapon.getInformation()
 		)
 		equipment_panel.add_child(weapon_button)
 	
-	for charm in subject_combatant.CHARMS.values():
+	for charm in subject_combatant.charms.values():
 		if charm == null:
 			continue
 		
@@ -57,19 +57,19 @@ func loadInformation():
 		equipment_panel.add_child(equipment_button)
 	
 	
-	for effect_name in subject_combatant.LINGERING_STATUS_EFFECTS:
+	for effect_name in subject_combatant.lingering_effects:
 		var status_button = OverworldGlobals.createCustomButton()
 		status_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		status_button.text = effect_name
 		status_button.mouse_entered.connect(
 		func updateDesciption():
 			var effect = CombatGlobals.loadStatusEffect(effect_name)
-			description.text = "\n[img]%s[/img] %s\n" % [effect.TEXTURE.resource_path, effect.DESCRIPTION]
+			description.text = "\n[img]%s[/img] %s\n" % [effect.texture.resource_path, effect.description]
 		)
 		status_button.focus_entered.connect(
 		func updateDesciption():
 			var effect = CombatGlobals.loadStatusEffect(effect_name)
-			description.text = "\n[img]%s[/img] %s\n" % [effect.TEXTURE.resource_path, effect.DESCRIPTION]
+			description.text = "\n[img]%s[/img] %s\n" % [effect.texture.resource_path, effect.description]
 		)
 		status_panel.add_child(status_button)
 	

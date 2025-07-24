@@ -1,12 +1,12 @@
 extends Resource
 class_name ResPower
 
-@export var INPUT_MAP: String = 'xxx'
+@export var input_map: String = 'xxx'
 @export var NAME: String
-@export_multiline var DESCRIPTION: String
+@export_multiline var description: String
 @export var icon: Texture
-@export var POWER_SCRIPT: GDScript
-@export var CRYSTAL_COST: int = 0
+@export var power_script: GDScript
+@export var crystal_cost: int = 0
 
 func setPower():
-	PlayerGlobals.power = POWER_SCRIPT
+	PlayerGlobals.power = power_script

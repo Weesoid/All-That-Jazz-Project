@@ -20,7 +20,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 	if target is CombatantScene: 
 		target = target.combatant_resource
 	if target is ResCombatant:
-		target = target.SCENE
+		target = target.combatant_scene
 		if target.combatant_resource is ResEnemyCombatant: 
 			offset = Vector2(-40,0)
 		else:

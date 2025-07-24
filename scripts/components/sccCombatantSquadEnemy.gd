@@ -30,9 +30,9 @@ func pickRandomEnemies():
 		var valid_enemies = enemy_pool.filter(
 			func(enemy):
 				if index <= 1:
-					return enemy.PREFERRED_POSITION == 0
+					return enemy.preferred_position == 0
 				elif index <= 3:
-					return enemy.PREFERRED_POSITION == 1
+					return enemy.preferred_position == 1
 		)
 		var enemy = valid_enemies.pick_random()
 		combatant_squad[index] = enemy
@@ -43,7 +43,7 @@ func getMajorityFaction()-> int:
 		faction_count[faction] = 0
 	var combatants = combatant_squad.filter(func(combatant): return combatant != null)
 	for combatant in combatants:
-		faction_count[combatant.FACTION] += 1
+		faction_count[combatant.faction] += 1
 	
 	return faction_count.find_key(faction_count.values().max())
 	

@@ -3,29 +3,29 @@ class_name ResItem
 
 @export var NAME: String
 @export var icon: Texture = preload("res://images/sprites/item_unknown.png")
-@export_multiline var DESCRIPTION: String
-@export var VALUE: int
-@export var MANDATORY = false
-@export var PARENT_ITEM: String # A path to the original item, only for duplicated items (e.g. Charms)
+@export_multiline var description: String
+@export var value: int
+@export var mandatory = false
+@export var parent_item: String # A path to the original item, only for duplicated items (e.g. Charms)
 
 func _to_string():
 	return str(NAME)
 
 func getInformation():
 	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
-	out += DESCRIPTION
+	out += description
 	return out
 
 func getGeneralInfo():
 	var out = ''
-	if VALUE > 0:
-		out += '[img]res://images/sprites/trade_slip.png[/img]%s	' % VALUE
+	if value > 0:
+		out += '[img]res://images/sprites/trade_slip.png[/img]%s	' % value
 	return out
 
 func getRarity():
-	if VALUE <= 0 and VALUE < 100:
+	if value <= 0 and value < 100:
 		return 0 # Common
-	elif VALUE >= 100 and VALUE < 200:
+	elif value >= 100 and value < 200:
 		return 1 # Rare
 	else:
 		return 2 # Epic

@@ -115,7 +115,7 @@ func applyBlessing(blessing):
 
 func equipNewArrowType():
 	var arrows: Array = InventoryGlobals.inventory.filter(func(item): return item is ResProjectileAmmo)
-	arrows.sort_custom(func(a, b): return a.STACK > b.STACK)
+	arrows.sort_custom(func(a, b): return a.stack > b.stack)
 	if !InventoryGlobals.hasItem(PlayerGlobals.equipped_arrow) and !arrows.is_empty():
 		arrows[0].equip()
 		return true
@@ -217,10 +217,10 @@ func addPower(power_file_name: String):
 func loadAddedAbilities():
 	for member in team:
 		if added_abilities.keys().has(member): 
-			member.ABILITY_POOL.append_array(added_abilities[member])
+			member.ability_pool.append_array(added_abilities[member])
 
 func hasAbility(combatant: ResPlayerCombatant, ability: ResAbility):
-	return combatant.ABILITY_POOL.has(ability)
+	return combatant.ability_pool.has(ability)
 
 func hasUnlockedAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 	return (unlocked_abilities.keys().has(combatant) and unlocked_abilities[combatant].has(ability)) or ability.required_level == 0
@@ -230,7 +230,7 @@ func hasActiveTeam()-> bool:
 
 func levelUpCombatants():
 	for combatant in PlayerGlobals.team:
-		combatant.STAT_POINTS += 1
+		combatant.stat_points += 1
 		combatant.scaleStats()
 	OverworldGlobals.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [team_level])
 	level_up.emit()
@@ -244,11 +244,11 @@ func addCombatantToTeam(combatant_id):
 			combatant = load(combatant_id)
 	elif combatant_id is ResCombatant:
 		combatant = combatant_id
-	if combatant.TEMPERMENT['primary'] == []:
-		combatant.TEMPERMENT['primary'].append(PlayerGlobals.primary_temperments.keys().pick_random())
-	if combatant.TEMPERMENT['secondary'] == []:
-		combatant.TEMPERMENT['secondary'].append(PlayerGlobals.secondary_temperments.keys().pick_random())
-	combatant.STAT_POINTS = team_level
+	if combatant.temperment['primary'] == []:
+		combatant.temperment['primary'].append(PlayerGlobals.primary_temperments.keys().pick_random())
+	if combatant.temperment['secondary'] == []:
+		combatant.temperment['secondary'].append(PlayerGlobals.secondary_temperments.keys().pick_random())
+	combatant.stat_points = team_level
 	team.append(combatant)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
 
@@ -270,18 +270,18 @@ func loadSquad():
 	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.team_formation)
 
 func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/random'):
-	if combatant.TEMPERMENT['secondary'].size() >= 6:
-		var removed_temperment = combatant.TEMPERMENT['secondary'][0]
-		combatant.TEMPERMENT['secondary'].remove_at(0)
+	if combatant.temperment['secondary'].size() >= 6:
+		var removed_temperment = combatant.temperment['secondary'][0]
+		combatant.temperment['secondary'].remove_at(0)
 		OverworldGlobals.showPrompt('[color=yellow]%s[/color] lost [color=yellow]%s[/color]' % [combatant, removed_temperment.capitalize()])
 	
 	if temperment == '/random':
 		randomize()
-		var random_temperment = secondary_temperments.keys().filter(func(key): return !combatant.TEMPERMENT['secondary'].has(key)).pick_random()
+		var random_temperment = secondary_temperments.keys().filter(func(key): return !combatant.temperment['secondary'].has(key)).pick_random()
 		OverworldGlobals.showPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
-		combatant.TEMPERMENT['secondary'].append(random_temperment)
+		combatant.temperment['secondary'].append(random_temperment)
 	else:
-		combatant.TEMPERMENT['secondary'].append(temperment)
+		combatant.temperment['secondary'].append(temperment)
 	
 	combatant.applyTemperments(true)
 
@@ -315,8 +315,8 @@ func setFollowersMotion(enable:bool):
 func healCombatants(percent_heal:float=1.0,cure: bool=true):
 	for combatant in team:
 		if !combatant.initialized: combatant.initializeCombatant(false)
-		combatant.STAT_VALUES['health'] = int(combatant.BASE_STAT_VALUES['health'] * percent_heal)
-		if cure: combatant.LINGERING_STATUS_EFFECTS.clear()
+		combatant.stat_values['health'] = int(combatant.base_stat_values['health'] * percent_heal)
+		if cure: combatant.lingering_effects.clear()
 
 func addMapLog(map_path: String, log=null):
 	if !map_logs.has(map_path):
@@ -378,7 +378,7 @@ func generateMapEvent():
 				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
 				'additional_enemies': events['additional_enemies'] = CombatGlobals.back_up_enemies.pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
-				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.UNIQUE).pick_random()
+				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.unique).pick_random()
 				'bonus_loot': events['bonus_loot'] = {}
 				'bonus_experience': events['bonus_experience'] = 0
 				#'destroy_objective': events['destroy_objective'] = true
@@ -456,21 +456,21 @@ func saveData(save_data: Array):
 	data.max_team_level = max_team_level
 	
 	for combatant in team:
-		data.COMBATANT_SAVE_DATA[combatant] = [
-			combatant.ABILITY_SET,
-			combatant.CHARMS,
-			combatant.STAT_VALUES,
-			combatant.BASE_STAT_VALUES,
-			combatant.ABILITY_POOL,
-			combatant.MANDATORY,
-			combatant.LINGERING_STATUS_EFFECTS,
+		data.combatant_save_data[combatant] = [
+			combatant.ability_set,
+			combatant.charms,
+			combatant.stat_values,
+			combatant.base_stat_values,
+			combatant.ability_pool,
+			combatant.mandatory,
+			combatant.lingering_effects,
 			combatant.initialized,
-			combatant.STAT_POINTS,
-			combatant.STAT_MODIFIERS,
-			combatant.EQUIPPED_WEAPON,
-			combatant.STAT_POINT_ALLOCATIONS,
-			combatant.GUARD_EFFECT,
-			combatant.TEMPERMENT
+			combatant.stat_points,
+			combatant.stat_modifiers,
+			combatant.equipped_weapon,
+			combatant.stat_point_allocations,
+			combatant.guard_effect,
+			combatant.temperment
 			]
 	
 	save_data.append(data)
@@ -499,22 +499,22 @@ func loadData(save_data: PlayerSaveData):
 	loadAddedAbilities()
 	for combatant in team:
 		#combatant.reset()
-		combatant.ABILITY_SET = save_data.COMBATANT_SAVE_DATA[combatant][0]
-		combatant.CHARMS = save_data.COMBATANT_SAVE_DATA[combatant][1]
-		#combatant.STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][2]
-		#combatant.BASE_STAT_VALUES = save_data.COMBATANT_SAVE_DATA[combatant][3]
-		#combatant.ABILITY_POOL = save_data.COMBATANT_SAVE_DATA[combatant][4]
-		#combatant.MANDATORY = save_data.COMBATANT_SAVE_DATA[combatant][5]
-		combatant.LINGERING_STATUS_EFFECTS = save_data.COMBATANT_SAVE_DATA[combatant][6]
-		combatant.initialized = save_data.COMBATANT_SAVE_DATA[combatant][7]
-		combatant.STAT_POINTS = save_data.COMBATANT_SAVE_DATA[combatant][8]
-		#combatant.STAT_MODIFIERS = save_data.COMBATANT_SAVE_DATA[combatant][9]
-		combatant.EQUIPPED_WEAPON = save_data.COMBATANT_SAVE_DATA[combatant][10]
-		combatant.STAT_POINT_ALLOCATIONS = save_data.COMBATANT_SAVE_DATA[combatant][11]
-		combatant.GUARD_EFFECT = save_data.COMBATANT_SAVE_DATA[combatant][12]
-		combatant.TEMPERMENT = save_data.COMBATANT_SAVE_DATA[combatant][13]
+		combatant.ability_set = save_data.combatant_save_data[combatant][0]
+		combatant.charms = save_data.combatant_save_data[combatant][1]
+		#combatant.stat_values = save_data.combatant_save_data[combatant][2]
+		#combatant.base_stat_values = save_data.combatant_save_data[combatant][3]
+		#combatant.ability_pool = save_data.combatant_save_data[combatant][4]
+		#combatant.mandatory = save_data.combatant_save_data[combatant][5]
+		combatant.lingering_effects = save_data.combatant_save_data[combatant][6]
+		combatant.initialized = save_data.combatant_save_data[combatant][7]
+		combatant.stat_points = save_data.combatant_save_data[combatant][8]
+		#combatant.stat_modifiers = save_data.combatant_save_data[combatant][9]
+		combatant.equipped_weapon = save_data.combatant_save_data[combatant][10]
+		combatant.stat_point_allocations = save_data.combatant_save_data[combatant][11]
+		combatant.guard_effect = save_data.combatant_save_data[combatant][12]
+		combatant.temperment = save_data.combatant_save_data[combatant][13]
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
-		for charm in combatant.CHARMS.values():
+		for charm in combatant.charms.values():
 			if charm != null:
 				charm.updateItem()
 				charm.equip(combatant)

@@ -37,7 +37,7 @@ func readCombatantData(combatant: ResCombatant, title):
 	
 	match base_title[1]:
 		'stats':
-			if combatant.STAT_VALUES[base_title[3]] <= int(base_title[4]):
+			if combatant.stat_values[base_title[3]] <= int(base_title[4]):
 				showDialogueBox(title)
 		'effect':
 			if combatant.hasStatusEffect(base_title[3]):

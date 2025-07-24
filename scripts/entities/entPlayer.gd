@@ -286,16 +286,16 @@ func showPowerInput(texture:CompressedTexture2D):
 
 func executePower():
 	for power in PlayerGlobals.known_powers:
-		if power.INPUT_MAP == power_inputs and power.INPUT_MAP != null: 
+		if power.input_map == power_inputs and power.input_map != null: 
 			if canCastPower(power): 
-				InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.CRYSTAL_COST)
-				power.POWER_SCRIPT.executePower(self)
+				InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.crystal_cost)
+				power.power_script.executePower(self)
 			elif !canCastPower(power) and power_inputs.length() >= 3:
 				OverworldGlobals.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
 			return
 
 func canCastPower(power: ResPower):
-	return (power.CRYSTAL_COST != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.CRYSTAL_COST)) or power.CRYSTAL_COST == 0
+	return (power.crystal_cost != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.crystal_cost)) or power.crystal_cost == 0
 
 func cancelPower():
 	Input.action_release("ui_gambit")
@@ -335,7 +335,7 @@ func canDrawBow()-> bool:
 #	if OverworldGlobals.getCurrentMap().SAFE:
 #		prompt.("Can't use [color=yellow]Bow[/color] right now.")
 #		return false
-	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.STACK <= 0):
+	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
 		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.NAME)
 		return false
 	if PlayerGlobals.equipped_arrow == null:
@@ -368,7 +368,7 @@ func animateInteract():
 		interaction_prompt_animator.play('RESET')
 
 func drawBow():
-	if (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.STACK <= 0) and !PlayerGlobals.equipNewArrowType():
+	if (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0) and !PlayerGlobals.equipNewArrowType():
 		bow_mode = false
 		toggleBowAnimation()
 	

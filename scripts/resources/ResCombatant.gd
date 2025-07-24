@@ -6,10 +6,10 @@ class_name ResCombatant
 @export var NAME: String
 @export var packed_scene: PackedScene
 @export var bullet_texture: Texture2D
-@export_multiline var DESCRIPTION: String
+@export_multiline var description: String
 
 ## Frontend / Gameplay export variables
-@export var STAT_VALUES = {
+@export var stat_values = {
 	'health': 20,
 	'brawn': 0.0,
 	'grit': 0.0,
@@ -21,7 +21,7 @@ class_name ResCombatant
 	'heal_mult': 1.0,
 	'resist': 0.05
 }
-@export var SCALE_STATS: Dictionary = {
+@export var scale_stats: Dictionary = {
 	'health': true,
 	'brawn': true,
 	'grit': true,
@@ -33,18 +33,17 @@ class_name ResCombatant
 	'heal_mult': false,
 	'resist': false
 }
-@export var ABILITY_SET: Array[ResAbility] # May need to be refactored to dict for specific selection
-@export var MAX_TURN_CHARGES = 1
-@export var RIPOSTE_EFFECT: ResDamageEffect
-@export var AI_PACKAGE: GDScript
-var TURN_CHARGES: int
-var STAT_MODIFIERS = {}
-var STATUS_EFFECTS: Array[ResStatusEffect]
-var LINGERING_STATUS_EFFECTS: Array[String]
-var BASE_STAT_VALUES: Dictionary
-var ROLLED_SPEED: int
-var ACTED: bool
-var SCENE: CombatantScene
+@export var ability_set: Array[ResAbility] # May need to be refactored to dict for specific selection
+@export var max_turn_charges = 1
+@export var riposte_effect: ResDamageEffect
+@export var ai_package: GDScript
+var turn_charges: int
+var stat_modifiers = {}
+var status_effects: Array[ResStatusEffect]
+var lingering_effects: Array[String]
+var base_stat_values: Dictionary
+var acted: bool
+var combatant_scene: CombatantScene
 var pos_tween: Tween
 var scale_tween: Tween
 
@@ -76,10 +75,10 @@ func stopBreatheTween():
 	resetSprite()
 
 func setBreatheTween(mode:int):
-	if is_instance_valid(SCENE) and (scale_tween == null and pos_tween == null or !scale_tween.is_valid() and !pos_tween.is_valid()):
-		scale_tween = SCENE.create_tween().set_loops()
-		pos_tween = SCENE.create_tween().set_loops()
-	elif is_instance_valid(SCENE) and !scale_tween.is_running() and !pos_tween.is_running() and scale_tween != null and pos_tween != null:
+	if is_instance_valid(combatant_scene) and (scale_tween == null and pos_tween == null or !scale_tween.is_valid() and !pos_tween.is_valid()):
+		scale_tween = combatant_scene.create_tween().set_loops()
+		pos_tween = combatant_scene.create_tween().set_loops()
+	elif is_instance_valid(combatant_scene) and !scale_tween.is_running() and !pos_tween.is_running() and scale_tween != null and pos_tween != null:
 		scale_tween.play()
 		pos_tween.play()
 		return
@@ -103,98 +102,98 @@ func act():
 
 func scaleStats():
 	var stat_increase = {}
-	for stat in STAT_VALUES.keys():
-		if SCALE_STATS[stat]: 
-			stat_increase[stat] = (BASE_STAT_VALUES[stat] * (1 + ((PlayerGlobals.team_level-1)*0.1))) - BASE_STAT_VALUES[stat]
-#		if (stat == 'health' or  stat == 'hustle') and BASE_STAT_VALUES[stat]:
+	for stat in stat_values.keys():
+		if scale_stats[stat]: 
+			stat_increase[stat] = (base_stat_values[stat] * (1 + ((PlayerGlobals.team_level-1)*0.1))) - base_stat_values[stat]
+#		if (stat == 'health' or  stat == 'hustle') and base_stat_values[stat]:
 #			stat_increase[stat] = int(stat_increase[stat])
 	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
 
 func getSprite()-> Sprite2D:
-	return SCENE.get_node('Sprite2D')
+	return combatant_scene.get_node('Sprite2D')
 
 func getAnimator()-> AnimationPlayer:
-	return SCENE.get_node('AnimationPlayer')
+	return combatant_scene.get_node('AnimationPlayer')
 
 func getStatusEffectNames()-> Array[String]:
 	var names: Array[String] = []
-	for effect in STATUS_EFFECTS:
+	for effect in status_effects:
 		names.append(effect.NAME)
 	return names
 
 func removeTokens(remove_type: int):
-	for effect in STATUS_EFFECTS:
-		if effect.REMOVE_WHEN.has(remove_type): 
-			match effect.REMOVE_STYLE:
+	for effect in status_effects:
+		if effect.remove_when.has(remove_type): 
+			match effect.remove_style:
 				0: effect.removeStatusEffect()
 				1: effect.tick(false, true)
 
 func getMaxHealth():
-	return BASE_STAT_VALUES['health']
+	return base_stat_values['health']
 
 func getStatusEffect(stat_name: String)-> ResStatusEffect:
-	for status in STATUS_EFFECTS:
+	for status in status_effects:
 		if status.NAME.to_lower() == stat_name.to_lower():
 			return status
 	
 	return null
 
 func hasStatusEffect(stat_name: String)-> bool:
-	for status in STATUS_EFFECTS:
+	for status in status_effects:
 		if status.NAME.to_lower() == stat_name.to_lower():
 			return true
 	
 	return false
 
 func isDead()-> bool:
-	return STAT_VALUES['health'] < 1.0
+	return stat_values['health'] < 1.0
 
 func isImmobilized()-> bool:
-	return STAT_VALUES['hustle'] < -99 and !hasStatusEffect('Fading')
+	return stat_values['hustle'] < -99 and !hasStatusEffect('Fading')
 
 func getStringStats(current_stats=false):
 	var result = ""
 	var stats
 	if current_stats:
-		stats = BASE_STAT_VALUES
+		stats = base_stat_values
 	else:
-		stats = STAT_VALUES
+		stats = stat_values
 	
 	for key in stats:
 		if key == 'health':
-			result += key.to_upper() + ": " + str(int(STAT_VALUES[key])) + ' / ' + str(BASE_STAT_VALUES[key]) + "\n"
-		elif BASE_STAT_VALUES[key] is float:
-			result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]*100) + "%\n"
+			result += key.to_upper() + ": " + str(int(stat_values[key])) + ' / ' + str(base_stat_values[key]) + "\n"
+		elif base_stat_values[key] is float:
+			result += key.to_upper() + ": " + str(base_stat_values[key]*100) + "%\n"
 		else:
-			result += key.to_upper() + ": " + str(BASE_STAT_VALUES[key]) + "\n"
+			result += key.to_upper() + ": " + str(base_stat_values[key]) + "\n"
 	return result
 
 func applyStatModifications(modifier_id: String):
-	for modifier in STAT_MODIFIERS.keys():
+	for modifier in stat_modifiers.keys():
 		if modifier == modifier_id:
-			for stat in STAT_MODIFIERS[modifier]:
+			for stat in stat_modifiers[modifier]:
 				if stat == 'health':
-					updateHealth(STAT_MODIFIERS[modifier][stat])
+					updateHealth(stat_modifiers[modifier][stat])
 				else:
-					STAT_VALUES[stat] += STAT_MODIFIERS[modifier][stat]
+					stat_values[stat] += stat_modifiers[modifier][stat]
 			return
 
 func removeStatModification(modifier_id: String):
-	for modifier in STAT_MODIFIERS.keys():
+	for modifier in stat_modifiers.keys():
 		if modifier == modifier_id:
-			for stat in STAT_MODIFIERS[modifier]:
+			for stat in stat_modifiers[modifier]:
 				if stat == 'health':
-					updateHealth(-STAT_MODIFIERS[modifier][stat])
+					updateHealth(-stat_modifiers[modifier][stat])
 				else:
-					STAT_VALUES[stat] -= STAT_MODIFIERS[modifier][stat]
-			STAT_MODIFIERS.erase(modifier)
+					stat_values[stat] -= stat_modifiers[modifier][stat]
+			stat_modifiers.erase(modifier)
 			return
 
 func updateHealth(amount: int):
-	var percent_health = float(STAT_VALUES['health']) / float(BASE_STAT_VALUES['health'])
-	BASE_STAT_VALUES['health'] += amount
-	if STAT_VALUES['health'] >= BASE_STAT_VALUES['health'] or percent_health == 1:
-		STAT_VALUES['health'] = BASE_STAT_VALUES['health']
+	var percent_health = float(stat_values['health']) / float(base_stat_values['health'])
+	base_stat_values['health'] += amount
+	if stat_values['health'] >= base_stat_values['health'] or percent_health == 1:
+		stat_values['health'] = base_stat_values['health']
 
 func _to_string():
 	return str(NAME)

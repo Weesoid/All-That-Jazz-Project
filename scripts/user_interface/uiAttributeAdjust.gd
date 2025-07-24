@@ -18,24 +18,24 @@ func _ready():
 
 func _process(_delta):
 	if combatant != null:
-		brawn_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['brawn']) * 100)+"%"
-		grit_bonus.text = '+%s' % str((combatant.STAT_MULTIPLIER * combatant.STAT_POINT_ALLOCATIONS['grit']) * 100)+"%"
-		handling_bonus.text = '+%s' % str(1 * combatant.STAT_POINT_ALLOCATIONS['handling'])
-		if combatant.STAT_POINT_ALLOCATIONS['brawn'] != 0:
+		brawn_bonus.text = '+%s' % str((combatant.stat_multiplier * combatant.stat_point_allocations['brawn']) * 100)+"%"
+		grit_bonus.text = '+%s' % str((combatant.stat_multiplier * combatant.stat_point_allocations['grit']) * 100)+"%"
+		handling_bonus.text = '+%s' % str(1 * combatant.stat_point_allocations['handling'])
+		if combatant.stat_point_allocations['brawn'] != 0:
 			reset_brawn.show()
 		else:
 			reset_brawn.hide()
-		if combatant.STAT_POINT_ALLOCATIONS['grit'] != 0:
+		if combatant.stat_point_allocations['grit'] != 0:
 			reset_grit.show()
 		else:
 			reset_grit.hide()
-		if combatant.STAT_POINTS >= 5:
+		if combatant.stat_points >= 5:
 			handling_up.show()
 			handling_bonus.show()
 		elif PlayerGlobals.team_level < 5:
 			handling_up.hide()
 			handling_bonus.hide()
-		if combatant.STAT_POINT_ALLOCATIONS['handling'] != 0:
+		if combatant.stat_point_allocations['handling'] != 0:
 			reset_handling.show()
 		else:
 			reset_handling.hide()
@@ -54,17 +54,17 @@ func focus():
 
 func _on_up_brawn_pressed():
 	adjustStat(1, 'brawn', brawn_up)
-	if combatant.STAT_POINTS <= 0:
+	if combatant.stat_points <= 0:
 		hidePanel()
 
 func _on_up_grit_pressed():
 	adjustStat(1, 'grit', grit_up)
-	if combatant.STAT_POINTS <= 0:
+	if combatant.stat_points <= 0:
 		hidePanel()
 
 func _on_up_hand_pressed():
 	adjustStat(5, 'handling', handling_up)
-	if combatant.STAT_POINTS <= 0:
+	if combatant.stat_points <= 0:
 		hidePanel()
 
 func _on_reset_brawn_pressed():
@@ -80,9 +80,9 @@ func _on_reset_handling_pressed():
 	focus()
 
 func adjustStat(cost: int, stat: String, button: Button):
-	if combatant.STAT_POINTS >= cost:
-		combatant.STAT_POINTS -= cost
-		combatant.STAT_POINT_ALLOCATIONS[stat] += 1
+	if combatant.stat_points >= cost:
+		combatant.stat_points -= cost
+		combatant.stat_point_allocations[stat] += 1
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 	else:
 		OverworldGlobals.showPrompt('[color=yellow]%s[/color] point(s) is required to increase [color=yellow]%s[/color].' % [str(cost), stat])
@@ -91,10 +91,10 @@ func adjustStat(cost: int, stat: String, button: Button):
 		focus()
 
 func resetStat(stat: String, cost):
-	if combatant.STAT_POINT_ALLOCATIONS[stat] > 0:
-		combatant.STAT_POINTS += combatant.STAT_POINT_ALLOCATIONS[stat] * cost
-		combatant.STAT_POINT_ALLOCATIONS[stat] = 0
+	if combatant.stat_point_allocations[stat] > 0:
+		combatant.stat_points += combatant.stat_point_allocations[stat] * cost
+		combatant.stat_point_allocations[stat] = 0
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 	
-	if combatant.hasEquippedWeapon() and !combatant.EQUIPPED_WEAPON.canUse(combatant):
+	if combatant.hasEquippedWeapon() and !combatant.equipped_weapon.canUse(combatant):
 		combatant.unequipWeapon()
