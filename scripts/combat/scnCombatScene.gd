@@ -548,15 +548,15 @@ func getMoveAbilities():
 	var out = []
 	for ability in secondary_panel_container.get_children():
 		out.append(ability.text)
-	if last_used_ability.keys().has(active_combatant) and out.has(last_used_ability[active_combatant][0].NAME):
+	if last_used_ability.keys().has(active_combatant) and out.has(last_used_ability[active_combatant][0].name):
 		for child in secondary_panel_container.get_children():
-			if child.text == last_used_ability[active_combatant][0].NAME: child.grab_focus()
+			if child.text == last_used_ability[active_combatant][0].name: child.grab_focus()
 	else:
 		OverworldGlobals.setMenuFocus(secondary_panel_container)
 
 func createAbilityButton(ability: ResAbility, weapon:ResWeapon=null)-> Button:
 	var button = OverworldGlobals.createAbilityButton(ability)
-	#button.text = ability.NAME
+	#button.text = ability.name
 	button.pressed.connect(func(): forceCastAbility(ability, weapon))
 	button.focus_entered.connect(func():updateDescription(ability))
 	button.mouse_entered.connect(func():updateDescription(ability))
@@ -901,11 +901,11 @@ func getLivingCombatants():
 func renameDuplicates():
 	var seen = []
 	for combatant in COMBATANTS:
-		if seen.has(combatant.NAME):
-			seen.append(combatant.NAME)
-			combatant.NAME = '%s %s' % [combatant.NAME, seen.count(combatant.NAME)]
+		if seen.has(combatant.name):
+			seen.append(combatant.name)
+			combatant.name = '%s %s' % [combatant.name, seen.count(combatant.name)]
 		else:
-			seen.append(combatant.NAME)
+			seen.append(combatant.name)
 
 func checkWin():
 	if isCombatantGroupDead('team'):
@@ -936,7 +936,7 @@ func checkDialogue():
 func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
 	var effects = combatant.status_effects.filter(func(effect: ResStatusEffect):return !effect.persist_on_dead)
 	if ignore_faded:
-		effects.filter(func(effect: ResStatusEffect):return !effect.NAME.contains('Faded'))
+		effects.filter(func(effect: ResStatusEffect):return !effect.name.contains('Faded'))
 		while !effects.is_empty():
 			effects[0].removeStatusEffect()
 			effects.remove_at(0)
@@ -951,7 +951,7 @@ func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duratio
 		if (per_turn and !effect.tick_any_turn) or (!per_turn and effect.tick_any_turn): 
 			continue
 		effect.tick(update_duration, false, do_tick)
-		if effect.NAME == 'Fading' and update_duration: 
+		if effect.name == 'Fading' and update_duration: 
 			CombatGlobals.manual_call_indicator.emit(combatant, 'Fading...', 'Resist')
 
 func refreshInstantCasts(combatant: ResCombatant):
@@ -1312,11 +1312,11 @@ func _on_turn_timer_timeout():
 	confirm.emit()
 
 func _on_shift_actions_pressed():
-	if ui_animator.is_playing() or (secondary_panel_container.get_children()[0].ability.NAME == 'Brace' and active_combatant.ability_set.is_empty()):
+	if ui_animator.is_playing() or (secondary_panel_container.get_children()[0].ability.name == 'Brace' and active_combatant.ability_set.is_empty()):
 		return
 	
 	resetActionLog()
-	if secondary_panel_container.get_children()[0].ability.NAME == 'Brace':
+	if secondary_panel_container.get_children()[0].ability.name == 'Brace':
 		_on_skills_pressed()
 	else:
 		getMoveAbilities()

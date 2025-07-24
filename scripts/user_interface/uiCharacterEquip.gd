@@ -9,7 +9,7 @@ signal equipped_item
 func showEquipment(type:int, combatant: ResPlayerCombatant, slot: int):
 	clearButtons()
 	var inventory = InventoryGlobals.inventory
-	inventory.sort_custom(func(a,b): return a.NAME < b.NAME)
+	inventory.sort_custom(func(a,b): return a.name < b.name)
 	if type == 0:
 		for item in inventory.filter(func(item): return item is ResCharm):
 			addButton(combatant, item, slot)

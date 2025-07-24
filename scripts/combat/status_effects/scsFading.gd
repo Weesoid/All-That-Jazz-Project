@@ -4,7 +4,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.playFadingTween(target)
 		#CombatGlobals.playAnimation(target, 'Fading')
 		target.combatant_scene.playIdle('Fading')
-		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
+		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.name)
 		target.combatant_scene.blocking = false
 	if CombatGlobals.randomRoll(0.02) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
@@ -15,7 +15,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		if qte.points >= 1:
 			CombatGlobals.calculateHealing(target, target.base_stat_values['health']*0.2, true, false)
 			CombatGlobals.manual_call_indicator.emit(target, 'Saved!', 'QTE')
-			CombatGlobals.resetStat(target, status_effect.NAME)
+			CombatGlobals.resetStat(target, status_effect.name)
 		qte.queue_free()
 		status_effect.removeStatusEffect()
 	elif target.stat_values['health'] > 0:
@@ -36,7 +36,7 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		applyFaded(target)
 		target.combatant_scene.idle_animation = 'Idle'
 	
-	CombatGlobals.resetStat(target, status_effect.NAME)
+	CombatGlobals.resetStat(target, status_effect.name)
 
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0

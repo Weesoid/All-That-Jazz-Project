@@ -16,7 +16,7 @@ func _ready():
 
 func loadMembers():
 	var team = PlayerGlobals.team
-	team.sort_custom(func(a,b): return a.NAME < b.NAME)
+	team.sort_custom(func(a,b): return a.name < b.name)
 	team.sort_custom(func(a,b): return isMemberMandatory(a) > isMemberMandatory(b))
 	for member in team:
 		var member_button = createMemberButton(member)
@@ -31,7 +31,7 @@ func createMemberButton(member: ResPlayerCombatant):
 	member.initializeCombatant(false)
 	var button = OverworldGlobals.createCustomButton()
 	#button.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
-	button.text = member.NAME
+	button.text = member.name
 	button.pressed.connect(func(): addToActive(member, button))
 #	button.mouse_exited.connect(func(): inspecting_label.text = '')
 #	button.focus_exited.connect(func(): inspecting_label.text = '')
@@ -47,7 +47,7 @@ func createMemberButton(member: ResPlayerCombatant):
 		button.remove_theme_icon_override('icon')
 	if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
 		button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_icon.png"))
-	if member.mandatory and OverworldGlobals.getCombatantSquadComponent('Player').hasMember(member.NAME): 
+	if member.mandatory and OverworldGlobals.getCombatantSquadComponent('Player').hasMember(member.name): 
 		button.disabled = true
 	return button
 
@@ -79,7 +79,7 @@ func hoverButton(member: ResPlayerCombatant, button: Button):
 	if Input.is_action_pressed('ui_sprint'):
 		if OverworldGlobals.getPlayer().squad.combatant_squad.has(member):
 			for mem_button in get_parent().member_container.get_children():
-				if mem_button.text == member.NAME:
+				if mem_button.text == member.name:
 					inspect_mark.hide()
 					mem_button.pressed.emit()
 					return

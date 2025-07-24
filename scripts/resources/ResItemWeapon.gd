@@ -36,7 +36,7 @@ func restoreDurability(amount: int):
 		durability += amount
 	
 	if durability == max_durability:
-		OverworldGlobals.showPrompt('[color=yellow]%s[/color] fully repaired.' % NAME)
+		OverworldGlobals.showPrompt('[color=yellow]%s[/color] fully repaired.' % name)
 
 func canUse(combatant: ResCombatant):
 	for stat in use_requirement.keys():
@@ -48,7 +48,7 @@ func canUse(combatant: ResCombatant):
 func getInformation():
 	var handling_bb = '[img]res://images/sprites/circle_filled.png[/img]'
 	var handling_requirement = ''
-	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
+	var out = OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	for i in use_requirement['handling']:
 		handling_requirement += handling_bb
 	out += handling_requirement+'\n'

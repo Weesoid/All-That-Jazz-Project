@@ -13,7 +13,7 @@ func loadFastTravelButtons():
 	for location in PlayerGlobals.map_logs.keys():
 		var button = OverworldGlobals.createCustomButton()
 		var map:MapData = load(location).instantiate()
-		button.text = map.NAME
+		button.text = map.name
 		button.pressed.connect(
 			func(): 
 				if PlayerGlobals.hasMapEvent(OverworldGlobals.getCurrentMap().scene_file_path):

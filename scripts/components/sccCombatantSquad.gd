@@ -18,12 +18,12 @@ func removeLingeringEffect(status_effect_name: String):
 
 func getMember(member_name: String)-> ResCombatant:
 	for member in combatant_squad:
-		if member.NAME == member_name: return member
+		if member.name == member_name: return member
 	
 	return null
 
 func hasMember(member_name: String)-> bool:
 	for member in combatant_squad:
-		if member.NAME == member_name: return true
+		if member.name == member_name: return true
 	
 	return false

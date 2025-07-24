@@ -17,8 +17,8 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if target.stat_modifiers.has(status_effect.NAME):
-		CombatGlobals.resetStat(target, status_effect.NAME)
+	if target.stat_modifiers.has(status_effect.name):
+		CombatGlobals.resetStat(target, status_effect.name)
 
 static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffect):
 	if (!effect.apply_once) or (effect.apply_once and status_effect.apply_once):
@@ -26,7 +26,7 @@ static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffec
 		if effect.message != '' and avoidMessageSpam(status_effect):
 			message = effect.message
 		elif avoidMessageSpam(status_effect):
-			message = status_effect.NAME
+			message = status_effect.name
 		if message != '':
 			CombatGlobals.manual_call_indicator.emit(status_effect.afflicted_combatant, message, 'Show')
 		
@@ -44,4 +44,4 @@ static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffe
 	else:
 		scale = 0
 	
-	CombatGlobals.modifyStat(status_effect.afflicted_combatant, effect.getStatChanges(scale), status_effect.NAME)
+	CombatGlobals.modifyStat(status_effect.afflicted_combatant, effect.getStatChanges(scale), status_effect.name)

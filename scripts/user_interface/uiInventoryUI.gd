@@ -46,5 +46,5 @@ func setButtonFunction(item):
 
 func focusItem(item: ResItem):
 	for button in inventory_grid.get_children():
-		if button.tooltip_text == item.NAME:
+		if button.tooltip_text == item.name:
 			button.grab_focus()

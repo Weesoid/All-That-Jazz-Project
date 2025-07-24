@@ -72,7 +72,7 @@ func updateStatusEffects():
 		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
 		var icon = effect.icon
-		icon.tooltip_text = effect.NAME+': '+effect.description
+		icon.tooltip_text = effect.name+': '+effect.description
 		#icon.expand_mode = icon.EXPAND_FIT_WIDTH_PROPORTIONAL
 		icon.add_child(tick_down)
 		if effect.permanent:

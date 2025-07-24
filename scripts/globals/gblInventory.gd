@@ -40,7 +40,7 @@ func craftItem(item_array: Array[ResItem]):
 	var out = [null, null, null]
 	for i in range(item_array.size()):
 		if item_array[i] != null:
-			out[i] = item_array[i].NAME
+			out[i] = item_array[i].name
 	
 	if recipes.has(out):
 		var craft_data = recipes[out].split('.')
@@ -61,7 +61,7 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 		if item.stack <= 0: item.stack = 1
 		item.add(count-1, false)
 		inventory.append(item)
-		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.NAME, item.stack])
+		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.name, item.stack])
 	elif item is ResCharm:
 		for i in range(count): 
 			var dupe_item = item.duplicate()
@@ -94,12 +94,12 @@ func giveItemDict(item_dict:Dictionary):
 func hasItem(item_name, count:int=0, check_equipped:bool=true):
 	if item_name is String and check_equipped:
 		for combatant in PlayerGlobals.team:
-			if combatant.equipped_weapon != null and combatant.equipped_weapon.NAME == item_name:
+			if combatant.equipped_weapon != null and combatant.equipped_weapon.name == item_name:
 				return true
 			for charm in combatant.charms.values():
 				if charm == null: 
 					continue
-				elif charm.NAME == item_name:
+				elif charm.name == item_name:
 					return true
 	elif item_name is ResItem and check_equipped:
 		for combatant in PlayerGlobals.team:
@@ -110,10 +110,10 @@ func hasItem(item_name, count:int=0, check_equipped:bool=true):
 	
 	if item_name is String:
 		for item in inventory:
-			if item is ResStackItem and count > 0 and item.stack >= count and item.NAME == item_name:
+			if item is ResStackItem and count > 0 and item.stack >= count and item.name == item_name:
 				return true
 			elif (item is ResStackItem and count <= 0) or (!item is ResStackItem):
-				if item.NAME == item_name:
+				if item.name == item_name:
 					return true
 				else:
 					continue
@@ -140,12 +140,12 @@ func getItem(item):
 
 func getItemWithName(item_name: String):
 	for item in inventory:
-		if item.NAME == item_name:
+		if item.name == item_name:
 			return item
 
 func removeItemWithName(item_name: String, count=1, revoke_mandatory=false):
 	for item in inventory:
-		if item.NAME == item_name:
+		if item.name == item_name:
 			if revoke_mandatory: item.mandatory = false
 			removeItemResource(item,count)
 
@@ -164,14 +164,14 @@ func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 	elif item is ResStackItem:
 		item.take(count)
 		if !item is ResProjectileAmmo:
-			if prompt: OverworldGlobals.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.NAME])
+			if prompt: OverworldGlobals.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.name])
 		if item.stack <= 0: 
-			if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.NAME])
+			if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.name])
 			inventory.erase(item)
 
 func incrementStackItem(item_name: String, count):
 	for item in inventory:
-		if item.NAME == item_name:
+		if item.name == item_name:
 			item.add(count)
 			added_item_to_inventory.emit()
 
@@ -179,8 +179,8 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 	if !canAdd(item.reference_item, count) or count <= 0:
 		return
 	
-	if hasItem(item.NAME):
-		incrementStackItem(item.NAME, count)
+	if hasItem(item.name):
+		incrementStackItem(item.name, count)
 	else:
 		addItemResource(item.reference_item, count)
 
@@ -191,7 +191,7 @@ func canAdd(item, count:int=1, show_prompt=true):
 	elif item is ResEquippable and hasItem(item):
 		if show_prompt: OverworldGlobals.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
-	elif item is ResStackItem and hasItem(item.NAME) and item.stack == item.max_stack and item.max_stack > 0:
+	elif item is ResStackItem and hasItem(item.name) and item.stack == item.max_stack and item.max_stack > 0:
 		if show_prompt: OverworldGlobals.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
 	
@@ -217,7 +217,7 @@ func getUnstackableItemNames()-> Array:
 	
 	for item in inventory:
 		if !item is ResStackItem:
-			out.append(item.NAME)
+			out.append(item.name)
 	
 	return out
 
@@ -251,7 +251,7 @@ func sortItems(items: Array[ResItem]=inventory):
 			
 			return getItemType(a) < getItemType(b)
 			)
-	#items.sort_custom(func(a, b): return a.NAME < b.NAME)
+	#items.sort_custom(func(a, b): return a.name < b.name)
 
 func getItemType(item: ResItem)-> float:
 	if item is ResStackItem:

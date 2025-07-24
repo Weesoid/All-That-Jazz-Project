@@ -6,7 +6,7 @@ extends MarginContainer
 var combatant: ResPlayerCombatant
 
 func _process(_delta):
-	char_name.text = combatant.NAME
+	char_name.text = combatant.name
 	char_health.value = combatant.stat_values['health']
 	char_health.max_value = combatant.getMaxHealth()
 #	for status_effect in combatant.lingering_effects:

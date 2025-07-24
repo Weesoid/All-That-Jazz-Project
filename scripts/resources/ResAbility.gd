@@ -12,7 +12,7 @@ enum TargetGroup {
 	ALL
 }
 
-@export var NAME: String
+@export var name: String
 @export_multiline var description: String
 @export var icon: Texture = preload("res://images/ability_icons/default.png")
 @export var animation: PackedScene
@@ -83,7 +83,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 func canUse(caster: ResCombatant, targets=null):
 	if caster is ResPlayerCombatant and CombatGlobals.tension < tension_cost:
 		return false
-	if required_effect['status_effect'] != null and !(caster.hasStatusEffect(required_effect['status_effect'].NAME) and caster.getStatusEffect(required_effect['status_effect'].NAME).current_rank >= required_effect['rank']):
+	if required_effect['status_effect'] != null and !(caster.hasStatusEffect(required_effect['status_effect'].name) and caster.getStatusEffect(required_effect['status_effect'].name).current_rank >= required_effect['rank']):
 		return false
 	if charges > 0:
 		return CombatGlobals.getCombatScene().getChargesLeft(caster, self) > 0
@@ -112,12 +112,12 @@ func getTargetType():
 		TargetType.MULTI: return 2
 
 func _to_string():
-	return NAME
+	return name
 
 func getRichDescription(with_name=true)-> String:
 	var rich_description = ''
 	if with_name:
-		rich_description += NAME.to_upper()+'\n'
+		rich_description += name.to_upper()+'\n'
 	rich_description += getPositionIcon()
 	if tension_cost > 0:
 		rich_description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % tension_cost

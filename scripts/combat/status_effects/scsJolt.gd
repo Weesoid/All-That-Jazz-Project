@@ -6,6 +6,6 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.manual_call_indicator.emit(target, 'OVERCHARGED!', 'Show')
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	CombatGlobals.resetStat(target, status_effect.NAME)
+	CombatGlobals.resetStat(target, status_effect.name)
 	var damage = (target.stat_values['health'] * 0.05) * status_effect.duration
 	CombatGlobals.calculateRawDamage(target, CombatGlobals.useDamageFormula(target, damage))

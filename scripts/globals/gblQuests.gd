@@ -6,14 +6,14 @@ func promptQuestCompleted(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
-	prompt.setTitle(quest.NAME)
+	prompt.setTitle(quest.name)
 	prompt.playAnimation('quest_complete')
 
 func addQuest(quest_name: String):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	var out_quest = load("res://resources/quests/%s.tres" % quest_name)
 	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
-	prompt.setTitle(out_quest.NAME)
+	prompt.setTitle(out_quest.name)
 	prompt.playAnimation('show_quest')
 	
 	out_quest.OBJECTIVES[0].active = true
@@ -47,7 +47,7 @@ func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String)
 
 func getQuest(quest_name: String)-> ResQuest:
 	for quest in quests:
-		if quest.NAME.to_lower() == quest_name.to_lower(): return quest
+		if quest.name.to_lower() == quest_name.to_lower(): return quest
 	
 	return null
 
@@ -57,7 +57,7 @@ func saveData(save_data: Array):
 	for quest in quests:
 		var objectives_data = {}
 		for objective in quest.OBJECTIVES:
-			objectives_data[objective.NAME] = [objective.active, objective.completed, objective.outcome]
+			objectives_data[objective.name] = [objective.active, objective.completed, objective.outcome]
 		data.quest_objectives_data[quest] = objectives_data
 	save_data.append(data)
 
@@ -65,9 +65,9 @@ func loadData(save_data: QuestSaveData):
 	quests = save_data.quests
 	for quest in quests:
 		for objective in quest.OBJECTIVES:
-			objective.active = save_data.quest_objectives_data[quest][objective.NAME][0]
-			objective.completed = save_data.quest_objectives_data[quest][objective.NAME][1]
-			objective.outcome = save_data.quest_objectives_data[quest][objective.NAME][2]
+			objective.active = save_data.quest_objectives_data[quest][objective.name][0]
+			objective.completed = save_data.quest_objectives_data[quest][objective.name][1]
+			objective.outcome = save_data.quest_objectives_data[quest][objective.name][2]
 		quest.isCompleted(false)
 
 func resetVariables():

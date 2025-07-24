@@ -24,12 +24,12 @@ func unequip():
 func applyStatModifications():
 	removeEmptyModifications()
 	if stat_modifications.is_empty() or !isEquipped(): return
-	CombatGlobals.modifyStat(equipped_combatant, stat_modifications, NAME)
+	CombatGlobals.modifyStat(equipped_combatant, stat_modifications, name)
 
 func removeStatModifications():
 	removeEmptyModifications()
 	if stat_modifications.is_empty() or !isEquipped(): return
-	CombatGlobals.resetStat(equipped_combatant, NAME)
+	CombatGlobals.resetStat(equipped_combatant, name)
 
 func removeEmptyModifications():
 	var remove = []
@@ -67,7 +67,7 @@ func getStatModifications():
 	return stat_modifications
 
 func getInformation():
-	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
+	var out = OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	out += getStringStats()+"\n"
 	out += description
 	return out

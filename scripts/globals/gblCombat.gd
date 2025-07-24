@@ -407,7 +407,7 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1,
 
 func playCombatantAnimation(combatant_name: String, animation_name: String, wait=true):
 	for combatant in getCombatScene().COMBATANTS:
-		if combatant.NAME == combatant_name:
+		if combatant.name == combatant_name:
 			if wait:
 				await combatant.combatant_scene.doAnimation(animation_name)
 			else:
@@ -420,7 +420,7 @@ func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
 		target = getCombatScene().camera_position
 	else:
 		for combatant in getCombatScene().COMBATANTS:
-			if combatant.NAME == target_name: target = combatant.combatant_scene.global_position
+			if combatant.name == target_name: target = combatant.combatant_scene.global_position
 	
 	if wait:
 		await getCombatScene().moveCamera(target, duration)
@@ -442,7 +442,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		manual_call_indicator.emit(target, '[img]'+icon_path+'[/img] Resisted!', 'Resist')
 		return
 	
-	if !target.getStatusEffectNames().has(status_effect.NAME):
+	if !target.getStatusEffectNames().has(status_effect.name):
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.status_effects.append(status_effect)
@@ -450,13 +450,13 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	else:
 		rankUpStatusEffect(target, status_effect)
 	if status_effect.tick_on_apply:
-		target.getStatusEffect(status_effect.NAME).tick(false)
+		target.getStatusEffect(status_effect.name).tick(false)
 	else:
 		manual_call_indicator.emit(target, 'Applied [img]'+icon_path+'[/img]!', 'Show')
 	
-	if (!guaranteed and !CombatGlobals.randomRoll(0.15+target.stat_values['resist'])) and (status_effect.lingers and target is ResPlayerCombatant and !target.lingering_effects.has(status_effect.NAME)):
-		manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.NAME, 'Lingering')
-		target.lingering_effects.append(status_effect.NAME)
+	if (!guaranteed and !CombatGlobals.randomRoll(0.15+target.stat_values['resist'])) and (status_effect.lingers and target is ResPlayerCombatant and !target.lingering_effects.has(status_effect.name)):
+		manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.name, 'Lingering')
+		target.lingering_effects.append(status_effect.name)
 	
 	checkReactions(target)
 
@@ -486,7 +486,7 @@ func runReaction(target: ResCombatant, effectA: String, effectB: String, reactio
 
 func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
 	for effect in afflicted_target.status_effects:
-		if effect.NAME == status_effect.NAME:
+		if effect.name == status_effect.name:
 			if effect.duration + status_effect.extend_duration > effect.max_duration:
 				effect.duration = effect.max_duration
 			else:
@@ -497,7 +497,7 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 
 func removeStatusEffect(target: ResCombatant, status_name: String):
 	for status in target.status_effects:
-		if status.NAME == status_name:
+		if status.name == status_name:
 			status.removeStatusEffect()
 			return
 

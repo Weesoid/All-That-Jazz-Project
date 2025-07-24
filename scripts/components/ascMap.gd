@@ -7,7 +7,7 @@ enum PatrollerClearState {
 	FULL_CLEAR
 }
 
-@export var NAME: String
+@export var name: String
 @export_multiline var description: String
 @export var occupying_faction: CombatGlobals.Enemy_Factions
 @export var events: Dictionary = {

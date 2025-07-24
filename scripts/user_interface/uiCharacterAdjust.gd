@@ -65,7 +65,7 @@ func loadMembers(set_focus:bool=true, preview_member:bool=false):
 			loadMemberInfo(selected_combatant)
 
 func loadMemberInfo(member: ResCombatant, button: Button=null):
-	character_name.text = member.NAME.to_upper()
+	character_name.text = member.name.to_upper()
 	updateCharacterView(member)
 	
 	if changing_formation and selected_combatant == null:
@@ -77,7 +77,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		loadMembers(false, true)
 		await get_tree().process_frame
 		for child in member_container.get_children():
-			if child.text == selected_combatant.NAME: 
+			if child.text == selected_combatant.name: 
 				child.grab_focus()
 				break
 		selected_combatant = null
@@ -175,7 +175,7 @@ func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
 	button.alignment =HORIZONTAL_ALIGNMENT_RIGHT
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
 	button.custom_minimum_size.x = 64
-	button.text = member.NAME
+	button.text = member.name
 	button.pressed.connect(func(): loadMemberInfo(member, button))
 	if preview_combatant:
 		member.initializeCombatant()
@@ -240,7 +240,7 @@ func updateEquipped():
 		return
 	
 	if selected_combatant.equipped_weapon != null:
-		weapon_button.text = selected_combatant.equipped_weapon.NAME
+		weapon_button.text = selected_combatant.equipped_weapon.name
 		weapon_button.icon = selected_combatant.equipped_weapon.icon
 		weapon_durability.text = '%s / %s' % [selected_combatant.equipped_weapon.durability, selected_combatant.equipped_weapon.max_durability]
 		if selected_combatant.equipped_weapon.durability <= 0:

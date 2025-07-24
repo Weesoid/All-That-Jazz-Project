@@ -4,7 +4,7 @@ static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 		randomize()
 		if CombatGlobals.randomRoll(0.65):
 			OverworldGlobals.playSound('res://audio/sounds/488392__wobesound__poisongasrelease.ogg')
-			var effect = effects.pick_random().NAME
+			var effect = effects.pick_random().name
 			CombatGlobals.manual_call_indicator.emit(target, 'CATALYZED! %s' % [effect], 'Reaction')
 			CombatGlobals.addStatusEffect(target, effect)
 			await CombatGlobals.playAbilityAnimation(target, animation_scene.animation, 0.1)

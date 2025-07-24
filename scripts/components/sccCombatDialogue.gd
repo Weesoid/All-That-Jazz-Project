@@ -32,7 +32,7 @@ func checkTitles(flag):
 
 func readCombatantData(combatant: ResCombatant, title):
 	var base_title = title.split('`')[0].split('/')
-	if combatant.NAME != base_title[2]:
+	if combatant.name != base_title[2]:
 		return
 	
 	match base_title[1]:

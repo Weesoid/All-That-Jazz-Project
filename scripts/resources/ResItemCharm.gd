@@ -10,7 +10,7 @@ func updateItem():
 		return
 	
 	var parent_item = load(parent_item)
-	NAME = parent_item.NAME
+	name = parent_item.name
 	icon = parent_item.icon
 	description = parent_item.description
 	value = parent_item.value

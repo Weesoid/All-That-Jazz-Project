@@ -109,7 +109,7 @@ func showLoot():
 	for drop in bank.keys():
 		var icon: TextureRect = TextureRect.new()
 		icon.texture = drop.icon.duplicate()
-		icon.tooltip_text = drop.NAME
+		icon.tooltip_text = drop.name
 		var count_label = Label.new()
 		count_label.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][drop])
 		count_label.theme = preload("res://design/OutlinedLabel.tres")

@@ -16,7 +16,7 @@ enum RemoveStyle {
 	TICK_DOWN
 }
 
-@export var NAME: String
+@export var name: String
 @export_multiline var description: String
 @export var basic_effects: Array[ResBasicEffect]
 @export var status_script: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
@@ -81,10 +81,10 @@ func removeStatusEffect():
 	if status_visuals != null:
 		status_visuals.queue_free()
 	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.stat_values['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and lingers and !persist_on_dead and resistable:
-		afflicted_combatant.lingering_effects.erase(NAME)
-		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, 'Cured %s!' % NAME, 'Heal')
+		afflicted_combatant.lingering_effects.erase(name)
+		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, 'Cured %s!' % name, 'Heal')
 	elif afflicted_combatant is ResPlayerCombatant and lingers:
-		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '%s Supressed!' % NAME, 'Flunk')
+		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '%s Supressed!' % name, 'Flunk')
 	
 	if is_instance_valid(icon):
 		icon.queue_free()
@@ -101,7 +101,7 @@ func tick(update_duration=true, override_permanent=false, apply_effects=true):
 	if ((duration <= 0 and ((permanent and !remove_when.is_empty()) or !permanent)) or (afflicted_combatant.isDead() and !persist_on_dead)) and status_script != null:
 		#print('Removing ', self)
 		removeStatusEffect()
-# ['Knock Out', 'Fading', 'Deathmark'].has(NAME)
+# ['Knock Out', 'Fading', 'Deathmark'].has(name)
 
 func animateStatusEffect():
 	if status_visuals == null:
@@ -122,4 +122,4 @@ func getDescription():
 	return out_description
 
 func _to_string():
-	return NAME
+	return name

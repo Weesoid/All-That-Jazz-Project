@@ -106,7 +106,7 @@ func _on_hit_box_body_entered(body):
 		hit_script.applyEffects(self, body, CombatGlobals.getCombatScene().selected_ability)
 
 func _to_string():
-	return combatant_resource.NAME
+	return combatant_resource.name
 
 func _exit_tree():
 	if combatant_resource.scale_tween != null and combatant_resource.pos_tween != null:

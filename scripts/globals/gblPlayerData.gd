@@ -90,12 +90,12 @@ func initializeBenchedTeam():
 func getTeamMemberNames():
 	var out = []
 	for combatant in team:
-		out.append(combatant.NAME)
+		out.append(combatant.name)
 	return out
 
 func getTeamMember(member_name: String)-> ResPlayerCombatant:
 	for member in team:
-		if member.NAME == member_name: return member
+		if member.name == member_name: return member
 	
 	return null
 
@@ -194,7 +194,7 @@ func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 func addAbility(combatant, ability):
 	if combatant is String:
 		for member in team: 
-			if member.NAME == combatant:
+			if member.name == combatant:
 				combatant = member
 				break
 	if ability is String:
@@ -205,14 +205,14 @@ func addAbility(combatant, ability):
 	else:
 		added_abilities[combatant] = []
 		added_abilities[combatant].append(ability)
-	OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.NAME, ability.NAME])
+	OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.name, ability.name])
 	loadAddedAbilities()
 
 func addPower(power_file_name: String):
 	if FileAccess.file_exists("res://resources/powers/%s.tres" % power_file_name):
 		var power = load("res://resources/powers/%s.tres" % power_file_name)
 		known_powers.append(power)
-		OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.NAME)
+		OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.name)
 
 func loadAddedAbilities():
 	for member in team:
@@ -250,7 +250,7 @@ func addCombatantToTeam(combatant_id):
 		combatant.temperment['secondary'].append(PlayerGlobals.secondary_temperments.keys().pick_random())
 	combatant.stat_points = team_level
 	team.append(combatant)
-	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.NAME)
+	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.name)
 
 func removeCombatant(combatant_id: ResPlayerCombatant):
 	for member in team:
@@ -294,7 +294,7 @@ func hasFollower(follower_combatant: ResPlayerCombatant):
 
 func isFollowerActive(follower_combatant_name: String):
 	for f in getActiveFollowers():
-		if f.host_combatant.NAME == follower_combatant_name:
+		if f.host_combatant.name == follower_combatant_name:
 			return true
 	
 	return false

@@ -22,7 +22,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		modifier = buy_modifier
 	else:
 		modifier = sell_modifier
-	array.sort_custom(func(a,b): return a.NAME < b.NAME)
+	array.sort_custom(func(a,b): return a.name < b.name)
 	array.sort_custom(func(a,b): return InventoryGlobals.getItemType(a) < InventoryGlobals.getItemType(b))
 	array.sort_custom(func(a,b): return a.value * modifier < b.value * modifier)
 	clearButtons()
@@ -89,7 +89,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		#button.focus_exited.connect(func(): resetDescription())
 		wares.add_child(button)
 		
-		if focus_item is ResGhostStackItem and item.NAME == focus_item.NAME:
+		if focus_item is ResGhostStackItem and item.name == focus_item.name:
 			button.grab_focus()
 		elif item == focus_item:
 			button.grab_focus()
@@ -128,7 +128,7 @@ func setButtonFunction(selected_item):
 	match mode:
 		1: # BUY
 			if PlayerGlobals.currency < selected_item.value * buy_modifier:
-				OverworldGlobals.showPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.NAME)
+				OverworldGlobals.showPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.name)
 				return
 			
 			if selected_item is ResGhostStackItem:
@@ -150,7 +150,7 @@ func setButtonFunction(selected_item):
 			loadWares(wares_array, selected_item)
 		0: # SELL
 			if selected_item.mandatory:
-				OverworldGlobals.showPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.NAME)
+				OverworldGlobals.showPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.name)
 				return
 			
 			OverworldGlobals.setMenuFocusMode(wares, false)

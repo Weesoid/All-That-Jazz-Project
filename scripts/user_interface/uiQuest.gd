@@ -21,7 +21,7 @@ func _ready():
 	for quest in QuestGlobals.quests:
 		var button = OverworldGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.text = str(quest.NAME)
+		button.text = str(quest.name)
 		button.custom_minimum_size.x = quests_containter.size.x
 		button.focus_entered.connect(
 			func setQuest():
@@ -37,7 +37,7 @@ func _ready():
 func setQuestInfo():
 	clearQuestInfo()
 	
-	title.text = selected_quest.NAME
+	title.text = selected_quest.name
 	description.text = selected_quest.description
 	
 	for objectve in selected_quest.OBJECTIVES:

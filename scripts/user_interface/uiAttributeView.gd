@@ -82,7 +82,7 @@ func getAbilities(view_combatant:ResCombatant):
 	var ability_set = '[table=2]'
 	
 	for ability in view_combatant.ability_set:
-		ability_set += '[cell][hint='+ability.description+']'+ability.NAME + '[/hint][/cell][cell]' + ability.getPositionIcon(true, combatant is ResEnemyCombatant)+'[/cell]\n'
+		ability_set += '[cell][hint='+ability.description+']'+ability.name + '[/hint][/cell][cell]' + ability.getPositionIcon(true, combatant is ResEnemyCombatant)+'[/cell]\n'
 	
 	ability_set += '[/table]'
 	return ability_set

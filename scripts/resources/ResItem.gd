@@ -1,7 +1,7 @@
 extends Resource
 class_name ResItem
 
-@export var NAME: String
+@export var name: String
 @export var icon: Texture = preload("res://images/sprites/item_unknown.png")
 @export_multiline var description: String
 @export var value: int
@@ -9,10 +9,10 @@ class_name ResItem
 @export var parent_item: String # A path to the original item, only for duplicated items (e.g. Charms)
 
 func _to_string():
-	return str(NAME)
+	return str(name)
 
 func getInformation():
-	var out = OverworldGlobals.insertTextureCode(icon)+' '+NAME.to_upper()+'\n'
+	var out = OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	out += description
 	return out
 

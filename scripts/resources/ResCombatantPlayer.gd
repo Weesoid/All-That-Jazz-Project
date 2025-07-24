@@ -71,8 +71,8 @@ func updateCombatant(save_data: PlayerSaveData):
 	
 	# Debug code.!
 	#var percent_health = float(save_data.combatant_save_data[self][2]['health']) / float(save_data.combatant_save_data[self][3]['health'])
-#	if NAME == 'Willis Flynn':
-#		print('======= ', NAME, ' =======')
+#	if name == 'Willis Flynn':
+#		print('======= ', name, ' =======')
 #		print('BaseHealth: ', stat_values['health'])
 #		print('Dividing: ',save_data.combatant_save_data[self][2]['health'], ' / ', save_data.combatant_save_data[self][3]['health'])
 #		print('% left: ', percent_health)
@@ -86,7 +86,7 @@ func act():
 func applyStatusEffects():
 	for charm in charms.values():
 		if charm == null or charm.status_effect == null: continue
-		CombatGlobals.addStatusEffect(self, charm.status_effect.NAME)
+		CombatGlobals.addStatusEffect(self, charm.status_effect.name)
 	for effect in lingering_effects:
 		CombatGlobals.addStatusEffect(self, effect)
 
@@ -128,7 +128,7 @@ func equipWeapon(weapon: ResWeapon):
 func unequipWeapon():
 	if equipped_weapon != null:
 #		if !equipped_weapon.canUse(self):
-#			OverworldGlobals.showPrompt('%s does not meet %s requirements.' % [NAME, equipped_weapon.NAME])
+#			OverworldGlobals.showPrompt('%s does not meet %s requirements.' % [name, equipped_weapon.name])
 #			return
 		
 		equipped_weapon.unequip()
@@ -150,7 +150,7 @@ func unequipCharm(slot: int):
 		return
 	
 	charms[slot].unequip()
-	CombatGlobals.resetStat(self, charms[slot].NAME)
+	CombatGlobals.resetStat(self, charms[slot].name)
 	InventoryGlobals.addItemResource(charms[slot], 1, false, false)
 	charms[slot] = null
 	OverworldGlobals.playSound("res://audio/sounds/421418__jaszunio15__click_200.ogg")
@@ -158,13 +158,13 @@ func unequipCharm(slot: int):
 func hasCharm(charm: ResCharm):
 	for equipped_charm in charms.values():
 		if equipped_charm == null: continue
-		if equipped_charm.NAME == charm.NAME: return true
+		if equipped_charm.name == charm.name: return true
 
 ## This function is pretty cool. Keeping it!
 func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	initializeCombatant(false)
 	var enemy = ResEnemyCombatant.new()
-	enemy.NAME = appended_name + ' ' +NAME
+	enemy.name = appended_name + ' ' +name
 	enemy.packed_scene = packed_scene
 	enemy.description = description
 	enemy.stat_values = base_stat_values.duplicate()

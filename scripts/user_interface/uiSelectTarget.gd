@@ -7,7 +7,7 @@ var attached_combatant: ResCombatant
 var combat_scene = CombatGlobals.getCombatScene()
 
 func _process(_delta):
-	label.text = attached_combatant.NAME
+	label.text = attached_combatant.name
 	if attached_combatant != null and combat_scene.target_state != 0:
 		if combat_scene.target_combatant is ResCombatant:
 			if combat_scene.target_combatant == attached_combatant:

@@ -11,7 +11,7 @@ const POWER_RIGHT = preload("res://images/sprites/power_right.png")
 @export var power: ResPower
 
 func _ready():
-	power_name.text = power.NAME
+	power_name.text = power.name
 	for character in power.input_map:
 		var icon = TextureRect.new()
 		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL

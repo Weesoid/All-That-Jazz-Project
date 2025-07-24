@@ -3,7 +3,7 @@ extends Resource
 class_name ResCombatant
 
 ## Backend export variables
-@export var NAME: String
+@export var name: String
 @export var packed_scene: PackedScene
 @export var bullet_texture: Texture2D
 @export_multiline var description: String
@@ -118,7 +118,7 @@ func getAnimator()-> AnimationPlayer:
 func getStatusEffectNames()-> Array[String]:
 	var names: Array[String] = []
 	for effect in status_effects:
-		names.append(effect.NAME)
+		names.append(effect.name)
 	return names
 
 func removeTokens(remove_type: int):
@@ -133,14 +133,14 @@ func getMaxHealth():
 
 func getStatusEffect(stat_name: String)-> ResStatusEffect:
 	for status in status_effects:
-		if status.NAME.to_lower() == stat_name.to_lower():
+		if status.name.to_lower() == stat_name.to_lower():
 			return status
 	
 	return null
 
 func hasStatusEffect(stat_name: String)-> bool:
 	for status in status_effects:
-		if status.NAME.to_lower() == stat_name.to_lower():
+		if status.name.to_lower() == stat_name.to_lower():
 			return true
 	
 	return false
@@ -196,4 +196,4 @@ func updateHealth(amount: int):
 		stat_values['health'] = base_stat_values['health']
 
 func _to_string():
-	return str(NAME)
+	return str(name)

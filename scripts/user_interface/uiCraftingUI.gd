@@ -15,7 +15,7 @@ var all_components: Array[ResItem] = [null, null, null]
 func _process(_delta):
 	if InventoryGlobals.recipes.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) != null:
 		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).icon
-		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).NAME	
+		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).name	
 		craft_button.show()
 		craft_button.disabled = canAddToInventory()
 	elif InventoryGlobals.recipes.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) == null:
@@ -49,7 +49,7 @@ func recipeToString()-> Array:
 	var out = [null, null, null]
 	for i in range(3):
 		if all_components[i] != null:
-			out[i] = all_components[i].NAME
+			out[i] = all_components[i].name
 	
 	return out
 
@@ -70,11 +70,11 @@ func updateComponentSlot(slot: int):
 	elif item is ResStackItem:
 		match slot:
 			0: 
-				component_core.text = '%s x%s' % [item.NAME, item.stack]
+				component_core.text = '%s x%s' % [item.name, item.stack]
 			1:
-				component_a.text = '%s x%s' % [item.NAME, item.stack]
+				component_a.text = '%s x%s' % [item.name, item.stack]
 			2:
-				component_b.text = '%s x%s' % [item.NAME, item.stack]
+				component_b.text = '%s x%s' % [item.name, item.stack]
 
 func showItems(slot_button: Button, slot: int):
 	for child in item_select_buttons.get_children():
@@ -197,9 +197,9 @@ func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
 	else:
 		slot_button.icon = item.icon
 		if item is ResStackItem:
-			slot_button.text = '%s x%s' % [item.NAME, item.stack]
+			slot_button.text = '%s x%s' % [item.name, item.stack]
 		else:
-			slot_button.text = item.NAME
+			slot_button.text = item.name
 		
 		all_components[slot] = item
 		item_select.hide()

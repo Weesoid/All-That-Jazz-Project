@@ -61,7 +61,7 @@ func createSaveButton(save_name: String):
 	if ResourceLoader.exists("res://saves/%s.tres" % save_name):
 		#await get_tree().process_frame
 		var save: SavedGame = load("res://saves/%s.tres" % save_name)
-		button.text = save.NAME
+		button.text = save.name
 	else:
 		button.text = 'EMPTY'
 	button.pressed.connect(func doAction(): slotPressed(save_name, button))
@@ -89,7 +89,7 @@ func slotPressed(save_name: String, button: Button):
 func saveGame(save_name: String, button: Button):
 	SaveLoadGlobals.saveGame(save_name)
 	var save = load("res://saves/%s.tres" % save_name)
-	button.text = save.NAME
+	button.text = save.name
 
 func deleteSave(save_name: String, button: Button):
 	DirAccess.remove_absolute("res://saves/%s.tres" % save_name)

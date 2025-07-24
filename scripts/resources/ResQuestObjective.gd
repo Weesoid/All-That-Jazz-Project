@@ -1,7 +1,7 @@
 extends Resource
 class_name ResObjective
 
-@export var NAME: String
+@export var name: String
 @export_multiline var description: String
 @export var dependent: ResObjective
 @export var dependent_outcome: int
@@ -17,4 +17,4 @@ func complete(outcome:int=0):
 	outcome = outcome
 
 func _to_string():
-	return "%s > Dependent:%s/%s, Active:%s, Completed:%s, Final:%s" % [NAME, dependent.NAME, dependent_outcome, active, completed, final_objective]
+	return "%s > Dependent:%s/%s, Active:%s, Completed:%s, Final:%s" % [name, dependent.name, dependent_outcome, active, completed, final_objective]

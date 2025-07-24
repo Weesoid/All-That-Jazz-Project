@@ -336,7 +336,7 @@ func canDrawBow()-> bool:
 #		prompt.("Can't use [color=yellow]Bow[/color] right now.")
 #		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
-		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.NAME)
+		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
 		return false
 	if PlayerGlobals.equipped_arrow == null:
 		return false

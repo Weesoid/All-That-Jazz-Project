@@ -1,7 +1,7 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.apply_once and !target.hasStatusEffect('Deathmark'):
 		target.combatant_scene.moveTo(target.combatant_scene.get_parent(), 0.25, Vector2(0,0), true)
-		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.NAME)
+		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.name)
 		CombatGlobals.playKnockOutTween(target)
 		target.combatant_scene.collision.disabled = true
 		if target is ResPlayerCombatant:
@@ -16,7 +16,7 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		applyFaded(target)
 	elif CombatGlobals.getCombatScene().combat_result == 0:
 		applyFaded(target)
-	CombatGlobals.resetStat(target, status_effect.NAME)
+	CombatGlobals.resetStat(target, status_effect.name)
 
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0

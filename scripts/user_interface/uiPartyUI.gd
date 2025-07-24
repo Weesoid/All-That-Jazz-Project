@@ -16,7 +16,7 @@ func loadInformation():
 	for ability in subject_combatant.ability_pool:
 		if ability == null: continue
 		var ability_button = OverworldGlobals.createCustomButton()
-		ability_button.text = ability.NAME
+		ability_button.text = ability.name
 		ability_button.mouse_entered.connect(
 			func updateDesciption():
 				description.text = ability.getRichDescription()
@@ -29,7 +29,7 @@ func loadInformation():
 	
 	if subject_combatant.equipped_weapon != null:
 		var weapon_button = OverworldGlobals.createCustomButton()
-		weapon_button.text = subject_combatant.equipped_weapon.NAME
+		weapon_button.text = subject_combatant.equipped_weapon.name
 		weapon_button.mouse_entered.connect(
 		func updateDesciption():
 			description.text = subject_combatant.equipped_weapon.getInformation()
@@ -45,7 +45,7 @@ func loadInformation():
 			continue
 		
 		var equipment_button = OverworldGlobals.createCustomButton()
-		equipment_button.text = charm.NAME
+		equipment_button.text = charm.name
 		equipment_button.mouse_entered.connect(
 		func updateDesciption():
 			description.text = charm.getInformation()

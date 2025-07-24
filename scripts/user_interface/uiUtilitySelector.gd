@@ -8,7 +8,7 @@ var current_index = -1
 
 func _input(event):
 	var arrows: Array = InventoryGlobals.inventory.filter(func(item): return item is ResProjectileAmmo)
-	arrows.sort_custom(func(a, b): return a.NAME < b.NAME)
+	arrows.sort_custom(func(a, b): return a.name < b.name)
 	if arrows.is_empty():
 		return
 	
@@ -19,7 +19,7 @@ func _input(event):
 		for arrow in arrows:
 			loadOtherArrows(arrow)
 		current_index = arrows.find(PlayerGlobals.equipped_arrow)
-		updateIcon(arrows[current_index].icon, arrows[current_index].NAME)
+		updateIcon(arrows[current_index].icon, arrows[current_index].name)
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg")
 	if Input.is_action_pressed("ui_select_arrow") and player.is_processing_input():
 		visible = true
@@ -43,7 +43,7 @@ func _input(event):
 
 func updateArrowSelect():
 	var arrows = InventoryGlobals.inventory.filter(func(item): return item is ResProjectileAmmo)
-	arrows.sort_custom(func(a, b): return a.NAME < b.NAME)
+	arrows.sort_custom(func(a, b): return a.name < b.name)
 	if arrows.size() <= 1:
 		return
 	
@@ -51,7 +51,7 @@ func updateArrowSelect():
 		current_index = 0
 	elif current_index < 0:
 		current_index = arrows.size() - 1
-	updateIcon(arrows[current_index].icon, arrows[current_index].NAME)
+	updateIcon(arrows[current_index].icon, arrows[current_index].name)
 	arrows[current_index].equip()
 	
 	for child in other_arrows_container.get_children():

@@ -228,7 +228,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	#button.expand_icon = true
 	button.icon = item.icon
-	button.tooltip_text = item.NAME
+	button.tooltip_text = item.name
 	button.description_text = item.getInformation()
 	button.description_offset = Vector2(0, -28)
 	if item is ResStackItem and show_count:
@@ -277,7 +277,7 @@ func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbi
 	#button.custom_minimum_size.y = 32
 	#button.expand_icon = true
 	#button.icon = ability.icon
-	#button.tooltip_text = ability.NAME
+	#button.tooltip_text = ability.name
 	#button.initialize()
 	return button
 
@@ -329,7 +329,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		await SaveLoadGlobals.done_saving
 		delayed_rewards.clear()
 	
-	#print(getCurrentMap().NAME, ' <=========================================')
+	#print(getCurrentMap().name, ' <=========================================')
 
 func forceGiveRewards():
 	getCurrentMap().giveRewards(true)
@@ -355,7 +355,7 @@ func setMapRewardBank(key: String, value):
 #func getTamedNames():
 #	var out = []
 #	for combatant in get_tree().current_scene.REWARD_BANK['tamed']:
-#		out.append(combatant.NAME)
+#		out.append(combatant.name)
 #	return out
 
 func isPlayerCheating()-> bool:
@@ -697,7 +697,7 @@ func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 func getCombatant(entity_name: String, combatant_name: String)-> ResCombatant:
 	for combatant in getCombatantSquad(entity_name):
 		print('Comp ', combatant, ' vs ', combatant_name)
-		if combatant.NAME == combatant_name:
+		if combatant.name == combatant_name:
 			print(combatant)
 			return combatant
 	
