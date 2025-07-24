@@ -605,7 +605,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var map_events = getCurrentMap().events
 	if map_events.has('patroller_effect'):
 		enemy_squad.addLingeringEffect(map_events['patroller_effect'])
-	combat_scene.COMBATANTS.append_array(getCombatantSquad('Player'))
+	combat_scene.combatants.append_array(getCombatantSquad('Player'))
 	for combatant in getCombatantSquad('Player'):
 		combatant.lingering_effects.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
 	for combatant in enemy_squad.combatant_squad:
@@ -616,7 +616,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 #		if CombatGlobals.randomRoll(enemy_squad.TAMEABLE_CHANCE):
 #			randomize()
 #			duped_combatant.spawn_on_death = getRandomTameable().pick_random().convertToEnemy('Feral')
-		combat_scene.COMBATANTS.append(duped_combatant)
+		combat_scene.combatants.append(duped_combatant)
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
 	elif map_events.has('combat_event'):

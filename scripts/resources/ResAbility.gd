@@ -108,8 +108,8 @@ func getCost():
 
 func getTargetType():
 	match target_type:
-		TargetType.SINGLE: return 1
-		TargetType.MULTI: return 2
+		TargetType.SINGLE: return CombatScene.TargetState.SINGLE
+		TargetType.MULTI: return CombatScene.TargetState.MULTI
 
 func _to_string():
 	return name

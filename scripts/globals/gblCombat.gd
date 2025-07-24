@@ -188,9 +188,9 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	message = indicator_bb_code+'[outline_size=8] '+message
 	if damage > 0:
 		manual_call_indicator.emit(target, message, 'Damage')
-	target.removeTokens(1)
+	target.removeTokens(ResStatusEffect.RemoveType.GET_HIT)
 	if caster != null:
-		caster.removeTokens(0)
+		caster.removeTokens(ResStatusEffect.RemoveType.HIT)
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
 	if caster != null and target.isDead() and abs(target.stat_values['health']) >= target.getMaxHealth() * 0.25:
@@ -264,7 +264,7 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 		manual_call_indicator.emit(target, "Broken.", 'Flunk')
 	
 	if trigger_on_heal:
-		target.removeTokens(2)
+		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
 	#print(target.combatant_scene.idle_animation)
 	if target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
 		target.combatant_scene.playIdle('Idle')
@@ -406,7 +406,7 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1,
 	return qte
 
 func playCombatantAnimation(combatant_name: String, animation_name: String, wait=true):
-	for combatant in getCombatScene().COMBATANTS:
+	for combatant in getCombatScene().combatants:
 		if combatant.name == combatant_name:
 			if wait:
 				await combatant.combatant_scene.doAnimation(animation_name)
@@ -419,7 +419,7 @@ func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
 	if target_name == 'RESET':
 		target = getCombatScene().camera_position
 	else:
-		for combatant in getCombatScene().COMBATANTS:
+		for combatant in getCombatScene().combatants:
 			if combatant.name == target_name: target = combatant.combatant_scene.global_position
 	
 	if wait:

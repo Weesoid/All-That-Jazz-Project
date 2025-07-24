@@ -26,5 +26,5 @@ func _process(_delta):
 			detect_audio.stop()
 			detect_audio.volume_db = 0.0
 		hide()
-	if patroller.state == 0:
+	if patroller.state == GenericPatroller.State.IDLE:
 		value = detect_timer.time_left

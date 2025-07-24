@@ -1,6 +1,12 @@
 extends CharacterBody2D
 class_name GenericPatroller
 
+enum State {
+	IDLE,
+	CHASING,
+	STUNNED
+}
+
 @onready var shape = $CollisionShape2D
 @onready var line_of_sight: RayCast2D = $LineOfSight
 @onready var stun_timer = $StunTimer
@@ -23,7 +29,7 @@ class_name GenericPatroller
 @export var action_cooldown_time: float
 @export var stun_time: float
 
-var state: int
+var state: State
 var speed: float = 15.0
 var combat_switch: bool = true
 var patroller_group: PatrollerGroup
@@ -34,7 +40,6 @@ func _ready():
 		CombatGlobals.generateCombatantSquad(self, CombatGlobals.Enemy_Factions.Scavs)
 	if get_parent() is PatrollerGroup:
 		patroller_group = get_parent()
-		print(patroller_group)
 	
 	if detection_time > 0:
 		detect_timer.wait_time = detection_time
@@ -43,15 +48,15 @@ func _ready():
 	if stun_time > 0:
 		stun_timer.wait_time = stun_time
 
-func updateState(new_state:int):
-	if new_state == 0:
+func updateState(new_state:State):
+	if new_state == State.IDLE:
 		chase_indicator_animator.play("RESET")
 		state = new_state
-	elif new_state == 1:
+	elif new_state == State.CHASING:
 		chase_indicator_animator.play("Show")
 		OverworldGlobals.playSound2D(global_position, "res://audio/sounds/413641__djlprojects__metal-gear-solid-inspired-alert-surprise-sfx.ogg")
 		state = new_state
-	elif new_state == 2:
+	elif new_state == State.STUNNED:
 		chase_indicator_animator.play("RESET")
 		animator.play("RESET")
 		shape.set_deferred('disabled', true)
@@ -65,9 +70,9 @@ func _physics_process(delta):
 	
 	doCollisionAction()
 	match state:
-		0: patrol()
-		1: chase()
-		2: stun()
+		State.IDLE: patrol()
+		State.CHASING: chase()
+		State.STUNNED: stun()
 	
 	animateWalk()
 	move_and_slide()
@@ -94,7 +99,7 @@ func checkPlayer():
 
 func _on_detect_timer_timeout():
 	if state != 2:
-		updateState(1)
+		updateState(State.CHASING)
 
 func patrol():
 	# Direction changing
@@ -110,7 +115,7 @@ func chase():
 	var y_pos = snappedf(shape.global_position.y,100.0)
 	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
 	if y_pos != y_pos_player:
-		updateState(0)
+		updateState(State.IDLE)
 	
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
 	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position)
@@ -129,13 +134,13 @@ func _on_stun_timer_timeout():
 	if shape.disabled: 
 		shape.set_deferred('disabled', false)
 	combat_switch = true
-	updateState(1)
+	updateState(State.CHASING)
 	flickerTween(false)
 
 func animateWalk():
 	if animator.current_animation.contains('Action'):
 		return
-	if state == 1:
+	if state == State.CHASING:
 		animator.advance(get_physics_process_delta_time()*1.5)
 	
 	if direction == -1 and velocity.x != 0:
@@ -200,7 +205,7 @@ func destroy(give_drops=false):
 		combatant_squad.addDrops()
 		OverworldGlobals.getPlayer().player_camera.addRewardBank(patroller_group)
 	
-	updateState(3)
+	updateState(GenericPatroller.State.STUNNED)
 	queue_free()
 	await tree_exited
 	patroller_group.checkGiveRewards()

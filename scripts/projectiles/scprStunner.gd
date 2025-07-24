@@ -3,4 +3,4 @@ static func applyEffect(body: CharacterBody2D):
 		var combat_interact = preload("res://scenes/components/CombatInteract.tscn").instantiate()
 		combat_interact.patroller_name = str(body.name)
 		body.call_deferred('add_child', combat_interact)
-		body.updateState(2)
+		body.updateState(GenericPatroller.State.STUNNED)

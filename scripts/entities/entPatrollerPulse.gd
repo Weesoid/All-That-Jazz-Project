@@ -1,7 +1,8 @@
 extends EffectPulse
 class_name PatrollerPulse
 
-var mode: int
+var mode: GenericPatroller.State
+var dynamic_pulse:bool=false
 var trigger_others=false
 
 func applyPulseEffect():
@@ -9,16 +10,16 @@ func applyPulseEffect():
 		if body is GenericPatroller:
 			if mode == body.state:
 				continue
-			elif mode == 0 and body.state == 2:
+			elif mode == GenericPatroller.State.IDLE and body.state == GenericPatroller.State.CHASING:
 				continue
 #			elif mode == 1 and (body.state == 2 or body.state == 3):
 #				continue
 			
-			if mode == 4: # Dynamic pulse
-				if body.state == 0: # If patroller is patrolling (soothe), alert patrol
-					body.updateState(1)
-				elif body.state == 1 or body.state == 2: # Patroller is chasing or alert patrolling, CHASE
-					body.updateState(2)
+			if dynamic_pulse: # Dynamic pulse
+				if body.state == GenericPatroller.State.IDLE: # If patroller is patrolling (soothe), alert patrol
+					body.updateState(GenericPatroller.State.CHASING)
+				elif body.state == GenericPatroller.State.CHASING: # Patroller is chasing or alert patrolling, CHASE
+					body.updateState(GenericPatroller.State.STUNNED)
 			else:
 				body.updateState(mode)
 	

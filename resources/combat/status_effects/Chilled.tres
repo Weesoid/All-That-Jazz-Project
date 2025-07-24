@@ -1,34 +1,31 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://djntbubqd5m1e"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://djntbubqd5m1e"]
 
-[ext_resource type="PackedScene" uid="uid://lp4vcelwsxn6" path="res://scenes/animations_status_effects/Chilled.tscn" id="1_58yo2"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_fe3a6"]
-[ext_resource type="Script" path="res://scripts/combat/status_effects/scsChilled.gd" id="2_x06er"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_bd7g7"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_vgnye"]
 
 [resource]
 script = ExtResource("1_fe3a6")
-NAME = "Chilled"
-DESCRIPTION = "Target has reduced GRIT."
+name = ""
+description = ""
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-STATUS_SCRIPT = ExtResource("2_x06er")
-PACKED_SCENE = ExtResource("1_58yo2")
-EFFECT_TYPE = 0
-REMOVE_WHEN = Array[int]([])
-REMOVE_STYLE = 0
-TEXTURE = ExtResource("3_vgnye")
-MAX_DURATION = 3
-EXTEND_DURATION = 0
-APPLY_EXTEND_DURATION = false
-MAX_RANK = 0
-TICK_ON_APPLY = true
-GIVE_EXTRA_DURATION = true
-TICK_PER_TURN = false
-DO_TICKS = true
-RESISTABLE = true
-PERMANENT = false
-LINGERING = false
-PERSIST_ON_DEAD = false
-SOUNDS = {
+status_script = ExtResource("2_bd7g7")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("3_vgnye")
+max_duration = 0
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = false
+do_ticks = true
+resistable = true
+permanent = false
+lingers = false
+persist_on_dead = false
+sounds = {
 "apply": "",
 "expire": ""
 }

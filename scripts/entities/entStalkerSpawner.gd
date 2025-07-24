@@ -38,7 +38,7 @@ func _ready():
 
 func reactivatePatroller():
 	if is_instance_valid(body) and body is GenericPatroller and OverworldGlobals.isPlayerAlive():
-		body.updateState(2)
+		body.updateState(GenericPatroller.State.STUNNED)
 		body.process_mode= Node.PROCESS_MODE_INHERIT
 		PlayerGlobals.CLEARED_MAPS[OverworldGlobals.getCurrentMap().scene_file_path]['cleared'] = true
 	elif !OverworldGlobals.isPlayerAlive():

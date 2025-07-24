@@ -125,8 +125,8 @@ func removeTokens(remove_type: int):
 	for effect in status_effects:
 		if effect.remove_when.has(remove_type): 
 			match effect.remove_style:
-				0: effect.removeStatusEffect()
-				1: effect.tick(false, true)
+				ResStatusEffect.RemoveStyle.REMOVE: effect.removeStatusEffect()
+				ResStatusEffect.RemoveStyle.TICK_DOWN: effect.tick(false, true)
 
 func getMaxHealth():
 	return base_stat_values['health']

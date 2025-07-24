@@ -1,8 +1,14 @@
 extends Node2D
 class_name CombatScene
 
-@export var COMBATANTS: Array[ResCombatant]
+enum TargetState {
+	NONE,
+	SINGLE,
+	MULTI,
+	INSPECT
+}
 
+@export var combatants: Array[ResCombatant]
 @onready var combat_camera = $CombatCamera
 @onready var combat_log = $CombatCamera/Interface/LogContainer
 @onready var team_container_markers = $TeamContainer.get_children()
@@ -45,7 +51,7 @@ class_name CombatScene
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
-var target_state = 0 # 0=None, 1=Single, 2=Multi
+var target_state: TargetState = TargetState.NONE # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
 var valid_targets
 var target_combatant
@@ -63,7 +69,6 @@ var battle_music_path: String = ""
 var combat_result: int = -1
 var camera_position: Vector2 = Vector2(0, 0)
 var enemy_reinforcements: Array[ResCombatant]
-#var tamed_combatants: Array[String]
 var bonus_escape_chance = 0.0
 var onslaught_mode = false
 var onslaught_combatant: ResPlayerCombatant
@@ -104,23 +109,23 @@ func _ready():
 	await transition.animation_finished
 	
 	var dead_combatants = []
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if combatant.isDead(): 
 			dead_combatants.append(combatant)
 			continue
 		await addCombatant(combatant, false, '', true)
 	for combatant in dead_combatants:
-		COMBATANTS.erase(combatant)
+		combatants.erase(combatant)
 	
 	if battle_music_path != "":
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
 	
 	# ACTIVATE COMBAT START STATUSES!
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		tickStatusEffects(combatant, false, false, true)
 		tickStatusEffects(combatant, true, false, true)
-	print(initial_damage)
+	
 	if initial_damage > 0.0:
 		for combatant in getCombatantGroup('enemies'):
 			await get_tree().create_timer(0.05).timeout
@@ -157,9 +162,9 @@ func _process(_delta):
 	turn_counter.text = str(turn_count)
 	round_counter.text = str(round_count)
 	match target_state:
-		1: playerSelectSingleTarget()
-		2: playerSelectMultiTarget()
-		3: playerSelectInspection()
+		TargetState.SINGLE: playerSelectSingleTarget()
+		TargetState.MULTI: playerSelectMultiTarget()
+		TargetState.INSPECT: playerSelectInspection()
 
 func _unhandled_input(_event):
 	if onslaught_mode and Input.is_action_just_pressed('ui_left') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
@@ -174,9 +179,9 @@ func _unhandled_input(_event):
 			toggleUI(false)
 		else:
 			toggleUI(true)
-	if Input.is_action_pressed("ui_select_arrow") and !ui_inspect_target.visible and target_state == 1:
+	if Input.is_action_pressed("ui_select_arrow") and !ui_inspect_target.visible and target_state == TargetState.SINGLE:
 		inspectTarget(true)
-	elif Input.is_action_just_released("ui_select_arrow") and target_state == 1:
+	elif Input.is_action_just_released("ui_select_arrow") and target_state == TargetState.SINGLE:
 		inspectTarget(false)
 
 func on_player_turn():
@@ -259,7 +264,7 @@ func end_turn(combatant_act=true):
 		return
 	if combatant_act:
 		tickStatusEffects(active_combatant, false, true, false, false) # Tick down ON TURN statuses
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
 	if combatant_act:
@@ -296,7 +301,7 @@ func end_turn(combatant_act=true):
 	var turn_title = 'turn/%s' % turn_count
 	CombatGlobals.dialogue_signal.emit(turn_title)
 	
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if combatant.isDead(): continue
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true) # Tick PER TURN statuses (e.g. tick even tho its not the combatant's)
@@ -316,7 +321,7 @@ func end_turn(combatant_act=true):
 		combat_log.writeCombatLog('Enemy reinforcements arrived!')
 		bonus_escape_chance -= 0.25
 		var replace = []
-		for combatant in COMBATANTS:
+		for combatant in combatants:
 			if combatant.isDead() and combatant is ResEnemyCombatant: replace.append(combatant)
 		for combatant in replace:
 			var replacement: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
@@ -416,7 +421,7 @@ func _on_guard_pressed():
 
 func _on_inspect_pressed():
 	ui_animator.play('ShowInspect')
-	target_state = 3
+	target_state = TargetState.INSPECT
 
 func _on_escape_pressed():
 	if CombatGlobals.randomRoll(calculateEscapeChance()*100):
@@ -560,7 +565,7 @@ func createAbilityButton(ability: ResAbility, weapon:ResWeapon=null)-> Button:
 	button.pressed.connect(func(): forceCastAbility(ability, weapon))
 	button.focus_entered.connect(func():updateDescription(ability))
 	button.mouse_entered.connect(func():updateDescription(ability))
-	if !ability.enabled or !ability.canUse(active_combatant, COMBATANTS):
+	if !ability.enabled or !ability.canUse(active_combatant, combatants):
 		button.disabled = true
 	if ability == load("res://resources/combat/abilities/BraceSelf.tres") and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
 		button.disabled = true
@@ -583,7 +588,7 @@ func playerSelectMultiTarget():
 	if getCombatantGroup('enemies').is_empty():
 		return
 	
-	target_combatant = selected_ability.getValidTargets(COMBATANTS, true)
+	target_combatant = selected_ability.getValidTargets(combatants, true)
 	confirmCancelInputs()
 
 func playerSelectInspection():
@@ -617,7 +622,7 @@ func executeAbility():
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	active_combatant.combatant_scene.z_index = 100
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
 			CombatGlobals.setCombatantVisibility(combatant.combatant_scene, false)
 	if target_combatant is ResPlayerCombatant:
@@ -635,11 +640,11 @@ func executeAbility():
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant.combatant_scene, selected_ability)
 	else:
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant, selected_ability)
-	if selected_ability.target_type == 0 and !selected_ability.isOnslaught():
+	if selected_ability.target_type == ResAbility.TargetType.SINGLE and !selected_ability.isOnslaught():
 		moveCamera(target_combatant.combatant_scene.global_position)
-	elif selected_ability.target_type == 0 and selected_ability.isOnslaught():
+	elif selected_ability.target_type == ResAbility.TargetType.SINGLE and selected_ability.isOnslaught():
 		moveCamera(camera_position)
-	elif selected_ability.target_type == 1:
+	elif selected_ability.target_type == ResAbility.TargetType.MULTI:
 		moveCamera(target_combatant[0].combatant_scene.global_position)
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
@@ -647,7 +652,7 @@ func executeAbility():
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		CombatGlobals.setCombatantVisibility(combatant.combatant_scene, true)
 	var ability_title = 'ability/%s' % selected_ability.resource_path.get_file().trim_suffix('.tres')
 	CombatGlobals.dialogue_signal.emit(ability_title)
@@ -672,7 +677,7 @@ func revokeBlocking(target: ResCombatant):
 		target.combatant_scene.allow_block = false
 
 func skipTurn():
-	target_state = 0
+	target_state = TargetState.NONE
 	if run_once:
 		Input.action_release("ui_accept")
 		confirm.emit()
@@ -681,8 +686,8 @@ func skipTurn():
 
 # For executing combat events and such.
 func commandExecuteAbility(target, ability: ResAbility):
-	if ability.target_type == ability.TargetType.MULTI:
-		target = ability.getValidTargets(COMBATANTS, active_combatant is ResPlayerCombatant)
+	if ability.target_type == ResAbility.TargetType.MULTI:
+		target = ability.getValidTargets(combatants, active_combatant is ResPlayerCombatant)
 	if ability.isBasicAbility():
 		ability.ability_script.animate(null, target, ability)
 	ability.ability_script.applyEffects(null, target, ability)
@@ -723,7 +728,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		combatant.combatant_scene.get_node('Sprite2D').flip_v = true
 		combat_bars.rotation_degrees = 180
 	if spawned:
-		COMBATANTS.append(combatant)
+		combatants.append(combatant)
 		combatant.acted = false
 		combatant.turn_charges = combatant.max_turn_charges
 		for turn_charge in range(combatant.max_turn_charges):
@@ -747,7 +752,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	combatant.startBreatheTween(true)
 
 func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):
-	COMBATANTS.erase(combatant)
+	combatants.erase(combatant)
 	combatant_turn_order.erase(combatant)
 	await get_tree().create_timer(0.25).timeout
 	combatant.combatant_scene.queue_free()
@@ -759,7 +764,7 @@ func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, anim
 	combat_log.writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
-	COMBATANTS.erase(combatant)
+	combatants.erase(combatant)
 	combatant_turn_order.erase(combatant)
 	combatant.combatant_scene.queue_free()
 
@@ -767,7 +772,7 @@ func removeCombatant(combatant: ResCombatant):
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
-	if ability.target_type == ability.TargetType.MULTI:
+	if ability.target_type == ResAbility.TargetType.MULTI:
 		addTargetClickButton(active_combatant)
 	elif valid_targets is Array:
 		for target in valid_targets: addTargetClickButton(target)
@@ -826,15 +831,15 @@ func animateSecondaryPanel(animation: String):
 		ui_animator.play_backwards("ShowOptionPanel")
 
 func getDeadCombatants(type: String=''):
-	var combatants = COMBATANTS.duplicate()
+	var dead_combatants = combatants.duplicate()
 	if type == 'enemies':
-		combatants = combatants.filter(func(combatant): return combatant is ResEnemyCombatant)
+		dead_combatants = dead_combatants.filter(func(combatant): return combatant is ResEnemyCombatant)
 	elif type == 'team':
-		combatants = combatants.filter(func(combatant): return combatant is ResPlayerCombatant)
-	return combatants.filter(func getDead(combatant): return combatant.isDead())
+		dead_combatants = dead_combatants.filter(func(combatant): return combatant is ResPlayerCombatant)
+	return dead_combatants.filter(func getDead(combatant): return combatant.isDead())
 
 func targetCombatant(combatant: ResCombatant):
-	if !COMBATANTS.has(combatant) or combatant.isDead():
+	if !combatants.has(combatant) or combatant.isDead():
 		return
 	
 	if valid_targets is Array:
@@ -853,7 +858,7 @@ func targetCombatant(combatant: ResCombatant):
 func rollTurns():
 	OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
 	combatant_turn_order.clear()
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if combatant.isDead() and !combatant.hasStatusEffect('Fading'): continue
 		randomize()
 		combatant.acted = false
@@ -866,7 +871,7 @@ func rollTurns():
 	round_arrow_spinner.play("Spin")
 
 func allCombatantsActed() -> bool:
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if !combatant.acted: return false
 	return true
 
@@ -879,8 +884,8 @@ func getCombatantFromTurnOrder(combatant: ResCombatant)-> ResCombatant:
 ## 'team' or 'enemies'
 func getCombatantGroup(type: String)-> Array[ResCombatant]:
 	match type:
-		'team': return COMBATANTS.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
-		'enemies': return COMBATANTS.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
+		'team': return combatants.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
+		'enemies': return combatants.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
 	
 	return [null]
 
@@ -896,11 +901,11 @@ func isCombatValid()-> bool:
 	return !isCombatantGroupDead('team') and !isCombatantGroupDead('enemies')
 
 func getLivingCombatants():
-	return COMBATANTS.duplicate().filter(func(combatant: ResCombatant): return !combatant.isDead())
+	return combatants.duplicate().filter(func(combatant: ResCombatant): return !combatant.isDead())
 
 func renameDuplicates():
 	var seen = []
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if seen.has(combatant.name):
 			seen.append(combatant.name)
 			combatant.name = '%s %s' % [combatant.name, seen.count(combatant.name)]
@@ -944,6 +949,7 @@ func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
 		while !combatant.status_effects.is_empty():
 			combatant.status_effects[0].removeStatusEffect()
 
+# This is disgusting but whatever
 func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true, only_permanent=false, do_tick=true):
 	for effect in combatant.status_effects:
 		if only_permanent and !effect.permanent:
@@ -997,7 +1003,7 @@ func resetActionLog(show_skills:bool=false):
 	#combat_camera.zoom = Vector2(1.0, 1.0)
 	ui_inspect_target.hide()
 	secondary_panel.hide()
-	target_state = 0
+	target_state = TargetState.NONE
 	target_index = 0
 	action_panel.get_child(0).grab_focus()
 	action_panel.show()
@@ -1009,7 +1015,7 @@ func resetActionLog(show_skills:bool=false):
 		_on_skills_pressed()
 
 func runAbility():
-	target_state = 0
+	target_state = TargetState.NONE
 	if run_once:
 		executeAbility()
 		action_panel.hide()
@@ -1031,11 +1037,11 @@ func concludeCombat(results: int):
 	secondary_panel.hide()
 	tension_bar.hide()
 	round_counter.hide()
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant, false)
 		if results == 0 or getDeadCombatants('team').size() > 0: await get_tree().create_timer(0.25).timeout
-	target_state = 0
+	target_state = TargetState.NONE
 	target_index = 0
 	var morale_bonus = 1
 	var loot_bonus = 1
@@ -1190,7 +1196,7 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 		combatant.combatant_scene.setBlocking(set_to)
 		combatant.combatant_scene.allow_block = set_to
 	
-	for target in COMBATANTS:
+	for target in combatants:
 		if !target.hasStatusEffect('Knock Out') and target != combatant:
 			target.combatant_scene.collision.disabled = set_to
 	if set_to:
@@ -1267,7 +1273,7 @@ func addTargetClickButton(combatant: ResCombatant):
 			if Input.is_action_pressed('ui_select_arrow'):
 				return
 			removeTargetButtons()
-			if target_state == 1:
+			if target_state == TargetState.SINGLE:
 				target_combatant = combatant
 			target_selected.emit()
 			OverworldGlobals.playSound("56243__qk__latch_01.ogg")
@@ -1290,7 +1296,7 @@ func addTargetClickButton(combatant: ResCombatant):
 		button.position.y -= 24
 
 func removeTargetButtons():
-	for combatant in COMBATANTS:
+	for combatant in combatants:
 		if combatant.combatant_scene.has_node('TargetButton'):
 			combatant.combatant_scene.get_node('TargetButton').queue_free()
 

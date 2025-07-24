@@ -9,7 +9,7 @@ func chase():
 	var y_pos = snappedf(shape.global_position.y,100.0)
 	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
 	if y_pos != y_pos_player:
-		updateState(0)
+		updateState(State.IDLE)
 	
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
 	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position)
@@ -26,7 +26,7 @@ func chase():
 		velocity.x = (direction * speed) * chase_speed_multiplier
 
 func canDoMeleeAction():
-	return !action_cooldown.is_stopped() and melee_action_cooldown.is_stopped() and !animator.current_animation.contains('Action') and state != 2
+	return !action_cooldown.is_stopped() and melee_action_cooldown.is_stopped() and !animator.current_animation.contains('Action') and state != State.STUNNED
 
 func doMeleeAction():
 	combat_switch = false
