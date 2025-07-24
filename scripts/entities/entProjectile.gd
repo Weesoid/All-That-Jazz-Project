@@ -3,7 +3,7 @@ class_name Projectile
 
 @export var SPEED = 1500.0
 @export var IMPACT_SOUND: AudioStream = preload("res://audio/sounds/13_Ice_explosion_01.ogg")
-@export var FREE_DISTANCE: float = 2500.0
+@export var FREE_DISTANCE: float = 325.0
 @export var PROJECTILE_TEXTURE: Texture
 @export var NO_CLIP_TIME: float = 0.0
 

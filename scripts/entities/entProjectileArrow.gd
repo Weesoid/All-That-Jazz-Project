@@ -13,5 +13,6 @@ func _on_body_entered(body):
 		queue_free()
 
 func _exit_tree():
-	OverworldGlobals.addPatrollerPulse(global_position, 150.0, 4)
-	OverworldGlobals.playSound2D(global_position, "66777__kevinkace__crate-break-1.ogg")
+	#OverworldGlobals.addPatrollerPulse(global_position, 150.0, 4)
+	pass
+	#OverworldGlobals.playSound2D(global_position, "66777__kevinkace__crate-break-1.ogg")

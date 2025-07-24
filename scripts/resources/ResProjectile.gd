@@ -12,7 +12,7 @@ enum Projectile_Type {
 @export var texture: Texture
 @export var speed = 800.0
 @export var impact_sound: AudioStream = preload("res://audio/sounds/13_Ice_explosion_01.ogg")
-@export var free_distance: float = 2500.0
+@export var free_distance: float = 500.0
 @export var no_clip_time: float = 0.0
 
 func getProjectile()-> Projectile:
