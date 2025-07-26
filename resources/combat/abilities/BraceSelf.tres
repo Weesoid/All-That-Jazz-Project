@@ -3,26 +3,27 @@
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_v8or2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_b4evy"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_ellp4"]
-[ext_resource type="Resource" uid="uid://dxbuny7c3eoa0" path="res://resources/combat/status_effects/Guard.tres" id="3_x40cs"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="4_0d74q"]
+[ext_resource type="Resource" uid="uid://dxbuny7c3eoa0" path="res://resources/combat/status_effects/Guard.tres" id="3_v7b1b"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="4_5o705"]
 [ext_resource type="Texture2D" uid="uid://mdq0i44s7xd3" path="res://images/ability_icons/defend.png" id="4_f5m2x"]
 
-[sub_resource type="Resource" id="Resource_iwyv2"]
-script = ExtResource("4_0d74q")
-heal = 2
-cast_animation = ""
-condition = "t/hp:<:0.0"
+[sub_resource type="Resource" id="Resource_io7yr"]
+script = ExtResource("2_b4evy")
+target = 0
+status_effect = ExtResource("3_v7b1b")
+cast_animation = "Cast_Misc"
+condition = ""
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_3a86h"]
-script = ExtResource("2_b4evy")
-target = 0
-status_effect = ExtResource("3_x40cs")
-cast_animation = "Cast_Block"
-condition = "t/hp:>:0.0"
+[sub_resource type="Resource" id="Resource_cjjuq"]
+script = ExtResource("4_5o705")
+heal = 5
+use_multiplier = false
+cast_animation = ""
+condition = "hp:<:0.0"
 is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
@@ -30,34 +31,32 @@ animate_on = 0
 
 [resource]
 script = ExtResource("3_ellp4")
-NAME = "Defend"
-DESCRIPTION = "Targets braces itself."
-ICON = ExtResource("4_f5m2x")
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_iwyv2"), SubResource("Resource_3a86h")])
-ABILITY_SCRIPT = ExtResource("1_v8or2")
-TARGET_TYPE = 0
-TARGET_GROUP = 2
-REQUIRED_STATUS_EFFECT = {
+name = "Defend"
+description = "Defend thyself"
+icon = ExtResource("4_f5m2x")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_io7yr"), SubResource("Resource_cjjuq")])
+ability_script = ExtResource("1_v8or2")
+target_type = 0
+target_group = 2
+required_effect = {
 "rank": 0,
 "status_effect": null
 }
-CHARGES = 0
-CAN_TARGET_SELF = true
-TARGET_DEAD = false
-DEAD_TARGET_PARAMS = {
+charges = 0
+can_target_self = false
+can_target_dead = false
+dead_target_params = {
 "only_dead": false,
-"only_faded": true,
-"only_marked": false,
-"only_unmarked": false
+"only_faded": true
 }
-CASTER_POSITION = {
+caster_position = {
 "max": 3,
 "min": 0
 }
-TARGET_POSITION = {
+target_position = {
 "max": 3,
 "min": 0
 }
-TENSION_COST = 0
-INSTANT_CAST = false
-REQUIRED_LEVEL = 0
+tension_cost = 0
+instant_cast = false
+required_level = 0

@@ -1,28 +1,51 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://djntbubqd5m1e"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=7 format=3 uid="uid://djntbubqd5m1e"]
 
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_6twpu"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_fe3a6"]
+[ext_resource type="PackedScene" uid="uid://lp4vcelwsxn6" path="res://scenes/animations_status_effects/Chilled.tscn" id="2_40dnv"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_bd7g7"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_vgnye"]
 
+[sub_resource type="Resource" id="Resource_wk3xe"]
+script = ExtResource("1_6twpu")
+status_change = {
+"accuracy": 0.0,
+"brawn": 0.0,
+"crit": 0.0,
+"crit_mult": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 0,
+"hustle": 0,
+"resist": -2.0
+}
+rank_scaling = false
+apply_once = true
+message = ""
+sound_effect = ""
+
 [resource]
 script = ExtResource("1_fe3a6")
-name = ""
+auto_name = false
+name = "Chilled"
 description = ""
-basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_wk3xe")])
 status_script = ExtResource("2_bd7g7")
+packed_scene = ExtResource("2_40dnv")
 effect_type = 0
-remove_when = Array[int]([])
+remove_when = Array[int]([4])
 remove_style = 0
 texture = ExtResource("3_vgnye")
-max_duration = 0
+max_duration = 1
 extend_duration = 1
 apply_extend_duration = false
 max_rank = 0
 tick_on_apply = true
 tick_any_turn = false
 do_ticks = true
-resistable = true
-permanent = false
+resistable = false
+permanent = true
 lingers = false
 persist_on_dead = false
 sounds = {

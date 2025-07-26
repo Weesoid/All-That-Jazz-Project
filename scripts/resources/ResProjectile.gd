@@ -29,7 +29,7 @@ func getProjectile()-> Projectile:
 			
 	projectile.hit_script = hit_script
 	projectile.projectile_texture = texture
-	projectile.SPEED = speed
+	projectile.speed = speed
 	projectile.impact_sound = impact_sound
 	projectile.free_distance = free_distance
 	projectile.no_clip_time = no_clip_time

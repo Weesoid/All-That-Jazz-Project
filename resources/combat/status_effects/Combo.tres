@@ -6,27 +6,27 @@
 
 [resource]
 script = ExtResource("4_fbodu")
-NAME = "Combo"
-DESCRIPTION = "Effect is unique depending on ability."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-STATUS_SCRIPT = ExtResource("2_k3wc7")
-EFFECT_TYPE = 0
-REMOVE_WHEN = Array[int]([])
-REMOVE_STYLE = 0
-TEXTURE = ExtResource("2_6lvld")
-MAX_DURATION = 0
-EXTEND_DURATION = 1
-APPLY_EXTEND_DURATION = true
-MAX_RANK = 0
-TICK_ON_APPLY = false
-GIVE_EXTRA_DURATION = true
-TICK_PER_TURN = false
-DO_TICKS = false
-RESISTABLE = false
-PERMANENT = true
-LINGERING = false
-PERSIST_ON_DEAD = false
-SOUNDS = {
-"apply": "res://audio/sounds/252078__pepingrillin__rocket_mode.ogg",
-"expire": "res://audio/sounds/252075__pepingrillin__electro_fire.ogg"
+auto_name = false
+name = "Combo"
+description = "May apply follow up effects or bonuses."
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("2_k3wc7")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("2_6lvld")
+max_duration = 0
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = false
+do_ticks = true
+resistable = false
+permanent = true
+lingers = false
+persist_on_dead = false
+sounds = {
+"apply": "",
+"expire": ""
 }

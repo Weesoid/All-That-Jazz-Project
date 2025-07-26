@@ -1,28 +1,23 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=7 format=3 uid="uid://541ffogrb12k"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://541ffogrb12k"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_gyudi"]
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_vqfeb"]
-[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_47i5o"]
-[ext_resource type="Texture2D" uid="uid://7snnagis6dkd" path="res://images/sprites/projectile_knife.png" id="3_dvm8p"]
-[ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_ipbjf"]
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_khovt"]
+[ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tsf88"]
 [ext_resource type="PackedScene" uid="uid://r0toat4qsmnb" path="res://scenes/combatants/Scav.tscn" id="3_lb1qm"]
 
 [resource]
 script = ExtResource("1_gyudi")
-FACTION = 0
-TIER = 0
-PREFERRED_POSITION = 0
-CHANCE_TO_DROP = 1.0
-DROP_COUNT = 1
-DROP_POOL = {
-ExtResource("3_ipbjf"): Vector2(1, 6)
-}
+faction = 0
+tier = 0
+preferred_position = 0
+chance_to_drop = 0.5
+drop_count = 1
+drop_pool = {}
 is_converted = false
-NAME = "Scav"
-PACKED_SCENE = ExtResource("3_lb1qm")
-RANGED_BULLET_TEXTURE = ExtResource("3_dvm8p")
-DESCRIPTION = ""
-STAT_VALUES = {
+name = "Scav"
+packed_scene = ExtResource("3_lb1qm")
+description = ""
+stat_values = {
 "accuracy": 0.95,
 "brawn": 0.0,
 "crit": 0.05,
@@ -32,9 +27,9 @@ STAT_VALUES = {
 "heal_mult": 1.0,
 "health": 20,
 "hustle": 1,
-"resist": 0.05
+"resist": 1.0
 }
-SCALE_STATS = {
+scale_stats = {
 "accuracy": false,
 "brawn": true,
 "crit": false,
@@ -46,5 +41,6 @@ SCALE_STATS = {
 "hustle": true,
 "resist": false
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_vqfeb"), ExtResource("2_47i5o")])
-MAX_TURN_CHARGES = 1
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_khovt")])
+max_turn_charges = 1
+ai_package = ExtResource("1_tsf88")

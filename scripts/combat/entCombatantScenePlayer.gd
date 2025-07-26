@@ -6,7 +6,6 @@ class_name PlayerCombatantScene
 @onready var unsheathe_point = $WeaponPoint
 
 var blocking: bool = false
-var perfect_block: bool =false
 var allow_block: bool = false
 var weapon: WeaponScene
 

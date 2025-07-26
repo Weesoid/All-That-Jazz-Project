@@ -52,12 +52,12 @@ func applyTemperments(update:bool = false):
 		applyTemperments()
 		return
 	
-	for temperment in temperment['primary']:
-		if !stat_modifiers.keys().has('pt_'+temperment) or update:
-			CombatGlobals.modifyStat(self, PlayerGlobals.primary_temperments[temperment], 'pt_'+temperment)
-	for temperment in temperment['secondary']:
-		if !stat_modifiers.keys().has('st_'+temperment) or update:
-			CombatGlobals.modifyStat(self, PlayerGlobals.secondary_temperments[temperment], 'st_'+temperment)
+	for temp in temperment['primary']:
+		if !stat_modifiers.keys().has('pt_'+temp) or update:
+			CombatGlobals.modifyStat(self, PlayerGlobals.primary_temperments[temp], 'pt_'+temp)
+	for temp in temperment['secondary']:
+		if !stat_modifiers.keys().has('st_'+temp) or update:
+			CombatGlobals.modifyStat(self, PlayerGlobals.secondary_temperments[temp], 'st_'+temp)
 
 func scaleStats():
 	var stat_increase = {}

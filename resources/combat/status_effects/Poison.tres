@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://dq6d2upb0ltas"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
 [ext_resource type="PackedScene" uid="uid://cmu5v5d578wll" path="res://scenes/animations_status_effects/Poison.tscn" id="1_qebaw"]
@@ -7,27 +7,28 @@
 
 [resource]
 script = ExtResource("1_5ugit")
-NAME = "Poison"
-DESCRIPTION = "Target takes damage per turn."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-STATUS_SCRIPT = ExtResource("1_t6ebe")
-PACKED_SCENE = ExtResource("1_qebaw")
-EFFECT_TYPE = 0
-REMOVE_WHEN = 0
-REMOVE_STYLE = 0
-TEXTURE = ExtResource("3_1sqmf")
-MAX_DURATION = 12
-EXTEND_DURATION = 3
-APPLY_EXTEND_DURATION = true
-MAX_RANK = 10
-TICK_ON_APPLY = false
-TICK_PER_TURN = false
-DO_TICKS = true
-RESISTABLE = true
-PERMANENT = false
-LINGERING = true
-PERSIST_ON_DEAD = false
-SOUNDS = {
+auto_name = false
+name = "Poison"
+description = "Target takes damage overtime."
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("1_t6ebe")
+packed_scene = ExtResource("1_qebaw")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("3_1sqmf")
+max_duration = 8
+extend_duration = 2
+apply_extend_duration = true
+max_rank = 8
+tick_on_apply = false
+tick_any_turn = false
+do_ticks = true
+resistable = true
+permanent = false
+lingers = false
+persist_on_dead = false
+sounds = {
 "apply": "",
 "expire": ""
 }

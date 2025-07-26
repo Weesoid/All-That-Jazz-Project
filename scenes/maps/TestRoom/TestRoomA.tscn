@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ceqx5b0b0m17j"]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]
 [ext_resource type="TileSet" uid="uid://cxwk6q11ndqhe" path="res://resources/tilesets/Desert.tres" id="2_7l0ay"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="5_v1cwg"]
 [ext_resource type="Resource" uid="uid://541ffogrb12k" path="res://resources/combat/combatants_enemies/scavs/Scav.tres" id="6_xvjba"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="7_eiq6g"]
-[ext_resource type="Resource" uid="uid://lv57kynsvloe" path="res://resources/combat/combatants_enemies/scavs/ScavSpearman.tres" id="7_gef8l"]
+[ext_resource type="Resource" uid="uid://lv57kynsvloe" path="res://resources/combat/combatants_enemies/neutral/ScavSpearman.tres" id="7_gef8l"]
 [ext_resource type="Texture2D" uid="uid://lmmr2dkcaseq" path="res://images/animations/antelope.png" id="8_livpf"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="8_pga02"]
 [ext_resource type="Resource" uid="uid://crf6wo1o4pndo" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_test_fight.dialogue" id="10_2rgfe"]

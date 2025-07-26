@@ -1,16 +1,17 @@
-[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=4 format=3 uid="uid://v3cb1h1wdgjc"]
 
-[ext_resource type="Texture2D" uid="uid://q0wyjp6htclx" path="res://images/sprites/arrow2.png" id="1_3sf8o"]
 [ext_resource type="Script" path="res://scripts/projectiles/scprSleeper.gd" id="1_5yufo"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_82w2h"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemProjectile.gd" id="1_ry84n"]
 
 [resource]
 script = ExtResource("1_ry84n")
-OVERWORLD_EFFECT = ExtResource("1_5yufo")
-MAX_STACK = 99
-BARTER_ITEM = false
-NAME = "Sleeper Arrow"
-ICON = ExtResource("1_3sf8o")
-DESCRIPTION = "Knock em out!"
-VALUE = 0
-MANDATORY = false
+overworld_effect = ExtResource("1_5yufo")
+max_stack = 99
+barter_item = false
+name = "Sleeper Arrow"
+icon = ExtResource("1_82w2h")
+description = "SDGSDG"
+value = 0
+mandatory = false
+parent_item = ""

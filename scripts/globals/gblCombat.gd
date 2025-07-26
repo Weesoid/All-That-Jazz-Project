@@ -441,7 +441,11 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	if !guaranteed and (randomRoll(target.stat_values['resist']) and status_effect.resistable):
 		manual_call_indicator.emit(target, '[img]'+icon_path+'[/img] Resisted!', 'Resist')
 		return
-	
+	if status_effect.resistable:
+		print(status_effect.name, ' is resistable! So removing!')
+		target.removeTokens(ResStatusEffect.RemoveType.GET_STATUSED)
+	else:
+		print(status_effect, ' is NOT resistable!!!!!!!!!')
 	if !target.getStatusEffectNames().has(status_effect.name):
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()

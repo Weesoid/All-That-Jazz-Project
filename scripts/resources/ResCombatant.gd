@@ -139,7 +139,10 @@ func getStatusEffect(stat_name: String)-> ResStatusEffect:
 	return null
 
 func hasStatusEffect(stat_name: String)-> bool:
+	if stat_name == 'Guard':
+		print('Checking!')
 	for status in status_effects:
+		if stat_name == 'Guard': print(status, ' v ', stat_name)
 		if status.name.to_lower() == stat_name.to_lower():
 			return true
 	

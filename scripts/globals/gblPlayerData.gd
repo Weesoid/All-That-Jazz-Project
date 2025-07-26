@@ -532,7 +532,7 @@ func resetVariables():
 		member.reset()
 	
 	save_name = null
-	team = [preload("res://resources/combat/combatants_player/Willis.tres")]
+	team = [preload("res://resources/combat/combatants_player/Willis.tres"), preload("res://resources/combat/combatants_player/Archie.tres")]
 	team_formation = []
 	#FOLLOWERS = []
 	map_logs = {}

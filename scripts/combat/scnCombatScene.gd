@@ -236,22 +236,7 @@ func useAIPackage():
 			if selected_ability.charges > 0: updateAbilityChargeTracker(active_combatant, selected_ability)
 			executeAbility()
 	else:
-		selected_ability = load("res://resources/combat/abilities/Struggle.tres")
-		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), active_combatant is ResPlayerCombatant)
-		target_combatant = active_combatant.ai_package.selectTarget(valid_targets)
-		if target_combatant != null:
-			executeAbility()
-#	var timer = Timer.new()
-#	timer.timeout.connect(
-#		func(): 
-#			print('x')
-#			confirm.emit()
-#			timer.queue_free()
-#			)
-#	add_child(timer)
-#	timer.start(5.0)
-	
-	#await get_tree().create_timer(30.0).timeout
+		showCannotAct('Pass!', true)
 	
 	await confirm
 	#timer.queue_free() TIME FAIL SAFE
@@ -357,12 +342,17 @@ func end_turn(combatant_act=true):
 		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
 		if is_instance_valid(active_combatant.combatant_scene):
-			moveCamera(active_combatant.combatant_scene.global_position)
-			CombatGlobals.manual_call_indicator.emit(active_combatant, 'Immobile!', 'Show')
-			await get_tree().create_timer(1.25).timeout
+			await showCannotAct('Immobile!')
 		end_turn()
 		return
 	if await checkWin(): return
+
+func showCannotAct(message:String,emit_confirm:bool=false):
+	moveCamera(active_combatant.combatant_scene.global_position)
+	CombatGlobals.manual_call_indicator.emit(active_combatant, message, 'Show')
+	await get_tree().create_timer(1.25).timeout
+	if emit_confirm:
+		confirm.emit()
 
 func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[0][0]
@@ -437,7 +427,7 @@ func _on_escape_pressed():
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		if selected_ability != null and selected_ability.instant_cast: selected_ability = null
 		confirm.emit()
-		CombatGlobals.addStatusEffect(previous_active, 'Dazed', true)
+		CombatGlobals.addStatusEffect(previous_active, 'Stunned', true)
 
 func _on_escape_focus_entered():
 	if can_escape:
@@ -618,6 +608,10 @@ func inspectTarget(inspect:bool):
 		await ui_animator.animation_finished
 		ui_inspect_target.hide()
 
+func removeTargetToken(target, caster):
+	if !CombatGlobals.isSameCombatantType(target,caster):
+		target_combatant.removeTokens(ResStatusEffect.RemoveType.GET_TARGETED)
+
 func executeAbility():
 	if !turn_timer.is_stopped(): 
 		stopTimer()
@@ -626,12 +620,15 @@ func executeAbility():
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
 			CombatGlobals.setCombatantVisibility(combatant.combatant_scene, false)
 	if target_combatant is ResPlayerCombatant:
+		removeTargetToken(target_combatant, active_combatant)
 		allowBlocking(target_combatant)
 	elif target_combatant is Array:
-		for target in target_combatant: allowBlocking(target)
+		for target in target_combatant: 
+			removeTargetToken(target_combatant, active_combatant)
+			allowBlocking(target)
 	
 	if active_combatant is ResPlayerCombatant:
-		CombatGlobals.addTension(-selected_ability.TENSION_COST)
+		CombatGlobals.addTension(-selected_ability.tension_cost)
 	round_counter.hide()
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	

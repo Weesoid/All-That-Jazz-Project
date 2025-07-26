@@ -5,40 +5,45 @@
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectMove.gd" id="2_7nh4x"]
 [ext_resource type="Texture2D" uid="uid://cjh3mqatg2p5o" path="res://images/ability_icons/recede.png" id="3_8pd82"]
 
-[sub_resource type="Resource" id="Resource_d8msw"]
+[sub_resource type="Resource" id="Resource_d736f"]
 script = ExtResource("2_7nh4x")
 target = 0
 direction = 1
 move_count = 1
+condition = ""
+is_combo_effect = false
 sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
 [resource]
 script = ExtResource("1_yx7md")
-NAME = "Recede"
-DESCRIPTION = "Move backward."
-ICON = ExtResource("3_8pd82")
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_d8msw")])
-ABILITY_SCRIPT = ExtResource("1_rxpyl")
-TARGET_TYPE = 0
-TARGET_GROUP = 2
-CAN_TARGET_SELF = true
-TARGET_DEAD = false
-DEAD_TARGET_PARAMS = {
-"only_dead": false,
-"only_faded": true,
-"only_marked": false,
-"only_unmarked": false
+name = "Recede"
+description = "Go backward one rank."
+icon = ExtResource("3_8pd82")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_d736f")])
+ability_script = ExtResource("1_rxpyl")
+target_type = 0
+target_group = 2
+required_effect = {
+"rank": 0,
+"status_effect": null
 }
-CASTER_POSITION = {
+charges = 0
+can_target_self = false
+can_target_dead = false
+dead_target_params = {
+"only_dead": false,
+"only_faded": true
+}
+caster_position = {
 "max": 2,
 "min": 0
 }
-TARGET_POSITION = {
+target_position = {
 "max": 3,
 "min": 0
 }
-TENSION_COST = 0
-INSTANT_CAST = false
-REQUIRED_LEVEL = 0
+tension_cost = 0
+instant_cast = false
+required_level = 0

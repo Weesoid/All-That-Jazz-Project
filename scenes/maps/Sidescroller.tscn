@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=27 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
@@ -9,8 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="6_8oxsm"]
 [ext_resource type="PackedScene" uid="uid://mjs3qc7nxo7b" path="res://scenes/components/ShopWares.tscn" id="6_ppbds"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="8_5ag6f"]
-[ext_resource type="Resource" uid="uid://541ffogrb12k" path="res://resources/combat/combatants_enemies/scavs/Scav.tres" id="9_yo6du"]
-[ext_resource type="Resource" uid="uid://lv57kynsvloe" path="res://resources/combat/combatants_enemies/scavs/ScavSpearman.tres" id="10_g8t1c"]
+[ext_resource type="Resource" uid="uid://v3cb1h1wdgjc" path="res://resources/items/ArrowSleeper.tres" id="9_yo4j3"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="11_fghhp"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="12_1xr6o"]
 [ext_resource type="Texture2D" uid="uid://lmmr2dkcaseq" path="res://images/animations/antelope.png" id="13_s8kga"]
@@ -140,7 +139,6 @@ _data = {
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
-NAME = "Wump"
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
@@ -200,7 +198,7 @@ position = Vector2(-32, 0)
 position = Vector2(56, 0)
 
 [node name="ShopWares" parent="ShopKeep" instance=ExtResource("6_ppbds")]
-GOD_SHOP = true
+shop_wares = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("9_yo4j3")])
 
 [node name="PartyManager" parent="." instance=ExtResource("5_rwctp")]
 position = Vector2(-112, 0)
@@ -209,8 +207,6 @@ position = Vector2(-112, 0)
 position = Vector2(-161, -20)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("8_5ag6f")]
-DO_REINFORCEMENTS = false
-COMBATANT_SQUAD = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("9_yo6du"), ExtResource("10_g8t1c"), ExtResource("10_g8t1c"), ExtResource("9_yo6du")])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("11_fghhp")]
 dialogue_resource = ExtResource("12_1xr6o")

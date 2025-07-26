@@ -61,6 +61,10 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
 	if ability.current_effect == null:
 		ability.current_effect = ability.basic_effects[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
+#	if ability.basic_effects.size() == 0:
+#		print('sexulus')
+#		await CombatGlobals.getCombatScene().showCannotAct('Pass!')
+#		return
 	
 	if target is Array and ability.current_effect.is_combo_effect and ability.current_effect.effect_only_combo_targets:
 		target = target.filter(func(combatant): return combatant.hasStatusEffect('Combo'))
@@ -133,7 +137,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect,true)
 	
 	elif ability.current_effect is ResHealEffect:
-		CombatGlobals.calculateHealing(target, ability.current_effect.heal)
+		CombatGlobals.calculateHealing(target, ability.current_effect.heal, ability.current_effect.use_multiplier)
 	
 	elif ability.current_effect is ResOnslaughtEffect:
 		CombatGlobals.calculateRawDamage(target.combatant_resource, CombatGlobals.useDamageFormula(target.combatant_resource, ability.current_effect.damage), caster.combatant_resource, true, -1, false, 0.15, null, false)

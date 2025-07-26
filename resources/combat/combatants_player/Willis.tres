@@ -1,57 +1,26 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=18 format=3 uid="uid://dnbjip7cpkmvx"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://dnbjip7cpkmvx"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
-[ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="2_nh55h"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="2_vmsk2"]
-[ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="3_sh1ok"]
-[ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_2e4kc"]
-[ext_resource type="Resource" uid="uid://dhoel3hfuuxgr" path="res://resources/combat/abilities/AilmentStrike.tres" id="5_q55wc"]
-[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="6_86hq2"]
-[ext_resource type="Resource" uid="uid://dnwt562yqug8x" path="res://resources/combat/abilities/Teamwork.tres" id="7_owu2i"]
-[ext_resource type="Resource" uid="uid://chc52jkp8yua1" path="res://resources/combat/abilities/KillChopAttack.tres" id="9_w6lwr"]
-[ext_resource type="Resource" uid="uid://d2xuqxaf6m1gc" path="res://resources/combat/abilities/Taunt.tres" id="10_27uu3"]
-[ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="12_diau4"]
-[ext_resource type="Resource" uid="uid://bl545ivx2u5hk" path="res://resources/combat/abilities/GuardSlash.tres" id="13_8mffv"]
-[ext_resource type="Resource" uid="uid://nljovo4vpket" path="res://resources/combat/abilities/Pass.tres" id="15_6s5it"]
-[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/animations/willis_follower.png" id="15_fkqsb"]
-[ext_resource type="Resource" uid="uid://cg2y4a201ihl0" path="res://resources/combat/abilities/RandaStrike.tres" id="16_4yism"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="16_cg6aq"]
-
-[sub_resource type="Resource" id="Resource_hb4i4"]
-script = ExtResource("16_cg6aq")
-damage_type = 0
-cast_animation = {
-"animation": "",
-"go_to_target": false
-}
-damage = 2
-can_miss = true
-can_crit = true
-bonus_stats = {
-"status_effect": "Poison"
-}
-return_pos = true
-indicator_bb = ""
-plant_self_on_combo = false
-condition = ""
-is_combo_effect = false
-sound_effect = ""
-animation_time = 0.0
-animate_on = 0
+[ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_wn1q6"]
+[ext_resource type="Resource" uid="uid://dvm5ick2m1o5b" path="res://resources/combat/status_effects/Riposte.tres" id="3_brbkc"]
+[ext_resource type="PackedScene" uid="uid://bnlcib44lcjpr" path="res://scenes/combatants/Willis.tscn" id="3_f2l1f"]
 
 [resource]
 script = ExtResource("2_vmsk2")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_nh55h"), ExtResource("3_sh1ok"), ExtResource("4_2e4kc"), ExtResource("5_q55wc"), ExtResource("6_86hq2"), ExtResource("7_owu2i"), ExtResource("9_w6lwr"), ExtResource("10_27uu3"), ExtResource("12_diau4"), ExtResource("13_8mffv"), ExtResource("2_nh55h"), ExtResource("15_6s5it"), ExtResource("16_4yism")])
-BASE_TEMPERMENT = {
-"primary": ["gifted", "deadly", "all_arounder"],
-"secondary": ["acute", "clumsy", "stalwart"]
+ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8")])
+guard_effect = ExtResource("3_brbkc")
+base_temperment = {
+"primary": [],
+"secondary": []
 }
-FOLLOWER_TEXTURE = ExtResource("15_fkqsb")
-MANDATORY = true
-STAT_MULTIPLIER = 0.01
-NAME = "Willis Flynt"
-DESCRIPTION = "Spicey frisk undertale!"
-STAT_VALUES = {
+mandatory = true
+stat_multiplier = 0.01
+name = "Willis Flynt"
+packed_scene = ExtResource("3_f2l1f")
+bullet_texture = ExtResource("2_wn1q6")
+description = "Just a lil dude"
+stat_values = {
 "accuracy": 0.95,
 "brawn": 0.0,
 "crit": 0.05,
@@ -59,11 +28,11 @@ STAT_VALUES = {
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 16,
+"health": 50,
 "hustle": 1,
 "resist": 0.05
 }
-SCALE_STATS = {
+scale_stats = {
 "accuracy": false,
 "brawn": true,
 "crit": false,
@@ -75,6 +44,5 @@ SCALE_STATS = {
 "hustle": true,
 "resist": false
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
-MAX_TURN_CHARGES = 1
-RIPOSTE_EFFECT = SubResource("Resource_hb4i4")
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+max_turn_charges = 1

@@ -1,5 +1,5 @@
 static func applyEffects(target, status_effect:ResStatusEffect):
-	if status_effect.apply_once:
+	if status_effect.apply_once and target.guard_effect != null:
 		CombatGlobals.addStatusEffect(target, target.guard_effect)
 	
 	if target.stat_modifiers.keys().has('block') and !target.combatant_scene.allow_block:
@@ -36,5 +36,3 @@ static func endEffects(target, _status_effect: ResStatusEffect):
 		CombatGlobals.removeStatusEffect(target, 'Guard Break')
 	if target.stat_modifiers.keys().has('block') and !target.combatant_scene.allow_block:
 		CombatGlobals.resetStat(target, 'block')
-	
-	#CombatGlobals.removeStatusEffect(target, 'Riposte')

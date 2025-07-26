@@ -1,52 +1,25 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=13 format=3 uid="uid://rmwlfd2x1b0a"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://rmwlfd2x1b0a"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_3wisx"]
-[ext_resource type="Resource" uid="uid://bdhoedbmkwu7e" path="res://resources/combat/abilities/Heal.tres" id="2_3bxjw"]
-[ext_resource type="Resource" uid="uid://dgbuphtjfcisl" path="res://resources/combat/abilities/Watchdog.tres" id="3_nmm7m"]
-[ext_resource type="Resource" uid="uid://dvfusnjqax2ti" path="res://resources/combat/abilities/PiercingProjectile.tres" id="4_8kp3n"]
-[ext_resource type="Resource" uid="uid://dhoel3hfuuxgr" path="res://resources/combat/abilities/AilmentStrike.tres" id="5_ivo5j"]
-[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="6_0jqet"]
-[ext_resource type="Resource" uid="uid://dnwt562yqug8x" path="res://resources/combat/abilities/Teamwork.tres" id="7_r7ld8"]
-[ext_resource type="Resource" uid="uid://chc52jkp8yua1" path="res://resources/combat/abilities/KillChopAttack.tres" id="9_liws1"]
-[ext_resource type="PackedScene" uid="uid://qkkfful7d77n" path="res://scenes/combatants/Archie.tscn" id="10_7xojd"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="11_74iuj"]
+[ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_i8m6m"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_mba6b"]
+[ext_resource type="PackedScene" uid="uid://qkkfful7d77n" path="res://scenes/combatants/Archie.tscn" id="2_qq2m6"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="11_avhlp"]
-
-[sub_resource type="Resource" id="Resource_jfub5"]
-script = ExtResource("11_74iuj")
-damage_type = 1
-cast_animation = {
-"animation": "",
-"go_to_target": false
-}
-damage = 2
-can_miss = true
-can_crit = true
-bonus_stats = {
-"status_effect": "Combo"
-}
-return_pos = true
-indicator_bb = ""
-plant_self_on_combo = false
-condition = ""
-is_combo_effect = false
-sound_effect = ""
-animation_time = 0.0
-animate_on = 0
 
 [resource]
 script = ExtResource("11_avhlp")
-ABILITY_POOL = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_3wisx"), ExtResource("2_3bxjw"), ExtResource("3_nmm7m"), ExtResource("4_8kp3n"), ExtResource("5_ivo5j"), ExtResource("6_0jqet"), ExtResource("7_r7ld8"), ExtResource("9_liws1")])
-BASE_TEMPERMENT = {
-"primary": "gifted",
-"secondary": "acute"
+ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_3wisx"), ExtResource("2_mba6b")])
+base_temperment = {
+"primary": [],
+"secondary": []
 }
-MANDATORY = true
-STAT_MULTIPLIER = 0.01
-NAME = "Archie Flynt"
-PACKED_SCENE = ExtResource("10_7xojd")
-DESCRIPTION = "Reliable big brother!"
-STAT_VALUES = {
+mandatory = false
+stat_multiplier = 0.01
+name = "Archie Flynt"
+packed_scene = ExtResource("2_qq2m6")
+bullet_texture = ExtResource("2_i8m6m")
+description = "The man, the myth, the legend!"
+stat_values = {
 "accuracy": 0.95,
 "brawn": 0.0,
 "crit": 0.05,
@@ -58,7 +31,7 @@ STAT_VALUES = {
 "hustle": 1,
 "resist": 0.05
 }
-SCALE_STATS = {
+scale_stats = {
 "accuracy": false,
 "brawn": true,
 "crit": false,
@@ -70,6 +43,5 @@ SCALE_STATS = {
 "hustle": true,
 "resist": false
 }
-ABILITY_SET = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
-MAX_TURN_CHARGES = 1
-RIPOSTE_EFFECT = SubResource("Resource_jfub5")
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+max_turn_charges = 1

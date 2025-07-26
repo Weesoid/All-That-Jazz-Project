@@ -40,6 +40,9 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 
 static func applyFaded(target: ResCombatant):
 #	var concluded_combat = CombatGlobals.getCombatScene().combat_result != 0
+	if CombatGlobals.getCombatScene().combat_result != -1 and getFadedLevel(target) == 0:
+		target.lingering_effects.append('Faded I')
+		return
 	if getFadedLevel(target) == 0:
 		CombatGlobals.addStatusEffect(target, applyFadedStatus(1))
 		target.lingering_effects.erase(applyFadedStatus(1, true))

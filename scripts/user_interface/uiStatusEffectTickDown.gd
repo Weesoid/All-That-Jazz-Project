@@ -16,7 +16,7 @@ func _process(_delta):
 	text = str(attached_status.duration)
 #	if attached_status.duration <= 1 and !attached_status.tick_any_turn:
 #		get_parent().hide()
-	if attached_status.permanent and attached_status.max_duration == 0: 
+	if attached_status.permanent and attached_status.duration <= 1: 
 		hide()
 	if attached_status.max_rank != 0:
 		rank.text = str(attached_status.current_rank)

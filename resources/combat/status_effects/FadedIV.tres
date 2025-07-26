@@ -6,26 +6,26 @@
 
 [resource]
 script = ExtResource("3_kgjj4")
-NAME = "Faded IV"
-DESCRIPTION = "Reduced HEALS, RES, ACC, and CRIT. May skip Fading state."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-STATUS_SCRIPT = ExtResource("1_nay4v")
-EFFECT_TYPE = 0
-REMOVE_WHEN = Array[int]([])
-REMOVE_STYLE = 0
-TEXTURE = ExtResource("2_3y4gj")
-MAX_DURATION = 0
-EXTEND_DURATION = 1
-APPLY_EXTEND_DURATION = true
-MAX_RANK = 0
-TICK_ON_APPLY = true
-TICK_PER_TURN = false
-DO_TICKS = true
-RESISTABLE = false
-PERMANENT = true
-LINGERING = true
-PERSIST_ON_DEAD = true
-SOUNDS = {
+name = "Faded IV"
+description = ""
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("1_nay4v")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("2_3y4gj")
+max_duration = 0
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = false
+do_ticks = true
+resistable = false
+permanent = true
+lingers = true
+persist_on_dead = true
+sounds = {
 "apply": "",
 "expire": ""
 }

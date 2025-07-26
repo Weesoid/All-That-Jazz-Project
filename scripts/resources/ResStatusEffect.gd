@@ -9,13 +9,16 @@ enum EffectType {
 enum RemoveType {
 	HIT,
 	GET_HIT,
-	GET_HEAL
+	GET_HEAL,
+	GET_TARGETED,
+	GET_STATUSED
 }
 enum RemoveStyle {
 	REMOVE,
 	TICK_DOWN
 }
 
+@export var auto_name:bool # Later
 @export var name: String
 @export_multiline var description: String
 @export var basic_effects: Array[ResBasicEffect]
@@ -25,7 +28,7 @@ enum RemoveStyle {
 @export var remove_when: Array[RemoveType]
 @export var remove_style: RemoveStyle
 @export var texture: Texture = preload("res://images/sprites/unknown_icon.png")
-@export var max_duration: int
+@export var max_duration: int = 1
 @export var extend_duration: int = 1
 @export var apply_extend_duration:  bool = false
 @export var max_rank: int
@@ -46,7 +49,6 @@ var afflicted_combatant: ResCombatant
 var attached_data
 var status_visuals
 var icon: TextureRect
-
 
 func initializeStatus():
 	icon = TextureRect.new()

@@ -24,7 +24,7 @@ enum TargetGroup {
 @export var charges: int = 0
 @export var can_target_self: bool = false
 @export var can_target_dead: bool = false
-@export var dead_target_params = {'only_dead':false, 'only_marked':false, 'only_unmarked':false,'only_faded': true}
+@export var dead_target_params = {'only_dead':false, 'only_faded': true}
 @export var caster_position: Dictionary = {'min':0, 'max':3}
 @export var target_position: Dictionary = {'min':0, 'max':3}
 @export var tension_cost: int = 0
@@ -56,10 +56,6 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
 	if dead_target_params['only_dead']:
 		combatants = combatants.filter(func(combatant): return combatant.isDead())
-	if dead_target_params['only_marked']:
-		combatants = combatants.filter(func(combatant): return combatant.hasStatusEffect('Deathmark'))
-	elif dead_target_params['only_unmarked']:
-		combatants = combatants.filter(func(combatant): return !combatant.hasStatusEffect('Deathmark'))
 	if dead_target_params['only_faded']:
 		combatants = combatants.filter(func(combatant): return (combatant.isDead() and combatant.hasStatusEffect('Fading') or !combatant.isDead()))
 	

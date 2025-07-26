@@ -491,7 +491,7 @@ func playDrawSound():
 		OverworldGlobals.playSound("res://audio/sounds/bow-loading-38752.ogg")
 
 func canMelee():
-	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and bow_mode and isFacingSide()
+	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and isFacingSide() and bow_mode
 
 func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	#velocity = Vector2.ZERO CHANGE LATER

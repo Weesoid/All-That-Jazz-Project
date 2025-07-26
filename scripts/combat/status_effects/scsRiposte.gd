@@ -30,7 +30,6 @@ static func applyHitEffects(target,caster, _value, status_effect: ResStatusEffec
 		else:
 			target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'target'=caster.combatant_scene,'frame_time'=0.7,'ability'=null,'anim_speed'=2.0})
 	if !target.hasStatusEffect('Guard'):
-		print('bluh')
 		CombatGlobals.removeStatusEffect(target, 'Riposte')
 	
 static func determineRiposte(target, caster):

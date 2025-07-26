@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://y5r2ut4msdjr"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_aq2jt"]
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectDamage.gd" id="1_ca6og"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_ytiuh"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_34ccu"]
+
+[sub_resource type="Resource" id="Resource_6ki17"]
+script = ExtResource("1_ca6og")
+damage = 1
+crit_chance = -1.0
+variation = -1.0
+trigger_on_hits = false
+sound_path = ""
+indicator_bb = ""
+apply_once = false
+message = ""
+sound_effect = ""
+
+[resource]
+script = ExtResource("1_aq2jt")
+auto_name = false
+name = "Burn"
+description = "Burn baby burn!"
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_6ki17")])
+status_script = ExtResource("2_ytiuh")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("3_34ccu")
+max_duration = 8
+extend_duration = 2
+apply_extend_duration = true
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = true
+do_ticks = true
+resistable = true
+permanent = false
+lingers = false
+persist_on_dead = false
+sounds = {
+"apply": "",
+"expire": ""
+}

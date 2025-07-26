@@ -16,8 +16,8 @@ var filled_circle = FILLED_CIRCLE
 
 func _ready():
 	if small_sprites:
-		empty_circle = EMPTY_CIRCLE
-		filled_circle = FILLED_CIRCLE
+		empty_circle = EMPTY_CIRCLE_SMALL
+		filled_circle = FILLED_CIRCLE_SMALL
 
 func _process(_delta):
 	if !valuesCorrect():

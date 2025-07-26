@@ -6,26 +6,27 @@
 
 [resource]
 script = ExtResource("2_h6axs")
-NAME = "Riposte"
-DESCRIPTION = "Target will counter attackers."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-STATUS_SCRIPT = ExtResource("1_u7a5f")
-EFFECT_TYPE = 1
-REMOVE_WHEN = Array[int]([])
-REMOVE_STYLE = 0
-TEXTURE = ExtResource("2_dkes6")
-MAX_DURATION = 0
-EXTEND_DURATION = 1
-APPLY_EXTEND_DURATION = false
-MAX_RANK = 0
-TICK_ON_APPLY = true
-TICK_PER_TURN = true
-DO_TICKS = false
-RESISTABLE = false
-PERMANENT = true
-LINGERING = false
-PERSIST_ON_DEAD = false
-SOUNDS = {
+auto_name = false
+name = "Riposte"
+description = ""
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("1_u7a5f")
+effect_type = 1
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("2_dkes6")
+max_duration = 0
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = true
+do_ticks = false
+resistable = false
+permanent = true
+lingers = false
+persist_on_dead = false
+sounds = {
 "apply": "",
 "expire": ""
 }
