@@ -12,7 +12,23 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		if effect is ResStatChangeEffect and checkApplyOnce(effect, status_effect):
 			changeStat(effect, status_effect)
 		elif effect is ResStatusDamageEffect and checkApplyOnce(effect, status_effect):
-			CombatGlobals.calculateRawDamage(status_effect.afflicted_combatant, CombatGlobals.useDamageFormula(status_effect.afflicted_combatant, effect.damage), null, true, effect.crit_chance, false, effect.variation, null, effect.trigger_on_hits, effect.sound_path)
+			var damage = effect.damage
+			if effect.rank_scaling:
+				damage *= status_effect.current_rank
+			CombatGlobals.calculateRawDamage(
+				status_effect.afflicted_combatant, 
+				damage, 
+				null,
+				true, 
+				effect.crit_chance, 
+				false, 
+				effect.variation, 
+				effect.trigger_on_hits, 
+				effect.sound_path,
+				effect.indicator_bb,
+				effect.bonus_stats,
+				effect.use_damage_formula
+				)
 		elif effect is ResStatusCommandAbility:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 

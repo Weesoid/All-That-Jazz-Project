@@ -19,7 +19,8 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			if effect.cast_animation != '': await caster.doAnimation(effect.cast_animation)
 			await applyEffects(caster, target, ability)
 		elif effect is ResApplyStatusEffect:
-			await caster.doAnimation(effect.cast_animation)
+			if caster != null:
+				await caster.doAnimation(effect.cast_animation)
 			await applyEffects(caster, target, ability)
 		elif effect is ResMoveEffect:
 			if effect.target == effect.Target.CASTER:
@@ -61,10 +62,6 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
 	if ability.current_effect == null:
 		ability.current_effect = ability.basic_effects[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
-#	if ability.basic_effects.size() == 0:
-#		print('sexulus')
-#		await CombatGlobals.getCombatScene().showCannotAct('Pass!')
-#		return
 	
 	if target is Array and ability.current_effect.is_combo_effect and ability.current_effect.effect_only_combo_targets:
 		target = target.filter(func(combatant): return combatant.hasStatusEffect('Combo'))
@@ -121,7 +118,6 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			ability.current_effect.crit_chance, 
 			ability.current_effect.can_miss, 
 			ability.current_effect.variation, 
-			ability.current_effect.message, 
 			ability.current_effect.trigger_on_hits, 
 			'', 
 			ability.current_effect.indicator_bb,
@@ -131,16 +127,29 @@ static func applyToTarget(caster, target, ability: ResAbility):
 	
 	elif ability.current_effect is ResApplyStatusEffect:
 		if ability.current_effect.target == ability.current_effect.Target.TARGET:
-			target = target.combatant_resource
+			if target is CombatantScene:
+				target = target.combatant_resource
 		elif ability.current_effect.target == ability.current_effect.Target.CASTER:
-			target = caster.combatant_resource
+			if target is CombatantScene:
+				target = caster.combatant_resource
+			else:
+				target = caster
 		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect,true)
 	
 	elif ability.current_effect is ResHealEffect:
 		CombatGlobals.calculateHealing(target, ability.current_effect.heal, ability.current_effect.use_multiplier)
 	
 	elif ability.current_effect is ResOnslaughtEffect:
-		CombatGlobals.calculateRawDamage(target.combatant_resource, CombatGlobals.useDamageFormula(target.combatant_resource, ability.current_effect.damage), caster.combatant_resource, true, -1, false, 0.15, null, false)
+		CombatGlobals.calculateRawDamage(
+			target.combatant_resource, 
+			CombatGlobals.useDamageFormula(target.combatant_resource, ability.current_effect.damage), 
+			caster.combatant_resource, 
+			true, 
+			-1, 
+			false, 
+			0.15, 
+			false
+			)
 		if target.combatant_resource.stat_modifiers.keys().has('block') and target.combatant_resource.hasStatusEffect('Guard') and target.combatant_resource.getStatusEffect('Guard').duration+1 <= target.combatant_resource.getStatusEffect('Guard').max_duration:
 			target.combatant_resource.getStatusEffect('Guard').duration += 1
 		if target.combatant_resource.isDead():
@@ -148,7 +157,16 @@ static func applyToTarget(caster, target, ability: ResAbility):
 		if ability.current_effect.target == ability.current_effect.Target.MULTI:
 			for combatant in CombatGlobals.getCombatScene().getCombatantGroup('team'):
 				if !combatant.isDead() and !target.combatant_resource.stat_modifiers.keys().has('block') and combatant != target.combatant_resource: 
-					CombatGlobals.calculateRawDamage(combatant, CombatGlobals.useDamageFormula(combatant, ability.current_effect.damage), caster.combatant_resource, true, -1, false, 0.15, null, false)
+					CombatGlobals.calculateRawDamage(
+						combatant, 
+						CombatGlobals.useDamageFormula(combatant, ability.current_effect.damage), 
+						caster.combatant_resource, 
+						true, 
+						-1, 
+						false, 
+						0.15, 
+						false
+						)
 
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResDamageEffect):

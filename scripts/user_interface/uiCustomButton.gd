@@ -16,7 +16,6 @@ func _on_focus_entered():
 	audio_player.stream = focused_entered_sound
 	audio_player.play()
 	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
-		print('blud')
 		showDescription()
 
 func _on_pressed():

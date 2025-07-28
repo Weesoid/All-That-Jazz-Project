@@ -13,11 +13,12 @@ func _process(_delta):
 #	if !attached_status.tick_any_turn:
 #		text = str(attached_status.duration-1)
 #	else:
-	text = str(attached_status.duration)
 #	if attached_status.duration <= 1 and !attached_status.tick_any_turn:
 #		get_parent().hide()
 	if attached_status.permanent and attached_status.duration <= 1: 
-		hide()
+		text = ''
+	else:
+		text = str(attached_status.duration)
 	if attached_status.max_rank != 0:
 		rank.text = str(attached_status.current_rank)
 	if attached_status.duration == 1 and !attached_status.permanent and CombatGlobals.getCombatScene().active_combatant == attached_status.afflicted_combatant and !flicker_tween.is_running():

@@ -16,6 +16,7 @@ base_temperment = {
 }
 mandatory = true
 stat_multiplier = 0.01
+auto_name = false
 name = "Willis Flynt"
 packed_scene = ExtResource("3_f2l1f")
 bullet_texture = ExtResource("2_wn1q6")
@@ -29,7 +30,7 @@ stat_values = {
 "handling": 0,
 "heal_mult": 1.0,
 "health": 50,
-"hustle": 1,
+"hustle": 66,
 "resist": 0.05
 }
 scale_stats = {

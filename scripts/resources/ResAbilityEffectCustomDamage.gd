@@ -12,5 +12,4 @@ class_name ResCustomDamageEffect
 @export var bonus_stats: Dictionary
 @export var can_miss: bool = false
 @export var trigger_on_hits = false
-@export var message: String = ''
 @export var indicator_bb:  String = ''

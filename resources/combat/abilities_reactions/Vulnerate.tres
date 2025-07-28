@@ -1,18 +1,40 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=5 format=3 uid="uid://76ne3n8q7jei"]
 
-[ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwVulnerate.gd" id="1_pqqsh"]
+[ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwVulnerate.gd" id="1_uvesn"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
-[ext_resource type="PackedScene" uid="uid://dule4kp7h5laf" path="res://scenes/animations_abilities/Vulnerate.tscn" id="2_rqqrm"]
+[ext_resource type="PackedScene" uid="uid://dule4kp7h5laf" path="res://scenes/animations_abilities/Vulnerate.tscn" id="2_t5csk"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_0ly46"]
 
 [resource]
 script = ExtResource("1_yro00")
-NAME = "Vulnerated"
-DESCRIPTION = ""
-ANIMATION = ExtResource("2_rqqrm")
-ABILITY_SCRIPT = ExtResource("1_pqqsh")
-TARGET_TYPE = 0
-TARGET_GROUP = 1
-CAN_TARGET_SELF = false
-TARGET_DEAD = false
-INSTANT_CAST = false
-REQUIRED_LEVEL = 0
+auto_name = false
+name = ""
+description = ""
+icon = ExtResource("4_0ly46")
+animation = ExtResource("2_t5csk")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("1_uvesn")
+target_type = 0
+target_group = 1
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+charges = 0
+can_target_self = false
+can_target_dead = false
+dead_target_params = {
+"only_dead": false,
+"only_faded": true
+}
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0

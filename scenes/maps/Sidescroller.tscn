@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="6_8oxsm"]
 [ext_resource type="PackedScene" uid="uid://mjs3qc7nxo7b" path="res://scenes/components/ShopWares.tscn" id="6_ppbds"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="8_5ag6f"]
-[ext_resource type="Resource" uid="uid://v3cb1h1wdgjc" path="res://resources/items/ArrowSleeper.tres" id="9_yo4j3"]
+[ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/Dummy.tres" id="11_2bouc"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="11_fghhp"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="12_1xr6o"]
 [ext_resource type="Texture2D" uid="uid://lmmr2dkcaseq" path="res://images/animations/antelope.png" id="13_s8kga"]
@@ -198,7 +198,7 @@ position = Vector2(-32, 0)
 position = Vector2(56, 0)
 
 [node name="ShopWares" parent="ShopKeep" instance=ExtResource("6_ppbds")]
-shop_wares = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("9_yo4j3")])
+god_shop = true
 
 [node name="PartyManager" parent="." instance=ExtResource("5_rwctp")]
 position = Vector2(-112, 0)
@@ -207,6 +207,7 @@ position = Vector2(-112, 0)
 position = Vector2(-161, -20)
 
 [node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("8_5ag6f")]
+combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc")])
 
 [node name="CombatDialogue" parent="Fighter" instance=ExtResource("11_fghhp")]
 dialogue_resource = ExtResource("12_1xr6o")

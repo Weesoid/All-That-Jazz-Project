@@ -27,6 +27,7 @@ InventoryGlobals="*res://scripts/globals/gblInventory.gd"
 QuestGlobals="*res://scripts/globals/gblQuests.gd"
 SaveLoadGlobals="*res://scripts/globals/gblSaveLoadManager.gd"
 SettingsGlobals="*res://scripts/globals/gblSettings.gd"
+ResourceGlobals="*res://scripts/globals/gblResourceManager.gd"
 
 [dialogue_manager]
 

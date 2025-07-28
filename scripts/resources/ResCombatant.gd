@@ -2,13 +2,11 @@
 extends Resource
 class_name ResCombatant
 
-## Backend export variables
+@export var auto_name:bool
 @export var name: String
 @export var packed_scene: PackedScene
 @export var bullet_texture: Texture2D
 @export_multiline var description: String
-
-## Frontend / Gameplay export variables
 @export var stat_values = {
 	'health': 20,
 	'brawn': 0.0,

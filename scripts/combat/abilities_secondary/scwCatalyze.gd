@@ -1,8 +1,12 @@
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
-	var effects = [preload("res://resources/combat/status_effects/Chilled.tres"), preload("res://resources/combat/status_effects/Singed.tres"), preload("res://resources/combat/status_effects/Poison.tres")]
+	var effects = [
+		preload("res://resources/combat/status_effects/Chilled.tres"), 
+		preload("res://resources/combat/status_effects/Burn.tres"), 
+		preload("res://resources/combat/status_effects/Poison.tres")
+		]
 	for target in targets:
 		randomize()
-		if CombatGlobals.randomRoll(0.65):
+		if CombatGlobals.randomRoll(0.75):
 			OverworldGlobals.playSound('res://audio/sounds/488392__wobesound__poisongasrelease.ogg')
 			var effect = effects.pick_random().name
 			CombatGlobals.manual_call_indicator.emit(target, 'CATALYZED! %s' % [effect], 'Reaction')

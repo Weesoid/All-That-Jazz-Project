@@ -17,7 +17,7 @@ func _physics_process(delta):
 	moveTarget(delta)
 
 func _unhandled_input(_event: InputEvent):
-	if Input.is_action_just_pressed("ui_melee"):
+	if Input.is_action_just_pressed("ui_accept"):
 		target_animator.play("Activate")
 		if target.has_overlapping_areas():
 			target.get_overlapping_areas()[0].queue_free()

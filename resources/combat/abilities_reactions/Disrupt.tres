@@ -1,18 +1,40 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=5 format=3 uid="uid://doa0j8cvfudee"]
 
-[ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwDisrupt.gd" id="1_3c07j"]
+[ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwDisrupt.gd" id="1_5ql6f"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
-[ext_resource type="PackedScene" uid="uid://bmfdfc72i87cl" path="res://scenes/animations_abilities/Disruption.tscn" id="2_7vgvt"]
+[ext_resource type="PackedScene" uid="uid://bmfdfc72i87cl" path="res://scenes/animations_abilities/Disruption.tscn" id="2_mt7ny"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="4_u3qbc"]
 
 [resource]
 script = ExtResource("1_yro00")
-NAME = "Disruption"
-DESCRIPTION = ""
-ANIMATION = ExtResource("2_7vgvt")
-ABILITY_SCRIPT = ExtResource("1_3c07j")
-TARGET_TYPE = 1
-TARGET_GROUP = 1
-CAN_TARGET_SELF = false
-TARGET_DEAD = false
-INSTANT_CAST = false
-REQUIRED_LEVEL = 0
+auto_name = false
+name = ""
+description = ""
+icon = ExtResource("4_u3qbc")
+animation = ExtResource("2_mt7ny")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("1_5ql6f")
+target_type = 1
+target_group = 1
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+charges = 0
+can_target_self = false
+can_target_dead = false
+dead_target_params = {
+"only_dead": false,
+"only_faded": true
+}
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0

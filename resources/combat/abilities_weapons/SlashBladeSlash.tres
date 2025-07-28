@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=5 format=3 uid="uid://qup6bens47pb"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilites_weapons/scaSwordSlash.gd" id="1_deot3"]
 [ext_resource type="PackedScene" uid="uid://cbk4px1d6i8mi" path="res://scenes/animations_abilities/SwordSlash.tscn" id="2_xsh4e"]
@@ -7,39 +7,34 @@
 
 [resource]
 script = ExtResource("3_yst25")
-NAME = "Slash Blade Slash"
-DESCRIPTION = "Cause an elemental effect based on your score in the QTE.
-1: Poison
-2: Electric
-3: Iced
-4: Fire"
-ICON = ExtResource("3_76x4d")
-ANIMATION = ExtResource("2_xsh4e")
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
-ABILITY_SCRIPT = ExtResource("1_deot3")
-TARGET_TYPE = 0
-TARGET_GROUP = 1
-REQUIRED_STATUS_EFFECT = {
+auto_name = false
+name = "Slash Blade Slash"
+description = "PENIS"
+icon = ExtResource("3_76x4d")
+animation = ExtResource("2_xsh4e")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("1_deot3")
+target_type = 0
+target_group = 1
+required_effect = {
 "rank": 0,
 "status_effect": null
 }
-CHARGES = 0
-CAN_TARGET_SELF = false
-TARGET_DEAD = false
-DEAD_TARGET_PARAMS = {
+charges = 0
+can_target_self = false
+can_target_dead = false
+dead_target_params = {
 "only_dead": false,
-"only_faded": true,
-"only_marked": false,
-"only_unmarked": false
+"only_faded": true
 }
-CASTER_POSITION = {
+caster_position = {
 "max": 3,
 "min": 0
 }
-TARGET_POSITION = {
+target_position = {
 "max": 3,
 "min": 0
 }
-TENSION_COST = 0
-INSTANT_CAST = false
-REQUIRED_LEVEL = 0
+tension_cost = 0
+instant_cast = false
+required_level = 0

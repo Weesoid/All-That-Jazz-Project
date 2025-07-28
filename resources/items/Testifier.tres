@@ -5,11 +5,23 @@
 
 [resource]
 script = ExtResource("2_wpvfv")
-STAT_MODIFICATIONS = {
-"health": 24
+unique = false
+stat_modifications = {
+"accuracy": 0.0,
+"brawn": 0.0,
+"crit": 0.0,
+"crit_mult": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 0,
+"hustle": 0,
+"resist": 0.0
 }
-NAME = "Testifier"
-ICON = ExtResource("1_rv82y")
-DESCRIPTION = "Testify Candace testify!"
-VALUE = 0
-MANDATORY = false
+auto_name = true
+name = ""
+icon = ExtResource("1_rv82y")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

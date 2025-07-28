@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://541ffogrb12k"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_gyudi"]
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_khovt"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tsf88"]
+[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_wvq80"]
 [ext_resource type="PackedScene" uid="uid://r0toat4qsmnb" path="res://scenes/combatants/Scav.tscn" id="3_lb1qm"]
 
 [resource]
@@ -14,6 +14,7 @@ chance_to_drop = 0.5
 drop_count = 1
 drop_pool = {}
 is_converted = false
+auto_name = false
 name = "Scav"
 packed_scene = ExtResource("3_lb1qm")
 description = ""
@@ -27,7 +28,7 @@ stat_values = {
 "heal_mult": 1.0,
 "health": 20,
 "hustle": 1,
-"resist": 1.0
+"resist": 0.05
 }
 scale_stats = {
 "accuracy": false,
@@ -41,6 +42,6 @@ scale_stats = {
 "hustle": true,
 "resist": false
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_khovt")])
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_wvq80")])
 max_turn_charges = 1
 ai_package = ExtResource("1_tsf88")

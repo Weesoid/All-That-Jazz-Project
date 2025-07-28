@@ -3,14 +3,14 @@
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_v8or2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_b4evy"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_ellp4"]
-[ext_resource type="Resource" uid="uid://dxbuny7c3eoa0" path="res://resources/combat/status_effects/Guard.tres" id="3_v7b1b"]
+[ext_resource type="Resource" uid="uid://nggpuuho017e" path="res://resources/combat/status_effects/Overguard.tres" id="3_fij3k"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="4_5o705"]
 [ext_resource type="Texture2D" uid="uid://mdq0i44s7xd3" path="res://images/ability_icons/defend.png" id="4_f5m2x"]
 
 [sub_resource type="Resource" id="Resource_io7yr"]
 script = ExtResource("2_b4evy")
 target = 0
-status_effect = ExtResource("3_v7b1b")
+status_effect = ExtResource("3_fij3k")
 cast_animation = "Cast_Misc"
 condition = ""
 is_combo_effect = false
@@ -31,6 +31,7 @@ animate_on = 0
 
 [resource]
 script = ExtResource("3_ellp4")
+auto_name = false
 name = "Defend"
 description = "Defend thyself"
 icon = ExtResource("4_f5m2x")

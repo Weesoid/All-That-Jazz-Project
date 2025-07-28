@@ -16,8 +16,7 @@ damage = 2
 can_miss = true
 can_crit = true
 bonus_stats = {
-"crit/combo": 0.75,
-"status_effect": "Chilled"
+"status_effect": "Vulnerated"
 }
 return_pos = true
 indicator_bb = ""
@@ -30,6 +29,7 @@ animate_on = 0
 
 [resource]
 script = ExtResource("1_k0byw")
+auto_name = false
 name = "Basic Attack"
 description = "Do a lil swingy swing"
 icon = ExtResource("3_aoac4")
@@ -53,7 +53,7 @@ caster_position = {
 "min": 0
 }
 target_position = {
-"max": 0,
+"max": 3,
 "min": 0
 }
 tension_cost = 0

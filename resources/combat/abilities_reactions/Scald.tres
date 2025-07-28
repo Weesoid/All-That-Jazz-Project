@@ -1,18 +1,40 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://cfqsbfoifoq8k"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=5 format=3 uid="uid://df6q7w45s4ruq"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities_secondary/scwScald.gd" id="1_feyf1"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yro00"]
-[ext_resource type="PackedScene" uid="uid://ou18hckw2aky" path="res://scenes/animations/Scald.tscn" id="2_4kueh"]
+[ext_resource type="PackedScene" uid="uid://cx3tk1uy83lal" path="res://scenes/animations_abilities/Scald.tscn" id="2_vcyqy"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_gqnek"]
 
 [resource]
 script = ExtResource("1_yro00")
-NAME = "Scald"
-DESCRIPTION = ""
-ANIMATION = ExtResource("2_4kueh")
-ABILITY_SCRIPT = ExtResource("1_feyf1")
-TARGET_TYPE = 0
-TARGET_GROUP = 1
-CAN_TARGET_SELF = false
-TARGET_DEAD = false
-INSTANT_CAST = false
-REQUIRED_LEVEL = 0
+auto_name = false
+name = ""
+description = ""
+icon = ExtResource("3_gqnek")
+animation = ExtResource("2_vcyqy")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("1_feyf1")
+target_type = 0
+target_group = 1
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+charges = 0
+can_target_self = false
+can_target_dead = false
+dead_target_params = {
+"only_dead": false,
+"only_faded": true
+}
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0

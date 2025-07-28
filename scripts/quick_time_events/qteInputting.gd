@@ -36,7 +36,7 @@ func displayInputs():
 	for child in container.get_children():
 		child.queue_free()
 	
-	for i in range(3):
+	for i in range(3): # Change to MOVE ui input
 		var icon = TextureRect.new()
 		match inputs[i]:
 			'ui_left': icon.texture = preload("res://images/sprites/arrow_left.png")

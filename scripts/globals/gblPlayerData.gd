@@ -375,10 +375,10 @@ func generateMapEvent():
 			random_event = possible_events.pick_random()
 			possible_events.erase(random_event)
 			match random_event:
-				'combat_event': events['combat_event'] = OverworldGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
+				'combat_event': events['combat_event'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
 				'additional_enemies': events['additional_enemies'] = CombatGlobals.back_up_enemies.pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
-				'reward_item': events['reward_item'] = OverworldGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.unique).pick_random()
+				'reward_item': events['reward_item'] = ResourceGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.unique).pick_random()
 				'bonus_loot': events['bonus_loot'] = {}
 				'bonus_experience': events['bonus_experience'] = 0
 				#'destroy_objective': events['destroy_objective'] = true

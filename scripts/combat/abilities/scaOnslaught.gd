@@ -9,7 +9,25 @@ static func animate(caster: CombatantScene, target: CombatantScene, ability: Res
 	CombatGlobals.ability_finished.emit()
 
 static func applyEffects(caster: CombatantScene , target: CombatantScene, _ability: ResAbility=null):
-	CombatGlobals.calculateRawDamage(target.combatant_resource, CombatGlobals.useDamageFormula(target.combatant_resource, 10), caster.combatant_resource, true, -1, false, 0.15, null, false)
+	CombatGlobals.calculateRawDamage(
+		target.combatant_resource, 
+		CombatGlobals.useDamageFormula(target.combatant_resource, 10), 
+		caster.combatant_resource, 
+		true, 
+		-1, 
+		false, 
+		0.15,
+		false
+		)
 	for combatant in CombatGlobals.getCombatScene().getCombatantGroup('team'):
 		if !combatant.isDead() and !target.combatant_resource.stat_modifiers.keys().has('block') and combatant != target.combatant_resource: 
-			CombatGlobals.calculateRawDamage(combatant, CombatGlobals.useDamageFormula(combatant, 10), caster.combatant_resource, true, -1, false, 0.15, null, false)
+			CombatGlobals.calculateRawDamage(
+				combatant, 
+				CombatGlobals.useDamageFormula(combatant, 10), 
+				caster.combatant_resource, 
+				true, 
+				-1, 
+				false, 
+				0.15, 
+				false
+				)

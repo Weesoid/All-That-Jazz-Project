@@ -407,7 +407,7 @@ func _on_guard_pressed():
 	resetActionLog()
 	animateSecondaryPanel('show')
 	Input.action_release("ui_accept")
-	forceCastAbility(load("res://resources/combat/abilities/BraceSelf.tres"))
+	forceCastAbility(load("res://resources/combat/abilities/Defend.tres"))
 
 func _on_inspect_pressed():
 	ui_animator.play('ShowInspect')
@@ -531,7 +531,7 @@ func getMoveAbilities():
 	var pass_button = createAbilityButton(load("res://resources/combat/abilities/Pass.tres"))
 	#pass_button.pressed.connect(func(): confirm.emit())
 	#pass_button.focus_entered.connect(func():updateDescription(null, 'Pass this turn.'))
-	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/BraceSelf.tres")))
+	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Defend.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Recede.tres")))
 	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
 	secondary_panel_container.add_child(pass_button)
@@ -557,7 +557,7 @@ func createAbilityButton(ability: ResAbility, weapon:ResWeapon=null)-> Button:
 	button.mouse_entered.connect(func():updateDescription(ability))
 	if !ability.enabled or !ability.canUse(active_combatant, combatants):
 		button.disabled = true
-	if ability == load("res://resources/combat/abilities/BraceSelf.tres") and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
+	if ability == load("res://resources/combat/abilities/Defend.tres") and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
 		button.disabled = true
 		button.dimButton()
 	return button

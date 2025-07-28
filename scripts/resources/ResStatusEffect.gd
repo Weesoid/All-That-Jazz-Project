@@ -8,6 +8,7 @@ enum EffectType {
 }
 enum RemoveType {
 	HIT,
+	MISSED,
 	GET_HIT,
 	GET_HEAL,
 	GET_TARGETED,
@@ -18,7 +19,7 @@ enum RemoveStyle {
 	TICK_DOWN
 }
 
-@export var auto_name:bool # Later
+@export var auto_name:bool
 @export var name: String
 @export_multiline var description: String
 @export var basic_effects: Array[ResBasicEffect]

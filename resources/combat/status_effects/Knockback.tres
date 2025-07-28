@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://5ixmsg8d0lhe"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_3rt0t"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_gqhoe"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="4_xpciy"]
+
+[resource]
+script = ExtResource("2_3rt0t")
+auto_name = false
+name = "Knockback"
+description = "KNOCKUS BACKUS"
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("2_gqhoe")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("4_xpciy")
+max_duration = 1
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = false
+do_ticks = false
+resistable = false
+permanent = true
+lingers = false
+persist_on_dead = false
+sounds = {
+"apply": "",
+"expire": ""
+}

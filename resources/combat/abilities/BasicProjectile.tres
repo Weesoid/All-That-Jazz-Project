@@ -16,7 +16,7 @@ damage = 2
 can_miss = true
 can_crit = true
 bonus_stats = {
-"status_effect": "Combo"
+"status_effect": "Burn"
 }
 return_pos = true
 indicator_bb = ""
@@ -29,6 +29,7 @@ animate_on = 0
 
 [resource]
 script = ExtResource("1_yj0nf")
+auto_name = false
 name = "Projectiliun"
 description = "Shooty shooty"
 icon = ExtResource("3_hgmaq")

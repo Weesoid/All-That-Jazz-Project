@@ -1,6 +1,6 @@
 static func animate(caster: CombatantScene, target: CombatantScene, ability: ResAbility):
 	await caster.moveTo(target)
-	await skillCheck(target, caster, 'Holding',ability,4)
+	await skillCheck(target, caster, 'Timing',ability,4)
 	await caster.moveTo(caster.get_parent())
 	CombatGlobals.ability_finished.emit()
 
@@ -11,7 +11,7 @@ static func skillCheck(target: CombatantScene , caster: CombatantScene, check: S
 	await CombatGlobals.playAbilityAnimation(caster.combatant_resource, ability.animation)
 	match points:
 		1:
-			CombatGlobals.addStatusEffect(target.combatant_resource, 'Singed')
+			CombatGlobals.addStatusEffect(target.combatant_resource, 'Burn')
 		2:
 			CombatGlobals.addStatusEffect(target.combatant_resource, 'Jolted')
 		3:

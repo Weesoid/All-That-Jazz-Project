@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://8bif5ddrnblw"]
 
 [ext_resource type="PackedScene" uid="uid://beab27ynxee6y" path="res://scenes/animations_status_effects/FollowUp.tscn" id="1_ofi5s"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsFollowUp.gd" id="2_iv452"]
@@ -7,22 +7,28 @@
 
 [resource]
 script = ExtResource("4_8p706")
-NAME = "Follow Up"
-DESCRIPTION = "Target will follow up single target attacks."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-STATUS_SCRIPT = ExtResource("2_iv452")
-PACKED_SCENE = ExtResource("1_ofi5s")
-EFFECT_TYPE = 2
-REMOVE_WHEN = 1
-REMOVE_STYLE = 1
-TEXTURE = ExtResource("3_a8eq6")
-MAX_DURATION = 4
-EXTEND_DURATION = 1
-APPLY_EXTEND_DURATION = false
-MAX_RANK = 0
-TICK_PER_TURN = false
-DO_TICKS = false
-RESISTABLE = false
-PERMANENT = true
-LINGERING = false
-PERSIST_ON_DEAD = false
+auto_name = false
+name = "Follow Up"
+description = "Follow up single target attacks!"
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("2_iv452")
+packed_scene = ExtResource("1_ofi5s")
+effect_type = 2
+remove_when = Array[int]([0])
+remove_style = 1
+texture = ExtResource("3_a8eq6")
+max_duration = 6
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = false
+do_ticks = false
+resistable = true
+permanent = true
+lingers = false
+persist_on_dead = false
+sounds = {
+"apply": "",
+"expire": ""
+}

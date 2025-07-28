@@ -27,7 +27,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 			offset = Vector2(40,0)
 	
 	combatant_resource.resetSprite()
-	var tween = create_tween()
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(self, 'global_position', Vector2(target.global_position.x, -14) + offset, duration)
 	await tween.finished
 	if combatant_resource.isDead() and combatant_resource is ResEnemyCombatant:
@@ -41,6 +41,11 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
 	if cannotAct() and !['Fading, KO'].has(animation) or animation == '': 
 		await get_tree().create_timer(0.25).timeout
+		return
+	if combatant_resource.hasStatusEffect('Knockback'):
+		await get_tree().create_timer(0.25).timeout
+		await moveTo(get_parent(),0.12)
+		combatant_resource.getStatusEffect('Knockback').removeStatusEffect()
 		return
 #	if CombatGlobals.getCombatScene().has_node('QTE'):
 #		await CombatGlobals.qte_finished

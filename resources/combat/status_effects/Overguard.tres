@@ -7,27 +7,28 @@
 
 [resource]
 script = ExtResource("4_7lkja")
-NAME = "Overguard"
-DESCRIPTION = "Target will block incoming projectiles."
-BASIC_EFFECTS = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-STATUS_SCRIPT = ExtResource("2_8ekwr")
-PACKED_SCENE = ExtResource("1_m5u3q")
-EFFECT_TYPE = 2
-REMOVE_WHEN = Array[int]([])
-REMOVE_STYLE = 0
-TEXTURE = ExtResource("3_kmvdv")
-MAX_DURATION = 3
-EXTEND_DURATION = 1
-APPLY_EXTEND_DURATION = false
-MAX_RANK = 0
-TICK_ON_APPLY = true
-TICK_PER_TURN = false
-DO_TICKS = false
-RESISTABLE = false
-PERMANENT = false
-LINGERING = false
-PERSIST_ON_DEAD = false
-SOUNDS = {
+auto_name = false
+name = "Overguard"
+description = "Block ranged projectiles."
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("2_8ekwr")
+packed_scene = ExtResource("1_m5u3q")
+effect_type = 2
+remove_when = Array[int]([1])
+remove_style = 1
+texture = ExtResource("3_kmvdv")
+max_duration = 4
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = true
+tick_any_turn = false
+do_ticks = false
+resistable = false
+permanent = true
+lingers = false
+persist_on_dead = false
+sounds = {
 "apply": "",
 "expire": ""
 }

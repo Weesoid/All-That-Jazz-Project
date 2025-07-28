@@ -89,7 +89,7 @@ func _on_debug_button_pressed():
 	loadFastTravelButtons()
 
 func addAllFastTravelPoints():
-	var maps = OverworldGlobals.loadArrayFromPath("res://scenes/maps/")
+	var maps = ResourceGlobals.loadArrayFromPath("res://scenes/maps/")
 	for map in maps:
 		if map == null: continue
 		var data = map.instantiate()

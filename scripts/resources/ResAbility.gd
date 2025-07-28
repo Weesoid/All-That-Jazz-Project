@@ -12,6 +12,7 @@ enum TargetGroup {
 	ALL
 }
 
+@export var auto_name: bool
 @export var name: String
 @export_multiline var description: String
 @export var icon: Texture = preload("res://images/ability_icons/default.png")

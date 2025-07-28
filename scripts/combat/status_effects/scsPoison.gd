@@ -7,7 +7,6 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		-1.0, 
 		false, 
 		-1.0, 
-		null, 
 		false, 
 		"res://audio/sounds/46_Poison_01.ogg",
 		'[color=purple][img]res://images/sprites/icon_poison.png[/img]'

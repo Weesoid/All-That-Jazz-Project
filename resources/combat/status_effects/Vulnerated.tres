@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=7 format=3 uid="uid://rk2u0axvwxvg"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_jjugo"]
+[ext_resource type="PackedScene" uid="uid://htwq6aqom1y7" path="res://scenes/animations_status_effects/Vulnerated.tscn" id="2_opxc8"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_v4hkh"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="4_00g3m"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="5_oqa2n"]
+
+[sub_resource type="Resource" id="Resource_rhmdr"]
+script = ExtResource("1_jjugo")
+status_change = {
+"accuracy": 0.0,
+"brawn": 0.0,
+"crit": 0.0,
+"crit_mult": 0.0,
+"grit": 0.0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 0,
+"hustle": 0,
+"resist": -0.3
+}
+rank_scaling = true
+apply_once = true
+message = ""
+sound_effect = ""
+
+[resource]
+script = ExtResource("3_v4hkh")
+auto_name = false
+name = "Vulnerated"
+description = "Target has reduced resistance."
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_rhmdr")])
+status_script = ExtResource("4_00g3m")
+packed_scene = ExtResource("2_opxc8")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("5_oqa2n")
+max_duration = 1
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 10
+tick_on_apply = true
+tick_any_turn = false
+do_ticks = true
+resistable = false
+permanent = true
+lingers = false
+persist_on_dead = true
+sounds = {
+"apply": "",
+"expire": ""
+}
+metadata/_editor_prop_ptr_ICON = NodePath("")
+metadata/_editor_prop_ptr_PARTICLES = NodePath("")

@@ -16,5 +16,7 @@ func showWeapon(sheathe:bool=false):
 	await animator.animation_finished
 
 func _on_area_2d_body_entered(body):
-	if hit_script != null and body != equipped_combatant: 
-		hit_script.applyEffects(body, equipped_combatant)
+	if hit_script == null or body == equipped_combatant or !body is CombatantScene:
+		return 
+	
+	hit_script.applyEffects(body, equipped_combatant)

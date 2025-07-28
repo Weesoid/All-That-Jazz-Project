@@ -9,5 +9,5 @@ func _ready():
 
 func enableGodShop():
 	shop_wares.clear()
-	var wares = OverworldGlobals.loadArrayFromPath("res://resources/items/").filter(func(item): return !OverworldGlobals.isResourcePlaceholder(item))
+	var wares = ResourceGlobals.loadArrayFromPath("res://resources/items/").filter(func(item): return !OverworldGlobals.isResourcePlaceholder(item) and ((item is ResWeapon and item.effect != null) or !item is ResWeapon))
 	shop_wares.assign(wares)

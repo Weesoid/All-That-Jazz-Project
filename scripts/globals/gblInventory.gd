@@ -57,25 +57,29 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	
 	if item is ResStackItem and inventory.has(item):
 		inventory[inventory.find(item)].add(count)
+	
 	elif item is ResStackItem:
 		if item.stack <= 0: item.stack = 1
 		item.add(count-1, false)
 		inventory.append(item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.name, item.stack])
+	
 	elif item is ResCharm:
 		for i in range(count): 
 			var dupe_item = item.duplicate()
 			if item.parent_item != '':
 				dupe_item.parent_item = item.parent_item
 			else:
-				dupe_item.parent_item = item.resource_path
+				dupe_item.parent_item = item.resource_path # Maybe later, if parent item doesn't exist, remove item from INV
 			dupe_item.removeEmptyModifications()
 			inventory.append(dupe_item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
+	
 	elif item is ResWeapon and check_restrictions:
 		item.durability = item.max_durability
 		inventory.append(item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
+	
 	else:
 		inventory.append(item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
@@ -211,15 +215,6 @@ func calculateValidAdd(item: ResStackItem) -> int:
 			return 0
 	else:
 		return item.max_stack
-
-func getUnstackableItemNames()-> Array:
-	var out = []
-	
-	for item in inventory:
-		if !item is ResStackItem:
-			out.append(item.name)
-	
-	return out
 
 func repairItem(item: ResWeapon, repair_amount: int, free_repair=false):
 	if !free_repair and getItemWithName("Scrap Salvage").stack >= repair_amount:

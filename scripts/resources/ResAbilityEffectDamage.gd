@@ -20,8 +20,8 @@ enum DamageType {
 ## Conditions:
 ## 		hp = Health threshold ex. crit/hp:>:0.5 or crit/hp:<:0.75
 ## 		s = Status effect ex. crit/s:bleed
-##		combo =  Only execute if target has combo token. Combo token is consumed. ex. crit/combo
-##			combo! = The same as combo but it will not consume the combo token. ex. crit/combo!
+##		combo =  Only execute if target has combo token. Combo token is consumed. ex. crit/combo:0.75
+##			combo! = The same as combo but it will not consume the combo token. ex. crit/combo!:0.75
 ## 	Special stats:
 ## 		execute = Execute combatant on a certain health threshold ex. "execute": 0.5 (executes at 50% health)
 ##		status_effect = Apply status effect ex. "status_effect": "Poison" (Must use file sys name) ("Poison,Riposte" will add an array of status effects)

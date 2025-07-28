@@ -1,24 +1,40 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://dq6d2upb0ltas"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=7 format=3 uid="uid://dq6d2upb0ltas"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
 [ext_resource type="PackedScene" uid="uid://cmu5v5d578wll" path="res://scenes/animations_status_effects/Poison.tscn" id="1_qebaw"]
-[ext_resource type="Script" path="res://scripts/combat/status_effects/scsPoison.gd" id="1_t6ebe"]
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectDamage.gd" id="1_va5wg"]
 [ext_resource type="Texture2D" uid="uid://cws4qm00g4avt" path="res://images/sprites/icon_poison.png" id="3_1sqmf"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="4_3i67t"]
+
+[sub_resource type="Resource" id="Resource_h03bo"]
+script = ExtResource("1_va5wg")
+damage = 2
+rank_scaling = true
+use_damage_formula = false
+bonus_stats = {}
+crit_chance = -1.0
+variation = -1.0
+trigger_on_hits = false
+sound_path = "res://audio/sounds/46_Poison_01.ogg"
+indicator_bb = "[color=purple][img]res://images/sprites/icon_poison.png[/img]"
+apply_once = false
+message = ""
+sound_effect = ""
 
 [resource]
 script = ExtResource("1_5ugit")
 auto_name = false
 name = "Poison"
 description = "Target takes damage overtime."
-basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
-status_script = ExtResource("1_t6ebe")
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_h03bo")])
+status_script = ExtResource("4_3i67t")
 packed_scene = ExtResource("1_qebaw")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
 texture = ExtResource("3_1sqmf")
-max_duration = 8
-extend_duration = 2
+max_duration = 12
+extend_duration = 3
 apply_extend_duration = true
 max_rank = 8
 tick_on_apply = false

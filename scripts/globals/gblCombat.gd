@@ -59,7 +59,7 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		return true
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, _message = null, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', bonus_stats:Dictionary={}, use_damage_formula:bool=false)-> bool:
+func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, can_miss = false, variation = -1.0, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', bonus_stats:Dictionary={}, use_damage_formula:bool=false)-> bool:
 	if !target is ResCombatant:
 		target = target.combatant_resource
 	if target is ResPlayerCombatant and target.combatant_scene.blocking:
@@ -167,6 +167,7 @@ func checkConditions(conditions: Array, target: ResCombatant):
 				return randomRoll(float(condition_data[1]))
 
 func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
+	caster.removeTokens(ResStatusEffect.RemoveType.MISSED)
 	manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 	playDodgeTween(target)
 	checkMissCases(target, caster, damage)
@@ -465,21 +466,21 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	checkReactions(target)
 
 func checkReactions(target: ResCombatant):
-	if target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Chilled'):
-		runReaction(target, 'Singed', 'Chilled', load("res://resources/combat/abilities_reactions/Scald.tres"))
+	if target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Chilled'):
+		runReaction(target, 'Burn', 'Chilled', load("res://resources/combat/abilities_reactions/Scald.tres"))
 	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Jolted', 'Poison', load("res://resources/combat/abilities_reactions/Catalyze.tres"))
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Jolted'):
 		runReaction(target, 'Chilled', 'Jolted', load("res://resources/combat/abilities_reactions/Disrupt.tres"))
 	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
 		runReaction(target, 'Chilled', 'Poison', load("res://resources/combat/abilities_reactions/Vulnerate.tres"))
-	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Poison'):
+	elif target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Poison'):
 		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Cauterize.tres"))
-		removeStatusEffect(target, 'Singed')
+		removeStatusEffect(target, 'Burn')
 		removeStatusEffect(target, 'Poison')
-	elif target.getStatusEffectNames().has('Singed') and target.getStatusEffectNames().has('Jolted'):
+	elif target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Jolted'):
 		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Fulgurate.tres"))
-		removeStatusEffect(target, 'Singed')
+		removeStatusEffect(target, 'Burn')
 		removeStatusEffect(target, 'Jolted')
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
@@ -562,7 +563,7 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	squad.fill_empty = true
 	squad.enemy_pool = getFactionEnemies(faction)
 	if map_events.has('additional_enemies'):
-		squad.enemy_pool.append_array(OverworldGlobals.loadArrayFromPath(map_events['additional_enemies']))
+		squad.enemy_pool.append_array(ResourceGlobals.loadArrayFromPath(map_events['additional_enemies']))
 	squad.enemy_pool = squad.enemy_pool.filter(func(combatant): return isWithinPlayerTier(combatant))
 	squad.combatant_squad.resize(squad_size)
 	squad.pickRandomEnemies()
@@ -575,7 +576,7 @@ func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties
 	patroller.add_child(squad)
 
 func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
-	var out = OverworldGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
+	var out = ResourceGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
 	var array_of_combatants: Array[ResEnemyCombatant]
 	array_of_combatants.assign(out)
 	return array_of_combatants
