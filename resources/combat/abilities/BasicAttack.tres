@@ -12,7 +12,7 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage = 2
+damage = 888
 can_miss = true
 can_crit = true
 bonus_stats = {

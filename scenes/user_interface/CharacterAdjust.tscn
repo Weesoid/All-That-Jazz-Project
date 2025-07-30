@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="PackedScene" uid="uid://r4d1xnyarsyl" path="res://scenes/user_interface/AttributeAdjust.tscn" id="2_f13wv"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="5_cqrwt"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]

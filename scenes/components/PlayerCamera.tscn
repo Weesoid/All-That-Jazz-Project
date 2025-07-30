@@ -56,21 +56,22 @@ position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 script = ExtResource("1_1hnbr")
 
-[node name="PlayerPrompt" parent="." instance=ExtResource("2_wxyfx")]
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="ClearProgress" type="VBoxContainer" parent="."]
-offset_left = -288.0
-offset_top = -168.0
-offset_right = -172.0
-offset_bottom = 161.0
+[node name="PlayerPrompt" parent="UI" instance=ExtResource("2_wxyfx")]
+
+[node name="ClearProgress" type="VBoxContainer" parent="UI"]
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 148.0
+offset_bottom = 345.0
 alignment = 2
 
-[node name="StaminaBar" type="ProgressBar" parent="."]
-visible = false
-offset_left = -24.0
-offset_top = 30.0
-offset_right = -20.0
-offset_bottom = 66.0
+[node name="StaminaBar" type="ProgressBar" parent="UI"]
+offset_left = 296.0
+offset_top = 214.0
+offset_right = 300.0
+offset_bottom = 250.0
 theme_override_styles/background = SubResource("StyleBoxFlat_846aw")
 theme_override_styles/fill = SubResource("StyleBoxFlat_to3hk")
 value = 50.0
@@ -78,52 +79,50 @@ fill_mode = 3
 show_percentage = false
 script = ExtResource("3_e80uh")
 
-[node name="Ammo" type="Label" parent="."]
-visible = false
+[node name="Ammo" type="Label" parent="UI"]
 offset_left = 17.0
-offset_top = 35.0
+offset_top = -61.0
 offset_right = 57.0
-offset_bottom = 48.0
+offset_bottom = -48.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 text = "1000"
 
-[node name="VoidCrystals" type="Label" parent="."]
-visible = false
+[node name="VoidCrystals" type="Label" parent="UI"]
 offset_left = 19.0
-offset_top = 47.0
+offset_top = -49.0
 offset_right = 59.0
-offset_bottom = 60.0
+offset_bottom = -36.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "3"
 
-[node name="PowerInputs" type="HBoxContainer" parent="."]
-offset_left = -24.0
-offset_top = 8.0
-offset_right = 24.0
-offset_bottom = 16.0
+[node name="PowerInputs" type="HBoxContainer" parent="UI"]
+offset_left = 296.0
+offset_top = 192.0
+offset_right = 344.0
+offset_bottom = 200.0
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_left = 144.0
-offset_top = -152.0
-offset_right = 283.0
-offset_bottom = -102.0
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+offset_left = 464.0
+offset_top = 32.0
+offset_right = 603.0
+offset_bottom = 82.0
 script = SubResource("GDScript_lueap")
 
-[node name="ColorOverlay" type="ColorRect" parent="."]
+[node name="ColorOverlay" type="ColorRect" parent="UI"]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -414.0
-offset_top = -182.0
-offset_right = -16.0
-offset_bottom = 24.0
+offset_left = -392.0
+offset_top = -204.0
+offset_right = 6.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)

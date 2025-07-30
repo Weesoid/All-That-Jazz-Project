@@ -76,7 +76,7 @@ func initializeRope():
 	if !Engine.is_editor_hint():
 		resizeClimbArea()
 
-func _on_area_2d_area_entered(area):
+func _on_pin_area_area_entered(area):
+	print(area)
 	if area is Projectile and must_shoot:
-		#print('plah')
 		initializeRope()

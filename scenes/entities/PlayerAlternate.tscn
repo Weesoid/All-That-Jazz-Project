@@ -1599,7 +1599,7 @@ tracks/1/path = NodePath("../PlayerDirection:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [3.14159]
@@ -1628,7 +1628,7 @@ tracks/1/path = NodePath("../PlayerDirection:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [3.14159]
@@ -2707,12 +2707,13 @@ script = ExtResource("1_cw77a")
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_vhjle")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0.666667, -20)
+position = Vector2(1, -20)
 texture = ExtResource("4_ybhti")
 offset = Vector2(0, -32)
+flip_h = true
 hframes = 9
 vframes = 6
-frame = 19
+frame = 12
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2743,7 +2744,7 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 1.5708
+rotation = -1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)

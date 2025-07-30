@@ -1,16 +1,84 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7mg0vkj75woi"]
+[gd_scene load_steps=8 format=3 uid="uid://8aufe1ycaau4"]
 
-[ext_resource type="Texture2D" uid="uid://bk3ggjp5ym4uf" path="res://images/sprites/table.png" id="1_2nmps"]
+[ext_resource type="Texture2D" uid="uid://b3mr0w65get7p" path="res://images/animations/campfire.png" id="1_f1dl0"]
+[ext_resource type="Script" path="res://scripts/environment/escSavePoint.gd" id="1_ve4xx"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
 [ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
 
+[sub_resource type="Animation" id="Animation_yegji"]
+resource_name = "Lit"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_c4qki"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mj52v"]
+_data = {
+"Lit": SubResource("Animation_yegji"),
+"RESET": SubResource("Animation_c4qki")
+}
+
 [node name="SavePoint" type="Node2D"]
+script = ExtResource("1_ve4xx")
+
+[node name="RestSpots" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="RestSpots"]
+position = Vector2(-40, -32)
+
+[node name="Sprite2D2" type="Sprite2D" parent="RestSpots"]
+position = Vector2(40, -32)
+flip_h = true
+
+[node name="Sprite2D3" type="Sprite2D" parent="RestSpots"]
+position = Vector2(-80, -32)
+
+[node name="Sprite2D4" type="Sprite2D" parent="RestSpots"]
+position = Vector2(80, -32)
+flip_h = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0, 0.933333, 1, 1)
-position = Vector2(0, -24)
-texture = ExtResource("1_2nmps")
+position = Vector2(0, -32)
+texture = ExtResource("1_f1dl0")
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mj52v")
+}
 
 [node name="InteractComponent" parent="." instance=ExtResource("2_pey47")]
 position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_m7jmf")
+show_ui = true
+move_player = false
+show_followers = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]

@@ -1,5 +1,5 @@
 ~ start
 
-do showMenu("res://scenes/user_interface/Saves.tscn")
+do showMenu("res://scenes/user_interface/CampMenu.tscn")
 
 => END

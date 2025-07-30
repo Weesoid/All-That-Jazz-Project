@@ -14,25 +14,27 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="10_ycel7"]
 [ext_resource type="Resource" path="res://resources/items/SlashBlade.tres" id="11_mbudr"]
 
-[sub_resource type="Resource" id="Resource_ra1n0"]
+[sub_resource type="Resource" id="Resource_umqos"]
 script = ExtResource("1_rrwc0")
-position = Vector2(-127.32, 20.9338)
+position = Vector2(29.9041, 212.925)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
-direction = 90
+direction = 179
 
-[sub_resource type="Resource" id="Resource_q5x77"]
+[sub_resource type="Resource" id="Resource_klpnj"]
 script = ExtResource("2_rc0jq")
 quests = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 quest_objectives_data = {}
 
-[sub_resource type="Resource" id="Resource_osdp3"]
+[sub_resource type="Resource" id="Resource_jbwkb"]
 script = ExtResource("8_5u21j")
 team = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_octdd"), ExtResource("6_wtdl2")])
-map_logs = {}
+map_logs = {
+"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2"]
+}
 equipped_arrow = ExtResource("8_gktm0")
 currency = 15
 team_level = 1
-current_exp = 0
+current_exp = 120
 progression_data = {}
 team_formation = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_octdd")])
 combatant_save_data = {
@@ -49,7 +51,7 @@ ExtResource("3_octdd"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "handling": 0,
 "heal_mult": 1.0,
 "health": 50,
-"hustle": 1,
+"hustle": 66,
 "resist": 0.05
 }, {
 "accuracy": 0.95,
@@ -60,7 +62,7 @@ ExtResource("3_octdd"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "handling": 0,
 "heal_mult": 1.0,
 "health": 50,
-"hustle": 1,
+"hustle": 66,
 "resist": 0.05
 }, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_5sdr5")]), true, Array[String]([]), true, 1, {
 "allocations": {
@@ -128,20 +130,20 @@ added_abilities = {}
 max_team_level = 5
 known_powers = [ExtResource("7_mcf5g")]
 
-[sub_resource type="Resource" id="Resource_njqui"]
+[sub_resource type="Resource" id="Resource_afy42"]
 script = ExtResource("9_0f7on")
 inventory = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("8_gktm0")])
 crafted_items = Array[String]([])
 item_data_inventory = {
-"res://resources/items/ArrowSleeper.tres": 99,
+"res://resources/items/ArrowSleeper.tres": 96,
 "res://resources/items/SlashBlade.tres-durability": 100
 }
 
 [resource]
 script = ExtResource("10_ycel7")
-name = "Save 2 - 00:02:26
+name = "Save 2 - 00:02:44
 Morale 1
 Node2D"
-playtime = 147.099
+playtime = 164.505
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_ra1n0"), SubResource("Resource_q5x77"), SubResource("Resource_osdp3"), SubResource("Resource_njqui")]
+save_data = [SubResource("Resource_umqos"), SubResource("Resource_klpnj"), SubResource("Resource_jbwkb"), SubResource("Resource_afy42")]

@@ -1,14 +1,14 @@
 extends DynamicCamera
 class_name PlayerCamera
 
-@onready var ammo_count = $Ammo
-@onready var crystal_count = $VoidCrystals
-@onready var prompt = $PlayerPrompt
+@onready var ammo_count = $UI/Ammo
+@onready var crystal_count = $UI/VoidCrystals
+@onready var prompt = $UI/PlayerPrompt
 @onready var cinematic_bars = $CinematicBars
-@onready var power_input_container = $PowerInputs
+@onready var power_input_container = $UI/PowerInputs
 @onready var quiver = $UtilitySelector
-@onready var color_overlay = $ColorOverlay
-@onready var reward_banks = $ClearProgress
+@onready var color_overlay = $UI/ColorOverlay
+@onready var reward_banks = $UI/ClearProgress
 var player: PlayerScene = OverworldGlobals.getPlayer()
 
 func _ready():
@@ -16,9 +16,12 @@ func _ready():
 		await SaveLoadGlobals.done_loading
 	player = OverworldGlobals.getPlayer()
 
-func _process(_delta):
+func _process(delta):
 	if player == null:
 		return
+	if shake_strength != 0:
+		shake_strength = lerpf(shake_strength, 0, shake_speed * delta)
+		offset = Vector2(randf_range(-shake_strength,shake_strength), randf_range(-shake_strength,shake_strength))
 	# TO DO: Move this to input..!
 	if player.bow_mode:
 		ammo_count.show()
@@ -50,7 +53,7 @@ func showOverlay(color: Color, alpha:float, duration:float=0.25):
 func hideOverlay(duration:float=0.25):
 	await create_tween().tween_property(color_overlay, 'modulate', Color.TRANSPARENT, duration).finished
 	color_overlay.hide()
-	color_overlay.modulate = Color.WHITE
+	color_overlay.modulate = Color.TRANSPARENT
 
 func addRewardBank(patroller_group: PatrollerGroup):
 	for bank in reward_banks.get_children():

@@ -19,7 +19,7 @@ func _physics_process(_delta):
 		OverworldGlobals.getPlayer().global_position.x = global_position.x
 
 func _input(event):
-	if Input.is_action_just_pressed('ui_accept') and player_on_segment and OverworldGlobals.getPlayer().isMovementAllowed():
+	if Input.is_action_just_pressed('ui_accept') and player_on_segment and OverworldGlobals.getPlayer().isMovementAllowed() and OverworldGlobals.getPlayer().climbing:
 		OverworldGlobals.getPlayer().climbing = false
 		OverworldGlobals.getPlayer().jump()
 		apply_force(Vector2(50.0*OverworldGlobals.getPlayer().velocity.x,0))

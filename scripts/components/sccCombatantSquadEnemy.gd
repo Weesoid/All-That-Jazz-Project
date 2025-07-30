@@ -50,6 +50,7 @@ func getMajorityFaction()-> int:
 func getRawDrops():
 	var drops = {}
 	for member in combatant_squad:
+		if member == null: continue
 		drops.merge(member.getDrops())
 		drops.merge(member.getBarterDrops())
 	return drops
@@ -65,5 +66,6 @@ func addDrops():
 func getExperience():
 	var out = 0
 	for member in combatant_squad:
+		if member == null: continue
 		out += member.getExperience()
 	return out

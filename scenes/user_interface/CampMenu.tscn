@@ -1,0 +1,119 @@
+[gd_scene load_steps=6 format=3 uid="uid://cimeplqfltcgd"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiCampMenu.gd" id="1_nstr8"]
+[ext_resource type="PackedScene" uid="uid://bwa3mr1qsun1o" path="res://scenes/user_interface/AbilityButton.tscn" id="2_ejioi"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_clnrx"]
+[ext_resource type="Theme" uid="uid://clgfgqvh2f440" path="res://design/BorderfulButton.tres" id="4_fshuc"]
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="5_hxrhj"]
+
+[node name="CampMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_nstr8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -152.0
+offset_top = -148.0
+offset_right = 152.0
+offset_bottom = -108.0
+grow_horizontal = 2
+scale = Vector2(2, 2)
+pivot_offset = Vector2(152, 22.5)
+alignment = 1
+
+[node name="Eat" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
+layout_mode = 2
+
+[node name="Craft" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
+layout_mode = 2
+descriptions = {
+"description": "asdf",
+"icon": ExtResource("3_clnrx"),
+"title": "Boingloings"
+}
+
+[node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
+layout_mode = 2
+
+[node name="Inventory" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
+layout_mode = 2
+
+[node name="Party" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -304.0
+offset_top = -143.0
+offset_right = -248.0
+offset_bottom = -121.0
+text = "BACK"
+alignment = 0
+
+[node name="Rest" type="Button" parent="."]
+layout_mode = 0
+offset_left = -136.0
+offset_top = -100.0
+offset_right = -8.0
+offset_bottom = -68.0
+theme = ExtResource("4_fshuc")
+theme_override_font_sizes/font_size = 16
+text = "REST"
+
+[node name="NoRest" type="Button" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = -100.0
+offset_right = 136.0
+offset_bottom = -68.0
+theme = ExtResource("4_fshuc")
+theme_override_font_sizes/font_size = 16
+text = "CARRY ON"
+
+[node name="RestStuff" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="RestStuff"]
+layout_mode = 0
+offset_left = -104.0
+offset_top = -156.0
+offset_bottom = -134.0
+scale = Vector2(2, 2)
+theme = ExtResource("5_hxrhj")
+bbcode_enabled = true
+text = "[center][outline_size=2][outline_color=black]Select Guard"
+fit_content = true
+
+[node name="ConfirmRest" type="Button" parent="RestStuff"]
+layout_mode = 0
+offset_left = -80.0
+offset_top = 108.0
+offset_right = 80.0
+offset_bottom = 140.0
+theme = ExtResource("4_fshuc")
+theme_override_font_sizes/font_size = 16
+text = "SKIP GUARD"
+
+[connection signal="pressed" from="HBoxContainer/Eat" to="." method="_on_eat_pressed"]
+[connection signal="pressed" from="HBoxContainer/Craft" to="." method="_on_craft_pressed"]
+[connection signal="pressed" from="HBoxContainer/FastTravel" to="." method="_on_fast_travel_pressed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Rest" to="." method="_on_rest_pressed"]
+[connection signal="pressed" from="NoRest" to="." method="_on_no_rest_pressed"]
+[connection signal="pressed" from="RestStuff/ConfirmRest" to="." method="_on_confirm_rest_pressed"]

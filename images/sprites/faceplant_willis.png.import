@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jkcya11d77up"
-path="res://.godot/imported/brigand_patroller.png-34ca8ccc70a2e863771ddb4b50152993.ctex"
+uid="uid://c8nn87vbmr36y"
+path="res://.godot/imported/faceplant_willis.png-12503938ba974bd75bd4eac7c4b5fa3a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/brigand_patroller.png"
-dest_files=["res://.godot/imported/brigand_patroller.png-34ca8ccc70a2e863771ddb4b50152993.ctex"]
+source_file="res://images/sprites/faceplant_willis.png"
+dest_files=["res://.godot/imported/faceplant_willis.png-12503938ba974bd75bd4eac7c4b5fa3a.ctex"]
 
 [params]
 

@@ -55,8 +55,8 @@ func _ready():
 	default_camera_pos = player_camera.position
 	OverworldGlobals.setMouseController(false)
 	# For testing only del later...
-	await get_tree().process_frame
-	PlayerGlobals.healCombatants()
+	#await get_tree().process_frame
+	#PlayerGlobals.healCombatants()
 #	await get_tree().process_frame
 #	if !OverworldGlobals.getCurrentMap().SAFE:
 #		#print('pluh')
@@ -127,8 +127,8 @@ func _physics_process(delta):
 			PlayerGlobals.overworld_stats['stamina'] -= 20.0
 			diving=true
 			jump(-100.0)
-			animation_player.play('Dive_2')
 			dodge()
+			animation_player.play('Dive_2')
 			await animation_player.animation_finished
 			collision_shape.set_deferred('disabled', false)
 			animation_player.play('RESET')
@@ -197,7 +197,7 @@ func isMovementAllowed():
 	return can_move and is_processing_input() and isMobile()
 
 func canDive():
-	return sprinting and !interaction_detector.has_overlapping_areas()
+	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0
 
 func _input(_event):
 	# Power handling
@@ -311,8 +311,6 @@ func cancelPower():
 	await get_tree().create_timer(0.15).timeout
 	if OverworldGlobals.isPlayerAlive():
 		can_move = true
-		#await tween.finished
-		#child.queue_free()
 
 func resetStates():
 	undrawBowAnimation()
@@ -491,7 +489,7 @@ func playDrawSound():
 		OverworldGlobals.playSound("res://audio/sounds/bow-loading-38752.ogg")
 
 func canMelee():
-	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and isFacingSide() and bow_mode
+	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and isFacingSide() and bow_mode and !diving
 
 func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	#velocity = Vector2.ZERO CHANGE LATER

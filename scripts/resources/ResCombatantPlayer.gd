@@ -6,6 +6,7 @@ class_name ResPlayerCombatant
 @export var base_temperment: Dictionary = {'primary':[], 'secondary':[]}
 @export var follower_texture: Texture
 @export var mandatory = false
+@export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
 @export var stat_multiplier = 0.01
 
 var equipped_weapon: ResWeapon

@@ -264,10 +264,10 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 	else:
 		manual_call_indicator.emit(target, "Broken.", 'Flunk')
 	
-	if trigger_on_heal:
+	if CombatGlobals.inCombat() and trigger_on_heal:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
 	#print(target.combatant_scene.idle_animation)
-	if target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
+	if CombatGlobals.inCombat() and target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
 		target.combatant_scene.playIdle('Idle')
 
 func randomRoll(percent_chance: float):
@@ -465,6 +465,14 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	
 	checkReactions(target)
 
+func removeStatusEffect(combatant: ResCombatant, effect_name:String):
+	for effect in combatant.status_effects:
+		if effect.name.to_lower() == effect_name.to_lower():
+			effect.removeStatusEffect()
+
+func removeStatusFaded(combatant: ResPlayerCombatant):
+	combatant.lingering_effects = combatant.lingering_effects.filter(func(effect): return !effect.contains('Faded'))
+
 func checkReactions(target: ResCombatant):
 	if target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Chilled'):
 		runReaction(target, 'Burn', 'Chilled', load("res://resources/combat/abilities_reactions/Scald.tres"))
@@ -499,12 +507,6 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 		if effect.current_rank != effect.max_rank and effect.max_rank != 0:
 			effect.apply_once = true
 			effect.current_rank += 1
-
-func removeStatusEffect(target: ResCombatant, status_name: String):
-	for status in target.status_effects:
-		if status.name == status_name:
-			status.removeStatusEffect()
-			return
 
 func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtjuy4oymkuda"
-path="res://.godot/imported/brigand_walker.png-e95d7cef99db6dfbfbf27cc6c5c0588d.ctex"
+uid="uid://pre04232361g"
+path="res://.godot/imported/rest_unknown.png-9cd54384567b2b516208195aba955e8d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/brigand_walker.png"
-dest_files=["res://.godot/imported/brigand_walker.png-e95d7cef99db6dfbfbf27cc6c5c0588d.ctex"]
+source_file="res://images/sprites/rest_unknown.png"
+dest_files=["res://.godot/imported/rest_unknown.png-9cd54384567b2b516208195aba955e8d.ctex"]
 
 [params]
 

@@ -21,7 +21,7 @@ func _on_body_entered(body):
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
 
 func _unhandled_input(event):
-	if Input.is_action_just_pressed('ui_melee') and player.canMelee():
+	if Input.is_action_just_pressed('ui_melee') and player.canMelee() and !player.diving:
 		smear.play('Show')
 
 func getTileTexture(tile_set):

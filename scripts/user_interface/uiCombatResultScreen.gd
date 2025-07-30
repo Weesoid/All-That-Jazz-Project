@@ -17,6 +17,7 @@ signal done
 @onready var loot_icons = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer
 @onready var animator = $AnimationPlayer
 @onready var combat_scene = CombatGlobals.getCombatScene()
+
 var rounds = 0
 var turns_player = 0
 var turns_enemy = 0
@@ -32,9 +33,7 @@ func _ready():
 	tween_rounds.tween_method(setRounds, rounds, combat_scene.round_count, 0.25)
 	tween_player.tween_method(setPlayerTurns, turns_player, combat_scene.player_turn_count, 0.25)
 	tween_enemy.tween_method(setEnemyTurns, turns_enemy, combat_scene.enemy_turn_count, 0.25)
-	#tween_morale.tween_method(setMorale, morale, PlayerGlobals.current_exp+OverworldGlobals.getCurrentMap().REWARD_BANK['experience'], 0.5)
 	showLoot()
-	#await get_tree().process_frame
 	await tween_morale.finished
 	if combat_scene.round_count <= 2:
 		changeText(round_label, 'Fast Finish!')

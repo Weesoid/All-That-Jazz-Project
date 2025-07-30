@@ -141,10 +141,10 @@ func showMenu(path: String):
 	getPlayer().velocity = Vector2.ZERO
 	setPlayerInput(false)
 	if !inMenu():
-		getPlayer().player_camera.showOverlay(Color.BLACK, 0.5)
+		#getPlayer().player_camera.showOverlay(Color.BLACK, 0.5)
 		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
 		setMouseController(true)
-		getPlayer().player_camera.add_child(main_menu)
+		getPlayer().player_camera.get_node('UI').add_child(main_menu)
 		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 	else:
@@ -164,14 +164,14 @@ func setMouseController(set_to:bool):
 		if has_node('MouseController'): get_node('MouseController').queue_free()
 
 func closeMenu(menu: Control):
-	getPlayer().player_camera.hideOverlay()
+	#getPlayer().player_camera.hideOverlay()
 	setMouseController(false)
 	menu.queue_free()
-	getPlayer().player_camera.get_node('uiMenu').queue_free()
+	getPlayer().player_camera.get_node('UI').get_node('uiMenu').queue_free()
 	setPlayerInput(true)
 
 func inMenu():
-	return getPlayer().player_camera.has_node('uiMenu')
+	return getPlayer().player_camera.get_node('UI').has_node('uiMenu')
 
 func setMenuFocus(container: Container):
 	

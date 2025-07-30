@@ -18,11 +18,9 @@ class_name CombatBar
 @onready var select_target = $SelectTarget
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 var indicator_animation = "Show"
-var received_combatant: ResCombatant
 var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
-var first_turn = true
 
 func _ready():
 #	CombatGlobals.call_indicator.connect(
@@ -82,24 +80,7 @@ func updateStatusEffects():
 
 func _on_health_bar_value_changed(value):
 	animateFaderBar(previous_value, attached_combatant.stat_values['health'])
-#	if first_turn: 
-#		indicator.hide()
-#	else:
-#		indicator.show()
-#
-#	indicator_label.text = str(abs(previous_value - value))
-##	if attached_combatant.isDead():
-##		indicator_animator.play('KO')
-##		await indicator_animator.animation_finished
-##		return
-#
-#	if indicator_animation == "Crit": indicator_label.text += " CRITICAL!"
-#	indicator_animator.play(indicator_animation)
-#	first_turn = false
-#	await indicator_animator.animation_finished
 	previous_value = value
-#	indicator_animation = "Show"
-	
 
 func animateFaderBar(prev_val, value):
 	if prev_val == value:
@@ -111,20 +92,10 @@ func animateFaderBar(prev_val, value):
 		health_bar_fader.modulate = Color.RED
 	elif prev_val < value:
 		health_bar_fader.modulate = Color.GREEN
-	#health_bar_fader_animator.play("FadeIn")
-	#await health_bar_fader_animator.animation_finished
 	await get_tree().create_timer(0.25).timeout
 	var tween = create_tween().set_parallel(true)
 	tween.tween_method(setFaderBarValue, prev_val, value, 0.3)
 	tween.tween_property(health_bar_fader, 'modulate', Color.BLACK, 0.4)
-	#await tween.finished
-	#health_bar_fader.hide()
-	#if prev_val > value:
-	#	tween.tween_property(health_bar_fader, 'modulate', Color.RED, 0.0)
-	#elif prev_val < value:
-	#	tween.tween_property(health_bar_fader, 'modulate', Color.GREEN, 0.0)
-	#tween.tween_property(health_bar_fader, 'modulate', Color.TRANSPARENT, 0.6)
-	#tween.set_parallel(true)
 
 func setFaderBarValue(value):
 	health_bar_fader.value = value
