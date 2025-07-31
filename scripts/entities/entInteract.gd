@@ -7,12 +7,14 @@ extends Area2D
 @export var go_left: bool = false
 @export var show_followers: bool = true
 @export var move_followers:bool = false
+@export var cooldown: float = 2.5
+
+@onready var cooldown_timer = $Timer
 var direction:int=1
 
 func _ready():
 	if go_left:
 		direction = -1
-	#OverworldGlobals.zoomCamera(Vector2(3,3))
 	centerSelf()
 
 func centerSelf():
@@ -24,15 +26,16 @@ func interact():
 	if dialogue_resource == null:
 		OverworldGlobals.showPrompt('YOU FORGOT TO PUT IN DIALOGUE STUPID!!!!!!!!!!!!!!!')
 		return
+	if !cooldown_timer.is_stopped():
+		return
+	
 	await enter()
 	if get_parent().has_method('interact'):
 		await get_parent().interact()
 	OverworldGlobals.showDialogueBox(dialogue_resource, dialogue_start)
 	if !show_ui:
 		await DialogueManager.dialogue_ended
-	print('ended!')
 	if get_parent().has_method('exit'):
-		print('awaiting exit')
 		await get_parent().exit()
 		#print('exited!')
 	exit()
@@ -86,10 +89,11 @@ func exit():
 	if !show_followers:
 		fadeFollowers(Color.WHITE)
 	if OverworldGlobals.getPlayer().player_camera.position != OverworldGlobals.getPlayer().default_camera_pos:
-		OverworldGlobals.moveCamera('RESET',1.0)
+		OverworldGlobals.moveCamera('RESET',0.5)
 	if OverworldGlobals.getPlayer().player_camera.zoom != Vector2(1,1):
-		OverworldGlobals.zoomCamera(Vector2(1,1),1.0)
+		OverworldGlobals.zoomCamera(Vector2(1,1),0.5)
 	PlayerGlobals.setFollowersMotion(true)
+	cooldown_timer.start(cooldown)
 
 func fadeFollowers(color: Color):
 	for follower in PlayerGlobals.getActiveFollowers():

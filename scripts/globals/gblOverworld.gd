@@ -337,6 +337,7 @@ func showTransition(animation: String, player_scene:PlayerScene=null):
 		player_scene.player_camera.add_child(transition)
 	transition.get_node('AnimationPlayer').play(animation)
 	await transition.get_node('AnimationPlayer').animation_finished
+	transition.queue_free()
 
 func getCurrentMap()-> MapData:
 	return get_tree().current_scene

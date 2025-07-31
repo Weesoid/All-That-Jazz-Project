@@ -13,3 +13,6 @@ script = ExtResource("1_o5wjk")
 [node name="InteractionArea" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_yxy0b")
 debug_color = Color(0.917647, 0.996078, 0, 0.419608)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

@@ -41,7 +41,8 @@ func exit():
 	watch_mark_animator.play("RESET")
 	player.sprite.show()
 	mini_bars = []
-	await player.player_camera.hideOverlay(1.5)
+	player.player_camera.hideOverlay(1.5)
+	await get_tree().process_frame
 
 func addRestSprite(combatant: ResPlayerCombatant):
 	for sprite in rest_spots.get_children():

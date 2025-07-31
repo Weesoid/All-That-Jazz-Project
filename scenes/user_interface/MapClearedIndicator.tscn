@@ -344,6 +344,7 @@ offset_top = -72.0
 offset_right = 136.0
 offset_bottom = -39.0
 pivot_offset = Vector2(136, 16)
+mouse_filter = 0
 theme = ExtResource("2_twayu")
 theme_override_font_sizes/font_size = 24
 text = "HOSTILES CLEARED"
@@ -405,6 +406,7 @@ offset_left = -136.0
 offset_top = -17.0
 offset_right = 136.0
 offset_bottom = -1.0
+mouse_filter = 0
 alignment = 1
 
 [node name="BonusExp" type="Label" parent="."]
@@ -414,6 +416,7 @@ offset_top = -35.0
 offset_right = 160.0
 offset_bottom = -22.0
 pivot_offset = Vector2(0, 7)
+mouse_filter = 0
 theme = ExtResource("2_twayu")
 text = " +250.0"
 vertical_alignment = 1
@@ -423,6 +426,7 @@ modulate = Color(1, 1, 1, 0)
 offset_left = -136.0
 offset_right = 136.0
 offset_bottom = 16.0
+mouse_filter = 0
 alignment = 1
 
 [node name="AnimationPlayerBonus" type="AnimationPlayer" parent="."]

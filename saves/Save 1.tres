@@ -15,23 +15,23 @@
 [ext_resource type="Resource" path="res://resources/items/Rations.tres" id="11_p7esh"]
 [ext_resource type="Resource" path="res://resources/items/CritRations.tres" id="11_rnwi8"]
 
-[sub_resource type="Resource" id="Resource_jmyk6"]
+[sub_resource type="Resource" id="Resource_n70q8"]
 script = ExtResource("1_ab6ex")
-position = Vector2(-183.577, 212.933)
+position = Vector2(-81.0782, 212.933)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_w4bgl"]
+[sub_resource type="Resource" id="Resource_pje03"]
 script = ExtResource("2_atmyk")
 quests = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 quest_objectives_data = {}
 
-[sub_resource type="Resource" id="Resource_opncg"]
+[sub_resource type="Resource" id="Resource_2gc6n"]
 script = ExtResource("9_rwa83")
 team = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_c7kvi"), ExtResource("6_l4wmx")])
 map_logs = {
 "res://scenes/maps/HuntingGrounds.tscn": [],
-"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup2"],
+"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2"],
 "res://scenes/maps/SidescrollerB.tscn": [],
 "res://scenes/maps/SidescrollerC.tscn": [{
 "bonus_experience": 0,
@@ -44,7 +44,7 @@ map_logs = {
 "res://scenes/maps/_BaseMap.tscn": []
 }
 equipped_arrow = ExtResource("8_o7rix")
-currency = 9774
+currency = 2429
 team_level = 1
 current_exp = 0
 progression_data = {}
@@ -142,21 +142,21 @@ added_abilities = {}
 max_team_level = 5
 known_powers = [ExtResource("8_qke2u")]
 
-[sub_resource type="Resource" id="Resource_lclhh"]
+[sub_resource type="Resource" id="Resource_nrsyw"]
 script = ExtResource("10_6e66r")
 inventory = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("8_o7rix"), ExtResource("11_rnwi8"), ExtResource("11_p7esh")])
 crafted_items = Array[String]([])
 item_data_inventory = {
-"res://resources/items/ArrowSleeper.tres": 48,
+"res://resources/items/ArrowSleeper.tres": 47,
 "res://resources/items/CritRations.tres": 15,
 "res://resources/items/Rations.tres": 16
 }
 
 [resource]
 script = ExtResource("11_lj63m")
-name = "Save 1 - 00:12:40
+name = "Save 1 - 00:12:50
 Morale 1
 Node2D"
-playtime = 761.145
+playtime = 770.843
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_jmyk6"), SubResource("Resource_w4bgl"), SubResource("Resource_opncg"), SubResource("Resource_lclhh")]
+save_data = [SubResource("Resource_n70q8"), SubResource("Resource_pje03"), SubResource("Resource_2gc6n"), SubResource("Resource_nrsyw")]

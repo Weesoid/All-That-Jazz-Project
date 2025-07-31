@@ -41,7 +41,7 @@ _data = {
 
 [node name="PlayerPrompt" type="RichTextLabel"]
 modulate = Color(1, 1, 1, 0)
-z_index = 4096
+top_level = true
 offset_right = 85.0
 offset_bottom = 22.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
