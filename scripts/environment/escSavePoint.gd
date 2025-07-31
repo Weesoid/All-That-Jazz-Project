@@ -6,10 +6,17 @@ class_name SavePoint
 @onready var animator = $AnimationPlayer
 @onready var music = $AudioStreamPlayer
 @onready var sfx = $AudioStreamPlayer2
-
+@onready var watch_mark = $Sprite2D2
+@onready var watch_mark_animator = $Sprite2D2/AnimationPlayer
 var mini_bars = []
-#@onready var player = 
+var combatant_squad: ResEnemyCombatant
 signal done
+
+func loadCombatantSquad():
+	add_child(CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)) # Changge to current map faction later
+
+func fightCombatantSquad():
+	OverworldGlobals.changeToCombat(name)
 
 func interact():
 	OverworldGlobals.setPlayerInput(false)
@@ -31,6 +38,7 @@ func exit():
 		sprite.texture = null
 	for bar in mini_bars:
 		bar.queue_free()
+	watch_mark_animator.play("RESET")
 	player.sprite.show()
 	mini_bars = []
 	await player.player_camera.hideOverlay(1.5)
@@ -45,6 +53,8 @@ func addRestSprite(combatant: ResPlayerCombatant):
 func addCombatBar(combatant:ResPlayerCombatant,rest_texture:Sprite2D):
 	var combat_bars = preload("res://scenes/user_interface/CombatBarsMini.tscn").instantiate()
 	combat_bars.attached_combatant = combatant
+	combat_bars.rest_sprite = rest_texture
+	#combat_bars.selector.pressed.connect()
 	rest_texture.add_child(combat_bars)
 	combat_bars.hide()
 	mini_bars.append(combat_bars)
@@ -52,3 +62,19 @@ func addCombatBar(combatant:ResPlayerCombatant,rest_texture:Sprite2D):
 func setBarVisibility(set_to:bool):
 	for bar in mini_bars:
 		bar.visible = set_to
+
+func showWatchMark(combatant: ResPlayerCombatant, reverse:bool=false):
+	watch_mark.global_position = getRestSprite(combatant).global_position
+	if reverse:
+		watch_mark_animator.play_backwards("Show")
+	else:
+		watch_mark_animator.play("RESET")
+		await watch_mark_animator.animation_finished
+		watch_mark_animator.play("Show")
+
+func getRestSprite(combatant: ResPlayerCombatant):
+	for sprite in rest_spots.get_children():
+		if sprite.texture == null: continue
+		
+		if sprite.get_node('CombatBars').attached_combatant == combatant:
+			return sprite

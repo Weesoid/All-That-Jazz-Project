@@ -17,6 +17,8 @@ var progression_data: Dictionary = {} # This'll be handy later...
 var unlocked_abilities: Dictionary = {}
 var added_abilities: Dictionary = {}
 var current_stalker: ResStalkerData
+var rested:bool
+
 var overworld_stats: Dictionary = {
 	'stamina': 100.0,
 	'bow_max_draw': 5.0,

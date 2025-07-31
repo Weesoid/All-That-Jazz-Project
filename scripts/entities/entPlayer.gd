@@ -501,7 +501,7 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	can_move = !stop_move
 
 func setUIVisibility(set_visibility:bool):
-	for child in player_camera.get_children():
+	for child in player_camera.get_node('UI').get_children():
 		if child is Control: 
 			match set_visibility:
 				true: child.self_modulate.a = 1.0

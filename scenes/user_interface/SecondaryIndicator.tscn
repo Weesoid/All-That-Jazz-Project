@@ -407,7 +407,6 @@ _data = {
 [node name="SecondaryIndicator" type="Node2D"]
 z_index = 100
 position = Vector2(7.62939e-06, -7.62939e-06)
-scale = Vector2(1.25, 1.25)
 script = ExtResource("1_1fdpo")
 
 [node name="Label" type="RichTextLabel" parent="."]

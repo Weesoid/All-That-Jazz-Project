@@ -12,11 +12,12 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage = 888
+damage = 2
 can_miss = true
 can_crit = true
 bonus_stats = {
-"status_effect": "Vulnerated"
+"crit/combo": "0.99",
+"status_effect": "Stunned"
 }
 return_pos = true
 indicator_bb = ""

@@ -20,7 +20,7 @@ signal animation_done
 signal exp_updated(value: float, max_value: float)
 signal received_combatant_value(combatant: ResCombatant, caster: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
-signal manual_call_indicator_bb(combatant: ResCombatant, text: String, animation: String, bb: String)
+#signal manual_call_indicator_bb(combatant: ResCombatant, text: String, animation: String, bb: String)
 signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
 signal ability_finished
@@ -160,6 +160,7 @@ func checkConditions(conditions: Array, target: ResCombatant):
 			'combo': # ex crit/combo
 				if target.hasStatusEffect('Combo'):
 					target.getStatusEffect('Combo').removeStatusEffect()
+					CombatGlobals.manual_call_indicator.emit(target, '[img]res://images/sprites/icon_combo.png[/img][color=turquoise]COMBO!!', 'Show')
 					return true
 			'combo!': # ex. crit/combo!
 				return target.hasStatusEffect('Combo')
@@ -440,13 +441,11 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		status_effect = effect.duplicate()
 	var icon_path = str(status_effect.texture.get_path())
 	if !guaranteed and (randomRoll(target.stat_values['resist']) and status_effect.resistable):
-		manual_call_indicator.emit(target, '[img]'+icon_path+'[/img] Resisted!', 'Resist')
+		manual_call_indicator.emit(target, '[color=red]X [img]'+icon_path+'[/img]', 'Resist')
 		return
 	if status_effect.resistable:
-		print(status_effect.name, ' is resistable! So removing!')
 		target.removeTokens(ResStatusEffect.RemoveType.GET_STATUSED)
-	else:
-		print(status_effect, ' is NOT resistable!!!!!!!!!')
+	
 	if !target.getStatusEffectNames().has(status_effect.name):
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
@@ -456,8 +455,8 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		rankUpStatusEffect(target, status_effect)
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
-	else:
-		manual_call_indicator.emit(target, 'Applied [img]'+icon_path+'[/img]!', 'Show')
+	if target.status_effects.has(status_effect): # Because some effects get removed on apply!
+		manual_call_indicator.emit(target, '[color=yellow]+ [img]'+icon_path+'[/img]', 'Show')
 	
 	if (!guaranteed and !CombatGlobals.randomRoll(0.15+target.stat_values['resist'])) and (status_effect.lingers and target is ResPlayerCombatant and !target.lingering_effects.has(status_effect.name)):
 		manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.name, 'Lingering')
@@ -569,7 +568,11 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	squad.enemy_pool = squad.enemy_pool.filter(func(combatant): return isWithinPlayerTier(combatant))
 	squad.combatant_squad.resize(squad_size)
 	squad.pickRandomEnemies()
-	patroller.add_child(squad)
+	
+	if patroller != null:
+		patroller.add_child(squad)
+	else:
+		return squad
 
 func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties: Dictionary):
 	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()

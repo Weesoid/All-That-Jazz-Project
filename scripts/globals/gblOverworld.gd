@@ -5,7 +5,7 @@ enum PlayerType {
 	ARCHIE
 }
 var entering_combat:bool=false
-var player_type: PlayerType = PlayerType.ARCHIE
+var player_type: PlayerType = PlayerType.WILLIS
 var delayed_rewards: Dictionary
 var player_follower_count = 0
 
@@ -207,7 +207,7 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_descri
 	
 	if !inMenu():
 		setMouseController(true)
-		getPlayer().player_camera.add_child(main_menu)
+		getPlayer().player_camera.get_node('UI').add_child(main_menu)
 		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 		#show_player_interaction = false
@@ -235,6 +235,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		var label = Label.new()
 		label.text = str(item.stack)
 		label.theme = preload("res://design/OutlinedLabel.tres")
+		label.name = 'Count'
 		button.add_child(label)
 	
 	if value_modifier != 0.0:
@@ -273,12 +274,6 @@ func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbi
 	var button: CustomAbilityButton = preload("res://scenes/user_interface/AbilityButton.tscn").instantiate()
 	button.ability = ability
 	button.outside_combat = large_icon
-	#button.custom_minimum_size.x = 32
-	#button.custom_minimum_size.y = 32
-	#button.expand_icon = true
-	#button.icon = ability.icon
-	#button.tooltip_text = ability.name
-	#button.initialize()
 	return button
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
@@ -675,6 +670,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	if combat_results != 0:
 		await get_tree().process_frame
 		setPlayerInput(true)
+	print('emiting EXIT!')
 	combat_exited.emit()
 	entering_combat=false
 	#if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')
@@ -741,6 +737,30 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	party_damaged.emit()
 	var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
 	OverworldGlobals.getPlayer().player_camera.get_node('Marker2D').add_child(pop_up)
+
+func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:bool=true,lethal:bool=false):
+	if combatant.isDead():
+		return
+	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
+	if use_damage_formula:
+		damage = int(CombatGlobals.useDamageFormula(combatant, damage))
+	
+	combatant.stat_values['health'] -= damage
+	if !lethal and combatant.isDead():
+		combatant.stat_values['health'] = 1
+	if combatant.isDead():
+		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
+	CombatGlobals.manual_call_indicator.emit(combatant, '[color=red]'+str(damage), 'Damage')
+	playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
+
+func addLingerEffect(combatant: ResCombatant, effect):
+	if effect is ResStatusEffect:
+		effect = effect.resource_path.get_file().replace('.tres','')
+	
+	if combatant.lingering_effects.has(effect):
+		return
+	else:
+		combatant.lingering_effects.append(effect)
 
 func isPlayerAlive()-> bool:
 	for combatant in getCombatantSquad('Player'):

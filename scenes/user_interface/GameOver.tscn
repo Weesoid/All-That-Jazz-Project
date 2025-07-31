@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dpdurcfiprjbj" path="res://scenes/user_interface/Saves.tscn" id="1_1gutg"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameOver.gd" id="1_gbj7h"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_41vgo"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_41vgo"]
 [ext_resource type="Theme" uid="uid://cuu2oxc3xqlvt" path="res://design/SideButtonHighlights.tres" id="4_ottt2"]
 [ext_resource type="AudioStream" uid="uid://cve58fsvqf55r" path="res://audio/sounds/252198__pepingrillin__rocket_impact.ogg" id="5_6u5k5"]
 

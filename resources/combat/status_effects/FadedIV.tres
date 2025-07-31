@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("3_kgjj4")
+auto_name = false
 name = "Faded IV"
 description = ""
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])

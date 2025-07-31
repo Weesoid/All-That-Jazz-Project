@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="ResCampItem" load_steps=5 format=3 uid="uid://b0qa7cs8isk56"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResItemCamp.gd" id="1_fm6vq"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="1_ysrfq"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="2_ev6bp"]
+
+[sub_resource type="Resource" id="Resource_w5uhc"]
+script = ExtResource("1_ysrfq")
+heal = 20
+use_multiplier = true
+cast_animation = ""
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[resource]
+script = ExtResource("1_fm6vq")
+effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_w5uhc")])
+max_stack = 16
+barter_item = false
+auto_name = true
+name = "Rations"
+icon = ExtResource("2_ev6bp")
+description = ""
+value = 20
+mandatory = false
+parent_item = ""

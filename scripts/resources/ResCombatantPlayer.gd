@@ -71,7 +71,7 @@ func updateCombatant(save_data: PlayerSaveData):
 		ability_set.erase(ability)
 	
 	# Debug code.!
-	#var percent_health = float(save_data.combatant_save_data[self][2]['health']) / float(save_data.combatant_save_data[self][3]['health'])
+	var percent_health = float(save_data.combatant_save_data[self][2]['health']) / float(save_data.combatant_save_data[self][3]['health'])
 #	if name == 'Willis Flynn':
 #		print('======= ', name, ' =======')
 #		print('BaseHealth: ', stat_values['health'])
@@ -79,7 +79,7 @@ func updateCombatant(save_data: PlayerSaveData):
 #		print('% left: ', percent_health)
 #		print(base_stat_values['health'], ' * ', percent_health, ' = ', base_stat_values['health'] * percent_health)
 #		print('Floored: ', floor(base_stat_values['health'] * percent_health))
-	stat_values['health'] = floor(base_stat_values['health']) #* percent_health)
+	stat_values['health'] = floor(base_stat_values['health'] * percent_health)
 
 func act():
 	player_turn.emit()

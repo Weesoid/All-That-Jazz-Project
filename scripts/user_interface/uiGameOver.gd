@@ -33,13 +33,8 @@ func _ready():
 func _on_yes_pressed():
 	buttons.hide()
 	penalty.hide()
-	if FileAccess.file_exists("res://saves/%s.tres" % PlayerGlobals.save_name):
-		OverworldGlobals.changeMap(saved_game.current_map_path, '0,0,0', 'SavePoint', true, true)
-		PlayerGlobals.healCombatants(0.25,false)
-#		for combatant in OverworldGlobals.getCombatantSquad('Player'):
-#			combatant.lingering_effects.append('Faded I')
-		PlayerGlobals.overworld_stats['stamina'] = 100.0
-		OverworldGlobals.getPlayer().setUIVisibility(true)
+	#if FileAccess.file_exists("res://saves/%s.tres" % PlayerGlobals.save_name):
+	SaveLoadGlobals.loadSaveFile()
 
 func _on_no_pressed():
 	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")

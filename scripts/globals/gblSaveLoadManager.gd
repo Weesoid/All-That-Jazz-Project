@@ -65,9 +65,7 @@ func loadGame(saved_game: SavedGame):
 	OverworldGlobals.getCurrentMap().show()
 
 func loadSaveFile(save_name: String = PlayerGlobals.save_name):
-	return load("res://saves/%s.tres" % save_name)
-
-
+	loadGame(load("res://saves/%s.tres" % save_name))
 
 func resetVariables():
 	is_loading = false

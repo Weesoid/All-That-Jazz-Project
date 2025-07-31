@@ -18,7 +18,7 @@ func _process(_delta):
 				audio_player.play()
 			
 			animatePrompt(1)
-			await  animator.animation_finished
+			await animator.animation_finished
 			prompts.erase(key)
 
 func animatePrompt(action: int):

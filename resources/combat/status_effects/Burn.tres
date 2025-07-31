@@ -15,7 +15,7 @@ crit_chance = -1.0
 variation = -1.0
 trigger_on_hits = false
 sound_path = ""
-indicator_bb = ""
+indicator_bb = "[color=orange_red]"
 apply_once = false
 message = ""
 sound_effect = ""

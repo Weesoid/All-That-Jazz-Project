@@ -31,8 +31,8 @@ stat_values = {
 "grit": 0.0,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 50,
-"hustle": 66,
+"health": 20,
+"hustle": 1,
 "resist": 0.05
 }
 scale_stats = {

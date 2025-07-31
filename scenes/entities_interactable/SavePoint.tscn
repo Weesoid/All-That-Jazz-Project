@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://8aufe1ycaau4"]
+[gd_scene load_steps=12 format=3 uid="uid://8aufe1ycaau4"]
 
 [ext_resource type="Texture2D" uid="uid://b3mr0w65get7p" path="res://images/animations/campfire.png" id="1_f1dl0"]
 [ext_resource type="Script" path="res://scripts/environment/escSavePoint.gd" id="1_ve4xx"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
 [ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
+[ext_resource type="Texture2D" uid="uid://bkybrnpuy5xws" path="res://images/sprites/watch_mark.png" id="5_yiib7"]
 
 [sub_resource type="Animation" id="Animation_yegji"]
 resource_name = "Lit"
@@ -41,6 +42,67 @@ tracks/0/keys = {
 _data = {
 "Lit": SubResource("Animation_yegji"),
 "RESET": SubResource("Animation_c4qki")
+}
+
+[sub_resource type="Animation" id="Animation_2w112"]
+resource_name = "Show"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1.5, 1.5), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_7wm1a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2sgs6"]
+_data = {
+"RESET": SubResource("Animation_7wm1a"),
+"Show": SubResource("Animation_2w112")
 }
 
 [node name="SavePoint" type="Node2D"]
@@ -82,3 +144,15 @@ show_followers = false
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(0, 8)
+texture = ExtResource("5_yiib7")
+offset = Vector2(0, -30)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D2"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_2sgs6")
+}

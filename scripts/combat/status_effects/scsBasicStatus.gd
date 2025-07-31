@@ -41,8 +41,6 @@ static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffec
 		var message = ''
 		if effect.message != '' and avoidMessageSpam(status_effect):
 			message = effect.message
-		elif avoidMessageSpam(status_effect):
-			message = status_effect.name
 		if message != '':
 			CombatGlobals.manual_call_indicator.emit(status_effect.afflicted_combatant, message, 'Show')
 		

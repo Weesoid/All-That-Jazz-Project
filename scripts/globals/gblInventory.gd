@@ -136,6 +136,9 @@ func getEquippedWeapons()-> Array:
 			out.append(combatant.equipped_weapon)
 	return out
 
+func getNonMandatoryItems():
+	return inventory.filter(func(item): return !item.mandatory)
+
 func getItem(item):
 	if item is ResItem:
 		return inventory[inventory.find(item)]

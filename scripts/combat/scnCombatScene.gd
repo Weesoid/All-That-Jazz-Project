@@ -98,6 +98,7 @@ func _ready():
 	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
+	#OverworldGlobals.getPlayer().player_camera.hideOverlay(1.0)
 	
 	escape_button.disabled = !can_escape
 	transition_scene.visible = true

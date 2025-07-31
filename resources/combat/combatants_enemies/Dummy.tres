@@ -26,7 +26,7 @@ stat_values = {
 "heal_mult": 1.0,
 "health": 200,
 "hustle": 1,
-"resist": 0.05
+"resist": 0.5
 }
 scale_stats = {
 "accuracy": false,

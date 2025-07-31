@@ -100,7 +100,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 					ability.current_effect.do_not_return_pos = true
 		
 		if (target.combatant_resource.hasStatusEffect('Combo') and ability.current_effect.is_combo_effect) and !ability.current_effect.plant_self_on_combo:
-			CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
+			#CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
 			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
 	
 	elif ability.current_effect is ResCustomDamageEffect:

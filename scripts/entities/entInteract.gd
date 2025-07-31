@@ -53,7 +53,7 @@ func  enter():
 	#OverworldGlobals.getPlayer().playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(3, 3), 0.5)
 	OverworldGlobals.setPlayerInput(false)
-	OverworldGlobals.getPlayer().setUIVisibility(false)
+	#OverworldGlobals.getPlayer().setUIVisibility(false)
 	OverworldGlobals.getPlayer().sprinting = false
 	OverworldGlobals.setMouseController(true)
 	#OverworldGlobals.setMouseController(true)
@@ -76,9 +76,9 @@ func  enter():
 func exit():
 	# Enable inputs
 	OverworldGlobals.getPlayer().player_camera.cinematic_bars.visible = false
-	OverworldGlobals.getPlayer().setUIVisibility(true)
+	#OverworldGlobals.getPlayer().setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
-		print('DBox setting to true!')
+		#print('DBox setting to true!')
 		if !OverworldGlobals.inCombat(): OverworldGlobals.setMouseController(false)
 		OverworldGlobals.setPlayerInput(true)
 	

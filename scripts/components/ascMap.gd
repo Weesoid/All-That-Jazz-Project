@@ -32,6 +32,8 @@ func _ready():
 	done_loading_map = true
 	for group in getPatrolGroups():
 		group.spawn()
+	for save_point in getSavePoints():
+		save_point.loadCombatantSquad()
 
 func getLogMapEvent():
 	for log in PlayerGlobals.map_logs[scene_file_path]:
@@ -82,3 +84,6 @@ func checkGiveClearRewards():
 func clearPatrollers():
 	for group in getPatrolGroups():
 		PlayerGlobals.addMapLog(scene_file_path, group.name)
+
+func getSavePoints():
+	return  get_children().filter(func(child): return child is SavePoint)

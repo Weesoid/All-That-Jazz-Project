@@ -16,7 +16,7 @@ damage = 2
 can_miss = true
 can_crit = true
 bonus_stats = {
-"status_effect": "Burn"
+"status_effect": "Combo"
 }
 return_pos = true
 indicator_bb = ""

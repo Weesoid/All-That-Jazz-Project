@@ -80,6 +80,7 @@ func giveRewards(ignore_stalker:bool=false):
 	map_clear_indicator.showAnimation(true, self)
 	
 	# Actual giving of rewards
+	PlayerGlobals.rested = false
 	PlayerGlobals.addExperience(reward_bank['experience'])
 	InventoryGlobals.giveItemDict(reward_bank['loot'])
 	

@@ -72,7 +72,7 @@ func createSaveButton(save_name: String):
 func slotPressed(save_name: String, button: Button):
 	match mode:
 		Modes.SAVE:
-			PlayerGlobals.healCombatants()
+			#PlayerGlobals.healCombatants()
 			saveGame(save_name, button)
 			OverworldGlobals.playSound("542003__rob_marion__gasp_lock-and-load.ogg")
 			queue_free()

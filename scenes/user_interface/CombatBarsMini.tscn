@@ -1,6 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://b57tm5xnp0h5c"]
+[gd_scene load_steps=11 format=3 uid="uid://b57tm5xnp0h5c"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBarsMini.gd" id="1_0kb5o"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_ro8a5"]
+[ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="3_4eunh"]
 [ext_resource type="PackedScene" uid="uid://yuje0oodg6y2" path="res://scenes/user_interface/Indicator.tscn" id="4_mv70c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diu1g"]
@@ -105,14 +107,25 @@ show_percentage = false
 [node name="PermaStatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
 layout_mode = 2
 offset_left = -6.0
-offset_top = 3.0
+offset_top = 4.0
 offset_right = 24.0
-offset_bottom = 35.0
+offset_bottom = 36.0
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
 alignment = 1
+
+[node name="Selector" parent="." instance=ExtResource("2_ro8a5")]
+offset_left = -15.0
+offset_top = -14.0
+offset_right = 15.0
+offset_bottom = 34.0
+theme = ExtResource("3_4eunh")
 
 [node name="Indicator" parent="." instance=ExtResource("4_mv70c")]
 position = Vector2(0, 3.8147e-06)
 
 [node name="Marker2D" type="Marker2D" parent="."]
+
+[connection signal="focus_entered" from="Selector" to="." method="highlightCombatant"]
+[connection signal="mouse_entered" from="Selector" to="." method="highlightCombatant"]
+[connection signal="mouse_exited" from="Selector" to="." method="stopHighlight"]
