@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://dnsry30h6o51x"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAmountSlider.gd" id="1_6n2f6"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_gopdp"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_gopdp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_andcd"]
 content_margin_left = 8.0
@@ -16,15 +16,10 @@ border_width_bottom = 2
 
 [node name="AmountSlider" type="Control"]
 layout_mode = 3
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = -28.0
-offset_bottom = -28.0
 grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("1_6n2f6")
 
 [node name="BackgroundFade" type="ColorRect" parent="."]
@@ -34,10 +29,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -560.0
-offset_top = -304.0
-offset_right = 560.0
-offset_bottom = 304.0
+offset_left = -400.0
+offset_top = -72.0
+offset_right = 720.0
+offset_bottom = 536.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.490196)
@@ -49,10 +44,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -188.0
-offset_top = -53.0
-offset_right = 188.0
-offset_bottom = 53.0
+offset_left = 32.0
+offset_top = 208.0
+offset_right = 408.0
+offset_bottom = 314.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_andcd")

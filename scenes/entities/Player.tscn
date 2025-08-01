@@ -2696,6 +2696,10 @@ script = ExtResource("1_ivxm1")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
 
+[node name="ClimbCooldown" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
@@ -2816,8 +2820,6 @@ parameters/Walk/blend_position = Vector2(-0.0708502, 0.086921)
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 max_polyphony = 8
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-
-[node name="CircleFilled" type="Sprite2D" parent="."]
+[node name="OriginPoint" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("14_w0217")

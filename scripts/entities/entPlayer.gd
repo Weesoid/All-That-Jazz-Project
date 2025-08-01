@@ -17,6 +17,7 @@ class_name PlayerScene
 @onready var drop_detector: Area2D = $PlayerDirection/Area2D
 @onready var animation_sprite = $AnimationSprite
 @onready var collision_shape: CollisionShape2D = $PlayerCollision
+@onready var climb_cooldown: Timer = $ClimbCooldown
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -61,14 +62,17 @@ func _ready():
 #	if !OverworldGlobals.getCurrentMap().SAFE:
 #		#print('pluh')
 #		Input.action_press('ui_bow')
+	
+	OverworldGlobals.player = self
 
 func _process(_delta):
 	updateAnimationParameters()
 	animateInteract()
 
+func getPosOffset():
+	return global_position+sprite.offset
+
 func jump(jump_velocity:float=-200.0, x_velocity:float=0.0):
-	#Input.action_release('ui_move_left') # DUCT TAPE
-	#Input.action_release('ui_move_right') # DUCT TAPE
 	if climbing:
 		toggleClimbAnimation(false)
 	velocity.y = jump_velocity

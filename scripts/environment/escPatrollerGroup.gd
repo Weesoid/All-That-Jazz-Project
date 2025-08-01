@@ -29,7 +29,7 @@ func spawnPatrollers():
 		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
 			continue
 		var patroller: GenericPatroller
-		if CombatGlobals.randomRoll(0.75):
+		if CombatGlobals.randomRoll(-0.75):
 			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, 0)
 		else:
 			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, -1)

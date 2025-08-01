@@ -1694,6 +1694,7 @@ offset_left = -268.0
 offset_top = -130.0
 offset_right = 278.0
 offset_bottom = 135.0
+mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CombatCamera/Flasher"]

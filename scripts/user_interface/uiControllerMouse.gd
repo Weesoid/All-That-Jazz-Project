@@ -43,6 +43,5 @@ func _process(delta):
 func _exit_tree():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
-
 func _on_fade_out_timer_timeout():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)

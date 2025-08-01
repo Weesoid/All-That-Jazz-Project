@@ -10,6 +10,9 @@ func doAction():
 	elif direction == -1:
 		line_of_sight.rotation_degrees = 90
 		sprite.flip_h = true
+	if !isSameYLevel():
+		line_of_sight.look_at(OverworldGlobals.getPlayer().global_position+OverworldGlobals.getPlayer().sprite.offset+Vector2(0,-16))
+		line_of_sight.rotation -= PI/2
 	velocity.x = move_toward(velocity.x, 0, speed)
 	action_cooldown.start()
 	var shot = projectile.getProjectile()
@@ -21,10 +24,10 @@ func doAction():
 
 func chase():
 	# check y
-	var y_pos = snappedf(shape.global_position.y,100.0)
-	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
-	if y_pos != y_pos_player:
-		updateState(State.IDLE)
+#	var y_pos = snappedf(shape.global_position.y,100.0)
+#	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
+#	if y_pos != y_pos_player:
+#		updateState(State.IDLE)
 	
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
 	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position)

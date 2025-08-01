@@ -112,9 +112,7 @@ func patrol():
 
 func chase():
 	# check y
-	var y_pos = snappedf(shape.global_position.y,100.0)
-	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
-	if y_pos != y_pos_player:
+	if !isSameYLevel():
 		updateState(State.IDLE)
 	
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
@@ -126,6 +124,11 @@ func chase():
 		# chase!
 		direction = (flat_pos.direction_to(flat_palyer_pos)).x
 		velocity.x = (direction * speed) * chase_speed_multiplier
+
+func isSameYLevel():
+	var y_pos = snappedf(shape.global_position.y,100.0)
+	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0) 
+	return is_equal_approx(y_pos, y_pos_player)
 
 func stun():
 	velocity = Vector2.ZERO

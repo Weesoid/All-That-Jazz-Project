@@ -8,6 +8,7 @@ var entering_combat:bool=false
 var player_type: PlayerType = PlayerType.WILLIS
 var delayed_rewards: Dictionary
 var player_follower_count = 0
+var player: PlayerScene
 
 signal update_patroller_modes(mode:int)
 signal party_damaged

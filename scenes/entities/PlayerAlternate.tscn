@@ -2706,6 +2706,10 @@ script = ExtResource("1_cw77a")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_vhjle")]
 
+[node name="ClimbCooldown" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1, -20)
 texture = ExtResource("4_ybhti")

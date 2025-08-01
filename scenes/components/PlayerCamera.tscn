@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://crqkcqks48t2k"]
+[gd_scene load_steps=10 format=3 uid="uid://crqkcqks48t2k"]
 
 [ext_resource type="Script" path="res://scripts/components/ascPlayerCamera.gd" id="1_1hnbr"]
 [ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="2_wxyfx"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="3_e80uh"]
 [ext_resource type="PackedScene" uid="uid://j1akjh3lc0v" path="res://scenes/user_interface/Quiver.tscn" id="4_2483m"]
+[ext_resource type="Texture2D" uid="uid://141agyx4y73o" path="res://images/sprites/icon_bolt.png" id="4_aqqua"]
 [ext_resource type="Texture2D" uid="uid://b2tqyyse1shv2" path="res://images/textures/cinematic_spotlight.png" id="5_ciqm1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_846aw"]
@@ -73,16 +74,23 @@ mouse_filter = 0
 alignment = 2
 
 [node name="StaminaBar" type="ProgressBar" parent="UI"]
-offset_left = 296.0
-offset_top = 214.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = 264.0
+offset_top = 328.0
+offset_right = 376.0
+offset_bottom = 335.0
 theme_override_styles/background = SubResource("StyleBoxFlat_846aw")
 theme_override_styles/fill = SubResource("StyleBoxFlat_to3hk")
 value = 50.0
-fill_mode = 3
 show_percentage = false
 script = ExtResource("3_e80uh")
+
+[node name="TextureRect" type="TextureRect" parent="UI/StaminaBar"]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -6.0
+offset_right = 7.0
+offset_bottom = 10.0
+texture = ExtResource("4_aqqua")
 
 [node name="Ammo" type="Label" parent="UI"]
 offset_left = 17.0
@@ -113,7 +121,7 @@ offset_bottom = 200.0
 mouse_filter = 0
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+[node name="PowerReference" type="VBoxContainer" parent="UI"]
 offset_left = 464.0
 offset_top = 32.0
 offset_right = 603.0
