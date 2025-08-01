@@ -14,5 +14,4 @@ texture = ExtResource("1_ew7ch")
 [node name="InteractComponent" parent="." instance=ExtResource("2_ln8c3")]
 position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_x3jmw")
-
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+show_followers = false

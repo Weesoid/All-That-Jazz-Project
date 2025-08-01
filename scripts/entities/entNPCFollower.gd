@@ -15,6 +15,7 @@ func _ready():
 	add_collision_exception_with(OverworldGlobals.player)
 	OverworldGlobals.player.jumped.connect(jump)
 	OverworldGlobals.player.phased.connect(phase)
+	OverworldGlobals.player.dived.connect(dive)
 
 func jump(jump_velocity):
 	if !OverworldGlobals.player.is_on_floor() or speed_multiplier < 1.1:
@@ -26,6 +27,18 @@ func jump(jump_velocity):
 	global_position = OverworldGlobals.player.global_position+Vector2(0,-32)
 	await get_tree().create_timer(0.1*follow_index).timeout
 	velocity.y = jump_velocity
+
+func dive():
+	fadeInOut()
+	var direction = int(OverworldGlobals.player.player_direction.rotation_degrees)
+	global_position = OverworldGlobals.player.getPosOffset()
+	velocity.y = -100
+	
+	if direction == 90:
+		sprite.flip_h = false
+	elif direction == -90:
+		sprite.flip_h = true
+	animator.play('Dive')
 
 func phase():
 	if speed_multiplier < 1.1:
@@ -60,9 +73,17 @@ func _physics_process(delta):
 #		queue_free()
 	if not is_on_floor():
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
-	
 	if speed_multiplier < 1.0:
 		return
+	if OverworldGlobals.player.sprinting:
+		animator.speed_scale = 2.0
+	else:
+		animator.speed_scale = 1.0
+	
+	if OverworldGlobals.player.diving and not is_on_floor():
+		velocity.x = OverworldGlobals.player.direction.x * 500.0
+	elif OverworldGlobals.player.diving and is_on_floor():
+		velocity.x = move_toward(OverworldGlobals.player.velocity.x, 0, 500.0)
 	
 	if OverworldGlobals.player.climbing:
 		fade(Color.TRANSPARENT)
@@ -95,6 +116,9 @@ func getFollowPoint(offset:Vector2=Vector2(1,0)):
 	return OverworldGlobals.player.global_position+(Vector2((follow_index*follow_offset),0)*offset)
 
 func updateSprite():
+	if OverworldGlobals.player.diving:
+		return
+	
 	var player_direction: int = OverworldGlobals.player.player_direction.rotation_degrees
 	
 	if player_direction == 90:
@@ -107,5 +131,8 @@ func updateSprite():
 		animator.play('Walk_Up')
 
 func stopWalkAnimation():
+	if !animator.current_animation.contains('Walk'):
+		return
+	
 	animator.seek(1, true)
 	animator.pause()

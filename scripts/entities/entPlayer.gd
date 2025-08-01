@@ -41,6 +41,7 @@ var default_camera_pos: Vector2
 var diving = false
 
 signal jumped(jump_velocity)
+signal dived
 signal phased
 
 func _ready():
@@ -72,16 +73,16 @@ func _process(_delta):
 func getPosOffset():
 	return global_position+sprite.offset
 
-func jump(jump_velocity:float=-200.0, x_velocity:float=0.0):
+func jump(jump_velocity:float=-200.0):
 	if climbing:
 		toggleClimbAnimation(false)
 	velocity.y = jump_velocity
-	#velocity.x += x_velocity*direction.x
 	if direction.x > 0:
 		animation_sprite.flip_h = true
 	else:
 		animation_sprite.flip_h = false
-	jumped.emit(jump_velocity)
+	if !diving:
+		jumped.emit(jump_velocity)
 
 func phase():
 	phased.emit()
@@ -90,6 +91,7 @@ func phase():
 	set_collision_mask_value(1, true)
 
 func dodge():
+	print('dodgge')
 	#phased.emit()
 	collision_shape.set_deferred('disabled', true)
 	await get_tree().create_timer(0.2).timeout
@@ -128,6 +130,8 @@ func _physics_process(delta):
 		direction = direction.normalized()
 		
 		if Input.is_action_just_pressed("ui_accept") and PlayerGlobals.overworld_stats['stamina'] >= 20 and canDive():
+			dived.emit()
+			#print(velocity)
 			PlayerGlobals.overworld_stats['stamina'] -= 20.0
 			diving=true
 			jump(-100.0)
@@ -201,7 +205,7 @@ func isMovementAllowed():
 	return can_move and is_processing_input() and isMobile()
 
 func canDive():
-	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0
+	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0 #and !OverworldGlobals.inMenu()
 
 func _input(_event):
 	# Power handling

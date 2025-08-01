@@ -37,9 +37,8 @@ func interact():
 		await DialogueManager.dialogue_ended
 	if get_parent().has_method('exit'):
 		await get_parent().exit()
-		#print('exited!')
 	exit()
-
+	
 func moveFollowers():
 	for follower in PlayerGlobals.getActiveFollowers():
 		OverworldGlobals.moveEntity(str(follower.name), follower.getFollowPoint(Vector2(direction,0)))
@@ -61,7 +60,6 @@ func  enter():
 	OverworldGlobals.setMouseController(true)
 	#OverworldGlobals.setMouseController(true)
 	PlayerGlobals.setFollowersMotion(false)
-	OverworldGlobals.player.sprinting = false
 	
 	# Move player
 	if move_player:

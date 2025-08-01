@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://dnbjip7cpkmvx"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://dnbjip7cpkmvx"]
 
 [ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="2_vmsk2"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_wn1q6"]
 [ext_resource type="Resource" uid="uid://dvm5ick2m1o5b" path="res://resources/combat/status_effects/Riposte.tres" id="3_brbkc"]
 [ext_resource type="PackedScene" uid="uid://bnlcib44lcjpr" path="res://scenes/combatants/Willis.tscn" id="3_f2l1f"]
+[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/animations/willis_follower.png" id="3_qv2st"]
 [ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/sprites/rest_willis.png" id="5_clolb"]
 
 [resource]
@@ -15,6 +16,7 @@ base_temperment = {
 "primary": [],
 "secondary": []
 }
+follower_texture = ExtResource("3_qv2st")
 mandatory = true
 rest_sprite = ExtResource("5_clolb")
 stat_multiplier = 0.01

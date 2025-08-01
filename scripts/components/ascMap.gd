@@ -71,7 +71,6 @@ func checkGiveClearRewards():
 	if getClearState() != PatrollerClearState.FULL_CLEAR:
 		return
 	
-	print('zoinks!')
 	if events.has('reward_item'):
 		InventoryGlobals.addItemResource(events['reward_item'])
 	if events.has('bonus_loot'):

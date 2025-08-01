@@ -101,6 +101,7 @@ func updateCharacterView(member: ResPlayerCombatant):
 	if character_scene:
 		character_scene.scale = Vector2(2,2)
 		character_view.add_child(character_scene)
+		character_scene.collision.set_deferred('disabled', true)
 		character_scene.combatant_resource.getAnimator().play('RESET')
 		if !changing_formation:
 			var cast_anim = ['Cast_Misc', 'Cast_Melee', 'Cast_Ranged'].pick_random()

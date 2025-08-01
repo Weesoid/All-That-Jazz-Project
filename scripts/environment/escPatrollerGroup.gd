@@ -5,9 +5,12 @@ class_name PatrollerGroup
 @export var max_spawns: int = 4
 @export var destroy_objectives_chance:float= 0.0 # Chance to spawn destroyable objectives on patroller respawn.
 @export var destroy_objectives: bool = false
+@export var enabled:bool=true
 var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
 
 func spawn():
+	if !enabled:
+		return
 	if !isCleared():
 		destroy_objectives = rollDestroyObjectives()
 		if canSpawnDestructibleObjectives(): 

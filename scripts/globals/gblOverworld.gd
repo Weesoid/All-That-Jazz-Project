@@ -5,7 +5,7 @@ enum PlayerType {
 	ARCHIE
 }
 var entering_combat:bool=false
-var player_type: PlayerType = PlayerType.WILLIS
+var player_type: PlayerType = PlayerType.ARCHIE
 var delayed_rewards: Dictionary
 var player_follower_count = 0
 var player: PlayerScene
@@ -291,10 +291,11 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	get_tree().change_scene_to_file(map_name_path)
 	await get_tree().process_frame
 	
-	if getCurrentMap().has_node('Player'): 
-		getCurrentMap().hide()
-		player.loadData()
-	var player
+#	if getCurrentMap().has_node('Player'): 
+#		getCurrentMap().hide()
+#		getCurrentMap().get_node('Player').queue_free()
+		#player.loadData()
+	#var player
 	match player_type:
 		PlayerType.WILLIS: player = load("res://scenes/entities/Player.tscn").instantiate()
 		PlayerType.ARCHIE: player = load("res://scenes/entities/PlayerAlternate.tscn").instantiate()
@@ -311,7 +312,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
 #	if OverworldGlobals.getCurrentMap().SAFE:
-#		OverworldGlobals.loadFollowers()
+	OverworldGlobals.loadFollowers()
 	if save:
 		SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	getCurrentMap().show()
@@ -412,14 +413,14 @@ func shakeCamera(strength=30.0, speed=20.0):
 # OVERWORLD FUNCTIONS AND UTILITIES
 #********************************************************************************
 func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game_states: Array = []) -> void:
-	var ExampleBalloonScene = load("res://scenes/user_interface/DialogueBox.tscn")
+	var ExampleBalloonScene = load("res://scenes/user_interface/DialogueBalloon.tscn")
 	var balloon: Node = ExampleBalloonScene.instantiate()
 	
 	if get_parent().has_node('CombatScene'):
 		get_parent().get_node('CombatScene').add_child(balloon)
 	else:
 		get_tree().current_scene.add_child(balloon)
-	
+	#balloon.global_position = OverworldGlobals.player.getPosOffset()+Vector2(margin.size.x/2,-80)
 	balloon.start(resource, title, extra_game_states)
 
 func loadFollowers():
@@ -430,12 +431,14 @@ func loadFollowers():
 	for combatant in PlayerGlobals.team:
 		if getCombatantSquad('Player').has(combatant) and combatant.follower_texture != null:
 			player_follower_count += 1
-			var follower_scene = load("res://scenes/entities/mobs/Follower.tscn").instantiate()
+			var follower_scene: Node2D = load("res://scenes/entities/mobs/Follower.tscn").instantiate()
 			follower_scene.texture = combatant.follower_texture
 			follower_scene.host_combatant = combatant
 			follower_scene.follow_index = player_follower_count
 			follower_scene.global_position = player.global_position+Vector2(0, -32)
+			#follower_scene.sprite.offset.y = -24 
 			getCurrentMap().add_child.call_deferred(follower_scene)
+			#await follower_scene.tree_entered
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 	var player = AudioStreamPlayer.new()
