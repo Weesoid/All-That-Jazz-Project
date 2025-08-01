@@ -11,9 +11,9 @@ func _ready():
 	var quarter_time = stalker_data.spawn_time*0.25
 	OverworldGlobals.combat_exited.connect(reactivatePatroller)
 	if stalker_data.flash_follow:
-		OverworldGlobals.getPlayer().player_camera.add_child(flash)
+		OverworldGlobals.player.player_camera.add_child(flash)
 	else:
-		flash.global_position = OverworldGlobals.getPlayer().global_position
+		flash.global_position = OverworldGlobals.player.global_position
 		OverworldGlobals.getCurrentMap().add_child(flash)
 	await get_tree().create_timer(stalker_data.spawn_time+randf_range(-quarter_time,quarter_time)).timeout
 	
@@ -24,12 +24,12 @@ func _ready():
 	PlayerGlobals.CLEARED_MAPS[OverworldGlobals.getCurrentMap().scene_file_path]['cleared'] = false
 	quarter_time = stalker_data.spawn_delay*0.25
 	if stalker_data.intro_follow:
-		await OverworldGlobals.showQuickAnimation(stalker_data.stalker_intro, OverworldGlobals.getPlayer(),'')
+		await OverworldGlobals.showQuickAnimation(stalker_data.stalker_intro, OverworldGlobals.player,'')
 	else:
 		await OverworldGlobals.showQuickAnimation(stalker_data.stalker_intro, 'Player','')
 	await get_tree().create_timer(stalker_data.spawn_delay+randf_range(-quarter_time,quarter_time)).timeout
 	OverworldGlobals.setPlayerInput(false)
-	var player_pos=OverworldGlobals.getPlayer().global_position+OverworldGlobals.getPlayer().sprite.offset
+	var player_pos=OverworldGlobals.player.global_position+OverworldGlobals.player.sprite.offset
 	body.global_position = player_pos+Vector2(0,10)
 	body.process_mode= Node.PROCESS_MODE_DISABLED
 	OverworldGlobals.getCurrentMap().add_child(body)

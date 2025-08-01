@@ -31,25 +31,25 @@ func initializePlayerParty():
 	loadFollowers()
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
-	getPlayer().can_move = enabled
-	getPlayer().set_process_input(enabled)
+	player.can_move = enabled
+	player.set_process_input(enabled)
 	
 	if enabled:
-		getPlayer().set_collision_layer_value(5, true)
-		getPlayer().set_collision_mask_value(5, true)
-		getPlayer().set_collision_layer_value(1, true)
-		getPlayer().set_collision_mask_value(1, true)
-		getPlayer().show()
+		player.set_collision_layer_value(5, true)
+		player.set_collision_mask_value(5, true)
+		player.set_collision_layer_value(1, true)
+		player.set_collision_mask_value(1, true)
+		player.show()
 	else:
-		getPlayer().sprinting = false
+		player.sprinting = false
 	
 	if disable_collision:
-		getPlayer().set_collision_layer_value(5, false)
-		getPlayer().set_collision_mask_value(5, false)
-		getPlayer().set_collision_layer_value(1, false)
-		getPlayer().set_collision_mask_value(1, false)
+		player.set_collision_layer_value(5, false)
+		player.set_collision_mask_value(5, false)
+		player.set_collision_layer_value(1, false)
+		player.set_collision_mask_value(1, false)
 	if hide_player:
-		getPlayer().hide()
+		player.hide()
 
 func inDialogue() -> bool:
 	return getCurrentMap().has_node('Balloon')
@@ -79,11 +79,11 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=10
 #********************************************************************************
 # GENERAL UTILITY
 #********************************************************************************
-func getPlayer()-> PlayerScene:
-	if !get_tree().current_scene.has_node('Player'):
-		return null
-	
-	return get_tree().current_scene.get_node('Player')
+#func player-> PlayerScene:
+#	if !get_tree().current_scene.has_node('Player'):
+#		return null
+#
+#	return get_tree().current_scene.get_node('Player')
 
 func flattenY(vector)-> Vector2:
 	return Vector2(vector.x,0)
@@ -113,7 +113,7 @@ func getEntityAnimator(entity_name: String)-> AnimationPlayer:
 
 func changeEntityVisibility(entity_name: String, visibility:bool):
 	if get_tree().current_scene.get_node(entity_name) is PlayerScene:
-		getPlayer().sprite.visible = visibility
+		player.sprite.visible = visibility
 	else:
 		get_tree().current_scene.get_node(entity_name).visible = visibility
 
@@ -137,19 +137,19 @@ func showMenu(path: String):
 	var main_menu: Control = load(path).instantiate()
 	main_menu.scale = Vector2.ZERO
 	main_menu.name = 'uiMenu'
-	getPlayer().resetStates()
-	getPlayer().sprinting = false
-	getPlayer().velocity = Vector2.ZERO
+	player.resetStates()
+	player.sprinting = false
+	player.velocity = Vector2.ZERO
 	setPlayerInput(false)
 	if !inMenu():
-		#getPlayer().player_camera.showOverlay(Color.BLACK, 0.5)
-		if isPlayerCheating(): getPlayer().get_node('DebugComponent').hide()
+		#player.player_camera.showOverlay(Color.BLACK, 0.5)
+		if isPlayerCheating(): player.get_node('DebugComponent').hide()
 		setMouseController(true)
-		getPlayer().player_camera.get_node('UI').add_child(main_menu)
+		player.player_camera.get_node('UI').add_child(main_menu)
 		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 	else:
-		if isPlayerCheating(): getPlayer().get_node('DebugComponent').show()
+		if isPlayerCheating(): player.get_node('DebugComponent').show()
 		closeMenu(main_menu)
 
 
@@ -165,14 +165,14 @@ func setMouseController(set_to:bool):
 		if has_node('MouseController'): get_node('MouseController').queue_free()
 
 func closeMenu(menu: Control):
-	#getPlayer().player_camera.hideOverlay()
+	#player.player_camera.hideOverlay()
 	setMouseController(false)
 	menu.queue_free()
-	getPlayer().player_camera.get_node('UI').get_node('uiMenu').queue_free()
+	player.player_camera.get_node('UI').get_node('uiMenu').queue_free()
 	setPlayerInput(true)
 
 func inMenu():
-	return getPlayer().player_camera.get_node('UI').has_node('uiMenu')
+	return player.player_camera.get_node('UI').has_node('uiMenu')
 
 func setMenuFocus(container: Container):
 	
@@ -208,7 +208,7 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_descri
 	
 	if !inMenu():
 		setMouseController(true)
-		getPlayer().player_camera.get_node('UI').add_child(main_menu)
+		player.player_camera.get_node('UI').add_child(main_menu)
 		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 		#show_player_interaction = false
@@ -278,22 +278,22 @@ func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbi
 	return button
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
-	OverworldGlobals.getPlayer().player_camera.prompt.showPrompt(message, time, audio_file)
+	OverworldGlobals.player.player_camera.prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
 #		delayed_rewards = getCurrentMap().REWARD_BANK
 	
 	if show_transition:
-		getPlayer().velocity = Vector2.ZERO
+		player.velocity = Vector2.ZERO
 		setPlayerInput(false, true)
-		await showTransition('FadeIn', getPlayer())
+		await showTransition('FadeIn', player)
 	get_tree().change_scene_to_file(map_name_path)
 	await get_tree().process_frame
 	
 	if getCurrentMap().has_node('Player'): 
 		getCurrentMap().hide()
-		getPlayer().loadData()
+		player.loadData()
 	var player
 	match player_type:
 		PlayerType.WILLIS: player = load("res://scenes/entities/Player.tscn").instantiate()
@@ -333,7 +333,7 @@ func forceGiveRewards():
 func showTransition(animation: String, player_scene:PlayerScene=null):
 	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	if player_scene == null:
-		getPlayer().player_camera.add_child(transition)
+		player.player_camera.add_child(transition)
 	else:
 		player_scene.player_camera.add_child(transition)
 	transition.get_node('AnimationPlayer').play(animation)
@@ -356,22 +356,22 @@ func setMapRewardBank(key: String, value):
 #	return out
 
 func isPlayerCheating()-> bool:
-	return getCurrentMap().has_node('Player') and getPlayer().has_node('DebugComponent')
+	return getCurrentMap().has_node('Player') and player.has_node('DebugComponent')
 
 func showGameOver(end_sentence: String=''):
 	#await get_tree().process_frame
 	if OverworldGlobals.inMenu(): OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
-	getPlayer().setUIVisibility(false)
-	getPlayer().resetStates()
+	player.setUIVisibility(false)
+	player.resetStates()
 	setPlayerInput(false, true)
-	getPlayer().set_process_unhandled_input(false)
-	getPlayer().z_index = 20
+	player.set_process_unhandled_input(false)
+	player.z_index = 20
 	#playEntityAnimation('Player', animation)
 	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
 	menu.z_index = 20
-	getPlayer().resetStates()
+	player.resetStates()
 	setMouseController(true)
-	getPlayer().player_camera.add_child(menu)
+	player.player_camera.add_child(menu)
 	if end_sentence == '': 
 		end_sentence = [
 			"You perished.", 
@@ -387,25 +387,25 @@ func showGameOver(end_sentence: String=''):
 func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=false):
 	var tween = create_tween()
 	if to is String and to.to_upper() == 'RESET':
-		tween.tween_property(getPlayer().player_camera, 'position', getPlayer().default_camera_pos, duration)
+		tween.tween_property(player.player_camera, 'position', player.default_camera_pos, duration)
 	elif to is String:
-		tween.tween_property(getPlayer().player_camera, 'global_position', getEntity(to).global_position+offset, duration)
+		tween.tween_property(player.player_camera, 'global_position', getEntity(to).global_position+offset, duration)
 	elif to is Vector2:
-		tween.tween_property(getPlayer().player_camera, 'global_position', to+offset, duration)
+		tween.tween_property(player.player_camera, 'global_position', to+offset, duration)
 	elif to is Node2D:
-		tween.tween_property(getPlayer().player_camera, 'global_position', to.global_position+offset, duration)
+		tween.tween_property(player.player_camera, 'global_position', to.global_position+offset, duration)
 	if wait:
 		await tween.finished
 
 func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(getPlayer().player_camera, 'zoom', zoom, duration)
+	tween.tween_property(player.player_camera, 'zoom', zoom, duration)
 	if wait:
 		await tween.finished
 
 func shakeCamera(strength=30.0, speed=20.0):
-	getPlayer().player_camera.shake(strength,speed)
+	player.player_camera.shake(strength,speed)
 
 
 #********************************************************************************
@@ -434,7 +434,7 @@ func loadFollowers():
 			follower_scene.texture = combatant.follower_texture
 			follower_scene.host_combatant = combatant
 			follower_scene.follow_index = player_follower_count
-			follower_scene.global_position = getPlayer().global_position+Vector2(0, -32)
+			follower_scene.global_position = player.global_position+Vector2(0, -32)
 			getCurrentMap().add_child.call_deferred(follower_scene)
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
@@ -497,7 +497,7 @@ func addEffectPulse(location, radius:float, script:GDScript):
 		pulse.global_position = location
 		getCurrentMap().call_deferred('add_child', pulse)
 	#showQuickAnimation('res://scenes/animations/Reinforcements.tscn', 'Player')
-	#showAbilityAnimation('res://scenes/animations/Reinforcements.tscn', OverworldGlobals.getPlayer().global_position)
+	#showAbilityAnimation('res://scenes/animations/Reinforcements.tscn', OverworldGlobals.player.global_position)
 
 func showQuickAnimation(animation_id, location, animation_name:String='Show', hide_scene:bool=false,wait:bool=true):
 	var animation: QuickAnimation
@@ -578,8 +578,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		combat_entity = getEntity(entity_name)
 	else:
 		combat_entity = patroller
-	getPlayer().resetStates()
-	OverworldGlobals.getPlayer().setUIVisibility(false)
+	player.resetStates()
+	OverworldGlobals.player.setUIVisibility(false)
 	moveCamera(combat_entity.get_node('Sprite2D'), 0.05, Vector2.ZERO, true)
 	await zoomCamera(Vector2(2,2), 0.1, true)
 	setPlayerInput(false)
@@ -632,11 +632,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		combat_scene.battle_music_path = combat_music.pick_random()
 	await combat_bubble.animator.animation_finished
 	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
-	getPlayer().player_camera.add_child(battle_transition)
+	player.player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
-	#getPlayer().player_camera.remove_child('BattleStart')
-	getPlayer().player_camera.get_node('BattleStart').queue_free()
+	#player.player_camera.remove_child('BattleStart')
+	player.player_camera.get_node('BattleStart').queue_free()
 	combat_bubble.queue_free()
 	combat_enetered.emit()
 	get_parent().add_child(combat_scene)
@@ -647,22 +647,22 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	await combat_scene.combat_done
 	
 	# Exit combat
-	moveCamera('Player', 0.0, getPlayer().sprite.offset)
+	moveCamera('Player', 0.0, player.sprite.offset)
 	OverworldGlobals.moveCamera('RESET',0.25)
 	OverworldGlobals.zoomCamera(Vector2(1,1),0.25)
 	var combat_results = combat_scene.combat_result
 #	var tamed = combat_scene.tamed_combatants
-	getPlayer().player_camera.make_current()
+	player.player_camera.make_current()
 	get_tree().paused = false
 	getCurrentMap().show()
-	getPlayer().resetStates()
+	player.resetStates()
 #	if combat_results == 1:
 #		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
 	for combatant in getCombatantSquad('Player'):
 		for effect in getCombatantSquadComponent('Player').afflicted_status_effects:
 			combatant.lingering_effects.erase(effect)
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
-	OverworldGlobals.getPlayer().setUIVisibility(true)
+	OverworldGlobals.player.setUIVisibility(true)
 	battle_transition.get_node('AnimationPlayer').play('Out')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
@@ -679,7 +679,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 
 func showCombatStartBars():
 	var bars = load("res://scenes/user_interface/BattleStart.tscn").instantiate()
-	getPlayer().player_camera.add_child(bars)
+	player.player_camera.add_child(bars)
 	bars.position = Vector2.ZERO
 	bars.get_node('AnimationPlayer').play('Show')
 
@@ -721,7 +721,7 @@ func isPlayerSquadDead():
 	return true
 
 func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
-	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
+	OverworldGlobals.player.player_camera.shake(15.0,10.0)
 	
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
@@ -738,12 +738,12 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
 	party_damaged.emit()
 	var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
-	OverworldGlobals.getPlayer().player_camera.get_node('Marker2D').add_child(pop_up)
+	OverworldGlobals.player.player_camera.get_node('Marker2D').add_child(pop_up)
 
 func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:bool=true,lethal:bool=false):
 	if combatant.isDead():
 		return
-	OverworldGlobals.getPlayer().player_camera.shake(15.0,10.0)
+	OverworldGlobals.player.player_camera.shake(15.0,10.0)
 	if use_damage_formula:
 		damage = int(CombatGlobals.useDamageFormula(combatant, damage))
 	
@@ -771,7 +771,7 @@ func isPlayerAlive()-> bool:
 	return false
 
 func restorePlayerView():
-	getPlayer().player_camera.make_current()
+	player.player_camera.make_current()
 	get_tree().paused = false
 
 func isResourcePlaceholder(resource: Resource):

@@ -36,7 +36,7 @@ func applySettings(settings_data: SavedSettings):
 	SettingsGlobals.cheat_mode = settings_data.toggle_cheats
 
 func doSprint()-> bool:
-	return (Input.is_action_pressed("ui_sprint") and !SettingsGlobals.toggle_sprint) or (Input.is_action_just_pressed("ui_sprint") and SettingsGlobals.toggle_sprint) and !OverworldGlobals.getPlayer().sprinting
+	return (Input.is_action_pressed("ui_sprint") and !SettingsGlobals.toggle_sprint) or (Input.is_action_just_pressed("ui_sprint") and SettingsGlobals.toggle_sprint) and !OverworldGlobals.player.sprinting
 
 func stopSprint()-> bool:
-	return (Input.is_action_just_released("ui_sprint") and !SettingsGlobals.toggle_sprint) or (Input.is_action_just_pressed("ui_sprint") and SettingsGlobals.toggle_sprint) and OverworldGlobals.getPlayer().sprinting
+	return (Input.is_action_just_released("ui_sprint") and !SettingsGlobals.toggle_sprint) or (Input.is_action_just_pressed("ui_sprint") and SettingsGlobals.toggle_sprint) and OverworldGlobals.player.sprinting

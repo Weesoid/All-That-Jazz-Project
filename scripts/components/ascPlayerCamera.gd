@@ -9,12 +9,12 @@ class_name PlayerCamera
 @onready var quiver = $UtilitySelector
 @onready var color_overlay = $UI/ColorOverlay
 @onready var reward_banks = $UI/ClearProgress
-var player: PlayerScene = OverworldGlobals.getPlayer()
+var player: PlayerScene = OverworldGlobals.player
 
 func _ready():
 	if SaveLoadGlobals.is_loading:
 		await SaveLoadGlobals.done_loading
-	player = OverworldGlobals.getPlayer()
+	player = OverworldGlobals.player
 
 func _process(delta):
 	if player == null:

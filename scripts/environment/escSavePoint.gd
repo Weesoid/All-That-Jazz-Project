@@ -20,28 +20,26 @@ func fightCombatantSquad():
 
 func interact():
 	OverworldGlobals.setPlayerInput(false)
-	var player = OverworldGlobals.getPlayer()
-	await player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
+	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
 	animator.play("Lit")
 	OverworldGlobals.moveCamera(self, 0, Vector2(0,-30))
 	await OverworldGlobals.zoomCamera(Vector2(3,3),1,true)
-	player.sprite.hide()
+	OverworldGlobals.player.sprite.hide()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		addRestSprite(combatant)
-	await player.player_camera.hideOverlay(1.5)
+	await OverworldGlobals.player.player_camera.hideOverlay(1.5)
 
 func exit():
 	await done
-	var player = OverworldGlobals.getPlayer()
 	animator.play("RESET")
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
 	for bar in mini_bars:
 		bar.queue_free()
 	watch_mark_animator.play("RESET")
-	player.sprite.show()
+	OverworldGlobals.player.sprite.show()
 	mini_bars = []
-	player.player_camera.hideOverlay(1.5)
+	OverworldGlobals.player.player_camera.hideOverlay(1.5)
 	await get_tree().process_frame
 
 func addRestSprite(combatant: ResPlayerCombatant):

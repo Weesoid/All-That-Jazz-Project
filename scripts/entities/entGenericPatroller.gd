@@ -116,7 +116,7 @@ func chase():
 		updateState(State.IDLE)
 	
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
-	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position)
+	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.player.get_node('PlayerCollision').global_position)
 	# action
 	if flat_pos.distance_to(flat_palyer_pos) <= min_action_distance and canDoAction():
 		doAction()
@@ -127,7 +127,7 @@ func chase():
 
 func isSameYLevel():
 	var y_pos = snappedf(shape.global_position.y,100.0)
-	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0) 
+	var y_pos_player = snappedf(OverworldGlobals.player.get_node('PlayerCollision').global_position.y, 100.0) 
 	return is_equal_approx(y_pos, y_pos_player)
 
 func stun():
@@ -206,7 +206,7 @@ func destroy(give_drops=false):
 		var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
 		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
 		combatant_squad.addDrops()
-		OverworldGlobals.getPlayer().player_camera.addRewardBank(patroller_group)
+		OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
 	
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()

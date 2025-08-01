@@ -5,14 +5,14 @@ var quests: Array[ResQuest]
 func promptQuestCompleted(quest: ResQuest):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	
-	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	OverworldGlobals.player.player_camera.add_child(prompt)
 	prompt.setTitle(quest.name)
 	prompt.playAnimation('quest_complete')
 
 func addQuest(quest_name: String):
 	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	var out_quest = load("res://resources/quests/%s.tres" % quest_name)
-	OverworldGlobals.getPlayer().player_camera.add_child(prompt)
+	OverworldGlobals.player.player_camera.add_child(prompt)
 	prompt.setTitle(out_quest.name)
 	prompt.playAnimation('show_quest')
 	

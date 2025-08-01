@@ -106,7 +106,7 @@ func applyBlessing(blessing):
 		blessing = load("res://resources/blessings/%s.tres" % blessing)
 	elif blessing is String:
 		blessing = load(blessing).instantiate()
-		OverworldGlobals.getPlayer().add_child(blessing)
+		OverworldGlobals.player.add_child(blessing)
 	
 	if equipped_blessing != null and blessing is ResBlessing:
 		equipped_blessing.setBlessing(false)
@@ -131,10 +131,10 @@ func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=fal
 #	if team_level >= max_team_level and !bypass_cap:
 #		OverworldGlobals.showPrompt('Max party level reached!')
 #		return
-	if show_message and !OverworldGlobals.getPlayer().has_node('ExperienceGainBar'):
+	if show_message and !OverworldGlobals.player.has_node('ExperienceGainBar'):
 		var experience_bar_view = load("res://scenes/user_interface/ExperienceGainBar.tscn").instantiate()
 		experience_bar_view.added_exp = experience
-		OverworldGlobals.getPlayer().add_child(experience_bar_view)
+		OverworldGlobals.player.add_child(experience_bar_view)
 	current_exp += experience
 	if team_level >= max_team_level and current_exp >= getRequiredExp() and !bypass_cap:
 		current_exp = getRequiredExp()
@@ -265,7 +265,7 @@ func removeCombatant(combatant_id: ResPlayerCombatant):
 		if !team.has(member): removed_combatants.append(member)
 	for member in removed_combatants:
 		OverworldGlobals.getCombatantSquad('Player').erase(member)
-	team_formation = OverworldGlobals.getPlayer().squad.combatant_squad
+	team_formation = OverworldGlobals.player.squad.combatant_squad
 	overwriteTeam()
 
 func loadSquad():
@@ -478,7 +478,7 @@ func saveData(save_data: Array):
 	save_data.append(data)
 
 func loadData(save_data: PlayerSaveData):
-	OverworldGlobals.getPlayer().squad.combatant_squad.clear()
+	OverworldGlobals.player.squad.combatant_squad.clear()
 	team = save_data.team
 	power = save_data.power
 	equipped_arrow = save_data.equipped_arrow

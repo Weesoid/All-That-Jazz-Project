@@ -51,32 +51,32 @@ func createMemberButton(member: ResPlayerCombatant):
 	return button
 
 func addToActive(member: ResCombatant, button: Button):
-	if OverworldGlobals.getPlayer().squad.combatant_squad.size() == 4 and !OverworldGlobals.getPlayer().squad.combatant_squad.has(member):
+	if OverworldGlobals.player.squad.combatant_squad.size() == 4 and !OverworldGlobals.player.squad.combatant_squad.has(member):
 		OverworldGlobals.showPrompt('You have a full party!')
 		return
 	
-	if !OverworldGlobals.getPlayer().squad.combatant_squad.has(member) and button != null:
-		OverworldGlobals.getPlayer().squad.combatant_squad.append(member)
+	if !OverworldGlobals.player.squad.combatant_squad.has(member) and button != null:
+		OverworldGlobals.player.squad.combatant_squad.append(member)
 		OverworldGlobals.initializePlayerParty()
 		if member.isInflicted():
 			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_mark.png"))
 		else:
 			button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
 	elif button != null:
-		OverworldGlobals.getPlayer().squad.combatant_squad.erase(member)
+		OverworldGlobals.player.squad.combatant_squad.erase(member)
 		#PlayerGlobals.removeFollower()
 		OverworldGlobals.loadFollowers()
 		if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
 			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_icon.png"))
 		else:
 			button.remove_theme_icon_override('icon')
-	PlayerGlobals.team_formation = OverworldGlobals.getPlayer().squad.combatant_squad
+	PlayerGlobals.team_formation = OverworldGlobals.player.squad.combatant_squad
 	await get_tree().process_frame
 	get_parent().loadMembers()
 
 func hoverButton(member: ResPlayerCombatant, button: Button):
 	if Input.is_action_pressed('ui_sprint'):
-		if OverworldGlobals.getPlayer().squad.combatant_squad.has(member):
+		if OverworldGlobals.player.squad.combatant_squad.has(member):
 			for mem_button in get_parent().member_container.get_children():
 				if mem_button.text == member.name:
 					inspect_mark.hide()

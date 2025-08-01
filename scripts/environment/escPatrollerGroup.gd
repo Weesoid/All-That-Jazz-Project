@@ -74,7 +74,7 @@ func giveRewards(ignore_stalker:bool=false):
 	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	print(map.getVerbalClearState())
 	map_clear_indicator.added_exp = reward_bank['experience']
-	OverworldGlobals.getPlayer().player_camera.add_child(map_clear_indicator)
+	OverworldGlobals.player.player_camera.add_child(map_clear_indicator)
 	if map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
 		map_clear_indicator.message.text = 'AREA CLEARED !'
 	map_clear_indicator.showAnimation(true, self)

@@ -117,7 +117,7 @@ func loadSlider(item)-> int:
 		a_slider.max_v = item.stack
 	
 	add_child(a_slider)
-	a_slider.global_position = OverworldGlobals.getPlayer().player_camera.global_position
+	a_slider.global_position = OverworldGlobals.player.player_camera.global_position
 	await a_slider.amount_enter
 	var amount = a_slider.slider.value
 	a_slider.queue_free()

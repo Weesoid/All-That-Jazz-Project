@@ -1,7 +1,5 @@
 extends Node2D
 
-@onready var player = OverworldGlobals.getPlayer()
-
 @onready var container = $VBoxContainer
 @onready var fps = $VBoxContainer/FPS
 @onready var coordinates = $VBoxContainer/Coordinates
@@ -25,7 +23,7 @@ func _process(_delta):
 		equipped_charm.text = 'No active blessing.'
 	#reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
 	save_name.text = 'Save Name: ' + str(PlayerGlobals.save_name)
-	speed.text = 'Speed: ' + str(player.SPEED)
+	speed.text = 'Speed: ' + str(OverworldGlobals.player.SPEED)
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_toggle_debug"):

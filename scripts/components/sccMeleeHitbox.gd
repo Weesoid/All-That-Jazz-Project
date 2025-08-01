@@ -1,7 +1,6 @@
 extends Area2D
 class_name MeleeHitbox
 
-@onready var player = OverworldGlobals.getPlayer()
 @onready var smear = $AnimationPlayer
 
 func _on_body_entered(body):
@@ -12,16 +11,16 @@ func _on_body_entered(body):
 			body.destroy(true)
 			PlayerGlobals.overworld_stats['stamina'] -= 50
 			OverworldGlobals.shakeCamera()
-			await OverworldGlobals.getPlayer().player_camera.showOverlay(Color.RED, 0.025)
-			OverworldGlobals.getPlayer().player_camera.hideOverlay()
+			await OverworldGlobals.player.player_camera.showOverlay(Color.RED, 0.025)
+			OverworldGlobals.player.player_camera.hideOverlay()
 		elif body.state != 3:
 			body.combat_switch = false
 			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=float(0.2)},body)
-	if body.has_node('Sprite2D') and body != player:
+	if body.has_node('Sprite2D') and body != OverworldGlobals.player:
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
 
 func _unhandled_input(event):
-	if Input.is_action_just_pressed('ui_melee') and player.canMelee() and !player.diving:
+	if Input.is_action_just_pressed('ui_melee') and OverworldGlobals.player.canMelee() and !OverworldGlobals.player.diving:
 		smear.play('Show')
 
 func getTileTexture(tile_set):

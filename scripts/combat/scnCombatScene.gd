@@ -98,7 +98,7 @@ func _ready():
 	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
-	#OverworldGlobals.getPlayer().player_camera.hideOverlay(1.0)
+	#OverworldGlobals.player.player_camera.hideOverlay(1.0)
 	
 	escape_button.disabled = !can_escape
 	transition_scene.visible = true
@@ -1088,7 +1088,7 @@ func concludeCombat(results: int):
 	if results == 0:
 		OverworldGlobals.showGameOver(end_sentence)
 	else:
-		OverworldGlobals.addPatrollerPulse(OverworldGlobals.getPlayer(), 180.0, 2)
+		OverworldGlobals.addPatrollerPulse(OverworldGlobals.player, 180.0, 2)
 	CombatGlobals.tension = 0
 	OverworldGlobals.setMouseController(false)
 	queue_free()

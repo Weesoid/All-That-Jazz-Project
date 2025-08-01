@@ -6,8 +6,8 @@ func _ready():
 
 func interact():
 	OverworldGlobals.addPatrollerPulse(global_position, 150.0, 3)
-	OverworldGlobals.getPlayer().set_collision_layer_value(5, false)
-	OverworldGlobals.getPlayer().set_collision_mask_value(5, false)
+	OverworldGlobals.player.set_collision_layer_value(5, false)
+	OverworldGlobals.player.set_collision_mask_value(5, false)
 	if OverworldGlobals.getCurrentMap().getPatrollers().size() > 0:
 		PlayerGlobals.addExperience(int(randf_range(-0.5,-0.25) * PlayerGlobals.getRequiredExp()), true)
 		OverworldGlobals.setMapRewardBank('experience', 0)

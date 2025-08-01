@@ -55,7 +55,7 @@ func _physics_process(delta):
 		
 		if !target_positions.is_empty() and target_positions[0] is Vector2 and animate_direction:
 			if body is PlayerScene:
-				OverworldGlobals.getPlayer().direction = body.velocity.normalized()
+				OverworldGlobals.player.direction = body.velocity.normalized()
 			elif body.has_node('WalkingAnimations'):
 				animateWalk()
 	elif target_positions.is_empty():

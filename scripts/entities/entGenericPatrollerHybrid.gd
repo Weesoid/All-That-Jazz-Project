@@ -7,12 +7,12 @@ class_name HybridPatroller
 func chase():
 	# check y
 	var y_pos = snappedf(shape.global_position.y,100.0)
-	var y_pos_player = snappedf(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position.y, 100.0)
+	var y_pos_player = snappedf(OverworldGlobals.player.get_node('PlayerCollision').global_position.y, 100.0)
 	if y_pos != y_pos_player:
 		updateState(State.IDLE)
 	
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
-	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.getPlayer().get_node('PlayerCollision').global_position)
+	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.player.get_node('PlayerCollision').global_position)
 	# action
 	direction = (flat_pos.direction_to(flat_palyer_pos)).x
 	if flat_pos.distance_to(flat_palyer_pos) <= min_action_distance and canDoAction():

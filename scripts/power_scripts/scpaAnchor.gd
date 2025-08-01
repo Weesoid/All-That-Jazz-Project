@@ -1,19 +1,18 @@
 extends Node2D
 class_name PowerAttachment
 
-@onready var player = OverworldGlobals.getPlayer()
 @onready var animator = $AnimationPlayer
 
 func _ready():
 	animator.play("Spawn")
 
 #func _unhandled_input(_event):
-#	if Input.is_action_just_released("ui_gambit") and player.POWER_INPUT == 'sss':
-#		if PlayerGlobals.overworld_stats['stamina']>= 25.0 and !OverworldGlobals.inMenu() and !player.hiding:
-#			player.playCastAnimation()
+#	if Input.is_action_just_released("ui_gambit") and OverworldGlobals.player.POWER_INPUT == 'sss':
+#		if PlayerGlobals.overworld_stats['stamina']>= 25.0 and !OverworldGlobals.inMenu() and !OverworldGlobals.player.hiding:
+#			OverworldGlobals.player.playCastAnimation()
 #			PlayerGlobals.overworld_stats['stamina']-= 25
-#			player.global_position = global_position
-#			OverworldGlobals.addPatrollerPulse(player, 80.0, 3)
+#			OverworldGlobals.player.global_position = global_position
+#			OverworldGlobals.addPatrollerPulse(OverworldGlobals.player, 80.0, 3)
 #			queue_free()
 #		else:
-#			player.prompt.('Not enough [color=yellow]stamina[/color].')
+#			OverworldGlobals.player.prompt.('Not enough [color=yellow]stamina[/color].')

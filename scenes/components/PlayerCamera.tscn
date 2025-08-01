@@ -21,9 +21,12 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="GDScript" id="GDScript_lueap"]
 script/source = "extends VBoxContainer
 
-@onready var player = OverworldGlobals.getPlayer()
+@onready var player = OverworldGlobals.player
 
 func _input(event):
+	if player == null:
+		return
+	
 	if player.is_processing_input() and player.power_inputs != '' and player.power_listening and (event is InputEventKey or event is InputEventJoypadButton):
 		for power in await getValidPowers(player.power_inputs):
 			add_child(createReference(power))

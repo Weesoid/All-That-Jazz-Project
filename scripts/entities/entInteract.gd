@@ -52,16 +52,16 @@ func moveFollowers():
 
 func  enter():
 	# Disable inputs /  Hide UI
-	OverworldGlobals.getPlayer().player_camera.cinematic_bars.visible = true
-	#OverworldGlobals.getPlayer().playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
-	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(3, 3), 0.5)
+	OverworldGlobals.player.player_camera.cinematic_bars.visible = true
+	#OverworldGlobals.player.playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
+	#get_tree().create_tween().tween_property(OverworldGlobals.player.player_camera, 'zoom', Vector2(3, 3), 0.5)
 	OverworldGlobals.setPlayerInput(false)
-	#OverworldGlobals.getPlayer().setUIVisibility(false)
-	OverworldGlobals.getPlayer().sprinting = false
+	#OverworldGlobals.player.setUIVisibility(false)
+	OverworldGlobals.player.sprinting = false
 	OverworldGlobals.setMouseController(true)
 	#OverworldGlobals.setMouseController(true)
 	PlayerGlobals.setFollowersMotion(false)
-	OverworldGlobals.getPlayer().sprinting = false
+	OverworldGlobals.player.sprinting = false
 	
 	# Move player
 	if move_player:
@@ -78,8 +78,8 @@ func  enter():
 
 func exit():
 	# Enable inputs
-	OverworldGlobals.getPlayer().player_camera.cinematic_bars.visible = false
-	#OverworldGlobals.getPlayer().setUIVisibility(true)
+	OverworldGlobals.player.player_camera.cinematic_bars.visible = false
+	#OverworldGlobals.player.setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
 		#print('DBox setting to true!')
 		if !OverworldGlobals.inCombat(): OverworldGlobals.setMouseController(false)
@@ -88,9 +88,9 @@ func exit():
 	# Reset player stuff
 	if !show_followers:
 		fadeFollowers(Color.WHITE)
-	if OverworldGlobals.getPlayer().player_camera.position != OverworldGlobals.getPlayer().default_camera_pos:
+	if OverworldGlobals.player.player_camera.position != OverworldGlobals.player.default_camera_pos:
 		OverworldGlobals.moveCamera('RESET',0.5)
-	if OverworldGlobals.getPlayer().player_camera.zoom != Vector2(1,1):
+	if OverworldGlobals.player.player_camera.zoom != Vector2(1,1):
 		OverworldGlobals.zoomCamera(Vector2(1,1),0.5)
 	PlayerGlobals.setFollowersMotion(true)
 	cooldown_timer.start(cooldown)

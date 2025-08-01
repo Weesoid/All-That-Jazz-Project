@@ -10,7 +10,6 @@ extends Control
 @onready var no_rest_button = $HBoxContainer/NoRest
 @onready var rest_ui = $RestStuff
 @onready var confirm_rest = $RestStuff/ConfirmRest
-@onready var player = OverworldGlobals.getPlayer()
 @onready var squad = OverworldGlobals.getCombatantSquad('Player')
 @onready var save_point: SavePoint = OverworldGlobals.getCurrentMap().get_node('SavePoint')
 var camp_item: ResCampItem
@@ -142,7 +141,7 @@ func _on_confirm_rest_pressed():
 	PlayerGlobals.rested = true
 	rest_ui.hide()
 	save_point.setBarVisibility(false)
-	await player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
+	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
 	for combatant in squad:
 		if combatant == guard_combatant: continue
 		restCombatant(combatant)
@@ -161,7 +160,7 @@ func pickRandomEvent():
 	match event: # TO DO: Event notifs... barks?
 		'fight':
 			save_point.fightCombatantSquad()
-			player.player_camera.hideOverlay(0)
+			OverworldGlobals.player.player_camera.hideOverlay(0)
 		'damage':
 			OverworldGlobals.damageParty(10,[],false)
 		'steal':
@@ -226,7 +225,7 @@ func getCampItems():
 
 func _on_no_rest_pressed():
 	action_container.hide()
-	await player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
+	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
 	#await get_tree().create_timer(1.5).timeout
 	save_point.done.emit()
 	queue_free()

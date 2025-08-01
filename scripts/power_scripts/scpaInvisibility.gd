@@ -1,20 +1,19 @@
 extends Node2D
 
-@onready var player = OverworldGlobals.getPlayer()
 @onready var bar = $ProgressBar
 @onready var timer = $Timer
 var active = true
 
 func _physics_process(_delta):
-	if player.sprinting or player.bow_draw_strength > 0.0:
+	if OverworldGlobals.player.sprinting or OverworldGlobals.player.bow_draw_strength > 0.0:
 		setVisible()
 	bar.value = timer.time_left
 #	if PlayerGlobals.overworld_stats['stamina']> 0 and active:
-#		player.channeling_power = true
+#		OverworldGlobals.player.channeling_power = true
 #		setInvisible()
 #	else:
-#		player.channeling_power = false
-#		player.toggleVoidAnimation(false)
+#		OverworldGlobals.player.channeling_power = false
+#		OverworldGlobals.player.toggleVoidAnimation(false)
 #		setVisible()
 
 func _ready():
@@ -25,24 +24,24 @@ func _ready():
 
 #func _unhandled_input(_event):
 #	if Input.is_action_just_pressed("ui_gambit"):
-#		player.toggleVoidAnimation(false)
+#		OverworldGlobals.player.toggleVoidAnimation(false)
 #		active = false
-#		player.channeling_power = false
+#		OverworldGlobals.player.channeling_power = false
 #		setVisible()
 
 func setInvisible():
-	player.toggleVoidAnimation(true)
-	player.stamina_regen = false
-	player.set_collision_layer_value(5, false)
-	player.set_collision_mask_value(5, false)
-	player.sprite.modulate.a = 0.5
+	OverworldGlobals.player.toggleVoidAnimation(true)
+	OverworldGlobals.player.stamina_regen = false
+	OverworldGlobals.player.set_collision_layer_value(5, false)
+	OverworldGlobals.player.set_collision_mask_value(5, false)
+	OverworldGlobals.player.sprite.modulate.a = 0.5
 
 func setVisible():
-	player.toggleVoidAnimation(false)
-	player.stamina_regen = true
-	player.set_collision_layer_value(5, true)
-	player.set_collision_mask_value(5, true)
-	player.sprite.modulate.a = 1
+	OverworldGlobals.player.toggleVoidAnimation(false)
+	OverworldGlobals.player.stamina_regen = true
+	OverworldGlobals.player.set_collision_layer_value(5, true)
+	OverworldGlobals.player.set_collision_mask_value(5, true)
+	OverworldGlobals.player.sprite.modulate.a = 1
 	queue_free()
 
 func _on_timer_timeout():
