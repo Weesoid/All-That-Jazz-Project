@@ -31,8 +31,8 @@ func jump(jump_velocity):
 func dive():
 	fadeInOut()
 	var direction = int(OverworldGlobals.player.player_direction.rotation_degrees)
-	global_position = OverworldGlobals.player.getPosOffset()
-	velocity.y = -100
+	global_position = OverworldGlobals.player.getPosOffset()+Vector2(8,0)
+	velocity.y = OverworldGlobals.player.dive_strength
 	
 	if direction == 90:
 		sprite.flip_h = false

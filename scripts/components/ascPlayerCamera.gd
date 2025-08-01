@@ -9,6 +9,7 @@ class_name PlayerCamera
 @onready var quiver = $UtilitySelector
 @onready var color_overlay = $UI/ColorOverlay
 @onready var reward_banks = $UI/ClearProgress
+@onready var ammo_tex = $UI/Ammo/TextureRect
 var player: PlayerScene = OverworldGlobals.player
 
 func _ready():
@@ -26,6 +27,7 @@ func _process(delta):
 	if player.bow_mode:
 		ammo_count.show()
 		ammo_count.text = str(PlayerGlobals.equipped_arrow.stack)
+		ammo_tex.texture = PlayerGlobals.equipped_arrow.icon
 	else:
 		ammo_count.hide()
 

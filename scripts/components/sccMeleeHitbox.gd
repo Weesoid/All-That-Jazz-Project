@@ -19,11 +19,10 @@ func _on_body_entered(body):
 	if body.has_node('Sprite2D') and body != OverworldGlobals.player:
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
 
-func _unhandled_input(event):
-	if Input.is_action_just_pressed('ui_melee') and OverworldGlobals.player.canMelee() and !OverworldGlobals.player.diving:
-		smear.play('Show')
-
 func getTileTexture(tile_set):
 	for tile_set_id in tile_set.get_source_count():
 		var atlas: TileSetAtlasSource = tile_set.get_source(tile_set_id)
 		print(atlas.texture.resource_path)
+
+func showSmear():
+	smear.play('Show')

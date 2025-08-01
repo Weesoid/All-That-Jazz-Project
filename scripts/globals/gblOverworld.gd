@@ -400,7 +400,10 @@ func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=
 
 func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
 	var tween = create_tween()
-	tween.set_trans(Tween.TRANS_CUBIC)
+	if player.player_camera.zoom < zoom:
+		tween.set_ease(Tween.EASE_IN)
+	else:
+		tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(player.player_camera, 'zoom', zoom, duration)
 	if wait:
 		await tween.finished
@@ -439,6 +442,10 @@ func loadFollowers():
 			#follower_scene.sprite.offset.y = -24 
 			getCurrentMap().add_child.call_deferred(follower_scene)
 			#await follower_scene.tree_entered
+
+func fadeFollowers(color: Color):
+	for follower in PlayerGlobals.getActiveFollowers():
+		follower.fade(color)
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 	var player = AudioStreamPlayer.new()

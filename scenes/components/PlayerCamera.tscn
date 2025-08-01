@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://crqkcqks48t2k"]
+[gd_scene load_steps=11 format=3 uid="uid://crqkcqks48t2k"]
 
 [ext_resource type="Script" path="res://scripts/components/ascPlayerCamera.gd" id="1_1hnbr"]
 [ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="2_wxyfx"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://j1akjh3lc0v" path="res://scenes/user_interface/Quiver.tscn" id="4_2483m"]
 [ext_resource type="Texture2D" uid="uid://141agyx4y73o" path="res://images/sprites/icon_bolt.png" id="4_aqqua"]
 [ext_resource type="Texture2D" uid="uid://b2tqyyse1shv2" path="res://images/textures/cinematic_spotlight.png" id="5_ciqm1"]
+[ext_resource type="Texture2D" uid="uid://hhwkf2u82bfq" path="res://images/sprites/arrow1.png" id="5_dj7uq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_846aw"]
 bg_color = Color(0, 0, 0, 1)
@@ -96,14 +97,29 @@ offset_bottom = 10.0
 texture = ExtResource("4_aqqua")
 
 [node name="Ammo" type="Label" parent="UI"]
-offset_left = 17.0
-offset_top = -61.0
-offset_right = 57.0
-offset_bottom = -48.0
+offset_left = 504.0
+offset_top = 320.0
+offset_right = 620.0
+offset_bottom = 343.0
 mouse_filter = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
 text = "1000"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Ammo"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 102.0
+offset_top = -10.5
+offset_right = 134.0
+offset_bottom = 21.5
+grow_vertical = 2
+texture = ExtResource("5_dj7uq")
 
 [node name="VoidCrystals" type="Label" parent="UI"]
 offset_left = 19.0

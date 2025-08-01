@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedGame" load_steps=16 format=3]
+[gd_resource type="Resource" script_class="SavedGame" load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_nuhsb"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_b0mga"]
@@ -8,32 +8,34 @@
 [ext_resource type="Resource" path="res://resources/combat/combatants_player/Archie.tres" id="6_8vyr5"]
 [ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="7_sn7wi"]
 [ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="8_eyvxl"]
+[ext_resource type="Resource" path="res://resources/items/ArrowSleeper.tres" id="8_iydr4"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="9_e3mll"]
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="10_dppvy"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="11_ib6uw"]
 
-[sub_resource type="Resource" id="Resource_rtrv0"]
+[sub_resource type="Resource" id="Resource_cfg1a"]
 script = ExtResource("1_nuhsb")
-position = Vector2(213.46, 212.925)
+position = Vector2(-216.311, 212.934)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_c15dn"]
+[sub_resource type="Resource" id="Resource_phisn"]
 script = ExtResource("2_b0mga")
 quests = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 quest_objectives_data = {}
 
-[sub_resource type="Resource" id="Resource_hltwn"]
+[sub_resource type="Resource" id="Resource_0rlpq"]
 script = ExtResource("9_e3mll")
 team = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_fi52v"), ExtResource("6_8vyr5")])
 map_logs = {}
-currency = 100
+equipped_arrow = ExtResource("8_iydr4")
+currency = 76
 team_level = 1
 current_exp = 0
 progression_data = {}
 team_formation = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("3_fi52v"), ExtResource("6_8vyr5")])
 combatant_save_data = {
-ExtResource("3_fi52v"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_y05we")]), {
+ExtResource("3_fi52v"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: null,
 1: null,
 2: null
@@ -80,7 +82,7 @@ ExtResource("3_fi52v"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "primary": [],
 "secondary": []
 }],
-ExtResource("6_8vyr5"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("7_sn7wi"), ExtResource("4_y05we")]), {
+ExtResource("6_8vyr5"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: null,
 1: null,
 2: null
@@ -134,17 +136,19 @@ max_team_level = 5
 known_powers = [ExtResource("8_eyvxl")]
 rested = false
 
-[sub_resource type="Resource" id="Resource_1mvhw"]
+[sub_resource type="Resource" id="Resource_l60a3"]
 script = ExtResource("10_dppvy")
-inventory = Array[Resource("res://scripts/resources/ResItem.gd")]([])
+inventory = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("8_iydr4")])
 crafted_items = Array[String]([])
-item_data_inventory = {}
+item_data_inventory = {
+"res://resources/items/ArrowSleeper.tres": 99
+}
 
 [resource]
 script = ExtResource("11_ib6uw")
-name = "Save 1 - 00:00:23
+name = "Save 1 - 00:00:50
 Morale 1
 Node2D"
-playtime = 23.717
+playtime = 51.663
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_rtrv0"), SubResource("Resource_c15dn"), SubResource("Resource_hltwn"), SubResource("Resource_1mvhw")]
+save_data = [SubResource("Resource_cfg1a"), SubResource("Resource_phisn"), SubResource("Resource_0rlpq"), SubResource("Resource_l60a3")]

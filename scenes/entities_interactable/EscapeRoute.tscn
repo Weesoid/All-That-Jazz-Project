@@ -10,9 +10,6 @@ radius = 24.0
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_0rlab")
-TO_SCENE_PATH = "res://scenes/maps/TestRoom/TestRoomB.tscn"
-TO_COORDS = "30.83763,64.06633,0"
-TOUCH_ENTER = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_u1b2x")

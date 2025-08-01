@@ -18,6 +18,7 @@ class_name PlayerScene
 @onready var animation_sprite = $AnimationSprite
 @onready var collision_shape: CollisionShape2D = $PlayerCollision
 @onready var climb_cooldown: Timer = $ClimbCooldown
+@onready var melee_hitbox = $PlayerDirection/MeleeHitbox
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -39,6 +40,7 @@ var fall_damage: int = 0
 var ANIMATION_SPEED = 0.0
 var default_camera_pos: Vector2
 var diving = false
+var dive_strength:float=-125
 
 signal jumped(jump_velocity)
 signal dived
@@ -91,7 +93,6 @@ func phase():
 	set_collision_mask_value(1, true)
 
 func dodge():
-	print('dodgge')
 	#phased.emit()
 	collision_shape.set_deferred('disabled', true)
 	await get_tree().create_timer(0.2).timeout
@@ -100,7 +101,7 @@ func dodge():
 func _physics_process(delta):
 	# Gravity
 	if not is_on_floor() and !climbing:
-		sprinting = false
+		#sprinting = false
 		velocity.x = 0
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 		fall_damage += 1
@@ -129,12 +130,11 @@ func _physics_process(delta):
 		)
 		direction = direction.normalized()
 		
-		if Input.is_action_just_pressed("ui_accept") and PlayerGlobals.overworld_stats['stamina'] >= 20 and canDive():
+		if Input.is_action_just_pressed("ui_accept") and canDive() and canDoStaminaAction(15.0):
 			dived.emit()
 			#print(velocity)
-			PlayerGlobals.overworld_stats['stamina'] -= 20.0
 			diving=true
-			jump(-100.0)
+			jump(dive_strength)
 			dodge()
 			animation_player.play('Dive_2')
 			await animation_player.animation_finished
@@ -200,12 +200,18 @@ func _physics_process(delta):
 	#OverworldGlobals.follow_array.push_front(global_position)
 	#OverworldGlobals.follow_array.pop_back()
 
+## NOTE: Must be called last.
+func canDoStaminaAction(cost:float):
+	if PlayerGlobals.overworld_stats['stamina'] >= cost:
+		PlayerGlobals.overworld_stats['stamina'] -= cost
+		return true
+
 
 func isMovementAllowed():
 	return can_move and is_processing_input() and isMobile()
 
 func canDive():
-	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0 #and !OverworldGlobals.inMenu()
+	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0
 
 func _input(_event):
 	# Power handling
@@ -484,10 +490,11 @@ func updateAnimationParameters():
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
-	if Input.is_action_just_pressed("ui_melee") and canMelee(): 
+	if Input.is_action_just_pressed("ui_melee") and canMelee() and canDoStaminaAction(5.0): 
 		undrawBowAnimation()
 		suddenStop()
 		animation_tree["parameters/conditions/melee"] = true
+		melee_hitbox.showSmear()
 		await animation_tree.animation_finished
 		animation_tree["parameters/conditions/melee"] = false
 		can_move = true 
@@ -509,11 +516,13 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	can_move = !stop_move
 
 func setUIVisibility(set_visibility:bool):
+	print('setting to ', set_visibility)
+	var exceptions = ['ColorOverlay', 'PlayerPrompt']
 	for child in player_camera.get_node('UI').get_children():
-		if child is Control: 
+		if child is Control and !exceptions.has(child.name): 
 			match set_visibility:
-				true: child.self_modulate.a = 1.0
-				false: child.self_modulate.a = 0.0
+				true: child.modulate.a = 1.0
+				false: child.modulate.a = 0.0
 
 func toggleVoidAnimation(enabled: bool):
 	if enabled:

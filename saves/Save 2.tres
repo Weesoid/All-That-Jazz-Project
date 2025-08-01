@@ -1,31 +1,31 @@
 [gd_resource type="Resource" script_class="SavedGame" load_steps=16 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_07onx"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_jimfb"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="3_tiky7"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="4_8vnar"]
-[ext_resource type="Resource" path="res://resources/combat/status_effects/Riposte.tres" id="5_4nbeu"]
-[ext_resource type="Resource" path="res://resources/combat/combatants_player/Archie.tres" id="6_pke7u"]
-[ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="7_o8ear"]
-[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="8_fweb2"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="9_r625t"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="10_jf08e"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="11_4y6iy"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_sowlk"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_b3b0v"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Willis.tres" id="3_32ej4"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicAttack.tres" id="4_0yln8"]
+[ext_resource type="Resource" path="res://resources/combat/status_effects/Riposte.tres" id="5_pndn1"]
+[ext_resource type="Resource" path="res://resources/combat/combatants_player/Archie.tres" id="6_4r6nd"]
+[ext_resource type="Resource" path="res://resources/combat/abilities/BasicProjectile.tres" id="7_brc76"]
+[ext_resource type="Resource" path="res://resources/powers/Stealth.tres" id="8_4744w"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="9_0wkxf"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="10_8r7hw"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="11_lgs7q"]
 
-[sub_resource type="Resource" id="Resource_xqm8f"]
-script = ExtResource("1_07onx")
-position = Vector2(213.334, 212.933)
+[sub_resource type="Resource" id="Resource_b7gnc"]
+script = ExtResource("1_sowlk")
+position = Vector2(120, 212)
 scene_path = "res://scenes/entities/PlayerAlternate.tscn"
-direction = 90
+direction = 0
 
-[sub_resource type="Resource" id="Resource_hox6v"]
-script = ExtResource("2_jimfb")
+[sub_resource type="Resource" id="Resource_xydr8"]
+script = ExtResource("2_b3b0v")
 quests = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
 quest_objectives_data = {}
 
-[sub_resource type="Resource" id="Resource_y33gh"]
-script = ExtResource("9_r625t")
-team = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_tiky7"), ExtResource("6_pke7u")])
+[sub_resource type="Resource" id="Resource_bdgse"]
+script = ExtResource("9_0wkxf")
+team = Array[Resource("res://scripts/resources/ResCombatantPlayer.gd")]([ExtResource("3_32ej4"), ExtResource("6_4r6nd")])
 map_logs = {}
 currency = 100
 team_level = 1
@@ -33,7 +33,7 @@ current_exp = 0
 progression_data = {}
 team_formation = Array[Resource("res://scripts/resources/ResCombatant.gd")]([])
 combatant_save_data = {
-ExtResource("3_tiky7"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("3_32ej4"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: null,
 1: null,
 2: null
@@ -42,7 +42,7 @@ ExtResource("3_tiky7"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "crit": 0.05,
 "crit_dmg": 1.5,
 "damage": 4,
-"defense": 0,
+"defense": 0.0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": 0,
@@ -63,7 +63,7 @@ ExtResource("3_tiky7"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 20,
 "resist": 0.05,
 "speed": 1
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_8vnar")]), true, Array[String]([]), true, 1, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_0yln8")]), true, Array[String]([]), true, 1, {
 "scaled_stats": {
 "health": 0.0
 }
@@ -71,11 +71,11 @@ ExtResource("3_tiky7"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "damage": 0,
 "defense": 0,
 "handling": 0
-}, ExtResource("5_4nbeu"), {
+}, ExtResource("5_pndn1"), {
 "primary": [],
 "secondary": []
 }],
-ExtResource("6_pke7u"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
+ExtResource("6_4r6nd"): [Array[Resource("res://scripts/resources/ResAbility.gd")]([]), {
 0: null,
 1: null,
 2: null
@@ -84,7 +84,7 @@ ExtResource("6_pke7u"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "crit": 0.05,
 "crit_dmg": 1.5,
 "damage": 4,
-"defense": 0,
+"defense": 0.0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": 0,
@@ -105,7 +105,7 @@ ExtResource("6_pke7u"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "health": 20,
 "resist": 0.05,
 "speed": 1
-}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_8vnar"), ExtResource("7_o8ear")]), false, Array[String]([]), true, 1, {
+}, Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("4_0yln8"), ExtResource("7_brc76")]), false, Array[String]([]), true, 1, {
 "scaled_stats": {
 "health": 0.0
 }
@@ -113,7 +113,7 @@ ExtResource("6_pke7u"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 "damage": 0,
 "defense": 0,
 "handling": 0
-}, ExtResource("5_4nbeu"), {
+}, ExtResource("5_pndn1"), {
 "primary": [],
 "secondary": []
 }]
@@ -121,20 +121,20 @@ ExtResource("6_pke7u"): [Array[Resource("res://scripts/resources/ResAbility.gd")
 unlocked_abilities = {}
 added_abilities = {}
 max_team_level = 5
-known_powers = [ExtResource("8_fweb2")]
+known_powers = [ExtResource("8_4744w")]
 rested = false
 
-[sub_resource type="Resource" id="Resource_u551n"]
-script = ExtResource("10_jf08e")
+[sub_resource type="Resource" id="Resource_qlchv"]
+script = ExtResource("10_8r7hw")
 inventory = Array[Resource("res://scripts/resources/ResItem.gd")]([])
 crafted_items = Array[String]([])
 item_data_inventory = {}
 
 [resource]
-script = ExtResource("11_4y6iy")
-name = "Save 2 - 00:00:03
+script = ExtResource("11_lgs7q")
+name = "Save 2 - 00:00:00
 Morale 1
 Node2D"
-playtime = 3.318
+playtime = 0.00100017
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_xqm8f"), SubResource("Resource_hox6v"), SubResource("Resource_y33gh"), SubResource("Resource_u551n")]
+save_data = [SubResource("Resource_b7gnc"), SubResource("Resource_xydr8"), SubResource("Resource_bdgse"), SubResource("Resource_qlchv")]

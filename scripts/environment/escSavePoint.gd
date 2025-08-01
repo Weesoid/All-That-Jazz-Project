@@ -21,6 +21,8 @@ func fightCombatantSquad():
 func interact():
 	OverworldGlobals.setPlayerInput(false)
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
+	PlayerGlobals.overworld_stats['stamina'] = 100.0
+	OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
 	animator.play("Lit")
 	OverworldGlobals.moveCamera(self, 0, Vector2(0,-30))
 	await OverworldGlobals.zoomCamera(Vector2(3,3),1,true)
@@ -32,6 +34,7 @@ func interact():
 func exit():
 	await done
 	animator.play("RESET")
+	OverworldGlobals.fadeFollowers(Color.WHITE)
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
 	for bar in mini_bars:

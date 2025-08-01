@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ResProjectileAmmo" load_steps=3 format=3 uid="uid://wdpe8hqfpnwk"]
 
 [ext_resource type="Texture2D" uid="uid://hhwkf2u82bfq" path="res://images/sprites/arrow1.png" id="1_kqrt4"]
-[ext_resource type="Script" path="res://scripts/projectiles/scprStunner.gd" id="1_r5kug"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemProjectile.gd" id="2_rbww4"]
 
 [resource]
 script = ExtResource("2_rbww4")
-OVERWORLD_EFFECT = ExtResource("1_r5kug")
-MAX_STACK = 6
-BARTER_ITEM = false
-NAME = "Arrow"
-ICON = ExtResource("1_kqrt4")
-DESCRIPTION = "A simple arrow."
-VALUE = 0
-MANDATORY = false
+max_stack = 0
+barter_item = false
+auto_name = true
+name = ""
+icon = ExtResource("1_kqrt4")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

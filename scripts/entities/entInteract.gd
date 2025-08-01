@@ -55,7 +55,7 @@ func  enter():
 	#OverworldGlobals.player.playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)
 	#get_tree().create_tween().tween_property(OverworldGlobals.player.player_camera, 'zoom', Vector2(3, 3), 0.5)
 	OverworldGlobals.setPlayerInput(false)
-	#OverworldGlobals.player.setUIVisibility(false)
+	OverworldGlobals.player.setUIVisibility(false)
 	OverworldGlobals.player.sprinting = false
 	OverworldGlobals.setMouseController(true)
 	#OverworldGlobals.setMouseController(true)
@@ -71,13 +71,13 @@ func  enter():
 	if show_followers and move_followers:
 		await moveFollowers()
 	elif !show_followers:
-		fadeFollowers(Color.TRANSPARENT)
+		OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
 
 
 func exit():
 	# Enable inputs
 	OverworldGlobals.player.player_camera.cinematic_bars.visible = false
-	#OverworldGlobals.player.setUIVisibility(true)
+	OverworldGlobals.player.setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
 		#print('DBox setting to true!')
 		if !OverworldGlobals.inCombat(): OverworldGlobals.setMouseController(false)
@@ -85,15 +85,11 @@ func exit():
 	
 	# Reset player stuff
 	if !show_followers:
-		fadeFollowers(Color.WHITE)
+		OverworldGlobals.fadeFollowers(Color.WHITE)
 	if OverworldGlobals.player.player_camera.position != OverworldGlobals.player.default_camera_pos:
 		OverworldGlobals.moveCamera('RESET',0.5)
 	if OverworldGlobals.player.player_camera.zoom != Vector2(1,1):
 		OverworldGlobals.zoomCamera(Vector2(1,1),0.5)
 	PlayerGlobals.setFollowersMotion(true)
 	cooldown_timer.start(cooldown)
-
-func fadeFollowers(color: Color):
-	for follower in PlayerGlobals.getActiveFollowers():
-		follower.fade(color)
 

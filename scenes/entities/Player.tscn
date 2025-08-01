@@ -2704,10 +2704,9 @@ one_shot = true
 position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
 offset = Vector2(0, -24)
-flip_h = true
 hframes = 9
 vframes = 6
-frame = 25
+frame = 19
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2738,7 +2737,7 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = -1.5708
+rotation = 1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)

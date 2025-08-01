@@ -14,3 +14,4 @@ texture = ExtResource("1_u4y8x")
 [node name="InteractComponent" parent="." instance=ExtResource("2_4rpqb")]
 position = Vector2(0, -18)
 dialogue_resource = ExtResource("3_gnm0e")
+show_ui = true

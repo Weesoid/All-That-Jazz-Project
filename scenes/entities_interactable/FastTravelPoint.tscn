@@ -20,6 +20,7 @@ texture = ExtResource("7_hjdo4")
 [node name="InteractComponent" parent="." instance=ExtResource("8_46j25")]
 position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_1vqke")
+show_ui = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -16.5)
