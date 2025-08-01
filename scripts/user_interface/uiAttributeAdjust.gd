@@ -18,14 +18,14 @@ func _ready():
 
 func _process(_delta):
 	if combatant != null:
-		brawn_bonus.text = '+%s' % str((combatant.stat_multiplier * combatant.stat_point_allocations['brawn']) * 100)+"%"
-		grit_bonus.text = '+%s' % str((combatant.stat_multiplier * combatant.stat_point_allocations['grit']) * 100)+"%"
+		brawn_bonus.text = '+%s' % combatant.stat_point_allocations['damage']
+		grit_bonus.text = '+%s' % str((combatant.stat_multiplier * combatant.stat_point_allocations['defense']) * 100)+"%"
 		handling_bonus.text = '+%s' % str(1 * combatant.stat_point_allocations['handling'])
-		if combatant.stat_point_allocations['brawn'] != 0:
+		if combatant.stat_point_allocations['damage'] != 0:
 			reset_brawn.show()
 		else:
 			reset_brawn.hide()
-		if combatant.stat_point_allocations['grit'] != 0:
+		if combatant.stat_point_allocations['defense'] != 0:
 			reset_grit.show()
 		else:
 			reset_grit.hide()
@@ -53,12 +53,12 @@ func focus():
 	brawn_up.grab_focus()
 
 func _on_up_brawn_pressed():
-	adjustStat(1, 'brawn', brawn_up)
+	adjustStat(1, 'damage', brawn_up)
 	if combatant.stat_points <= 0:
 		hidePanel()
 
 func _on_up_grit_pressed():
-	adjustStat(1, 'grit', grit_up)
+	adjustStat(1, 'defense', grit_up)
 	if combatant.stat_points <= 0:
 		hidePanel()
 
@@ -68,11 +68,11 @@ func _on_up_hand_pressed():
 		hidePanel()
 
 func _on_reset_brawn_pressed():
-	resetStat('brawn', 1)
+	resetStat('damage', 1)
 	focus()
 
 func _on_reset_grit_pressed():
-	resetStat('grit', 1)
+	resetStat('defense', 1)
 	focus()
 
 func _on_reset_handling_pressed():

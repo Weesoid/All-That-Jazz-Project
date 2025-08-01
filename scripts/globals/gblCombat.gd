@@ -39,7 +39,7 @@ func emit_exp_updated(value, max_value):
 # ability EFFECTS & UTILITY
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
-func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = true, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary={})-> bool:
+func calculateDamage(caster, target, modifier, can_miss = true, can_crit = true, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary={})-> bool:
 	if caster is CombatantScene:
 		caster = caster.combatant_resource
 	if target is CombatantScene:
@@ -49,13 +49,13 @@ func calculateDamage(caster, target, base_damage, can_miss = true, can_crit = tr
 		can_miss=false
 	
 	if randomRoll(caster.stat_values['accuracy']+getBonusStat(bonus_stats, 'accuracy', target)) and can_miss:
-		damageTarget(caster, target, base_damage, can_crit, sound, indicator_bb_code, bonus_stats)
+		damageTarget(caster, target, modifier, can_crit, sound, indicator_bb_code, bonus_stats)
 		return true
 	elif can_miss:
-		doDodgeEffects(caster, target, base_damage)
+		doDodgeEffects(caster, target, modifier)
 		return false
 	else:
-		damageTarget(caster, target, base_damage, can_crit, sound, indicator_bb_code)
+		damageTarget(caster, target, modifier, can_crit, sound, indicator_bb_code)
 		return true
 
 ## Calculate damage using custom formula and parameters
@@ -82,19 +82,20 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	return true
 
 ## Basic damage calculations
-func damageTarget(caster: ResCombatant, target: ResCombatant, base_damage, can_crit: bool, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary = {}):
-	base_damage += getBonusStat(bonus_stats, 'damage', target)
-	base_damage += (caster.stat_values['brawn']+getBonusStat(bonus_stats, 'brawn', target)) * base_damage
-	base_damage = useDamageFormula(target, base_damage)
-	base_damage = valueVariate(base_damage, 0.1)
-	if randomRoll(caster.stat_values['crit']+getBonusStat(bonus_stats, 'crit', target)) and can_crit:
-		base_damage = doCritEffects(base_damage, caster, getBonusStat(bonus_stats,'crit_dmg', target),true)
-		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
-	if checkSpecialStat('non-lethal', bonus_stats, target) and target.stat_values['health']-base_damage <= 0:
-		base_damage = 0
+func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, can_crit: bool, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary = {}):
+	var damage = (caster.stat_values['damage']+getBonusStat(bonus_stats, 'damage', target))*caster.stat_values['dmg_modifier']
+	damage = damage*modifier
+	damage = valueVariate(damage, caster.stat_values['dmg_variance'])
+	damage = useDamageFormula(target, damage)
 	
-	target.stat_values['health'] -= int(base_damage)
-	doPostDamageEffects(caster, target, base_damage, sound, indicator_bb_code, true, bonus_stats)
+	if randomRoll(caster.stat_values['crit']+getBonusStat(bonus_stats, 'crit', target)) and can_crit:
+		damage = doCritEffects(damage, caster, getBonusStat(bonus_stats,'crit_dmg', target),true)
+		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
+	if checkSpecialStat('non-lethal', bonus_stats, target) and target.stat_values['health']-damage <= 0:
+		damage = 0
+	
+	target.stat_values['health'] -= int(damage)
+	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, true, bonus_stats)
 
 func getBonusStat(bonus_stats: Dictionary, key: String, target: ResCombatant):
 	if hasBonusStat(bonus_stats, key) and checkBonusStatConditions(bonus_stats, key, target):
@@ -134,10 +135,9 @@ func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResC
 
 func checkConditions(conditions: Array, target: ResCombatant):
 	for condition in conditions:
-		print('deep checking: ', condition)
 		var condition_data = condition.split(':')
 		match condition_data[0]:
-			's': # ex. s:bleed or s:guard:2,=
+			's': # ex. s:bleed or s:guard:2
 				if !target.hasStatusEffect(condition_data[1]): 
 					return false
 				
@@ -235,7 +235,7 @@ func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
 
 func useDamageFormula(target: ResCombatant, damage):
-	var grit = target.stat_values['grit']
+	var grit = target.stat_values['defense']
 	if grit > 0.7 and (CombatGlobals.inCombat() and !target.combatant_scene.blocking):
 		grit = 0.7
 	var out_damage = damage - (grit * damage)
@@ -281,10 +281,11 @@ func randomRoll(percent_chance: float):
 	return randf_range(0, 1.0) > percent_chance
 
 func valueVariate(value, percent_variance: float):
-	var variation = value * percent_variance
 	randomize()
+	var variation = value * percent_variance
 	value += randf_range(variation*-1, variation)
-	return value
+	print('unrounded var: ', value)
+	return round(value)
 
 func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String):
 	target.removeStatModification(modifier_id)

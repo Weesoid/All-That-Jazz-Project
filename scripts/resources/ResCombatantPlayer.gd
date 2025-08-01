@@ -17,8 +17,8 @@ var charms = {
 	2: null
 }
 var stat_point_allocations = {
-	'brawn': 0,
-	'grit': 0,
+	'damage': 0, # Hmmm what to do....... Change to dmg_modifier!
+	'defense': 0,
 	'handling': 0
 }
 var temperment: Dictionary = {'primary':[], 'secondary':[]}
@@ -70,15 +70,7 @@ func updateCombatant(save_data: PlayerSaveData):
 	for ability in remove_abilities:
 		ability_set.erase(ability)
 	
-	# Debug code.!
 	var percent_health = float(save_data.combatant_save_data[self][2]['health']) / float(save_data.combatant_save_data[self][3]['health'])
-#	if name == 'Willis Flynn':
-#		print('======= ', name, ' =======')
-#		print('BaseHealth: ', stat_values['health'])
-#		print('Dividing: ',save_data.combatant_save_data[self][2]['health'], ' / ', save_data.combatant_save_data[self][3]['health'])
-#		print('% left: ', percent_health)
-#		print(base_stat_values['health'], ' * ', percent_health, ' = ', base_stat_values['health'] * percent_health)
-#		print('Floored: ', floor(base_stat_values['health'] * percent_health))
 	stat_values['health'] = floor(base_stat_values['health'] * percent_health)
 
 func act():
@@ -107,10 +99,10 @@ func applyEquipmentModifications():
 func getAllocationModifier()-> Dictionary:
 	var out = stat_point_allocations.duplicate()
 	for stat in out.keys():
-		if stat != 'handling' and out.has(stat):
-			out[stat] *= stat_multiplier
-		elif out.has(stat):
+		if (stat == 'handling' or stat == 'damage') and out.has(stat):
 			out[stat] *= 1
+		elif out.has(stat):
+			out[stat] *= stat_multiplier
 	return out
 
 func removeEquipmentModifications():
@@ -199,8 +191,8 @@ func reset():
 		2: null
 	}
 	stat_point_allocations = {
-		'brawn': 0,
-		'grit': 0,
+		'damage': 0,
+		'defense': 0,
 		'handling': 0
 	}
 	temperment = {'primary':[], 'secondary':[]}

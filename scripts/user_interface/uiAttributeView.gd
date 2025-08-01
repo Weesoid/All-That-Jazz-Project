@@ -20,11 +20,6 @@ extends Control
 @onready var healm_val = $HiddenAttributes/MarginContainer/VBoxContainer/HealMult/Value
 @onready var hp_text = $Attributes/MarginContainer/VBoxContainer/Health/ProgressBar/HealthValues
 @onready var debug_status = $Debug
-#@onready var temperments = $Temperments
-#@onready var p_temp_name = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Label
-#@onready var s_temp_name = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Label
-#@onready var p_temp_val = $Temperments/MarginContainer/VBoxContainer/PrimaryTemperment/Values
-#@onready var s_temp_val = $Temperments/MarginContainer/VBoxContainer/SecondaryTemperment/Values
 @onready var abilities_label = $Abilities
 
 func _ready():
@@ -38,12 +33,12 @@ func _process(_delta):
 		hp_text.text = '%s/%s' % [combatant.stat_values['health'], combatant.base_stat_values['health']]
 		hp_val.value = combatant.stat_values['health']
 		hp_val.max_value = combatant.base_stat_values['health']
-		brawn_val.value = combatant.stat_values['brawn'] * 100
-		grit_val.value = combatant.stat_values['grit'] * 100
+		brawn_val.text = str('%s - %s' % [calcDamage('min'),calcDamage('max')])
+		grit_val.value = combatant.stat_values['defense'] * 100
 		handling_val.max_value = 4
 		handling_val.value = combatant.stat_values['handling']
-		if combatant.stat_values['hustle'] >= -99:
-			hustle_val.text = str(combatant.stat_values['hustle'])
+		if combatant.stat_values['speed'] >= -99:
+			hustle_val.text = str(combatant.stat_values['speed'])
 		else:
 			hustle_val.text = 'IMMOBILIZED'
 		acc_val.value = combatant.stat_values['accuracy'] * 100
@@ -60,15 +55,23 @@ func _process(_delta):
 			abilities_label.show()
 	
 		#highlightModifiedStats(hp_val, 'health')
-		highlightModifiedStats(brawn_val, 'brawn')
-		highlightModifiedStats(grit_val, 'grit')
+		highlightModifiedStats(brawn_val, 'damage')
+		highlightModifiedStats(grit_val, 'defense')
 		highlightModifiedStats(handling_val, 'handling')
-		highlightModifiedStats(hustle_val, 'hustle')
+		highlightModifiedStats(hustle_val, 'speed')
 		highlightModifiedStats(acc_val, 'accuracy')
 		highlightModifiedStats(crit_d_val, 'crit_dmg')
 		highlightModifiedStats(crit_val, 'crit')
 		highlightModifiedStats(resist_val, 'resist')
 		highlightModifiedStats(healm_val, 'heal_mult')
+
+func calcDamage(val:String):
+	var damage = combatant.stat_values['damage']*combatant.stat_values['dmg_modifier']
+	var variance = (damage*combatant.stat_values['dmg_variance'])
+	
+	match val:
+		'min': return round(damage-variance)
+		'max': return round(damage+variance)
 
 func highlightModifiedStats(value_node, stat):
 	if combatant.stat_values[stat] > combatant.base_stat_values[stat]:

@@ -158,7 +158,7 @@ func _on_confirm_rest_pressed():
 func pickRandomEvent():
 	randomize()
 	var event = wake_events.pick_random()
-	match event:
+	match event: # TO DO: Event notifs... barks?
 		'fight':
 			save_point.fightCombatantSquad()
 			player.player_camera.hideOverlay(0)

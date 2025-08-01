@@ -21,13 +21,6 @@ static func applyHitEffects(target, caster, value, status_effect):
 	else:
 		target.combatant_scene.block_timer.start(0.8)
 
-static func skillCheck(target: CombatantScene , caster: CombatantScene, check: String, count:int=1):
-	var qte = await CombatGlobals.spawnQuickTimeEvent(target, check, count)
-	var points = qte.points
-	qte.queue_free()
-	if points > 0:
-		CombatGlobals.calculateDamage(target, caster, 2)
-
 static func endEffects(target, _status_effect: ResStatusEffect):
 	target.combatant_scene.setBlocking(false)
 	if !target.hasStatusEffect('Guard Break'):

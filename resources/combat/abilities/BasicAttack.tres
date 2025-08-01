@@ -12,13 +12,10 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage = 2
+damage_modifier = 1.0
 can_miss = true
 can_crit = true
-bonus_stats = {
-"crit/combo": "0.99",
-"status_effect": "Stunned"
-}
+bonus_stats = {}
 return_pos = true
 indicator_bb = ""
 plant_self_on_combo = false

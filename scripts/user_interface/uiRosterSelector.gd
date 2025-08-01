@@ -37,7 +37,6 @@ func createMemberButton(member: ResPlayerCombatant):
 #	button.focus_exited.connect(func(): inspecting_label.text = '')
 	button.focus_entered.connect(func(): hoverButton(member, button))
 	button.mouse_entered.connect(func(): hoverButton(member, button))
-	print(member.isInflicted())
 	if OverworldGlobals.getCombatantSquad('Player').has(member):
 		if member.isInflicted():
 			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_mark.png"))

@@ -1,7 +1,7 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.apply_once:
 		target.combatant_scene.moveTo(target.combatant_scene.get_parent(), 0.25, Vector2(0,0), true)
-		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.name)
+		CombatGlobals.modifyStat(target, {'speed': -999}, status_effect.name)
 		CombatGlobals.playKnockOutTween(target)
 		target.combatant_scene.collision.disabled = true
 		if target is ResPlayerCombatant:

@@ -4,7 +4,7 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 		CombatGlobals.calculateDamage(
 			caster, 
 			target, 
-			caster_riposte.damage,
+			caster_riposte.damage_modifier,
 			caster_riposte.can_miss,
 			caster_riposte.can_crit,
 			'',
@@ -15,7 +15,7 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 		CombatGlobals.calculateDamage(
 			caster, 
 			target, 
-			5+(target.combatant_resource.getMaxHealth()*0.1),
+			0.75,
 			true,
 			true,
 			'',

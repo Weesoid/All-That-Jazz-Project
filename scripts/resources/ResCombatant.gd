@@ -9,27 +9,31 @@ class_name ResCombatant
 @export_multiline var description: String
 @export var stat_values = {
 	'health': 20,
-	'brawn': 0.0,
-	'grit': 0.0,
+	'damage': 4,
+	'defense': 0,
 	'handling': 0,
-	'hustle': 1,
+	'speed': 1,
 	'accuracy': 0.95,
 	'crit': 0.05,
 	'crit_dmg': 1.5,
 	'heal_mult': 1.0,
-	'resist': 0.05
+	'resist': 0.05,
+	'dmg_variance': 0.25,
+	'dmg_modifier': 1.0
 }
 @export var scale_stats: Dictionary = {
 	'health': true,
-	'brawn': true,
-	'grit': true,
+	'damage': true,
+	'defense': true,
 	'handling': false,
-	'hustle': true,
+	'speed': true,
 	'accuracy': false,
 	'crit': false,
 	'crit_dmg': false,
 	'heal_mult': false,
-	'resist': false
+	'resist': false,
+	'dmg_variance': false,
+	'dmg_modifier': false
 }
 @export var ability_set: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var max_turn_charges = 1
@@ -102,8 +106,12 @@ func scaleStats():
 	var stat_increase = {}
 	for stat in stat_values.keys():
 		if scale_stats[stat]: 
+			# Increase stat by 10% of the character's base stat value (value at lvl1) per level
+			# 20HP > 22 > 24
+			# 0.25 > 0.27 > 0.3
+			# 8 > 9 > 10
 			stat_increase[stat] = (base_stat_values[stat] * (1 + ((PlayerGlobals.team_level-1)*0.1))) - base_stat_values[stat]
-#		if (stat == 'health' or  stat == 'hustle') and base_stat_values[stat]:
+#		if (stat == 'health' or  stat == 'speed') and base_stat_values[stat]:
 #			stat_increase[stat] = int(stat_increase[stat])
 	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
 
@@ -137,10 +145,7 @@ func getStatusEffect(stat_name: String)-> ResStatusEffect:
 	return null
 
 func hasStatusEffect(stat_name: String)-> bool:
-	if stat_name == 'Guard':
-		print('Checking!')
 	for status in status_effects:
-		if stat_name == 'Guard': print(status, ' v ', stat_name)
 		if status.name.to_lower() == stat_name.to_lower():
 			return true
 	
@@ -150,7 +155,7 @@ func isDead()-> bool:
 	return stat_values['health'] < 1.0
 
 func isImmobilized()-> bool:
-	return stat_values['hustle'] < -99 and !hasStatusEffect('Fading')
+	return stat_values['speed'] < -99 and !hasStatusEffect('Fading')
 
 func getStringStats(current_stats=false):
 	var result = ""

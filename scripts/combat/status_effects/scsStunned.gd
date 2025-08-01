@@ -1,5 +1,5 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.name)
+	CombatGlobals.modifyStat(target, {'speed': -999}, status_effect.name)
 	if !target.hasStatusEffect('Poised') and status_effect.apply_once:
 		OverworldGlobals.playSound("res://audio/sounds/39_Block_03.ogg")
 	if target.hasStatusEffect('Poised'):

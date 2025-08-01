@@ -2,7 +2,7 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 	CombatGlobals.calculateDamage(
 		caster, 
 		target, 
-		2+caster.combatant_resource.stat_values['health']*0.01,
+		-0.75,
 		true,
 		false,
 		'',

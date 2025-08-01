@@ -456,9 +456,9 @@ func calculateEscapeChance()-> float:
 	var hustle_enemies = 0
 	var hustle_allies = 0
 	for combatant in getCombatantGroup('enemies'):
-		hustle_enemies += combatant.base_stat_values['hustle']
+		hustle_enemies += combatant.base_stat_values['speed']
 	for combatant in getCombatantGroup('team'):
-		hustle_allies += combatant.base_stat_values['hustle']
+		hustle_allies += combatant.base_stat_values['speed']
 	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
 
 func toggleUI(visibility: bool):
@@ -730,7 +730,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		combatant.acted = false
 		combatant.turn_charges = combatant.max_turn_charges
 		for turn_charge in range(combatant.max_turn_charges):
-			var rolled_speed = randi_range(1, 8) + combatant.stat_values['hustle']
+			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
 			combatant_turn_order.append([combatant, rolled_speed])
 	for marker in team_container:
 		if marker.get_child_count() != 0: continue
@@ -862,7 +862,7 @@ func rollTurns():
 		combatant.acted = false
 		combatant.turn_charges = combatant.max_turn_charges
 		for turn_charge in range(combatant.max_turn_charges):
-			var rolled_speed = randi_range(1, 8) + combatant.stat_values['hustle']
+			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
 			combatant_turn_order.append([combatant, rolled_speed])
 	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
 	round_count += 1

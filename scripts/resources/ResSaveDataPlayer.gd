@@ -16,3 +16,4 @@ class_name PlayerSaveData
 @export var added_abilities: Dictionary
 @export var max_team_level: int
 @export var known_powers: Array
+@export var rested: bool

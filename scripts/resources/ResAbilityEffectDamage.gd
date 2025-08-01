@@ -13,7 +13,7 @@ enum DamageType {
 @export var damage_type: DamageType
 ## Only applicable if damage type is "Custom". What animation the caster will do.
 @export var cast_animation: Dictionary= {'animation': '', 'go_to_target': false} 
-@export var damage := 0
+@export var damage_modifier: float = 1.0
 @export var can_miss: bool = true
 @export var can_crit: bool = true
 ## Additional stats to be applied on usage.

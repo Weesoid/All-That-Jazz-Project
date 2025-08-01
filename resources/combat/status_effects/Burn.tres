@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_6ki17"]
 script = ExtResource("1_ca6og")
 damage = 1
-rank_scaling = false
+rank_scaling = true
 use_damage_formula = false
 bonus_stats = {}
 crit_chance = -1.0
@@ -34,7 +34,7 @@ texture = ExtResource("3_34ccu")
 max_duration = 8
 extend_duration = 2
 apply_extend_duration = true
-max_rank = 0
+max_rank = 10
 tick_on_apply = true
 tick_any_turn = true
 do_ticks = true

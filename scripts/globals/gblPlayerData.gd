@@ -30,46 +30,46 @@ var overworld_stats: Dictionary = {
 # TEMPERMENTS!
 var primary_temperments: Dictionary = {
 	'gifted': {'handling': 1},
-	'nimble': {'hustle': 4},
+	'nimble': {'speed': 4},
 	'lucky': {'crit':0.03},
 	'deadly': {'crit_dmg': 0.15},
-	'dominant': {'brawn': 0.1},
-	'tenacious': {'grit': 0.1},
+	'dominant': {'damage': 2},
+	'tenacious': {'defense': 0.1},
 	'fortified': {'resist': 0.1},
 	'focused': {'accuracy':0.03},
 	'unyielding': {'heal_mult':0.2},
-	'all_arounder': {'hustle': 1, 'crit': 0.02, 'crit_dmg': 0.02, 'brawn': 0.02, 'grit': 0.02, 'resist': 0.02, 'accuracy': 0.02, 'heal_mult': 0.02}
+	'all_arounder': {'speed': 1, 'crit': 0.02, 'crit_dmg': 0.02, 'damage': 3, 'defense': 0.02, 'resist': 0.02, 'accuracy': 0.02, 'heal_mult': 0.02}
 }
 var secondary_temperments: Dictionary = {
 	# BUFFS
 	'clever': {'handling': 1},
-	'quick': {'hustle': 2},
+	'quick': {'speed': 2},
 	'acute': {'crit':0.02},
 	'hard_hitter': {'crit_dmg': 0.1},
-	'mighty': {'brawn': 0.05},
-	'stalwart': {'grit': 0.05},
+	'mighty': {'damage': 4},
+	'stalwart': {'defense': 0.05},
 	'resilient': {'resist': 0.05},
 	'keen': {'accuracy':0.02},
 	'limber': {'heal_mult':0.05},
 	
 	# QUIRKS
-	'smartass': {'handling': 2, 'brawn': -0.12,'grit': -0.12},
-	'frantic': {'hustle': 4, 'accuracy': -0.1},
+	'smartass': {'handling': 2, 'damage': -3,'defense': -0.12},
+	'frantic': {'speed': 4, 'accuracy': -0.1},
 	'daredevil': {'crit':0.1, 'accuracy':-0.1},
 	'crude': {'crit_dmg': 0.25, 'crit':-0.15},
-	'reckless': {'brawn': 0.15, 'grit': -0.15},
-	'headstrong': {'grit': 0.15, 'brawn': -0.15},
+	'reckless': {'damage': 4, 'defense': -0.15},
+	'headstrong': {'defense': 0.15, 'damage': -4},
 	'hardened': {'resist': 0.35, 'crit': -0.1},
 	'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_dmg': -0.25},
-	'selfish': {'heal_mult':0.25, 'grit': -0.2},
+	'selfish': {'heal_mult':0.25, 'defense': -0.2},
 	
 	# DEBUFFS
 	'heavy_handed': {'handling': -1},
-	'clumsy': {'hustle': -4},
+	'clumsy': {'speed': -4},
 	'bad_luck': {'crit':-0.05},
 	'dud_hitter': {'crit_dmg': -0.25},
-	'wimpy': {'brawn': -0.1},
-	'soft': {'grit': -0.1},
+	'wimpy': {'damage': -2},
+	'soft': {'defense': -0.1},
 	'sickly': {'resist': -0.05},
 	'oblivious': {'accuracy':-0.05},
 	'stubborn': {'heal_mult':-0.15}
@@ -456,7 +456,7 @@ func saveData(save_data: Array):
 	data.unlocked_abilities = unlocked_abilities
 	data.added_abilities = added_abilities
 	data.max_team_level = max_team_level
-	
+	data.rested = rested
 	for combatant in team:
 		data.combatant_save_data[combatant] = [
 			combatant.ability_set,
@@ -493,6 +493,7 @@ func loadData(save_data: PlayerSaveData):
 	added_abilities = save_data.added_abilities
 	max_team_level = save_data.max_team_level
 	known_powers = save_data.known_powers
+	rested = save_data.rested
 	if equipped_blessing != null: equipped_blessing.setBlessing(true)
 	
 	initializeBenchedTeam()

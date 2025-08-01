@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsKnockOut.gd" id="1_aglpc"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_w5lqe"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_o5ves"]
+[ext_resource type="Texture2D" uid="uid://d2yuoey2x0pvr" path="res://images/sprites/icon_ko.png" id="3_qcd2m"]
 
 [resource]
 script = ExtResource("1_w5lqe")
+auto_name = false
 name = "Knock Out"
 description = "Target is out cold."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
@@ -13,7 +14,7 @@ status_script = ExtResource("1_aglpc")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
-texture = ExtResource("2_o5ves")
+texture = ExtResource("3_qcd2m")
 max_duration = 0
 extend_duration = 1
 apply_extend_duration = false

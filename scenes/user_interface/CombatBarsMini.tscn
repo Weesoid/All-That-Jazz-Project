@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://b57tm5xnp0h5c"]
+[gd_scene load_steps=10 format=3 uid="uid://b57tm5xnp0h5c"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBarsMini.gd" id="1_0kb5o"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_ro8a5"]
+[ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="3_2nlcb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diu1g"]
 bg_color = Color(0, 0, 0, 1)
@@ -116,10 +117,12 @@ theme_override_constants/v_separation = 1
 alignment = 1
 
 [node name="Selector" parent="." instance=ExtResource("2_ro8a5")]
+layout_mode = 0
 offset_left = -15.0
 offset_top = -14.0
 offset_right = 15.0
 offset_bottom = 34.0
+theme = ExtResource("3_2nlcb")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 

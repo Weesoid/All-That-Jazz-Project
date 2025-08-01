@@ -11,7 +11,7 @@
 script = ExtResource("2_b4evy")
 target = 0
 status_effect = ExtResource("3_yylv3")
-cast_animation = "Cast_Defend"
+cast_animation = "Cast_Block"
 condition = ""
 is_combo_effect = false
 sound_effect = ""

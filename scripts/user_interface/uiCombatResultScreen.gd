@@ -104,24 +104,25 @@ func hideLoot():
 	all_loot_label.hide()
 
 func showLoot():
-	var bank = OverworldGlobals.getCurrentMap().REWARD_BANK['loot']
-	for drop in bank.keys():
-		var icon: TextureRect = TextureRect.new()
-		icon.texture = drop.icon.duplicate()
-		icon.tooltip_text = drop.name
-		var count_label = Label.new()
-		count_label.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][drop])
-		count_label.theme = preload("res://design/OutlinedLabel.tres")
-		icon.add_child(count_label)
-		if combat_scene.drops.has(drop):
-			var tween = create_tween()
-			var tween_b = create_tween()
-			loot_icons.add_child(icon)
-			tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
-			tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
-			tween_b.tween_property(icon, 'self_modulate', Color.YELLOW, 0.25)
-			tween_b.tween_property(icon, 'self_modulate', Color.WHITE, 1.5)
-			OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
-		else:
-			loot_icons.add_child(icon)
+#	FIX LATER!
+#	var bank = OverworldGlobals.getCurrentMap().REWARD_BANK['loot']
+#	for drop in bank.keys():
+#		var icon: TextureRect = TextureRect.new()
+#		icon.texture = drop.icon.duplicate()
+#		icon.tooltip_text = drop.name
+#		var count_label = Label.new()
+#		count_label.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][drop])
+#		count_label.theme = preload("res://design/OutlinedLabel.tres")
+#		icon.add_child(count_label)
+#		if combat_scene.drops.has(drop):
+#			var tween = create_tween()
+#			var tween_b = create_tween()
+#			loot_icons.add_child(icon)
+#			tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
+#			tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
+#			tween_b.tween_property(icon, 'self_modulate', Color.YELLOW, 0.25)
+#			tween_b.tween_property(icon, 'self_modulate', Color.WHITE, 1.5)
+#			OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
+#		else:
+#			loot_icons.add_child(icon)
 		await get_tree().create_timer(0.15).timeout

@@ -4,7 +4,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.playFadingTween(target)
 		#CombatGlobals.playAnimation(target, 'Fading')
 		target.combatant_scene.playIdle('Fading')
-		CombatGlobals.modifyStat(target, {'hustle': -999}, status_effect.name)
+		CombatGlobals.modifyStat(target, {'speed': -999}, status_effect.name)
 		target.combatant_scene.blocking = false
 	if CombatGlobals.randomRoll(0.02) and canAddQTE(status_effect):
 		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()

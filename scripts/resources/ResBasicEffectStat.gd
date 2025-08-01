@@ -3,10 +3,10 @@ class_name ResStatChangeEffect
 
 @export var status_change = {
 	'health': 0,
-	'brawn': 0.0,
-	'grit': 0.0,
+	'damage': 0,
+	'defense': 0.0,
 	'handling': 0,
-	'hustle': 0,
+	'speed': 0,
 	'accuracy': 0.0,
 	'crit_mult': 0.0,
 	'crit': 0.0,

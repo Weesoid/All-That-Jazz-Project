@@ -205,13 +205,14 @@ dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Brawn"]
 layout_mode = 2
-text = "Brawn"
+text = "DAMAGE"
 vertical_alignment = 1
 uppercase = true
 
-[node name="ProgressBar" type="ProgressBar" parent="Attributes/MarginContainer/VBoxContainer/Brawn"]
+[node name="ProgressBar" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Brawn"]
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+text = "10-19"
+horizontal_alignment = 1
 
 [node name="Grit" type="HSplitContainer" parent="Attributes/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -221,7 +222,7 @@ dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Attributes/MarginContainer/VBoxContainer/Grit"]
 layout_mode = 2
-text = "Grit"
+text = "DEFENSE"
 vertical_alignment = 1
 uppercase = true
 
