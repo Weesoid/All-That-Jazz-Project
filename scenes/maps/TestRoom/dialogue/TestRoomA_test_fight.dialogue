@@ -2,12 +2,13 @@
 Entity: Wanna fight!?
 Entity: ...Or not....
 Entity: I don't rlly care tbh....
-Entity: But if u wanna...............
-- Manipulate my experience => experience
-- YES => fight
-- Give me a blessing! => bless
-- Teleport me to the super secret third room! => teleport
-- Nah fam. => END
+Player: Come on, don't be like that! Tell me a long winded fact about ipsum lorem!
+Entity: "Lorem ipsum" is a placeholder text commonly used in the graphic design, publishing, and web development industries. It's a collection of Latin words that have been scrambled to create text that doesn't convey any specific meaning, allowing designers to focus on the visual aspects of their work without being distracted by the content!
+- Player: Manipulate my experience => experience
+- Player: YES => fight
+- Player: Give me a blessing! => bless
+- Player: Teleport me to the super secret third room! => teleport
+- Player: Nah fam. => END
 => END
 
 ~ bless
@@ -36,5 +37,5 @@ do changeMap("res://scenes/maps/TestRoom/TestRoomC.tscn", "0,0,0", "FastTravel")
 => END
 
 ~ fight
-do changeToCombat("Fighter")
+do changeToCombat("Entity")
 => END

@@ -713,7 +713,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		team_container = team_container_markers
 	else:
 		team_container = enemy_container_markers
-	var combat_bars = preload("res://scenes/user_interface/CombatBars.tscn").instantiate()
+	var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
 	combat_bars.attached_combatant = combatant
 	combatant.combatant_scene.add_child(combat_bars)
 	if do_tween:
@@ -1067,7 +1067,7 @@ func concludeCombat(results: int):
 	#resetActionLog()
 	
 	if results == 1:
-		var bc_ui = preload("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
+		var bc_ui = load("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 		bc_ui.morale = morale_before
 		add_child(bc_ui)
 		await bc_ui.done

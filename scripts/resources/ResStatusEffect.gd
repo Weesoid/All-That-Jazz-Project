@@ -19,7 +19,7 @@ enum RemoveStyle {
 	TICK_DOWN
 }
 
-@export var auto_name:bool
+## NOTE: Always name status effects with the following convention: File-GuardBreak.tres;Name-Guard Break
 @export var name: String
 @export_multiline var description: String
 @export var basic_effects: Array[ResBasicEffect]

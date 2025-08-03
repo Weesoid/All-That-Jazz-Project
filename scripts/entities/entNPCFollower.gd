@@ -11,6 +11,7 @@ var follow_offset=48
 var follow_index:int
 
 func _ready():
+	name = host_combatant.name.split(' ')[0]
 	sprite.texture = texture
 	add_collision_exception_with(OverworldGlobals.player)
 	OverworldGlobals.player.jumped.connect(jump)

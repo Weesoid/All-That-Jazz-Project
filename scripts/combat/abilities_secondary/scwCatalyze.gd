@@ -1,8 +1,8 @@
 static func applyEffects(_caster: ResCombatant, targets, animation_scene):
 	var effects = [
-		preload("res://resources/combat/status_effects/Chilled.tres"), 
-		preload("res://resources/combat/status_effects/Burn.tres"), 
-		preload("res://resources/combat/status_effects/Poison.tres")
+		load("res://resources/combat/status_effects/Chilled.tres"), 
+		load("res://resources/combat/status_effects/Burn.tres"), 
+		load("res://resources/combat/status_effects/Poison.tres")
 		]
 	for target in targets:
 		randomize()

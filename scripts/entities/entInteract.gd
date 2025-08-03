@@ -7,7 +7,7 @@ extends Area2D
 @export var go_left: bool = false
 @export var show_followers: bool = true
 @export var move_followers:bool = false
-@export var cooldown: float = 2.5
+@export var cooldown: float = 1.0
 
 @onready var cooldown_timer = $Timer
 var direction:int=1
@@ -59,6 +59,7 @@ func  enter():
 	OverworldGlobals.player.sprinting = false
 	OverworldGlobals.setMouseController(true)
 	#OverworldGlobals.setMouseController(true)
+	#OverworldGlobals.zoomCamera(Vector2(3,3))
 	PlayerGlobals.setFollowersMotion(false)
 	
 	# Move player

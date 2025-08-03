@@ -176,7 +176,7 @@ scale = Vector2(0.383333, 0.362963)
 texture = ExtResource("5_ciqm1")
 
 [node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(-272, 136)
+position = Vector2(80, -120)
 
 [node name="CinematicBars" type="Node2D" parent="."]
 visible = false

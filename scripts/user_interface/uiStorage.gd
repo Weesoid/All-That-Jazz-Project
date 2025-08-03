@@ -48,7 +48,7 @@ func loadSlider(item)-> int:
 	if !item is ResStackItem:
 		return 1
 	
-	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
+	var a_slider = load("res://scenes/user_interface/AmountSlider.tscn").instantiate()
 	a_slider.max_v = item.stack
 	add_child(a_slider)
 	await a_slider.amount_enter

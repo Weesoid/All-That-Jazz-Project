@@ -12,7 +12,7 @@ func _ready():
 		PlayerGlobals.applyBlessing("res://scenes/temporary_blessings/Stun.tscn")
 		visible = false
 	else:
-		var stun_stars = preload("res://scenes/animations_quick/Dazed.tscn").instantiate()
+		var stun_stars = load("res://scenes/animations_quick/Dazed.tscn").instantiate()
 		stun_stars.position = Vector2(0,-OverworldGlobals.getEntity(patroller_name).get_node('Sprite2D').texture.get_height()/4)
 		add_child(stun_stars)
 	timer.timeout.connect(queue_free)

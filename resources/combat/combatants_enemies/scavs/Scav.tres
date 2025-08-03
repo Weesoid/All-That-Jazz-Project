@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_gyudi"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tsf88"]
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_wvq80"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_vy0fi"]
 [ext_resource type="PackedScene" uid="uid://r0toat4qsmnb" path="res://scenes/combatants/Scav.tscn" id="3_lb1qm"]
 
 [resource]
@@ -46,6 +46,6 @@ scale_stats = {
 "resist": false,
 "speed": true
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_wvq80")])
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_vy0fi")])
 max_turn_charges = 1
 ai_package = ExtResource("1_tsf88")

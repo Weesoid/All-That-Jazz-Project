@@ -7,7 +7,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.modifyStat(target, {'speed': -999}, status_effect.name)
 		target.combatant_scene.blocking = false
 	if CombatGlobals.randomRoll(0.02) and canAddQTE(status_effect):
-		var qte = preload("res://scenes/quick_time_events/Timing.tscn").instantiate()
+		var qte = load("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)
 		CombatGlobals.getCombatScene().add_child(qte)

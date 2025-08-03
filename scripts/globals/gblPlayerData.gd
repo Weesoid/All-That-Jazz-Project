@@ -2,21 +2,21 @@
 extends Node
 
 var save_name
-var team: Array[ResPlayerCombatant]
-var team_formation: Array[ResCombatant]
+var team: Array[ResPlayerCombatant] # Marked for indirect reference. Load per item, skip if !file_exists.
+var team_formation: Array[ResCombatant] # Marked for indirect reference. Load per item, skip if !file_exists.
 var map_logs: Dictionary = {}
 var power: GDScript
-var known_powers: Array = [load("res://resources/powers/Stealth.tres")]
-var equipped_arrow: ResProjectileAmmo
-var equipped_blessing: ResBlessing
+var known_powers: Array = [load("res://resources/powers/Stealth.tres")]  # Marked for indirect reference. Load per item, skip if !file_exists.
+var equipped_arrow: ResProjectileAmmo # Marked for indirect reference. Load item, skip if !file_exists.
+var equipped_blessing: ResBlessing # Marked for indirect reference. Load item, skip if !file_exists.
 var currency = 100
 var team_level = 1
 var max_team_level = 5
 var current_exp = 0
 var progression_data: Dictionary = {} # This'll be handy later...
-var unlocked_abilities: Dictionary = {}
-var added_abilities: Dictionary = {}
-var current_stalker: ResStalkerData
+var unlocked_abilities: Dictionary = {}  # Marked for indirect reference.
+var added_abilities: Dictionary = {}  # Marked for indirect reference.
+var current_stalker: ResStalkerData # Marked for indirect reference. Load item, skip if !file_exists.
 var rested:bool
 
 var overworld_stats: Dictionary = {
@@ -79,6 +79,7 @@ signal level_up
 
 func _ready():
 	initializeBenchedTeam()
+	#print(FileAccess.file_exists(''))
 	#addExperience(99)
 
 func initializeBenchedTeam():
@@ -253,6 +254,17 @@ func addCombatantToTeam(combatant_id):
 	combatant.stat_points = team_level
 	team.append(combatant)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.name)
+
+func setAbilityActive(combatant: ResPlayerCombatant, ability: ResAbility, set_active:bool):
+	if set_active:
+		if combatant.ability_set.size() >= 4:
+			OverworldGlobals.showPrompt('Max abilities enabled.')
+			return
+		combatant.file_references['active_abilities'].append(ability.resource_path)
+		combatant.ability_set.append(load(ability.resource_path))
+	else:
+		combatant.file_references['active_abilities'].erase(ability.resource_path)
+		combatant.ability_set.erase(load(ability.resource_path))
 
 func removeCombatant(combatant_id: ResPlayerCombatant):
 	for member in team:
@@ -458,22 +470,17 @@ func saveData(save_data: Array):
 	data.max_team_level = max_team_level
 	data.rested = rested
 	for combatant in team:
-		data.combatant_save_data[combatant] = [
-			combatant.ability_set,
-			combatant.charms,
-			combatant.stat_values,
-			combatant.base_stat_values,
-			combatant.ability_pool,
-			combatant.mandatory,
-			combatant.lingering_effects,
-			combatant.initialized,
-			combatant.stat_points,
-			combatant.stat_modifiers,
-			combatant.equipped_weapon,
-			combatant.stat_point_allocations,
-			combatant.guard_effect,
-			combatant.temperment
-			]
+		data.combatant_save_data[combatant] = CombatantSaveData.new(
+				combatant.charms,
+				combatant.stat_values,
+				combatant.base_stat_values,
+				combatant.mandatory,
+				combatant.lingering_effects,
+				combatant.initialized,
+				combatant.stat_points,
+				combatant.stat_point_allocations,
+				combatant.file_references
+			)
 	
 	save_data.append(data)
 
@@ -501,21 +508,8 @@ func loadData(save_data: PlayerSaveData):
 	OverworldGlobals.setCombatantSquad('Player', team_formation)
 	loadAddedAbilities()
 	for combatant in team:
-		#combatant.reset()
-		combatant.ability_set = save_data.combatant_save_data[combatant][0]
-		combatant.charms = save_data.combatant_save_data[combatant][1]
-		#combatant.stat_values = save_data.combatant_save_data[combatant][2]
-		#combatant.base_stat_values = save_data.combatant_save_data[combatant][3]
-		#combatant.ability_pool = save_data.combatant_save_data[combatant][4]
-		#combatant.mandatory = save_data.combatant_save_data[combatant][5]
-		combatant.lingering_effects = save_data.combatant_save_data[combatant][6]
-		combatant.initialized = save_data.combatant_save_data[combatant][7]
-		combatant.stat_points = save_data.combatant_save_data[combatant][8]
-		#combatant.stat_modifiers = save_data.combatant_save_data[combatant][9]
-		combatant.equipped_weapon = save_data.combatant_save_data[combatant][10]
-		combatant.stat_point_allocations = save_data.combatant_save_data[combatant][11]
-		combatant.guard_effect = save_data.combatant_save_data[combatant][12]
-		combatant.temperment = save_data.combatant_save_data[combatant][13]
+		save_data.combatant_save_data[combatant].loadData(combatant)
+		await get_tree().process_frame
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.charms.values():
 			if charm != null:
@@ -524,18 +518,25 @@ func loadData(save_data: PlayerSaveData):
 		combatant.initializeCombatant(false)
 		combatant.updateCombatant(save_data)
 		combatant.initializeCombatant(false)
+	
 	# TO DO: Fade followers based on interaction instead...?
 #	if OverworldGlobals.getCurrentMap().SAFE:
 #		OverworldGlobals.loadFollowers()
 	
 	overworld_stats['stamina'] = 100.0 # DO NOT TOUCH STAMINA FOR BLESSINGS!
-	
+
+func loadPlayerCombatant(path)-> ResPlayerCombatant:
+	return load(path)
+
 func resetVariables():
 	for member in team:
 		member.reset()
 	
 	save_name = null
-	team = [preload("res://resources/combat/combatants_player/Willis.tres"), preload("res://resources/combat/combatants_player/Archie.tres")]
+	team = [
+		loadPlayerCombatant("res://resources/combat/combatants_player/Willis.tres"), 
+		loadPlayerCombatant("res://resources/combat/combatants_player/Archie.tres")
+		]
 	team_formation = []
 	#FOLLOWERS = []
 	map_logs = {}

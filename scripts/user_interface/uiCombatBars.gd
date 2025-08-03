@@ -67,7 +67,7 @@ func updateBars():
 func updateStatusEffects():
 	for effect in attached_combatant.status_effects:
 		if status_effects.get_children().has(effect.icon) or permanent_status_effects.get_children().has(effect.icon) or effect.icon == null: continue
-		var tick_down = preload("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
+		var tick_down = load("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
 		tick_down.attached_status = effect
 		var icon = effect.icon
 		icon.tooltip_text = effect.name+': '+effect.description
@@ -103,7 +103,7 @@ func setFaderBarValue(value):
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
 	if attached_combatant == combatant and indicator.visible:
-		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
+		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 		var y_placement = 0
 		for child in secondary_prompts.get_children():
 			y_placement -= 8
@@ -112,7 +112,7 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 
 #func manualCallIndicatorBB(combatant: ResCombatant, text: String, animation: String, bb_code: String):
 #	if attached_combatant == combatant and indicator.visible:
-#		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
+#		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 #		var y_placement = 0
 #		for child in secondary_prompts.get_children():
 #			y_placement -= 8

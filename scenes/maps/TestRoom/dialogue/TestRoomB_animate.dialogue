@@ -1,12 +1,12 @@
 ~ start
 if isFollowerActive("PUFriendHealer"):
-	Willis: My frined is just gonna move on over here.
+	Player: My frined is just gonna move on over here.
 	do moveEntity("NPCPrototypeFollower", "v>-100 44,-97 44,*Spin,^D", Vector2(0,0), 35.0, true, false)
 
 
-Willis: ...
-Willis: I'm gonna hug you now.
-Entity: Woah!
+Player: ...
+Player: I'm gonna hug you now.
+Animator: Woah!
 do moveEntity("Player", ">L100")
 #do changeEntityVisibility("Player", false)
 do playEntityAnimation("Animator", "Hug",true)
@@ -15,11 +15,11 @@ do playEntityAnimation("Animator", "Hug",true)
 #do playEntityAnimation("Animator", "RESET", false)
 #do moveEntity("Player", ">L100", Vector2(0,0), 35.0, false)
 do moveEntity("Animator", ">L10,R10,L10,R10,J400")
-Entity: Nice hug!
+Animator: Nice hug!
 
 do moveCamera(Vector2(0,0))
 do zoomCamera(Vector2(2,2), 1.0, true)
 
 do moveEntity("Player", ">L10,R10,*VoidChannel,L10,w3,R2")
-Entity: Nice trick!
+Animator: Nice trick!
 => END

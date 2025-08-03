@@ -12,7 +12,7 @@ class_name PlayerScene
 @onready var player_direction = $PlayerDirection
 @onready var bow_line = $PlayerDirection/BowShotLine
 @onready var squad = $CombatantSquadComponent
-@onready var player_camera = $PlayerCamera
+@onready var player_camera: PlayerCamera = $PlayerCamera
 @onready var audio_player = $AudioStreamPlayer2D
 @onready var drop_detector: Area2D = $PlayerDirection/Area2D
 @onready var animation_sprite = $AnimationSprite
@@ -24,6 +24,7 @@ const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
 const POWER_LEFT = preload("res://images/sprites/power_left.png")
 const POWER_RIGHT = preload("res://images/sprites/power_right.png")
+
 var can_move = true
 var direction = Vector2()
 var bow_mode = false
@@ -144,7 +145,7 @@ func _physics_process(delta):
 			can_move=true
 		
 		# Jump detector
-		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO:
+		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO and canDoStaminaAction(5):
 			jump(-225.0)
 		elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
 			phase()
@@ -179,7 +180,8 @@ func _physics_process(delta):
 	if sprinting and PlayerGlobals.overworld_stats['stamina'] > 0.0 and bow_draw_strength == 0 and can_move:
 		SPEED = PlayerGlobals.overworld_stats['sprint_speed']
 		ANIMATION_SPEED = 1.0
-		if velocity != Vector2.ZERO: PlayerGlobals.overworld_stats['stamina'] -= PlayerGlobals.overworld_stats['sprint_drain']
+		if velocity != Vector2.ZERO and is_on_floor(): 
+			PlayerGlobals.overworld_stats['stamina'] -= PlayerGlobals.overworld_stats['sprint_drain']
 	elif bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
 		if PlayerGlobals.overworld_stats['stamina'] > 0.0:
 			PlayerGlobals.overworld_stats['stamina'] -= 0.1
@@ -205,6 +207,9 @@ func canDoStaminaAction(cost:float):
 	if PlayerGlobals.overworld_stats['stamina'] >= cost:
 		PlayerGlobals.overworld_stats['stamina'] -= cost
 		return true
+	else:
+		player_camera.flashStamina(Color.RED)
+		return false
 
 
 func isMovementAllowed():
@@ -516,7 +521,6 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	can_move = !stop_move
 
 func setUIVisibility(set_visibility:bool):
-	print('setting to ', set_visibility)
 	var exceptions = ['ColorOverlay', 'PlayerPrompt']
 	for child in player_camera.get_node('UI').get_children():
 		if child is Control and !exceptions.has(child.name): 

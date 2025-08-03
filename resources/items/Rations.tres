@@ -18,6 +18,7 @@ animate_on = 0
 [resource]
 script = ExtResource("1_fm6vq")
 effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_w5uhc")])
+party_wide = false
 max_stack = 16
 barter_item = false
 auto_name = true

@@ -42,7 +42,7 @@ func moveTarget(d):
 		if target.position.x <= size: CombatGlobals.qte_finished.emit()
 
 func newGoal(init=false):
-	var goal = preload("res://scenes/quick_time_events/targets/TimingTarget.tscn").instantiate()
+	var goal = load("res://scenes/quick_time_events/targets/TimingTarget.tscn").instantiate()
 	goal.scale.x -=  (size_penalty * points)
 	if init:
 		#debugPoints((size*-1)+90, size)
@@ -61,8 +61,8 @@ func debugPoints(start, end):
 		remove_child(get_node('start'))
 		remove_child(get_node('end'))
 
-	var start_point = preload("res://scenes/quick_time_events/targets/TimingTarget.tscn").instantiate()
-	var end_point = preload("res://scenes/quick_time_events/targets/TimingTarget.tscn").instantiate()
+	var start_point = load("res://scenes/quick_time_events/targets/TimingTarget.tscn").instantiate()
+	var end_point = load("res://scenes/quick_time_events/targets/TimingTarget.tscn").instantiate()
 	start_point.scale.x = 0.1
 	end_point.scale.x = 0.1
 	start_point.modulate = Color.GREEN

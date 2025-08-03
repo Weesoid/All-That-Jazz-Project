@@ -1,20 +1,27 @@
 [gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://cdpk5o3ahct04"]
 
-[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_iv4bj"]
+[ext_resource type="Texture2D" uid="uid://141agyx4y73o" path="res://images/sprites/icon_bolt.png" id="1_doyk5"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="1_kre4j"]
 
 [resource]
 script = ExtResource("1_kre4j")
-UNIQUE = false
-STAT_MODIFICATIONS = {
-"brawn": 1.0,
-"crit": 1.0,
-"grit": 0.1,
-"hustle": 99
+unique = false
+stat_modifications = {
+"accuracy": 0.0,
+"crit": 0.0,
+"crit_mult": 0.0,
+"damage": 0,
+"defense": 0.0,
+"handling": 1,
+"heal_mult": 0.0,
+"health": 0,
+"resist": 0.0,
+"speed": 0
 }
-NAME = "Murder Charm"
-ICON = ExtResource("1_iv4bj")
-DESCRIPTION = "KILL KILL EVERYTHING!"
-VALUE = 100
-MANDATORY = false
-PARENT_ITEM = ""
+auto_name = true
+name = "MURDERNUS"
+icon = ExtResource("1_doyk5")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

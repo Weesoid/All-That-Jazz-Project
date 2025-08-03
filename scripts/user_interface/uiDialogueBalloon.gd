@@ -12,11 +12,14 @@ const MAX_WIDTH = 256
 @export var file_suffix: String = ""
 @onready var talk_sound: AudioStreamPlayer = $TalkSound
 @onready var balloon = $Balloon
-@onready var margin = $Balloon/Panel
-@onready var character_portrait: Sprite2D = $Balloon/Portrait/Sprite2D
-@onready var character_label: RichTextLabel = $Balloon/Panel/VBoxContainer/CharacterLabel
-@onready var dialogue_label := $Balloon/Panel/VBoxContainer/DialogueLabel
-@onready var responses_menu = $Balloon/Responses
+@onready var panel = $Balloon/Panel
+@onready var arrow = $Balloon/TextureRect
+@onready var character_portrait: Sprite2D = $Balloon/Portrait/Face
+@onready var potrait_holder = $Balloon/Portrait
+@onready var character_label: RichTextLabel = $Balloon/CharacterLabel
+@onready var dialogue_label := $Balloon/MarginContainer/DialogueLabel
+@onready var responses_menu = $Responses
+@onready var animator = $AnimationPlayer
 ## The dialogue resource
 var resource: DialogueResource
 
@@ -43,25 +46,30 @@ var dialogue_line: DialogueLine:
 		dialogue_line = next_dialogue_line
 		
 		#character_label.visible = not dialogue_line.character.is_empty()
-		character_label.text = tr(dialogue_line.character.split("-")[0], "dialogue")
-		var portrait = load("res://images/dialogue_portraits/%s%s.png" % [dialogue_line.character.to_lower(), file_suffix])
-		if portrait != null:
+		arrow.hide()
+		var speaker = dialogue_line.character.split("-")[0]
+		var portrait_path = "res://images/dialogue_portraits/%s%s.png" % [dialogue_line.character.to_lower(), file_suffix]
+		character_label.text = tr(speaker, "dialogue")
+		if FileAccess.file_exists(portrait_path):
+			var portrait = load(portrait_path)
+			potrait_holder.show()
 			character_portrait.visible = true
 			character_portrait.texture = portrait
 		else:
+			potrait_holder.hide()
 			character_portrait.visible = false
 		
 		dialogue_label.modulate.a = 0
-		dialogue_label.custom_minimum_size.x = dialogue_label.get_parent().size.x - 1
+		#dialogue_label.custom_minimum_size.x = dialogue_label.get_parent().size.x - 1
 		dialogue_label.dialogue_line = dialogue_line
 		
-		# Show our balloon if it was previously hidden
+		setSizePosition(speaker)
 		balloon.show()
 		
 		dialogue_label.modulate.a = 1
 		dialogue_label.type_out()
 		await dialogue_label.finished_typing
-		
+		arrow.show()
 		# Show any responses we have
 		responses_menu.modulate.a = 0
 		if dialogue_line.responses.size() > 0:
@@ -92,9 +100,27 @@ var dialogue_line: DialogueLine:
 		return dialogue_line
 
 
+func setSizePosition(speaker:String):
+	balloon.custom_minimum_size.x = min(balloon.size.x, MAX_WIDTH)
+	if balloon.size.x > MAX_WIDTH:
+		dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+		balloon.custom_minimum_size.y = balloon.size.y
+	await get_tree().process_frame
+	
+	var speaker_entity = OverworldGlobals.getEntity(speaker)
+	var offset = Vector2.ZERO
+	if speaker_entity.has_node('Sprite2D'):
+		offset = speaker_entity.get_node('Sprite2D').offset
+	var entity_position = Vector2(speaker_entity.global_position.x+offset.x,speaker_entity.global_position.y+offset.y)
+	var cam_position = Vector2(entity_position.x,entity_position.y+OverworldGlobals.player.default_camera_pos.y)
+	global_position.x = entity_position.x - (balloon.size.x/2)
+	global_position.y = entity_position.y - (48+balloon.size.y)
+	OverworldGlobals.moveCamera(cam_position)
+	animator.play("Show")
+
 func _ready() -> void:
 	response_template.hide()
-	balloon.custom_minimum_size.x = MAX_WIDTH
+	#balloon.custom_minimum_size.x = MAX_WIDTH
 	balloon.hide()
 	Engine.get_singleton("DialogueManager").mutated.connect(_on_mutated)
 
@@ -164,30 +190,12 @@ func get_responses() -> Array:
 
 
 func handle_resize() -> void:
-	if not is_instance_valid(margin):
+	if not is_instance_valid(panel):
 		call_deferred("handle_resize")
 		return
 	
-	#balloon.custom_minimum_size.y = margin.size.y
-	#balloon.size.y = 0
-	#var viewport_size = balloon.get_viewport_rect().size
-	#balloon.global_position = Vector2((viewport_size.x - balloon.size.x) * 0.5, viewport_size.y - balloon.size.y)
-#	balloon.custom_minimum_size.y = margin.size.y
-#	balloon.size.y = 0
-#	balloon.size.x = margin.size.x
-#	balloon.global_position = OverworldGlobals.player.getPosOffset()
-	margin.custom_minimum_size.x = min(margin.size.x, MAX_WIDTH)
-#	if margin.custom_minimum_size.x > MAX_WIDTH:
-#		dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-#		await margin.resized
-#		await margin.resized
-#		margin.custom_minimum_size.y = margin.size.y
-	#await get_tree().process_frame
-	margin.global_position = OverworldGlobals.player.getPosOffset()-Vector2(margin.size.x/2,64)
-	#balloon.global_position = OverworldGlobals.player.getPosOffset()+Vector2(balloon.global_position.x/2,0)
-### Signals
 
-
+	
 func _on_mutated(_mutation: Dictionary) -> void:
 	is_waiting_for_input = false
 	balloon.hide()

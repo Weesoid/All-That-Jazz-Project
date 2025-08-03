@@ -53,7 +53,7 @@ func addRestSprite(combatant: ResPlayerCombatant):
 		return
 
 func addCombatBar(combatant:ResPlayerCombatant,rest_texture:Sprite2D):
-	var combat_bars = preload("res://scenes/user_interface/CombatBarsMini.tscn").instantiate()
+	var combat_bars = load("res://scenes/user_interface/CombatBarsMini.tscn").instantiate()
 	combat_bars.attached_combatant = combatant
 	combat_bars.rest_sprite = rest_texture
 	#combat_bars.selector.pressed.connect()

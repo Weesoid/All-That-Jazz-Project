@@ -5,18 +5,14 @@ class_name ResCharm
 @export var unique: bool = false
 
 func updateItem():
-	if !FileAccess.file_exists(parent_item):
-		InventoryGlobals.removeItemResource(self)
-		return
-	
-	var parent_item = load(parent_item)
-	name = parent_item.name
-	icon = parent_item.icon
-	description = parent_item.description
-	value = parent_item.value
-	mandatory = parent_item.mandatory
-	stat_modifications = parent_item.stat_modifications
-	status_effect = parent_item.status_effect
+	var updated_item = load(parent_item)
+	name = updated_item.name
+	icon = updated_item.icon
+	description = updated_item.description
+	value = updated_item.value
+	mandatory = updated_item.mandatory
+	stat_modifications = updated_item.stat_modifications
+	status_effect = updated_item.status_effect
 
 func equip(combatant: ResCombatant):
 	if isEquipped():

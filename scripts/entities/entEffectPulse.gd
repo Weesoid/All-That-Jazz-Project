@@ -22,7 +22,7 @@ func applyPulseEffect():
 	queue_free()
 
 func showPulse():
-	var pulse_anim = preload("res://scenes/entities_disposable/Pulse.tscn").instantiate()
+	var pulse_anim = load("res://scenes/entities_disposable/Pulse.tscn").instantiate()
 	pulse_anim.global_position = global_position
 	OverworldGlobals.getCurrentMap().add_child(pulse_anim)
 	pulse_anim.showAnimation(radius, 0.4,color)

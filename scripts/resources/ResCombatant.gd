@@ -2,7 +2,6 @@
 extends Resource
 class_name ResCombatant
 
-@export var auto_name:bool
 @export var name: String
 @export var packed_scene: PackedScene
 @export var bullet_texture: Texture2D

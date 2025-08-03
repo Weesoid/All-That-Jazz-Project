@@ -31,3 +31,12 @@ func loadArrayFromPath(path:String, filter=null)-> Array:
 		out = out.filter(filter)
 	
 	return out
+
+func loadResourcePathArray(path_array: Array[String], write_array):
+	var out = []
+	for path in path_array:
+		if !FileAccess.file_exists(path):
+			continue
+		out.append(path)
+	write_array.assign(out)
+	return write_array

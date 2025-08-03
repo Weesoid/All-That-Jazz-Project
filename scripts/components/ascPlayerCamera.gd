@@ -5,6 +5,7 @@ class_name PlayerCamera
 @onready var crystal_count = $UI/VoidCrystals
 @onready var prompt = $UI/PlayerPrompt
 @onready var cinematic_bars = $CinematicBars
+@onready var stamina_bar = $UI/StaminaBar
 @onready var power_input_container = $UI/PowerInputs
 @onready var quiver = $UtilitySelector
 @onready var color_overlay = $UI/ColorOverlay
@@ -38,6 +39,11 @@ func _input(_event):
 	if player.canUsePower() and InventoryGlobals.hasItem('Void Resonance Crystal'):
 		crystal_count.show()
 		crystal_count.text = str(InventoryGlobals.getItem('Void Resonance Crystal').stack)
+
+func flashStamina(color:Color):
+	var tween = create_tween().chain()
+	tween.tween_property(stamina_bar, 'modulate',color,0.25)
+	tween.tween_property(stamina_bar, 'modulate',Color.WHITE,0.25)
 
 func addPowerInput(icon: TextureRect):
 	power_input_container.add_child(icon)

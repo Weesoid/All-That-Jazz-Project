@@ -39,13 +39,13 @@ func createMemberButton(member: ResPlayerCombatant):
 	button.mouse_entered.connect(func(): hoverButton(member, button))
 	if OverworldGlobals.getCombatantSquad('Player').has(member):
 		if member.isInflicted():
-			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_mark.png"))
+			button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_mark.png"))
 		else:
-			button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
+			button.add_theme_icon_override('icon', load("res://images/sprites/icon_mark.png"))
 	else:
 		button.remove_theme_icon_override('icon')
 	if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
-		button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_icon.png"))
+		button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_icon.png"))
 	if member.mandatory and OverworldGlobals.getCombatantSquadComponent('Player').hasMember(member.name): 
 		button.disabled = true
 	return button
@@ -59,15 +59,15 @@ func addToActive(member: ResCombatant, button: Button):
 		OverworldGlobals.player.squad.combatant_squad.append(member)
 		OverworldGlobals.initializePlayerParty()
 		if member.isInflicted():
-			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_mark.png"))
+			button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_mark.png"))
 		else:
-			button.add_theme_icon_override('icon', preload("res://images/sprites/icon_mark.png"))
+			button.add_theme_icon_override('icon', load("res://images/sprites/icon_mark.png"))
 	elif button != null:
 		OverworldGlobals.player.squad.combatant_squad.erase(member)
 		#PlayerGlobals.removeFollower()
 		OverworldGlobals.loadFollowers()
 		if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
-			button.add_theme_icon_override('icon', preload("res://images/sprites/inflicted_icon.png"))
+			button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_icon.png"))
 		else:
 			button.remove_theme_icon_override('icon')
 	PlayerGlobals.team_formation = OverworldGlobals.player.squad.combatant_squad

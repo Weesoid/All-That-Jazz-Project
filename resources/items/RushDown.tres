@@ -5,11 +5,23 @@
 
 [resource]
 script = ExtResource("2_bsvey")
-STAT_MODIFICATIONS = {
-"hustle": 10
+unique = false
+stat_modifications = {
+"accuracy": 0.0,
+"crit": 0.0,
+"crit_mult": 0.0,
+"damage": 0,
+"defense": 0.0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 0,
+"resist": 0.0,
+"speed": 0
 }
-NAME = "Rushdown"
-ICON = ExtResource("1_flvry")
-DESCRIPTION = "Get speedy wagoo wagoo!"
-VALUE = 0
-MANDATORY = false
+auto_name = true
+name = ""
+icon = ExtResource("1_flvry")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

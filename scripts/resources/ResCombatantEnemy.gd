@@ -26,7 +26,7 @@ var spawn_on_death: ResCombatant
 
 func initializeCombatant():
 	if ai_package == null: 
-		ai_package = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
+		ai_package = load("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	combatant_scene = packed_scene.instantiate()
 	combatant_scene.combatant_resource = self
 	applyStatusEffects()

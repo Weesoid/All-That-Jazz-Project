@@ -6,14 +6,14 @@ extends CanvasLayer
 func _ready():
 	loadCombatants()
 	animator.play("Show")
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(2.5).timeout
 	animator.play_backwards("Show")
 	await animator.animation_finished
 	queue_free()
 
 func loadCombatants():
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
-		var bar = preload("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
+		var bar = load("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 		bar.combatant = combatant
 		if combatant.isDead(): 
 			bar.modulate = Color.RED

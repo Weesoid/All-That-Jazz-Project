@@ -83,10 +83,10 @@ func showItems(slot_button: Button, slot: int):
 	
 	item_select.show()
 	var cancel_button = OverworldGlobals.createCustomButton()
-	cancel_button.theme = preload("res://design/ItemButtons.tres")
-	cancel_button.icon = preload('res://images/sprites/icon_cross.png')
-	cancel_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	cancel_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
+	cancel_button.theme = load("res://design/ItemButtons.tres")
+	cancel_button.icon = load('res://images/sprites/icon_cross.png')
+	cancel_button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	cancel_button.click_sound = load("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 	cancel_button.pressed.connect(
 		func():
 			if all_components[slot] != null:
@@ -114,10 +114,10 @@ func showRecipes():
 	
 	item_select.show()
 	var cancel_button = OverworldGlobals.createCustomButton()
-	cancel_button.theme = preload("res://design/ItemButtons.tres")
-	cancel_button.icon = preload('res://images/sprites/icon_cross.png')
-	cancel_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	cancel_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
+	cancel_button.theme = load("res://design/ItemButtons.tres")
+	cancel_button.icon = load('res://images/sprites/icon_cross.png')
+	cancel_button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	cancel_button.click_sound = load("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 	cancel_button.pressed.connect(
 		func():
 			item_select.hide()
@@ -128,7 +128,7 @@ func showRecipes():
 	cancel_button.grab_focus()
 	InventoryGlobals.crafted_items.sort()
 	for recipe in InventoryGlobals.crafted_items:
-		var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+		var button = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
 		button.custom_minimum_size = Vector2(32, 32)
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		button.icon = load("res://resources/items/%s.tres" % recipe).icon
@@ -147,10 +147,10 @@ func showWeaponRepair():
 	#additional_repair_buttons.show()
 	var cancel_button = OverworldGlobals.createCustomButton()
 	cancel_button.name = 'CancelButton'
-	cancel_button.theme = preload("res://design/ItemButtons.tres")
-	cancel_button.icon = preload('res://images/sprites/icon_cross.png')
-	cancel_button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	cancel_button.click_sound = preload("res://audio/sounds/421418__jaszunio15__click_200.ogg")
+	cancel_button.theme = load("res://design/ItemButtons.tres")
+	cancel_button.icon = load('res://images/sprites/icon_cross.png')
+	cancel_button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	cancel_button.click_sound = load("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 	cancel_button.pressed.connect(
 		func():
 			additional_repair_buttons.hide()
@@ -212,15 +212,15 @@ func removeItemFromSlot(slot: int):
 	match slot:
 		0:
 			component_core.text = 'CORE COMPONENT'
-			component_core.icon = preload("res://images/sprites/icon_plus.png")
+			component_core.icon = load("res://images/sprites/icon_plus.png")
 			component_core.modulate = Color.WHITE
 		1:
 			component_a.text = 'COMPONENT A'
-			component_a.icon = preload("res://images/sprites/icon_plus.png")
+			component_a.icon = load("res://images/sprites/icon_plus.png")
 			component_a.modulate = Color.WHITE
 		2:
 			component_b.text = 'COMPONENT B'
-			component_b.icon = preload("res://images/sprites/icon_plus.png")
+			component_b.icon = load("res://images/sprites/icon_plus.png")
 			component_b.modulate = Color.WHITE
 	
 	all_components[slot] = null
@@ -239,7 +239,7 @@ func useRecipe(item: String):
 					addItemToSlot(InventoryGlobals.getItem(component), i, base.get_child(i))
 				elif component != null:
 					base.get_child(i).text = '%s' % component
-					base.get_child(i).icon = preload("res://images/sprites/cross.png")
+					base.get_child(i).icon = load("res://images/sprites/cross.png")
 					base.get_child(i).modulate = Color.DARK_GRAY
 				i += 1
 

@@ -28,6 +28,7 @@ func useDurability():
 	durability -= 1
 	if durability <= 0:
 		durability = 0
+	equipped_combatant.file_references['equipped_weapon'][1] = durability
 
 func restoreDurability(amount: int):
 	if (durability + amount) > max_durability:

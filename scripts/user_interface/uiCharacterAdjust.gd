@@ -96,12 +96,12 @@ func updateCharacterView(member: ResPlayerCombatant):
 		character_view.remove_child(last_member)
 		last_member.queue_free()
 	
-	member.initializeCombatant()
-	var character_scene = member.combatant_scene
+	#member.initializeCombatant()
+	var character_scene = member.getScenePreview()
 	if character_scene:
 		character_scene.scale = Vector2(2,2)
 		character_view.add_child(character_scene)
-		character_scene.collision.set_deferred('disabled', true)
+		character_scene.collision.disabled = true
 		character_scene.combatant_resource.getAnimator().play('RESET')
 		if !changing_formation:
 			var cast_anim = ['Cast_Misc', 'Cast_Melee', 'Cast_Ranged'].pick_random()
@@ -135,12 +135,12 @@ func clearChildren(parent):
 func createAbilityButton(ability, location):
 	var button: CustomButton = OverworldGlobals.createAbilityButton(ability, true)
 	var has_unlocked = PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) or ability.required_level == 0
-	button.focused_entered_sound = preload("res://audio/sounds/421354__jaszunio15__click_31.ogg")
-	button.click_sound = preload("res://audio/sounds/421304__jaszunio15__click_229.ogg")
+	button.focused_entered_sound = load("res://audio/sounds/421354__jaszunio15__click_31.ogg")
+	button.click_sound = load("res://audio/sounds/421304__jaszunio15__click_229.ogg")
 	if selected_combatant.ability_set.has(ability):
-		button.add_theme_icon_override('icon', preload("res://images/sprites/ability_mark.png"))
+		button.add_theme_icon_override('icon', load("res://images/sprites/ability_mark.png"))
 	if !has_unlocked:
-		button.add_theme_icon_override('icon', preload("res://images/sprites/lock.png"))
+		button.add_theme_icon_override('icon', load("res://images/sprites/lock.png"))
 		button.tooltip_text = str(ability.getCost())
 	
 	button.pressed.connect(
@@ -151,15 +151,14 @@ func createAbilityButton(ability, location):
 					PlayerGlobals.unlockAbility(selected_combatant, ability)
 					OverworldGlobals.playSound('res://audio/sounds/721774__maodin204__cash-register.ogg')
 					loadMemberInfo(selected_combatant)
-			elif !selected_combatant.ability_set.has(ability):
-				if selected_combatant.ability_set.size() >= 4:
-					OverworldGlobals.showPrompt('Max abilities enabled.')
-					return
-				selected_combatant.ability_set.append(ability)
-				button.add_theme_icon_override('icon', preload("res://images/sprites/ability_mark.png"))
-			elif selected_combatant.ability_set.has(ability):
-				selected_combatant.ability_set.erase(ability)
+			else:
+				PlayerGlobals.setAbilityActive(selected_combatant, ability, !selected_combatant.ability_set.has(ability))
+			
+			if selected_combatant.ability_set.has(ability):
+				button.add_theme_icon_override('icon', load("res://images/sprites/ability_mark.png"))
+			else:
 				button.remove_theme_icon_override('icon')
+			print(selected_combatant.ability_set)
 	)
 	location.add_child(button)
 
@@ -179,8 +178,9 @@ func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
 	button.text = member.name
 	button.pressed.connect(func(): loadMemberInfo(member, button))
 	if preview_combatant:
-		member.initializeCombatant()
+		var character_scene = member.getScenePreview()
 		button.add_child(member.combatant_scene)
+		character_scene.collision.disabled = true
 	
 	return button
 
@@ -203,7 +203,7 @@ func _on_weapon_pressed():
 func _on_slot_a_pressed():
 	if selected_combatant.charms[0] != null: 
 		selected_combatant.unequipCharm(0)
-		charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
+		charm_slot_a.icon = load("res://images/sprites/icon_plus.png")
 	await showEquipment(0, 0)
 	updateEquipped()
 	charm_slot_a.grab_focus()
@@ -211,7 +211,7 @@ func _on_slot_a_pressed():
 func _on_slot_b_pressed():
 	if selected_combatant.charms[1] != null: 
 		selected_combatant.unequipCharm(1)
-		charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
+		charm_slot_b.icon = load("res://images/sprites/icon_plus.png")
 	await showEquipment(0, 1)
 	updateEquipped()
 	charm_slot_b.grab_focus()
@@ -219,7 +219,7 @@ func _on_slot_b_pressed():
 func _on_slot_c_pressed():
 	if selected_combatant.charms[2] != null: 
 		selected_combatant.unequipCharm(2)
-		charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
+		charm_slot_c.icon = load("res://images/sprites/icon_plus.png")
 	await showEquipment(0, 2)
 	updateEquipped()
 	charm_slot_c.grab_focus()
@@ -253,9 +253,9 @@ func updateEquipped():
 		weapon_durability.modulate = Color.WHITE
 		weapon_durability.hide()
 	
-	charm_slot_a.icon = preload("res://images/sprites/icon_plus.png")
-	charm_slot_b.icon = preload("res://images/sprites/icon_plus.png")
-	charm_slot_c.icon = preload("res://images/sprites/icon_plus.png")
+	charm_slot_a.icon = load("res://images/sprites/icon_plus.png")
+	charm_slot_b.icon = load("res://images/sprites/icon_plus.png")
+	charm_slot_c.icon = load("res://images/sprites/icon_plus.png")
 	if selected_combatant.charms[0] != null:
 		charm_slot_a.icon = selected_combatant.charms[0].icon
 	if selected_combatant.charms[1] != null:

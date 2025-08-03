@@ -6,6 +6,7 @@ class_name PatrollerGroup
 @export var destroy_objectives_chance:float= 0.0 # Chance to spawn destroyable objectives on patroller respawn.
 @export var destroy_objectives: bool = false
 @export var enabled:bool=true
+@export var special_chance:float = 0.25
 var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
 
 func spawn():
@@ -32,10 +33,10 @@ func spawnPatrollers():
 		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
 			continue
 		var patroller: GenericPatroller
-		if CombatGlobals.randomRoll(-0.75):
-			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, 0)
-		else:
+		if CombatGlobals.randomRoll(special_chance):
 			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, -1)
+		else:
+			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, 0)
 		
 		patroller.global_position = spawn_point.global_position
 		CombatGlobals.generateCombatantSquad(patroller, enemy_faction)
@@ -74,7 +75,7 @@ func giveRewards(ignore_stalker:bool=false):
 	
 	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
 	# UI Map clear indicator handling
-	var map_clear_indicator = preload("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	print(map.getVerbalClearState())
 	map_clear_indicator.added_exp = reward_bank['experience']
 	OverworldGlobals.player.player_camera.add_child(map_clear_indicator)

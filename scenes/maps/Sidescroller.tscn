@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=27 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="8_5ag6f"]
 [ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/Dummy.tres" id="11_2bouc"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="11_fghhp"]
+[ext_resource type="Resource" uid="uid://541ffogrb12k" path="res://resources/combat/combatants_enemies/scavs/Scav.tres" id="11_lk2d4"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="12_1xr6o"]
 [ext_resource type="Texture2D" uid="uid://lmmr2dkcaseq" path="res://images/animations/antelope.png" id="13_s8kga"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="14_ie3ty"]
@@ -201,23 +202,23 @@ god_shop = true
 [node name="PartyManager" parent="." instance=ExtResource("5_rwctp")]
 position = Vector2(168, 192)
 
-[node name="Fighter" type="CharacterBody2D" parent="."]
+[node name="Entity" type="CharacterBody2D" parent="."]
 position = Vector2(-161, -20)
 
-[node name="CombatantSquadComponent" parent="Fighter" instance=ExtResource("8_5ag6f")]
-combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc")])
+[node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
+combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc"), ExtResource("11_lk2d4")])
 
-[node name="CombatDialogue" parent="Fighter" instance=ExtResource("11_fghhp")]
+[node name="CombatDialogue" parent="Entity" instance=ExtResource("11_fghhp")]
 dialogue_resource = ExtResource("12_1xr6o")
 enabled = false
 
-[node name="Sprite2D" type="Sprite2D" parent="Fighter"]
+[node name="Sprite2D" type="Sprite2D" parent="Entity"]
 position = Vector2(0, -12)
 texture = ExtResource("13_s8kga")
 hframes = 5
 vframes = 2
 
-[node name="InteractComponent" parent="Fighter" instance=ExtResource("14_ie3ty")]
+[node name="InteractComponent" parent="Entity" instance=ExtResource("14_ie3ty")]
 position = Vector2(0, 8)
 dialogue_resource = ExtResource("15_21t34")
 

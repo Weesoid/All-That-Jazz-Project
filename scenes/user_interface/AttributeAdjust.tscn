@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://r4d1xnyarsyl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeAdjust.gd" id="1_unumd"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_il4r5"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_il4r5"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtons.tres" id="2_yecu6"]
 [ext_resource type="Theme" uid="uid://b2trsep3ukxi0" path="res://design/RightSideButtonHighlights.tres" id="3_ffloy"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_is7rp"]
@@ -111,7 +111,7 @@ split_offset = 1596
 [node name="Up" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn" instance=ExtResource("2_il4r5")]
 layout_mode = 2
 theme = ExtResource("4_2j15m")
-text = "BRAWN"
+text = "DAMAGE"
 
 [node name="Reset" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Brawn" instance=ExtResource("2_il4r5")]
 layout_mode = 2
@@ -125,7 +125,7 @@ split_offset = 1596
 [node name="Up" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit" instance=ExtResource("2_il4r5")]
 layout_mode = 2
 theme = ExtResource("4_2j15m")
-text = "GRIT"
+text = "DEFENSES"
 
 [node name="Reset" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit" instance=ExtResource("2_il4r5")]
 layout_mode = 2

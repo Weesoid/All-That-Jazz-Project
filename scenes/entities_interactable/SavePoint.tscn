@@ -139,6 +139,7 @@ position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_m7jmf")
 show_ui = true
 move_player = false
+cooldown = 3.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 

@@ -50,7 +50,7 @@ func loadGame(saved_game: SavedGame):
 					-90: scene.direction = Vector2(1, 0) # Right
 					90: scene.direction = Vector2(-1,0) # Left
 			OverworldGlobals.getCurrentMap().add_child(scene)
-		if item is InventorySaveData:
+		elif item is InventorySaveData:
 			InventoryGlobals.loadData(item)
 		elif item is QuestSaveData:
 			QuestGlobals.loadData(item)

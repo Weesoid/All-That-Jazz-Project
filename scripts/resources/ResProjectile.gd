@@ -19,9 +19,9 @@ func getProjectile()-> Projectile:
 	var projectile: Projectile 
 	match projectile_type:
 		Projectile_Type.Enemy: 
-			projectile = preload("res://scenes/entities_disposable/ProjectileEnemy.tscn").instantiate()
+			projectile = load("res://scenes/entities_disposable/ProjectileEnemy.tscn").instantiate()
 		Projectile_Type.Pulse:
-			projectile = preload("res://scenes/entities_disposable/ProjectilePulse.tscn").instantiate()
+			projectile = load("res://scenes/entities_disposable/ProjectilePulse.tscn").instantiate()
 			projectile.radius = projectile_data['radius']
 			projectile.animation = projectile_data['animation']
 			if projectile_data.has('animation_data'):

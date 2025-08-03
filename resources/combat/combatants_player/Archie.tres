@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://rmwlfd2x1b0a"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://rmwlfd2x1b0a"]
 
-[ext_resource type="Resource" uid="uid://cj3etighmenn7" path="res://resources/combat/abilities/BasicAttack.tres" id="1_3wisx"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_i8m6m"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_mba6b"]
 [ext_resource type="PackedScene" uid="uid://qkkfful7d77n" path="res://scenes/combatants/Archie.tscn" id="2_qq2m6"]
@@ -9,7 +8,7 @@
 
 [resource]
 script = ExtResource("11_avhlp")
-ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_3wisx"), ExtResource("2_mba6b")])
+ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_mba6b")])
 base_temperment = {
 "primary": [],
 "secondary": []

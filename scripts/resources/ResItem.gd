@@ -1,7 +1,6 @@
 extends Resource
 class_name ResItem
 
-@export var auto_name:bool=true
 @export var name: String
 @export var icon: Texture = preload("res://images/sprites/item_unknown.png")
 @export_multiline var description: String

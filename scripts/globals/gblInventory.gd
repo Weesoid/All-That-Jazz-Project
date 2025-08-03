@@ -1,6 +1,6 @@
 extends Node
 
-var inventory: Array[ResItem] = []
+var inventory: Array[ResItem] = [] # Marked for indirect reference. Load per item, skip if !file_exists.
 var crafted_items: Array[String] = []
 var recipes: Dictionary = {
 	# In-game name -> .tres name
@@ -70,7 +70,7 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 			if item.parent_item != '':
 				dupe_item.parent_item = item.parent_item
 			else:
-				dupe_item.parent_item = item.resource_path # Maybe later, if parent item doesn't exist, remove item from INV
+				dupe_item.parent_item = item.resource_path
 			dupe_item.removeEmptyModifications()
 			inventory.append(dupe_item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
@@ -269,47 +269,43 @@ func getItemType(item: ResItem)-> float:
 
 func saveData(save_data: Array):
 	var data = InventorySaveData.new()
-	data.inventory = inventory
+	data.saveInventory(inventory)
 	data.crafted_items = crafted_items
-	saveItemData(data)
 	save_data.append(data)
 
 func loadData(save_data: InventorySaveData):
-	inventory = save_data.inventory
+	inventory.assign(save_data.loadInventory())
 	crafted_items = save_data.crafted_items
-	loadItemData(save_data)
 
-func saveItemData(inv_save_data: InventorySaveData):
-	var item_data: Dictionary
-	item_data = inv_save_data.item_data_inventory
-	
-	for item in inventory:
-		if item is ResGhostStackItem:
-			item_data[item.resource_path] = [item.reference_item.resource_path, item.stack]
-		elif item is ResStackItem:
-			item_data[item.resource_path] = item.stack
-		elif item is ResWeapon:
-			item_data[item.resource_path+'-durability'] = item.durability
-	for weapon in getEquippedWeapons():
-		item_data[weapon.resource_path+'-durability'] = weapon.durability
-
-func loadItemData(save_data: InventorySaveData):
-	var item_data: Dictionary
-	item_data = save_data.item_data_inventory
-	
-	for item in inventory:
-		if item_data.keys().has(item.resource_path):
-			if item is ResGhostStackItem:
-				continue
-			elif item is ResStackItem:
-				item.stack = item_data[item.resource_path]
-				if item.stack > item.max_stack: item.stack = item.max_stack
-		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'):
-			item.durability = item_data[item.resource_path+'-durability']
-		elif item is ResCharm:
-			item.updateItem()
-	for weapon in getEquippedWeapons():
-		weapon.durability = item_data[weapon.resource_path+'-durability']
+#func saveItemData(inv_save_data: InventorySaveData):
+#	var item_data: Dictionary
+#	item_data = inv_save_data.item_data_inventory
+#
+#	for item in inventory:
+#		if item is ResGhostStackItem:
+#			item_data[item.resource_path] = [item.reference_item.resource_path, item.stack]
+#		elif item is ResStackItem:
+#			item_data[item.resource_path] = item.stack
+#		elif item is ResWeapon: # Handles save data of unequipped weapons
+#			item_data[item.resource_path+'-durability'] = item.durability
+#	for weapon in getEquippedWeapons():
+#		item_data[weapon.resource_path+'-durability'] = weapon.durability
+#
+#func loadItemData(save_data: InventorySaveData):
+#	var item_data: Dictionary
+#	item_data = save_data.item_data_inventory
+#
+#	for item in inventory:
+#		if item_data.keys().has(item.resource_path):
+#			if item is ResGhostStackItem:
+#				continue
+#			elif item is ResStackItem:
+#				item.stack = item_data[item.resource_path]
+#				if item.stack > item.max_stack: item.stack = item.max_stack
+#		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'): # Handles save data of unequipped weapons
+#			item.durability = item_data[item.resource_path+'-durability']
+#		elif item is ResCharm:
+#			item.updateItem()
 
 func resetVariables():
 	inventory = []

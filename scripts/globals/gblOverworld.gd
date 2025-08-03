@@ -61,7 +61,7 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=10
 	if getEntity(entity_body_name).has_node('ScriptedMovementComponent'):
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').tree_exited
 	
-	getEntity(entity_body_name).add_child(preload("res://scenes/components/ScriptedMovement.tscn").instantiate())
+	getEntity(entity_body_name).add_child(load("res://scenes/components/ScriptedMovement.tscn").instantiate())
 	getEntity(entity_body_name).get_node('ScriptedMovementComponent').animate_direction = animate_direction
 	getEntity(entity_body_name).get_node('ScriptedMovementComponent').move_speed = speed
 	if move_to is Vector2:
@@ -140,6 +140,7 @@ func showMenu(path: String):
 	player.resetStates()
 	player.sprinting = false
 	player.velocity = Vector2.ZERO
+	player.setUIVisibility(false)
 	setPlayerInput(false)
 	if !inMenu():
 		#player.player_camera.showOverlay(Color.BLACK, 0.5)
@@ -166,6 +167,7 @@ func setMouseController(set_to:bool):
 
 func closeMenu(menu: Control):
 	#player.player_camera.hideOverlay()
+	player.setUIVisibility(true)
 	setMouseController(false)
 	menu.queue_free()
 	player.player_camera.get_node('UI').get_node('uiMenu').queue_free()
@@ -215,15 +217,15 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_descri
 	else:
 		closeMenu(main_menu)
 
-func createCustomButton(theme: Theme = preload("res://design/DefaultTheme.tres"))-> CustomButton:
-	var button = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
+func createCustomButton(theme: Theme = load("res://design/DefaultTheme.tres"))-> CustomButton:
+	var button = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
 	button.theme = theme
 	return button
 
 func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true)-> CustomButton:
-	var button: CustomButton = preload("res://scenes/user_interface/CustomButton.tscn").instantiate()
-	button.focused_entered_sound = preload("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	button.click_sound = preload("res://audio/sounds/421461__jaszunio15__click_46.ogg")
+	var button: CustomButton = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
+	button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+	button.click_sound = load("res://audio/sounds/421461__jaszunio15__click_46.ogg")
 	button.custom_minimum_size.x = 32
 	button.custom_minimum_size.y = 32
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -235,7 +237,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	if item is ResStackItem and show_count:
 		var label = Label.new()
 		label.text = str(item.stack)
-		label.theme = preload("res://design/OutlinedLabel.tres")
+		label.theme = load("res://design/OutlinedLabel.tres")
 		label.name = 'Count'
 		button.add_child(label)
 	
@@ -246,15 +248,15 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 			label.add_theme_font_size_override('font_size', 6)
 		else:
 			label.text = str(int(item.value * value_modifier))
-		label.theme = preload("res://design/OutlinedLabel.tres")
+		label.theme = load("res://design/OutlinedLabel.tres")
 		label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 		button.add_child(label)
 	
 	if item is ResStackItem and item.barter_item: # item.mandatory
-		button.theme = preload("res://design/ItemButtonsMandatory.tres")
+		button.theme = load("res://design/ItemButtonsMandatory.tres")
 	else:
-		button.theme = preload("res://design/ItemButtons.tres")
+		button.theme = load("res://design/ItemButtons.tres")
 	#TEMP
 	
 	return button
@@ -266,13 +268,13 @@ func createItemIcon(item: ResItem, count:int):
 	icon.pivot_offset = Vector2(icon.size.x/2,icon.size.y/2)
 	var count_label = Label.new()
 	count_label.text = str(count)
-	count_label.theme = preload("res://design/OutlinedLabelThin.tres")
+	count_label.theme = load("res://design/OutlinedLabelThin.tres")
 	count_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	icon.add_child(count_label)
 	return icon
 
 func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbilityButton:
-	var button: CustomAbilityButton = preload("res://scenes/user_interface/AbilityButton.tscn").instantiate()
+	var button: CustomAbilityButton = load("res://scenes/user_interface/AbilityButton.tscn").instantiate()
 	button.ability = ability
 	button.outside_combat = large_icon
 	return button
@@ -332,7 +334,7 @@ func forceGiveRewards():
 	getCurrentMap().giveRewards(true)
 
 func showTransition(animation: String, player_scene:PlayerScene=null):
-	var transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
+	var transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	if player_scene == null:
 		player.player_camera.add_child(transition)
 	else:
@@ -448,46 +450,46 @@ func fadeFollowers(color: Color):
 		follower.fade(color)
 
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
-	var player = AudioStreamPlayer.new()
-	player.bus = "Sounds"
-	player.process_mode = Node.PROCESS_MODE_ALWAYS
-	player.connect("finished", player.queue_free)
-	player.pitch_scale = pitch
+	var audio_player = AudioStreamPlayer.new()
+	audio_player.bus = "Sounds"
+	audio_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	audio_player.connect("finished", audio_player.queue_free)
+	audio_player.pitch_scale = pitch
 	if filename.begins_with('res://'):
-		player.stream = load(filename)
+		audio_player.stream = load(filename)
 	else:
-		player.stream = load("res://audio/sounds/%s" % filename)
-	player.volume_db = db
+		audio_player.stream = load("res://audio/sounds/%s" % filename)
+	audio_player.volume_db = db
 	if random_pitch:
 		randomize()
-		player.pitch_scale += randf_range(0.0, 0.25)
-	player.name = filename
+		audio_player.pitch_scale += randf_range(0.0, 0.25)
+	audio_player.name = filename
 	if inCombat():
-		CombatGlobals.getCombatScene().add_child(player)
+		CombatGlobals.getCombatScene().add_child(audio_player)
 	else:
-		add_child(player)
-	player.play()
+		add_child(audio_player)
+	audio_player.play()
 
 func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_pitch=true):
-	var player = AudioStreamPlayer2D.new()
-	player.bus = "Sounds"
-	player.connect("finished", player.queue_free)
-	player.pitch_scale = pitch
-	player.global_position = position
+	var audio_player = AudioStreamPlayer2D.new()
+	audio_player.bus = "Sounds"
+	audio_player.connect("finished", audio_player.queue_free)
+	audio_player.pitch_scale = pitch
+	audio_player.global_position = position
 	if filename.begins_with('res://'):
-		player.stream = load(filename)
+		audio_player.stream = load(filename)
 	else:
-		player.stream = load("res://audio/sounds/%s" % filename)
-	player.volume_db = db
+		audio_player.stream = load("res://audio/sounds/%s" % filename)
+	audio_player.volume_db = db
 	if random_pitch:
 		randomize()
-		player.pitch_scale += randf_range(0.0, 0.25)
-	call_deferred('add_child', player)
-	await player.ready
-	player.play()
+		audio_player.pitch_scale += randf_range(0.0, 0.25)
+	call_deferred('add_child', audio_player)
+	await audio_player.ready
+	audio_player.play()
 
 func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=false):
-	var pulse = preload("res://scenes/entities_disposable/PatrollerPulse.tscn").instantiate()
+	var pulse = load("res://scenes/entities_disposable/PatrollerPulse.tscn").instantiate()
 	pulse.radius = radius
 	pulse.mode = mode
 	pulse.trigger_others = trigger_others
@@ -498,7 +500,7 @@ func addPatrollerPulse(location, radius:float, mode:int, trigger_others:bool=fal
 		getCurrentMap().call_deferred('add_child', pulse)
 
 func addEffectPulse(location, radius:float, script:GDScript):
-	var pulse: EffectPulse = preload("res://scenes/entities_disposable/EffectPulse.tscn").instantiate()
+	var pulse: EffectPulse = load("res://scenes/entities_disposable/EffectPulse.tscn").instantiate()
 	pulse.radius = radius
 	pulse.hit_script = script
 	if location is Node2D:
@@ -583,7 +585,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	
 	# Enter combat
 	var combat_entity
-	var combat_bubble = preload("res://scenes/components/CombatStartedBubble.tscn").instantiate()
+	var combat_bubble = load("res://scenes/components/CombatStartedBubble.tscn").instantiate()
 	if patroller == null:
 		combat_entity = getEntity(entity_name)
 	else:
@@ -641,7 +643,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
 	await combat_bubble.animator.animation_finished
-	var battle_transition = preload("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
+	var battle_transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	player.player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished

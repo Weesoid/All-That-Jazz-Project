@@ -20,7 +20,7 @@ func _ready():
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
 	if attached_combatant == combatant:
-		var secondary_indicator = preload("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
+		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 		var y_placement = 0
 		for child in prompts.get_children():
 			y_placement -= 8

@@ -1,16 +1,16 @@
 extends Node
 
-var quests: Array[ResQuest]
+var quests: Array[ResQuest] # Marked for indirect reference.
 
 func promptQuestCompleted(quest: ResQuest):
-	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
+	var prompt = load("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	
 	OverworldGlobals.player.player_camera.add_child(prompt)
 	prompt.setTitle(quest.name)
 	prompt.playAnimation('quest_complete')
 
 func addQuest(quest_name: String):
-	var prompt = preload("res://scenes/user_interface/PromptQuest.tscn").instantiate()
+	var prompt = load("res://scenes/user_interface/PromptQuest.tscn").instantiate()
 	var out_quest = load("res://resources/quests/%s.tres" % quest_name)
 	OverworldGlobals.player.player_camera.add_child(prompt)
 	prompt.setTitle(out_quest.name)

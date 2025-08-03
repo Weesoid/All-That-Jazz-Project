@@ -5,11 +5,23 @@
 
 [resource]
 script = ExtResource("2_ulvy6")
-STAT_MODIFICATIONS = {
-"health": 10
+unique = false
+stat_modifications = {
+"accuracy": 0.0,
+"crit": 0.0,
+"crit_mult": 0.0,
+"damage": 0,
+"defense": 0.0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 0,
+"resist": 0.0,
+"speed": 0
 }
-NAME = "Healthifier"
-ICON = ExtResource("1_w2xow")
-DESCRIPTION = "Mo health!"
-VALUE = 0
-MANDATORY = false
+auto_name = true
+name = ""
+icon = ExtResource("1_w2xow")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

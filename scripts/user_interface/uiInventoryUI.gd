@@ -31,7 +31,7 @@ func createButton(item: ResItem):
 	if item is ResStackItem:
 		var label = Label.new()
 		label.text = str(item.stack)
-		label.theme = preload("res://design/OutlinedLabel.tres")
+		label.theme = load("res://design/OutlinedLabel.tres")
 		button.add_child(label)
 	
 	return button

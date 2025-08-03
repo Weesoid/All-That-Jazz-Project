@@ -5,7 +5,7 @@ enum Enemy_Factions {
 	Scavs
 }
 var FACTION_PATROLLER_PROPERTIES = {
-	Enemy_Factions.Scavs: preload("res://resources/combat/faction_patrollers/Scavs.tres")
+	Enemy_Factions.Scavs: load("res://resources/combat/faction_patrollers/Scavs.tres")
 }
 var back_up_enemies = [
 	'res://resources/combat/combatants_enemies/mercenaries/'
@@ -384,7 +384,7 @@ func playAnimation(target: ResCombatant, animation_name: String):
 	target.getAnimator().play(animation_name)
 
 func showWarning(target: CombatantScene):
-	var warning = preload("res://scenes/user_interface/TargetWarning.tscn").instantiate()
+	var warning = load("res://scenes/user_interface/TargetWarning.tscn").instantiate()
 	target.add_child(warning)
 
 func setCombatantVisibility(target: CombatantScene, set_to:bool):
@@ -436,7 +436,9 @@ func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
 func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	var status_effect: ResStatusEffect
 	if effect is String:
-		#if status_effect.contains(' '): status_effect = status_effect.replace(' ', '')
+		var path = str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")
+		if !FileAccess.file_exists(path):
+			return
 		status_effect = load(str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")).duplicate()
 	elif effect is ResStatusEffect:
 		status_effect = effect.duplicate()
@@ -558,7 +560,7 @@ func instantiatePatroller(type:int)-> GenericPatroller:
 
 func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions):
 	randomize()
-	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
+	var squad: EnemyCombatantSquad = load("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
 	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)
 	var map_events = OverworldGlobals.getCurrentMap().events
 	if squad_size > 4: squad_size = 4
@@ -576,12 +578,12 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 		return squad
 
 func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties: Dictionary):
-	var squad: EnemyCombatantSquad = preload("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
+	var squad: EnemyCombatantSquad = load("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
 	squad.combatant_squad = combatants
 	squad.setProperties(properties)
 	patroller.add_child(squad)
 
-func getFactionEnemies(faction: Enemy_Factions)-> Array[ResEnemyCombatant]:
+func getFactionEnemies(faction: Enemy_Factions):
 	var out = ResourceGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
 	var array_of_combatants: Array[ResEnemyCombatant]
 	array_of_combatants.assign(out)

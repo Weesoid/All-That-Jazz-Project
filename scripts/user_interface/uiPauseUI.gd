@@ -25,7 +25,7 @@ func _ready():
 	base.get_child(0).grab_focus()
 	
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
-		var bar = preload("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
+		var bar = load("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 		$Container/VBoxContainer.add_child(bar)
 		bar.combatant = combatant
 	

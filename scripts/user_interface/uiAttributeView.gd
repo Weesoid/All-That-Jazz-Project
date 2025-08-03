@@ -24,7 +24,7 @@ extends Control
 
 func _ready():
 	if !borders:
-		var stylebox:StyleBox = preload("res://design/BorderlessContiner.tres")
+		var stylebox:StyleBox = load("res://design/BorderlessContiner.tres")
 		attribute_tab.add_theme_stylebox_override('panel', stylebox)
 		hidden_tab.add_theme_stylebox_override('panel', stylebox)
 

@@ -1,18 +1,18 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://cj3etighmenn7"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://btd50tvrm5mdc"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_nqi6m"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
 
-[sub_resource type="Resource" id="Resource_gvu7y"]
+[sub_resource type="Resource" id="Resource_8w0sy"]
 script = ExtResource("2_nqi6m")
 damage_type = 0
 cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage_modifier = 1.0
+damage_modifier = 0.5
 can_miss = true
 can_crit = true
 bonus_stats = {}
@@ -29,9 +29,9 @@ animate_on = 0
 script = ExtResource("1_k0byw")
 auto_name = false
 name = "Basic Attack"
-description = "Do a lil swingy swing"
+description = "xxx"
 icon = ExtResource("3_aoac4")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_gvu7y")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_8w0sy")])
 ability_script = ExtResource("1_y24xu")
 target_type = 0
 target_group = 1

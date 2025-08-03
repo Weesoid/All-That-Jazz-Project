@@ -112,7 +112,7 @@ func showLoot():
 #		icon.tooltip_text = drop.name
 #		var count_label = Label.new()
 #		count_label.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][drop])
-#		count_label.theme = preload("res://design/OutlinedLabel.tres")
+#		count_label.theme = load("res://design/OutlinedLabel.tres")
 #		icon.add_child(count_label)
 #		if combat_scene.drops.has(drop):
 #			var tween = create_tween()

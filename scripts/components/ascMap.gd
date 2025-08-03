@@ -12,11 +12,11 @@ enum PatrollerClearState {
 @export var occupying_faction: CombatGlobals.Enemy_Factions
 @export var events: Dictionary = {
 	'additional_enemies':null,
-	'combat_event':preload("res://resources/combat/events/_CombatEvent.tres"),
+	'combat_event':preload("res://_Resource.tres"),
 	'patroller_effect': preload("res://_Resource.tres"),
 	'bonus_loot':null,
 	'bonus_experience':null,
-	'reward_item': preload("res://resources/items/_Item.tres")
+	'reward_item': preload("res://_Resource.tres")
 }
 var done_loading_map:bool = false
 

@@ -4,6 +4,6 @@ extends Control
 
 func _ready():
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
-		var bar = preload("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
+		var bar = load("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 		bar.setStatus(combatant)
 		container.add_child(bar)

@@ -31,9 +31,9 @@ func loadFastTravelButtons():
 		)
 		button.tooltip_text=str(PlayerGlobals.map_logs[location])
 		if map.getClearState() != MapData.PatrollerClearState.FULL_CLEAR and PlayerGlobals.hasMapEvent(location):
-			button.icon = preload("res://images/sprites/icon_patrol_spawned.png")
+			button.icon = load("res://images/sprites/icon_patrol_spawned.png")
 		elif map.getClearState() != MapData.PatrollerClearState.FULL_CLEAR:
-			button.icon = preload("res://images/sprites/icon_patrol_uncleared.png")
+			button.icon = load("res://images/sprites/icon_patrol_uncleared.png")
 			
 		if OverworldGlobals.getCurrentMap().scene_file_path == location:
 			button.disabled = true

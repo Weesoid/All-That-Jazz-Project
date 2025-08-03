@@ -60,7 +60,7 @@ func resetTarget():
 	target.scale = Vector2(1.0, 1.0)
 
 func newSweetSpot():
-	sweet_spot = preload("res://scenes/quick_time_events/targets/HoldingTarget.tscn").instantiate()
+	sweet_spot = load("res://scenes/quick_time_events/targets/HoldingTarget.tscn").instantiate()
 	sweet_spot.scale -= Vector2(scale_penalty, scale_penalty) * (base_penalty + points)
 	add_child(sweet_spot)
 	timer.start(1.0)

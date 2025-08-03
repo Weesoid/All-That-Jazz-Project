@@ -9,6 +9,10 @@ class_name ResPlayerCombatant
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
 @export var stat_multiplier = 0.01
 
+var file_references: Dictionary = {
+	'active_abilities': [],
+	'equipped_weapon': ['',0] # [path, durability] ; Handles save data of equipped weapons.
+}
 var equipped_weapon: ResWeapon
 var stat_points = 1
 var charms = {
@@ -42,7 +46,32 @@ func initializeCombatant(do_scene:bool=true):
 		temperment['secondary'] = []
 	if temperment['primary'] == [] and temperment['secondary'] == []:
 		temperment = base_temperment
+	
+	#loadActiveAbilities()
 	applyTemperments()
+
+func getScenePreview():
+	combatant_scene = packed_scene.instantiate()
+	combatant_scene.combatant_resource = self
+	#combatant_scene.collision.disabled = true
+	return combatant_scene
+
+func loadFileReferences():
+	var remove = []
+	
+	for ability_path in file_references['active_abilities']:
+		if !FileAccess.file_exists(ability_path):
+			remove.append(ability_path)
+			continue
+		ability_set.append(load(ability_path))
+	for ability_path in remove:
+		file_references['active_abilities'].erase(ability_path)
+	remove.clear()
+	
+	if FileAccess.file_exists(file_references['equipped_weapon'][0]):
+		var weapon = load(file_references['equipped_weapon'][0])
+		weapon.equip(self)
+		equipped_weapon.durability = file_references['equipped_weapon'][1]
 
 func applyTemperments(update:bool = false):
 	if temperment['primary'].is_empty():
@@ -66,11 +95,8 @@ func scaleStats():
 	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
 
 func updateCombatant(save_data: PlayerSaveData):
-	var remove_abilities = ability_set.filter(func(ability): return !ability_pool.has(ability))
-	for ability in remove_abilities:
-		ability_set.erase(ability)
-	
-	var percent_health = float(save_data.combatant_save_data[self][2]['health']) / float(save_data.combatant_save_data[self][3]['health'])
+	loadFileReferences()
+	var percent_health = float(save_data.combatant_save_data[self].stat_values['health']) / float(save_data.combatant_save_data[self].base_stat_values['health'])
 	stat_values['health'] = floor(base_stat_values['health'] * percent_health)
 
 func act():
@@ -98,11 +124,13 @@ func applyEquipmentModifications():
 
 func getAllocationModifier()-> Dictionary:
 	var out = stat_point_allocations.duplicate()
+	out['resist'] = out['defense']
 	for stat in out.keys():
 		if (stat == 'handling' or stat == 'damage') and out.has(stat):
 			out[stat] *= 1
-		elif out.has(stat):
-			out[stat] *= stat_multiplier
+		elif stat == 'defense' and out.has(stat):
+			out['defense'] *= stat_multiplier
+			out['resist'] *= stat_multiplier
 	return out
 
 func removeEquipmentModifications():
@@ -116,16 +144,15 @@ func equipWeapon(weapon: ResWeapon):
 	if InventoryGlobals.getItem(weapon) != null:
 		InventoryGlobals.removeItemResource(weapon, 1, false, true)
 		weapon.equip(self)
+		file_references['equipped_weapon'] = [weapon.resource_path,weapon.durability]
+		print(file_references['equipped_weapon'])
 		return
 
 func unequipWeapon():
 	if equipped_weapon != null:
-#		if !equipped_weapon.canUse(self):
-#			OverworldGlobals.showPrompt('%s does not meet %s requirements.' % [name, equipped_weapon.name])
-#			return
-		
 		equipped_weapon.unequip()
 		InventoryGlobals.addItemResource(equipped_weapon, 1, false, false)
+		file_references['equipped_weapon'] = ['',0]
 		equipped_weapon = null
 
 func hasEquippedWeapon()-> bool:
@@ -170,7 +197,7 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 		enemy.ability_set.append(ability_pool[1])
 		enemy.ability_set.append(ability_pool[2])
 		enemy.ability_set.append(ability_pool[3])
-	enemy.ai_package = preload("res://scripts/combat/combatant_ai/aiRandomAI.gd")
+	enemy.ai_package = load("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	enemy.is_converted = true
 #	enemy.tamed_combatant = self
 	return enemy.duplicate()

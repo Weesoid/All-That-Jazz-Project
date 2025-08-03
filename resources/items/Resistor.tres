@@ -5,21 +5,23 @@
 
 [resource]
 script = ExtResource("2_p3o31")
-STAT_MODIFICATIONS = {
+unique = false
+stat_modifications = {
 "accuracy": 0.0,
-"brawn": 0.0,
 "crit": 0.0,
 "crit_mult": 0.0,
-"grit": 0.0,
+"damage": 0,
+"defense": 0.0,
 "handling": 0,
-"heal_mult": -0.2,
+"heal_mult": 0.0,
 "health": 0,
-"hustle": 0,
-"resist": 0.75
+"resist": 0.0,
+"speed": 0
 }
-NAME = "Resistor"
-ICON = ExtResource("1_irrdj")
-DESCRIPTION = "To resist nast effects, btw poo poo pee pee sex."
-VALUE = 0
-MANDATORY = false
-PARENT_ITEM = ""
+auto_name = true
+name = ""
+icon = ExtResource("1_irrdj")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

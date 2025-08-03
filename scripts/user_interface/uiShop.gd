@@ -41,7 +41,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			label.add_theme_font_size_override('font_size', 6)
 		else:
 			label.text = str(floor(item.value * modifier))
-		label.theme = preload("res://design/OutlinedLabel.tres")
+		label.theme = load("res://design/OutlinedLabel.tres")
 		label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 		button.add_child(label)
@@ -49,7 +49,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		if mode == 0 and item is ResStackItem:
 			var count_label = Label.new()
 			count_label.text = str(item.stack)
-			count_label.theme = preload("res://design/OutlinedLabel.tres")
+			count_label.theme = load("res://design/OutlinedLabel.tres")
 			button.add_child(count_label)
 		
 		if item is ResStackItem and mode == 1:
@@ -106,7 +106,7 @@ func loadSlider(item)-> int:
 	if !item is ResStackItem:
 		return 1
 	
-	var a_slider = preload("res://scenes/user_interface/AmountSlider.tscn").instantiate()
+	var a_slider = load("res://scenes/user_interface/AmountSlider.tscn").instantiate()
 	
 	if mode == 1:
 		if item.value * buy_modifier != 0 and floor(PlayerGlobals.currency / (item.value * buy_modifier)) <= item.reference_item.max_stack:
@@ -212,7 +212,7 @@ func showChange(amount: int):
 	
 	var sold_label: Label = Label.new()
 	sold_label.text = str(amount)
-	sold_label.theme = preload("res://design/OutlinedLabel.tres")
+	sold_label.theme = load("res://design/OutlinedLabel.tres")
 	if amount >= 0:
 		sold_label.modulate = Color.GREEN_YELLOW
 	else:
