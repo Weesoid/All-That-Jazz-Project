@@ -50,6 +50,7 @@ func moveFollowers():
 				)
 
 func  enter():
+	cooldown_timer.start(cooldown)
 	# Disable inputs /  Hide UI
 	OverworldGlobals.player.player_camera.cinematic_bars.visible = true
 	#OverworldGlobals.player.playAudio("sounds118228__joedeshon__raising_phone_handset.ogg", 0.0, true)

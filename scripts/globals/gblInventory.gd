@@ -277,36 +277,6 @@ func loadData(save_data: InventorySaveData):
 	inventory.assign(save_data.loadInventory())
 	crafted_items = save_data.crafted_items
 
-#func saveItemData(inv_save_data: InventorySaveData):
-#	var item_data: Dictionary
-#	item_data = inv_save_data.item_data_inventory
-#
-#	for item in inventory:
-#		if item is ResGhostStackItem:
-#			item_data[item.resource_path] = [item.reference_item.resource_path, item.stack]
-#		elif item is ResStackItem:
-#			item_data[item.resource_path] = item.stack
-#		elif item is ResWeapon: # Handles save data of unequipped weapons
-#			item_data[item.resource_path+'-durability'] = item.durability
-#	for weapon in getEquippedWeapons():
-#		item_data[weapon.resource_path+'-durability'] = weapon.durability
-#
-#func loadItemData(save_data: InventorySaveData):
-#	var item_data: Dictionary
-#	item_data = save_data.item_data_inventory
-#
-#	for item in inventory:
-#		if item_data.keys().has(item.resource_path):
-#			if item is ResGhostStackItem:
-#				continue
-#			elif item is ResStackItem:
-#				item.stack = item_data[item.resource_path]
-#				if item.stack > item.max_stack: item.stack = item.max_stack
-#		if item is ResWeapon and item_data.keys().has(item.resource_path+'-durability'): # Handles save data of unequipped weapons
-#			item.durability = item_data[item.resource_path+'-durability']
-#		elif item is ResCharm:
-#			item.updateItem()
-
 func resetVariables():
 	inventory = []
 	crafted_items = []

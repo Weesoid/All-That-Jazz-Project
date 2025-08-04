@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://n3be8sd47yqk"
-path="res://.godot/imported/rest_archie.png-8938a37e3dae4f69bec6eaff559b270d.ctex"
+uid="uid://cei8jf77ejry3"
+path="res://.godot/imported/battler_archie.png-8b8b5b601f3a9ca8103259b9ab643490.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/sprites/rest_archie.png"
-dest_files=["res://.godot/imported/rest_archie.png-8938a37e3dae4f69bec6eaff559b270d.ctex"]
+source_file="res://images/character_sprites/archie/battler_archie.png"
+dest_files=["res://.godot/imported/battler_archie.png-8b8b5b601f3a9ca8103259b9ab643490.ctex"]
 
 [params]
 

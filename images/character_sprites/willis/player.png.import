@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b64hae3ym8ck"
-path="res://.godot/imported/turn_highlight.png-8979db2c8edbbadc43856ec2777a104f.ctex"
+uid="uid://c4mxnd122fr4x"
+path="res://.godot/imported/player.png-ff13a2e524d69816bc69755ca5c90e4f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/sprites/turn_highlight.png"
-dest_files=["res://.godot/imported/turn_highlight.png-8979db2c8edbbadc43856ec2777a104f.ctex"]
+source_file="res://images/character_sprites/willis/player.png"
+dest_files=["res://.godot/imported/player.png-ff13a2e524d69816bc69755ca5c90e4f.ctex"]
 
 [params]
 

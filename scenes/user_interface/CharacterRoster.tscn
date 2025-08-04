@@ -11,25 +11,19 @@ func _ready():
 		show()
 
 func _on_pressed():
-	var path = \"res://resources/combat/combatants_player/tameable/\"
+	var path = \"res://resources/combat/combatants_player/\"
 	var dir = DirAccess.open(path)
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != \"\":
 			var combatant = load(path+'/'+file_name)
-			if !PlayerGlobals.TEAM.has(combatant):
+			if !PlayerGlobals.team.has(combatant):
 				PlayerGlobals.addCombatantToTeam(combatant)
 			file_name = dir.get_next()
 	else:
 		print(\"An error occurred when trying to access the path.\")
 		print(path)
-	var archie = load(\"res://resources/combat/combatants_player/Archie.tres\")
-	var willis = load(\"res://resources/combat/combatants_player/Willis.tres\")
-	if !PlayerGlobals.TEAM.has(archie):
-		PlayerGlobals.addCombatantToTeam(archie)
-	if !PlayerGlobals.TEAM.has(willis):
-		PlayerGlobals.addCombatantToTeam(willis)
 	#await get_tree().process_frame
 	#get_parent().get_node('CharacterAdjust').get_node('Members2').loadMembers()
 "

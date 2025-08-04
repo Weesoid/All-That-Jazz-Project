@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://k3e3jm7nswux"]
+[gd_scene load_steps=11 format=3 uid="uid://bb8ubw7kep81d"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiDialogueBalloon.gd" id="1_c8jm1"]
 [ext_resource type="AudioStream" uid="uid://3g8lmthlik76" path="res://audio/sounds/text_default.ogg" id="2_007ph"]
 [ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="3_3gpam"]
 [ext_resource type="Texture2D" uid="uid://bx2ajgaow4aiu" path="res://images/sprites/dialogue_arrow.png" id="4_ffco3"]
-[ext_resource type="Texture2D" uid="uid://bln0ahed21w6e" path="res://images/dialogue_portraits/player.png" id="5_ikawd"]
 [ext_resource type="Texture2D" uid="uid://ch3hfjxwctukl" path="res://images/sprites/dialogue_tail.png" id="6_8ju85"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5d24i"]
@@ -159,7 +158,6 @@ size_flags_vertical = 8
 [node name="Face" type="Sprite2D" parent="Balloon/Portrait"]
 position = Vector2(-43, -37)
 scale = Vector2(2, 2)
-texture = ExtResource("5_ikawd")
 
 [node name="TextureRect2" type="TextureRect" parent="Balloon/Portrait"]
 layout_mode = 0

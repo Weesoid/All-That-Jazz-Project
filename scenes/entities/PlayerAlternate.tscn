@@ -1,18 +1,18 @@
-[gd_scene load_steps=149 format=3 uid="uid://by1pampbgw84d"]
+[gd_scene load_steps=149 format=3 uid="uid://doc1civ7oa1hv"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayerBowman.gd" id="1_cw77a"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="2_vhjle"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_vfkv7"]
-[ext_resource type="Texture2D" uid="uid://dso7nlpdot0vv" path="res://images/animations/player_alt.png" id="4_ybhti"]
+[ext_resource type="Texture2D" uid="uid://dso7nlpdot0vv" path="res://images/character_sprites/archie/player_alt.png" id="4_ybhti"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="5_55s1i"]
 [ext_resource type="PackedScene" uid="uid://cdkunqmsd5yml" path="res://scenes/components/MeleeHitbox.tscn" id="6_l557x"]
 [ext_resource type="PackedScene" uid="uid://crqkcqks48t2k" path="res://scenes/components/PlayerCamera.tscn" id="7_qu8h1"]
 [ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_c0qfe"]
 [ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="14_4s765"]
 [ext_resource type="Texture2D" uid="uid://emh44pfnyck" path="res://images/animations/player_alt_fall.png" id="15_jrgcy"]
-[ext_resource type="Texture2D" uid="uid://8thn8af4p4s8" path="res://images/animations/player_alt_dive.png" id="16_b4iw2"]
+[ext_resource type="Texture2D" uid="uid://8thn8af4p4s8" path="res://images/character_sprites/archie/player_alt_dive.png" id="16_b4iw2"]
 [ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="16_pcysk"]
-[ext_resource type="Texture2D" uid="uid://btxgpkjknsc7a" path="res://images/sprites/faceplant_archie.png" id="16_ty47e"]
+[ext_resource type="Texture2D" uid="uid://btxgpkjknsc7a" path="res://images/character_sprites/archie/faceplant_archie.png" id="16_ty47e"]
 
 [sub_resource type="Animation" id="Animation_b30mo"]
 resource_name = "Interact"
@@ -2703,6 +2703,7 @@ graph_offset = Vector2(-515.482, -134.209)
 collision_layer = 17
 collision_mask = 17
 script = ExtResource("1_cw77a")
+dialogue_name = "Archie"
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("2_vhjle")]
 

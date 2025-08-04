@@ -123,7 +123,7 @@ func loadAbilities():
 		if ability == null:
 			selected_combatant.ability_pool.erase(ability)
 			continue
-		if PlayerGlobals.team_level < ability.required_level or (!PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) and PlayerGlobals.team_level >= ability.required_level and !show_temperments): 
+		if PlayerGlobals.team_level < ability.required_level:
 			continue
 		createAbilityButton(ability, pool)
 
@@ -146,7 +146,7 @@ func createAbilityButton(ability, location):
 	button.pressed.connect(
 		func():
 			if !has_unlocked:
-				if button.has_focus() and PlayerGlobals.currency >= ability.getCost():
+				if button.has_focus() and PlayerGlobals.currency >= ability.getCost() and !PlayerGlobals.hasUnlockedAbility(selected_combatant, ability):
 					PlayerGlobals.currency -= ability.getCost()
 					PlayerGlobals.unlockAbility(selected_combatant, ability)
 					OverworldGlobals.playSound('res://audio/sounds/721774__maodin204__cash-register.ogg')
@@ -180,8 +180,9 @@ func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
 	if preview_combatant:
 		var character_scene = member.getScenePreview()
 		button.add_child(member.combatant_scene)
-		character_scene.collision.disabled = true
-	
+		if character_scene.collision != null:
+			character_scene.collision.disabled = true
+		
 	return button
 
 func getOtherMemberScenes(except_name: String=''):

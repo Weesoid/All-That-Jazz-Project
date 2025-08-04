@@ -1,7 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://bnlcib44lcjpr"]
+[gd_scene load_steps=17 format=3 uid="uid://hojidodoc70i"]
 
 [ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_y6fp3"]
-[ext_resource type="Texture2D" uid="uid://bbcg77hqsgne0" path="res://images/animations/battler_willis.png" id="2_n2m26"]
+[ext_resource type="Texture2D" uid="uid://bbcg77hqsgne0" path="res://images/character_sprites/willis/battler_willis.png" id="2_qhkqs"]
 [ext_resource type="Script" path="res://scripts/components/sccBlockTimer.gd" id="3_80gj8"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5sw1x"]
@@ -421,7 +421,7 @@ _data = {
 script = ExtResource("1_y6fp3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_n2m26")
+texture = ExtResource("2_qhkqs")
 hframes = 10
 vframes = 10
 

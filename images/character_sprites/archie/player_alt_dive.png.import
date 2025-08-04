@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dso7nlpdot0vv"
-path="res://.godot/imported/player_alt.png-9ac5984c74f856d1d629af53cb10e2b3.ctex"
+uid="uid://8thn8af4p4s8"
+path="res://.godot/imported/player_alt_dive.png-676a65df34268d4abab34035df05ed28.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/player_alt.png"
-dest_files=["res://.godot/imported/player_alt.png-9ac5984c74f856d1d629af53cb10e2b3.ctex"]
+source_file="res://images/character_sprites/archie/player_alt_dive.png"
+dest_files=["res://.godot/imported/player_alt_dive.png-676a65df34268d4abab34035df05ed28.ctex"]
 
 [params]
 

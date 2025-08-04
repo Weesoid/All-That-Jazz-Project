@@ -5,7 +5,7 @@ enum PlayerType {
 	ARCHIE
 }
 var entering_combat:bool=false
-var player_type: PlayerType = PlayerType.ARCHIE
+var player_type: PlayerType = PlayerType.WILLIS
 var delayed_rewards: Dictionary
 var player_follower_count = 0
 var player: PlayerScene
@@ -374,7 +374,7 @@ func showGameOver(end_sentence: String=''):
 	menu.z_index = 20
 	player.resetStates()
 	setMouseController(true)
-	player.player_camera.add_child(menu)
+	player.player_camera.get_node('UI').add_child(menu)
 	if end_sentence == '': 
 		end_sentence = [
 			"You perished.", 

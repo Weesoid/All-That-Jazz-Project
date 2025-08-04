@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ResFactionProperties" load_steps=9 format=3 uid="uid://deyjrdgu1gteh"]
+[gd_resource type="Resource" script_class="ResFactionProperties" load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResFactionPatrollerProperties.gd" id="1_iulig"]
 [ext_resource type="Script" path="res://scripts/resources/ResPatrollerProperties.gd" id="1_wjv6f"]
-[ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/animations/scav_patrol_chaser.png" id="2_3p64n"]
+[ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/character_sprites/faction_scavs/scav_patrol_chaser.png" id="2_3p64n"]
 [ext_resource type="Resource" uid="uid://dmk3rgyjgpgy6" path="res://resources/projectiles/DamageProjectile.tres" id="3_mgjne"]
 [ext_resource type="Script" path="res://scripts/resources/ResPatrollerPropertiesShooter.gd" id="4_26nm3"]
-[ext_resource type="Texture2D" uid="uid://c68ktd0q26eqy" path="res://images/animations/scav_patrol_shooter.png" id="5_kw6u8"]
+[ext_resource type="Texture2D" uid="uid://c68ktd0q26eqy" path="res://images/character_sprites/faction_scavs/scav_patrol_shooter.png" id="5_kw6u8"]
 
 [sub_resource type="Resource" id="Resource_swyfo"]
 script = ExtResource("1_wjv6f")

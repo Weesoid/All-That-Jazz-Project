@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwttrm4n587tw"
-path="res://.godot/imported/archie_rest.png-54707b8a39956a6681df02a0c66e3ccd.ctex"
+uid="uid://cavix0rkwc0ho"
+path="res://.godot/imported/willis_follower.png-f646385be26296db394efb78a15d7881.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/sprites/archie_rest.png"
-dest_files=["res://.godot/imported/archie_rest.png-54707b8a39956a6681df02a0c66e3ccd.ctex"]
+source_file="res://images/character_sprites/willis/willis_follower.png"
+dest_files=["res://.godot/imported/willis_follower.png-f646385be26296db394efb78a15d7881.ctex"]
 
 [params]
 

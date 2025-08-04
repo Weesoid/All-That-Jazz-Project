@@ -96,7 +96,8 @@ func scaleStats():
 
 func updateCombatant(save_data: PlayerSaveData):
 	loadFileReferences()
-	var percent_health = float(save_data.combatant_save_data[self].stat_values['health']) / float(save_data.combatant_save_data[self].base_stat_values['health'])
+	var path = resource_path
+	var percent_health = float(save_data.combatant_save_data[path].stat_values['health']) / float(save_data.combatant_save_data[path].base_stat_values['health'])
 	stat_values['health'] = floor(base_stat_values['health'] * percent_health)
 
 func act():

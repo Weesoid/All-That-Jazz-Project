@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwt74stfdukdn"
-path="res://.godot/imported/scav_battler_a.png-e8e2c70df1806f40a5950042e50c2863.ctex"
+uid="uid://cujt163cfwhbm"
+path="res://.godot/imported/engage_stalker.png-b58031bcb02df0ce4cd31e57557d0c20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/scav_battler_a.png"
-dest_files=["res://.godot/imported/scav_battler_a.png-e8e2c70df1806f40a5950042e50c2863.ctex"]
+source_file="res://images/character_sprites/faction_scavs/engage_stalker.png"
+dest_files=["res://.godot/imported/engage_stalker.png-b58031bcb02df0ce4cd31e57557d0c20.ctex"]
 
 [params]
 

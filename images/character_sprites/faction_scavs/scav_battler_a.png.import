@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwvflwff44l4r"
-path="res://.godot/imported/monky.png-f31260e2612124ed8f476f3e2a79aed1.ctex"
+uid="uid://bwt74stfdukdn"
+path="res://.godot/imported/scav_battler_a.png-596238436ea1c1b0c0482b5b99eee210.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/monky.png"
-dest_files=["res://.godot/imported/monky.png-f31260e2612124ed8f476f3e2a79aed1.ctex"]
+source_file="res://images/character_sprites/faction_scavs/scav_battler_a.png"
+dest_files=["res://.godot/imported/scav_battler_a.png-596238436ea1c1b0c0482b5b99eee210.ctex"]
 
 [params]
 

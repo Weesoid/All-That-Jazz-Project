@@ -44,11 +44,14 @@ var dialogue_line: DialogueLine:
 			child.queue_free()
 		
 		dialogue_line = next_dialogue_line
-		
-		#character_label.visible = not dialogue_line.character.is_empty()
 		arrow.hide()
+		
+		# Character portait setting
 		var speaker = dialogue_line.character.split("-")[0]
-		var portrait_path = "res://images/dialogue_portraits/%s%s.png" % [dialogue_line.character.to_lower(), file_suffix]
+		var face_path = speaker
+		if speaker == 'Player': 
+			face_path = determinePlayerSpeaker()
+		var portrait_path = "res://images/character_sprites/%s/%s.png" % [face_path.to_lower(), face_path.to_lower()]
 		character_label.text = tr(speaker, "dialogue")
 		if FileAccess.file_exists(portrait_path):
 			var portrait = load(portrait_path)
@@ -99,6 +102,11 @@ var dialogue_line: DialogueLine:
 	get:
 		return dialogue_line
 
+func determinePlayerSpeaker():
+	if OverworldGlobals.player.dialogue_name == 'Willis':
+		return 'Willis'
+	elif OverworldGlobals.player.dialogue_name == 'Archie':
+		return 'Archie'
 
 func setSizePosition(speaker:String):
 	balloon.custom_minimum_size.x = min(balloon.size.x, MAX_WIDTH)

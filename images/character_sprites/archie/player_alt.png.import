@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2luu3mc4n00g"
-path="res://.godot/imported/scav_battler_b.png-57784ac1b9e9bbc58fd170bf0b3cf377.ctex"
+uid="uid://dso7nlpdot0vv"
+path="res://.godot/imported/player_alt.png-af4ea755892653b05f87333185408b35.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/scav_battler_b.png"
-dest_files=["res://.godot/imported/scav_battler_b.png-57784ac1b9e9bbc58fd170bf0b3cf377.ctex"]
+source_file="res://images/character_sprites/archie/player_alt.png"
+dest_files=["res://.godot/imported/player_alt.png-af4ea755892653b05f87333185408b35.ctex"]
 
 [params]
 

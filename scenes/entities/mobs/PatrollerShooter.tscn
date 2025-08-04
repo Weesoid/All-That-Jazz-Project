@@ -1,10 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://j4tshp0xgo2n"]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatrollerShooter.gd" id="1_y3dnd"]
 [ext_resource type="Texture2D" uid="uid://oqxgdnxhjr2c" path="res://images/sprites/exclamation.png" id="2_lk1s1"]
 [ext_resource type="Resource" uid="uid://dmk3rgyjgpgy6" path="res://resources/projectiles/DamageProjectile.tres" id="2_tx426"]
 [ext_resource type="PackedScene" uid="uid://c4tte42jxqyy" path="res://scenes/user_interface/PatrollerDetectBar.tscn" id="3_twibo"]
-[ext_resource type="Texture2D" uid="uid://c68ktd0q26eqy" path="res://images/animations/scav_patrol_shooter.png" id="4_08kkb"]
+[ext_resource type="Texture2D" uid="uid://c68ktd0q26eqy" path="res://images/character_sprites/faction_scavs/scav_patrol_shooter.png" id="4_08kkb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b7sqp"]
 size = Vector2(23, 30)

@@ -1,7 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://bat6k2egemqg8"]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatroller.gd" id="1_khwtj"]
-[ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/animations/scav_patrol_chaser.png" id="2_1ek2d"]
+[ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/character_sprites/faction_scavs/scav_patrol_chaser.png" id="2_1ek2d"]
 [ext_resource type="PackedScene" uid="uid://c4tte42jxqyy" path="res://scenes/user_interface/PatrollerDetectBar.tscn" id="2_8gvrl"]
 [ext_resource type="Texture2D" uid="uid://oqxgdnxhjr2c" path="res://images/sprites/exclamation.png" id="2_p0bs2"]
 

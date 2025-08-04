@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4mxnd122fr4x"
-path="res://.godot/imported/player.png-fd58dac335d5147d47eb84ee861968c9.ctex"
+uid="uid://btxgpkjknsc7a"
+path="res://.godot/imported/faceplant_archie.png-dc171b23854e7b04b3b4419399beac99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/player.png"
-dest_files=["res://.godot/imported/player.png-fd58dac335d5147d47eb84ee861968c9.ctex"]
+source_file="res://images/character_sprites/archie/faceplant_archie.png"
+dest_files=["res://.godot/imported/faceplant_archie.png-dc171b23854e7b04b3b4419399beac99.ctex"]
 
 [params]
 

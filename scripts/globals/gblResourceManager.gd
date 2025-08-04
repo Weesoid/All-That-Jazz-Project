@@ -32,11 +32,65 @@ func loadArrayFromPath(path:String, filter=null)-> Array:
 	
 	return out
 
-func loadResourcePathArray(path_array: Array[String], write_array):
+# Load array of resource paths
+func loadResourcePathArray(path_array):
 	var out = []
+	
 	for path in path_array:
 		if !FileAccess.file_exists(path):
 			continue
-		out.append(path)
-	write_array.assign(out)
-	return write_array
+		out.append(load(path))
+	
+	return out
+
+# Convert array of resources into array of resource paths
+func getResourcePathArray(array):
+	var out = []
+	for res in array:
+		out.append(res.resource_path)
+	
+	return out
+
+# Load dict of resources (Resource: Resource or Resource: [Resource, Resource, ...])
+func loadResourcePathDict(dict:Dictionary):
+	var out = {}
+	for key in dict.keys():
+		if !FileAccess.file_exists(key):
+			continue
+		if dict[key] is Array:
+			out[load(key)] = loadResourcePathArray(dict[key])
+		else:
+			out[load(key)] = load(dict[key])
+	return out
+
+# Convert dict of resources to dict of resource paths
+func getResourcePathDict(dict):
+	if dict == {}:
+		return {}
+	
+	var out = {}
+	for key in dict.keys():
+		if dict[key] is Array:
+			out[key.resource_path] = getResourcePathArray(dict[key])
+		else:
+			out[key.resource_path] = dict[key].resource_path
+	
+	return out
+
+func loadResourcePath(path:String):
+	if FileAccess.file_exists(path):
+		return load(path)
+	else:
+		return null
+
+func getResourcePath(resource):
+	if resource == null:
+		return ''
+	
+	if FileAccess.file_exists(resource.resource_path):
+		return resource.resource_path
+	else:
+		return ''
+
+#func filterExistingResources(element):
+#	return FileAccess.file_exists(element)

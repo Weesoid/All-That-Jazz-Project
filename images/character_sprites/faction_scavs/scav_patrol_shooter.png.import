@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6iacu5bntvp7"
-path="res://.godot/imported/player_dive.png-385590c40b6820583adef45773ff78c3.ctex"
+uid="uid://c68ktd0q26eqy"
+path="res://.godot/imported/scav_patrol_shooter.png-a22d94c9511dca1303ef5d18e6ac8f5b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/player_dive.png"
-dest_files=["res://.godot/imported/player_dive.png-385590c40b6820583adef45773ff78c3.ctex"]
+source_file="res://images/character_sprites/faction_scavs/scav_patrol_shooter.png"
+dest_files=["res://.godot/imported/scav_patrol_shooter.png-a22d94c9511dca1303ef5d18e6ac8f5b.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://r0toat4qsmnb"]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/entCombatantScene.gd" id="1_jtk3v"]
-[ext_resource type="Texture2D" uid="uid://bwt74stfdukdn" path="res://images/animations/scav_battler_a.png" id="2_ofqtr"]
+[ext_resource type="Texture2D" uid="uid://bwt74stfdukdn" path="res://images/character_sprites/faction_scavs/scav_battler_a.png" id="2_ofqtr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5sw1x"]
 radius = 8.0

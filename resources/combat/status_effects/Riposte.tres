@@ -6,7 +6,6 @@
 
 [resource]
 script = ExtResource("2_h6axs")
-auto_name = false
 name = "Riposte"
 description = ""
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])

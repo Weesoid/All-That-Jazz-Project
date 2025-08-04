@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cavix0rkwc0ho"
-path="res://.godot/imported/willis_follower.png-75cbe18406e875a688c56c98e7732260.ctex"
+uid="uid://bbcg77hqsgne0"
+path="res://.godot/imported/battler_willis.png-c3fd6db46a6b7af32a14334655c71f14.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/willis_follower.png"
-dest_files=["res://.godot/imported/willis_follower.png-75cbe18406e875a688c56c98e7732260.ctex"]
+source_file="res://images/character_sprites/willis/battler_willis.png"
+dest_files=["res://.godot/imported/battler_willis.png-c3fd6db46a6b7af32a14334655c71f14.ctex"]
 
 [params]
 

@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name PlayerScene
 
+@export var dialogue_name: String
+
 @onready var sprite = $Sprite2D
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var player_animator = $WalkingAnimations
@@ -48,6 +50,7 @@ signal dived
 signal phased
 
 func _ready():
+	#name = 'Willis'
 	SPEED = PlayerGlobals.overworld_stats['walk_speed']
 	animation_tree.active = true
 	

@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxkovbrj8brlp"]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/components/ascDisposableAnimation.gd" id="1_eo5pm"]
-[ext_resource type="Texture2D" uid="uid://cujt163cfwhbm" path="res://images/animations/engage_stalker.png" id="2_0vact"]
+[ext_resource type="Texture2D" uid="uid://cujt163cfwhbm" path="res://images/character_sprites/faction_scavs/engage_stalker.png" id="2_0vact"]
 
 [sub_resource type="Animation" id="Animation_am1vv"]
 length = 0.001

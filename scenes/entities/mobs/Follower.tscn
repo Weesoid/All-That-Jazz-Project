@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://ovdh5raaljpb"]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/entities/entNPCFollower.gd" id="1_ddcxm"]
-[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/animations/willis_follower.png" id="2_skjm7"]
+[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/character_sprites/willis/willis_follower.png" id="2_skjm7"]
 
 [sub_resource type="Animation" id="Animation_ndr0a"]
 resource_name = "Dive"

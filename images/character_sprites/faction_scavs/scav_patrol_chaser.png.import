@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x1rkx7kmua4n"
-path="res://.godot/imported/ent_walk_shooter.png-66d1de0cca74bc0ca8c72d0ed62fa166.ctex"
+uid="uid://vrc6khek60cj"
+path="res://.godot/imported/scav_patrol_chaser.png-4d5b095b8cf1d7bcc3abe1cbe514c891.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/ent_walk_shooter.png"
-dest_files=["res://.godot/imported/ent_walk_shooter.png-66d1de0cca74bc0ca8c72d0ed62fa166.ctex"]
+source_file="res://images/character_sprites/faction_scavs/scav_patrol_chaser.png"
+dest_files=["res://.godot/imported/scav_patrol_chaser.png-4d5b095b8cf1d7bcc3abe1cbe514c891.ctex"]
 
 [params]
 

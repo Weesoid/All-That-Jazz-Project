@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbcg77hqsgne0"
-path="res://.godot/imported/battler_willis.png-b3efff268bd2f370d0443263f62f5126.ctex"
+uid="uid://bln0ahed21w6e"
+path="res://.godot/imported/archie.png-e583d04167d2c5651f6db017969ecd9f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/animations/battler_willis.png"
-dest_files=["res://.godot/imported/battler_willis.png-b3efff268bd2f370d0443263f62f5126.ctex"]
+source_file="res://images/character_sprites/archie/archie.png"
+dest_files=["res://.godot/imported/archie.png-e583d04167d2c5651f6db017969ecd9f.ctex"]
 
 [params]
 

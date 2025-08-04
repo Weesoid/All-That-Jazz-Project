@@ -10,3 +10,6 @@ class_name ResPower
 
 func setPower():
 	PlayerGlobals.power = power_script
+
+func _to_string():
+	return name+': '+input_map

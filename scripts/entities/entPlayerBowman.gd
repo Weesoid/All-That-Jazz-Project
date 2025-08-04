@@ -2,6 +2,8 @@ extends PlayerScene
 class_name PlayerBowOnly
 
 func _input(_event):
+	#name = 'Archie'
+	
 	# Sprint/bow handling
 	if SettingsGlobals.doSprint():
 		sprinting = true

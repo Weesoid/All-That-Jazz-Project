@@ -25,6 +25,7 @@ script/source = "extends VBoxContainer
 @onready var player = OverworldGlobals.player
 
 func _input(event):
+	#print(PlayerGlobals.known_powers)
 	if player == null:
 		return
 	
@@ -48,8 +49,8 @@ func createReference(power: ResPower):
 func getValidPowers(inputs: String):
 	await clearReferences()
 	var valid_powers = []
-	for power in PlayerGlobals.KNOWN_POWERS:
-		if power.INPUT_MAP.begins_with(inputs): valid_powers.append(power)
+	for power in PlayerGlobals.known_powers:
+		if power.input_map.begins_with(inputs): valid_powers.append(power)
 	return valid_powers
 
 "

@@ -1,14 +1,12 @@
-[gd_resource type="Resource" script_class="ResPower" load_steps=4 format=3 uid="uid://6g8ewkl5xa4a"]
+[gd_resource type="Resource" script_class="ResPower" load_steps=3 format=3 uid="uid://6g8ewkl5xa4a"]
 
-[ext_resource type="Texture2D" uid="uid://daj63f5hbitmd" path="res://images/sprites/power1.png" id="1_db1p2"]
 [ext_resource type="Script" path="res://scripts/resources/ResPower.gd" id="1_nguqf"]
 [ext_resource type="Script" path="res://scripts/power_scripts/scpInvisibility.gd" id="2_x00vh"]
 
 [resource]
 script = ExtResource("1_nguqf")
-INPUT_MAP = "aas"
-NAME = "Phase Shift"
-DESCRIPTION = "Enter the void and become invisible to the naked eye."
-ICON = ExtResource("1_db1p2")
-POWER_SCRIPT = ExtResource("2_x00vh")
-CRYSTAL_COST = 1
+input_map = "aas"
+name = "Steakth"
+description = ""
+power_script = ExtResource("2_x00vh")
+crystal_cost = 0
