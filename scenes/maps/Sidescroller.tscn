@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=30 format=3 uid="uid://dkxd0fi262mch"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
@@ -22,6 +22,9 @@
 [ext_resource type="PackedScene" uid="uid://cmvvapgedbg4q" path="res://scenes/entities/GenericNPC.tscn" id="21_cchwb"]
 [ext_resource type="Texture2D" uid="uid://bgfd4prdnyfft" path="res://images/animations/base_battler.png" id="22_b8a2s"]
 [ext_resource type="PackedScene" uid="uid://bnh7ste0fc6w4" path="res://scenes/environment/PatrollerGroup.tscn" id="23_1rrnk"]
+[ext_resource type="Resource" uid="uid://duokdpjjw1bgv" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_MrQuesty.dialogue" id="23_uupkl"]
+[ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://images/sprites/NPC_unknown_entity.png" id="24_qqfd5"]
+[ext_resource type="Resource" uid="uid://dpx62r3hkqksv" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_MrMan.dialogue" id="25_m8hhu"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j63u4"]
 radius = 16.0
@@ -252,8 +255,20 @@ libraries = {
 "": SubResource("AnimationLibrary_2ni2q")
 }
 
+[node name="MrMan" type="CharacterBody2D" parent="."]
+position = Vector2(-280, -12)
+
+[node name="Sprite2D" type="Sprite2D" parent="MrMan"]
+position = Vector2(0, -12)
+texture = ExtResource("24_qqfd5")
+
+[node name="InteractComponent" parent="MrMan" instance=ExtResource("14_ie3ty")]
+dialogue_resource = ExtResource("25_m8hhu")
+move_player = false
+
 [node name="GenericNPC" parent="." instance=ExtResource("21_cchwb")]
 position = Vector2(57, -48)
 texture = ExtResource("22_b8a2s")
 
 [node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]
+dialogue_resource = ExtResource("23_uupkl")

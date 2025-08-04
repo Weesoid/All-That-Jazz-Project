@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_gyudi"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tsf88"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_vy0fi"]
-[ext_resource type="PackedScene" uid="uid://r0toat4qsmnb" path="res://scenes/combatants/Scav.tscn" id="3_lb1qm"]
+[ext_resource type="PackedScene" path="res://scenes/combatants/Scav.tscn" id="3_lb1qm"]
 
 [resource]
 script = ExtResource("1_gyudi")
@@ -14,7 +14,6 @@ chance_to_drop = 0.5
 drop_count = 1
 drop_pool = {}
 is_converted = false
-auto_name = false
 name = "Scav"
 packed_scene = ExtResource("3_lb1qm")
 description = ""

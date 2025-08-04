@@ -40,7 +40,7 @@ func setQuestInfo():
 	title.text = selected_quest.name
 	description.text = selected_quest.description
 	
-	for objectve in selected_quest.OBJECTIVES:
+	for objectve in selected_quest.objectives:
 		if objectve.active:
 			var objective_description = Label.new()
 			objective_description.custom_minimum_size.x = objectives_container.size.x

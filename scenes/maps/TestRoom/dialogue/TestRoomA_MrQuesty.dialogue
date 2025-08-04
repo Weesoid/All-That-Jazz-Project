@@ -1,14 +1,14 @@
 ~ start
 
 if !hasQuest("Get That Item"):
-	Entity: Hello Willis my boy!
-	Willis: Hello Mr. Questy. Just give me the quest already.
-	Entity: You betcha!
+	GenericNPC: Hello Willis my boy!
+	Player: Hello Mr. Questy. Just give me the quest already.
+	GenericNPC: You betcha!
 	do addQuest("GetThatItem")
 else:
-	Entity: Wees
+	GenericNPC: Wees
 	- I delivered it. [if isObjectiveActive("Get That Item", "Tell Questy")]
-		Entity: Oh how delicious!
+		GenericNPC: Oh how delicious!
 		do completeQuestObjective("Get That Item", "Tell Questy", 0)
 		do addPower("Anchor")
 

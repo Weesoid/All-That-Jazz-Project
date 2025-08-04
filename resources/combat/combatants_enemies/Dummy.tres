@@ -12,7 +12,6 @@ chance_to_drop = 0.5
 drop_count = 1
 drop_pool = {}
 is_converted = false
-auto_name = false
 name = "Dummy"
 packed_scene = ExtResource("1_qr0qk")
 description = ""

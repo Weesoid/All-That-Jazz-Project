@@ -3,42 +3,45 @@
 [ext_resource type="Script" path="res://scripts/resources/ResQuestObjective.gd" id="1_5s5hl"]
 [ext_resource type="Script" path="res://scripts/resources/ResQuest.gd" id="1_ayys1"]
 
-[sub_resource type="Resource" id="Resource_f45us"]
+[sub_resource type="Resource" id="Resource_kubhv"]
 script = ExtResource("1_5s5hl")
-NAME = "Get Scrap"
-description = ""
+name = "Get Scrap"
+description = "Get 8 pieces of scrappadappa ding dong."
 dependent_outcome = 0
 final_objective = false
 auto_complete = false
 
-[sub_resource type="Resource" id="Resource_u6be8"]
+[sub_resource type="Resource" id="Resource_m0g22"]
 script = ExtResource("1_5s5hl")
-NAME = "Tell Questy"
-description = ""
+name = "Tell Questy"
+description = "Tell questy you got them scrappers!  Or backstab his ahh!"
+dependent = SubResource("Resource_kubhv")
 dependent_outcome = 0
 final_objective = false
 auto_complete = false
 
-[sub_resource type="Resource" id="Resource_ci8bd"]
+[sub_resource type="Resource" id="Resource_wil1a"]
 script = ExtResource("1_5s5hl")
-NAME = "Betrayal"
-description = ""
+name = "Noodle"
+description = "You told him the truth, aintcha a good noodle?"
+dependent = SubResource("Resource_m0g22")
 dependent_outcome = 0
-final_objective = false
-auto_complete = false
+final_objective = true
+auto_complete = true
 
-[sub_resource type="Resource" id="Resource_rgqkl"]
+[sub_resource type="Resource" id="Resource_7vsf3"]
 script = ExtResource("1_5s5hl")
-NAME = "Friends"
-description = ""
-dependent_outcome = 0
-final_objective = false
-auto_complete = false
+name = "Mischief"
+description = "No better than the scum of the earth. Liar."
+dependent = SubResource("Resource_m0g22")
+dependent_outcome = 1
+final_objective = true
+auto_complete = true
 
 [resource]
 script = ExtResource("1_ayys1")
-NAME = "Get That Item"
-description = ""
-OBJECTIVES = Array[ExtResource("1_5s5hl")]([SubResource("Resource_f45us"), SubResource("Resource_u6be8"), SubResource("Resource_ci8bd"), SubResource("Resource_rgqkl")])
+name = "Get That Item"
+description = "Tems is a wretched whore and I hate her so fucking much."
+objectives = Array[ExtResource("1_5s5hl")]([SubResource("Resource_kubhv"), SubResource("Resource_m0g22"), SubResource("Resource_wil1a"), SubResource("Resource_7vsf3")])
 completed = false
-EXPERIENCE_REWARD = 0.25
+experience_reward = 0.25

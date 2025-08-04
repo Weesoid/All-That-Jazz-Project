@@ -7,18 +7,25 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="7_cjjrq"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="8_whx1v"]
 
-[sub_resource type="Resource" id="Resource_b2mkp"]
+[sub_resource type="Resource" id="Resource_y6iee"]
 script = ExtResource("1_kj07h")
-position = Vector2(-116.75, 20.9338)
+position = Vector2(102.829, -27.0748)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_vv6d4"]
+[sub_resource type="Resource" id="Resource_ctb17"]
 script = ExtResource("2_acxl0")
-quests = Array[Resource("res://scripts/resources/ResQuest.gd")]([])
-quest_objectives_data = {}
+quests = Array[String](["res://resources/quests/GetThatItem.tres"])
+quest_objectives_data = {
+"res://resources/quests/GetThatItem.tres": {
+"Get Scrap": [true, true, 0],
+"Mischief": [false, false, 0],
+"Noodle": [true, true, 0],
+"Tell Questy": [true, true, 0]
+}
+}
 
-[sub_resource type="Resource" id="Resource_ygk3u"]
+[sub_resource type="Resource" id="Resource_y3lxr"]
 script = ExtResource("4_v7ybd")
 charms = {
 0: "",
@@ -30,12 +37,12 @@ stat_values = {
 "crit": 0.05,
 "crit_dmg": 1.5,
 "damage": 4,
-"defense": 0.0,
+"defense": 0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 28.0,
+"health": 20,
 "resist": 0.05,
 "speed": 1
 }
@@ -49,63 +56,14 @@ base_stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 28,
+"health": 20,
 "resist": 0.05,
 "speed": 1
 }
 mandatory = true
 lingering_effects = Array[String]([])
 initialized = true
-stat_points = 5
-stat_point_allocations = {
-"damage": 0,
-"defense": 0,
-"handling": 0
-}
-file_references = {
-"active_abilities": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicAttack.tres"],
-"equipped_weapon": ["", 0]
-}
-
-[sub_resource type="Resource" id="Resource_p16f8"]
-script = ExtResource("4_v7ybd")
-charms = {
-0: "",
-1: "",
-2: ""
-}
-stat_values = {
-"accuracy": 0.95,
-"crit": 0.05,
-"crit_dmg": 1.5,
-"damage": 4,
-"defense": 0.0,
-"dmg_modifier": 1.0,
-"dmg_variance": 0.25,
-"handling": 0,
-"heal_mult": 1.0,
-"health": 28.0,
-"resist": 0.05,
-"speed": 1
-}
-base_stat_values = {
-"accuracy": 0.95,
-"crit": 0.05,
-"crit_dmg": 1.5,
-"damage": 4,
-"defense": 0,
-"dmg_modifier": 1.0,
-"dmg_variance": 0.25,
-"handling": 0,
-"heal_mult": 1.0,
-"health": 28,
-"resist": 0.05,
-"speed": 1
-}
-mandatory = false
-lingering_effects = Array[String]([])
-initialized = true
-stat_points = 5
+stat_points = 1
 stat_point_allocations = {
 "damage": 0,
 "defense": 0,
@@ -116,40 +74,88 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_7rn5u"]
+[sub_resource type="Resource" id="Resource_j4182"]
+script = ExtResource("4_v7ybd")
+charms = {
+0: "",
+1: "",
+2: ""
+}
+stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 4,
+"defense": 0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 20,
+"resist": 0.05,
+"speed": 1
+}
+base_stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 4,
+"defense": 0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 20,
+"resist": 0.05,
+"speed": 1
+}
+mandatory = false
+lingering_effects = Array[String]([])
+initialized = true
+stat_points = 1
+stat_point_allocations = {
+"damage": 0,
+"defense": 0,
+"handling": 0
+}
+file_references = {
+"active_abilities": [],
+"equipped_weapon": ["", 0]
+}
+
+[sub_resource type="Resource" id="Resource_rnpc3"]
 script = ExtResource("6_py8kv")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 map_logs = {}
 equipped_arrow = ""
 equipped_blessing = ""
-currency = 9720
-team_level = 5
-current_exp = 673
+currency = 10000
+team_level = 1
+current_exp = 125
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_p16f8"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_ygk3u")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_j4182"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_y3lxr")
 }
-unlocked_abilities = {
-"res://resources/combat/combatants_player/Archie.tres": ["res://resources/combat/abilities/BasicProjectile.tres"],
-"res://resources/combat/combatants_player/Willis.tres": ["res://resources/combat/abilities/BasicProjectile.tres"]
-}
+unlocked_abilities = {}
 added_abilities = {}
 max_team_level = 5
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_nq5a5"]
+[sub_resource type="Resource" id="Resource_sdry2"]
 script = ExtResource("7_cjjrq")
-inventory = {}
+inventory = {
+"res://resources/items/ScrapSalvage.tres": 100
+}
 crafted_items = Array[String]([])
 
 [resource]
 script = ExtResource("8_whx1v")
-name = "Save 1 - 00:00:43
-Morale 5
+name = "Save 1 - 00:00:30
+Morale 1
 Node2D"
-playtime = 43.839
+playtime = 30.852
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_b2mkp"), SubResource("Resource_vv6d4"), SubResource("Resource_7rn5u"), SubResource("Resource_nq5a5")]
+save_data = [SubResource("Resource_y6iee"), SubResource("Resource_ctb17"), SubResource("Resource_rnpc3"), SubResource("Resource_sdry2")]

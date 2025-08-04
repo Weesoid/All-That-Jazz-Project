@@ -16,7 +16,7 @@ func addQuest(quest_name: String):
 	prompt.setTitle(out_quest.name)
 	prompt.playAnimation('show_quest')
 	
-	out_quest.OBJECTIVES[0].active = true
+	out_quest.objectives[0].active = true
 	quests.append(out_quest)
 
 func hasQuest(quest_name: String):
@@ -36,7 +36,8 @@ func isObjectiveActive(quest_name: String, quest_objective_name: String)-> bool:
 
 func completeQuestObjective(quest_name: String, quest_objective_name: String, outcome:int=0):
 	getQuest(quest_name).completeObjective(quest_objective_name, outcome)
-	OverworldGlobals.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest_name, 5.0, "430892__gsb1039__magic-1-grainsmooth.ogg")
+	if !getQuest(quest_name).isCompleted():
+		OverworldGlobals.showPrompt('Quest updated: [color=yellow]%s[/color]' % quest_name, 5.0, "430892__gsb1039__magic-1-grainsmooth.ogg")
 
 
 func isQuestObjectiveCompleted(quest_name: String, quest_objective_name: String) -> bool:
@@ -53,21 +54,21 @@ func getQuest(quest_name: String)-> ResQuest:
 
 func saveData(save_data: Array):
 	var data: QuestSaveData = QuestSaveData.new()
-	data.quests = quests
+	data.quests.assign(ResourceGlobals.getResourcePathArray(quests))
 	for quest in quests:
 		var objectives_data = {}
-		for objective in quest.OBJECTIVES:
+		for objective in quest.objectives:
 			objectives_data[objective.name] = [objective.active, objective.completed, objective.outcome]
-		data.quest_objectives_data[quest] = objectives_data
+		data.quest_objectives_data[quest.resource_path] = objectives_data
 	save_data.append(data)
 
 func loadData(save_data: QuestSaveData):
-	quests = save_data.quests
+	quests.assign(ResourceGlobals.loadResourcePathArray(save_data.quests))
 	for quest in quests:
-		for objective in quest.OBJECTIVES:
-			objective.active = save_data.quest_objectives_data[quest][objective.name][0]
-			objective.completed = save_data.quest_objectives_data[quest][objective.name][1]
-			objective.outcome = save_data.quest_objectives_data[quest][objective.name][2]
+		for objective in quest.objectives:
+			objective.active = save_data.quest_objectives_data[quest.resource_path][objective.name][0]
+			objective.completed = save_data.quest_objectives_data[quest.resource_path][objective.name][1]
+			objective.outcome = save_data.quest_objectives_data[quest.resource_path][objective.name][2]
 		quest.isCompleted(false)
 
 func resetVariables():

@@ -5,11 +5,11 @@
 
 [resource]
 script = ExtResource("1_tfqii")
-MAX_STACK = 999
-BARTER_ITEM = false
-NAME = "Scrap Salvage"
-ICON = ExtResource("1_55b5r")
-DESCRIPTION = "Used for crafting."
-VALUE = 5
-MANDATORY = false
-PARENT_ITEM = ""
+max_stack = 0
+barter_item = false
+name = "Scrap Salvage"
+icon = ExtResource("1_55b5r")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""
