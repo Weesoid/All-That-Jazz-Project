@@ -212,3 +212,6 @@ func destroy(give_drops=false):
 	queue_free()
 	await tree_exited
 	patroller_group.checkGiveRewards()
+
+func playFootstep():
+	FootstepSoundManager.playFootstep(self, global_position,-8,0.5)

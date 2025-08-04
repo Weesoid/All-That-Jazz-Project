@@ -1982,6 +1982,23 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_poahb"]
 resource_name = "Walk_Left_Bow"
@@ -2022,6 +2039,23 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_6w4gc"]
@@ -2064,6 +2098,23 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_ddvpw"]
 resource_name = "Walk_Right"
@@ -2104,6 +2155,23 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_15la0"]
@@ -2146,6 +2214,23 @@ tracks/2/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_2u154"]
 resource_name = "Walk_Right_Bow_Drawn"
@@ -2186,6 +2271,23 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_dpwad"]
@@ -2707,7 +2809,7 @@ texture = ExtResource("5_nms4n")
 offset = Vector2(0, -24)
 hframes = 9
 vframes = 6
-frame = 35
+frame = 4
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false

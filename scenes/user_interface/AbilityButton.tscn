@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://bwa3mr1qsun1o"]
+[gd_scene load_steps=13 format=3 uid="uid://bwa3mr1qsun1o"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAbilityButton.gd" id="1_4mlso"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtons.tres" id="2_drb8e"]
+[ext_resource type="AudioStream" uid="uid://dtcwqqchfejm1" path="res://audio/sounds/709597__alexcoover__unsheath-arrow.ogg" id="3_wmurb"]
 [ext_resource type="Texture2D" uid="uid://l8tr2uv4y35t" path="res://images/ability_icons/forward.png" id="4_ckhx1"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="4_oplrr"]
 
@@ -198,6 +199,7 @@ expand_icon = true
 script = ExtResource("1_4mlso")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_wmurb")
 bus = &"Sounds"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]

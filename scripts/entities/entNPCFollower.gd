@@ -18,6 +18,9 @@ func _ready():
 	OverworldGlobals.player.phased.connect(phase)
 	OverworldGlobals.player.dived.connect(dive)
 
+func playFootstep():
+	FootstepSoundManager.playFootstep(self, global_position,-8)
+
 func jump(jump_velocity):
 	if !OverworldGlobals.player.is_on_floor() or speed_multiplier < 1.1:
 		return

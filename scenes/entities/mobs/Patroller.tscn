@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=15 format=3 uid="uid://cwb1nk6unobbo"]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatroller.gd" id="1_khwtj"]
 [ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/character_sprites/faction_scavs/scav_patrol_chaser.png" id="2_1ek2d"]
@@ -238,6 +238,23 @@ tracks/3/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_pf8d5"]
 resource_name = "Walk_Right"
@@ -290,6 +307,23 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"playFootstep"
+}, {
+"args": [],
+"method": &"playFootstep"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sx3aq"]

@@ -92,5 +92,5 @@ func getResourcePath(resource):
 	else:
 		return ''
 
-#func filterExistingResources(element):
-#	return FileAccess.file_exists(element)
+func isResourcePlaceholder(resource: Resource):
+	return resource.resource_path.get_file()[0] == '_'

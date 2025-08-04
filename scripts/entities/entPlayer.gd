@@ -35,7 +35,6 @@ var SPEED = 100.0
 var stamina_regen = true # MIND THIS, PREFERABLY ONLY INVI CAN DISABLE/ENABLE STAMINA REGEN
 var sprinting = false
 var climbing = false
-var hiding = false
 var channeling_power = false
 var power_listening = false
 var power_inputs = ''
@@ -76,7 +75,7 @@ func _process(_delta):
 	updateAnimationParameters()
 	animateInteract()
 
-func getPosOffset():
+func getPosOffset()-> Vector2:
 	return global_position+sprite.offset
 
 func jump(jump_velocity:float=-200.0):
@@ -103,6 +102,7 @@ func dodge():
 	collision_shape.set_deferred('disabled', false)
 
 func _physics_process(delta):
+	#print(velocity.x)
 	# Gravity
 	if not is_on_floor() and !climbing:
 		#sprinting = false
@@ -279,9 +279,9 @@ func isFacingDown():
 
 func _unhandled_input(_event: InputEvent):
 	# UI Handling
-	if Input.is_action_just_pressed("ui_show_menu") and !hiding:
+	if Input.is_action_just_pressed("ui_show_menu"):
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
-	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu() and !hiding:
+	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu():
 		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	# Interaction handling
 	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing:
@@ -567,6 +567,9 @@ func undrawBowAnimation():
 	undrawBow()
 	animation_tree["parameters/conditions/draw_bow"] = false
 	animation_tree["parameters/conditions/cancel"] = true
+
+func playFootstep():
+	FootstepSoundManager.playFootstep(self, getPosOffset())
 
 func saveData(save_data: Array):
 	var data = EntitySaveData.new()

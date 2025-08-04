@@ -41,7 +41,7 @@ func getLogMapEvent():
 
 func removeEmptyEvents():
 	for key in events.keys():
-		if (events[key] is Resource and OverworldGlobals.isResourcePlaceholder(events[key])) or events[key] == null:
+		if (events[key] is Resource and ResourceGlobals.isResourcePlaceholder(events[key])) or events[key] == null:
 			events.erase(key)
 
 func getPatrolGroups():

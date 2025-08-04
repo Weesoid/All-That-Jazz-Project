@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cdels6jbj5xix"
+path="res://.godot/imported/353799__monte32__footsteps_6_dirt_shoe 05.ogg-031ed1cfa6019075953f60aef06244d1.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/sounds/353799__monte32__footsteps_6_dirt_shoe 05.ogg"
+dest_files=["res://.godot/imported/353799__monte32__footsteps_6_dirt_shoe 05.ogg-031ed1cfa6019075953f60aef06244d1.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

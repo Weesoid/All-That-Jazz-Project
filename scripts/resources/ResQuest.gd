@@ -1,7 +1,7 @@
 extends Resource
 class_name ResQuest
 
-@export var name: String
+var name: String
 @export_multiline var description: String
 @export var objectives: Array[ResObjective]
 @export var completed: bool = false

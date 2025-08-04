@@ -8,7 +8,7 @@ static func executePower(player: PlayerScene):
 		player.channeling_power = false
 	elif OverworldGlobals.getCurrentMap().has_node("Anchor") and !player.channeling_power:
 		var anchor = OverworldGlobals.getCurrentMap().get_node("Anchor")
-		if PlayerGlobals.overworld_stats['stamina']>= 25.0 and !OverworldGlobals.inMenu() and !player.hiding:
+		if PlayerGlobals.overworld_stats['stamina']>= 25.0 and !OverworldGlobals.inMenu():
 			player.playCastAnimation()
 			PlayerGlobals.overworld_stats['stamina']-= 25
 			player.global_position = anchor.global_position

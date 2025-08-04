@@ -28,6 +28,7 @@ QuestGlobals="*res://scripts/globals/gblQuests.gd"
 SaveLoadGlobals="*res://scripts/globals/gblSaveLoadManager.gd"
 SettingsGlobals="*res://scripts/globals/gblSettings.gd"
 ResourceGlobals="*res://scripts/globals/gblResourceManager.gd"
+FootstepSoundManager="*res://scripts/globals/gblFootstepSoundManager.gd"
 
 [dialogue_manager]
 

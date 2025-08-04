@@ -16,9 +16,6 @@ signal combat_enetered
 signal combat_exited
 signal group_cleared(group:PatrollerGroup)
 
-#func _process(_delta):
-#	print_orphan_nodes()
-
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
 		return
@@ -134,12 +131,14 @@ func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 		getEntity(entity_name).global_position = getEntity(teleport_to).global_position + offset
 
 func showMenu(path: String):
+	if !canShowMenu():
+		return
+	
 	var main_menu: Control = load(path).instantiate()
 	main_menu.scale = Vector2.ZERO
 	main_menu.name = 'uiMenu'
+	player.suddenStop()
 	player.resetStates()
-	player.sprinting = false
-	player.velocity = Vector2.ZERO
 	player.setUIVisibility(false)
 	setPlayerInput(false)
 	if !inMenu():
@@ -153,6 +152,8 @@ func showMenu(path: String):
 		if isPlayerCheating(): player.get_node('DebugComponent').show()
 		closeMenu(main_menu)
 
+func canShowMenu():
+	return player.is_on_floor()
 
 func setMouseController(set_to:bool):
 	if has_node('MouseController') and set_to:
@@ -470,7 +471,10 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 		add_child(audio_player)
 	audio_player.play()
 
-func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_pitch=true):
+func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_pitch=true, pitch_range=[0,0.25]):
+	if !CombatGlobals.inCombat() and player.getPosOffset().distance_to(position) > 300:
+		return
+	
 	var audio_player = AudioStreamPlayer2D.new()
 	audio_player.bus = "Sounds"
 	audio_player.connect("finished", audio_player.queue_free)
@@ -483,7 +487,7 @@ func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_
 	audio_player.volume_db = db
 	if random_pitch:
 		randomize()
-		audio_player.pitch_scale += randf_range(0.0, 0.25)
+		audio_player.pitch_scale += randf_range(pitch_range[0], pitch_range[1])
 	call_deferred('add_child', audio_player)
 	await audio_player.ready
 	audio_player.play()
@@ -622,9 +626,6 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		var duped_combatant = combatant.duplicate()
 		for effect in enemy_squad.afflicted_status_effects:
 			duped_combatant.lingering_effects.append(effect)
-#		if CombatGlobals.randomRoll(enemy_squad.TAMEABLE_CHANCE):
-#			randomize()
-#			duped_combatant.spawn_on_death = getRandomTameable().pick_random().convertToEnemy('Feral')
 		combat_scene.combatants.append(duped_combatant)
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
@@ -647,7 +648,6 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	player.player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
-	#player.player_camera.remove_child('BattleStart')
 	player.player_camera.get_node('BattleStart').queue_free()
 	combat_bubble.queue_free()
 	combat_enetered.emit()
@@ -663,13 +663,10 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	OverworldGlobals.moveCamera('RESET',0.25)
 	OverworldGlobals.zoomCamera(Vector2(1,1),0.25)
 	var combat_results = combat_scene.combat_result
-#	var tamed = combat_scene.tamed_combatants
 	player.player_camera.make_current()
 	get_tree().paused = false
 	getCurrentMap().show()
 	player.resetStates()
-#	if combat_results == 1:
-#		for combatant in tamed: getMapRewardBank('tamed').append(combatant)
 	for combatant in getCombatantSquad('Player'):
 		for effect in getCombatantSquadComponent('Player').afflicted_status_effects:
 			combatant.lingering_effects.erase(effect)
@@ -684,10 +681,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	if combat_results != 0:
 		await get_tree().process_frame
 		setPlayerInput(true)
-	print('emiting EXIT!')
 	combat_exited.emit()
 	entering_combat=false
-	#if !isPlayerAlive(): showGameOver('You succumbed to overtime damage!')
 
 func showCombatStartBars():
 	var bars = load("res://scenes/user_interface/BattleStart.tscn").instantiate()
@@ -706,9 +701,7 @@ func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 
 func getCombatant(entity_name: String, combatant_name: String)-> ResCombatant:
 	for combatant in getCombatantSquad(entity_name):
-		print('Comp ', combatant, ' vs ', combatant_name)
 		if combatant.name == combatant_name:
-			print(combatant)
 			return combatant
 	
 	return null
@@ -785,9 +778,6 @@ func isPlayerAlive()-> bool:
 func restorePlayerView():
 	player.player_camera.make_current()
 	get_tree().paused = false
-
-func isResourcePlaceholder(resource: Resource):
-	return resource.resource_path.get_file()[0] == '_'
 
 func freezeFrame(time_scale: float=0.3, duration: float=1.5):
 	Engine.time_scale = time_scale
