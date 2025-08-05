@@ -18,7 +18,7 @@ func _physics_process(_delta):
 	if player_on_segment and OverworldGlobals.player.climbing and !OverworldGlobals.player.is_on_floor():
 		OverworldGlobals.player.global_position.x = global_position.x
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed('ui_accept') and player_on_segment and OverworldGlobals.player.isMovementAllowed() and OverworldGlobals.player.climbing:
 		OverworldGlobals.player.climbing = false
 		OverworldGlobals.player.jump()

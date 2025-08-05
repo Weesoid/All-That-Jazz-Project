@@ -121,7 +121,6 @@ func getBonusStatValue(bonus_stats: Dictionary, key: String):
 				return bonus_stats[stat]
 
 func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResCombatant):
-	var base_bonus_stats = []
 	var conditions: Array
 	for stat in bonus_stats.keys():
 		if key == stat.split('/')[0] and (stat.split('/').size() > 1):
@@ -381,6 +380,9 @@ func playKnockOutTween(target: ResCombatant):
 	await tween.finished
 
 func playAnimation(target: ResCombatant, animation_name: String):
+	if !target.getAnimator().get_animation_list().has(animation_name):
+		return
+	
 	target.getAnimator().play(animation_name)
 
 func showWarning(target: CombatantScene):
@@ -510,6 +512,21 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 			effect.apply_once = true
 			effect.current_rank += 1
 
+func spawnIndicator(position: Vector2, message:String, animation:String='Show',add_to:Node=null):
+	var indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
+	
+	if add_to != null:
+		add_to.add_child(indicator)
+	elif inCombat():
+		getCombatScene().add_child(indicator)
+	else:
+		OverworldGlobals.getCurrentMap().add_child(indicator)
+	
+	indicator.global_position = position
+	indicator.z_index = 99
+	#indicator.top_level=true
+	indicator.playAnimation(position, message, animation)
+
 func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')
 
@@ -585,7 +602,7 @@ func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties
 
 func getFactionEnemies(faction: Enemy_Factions):
 	var out = ResourceGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
-	var array_of_combatants: Array[ResEnemyCombatant]
+	var array_of_combatants: Array[ResEnemyCombatant]=[]
 	array_of_combatants.assign(out)
 	return array_of_combatants
 

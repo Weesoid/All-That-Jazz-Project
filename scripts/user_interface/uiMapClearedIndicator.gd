@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 @onready var animator = $AnimationPlayer
 @onready var bar_animator = $ProgressBar/AnimationPlayer
@@ -11,7 +11,7 @@ extends Node2D
 @onready var bonuses_animator = $AnimationPlayerBonus
 @export var added_exp: int
 
-func showAnimation(show_clear:bool, patroller_group: PatrollerGroup):
+func showAnimation(show_clear:bool, reward_bank:Dictionary):
 	if OverworldGlobals.getCurrentMap().getClearState() == MapData.PatrollerClearState.FULL_CLEAR and hasBonuses():
 		var map_events = OverworldGlobals.getCurrentMap().events
 		if map_events.has('bonus_experience'):
@@ -27,7 +27,7 @@ func showAnimation(show_clear:bool, patroller_group: PatrollerGroup):
 	else:
 		var tween = create_tween()
 		animator.play("Show")
-		showLoot(patroller_group.reward_bank['loot'])
+		showLoot(reward_bank['loot'])
 		level.text = str(PlayerGlobals.team_level)
 		experience.max_value = PlayerGlobals.getRequiredExp()
 		experience.value = PlayerGlobals.current_exp

@@ -39,6 +39,6 @@ static func determineRiposte(target, caster):
 	else:
 		return 'Cast_Melee'
 
-static func endEffects(target: ResCombatant, _status_effect: ResStatusEffect):
+static func endEffects(_target: ResCombatant, _status_effect: ResStatusEffect):
 	pass
 	#applyHitEffects(target, null, null, _status_effect)

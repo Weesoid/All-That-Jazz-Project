@@ -12,9 +12,9 @@ var active: bool = false
 var completed: bool = false
 var outcome: int
 
-func complete(outcome:int=0):
+func complete(p_outcome:int=0):
 	completed = true
-	outcome = outcome
+	outcome = p_outcome
 
 func _to_string():
 	return "%s > Dependent:%s/%s, Active:%s, Completed:%s, Final:%s" % [name, dependent.name, dependent_outcome, active, completed, final_objective]

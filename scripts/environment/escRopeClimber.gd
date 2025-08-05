@@ -5,7 +5,7 @@ func _on_body_exited(body):
 	if body is PlayerScene:
 		setClimbingFalse()
 
-func _input(event):
+func _input(_event):
 	if OverworldGlobals.player == null or get_parent().must_shoot or !OverworldGlobals.player.isMovementAllowed() or !OverworldGlobals.player.climb_cooldown.is_stopped():
 		return
 	

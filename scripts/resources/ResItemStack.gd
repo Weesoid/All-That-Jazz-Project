@@ -18,14 +18,14 @@ func updateItem():
 		InventoryGlobals.removeItemResource(self)
 		return
 	
-	var parent_item = load(parent_item)
-	name = parent_item.name
-	icon = parent_item.icon
-	description = parent_item.description
-	value = parent_item.value
-	mandatory = parent_item.mandatory
-	max_stack = parent_item.max_stack
-	barter_item = parent_item.barter_item
+	var loaded_parent_item = load(parent_item)
+	name = loaded_parent_item.name
+	icon = loaded_parent_item.icon
+	description = loaded_parent_item.description
+	value = loaded_parent_item.value
+	mandatory = loaded_parent_item.mandatory
+	max_stack = loaded_parent_item.max_stack
+	barter_item = loaded_parent_item.barter_item
 
 func take(count: int):
 	stack -= count

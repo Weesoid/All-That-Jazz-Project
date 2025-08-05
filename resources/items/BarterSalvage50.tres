@@ -5,10 +5,11 @@
 
 [resource]
 script = ExtResource("2_uvwir")
-MAX_STACK = 999
-BARTER_ITEM = true
-NAME = "Fine Salvage"
-ICON = ExtResource("1_24si5")
-DESCRIPTION = "Rare and valuable materials."
-VALUE = 50
-MANDATORY = false
+max_stack = 0
+barter_item = true
+name = "Barter Salvage 2"
+icon = ExtResource("1_24si5")
+description = ""
+value = 50
+mandatory = false
+parent_item = ""

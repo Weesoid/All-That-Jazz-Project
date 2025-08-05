@@ -1,16 +1,15 @@
 [gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://gay58irfkd44"]
 
-[ext_resource type="Texture2D" uid="uid://cgpfext1pbx5t" path="res://images/sprites/icon_crit_eye.png" id="1_mfmnq"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_es0jt"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_eidcw"]
 
 [resource]
 script = ExtResource("2_eidcw")
-max_stack = 25
-barter_item = false
-auto_name = true
-name = "Tempinus Arrow"
-icon = ExtResource("1_mfmnq")
+max_stack = 0
+barter_item = true
+name = "Barter Salvage 1"
+icon = ExtResource("1_es0jt")
 description = ""
-value = 0
+value = 20
 mandatory = false
 parent_item = ""

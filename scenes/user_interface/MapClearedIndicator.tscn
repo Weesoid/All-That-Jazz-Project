@@ -335,14 +335,16 @@ _data = {
 "Show": SubResource("Animation_fy7rb")
 }
 
-[node name="MapClearedIndicator" type="Node2D"]
+[node name="MapClearedIndicator" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_7i2g0")
 
 [node name="Label" type="Label" parent="."]
-offset_left = -136.0
-offset_top = -72.0
-offset_right = 136.0
-offset_bottom = -39.0
+offset_left = 184.0
+offset_top = 96.0
+offset_right = 456.0
+offset_bottom = 129.0
 pivot_offset = Vector2(136, 16)
 mouse_filter = 0
 theme = ExtResource("2_twayu")
@@ -352,11 +354,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-visible = false
-offset_left = -96.0
-offset_top = -32.0
-offset_right = 96.0
-offset_bottom = -26.0
+offset_left = 224.0
+offset_top = 136.0
+offset_right = 416.0
+offset_bottom = 142.0
 show_percentage = false
 
 [node name="Label" type="Label" parent="ProgressBar"]
@@ -396,16 +397,11 @@ libraries = {
 "": SubResource("AnimationLibrary_lapm8")
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_qy2me")
-}
-
 [node name="Loot" type="HBoxContainer" parent="."]
-offset_left = -136.0
-offset_top = -17.0
-offset_right = 136.0
-offset_bottom = -1.0
+offset_left = 184.0
+offset_top = 151.0
+offset_right = 456.0
+offset_bottom = 167.0
 mouse_filter = 0
 alignment = 1
 
@@ -423,11 +419,17 @@ vertical_alignment = 1
 
 [node name="BonusLoot" type="HBoxContainer" parent="."]
 modulate = Color(1, 1, 1, 0)
-offset_left = -136.0
-offset_right = 136.0
-offset_bottom = 16.0
+offset_left = 184.0
+offset_top = 168.0
+offset_right = 456.0
+offset_bottom = 184.0
 mouse_filter = 0
 alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qy2me")
+}
 
 [node name="AnimationPlayerBonus" type="AnimationPlayer" parent="."]
 libraries = {

@@ -48,7 +48,7 @@ func createPinJoint(segment_a, segment_b):
 	add_child(pin_joint)
 
 func resizeClimbArea():
-	climber_area.position = Vector2(0, rope_length/2)
+	climber_area.position = Vector2(0, rope_length/2.0)
 	climber_shape.shape.height = float(rope_length)
 
 func initializeRope():
@@ -77,6 +77,5 @@ func initializeRope():
 		resizeClimbArea()
 
 func _on_pin_area_area_entered(area):
-	print(area)
 	if area is Projectile and must_shoot:
 		initializeRope()

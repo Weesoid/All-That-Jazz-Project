@@ -36,8 +36,8 @@ func _ready():
 		save_point.loadCombatantSquad()
 
 func getLogMapEvent():
-	for log in PlayerGlobals.map_logs[scene_file_path]:
-		if log is Dictionary and log.has('map_events'): return log
+	for entry in PlayerGlobals.map_logs[scene_file_path]:
+		if entry is Dictionary and entry.has('map_events'): return entry
 
 func removeEmptyEvents():
 	for key in events.keys():

@@ -1,5 +1,5 @@
 static func applyEffect(body: CharacterBody2D):
-	OverworldGlobals.damageParty(8, ['Shot dead!', "Why didn't you dodge?!"], false)
+	OverworldGlobals.damageParty(5, ['Shot dead!', "Why didn't you dodge?!"], false)
 	if body.climbing:
 		body.climb_cooldown.start()
 		body.climbing = false

@@ -10,7 +10,6 @@ enum TargetState {
 
 @export var combatants: Array[ResCombatant]
 @onready var combat_camera = $CombatCamera
-@onready var combat_log = $CombatCamera/Interface/LogContainer
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
 @onready var onslaught_container = $OnslaughtContainer
@@ -25,28 +24,27 @@ enum TargetState {
 @onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
-@onready var round_counter = $CombatCamera/Interface/Counts/RoundCounter
-@onready var turn_counter = $CombatCamera/Interface/Counts/TurnCounter
-@onready var round_arrow_spinner = $CombatCamera/Interface/Counts/RoundCounter/TextureRect2/AnimationPlayer
+@onready var round_counter = $CombatCamera/Interface/RoundCounter
+@onready var round_arrow_spinner = $CombatCamera/Interface/RoundCounter/TextureRect2/AnimationPlayer
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
 @onready var battle_back = $ParallaxBackground/AnimationPlayer
-@onready var top_log_label = $CombatCamera/Interface/TopLog
-@onready var top_log_animator = $CombatCamera/Interface/TopLog/AnimationPlayer
 @onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
 @onready var guard_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
 @onready var skills_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills
-@onready var tension_bar = $CombatCamera/Interface/ProgressBar
-@onready var tension_bar_animator = $CombatCamera/Interface/ProgressBar/AnimationPlayer
+@onready var tension_bar = $CombatCamera/Interface/TensionBar
+@onready var tension_bar_animator = $CombatCamera/Interface/TensionBar/AnimationPlayer
 @onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 @onready var team_hp_bar = $OnslaughtContainer/ProgressBar
-@onready var turn_timer_bar = $CombatCamera/Interface/ProgressBar/ProgressBar
+@onready var turn_timer_bar = $CombatCamera/Interface/TurnTimerBar
+@onready var turn_timer_animator = $CombatCamera/Interface/TurnTimerBar/AnimationPlayer
 @onready var turn_timer = $TurnTimer
-@onready var turn_timer_animator = $CombatCamera/Interface/ProgressBar/AnimationPlayer2
 @onready var fade_bars_animator = $CombatCamera/FadeBars/AnimationPlayer
 @onready var flasher = $CombatCamera/Flasher
 @onready var flasher_animator = $CombatCamera/Flasher/AnimationPlayer
+@onready var combat_log = $CombatCamera/Interface/CombatLog
+@onready var combat_log_animator = $CombatCamera/Interface/CombatLog/AnimationPlayer
 
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
@@ -60,7 +58,6 @@ var combat_event: ResCombatEvent
 var selected_ability: ResAbility
 var run_once = true
 var total_experience = 0
-var drops = []
 var turn_count = 0
 var round_count = 0
 var player_turn_count = 0
@@ -83,6 +80,8 @@ var turn_time: float = 0.0
 var reinforcements_turn: int = 50
 var is_combatant_moving = false
 var initial_damage: float = 0.0
+var combat_entity
+var reward_bank
 
 signal confirm
 signal target_selected
@@ -151,16 +150,21 @@ func _ready():
 	transition_scene.visible = false
 	OverworldGlobals.setMouseController(true)
 	
-	# Handle overworld stalker
+	# Handle overworld stuff
+	if combat_entity is GenericPatroller:
+		reward_bank = combat_entity.patroller_group.reward_bank
+	else:
+		reward_bank = combat_entity.get_node('CombatantSquadComponent').reward_bank
+	
 	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
 		OverworldGlobals.getCurrentMap().get_node('StalkerEngage').queue_free()
 	if OverworldGlobals.getCurrentMap().has_node('Stalker'):
 		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
+
 func _process(_delta):
 	#print(combatant_turn_order)
 	$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
 	#ui_attribute_view.combatant = target_combatant
-	turn_counter.text = str(turn_count)
 	round_counter.text = str(round_count)
 	match target_state:
 		TargetState.SINGLE: playerSelectSingleTarget()
@@ -277,12 +281,12 @@ func end_turn(combatant_act=true):
 	
 	if combat_event != null and turn_count % combat_event.turn_trigger == 0:
 		ui_animator.play_backwards('ShowActionPanel')
-		combat_log.writeCombatLog(combat_event.event_message)
+		writeCombatLog(combat_event.event_message)
 		commandExecuteAbility(null, combat_event.ability)
 		await get_tree().create_timer(2.0).timeout
 		if await checkWin(): return
 	elif combat_event != null and turn_count % combat_event.turn_trigger == combat_event.turn_trigger - 3:
-		combat_log.writeCombatLog(combat_event.warning_message)
+		writeCombatLog(combat_event.warning_message)
 	
 	var turn_title = 'turn/%s' % turn_count
 	CombatGlobals.dialogue_signal.emit(turn_title)
@@ -302,9 +306,9 @@ func end_turn(combatant_act=true):
 	# REINFORCEMENTS
 	randomize()
 	if turn_count % (reinforcements_turn-1) == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
-		combat_log.writeCombatLog('Enemy reinforcements are incoming!')
+		writeCombatLog('Enemy reinforcements are incoming!')
 	if turn_count % reinforcements_turn == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
-		combat_log.writeCombatLog('Enemy reinforcements arrived!')
+		writeCombatLog('Enemy reinforcements arrived!')
 		bonus_escape_chance -= 0.25
 		var replace = []
 		for combatant in combatants:
@@ -614,6 +618,7 @@ func removeTargetToken(target, caster):
 		target_combatant.removeTokens(ResStatusEffect.RemoveType.GET_TARGETED)
 
 func executeAbility():
+	#writeTopLogMessage(selected_ability.name)
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	active_combatant.combatant_scene.z_index = 100
@@ -759,7 +764,7 @@ func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, anim
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(new_combatant, load(animation_path), 0.15)
 	escape_button.disabled = true
-	combat_log.writeCombatLog("The grasp of the void prevents your escape.")
+	writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
 	combatants.erase(combatant)
@@ -845,13 +850,12 @@ func targetCombatant(combatant: ResCombatant):
 	else:
 		target_index = combatant
 
-#func addDrop(loot_drops: Dictionary): # DO NOT ADD IMMEDIATELY
-#	for loot in loot_drops.keys():
-#		if OverworldGlobals.getCurrentMap().REWARD_BANK['loot'].keys().has(loot):
-#			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] += loot_drops[loot]
-#		else:
-#			OverworldGlobals.getCurrentMap().REWARD_BANK['loot'][loot] = loot_drops[loot]
-#		drops.append(loot)
+func addDropToBank(loot_drops: Dictionary):
+	for loot in loot_drops.keys():
+		if reward_bank['loot'].has(loot):
+			reward_bank['loot'][loot] += loot_drops[loot]
+		else:
+			reward_bank['loot'][loot] = loot_drops[loot]
 
 func rollTurns():
 	OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
@@ -1019,11 +1023,6 @@ func runAbility():
 		action_panel.hide()
 		run_once = false
 
-func writeTopLogMessage(message: String):
-	top_log_label.text = message
-	top_log_animator.stop()
-	top_log_animator.play("Show")
-
 func concludeCombat(results: int):
 	if combat_result != -1: return
 	if !turn_timer.is_stopped(): stopTimer()
@@ -1044,7 +1043,8 @@ func concludeCombat(results: int):
 	var morale_bonus = 1
 	var loot_bonus = 1
 	var morale_before = 0
-	
+	var drops = {}
+	var bonuses = []
 	await get_tree().create_timer(1.0).timeout
 	toggleUI(false)
 	
@@ -1052,23 +1052,35 @@ func concludeCombat(results: int):
 		if round_count <= 2:
 			morale_bonus += 0.25
 			loot_bonus += 1
+			bonuses.append('Swift Finish!')
 		if enemy_turn_count < getCombatantGroup('enemies').size():
 			loot_bonus += 1
+			bonuses.append('Ruthless Finish!')
 		if player_turn_count < getCombatantGroup('team').size():
 			morale_bonus += 0.25
-		#morale_before = OverworldGlobals.getCurrentMap().REWARD_BANK['experience']
-		#OverworldGlobals.getCurrentMap().REWARD_BANK['experience'] += total_experience * morale_bonus
-#		for i in range(loot_bonus):
-#			for enemy in getCombatantGroup('enemies'): 
-#				addDrop(enemy.getDrops())
-#				addDrop(enemy.getBarterDrops())
-#	else:
-#		experience_earnt = -(PlayerGlobals.getRequiredExp()*0.2)
-	#resetActionLog()
+			bonuses.append('Stragetic Finish!')
+		
+		reward_bank['experience'] += total_experience * morale_bonus
+		for enemy in getCombatantGroup('enemies'):
+			var enemy_drops = enemy.getDrops()
+			var barter_drops = enemy.getBarterDrops()
+			print(barter_drops)
+			enemy_drops.merge(barter_drops)
+			addDropToBank(enemy_drops)
+			drops.merge(enemy_drops)
+		if loot_bonus > 1: # Disgusting
+			for i in range(loot_bonus):
+					for enemy in getCombatantGroup('enemies'):
+						var enemy_drops = enemy.getDrops()
+						addDropToBank(enemy_drops)
+						drops.merge(enemy_drops)
 	
 	if results == 1:
 		var bc_ui = load("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 		bc_ui.morale = morale_before
+		bc_ui.drops = drops
+		bc_ui.reward_bank = reward_bank
+		bc_ui.bonuses = bonuses
 		add_child(bc_ui)
 		await bc_ui.done
 		bc_ui.queue_free()
@@ -1304,14 +1316,15 @@ func startTimer():
 	turn_timer_animator.play("Show")
 
 func stopTimer():
-	if turn_timer.time_left > turn_time*0.9:
+	if turn_timer.time_left > turn_time*0.25:
 		CombatGlobals.addTension(1)
 	
 	turn_timer_animator.play_backwards("Show")
 	turn_timer.stop()
-	turn_timer_bar.process_mode = Node.PROCESS_MODE_DISABLED
+	#turn_timer_bar.process_mode = Node.PROCESS_MODE_DISABLED
 
 func _on_turn_timer_timeout():
+	resetActionLog()
 	turn_timer_animator.play_backwards("Show")
 	confirm.emit()
 
@@ -1328,3 +1341,11 @@ func _on_shift_actions_pressed():
 func battleFlash(animation: String, color: Color):
 	flasher.modulate = color
 	flasher_animator.play(animation)
+
+func writeCombatLog(message: String):
+	if combat_log_animator.is_playing():
+		combat_log_animator.play('RESET')
+	#	await combat_log_animator.play_backwards('Show')
+	
+	combat_log.text = '[outline_size=2][outline_color=black][center]'+message
+	combat_log_animator.play('Show')

@@ -6,13 +6,12 @@
 
 [resource]
 script = ExtResource("2_sesnd")
-auto_name = false
 name = "Fading"
 description = "Target is on the brink."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 status_script = ExtResource("1_12rad")
 effect_type = 0
-remove_when = Array[int]([1, 2])
+remove_when = Array[int]([0, 2])
 remove_style = 0
 texture = ExtResource("1_dpk41")
 max_duration = 3

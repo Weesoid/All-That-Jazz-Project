@@ -28,6 +28,8 @@ Entity: Sure man wazzup?!
 	do levelUpTeam()
 - MAX ME OUT!
 	do addExperience(9999, true)
+- Gimme... Just 100. Yeah. ;w;
+	do addExperience(100, true)
 - Increase muh cap.
 	do increaseLevelCap()
 => END

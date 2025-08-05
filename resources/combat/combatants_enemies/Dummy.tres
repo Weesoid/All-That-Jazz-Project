@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=3 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://ewb80noaamii"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_qr0qk"]
+[ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="1_w1nhd"]
 
 [resource]
 script = ExtResource("1_hgql2")
@@ -10,7 +11,9 @@ tier = 0
 preferred_position = 0
 chance_to_drop = 0.5
 drop_count = 1
-drop_pool = {}
+drop_pool = {
+ExtResource("1_w1nhd"): Vector2(0.75, 2)
+}
 is_converted = false
 name = "Dummy"
 packed_scene = ExtResource("1_qr0qk")
@@ -25,7 +28,7 @@ stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 999,
+"health": 2,
 "resist": 0.05,
 "speed": 1
 }

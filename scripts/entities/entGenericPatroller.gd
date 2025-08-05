@@ -122,7 +122,7 @@ func chase():
 		doAction()
 	elif combat_switch and !animator.current_animation.contains('Action'):
 		# chase!
-		direction = (flat_pos.direction_to(flat_palyer_pos)).x
+		direction = int((flat_pos.direction_to(flat_palyer_pos)).x)
 		velocity.x = (direction * speed) * chase_speed_multiplier
 
 func isSameYLevel():
@@ -187,14 +187,14 @@ func flickerTween(play:bool):
 		flicker_tween = create_tween().set_loops()
 		flicker_tween.tween_property(get_node('Sprite2D'),'self_modulate', Color(Color.WHITE, 0.5), 0.5).from(Color.WHITE)
 	
-	var sprite = get_node('Sprite2D')
+	var patroller_sprite = get_node('Sprite2D')
 	if play:
-		sprite.modulate = Color.DARK_GRAY
+		patroller_sprite.modulate = Color.DARK_GRAY
 		flicker_tween.play()
 	else:
 		flicker_tween.stop()
-		sprite.modulate = Color.WHITE
-		sprite.self_modulate = Color.WHITE
+		patroller_sprite.modulate = Color.WHITE
+		patroller_sprite.self_modulate = Color.WHITE
 
 func _on_melee_hitbox_body_entered(body):
 	if body is PlayerScene and canEnterCombat(false): 
@@ -214,4 +214,5 @@ func destroy(give_drops=false):
 	patroller_group.checkGiveRewards()
 
 func playFootstep():
-	FootstepSoundManager.playFootstep(self, global_position,-8,0.5)
+	if is_on_floor():
+		FootstepSoundManager.playFootstep(global_position,-10,0.5)

@@ -74,37 +74,9 @@ func giveRewards(ignore_stalker:bool=false):
 		return
 	
 	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
-	# UI Map clear indicator handling
-	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
-	print(map.getVerbalClearState())
-	map_clear_indicator.added_exp = reward_bank['experience']
-	OverworldGlobals.player.player_camera.add_child(map_clear_indicator)
-	if map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
-		map_clear_indicator.message.text = 'AREA CLEARED !'
-	map_clear_indicator.showAnimation(true, self)
-	
-	# Actual giving of rewards
-	PlayerGlobals.rested = false
-	PlayerGlobals.addExperience(reward_bank['experience'])
-	InventoryGlobals.giveItemDict(reward_bank['loot'])
-	
-	# Current map handling
-	if map.events.has('bonus_loot'): # Add generated multipliers later
-		appendBonusLoot(reward_bank['loot'])
-	if map.events.has('bonus_experience'):
-		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
+	OverworldGlobals.giveRewardBank(reward_bank)
 	map.checkGiveClearRewards()
 	#SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
-
-func appendBonusLoot(loot_dict: Dictionary, stack_multiplier:float=0.25):
-	var map = OverworldGlobals.getCurrentMap()
-	
-	for item in loot_dict.keys():
-		var stack = ceil(loot_dict[item]*stack_multiplier)
-		if map.events['bonus_loot'].has(item):
-			map.events['bonus_loot'][item] += stack
-		else:
-			map.events['bonus_loot'][item] = stack
 
 func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_destroyables:bool=true):
 	if random_unclear:

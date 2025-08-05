@@ -19,7 +19,8 @@ func _ready():
 	OverworldGlobals.player.dived.connect(dive)
 
 func playFootstep():
-	FootstepSoundManager.playFootstep(self, global_position,-8)
+	if is_on_floor() and modulate == Color.WHITE:
+		FootstepSoundManager.playFootstep(global_position,-10)
 
 func jump(jump_velocity):
 	if !OverworldGlobals.player.is_on_floor() or speed_multiplier < 1.1:

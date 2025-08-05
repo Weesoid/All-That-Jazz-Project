@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResFactionProperties" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="ResFactionProperties" load_steps=9 format=3 uid="uid://ctlsikc0c6iac"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResFactionPatrollerProperties.gd" id="1_iulig"]
 [ext_resource type="Script" path="res://scripts/resources/ResPatrollerProperties.gd" id="1_wjv6f"]

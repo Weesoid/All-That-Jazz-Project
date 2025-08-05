@@ -32,7 +32,7 @@ func chase():
 	var flat_pos:Vector2 = OverworldGlobals.flattenY(shape.global_position)
 	var flat_palyer_pos:Vector2 = OverworldGlobals.flattenY(OverworldGlobals.player.get_node('PlayerCollision').global_position)
 	# action
-	direction = (flat_pos.direction_to(flat_palyer_pos)).x
+	direction = int((flat_pos.direction_to(flat_palyer_pos)).x)
 	if flat_pos.distance_to(flat_palyer_pos) <= min_action_distance and canDoAction():
 		doAction()
 	elif flat_pos.distance_to(flat_palyer_pos) > min_action_distance and combat_switch and !animator.current_animation.contains('Action'):

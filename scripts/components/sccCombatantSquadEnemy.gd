@@ -10,6 +10,7 @@ class_name EnemyCombatantSquad
 @export var can_escape:bool = true
 @export var do_reinforcements:bool = true
 @export var reinforcements_turn:int = 50
+var reward_bank ={'experience':0.0, 'loot':{}}
 
 func _ready():
 	unique_id = get_parent().name
@@ -34,6 +35,8 @@ func pickRandomEnemies():
 				elif index <= 3:
 					return enemy.preferred_position == 1
 		)
+		if valid_enemies.is_empty():
+			continue
 		var enemy = valid_enemies.pick_random()
 		combatant_squad[index] = enemy
 

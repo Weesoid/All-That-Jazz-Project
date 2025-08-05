@@ -112,7 +112,7 @@ func _physics_process(delta):
 	
 	# Fall damage
 	if fall_damage != 0 and get_node('CombatantSquadComponent').combatant_squad.size() > 0 and is_on_floor():
-		var damage = floor(fall_damage/6)
+		var damage = floor(float(fall_damage)/6.0)
 		if damage < 6:
 			fall_damage = 0
 			return
@@ -569,7 +569,8 @@ func undrawBowAnimation():
 	animation_tree["parameters/conditions/cancel"] = true
 
 func playFootstep():
-	FootstepSoundManager.playFootstep(self, getPosOffset())
+	if is_on_floor():
+		FootstepSoundManager.playFootstep(getPosOffset())
 
 func saveData(save_data: Array):
 	var data = EntitySaveData.new()

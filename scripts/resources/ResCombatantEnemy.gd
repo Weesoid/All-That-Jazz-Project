@@ -83,7 +83,7 @@ func getDrops():
 #	return drops
 
 func getBarterDrops():
-	var out = ceil(getExperience()/2)
+	var out = ceil(getExperience())
 	var denominations = [20, 50, 100, 500, 1000]
 	var change = {}
 	
@@ -91,7 +91,6 @@ func getBarterDrops():
 		if out >= denom:
 			change[InventoryGlobals.loadItemResource('BarterSalvage'+str(denom))] = int(out / denom)
 			out -= int(out / denom)
-	
 	return change
 
 func rollDrops():

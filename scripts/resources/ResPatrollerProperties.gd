@@ -32,6 +32,7 @@ func setPatrollerProperties(patroller: GenericPatroller):
 	patroller.get_node('Sprite2D').texture = sprite
 
 func setExtendedProperties(patroller):
+	if patroller: return
 	pass
 
 func getType():

@@ -11,9 +11,7 @@ const FOOTSTEP_SOUNDS = {
 	]
 }
 
-func playFootstep(body: CharacterBody2D, position:Vector2,db:float=-3,pitch=1.0):
-	if !body.is_on_floor():
-		return
+func playFootstep(position:Vector2,db:float=-3,pitch=1.0):
 	position+=Vector2(0,7)
 	#OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/DebugPoint.tscn",position)
 	var tile_data = []
@@ -29,4 +27,4 @@ func playFootstep(body: CharacterBody2D, position:Vector2,db:float=-3,pitch=1.0)
 	if tile_data.size() > 0:
 		var tile_type = tile_data.back().get_custom_data("footstep_sound")
 		if FOOTSTEP_SOUNDS.has(tile_type):
-			OverworldGlobals.playSound2D(position, FOOTSTEP_SOUNDS[tile_type].pick_random(),db,pitch,true,[0.0,1.0])
+			OverworldGlobals.playSound2D(position, FOOTSTEP_SOUNDS[tile_type].pick_random(),db,pitch,true,[0.0,2.0])

@@ -74,6 +74,8 @@ func cannotAct()-> bool:
 	return combatant_resource.isDead() and !combatant_resource.hasStatusEffect('Fading')
 
 func playIdle(new_idle:String=''):
+	if !animator.get_animation_list().has(new_idle) and new_idle != '':
+		return
 	if new_idle != '':
 		idle_animation = new_idle
 	combatant_resource.resetSprite()

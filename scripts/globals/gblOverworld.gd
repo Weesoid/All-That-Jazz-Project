@@ -178,8 +178,6 @@ func inMenu():
 	return player.player_camera.get_node('UI').has_node('uiMenu')
 
 func setMenuFocus(container: Container):
-	
-	
 	if container.get_child_count() > 0:
 		container.get_child(0).grab_focus()
 
@@ -571,8 +569,11 @@ func shootProjectile(projectile: Projectile, origin, direction: float):
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
+# Disgusting...... absolutely disgusting...............
 func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericPatroller=null):
 	# Check validity
+	if entering_combat:
+		return
 	if get_parent().has_node('CombatScene'):
 		await getCurrentMap().get_node('CombatScene').tree_exited
 	if getCurrentMap().has_node('Balloon'):
@@ -588,10 +589,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	entering_combat=true
 	
 	# Enter combat
-	var combat_entity
-	var combat_bubble = load("res://scenes/components/CombatStartedBubble.tscn").instantiate()
+	var combat_entity 
+	var give_non_pg_reward:bool=false
 	if patroller == null:
 		combat_entity = getEntity(entity_name)
+		give_non_pg_reward=true
 	else:
 		combat_entity = patroller
 	player.resetStates()
@@ -599,17 +601,12 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	moveCamera(combat_entity.get_node('Sprite2D'), 0.05, Vector2.ZERO, true)
 	await zoomCamera(Vector2(2,2), 0.1, true)
 	setPlayerInput(false)
-	combat_bubble.hide()
 	showCombatStartBars()
 	if combat_entity is GenericPatroller and combat_entity.state != 1:
 		for member in getCombatantSquad('Player'): CombatGlobals.addStatusEffect(member, 'CriticalEye')
-		combat_bubble.animation = 'Show_Surprised'
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_3.ogg")
 	else:
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_1.ogg")
-	if data.keys().has('combat_bubble_anim'):
-		combat_bubble.animation = data['combat_bubble_anim']
-	combat_entity.add_child(combat_bubble)
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
@@ -640,16 +637,18 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_scene.can_escape = enemy_squad.can_escape
 	combat_scene.turn_time = enemy_squad.turn_time
 	combat_scene.reinforcements_turn = enemy_squad.reinforcements_turn
+	combat_scene.combat_entity = combat_entity
 	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
-	await combat_bubble.animator.animation_finished
+	#await combat_bubble.animator.animation_finished
+	await get_tree().create_timer(0.5).timeout
 	var battle_transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	player.player_camera.add_child(battle_transition)
 	battle_transition.get_node('AnimationPlayer').play('In')
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	player.player_camera.get_node('BattleStart').queue_free()
-	combat_bubble.queue_free()
+	#combat_bubble.queue_free()
 	combat_enetered.emit()
 	get_parent().add_child(combat_scene)
 	combat_scene.combat_camera.make_current()
@@ -673,6 +672,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
 	OverworldGlobals.player.setUIVisibility(true)
 	battle_transition.get_node('AnimationPlayer').play('Out')
+	if combat_entity is GenericPatroller and combat_results == 1:
+		combat_entity.destroy()
 	await battle_transition.get_node('AnimationPlayer').animation_finished
 	battle_transition.queue_free()
 	if hasCombatDialogue(entity_name) and combat_results == 1:
@@ -683,6 +684,40 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		setPlayerInput(true)
 	combat_exited.emit()
 	entering_combat=false
+	if combat_results == 1 and give_non_pg_reward:
+		OverworldGlobals.giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank)
+		combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
+
+func giveRewardBank(reward_bank: Dictionary):
+	# UI Map clear indicator handling
+	var map = getCurrentMap()
+	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+	map_clear_indicator.added_exp = reward_bank['experience']
+	OverworldGlobals.player.player_camera.get_node('UI').add_child(map_clear_indicator)
+	if map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
+		map_clear_indicator.message.text = 'AREA CLEARED !'
+	map_clear_indicator.showAnimation(true, reward_bank)
+	
+	# Actual giving of rewards
+	PlayerGlobals.rested = false
+	PlayerGlobals.addExperience(reward_bank['experience'])
+	InventoryGlobals.giveItemDict(reward_bank['loot'])
+	
+	# Current map handling
+	if map.events.has('bonus_loot'): # Add generated multipliers later
+		appendBonusLoot(reward_bank['loot'])
+	if map.events.has('bonus_experience'):
+		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
+
+func appendBonusLoot(loot_dict: Dictionary, stack_multiplier:float=0.25):
+	var map = getCurrentMap()
+	
+	for item in loot_dict.keys():
+		var stack = ceil(loot_dict[item]*stack_multiplier)
+		if map.events['bonus_loot'].has(item):
+			map.events['bonus_loot'][item] += stack
+		else:
+			map.events['bonus_loot'][item] = stack
 
 func showCombatStartBars():
 	var bars = load("res://scenes/user_interface/BattleStart.tscn").instantiate()

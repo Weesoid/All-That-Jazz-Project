@@ -218,8 +218,8 @@ func addAbility(combatant, ability):
 
 func addPower(power_file_name: String):
 	if FileAccess.file_exists("res://resources/powers/%s.tres" % power_file_name):
-		var power = load("res://resources/powers/%s.tres" % power_file_name)
-		known_powers.append(power)
+		var loaded_power = load("res://resources/powers/%s.tres" % power_file_name)
+		known_powers.append(loaded_power)
 		OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.name)
 
 func loadAddedAbilities():
@@ -337,14 +337,14 @@ func healCombatants(percent_heal:float=1.0,cure: bool=true):
 		combatant.stat_values['health'] = int(combatant.base_stat_values['health'] * percent_heal)
 		if cure: combatant.lingering_effects.clear()
 
-func addMapLog(map_path: String, log=null):
+func addMapLog(map_path: String, entry=null):
 	if !map_logs.has(map_path):
-		if log != null:
-			map_logs[map_path] = [log]
+		if entry != null:
+			map_logs[map_path] = [entry]
 		else:
 			map_logs[map_path] = []
-	elif log != null:
-		map_logs[map_path].append(log)
+	elif entry != null:
+		map_logs[map_path].append(entry)
 	
 
 func randomizeMapEvents(exclude_map:String=''):
@@ -366,7 +366,7 @@ func getClearedMaps():
 	return map_logs.keys().filter(func(map): return hasClearedPatrolGroups(map))
 
 func respawnMapPatrollers(map):
-	map_logs[map] = map_logs[map].filter(func(log): return !(log is StringName and log.contains('PatrollerGroup')))
+	map_logs[map] = map_logs[map].filter(func(entry): return !(entry is StringName and entry.contains('PatrollerGroup')))
 
 func clearMapPatrollers(map_path):
 	var map: MapData = load(map_path).instantiate()
@@ -374,7 +374,7 @@ func clearMapPatrollers(map_path):
 	map.queue_free()
 
 func removeMapEvents(map):
-	map_logs[map] = map_logs[map].filter(func(log): return !(log is Dictionary and log.has('map_events')))
+	map_logs[map] = map_logs[map].filter(func(entry): return !(entry is Dictionary and entry.has('map_events')))
 
 func generateMapEvent():
 	var events = {}
@@ -412,8 +412,8 @@ func hasMapEvent(map_path):
 	if !map_logs.has(map_path):
 		return false
 	
-	for log in map_logs[map_path]:
-		if log is Dictionary and log.has('map_events') and hasPatrolGroups(map_path):
+	for entry in map_logs[map_path]:
+		if entry is Dictionary and entry.has('map_events') and hasPatrolGroups(map_path):
 			return true
 
 # Checks if map has patrol groups.
