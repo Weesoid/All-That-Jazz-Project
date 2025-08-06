@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="ResCampItem" load_steps=8 format=3 uid="uid://bmp8t0wlenxgw"]
+[gd_resource type="Resource" script_class="ResCampItem" load_steps=8 format=3 uid="uid://bj2a6hj115868"]
 
 [ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="2_3atc6"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_cn55c"]
-[ext_resource type="Resource" uid="uid://bem7anjcbg20k" path="res://resources/combat/status_effects/FadedIV.tres" id="2_yu6ry"]
+[ext_resource type="Resource" uid="uid://bem7anjcbg20k" path="res://resources/combat/status_effects/FadedIII.tres" id="2_yd556"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCamp.gd" id="3_rxa8f"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectCustomDamage.gd" id="3_x0wcf"]
 
 [sub_resource type="Resource" id="Resource_n5l5a"]
 script = ExtResource("2_cn55c")
 target = 0
-status_effect = ExtResource("2_yu6ry")
+status_effect = ExtResource("2_yd556")
 cast_animation = ""
 condition = ""
 is_combo_effect = false
@@ -42,7 +42,6 @@ effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubRes
 party_wide = true
 max_stack = 16
 barter_item = false
-auto_name = true
 name = "Crit Rations"
 icon = ExtResource("2_3atc6")
 description = ""

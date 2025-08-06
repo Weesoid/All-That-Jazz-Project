@@ -46,7 +46,7 @@ func getMapInfo(path):
 	var map: MapData = load(path).instantiate()
 	var map_log = PlayerGlobals.map_logs[map.scene_file_path]
 	var total_patrols = map.getPatrolGroups().size()
-	var cleared_patrols = map_log.filter(func(log): return log is String and log.contains('PatrollerGroup')).size()
+	var cleared_patrols = map_log.filter(func(entry): return entry is String and entry.contains('PatrollerGroup')).size()
 	getMapEventInfo(map_log)
 	description.text = 'Status: %s' % map.getVerbalClearState()
 	if total_patrols > 0 or cleared_patrols != total_patrols: 
@@ -59,9 +59,9 @@ func getMapInfo(path):
 func getMapEventInfo(map_log: Array):
 	event_description.hide()
 	
-	for log in map_log:
-		if log is Dictionary and log.has('map_events'):
-			event_description.text = str(log)
+	for entry in map_log:
+		if entry is Dictionary and entry.has('map_events'):
+			event_description.text = str(entry)
 			event_description.show()
 			return
 

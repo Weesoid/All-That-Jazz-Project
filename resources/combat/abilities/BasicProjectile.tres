@@ -56,4 +56,4 @@ target_position = {
 }
 tension_cost = 0
 instant_cast = false
-required_level = 4
+required_level = 0

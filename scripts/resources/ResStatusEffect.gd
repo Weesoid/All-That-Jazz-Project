@@ -20,6 +20,7 @@ enum RemoveStyle {
 }
 
 ## NOTE: Always name status effects with the following convention: File-GuardBreak.tres;Name-Guard Break
+@export var auto_name:bool=true
 @export var name: String
 @export_multiline var description: String
 @export var basic_effects: Array[ResBasicEffect]
@@ -126,3 +127,6 @@ func getDescription():
 
 func _to_string():
 	return name
+
+#func getFilename():
+#	return resource_path.get_file().replace('.tres','')

@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("3_74buc")
-auto_name = false
+auto_name = true
 name = "Guard"
 description = "Target is guarding."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])

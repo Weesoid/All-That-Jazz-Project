@@ -204,7 +204,7 @@ func _on_melee_hitbox_body_entered(body):
 		OverworldGlobals.damageParty(5)
 		OverworldGlobals.changeToCombat(str(name),{},self)
 
-func destroy(give_drops=false):
+func destroy(give_drops=false, check_rewards:bool=true):
 	if give_drops:
 		var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
 		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
@@ -213,8 +213,9 @@ func destroy(give_drops=false):
 	
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()
-	await tree_exited
-	patroller_group.checkGiveRewards()
+	if check_rewards:
+		await tree_exited
+		patroller_group.checkGiveRewards()
 
 func playFootstep():
 	if is_on_floor():

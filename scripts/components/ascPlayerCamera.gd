@@ -73,3 +73,7 @@ func addRewardBank(patroller_group: PatrollerGroup):
 	bank_ui.patroller_group = patroller_group
 	reward_banks.add_child(bank_ui)
 	bank_ui.updateBank(patroller_group.reward_bank)
+
+func clearRewardBanks():
+	for child in reward_banks.get_children():
+		child.queue_free()

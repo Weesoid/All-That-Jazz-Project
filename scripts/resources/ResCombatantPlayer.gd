@@ -116,7 +116,8 @@ func isInflicted()-> bool:
 func getLingeringEffectsString():
 	var out = 'During combat:\n'
 	for effect in lingering_effects:
-		out += '%s - %s\n' % [effect, CombatGlobals.loadStatusEffect(effect).description]
+		var status_effect = CombatGlobals.loadStatusEffect(effect)
+		out += '%s - %s\n' % [status_effect.name, status_effect.description]
 	return out
 
 func applyEquipmentModifications():

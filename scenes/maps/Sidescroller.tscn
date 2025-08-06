@@ -216,7 +216,7 @@ position = Vector2(0, 8)
 dialogue_resource = ExtResource("15_21t34")
 
 [node name="SavePoint" parent="." instance=ExtResource("16_jpex5")]
-position = Vector2(-232, 192)
+position = Vector2(113, 0)
 
 [node name="Rope2" parent="." instance=ExtResource("3_gkab1")]
 position = Vector2(14, -5)

@@ -1,12 +1,11 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.apply_once:
-		applyFaded(target, status_effect)
-		#CombatGlobals.manual_call_indicator.emit(target, 'Disrupted!', 'Reaction')
+		applyFadedEffects(target, status_effect)
 
 static func endEffects(target: ResCombatant, _status_effect: ResStatusEffect):
 	CombatGlobals.resetStat(target, 'Faded')
 
-static func applyFaded(target: ResCombatant, status_effect: ResStatusEffect):
+static func applyFadedEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	match status_effect.name:
 		'Faded I':
 			CombatGlobals.modifyStat(target, {'heal_mult': -0.25}, 'Faded')

@@ -159,7 +159,7 @@ func checkConditions(conditions: Array, target: ResCombatant):
 			'combo': # ex crit/combo
 				if target.hasStatusEffect('Combo'):
 					target.getStatusEffect('Combo').removeStatusEffect()
-					CombatGlobals.manual_call_indicator.emit(target, '[img]res://images/sprites/icon_combo.png[/img][color=turquoise]COMBO!!', 'Show')
+					manual_call_indicator.emit(target, '[img]res://images/sprites/icon_combo.png[/img][color=turquoise]COMBO!!', 'Show')
 					return true
 			'combo!': # ex. crit/combo!
 				return target.hasStatusEffect('Combo')
@@ -209,14 +209,14 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	if checkSpecialStat('status_effect', bonus_stats, target):
 		var status_effects = getBonusStatValue(bonus_stats, 'status_effect').split(',')
 		for effect in status_effects:
-			CombatGlobals.addStatusEffect(target, effect)
+			addStatusEffect(target, effect)
 	if checkSpecialStat('move', bonus_stats, target):
 		var move_data = getBonusStatValue(bonus_stats, 'move').split(',')
 		var direction
 		match move_data[0]:
 			'f': direction = 1
 			'b': direction = -1
-		CombatGlobals.getCombatScene().changeCombatantPosition(target, direction,false,int(move_data[1]))
+		getCombatScene().changeCombatantPosition(target, direction,false,int(move_data[1]))
 #	if checkSpecialStat('plant', bonus_stats, target):
 #
 	if target.isDead():
@@ -235,7 +235,7 @@ func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 
 func useDamageFormula(target: ResCombatant, damage):
 	var grit = target.stat_values['defense']
-	if grit > 0.7 and (CombatGlobals.inCombat() and !target.combatant_scene.blocking):
+	if grit > 0.7 and (inCombat() and !target.combatant_scene.blocking):
 		grit = 0.7
 	var out_damage = damage - (grit * damage)
 	if out_damage < 0.0: 
@@ -252,24 +252,24 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 		base_healing *= target.stat_values['heal_mult']
 	if base_healing <= 0: 
 		base_healing = 0
-		
+	
 	if target.stat_values['health'] + base_healing > target.getMaxHealth():
 		target.stat_values['health'] = target.getMaxHealth()
 	else:
 		target.stat_values['health'] += int(base_healing)
 	
-	if base_healing > 0:
+	if base_healing >= 1.0:
 		manual_call_indicator.emit(target, '[color=green]'+str(int(base_healing)), 'Damage')
 		OverworldGlobals.playSound('02_Heal_02.ogg')
 	else:
 		manual_call_indicator.emit(target, "Broken.", 'Flunk')
 	
-	if CombatGlobals.inCombat() and trigger_on_heal:
+	if inCombat() and trigger_on_heal and base_healing >= 1:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
-	#print(target.combatant_scene.idle_animation)
-	if CombatGlobals.inCombat() and target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
+	if inCombat() and target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
 		target.combatant_scene.playIdle('Idle')
-
+	if !inCombat():
+		applyFaded(target)
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
 	if percent_chance > 1.0:
@@ -283,7 +283,6 @@ func valueVariate(value, percent_variance: float):
 	randomize()
 	var variation = value * percent_variance
 	value += randf_range(variation*-1, variation)
-	print('unrounded var: ', value)
 	return round(value)
 
 func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String):
@@ -322,7 +321,7 @@ func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 		if target.isDead():
 			getCombatScene().combat_camera.shake(25.0, 10.0)
 			if target is ResEnemyCombatant:
-				CombatGlobals.playAnimation(target, 'KO')
+				playAnimation(target, 'KO')
 				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
 			elif target is ResPlayerCombatant:
 				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
@@ -390,7 +389,7 @@ func showWarning(target: CombatantScene):
 	target.add_child(warning)
 
 func setCombatantVisibility(target: CombatantScene, set_to:bool):
-	var tween = CombatGlobals.getCombatScene().create_tween()
+	var tween = getCombatScene().create_tween()
 	if !set_to:
 		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.TRANSPARENT, 0.5), 0.15)
 		target.z_index = -10
@@ -407,7 +406,7 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1,
 	qte.global_position = target.global_position + offset
 	qte.z_index = 101
 	getCombatScene().call_deferred('add_child',qte)
-	await CombatGlobals.qte_finished
+	await qte_finished
 	return qte
 
 func playCombatantAnimation(combatant_name: String, animation_name: String, wait=true):
@@ -437,12 +436,14 @@ func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
 #********************************************************************************
 func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	var status_effect: ResStatusEffect
+	var path
 	if effect is String:
-		var path = str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")
+		path = str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")
 		if !FileAccess.file_exists(path):
 			return
 		status_effect = load(str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")).duplicate()
 	elif effect is ResStatusEffect:
+		path = effect.resource_path
 		status_effect = effect.duplicate()
 	var icon_path = str(status_effect.texture.get_path())
 	if !guaranteed and (randomRoll(target.stat_values['resist']) and status_effect.resistable):
@@ -463,9 +464,9 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	if target.status_effects.has(status_effect): # Because some effects get removed on apply!
 		manual_call_indicator.emit(target, '[color=yellow]+ [img]'+icon_path+'[/img]', 'Show')
 	
-	if (!guaranteed and !CombatGlobals.randomRoll(0.15+target.stat_values['resist'])) and (status_effect.lingers and target is ResPlayerCombatant and !target.lingering_effects.has(status_effect.name)):
-		manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.name, 'Lingering')
-		target.lingering_effects.append(status_effect.name)
+	if (!guaranteed and !randomRoll(0.15+target.stat_values['resist'])) and (status_effect.lingers and target is ResPlayerCombatant):
+		if OverworldGlobals.addLingerEffect(target,status_effect):
+			manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.name, 'Lingering')
 	
 	checkReactions(target)
 
@@ -621,3 +622,41 @@ func addTension(amount: int):
 	else:
 		tension += amount
 	tension_changed.emit(prev_tension, tension)
+
+func applyFaded(target: ResCombatant):
+	if inCombat() and (getCombatScene().combat_result != -1 and getFadedLevel(target) == 0):
+		OverworldGlobals.addLingerEffect(target,'FadedI')
+		return
+	
+	var escalated_level = getFadedLevel(target)+1
+	# Remove previous faded
+	if inCombat():
+		removeStatusEffect(target, applyFadedStatus(escalated_level-1,true))
+	target.lingering_effects.erase(applyFadedStatus(escalated_level-1))
+	# Add escalated faded level
+	if inCombat():
+		addStatusEffect(target, applyFadedStatus(escalated_level,true))
+	OverworldGlobals.addLingerEffect(target,applyFadedStatus(escalated_level))
+
+func getFadedLevel(target: ResCombatant):
+	if target.hasStatusEffect('Faded I') or target.lingering_effects.has('FadedI'):
+		return 1
+	elif target.hasStatusEffect('Faded II') or target.lingering_effects.has('FadedII'):
+		return 2
+	elif target.hasStatusEffect('Faded III') or target.lingering_effects.has('FadedIII'):
+		return 3
+	elif target.hasStatusEffect('Faded IV') or target.lingering_effects.has('FadedIV'):
+		return 4
+	else:
+		return 0
+
+func applyFadedStatus(level: int, add_space:bool=false):
+	var out = ''
+	match level:
+		1: out = 'FadedI'
+		2: out =  'FadedII'
+		3: out =  'FadedIII'
+		4: out =  'FadedIV'
+	if add_space:
+		out = out.insert(5, ' ')
+	return out

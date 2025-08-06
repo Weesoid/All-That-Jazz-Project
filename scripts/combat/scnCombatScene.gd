@@ -463,7 +463,7 @@ func calculateEscapeChance()-> float:
 		hustle_enemies += combatant.base_stat_values['speed']
 	for combatant in getCombatantGroup('team'):
 		hustle_allies += combatant.base_stat_values['speed']
-	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
+	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)+11
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:

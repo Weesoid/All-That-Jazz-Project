@@ -5,7 +5,7 @@ enum PlayerType {
 	ARCHIE
 }
 var entering_combat:bool=false
-var player_type: PlayerType = PlayerType.WILLIS
+var player_type: PlayerType = PlayerType.ARCHIE
 var delayed_rewards: Dictionary
 var player_follower_count = 0
 var player: PlayerScene
@@ -355,11 +355,13 @@ func getAllPatrollers():
 
 func destroyAllPatrollers(respawn:bool=false):
 	for patroller in getAllPatrollers():
-		patroller.destroy()
-	if respawn:
-		for group in getCurrentMap().getPatrolGroups():
-			if !group.isCleared():
-				group.spawn()
+		patroller.destroy(false,false)
+	player.player_camera.clearRewardBanks()
+	await get_tree().process_frame
+	for group in getCurrentMap().getPatrolGroups():
+		group.reward_bank = {'loot':{},'experience':0.0}
+		if respawn and !group.isCleared():
+			group.spawn()
 
 func getMapRewardBank(key: String):
 	return get_tree().current_scene.REWARD_BANK[key]
@@ -704,7 +706,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_exited.emit()
 	entering_combat=false
 	if combat_results == 1 and give_non_pg_reward:
-		OverworldGlobals.giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank)
+		giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank)
 		combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
 
 func giveRewardBank(reward_bank: Dictionary):
@@ -817,11 +819,14 @@ func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:
 func addLingerEffect(combatant: ResCombatant, effect):
 	if effect is ResStatusEffect:
 		effect = effect.resource_path.get_file().replace('.tres','')
+	if effect == '':
+		return
 	
 	if combatant.lingering_effects.has(effect):
-		return
+		return false
 	else:
 		combatant.lingering_effects.append(effect)
+		return true
 
 func isPlayerAlive()-> bool:
 	for combatant in getCombatantSquad('Player'):

@@ -1,21 +1,21 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://bem7anjcbg20k"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://b12sm8hd42lr1"]
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsFaded.gd" id="1_nay4v"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="2_3y4gj"]
+[ext_resource type="Texture2D" uid="uid://bxj3j5ncufyt4" path="res://images/sprites/icon_faded4.png" id="3_22ytm"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_kgjj4"]
 
 [resource]
 script = ExtResource("3_kgjj4")
-auto_name = false
+auto_name = true
 name = "Faded IV"
-description = ""
+description = "Reduced HEAL, RESIST, ACCURACY, and CRIT. Lethal damage may knock target down."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 status_script = ExtResource("1_nay4v")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
-texture = ExtResource("2_3y4gj")
-max_duration = 0
+texture = ExtResource("3_22ytm")
+max_duration = 1
 extend_duration = 1
 apply_extend_duration = false
 max_rank = 0

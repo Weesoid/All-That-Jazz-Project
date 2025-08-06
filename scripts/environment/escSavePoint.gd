@@ -19,6 +19,7 @@ func fightCombatantSquad():
 	OverworldGlobals.changeToCombat(name)
 
 func interact():
+	OverworldGlobals.destroyAllPatrollers(true)
 	OverworldGlobals.setPlayerInput(false)
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
 	PlayerGlobals.overworld_stats['stamina'] = 100.0
