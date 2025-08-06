@@ -29,9 +29,9 @@ func initializeCombatant():
 		ai_package = load("res://scripts/combat/combatant_ai/aiRandomAI.gd")
 	combatant_scene = packed_scene.instantiate()
 	combatant_scene.combatant_resource = self
-	applyStatusEffects()
 	base_stat_values = stat_values.duplicate()
 	scaleStats()
+	applyStatusEffects()
 
 func act():
 	enemy_turn.emit()

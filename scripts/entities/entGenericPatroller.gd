@@ -158,7 +158,7 @@ func doCollisionAction():
 	if get_slide_collision_count() == 0 or !OverworldGlobals.getCurrentMap().done_loading_map or !canEnterCombat():
 		return
 	
-	if get_last_slide_collision().get_collider() is PlayerScene:
+	if get_last_slide_collision().get_collider() is PlayerScene and canEnterCombat():
 		combat_switch = false
 		chase_indicator_animator.play("RESET")
 		OverworldGlobals.changeToCombat(str(name),{},self)
@@ -180,7 +180,7 @@ func canDoAction():
 	return action_cooldown.is_stopped() and !animator.current_animation.contains('Action') and state != 2
 
 func canEnterCombat(check_switch:bool=true)-> bool:
-	return (combat_switch  or !check_switch) and is_instance_valid(self) and state != 2 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive())
+	return (combat_switch  or !check_switch) and is_instance_valid(self) and state != 2 and (OverworldGlobals.getCurrentMap().has_node('Player') and OverworldGlobals.isPlayerAlive() and !OverworldGlobals.player.invincible)
 
 func flickerTween(play:bool):
 	if flicker_tween == null:
@@ -198,6 +198,9 @@ func flickerTween(play:bool):
 
 func _on_melee_hitbox_body_entered(body):
 	if body is PlayerScene and canEnterCombat(false): 
+		await get_tree().process_frame
+		if !is_instance_valid(self):
+			return
 		OverworldGlobals.damageParty(5)
 		OverworldGlobals.changeToCombat(str(name),{},self)
 

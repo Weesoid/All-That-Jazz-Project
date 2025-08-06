@@ -20,7 +20,10 @@ func _physics_process(_delta):
 
 func _input(_event):
 	if Input.is_action_just_pressed('ui_accept') and player_on_segment and OverworldGlobals.player.isMovementAllowed() and OverworldGlobals.player.climbing:
+		if !OverworldGlobals.player.get_collision_mask_value(1):
+			OverworldGlobals.player.set_collision_mask_value(1, true)
 		OverworldGlobals.player.climbing = false
+		OverworldGlobals.player.toggleClimbAnimation(false)
 		OverworldGlobals.player.jump()
 		apply_force(Vector2(50.0*OverworldGlobals.player.velocity.x,0))
-
+		

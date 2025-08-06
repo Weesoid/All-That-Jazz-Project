@@ -65,6 +65,12 @@ func loadGame(saved_game: SavedGame):
 	OverworldGlobals.getCurrentMap().show()
 
 func loadSaveFile(save_name: String = PlayerGlobals.save_name):
+	PlayerGlobals.resetVariables(false)
+	InventoryGlobals.resetVariables()
+	OverworldGlobals.resetVariables()
+	QuestGlobals.resetVariables()
+	SaveLoadGlobals.resetVariables()
+	await get_tree().process_frame
 	loadGame(load("res://saves/%s.tres" % save_name))
 
 func resetVariables():

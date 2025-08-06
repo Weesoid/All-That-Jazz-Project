@@ -199,6 +199,7 @@ position = Vector2(-161, -20)
 
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
 combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc")])
+afflicted_status_effects = Array[String](["CriticalEye"])
 
 [node name="CombatDialogue" parent="Entity" instance=ExtResource("11_fghhp")]
 dialogue_resource = ExtResource("12_1xr6o")

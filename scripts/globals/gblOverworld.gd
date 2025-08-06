@@ -345,6 +345,22 @@ func showTransition(animation: String, player_scene:PlayerScene=null):
 func getCurrentMap()-> MapData:
 	return get_tree().current_scene
 
+func getAllPatrollers():
+	var patrol_groups = getCurrentMap().getPatrolGroups()
+	var patrollers = getCurrentMap().get_children().filter(func(child): return child is GenericPatroller)
+	for group in patrol_groups:
+		patrollers.append_array(group.getPatrollers())
+	
+	return patrollers.filter(func(patroller): return is_instance_valid(patroller))
+
+func destroyAllPatrollers(respawn:bool=false):
+	for patroller in getAllPatrollers():
+		patroller.destroy()
+	if respawn:
+		for group in getCurrentMap().getPatrolGroups():
+			if !group.isCleared():
+				group.spawn()
+
 func getMapRewardBank(key: String):
 	return get_tree().current_scene.REWARD_BANK[key]
 
@@ -361,11 +377,14 @@ func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and player.has_node('DebugComponent')
 
 func showGameOver(end_sentence: String=''):
-	#await get_tree().process_frame
-	if OverworldGlobals.inMenu(): OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
+	if player.player_camera.get_node('UI').has_node('GameOver'):
+		return
+	if inMenu(): 
+		showMenu("res://scenes/user_interface/PauseMenu.tscn")
+	destroyAllPatrollers()
 	player.setUIVisibility(false)
 	player.resetStates()
-	setPlayerInput(false, true)
+	setPlayerInput(false)
 	player.set_process_unhandled_input(false)
 	player.z_index = 20
 	#playEntityAnimation('Player', animation)

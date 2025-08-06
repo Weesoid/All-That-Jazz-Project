@@ -341,6 +341,7 @@ anchors_preset = 0
 script = ExtResource("1_7i2g0")
 
 [node name="Label" type="Label" parent="."]
+layout_mode = 0
 offset_left = 184.0
 offset_top = 96.0
 offset_right = 456.0
@@ -354,6 +355,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
+layout_mode = 0
 offset_left = 224.0
 offset_top = 136.0
 offset_right = 416.0
@@ -398,6 +401,7 @@ libraries = {
 }
 
 [node name="Loot" type="HBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 184.0
 offset_top = 151.0
 offset_right = 456.0
@@ -407,6 +411,7 @@ alignment = 1
 
 [node name="BonusExp" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0)
+layout_mode = 0
 offset_left = 100.0
 offset_top = -35.0
 offset_right = 160.0
@@ -419,6 +424,7 @@ vertical_alignment = 1
 
 [node name="BonusLoot" type="HBoxContainer" parent="."]
 modulate = Color(1, 1, 1, 0)
+layout_mode = 0
 offset_left = 184.0
 offset_top = 168.0
 offset_right = 456.0

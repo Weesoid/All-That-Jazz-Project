@@ -528,11 +528,12 @@ func loadData(save_data: PlayerSaveData):
 func loadPlayerCombatant(path)-> ResPlayerCombatant:
 	return load(path)
 
-func resetVariables():
+func resetVariables(reset_save_name:bool=true):
 	for member in team:
 		member.reset()
 	
-	save_name = null
+	if reset_save_name:
+		save_name = null
 	team = [
 		loadPlayerCombatant("res://resources/combat/combatants_player/Willis.tres"), 
 		loadPlayerCombatant("res://resources/combat/combatants_player/Archie.tres")

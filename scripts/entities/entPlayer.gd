@@ -43,6 +43,7 @@ var ANIMATION_SPEED = 0.0
 var default_camera_pos: Vector2
 var diving = false
 var dive_strength:float=-125
+var invincible = false
 
 signal jumped(jump_velocity)
 signal dived
@@ -95,11 +96,24 @@ func phase():
 	await get_tree().create_timer(0.1).timeout
 	set_collision_mask_value(1, true)
 
-func dodge():
-	#phased.emit()
-	collision_shape.set_deferred('disabled', true)
-	await get_tree().create_timer(0.2).timeout
-	collision_shape.set_deferred('disabled', false)
+func dodge(time:float=0.2):
+	if invincible:
+		return
+	
+	invincible=true
+	setPatrollerCollisionExceptions(true)
+	await get_tree().create_timer(time).timeout
+	invincible=false
+	setPatrollerCollisionExceptions(false)
+
+func setPatrollerCollisionExceptions(set_to:bool):
+	var patrollers = OverworldGlobals.getAllPatrollers()
+	if set_to:
+		for patroller in patrollers:
+			patroller.add_collision_exception_with(self)
+	else:
+		for patroller in patrollers:
+			patroller.remove_collision_exception_with(self)
 
 func _physics_process(delta):
 	#print(velocity.x)
@@ -134,7 +148,7 @@ func _physics_process(delta):
 		)
 		direction = direction.normalized()
 		
-		if Input.is_action_just_pressed("ui_accept") and canDive() and canDoStaminaAction(15.0):
+		if Input.is_action_just_pressed("ui_accept") and canDive() and canDoStaminaAction(5.0):
 			dived.emit()
 			#print(velocity)
 			diving=true

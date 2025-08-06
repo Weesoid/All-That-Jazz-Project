@@ -4,10 +4,10 @@ class_name ProjectileEnemy
 @export var hit_script: GDScript
 
 func _on_body_entered(body):
-	if body is PlayerScene:
+	if body is PlayerScene and !body.invincible:
 		hit_script.applyEffect(body)
 	
-	if body != shooter and (body is PlayerScene or body is TileMap):
+	if body != shooter and ((body is PlayerScene and !body.invincible) or body is TileMap):
 		queue_free()
 
 func _exit_tree():
