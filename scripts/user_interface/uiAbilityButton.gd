@@ -121,6 +121,10 @@ func dimButton():
 	if ability_icon != null:
 		ability_icon.modulate = Color.DIM_GRAY
 
+func undimButton():
+	if ability_icon != null:
+		ability_icon.modulate = Color.WHITE
+
 func _on_visibility_changed():
 	if ability_icon != null:
 		ability_icon.self_modulate = Color.WHITE

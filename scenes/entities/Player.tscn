@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=3 uid="uid://doc3puk0lkp31"]
+[gd_scene load_steps=152 format=3 uid="uid://doc3puk0lkp31"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_ivxm1"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
@@ -1020,7 +1020,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [16]
+"values": [21]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1041,10 +1041,10 @@ tracks/2/path = NodePath(".:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -20), Vector2(0, -19)]
+"values": [Vector2(0, -20)]
 }
 tracks/3/type = "method"
 tracks/3/imported = false
@@ -2331,8 +2331,8 @@ tracks/2/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_0mv0s"]
-resource_name = "Walk_Up_Bow_Drawn"
+[sub_resource type="Animation" id="Animation_aohf7"]
+resource_name = "Walk_Up_Bow"
 length = 1.2
 loop_mode = 1
 tracks/0/type = "value"
@@ -2346,6 +2346,47 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [15, 16, 17, 16]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../PlayerDirection:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.14159]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_0mv0s"]
+resource_name = "Walk_Up_Bow_Drawn"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [21]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -2394,6 +2435,7 @@ _data = {
 "Walk_Right_Bow": SubResource("Animation_15la0"),
 "Walk_Right_Bow_Drawn": SubResource("Animation_2u154"),
 "Walk_Up": SubResource("Animation_dpwad"),
+"Walk_Up_Bow": SubResource("Animation_aohf7"),
 "Walk_Up_Bow_Drawn": SubResource("Animation_0mv0s")
 }
 
@@ -2426,7 +2468,7 @@ blend_mode = 1
 animation = &"Climb_Idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mv7pm"]
-animation = &"Walk_Down_Bow_Drawn"
+animation = &"Walk_Down_Bow"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w18mi"]
 animation = &"Walk_Up_Bow_Drawn"
@@ -2451,7 +2493,7 @@ max_space = Vector2(1, 1.1)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g5qyj"]
-animation = &"Bow_Draw_Down"
+animation = &"Walk_Down_Bow"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1r0gm"]
 animation = &"Bow_Draw_Up"
@@ -2489,13 +2531,15 @@ animation = &"Idle_Right_Bow"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_bcrss"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_ikjxj")
-blend_point_0/pos = Vector2(0, -1)
+blend_point_0/pos = Vector2(0, -1.1)
 blend_point_1/node = SubResource("AnimationNodeAnimation_xbubl")
-blend_point_1/pos = Vector2(0, 1)
+blend_point_1/pos = Vector2(0, 1.1)
 blend_point_2/node = SubResource("AnimationNodeAnimation_42y1x")
 blend_point_2/pos = Vector2(-1, 0)
 blend_point_3/node = SubResource("AnimationNodeAnimation_df25o")
 blend_point_3/pos = Vector2(1, 0)
+min_space = Vector2(-1, -1.1)
+max_space = Vector2(1, 1.1)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sh6bn"]
@@ -2512,13 +2556,15 @@ animation = &"Idle_Right"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_ygwhc"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_sh6bn")
-blend_point_0/pos = Vector2(0, 1)
+blend_point_0/pos = Vector2(0, 1.1)
 blend_point_1/node = SubResource("AnimationNodeAnimation_bm8kv")
-blend_point_1/pos = Vector2(0, -1)
+blend_point_1/pos = Vector2(0, -1.1)
 blend_point_2/node = SubResource("AnimationNodeAnimation_jsprf")
 blend_point_2/pos = Vector2(-1, 0)
 blend_point_3/node = SubResource("AnimationNodeAnimation_11f1v")
 blend_point_3/pos = Vector2(1, 0)
+min_space = Vector2(-1, -1.1)
+max_space = Vector2(1, 1.1)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6qjdu"]
@@ -2764,11 +2810,11 @@ states/Climb/position = Vector2(-137.482, 46.0987)
 states/Climb_Idle/node = SubResource("AnimationNodeAnimation_gip34")
 states/Climb_Idle/position = Vector2(-14.4816, 100)
 "states/Draw Bow/node" = SubResource("AnimationNodeBlendSpace2D_am7tc")
-"states/Draw Bow/position" = Vector2(422.017, 6.774)
+"states/Draw Bow/position" = Vector2(420.017, 6.774)
 "states/Draw Bow Walk/node" = SubResource("AnimationNodeBlendSpace2D_g742a")
 "states/Draw Bow Walk/position" = Vector2(84.0174, -188.226)
 states/Idle/node = SubResource("AnimationNodeBlendSpace2D_ygwhc")
-states/Idle/position = Vector2(84.0174, 227)
+states/Idle/position = Vector2(84.0174, 228)
 "states/Idle Bow/node" = SubResource("AnimationNodeBlendSpace2D_bcrss")
 "states/Idle Bow/position" = Vector2(84.0174, 6.774)
 states/Melee/node = SubResource("AnimationNodeBlendSpace2D_3ur08")
@@ -2787,7 +2833,7 @@ states/Walk/position = Vector2(-191, 149)
 "states/Walk Bow/node" = SubResource("AnimationNodeBlendSpace2D_v7p5t")
 "states/Walk Bow/position" = Vector2(-191, -81.226)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_tus5o"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_vn7n0"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_ivvpp"), "Idle", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_d4yll"), "Idle Bow", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_pwvh3"), "Walk Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_di8f5"), "Idle Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_xc2fq"), "Idle Bow", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_yyjk8"), "Draw Bow", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_f5ypq"), "Shoot Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_13w0k"), "Idle Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_052le"), "Idle", "Void_Call", SubResource("AnimationNodeStateMachineTransition_7rfp5"), "Void_Call", "Void_Charge", SubResource("AnimationNodeStateMachineTransition_ctdd1"), "Void_Charge", "Void_Calm", SubResource("AnimationNodeStateMachineTransition_sxu5c"), "Void_Calm", "Idle", SubResource("AnimationNodeStateMachineTransition_t3elc"), "Draw Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_87fsc"), "Walk Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_n3d2h"), "Walk", "Void_Call", SubResource("AnimationNodeStateMachineTransition_c2w6y"), "Draw Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_a12pg"), "Draw Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_dkf3g"), "Draw Bow Walk", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_j2agf"), "Draw Bow Walk", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_46kqf"), "Draw Bow Walk", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_rwk1u"), "Walk Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_imlol"), "Idle Bow", "Melee", SubResource("AnimationNodeStateMachineTransition_iq35y"), "Melee", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_wm4dt"), "Idle Bow", "Climb_Idle", SubResource("AnimationNodeStateMachineTransition_xj8uw"), "Idle", "Climb_Idle", SubResource("AnimationNodeStateMachineTransition_v1kr8"), "Climb_Idle", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_qxirn"), "Climb_Idle", "Idle", SubResource("AnimationNodeStateMachineTransition_adhns"), "Climb", "Climb_Idle", SubResource("AnimationNodeStateMachineTransition_cbwp0"), "Climb_Idle", "Climb", SubResource("AnimationNodeStateMachineTransition_u4256")]
-graph_offset = Vector2(-515.482, -134.209)
+graph_offset = Vector2(-286.852, -278.14)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_7ym7e"]
 
@@ -2809,7 +2855,7 @@ texture = ExtResource("5_nms4n")
 offset = Vector2(0, -24)
 hframes = 9
 vframes = 6
-frame = 4
+frame = 21
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2840,7 +2886,7 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 1.5708
+rotation = 3.14159
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)
@@ -2910,10 +2956,10 @@ parameters/conditions/unequip_bow = false
 parameters/conditions/void_call = false
 parameters/conditions/void_release = false
 parameters/Climb/blend_position = Vector2(-0.502336, 0.0329342)
-"parameters/Draw Bow/blend_position" = Vector2(-0.00419813, 1.1)
+"parameters/Draw Bow/blend_position" = Vector2(-0.0559345, -0.821397)
 "parameters/Draw Bow Walk/blend_position" = Vector2(0, 0)
-parameters/Idle/blend_position = Vector2(-0.00813007, -0.0117096)
-"parameters/Idle Bow/blend_position" = Vector2(0, 0)
+parameters/Idle/blend_position = Vector2(-0.00563908, -0.569321)
+"parameters/Idle Bow/blend_position" = Vector2(0.0338346, 0.119438)
 parameters/Melee/blend_position = Vector2(0.00607288, 1.1)
 "parameters/Shoot Bow/blend_position" = Vector2(0.0914634, -0.546707)
 parameters/Walk/blend_position = Vector2(-0.0708502, 0.086921)

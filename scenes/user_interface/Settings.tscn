@@ -1,8 +1,8 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=11 format=3 uid="uid://7uprgop7pw6"]
 
 [ext_resource type="Theme" uid="uid://bph3lrtlntxys" path="res://design/Settings.tres" id="1_nyyof"]
 [ext_resource type="Script" path="res://scenes/user_interface/uiSettings.gd" id="1_xqud4"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_l6dme"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_l6dme"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_geg3d"]
 [ext_resource type="StyleBox" uid="uid://f2ekr76rfqoq" path="res://design/PanelNoBottom.tres" id="3_n7gsw"]
 [ext_resource type="StyleBox" uid="uid://dp2nq8lcxrsfc" path="res://design/PanelNoTop.tres" id="5_3xlyu"]
@@ -30,9 +30,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -176.0
+offset_left = -296.0
 offset_top = -156.0
-offset_right = 176.0
+offset_right = 296.0
 offset_bottom = 116.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -267,10 +267,10 @@ text = "CURRENT DEVICE: KEYBOARD"
 
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = -176.0
-offset_top = 112.0
-offset_right = 176.0
-offset_bottom = 160.0
+offset_left = -296.0
+offset_top = 116.0
+offset_right = 296.0
+offset_bottom = 164.0
 theme_override_styles/panel = ExtResource("5_3xlyu")
 
 [node name="DefaultSettings" parent="." instance=ExtResource("2_l6dme")]

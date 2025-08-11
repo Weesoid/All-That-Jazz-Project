@@ -1,18 +1,22 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=7 format=3 uid="uid://bt47t35j5qxrq"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=11 format=3 uid="uid://bt47t35j5qxrq"]
 
 [ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="2_8v6wo"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_i8m6m"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_mba6b"]
 [ext_resource type="PackedScene" path="res://scenes/combatants/Archie.tscn" id="2_qq2m6"]
+[ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="3_q5w68"]
+[ext_resource type="Resource" uid="uid://n15uy40oimtq" path="res://resources/combat/abilities/Defend.tres" id="4_e2iex"]
 [ext_resource type="Texture2D" uid="uid://n3be8sd47yqk" path="res://images/character_sprites/archie/rest_archie.png" id="5_b1vt3"]
+[ext_resource type="Resource" uid="uid://vedm8h64ew7u" path="res://resources/combat/abilities/Recede.tres" id="5_v0avs"]
+[ext_resource type="Resource" uid="uid://ol8t3xlrcx8b" path="res://resources/combat/abilities/Advance.tres" id="6_hn22q"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="11_avhlp"]
 
 [resource]
 script = ExtResource("11_avhlp")
-ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_mba6b"), ExtResource("2_8v6wo")])
+ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_mba6b"), ExtResource("2_8v6wo"), ExtResource("3_q5w68"), ExtResource("4_e2iex"), ExtResource("5_v0avs"), ExtResource("6_hn22q")])
 base_temperment = {
-"primary": [],
-"secondary": []
+"primary": ["all_arounder", "unyielding", "focused"],
+"secondary": ["clever", "quick", "acute"]
 }
 mandatory = false
 rest_sprite = ExtResource("5_b1vt3")

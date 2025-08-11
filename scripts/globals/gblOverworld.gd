@@ -76,12 +76,6 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=10
 #********************************************************************************
 # GENERAL UTILITY
 #********************************************************************************
-#func player-> PlayerScene:
-#	if !get_tree().current_scene.has_node('Player'):
-#		return null
-#
-#	return get_tree().current_scene.get_node('Player')
-
 func flattenY(vector)-> Vector2:
 	return Vector2(vector.x,0)
 
@@ -135,7 +129,7 @@ func showMenu(path: String):
 		return
 	
 	var main_menu: Control = load(path).instantiate()
-	main_menu.scale = Vector2.ZERO
+	#main_menu.scale = Vector2.ZERO
 	main_menu.name = 'uiMenu'
 	player.suddenStop()
 	player.resetStates()
@@ -146,7 +140,7 @@ func showMenu(path: String):
 		if isPlayerCheating(): player.get_node('DebugComponent').hide()
 		setMouseController(true)
 		player.player_camera.get_node('UI').add_child(main_menu)
-		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
+		#create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 	else:
 		if isPlayerCheating(): player.get_node('DebugComponent').show()
@@ -270,6 +264,15 @@ func createItemIcon(item: ResItem, count:int):
 	count_label.theme = load("res://design/OutlinedLabelThin.tres")
 	count_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	icon.add_child(count_label)
+	return icon
+
+func createStatusEffectIcon(effect_id):
+	var effect = CombatGlobals.loadStatusEffect(effect_id)
+	var icon = TextureRect.new()
+	icon.texture = effect.texture
+	icon.tooltip_text = effect.name+': '+effect.description
+	icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	return icon
 
 func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbilityButton:

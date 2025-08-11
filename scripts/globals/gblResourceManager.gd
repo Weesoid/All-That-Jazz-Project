@@ -22,7 +22,8 @@ func loadArrayFromPath(path:String, filter=null)-> Array:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			out.append(load(path+'/'+file_name))
+			if FileAccess.file_exists(path+'/'+file_name):
+				out.append(load(path+'/'+file_name))
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")

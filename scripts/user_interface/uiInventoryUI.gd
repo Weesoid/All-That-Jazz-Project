@@ -2,17 +2,19 @@
 # >:/
 extends Control
 
-@onready var inventory_grid = $PanelContainer2/MarginContainer/ScrollContainer/TabContainer
+@onready var inventory_grid = $MarginContainer/ScrollContainer/TabContainer
 @onready var space_label = $Space
-
+var show_space:bool=false
 func _ready():
 	InventoryGlobals.sortItems()
 	updateInventory()
 	if inventory_grid.get_child_count() > 0:
 		inventory_grid.get_child(0).grab_focus()
+	show_space = float(InventoryGlobals.inventory.size()) / InventoryGlobals.max_inventory >= 0.75
 
 func _process(_delta):
-	space_label.text = '%s / %s' % [InventoryGlobals.inventory.size(), InventoryGlobals.max_inventory]
+	if show_space:
+		space_label.text = '%s / %s' % [InventoryGlobals.inventory.size(), InventoryGlobals.max_inventory]
 
 func updateInventory():
 	for child in inventory_grid.get_children():

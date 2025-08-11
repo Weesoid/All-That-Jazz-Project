@@ -1,0 +1,238 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmb8cwivijlnn"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiAttributeViewContainer.gd" id="1_4r38l"]
+[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="2_l6363"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_orqiy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nfvwe"]
+
+[node name="VFlowContainer" type="VBoxContainer"]
+offset_left = 4.0
+offset_right = 115.0
+offset_bottom = 182.0
+alignment = 1
+script = ExtResource("1_4r38l")
+
+[node name="Health" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "How much damage character can take before getting knocked out."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Health"]
+layout_mode = 2
+text = "Health
+"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Health"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+value = 50.0
+
+[node name="HealthValues" type="Label" parent="Health/ProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -7.0
+offset_right = 39.5
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Brawn" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Bonus damage for damaging abilities."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Brawn"]
+layout_mode = 2
+text = "DAMAGE"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="Label" parent="Brawn"]
+layout_mode = 2
+text = "10-19"
+horizontal_alignment = 1
+
+[node name="Grit" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Resistance from damage (caps out at 70%)."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Grit"]
+layout_mode = 2
+text = "DEFENSE"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Grit"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+
+[node name="Handling" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Rank of weapon character can use."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Handling"]
+layout_mode = 2
+text = "Handling"
+vertical_alignment = 1
+uppercase = true
+
+[node name="CustomCountBar" parent="Handling" instance=ExtResource("2_l6363")]
+layout_mode = 2
+
+[node name="Hustle" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Determines turn order. Higher, the better."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Hustle"]
+layout_mode = 2
+text = "Hustle"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Value" type="Label" parent="Hustle"]
+layout_mode = 2
+text = "0"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Accuracy" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Chance to land missable abilities."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Accuracy"]
+layout_mode = 2
+text = "Accuracy"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Accuracy"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+
+[node name="Resist" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Chance to resist status effects."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Resist"]
+layout_mode = 2
+text = "Resist"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Resist"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+
+[node name="Crit" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Chance to land criticals."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Crit"]
+layout_mode = 2
+text = "Crit"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Crit"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+
+[node name="Dodge" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Critical damage."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Dodge"]
+layout_mode = 2
+text = "CRIT DMG."
+vertical_alignment = 1
+uppercase = true
+
+[node name="Value" type="Label" parent="Dodge"]
+layout_mode = 2
+text = "1.5"
+vertical_alignment = 1
+uppercase = true
+
+[node name="HealMult" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Heal multiplier."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="HealMult"]
+layout_mode = 2
+text = "HEAL M."
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="HealMult"]
+layout_mode = 2
+text = "0"
+vertical_alignment = 1
+uppercase = true
+
+[node name="AttributeView" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="AttributeView"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nfvwe")
+
+[node name="Abilities" type="RichTextLabel" parent="AttributeView"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("3_orqiy")
+bbcode_enabled = true
+
+[node name="Debug" type="Label" parent="AttributeView"]
+z_index = 101
+layout_mode = 2
+theme = ExtResource("3_orqiy")
+theme_override_font_sizes/font_size = 8
+autowrap_mode = 3

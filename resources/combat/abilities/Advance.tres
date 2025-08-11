@@ -18,6 +18,7 @@ animate_on = 0
 
 [resource]
 script = ExtResource("1_8t8d7")
+auto_name = false
 name = "Advance"
 description = "Go forward one rank."
 icon = ExtResource("3_fo2hn")

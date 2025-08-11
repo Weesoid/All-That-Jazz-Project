@@ -243,10 +243,12 @@ func useDamageFormula(target: ResCombatant, damage):
 	return out_damage
 
 func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:bool=true):
+	var from_death:bool=false
 	if target is CombatantScene:
 		target = target.combatant_resource
 	if target.stat_values['health'] < 0:
 		target.stat_values['health'] = 0
+		from_death=true
 	base_healing = valueVariate(base_healing, 0.15)
 	if use_mult:
 		base_healing *= target.stat_values['heal_mult']
@@ -268,8 +270,9 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
 	if inCombat() and target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
 		target.combatant_scene.playIdle('Idle')
-	if !inCombat():
+	if !inCombat() and from_death:
 		applyFaded(target)
+
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
 	if percent_chance > 1.0:
@@ -459,6 +462,11 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		if status_effect.sounds['apply'] != '': OverworldGlobals.playSound(status_effect.sounds['apply'])
 	else:
 		rankUpStatusEffect(target, status_effect)
+		if status_effect.max_rank > 0:
+			if status_effect.current_rank < status_effect.max_rank:
+				manual_call_indicator.emit(target, '[color=yellow]++[img]'+icon_path+'[/img]', 'Show')
+			else:
+				manual_call_indicator.emit(target, '[color=yellow]![img]'+icon_path+'[/img]', 'Show')
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
 	if target.status_effects.has(status_effect): # Because some effects get removed on apply!

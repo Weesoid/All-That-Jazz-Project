@@ -22,8 +22,9 @@ func showEquipment(type:int, combatant: ResPlayerCombatant, slot: int):
 	animator.play("Show")
 
 func addButton(combatant, item, slot):
+	if (item is ResWeapon and !item.canUse(combatant)) or (item is ResCharm and combatant.hasCharm(item)):
+		return
 	var button = OverworldGlobals.createItemButton(item)
-	button.disabled = (item is ResWeapon and !item.canUse(combatant)) or (item is ResCharm and combatant.hasCharm(item))
 	button.pressed.connect(func(): equipItem(combatant, item, slot))
 	equipment.add_child(button)
 

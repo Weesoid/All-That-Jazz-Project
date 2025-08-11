@@ -1,14 +1,11 @@
 extends Control
 
-@onready var quests_containter = $QuestContainer
-@onready var objectives_container = $DescriptionPanel/Objectives
-
-@onready var ongoing_quests = $QuestContainer/Ongoing/VBoxContainer
-@onready var completed_quests = $QuestContainer/Completed/VBoxContainer
-@onready var title = $DescriptionPanel/Title
-@onready var description = $DescriptionPanel/Description
-@onready var objectives_panel = $DescriptionPanel/Objectives
-@onready var objective_scroller = $DescriptionPanel/Objectives/VBoxContainer
+@onready var objectives_container = $MarginContainer/MarginContainer2/DescriptionPanel/Objectives
+@onready var ongoing_quests = $QuestContainer/MarginContainer/VBoxContainer/VBoxContainer/Ongoing/VBoxContainer
+@onready var completed_quests = $QuestContainer/MarginContainer/VBoxContainer/VBoxContainer/Completed/VBoxContainer
+@onready var title = $MarginContainer/MarginContainer2/DescriptionPanel/Title
+@onready var description = $MarginContainer/MarginContainer2/DescriptionPanel/Description
+@onready var objective_scroller = $MarginContainer/MarginContainer2/DescriptionPanel/Objectives/VBoxContainer
 
 var selected_quest: ResQuest
 var run_once = true
@@ -22,17 +19,18 @@ func _ready():
 		var button = OverworldGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = str(quest.name)
-		button.custom_minimum_size.x = quests_containter.size.x
 		button.focus_entered.connect(
 			func setQuest():
 				selected_quest = quest
 				run_once = true
+				#setQuestInfo()
 				)
 		if quest.completed:
 			completed_quests.add_child(button)
 		else:
 			ongoing_quests.add_child(button)
-	OverworldGlobals.setMenuFocus(ongoing_quests)
+	#await get_tree().process_frame
+	#OverworldGlobals.setMenuFocus(ongoing_quests)
 
 func setQuestInfo():
 	clearQuestInfo()
@@ -43,9 +41,9 @@ func setQuestInfo():
 	for objectve in selected_quest.objectives:
 		if objectve.active:
 			var objective_description = Label.new()
-			objective_description.custom_minimum_size.x = objectives_container.size.x
+			#objective_description.custom_minimum_size.x = objectives_container.size.x
 			objective_description.text = str("* ", objectve.description)
-			objective_description.autowrap_mode = 3
+			#objective_description.autowrap_mode = 3
 			if objectve.completed:
 				objective_description.self_modulate.a = 0.5
 			if run_once and objectve.active:
@@ -58,12 +56,6 @@ func clearQuestInfo():
 	description.text = ""
 	for child in objective_scroller.get_children():
 		child.queue_free()
-
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed('ui_tab_right') and quests_containter.current_tab + 1 < quests_containter.get_tab_count():
-		quests_containter.current_tab += 1
-	elif Input.is_action_just_pressed('ui_tab_left') and quests_containter.current_tab - 1 >= 0:
-		quests_containter.current_tab -= 1
 
 func _on_quest_container_tab_changed(tab):
 	match tab:

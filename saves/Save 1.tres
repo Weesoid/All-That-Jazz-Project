@@ -1,0 +1,166 @@
+[gd_resource type="Resource" script_class="SavedGame" load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_ydyhn"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_ectho"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataCombatant.gd" id="3_26bgo"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="4_k1568"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_amg8j"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_xnykt"]
+
+[sub_resource type="Resource" id="Resource_uqdwp"]
+script = ExtResource("1_ydyhn")
+position = Vector2(200.983, 20.9253)
+scene_path = "res://scenes/entities/Player.tscn"
+direction = 90
+
+[sub_resource type="Resource" id="Resource_8nl51"]
+script = ExtResource("2_ectho")
+quests = Array[String](["res://resources/quests/GetThatItem.tres"])
+quest_objectives_data = {
+"res://resources/quests/GetThatItem.tres": {
+"Get Scrap": [true, true, 0],
+"Mischief": [true, true, 0],
+"Noodle": [false, false, 0],
+"Tell Questy": [true, true, 1]
+}
+}
+
+[sub_resource type="Resource" id="Resource_kwocg"]
+script = ExtResource("3_26bgo")
+charms = {
+0: "",
+1: "",
+2: ""
+}
+stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 4,
+"defense": 0.0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 1.0,
+"resist": 0.05,
+"speed": 1
+}
+base_stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 4,
+"defense": 0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 28,
+"resist": 0.05,
+"speed": 1
+}
+mandatory = true
+lingering_effects = Array[String](["FadedIII", "CriticalEye"])
+initialized = true
+stat_points = 5
+stat_point_allocations = {
+"damage": 0,
+"defense": 0,
+"handling": 0
+}
+file_references = {
+"active_abilities": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
+"equipped_weapon": ["", 0]
+}
+
+[sub_resource type="Resource" id="Resource_6n7cl"]
+script = ExtResource("3_26bgo")
+charms = {
+0: "",
+1: "",
+2: ""
+}
+stat_values = {
+"accuracy": 1.0,
+"crit": 0.09,
+"crit_dmg": 1.52,
+"damage": 7,
+"defense": 0.02,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 1,
+"heal_mult": 1.22,
+"health": 1.0,
+"resist": 0.07,
+"speed": 4
+}
+base_stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 4,
+"defense": 0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 4,
+"resist": 0.05,
+"speed": 1
+}
+mandatory = false
+lingering_effects = Array[String](["FadedIII", "CriticalEye"])
+initialized = true
+stat_points = 5
+stat_point_allocations = {
+"damage": 0,
+"defense": 0,
+"handling": 0
+}
+file_references = {
+"active_abilities": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
+"equipped_weapon": ["", 0]
+}
+
+[sub_resource type="Resource" id="Resource_v6np4"]
+script = ExtResource("4_k1568")
+team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
+map_logs = {
+"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup2"]
+}
+equipped_arrow = "res://resources/items/ArrowSleeper.tres"
+equipped_blessing = ""
+currency = 161
+team_level = 5
+current_exp = 0
+progression_data = {}
+team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres"])
+combatant_save_data = {
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_6n7cl"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_kwocg")
+}
+unlocked_abilities = {}
+added_abilities = {}
+max_team_level = 5
+known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
+rested = false
+
+[sub_resource type="Resource" id="Resource_fncyw"]
+script = ExtResource("5_amg8j")
+inventory = {
+"res://resources/items/ArrowSleeper.tres": 94,
+"res://resources/items/CritRations.tres": 15,
+"res://resources/items/Rations.tres": 16,
+"res://resources/items/ScrapSalvage.tres": 102
+}
+crafted_items = Array[String]([])
+
+[resource]
+script = ExtResource("6_xnykt")
+name = "Save 1 - 00:07:45
+Morale 5
+Node2D"
+playtime = 465.761
+current_map_path = "res://scenes/maps/Sidescroller.tscn"
+save_data = [SubResource("Resource_uqdwp"), SubResource("Resource_8nl51"), SubResource("Resource_v6np4"), SubResource("Resource_fncyw")]

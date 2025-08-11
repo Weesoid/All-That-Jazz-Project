@@ -162,7 +162,7 @@ func _physics_process(delta):
 			can_move=true
 		
 		# Jump detector
-		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO and canDoStaminaAction(5):
+		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO and isFacingUp()  and canDoStaminaAction(5) :
 			jump(-225.0)
 		elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
 			phase()
@@ -294,9 +294,9 @@ func isFacingDown():
 func _unhandled_input(_event: InputEvent):
 	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu"):
-		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
+		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu():
-		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
+		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	# Interaction handling
 	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing:
 		var interactables = interaction_detector.get_overlapping_areas()

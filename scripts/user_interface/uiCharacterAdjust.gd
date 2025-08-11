@@ -1,27 +1,29 @@
 extends Control
 class_name MemberAdjustUI
 
+const SWORD_ICON = "res://images/sprites/icon_weapon.png"
+const SACK_ICON = "res://images/sprites/icon_sack.png"
+
 @export var show_temperments = false
-@onready var pool = $MainPanel/Abilities/PanelContainer/MarginContainer/ScrollContainer/VBoxContainer
-@onready var member_container = $Members/HBoxContainer
-@onready var stat_points = $MainPanel/Button/Label
-@onready var show_attrib_adjust = $MainPanel/Button
-@onready var attrib_adjust = $MainPanel/AttributesAdjust
-@onready var attrib_view = $MainPanel/AttributeView
-@onready var equipped_charms = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms
-@onready var weapon_button = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon
-@onready var charm_slot_a = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotA
-@onready var charm_slot_b = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotB
-@onready var charm_slot_c = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/SlotC
-@onready var equipment_select_point = $Marker2D
-@onready var formation_button = $ChangeFormation
-@onready var infliction = $MainPanel/Panel/Infliction
-@onready var primary_temperments = $MainPanel/Temperment/Primary/PrimaryTemperment
-@onready var secondary_temperments = $MainPanel/Temperment/Secondary/PrimaryTemperment
-@onready var character_view = $MainPanel/Panel/Marker2D
-@onready var attrib_view_animator = $MainPanel/Button/AnimationPlayer
-@onready var character_name = $MainPanel/Panel/Label
-@onready var weapon_durability = $MainPanel/Charms/PanelContainer/MarginContainer/EquippedCharms/Weapon/Label
+@onready var pool = $Abilities/MarginContainer/ScrollContainer/VBoxContainer
+@onready var member_container = $Formation/Members/HBoxContainer
+@onready var stat_points = $Character/StatAdjusters/Button/Label
+@onready var show_attrib_adjust = $Character/StatAdjusters/Button
+@onready var attrib_adjust = $Character/SubMenus/AttributeAdjust
+@onready var attrib_view = $Stats/HSplitContainer/AttributeView
+@onready var equipped_charms = $Character/StatAdjusters
+@onready var weapon_button = $Character/StatAdjusters/Weapon
+@onready var charm_slot_a = $Character/StatAdjusters/SlotA
+@onready var charm_slot_b = $Character/StatAdjusters/SlotB
+@onready var charm_slot_c = $Character/StatAdjusters/SlotC
+@onready var equipment_select_point = $SubmenuPoint
+@onready var formation_button = $Formation/ChangeFormation
+@onready var infliction = $Character/Panel/Label/Infliction
+@onready var primary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/Primary/PrimaryTemperment
+@onready var secondary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/Secondary/PrimaryTemperment
+@onready var character_view = $Character/Panel/Marker2D
+@onready var character_name = $Character/Panel/Label
+@onready var weapon_durability = $Character/StatAdjusters/Weapon/Label
 
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
@@ -30,21 +32,24 @@ func _process(_delta):
 	if selected_combatant != null:
 		attrib_view.combatant = selected_combatant
 		attrib_adjust.combatant = selected_combatant
-		if selected_combatant.isInflicted():
-			infliction.text = 'INFLICTED!'
-			infliction.add_theme_color_override("font_color", Color.ORANGE)
-			infliction.tooltip_text = selected_combatant.getLingeringEffectsString()
-		else:
-			infliction.add_theme_color_override("font_color", Color.WHITE)
-			infliction.text = ''
-			infliction.tooltip_text = ''
+		
+#			infliction.text = 'INFLICTED!'
+#			infliction.add_theme_color_override("font_color", Color.ORANGE)
+#			infliction.tooltip_text = selected_combatant.getLingeringEffectsString()
+#		else:
+#			infliction.add_theme_color_override("font_color", Color.WHITE)
+#			infliction.text = ''
+#			infliction.tooltip_text = ''
 		if selected_combatant.stat_points > 0:
 			stat_points.text = str(selected_combatant.stat_points)
-#			if !attrib_view_animator.is_playing():
-#				attrib_view_animator.play('UnspentPoints')
 		else:
-#			attrib_view_animator.play('RESET')
 			stat_points.text = ''
+
+func addStatusEffectIcons():
+	for child in infliction.get_children():
+		child.queue_free()
+	for effect in selected_combatant.lingering_effects:
+		infliction.add_child(OverworldGlobals.createStatusEffectIcon(effect))
 
 func _ready():
 	loadMembers()
@@ -87,6 +92,12 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		loadAbilities()
 		updateTemperments()
 		updateEquipped()
+	if selected_combatant != null:
+		if selected_combatant.ability_set.size() >= 4:
+			dimInactiveAbilities()
+		if selected_combatant.isInflicted():
+			addStatusEffectIcons()
+	
 	if has_node('Roster'):
 		get_node('Roster').inspect_mark.hide()
 
@@ -158,9 +169,24 @@ func createAbilityButton(ability, location):
 				button.add_theme_icon_override('icon', load("res://images/sprites/ability_mark.png"))
 			else:
 				button.remove_theme_icon_override('icon')
-			print(selected_combatant.ability_set)
+			
+			if selected_combatant.ability_set.size() >= 4:
+				dimInactiveAbilities()
+			elif selected_combatant.ability_set.size() < 4:
+				undimAbilities()
 	)
 	location.add_child(button)
+
+func dimInactiveAbilities():
+	for ability_button in pool.get_children():
+		if !selected_combatant.ability_set.has(ability_button.ability):
+			ability_button.disabled = true
+			ability_button.dimButton()
+
+func undimAbilities():
+	for ability_button in pool.get_children():
+		ability_button.disabled = false
+		ability_button.undimButton()
 
 func setButtonDisabled(set_to: bool):
 	for button in pool.get_children():
@@ -204,7 +230,7 @@ func _on_weapon_pressed():
 func _on_slot_a_pressed():
 	if selected_combatant.charms[0] != null: 
 		selected_combatant.unequipCharm(0)
-		charm_slot_a.icon = load("res://images/sprites/icon_plus.png")
+		charm_slot_a.icon = load(SACK_ICON)
 	await showEquipment(0, 0)
 	updateEquipped()
 	charm_slot_a.grab_focus()
@@ -212,7 +238,7 @@ func _on_slot_a_pressed():
 func _on_slot_b_pressed():
 	if selected_combatant.charms[1] != null: 
 		selected_combatant.unequipCharm(1)
-		charm_slot_b.icon = load("res://images/sprites/icon_plus.png")
+		charm_slot_b.icon = load(SACK_ICON)
 	await showEquipment(0, 1)
 	updateEquipped()
 	charm_slot_b.grab_focus()
@@ -220,7 +246,7 @@ func _on_slot_b_pressed():
 func _on_slot_c_pressed():
 	if selected_combatant.charms[2] != null: 
 		selected_combatant.unequipCharm(2)
-		charm_slot_c.icon = load("res://images/sprites/icon_plus.png")
+		charm_slot_c.icon = load(SACK_ICON)
 	await showEquipment(0, 2)
 	updateEquipped()
 	charm_slot_c.grab_focus()
@@ -242,21 +268,21 @@ func updateEquipped():
 		return
 	
 	if selected_combatant.equipped_weapon != null:
-		weapon_button.text = selected_combatant.equipped_weapon.name
+		#weapon_button.text = selected_combatant.equipped_weapon.name
 		weapon_button.icon = selected_combatant.equipped_weapon.icon
 		weapon_durability.text = '%s / %s' % [selected_combatant.equipped_weapon.durability, selected_combatant.equipped_weapon.max_durability]
 		if selected_combatant.equipped_weapon.durability <= 0:
 			weapon_durability.modulate = Color.RED
 		weapon_durability.show()
 	else:
-		weapon_button.icon = null
-		weapon_button.text = 'NO  GEAR'
+		weapon_button.icon = load(SWORD_ICON)
+		#weapon_button.text = 'NO  GEAR'
 		weapon_durability.modulate = Color.WHITE
 		weapon_durability.hide()
 	
-	charm_slot_a.icon = load("res://images/sprites/icon_plus.png")
-	charm_slot_b.icon = load("res://images/sprites/icon_plus.png")
-	charm_slot_c.icon = load("res://images/sprites/icon_plus.png")
+	charm_slot_a.icon = load(SACK_ICON)
+	charm_slot_b.icon = load(SACK_ICON)
+	charm_slot_c.icon = load(SACK_ICON)
 	if selected_combatant.charms[0] != null:
 		charm_slot_a.icon = selected_combatant.charms[0].icon
 	if selected_combatant.charms[1] != null:

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterEquip.gd" id="1_3gpyr"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_jmc6r"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtons.tres" id="2_rjs3c"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="3_3kub0"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="3_3kub0"]
 [ext_resource type="Texture2D" uid="uid://cxqye3hwkqsge" path="res://images/sprites/cross.png" id="5_iu1jn"]
 
 [sub_resource type="Animation" id="Animation_7eruq"]
@@ -87,8 +87,8 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -76.0
 offset_top = -192.0
-offset_right = 84.0
-offset_bottom = -8.0
+offset_right = 116.0
+offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("2_rjs3c")
@@ -105,7 +105,7 @@ layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
-columns = 4
+columns = 5
 
 [node name="CustomButton" parent="PanelContainer/MarginContainer/ScrollContainer/GridContainer" instance=ExtResource("3_3kub0")]
 layout_mode = 2

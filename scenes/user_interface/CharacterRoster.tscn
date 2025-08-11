@@ -40,20 +40,33 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="Roster" parent="." node_paths=PackedStringArray("char_page") instance=ExtResource("2_w1qpt")]
+offset_left = -272.0
+offset_top = -132.0
+offset_right = 272.0
+offset_bottom = -100.0
+char_page = NodePath("../CharacterAdjust")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -280.0
+offset_top = -100.0
+offset_right = 280.0
+offset_bottom = 118.0
+
 [node name="CharacterAdjust" parent="." instance=ExtResource("1_ymvan")]
 layout_mode = 1
-offset_left = -137.0
-offset_top = -2.0
-offset_right = -137.0
-offset_bottom = -2.0
+offset_left = -272.0
+offset_top = -88.0
+offset_right = 328.0
+offset_bottom = 145.0
 show_temperments = true
 
-[node name="Roster" parent="CharacterAdjust" instance=ExtResource("2_w1qpt")]
-layout_mode = 0
-offset_left = 344.0
-offset_top = -146.0
-offset_right = 432.0
-offset_bottom = 144.0
+[node name="Formation" parent="CharacterAdjust" index="4"]
+alignment = 0
+
+[node name="SubmenuPoint" parent="CharacterAdjust" index="5"]
+position = Vector2(216, 244)
 
 [node name="GetAllCombatants" type="Button" parent="."]
 layout_mode = 0
@@ -66,3 +79,5 @@ alignment = 0
 script = SubResource("GDScript_xd62j")
 
 [connection signal="pressed" from="GetAllCombatants" to="GetAllCombatants" method="_on_pressed"]
+
+[editable path="CharacterAdjust"]

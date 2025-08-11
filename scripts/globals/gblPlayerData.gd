@@ -190,13 +190,11 @@ func addCurrency(value: int):
 		currency += value
 
 func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
-	print('penar')
 	if unlocked_abilities.keys().has(combatant):
 		unlocked_abilities[combatant].append(ability)
 	else:
 		unlocked_abilities[combatant] = []
 		unlocked_abilities[combatant].append(ability)
-	print(unlocked_abilities)
 
 func addAbility(combatant, ability):
 	if combatant is String:
@@ -263,13 +261,14 @@ func addCombatantToTeam(combatant_id):
 func setAbilityActive(combatant: ResPlayerCombatant, ability: ResAbility, set_active:bool):
 	if set_active:
 		if combatant.ability_set.size() >= 4:
-			OverworldGlobals.showPrompt('Max abilities enabled.')
-			return
+			return false
 		combatant.file_references['active_abilities'].append(ability.resource_path)
 		combatant.ability_set.append(load(ability.resource_path))
 	else:
 		combatant.file_references['active_abilities'].erase(ability.resource_path)
 		combatant.ability_set.erase(load(ability.resource_path))
+	
+	return true
 
 func removeCombatant(combatant_id: ResPlayerCombatant):
 	for member in team:

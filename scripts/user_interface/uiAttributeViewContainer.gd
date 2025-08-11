@@ -1,32 +1,17 @@
 extends Control
 
-@export var borders = true
-@export var view_hidden = true
-@export var view_abilities = false
-@export var view_debug = false
-
 @onready var combatant: ResCombatant
-@onready var attribute_tab = $Attributes
-@onready var hidden_tab = $HiddenAttributes
-@onready var hp_val = $Attributes/MarginContainer/VBoxContainer/Health/ProgressBar
-@onready var brawn_val = $Attributes/MarginContainer/VBoxContainer/Brawn/ProgressBar
-@onready var grit_val = $Attributes/MarginContainer/VBoxContainer/Grit/ProgressBar
-@onready var handling_val = $Attributes/MarginContainer/VBoxContainer/Handling/CustomCountBar
-@onready var hustle_val = $Attributes/MarginContainer/VBoxContainer/Hustle/Value
-@onready var acc_val = $HiddenAttributes/MarginContainer/VBoxContainer/Accuracy/ProgressBar
-@onready var crit_d_val = $HiddenAttributes/MarginContainer/VBoxContainer/Dodge/Value
-@onready var crit_val = $HiddenAttributes/MarginContainer/VBoxContainer/Crit/ProgressBar
-@onready var resist_val = $HiddenAttributes/MarginContainer/VBoxContainer/Resist/ProgressBar
-@onready var healm_val = $HiddenAttributes/MarginContainer/VBoxContainer/HealMult/Value
-@onready var hp_text = $Attributes/MarginContainer/VBoxContainer/Health/ProgressBar/HealthValues
-@onready var debug_status = $Debug
-@onready var abilities_label = $Abilities
-
-func _ready():
-	if !borders:
-		var stylebox:StyleBox = load("res://design/BorderlessContiner.tres")
-		attribute_tab.add_theme_stylebox_override('panel', stylebox)
-		hidden_tab.add_theme_stylebox_override('panel', stylebox)
+@onready var hp_val = $Health/ProgressBar
+@onready var brawn_val = $Brawn/ProgressBar
+@onready var grit_val = $Grit/ProgressBar
+@onready var handling_val = $Handling/CustomCountBar
+@onready var hustle_val = $Hustle/Value
+@onready var acc_val = $Accuracy/ProgressBar
+@onready var crit_d_val = $Dodge/Value
+@onready var crit_val = $Crit/ProgressBar
+@onready var resist_val = $Resist/ProgressBar
+@onready var healm_val = $HealMult/Value
+@onready var hp_text = $Health/ProgressBar/HealthValues
 
 func _process(_delta):
 	if combatant != null:
@@ -49,10 +34,6 @@ func _process(_delta):
 			healm_val.text = str(combatant.stat_values['heal_mult'])
 		else:
 			healm_val.text = 'BROKEN'
-		# Abilities
-		if view_abilities:
-			abilities_label.text = getAbilities(combatant)
-			abilities_label.show()
 	
 		#highlightModifiedStats(hp_val, 'health')
 		highlightModifiedStats(brawn_val, 'damage')

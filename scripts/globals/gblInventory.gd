@@ -10,7 +10,7 @@ var recipes: Dictionary = {
 	['Murder Charm', 'Scrap Salvage', null]: 'CharmStoneWall',
 	['Scrap Salvage', 'Precious Salvage', null]: 'CharmMurder',
 }
-var max_inventory: int = 200
+var max_inventory: int = 500
 
 signal added_item_to_inventory
 
