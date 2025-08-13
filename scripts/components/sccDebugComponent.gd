@@ -23,7 +23,7 @@ func _process(_delta):
 		equipped_charm.text = 'No active blessing.'
 	#reward_bank.text = str(OverworldGlobals.getCurrentMap().REWARD_BANK)
 	save_name.text = 'Save Name: ' + str(PlayerGlobals.save_name)
-	speed.text = 'Speed: ' + str(OverworldGlobals.player.SPEED)
+	speed.text = 'Speed: ' + str(OverworldGlobals.player.speed)
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_toggle_debug"):

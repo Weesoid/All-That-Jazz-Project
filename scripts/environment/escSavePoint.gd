@@ -19,6 +19,7 @@ func fightCombatantSquad():
 	OverworldGlobals.changeToCombat(name)
 
 func interact():
+	OverworldGlobals.player.camping=true
 	OverworldGlobals.destroyAllPatrollers(true)
 	OverworldGlobals.setPlayerInput(false)
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
@@ -45,6 +46,7 @@ func exit():
 	mini_bars = []
 	OverworldGlobals.player.player_camera.hideOverlay(1.5)
 	await get_tree().process_frame
+	OverworldGlobals.player.camping=false
 
 func addRestSprite(combatant: ResPlayerCombatant):
 	for sprite in rest_spots.get_children():

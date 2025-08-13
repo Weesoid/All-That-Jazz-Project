@@ -31,7 +31,7 @@ var can_move = true
 var direction = Vector2()
 var bow_mode = false
 var bow_draw_strength = 0
-var SPEED = 100.0
+var speed = 100.0
 var stamina_regen = true # MIND THIS, PREFERABLY ONLY INVI CAN DISABLE/ENABLE STAMINA REGEN
 var sprinting = false
 var climbing = false
@@ -44,6 +44,7 @@ var default_camera_pos: Vector2
 var diving = false
 var dive_strength:float=-125
 var invincible = false
+var camping = false
 
 signal jumped(jump_velocity)
 signal dived
@@ -51,7 +52,7 @@ signal phased
 
 func _ready():
 	#name = 'Willis'
-	SPEED = PlayerGlobals.overworld_stats['walk_speed']
+	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	animation_tree.active = true
 	
 	PlayerGlobals.loadSquad()
@@ -119,7 +120,8 @@ func _physics_process(delta):
 	#print(velocity.x)
 	# Gravity
 	if not is_on_floor() and !climbing:
-		#sprinting = false
+		if bow_draw_strength > 0.0:
+			setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		velocity.x = 0
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 		fall_damage += 1
@@ -133,6 +135,7 @@ func _physics_process(delta):
 		OverworldGlobals.damageParty(damage, ['Faceplant!', "That's gotta hurt.", 'Watch your step!'])
 		fall_damage = 0
 		suddenStop()
+		resetStates()
 		animation_player.play('Faceplant')
 		await animation_player.animation_finished
 		can_move = true
@@ -178,11 +181,11 @@ func _physics_process(delta):
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing
 			sprinting = false
 			velocity.y = direction.y * 100.0
-		velocity.x = direction.x * SPEED # Walking
+		velocity.x = direction.x * speed # Walking
 	else:
 		if climbing:
 			velocity.y = 0.0 # Stop climbing
-		velocity.x = move_toward(velocity.x, 0, SPEED) # Stop walking
+		velocity.x = move_toward(velocity.x, 0, speed) # Stop walking
 	move_and_slide()
 	
 	animation_tree.advance(ANIMATION_SPEED * delta)
@@ -195,7 +198,7 @@ func _physics_process(delta):
 	if PlayerGlobals.overworld_stats['stamina'] <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
 		Input.action_press("ui_bow")
 	if sprinting and PlayerGlobals.overworld_stats['stamina'] > 0.0 and bow_draw_strength == 0 and can_move:
-		SPEED = PlayerGlobals.overworld_stats['sprint_speed']
+		setSpeed(PlayerGlobals.overworld_stats['sprint_speed'])
 		ANIMATION_SPEED = 1.0
 		if velocity != Vector2.ZERO and is_on_floor(): 
 			PlayerGlobals.overworld_stats['stamina'] -= PlayerGlobals.overworld_stats['sprint_drain']
@@ -203,12 +206,12 @@ func _physics_process(delta):
 		if PlayerGlobals.overworld_stats['stamina'] > 0.0:
 			PlayerGlobals.overworld_stats['stamina'] -= 0.1
 	elif sprinting and PlayerGlobals.overworld_stats['stamina'] < 0.0:
-		SPEED = PlayerGlobals.overworld_stats['walk_speed']
+		setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		ANIMATION_SPEED = 0.0
 	elif !sprinting and PlayerGlobals.overworld_stats['stamina'] < 100 and stamina_regen:
 		PlayerGlobals.overworld_stats['stamina'] += PlayerGlobals.overworld_stats['stamina_gain']
 	if (!sprinting or PlayerGlobals.overworld_stats['stamina'] <= 0.0) and bow_draw_strength == 0.0:
-		SPEED = PlayerGlobals.overworld_stats['walk_speed']
+		setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		ANIMATION_SPEED = 0.0
 	
 	# Ensure that stamina doesn't over regen
@@ -293,9 +296,9 @@ func isFacingDown():
 
 func _unhandled_input(_event: InputEvent):
 	# UI Handling
-	if Input.is_action_just_pressed("ui_show_menu"):
+	if Input.is_action_just_pressed("ui_show_menu") and !camping:
 		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
-	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu():
+	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu() and !camping:
 		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	# Interaction handling
 	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing:
@@ -352,7 +355,7 @@ func resetStates():
 	undrawBowAnimation()
 	toggleVoidAnimation(false)
 	sprinting = false
-	SPEED = PlayerGlobals.overworld_stats['walk_speed']
+	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	ANIMATION_SPEED = 0.0
 	power_inputs = ''
 	cancelPower()
@@ -408,9 +411,7 @@ func drawBow():
 	
 	if Input.is_action_pressed("ui_bow_draw") and canPullBow():
 		if bow_draw_strength < 1.5: suddenStop(false)
-		#sprinting = false
-		#print('Setting speed!')
-		SPEED = 15.0
+		setSpeed(15.0)
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10) + sprite.offset
 		bow_draw_strength += 0.1
@@ -448,7 +449,7 @@ func undrawBow():
 	bow_line.hide()
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
-	SPEED = PlayerGlobals.overworld_stats['walk_speed']
+	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 
 func shootProjectile():
 	bow_line.hide()
@@ -463,6 +464,11 @@ func shootProjectile():
 
 func shakeCamera(strength:float, speed:float):
 	player_camera.shake(strength,speed)
+
+func setSpeed(p_speed:float, only_on_floor:bool=true):
+	if only_on_floor and !is_on_floor():
+		return
+	speed = p_speed
 
 # Based on https://www.youtube.com/watch?v=WrMORzl3g1U
 func updateAnimationParameters():
@@ -526,16 +532,18 @@ func playDrawSound():
 		OverworldGlobals.playSound("res://audio/sounds/bow-loading-38752.ogg")
 
 func canMelee():
-	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and isFacingSide() and bow_mode and !diving
+	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and isFacingSide() and bow_mode and !diving and is_on_floor()
 
 func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
-	#velocity = Vector2.ZERO CHANGE LATER
-	sprinting = !stop_sprint
-	Input.action_release('ui_move_down')
-	Input.action_release('ui_move_up')
-	Input.action_release('ui_move_left')
-	Input.action_release('ui_move_right')
-	can_move = !stop_move
+	if stop_sprint:
+		sprinting = false
+		ANIMATION_SPEED=0.0
+	if stop_move:
+		Input.action_release('ui_move_down')
+		Input.action_release('ui_move_up')
+		Input.action_release('ui_move_left')
+		Input.action_release('ui_move_right')
+		can_move = false
 
 func setUIVisibility(set_visibility:bool):
 	var exceptions = ['ColorOverlay', 'PlayerPrompt']

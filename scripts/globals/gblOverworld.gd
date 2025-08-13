@@ -140,7 +140,6 @@ func showMenu(path: String):
 		if isPlayerCheating(): player.get_node('DebugComponent').hide()
 		setMouseController(true)
 		player.player_camera.get_node('UI').add_child(main_menu)
-		#create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		setPlayerInput(false)
 	else:
 		if isPlayerCheating(): player.get_node('DebugComponent').show()

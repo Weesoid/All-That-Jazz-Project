@@ -98,15 +98,15 @@ func _physics_process(delta):
 	if global_position.distance_to(OverworldGlobals.player.global_position) > follow_offset*follow_index:
 		if z_index != 0: z_index = 0
 		var direction = (OverworldGlobals.player.position-position).normalized()
-		velocity.x = snappedf(direction.x*(OverworldGlobals.player.SPEED),100.0)
+		velocity.x = snappedf(direction.x*(OverworldGlobals.player.speed),100.0)
 		updateSprite()
 	else:
-		velocity.x = move_toward(velocity.x, 0, (OverworldGlobals.player.SPEED*speed_multiplier)) # Stop walking
+		velocity.x = move_toward(velocity.x, 0, (OverworldGlobals.player.speed*speed_multiplier)) # Stop walking
 		stopWalkAnimation()
 	if global_position.distance_to(OverworldGlobals.player.global_position) > 300 and !OverworldGlobals.player.climbing:
 		fadeInOut()
 		teleportToTarget()
-		
+	
 	
 	move_and_slide()
 

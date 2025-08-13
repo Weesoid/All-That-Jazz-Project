@@ -12,6 +12,7 @@ extends Control
 @onready var confirm_rest = $RestStuff/ConfirmRest
 @onready var squad = OverworldGlobals.getCombatantSquad('Player')
 @onready var save_point: SavePoint = OverworldGlobals.getCurrentMap().get_node('SavePoint')
+@onready var player_ui_path = OverworldGlobals.player.player_camera.get_node('UI')
 var camp_item: ResCampItem
 var camp_target: ResPlayerCombatant
 var select_guard:bool = false
@@ -90,7 +91,7 @@ func loadUserInterface(path):
 	var ui = load(path).instantiate()
 	ui.name = 'Menu'
 	setButtons(false)
-	add_child(ui)
+	player_ui_path.add_child(ui)
 	back_button.show()
 
 func tweenAbilityButtons(buttons: Array):
@@ -108,8 +109,8 @@ func tweenAbilityButtons(buttons: Array):
 
 func _on_back_button_pressed():
 	back_button.hide()
-	if has_node('Menu'):
-		get_node('Menu').queue_free()
+	if player_ui_path.has_node('Menu'):
+		player_ui_path.get_node('Menu').queue_free()
 	for child in camp_item_container.get_children():
 		child.queue_free()
 	save_point.setBarVisibility(false)
@@ -129,6 +130,10 @@ func showContainer(container):
 	container.show()
 	OverworldGlobals.setMenuFocus(container)
 	await tweenAbilityButtons(container.get_children())
+
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed("ui_show_menu") and (player_ui_path.has_node('Menu') or camp_item_container.visible):
+		_on_back_button_pressed()
 
 func _on_rest_pressed():
 	showContainer(null)
@@ -231,7 +236,5 @@ func _on_no_rest_pressed():
 	queue_free()
 
 func _on_inventory_pressed():
-	loadUserInterface("res://scenes/user_interface/Inventory.tscn")
+	loadUserInterface("res://scenes/user_interface/GameMenu.tscn")
 
-func _on_party_pressed():
-	loadUserInterface("res://scenes/user_interface/CharacterAdjust.tscn")
