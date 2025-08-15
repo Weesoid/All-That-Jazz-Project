@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://r4d1xnyarsyl"]
+[gd_scene load_steps=11 format=3 uid="uid://r4d1xnyarsyl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeAdjust.gd" id="1_unumd"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_il4r5"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://b2trsep3ukxi0" path="res://design/RightSideButtonHighlights.tres" id="3_ffloy"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_is7rp"]
 [ext_resource type="Theme" uid="uid://bid2xvoeqgilk" path="res://design/DefaultTheme.tres" id="4_2j15m"]
+[ext_resource type="Theme" uid="uid://cuu2oxc3xqlvt" path="res://design/SideButtonHighlights.tres" id="6_xeuy1"]
 
 [sub_resource type="Animation" id="Animation_nxntp"]
 length = 0.001
@@ -146,6 +147,12 @@ layout_mode = 2
 theme = ExtResource("3_ffloy")
 text = "X"
 
+[node name="Return" parent="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer" instance=ExtResource("2_il4r5")]
+layout_mode = 2
+theme = ExtResource("6_xeuy1")
+text = "Done"
+alignment = 1
+
 [node name="BrawnVal" type="Label" parent="StatAdjustPanel"]
 layout_mode = 0
 offset_left = 80.0
@@ -190,3 +197,4 @@ libraries = {
 [connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit/Reset" to="." method="_on_reset_grit_pressed"]
 [connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling/Up" to="." method="_on_up_hand_pressed"]
 [connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling/Reset" to="." method="_on_reset_handling_pressed"]
+[connection signal="pressed" from="StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Return" to="." method="_on_return_pressed"]

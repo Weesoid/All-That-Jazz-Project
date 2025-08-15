@@ -1,4 +1,5 @@
 extends Control
+class_name QuestsUI
 
 @onready var objectives_container = $MarginContainer/MarginContainer2/DescriptionPanel/Objectives
 @onready var ongoing_quests = $QuestContainer/MarginContainer/VBoxContainer/VBoxContainer/Ongoing/VBoxContainer
@@ -10,9 +11,9 @@ extends Control
 var selected_quest: ResQuest
 var run_once = true
 
-func _process(_delta):
-	if selected_quest != null and run_once:
-		setQuestInfo()
+#func _process(_delta):
+#	if selected_quest != null and run_once:
+#		setQuestInfo()
 
 func _ready():
 	for quest in QuestGlobals.quests:
@@ -22,8 +23,7 @@ func _ready():
 		button.focus_entered.connect(
 			func setQuest():
 				selected_quest = quest
-				run_once = true
-				#setQuestInfo()
+				setQuestInfo()
 				)
 		if quest.completed:
 			completed_quests.add_child(button)
@@ -56,8 +56,3 @@ func clearQuestInfo():
 	description.text = ""
 	for child in objective_scroller.get_children():
 		child.queue_free()
-
-func _on_quest_container_tab_changed(tab):
-	match tab:
-		0: OverworldGlobals.setMenuFocus(ongoing_quests)
-		1: OverworldGlobals.setMenuFocus(completed_quests)

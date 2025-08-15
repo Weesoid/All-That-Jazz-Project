@@ -1,6 +1,5 @@
-# I DO NOT LIKE THIS, THIS IS A MESS!! But whatever.
-# >:/
 extends Control
+class_name InventoryUI
 
 @onready var inventory_grid = $MarginContainer/ScrollContainer/TabContainer
 @onready var space_label = $Space
@@ -24,7 +23,7 @@ func updateInventory():
 	for item in InventoryGlobals.inventory:
 		inventory_grid.add_child(createButton(item))
 	
-	OverworldGlobals.setMenuFocus(inventory_grid)
+	#OverworldGlobals.setMenuFocus(inventory_grid)
 
 func createButton(item: ResItem):
 	var button = OverworldGlobals.createItemButton(item)

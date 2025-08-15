@@ -32,14 +32,6 @@ func _process(_delta):
 	if selected_combatant != null:
 		attrib_view.combatant = selected_combatant
 		attrib_adjust.combatant = selected_combatant
-		
-#			infliction.text = 'INFLICTED!'
-#			infliction.add_theme_color_override("font_color", Color.ORANGE)
-#			infliction.tooltip_text = selected_combatant.getLingeringEffectsString()
-#		else:
-#			infliction.add_theme_color_override("font_color", Color.WHITE)
-#			infliction.text = ''
-#			infliction.tooltip_text = ''
 		if selected_combatant.stat_points > 0:
 			stat_points.text = str(selected_combatant.stat_points)
 		else:
@@ -374,3 +366,6 @@ func _on_button_pressed():
 	else:
 		attrib_adjust.showPanel()
 		attrib_adjust.focus()
+
+func grabFocus():
+	OverworldGlobals.setMenuFocus(pool)

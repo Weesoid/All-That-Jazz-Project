@@ -172,7 +172,7 @@ offset_top = 2.0
 offset_right = -8.0
 offset_bottom = 2.0
 
-[node name="AttributeAdjust" parent="Character/SubMenus" instance=ExtResource("4_ukx4i")]
+[node name="AttributeAdjust" parent="Character/SubMenus" node_paths=PackedStringArray("return_button") instance=ExtResource("4_ukx4i")]
 visible = false
 z_index = 1
 layout_mode = 2
@@ -185,6 +185,7 @@ offset_left = 84.0
 offset_top = 152.0
 offset_right = 84.0
 offset_bottom = 152.0
+return_button = NodePath("../../StatAdjusters/Button")
 
 [node name="Stats" type="MarginContainer" parent="."]
 layout_mode = 2

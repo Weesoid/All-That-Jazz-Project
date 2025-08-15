@@ -170,6 +170,18 @@ func closeMenu(menu: Control):
 func inMenu():
 	return player.player_camera.get_node('UI').has_node('uiMenu')
 
+func setControlFocus(control):
+	print(control.get_children())
+	for child in control.get_children():
+		if child is Button:
+			child.grab_focus()
+			print('grabbin boob')
+			return
+		elif child is Container and containerHasButtons(child):
+			getContainerButton(child).grab_focus()
+			print('grabbin boo')
+			return
+
 func setMenuFocus(container: Container):
 	if container.get_child_count() > 0:
 		container.get_child(0).grab_focus()
@@ -187,6 +199,15 @@ func setMenuFocusMode(control_item, mode: bool):
 					child.focus_mode = Control.FOCUS_ALL
 				else:
 					child.focus_mode = Control.FOCUS_NONE
+
+func getContainerButton(container: Container)-> Button:
+	for child in container.get_children():
+		if child is Button:
+			return child
+	return null
+
+func containerHasButtons(container: Container):
+	return container.get_children().filter(func(control): return control is Button).size() > 0
 
 func insertTextureCode(texture: Texture)-> String:
 	return '[img]%s[/img]' % texture.resource_path

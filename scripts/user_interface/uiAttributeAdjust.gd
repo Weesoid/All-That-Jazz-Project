@@ -11,6 +11,7 @@ extends Control
 @onready var reset_grit = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Grit/Reset
 @onready var reset_handling = $StatAdjustPanel/PanelContainer/MarginContainer/VFlowContainer/Handling/Reset
 @onready var animator = $AnimationPlayer
+@export var return_button:Control
 
 func _ready():
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
@@ -45,6 +46,8 @@ func showPanel():
 	animator.play("Show")
 
 func hidePanel():
+	if return_button != null:
+		return_button.grab_focus()
 	animator.play_backwards("Show")
 	await animator.animation_finished
 	hide()
@@ -98,3 +101,7 @@ func resetStat(stat: String, cost):
 	
 	if combatant.hasEquippedWeapon() and !combatant.equipped_weapon.canUse(combatant):
 		combatant.unequipWeapon()
+
+
+func _on_return_pressed():
+	hidePanel()
