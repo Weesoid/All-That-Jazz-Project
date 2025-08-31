@@ -1,11 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://j1akjh3lc0v"]
+[gd_scene load_steps=2 format=3 uid="uid://j1akjh3lc0v"]
 
-[ext_resource type="Script" path="res://scripts/user_interface/uiUtilitySelector.gd" id="2_6amlo"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="2_pi671"]
 
 [node name="UtilitySelector" type="Node2D"]
 scale = Vector2(0.55, 0.55)
-script = ExtResource("2_6amlo")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchors_preset = 5

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://di5s6dqvu1lav"]
+[gd_scene load_steps=3 format=3 uid="uid://di5s6dqvu1lav"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomCountBar.gd" id="1_6kc3e"]
+[ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="2_rtjqq"]
 
 [node name="CustomCountBar" type="Control"]
 layout_mode = 3
@@ -9,3 +10,31 @@ script = ExtResource("1_6kc3e")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_rtjqq")
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_rtjqq")
+
+[node name="TextureRect3" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_rtjqq")
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_rtjqq")
+
+[node name="TextureRect5" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_rtjqq")
+
+[node name="TextureRect6" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_rtjqq")
+
+[node name="TextureRect7" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_rtjqq")

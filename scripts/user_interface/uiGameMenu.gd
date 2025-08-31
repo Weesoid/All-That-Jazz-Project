@@ -35,6 +35,5 @@ func grabTabFocus(tab:int):
 		if quests.get_children().size() == 1:
 			quests = menu.get_child(0).completed_quests
 		menu = quests
-		print(menu)
-	#await get_tree().process_frame
+	
 	OverworldGlobals.setControlFocus(menu)

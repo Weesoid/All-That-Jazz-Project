@@ -48,7 +48,7 @@ func _on_pressed():
 	audio_player.stop()
 	audio_player.stream = click_sound
 	audio_player.play()
-	
+	ability_icon.self_modulate = Color.WHITE
 	icon_animator.play('Pressed')
 	#await icon_animator.animation_finished
 	#if has_focus(): icon_animator.play("Focus")
@@ -69,7 +69,7 @@ func _on_focus_entered():
 		showDescription()
 
 func _on_mouse_entered():
-	if focused_entered_sound == null: return
+	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
 	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
 	audio_player.stop()
 	audio_player.stream = focused_entered_sound
@@ -82,7 +82,8 @@ func _on_mouse_entered():
 	
 	if Input.is_action_pressed("ui_select_arrow"):
 		showDescription()
-	grab_focus()
+	if focus_mode != Control.FOCUS_NONE:
+		grab_focus()
 
 func _on_mouse_exited():
 	z_index = 0
@@ -98,10 +99,10 @@ func _on_focus_exited():
 		hideDescription()
 
 func _input(_event):
-	if Input.is_action_just_released("ui_select_arrow") and description_label.visible:
-		hideDescription()
 	if Input.is_action_just_pressed("ui_select_arrow") and !description_label.visible and has_focus():
 		showDescription()
+	if Input.is_action_just_released("ui_select_arrow") and description_label.visible:
+		hideDescription()
 
 func showDescription():
 	if outside_combat:

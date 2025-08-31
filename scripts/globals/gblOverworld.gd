@@ -182,7 +182,7 @@ func setControlFocus(control):
 			print('grabbin boo')
 			return
 
-func setMenuFocus(container: Container):
+func setMenuFocus(container: Control):
 	if container.get_child_count() > 0:
 		container.get_child(0).grab_focus()
 
@@ -295,11 +295,14 @@ func createStatusEffectIcon(effect_id):
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	return icon
 
-func createAbilityButton(ability: ResAbility, large_icon:bool=false)-> CustomAbilityButton:
+func createAbilityButton(ability: ResAbility, outside_combat:bool=false)-> CustomAbilityButton:
 	var button: CustomAbilityButton = load("res://scenes/user_interface/AbilityButton.tscn").instantiate()
 	button.ability = ability
-	button.outside_combat = large_icon
+	if outside_combat:
+		button.outside_combat = true
+		button.theme = load("res://design/AbilityButtonsOutCombat.tres")
 	return button
+
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.player.player_camera.prompt.showPrompt(message, time, audio_file)

@@ -205,6 +205,7 @@ position = Vector2(155, 0)
 position = Vector2(-161, -20)
 
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
+reinforcements_turn = 5
 combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc")])
 afflicted_status_effects = Array[String](["CriticalEye"])
 

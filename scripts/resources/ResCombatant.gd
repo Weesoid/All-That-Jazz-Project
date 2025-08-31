@@ -85,6 +85,7 @@ func setBreatheTween(mode:int):
 		return
 	else:
 		return
+	
 	getSprite().position = Vector2.ZERO
 	match mode:
 		0: # Normal Breathing

@@ -153,7 +153,6 @@ func _physics_process(delta):
 		
 		if Input.is_action_just_pressed("ui_accept") and canDive() and canDoStaminaAction(5.0):
 			dived.emit()
-			#print(velocity)
 			diving=true
 			jump(dive_strength)
 			dodge()
@@ -236,10 +235,9 @@ func isMovementAllowed():
 	return can_move and is_processing_input() and isMobile()
 
 func canDive():
-	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0
+	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0 and ((Input.is_action_pressed('ui_move_left') or Input.is_action_pressed('ui_move_right')) and !Input.is_action_pressed('ui_move_up'))
 
 func _input(_event):
-	# Power handling
 	if !channeling_power and power_listening and !can_move and isMobile() and player_camera.power_input_container.get_child_count() < 3:
 		if Input.is_action_just_pressed('ui_left'):
 			power_inputs += 'a'
@@ -359,7 +357,7 @@ func resetStates():
 	ANIMATION_SPEED = 0.0
 	power_inputs = ''
 	cancelPower()
-	player_camera.quiver.select_name.text = ''
+	#player_camera.quiver.select_name.text = ''
 	player_camera.quiver.visible = false
 	Input.action_release("ui_bow_draw")
 
@@ -369,9 +367,6 @@ func resetAnimation():
 func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
-#	if OverworldGlobals.getCurrentMap().SAFE:
-#		prompt.("Can't use [color=yellow]Bow[/color] right now.")
-#		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
 		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
 		return false
@@ -387,9 +382,6 @@ func canDrawBow()-> bool:
 func canUsePower():
 	if OverworldGlobals.inMenu():
 		return false
-#	if OverworldGlobals.getCurrentMap().SAFE:
-#		player_camera.prompt.("Can't use [color=gray]Gambit[/color] right now.")
-#		return false
 	if bow_draw_strength != 0.0:
 		return false
 	if OverworldGlobals.getCombatantSquad('Player').is_empty():
@@ -433,23 +425,25 @@ func drawBow():
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
 	if Input.is_action_just_released("ui_bow_draw") and canShootBow(): 
 		suddenStop()
-		playShootAnimation()
 		shootProjectile()
+		playShootAnimation()
 		await animation_tree.animation_finished
-		can_move = true
 		undrawBow()
+		
 
 func canPullBow():
-	return !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile() and (isFacingSide() or isFacingUp())
+	return !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile() and !diving and (isFacingSide() or isFacingUp())
 
 func canShootBow()-> bool:
-	return can_move and bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile()
+	return can_move and bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile() and velocity.x == 0
 
 func undrawBow():
 	bow_line.hide()
 	bow_line.points[1].y = 0
 	bow_draw_strength = 0
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
+	if !can_move:
+		can_move = true
 
 func shootProjectile():
 	bow_line.hide()
@@ -462,8 +456,8 @@ func shootProjectile():
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
 
-func shakeCamera(strength:float, speed:float):
-	player_camera.shake(strength,speed)
+func shakeCamera(strength:float, shake_speed:float):
+	player_camera.shake(strength,shake_speed)
 
 func setSpeed(p_speed:float, only_on_floor:bool=true):
 	if only_on_floor and !is_on_floor():

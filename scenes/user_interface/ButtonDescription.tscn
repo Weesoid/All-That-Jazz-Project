@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2kta24hg7ch4"]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtons.tres" id="1_232of"]
+[ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_232of"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiAbilityButtonSideDescription.gd" id="2_eb6du"]
 
 [sub_resource type="Animation" id="Animation_qxw2k"]

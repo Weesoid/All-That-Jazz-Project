@@ -6,10 +6,10 @@ class_name CustomButton
 @export var description_offset: Vector2= Vector2.ZERO
 @export var focused_entered_sound: AudioStream = preload("res://audio/sounds/421465__jaszunio15__click_5.ogg")
 @export var click_sound: AudioStream = preload("res://audio/sounds/421469__jaszunio15__click_149.ogg")
-
 var random_pitch = 0.1
 
 func _on_focus_entered():
+	#create_tween().tween_property(self,'scale',Vector2(1.05,1.05),0.1)
 	if focused_entered_sound == null: return
 	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
 	audio_player.stop()
@@ -26,6 +26,7 @@ func _on_pressed():
 	audio_player.play()
 
 func _on_mouse_entered():
+	#create_tween().tween_property(self,'scale',Vector2(1.05,1.05),0.1)
 	if focused_entered_sound == null: return
 	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
 	audio_player.stop()
@@ -36,8 +37,13 @@ func _on_mouse_entered():
 	grab_focus()
 
 func _on_mouse_exited():
+	#create_tween().tween_property(self,'scale',Vector2(1.0,1.0),0.25)
 	if has_node('ButtonDescription'):
 		get_node('ButtonDescription').remove()
+
+func _on_focus_exited():
+	pass
+	#create_tween().tween_property(self,'scale',Vector2(1.0,1.0),0.25)
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_select_arrow") and has_focus() and description_text != '':
@@ -47,6 +53,4 @@ func showDescription():
 	var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
 	add_child(side_description)
 	side_description.showDescription(description_text, description_offset)
-
-
 

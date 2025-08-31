@@ -1,9 +1,5 @@
 ~ start
-Entity: Wanna fight!?
-Entity: ...Or not....
-Entity: I don't rlly care tbh....
-Player: Come on, don't be like that! Tell me a long winded fact about ipsum lorem!
-Entity: "Lorem ipsum" is a placeholder text commonly used in the graphic design, publishing, and web development industries. It's a collection of Latin words that have been scrambled to create text that doesn't convey any specific meaning, allowing designers to focus on the visual aspects of their work without being distracted by the content!
+Entity: Jabrowski
 - Player: Manipulate my experience => experience
 - Player: YES => fight
 - Player: Give me a blessing! => bless

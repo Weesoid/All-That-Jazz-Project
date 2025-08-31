@@ -21,9 +21,9 @@ func _ready():
 
 func _process(_delta):
 	if !valuesCorrect():
-		#print('x')
 		var filled = 0
-		for child in container.get_children(): child.queue_free()
+		for child in container.get_children(): 
+			child.queue_free()
 		for i in range(max_value):
 			var rect: TextureRect = TextureRect.new()
 			rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
@@ -45,3 +45,6 @@ func valuesCorrect()-> bool:
 			filled += 1
 	
 	return empty == max_value and filled == value
+
+func setValue(p_value):
+	value = p_value

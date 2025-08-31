@@ -2814,13 +2814,12 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -20)
+position = Vector2(0.833333, -20)
 texture = ExtResource("4_ybhti")
 offset = Vector2(0, -32)
-flip_h = true
 hframes = 9
 vframes = 6
-frame = 16
+frame = 19
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2851,7 +2850,7 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 3.14159
+rotation = 1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)

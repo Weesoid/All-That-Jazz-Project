@@ -7,8 +7,8 @@ const SACK_ICON = "res://images/sprites/icon_sack.png"
 @export var show_temperments = false
 @onready var pool = $Abilities/MarginContainer/ScrollContainer/VBoxContainer
 @onready var member_container = $Formation/Members/HBoxContainer
-@onready var stat_points = $Character/StatAdjusters/Button/Label
-@onready var show_attrib_adjust = $Character/StatAdjusters/Button
+@onready var stat_points = $Character/Panel/Button/Label
+@onready var show_attrib_adjust = $Character/Panel/Button
 @onready var attrib_adjust = $Character/SubMenus/AttributeAdjust
 @onready var attrib_view = $Stats/HSplitContainer/AttributeView
 @onready var equipped_charms = $Character/StatAdjusters
@@ -19,12 +19,13 @@ const SACK_ICON = "res://images/sprites/icon_sack.png"
 @onready var equipment_select_point = $SubmenuPoint
 @onready var formation_button = $Formation/ChangeFormation
 @onready var infliction = $Character/Panel/Label/Infliction
+@onready var temperments = $Stats/HSplitContainer/VFlowContainer
 @onready var primary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/Primary/PrimaryTemperment
 @onready var secondary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/Secondary/PrimaryTemperment
 @onready var character_view = $Character/Panel/Marker2D
 @onready var character_name = $Character/Panel/Label
 @onready var weapon_durability = $Character/StatAdjusters/Weapon/Label
-
+@onready var toggle_temperments = $Formation/ShowTemperments
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
 
@@ -187,6 +188,7 @@ func setButtonDisabled(set_to: bool):
 	for button in equipped_charms.get_children():
 		button.disabled = set_to
 	show_attrib_adjust.disabled = set_to
+	toggle_temperments.disabled = set_to
 
 func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
 	var button = OverworldGlobals.createCustomButton(load("res://design/PartyButtons.tres"))
@@ -362,10 +364,23 @@ func formatModifiers(stat_dict: Dictionary, bb_code:bool=true) -> String:
 
 func _on_button_pressed():
 	if attrib_adjust.visible:
+		setButtonDisabled(false)
 		attrib_adjust.hidePanel()
 	else:
+		setButtonDisabled(true)
 		attrib_adjust.showPanel()
 		attrib_adjust.focus()
 
 func grabFocus():
 	OverworldGlobals.setMenuFocus(pool)
+
+
+func _on_show_temperments_pressed():
+	if temperments.visible:
+		temperments.hide()
+		toggle_temperments.icon = load("res://images/sprites/icon_half_face.png")
+		toggle_temperments.tooltip_text = 'Show Temperments'
+	else:
+		temperments.show()
+		toggle_temperments.icon = load("res://images/sprites/icon_half_face_b.png")
+		toggle_temperments.tooltip_text = 'Hide Temperments'

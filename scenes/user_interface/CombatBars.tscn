@@ -1,10 +1,13 @@
-[gd_scene load_steps=22 format=3 uid="uid://b4dlbbhtcf2f2"]
+[gd_scene load_steps=25 format=3 uid="uid://b4dlbbhtcf2f2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="PackedScene" uid="uid://yuje0oodg6y2" path="res://scenes/user_interface/Indicator.tscn" id="3_2wqip"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_kl3dw"]
 [ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="6_1sh2p"]
+[ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="7_b4v4h"]
+[ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="8_fh81n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diu1g"]
 bg_color = Color(0, 0, 0, 1)
@@ -404,7 +407,7 @@ texture = ExtResource("3_kl3dw")
 layout_mode = 2
 offset_left = -3.0
 offset_top = 4.0
-offset_right = 27.0
+offset_right = 36.0
 offset_bottom = 36.0
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
@@ -439,4 +442,21 @@ position = Vector2(0, 3.8147e-06)
 
 [node name="Marker2D" type="Marker2D" parent="."]
 
+[node name="TargetClicker" parent="." instance=ExtResource("6_1sh2p")]
+visible = false
+offset_left = -16.0
+offset_top = -33.0
+offset_right = 16.0
+offset_bottom = 24.0
+theme = ExtResource("7_b4v4h")
+flat = true
+
+[node name="Sprite2D" type="Sprite2D" parent="TargetClicker"]
+modulate = Color(1, 1, 1, 0.180392)
+position = Vector2(16, 33)
+texture = ExtResource("8_fh81n")
+
 [connection signal="value_changed" from="HealthBar" to="." method="_on_health_bar_value_changed"]
+[connection signal="focus_entered" from="TargetClicker" to="." method="_on_target_clicker_focus_entered"]
+[connection signal="mouse_entered" from="TargetClicker" to="." method="_on_target_clicker_mouse_entered"]
+[connection signal="pressed" from="TargetClicker" to="." method="_on_target_clicker_pressed"]

@@ -79,3 +79,11 @@ func initializeRope():
 func _on_pin_area_area_entered(area):
 	if area is Projectile and must_shoot:
 		initializeRope()
+
+func jumpRope(jump_strength=-200.0):
+	if !OverworldGlobals.player.get_collision_mask_value(1):
+			OverworldGlobals.player.set_collision_mask_value(1, true)
+	OverworldGlobals.player.climbing = false
+	OverworldGlobals.player.toggleClimbAnimation(false)
+	OverworldGlobals.player.jump(jump_strength)
+	#apply_force(Vector2(50.0*OverworldGlobals.player.velocity.x,0))

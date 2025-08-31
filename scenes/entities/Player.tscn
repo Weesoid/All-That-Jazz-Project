@@ -142,7 +142,7 @@ tracks/5/keys = {
 
 [sub_resource type="Animation" id="Animation_rb2us"]
 resource_name = "Dive_2"
-length = 0.3
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -213,7 +213,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -21)]
+"values": [Vector2(0, -28)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -2855,7 +2855,7 @@ texture = ExtResource("5_nms4n")
 offset = Vector2(0, -24)
 hframes = 9
 vframes = 6
-frame = 21
+frame = 19
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2886,7 +2886,7 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 3.14159
+rotation = 1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)

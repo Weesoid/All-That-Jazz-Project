@@ -14,28 +14,10 @@ enum TargetState {
 @onready var enemy_container_markers = $EnemyContainer.get_children()
 @onready var onslaught_container = $OnslaughtContainer
 @onready var onslaught_container_animator = $OnslaughtContainer/AnimationPlayer
-@onready var secondary_panel = $CombatCamera/Interface/SecondaryPanel
-@onready var secondary_action_panel = $CombatCamera/Interface/SecondaryPanel/OptionContainer
-@onready var secondary_panel_container = $CombatCamera/Interface/SecondaryPanel/OptionContainer/CenterContainer/HBoxContainer
-@onready var secondary_description = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel/MarginContainer/RichTextLabel
-@onready var description_panel = $CombatCamera/Interface/SecondaryPanel/DescriptionPanel
-@onready var action_panel = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons
-@onready var whole_action_panel = $CombatCamera/Interface/ActionPanel
-@onready var escape_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape
-@onready var ui_inspect_target = $CombatCamera/Interface/Inspect
-@onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
-@onready var round_counter = $CombatCamera/Interface/RoundCounter
-@onready var round_arrow_spinner = $CombatCamera/Interface/RoundCounter/TextureRect2/AnimationPlayer
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
 @onready var battle_back = $ParallaxBackground/AnimationPlayer
-@onready var ui_animator = $CombatCamera/Interface/InterfaceAnimator
-@onready var guard_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Guard
-@onready var skills_button = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Skills
-@onready var tension_bar = $CombatCamera/Interface/TensionBar
-@onready var tension_bar_animator = $CombatCamera/Interface/TensionBar/AnimationPlayer
-@onready var escape_chance_label = $CombatCamera/Interface/ActionPanel/ActionPanel/MarginContainer/Buttons/Escape/Label
 @onready var team_hp_bar = $OnslaughtContainer/ProgressBar
 @onready var turn_timer_bar = $CombatCamera/Interface/TurnTimerBar
 @onready var turn_timer_animator = $CombatCamera/Interface/TurnTimerBar/AnimationPlayer
@@ -43,9 +25,9 @@ enum TargetState {
 @onready var fade_bars_animator = $CombatCamera/FadeBars/AnimationPlayer
 @onready var flasher = $CombatCamera/Flasher
 @onready var flasher_animator = $CombatCamera/Flasher/AnimationPlayer
-@onready var combat_log = $CombatCamera/Interface/CombatLog
-@onready var combat_log_animator = $CombatCamera/Interface/CombatLog/AnimationPlayer
-
+@onready var ui_inspect_target = $CombatCamera/Interface/Inspect
+@onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
+@onready var combat_ui: CombatUI = $CombatCamera/Interface/CombatUI
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -99,7 +81,7 @@ func _ready():
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
 	#OverworldGlobals.player.player_camera.hideOverlay(1.0)
 	
-	escape_button.disabled = !can_escape
+	#escape_button.disabled = !can_escape
 	transition_scene.visible = true
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
@@ -138,8 +120,6 @@ func _ready():
 	while active_combatant.isImmobilized():
 		setActiveCombatant(false)
 	
-	for button in action_panel.get_children():
-		button.focus_entered.connect(func(): secondary_panel.hide())
 	
 	active_combatant.act()
 	active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
@@ -160,12 +140,14 @@ func _ready():
 		OverworldGlobals.getCurrentMap().get_node('StalkerEngage').queue_free()
 	if OverworldGlobals.getCurrentMap().has_node('Stalker'):
 		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
+	
+	combat_ui.initialize()
 
 func _process(_delta):
 	#print(combatant_turn_order)
-	$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
+	#$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
 	#ui_attribute_view.combatant = target_combatant
-	round_counter.text = str(round_count)
+	#round_counter.text = str(round_count)
 	match target_state:
 		TargetState.SINGLE: playerSelectSingleTarget()
 		TargetState.MULTI: playerSelectMultiTarget()
@@ -177,13 +159,14 @@ func _unhandled_input(_event):
 	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
 		moveOnslaught(1)
 	
-	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and secondary_action_panel.visible and !onslaught_mode: 
-		resetActionLog()
-	if Input.is_action_just_pressed('ui_home'):
-		if action_panel.visible == true:
-			toggleUI(false)
-		else:
-			toggleUI(true)
+	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and !onslaught_mode: 
+		resetUI()
+		
+#	if Input.is_action_just_pressed('ui_home'):
+#		if action_panel.visible == true:
+#			toggleUI(false)
+#		else:
+#			toggleUI(true)
 	if Input.is_action_pressed("ui_select_arrow") and !ui_inspect_target.visible and target_state == TargetState.SINGLE:
 		inspectTarget(true)
 	elif Input.is_action_just_released("ui_select_arrow") and target_state == TargetState.SINGLE:
@@ -192,39 +175,25 @@ func _unhandled_input(_event):
 func on_player_turn():
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
 	if active_combatant.ai_package != null:
-		whole_action_panel.hide()
-		ui_animator.play_backwards('ShowActionPanel')
 		if has_node('QTE'): await CombatGlobals.qte_finished
 		if await checkWin(): return
 		await useAIPackage()
 		return
 	
-	whole_action_panel.show()
 	if has_node('QTE'):
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
 	
 	Input.action_release("ui_accept")
-	resetActionLog()
-	#escape_button.disabled = hasTameableCombatants()
-	skills_button.disabled = active_combatant.ability_set.is_empty() and !active_combatant.hasEquippedWeapon()
-	action_panel.show()
-	action_panel.get_child(0).grab_focus()
-	ui_animator.play('ShowActionPanel')
-	#print(last_used_ability)
-	if last_used_ability.keys().has(active_combatant) and active_combatant.ability_set.has(last_used_ability[active_combatant][0]):
-		#await get_tree().process_frame
-		_on_skills_pressed()
+	moveCamera(camera_position)
+	combat_ui.showAbilities(active_combatant)
 	if turn_time > 0.0:
 		startTimer()
 	await confirm
-	#await get_tree().process_frame
 	end_turn()
 
 func on_enemy_turn():
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
-	whole_action_panel.hide()
-	ui_animator.play_backwards('ShowActionPanel')
 	if has_node('QTE'): await CombatGlobals.qte_finished
 	if await checkWin(): return
 	await useAIPackage()
@@ -280,13 +249,12 @@ func end_turn(combatant_act=true):
 		await get_tree().process_frame
 	
 	if combat_event != null and turn_count % combat_event.turn_trigger == 0:
-		ui_animator.play_backwards('ShowActionPanel')
-		writeCombatLog(combat_event.event_message)
+		combat_ui.writeCombatLog(combat_event.event_message)
 		commandExecuteAbility(null, combat_event.ability)
 		await get_tree().create_timer(2.0).timeout
 		if await checkWin(): return
 	elif combat_event != null and turn_count % combat_event.turn_trigger == combat_event.turn_trigger - 3:
-		writeCombatLog(combat_event.warning_message)
+		combat_ui.writeCombatLog(combat_event.warning_message)
 	
 	var turn_title = 'turn/%s' % turn_count
 	CombatGlobals.dialogue_signal.emit(turn_title)
@@ -301,14 +269,14 @@ func end_turn(combatant_act=true):
 	# Reset values
 	run_once = true
 	target_index = 0
-	secondary_panel.hide()
+	#secondary_panel.hide()
 	
 	# REINFORCEMENTS
 	randomize()
 	if turn_count % (reinforcements_turn-1) == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
-		writeCombatLog('Enemy reinforcements are incoming!')
+		combat_ui.writeCombatLog('Enemy reinforcements are incoming!')
 	if turn_count % reinforcements_turn == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
-		writeCombatLog('Enemy reinforcements arrived!')
+		combat_ui.writeCombatLog('Enemy reinforcements arrived!')
 		bonus_escape_chance -= 0.25
 		var replace = []
 		for combatant in combatants:
@@ -401,61 +369,6 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 #********************************************************************************
 # BASE combatant_scene NODE CONTROL
 #********************************************************************************
-func _on_skills_pressed():
-	getPlayerAbilities(active_combatant.ability_set)
-	if secondary_panel_container.get_child_count() == 0: return
-	animateSecondaryPanel('show')
-	description_panel.hide()
-	secondary_panel_container.get_child(0).grab_focus()
-
-func _on_guard_pressed():
-	resetActionLog()
-	animateSecondaryPanel('show')
-	Input.action_release("ui_accept")
-	forceCastAbility(load("res://resources/combat/abilities/Defend.tres"))
-
-func _on_inspect_pressed():
-	ui_animator.play('ShowInspect')
-	target_state = TargetState.INSPECT
-
-func _on_escape_pressed():
-	if CombatGlobals.randomRoll(calculateEscapeChance()*100):
-		CombatGlobals.combat_lost.emit(unique_id)
-		concludeCombat(2)
-	else:
-		whole_action_panel.hide()
-		ui_animator.play_backwards('ShowActionPanel')
-		var previous_active = active_combatant
-		if !previous_active.hasStatusEffect('Poised'):
-			battleFlash('Flash', Color.YELLOW)
-		bonus_escape_chance += 0.1
-		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
-		if selected_ability != null and selected_ability.instant_cast: selected_ability = null
-		confirm.emit()
-		CombatGlobals.addStatusEffect(previous_active, 'Stunned', true)
-
-func _on_escape_focus_entered():
-	if can_escape:
-#		if hasTameableCombatants():
-#			escape_chance_label.text = 'VOID LOCK'
-#		else:
-		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
-		escape_chance_label.show()
-
-func _on_escape_mouse_entered():
-	if can_escape:
-#		if hasTameableCombatants():
-#			escape_chance_label.text = 'VOID LOCK'
-#		else:
-		escape_chance_label.text = str(calculateEscapeChance()*100.0)+'%'
-		escape_chance_label.show()
-
-func _on_escape_mouse_exited():
-	escape_chance_label.hide()
-
-func _on_escape_focus_exited():
-	escape_chance_label.hide()
-
 func calculateEscapeChance()-> float:
 	var hustle_enemies = 0
 	var hustle_allies = 0
@@ -463,7 +376,7 @@ func calculateEscapeChance()-> float:
 		hustle_enemies += combatant.base_stat_values['speed']
 	for combatant in getCombatantGroup('team'):
 		hustle_allies += combatant.base_stat_values['speed']
-	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)+11
+	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
 
 func toggleUI(visibility: bool):
 	for marker in enemy_container_markers:
@@ -477,7 +390,9 @@ func toggleUI(visibility: bool):
 		if child is Control:
 			child.visible = visibility
 	
-	if visibility: resetActionLog()
+	if visibility: 
+		pass
+		#resetActionLog()
 
 func setUIModulation(ui_modulate: Color, duration:float=0.1):
 	for marker in enemy_container_markers:
@@ -494,79 +409,6 @@ func setUIModulation(ui_modulate: Color, duration:float=0.1):
 #********************************************************************************
 # ability SELECTION, TARGETING, AND EXECUTION
 #********************************************************************************
-func getPlayerAbilities(ability_set: Array[ResAbility]):
-	for child in secondary_panel_container.get_children():
-		child.queue_free()
-	
-	if active_combatant.equipped_weapon != null:
-		var button = createAbilityButton(active_combatant.equipped_weapon.effect, active_combatant.equipped_weapon)
-		button.custom_charge = active_combatant.equipped_weapon.durability
-		if !active_combatant.equipped_weapon.effect.enabled or active_combatant.equipped_weapon.durability <= 0:
-			button.disabled = true
-		secondary_panel_container.add_child(button)
-	if isCombatValid():
-		for ability in ability_set: secondary_panel_container.add_child(createAbilityButton(ability))
-	
-	await get_tree().process_frame
-	tweenAbilityButtons(secondary_panel_container.get_children())
-	if last_used_ability.keys().has(active_combatant) and ability_set.has(last_used_ability[active_combatant][0]):
-		for child in secondary_panel_container.get_children():
-			if child.ability == last_used_ability[active_combatant][0]: child.grab_focus()
-	else:
-		OverworldGlobals.setMenuFocus(secondary_panel_container)
-
-func tweenAbilityButtons(buttons: Array):
-	for button in buttons:
-		button.modulate = Color.TRANSPARENT
-	await get_tree().process_frame
-	for button in buttons:
-		var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-		tween.tween_property(button, 'scale', Vector2(1.1,1.1), 0.005)
-		tween.tween_property(button, 'scale', Vector2(1.0,1.0), 0.05)
-		tween.set_parallel(true)
-		tween.tween_property(button, 'modulate', Color.WHITE, 0.0025)
-		await tween.finished
-		OverworldGlobals.playSound('536805__egomassive__gun_2.ogg',-6.0)
-		#await get_tree().create_timer(0.025).timeout
-
-func getMoveAbilities():
-	for child in secondary_panel_container.get_children():
-		child.free()
-	
-	var pass_button = createAbilityButton(load("res://resources/combat/abilities/Pass.tres"))
-	#pass_button.pressed.connect(func(): confirm.emit())
-	#pass_button.focus_entered.connect(func():updateDescription(null, 'Pass this turn.'))
-	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Defend.tres")))
-	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Recede.tres")))
-	secondary_panel_container.add_child(createAbilityButton(load("res://resources/combat/abilities/Advance.tres")))
-	secondary_panel_container.add_child(pass_button)
-	secondary_panel_container.get_children()[0].disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
-	
-	animateSecondaryPanel('show')
-	tweenAbilityButtons(secondary_panel_container.get_children())
-	await get_tree().process_frame
-	var out = []
-	for ability in secondary_panel_container.get_children():
-		out.append(ability.text)
-	if last_used_ability.keys().has(active_combatant) and out.has(last_used_ability[active_combatant][0].name):
-		for child in secondary_panel_container.get_children():
-			if child.text == last_used_ability[active_combatant][0].name: child.grab_focus()
-	else:
-		OverworldGlobals.setMenuFocus(secondary_panel_container)
-
-func createAbilityButton(ability: ResAbility, weapon:ResWeapon=null)-> Button:
-	var button = OverworldGlobals.createAbilityButton(ability)
-	#button.text = ability.name
-	button.pressed.connect(func(): forceCastAbility(ability, weapon))
-	button.focus_entered.connect(func():updateDescription(ability))
-	button.mouse_entered.connect(func():updateDescription(ability))
-	if !ability.enabled or !ability.canUse(active_combatant, combatants):
-		button.disabled = true
-	if ability == load("res://resources/combat/abilities/Defend.tres") and active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard')):
-		button.disabled = true
-		button.dimButton()
-	return button
-
 func playerSelectSingleTarget():
 	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
 		return
@@ -587,9 +429,6 @@ func playerSelectMultiTarget():
 	confirmCancelInputs()
 
 func playerSelectInspection():
-	#action_panel.hide()
-	whole_action_panel.hide()
-	tension_bar.hide()
 	valid_targets = sortCombatantsByPosition()
 	target_combatant = valid_targets[target_index]
 	ui_inspect_target.show()
@@ -605,12 +444,9 @@ func inspectTarget(inspect:bool):
 	ui_attribute_view.combatant = target_combatant
 	if inspect:
 		ui_inspect_target.show()
-		ui_animator.play('ShowInspect')
 		zoomCamera(Vector2(0.25,0.25))
 	else:
-		ui_animator.play_backwards('ShowInspect')
 		zoomCamera(Vector2(-0.25,-0.25))
-		await ui_animator.animation_finished
 		ui_inspect_target.hide()
 
 func removeTargetToken(target, caster):
@@ -618,7 +454,6 @@ func removeTargetToken(target, caster):
 		target_combatant.removeTokens(ResStatusEffect.RemoveType.GET_TARGETED)
 
 func executeAbility():
-	#writeTopLogMessage(selected_ability.name)
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	active_combatant.combatant_scene.z_index = 100
@@ -635,7 +470,7 @@ func executeAbility():
 	
 	if active_combatant is ResPlayerCombatant:
 		CombatGlobals.addTension(-selected_ability.tension_cost)
-	round_counter.hide()
+	#round_counter.hide()
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	
 	await get_tree().create_timer(0.25).timeout
@@ -684,7 +519,8 @@ func skipTurn():
 	if run_once:
 		Input.action_release("ui_accept")
 		confirm.emit()
-		action_panel.hide()
+		#combat_ui.hideUI()
+		#action_panel.hide()
 		run_once = false
 
 # For executing combat events and such.
@@ -763,8 +599,8 @@ func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, anim
 	addCombatant(new_combatant, true)
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(new_combatant, load(animation_path), 0.15)
-	escape_button.disabled = true
-	writeCombatLog("The grasp of the void prevents your escape.")
+#	escape_button.disabled = true
+	#writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
 	combatants.erase(combatant)
@@ -782,12 +618,12 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	else:
 		addTargetClickButton(valid_targets)
 	target_state = selected_ability.getTargetType()
-	updateDescription(ability)
-	description_panel.show()
-	ui_animator.play('FocusDescription')
-	tension_bar.hide()
-	secondary_action_panel.hide()
-	action_panel.hide()
+	#updateDescription(ability)
+	#description_panel.show()
+	#ui_animator.play('FocusDescription')
+	#tension_bar.hide()
+	#secondary_action_panel.hide()
+	#action_panel.hide()
 	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.target_type == ability.TargetType.SINGLE:
 		targetCombatant(last_used_ability[active_combatant][1])
 	await target_selected
@@ -810,28 +646,8 @@ func getChargesLeft(combatant: ResCombatant, ability: ResAbility):
 		return ability_charge_tracker[combatant][ability]
 	else:
 		return ability.charges
-
-func updateDescription(ability: ResAbility, text: String=''):
-	if ability != null:
-		secondary_description.text = ability.getRichDescription()
-	elif text != '':
-		secondary_description.text = text
 	
 	#secondary_description.show()
-
-func animateSecondaryPanel(animation: String):
-	await get_tree().process_frame
-	ui_animator.play('RESET')
-	if animation == 'show':
-		secondary_action_panel.show()
-		secondary_panel.show()
-		tension_bar.show()
-		whole_action_panel.hide()
-		ui_animator.play("ShowSecondaryPanel")
-		tension_bar_animator.play("Show_2")
-	elif animation == 'hide':
-		#ui_animator.play_backwards("ShowDescriptionPanel")
-		ui_animator.play_backwards("ShowOptionPanel")
 
 func getDeadCombatants(type: String=''):
 	var dead_combatants = combatants.duplicate()
@@ -870,7 +686,8 @@ func rollTurns():
 			combatant_turn_order.append([combatant, rolled_speed])
 	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
 	round_count += 1
-	round_arrow_spinner.play("Spin")
+	combat_ui.updateRoundCounter(round_count)
+	#round_arrow_spinner.play("Spin")
 
 func allCombatantsActed() -> bool:
 	for combatant in combatants:
@@ -990,37 +807,15 @@ func confirmCancelInputs():
 		target_selected.emit()
 	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
 		removeTargetButtons()
-		description_panel.hide()
-		ui_animator.play_backwards('FocusDescription')
-		resetActionLog()
-
-func resetActionLog(show_skills:bool=false):
-	if active_combatant is ResEnemyCombatant:
-		return
-	
-	moveCamera(camera_position)
-	whole_action_panel.show()
-	tension_bar.show()
-	round_counter.show()
-	#combat_camera.zoom = Vector2(1.0, 1.0)
-	ui_inspect_target.hide()
-	secondary_panel.hide()
-	target_state = TargetState.NONE
-	target_index = 0
-	action_panel.get_child(0).grab_focus()
-	action_panel.show()
-	ui_animator.play('ShowActionPanel')
-	tension_bar_animator.play("Show")
-	#guard_button.disabled = active_combatant is ResPlayerCombatant and (active_combatant.hasStatusEffect('Guard Break') or active_combatant.hasStatusEffect('Guard'))
-	await ui_animator.animation_finished
-	if show_skills and !skills_button.disabled:
-		_on_skills_pressed()
+		#description_panel.hide()
+		#ui_animator.play_backwards('FocusDescription')
+		#resetActionLog()
 
 func runAbility():
 	target_state = TargetState.NONE
 	if run_once:
 		executeAbility()
-		action_panel.hide()
+		#action_panel.hide()
 		run_once = false
 
 func concludeCombat(results: int):
@@ -1030,10 +825,10 @@ func concludeCombat(results: int):
 	combat_result = results
 	battle_music.stop()
 	moveCamera(camera_position)
-	whole_action_panel.hide()
-	secondary_panel.hide()
-	tension_bar.hide()
-	round_counter.hide()
+	#whole_action_panel.hide()
+	#secondary_panel.hide()
+	#tension_bar.hide()
+	#round_counter.hide()
 	for combatant in combatants:
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant, false)
@@ -1273,42 +1068,43 @@ func sortCombatantsByPosition()-> Array[ResCombatant]:
 #	return false
 
 func addTargetClickButton(combatant: ResCombatant):
-	if !is_instance_valid(combatant.combatant_scene): return
-	var button = TextureButton.new()
-	button.texture_hover = load("res://images/sprites/button_confirm_hover.png")
-	button.texture_normal = load("res://images/sprites/button_confirm_normal.png")
-	button.texture_pressed = load("res://images/sprites/button_confirm_click.png")
-	button.pressed.connect(
-		func(): 
-			if Input.is_action_pressed('ui_select_arrow'):
-				return
-			removeTargetButtons()
-			if target_state == TargetState.SINGLE:
-				target_combatant = combatant
-			target_selected.emit()
-			OverworldGlobals.playSound("56243__qk__latch_01.ogg")
-	)
-	button.mouse_entered.connect(
-		func(): 
-			OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
-			)
-	button.z_index = 999
-	button.name = 'TargetButton'
-	button.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	button.grow_vertical = Control.GROW_DIRECTION_BOTH
-	button.set_anchors_preset(Control.PRESET_CENTER)
-	#button.rotation_degrees = combatant.combatant_scene.rotation_degrees
-	combatant.combatant_scene.add_child(button)
-	if combatant is ResEnemyCombatant and combatant.is_converted:
-		button.position.y += 24
-		button.flip_v = true
-	else:
-		button.position.y -= 24
+	if !is_instance_valid(combatant.combatant_scene): 
+		return
+	combatant.combatant_scene.get_node('CombatBars').enableClicker()
+#	var button = TextureButton.new()
+#	button.texture_hover = load("res://images/sprites/button_confirm_hover.png")
+#	button.texture_normal = load("res://images/sprites/button_confirm_normal.png")
+#	button.texture_pressed = load("res://images/sprites/button_confirm_click.png")
+#	button.pressed.connect(
+#		func(): 
+#			if Input.is_action_pressed('ui_select_arrow'):
+#				return
+#			removeTargetButtons()
+#			if target_state == TargetState.SINGLE:
+#				target_combatant = combatant
+#			target_selected.emit()
+#			OverworldGlobals.playSound("56243__qk__latch_01.ogg")
+#	)
+#	button.mouse_entered.connect(
+#		func(): 
+#			OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+#			)
+#	button.z_index = 999
+#	button.name = 'TargetButton'
+#	button.scale = Vector2(4,4)
+#	button.grow_horizontal = Control.GROW_DIRECTION_BOTH
+#	button.grow_vertical = Control.GROW_DIRECTION_BOTH
+#	button.set_anchors_preset(Control.PRESET_CENTER)
+#	combatant.combatant_scene.add_child(button)
+#	if combatant is ResEnemyCombatant and combatant.is_converted:
+#		button.position.y += 24
+#		button.flip_v = true
+#	else:
+#		button.position.y -= 24
 
 func removeTargetButtons():
 	for combatant in combatants:
-		if combatant.combatant_scene.has_node('TargetButton'):
-			combatant.combatant_scene.get_node('TargetButton').queue_free()
+		combatant.combatant_scene.get_node('CombatBars').disableClicker()
 
 func startTimer():
 	turn_timer_bar.process_mode = Node.PROCESS_MODE_INHERIT
@@ -1324,28 +1120,33 @@ func stopTimer():
 	#turn_timer_bar.process_mode = Node.PROCESS_MODE_DISABLED
 
 func _on_turn_timer_timeout():
-	resetActionLog()
+	#resetActionLog()
 	turn_timer_animator.play_backwards("Show")
 	confirm.emit()
-
-func _on_shift_actions_pressed():
-	if ui_animator.is_playing() or (secondary_panel_container.get_children()[0].ability.name == 'Brace' and active_combatant.ability_set.is_empty()):
-		return
-	
-	resetActionLog()
-	if secondary_panel_container.get_children()[0].ability.name == 'Brace':
-		_on_skills_pressed()
-	else:
-		getMoveAbilities()
 
 func battleFlash(animation: String, color: Color):
 	flasher.modulate = color
 	flasher_animator.play(animation)
 
-func writeCombatLog(message: String):
-	if combat_log_animator.is_playing():
-		combat_log_animator.play('RESET')
-	#	await combat_log_animator.play_backwards('Show')
-	
-	combat_log.text = '[outline_size=2][outline_color=black][center]'+message
-	combat_log_animator.play('Show')
+func resetUI():
+	moveCamera(camera_position)
+	removeTargetButtons()
+	combat_ui.showUI()
+	target_state = TargetState.NONE
+	target_index = 0
+
+func attemptEscape():
+	if CombatGlobals.randomRoll(calculateEscapeChance()):
+		combat_ui.hideUI()
+		CombatGlobals.combat_lost.emit(unique_id)
+		concludeCombat(2)
+	else:
+		combat_ui.hideUI()
+		var previous_active = active_combatant
+		if !previous_active.hasStatusEffect('Poised'):
+			battleFlash('Flash', Color.YELLOW)
+		bonus_escape_chance += 0.1
+		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
+		if selected_ability != null and selected_ability.instant_cast: selected_ability = null
+		confirm.emit()
+		CombatGlobals.addStatusEffect(previous_active, 'Stunned', true)

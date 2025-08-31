@@ -7,7 +7,7 @@ class_name PlayerCamera
 @onready var cinematic_bars = $CinematicBars
 @onready var stamina_bar = $UI/StaminaBar
 @onready var power_input_container = $UI/PowerInputs
-@onready var quiver = $UtilitySelector
+@onready var quiver = $UI/Quiver
 @onready var color_overlay = $UI/ColorOverlay
 @onready var reward_banks = $UI/ClearProgress
 @onready var ammo_tex = $UI/Ammo/TextureRect

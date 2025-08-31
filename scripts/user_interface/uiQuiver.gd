@@ -1,7 +1,4 @@
-extends Node2D
-
-@onready var select_name = $Name
-@onready var other_arrows_container = $HBoxContainer
+extends Container
 
 var current_index = -1
 
@@ -12,13 +9,12 @@ func _input(event):
 		return
 	
 	if Input.is_action_just_pressed("ui_select_arrow") and OverworldGlobals.player.is_processing_input():
-		for child in other_arrows_container.get_children():
+		for child in get_children():
 			child.queue_free()
 			await child.tree_exited
 		for arrow in arrows:
 			loadOtherArrows(arrow)
 		current_index = arrows.find(PlayerGlobals.equipped_arrow)
-		updateIcon(arrows[current_index].icon, arrows[current_index].name)
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg")
 	if Input.is_action_pressed("ui_select_arrow") and OverworldGlobals.player.is_processing_input():
 		visible = true
@@ -37,7 +33,6 @@ func _input(event):
 				current_index -= 1
 				updateArrowSelect()
 	if Input.is_action_just_released('ui_select_arrow'):
-		select_name.text = ''
 		visible = false
 
 func updateArrowSelect():
@@ -50,10 +45,9 @@ func updateArrowSelect():
 		current_index = 0
 	elif current_index < 0:
 		current_index = arrows.size() - 1
-	updateIcon(arrows[current_index].icon, arrows[current_index].name)
 	arrows[current_index].equip()
 	
-	for child in other_arrows_container.get_children():
+	for child in get_children():
 		child.queue_free()
 		await child.tree_exited
 	for arrow in arrows:
@@ -62,12 +56,10 @@ func updateArrowSelect():
 func loadOtherArrows(arrow: ResProjectileAmmo):
 	var texture = TextureRect.new()
 	texture.texture = arrow.icon
-	texture.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	texture.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+	
 	if PlayerGlobals.equipped_arrow != arrow:
-		texture.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+		#texture.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 		texture.modulate = Color(Color.WHITE, 0.25)
-	other_arrows_container.add_child(texture)
-
-func updateIcon(_icon, display_name):
-	if display_name != '':
-		select_name.text = display_name.to_upper()
+	add_child(texture)

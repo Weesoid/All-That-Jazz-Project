@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cbkybcyyxjsku"]
+[gd_scene load_steps=23 format=3 uid="uid://cbkybcyyxjsku"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://b6otb3unpofi5" path="res://images/sprites/icon_sack.png" id="13_p5npw"]
 [ext_resource type="Texture2D" uid="uid://bei8dr7bb8bfq" path="res://images/sprites/icon_rotating_arrows.png" id="14_dhwtn"]
 [ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="18_sjp7i"]
+[ext_resource type="Texture2D" uid="uid://bid2yp6x5ds0a" path="res://images/sprites/icon_half_face.png" id="21_46t30"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qba66"]
 
@@ -60,6 +61,28 @@ layout_mode = 2
 custom_minimum_size = Vector2(168, 0)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="Button" type="TextureButton" parent="Character/Panel"]
+layout_mode = 2
+offset_left = 132.0
+offset_top = 120.0
+offset_right = 164.0
+offset_bottom = 152.0
+texture_normal = ExtResource("9_tpi3e")
+texture_pressed = ExtResource("10_pflur")
+texture_hover = ExtResource("11_wmyvu")
+texture_disabled = ExtResource("11_fxkff")
+texture_focused = ExtResource("10_4r0fd")
+
+[node name="Label" type="Label" parent="Character/Panel/Button"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 2.0
+offset_right = 61.0
+offset_bottom = 25.0
+mouse_filter = 1
+theme = ExtResource("8_hty5i")
+text = "25"
 
 [node name="Label" type="Label" parent="Character/Panel"]
 layout_mode = 1
@@ -102,24 +125,6 @@ position = Vector2(84, 104)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-
-[node name="Button" type="TextureButton" parent="Character/StatAdjusters"]
-layout_mode = 2
-texture_normal = ExtResource("9_tpi3e")
-texture_pressed = ExtResource("10_pflur")
-texture_hover = ExtResource("11_wmyvu")
-texture_disabled = ExtResource("11_fxkff")
-texture_focused = ExtResource("10_4r0fd")
-
-[node name="Label" type="Label" parent="Character/StatAdjusters/Button"]
-layout_mode = 0
-offset_left = 21.0
-offset_top = 2.0
-offset_right = 61.0
-offset_bottom = 25.0
-mouse_filter = 1
-theme = ExtResource("8_hty5i")
-text = "25"
 
 [node name="Weapon" parent="Character/StatAdjusters" instance=ExtResource("2_s185n")]
 layout_mode = 2
@@ -185,7 +190,7 @@ offset_left = 84.0
 offset_top = 152.0
 offset_right = 84.0
 offset_bottom = 152.0
-return_button = NodePath("../../StatAdjusters/Button")
+return_button = NodePath("../../Panel/Button")
 
 [node name="Stats" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -201,6 +206,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="VFlowContainer" type="VFlowContainer" parent="Stats/HSplitContainer"]
+visible = false
 layout_mode = 2
 alignment = 1
 
@@ -359,12 +365,20 @@ theme = ExtResource("9_c41m6")
 icon = ExtResource("14_dhwtn")
 icon_alignment = 1
 
+[node name="ShowTemperments" parent="Formation" instance=ExtResource("2_s185n")]
+layout_mode = 2
+tooltip_text = "Show Temperments"
+theme = ExtResource("9_c41m6")
+icon = ExtResource("21_46t30")
+icon_alignment = 1
+
 [node name="SubmenuPoint" type="Marker2D" parent="."]
 position = Vector2(272, 248)
 
-[connection signal="pressed" from="Character/StatAdjusters/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Character/Panel/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Character/StatAdjusters/Weapon" to="." method="_on_weapon_pressed"]
 [connection signal="pressed" from="Character/StatAdjusters/SlotA" to="." method="_on_slot_a_pressed"]
 [connection signal="pressed" from="Character/StatAdjusters/SlotB" to="." method="_on_slot_b_pressed"]
 [connection signal="pressed" from="Character/StatAdjusters/SlotC" to="." method="_on_slot_c_pressed"]
 [connection signal="pressed" from="Formation/ChangeFormation" to="." method="_on_change_formation_pressed"]
+[connection signal="pressed" from="Formation/ShowTemperments" to="." method="_on_show_temperments_pressed"]

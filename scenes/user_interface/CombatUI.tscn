@@ -1,0 +1,407 @@
+[gd_scene load_steps=20 format=3 uid="uid://dudecf5kpx35v"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiCombatUI.gd" id="1_xa35n"]
+[ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="1_xjxjm"]
+[ext_resource type="Resource" uid="uid://n15uy40oimtq" path="res://resources/combat/abilities/Defend.tres" id="2_mvnss"]
+[ext_resource type="Texture2D" uid="uid://cc77vpghixtg8" path="res://images/ability_icons/move.png" id="2_rufvp"]
+[ext_resource type="Texture2D" uid="uid://c057yn1t2726m" path="res://images/sprites/icon_tp.png" id="4_h2q6l"]
+[ext_resource type="Resource" uid="uid://ol8t3xlrcx8b" path="res://resources/combat/abilities/Advance.tres" id="6_15don"]
+[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="7_8it53"]
+[ext_resource type="Resource" uid="uid://vedm8h64ew7u" path="res://resources/combat/abilities/Recede.tres" id="7_et8gl"]
+[ext_resource type="Texture2D" uid="uid://du1iddji1w8cp" path="res://images/ability_icons/combat_gear.png" id="8_k8onw"]
+[ext_resource type="Texture2D" uid="uid://booeu7atgv18m" path="res://images/ability_icons/escape.png" id="9_1g12q"]
+[ext_resource type="Texture2D" uid="uid://cac4xj6cte52y" path="res://images/ability_icons/pass.png" id="9_hipl7"]
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="11_udija"]
+
+[sub_resource type="Animation" id="Animation_k3y2o"]
+resource_name = "Hide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_vvdwg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_a2ra5"]
+resource_name = "Show"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_shxqr"]
+_data = {
+"Hide": SubResource("Animation_k3y2o"),
+"RESET": SubResource("Animation_vvdwg"),
+"Show": SubResource("Animation_a2ra5")
+}
+
+[sub_resource type="Animation" id="Animation_yimmp"]
+resource_name = "New_Round"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2, 2), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.15708, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_t2f48"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e7a6n"]
+_data = {
+"New_Round": SubResource("Animation_yimmp"),
+"RESET": SubResource("Animation_t2f48")
+}
+
+[node name="CombatUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_xa35n")
+
+[node name="AbilityContainer" type="HFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -48.0
+offset_right = 256.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="BaseAbilities" type="MarginContainer" parent="AbilityContainer"]
+layout_mode = 2
+
+[node name="Tension" type="Control" parent="AbilityContainer/BaseAbilities"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="TensionBar" parent="AbilityContainer/BaseAbilities/Tension" instance=ExtResource("7_8it53")]
+offset_left = -99.0
+offset_top = 8.0
+offset_right = -99.0
+offset_bottom = 8.0
+value = 3
+max_value = 8
+
+[node name="TextureRect" type="TextureRect" parent="AbilityContainer/BaseAbilities/Tension"]
+layout_mode = 0
+offset_left = -112.0
+offset_top = 6.0
+offset_right = -100.0
+offset_bottom = 18.0
+texture = ExtResource("4_h2q6l")
+
+[node name="BaseAbilities" type="Control" parent="AbilityContainer/BaseAbilities"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Defend" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 2.0
+offset_right = 26.0
+focus_neighbor_top = NodePath("../Move")
+focus_neighbor_right = NodePath("../Gear")
+focus_neighbor_bottom = NodePath("../Pass")
+ability = ExtResource("2_mvnss")
+
+[node name="Movements" type="Control" parent="AbilityContainer/BaseAbilities/BaseAbilities"]
+visible = false
+anchors_preset = 0
+offset_left = 9.0
+offset_top = -40.0
+offset_right = 49.0
+
+[node name="Advance" parent="AbilityContainer/BaseAbilities/BaseAbilities/Movements" instance=ExtResource("1_xjxjm")]
+layout_mode = 1
+offset_left = 3.0
+offset_top = 11.0
+offset_right = 27.0
+offset_bottom = 35.0
+focus_neighbor_bottom = NodePath("../../Move")
+ability = ExtResource("6_15don")
+
+[node name="Recede" parent="AbilityContainer/BaseAbilities/BaseAbilities/Movements" instance=ExtResource("1_xjxjm")]
+layout_mode = 1
+offset_left = -25.0
+offset_top = 11.0
+offset_right = -1.0
+offset_bottom = 35.0
+focus_neighbor_bottom = NodePath("../../Move")
+ability = ExtResource("7_et8gl")
+
+[node name="Move" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 18.0
+offset_top = -15.0
+offset_right = 42.0
+offset_bottom = 9.0
+focus_neighbor_left = NodePath("../Defend")
+focus_neighbor_right = NodePath("../Gear")
+descriptions = {
+"description": "Show movement abilities.",
+"icon": ExtResource("2_rufvp"),
+"title": "Movement"
+}
+
+[node name="Gear" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 34.0
+offset_right = 58.0
+focus_neighbor_left = NodePath("../Defend")
+focus_neighbor_top = NodePath("../Move")
+focus_neighbor_bottom = NodePath("../Pass")
+descriptions = {
+"description": "",
+"icon": ExtResource("8_k8onw"),
+"title": ""
+}
+
+[node name="Pass" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = 42.0
+offset_bottom = 39.0
+focus_neighbor_left = NodePath("../Defend")
+focus_neighbor_right = NodePath("../Gear")
+descriptions = {
+"description": "Skip this turn.",
+"icon": ExtResource("9_hipl7"),
+"title": "Pass"
+}
+
+[node name="EscapeButton" parent="." instance=ExtResource("1_xjxjm")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -32.0
+offset_right = 16.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+descriptions = {
+"description": "",
+"icon": ExtResource("9_1g12q"),
+"title": ""
+}
+
+[node name="EscapeChance" type="Label" parent="EscapeButton"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = -64.0
+offset_bottom = 24.0
+theme = ExtResource("11_udija")
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CombatLog" type="RichTextLabel" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 376.0
+offset_bottom = 30.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+bbcode_enabled = true
+text = "This is a combat log message!"
+fit_content = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CombatLog"]
+libraries = {
+"": SubResource("AnimationLibrary_shxqr")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Rounds" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -48.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 48.0
+grow_horizontal = 0
+
+[node name="RoundText" type="Label" parent="Rounds"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -56.0
+offset_right = -16.0
+offset_bottom = 13.0
+grow_horizontal = 0
+pivot_offset = Vector2(16, 8)
+theme = ExtResource("11_udija")
+text = "Round"
+
+[node name="RoundCounter" type="Label" parent="Rounds"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_bottom = 13.0
+grow_horizontal = 0
+pivot_offset = Vector2(24, 5)
+theme = ExtResource("11_udija")
+text = "199"
+horizontal_alignment = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Rounds/RoundCounter"]
+libraries = {
+"": SubResource("AnimationLibrary_e7a6n")
+}
+
+[connection signal="focus_exited" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_focus_exited"]
+[connection signal="focus_exited" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede" to="." method="_on_recede_focus_exited"]
+[connection signal="pressed" from="AbilityContainer/BaseAbilities/BaseAbilities/Move" to="." method="_on_move_pressed"]
+[connection signal="pressed" from="AbilityContainer/BaseAbilities/BaseAbilities/Pass" to="." method="_on_pass_pressed"]
+[connection signal="focus_entered" from="EscapeButton" to="." method="_on_escape_button_focus_entered"]
+[connection signal="focus_exited" from="EscapeButton" to="." method="_on_escape_button_focus_exited"]
+[connection signal="mouse_entered" from="EscapeButton" to="." method="_on_escape_button_mouse_entered"]
+[connection signal="mouse_exited" from="EscapeButton" to="." method="_on_escape_button_mouse_exited"]
+[connection signal="pressed" from="EscapeButton" to="." method="_on_escape_button_pressed"]

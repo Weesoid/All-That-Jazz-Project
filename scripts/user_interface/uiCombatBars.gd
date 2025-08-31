@@ -17,6 +17,7 @@ class_name CombatBar
 @onready var pulse_gradient_sprite = $HealthBar/TurnPulser
 @onready var select_target = $SelectTarget
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
+@onready var target_clicker = $TargetClicker
 var indicator_animation = "Show"
 var attached_combatant: ResCombatant
 var previous_value = 0
@@ -126,3 +127,27 @@ func setBarVisibility(set_to:bool):
 	else:
 		health_bar_fader.modulate = Color.TRANSPARENT
 		health_bar.modulate = Color.TRANSPARENT
+
+func enableClicker():
+	target_clicker.show()
+
+func disableClicker():
+	target_clicker.hide()
+
+func _on_target_clicker_pressed():
+	var combat_scene = CombatGlobals.getCombatScene()
+	if combat_scene.target_state == combat_scene.TargetState.SINGLE:
+		combat_scene.target_combatant = attached_combatant
+		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
+	combat_scene.target_selected.emit()
+	combat_scene.removeTargetButtons()
+
+func _on_target_clicker_mouse_entered():
+	var combat_scene = CombatGlobals.getCombatScene()
+	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+	combat_scene.targetCombatant(attached_combatant)
+
+func _on_target_clicker_focus_entered():
+	var combat_scene = CombatGlobals.getCombatScene()
+	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+	combat_scene.targetCombatant(attached_combatant)

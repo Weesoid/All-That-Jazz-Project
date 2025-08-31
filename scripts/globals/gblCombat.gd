@@ -26,7 +26,7 @@ signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
 signal active_combatant_changed(combatant: ResCombatant)
-signal tension_changed(previous_tension, tension)
+signal tension_changed(current_tension)
 signal click_block
 
 #********************************************************************************
@@ -505,7 +505,6 @@ func checkReactions(target: ResCombatant):
 		removeStatusEffect(target, 'Jolted')
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
-	#OverworldGlobals.playSound("res://audio/sounds/334674__yoyodaman234__intense-sizzling-2.ogg")
 	removeStatusEffect(target, effectA)
 	removeStatusEffect(target, effectB)
 	execute_ability.emit(target, reaction)
@@ -622,14 +621,13 @@ func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
 	return enemy.tier+1 <= PlayerGlobals.getLevelTier()
 
 func addTension(amount: int):
-	var prev_tension = tension
 	if tension + amount > 8:
 		tension = 8
 	elif tension + amount < 0:
 		tension = 0
 	else:
 		tension += amount
-	tension_changed.emit(prev_tension, tension)
+	tension_changed.emit(tension)
 
 func applyFaded(target: ResCombatant):
 	if inCombat() and (getCombatScene().combat_result != -1 and getFadedLevel(target) == 0):

@@ -151,11 +151,11 @@ func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String
 	
 	for i in range(3, -1, -1):
 		if i >= caster_position['min'] and i <= caster_position['max']:
-			if CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition() and !ignore_active_pos:
+			if CombatGlobals.inCombat() and CombatGlobals.getCombatScene().active_combatant != null and i == CombatGlobals.getCombatScene().getCombatantPosition() and !ignore_active_pos:
 				postions.append(valid_self)
 			else:
 				postions.append(valid)
-		elif CombatGlobals.inCombat() and i == CombatGlobals.getCombatScene().getCombatantPosition() and !ignore_active_pos:
+		elif CombatGlobals.inCombat() and CombatGlobals.getCombatScene().active_combatant != null and i == CombatGlobals.getCombatScene().getCombatantPosition() and !ignore_active_pos:
 			postions.append(invalid_self)
 		else:
 			postions.append(invalid)
