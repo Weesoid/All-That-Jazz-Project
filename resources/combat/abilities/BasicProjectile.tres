@@ -56,6 +56,6 @@ target_position = {
 "max": 3,
 "min": 0
 }
-tension_cost = 0
+tension_cost = 4
 instant_cast = false
 required_level = 0

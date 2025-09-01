@@ -14,9 +14,9 @@ static func applyEffects(target, status_effect:ResStatusEffect):
 static func applyHitEffects(target, _caster, _value, status_effect):
 	if target is ResPlayerCombatant and target.stat_modifiers.keys().has('block'):
 		CombatGlobals.getCombatScene().battleFlash('Flash', Color.WHITE)
-		CombatGlobals.manual_call_indicator.emit(target, '[img]'+str(status_effect.texture.get_path())+'[/img] Blocked!', 'Resist')
+		#CombatGlobals.manual_call_indicator.emit(target, '[img]'+str(status_effect.texture.get_path())+'[/img] Blocked!', 'Resist')
 		if target is ResPlayerCombatant and status_effect.attached_data == 1:
-			CombatGlobals.addTension(1)
+			CombatGlobals.addTension(1,target.combatant_scene)
 			status_effect.attached_data = 0
 	else:
 		target.combatant_scene.block_timer.start(0.8)

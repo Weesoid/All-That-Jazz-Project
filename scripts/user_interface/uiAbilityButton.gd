@@ -54,7 +54,7 @@ func _on_pressed():
 	#if has_focus(): icon_animator.play("Focus")
 
 func _on_focus_entered():
-	if focused_entered_sound == null: return
+	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
 	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
 	audio_player.stop()
 	audio_player.stream = focused_entered_sound

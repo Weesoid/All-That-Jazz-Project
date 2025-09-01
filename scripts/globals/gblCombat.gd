@@ -26,7 +26,7 @@ signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
 signal active_combatant_changed(combatant: ResCombatant)
-signal tension_changed(current_tension)
+signal tension_changed(previous_tension,current_tension,from_target)
 signal click_block
 
 #********************************************************************************
@@ -201,6 +201,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	playHurtAnimation(target, damage, sound)
+	
 	# The wall of post damage effects
 	if hasBonusStat(bonus_stats, 'execute') and target.stat_values['health'] <= getBonusStat(bonus_stats, 'execute', target)*target.getMaxHealth():
 		OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", target.combatant_scene.global_position)
@@ -217,6 +218,9 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			'f': direction = 1
 			'b': direction = -1
 		getCombatScene().changeCombatantPosition(target, direction,false,int(move_data[1]))
+	if hasBonusStat(bonus_stats, 'tp') and caster is ResPlayerCombatant:
+		addTension(getBonusStat(bonus_stats,'tp',target), target.combatant_scene)
+
 #	if checkSpecialStat('plant', bonus_stats, target):
 #
 	if target.isDead():
@@ -620,14 +624,15 @@ func getFactionName(faction_value:int):
 func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
 	return enemy.tier+1 <= PlayerGlobals.getLevelTier()
 
-func addTension(amount: int):
+func addTension(amount: int,from_target:CombatantScene=null):
+	var previous_tension = tension
 	if tension + amount > 8:
 		tension = 8
 	elif tension + amount < 0:
 		tension = 0
 	else:
 		tension += amount
-	tension_changed.emit(tension)
+	tension_changed.emit(previous_tension, tension,from_target)
 
 func applyFaded(target: ResCombatant):
 	if inCombat() and (getCombatScene().combat_result != -1 and getFadedLevel(target) == 0):

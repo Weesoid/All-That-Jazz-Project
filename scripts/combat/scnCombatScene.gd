@@ -46,7 +46,7 @@ var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
-var camera_position: Vector2 = Vector2(0, 0)
+var camera_position: Vector2 = Vector2(0, 5)
 var enemy_reinforcements: Array[ResCombatant]
 var bonus_escape_chance = 0.0
 var onslaught_mode = false
@@ -79,9 +79,7 @@ func _ready():
 	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
-	#OverworldGlobals.player.player_camera.hideOverlay(1.0)
 	
-	#escape_button.disabled = !can_escape
 	transition_scene.visible = true
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
@@ -842,18 +840,18 @@ func concludeCombat(results: int):
 	var bonuses = []
 	await get_tree().create_timer(1.0).timeout
 	toggleUI(false)
-	
+	combat_ui.hideUI()
 	if results == 1:
-		if round_count <= 2:
+		if round_count <= 4:
 			morale_bonus += 0.25
 			loot_bonus += 1
 			bonuses.append('Swift Finish!')
-		if enemy_turn_count < getCombatantGroup('enemies').size():
+		if CombatGlobals.tension == 8:
 			loot_bonus += 1
-			bonuses.append('Ruthless Finish!')
-		if player_turn_count < getCombatantGroup('team').size():
+			bonuses.append('Full Tension!')
+		if CombatGlobals.tension == 0:
 			morale_bonus += 0.25
-			bonuses.append('Stragetic Finish!')
+			bonuses.append('Exhausted Tension!')
 		
 		reward_bank['experience'] += total_experience * morale_bonus
 		for enemy in getCombatantGroup('enemies'):
@@ -1131,7 +1129,7 @@ func battleFlash(animation: String, color: Color):
 func resetUI():
 	moveCamera(camera_position)
 	removeTargetButtons()
-	combat_ui.showUI()
+	combat_ui.showUI(true)
 	target_state = TargetState.NONE
 	target_index = 0
 
