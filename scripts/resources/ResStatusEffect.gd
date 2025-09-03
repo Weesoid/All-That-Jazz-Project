@@ -13,7 +13,8 @@ enum RemoveType {
 	GET_HEAL,
 	GET_TARGETED,
 	GET_STATUSED,
-	ON_TURN
+	ON_TURN,
+	GET_MISSED
 }
 enum RemoveStyle {
 	REMOVE,
@@ -99,7 +100,6 @@ func removeStatusEffect():
 		afflicted_combatant.lingering_effects.erase(name)
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '[s]%s' % getMessageIcon(), 'Resist')
 	elif afflicted_combatant is ResPlayerCombatant and lingers and afflicted_combatant.lingering_effects.has(name.replace(' ','')) and resistable:
-		print('nipple tits')
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, getMessageIcon(), 'Status_Added')
 	
 	if is_instance_valid(icon):

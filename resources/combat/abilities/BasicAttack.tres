@@ -16,7 +16,7 @@ damage_modifier = 1.0
 can_miss = true
 can_crit = true
 bonus_stats = {
-"status_effect": "Poison",
+"status_effect": "Chilled",
 "tp": "2"
 }
 return_pos = true

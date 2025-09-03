@@ -776,7 +776,8 @@ func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
 
 # This is disgusting but whatever
 func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true, only_permanent=false, do_tick=true):
-	for effect in combatant.status_effects:
+	for i in range(combatant.status_effects.size()-1,-1,-1):
+		var effect = combatant.status_effects[i]
 		if only_permanent and !effect.permanent:
 			continue
 		if (per_turn and !effect.tick_any_turn) or (!per_turn and effect.tick_any_turn): 
