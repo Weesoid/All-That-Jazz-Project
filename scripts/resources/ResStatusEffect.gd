@@ -12,7 +12,8 @@ enum RemoveType {
 	GET_HIT,
 	GET_HEAL,
 	GET_TARGETED,
-	GET_STATUSED
+	GET_STATUSED,
+	ON_TURN
 }
 enum RemoveStyle {
 	REMOVE,
@@ -85,7 +86,7 @@ func onHitTick(combatant, caster, received_value):
 		status_script.applyHitEffects(afflicted_combatant, caster, received_value, self)
 
 func removeStatusEffect():
-	if effect_type == EffectType.ON_HIT:
+	if effect_type == EffectType.ON_HIT and CombatGlobals.received_combatant_value.is_connected(onHitTick):
 		CombatGlobals.received_combatant_value.disconnect(onHitTick)
 	
 	if sounds['expire'] != '':

@@ -131,7 +131,7 @@ map_logs = {
 }
 equipped_arrow = "res://resources/items/ArrowSleeper.tres"
 equipped_blessing = ""
-currency = 4
+currency = 3
 team_level = 5
 current_exp = 0
 progression_data = {}

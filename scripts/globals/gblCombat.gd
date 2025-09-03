@@ -639,7 +639,8 @@ func applyFaded(target: ResCombatant):
 	if inCombat() and (getCombatScene().combat_result != -1 and getFadedLevel(target) == 0):
 		OverworldGlobals.addLingerEffect(target,'FadedI')
 		return
-	
+	if inCombat() and (getCombatScene().combat_result != -1 and getFadedLevel(target) >= 4):
+		return
 	var escalated_level = getFadedLevel(target)+1
 	
 	# Remove previous faded

@@ -49,7 +49,7 @@ var battle_music_path: String = ""
 var combat_result: int = -1
 var camera_position: Vector2 = Vector2(0, 5)
 var enemy_reinforcements: Array[ResCombatant]
-var bonus_escape_chance = 0.0
+var bonus_escape_chance = -1.0
 var onslaught_mode = false
 var onslaught_combatant: ResPlayerCombatant
 var previous_position: Vector2
@@ -219,8 +219,6 @@ func useAIPackage():
 	end_turn()
 
 func end_turn(combatant_act=true):
-	print('cycle!')
-	print(selected_ability)
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	if await checkWin(): 
@@ -314,10 +312,12 @@ func end_turn(combatant_act=true):
 		await DialogueManager.dialogue_ended
 	
 	if !active_combatant.isImmobilized():
+		active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 		active_combatant.act()
 		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
 		if is_instance_valid(active_combatant.combatant_scene):
+			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 			await showCannotAct('Immobile!')
 		end_turn()
 		return
@@ -347,6 +347,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 	if !isCombatValid() and is_valid_check: return
 	
 	for combatant in getDeadCombatants():
+		combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 		if combatant is ResEnemyCombatant:
 			if !combatant.getStatusEffectNames().has('Knock Out'): 
 				clearStatusEffects(combatant)
@@ -782,7 +783,7 @@ func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duratio
 			continue
 		effect.tick(update_duration, false, do_tick)
 		if effect.name == 'Fading' and update_duration: 
-			CombatGlobals.manual_call_indicator.emit(combatant, 'Fading...', 'Resist')
+			CombatGlobals.manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['down-bb']+effect.getMessageIcon()+' ...!', 'Resist')
 
 func refreshInstantCasts(combatant: ResCombatant):
 	for ability in combatant.ability_set:
@@ -864,7 +865,6 @@ func concludeCombat(results: int):
 		for enemy in getCombatantGroup('enemies'):
 			var enemy_drops = enemy.getDrops()
 			var barter_drops = enemy.getBarterDrops()
-			print(barter_drops)
 			enemy_drops.merge(barter_drops)
 			addDropToBank(enemy_drops)
 			drops.merge(enemy_drops)

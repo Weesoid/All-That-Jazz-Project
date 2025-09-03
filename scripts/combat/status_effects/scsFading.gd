@@ -6,7 +6,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		CombatGlobals.modifyStat(target, {'speed': -999}, status_effect.name)
 		target.combatant_scene.blocking = false
 	
-	if CombatGlobals.randomRoll(0.02) and canAddQTE(status_effect):
+	if CombatGlobals.randomRoll(0.025) and canAddQTE(status_effect):
 		var qte = load("res://scenes/quick_time_events/Timing.tscn").instantiate()
 		qte.target_speed = 1.0 + randf_range(0.5, 1.0)
 		qte.global_position = Vector2(0, -40)
@@ -14,10 +14,10 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		await CombatGlobals.qte_finished
 		if qte.points >= 1:
 			CombatGlobals.calculateHealing(target, target.base_stat_values['health']*0.2, true, false)
-			CombatGlobals.manual_call_indicator.emit(target, 'Saved!', 'QTE')
 			CombatGlobals.resetStat(target, status_effect.name)
 		qte.queue_free()
 		status_effect.removeStatusEffect()
+		#CombatGlobals.addStatusEffect(target,'Guard')
 	
 	elif target.stat_values['health'] > 0:
 		status_effect.removeStatusEffect()

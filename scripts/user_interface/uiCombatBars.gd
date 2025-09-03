@@ -36,7 +36,7 @@ func _ready():
 #		turn_gradient_sprite.modulate = Color.RED
 	select_target.attached_combatant = attached_combatant
 	previous_value = attached_combatant.getMaxHealth()
-	turn_charges.filled_modulate = SettingsGlobals.ui_colors['up']
+	#turn_charges.filled_modulate = SettingsGlobals.ui_colors['up']
 
 func _process(_delta):
 	updateBars()
@@ -91,7 +91,7 @@ func animateFaderBar(prev_val, value):
 	health_bar_fader.max_value = attached_combatant.getMaxHealth()
 	health_bar_fader.value = prev_val
 	if prev_val > value:
-		health_bar_fader.modulate = Color.RED
+		health_bar_fader.modulate = Color.YELLOW
 	elif prev_val < value:
 		health_bar_fader.modulate = Color.GREEN
 	await get_tree().create_timer(0.25).timeout

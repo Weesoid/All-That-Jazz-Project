@@ -230,6 +230,9 @@ func tweenAbilityButtons(buttons: Array, sound:String='536805__egomassive__gun_2
 		button.modulate = Color.TRANSPARENT
 	await get_tree().process_frame
 	for button in buttons:
+		if !is_instance_valid(button):
+			continue
+		
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
 		tween.tween_property(button, 'scale', Vector2(1.1,1.1), 0.005).set_ease(Tween.EASE_IN)
 		tween.tween_property(button, 'scale', Vector2(1.0,1.0), 0.05).set_ease(Tween.EASE_OUT)
@@ -326,7 +329,7 @@ func canUseAbility(button: CustomAbilityButton):
 	var combatants = combat_scene.combatants
 	
 	if button.ability.name == 'Defend':
-		setButtonDisabled(button, active_combatant.hasStatusEffect('Guard'),false)
+		setButtonDisabled(button, active_combatant.hasStatusEffect('Guard') or active_combatant.hasStatusEffect('Guard Break'),false)
 	else:
 		setButtonDisabled(button, !(button.ability.enabled and button.ability.canUse(active_combatant, combatants)),false)
 
@@ -414,8 +417,8 @@ func _unhandled_input(_event):
 
 # Edit properties should get a fix. Idk.
 func setRushMovements():
-	move_forward_button.ability.editProperties({'tension_cost':2,'instant_cast':true,'name':'Rushing Advance'})
-	move_back_button.ability.editProperties({'tension_cost':2,'instant_cast':true,'name':'Rushing Recede'})
+	move_forward_button.ability.editProperties({'tension_cost':4,'instant_cast':true,'name':'Rushing Advance'})
+	move_back_button.ability.editProperties({'tension_cost':4,'instant_cast':true,'name':'Rushing Recede'})
 	move_forward_button._ready()
 	move_back_button._ready()
 	if move_forward_button.has_focus():

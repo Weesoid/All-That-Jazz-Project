@@ -26,7 +26,7 @@ do_ticks = false
 resistable = false
 permanent = false
 lingers = false
-persist_on_dead = false
+persist_on_dead = true
 sounds = {
 "apply": "",
 "expire": ""

@@ -11,9 +11,9 @@ var toggle_sprint = true
 var cheat_mode = true
 var ui_colors: Dictionary = {
 	'up': Color.GOLD,
-	'down': Color.ROYAL_BLUE,
+	'down': Color.STEEL_BLUE,
 	'up-bb': '[color=GOLD]',
-	'down-bb': '[color=ROYAL_BLUE]',
+	'down-bb': '[color=STEEL_BLUE]',
 }
 
 func applySettings(settings_data: SavedSettings):

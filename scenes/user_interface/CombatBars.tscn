@@ -408,12 +408,14 @@ texture = ExtResource("3_kl3dw")
 
 [node name="PermaStatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
 layout_mode = 2
-offset_left = -3.0
-offset_top = 4.0
-offset_right = 36.0
-offset_bottom = 36.0
+offset_left = -8.0
+offset_top = 7.0
+offset_right = 32.0
+offset_bottom = 39.0
+mouse_filter = 2
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
+alignment = 1
 
 [node name="TurnPulser" type="Sprite2D" parent="HealthBar"]
 modulate = Color(1, 1, 1, 0)

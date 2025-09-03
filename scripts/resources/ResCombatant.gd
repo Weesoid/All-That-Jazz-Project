@@ -155,7 +155,7 @@ func isDead()-> bool:
 	return stat_values['health'] < 1.0
 
 func isImmobilized()-> bool:
-	return stat_values['speed'] < -99 and !hasStatusEffect('Fading')
+	return (stat_values['speed'] < -99 and !hasStatusEffect('Fading')) or hasStatusEffect('Stunned')
 
 func getStringStats(current_stats=false):
 	var result = ""

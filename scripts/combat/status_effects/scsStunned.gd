@@ -4,8 +4,8 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		OverworldGlobals.playSound("res://audio/sounds/39_Block_03.ogg")
 	if target.hasStatusEffect('Poised'):
 		status_effect.removeStatusEffect()
-	elif CombatGlobals.getCombatScene().active_combatant == target and CombatGlobals.getCombatScene().turn_count > 1:
-		status_effect.removeStatusEffect()
+#	elif CombatGlobals.getCombatScene().active_combatant == target and CombatGlobals.getCombatScene().turn_count > 1:
+#		status_effect.removeStatusEffect()
 
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):

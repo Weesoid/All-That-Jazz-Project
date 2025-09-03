@@ -14,11 +14,11 @@ basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 status_script = ExtResource("2_vs3dw")
 packed_scene = ExtResource("1_jdgqk")
 effect_type = 0
-remove_when = Array[int]([])
+remove_when = Array[int]([6])
 remove_style = 0
 texture = ExtResource("4_0387h")
 style = 2
-max_duration = 0
+max_duration = 1
 extend_duration = 1
 apply_extend_duration = false
 max_rank = 0
@@ -28,7 +28,7 @@ do_ticks = true
 resistable = true
 permanent = true
 lingers = false
-persist_on_dead = false
+persist_on_dead = true
 sounds = {
 "apply": "",
 "expire": ""
