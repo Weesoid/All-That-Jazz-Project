@@ -56,9 +56,9 @@ func calcDamage(val:String):
 
 func highlightModifiedStats(value_node, stat):
 	if combatant.stat_values[stat] > combatant.base_stat_values[stat]:
-		value_node.modulate = Color.PALE_GREEN
+		value_node.modulate = SettingsGlobals.ui_colors['up']
 	elif combatant.stat_values[stat] < combatant.base_stat_values[stat]:
-		value_node.modulate = Color.PALE_VIOLET_RED
+		value_node.modulate = SettingsGlobals.ui_colors['down']
 	elif combatant.stat_values[stat] == combatant.base_stat_values[stat]:
 		value_node.modulate = Color.WHITE
 

@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://baedkuu18iwg4"]
+[gd_scene load_steps=8 format=3 uid="uid://baedkuu18iwg4"]
 
 [ext_resource type="PackedScene" uid="uid://dpdurcfiprjbj" path="res://scenes/user_interface/Saves.tscn" id="1_1gutg"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameOver.gd" id="1_gbj7h"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_41vgo"]
 [ext_resource type="Theme" uid="uid://cuu2oxc3xqlvt" path="res://design/SideButtonHighlights.tres" id="4_ottt2"]
-[ext_resource type="AudioStream" uid="uid://cve58fsvqf55r" path="res://audio/sounds/252198__pepingrillin__rocket_impact.ogg" id="5_6u5k5"]
 
 [sub_resource type="Animation" id="Animation_17ikh"]
 length = 0.001
@@ -156,21 +155,6 @@ tracks/5/keys = {
 "update": 0,
 "values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
 }
-tracks/6/type = "audio"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("AudioStreamPlayer")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("5_6u5k5")
-}],
-"times": PackedFloat32Array(0)
-}
-tracks/6/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pf1gt"]
 _data = {
@@ -276,8 +260,6 @@ pivot_offset = Vector2(248, 40)
 theme_override_font_sizes/font_size = 64
 text = "GAME OVER"
 horizontal_alignment = 1
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [connection signal="pressed" from="VBoxContainer/Yes" to="." method="_on_yes_pressed"]
 [connection signal="pressed" from="VBoxContainer/No" to="." method="_on_no_pressed"]

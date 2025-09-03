@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://uv3xfyxccq3q"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://47lduof3c088"]
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="1_e0mox"]
 [ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_t0wjm"]
-[ext_resource type="Texture2D" uid="uid://cgpfext1pbx5t" path="res://images/sprites/icon_crit_eye.png" id="3_2so27"]
+[ext_resource type="Texture2D" uid="uid://cgpfext1pbx5t" path="res://images/status_icons/icon_crit_eye.png" id="3_2so27"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_frn68"]
 
 [sub_resource type="Resource" id="Resource_3tlie"]
@@ -35,6 +35,7 @@ effect_type = 0
 remove_when = Array[int]([0])
 remove_style = 0
 texture = ExtResource("3_2so27")
+style = 1
 max_duration = 1
 extend_duration = 1
 apply_extend_duration = false

@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://dxbuny7c3eoa0"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://03nkxcn0qwjq"]
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBrace.gd" id="2_sh6iq"]
-[ext_resource type="Texture2D" uid="uid://b03spp2atatwd" path="res://images/sprites/icon_shield.png" id="2_v6ipy"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_74buc"]
+[ext_resource type="Texture2D" uid="uid://b03spp2atatwd" path="res://images/status_icons/icon_shield.png" id="3_mek1h"]
 
 [resource]
 script = ExtResource("3_74buc")
@@ -14,8 +14,9 @@ status_script = ExtResource("2_sh6iq")
 effect_type = 1
 remove_when = Array[int]([4])
 remove_style = 1
-texture = ExtResource("2_v6ipy")
-max_duration = 4
+texture = ExtResource("3_mek1h")
+style = 1
+max_duration = 3
 extend_duration = 1
 apply_extend_duration = false
 max_rank = 0

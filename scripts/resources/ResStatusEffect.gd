@@ -18,6 +18,11 @@ enum RemoveStyle {
 	REMOVE,
 	TICK_DOWN
 }
+enum StatusStyle {
+	NEUTRAL,
+	BUFF,
+	DEBUFF
+}
 
 ## NOTE: Always name status effects with the following convention: File-GuardBreak.tres;Name-Guard Break
 @export var auto_name:bool=true
@@ -29,7 +34,8 @@ enum RemoveStyle {
 @export var effect_type: EffectType
 @export var remove_when: Array[RemoveType]
 @export var remove_style: RemoveStyle
-@export var texture: Texture = preload("res://images/sprites/unknown_icon.png")
+@export var texture: Texture = preload("res://images/status_icons/icon_unknown.png")
+@export var style: StatusStyle
 @export var max_duration: int = 1
 @export var extend_duration: int = 1
 @export var apply_extend_duration:  bool = false
@@ -55,6 +61,10 @@ var icon: TextureRect
 func initializeStatus():
 	icon = TextureRect.new()
 	icon.texture = texture
+	if style == StatusStyle.BUFF:
+		icon.self_modulate = SettingsGlobals.ui_colors['up']
+	elif style == StatusStyle.DEBUFF:
+		icon.self_modulate = SettingsGlobals.ui_colors['down']
 	
 	if packed_scene != null:
 		status_visuals = packed_scene.instantiate()
@@ -86,9 +96,10 @@ func removeStatusEffect():
 		status_visuals.queue_free()
 	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.stat_values['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and lingers and !persist_on_dead and resistable:
 		afflicted_combatant.lingering_effects.erase(name)
-		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, 'Cured %s!' % name, 'Heal')
-	elif afflicted_combatant is ResPlayerCombatant and lingers:
-		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '%s Supressed!' % name, 'Flunk')
+		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '[s]%s' % getMessageIcon(), 'Resist')
+	elif afflicted_combatant is ResPlayerCombatant and lingers and afflicted_combatant.lingering_effects.has(name.replace(' ','')) and resistable:
+		print('nipple tits')
+		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, getMessageIcon(), 'Status_Added')
 	
 	if is_instance_valid(icon):
 		icon.queue_free()
@@ -127,6 +138,14 @@ func getDescription():
 
 func _to_string():
 	return name
+
+func getMessageIcon():
+	var color_bb='color=white'
+	if style==StatusStyle.BUFF:
+		color_bb = SettingsGlobals.ui_colors['up-bb'].replace('[','').replace(']','')
+	elif style==StatusStyle.DEBUFF:
+		color_bb = SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
+	return '[img %s]%s[/img]' % [color_bb,texture.get_path()]
 
 #func getFilename():
 #	return resource_path.get_file().replace('.tres','')

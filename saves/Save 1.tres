@@ -131,9 +131,9 @@ map_logs = {
 }
 equipped_arrow = "res://resources/items/ArrowSleeper.tres"
 equipped_blessing = ""
-currency = 1018
+currency = 4
 team_level = 5
-current_exp = 463
+current_exp = 0
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 combatant_save_data = {

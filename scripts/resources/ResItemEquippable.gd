@@ -46,13 +46,13 @@ func getStringStats():
 		if val is float: 
 			val *= 100.0
 		if stat_modifications[key] > 0 and stat_modifications[key]:
-			result += '[color=GREEN_YELLOW]'
+			result += SettingsGlobals.ui_colors['up-bb']
 			if val is float: 
 				result += "+" + str(val) + "% " +key.to_upper().replace('_', ' ') + "\n"
 			else:
 				result += "+" + str(val) + " " +key.to_upper().replace('_', ' ') +  "\n"
 		else:
-			result += '[color=ORANGE_RED]'
+			result += SettingsGlobals.ui_colors['down-bb'] #'[color=ORANGE_RED]'
 			if val is float: 
 				result += str(val) + "% " +key.to_upper().replace('_', ' ') +  "\n"
 			else:

@@ -3,10 +3,13 @@ class_name CombatUI
 
 const COMBAT_GEAR_ICON = preload("res://images/ability_icons/combat_gear.png")
 const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
-@export var tension_color:Color = Color.DARK_ORANGE
+
+@export var tension_color:Color = SettingsGlobals.ui_colors['up']
+@export var tension_particles_db:float = -8.0
 @onready var ability_buttons = $AbilityContainer
 @onready var base_abilities = $AbilityContainer/BaseAbilities/BaseAbilities
 @onready var tension_bar: CustomCountBar = $Tension/TensionBar
+@onready var tension_icon = $Tension/TextureRect
 @onready var tension_whole = $Tension
 @onready var combat_scene = CombatGlobals.getCombatScene()
 @onready var gear_button = $AbilityContainer/BaseAbilities/BaseAbilities/Gear
@@ -25,8 +28,11 @@ const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
 @onready var round_text = $Rounds/RoundText
 @onready var round_counter = $Rounds/RoundCounter
 @onready var round_counter_animator = $Rounds/RoundCounter/AnimationPlayer
+@onready var rushed_movement_timer = $Timer
+
 var tension_orig_pos
 var rounds_orig_pos
+
 
 func _ready():
 	tension_orig_pos = tension_whole.position
@@ -38,15 +44,12 @@ func initialize():
 	for button in base_abilities.get_children():
 		if !button is Button:
 			continue
-		
 		if button.ability != null:
-			print('giving ', button.ability)
 			giveButtonFunction(button, button.ability)
-		elif button.descriptions['title'] == 'escape':
-			print('give escape funcs')
 	for button in movements.get_children():
 		giveButtonFunction(button, button.ability)
-	
+		button._ready()
+		
 	CombatGlobals.tension_changed.connect(setTensionValue)
 
 func setTensionValue(prev_amount:int,amount:int, target:CombatantScene):
@@ -66,7 +69,7 @@ func setTensionValue(prev_amount:int,amount:int, target:CombatantScene):
 	else:
 		var circles = tension_bar.getCircles('empty')
 		decreaseTensionBarAnimation(circles,prev_amount-amount)
-		explodeTensionParticles(combat_scene.active_combatant.combatant_scene,prev_amount-amount)
+		attractTensionParticles(combat_scene.active_combatant.combatant_scene,prev_amount-amount)
 
 func increaseTensionBarAnimation(circles,increased_amount:int):
 	var increased = 0
@@ -93,7 +96,7 @@ func decreaseTensionBarAnimation(circles, decrease_amount:int):
 		tween.tween_property(circle,'scale',Vector2(2.0,2.0),0.2).set_ease(Tween.EASE_OUT)
 		tween.chain()
 		tween.tween_property(circle,'scale',Vector2(1.0,1.0),0.1).set_ease(Tween.EASE_OUT)
-		tween.tween_property(circle,'modulate',Color.RED,0.1)
+		tween.tween_property(circle,'modulate',SettingsGlobals.ui_colors['down'],0.1)
 		tween.tween_property(circle,'modulate',Color.WHITE,0.2)
 		decreased +=1
 		await get_tree().create_timer(0.1).timeout
@@ -101,65 +104,64 @@ func decreaseTensionBarAnimation(circles, decrease_amount:int):
 func spawnTensionParticles(target:CombatantScene, tp_amount:int,is_player:bool):
 	var pitch = 1.0
 	var direction = 1.0
-	var receiver = combat_scene.active_combatant.combatant_scene
+	var receiver = combat_scene.tp_particle_magnet
 	if is_player:
 		direction = -1.0
-		receiver = target
 	
 	for i in range(tp_amount):
-		var tween = create_tween().chain()
+		var tween = create_tween().chain().set_trans(Tween.TRANS_CIRC)
 		var tp_particle = Sprite2D.new()
 		tween.finished.connect(
-			func(): 
-				var yellow_pulse = create_tween().chain()
-				yellow_pulse.tween_property(receiver,'modulate',tension_color,0.1)
-				yellow_pulse.tween_property(receiver,'modulate',Color.WHITE,0.5)
-				tp_particle.queue_free()
-				OverworldGlobals.playSound("res://audio/sounds/27_sword_miss_3.ogg",0.0,pitch,false)
+			func():
+				pulseAnimation(tp_particle)
+				OverworldGlobals.playSound("res://audio/sounds/27_sword_miss_3.ogg",tension_particles_db,pitch,false)
 				)
-		tp_particle.modulate = tension_color
+		tp_particle.modulate = Color.TRANSPARENT
 		tp_particle.texture = load("res://images/sprites/tp_particle.png")
 		combat_scene.add_child(tp_particle)
 		tp_particle.global_position = target.global_position
+		create_tween().tween_property(tp_particle,'modulate',tension_color,0.3)
 		tween.tween_property(
 			tp_particle, 
 			'global_position', 
 			tp_particle.global_position+Vector2(randf_range(32,48)*direction,randf_range(-16,16)*direction),
 			0.25
-			).set_ease(Tween.EASE_IN)
-		tween.tween_property(tp_particle,'rotation', randf_range(-8,8),0.15)
-		tween.tween_property(tp_particle,'global_position', receiver.global_position,0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+			).set_ease(Tween.EASE_OUT)
+		tween.tween_property(tp_particle,'rotation', randf_range(-8,8),0.25)
+		tween.tween_property(tp_particle,'global_position', receiver.global_position,0.2).set_ease(Tween.EASE_IN)
 		pitch += 0.2
-		await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(0.08).timeout
 
-func explodeTensionParticles(target:CombatantScene, tp_amount:int):
+func attractTensionParticles(target:CombatantScene, tp_amount:int):
 	var pitch = 1.0
 	for i in range(tp_amount):
-		var tween = create_tween().chain()
+		var tween = create_tween().chain().set_trans(Tween.TRANS_EXPO)
 		var tp_particle = Sprite2D.new()
-		tween.finished.connect(
-			func(): 
-				var modulate_tween = create_tween()
-				var pulse = create_tween().chain()
-				pulse.tween_property(combat_scene.active_combatant.combatant_scene,'modulate',tension_color,0.1)
-				pulse.tween_property(combat_scene.active_combatant.combatant_scene,'modulate',Color.WHITE,0.25)
-				modulate_tween.tween_property(tp_particle,'modulate', Color.TRANSPARENT,0.25)
-				await modulate_tween.finished
-				tp_particle.queue_free()
-				)
+		tween.finished.connect(func(): pulseAnimation(tp_particle,target.combatant_resource.getSprite(),false))
 		tp_particle.modulate = tension_color
 		tp_particle.texture = load("res://images/sprites/tp_particle.png")
 		combat_scene.add_child(tp_particle)
-		tp_particle.global_position = target.global_position
+		tp_particle.global_position = combat_scene.tp_particle_magnet.global_position
+		create_tween().tween_property(tp_particle,'modulate',Color.TRANSPARENT,0.24)
 		tween.tween_property(
 			tp_particle, 
 			'global_position', 
-			tp_particle.global_position+Vector2(randf_range(-64,64),randf_range(-32,32)),
-			0.12
-			).set_ease(Tween.EASE_OUT)
-		OverworldGlobals.playSound("res://audio/sounds/07_human_atk_sword_1.ogg",0.0,pitch,false)
+			target.global_position,
+			0.3
+			)
+		OverworldGlobals.playSound("res://audio/sounds/07_human_atk_sword_1.ogg",tension_particles_db,pitch,false)
 		pitch += 0.2
-		await get_tree().create_timer(0.08).timeout
+		await get_tree().create_timer(0.06).timeout
+
+func pulseAnimation(tp_particle, pulse_on=tension_icon,do_scale=true): 
+	var pulse = create_tween().chain()
+	pulse.tween_property(pulse_on,'self_modulate',tension_color,0.1)
+	pulse.tween_property(pulse_on,'self_modulate',Color.WHITE,0.25).set_ease(Tween.EASE_OUT)
+	if do_scale:
+		var scale_tween = create_tween().chain()
+		scale_tween.tween_property(pulse_on,'scale',Vector2(1.25,1.25),0.1).set_ease(Tween.EASE_IN)
+		scale_tween.tween_property(pulse_on,'scale',Vector2(1.0,1.0),0.25)
+	tp_particle.queue_free()
 
 func showAbilities(combatant: ResCombatant):
 	for child in ability_buttons.get_children():
@@ -187,7 +189,6 @@ func showAbilities(combatant: ResCombatant):
 		giveButtonFunction(button,ability)
 		ability_buttons.add_child(button)
 		ability_buttons.move_child(button,0)
-		#await button.tree_entered
 	canUseAbility(defend_button)
 	
 	await get_tree().process_frame
@@ -241,7 +242,6 @@ func tweenAbilityButtons(buttons: Array, sound:String='536805__egomassive__gun_2
 		await get_tree().create_timer(0.05).timeout
 		if sound != '':
 			OverworldGlobals.playSound(sound,-6.0)
-		#await get_tree().create_timer(0.025).timeout
 
 func writeCombatLog(mesesage:String):
 	if combat_log_animator.is_playing():
@@ -254,11 +254,11 @@ func writeCombatLog(mesesage:String):
 	combat_log_animator.play("Hide")
 
 func hideUI():
-	#create_tween().tween_property(self,'modulate',Color.TRANSPARENT,0.25).set_ease(Tween.EASE_OUT)
 	ability_buttons.hide()
 	escape_button.hide()
 	setRoundsVisible(false)
 	setTensionBarVisible(false)
+	#resetMovements()
 
 
 func showUI(set_focus:bool=false):
@@ -270,10 +270,9 @@ func showUI(set_focus:bool=false):
 	setTensionBarVisible(true)
 	tweenAbilityButtons(getAbilityButtons())
 	tweenAbilityButtons(base_abilities.get_children(),'')
+	#resetMovements()
 	if set_focus:
 		OverworldGlobals.setMenuFocus(ability_buttons)
-	#await get_tree().process_frame
-	#OverworldGlobals.setMenuFocus(ability_buttons)
 
 func fillInvalid():
 	for i in range(4-getAbilityButtons().size()):
@@ -308,7 +307,6 @@ func hideEscapeChance():
 	create_tween().tween_property(escape_chance, 'modulate', Color.TRANSPARENT, 0.25).set_ease(Tween.EASE_OUT)
 	create_tween().tween_property(escape_button, 'position', escape_button_default_pos, 0.2).set_ease(Tween.EASE_OUT)
 
-
 func _on_move_pressed():
 	setButtonDisabled(move_button,true)
 	showMovements()
@@ -335,15 +333,12 @@ func canUseAbility(button: CustomAbilityButton):
 func hideMovements():
 	movements.hide()
 
-
 func _on_pass_pressed():
 	combat_scene.confirm.emit()
 	hideUI()
 
-
 func _on_escape_button_pressed():
 	combat_scene.attemptEscape()
-
 
 func _on_advance_focus_exited():
 	await get_tree().process_frame
@@ -363,7 +358,6 @@ func updateRoundCounter(count:int):
 	setRoundsVisible(true)
 	round_counter.text = str(count)
 	if int(round_counter.text) <= 4:
-		print('zipple')
 		round_text.text = '[wave]Round'
 	else:
 		round_text.text = 'Round'
@@ -395,7 +389,7 @@ func showTensionCost(cost:int):
 	for circle in circles:
 		if i >= cost:
 			return
-		circle.modulate = Color.RED
+		circle.modulate = SettingsGlobals.ui_colors['down']
 		i += 1
 
 func resetTensionColors():
@@ -410,3 +404,36 @@ func setRoundsVisible(set_to:bool):
 	else:
 		tween.tween_property(rounds,'position',rounds_orig_pos+Vector2(0,-8),0.25)
 		tween.tween_property(rounds,'modulate',Color.TRANSPARENT,0.25)
+
+# Add innate "hold button" functionality to custom buttons.
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed("ui_sprint"):
+		setRushMovements()
+	elif Input.is_action_just_pressed("ui_gambit"):
+		resetMovements()
+
+# Edit properties should get a fix. Idk.
+func setRushMovements():
+	move_forward_button.ability.editProperties({'tension_cost':2,'instant_cast':true,'name':'Rushing Advance'})
+	move_back_button.ability.editProperties({'tension_cost':2,'instant_cast':true,'name':'Rushing Recede'})
+	move_forward_button._ready()
+	move_back_button._ready()
+	if move_forward_button.has_focus():
+		move_forward_button.showDescription()
+	else:
+		move_back_button.showDescription()
+	canUseAbility(move_forward_button)
+	canUseAbility(move_back_button)
+
+func resetMovements():
+	move_back_button.ability.restoreProperties()
+	move_forward_button.ability.restoreProperties()
+	move_forward_button._ready()
+	move_back_button._ready()
+	if move_forward_button.has_focus():
+		move_forward_button.showDescription()
+	else:
+		move_back_button.showDescription()
+	canUseAbility(move_forward_button)
+	canUseAbility(move_back_button)
+

@@ -28,6 +28,7 @@ enum TargetState {
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var combat_ui: CombatUI = $CombatCamera/Interface/CombatUI
+@onready var tp_particle_magnet = $TensionParticleMarker
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -192,8 +193,11 @@ func on_player_turn():
 
 func on_enemy_turn():
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
-	if has_node('QTE'): await CombatGlobals.qte_finished
-	if await checkWin(): return
+	if has_node('QTE'): 
+		await CombatGlobals.qte_finished
+	if await checkWin(): 
+		return
+	combat_ui.hideUI()
 	await useAIPackage()
 
 func useAIPackage():
@@ -215,22 +219,24 @@ func useAIPackage():
 	end_turn()
 
 func end_turn(combatant_act=true):
+	print('cycle!')
+	print(selected_ability)
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	if await checkWin(): 
 		return
-	if combatant_act:
+	if combatant_act and (selected_ability == null or !selected_ability.instant_cast):
 		tickStatusEffects(active_combatant, false, true, false, false) # Tick down ON TURN statuses
-	for combatant in combatants:
+	for combatant in combatants: # Check for survivors!
 		if combatant.isDead(): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
-	if combatant_act:
+	if combatant_act and (selected_ability == null or !selected_ability.instant_cast):
 		active_combatant.turn_charges -= 1
 		combatant_turn_order.remove_at(0)
 		if active_combatant.turn_charges <= 0:
 			active_combatant.acted = true
 	
-	if allCombatantsActed():
+	if allCombatantsActed() and combatant_turn_order.is_empty():
 		rollTurns()
 		end_turn(false)
 		return
@@ -267,7 +273,6 @@ func end_turn(combatant_act=true):
 	# Reset values
 	run_once = true
 	target_index = 0
-	#secondary_panel.hide()
 	
 	# REINFORCEMENTS
 	randomize()
@@ -295,15 +300,15 @@ func end_turn(combatant_act=true):
 			await CombatGlobals.qte_finished
 			await get_node('QTE').tree_exited
 		setActiveCombatant()
-	elif !active_combatant.isImmobilized():
-		selected_ability.enabled = false
-		active_combatant.turn_charges += 1
-		combatant_turn_order.push_front([active_combatant, 1])
-	else:
-		if has_node('QTE'):
-			await CombatGlobals.qte_finished
-			await get_node('QTE').tree_exited
-		setActiveCombatant()
+#	elif !active_combatant.isImmobilized():
+#		selected_ability.enabled = false
+#		active_combatant.turn_charges += 1
+#		combatant_turn_order.push_front([active_combatant, 1])
+#	else:
+#		if has_node('QTE'):
+#			await CombatGlobals.qte_finished
+#			await get_node('QTE').tree_exited
+#		setActiveCombatant()
 	
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
@@ -316,7 +321,8 @@ func end_turn(combatant_act=true):
 			await showCannotAct('Immobile!')
 		end_turn()
 		return
-	if await checkWin(): return
+	if await checkWin(): 
+		return
 
 func showCannotAct(message:String,emit_confirm:bool=false):
 	moveCamera(active_combatant.combatant_scene.global_position)
@@ -459,16 +465,13 @@ func executeAbility():
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
 			CombatGlobals.setCombatantVisibility(combatant.combatant_scene, false)
 	if target_combatant is ResPlayerCombatant:
-		removeTargetToken(target_combatant, active_combatant)
 		allowBlocking(target_combatant)
 	elif target_combatant is Array:
 		for target in target_combatant: 
-			removeTargetToken(target_combatant, active_combatant)
 			allowBlocking(target)
 	
 	if active_combatant is ResPlayerCombatant:
 		CombatGlobals.addTension(-selected_ability.tension_cost)
-	#round_counter.hide()
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	
 	await get_tree().create_timer(0.25).timeout
@@ -495,9 +498,11 @@ func executeAbility():
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
 	if (target_combatant is  ResCombatant and is_instance_valid(target_combatant.combatant_scene)):
+		removeTargetToken(target_combatant, active_combatant)
 		revokeBlocking(target_combatant)
 	elif target_combatant is Array:
 		for target in target_combatant:
+			removeTargetToken(target_combatant, active_combatant)
 			revokeBlocking(target)
 	await get_tree().process_frame # Attempt to fix combatants standing there like idiots, keep an eye out
 	
@@ -689,7 +694,9 @@ func rollTurns():
 
 func allCombatantsActed() -> bool:
 	for combatant in combatants:
-		if !combatant.acted: return false
+		if !combatant.acted: 
+			return false
+	
 	return true
 
 func getCombatantFromTurnOrder(combatant: ResCombatant)-> ResCombatant:

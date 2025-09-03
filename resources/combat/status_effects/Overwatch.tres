@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://c5a8ckh2ajx02"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://cjbn17ira2reg"]
 
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="1_c16en"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="1_c16en"]
 [ext_resource type="PackedScene" uid="uid://bdtnlc1i6gy21" path="res://scenes/animations_status_effects/Overwatch.tscn" id="1_sarp4"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_chney"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsOverwatch.gd" id="2_mhihr"]
@@ -17,6 +17,7 @@ effect_type = 2
 remove_when = Array[int]([0])
 remove_style = 1
 texture = ExtResource("1_c16en")
+style = 1
 max_duration = 4
 extend_duration = 1
 apply_extend_duration = false

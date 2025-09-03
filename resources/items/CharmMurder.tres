@@ -7,18 +7,17 @@
 script = ExtResource("1_kre4j")
 unique = false
 stat_modifications = {
-"accuracy": 0.0,
-"crit": 0.0,
+"accuracy": -0.25,
+"crit": -0.25,
 "crit_mult": 0.0,
 "damage": 0,
-"defense": 0.0,
+"defense": 0.2,
 "handling": 1,
 "heal_mult": 0.0,
 "health": 0,
 "resist": 0.0,
 "speed": 0
 }
-auto_name = true
 name = "MURDERNUS"
 icon = ExtResource("1_doyk5")
 description = ""

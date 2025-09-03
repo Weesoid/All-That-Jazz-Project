@@ -75,7 +75,7 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 		damage = valueVariate(damage, variation)
 	if can_crit and ((caster != null and randomRoll(caster.stat_values['crit']+getBonusStat(bonus_stats, 'crit', target))) or (crit_chance != -1.0 and randomRoll(crit_chance+getBonusStat(bonus_stats, 'crit', target)))):
 		damage = doCritEffects(damage, caster, 2.0+getBonusStat(bonus_stats,'crit_dmg', target), true)
-		indicator_bb_code += '[img]res://images/sprites/icon_crit.png[/img][color=red]'
+		indicator_bb_code += '[img]res://images/status_icons/icon_crit.png[/img][color=red]'
 	target.stat_values['health'] -= int(damage)
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits, bonus_stats)
 	
@@ -159,7 +159,7 @@ func checkConditions(conditions: Array, target: ResCombatant):
 			'combo': # ex crit/combo
 				if target.hasStatusEffect('Combo'):
 					target.getStatusEffect('Combo').removeStatusEffect()
-					manual_call_indicator.emit(target, '[img]res://images/sprites/icon_combo.png[/img][color=turquoise]COMBO!!', 'Show')
+					manual_call_indicator.emit(target, '[img]res://images/status_icons/icon_combo.png[/img][color=turquoise]COMBO!!', 'Show')
 					return true
 			'combo!': # ex. crit/combo!
 				return target.hasStatusEffect('Combo')
@@ -186,8 +186,11 @@ func doCritEffects(base_damage, caster: ResCombatant, crit_damage:float=2.0, sta
 
 func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sound: String, indicator_bb_code: String='', trigger_on_hits: bool=true, bonus_stats: Dictionary={}):
 	var message = str(int(damage))
-	message = indicator_bb_code+'[outline_size=8] '+message
-	if damage > 0:
+	message = indicator_bb_code+'[outline_size=2] '+message
+	
+	if indicator_bb_code.contains('crit'):
+		manual_call_indicator.emit(target, message, 'Crit')
+	elif damage > 0:
 		manual_call_indicator.emit(target, message, 'Damage')
 	target.removeTokens(ResStatusEffect.RemoveType.GET_HIT)
 	if caster != null:
@@ -452,9 +455,8 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	elif effect is ResStatusEffect:
 		path = effect.resource_path
 		status_effect = effect.duplicate()
-	var icon_path = str(status_effect.texture.get_path())
 	if !guaranteed and (randomRoll(target.stat_values['resist']) and status_effect.resistable):
-		manual_call_indicator.emit(target, '[color=red]X [img]'+icon_path+'[/img]', 'Resist')
+		manual_call_indicator.emit(target, '[s]'+status_effect.getMessageIcon(), 'Resist')
 		return
 	if status_effect.resistable:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_STATUSED)
@@ -468,13 +470,13 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		rankUpStatusEffect(target, status_effect)
 		if status_effect.max_rank > 0:
 			if status_effect.current_rank < status_effect.max_rank:
-				manual_call_indicator.emit(target, '[color=yellow]++[img]'+icon_path+'[/img]', 'Show')
-			else:
-				manual_call_indicator.emit(target, '[color=yellow]![img]'+icon_path+'[/img]', 'Show')
+				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Up')
+			elif status_effect.current_rank >= status_effect.max_rank:
+				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Added')
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
 	if target.status_effects.has(status_effect): # Because some effects get removed on apply!
-		manual_call_indicator.emit(target, '[color=yellow]+ [img]'+icon_path+'[/img]', 'Show')
+		manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Added')
 	
 	if (!guaranteed and !randomRoll(0.15+target.stat_values['resist'])) and (status_effect.lingers and target is ResPlayerCombatant):
 		if OverworldGlobals.addLingerEffect(target,status_effect):
@@ -536,7 +538,6 @@ func spawnIndicator(position: Vector2, message:String, animation:String='Show',a
 	
 	indicator.global_position = position
 	indicator.z_index = 99
-	#indicator.top_level=true
 	indicator.playAnimation(position, message, animation)
 
 func getCombatScene()-> CombatScene:
@@ -640,10 +641,12 @@ func applyFaded(target: ResCombatant):
 		return
 	
 	var escalated_level = getFadedLevel(target)+1
+	
 	# Remove previous faded
+	target.lingering_effects.erase(applyFadedStatus(escalated_level-1))
 	if inCombat():
 		removeStatusEffect(target, applyFadedStatus(escalated_level-1,true))
-	target.lingering_effects.erase(applyFadedStatus(escalated_level-1))
+	
 	# Add escalated faded level
 	if inCombat():
 		addStatusEffect(target, applyFadedStatus(escalated_level,true))

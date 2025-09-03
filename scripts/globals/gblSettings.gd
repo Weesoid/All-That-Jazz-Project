@@ -9,6 +9,12 @@ var resolutions: Dictionary = {
 }
 var toggle_sprint = true
 var cheat_mode = true
+var ui_colors: Dictionary = {
+	'up': Color.GOLD,
+	'down': Color.ROYAL_BLUE,
+	'up-bb': '[color=GOLD]',
+	'down-bb': '[color=ROYAL_BLUE]',
+}
 
 func applySettings(settings_data: SavedSettings):
 	InputHelper.deserialize_inputs_for_actions(settings_data.binds)

@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://vppdmnvxdmtj"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://bbox5uqlacm4y"]
 
 [ext_resource type="PackedScene" uid="uid://dxscju2fli3b" path="res://scenes/animations_status_effects/Dazed.tscn" id="1_jdgqk"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_sbokl"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsStunned.gd" id="2_vs3dw"]
-[ext_resource type="Texture2D" uid="uid://ce2cua67y0pfp" path="res://images/sprites/icon_stun.png" id="4_nn7gn"]
+[ext_resource type="Texture2D" uid="uid://ce2cua67y0pfp" path="res://images/status_icons/icon_stun.png" id="4_0387h"]
 
 [resource]
 script = ExtResource("1_sbokl")
@@ -16,7 +16,8 @@ packed_scene = ExtResource("1_jdgqk")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
-texture = ExtResource("4_nn7gn")
+texture = ExtResource("4_0387h")
+style = 2
 max_duration = 0
 extend_duration = 1
 apply_extend_duration = false

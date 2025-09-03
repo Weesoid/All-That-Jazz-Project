@@ -16,6 +16,7 @@ damage_modifier = 1.0
 can_miss = true
 can_crit = true
 bonus_stats = {
+"crit": 1.0,
 "status_effect": "Combo"
 }
 return_pos = true
@@ -53,9 +54,9 @@ caster_position = {
 "min": 0
 }
 target_position = {
-"max": 3,
+"max": 1,
 "min": 0
 }
-tension_cost = 4
+tension_cost = 8
 instant_cast = false
 required_level = 0

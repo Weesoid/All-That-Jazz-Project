@@ -1,24 +1,17 @@
 extends Control
 class_name CustomCountBar
 
-const EMPTY_CIRCLE: Texture = preload("res://images/sprites/circle_empty.png")
-const FILLED_CIRCLE: Texture = preload("res://images/sprites/circle_filled.png")
-const EMPTY_CIRCLE_SMALL = preload("res://images/sprites/circle_empty_small.png")
-const FILLED_CIRCLE_SMALL = preload("res://images/sprites/circle_filled_small.png")
-
 @onready var container = $HBoxContainer
 @export var value: int = 0
 @export var max_value: int = 0
 @export var show_max: bool = true
-@export var small_sprites: bool = false
 @export var process:bool=true
-var empty_circle = EMPTY_CIRCLE
-var filled_circle = FILLED_CIRCLE
+@export var empty_circle: Texture = preload("res://images/sprites/circle_empty.png")
+@export var filled_circle: Texture = preload("res://images/sprites/circle_filled.png")
+var filled_modulate:Color = Color.WHITE
+var empty_modulate:Color = Color.WHITE
 
 func _ready():
-	if small_sprites:
-		empty_circle = EMPTY_CIRCLE_SMALL
-		filled_circle = FILLED_CIRCLE_SMALL
 	if !process:
 		process_mode = Node.PROCESS_MODE_DISABLED
 
@@ -50,9 +43,11 @@ func updateValue():
 		rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 		if filled != value:
 			rect.texture = filled_circle
+			rect.modulate = filled_modulate
 			filled += 1
 		elif filled == value and show_max:
 			rect.texture = empty_circle
+			rect.modulate = empty_modulate
 			rect.scale = Vector2(1.25,1.25)
 		rect.pivot_offset = rect.texture.get_size()/2
 		container.add_child(rect)

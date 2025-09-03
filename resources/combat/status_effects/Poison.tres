@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=7 format=3 uid="uid://dq6d2upb0ltas"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=7 format=3 uid="uid://blm4dyw2h22m2"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
 [ext_resource type="PackedScene" uid="uid://cmu5v5d578wll" path="res://scenes/animations_status_effects/Poison.tscn" id="1_qebaw"]
 [ext_resource type="Script" path="res://scripts/resources/ResBasicEffectDamage.gd" id="1_va5wg"]
-[ext_resource type="Texture2D" uid="uid://cws4qm00g4avt" path="res://images/sprites/icon_poison.png" id="3_1sqmf"]
+[ext_resource type="Texture2D" uid="uid://cws4qm00g4avt" path="res://images/status_icons/icon_poison.png" id="3_1sqmf"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="4_3i67t"]
 
 [sub_resource type="Resource" id="Resource_h03bo"]
@@ -16,7 +16,7 @@ crit_chance = -1.0
 variation = -1.0
 trigger_on_hits = false
 sound_path = "res://audio/sounds/46_Poison_01.ogg"
-indicator_bb = "[color=purple][img]res://images/sprites/icon_poison.png[/img]"
+indicator_bb = "[color=purple][img]res://images/status_icons/icon_poison.png[/img]"
 apply_once = false
 message = ""
 sound_effect = ""
@@ -33,6 +33,7 @@ effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
 texture = ExtResource("3_1sqmf")
+style = 0
 max_duration = 3
 extend_duration = 1
 apply_extend_duration = false

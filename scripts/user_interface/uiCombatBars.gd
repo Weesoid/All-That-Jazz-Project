@@ -36,6 +36,7 @@ func _ready():
 #		turn_gradient_sprite.modulate = Color.RED
 	select_target.attached_combatant = attached_combatant
 	previous_value = attached_combatant.getMaxHealth()
+	turn_charges.filled_modulate = SettingsGlobals.ui_colors['up']
 
 func _process(_delta):
 	updateBars()

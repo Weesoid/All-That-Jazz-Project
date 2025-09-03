@@ -21,7 +21,6 @@ func _ready():
 		ability_icon.texture = ability.icon
 		description_label.text = ability.getRichDescription(true)
 		description_label.hide()
-		#print('Cust charge on ', ability, ': ', custom_charge)
 		if custom_charge > -1:
 			charges.text = str(custom_charge)
 			charges.show()

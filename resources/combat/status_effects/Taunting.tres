@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cux4moxbaqb8e"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://buodxm576ecpk"]
 
-[ext_resource type="Texture2D" uid="uid://dmararqpq7dek" path="res://images/sprites/icon_taunt.png" id="2_n11nf"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_vek52"]
+[ext_resource type="Texture2D" uid="uid://dmararqpq7dek" path="res://images/status_icons/icon_taunt.png" id="3_6r738"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_ftlwm"]
 
 [resource]
@@ -14,7 +14,8 @@ status_script = ExtResource("2_vek52")
 effect_type = 0
 remove_when = Array[int]([1])
 remove_style = 0
-texture = ExtResource("2_n11nf")
+texture = ExtResource("3_6r738")
+style = 0
 max_duration = 1
 extend_duration = 1
 apply_extend_duration = false

@@ -9,7 +9,7 @@ func playAnimation(pos: Vector2, text: String, animation: String):
 	global_position = pos
 	label.text = '[center]'+str(text)
 	animator.play(animation)
-	await get_tree().create_timer(0.25).timeout
+	await get_tree().create_timer(0.5).timeout
 	var tween = create_tween()
 	tween.set_parallel()
 	tween.tween_property(self, 'modulate', Color.TRANSPARENT, 0.8).set_trans(Tween.TRANS_EXPO)

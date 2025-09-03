@@ -29,3 +29,5 @@ static func endEffects(target, _status_effect: ResStatusEffect):
 		CombatGlobals.removeStatusEffect(target, 'Guard Break')
 	if target.stat_modifiers.keys().has('block') and !target.combatant_scene.allow_block:
 		CombatGlobals.resetStat(target, 'block')
+	if target.hasStatusEffect('Riposte'):
+		CombatGlobals.removeStatusEffect(target, 'Riposte')

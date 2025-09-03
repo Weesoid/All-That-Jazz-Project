@@ -17,7 +17,7 @@ can_miss = true
 can_crit = true
 bonus_stats = {
 "status_effect": "Poison",
-"tp": "28"
+"tp": "2"
 }
 return_pos = true
 indicator_bb = ""

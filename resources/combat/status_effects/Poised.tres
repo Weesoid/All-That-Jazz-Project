@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://d11ytxu3omjpw"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://w3qwgxv70emm"]
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="1_bmjhd"]
-[ext_resource type="Texture2D" uid="uid://bcf3vg2st1t1f" path="res://images/sprites/icon_poised.png" id="2_8qiww"]
+[ext_resource type="Texture2D" uid="uid://bcf3vg2st1t1f" path="res://images/status_icons/icon_poised.png" id="2_8qiww"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_hi6ev"]
 
 [resource]
@@ -15,6 +15,7 @@ effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
 texture = ExtResource("2_8qiww")
+style = 1
 max_duration = 3
 extend_duration = 1
 apply_extend_duration = false

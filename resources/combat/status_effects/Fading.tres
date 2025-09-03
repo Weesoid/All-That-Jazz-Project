@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://ccou74m72m87i"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://cmwvl3l4vc7gs"]
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsFading.gd" id="1_12rad"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="1_dpk41"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="1_dpk41"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_sesnd"]
 
 [resource]
@@ -15,6 +15,7 @@ effect_type = 0
 remove_when = Array[int]([3, 2])
 remove_style = 0
 texture = ExtResource("1_dpk41")
+style = 2
 max_duration = 3
 extend_duration = 0
 apply_extend_duration = false

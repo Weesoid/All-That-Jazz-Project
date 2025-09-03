@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://do02ovtvlf8a7"]
+[gd_scene load_steps=34 format=3 uid="uid://do02ovtvlf8a7"]
 
 [ext_resource type="Script" path="res://scripts/combat/scnCombatScene.gd" id="1_kv6ut"]
 [ext_resource type="Script" path="res://scripts/components/ascDynamicCamera.gd" id="2_dcn2q"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bsq3n6st76j4x" path="res://images/textures/grid.png" id="4_m8l8q"]
 [ext_resource type="Texture2D" uid="uid://bytrjypgh861o" path="res://images/textures/flat.png" id="5_rh8gw"]
 [ext_resource type="PackedScene" uid="uid://cgldnawgqjpj3" path="res://scenes/miscellaneous/BattleTransition.tscn" id="6_hscg6"]
+[ext_resource type="Texture2D" uid="uid://cxr5butdhw1r2" path="res://images/ability_icons/action.png" id="8_3ofn8"]
 [ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="9_bbc62"]
 [ext_resource type="PackedScene" uid="uid://d3kxw4js4bdau" path="res://scenes/user_interface/AttributeView.tscn" id="10_60ct5"]
 [ext_resource type="PackedScene" uid="uid://dudecf5kpx35v" path="res://scenes/user_interface/CombatUI.tscn" id="10_ny5ck"]
@@ -679,6 +680,14 @@ texture = ExtResource("5_rh8gw")
 libraries = {
 "": SubResource("AnimationLibrary_cyo55")
 }
+
+[node name="TensionParticleMarker" type="Marker2D" parent="."]
+position = Vector2(-66, 66)
+
+[node name="Sprite2D" type="Sprite2D" parent="TensionParticleMarker"]
+visible = false
+scale = Vector2(0.166667, 0.375)
+texture = ExtResource("8_3ofn8")
 
 [node name="CombatCamera" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)

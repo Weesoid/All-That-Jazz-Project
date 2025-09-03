@@ -5,6 +5,10 @@ extends Control
 @onready var animator = $AnimationPlayer
 @onready var saves = $Saves
 @onready var penalty = $Penalty
+var sounds = [
+	"res://audio/sounds/488375__wobesound__deathgameoverv2.ogg",
+	"res://audio/sounds/488376__wobesound__deathgameoverv1.ogg"
+]
 var current_currency = PlayerGlobals.currency
 var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.save_name)
 
@@ -27,6 +31,8 @@ func _ready():
 	ResourceSaver.save(saved_game, "res://saves/%s.tres" % PlayerGlobals.save_name)
 	
 	animator.play('Show')
+	OverworldGlobals.playSound("res://audio/sounds/252198__pepingrillin__rocket_impact.ogg")
+	#OverworldGlobals.playSound(sounds.pick_random())
 	OverworldGlobals.setMouseController(true)
 	OverworldGlobals.setMenuFocus(buttons)
 

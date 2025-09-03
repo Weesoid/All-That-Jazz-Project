@@ -35,6 +35,7 @@ enum TargetGroup {
 var current_effect: ResAbilityEffect
 var current_charge: int
 var enabled: bool = true
+var default_properties:Dictionary={}
 
 signal single_target(type)
 signal multi_target(type)
@@ -118,7 +119,6 @@ func getRichDescription(with_name=true)-> String:
 	rich_description += getPositionIcon()
 	if tension_cost > 0:
 		rich_description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % tension_cost
-	#description += '[img]%s[/img]' % [getValidTargetIcon()]
 	if instant_cast:
 		rich_description += '	[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
 	rich_description += '\n '+ description
@@ -126,28 +126,20 @@ func getRichDescription(with_name=true)-> String:
 		rich_description += '[color=yellow] Uses: '+str(charges)
 	return rich_description
 
-func getValidTargetIcon():
-	if target_group == TargetGroup.SELF:
-		return "res://images/sprites/icon_single_friend.png"
-	if target_type == TargetType.SINGLE:
-		match target_group:
-			TargetGroup.ALLIES: return "res://images/sprites/icon_single_friend.png"
-			TargetGroup.ENEMIES:  return "res://images/sprites/icon_single_enemy.png"
-			TargetGroup.ALL: return "res://images/sprites/icon_single_all.png"
-	if target_type == TargetType.MULTI:
-		match target_group:
-			TargetGroup.ALLIES: return "res://images/sprites/icon_multi_friend.png"
-			TargetGroup.ENEMIES:  return "res://images/sprites/icon_multi_enemy.png"
-			TargetGroup.ALL: return "res://images/sprites/icon_multi_all.png"
-
 func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String:
-	var valid = "res://images/sprites/circle_self.png"
-	var valid_self = "res://images/sprites/circle_self_pos.png"
-	var invalid_self = "res://images/sprites/circle_self_pos_invalid.png"
-	var valid_ally = "res://images/sprites/circle_ally.png"
-	var valid_enemy = "res://images/sprites/circle_enemy.png"
-	var invalid = "res://images/sprites/circle_invalid.png"
 	var postions = []
+	var invalid_self= setBBColor("res://images/sprites/circle_self_pos_invalid.png", 'color=white')
+	var invalid = setBBColor("res://images/sprites/circle_invalid.png", 'color=white')
+	var valid = setBBColor("res://images/sprites/circle_unit.png", SettingsGlobals.ui_colors['up-bb'])
+	var valid_self = setBBColor("res://images/sprites/circle_self_pos.png", SettingsGlobals.ui_colors['up-bb'])
+	var valid_ally
+	var valid_enemy
+	if target_type == TargetType.SINGLE:
+		valid_ally = setBBColor("res://images/sprites/circle_unit.png", SettingsGlobals.ui_colors['up-bb'])
+		valid_enemy = setBBColor("res://images/sprites/circle_unit.png", SettingsGlobals.ui_colors['down-bb'])
+	else:
+		valid_ally = setBBColor("res://images/sprites/circle_unit_link.png", SettingsGlobals.ui_colors['up-bb'])
+		valid_enemy = setBBColor("res://images/sprites/circle_unit_link.png", SettingsGlobals.ui_colors['down-bb'])
 	
 	for i in range(3, -1, -1):
 		if i >= caster_position['min'] and i <= caster_position['max']:
@@ -162,18 +154,12 @@ func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String
 	
 	if target_group != TargetGroup.SELF:
 		if target_group == TargetGroup.ENEMIES:
-#			if is_enemy:
-#				invalid =  "res://images/sprites/circle_enemy.png"
-#				valid_enemy = "res://images/sprites/circle_invalid.png"
 			for j in range(4):
 				if j >= target_position['min'] and j <= target_position['max']:
 					postions.append(valid_enemy)
 				else:
 					postions.append(invalid)
 		else:
-#			if is_enemy:
-#				invalid =   "res://images/sprites/circle_ally.png"
-#				valid_ally = "res://images/sprites/circle_invalid.png"
 			for i in range(3, -1, -1):
 				if i >= caster_position['min'] and i <= caster_position['max']:
 					postions.append(valid_ally)
@@ -183,9 +169,12 @@ func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String
 		postions.reverse()
 	
 	if target_group != TargetGroup.SELF:
-		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img] [img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
+		return '%s%s%s%s %s%s%s%s' % postions
 	else:
-		return '[img]%s[/img][img]%s[/img][img]%s[/img][img]%s[/img]' % postions
+		return '%s%s%s%s' % postions
+
+func setBBColor(image_path:String, bb_color:String):
+	return '[img %s]%s[/img]' % [bb_color.replace('[','').replace(']',''), image_path]
 
 func isBasicAbility():
 	return basic_effects.size() > 0
@@ -195,3 +184,17 @@ func isOnslaught():
 		if effect is ResOnslaughtEffect: return true
 	
 	return false
+
+## USE THESE FUNCTIONS SPARINGLY, HIGHLY UNSTABLE!
+func editProperties(properties:Dictionary):
+	if !default_properties.is_empty():
+		return
+	
+	for property in properties.keys():
+		default_properties[property] = get(property)
+		set(property,properties[property])
+
+func restoreProperties():
+	for property in default_properties.keys():
+		set(property,default_properties[property])
+	default_properties.clear()

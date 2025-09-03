@@ -8,7 +8,7 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 			caster_riposte.can_miss,
 			caster_riposte.can_crit,
 			'',
-			'[img]res://images/sprites/icon_riposte.png[/img][color=orange]',
+			caster.combatant_resource.getStatusEffect('Riposte').getMessageIcon()+'[color=orange]',
 			caster_riposte.bonus_stats
 		)
 	else:
@@ -19,7 +19,7 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 			true,
 			true,
 			'',
-			'[img]res://images/sprites/icon_riposte.png[/img][color=orange]'
+			caster.combatant_resource.getStatusEffect('Riposte').getMessageIcon()+'[color=orange]'
 		)
 
 static func applyHitEffects(target,caster, _value, status_effect: ResStatusEffect):

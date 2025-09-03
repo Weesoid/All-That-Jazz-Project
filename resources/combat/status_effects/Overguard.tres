@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://nggpuuho017e"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=5 format=3 uid="uid://f24r1fjkctji"]
 
 [ext_resource type="PackedScene" uid="uid://cdqrjk5sniec5" path="res://scenes/animations_status_effects/Overguard.tscn" id="1_m5u3q"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_8ekwr"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/sprites/unknown_icon.png" id="3_kmvdv"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="3_kmvdv"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_7lkja"]
 
 [resource]
@@ -17,6 +17,7 @@ effect_type = 2
 remove_when = Array[int]([1])
 remove_style = 1
 texture = ExtResource("3_kmvdv")
+style = 1
 max_duration = 4
 extend_duration = 1
 apply_extend_duration = false
