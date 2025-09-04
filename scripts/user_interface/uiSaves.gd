@@ -9,8 +9,6 @@ enum Modes {
 
 @onready var panel = $PanelContainer/MarginContainer/VBoxContainer
 @onready var container = $PanelContainer
-@onready var delete_label = $Label
-@onready var timer = $Timer
 
 @export var mode: Modes
 @export var new_game_map = "res://scenes/maps/Sidescroller.tscn"
@@ -27,17 +25,6 @@ func _ready():
 		createSaveButton(PlayerGlobals.save_name)
 	OverworldGlobals.setMenuFocus(panel)
 	initial_mode = mode
-	if mode != Modes.LOAD:
-		delete_label.hide()
-#	if mode == Modes.LOAD:
-#		createSaveButtons()
-#	else:
-#		pass
-#	if OverworldGlobals.getPlayer().has_node('DebugComponent'):
-#		dropdown.add_item('Save', 0)
-#		dropdown.add_item('Load', 1)
-#		dropdown.add_item('Delete', 2)
-#		dropdown.show()
 
 func createSaveButtons():
 	var path = "res://saves/"
@@ -64,7 +51,26 @@ func createSaveButton(save_name: String):
 		button.text = save.name
 	else:
 		button.text = 'EMPTY'
-	button.pressed.connect(func doAction(): slotPressed(save_name, button))
+	button.pressed.connect(func(): slotPressed(save_name, button))
+	button.hold_color=Color.RED
+	button.hold_time = 5
+	button.focus_entered.connect(
+		func():
+			if mode == Modes.LOAD:
+				button.hold_time = 10.0
+			else:
+				button.hold_time = -1
+	)
+	button.hold_started.connect(
+		func():
+			if mode == Modes.LOAD:
+				CombatGlobals.spawnIndicator(button.global_position,'[color=YELLOW]Deleting Save!','Show',null,8.0)
+			)
+	button.held_press.connect(
+		func():
+			if mode == Modes.LOAD:
+				deleteSave(save_name,button)
+			)
 	if get_tree().current_scene.name == 'StartMenu':
 		button.disabled = (mode == Modes.NEW_GAME and button.text != 'EMPTY') or (mode == Modes.LOAD and button.text == 'EMPTY')
 	panel.add_child(button)
@@ -81,10 +87,8 @@ func slotPressed(save_name: String, button: Button):
 			SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name))
 		Modes.NEW_GAME:
 			PlayerGlobals.save_name = generateSaveName()
-			OverworldGlobals.changeMap(new_game_map, '0,0,0', 'FastTravel', false, true)
+			OverworldGlobals.changeMap('res://scenes/maps/Sidescroller.tscn', '0,0,0', 'FastTravel', false, true)
 			for combatant in PlayerGlobals.team: combatant.initializeCombatant(false)
-		Modes.DELETE:
-			deleteSave(save_name, button)
 
 func saveGame(save_name: String, button: Button):
 	SaveLoadGlobals.saveGame(save_name)
@@ -97,7 +101,6 @@ func deleteSave(save_name: String, button: Button):
 	button.disabled = initial_mode == Modes.LOAD
 	mode = initial_mode
 	container.self_modulate = Color.WHITE
-	delete_label.text = 'Hold [SPRINT KEY] to toggle DELETE mode'
 
 func generateSaveName()-> String:
 	var path = "res://saves/"
@@ -123,20 +126,3 @@ func _exit_tree():
 		OverworldGlobals.setPlayerInput(true)
 		OverworldGlobals.setMouseController(false)
 
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_sprint") and initial_mode == Modes.LOAD:
-		#container.self_modulate += Color(0.1, 0, 0, 0)
-		timer.start(1.0)
-	if Input.is_action_just_released("ui_sprint") and initial_mode == Modes.LOAD:
-		#container.self_modulate = Color.WHITE
-		timer.stop()
-
-func _on_timer_timeout():
-	if mode != Modes.DELETE:
-		mode = Modes.DELETE
-		container.self_modulate = Color.RED
-		delete_label.text = 'Hold [SPRINT KEY] to toggle LOAD mode'
-	else:
-		mode = initial_mode
-		container.self_modulate = Color.WHITE
-		delete_label.text = 'Hold [SPRINT KEY] to toggle DELETE mode'

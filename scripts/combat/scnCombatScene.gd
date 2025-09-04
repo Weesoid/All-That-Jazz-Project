@@ -505,6 +505,8 @@ func executeAbility():
 		for target in target_combatant:
 			removeTargetToken(target_combatant, active_combatant)
 			revokeBlocking(target)
+	if selected_ability.is_mutated:
+		selected_ability.restoreProperties()
 	await get_tree().process_frame # Attempt to fix combatants standing there like idiots, keep an eye out
 	
 	confirm.emit()

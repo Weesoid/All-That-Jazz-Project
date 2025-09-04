@@ -77,3 +77,7 @@ func _unhandled_input(_event):
 
 func _on_audio_stream_player_finished():
 	animator.play("RESET")
+
+
+func _on_load_game_held_press():
+	print('zooble')

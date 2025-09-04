@@ -48,3 +48,8 @@ target_position = {
 tension_cost = 0
 instant_cast = false
 required_level = 0
+mutation = {
+"instant_cast": true,
+"name": "Rushing Recede",
+"tension_cost": 4
+}

@@ -315,6 +315,8 @@ descriptions = {
 "icon": ExtResource("9_hipl7"),
 "title": "Pass"
 }
+hold_time = 1.0
+do_press = false
 
 [node name="EscapeButton" parent="." instance=ExtResource("1_xjxjm")]
 layout_mode = 1
@@ -334,6 +336,8 @@ descriptions = {
 "icon": ExtResource("9_1g12q"),
 "title": ""
 }
+hold_time = 1.0
+do_press = false
 
 [node name="EscapeChance" type="Label" parent="EscapeButton"]
 modulate = Color(1, 1, 1, 0)
@@ -417,12 +421,14 @@ libraries = {
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="focus_exited" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_focus_exited"]
+[connection signal="held_press" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_held_press"]
 [connection signal="focus_exited" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede" to="." method="_on_recede_focus_exited"]
+[connection signal="held_press" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede" to="." method="_on_recede_held_press"]
 [connection signal="pressed" from="AbilityContainer/BaseAbilities/BaseAbilities/Move" to="." method="_on_move_pressed"]
-[connection signal="pressed" from="AbilityContainer/BaseAbilities/BaseAbilities/Pass" to="." method="_on_pass_pressed"]
+[connection signal="held_press" from="AbilityContainer/BaseAbilities/BaseAbilities/Pass" to="." method="_on_pass_pressed"]
 [connection signal="focus_entered" from="EscapeButton" to="." method="_on_escape_button_focus_entered"]
 [connection signal="focus_exited" from="EscapeButton" to="." method="_on_escape_button_focus_exited"]
+[connection signal="held_press" from="EscapeButton" to="." method="_on_escape_button_pressed"]
 [connection signal="mouse_entered" from="EscapeButton" to="." method="_on_escape_button_mouse_entered"]
 [connection signal="mouse_exited" from="EscapeButton" to="." method="_on_escape_button_mouse_exited"]
-[connection signal="pressed" from="EscapeButton" to="." method="_on_escape_button_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

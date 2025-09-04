@@ -17,6 +17,7 @@ class_name CustomAbilityButton
 @export var outside_combat: bool = false
 
 func _ready():
+	$TextureRect/HoldProgress.modulate=hold_color
 	if ability != null:
 		ability_icon.texture = ability.icon
 		description_label.text = ability.getRichDescription(true)
@@ -39,69 +40,37 @@ func _ready():
 	else:
 		description_label.text = descriptions['title'].to_upper()+'\n'+descriptions['description']
 		ability_icon.texture = descriptions['icon']
-	#toggle_mode = true
 
 func _on_pressed():
-	if click_sound == null: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = click_sound
-	audio_player.play()
-	ability_icon.self_modulate = Color.WHITE
-	icon_animator.play('Pressed')
-	#await icon_animator.animation_finished
-	#if has_focus(): icon_animator.play("Focus")
+	press_feedback()
+	if do_press:
+		icon_animator.play('Pressed')
 
 func _on_focus_entered():
-	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = focused_entered_sound
-	audio_player.play()
-	z_index = 99
-	if outside_combat:
-		ability_icon.self_modulate = Color.YELLOW
-	else:
-		icon_animator.play("Focus")
-	
-	if Input.is_action_pressed("ui_select_arrow"): 
+	focus_feedback()
+	if Input.is_action_pressed("ui_select_arrow") and has_focus(): 
 		showDescription()
 
 func _on_mouse_entered():
-	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = focused_entered_sound
-	audio_player.play()
-	z_index = 99
-	if outside_combat:
-		ability_icon.self_modulate = Color.YELLOW
-	else:
-		icon_animator.play("Focus")
-	
-	if Input.is_action_pressed("ui_select_arrow"):
-		showDescription()
+	focus_feedback()
 	if focus_mode != Control.FOCUS_NONE:
 		grab_focus()
+	if Input.is_action_pressed("ui_select_arrow") and has_focus(): 
+		showDescription()
 
 func _on_mouse_exited():
-	z_index = 0
-	icon_animator.play('RESET')
-	if description_label.visible: 
-		hideDescription()
-
+	exit_focus_feedback()
 
 func _on_focus_exited():
-	z_index = 0
-	icon_animator.play('RESET')
-	if description_label.visible: 
-		hideDescription()
+	exit_focus_feedback()
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_select_arrow") and !description_label.visible and has_focus():
 		showDescription()
 	if Input.is_action_just_released("ui_select_arrow") and description_label.visible:
 		hideDescription()
+	
+	checkHoldInputs()
 
 func showDescription():
 	if outside_combat:
@@ -128,3 +97,28 @@ func undimButton():
 func _on_visibility_changed():
 	if ability_icon != null:
 		ability_icon.self_modulate = Color.WHITE
+
+func focus_feedback():
+	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
+	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
+	audio_player.stop()
+	audio_player.stream = focused_entered_sound
+	audio_player.play()
+	
+	z_index = 99
+	if outside_combat:
+		ability_icon.self_modulate = Color.YELLOW
+	else:
+		icon_animator.play("Focus")
+
+func exit_focus_feedback():
+	delay_timer.stop()
+	if hold_time > 0 and audio_player.stream == hold_sound:
+		hold_timer.stop()
+		audio_player.stop()
+	if has_node('ButtonDescription'):
+		get_node('ButtonDescription').remove()
+	z_index = 0
+	icon_animator.play('RESET')
+	if description_label.visible: 
+		hideDescription()

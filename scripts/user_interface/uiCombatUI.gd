@@ -211,7 +211,7 @@ func showAbilities(combatant: ResCombatant):
 func getAbilityButtons():
 	return ability_buttons.get_children().filter(func(control): return control is Button)
 
-func giveButtonFunction(button:Button, ability:ResAbility,weapon:ResWeapon=null):
+func giveButtonFunction(button:CustomAbilityButton, ability:ResAbility,weapon:ResWeapon=null):
 	var active_combatant = combat_scene.active_combatant
 	var combatants = combat_scene.combatants
 	button.pressed.connect(
@@ -222,6 +222,23 @@ func giveButtonFunction(button:Button, ability:ResAbility,weapon:ResWeapon=null)
 				setTensionBarVisible(true)
 				showTensionCost(ability.tension_cost)
 			)
+	if button.ability.canMutate():
+		button.hold_time = 0.75
+		button.held_press.connect(
+			func():
+				if !button.ability.is_mutated:
+					print('x')
+					button.ability.mutateProperties()
+					button._ready()
+					button.showDescription()
+					canUseAbility(button)
+				else:
+					print('y')
+					button.ability.restoreProperties()
+					button._ready()
+					button.showDescription()
+					canUseAbility(button)
+		)
 	if !ability.enabled or !ability.canUse(active_combatant, combatants):
 		setButtonDisabled(button,true,false)
 
@@ -408,35 +425,11 @@ func setRoundsVisible(set_to:bool):
 		tween.tween_property(rounds,'position',rounds_orig_pos+Vector2(0,-8),0.25)
 		tween.tween_property(rounds,'modulate',Color.TRANSPARENT,0.25)
 
-# Add innate "hold button" functionality to custom buttons.
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_sprint"):
-		setRushMovements()
-	elif Input.is_action_just_pressed("ui_gambit"):
-		resetMovements()
+func _on_move_held_press():
+	print('penitus')
 
-# Edit properties should get a fix. Idk.
-func setRushMovements():
-	move_forward_button.ability.editProperties({'tension_cost':4,'instant_cast':true,'name':'Rushing Advance'})
-	move_back_button.ability.editProperties({'tension_cost':4,'instant_cast':true,'name':'Rushing Recede'})
-	move_forward_button._ready()
-	move_back_button._ready()
-	if move_forward_button.has_focus():
-		move_forward_button.showDescription()
-	else:
-		move_back_button.showDescription()
-	canUseAbility(move_forward_button)
-	canUseAbility(move_back_button)
+func _on_advance_held_press():
+	pass # Replace with function body.
 
-func resetMovements():
-	move_back_button.ability.restoreProperties()
-	move_forward_button.ability.restoreProperties()
-	move_forward_button._ready()
-	move_back_button._ready()
-	if move_forward_button.has_focus():
-		move_forward_button.showDescription()
-	else:
-		move_back_button.showDescription()
-	canUseAbility(move_forward_button)
-	canUseAbility(move_back_button)
-
+func _on_recede_held_press():
+	pass # Replace with function body.

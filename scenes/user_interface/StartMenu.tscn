@@ -159,6 +159,7 @@ layout_mode = 2
 theme = ExtResource("1_6f5xk")
 text = "LOAD"
 alignment = 1
+hold_time = 10.0
 
 [node name="Settings" parent="VBoxContainer" instance=ExtResource("1_102o8")]
 layout_mode = 2
@@ -216,6 +217,7 @@ libraries = {
 }
 
 [connection signal="pressed" from="VBoxContainer/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="held_press" from="VBoxContainer/LoadGame" to="." method="_on_load_game_held_press"]
 [connection signal="pressed" from="VBoxContainer/LoadGame" to="." method="_on_load_game_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

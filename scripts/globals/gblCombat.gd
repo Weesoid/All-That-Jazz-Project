@@ -526,9 +526,9 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 			effect.apply_once = true
 			effect.current_rank += 1
 
-func spawnIndicator(position: Vector2, message:String, animation:String='Show',add_to:Node=null):
+func spawnIndicator(position: Vector2, message:String, animation:String='Show',add_to:Node=null,time:float=1.0):
 	var indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
-	
+	indicator.scale=Vector2(1,1)
 	if add_to != null:
 		add_to.add_child(indicator)
 	elif inCombat():
@@ -538,7 +538,7 @@ func spawnIndicator(position: Vector2, message:String, animation:String='Show',a
 	
 	indicator.global_position = position
 	indicator.z_index = 99
-	indicator.playAnimation(position, message, animation)
+	indicator.playAnimation(position, message, animation,time)
 
 func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')

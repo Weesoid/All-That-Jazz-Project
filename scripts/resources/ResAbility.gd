@@ -31,11 +31,13 @@ enum TargetGroup {
 @export var tension_cost: int = 0
 @export var instant_cast: bool = false
 @export var required_level = 0
+@export var mutation: Dictionary = {}
 
 var current_effect: ResAbilityEffect
 var current_charge: int
 var enabled: bool = true
 var default_properties:Dictionary={}
+var is_mutated:bool=false
 
 signal single_target(type)
 signal multi_target(type)
@@ -100,8 +102,6 @@ func isCombatantInRange(combatant: ResCombatant, target_range: String):
 		return position >= target_position['min'] and position <= target_position['max']
 
 func getCost():
-#	for i in range(21):
-#		print(i, ' = ', str(snappedf(100 * pow(i, 0.25), 10)))
 	return snappedf(100 * pow(required_level, 0.25), 10)
 
 func getTargetType():
@@ -185,16 +185,19 @@ func isOnslaught():
 	
 	return false
 
-## USE THESE FUNCTIONS SPARINGLY, HIGHLY UNSTABLE!
-func editProperties(properties:Dictionary):
-	if !default_properties.is_empty():
+func canMutate():
+	return !mutation.is_empty()
+
+func mutateProperties():
+	if mutation.is_empty():
 		return
 	
-	for property in properties.keys():
+	for property in mutation.keys():
 		default_properties[property] = get(property)
-		set(property,properties[property])
+		set(property,mutation[property])
+	is_mutated=true
 
 func restoreProperties():
 	for property in default_properties.keys():
-		set(property,default_properties[property])
-	default_properties.clear()
+		set(property,property_get_revert(property))
+	is_mutated=false

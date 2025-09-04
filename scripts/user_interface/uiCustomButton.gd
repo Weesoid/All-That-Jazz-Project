@@ -2,55 +2,108 @@ extends Button
 class_name CustomButton
 
 @onready var audio_player = $AudioStreamPlayer
+@onready var hold_timer = $HoldTimer
+@onready var delay_timer = $HoldDelay
+
 @export var description_text: String
 @export var description_offset: Vector2= Vector2.ZERO
 @export var focused_entered_sound: AudioStream = preload("res://audio/sounds/421465__jaszunio15__click_5.ogg")
 @export var click_sound: AudioStream = preload("res://audio/sounds/421469__jaszunio15__click_149.ogg")
+@export var hold_sound: AudioStream = preload("res://audio/sounds/loading sfx loopable.ogg")
+@export var hold_color:Color=Color.YELLOW
+@export var hold_key: String = "ui_hold_accept"
+@export var hold_time:float = -1
+@export var hold_delay:float=0.5
+
+@export var do_press:bool=true
+
 var random_pitch = 0.1
 
+signal held_press
+signal hold_started
+
+func _ready():
+	$HoldProgress.modulate=hold_color
+
 func _on_focus_entered():
-	#create_tween().tween_property(self,'scale',Vector2(1.05,1.05),0.1)
-	if focused_entered_sound == null: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = focused_entered_sound
-	audio_player.play()
+	focus_feedback()
 	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
 		showDescription()
 
 func _on_pressed():
-	if click_sound == null: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = click_sound
-	audio_player.play()
+	press_feedback()
 
 func _on_mouse_entered():
-	#create_tween().tween_property(self,'scale',Vector2(1.05,1.05),0.1)
-	if focused_entered_sound == null: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = focused_entered_sound
-	audio_player.play()
 	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
 		showDescription()
 	grab_focus()
 
 func _on_mouse_exited():
-	#create_tween().tween_property(self,'scale',Vector2(1.0,1.0),0.25)
-	if has_node('ButtonDescription'):
-		get_node('ButtonDescription').remove()
+	exit_focus_feedback()
 
 func _on_focus_exited():
-	pass
-	#create_tween().tween_property(self,'scale',Vector2(1.0,1.0),0.25)
+	exit_focus_feedback()
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_select_arrow") and has_focus() and description_text != '':
 		showDescription()
+	checkHoldInputs()
 
 func showDescription():
 	var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
 	add_child(side_description)
 	side_description.showDescription(description_text, description_offset)
 
+func checkHoldInputs():
+	if Input.is_action_just_pressed(hold_key) and has_focus() and hold_time > 0:
+		delay_timer.start(hold_delay)
+		await delay_timer.timeout
+		await cancelPress()
+		audio_player.stop()
+		audio_player.stream = hold_sound
+		audio_player.play()
+		hold_timer.start(hold_time)
+		hold_started.emit()
+	elif !hold_timer.is_stopped() and (Input.is_action_just_released(hold_key) or Input.is_action_just_pressed("ui_alt_cancel")) and has_focus():
+		if Input.is_action_just_pressed("ui_alt_cancel") and has_focus():
+			await cancelPress()
+		delay_timer.stop()
+		audio_player.stop()
+		hold_timer.stop()
+
+func _on_hold_timer_timeout():
+	if has_focus(): await cancelPress()
+	press_feedback()
+	held_press.emit()
+
+func cancelPress():
+	set_block_signals(true)
+	release_focus()
+	await get_tree().process_frame
+	grab_focus()
+	set_block_signals(false)
+
+func press_feedback():
+	if click_sound == null: return
+	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
+	audio_player.stop()
+	audio_player.stream = click_sound
+	audio_player.play()
+
+func focus_feedback():
+	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
+	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
+	audio_player.stop()
+	audio_player.stream = focused_entered_sound
+	audio_player.play()
+
+func exit_focus_feedback():
+	delay_timer.stop()
+	if hold_time > 0 and audio_player.stream == hold_sound:
+		hold_timer.stop()
+		audio_player.stop()
+	if has_node('ButtonDescription'):
+		get_node('ButtonDescription').remove()
+
+#func isHoldOverThreshold(threshold:float):
+#	return float(hold_timer.time_left/hold_time) >= threshold

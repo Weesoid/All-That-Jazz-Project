@@ -432,6 +432,7 @@ offset_right = 80.0
 offset_bottom = 18.0
 pivot_offset = Vector2(76, 24)
 size_flags_horizontal = 4
+mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
