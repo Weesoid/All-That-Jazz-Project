@@ -13,3 +13,4 @@ class_name ResCustomDamageEffect
 @export var can_miss: bool = false
 @export var trigger_on_hits = false
 @export var indicator_bb:  String = ''
+

@@ -4,6 +4,7 @@ class_name CustomAbilityButton
 @onready var ability_icon = $TextureRect
 @onready var icon_animator = $TextureRect/AnimationPlayer
 @onready var description_label = $PanelContainer/RichTextLabel
+@onready var description_panel = $PanelContainer
 @onready var description_animator = $PanelContainer/AnimationPlayer
 @onready var charges = $TextureRect/Charges
 
@@ -21,7 +22,7 @@ func _ready():
 	if ability != null:
 		ability_icon.texture = ability.icon
 		description_label.text = ability.getRichDescription(true)
-		description_label.hide()
+		description_panel.hide()
 		if custom_charge > -1:
 			charges.text = str(custom_charge)
 			charges.show()
@@ -43,7 +44,7 @@ func _ready():
 
 func _on_pressed():
 	press_feedback()
-	if do_press:
+	if hold_timer.time_left > 0:
 		icon_animator.play('Pressed')
 
 func _on_focus_entered():
@@ -56,6 +57,7 @@ func _on_mouse_entered():
 	if focus_mode != Control.FOCUS_NONE:
 		grab_focus()
 	if Input.is_action_pressed("ui_select_arrow") and has_focus(): 
+		
 		showDescription()
 
 func _on_mouse_exited():
@@ -65,26 +67,30 @@ func _on_focus_exited():
 	exit_focus_feedback()
 
 func _input(_event):
-	if Input.is_action_just_pressed("ui_select_arrow") and !description_label.visible and has_focus():
+	if Input.is_action_just_pressed("ui_select_arrow") and !description_panel.visible and has_focus():
 		showDescription()
-	if Input.is_action_just_released("ui_select_arrow") and description_label.visible:
+	if Input.is_action_just_released("ui_select_arrow") and description_panel.visible:
 		hideDescription()
 	
 	checkHoldInputs()
 
 func showDescription():
+	if description_label.text.replace('\n','') == '':
+		return
+	
 	if outside_combat:
 		var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
 		add_child(side_description)
 		side_description.showDescription(ability.getRichDescription(), Vector2(12,-28))
 	else:
-		description_label.show()
+		description_panel.show()
 		description_animator.play("ShowDescription")
 
 func hideDescription():
+
 	description_animator.play_backwards("ShowDescription")
 	await description_animator.animation_finished
-	description_label.hide()
+	description_panel.hide()
 
 func dimButton():
 	if ability_icon != null:
@@ -120,5 +126,5 @@ func exit_focus_feedback():
 		get_node('ButtonDescription').remove()
 	z_index = 0
 	icon_animator.play('RESET')
-	if description_label.visible: 
+	if description_panel.visible: 
 		hideDescription()

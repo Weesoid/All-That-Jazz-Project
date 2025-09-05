@@ -15,8 +15,6 @@ class_name CustomButton
 @export var hold_time:float = -1
 @export var hold_delay:float=0.5
 
-@export var do_press:bool=true
-
 var random_pitch = 0.1
 
 signal held_press
@@ -64,7 +62,9 @@ func checkHoldInputs():
 		audio_player.play()
 		hold_timer.start(hold_time)
 		hold_started.emit()
-	elif !hold_timer.is_stopped() and (Input.is_action_just_released(hold_key) or Input.is_action_just_pressed("ui_alt_cancel")) and has_focus():
+	if Input.is_action_just_released(hold_key) and !delay_timer.is_stopped():
+		delay_timer.stop()
+	if !hold_timer.is_stopped() and (Input.is_action_just_released(hold_key) or Input.is_action_just_pressed("ui_alt_cancel")) and has_focus():
 		if Input.is_action_just_pressed("ui_alt_cancel") and has_focus():
 			await cancelPress()
 		delay_timer.stop()
@@ -77,6 +77,8 @@ func _on_hold_timer_timeout():
 	held_press.emit()
 
 func cancelPress():
+	if !delay_timer.is_stopped():
+		delay_timer.stop()
 	set_block_signals(true)
 	release_focus()
 	await get_tree().process_frame
@@ -104,6 +106,3 @@ func exit_focus_feedback():
 		audio_player.stop()
 	if has_node('ButtonDescription'):
 		get_node('ButtonDescription').remove()
-
-#func isHoldOverThreshold(threshold:float):
-#	return float(hold_timer.time_left/hold_time) >= threshold

@@ -30,3 +30,4 @@ func checkConditions(target: ResCombatant, caster: ResCombatant)-> bool:
 			return false
 	
 	return true
+

@@ -31,3 +31,6 @@ enum DamageType {
 @export var indicator_bb:  String = ''
 @export var plant_self_on_combo: bool
 var do_not_return_pos: bool=false
+
+func _to_string():
+	return str(damage_modifier)

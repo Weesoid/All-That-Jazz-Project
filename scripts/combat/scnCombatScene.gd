@@ -215,7 +215,6 @@ func useAIPackage():
 		showCannotAct('Pass!', true)
 	
 	await confirm
-	#timer.queue_free() TIME FAIL SAFE
 	end_turn()
 
 func end_turn(combatant_act=true):
@@ -298,15 +297,8 @@ func end_turn(combatant_act=true):
 			await CombatGlobals.qte_finished
 			await get_node('QTE').tree_exited
 		setActiveCombatant()
-#	elif !active_combatant.isImmobilized():
-#		selected_ability.enabled = false
-#		active_combatant.turn_charges += 1
-#		combatant_turn_order.push_front([active_combatant, 1])
-#	else:
-#		if has_node('QTE'):
-#			await CombatGlobals.qte_finished
-#			await get_node('QTE').tree_exited
-#		setActiveCombatant()
+	if selected_ability != null and selected_ability.isMutated():
+		selected_ability.restoreProperties()
 	
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
@@ -505,11 +497,10 @@ func executeAbility():
 		for target in target_combatant:
 			removeTargetToken(target_combatant, active_combatant)
 			revokeBlocking(target)
-	if selected_ability.is_mutated:
-		selected_ability.restoreProperties()
 	await get_tree().process_frame # Attempt to fix combatants standing there like idiots, keep an eye out
-	
+	print('waiting!')
 	confirm.emit()
+	print('pass!')
 
 func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
@@ -624,12 +615,6 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	else:
 		addTargetClickButton(valid_targets)
 	target_state = selected_ability.getTargetType()
-	#updateDescription(ability)
-	#description_panel.show()
-	#ui_animator.play('FocusDescription')
-	#tension_bar.hide()
-	#secondary_action_panel.hide()
-	#action_panel.hide()
 	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.target_type == ability.TargetType.SINGLE:
 		targetCombatant(last_used_ability[active_combatant][1])
 	await target_selected

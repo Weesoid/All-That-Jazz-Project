@@ -200,7 +200,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	if caster != null and target.isDead() and abs(target.stat_values['health']) >= target.getMaxHealth() * 0.25:
 		calculateHealing(caster, caster.getMaxHealth()*0.15)
 		if caster is ResPlayerCombatant:
-			addTension(1)
+			addTension(1, target.combatant_scene)
 			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	playHurtAnimation(target, damage, sound)

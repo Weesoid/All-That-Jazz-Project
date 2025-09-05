@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://ol8t3xlrcx8b"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://ol8t3xlrcx8b"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_8t8d7"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_20jjo"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectMove.gd" id="2_8s0t3"]
 [ext_resource type="Texture2D" uid="uid://bkaqbhddufd3n" path="res://images/ability_icons/advance.png" id="3_fo2hn"]
+[ext_resource type="Texture2D" uid="uid://b73xkdfpl056s" path="res://images/ability_icons/advance_r.png" id="4_rkyhn"]
 
 [sub_resource type="Resource" id="Resource_hhdcl"]
 script = ExtResource("2_8s0t3")
@@ -49,6 +50,7 @@ tension_cost = 0
 instant_cast = false
 required_level = 0
 mutation = {
+"icon": ExtResource("4_rkyhn"),
 "instant_cast": true,
 "name": "Rushing Advance",
 "tension_cost": 4

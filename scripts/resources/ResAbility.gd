@@ -37,7 +37,6 @@ var current_effect: ResAbilityEffect
 var current_charge: int
 var enabled: bool = true
 var default_properties:Dictionary={}
-var is_mutated:bool=false
 
 signal single_target(type)
 signal multi_target(type)
@@ -121,10 +120,17 @@ func getRichDescription(with_name=true)-> String:
 		rich_description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % tension_cost
 	if instant_cast:
 		rich_description += '	[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
-	rich_description += '\n '+ description
+	if isBasicAbility():
+		rich_description += '\n '+getBasicDescription()
+	if description != '':
+		rich_description += '\n '+ description
 	if charges > 0 and !OverworldGlobals.inCombat():
 		rich_description += '[color=yellow] Uses: '+str(charges)
 	return rich_description
+
+func getBasicDescription():
+	for effect in basic_effects:
+		pass
 
 func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String:
 	var postions = []
@@ -189,15 +195,33 @@ func canMutate():
 	return !mutation.is_empty()
 
 func mutateProperties():
-	if mutation.is_empty():
+	if isMutated():
 		return
 	
 	for property in mutation.keys():
-		default_properties[property] = get(property)
-		set(property,mutation[property])
-	is_mutated=true
+		assert(get(property) != mutation[property], "Warning! %s property is the same as it's mutation." % property)
+		
+		#print('Defaults b4 assign: ', default_properties)
+		if mutation[property] is Array:
+			var array = []
+			array.assign(get(property))
+			default_properties[property] = array
+			get(property).assign(mutation[property])
+		else:
+			default_properties[property] = get(property)
+			set(property,mutation[property])
 
 func restoreProperties():
 	for property in default_properties.keys():
-		set(property,property_get_revert(property))
-	is_mutated=false
+		if default_properties[property] is Array:
+			get(property).assign(default_properties[property])
+		else:
+			set(property,default_properties[property])
+
+func isMutated():
+	var the_same = 0
+	for property in mutation.keys():
+		if get(property) == mutation[property]:
+			the_same += 1
+	
+	return the_same == mutation.size()

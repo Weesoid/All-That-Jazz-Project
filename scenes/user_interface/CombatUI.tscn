@@ -316,7 +316,6 @@ descriptions = {
 "title": "Pass"
 }
 hold_time = 1.0
-do_press = false
 
 [node name="EscapeButton" parent="." instance=ExtResource("1_xjxjm")]
 layout_mode = 1
@@ -337,7 +336,6 @@ descriptions = {
 "title": ""
 }
 hold_time = 1.0
-do_press = false
 
 [node name="EscapeChance" type="Label" parent="EscapeButton"]
 modulate = Color(1, 1, 1, 0)

@@ -210,6 +210,7 @@ stream = ExtResource("3_wmurb")
 bus = &"Sounds"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
+visible = false
 z_index = 100
 layout_mode = 1
 anchors_preset = 5
