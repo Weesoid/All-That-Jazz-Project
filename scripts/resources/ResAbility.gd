@@ -112,7 +112,7 @@ func _to_string():
 	return name
 
 func getRichDescription(with_name=true)-> String:
-	var rich_description = ''
+	var rich_description = '[center]'
 	if with_name:
 		rich_description += name.to_upper()+'\n'
 	rich_description += getPositionIcon()
@@ -123,14 +123,22 @@ func getRichDescription(with_name=true)-> String:
 	if isBasicAbility():
 		rich_description += '\n '+getBasicDescription()
 	if description != '':
-		rich_description += '\n '+ description
+		rich_description += SettingsGlobals.bb_line
+		rich_description += description
 	if charges > 0 and !OverworldGlobals.inCombat():
 		rich_description += '[color=yellow] Uses: '+str(charges)
 	return rich_description
 
 func getBasicDescription():
-	for effect in basic_effects:
-		pass
+	var out = ''
+	for i in range(basic_effects.size()):
+		var effect = basic_effects[i]
+		if !effect.has_method('_to_string'):
+			continue
+		out+=effect._to_string()
+		if i != basic_effects.size()-1:
+			out += SettingsGlobals.bb_line
+	return out
 
 func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String:
 	var postions = []
@@ -201,7 +209,6 @@ func mutateProperties():
 	for property in mutation.keys():
 		assert(get(property) != mutation[property], "Warning! %s property is the same as it's mutation." % property)
 		
-		#print('Defaults b4 assign: ', default_properties)
 		if mutation[property] is Array:
 			var array = []
 			array.assign(get(property))

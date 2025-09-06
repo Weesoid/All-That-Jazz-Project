@@ -210,7 +210,6 @@ func addAbility(combatant, ability):
 	else:
 		added_abilities[combatant] = []
 		added_abilities[combatant].append(ability)
-	print(combatant, ' . ', ability)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.name, ability.name])
 	loadAddedAbilities()
 

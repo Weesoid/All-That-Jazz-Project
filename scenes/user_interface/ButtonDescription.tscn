@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://culgycyo36e3u"]
 
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_232of"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiAbilityButtonSideDescription.gd" id="2_eb6du"]

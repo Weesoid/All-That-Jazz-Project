@@ -51,7 +51,3 @@ func canBlock()-> bool:
 func _input(_event):
 	if Input.is_action_just_pressed('ui_accept'):
 		block()
-
-
-func _on_property_list_changed():
-	print('ppogis')

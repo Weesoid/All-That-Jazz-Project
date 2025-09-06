@@ -135,6 +135,7 @@ func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResC
 func checkConditions(conditions: Array, target: ResCombatant):
 	for condition in conditions:
 		var condition_data = condition.split(':')
+		#if condition_data.contains()
 		match condition_data[0]:
 			's': # ex. s:bleed or s:guard:2
 				if !target.hasStatusEffect(condition_data[1]): 
@@ -165,6 +166,45 @@ func checkConditions(conditions: Array, target: ResCombatant):
 				return target.hasStatusEffect('Combo')
 			'%': # ex. crit/%:0.50
 				return randomRoll(float(condition_data[1]))
+
+func stringifyBonusStatConditions(conditions: Array)->String:
+	for condition in conditions:
+		var condition_data = condition.split(':')
+		match condition_data[0]:
+			's': # ex. s:bleed or s:guard:2
+				return 'If target '+loadStatusEffect(condition_data[1]).getMessageIcon()
+			'hp': # ex. hp:>:0.5 or hp:<:0.45
+				if condition_data[1] == '>':
+					return 'If target HP > '+str(float(condition_data[2])*100)+'%'
+				if condition_data[1] == '<':
+					return 'If target HP < '+str(float(condition_data[2])*100)+'%'
+			'combo': # ex crit/combo
+				return 'If target [img]res://images/status_icons/icon_combo.png[/img]'
+			'combo!': # ex. crit/combo!
+				return 'If target [img]res://images/status_icons/icon_combo.png[/img]'
+			'%': # ex. crit/%:0.50
+				return str(float(condition_data[1])*100)+'% chance to'
+	
+	return 'UNKNOWN CONDITION: '+str(conditions)
+
+func stringifySpecialStat(stat: String,value:String):
+	if stat == 'status_effect':
+		return 'Apply '+ loadStatusEffect(value).getMessageIcon()
+	elif stat == 'move':
+		var out = ''
+		var movement = value.split(',')
+		if movement[0] == 'f':
+			out += '[color=dark_turquoise]Pull '
+		elif movement[0] == 'b':
+			out += '[color=dark_turquoise]Push '
+		return out+' '+str(movement[1])+'[/color]'
+	elif stat == 'non-lethal':
+		return 'Non-lethal'
+	elif stat == 'tp':
+		return 'Gain '+value+'[img]res://images/sprites/icon_tp.png[/img]'
+
+func hasStatCondition(key):
+	return key.contains('/')
 
 func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
 	caster.removeTokens(ResStatusEffect.RemoveType.MISSED)
@@ -224,14 +264,8 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	if hasBonusStat(bonus_stats, 'tp') and caster is ResPlayerCombatant:
 		addTension(getBonusStat(bonus_stats,'tp',target), target.combatant_scene)
 
-#	if checkSpecialStat('plant', bonus_stats, target):
-#
 	if target.isDead():
 		OverworldGlobals.freezeFrame()
-#		if target is ResEnemyCombatant:
-#			getCombatScene().fade_bars_animator.play('KOEnemy')
-#		else:
-#			getCombatScene().fade_bars_animator.play('KOAlly')
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
@@ -547,6 +581,7 @@ func inCombat()-> bool:
 	return get_parent().has_node('CombatScene')
 
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
+	status_effect_name = status_effect_name.capitalize()
 	return load(str("res://resources/combat/status_effects/"+status_effect_name.replace(' ', '')+".tres")).duplicate()
 
 func getCombatantType(combatant):

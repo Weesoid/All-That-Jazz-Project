@@ -357,7 +357,7 @@ offset_bottom = 30.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 bbcode_enabled = true
-text = "This is a combat log message!"
+text = "This is a combat log message! "
 fit_content = true
 visible_characters = 0
 visible_ratio = 0.0
@@ -395,7 +395,7 @@ pivot_offset = Vector2(16, 8)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 bbcode_enabled = true
-text = "[img]res://images/sprites/circle_self_pos.png[/img]"
+text = "Round"
 fit_content = true
 
 [node name="RoundCounter" type="Label" parent="Rounds"]

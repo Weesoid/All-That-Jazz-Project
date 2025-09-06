@@ -7,17 +7,17 @@
 
 [sub_resource type="Resource" id="Resource_cicm1"]
 script = ExtResource("2_xs2wk")
-damage_type = 0
+damage_type = 1
 cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage_modifier = 1.0
+damage_modifier = 0.75
 can_miss = true
 can_crit = true
 bonus_stats = {
-"crit": 1.0,
-"status_effect": "Combo"
+"crit/s:poison": 1.25,
+"execute": 0.12
 }
 return_pos = true
 indicator_bb = ""
@@ -32,7 +32,7 @@ animate_on = 0
 script = ExtResource("1_yj0nf")
 auto_name = false
 name = "Projectiliun"
-description = "Shooty shooty"
+description = ""
 icon = ExtResource("3_hgmaq")
 basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_cicm1")])
 ability_script = ExtResource("1_g0kd2")

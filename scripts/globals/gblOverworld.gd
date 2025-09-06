@@ -171,15 +171,12 @@ func inMenu():
 	return player.player_camera.get_node('UI').has_node('uiMenu')
 
 func setControlFocus(control):
-	print(control.get_children())
 	for child in control.get_children():
 		if child is Button:
 			child.grab_focus()
-			print('grabbin boob')
 			return
 		elif child is Container and containerHasButtons(child):
 			getContainerButton(child).grab_focus()
-			print('grabbin boo')
 			return
 
 func setMenuFocus(container: Control):
@@ -295,11 +292,11 @@ func createStatusEffectIcon(effect_id):
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	return icon
 
-func createAbilityButton(ability: ResAbility, outside_combat:bool=false)-> CustomAbilityButton:
+func createAbilityButton(ability: ResAbility)-> CustomAbilityButton:
 	var button: CustomAbilityButton = load("res://scenes/user_interface/AbilityButton.tscn").instantiate()
 	button.ability = ability
-	if outside_combat:
-		button.outside_combat = true
+	button.outside_combat = !CombatGlobals.inCombat()
+	if button.outside_combat:
 		button.theme = load("res://design/AbilityButtonsOutCombat.tres")
 	return button
 
@@ -347,8 +344,6 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 		showTransition('FadeOut', player)
 	if !delayed_rewards.is_empty():
 		getCurrentMap().REWARD_BANK = delayed_rewards
-		#await getCurrentMap().ready
-		print('Givin from delayed!')
 		getCurrentMap().giveRewards()
 		await SaveLoadGlobals.done_saving
 		delayed_rewards.clear()

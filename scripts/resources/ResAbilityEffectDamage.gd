@@ -33,4 +33,33 @@ enum DamageType {
 var do_not_return_pos: bool=false
 
 func _to_string():
-	return str(damage_modifier)
+	var out=''
+	
+	if is_combo_effect:
+		out += 'On [img]res://images/status_icons/icon_combo.png[/img]:\n'
+	if damage_type == DamageType.MELEE or cast_animation['animation'].to_lower().contains('melee'):
+		out += "[img]res://images/sprites/icon_melee.png[/img] "
+	elif (damage_type == DamageType.RANGED or damage_type == DamageType.RANGED_PIERCING) or cast_animation['animation'].to_lower().contains('ranged'):
+		out += "[img]res://images/sprites/icon_range.png[/img] "
+	
+	out += SettingsGlobals.colorValueBB(damage_modifier*100,100.0)+'%[/color]\n'
+	var i = 1
+	for key in bonus_stats.keys():
+		var bonus_stat_str = key.split('/')[0]
+		if CombatGlobals.hasStatCondition(key):
+			out += CombatGlobals.stringifyBonusStatConditions(key.split('/'))+' '
+		
+		if bonus_stats[key] is float:
+			out += SettingsGlobals.colorValueBB(bonus_stats[key]*100,0)+'% '+bonus_stat_str.to_upper()+'[/color]'
+		elif bonus_stats[key] is int:
+			out += SettingsGlobals.colorValueBB(bonus_stats[key],0)+' '+bonus_stat_str.to_upper()+'[/color]'
+		elif bonus_stats[key] is String:
+			out += CombatGlobals.stringifySpecialStat(bonus_stat_str, bonus_stats[key])
+		if i != bonus_stats.size():
+			out += '\n'
+		
+		i += 1
+#		elif bonus_stat_str is ResStatusEffect:
+#			out += '+'+bonus_stats[key].getMessageIcon()+'\n'
+	
+	return out

@@ -15,11 +15,13 @@ enum AnimateOn {
 @export var animate_on: AnimateOn
 
 func checkConditions(target: ResCombatant, caster: ResCombatant)-> bool:
+	print(condition)
 	if condition == '':
 		return true
 	
 	var condition_data = condition.split('/')
 	var combatant
+	
 	match condition_data[0]:
 		't': combatant = target
 		'c': combatant = caster

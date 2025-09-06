@@ -22,7 +22,6 @@ func _on_body_entered(body):
 func getTileTexture(tile_set):
 	for tile_set_id in tile_set.get_source_count():
 		var atlas: TileSetAtlasSource = tile_set.get_source(tile_set_id)
-		print(atlas.texture.resource_path)
 
 func showSmear():
 	smear.play('Show')

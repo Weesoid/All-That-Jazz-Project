@@ -13,8 +13,20 @@ var ui_colors: Dictionary = {
 	'up': Color.GOLD,
 	'down': Color.STEEL_BLUE,
 	'up-bb': '[color=GOLD]',
-	'down-bb': '[color=STEEL_BLUE]',
+	'down-bb': '[color=STEEL_BLUE]'
 }
+var bb_line:String = '\n[color=transparent]a[/color][img]res://images/sprites/bb_line.png[/img][color=transparent]a[/color]\n'
+
+func colorImgBB(ui_color:String):
+	return '[img '+ui_colors[ui_color].replace('[','').replace(']','')+']'
+
+func colorValueBB(value, control_value)-> String:
+	if value > control_value:
+		return ui_colors['up-bb']+str(value)
+	elif value < control_value:
+		return ui_colors['down-bb']+str(value)
+	else:
+		return '[color=white]'+str(value)
 
 func applySettings(settings_data: SavedSettings):
 	InputHelper.deserialize_inputs_for_actions(settings_data.binds)

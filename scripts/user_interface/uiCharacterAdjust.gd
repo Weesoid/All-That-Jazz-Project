@@ -137,7 +137,7 @@ func clearChildren(parent):
 		child.queue_free()
 
 func createAbilityButton(ability, location):
-	var button: CustomButton = OverworldGlobals.createAbilityButton(ability, true)
+	var button: CustomButton = OverworldGlobals.createAbilityButton(ability)
 	var has_unlocked = PlayerGlobals.hasUnlockedAbility(selected_combatant, ability) or ability.required_level == 0
 	button.focused_entered_sound = load("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = load("res://audio/sounds/421304__jaszunio15__click_229.ogg")

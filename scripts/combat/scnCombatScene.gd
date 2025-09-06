@@ -497,10 +497,9 @@ func executeAbility():
 		for target in target_combatant:
 			removeTargetToken(target_combatant, active_combatant)
 			revokeBlocking(target)
+	
 	await get_tree().process_frame # Attempt to fix combatants standing there like idiots, keep an eye out
-	print('waiting!')
 	confirm.emit()
-	print('pass!')
 
 func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
