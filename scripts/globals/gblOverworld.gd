@@ -5,7 +5,7 @@ enum PlayerType {
 	ARCHIE
 }
 var entering_combat:bool=false
-var player_type: PlayerType = PlayerType.ARCHIE
+var player_type: PlayerType = PlayerType.WILLIS
 var delayed_rewards: Dictionary
 var player_follower_count = 0
 var player: PlayerScene
@@ -283,13 +283,14 @@ func createItemIcon(item: ResItem, count:int):
 	icon.add_child(count_label)
 	return icon
 
-func createStatusEffectIcon(effect_id):
+func createStatusEffectIcon(effect_id,expand=TextureRect.EXPAND_KEEP_SIZE):
 	var effect = CombatGlobals.loadStatusEffect(effect_id)
 	var icon = TextureRect.new()
 	icon.texture = effect.texture
+	icon.self_modulate = effect.getIconColor()
 	icon.tooltip_text = effect.name+': '+effect.description
-	icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	icon.expand_mode = expand
+	#icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	return icon
 
 func createAbilityButton(ability: ResAbility)-> CustomAbilityButton:
@@ -318,8 +319,8 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 #	if getCurrentMap().has_node('Player'): 
 #		getCurrentMap().hide()
 #		getCurrentMap().get_node('Player').queue_free()
-		#player.loadData()
-	#var player
+#		player.loadData()
+#	var player
 	match player_type:
 		PlayerType.WILLIS: player = load("res://scenes/entities/Player.tscn").instantiate()
 		PlayerType.ARCHIE: player = load("res://scenes/entities/PlayerAlternate.tscn").instantiate()

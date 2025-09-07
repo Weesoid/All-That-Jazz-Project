@@ -29,9 +29,7 @@ damage_modifier = 1.17
 can_miss = true
 can_crit = true
 bonus_stats = {
-"move": "b,2",
-"status_effect": "Poison",
-"tp": "2"
+"status_effect/hp:>:0.9": "Poison"
 }
 return_pos = true
 indicator_bb = ""

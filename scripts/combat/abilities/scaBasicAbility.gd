@@ -12,7 +12,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await playAnimation(ability, caster)
 		if effect.sound_effect != '': 
 			OverworldGlobals.playSound(effect.sound_effect)
-	
+		
 		if effect is ResDamageEffect:
 			await doAttackAnimations(caster, target, ability, effect)
 		elif effect is ResCustomDamageEffect:

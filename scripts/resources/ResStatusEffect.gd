@@ -23,7 +23,9 @@ enum RemoveStyle {
 enum StatusStyle {
 	NEUTRAL,
 	BUFF,
-	DEBUFF
+	DEBUFF,
+	UNIQUE,
+	SPECIAL
 }
 
 ## NOTE: Always name status effects with the following convention: File-GuardBreak.tres;Name-Guard Break
@@ -67,6 +69,10 @@ func initializeStatus():
 		icon.self_modulate = SettingsGlobals.ui_colors['up']
 	elif style == StatusStyle.DEBUFF:
 		icon.self_modulate = SettingsGlobals.ui_colors['down']
+	elif style == StatusStyle.UNIQUE:
+		icon.self_modulate = SettingsGlobals.ui_colors['unique']
+	elif style == StatusStyle.SPECIAL:
+		icon.self_modulate = SettingsGlobals.ui_colors['special']
 	
 	if packed_scene != null:
 		status_visuals = packed_scene.instantiate()
@@ -146,7 +152,24 @@ func getMessageIcon():
 		color_bb = SettingsGlobals.ui_colors['up-bb'].replace('[','').replace(']','')
 	elif style==StatusStyle.DEBUFF:
 		color_bb = SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
+	elif style==StatusStyle.UNIQUE:
+		color_bb = SettingsGlobals.ui_colors['unique-bb'].replace('[','').replace(']','')
+	elif style==StatusStyle.SPECIAL:
+		color_bb = SettingsGlobals.ui_colors['special-bb'].replace('[','').replace(']','')
+	
 	return '[img %s]%s[/img]' % [color_bb,texture.get_path()]
+
+func getIconColor():
+	if style == StatusStyle.BUFF:
+		return SettingsGlobals.ui_colors['up']
+	elif style == StatusStyle.DEBUFF:
+		return SettingsGlobals.ui_colors['down']
+	elif style == StatusStyle.UNIQUE:
+		return SettingsGlobals.ui_colors['unique']
+	elif style == StatusStyle.SPECIAL:
+		return SettingsGlobals.ui_colors['special']
+	
+	return Color.WHITE
 
 #func getFilename():
 #	return resource_path.get_file().replace('.tres','')

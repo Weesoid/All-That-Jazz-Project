@@ -12,8 +12,12 @@ var cheat_mode = true
 var ui_colors: Dictionary = {
 	'up': Color.GOLD,
 	'down': Color.STEEL_BLUE,
+	'special':Color.TURQUOISE,
+	'unique':Color.ORANGE,
 	'up-bb': '[color=GOLD]',
-	'down-bb': '[color=STEEL_BLUE]'
+	'down-bb': '[color=STEEL_BLUE]',
+	'special-bb':'[color=TURQUOISE]',
+	'unique-bb':'[color=ORANGE]'
 }
 var bb_line:String = '\n[color=transparent]a[/color][img]res://images/sprites/bb_line.png[/img][color=transparent]a[/color]\n'
 

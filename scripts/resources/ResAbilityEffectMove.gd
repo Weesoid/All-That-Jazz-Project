@@ -15,7 +15,14 @@ enum Direction {
 @export var move_count: int = 1
 
 func _to_string():
-	var str_condition = ''
-	if condition != '':
-		str_condition += CombatGlobals.stringifyBonusStatConditions(condition.split('/'))+' : '
-	return str_condition+'[color=dark_turquoise]'+str(Direction.find_key(direction)).capitalize()+' '+str(move_count)+'[/color]'
+	return stringifyCondition()+'[color=dark_turquoise]'+getWording()+' '+str(move_count)+'[/color]'
+
+func getWording():
+	if target == Target.CASTER and direction == Direction.FORWARD:
+		return 'Forward'
+	elif target == Target.CASTER and direction == Direction.BACK:
+		return 'Back'
+	elif target == Target.TARGET and direction == Direction.FORWARD:
+		return 'Push'
+	elif target == Target.TARGET and direction == Direction.BACK:
+		return 'Pull'

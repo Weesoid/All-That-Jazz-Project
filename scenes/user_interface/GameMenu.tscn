@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dl5lgui67w0wr"]
 
 [ext_resource type="PackedScene" uid="uid://iebdjevflk78" path="res://scenes/user_interface/Inventory.tscn" id="1_80xws"]
-[ext_resource type="PackedScene" uid="uid://cbkybcyyxjsku" path="res://scenes/user_interface/CharacterAdjust.tscn" id="1_o6f3c"]
+[ext_resource type="PackedScene" uid="uid://c36dx7g860omy" path="res://scenes/user_interface/CharacterAdjust.tscn" id="1_o6f3c"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameMenu.gd" id="1_quklc"]
 [ext_resource type="PackedScene" uid="uid://l6g1sleppkxg" path="res://scenes/user_interface/Quest.tscn" id="4_4cqdi"]
 [ext_resource type="PackedScene" uid="uid://b56515n0oi2ut" path="res://scenes/user_interface/OthersMenu.tscn" id="4_7ei7o"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=23 format=3 uid="uid://c36dx7g860omy"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
@@ -99,18 +99,19 @@ text = "ARCHIE FLYNT"
 horizontal_alignment = 1
 
 [node name="Infliction" type="HBoxContainer" parent="Character/Panel/Label"]
+z_index = 2
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -68.0
-offset_top = -4.0
-offset_right = 68.0
-offset_bottom = 4.0
+offset_left = -136.0
+offset_top = -2.0
+offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 0
+scale = Vector2(2, 2)
 theme = ExtResource("8_hty5i")
 alignment = 1
 

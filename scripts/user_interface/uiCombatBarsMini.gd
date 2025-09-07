@@ -29,26 +29,17 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 
 func _process(_delta):
 	updateBars()
-	#updateStatusEffects()
 
 func updateBars():
 	health_bar.max_value = int(attached_combatant.base_stat_values['health'])
 	health_bar.value = int(attached_combatant.stat_values['health'])
 
 func updateStatusEffects():
-	#for child in status_effects.get_children():
-	#	child.queue_free()
-	#added_lingers = []
-	#await get_tree().process_frame
 	for linger_effect in attached_combatant.lingering_effects:
 		if added_lingers.has(linger_effect):
 			continue
 		
-		var effect: ResStatusEffect = CombatGlobals.loadStatusEffect(linger_effect)
-		var icon = TextureRect.new()
-		icon.texture = effect.texture
-		icon.tooltip_text = effect.name+': '+effect.description
-		status_effects.add_child(icon)
+		status_effects.add_child(OverworldGlobals.createStatusEffectIcon(linger_effect,TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL))
 		added_lingers.append(linger_effect)
 
 func highlightCombatant():

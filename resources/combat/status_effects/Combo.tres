@@ -15,6 +15,7 @@ effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
 texture = ExtResource("2_6lvld")
+style = 4
 max_duration = 0
 extend_duration = 1
 apply_extend_duration = false

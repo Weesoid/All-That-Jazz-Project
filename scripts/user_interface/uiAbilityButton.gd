@@ -44,8 +44,8 @@ func _ready():
 
 func _on_pressed():
 	press_feedback()
-	if hold_timer.time_left > 0:
-		icon_animator.play('Pressed')
+	#if hold_timer.time_left > 0:
+	icon_animator.play('Pressed')
 
 func _on_focus_entered():
 	focus_feedback()
@@ -81,7 +81,7 @@ func showDescription():
 	if outside_combat:
 		var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
 		add_child(side_description)
-		side_description.showDescription(ability.getRichDescription(), Vector2(128,28))
+		side_description.showDescription(ability.getRichDescription(), Vector2(128,32))
 	else:
 		description_panel.show()
 		description_animator.play("ShowDescription")

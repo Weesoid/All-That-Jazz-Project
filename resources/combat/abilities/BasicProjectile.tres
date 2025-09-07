@@ -16,8 +16,8 @@ damage_modifier = 0.75
 can_miss = true
 can_crit = true
 bonus_stats = {
-"crit/s:poison": 1.25,
-"execute": 0.12
+"execute": 0.12,
+"status_effect": "Poison"
 }
 return_pos = true
 indicator_bb = ""
@@ -57,7 +57,7 @@ target_position = {
 "max": 1,
 "min": 0
 }
-tension_cost = 8
+tension_cost = 0
 instant_cast = false
 required_level = 0
 mutation = {}

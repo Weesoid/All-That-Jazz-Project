@@ -11,7 +11,7 @@ class_name CustomButton
 @export var click_sound: AudioStream = preload("res://audio/sounds/421469__jaszunio15__click_149.ogg")
 @export var hold_sound: AudioStream = preload("res://audio/sounds/loading sfx loopable.ogg")
 @export var hold_color:Color=Color.YELLOW
-@export var hold_key: String = "ui_hold_accept"
+@export var hold_key: Array[String] = ["ui_accept","ui_click"]
 @export var hold_time:float = -1
 @export var hold_delay:float=0.5
 
@@ -53,7 +53,7 @@ func showDescription():
 	side_description.showDescription(description_text, description_offset)
 
 func checkHoldInputs():
-	if Input.is_action_just_pressed(hold_key) and has_focus() and hold_time > 0:
+	if isHoldKey('pressed') and has_focus() and hold_time > 0:
 		delay_timer.start(hold_delay)
 		await delay_timer.timeout
 		await cancelPress()
@@ -62,14 +62,22 @@ func checkHoldInputs():
 		audio_player.play()
 		hold_timer.start(hold_time)
 		hold_started.emit()
-	if Input.is_action_just_released(hold_key) and !delay_timer.is_stopped():
+	if isHoldKey('released') and !delay_timer.is_stopped():
 		delay_timer.stop()
-	if !hold_timer.is_stopped() and (Input.is_action_just_released(hold_key) or Input.is_action_just_pressed("ui_alt_cancel")) and has_focus():
+	if !hold_timer.is_stopped() and (isHoldKey('released') or Input.is_action_just_pressed("ui_alt_cancel")) and has_focus():
 		if Input.is_action_just_pressed("ui_alt_cancel") and has_focus():
 			await cancelPress()
 		delay_timer.stop()
 		audio_player.stop()
 		hold_timer.stop()
+
+func isHoldKey(action:String):
+	for input in hold_key:
+		if action == 'pressed' and Input.is_action_just_pressed(input):
+			return true
+		elif action == 'released' and Input.is_action_just_released(input):
+			return true
+	return false
 
 func _on_hold_timer_timeout():
 	if has_focus(): await cancelPress()

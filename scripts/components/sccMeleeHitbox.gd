@@ -19,9 +19,5 @@ func _on_body_entered(body):
 	if body.has_node('Sprite2D') and body != OverworldGlobals.player:
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
 
-func getTileTexture(tile_set):
-	for tile_set_id in tile_set.get_source_count():
-		var atlas: TileSetAtlasSource = tile_set.get_source(tile_set_id)
-
 func showSmear():
 	smear.play('Show')

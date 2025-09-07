@@ -911,8 +911,8 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 	var current_pos = combatant_group.find(combatant.combatant_scene.get_parent())
 	if !moveValid(move, current_pos, combatant_group): return
 	var combatant_prev_pos = combatant.combatant_scene.global_position
-	var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	var tween_a_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC) # ROTAT
+	var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_SINE)
+	var tween_a_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_SINE) # ROTAT
 	var tween_b
 	var combatant_b
 	var move_combatant_b_pos = move * -1

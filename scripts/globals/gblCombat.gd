@@ -47,7 +47,7 @@ func calculateDamage(caster, target, modifier, can_miss = true, can_crit = true,
 	
 	if target is ResPlayerCombatant and target.combatant_scene.blocking:
 		can_miss=false
-	
+	#print(bonus_stats)
 	if randomRoll(caster.stat_values['accuracy']+getBonusStat(bonus_stats, 'accuracy', target)) and can_miss:
 		damageTarget(caster, target, modifier, can_crit, sound, indicator_bb_code, bonus_stats)
 		return true
@@ -121,18 +121,28 @@ func getBonusStatValue(bonus_stats: Dictionary, key: String):
 				return bonus_stats[stat]
 
 func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResCombatant):
+	#print('ASS ', bonus_stats, ' / ', key)
 	var conditions: Array
+	#print('key -------------- ', key)
+	#print(bonus_stats)
 	for stat in bonus_stats.keys():
+	#	print('checking! ',stat.split('/'))
+		#print('ch1: ', stat.split('/')[0])
+		#print('ch2: ',stat.split('/').size())
 		if key == stat.split('/')[0] and (stat.split('/').size() > 1):
 			conditions = stat.split('/')
 			conditions.remove_at(0)
 			break
 		elif key == stat.split('/')[0]:
+			#print('bruh')
 			return true
 	
+	#print('Outted: ',conditions)
 	return checkConditions(conditions, target)
 
 func checkConditions(conditions: Array, target: ResCombatant):
+	print('zugley: ',conditions)
+	#print(conditions)
 	for condition in conditions:
 		var condition_data = condition.split(':')
 		#if condition_data.contains()
@@ -154,8 +164,10 @@ func checkConditions(conditions: Array, target: ResCombatant):
 				return target.hasStatusEffect(condition_data[1]) and rank_condition
 			'hp': # ex. hp:>:0.5 or hp:<:0.45
 				if condition_data[1] == '>':
+					#print('supple')
 					return target.stat_values['health'] >= float(condition_data[2])*target.getMaxHealth()
 				if condition_data[1] == '<':
+					#print('sex')
 					return target.stat_values['health'] <= float(condition_data[2])*target.getMaxHealth()
 			'combo': # ex crit/combo
 				if target.hasStatusEffect('Combo'):
@@ -165,23 +177,24 @@ func checkConditions(conditions: Array, target: ResCombatant):
 			'combo!': # ex. crit/combo!
 				return target.hasStatusEffect('Combo')
 			'%': # ex. crit/%:0.50
+				#print('that')
 				return randomRoll(float(condition_data[1]))
 
-func stringifyBonusStatConditions(conditions: Array)->String:
+func stringifyBonusStatConditions(conditions: Array, unit:String='Target')->String:
 	for condition in conditions:
 		var condition_data = condition.split(':')
 		match condition_data[0]:
 			's': # ex. s:bleed or s:guard:2
-				return 'If target '+loadStatusEffect(condition_data[1]).getMessageIcon()
+				return 'If %s '% unit+loadStatusEffect(condition_data[1]).getMessageIcon()
 			'hp': # ex. hp:>:0.5 or hp:<:0.45
 				if condition_data[1] == '>':
-					return 'If target HP > '+str(float(condition_data[2])*100)+'%'
+					return 'If %s HP > '% unit+str(float(condition_data[2])*100)+'%'
 				if condition_data[1] == '<':
-					return 'If target HP < '+str(float(condition_data[2])*100)+'%'
+					return 'If %s HP < '% unit+str(float(condition_data[2])*100)+'%'
 			'combo': # ex crit/combo
-				return 'If target [img]res://images/status_icons/icon_combo.png[/img]'
+				return 'If %s [img]res://images/status_icons/icon_combo.png[/img]' % unit
 			'combo!': # ex. crit/combo!
-				return 'If target [img]res://images/status_icons/icon_combo.png[/img]'
+				return 'If %s [img]res://images/status_icons/icon_combo.png[/img]' % unit
 			'%': # ex. crit/%:0.50
 				return str(float(condition_data[1])*100)+'% chance to'
 	
@@ -250,7 +263,9 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", target.combatant_scene.global_position)
 		target.stat_values['health'] -= 999
 		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
+	
 	if checkSpecialStat('status_effect', bonus_stats, target):
+		print('fuckus: ',bonus_stats)
 		var status_effects = getBonusStatValue(bonus_stats, 'status_effect').split(',')
 		for effect in status_effects:
 			addStatusEffect(target, effect)
@@ -268,6 +283,8 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		OverworldGlobals.freezeFrame()
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
+	print('sexley: ',special_stat)
+	print('ASS ',special_stat, ' / ', bonus_stats)
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
@@ -581,7 +598,8 @@ func inCombat()-> bool:
 	return get_parent().has_node('CombatScene')
 
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
-	status_effect_name = status_effect_name.capitalize()
+	if !status_effect_name.contains('Faded'):
+		status_effect_name = status_effect_name.capitalize()
 	return load(str("res://resources/combat/status_effects/"+status_effect_name.replace(' ', '')+".tres")).duplicate()
 
 func getCombatantType(combatant):

@@ -6,7 +6,4 @@ class_name ResHealEffect
 @export var cast_animation: String = ''
 
 func _to_string():
-	var str_condition = ''
-	if condition != '':
-		str_condition += CombatGlobals.stringifyBonusStatConditions(condition.split('/'))+' '
-	return str_condition+'[color=green]Heal %s[/color]' % str(heal)
+	return stringifyCondition()+'[color=green]Heal %s[/color]' % str(heal)

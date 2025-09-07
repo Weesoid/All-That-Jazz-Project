@@ -35,6 +35,7 @@ var do_not_return_pos: bool=false
 func _to_string():
 	var out=''
 	
+	out += stringifyCondition()
 	if is_combo_effect:
 		out += 'On [img]res://images/status_icons/icon_combo.png[/img]:\n'
 	if damage_type == DamageType.MELEE or cast_animation['animation'].to_lower().contains('melee'):
