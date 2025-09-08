@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=10 format=3 uid="uid://btd50tvrm5mdc"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://btd50tvrm5mdc"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
@@ -40,29 +40,8 @@ sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_vy2ql"]
-script = ExtResource("2_nqi6m")
-damage_type = 0
-cast_animation = {
-"animation": "",
-"go_to_target": false
-}
-damage_modifier = 9.0
-can_miss = true
-can_crit = true
-bonus_stats = {}
-return_pos = true
-indicator_bb = ""
-plant_self_on_combo = false
-condition = ""
-is_combo_effect = false
-sound_effect = ""
-animation_time = 0.0
-animate_on = 0
-
 [resource]
 script = ExtResource("1_k0byw")
-auto_name = false
 name = "Basic Attack"
 description = ""
 icon = ExtResource("3_aoac4")
@@ -92,6 +71,4 @@ target_position = {
 tension_cost = 0
 instant_cast = false
 required_level = 0
-mutation = {
-"basic_effects": [SubResource("Resource_vy2ql")]
-}
+mutation = {}

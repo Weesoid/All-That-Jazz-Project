@@ -145,9 +145,10 @@ func _ready() -> void:
 
 	code_edit.main_view = self
 	code_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY if DialogueSettings.get_setting("wrap_lines", false) else TextEdit.LINE_WRAPPING_NONE
-	var editor_settings: EditorSettings = editor_plugin.get_editor_interface().get_editor_settings()
-	editor_settings.settings_changed.connect(_on_editor_settings_changed)
-	_on_editor_settings_changed()
+	if editor_plugin != null:
+		var editor_settings: EditorSettings = editor_plugin.get_editor_interface().get_editor_settings()
+		editor_settings.settings_changed.connect(_on_editor_settings_changed)
+		_on_editor_settings_changed()
 
 	save_all_button.disabled = true
 

@@ -46,7 +46,7 @@ mouse_cursor/custom_image="res://images/sprites/cursor.png"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/imrp/plugin.cfg")
 
 [filesystem]
 

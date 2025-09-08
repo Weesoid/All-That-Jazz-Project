@@ -26,7 +26,6 @@ sound_effect = ""
 
 [resource]
 script = ExtResource("3_frn68")
-auto_name = false
 name = "Critical Eye"
 description = "+200% Critical chance for one attack."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_3tlie")])
