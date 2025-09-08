@@ -64,14 +64,7 @@ var icon: TextureRect
 func initializeStatus():
 	icon = TextureRect.new()
 	icon.texture = texture
-	if style == StatusStyle.BUFF:
-		icon.self_modulate = SettingsGlobals.ui_colors['up']
-	elif style == StatusStyle.DEBUFF:
-		icon.self_modulate = SettingsGlobals.ui_colors['down']
-	elif style == StatusStyle.UNIQUE:
-		icon.self_modulate = SettingsGlobals.ui_colors['unique']
-	elif style == StatusStyle.SPECIAL:
-		icon.self_modulate = SettingsGlobals.ui_colors['special']
+	icon.self_modulate = getIconColor()
 	
 	if packed_scene != null:
 		status_visuals = packed_scene.instantiate()
@@ -158,15 +151,27 @@ func getMessageIcon():
 	
 	return '[img %s]%s[/img]' % [color_bb,texture.get_path()]
 
-func getIconColor():
+func getIconColor(as_bb:bool=false):
 	if style == StatusStyle.BUFF:
-		return SettingsGlobals.ui_colors['up']
+		if as_bb:
+			return SettingsGlobals.ui_colors['up-bb']
+		else:
+			return SettingsGlobals.ui_colors['up']
 	elif style == StatusStyle.DEBUFF:
-		return SettingsGlobals.ui_colors['down']
+		if as_bb:
+			return SettingsGlobals.ui_colors['down-bb']
+		else:
+			return SettingsGlobals.ui_colors['down']
 	elif style == StatusStyle.UNIQUE:
-		return SettingsGlobals.ui_colors['unique']
+		if as_bb:
+			return SettingsGlobals.ui_colors['unique-bb']
+		else:
+			return SettingsGlobals.ui_colors['unique']
 	elif style == StatusStyle.SPECIAL:
-		return SettingsGlobals.ui_colors['special']
+		if as_bb:
+			return SettingsGlobals.ui_colors['special-bb']
+		else:
+			return SettingsGlobals.ui_colors['special']
 	
 	return Color.WHITE
 

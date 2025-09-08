@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://ewb80noaamii"]
 
-[ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_04wye"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_qr0qk"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="1_w1nhd"]
@@ -47,5 +46,5 @@ scale_stats = {
 "resist": false,
 "speed": true
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_04wye")])
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 max_turn_charges = 1

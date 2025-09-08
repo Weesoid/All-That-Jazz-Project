@@ -31,7 +31,6 @@ animate_on = 0
 
 [resource]
 script = ExtResource("3_ellp4")
-auto_name = false
 name = "Defend"
 description = ""
 icon = ExtResource("4_f5m2x")

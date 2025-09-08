@@ -25,11 +25,13 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage_modifier = 1.17
+damage_modifier = 1.0
 can_miss = true
 can_crit = true
 bonus_stats = {
-"status_effect/hp:>:0.9": "Poison"
+"accuracy/hp:>:0.9": 0.5,
+"crit/hp:>:0.5": 2.0,
+"status_effect/hp:>:0.8": "Poison,Combo"
 }
 return_pos = true
 indicator_bb = ""
@@ -71,4 +73,6 @@ target_position = {
 tension_cost = 0
 instant_cast = false
 required_level = 0
-mutation = {}
+mutation = {
+"": null
+}

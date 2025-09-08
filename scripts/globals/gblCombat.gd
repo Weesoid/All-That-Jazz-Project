@@ -1,6 +1,6 @@
 extends Node
 
-
+# TO DO: Simplify bonus stat system or just design abilities with one bonus stat category per stat
 enum Enemy_Factions {
 	Scavs
 }
@@ -120,7 +120,7 @@ func getBonusStatValue(bonus_stats: Dictionary, key: String):
 			else:
 				return bonus_stats[stat]
 
-func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResCombatant):
+func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResCombatant)-> bool:
 	#print('ASS ', bonus_stats, ' / ', key)
 	var conditions: Array
 	#print('key -------------- ', key)
@@ -140,8 +140,8 @@ func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResC
 	#print('Outted: ',conditions)
 	return checkConditions(conditions, target)
 
-func checkConditions(conditions: Array, target: ResCombatant):
-	print('zugley: ',conditions)
+func checkConditions(conditions: Array, target: ResCombatant)->bool:
+	#print('zugley: ',conditions)
 	#print(conditions)
 	for condition in conditions:
 		var condition_data = condition.split(':')
@@ -172,13 +172,16 @@ func checkConditions(conditions: Array, target: ResCombatant):
 			'combo': # ex crit/combo
 				if target.hasStatusEffect('Combo'):
 					target.getStatusEffect('Combo').removeStatusEffect()
-					manual_call_indicator.emit(target, '[img]res://images/status_icons/icon_combo.png[/img][color=turquoise]COMBO!!', 'Show')
+					manual_call_indicator.emit(target, '%s %sCOMBO !' % [loadStatusEffect('Combo').getMessageIcon(),loadStatusEffect('Combo').getIconColor(true)], 'Show')
 					return true
 			'combo!': # ex. crit/combo!
 				return target.hasStatusEffect('Combo')
 			'%': # ex. crit/%:0.50
-				#print('that')
+				print('that')
 				return randomRoll(float(condition_data[1]))
+	
+	#assert(false,'Incorrect format! '+str(conditions))
+	return false
 
 func stringifyBonusStatConditions(conditions: Array, unit:String='Target')->String:
 	for condition in conditions:
@@ -192,9 +195,9 @@ func stringifyBonusStatConditions(conditions: Array, unit:String='Target')->Stri
 				if condition_data[1] == '<':
 					return 'If %s HP < '% unit+str(float(condition_data[2])*100)+'%'
 			'combo': # ex crit/combo
-				return 'If %s [img]res://images/status_icons/icon_combo.png[/img]' % unit
+				return 'If %s %s' % [unit, loadStatusEffect('Combo').getMessageIcon()]
 			'combo!': # ex. crit/combo!
-				return 'If %s [img]res://images/status_icons/icon_combo.png[/img]' % unit
+				return 'If  %s %s' % [unit, loadStatusEffect('Combo').getMessageIcon()]
 			'%': # ex. crit/%:0.50
 				return str(float(condition_data[1])*100)+'% chance to'
 	
@@ -202,7 +205,11 @@ func stringifyBonusStatConditions(conditions: Array, unit:String='Target')->Stri
 
 func stringifySpecialStat(stat: String,value:String):
 	if stat == 'status_effect':
-		return 'Apply '+ loadStatusEffect(value).getMessageIcon()
+		var out = 'Apply '
+		for effect in value.split(','):
+			out += loadStatusEffect(effect).getMessageIcon()+' '
+			
+		return out
 	elif stat == 'move':
 		var out = ''
 		var movement = value.split(',')
@@ -265,7 +272,6 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
 	
 	if checkSpecialStat('status_effect', bonus_stats, target):
-		print('fuckus: ',bonus_stats)
 		var status_effects = getBonusStatValue(bonus_stats, 'status_effect').split(',')
 		for effect in status_effects:
 			addStatusEffect(target, effect)
@@ -283,8 +289,6 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		OverworldGlobals.freezeFrame()
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
-	print('sexley: ',special_stat)
-	print('ASS ',special_stat, ' / ', bonus_stats)
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
 
 func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):

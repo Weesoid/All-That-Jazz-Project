@@ -23,6 +23,8 @@ func _on_node_added(node : Node):
 
 
 func _on_native_picker_show(native_picker: PopupMenu):
+	if native_picker.item_count < 25:
+		return
 	var ex_picker = ImprovedResourcePicker.instantiate()
 	get_editor_interface().get_base_control().add_child(ex_picker)
 	ex_picker.decorate(native_picker)

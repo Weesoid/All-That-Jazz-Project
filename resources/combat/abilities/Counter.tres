@@ -6,7 +6,6 @@
 
 [resource]
 script = ExtResource("1_7c88m")
-auto_name = false
 name = ""
 description = ""
 icon = ExtResource("5_bcyo3")

@@ -15,18 +15,16 @@ enum AnimateOn {
 @export var animate_on: AnimateOn
 
 func checkConditions(target: ResCombatant, caster: ResCombatant)-> bool:
-	print(condition)
 	if condition == '':
+		#print(self, ': true!')
 		return true
 	
 	var condition_data = condition.split('/')
-	print('check1: ',condition_data)
 	var combatant
 	match condition_data[0]:
 		't': combatant = target
 		'c': combatant = caster
 	condition_data.remove_at(0)
-	print('check2: ',condition_data)
 	for i in condition_data.size():
 		if !CombatGlobals.checkConditions(condition_data[i].split('/'), combatant):
 			return false

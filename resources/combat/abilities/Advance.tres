@@ -19,7 +19,6 @@ animate_on = 0
 
 [resource]
 script = ExtResource("1_8t8d7")
-auto_name = false
 name = "Advance"
 description = ""
 icon = ExtResource("3_fo2hn")
@@ -40,11 +39,11 @@ dead_target_params = {
 }
 caster_position = {
 "max": 3,
-"min": 1
+"min": 0
 }
 target_position = {
 "max": 3,
-"min": 0
+"min": 1
 }
 tension_cost = 0
 instant_cast = false

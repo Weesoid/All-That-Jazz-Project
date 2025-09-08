@@ -19,7 +19,6 @@ animate_on = 0
 
 [resource]
 script = ExtResource("1_yx7md")
-auto_name = false
 name = "Recede"
 description = ""
 icon = ExtResource("3_8pd82")
@@ -43,7 +42,7 @@ caster_position = {
 "min": 0
 }
 target_position = {
-"max": 3,
+"max": 2,
 "min": 0
 }
 tension_cost = 0

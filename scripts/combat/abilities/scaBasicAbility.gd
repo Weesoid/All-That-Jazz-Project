@@ -3,7 +3,8 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 	for effect in ability.basic_effects:
 		ability.current_effect = effect
 		#print(ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource))
-		if (target is CombatantScene and !ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource)) or (effect.is_combo_effect and !canDoCombo(effect, target)):
+		if (target is CombatantScene and !effect.checkConditions(target.combatant_resource, caster.combatant_resource)) or (effect.is_combo_effect and !canDoCombo(effect, target)):
+			#print(effect, ': skipping!')
 			continue
 		elif ability.getTargetType() == 1 and canDoCombo(effect, target) and !effect is ResDamageEffect:
 			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
