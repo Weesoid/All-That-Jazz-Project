@@ -124,12 +124,21 @@ func getRichDescription(with_name=true)-> String:
 	if description != '':
 		rich_description += SettingsGlobals.bb_line
 		rich_description += description
+	if required_effect['status_effect'] != null:
+		rich_description += SettingsGlobals.bb_line
+		var effect = CombatGlobals.loadStatusEffect(required_effect['status_effect'].name)
+		var rank = ''
+		if required_effect['rank'] > 0:
+			rank = effect.getIconColor(true)+str(required_effect['rank'])
+		rich_description += '[color=yellow]Requires[/color] %s%s' % [rank, effect.getMessageIcon()]
 	if charges > 0 and !OverworldGlobals.inCombat():
+		rich_description += SettingsGlobals.bb_line
 		rich_description += '[color=yellow] Uses: '+str(charges)
 	return rich_description
 
 func getBasicDescription():
 	var out = ''
+	
 	for i in range(basic_effects.size()):
 		var effect = basic_effects[i]
 		if !effect.has_method('_to_string'):
@@ -137,6 +146,7 @@ func getBasicDescription():
 		out+=effect._to_string()
 		if i != basic_effects.size()-1:
 			out += SettingsGlobals.bb_line
+	
 	return out
 
 func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String:
