@@ -6,7 +6,6 @@
 
 [resource]
 script = ExtResource("4_hi6ev")
-auto_name = false
 name = "Poised"
 description = "Target cannot be stunned."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
@@ -16,7 +15,7 @@ remove_when = Array[int]([])
 remove_style = 0
 texture = ExtResource("2_8qiww")
 style = 1
-max_duration = 3
+max_duration = 4
 extend_duration = 1
 apply_extend_duration = false
 max_rank = 0

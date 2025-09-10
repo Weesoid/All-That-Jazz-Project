@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=10 format=3 uid="uid://btd50tvrm5mdc"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://btd50tvrm5mdc"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_yve3e"]
 [ext_resource type="Resource" uid="uid://47lduof3c088" path="res://resources/combat/status_effects/CriticalEye.tres" id="3_6vg0x"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
-[ext_resource type="Resource" uid="uid://03nkxcn0qwjq" path="res://resources/combat/status_effects/Guard.tres" id="6_45inc"]
 
 [sub_resource type="Resource" id="Resource_n4p1f"]
 script = ExtResource("2_yve3e")
@@ -30,7 +29,7 @@ damage_modifier = 1.0
 can_miss = true
 can_crit = true
 bonus_stats = {
-"accuracy/hp:>:0.9": 0.5,
+"accuracy/hp:>:0.9": -0.99,
 "crit/hp:>:0.5": 2.0,
 "status_effect/hp:>:0.8": "Poison,Combo"
 }
@@ -53,8 +52,8 @@ ability_script = ExtResource("1_y24xu")
 target_type = 0
 target_group = 1
 required_effect = {
-"rank": 3,
-"status_effect": ExtResource("6_45inc")
+"rank": 0,
+"status_effect": null
 }
 charges = 0
 can_target_self = false
