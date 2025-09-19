@@ -14,10 +14,7 @@
 [resource]
 script = ExtResource("11_avhlp")
 ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_mba6b"), ExtResource("2_8v6wo"), ExtResource("3_q5w68"), ExtResource("4_e2iex"), ExtResource("5_v0avs"), ExtResource("6_hn22q")])
-base_temperment = {
-"primary": ["all_arounder", "unyielding", "focused"],
-"secondary": ["clever", "quick", "acute"]
-}
+base_temperment = Array[String](["rigid", "clever", "clumsy", "keen", "heavy_handed"])
 mandatory = false
 rest_sprite = ExtResource("5_b1vt3")
 stat_multiplier = 0.01

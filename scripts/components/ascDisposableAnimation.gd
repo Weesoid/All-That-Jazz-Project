@@ -10,6 +10,7 @@ class_name QuickAnimation
 func _ready():
 	if invisible_frame_zero:
 		modulate = Color.TRANSPARENT
+	
 	if animation_name == '':
 		var random_anim = Array(animation_player.get_animation_list())
 		random_anim.erase('RESET')

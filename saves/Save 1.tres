@@ -1,43 +1,43 @@
 [gd_resource type="Resource" script_class="SavedGame" load_steps=13 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_hs2uv"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_k4a0b"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataCombatant.gd" id="3_uv83a"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="4_18le2"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_x38wm"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_hmyj2"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_xc0sb"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_83lmi"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataCombatant.gd" id="3_4k0cw"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="4_s6gfn"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_wen4u"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_pal30"]
 
-[sub_resource type="Resource" id="Resource_ywxw6"]
-script = ExtResource("1_hs2uv")
-position = Vector2(-76.7331, 20.9337)
+[sub_resource type="Resource" id="Resource_86rpn"]
+script = ExtResource("1_xc0sb")
+position = Vector2(69.6678, 20.9338)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = 90
+direction = -90
 
-[sub_resource type="Resource" id="Resource_21bmj"]
-script = ExtResource("2_k4a0b")
+[sub_resource type="Resource" id="Resource_3xybp"]
+script = ExtResource("2_83lmi")
 quests = Array[String]([])
 quest_objectives_data = {}
 
-[sub_resource type="Resource" id="Resource_5scab"]
-script = ExtResource("3_uv83a")
+[sub_resource type="Resource" id="Resource_7r72g"]
+script = ExtResource("3_4k0cw")
 charms = {
 0: "",
 1: "",
 2: ""
 }
 stat_values = {
-"accuracy": 0.95,
-"crit": 0.05,
+"accuracy": 0.85,
+"crit": 2.05,
 "crit_dmg": 1.5,
-"damage": 4,
+"damage": 4.0,
 "defense": 0.0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
-"handling": 0,
-"heal_mult": 1.0,
-"health": 9.0,
-"resist": 0.05,
-"speed": 1
+"handling": 0.0,
+"heal_mult": 0.25,
+"health": 15.0,
+"resist": -0.25,
+"speed": -2.0
 }
 base_stat_values = {
 "accuracy": 0.95,
@@ -62,31 +62,32 @@ stat_point_allocations = {
 "defense": 0,
 "handling": 0
 }
+temperment = Array[String](["linger|Faded III|{ \"accuracy\": -0.1, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": -0.75, \"health\": 0, \"resist\": -0.3, \"speed\": -3 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded3.png[/img]", "linger|Critical Eye|{ \"accuracy\": 0, \"crit\": 2, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": 0, \"health\": 0, \"resist\": 0, \"speed\": 0 }|[img color=GOLD]res://images/status_icons/icon_crit_eye.png[/img]"])
 file_references = {
 "active_abilities": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_sj55v"]
-script = ExtResource("3_uv83a")
+[sub_resource type="Resource" id="Resource_0me0m"]
+script = ExtResource("3_4k0cw")
 charms = {
 0: "",
 1: "",
 2: ""
 }
 stat_values = {
-"accuracy": 1.0,
-"crit": 0.09,
-"crit_dmg": 1.52,
-"damage": 7,
-"defense": 0.02,
+"accuracy": 1.02,
+"crit": 2.0,
+"crit_dmg": 1.25,
+"damage": 4.0,
+"defense": 0.0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
-"handling": 1,
-"heal_mult": 1.22,
-"health": 21.0,
-"resist": 0.07,
-"speed": 47
+"handling": 0.0,
+"heal_mult": 0.25,
+"health": 2.0,
+"resist": -0.25,
+"speed": 37.0
 }
 base_stat_values = {
 "accuracy": 0.95,
@@ -111,25 +112,26 @@ stat_point_allocations = {
 "defense": 0,
 "handling": 0
 }
+temperment = Array[String](["clever", "keen", "rigid", "clumsy", "heavy_handed", "linger|Faded III|{ \"accuracy\": -0.1, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": -0.75, \"health\": 0, \"resist\": -0.3, \"speed\": -3 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded3.png[/img]", "linger|Critical Eye|{ \"accuracy\": 0, \"crit\": 2, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": 0, \"health\": 0, \"resist\": 0, \"speed\": 0 }|[img color=GOLD]res://images/status_icons/icon_crit_eye.png[/img]"])
 file_references = {
-"active_abilities": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres"],
+"active_abilities": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Advance.tres"],
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_pha68"]
-script = ExtResource("4_18le2")
+[sub_resource type="Resource" id="Resource_ljv25"]
+script = ExtResource("4_s6gfn")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 map_logs = {}
-equipped_arrow = "res://resources/items/Arrow.tres"
+equipped_arrow = ""
 equipped_blessing = ""
-currency = 135
+currency = 1750
 team_level = 1
 current_exp = 0
 progression_data = {}
-team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
+team_formation = Array[String](["res://resources/combat/combatants_player/Archie.tres", "res://resources/combat/combatants_player/Willis.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_sj55v"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_5scab")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_0me0m"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_7r72g")
 }
 unlocked_abilities = {}
 added_abilities = {}
@@ -137,21 +139,18 @@ max_team_level = 5
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_51n8x"]
-script = ExtResource("5_x38wm")
+[sub_resource type="Resource" id="Resource_0cn3g"]
+script = ExtResource("5_wen4u")
 inventory = {
-"res://resources/items/Arrow.tres": 200,
-"res://resources/items/ArrowSleeper.tres": 99,
-"res://resources/items/CritRations.tres": 15,
-"res://resources/items/Rations.tres": 16
+"res://resources/items/CritRations.tres": 14
 }
 crafted_items = Array[String]([])
 
 [resource]
-script = ExtResource("6_hmyj2")
-name = "Save 1 - 00:05:07
+script = ExtResource("6_pal30")
+name = "Save 1 - 00:03:55
 Morale 1
 Node2D"
-playtime = 308.804
+playtime = 235.783
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_ywxw6"), SubResource("Resource_21bmj"), SubResource("Resource_pha68"), SubResource("Resource_51n8x")]
+save_data = [SubResource("Resource_86rpn"), SubResource("Resource_3xybp"), SubResource("Resource_ljv25"), SubResource("Resource_0cn3g")]

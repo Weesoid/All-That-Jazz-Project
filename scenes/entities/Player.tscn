@@ -2878,6 +2878,7 @@ texture = ExtResource("3_h566x")
 hframes = 9
 
 [node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(1, -49)
 scale = Vector2(0.546875, 0.476)
 texture = ExtResource("3_y84xx")
@@ -2898,7 +2899,7 @@ rotation = 1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 6)
-collision_layer = 0
+collision_layer = 2
 collision_mask = 2
 
 [node name="InteractionColShape" type="CollisionShape2D" parent="PlayerDirection/InteractionDetector"]

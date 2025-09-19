@@ -3,13 +3,14 @@ extends Area2D
 @export var dialogue_resource: DialogueResource
 @export var dialogue_start: String = "start"
 @export var show_ui:bool = false
-@export var move_player: bool = true
+@export var move_player: bool = false
 @export var go_left: bool = false
 @export var show_followers: bool = true
 @export var move_followers:bool = false
 @export var cooldown: float = 1.0
-
 @onready var cooldown_timer = $Timer
+@onready var interact_animator = $Sprite2D/AnimationPlayer
+
 var direction:int=1
 
 func _ready():
@@ -23,13 +24,14 @@ func centerSelf():
 		position.y = -(get_parent().get_node('CollisionShape2D').shape.height/2)
 
 func interact():
-	if dialogue_resource == null:
-		OverworldGlobals.showPrompt('YOU FORGOT TO PUT IN DIALOGUE STUPID!!!!!!!!!!!!!!!')
+	assert(dialogue_resource != null, '%s has no dialogue resource' % get_parent().name)
+	if !OverworldGlobals.player.canInteract():
 		return
 	if !cooldown_timer.is_stopped():
 		return
 	
 	await enter()
+	interact_animator.play("RESET")
 	if get_parent().has_method('interact'):
 		await get_parent().interact()
 	OverworldGlobals.showDialogueBox(dialogue_resource, dialogue_start)
@@ -95,3 +97,17 @@ func exit():
 	PlayerGlobals.setFollowersMotion(true)
 	cooldown_timer.start(cooldown)
 
+
+
+func _on_area_entered(area):
+	if area == OverworldGlobals.player.interaction_detector and OverworldGlobals.player.canInteract():
+		interact_animator.play("Show")
+
+
+func _on_area_exited(area):
+	if area == OverworldGlobals.player.interaction_detector:
+		interact_animator.play("RESET")
+
+func _on_timer_timeout():
+	if get_overlapping_areas().has(OverworldGlobals.player.interaction_detector) and OverworldGlobals.player.canInteract():
+		interact_animator.play("Show")

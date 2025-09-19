@@ -29,21 +29,8 @@ var overworld_stats: Dictionary = {
 	'sprint_drain': 0.25,
 	'stamina_gain': 0.15
 }
-# TEMPERMENTS!
-var primary_temperments: Dictionary = {
-	'gifted': {'handling': 1},
-	'nimble': {'speed': 4},
-	'lucky': {'crit':0.03},
-	'deadly': {'crit_dmg': 0.15},
-	'dominant': {'damage': 2},
-	'tenacious': {'defense': 0.1},
-	'fortified': {'resist': 0.1},
-	'focused': {'accuracy':0.03},
-	'unyielding': {'heal_mult':0.2},
-	'all_arounder': {'speed': 1, 'crit': 0.02, 'crit_dmg': 0.02, 'damage': 3, 'defense': 0.02, 'resist': 0.02, 'accuracy': 0.02, 'heal_mult': 0.02}
-}
-var secondary_temperments: Dictionary = {
-	# BUFFS
+var temperments: Dictionary = {
+	# Buffs
 	'clever': {'handling': 1},
 	'quick': {'speed': 2},
 	'acute': {'crit':0.02},
@@ -54,7 +41,7 @@ var secondary_temperments: Dictionary = {
 	'keen': {'accuracy':0.02},
 	'limber': {'heal_mult':0.05},
 	
-	# QUIRKS
+	# Quirks
 	'smartass': {'handling': 2, 'damage': -3,'defense': -0.12},
 	'frantic': {'speed': 4, 'accuracy': -0.1},
 	'daredevil': {'crit':0.1, 'accuracy':-0.1},
@@ -65,7 +52,7 @@ var secondary_temperments: Dictionary = {
 	'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_dmg': -0.25},
 	'selfish': {'heal_mult':0.25, 'defense': -0.2},
 	
-	# DEBUFFS
+	# Debuffs
 	'heavy_handed': {'handling': -1},
 	'clumsy': {'speed': -4},
 	'bad_luck': {'crit':-0.05},
@@ -249,10 +236,10 @@ func addCombatantToTeam(combatant_id):
 			combatant = load(combatant_id)
 	elif combatant_id is ResCombatant:
 		combatant = combatant_id
-	if combatant.temperment['primary'] == []:
-		combatant.temperment['primary'].append(PlayerGlobals.primary_temperments.keys().pick_random())
-	if combatant.temperment['secondary'] == []:
-		combatant.temperment['secondary'].append(PlayerGlobals.secondary_temperments.keys().pick_random())
+	#if combatant.temperment['primary'] == []:
+	#	combatant.temperment['primary'].append(PlayerGlobals.primary_temperments.keys().pick_random())
+	#if combatant.temperment['secondary'] == []:
+	#	combatant.temperment['secondary'].append(PlayerGlobals.secondary_temperments.keys().pick_random())
 	combatant.stat_points = team_level
 	team.append(combatant)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.name)
@@ -287,20 +274,18 @@ func loadSquad():
 	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.team_formation)
 
 func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/random'):
-	if combatant.temperment['secondary'].size() >= 6:
-		var removed_temperment = combatant.temperment['secondary'][0]
-		combatant.temperment['secondary'].remove_at(0)
-		OverworldGlobals.showPrompt('[color=yellow]%s[/color] lost [color=yellow]%s[/color]' % [combatant, removed_temperment.capitalize()])
+	if combatant.temperment.size() >= 6:
+		return
 	
 	if temperment == '/random':
 		randomize()
-		var random_temperment = secondary_temperments.keys().filter(func(key): return !combatant.temperment['secondary'].has(key)).pick_random()
+		var random_temperment = temperments.keys().filter(func(key): return !combatant.temperment.has(key)).pick_random()
 		OverworldGlobals.showPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
-		combatant.temperment['secondary'].append(random_temperment)
+		combatant.temperment.append(random_temperment)
 	else:
-		combatant.temperment['secondary'].append(temperment)
+		combatant.temperment.append(temperment)
 	
-	combatant.applyTemperments(true)
+	combatant.applyTemperments()
 
 func hasFollower(follower_combatant: ResPlayerCombatant):
 	for f in getActiveFollowers():
@@ -446,7 +431,6 @@ func overwriteTeam():
 			data.team_formation = team_formation
 			break
 	ResourceSaver.save(current_save, "res://saves/%s.tres" % PlayerGlobals.save_name)
-	#return sa
 
 func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
@@ -475,7 +459,8 @@ func saveData(save_data: Array):
 				combatant.initialized,
 				combatant.stat_points,
 				combatant.stat_point_allocations,
-				combatant.file_references
+				combatant.temperment,
+				combatant.file_references,
 			)
 	
 	save_data.append(data)

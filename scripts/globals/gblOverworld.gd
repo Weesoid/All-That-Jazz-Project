@@ -619,9 +619,9 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		return
 	if get_parent().has_node('CombatScene'):
 		await getCurrentMap().get_node('CombatScene').tree_exited
-	if getCurrentMap().has_node('Balloon'):
-		getCurrentMap().get_node('Balloon').queue_free()
-		await getCurrentMap().get_node('Balloon').tree_exited
+#	if getCurrentMap().has_node('Balloon'):
+#		getCurrentMap().get_node('Balloon').queue_free()
+#		await getCurrentMap().get_node('Balloon').tree_exited # LEAK 1
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
 		return
@@ -644,7 +644,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	moveCamera(combat_entity.get_node('Sprite2D'), 0.05, Vector2.ZERO, true)
 	await zoomCamera(Vector2(2,2), 0.1, true)
 	setPlayerInput(false)
-	showCombatStartBars()
+#	showCombatStartBars()
 	if combat_entity is GenericPatroller and combat_entity.state != 1:
 		for member in getCombatantSquad('Player'): CombatGlobals.addStatusEffect(member, 'CriticalEye')
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_3.ogg")
@@ -652,6 +652,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_1.ogg")
 	get_tree().paused = true
 	PhysicsServer2D.set_active(true)
+	
 	var combat_scene: CombatScene = load("res://scenes/gameplay/CombatScene.tscn").instantiate()
 	var combat_id = combat_entity.get_node('CombatantSquadComponent').unique_id
 	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
@@ -666,7 +667,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		var duped_combatant = combatant.duplicate()
 		for effect in enemy_squad.afflicted_status_effects:
 			duped_combatant.lingering_effects.append(effect)
-		combat_scene.combatants.append(duped_combatant)
+		combat_scene.combatants.append(combatant)
+	combat_scene.combat_entity = combat_entity
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
 	elif map_events.has('combat_event'):
@@ -680,31 +682,31 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_scene.can_escape = enemy_squad.can_escape
 	combat_scene.turn_time = enemy_squad.turn_time
 	combat_scene.reinforcements_turn = enemy_squad.reinforcements_turn
-	combat_scene.combat_entity = combat_entity
 	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
 	#await combat_bubble.animator.animation_finished
-	await get_tree().create_timer(0.5).timeout
-	var battle_transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
-	player.player_camera.add_child(battle_transition)
-	battle_transition.get_node('AnimationPlayer').play('In')
-	await battle_transition.get_node('AnimationPlayer').animation_finished
-	player.player_camera.get_node('BattleStart').queue_free()
+	#await get_tree().create_timer(0.5).timeout
+	#var battle_transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
+	#player.player_camera.add_child(battle_transition)
+	#battle_transition.get_node('AnimationPlayer').play('In')
+	#await battle_transition.get_node('AnimationPlayer').animation_finished
+	#player.player_camera.get_node('BattleStart').queue_free()
 	#combat_bubble.queue_free()
-	combat_enetered.emit()
 	get_parent().add_child(combat_scene)
+	#await combat_scene.tree_entered
+	combat_enetered.emit()
 	combat_scene.combat_camera.make_current()
 	if combat_entity.has_node('CombatDialogue'):
 		combat_scene.combat_dialogue = getComponent(entity_name, 'CombatDialogue')
 	getCurrentMap().hide()
 	await combat_scene.combat_done
-	
+#	await get_tree().create_timer(0.5).timeout
 	# Exit combat
 	moveCamera('Player', 0.0, player.sprite.offset)
 	OverworldGlobals.moveCamera('RESET',0.25)
 	OverworldGlobals.zoomCamera(Vector2(1,1),0.25)
-	var combat_results = combat_scene.combat_result
+	var combat_results = -1 #combat_scene.combat_result
 	player.player_camera.make_current()
 	get_tree().paused = false
 	getCurrentMap().show()
@@ -714,11 +716,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 			combatant.lingering_effects.erase(effect)
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
 	OverworldGlobals.player.setUIVisibility(true)
-	battle_transition.get_node('AnimationPlayer').play('Out')
+#	battle_transition.get_node('AnimationPlayer').play('Out')
 	if combat_entity is GenericPatroller and combat_results == 1:
 		combat_entity.destroy()
-	await battle_transition.get_node('AnimationPlayer').animation_finished
-	battle_transition.queue_free()
+#	await battle_transition.get_node('AnimationPlayer').animation_finished
+#	battle_transition.queue_free()
 	if hasCombatDialogue(entity_name) and combat_results == 1:
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
@@ -844,12 +846,17 @@ func addLingerEffect(combatant: ResCombatant, effect):
 	if effect == '':
 		return
 	
+	var status_effect:ResStatusEffect = CombatGlobals.loadStatusEffect(effect)
 	if combatant.lingering_effects.has(effect):
 		return false
 	else:
+		if status_effect.getStatusModiferEffect() != null and combatant is ResPlayerCombatant:
+			combatant.temperment.append(CombatGlobals.getTempermentModiferID(status_effect, status_effect.getStatusModiferEffect().status_change))
+		
 		combatant.lingering_effects.append(effect)
 		return true
-
+		
+		
 func isPlayerAlive()-> bool:
 	for combatant in getCombatantSquad('Player'):
 		if !combatant.isDead(): return true

@@ -9,6 +9,7 @@ class_name CombatantSaveData
 @export var initialized:bool
 @export var stat_points: int
 @export var stat_point_allocations: Dictionary
+@export var temperment: Array[String]
 @export var file_references: Dictionary
 
 func _init(
@@ -20,6 +21,7 @@ func _init(
 	p_initialized = false,
 	p_stat_points = 0,
 	p_stat_point_allocations = {},
+	p_temperment = [],
 	p_file_references = {}
 ):
 	#lingering_effects.assign(p_lingering_effects)
@@ -31,6 +33,7 @@ func _init(
 	initialized = p_initialized
 	stat_points = p_stat_points
 	stat_point_allocations = p_stat_point_allocations
+	temperment.assign(p_temperment)
 	file_references = p_file_references
 
 func loadData(combatant: ResPlayerCombatant):
@@ -40,6 +43,7 @@ func loadData(combatant: ResPlayerCombatant):
 	combatant.initialized = initialized
 	combatant.stat_points = stat_points
 	combatant.stat_point_allocations = stat_point_allocations
+	combatant.temperment = temperment
 	combatant.file_references = file_references
 
 func saveCharms(p_charms):

@@ -8,15 +8,14 @@ class_name CombatBarsMini
 @onready var selector = $Selector
 @onready var prompts = $Marker2D
 var attached_combatant: ResPlayerCombatant
-var rest_sprite: Sprite2D
-var highlight_tween: Tween
+#var highlight_tween: Tween
 var added_lingers = []
 
 func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 	updateStatusEffects()
-	highlight_tween = create_tween().set_loops()
-	highlight_tween.stop()
+#	highlight_tween = create_tween().set_loops()
+#	highlight_tween.stop()
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
 	if attached_combatant == combatant:
@@ -28,6 +27,8 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 		secondary_indicator.playAnimation(prompts.global_position+Vector2(0,y_placement), text, animation)
 
 func _process(_delta):
+	if attached_combatant == null:
+		return
 	updateBars()
 
 func updateBars():
@@ -35,19 +36,21 @@ func updateBars():
 	health_bar.value = int(attached_combatant.stat_values['health'])
 
 func updateStatusEffects():
+	if attached_combatant == null:
+		return
 	for linger_effect in attached_combatant.lingering_effects:
 		if added_lingers.has(linger_effect):
 			continue
+		if linger_effect.contains('linger|'):
+			linger_effect = linger_effect.split('|')[1].replace(' ','')
 		
 		status_effects.add_child(OverworldGlobals.createStatusEffectIcon(linger_effect,TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL))
 		added_lingers.append(linger_effect)
 
 func highlightCombatant():
-	if !highlight_tween.is_running():
-		highlight_tween.tween_property(rest_sprite,'self_modulate', Color.YELLOW, 1.0).from(Color.WHITE)
-		highlight_tween.play()
+	if get_parent().texture != null:
+		get_parent().self_modulate = Color.YELLOW
 
 func stopHighlight():
-	if highlight_tween.is_running():
-		highlight_tween.stop()
-	rest_sprite.self_modulate = Color.WHITE
+	if get_parent().texture != null:
+		get_parent().self_modulate = Color.WHITE

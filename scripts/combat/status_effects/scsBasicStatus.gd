@@ -10,7 +10,7 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		if effect.sound_effect != '': 
 			OverworldGlobals.playSound(effect.sound_effect)
 		if effect is ResStatChangeEffect and checkApplyOnce(effect, status_effect):
-			changeStat(effect, status_effect)
+			changeStat(effect, status_effect,target)
 		elif effect is ResStatusDamageEffect and checkApplyOnce(effect, status_effect):
 			var damage = effect.damage
 			if effect.rank_scaling:
@@ -33,6 +33,8 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
+	if target is ResPlayerCombatant and (target.lingering_effects.has(status_effect.name.replace(' ','')) and !status_effect.lingers):
+		CombatGlobals.removeLingeringEffect(target, status_effect)
 	if target.stat_modifiers.has(status_effect.name):
 		CombatGlobals.resetStat(target, status_effect.name)
 
@@ -51,11 +53,19 @@ static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffec
 static func avoidMessageSpam(status_effect: ResStatusEffect):
 	return (status_effect.tick_any_turn and status_effect.apply_once) or !status_effect.tick_any_turn
 
-static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffect):
+static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffect,target:ResCombatant):
 	var scale
 	if effect.rank_scaling:
 		scale = status_effect.current_rank
 	else:
 		scale = 0
 	
-	CombatGlobals.modifyStat(status_effect.afflicted_combatant, effect.getStatChanges(scale), status_effect.name)
+	if status_effect.lingers and target is ResPlayerCombatant and !target.temperment.has(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change)):
+		target.temperment.append(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change))
+		target.applyTemperments()
+	elif !status_effect.lingers:
+		CombatGlobals.modifyStat(
+			status_effect.afflicted_combatant, 
+			effect.getStatChanges(scale), 
+			status_effect.name
+			)

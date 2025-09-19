@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=4 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://ewb80noaamii"]
 
+[ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_1dte0"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_qr0qk"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="1_w1nhd"]
@@ -22,14 +23,14 @@ stat_values = {
 "accuracy": 0.95,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 7,
+"damage": 1,
 "defense": 0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
 "health": 999,
-"resist": 0.05,
+"resist": 0.01,
 "speed": -5
 }
 scale_stats = {
@@ -46,5 +47,5 @@ scale_stats = {
 "resist": false,
 "speed": true
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_1dte0")])
 max_turn_charges = 1

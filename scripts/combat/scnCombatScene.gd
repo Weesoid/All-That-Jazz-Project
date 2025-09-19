@@ -29,6 +29,7 @@ enum TargetState {
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var combat_ui: CombatUI = $CombatCamera/Interface/CombatUI
 @onready var tp_particle_magnet = $TensionParticleMarker
+
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -49,7 +50,7 @@ var battle_music_path: String = ""
 var combat_result: int = -1
 var camera_position: Vector2 = Vector2(0, 5)
 var enemy_reinforcements: Array[ResCombatant]
-var bonus_escape_chance = -1.0
+var bonus_escape_chance = 1.0
 var onslaught_mode = false
 var onslaught_combatant: ResPlayerCombatant
 var previous_position: Vector2
@@ -76,6 +77,9 @@ signal combat_done
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
+#func _init(p_):
+#	reward_bank = p_ #placeholder
+
 func _ready():
 	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
@@ -106,41 +110,43 @@ func _ready():
 	for combatant in combatants:
 		tickStatusEffects(combatant, false, false, true)
 		tickStatusEffects(combatant, true, false, true)
-	
+
 	if initial_damage > 0.0:
 		for combatant in getCombatantGroup('enemies'):
 			await get_tree().create_timer(0.05).timeout
 			CombatGlobals.calculateRawDamage(combatant, combatant.getMaxHealth()*initial_damage)
-	
+
 	await removeDeadCombatants(false)
-	
+
 	rollTurns()
 	setActiveCombatant(false)
 	while active_combatant.isImmobilized():
 		setActiveCombatant(false)
-	
-	
+
+
 	active_combatant.act()
-	active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
-	
+#	active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
+
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
-	
+
 	transition_scene.visible = false
 	OverworldGlobals.setMouseController(true)
-	
+
 	# Handle overworld stuff
 	if combat_entity is GenericPatroller:
 		reward_bank = combat_entity.patroller_group.reward_bank
 	else:
 		reward_bank = combat_entity.get_node('CombatantSquadComponent').reward_bank
-	
+
 	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
 		OverworldGlobals.getCurrentMap().get_node('StalkerEngage').queue_free()
 	if OverworldGlobals.getCurrentMap().has_node('Stalker'):
 		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
-	
+
 	combat_ui.initialize()
+	#await get_tree().process_frame
+	#attemptEscape()
 
 func _process(_delta):
 	#print(combatant_turn_order)
@@ -290,7 +296,7 @@ func end_turn(combatant_act=true):
 			for i in range(4 - size):
 				var random: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
 				await addCombatant(random, true, "res://scenes/animations_abilities/Reinforcements.tscn")
-	
+		
 	# Determine next combatant
 	if selected_ability == null or !selected_ability.instant_cast:
 		if has_node('QTE'):
@@ -306,7 +312,7 @@ func end_turn(combatant_act=true):
 	if !active_combatant.isImmobilized():
 		active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 		active_combatant.act()
-		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
+#		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
 		if is_instance_valid(active_combatant.combatant_scene):
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
@@ -376,12 +382,12 @@ func calculateEscapeChance()-> float:
 	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
 
 func toggleUI(visibility: bool):
-	for marker in enemy_container_markers:
-		if marker.get_child_count() != 0:
-			marker.get_child(0).get_node('CombatBars').visible = visibility
-	for marker in team_container_markers:
-		if marker.get_child_count() != 0:
-			marker.get_child(0).get_node('CombatBars').visible = visibility
+#	for marker in enemy_container_markers:
+#		if marker.get_child_count() != 0:
+#			marker.get_child(0).get_node('CombatBars').visible = visibility
+#	for marker in team_container_markers:
+#		if marker.get_child_count() != 0:
+#			marker.get_child(0).get_node('CombatBars').visible = visibility
 	
 	for child in combat_camera.get_children():
 		if child is Control:
@@ -544,15 +550,14 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		return
 	var team_container
 	combatant.initializeCombatant()
-	combatant.player_turn.connect(on_player_turn)
-	combatant.enemy_turn.connect(on_enemy_turn)
+	setSignals(combatant,true)
 	if combatant is ResPlayerCombatant:
 		team_container = team_container_markers
 	else:
 		team_container = enemy_container_markers
-	var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
-	combat_bars.attached_combatant = combatant
-	combatant.combatant_scene.add_child(combat_bars)
+#	var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
+#	combat_bars.attached_combatant = combatant
+#	combatant.combatant_scene.add_child(combat_bars)
 	if do_tween:
 		if combatant is ResPlayerCombatant:
 			combatant.combatant_scene.global_position = Vector2(-100, 0)
@@ -561,7 +566,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	if combatant is ResEnemyCombatant and combatant.is_converted:
 		combatant.combatant_scene.rotation_degrees = -180
 		combatant.combatant_scene.get_node('Sprite2D').flip_v = true
-		combat_bars.rotation_degrees = 180
+#		combat_bars.rotation_degrees = 180
 	if spawned:
 		combatants.append(combatant)
 		combatant.acted = false
@@ -574,9 +579,9 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		marker.add_child(combatant.combatant_scene)
 		break
 	if combatant is ResPlayerCombatant and combatant.isDead():
-		combatant.getAnimator().play('Fading')
+		combatant.combatant_scene.doAnimation('Fading')
 	else:
-		combatant.getAnimator().play('Idle')
+		combatant.combatant_scene.doAnimation('Idle')
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
 	if do_tween:
@@ -599,6 +604,7 @@ func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, anim
 	#writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
+	setSignals(combatant,false)
 	combatants.erase(combatant)
 	combatant_turn_order.erase(combatant)
 	combatant.combatant_scene.queue_free()
@@ -818,14 +824,12 @@ func concludeCombat(results: int):
 	combat_result = results
 	battle_music.stop()
 	moveCamera(camera_position)
-	#whole_action_panel.hide()
-	#secondary_panel.hide()
-	#tension_bar.hide()
-	#round_counter.hide()
 	for combatant in combatants:
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant, false)
-		if results == 0 or getDeadCombatants('team').size() > 0: await get_tree().create_timer(0.25).timeout
+		setSignals(combatant,false)
+		if results == 0 or getDeadCombatants('team').size() > 0: 
+			await get_tree().create_timer(0.25).timeout
 	target_state = TargetState.NONE
 	target_index = 0
 	var morale_bonus = 1
@@ -1053,50 +1057,16 @@ func sortCombatantsByPosition()-> Array[ResCombatant]:
 		out.append(combatant.get_child(0).combatant_resource)
 	return out
 
-#func hasTameableCombatants()-> bool:
-#	for combatant in getCombatantGroup('enemies'):
-#		if combatant.tamed_combatant: return true
-#
-#	return false
-
 func addTargetClickButton(combatant: ResCombatant):
-	if !is_instance_valid(combatant.combatant_scene): 
-		return
-	combatant.combatant_scene.get_node('CombatBars').enableClicker()
-#	var button = TextureButton.new()
-#	button.texture_hover = load("res://images/sprites/button_confirm_hover.png")
-#	button.texture_normal = load("res://images/sprites/button_confirm_normal.png")
-#	button.texture_pressed = load("res://images/sprites/button_confirm_click.png")
-#	button.pressed.connect(
-#		func(): 
-#			if Input.is_action_pressed('ui_select_arrow'):
-#				return
-#			removeTargetButtons()
-#			if target_state == TargetState.SINGLE:
-#				target_combatant = combatant
-#			target_selected.emit()
-#			OverworldGlobals.playSound("56243__qk__latch_01.ogg")
-#	)
-#	button.mouse_entered.connect(
-#		func(): 
-#			OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
-#			)
-#	button.z_index = 999
-#	button.name = 'TargetButton'
-#	button.scale = Vector2(4,4)
-#	button.grow_horizontal = Control.GROW_DIRECTION_BOTH
-#	button.grow_vertical = Control.GROW_DIRECTION_BOTH
-#	button.set_anchors_preset(Control.PRESET_CENTER)
-#	combatant.combatant_scene.add_child(button)
-#	if combatant is ResEnemyCombatant and combatant.is_converted:
-#		button.position.y += 24
-#		button.flip_v = true
-#	else:
-#		button.position.y -= 24
+	return
+#	if !is_instance_valid(combatant.combatant_scene): 
+#		return
+#	combatant.combatant_scene.get_node('CombatBars').enableClicker()
 
 func removeTargetButtons():
-	for combatant in combatants:
-		combatant.combatant_scene.get_node('CombatBars').disableClicker()
+	return
+#	for combatant in combatants:
+#		combatant.combatant_scene.get_node('CombatBars').disableClicker()
 
 func startTimer():
 	turn_timer_bar.process_mode = Node.PROCESS_MODE_INHERIT
@@ -1142,3 +1112,16 @@ func attemptEscape():
 		if selected_ability != null and selected_ability.instant_cast: selected_ability = null
 		confirm.emit()
 		CombatGlobals.addStatusEffect(previous_active, 'Stunned', true)
+
+func setSignals(combatant:ResCombatant, connect_signals:bool):
+	if connect_signals:
+		if !combatant.player_turn.is_connected(on_player_turn):
+			combatant.player_turn.connect(on_player_turn)
+		if !combatant.enemy_turn.is_connected(on_enemy_turn):
+			combatant.enemy_turn.connect(on_enemy_turn)
+
+	else:
+		if combatant.player_turn.is_connected(on_player_turn):
+			combatant.player_turn.disconnect(on_player_turn)
+		if combatant.enemy_turn.is_connected(on_enemy_turn):
+			combatant.enemy_turn.disconnect(on_enemy_turn)

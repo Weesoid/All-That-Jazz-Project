@@ -178,6 +178,7 @@ position = Vector2(163, -50)
 
 [node name="PatrollerGroup2" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 2
+enabled = false
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup2"]
 position = Vector2(528, 163)
@@ -262,7 +263,6 @@ texture = ExtResource("24_qqfd5")
 
 [node name="InteractComponent" parent="MrMan" instance=ExtResource("14_ie3ty")]
 dialogue_resource = ExtResource("25_m8hhu")
-move_player = false
 
 [node name="GenericNPC" parent="." instance=ExtResource("21_cchwb")]
 position = Vector2(57, -48)

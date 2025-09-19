@@ -160,7 +160,7 @@ func showWeaponRepair():
 	)
 	var weapons = InventoryGlobals.inventory.filter(func(item): return item is ResWeapon)
 	var active_weapons = []
-	checkCanRepair(weapons, active_weapons)
+	checkCanRepair(weapons)
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		if member.hasEquippedWeapon(): active_weapons.append(member.equipped_weapon)
 	weapons.append_array(active_weapons)
@@ -176,13 +176,13 @@ func showWeaponRepair():
 				InventoryGlobals.removeItemWithName('Scrap Salvage')
 				weapon.restoreDurability(weapon.max_durability)
 				button.disabled = true
-				checkCanRepair(weapons, active_weapons)
+				checkCanRepair(weapons)
 				)
 		if weapon.durability >= weapon.max_durability or !InventoryGlobals.hasItem('Scrap Salvage'): 
 			button.disabled = true
 		item_select_buttons.add_child(button)
 
-func checkCanRepair(weapons: Array, active_weapons: Array):
+func checkCanRepair(weapons: Array):
 	if !InventoryGlobals.hasItem('Scrap Salvage'): 
 		for button in item_select_buttons.get_children(): 
 			if button.name == 'CancelButton': continue
@@ -244,7 +244,7 @@ func useRecipe(item: String):
 				i += 1
 
 func showRecipeDescription(item_name: String):
-	var out = ''
+	var out
 	for recipe in InventoryGlobals.recipes.keys():
 		if InventoryGlobals.recipes[recipe].split('.')[0] == item_name:
 			out += load("res://resources/items/%s.tres" % item_name).getInformation()+'\n\nRecipe: '

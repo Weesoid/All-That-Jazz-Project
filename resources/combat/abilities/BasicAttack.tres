@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://btd50tvrm5mdc"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=10 format=3 uid="uid://btd50tvrm5mdc"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
@@ -29,10 +29,30 @@ damage_modifier = 1.0
 can_miss = true
 can_crit = true
 bonus_stats = {
-"accuracy/hp:>:0.9": -0.99,
+"accuracy/hp:>:0.9": 1.0,
 "crit/hp:>:0.5": 2.0,
 "status_effect/hp:>:0.8": "Poison,Combo"
 }
+return_pos = true
+indicator_bb = ""
+plant_self_on_combo = false
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_i8w1i"]
+script = ExtResource("2_nqi6m")
+damage_type = 0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+damage_modifier = 2.0
+can_miss = true
+can_crit = true
+bonus_stats = {}
 return_pos = true
 indicator_bb = ""
 plant_self_on_combo = false
@@ -67,12 +87,12 @@ caster_position = {
 "min": 0
 }
 target_position = {
-"max": 3,
+"max": 0,
 "min": 0
 }
 tension_cost = 0
 instant_cast = false
 required_level = 0
 mutation = {
-"": null
+"basic_effects": [SubResource("Resource_i8w1i")]
 }

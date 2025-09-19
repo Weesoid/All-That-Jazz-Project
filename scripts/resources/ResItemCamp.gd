@@ -21,3 +21,10 @@ func apply(combatant: ResPlayerCombatant):
 			OverworldGlobals.damageMember(combatant, effect.damage, effect.use_damage_formula)
 		elif effect is ResApplyStatusEffect:
 			OverworldGlobals.addLingerEffect(combatant, effect.status_effect)
+
+func getInformation():
+	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
+	out += CombatGlobals.getBasicEffectsDescription(effects,false)
+	if description != '':
+		out += '\n'+description
+	return out

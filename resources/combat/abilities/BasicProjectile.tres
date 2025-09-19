@@ -1,27 +1,16 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://shhdhoteyxnb"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://shhdhoteyxnb"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_g0kd2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yj0nf"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_xs2wk"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_xayi7"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_hgmaq"]
+[ext_resource type="Resource" uid="uid://47lduof3c088" path="res://resources/combat/status_effects/CriticalEye.tres" id="3_j1dax"]
 
-[sub_resource type="Resource" id="Resource_cicm1"]
-script = ExtResource("2_xs2wk")
-damage_type = 1
-cast_animation = {
-"animation": "",
-"go_to_target": false
-}
-damage_modifier = 0.75
-can_miss = true
-can_crit = true
-bonus_stats = {
-"execute": 0.12,
-"status_effect/combo": "Poison"
-}
-return_pos = true
-indicator_bb = ""
-plant_self_on_combo = false
+[sub_resource type="Resource" id="Resource_c07ty"]
+script = ExtResource("2_xayi7")
+target = 1
+status_effect = ExtResource("3_j1dax")
+cast_animation = "Cast_Misc"
 condition = ""
 is_combo_effect = false
 sound_effect = ""
@@ -33,17 +22,17 @@ script = ExtResource("1_yj0nf")
 name = "Projectiliun"
 description = ""
 icon = ExtResource("3_hgmaq")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_cicm1")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_c07ty")])
 ability_script = ExtResource("1_g0kd2")
 target_type = 0
-target_group = 1
+target_group = 0
 required_effect = {
 "rank": 0,
 "status_effect": null
 }
 charges = 0
 can_target_self = false
-can_target_dead = false
+can_target_dead = true
 dead_target_params = {
 "only_dead": false,
 "only_faded": true
@@ -57,6 +46,6 @@ target_position = {
 "min": 0
 }
 tension_cost = 0
-instant_cast = false
+instant_cast = true
 required_level = 0
 mutation = {}

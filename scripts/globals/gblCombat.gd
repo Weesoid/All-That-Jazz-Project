@@ -27,7 +27,6 @@ signal ability_finished
 signal ability_casted(ability: ResAbility)
 signal active_combatant_changed(combatant: ResCombatant)
 signal tension_changed(previous_tension,current_tension,from_target)
-signal click_block
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -461,7 +460,7 @@ func setCombatantVisibility(target: CombatantScene, set_to:bool):
 	else:
 		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
 		target.z_index = 0
-	target.get_node('CombatBars').setBarVisibility(set_to)
+	#target.get_node('CombatBars').setBarVisibility(set_to)
 
 func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1, offset:Vector2=Vector2.ZERO):
 	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
@@ -511,7 +510,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 		path = effect.resource_path
 		status_effect = effect.duplicate()
 	if !guaranteed and (randomRoll(target.stat_values['resist']) and status_effect.resistable):
-		manual_call_indicator.emit(target, '[s]'+status_effect.getMessageIcon(), 'Resist')
+		manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Resisted')
 		return
 	if status_effect.resistable:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_STATUSED)
@@ -524,10 +523,10 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	else:
 		rankUpStatusEffect(target, status_effect)
 		if status_effect.max_rank > 0:
-			if status_effect.current_rank < status_effect.max_rank:
+			if target.getStatusEffect(status_effect.name).current_rank < status_effect.max_rank:
 				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Up')
-			elif status_effect.current_rank >= status_effect.max_rank:
-				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Added')
+			elif target.getStatusEffect(status_effect.name).current_rank >= status_effect.max_rank:
+				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Max')
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
 	if target.status_effects.has(status_effect): # Because some effects get removed on apply!
@@ -539,13 +538,30 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	
 	checkReactions(target)
 
+func getTempermentModiferID(status_effect:ResStatusEffect,status_modifications:Dictionary):
+	return 'linger|'+status_effect.name+'|'+str(status_modifications)+'|'+status_effect.getMessageIcon()
+
 func removeStatusEffect(combatant: ResCombatant, effect_name:String):
 	for effect in combatant.status_effects:
 		if effect.name.to_lower() == effect_name.to_lower():
 			effect.removeStatusEffect()
 
-func removeStatusFaded(combatant: ResPlayerCombatant):
-	combatant.lingering_effects = combatant.lingering_effects.filter(func(effect): return !effect.contains('Faded'))
+func removeLingeringEffect(combatant: ResPlayerCombatant, linger_effect:ResStatusEffect):
+	assert(linger_effect.lingers or combatant.lingering_effects.has(linger_effect.name.replace(' ','')), '%s must be a lingering effect OR is included in combatant lingering effects array' % linger_effect)
+	
+	for i in range(combatant.lingering_effects.size()-1,-1,-1):
+		var effect = combatant.lingering_effects[i]
+		if effect.to_lower() == linger_effect.name.to_lower().replace(' ',''):
+			combatant.lingering_effects.remove_at(i)
+			break
+	
+	if linger_effect.getStatusModiferEffect() != null:
+		var modifier_id = getTempermentModiferID(linger_effect,linger_effect.getStatusModiferEffect().status_change)
+		for temp in combatant.temperment:
+			if temp.split('|').size() > 1 and modifier_id.split('|')[1].to_lower() == temp.split('|')[1].to_lower():
+				resetStat(combatant, temp)
+				combatant.temperment.erase(temp)
+				break
 
 func checkReactions(target: ResCombatant):
 	if target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Chilled'):
@@ -602,9 +618,12 @@ func inCombat()-> bool:
 	return get_parent().has_node('CombatScene')
 
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
+	if status_effect_name.contains('linger|'):
+		status_effect_name = status_effect_name.split('|')[1]
 	if !status_effect_name.contains('Faded'):
 		status_effect_name = status_effect_name.capitalize()
-	return load(str("res://resources/combat/status_effects/"+status_effect_name.replace(' ', '')+".tres")).duplicate()
+	
+	return load(str("res://resources/combat/status_effects/"+status_effect_name.replace(' ', '')+".tres"))
 
 func getCombatantType(combatant):
 	if combatant is CombatantScene:
@@ -701,6 +720,7 @@ func applyFaded(target: ResCombatant):
 	var escalated_level = getFadedLevel(target)+1
 	
 	# Remove previous faded
+	target.temperment.erase(getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
 	target.lingering_effects.erase(applyFadedStatus(escalated_level-1))
 	if inCombat():
 		removeStatusEffect(target, applyFadedStatus(escalated_level-1,true))
@@ -722,6 +742,13 @@ func getFadedLevel(target: ResCombatant):
 	else:
 		return 0
 
+func getFadedStatus(target:ResCombatant)-> ResStatusEffect:
+	for effect in target.lingering_effects:
+		if effect.contains('Faded'):
+			return loadStatusEffect(effect.replace(' ',''))
+	
+	return null
+
 func applyFadedStatus(level: int, add_space:bool=false):
 	var out = ''
 	match level:
@@ -731,4 +758,18 @@ func applyFadedStatus(level: int, add_space:bool=false):
 		4: out =  'FadedIV'
 	if add_space:
 		out = out.insert(5, ' ')
+	return out
+
+func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
+	var out = ''
+	
+	for i in range(basic_effects.size()):
+		var effect = basic_effects[i]
+		if !effect.has_method('_to_string'):
+			continue
+		out+=effect._to_string()
+		if seperator and i != basic_effects.size()-1:
+			out += SettingsGlobals.bb_line
+		elif !seperator:
+			out += '\n'
 	return out

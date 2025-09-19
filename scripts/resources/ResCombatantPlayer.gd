@@ -3,7 +3,7 @@ class_name ResPlayerCombatant
 
 @export var ability_pool: Array[ResAbility]
 @export var guard_effect: ResStatusEffect = load("res://resources/combat/status_effects/Riposte.tres")
-@export var base_temperment: Dictionary = {'primary':[], 'secondary':[]}
+@export var base_temperment: Array[String] = []
 @export var follower_texture: Texture
 @export var mandatory = false
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
@@ -25,7 +25,7 @@ var stat_point_allocations = {
 	'defense': 0,
 	'handling': 0
 }
-var temperment: Dictionary = {'primary':[], 'secondary':[]}
+var temperment: Array[String] = []
 var base_health: int
 var initialized = false
 
@@ -41,13 +41,11 @@ func initializeCombatant(do_scene:bool=true):
 		scaleStats()
 	if CombatGlobals.inCombat():
 		applyStatusEffects()
-	if !temperment['primary'] is Array:
-		temperment['primary'] = []
-		temperment['secondary'] = []
-	if temperment['primary'] == [] and temperment['secondary'] == []:
-		temperment = base_temperment
 	
 	#loadActiveAbilities()
+	if !base_temperment.is_empty() and temperment.is_empty():
+		temperment = base_temperment
+	
 	applyTemperments()
 
 func getScenePreview():
@@ -73,21 +71,15 @@ func loadFileReferences():
 		weapon.equip(self)
 		equipped_weapon.durability = file_references['equipped_weapon'][1]
 
-func applyTemperments(update:bool = false):
-	if temperment['primary'].is_empty():
-		return
-	if !temperment['primary'] is Array:
-		temperment['primary'] = []
-		temperment['secondary'] = []
-		applyTemperments()
+func applyTemperments():
+	if temperment.is_empty():
 		return
 	
-	for temp in temperment['primary']:
-		if !stat_modifiers.keys().has('pt_'+temp) or update:
-			CombatGlobals.modifyStat(self, PlayerGlobals.primary_temperments[temp], 'pt_'+temp)
-	for temp in temperment['secondary']:
-		if !stat_modifiers.keys().has('st_'+temp) or update:
-			CombatGlobals.modifyStat(self, PlayerGlobals.secondary_temperments[temp], 'st_'+temp)
+	for temp in temperment:
+		if (PlayerGlobals.temperments.keys().has(temp) and !stat_modifiers.keys().has(temp)):
+			CombatGlobals.modifyStat(self, PlayerGlobals.temperments[temp], temp)
+		elif temp.contains('linger|'):
+			CombatGlobals.modifyStat(self, JSON.parse_string(temp.split('|')[2]), temp)
 
 func scaleStats():
 	var stat_increase = {}
@@ -105,7 +97,8 @@ func act():
 
 func applyStatusEffects():
 	for charm in charms.values():
-		if charm == null or charm.status_effect == null: continue
+		if charm == null or charm.status_effect == null: 
+			continue
 		CombatGlobals.addStatusEffect(self, charm.status_effect.name)
 	for effect in lingering_effects:
 		CombatGlobals.addStatusEffect(self, effect)
@@ -147,7 +140,7 @@ func equipWeapon(weapon: ResWeapon):
 		InventoryGlobals.removeItemResource(weapon, 1, false, true)
 		weapon.equip(self)
 		file_references['equipped_weapon'] = [weapon.resource_path,weapon.durability]
-		print(file_references['equipped_weapon'])
+		#print(file_references['equipped_weapon'])
 		return
 
 func unequipWeapon():
@@ -224,5 +217,5 @@ func reset():
 		'defense': 0,
 		'handling': 0
 	}
-	temperment = {'primary':[], 'secondary':[]}
+	temperment = []
 

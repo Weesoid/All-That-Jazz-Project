@@ -94,6 +94,8 @@ func removeStatusEffect():
 		status_script.endEffects(afflicted_combatant, self)
 	if status_visuals != null:
 		status_visuals.queue_free()
+#	if lingers and afflicted_combatant is ResPlayerCombatant and getStatusModiferEffect() != null:
+#		afflicted_combatant.temperment.erase(CombatGlobals.getTempermentModiferID(self,getStatusModiferEffect().status_change))
 	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.stat_values['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and lingers and !persist_on_dead and resistable:
 		afflicted_combatant.lingering_effects.erase(name)
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '[s]%s' % getMessageIcon(), 'Resist')
@@ -174,6 +176,13 @@ func getIconColor(as_bb:bool=false):
 			return SettingsGlobals.ui_colors['special']
 	
 	return Color.WHITE
+
+func getStatusModiferEffect():
+	for effect in basic_effects:
+		if effect is ResStatChangeEffect:
+			return effect
+	
+	return null
 
 #func getFilename():
 #	return resource_path.get_file().replace('.tres','')

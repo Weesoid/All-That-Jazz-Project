@@ -18,7 +18,6 @@ config/icon="res://ATJ Icon.png"
 
 [autoload]
 
-DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 InputHelper="*res://addons/input_helper/input_helper.gd"
 OverworldGlobals="*res://scripts/globals/gblOverworld.gd"
 CombatGlobals="*res://scripts/globals/gblCombat.gd"
@@ -29,6 +28,7 @@ SaveLoadGlobals="*res://scripts/globals/gblSaveLoadManager.gd"
 SettingsGlobals="*res://scripts/globals/gblSettings.gd"
 ResourceGlobals="*res://scripts/globals/gblResourceManager.gd"
 FootstepSoundManager="*res://scripts/globals/gblFootstepSoundManager.gd"
+DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 
 [dialogue_manager]
 
@@ -46,7 +46,7 @@ mouse_cursor/custom_image="res://images/sprites/cursor.png"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/imrp/plugin.cfg", "res://addons/dictionary_inspector/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/imrp/plugin.cfg")
 
 [filesystem]
 

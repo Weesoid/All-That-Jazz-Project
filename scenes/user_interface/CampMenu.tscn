@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cimeplqfltcgd"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCampMenu.gd" id="1_nstr8"]
-[ext_resource type="PackedScene" uid="uid://bwa3mr1qsun1o" path="res://scenes/user_interface/AbilityButton.tscn" id="2_ejioi"]
+[ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="2_ejioi"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_clnrx"]
 [ext_resource type="Theme" uid="uid://clgfgqvh2f440" path="res://design/BorderfulButton.tres" id="4_fshuc"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="4_hfpgg"]

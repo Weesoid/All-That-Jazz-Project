@@ -70,7 +70,7 @@ func startBreatheTween(await_start:bool):
 func stopBreatheTween():
 	if scale_tween == null or pos_tween == null:
 		return
-	
+
 	scale_tween.stop()
 	pos_tween.stop()
 	resetSprite()
@@ -172,6 +172,7 @@ func getStringStats(current_stats=false):
 			result += key.to_upper() + ": " + str(base_stat_values[key]*100) + "%\n"
 		else:
 			result += key.to_upper() + ": " + str(base_stat_values[key]) + "\n"
+	
 	return result
 
 func applyStatModifications(modifier_id: String):
@@ -203,3 +204,10 @@ func updateHealth(amount: int):
 
 func _to_string():
 	return str(name)
+
+#func freeBreathingTweens():
+#	stopBreatheTween()
+#	if is_instance_valid(scale_tween):
+#		scale_tween=null
+#	if is_instance_valid(pos_tween):
+#		pos_tween=null

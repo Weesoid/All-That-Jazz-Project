@@ -120,7 +120,7 @@ func getRichDescription(with_name=true)-> String:
 	if instant_cast:
 		rich_description += '	[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
 	if isBasicAbility():
-		rich_description += '\n '+getBasicDescription()
+		rich_description += '\n '+CombatGlobals.getBasicEffectsDescription(basic_effects)
 	if description != '':
 		rich_description += SettingsGlobals.bb_line
 		rich_description += description
@@ -135,19 +135,6 @@ func getRichDescription(with_name=true)-> String:
 		rich_description += SettingsGlobals.bb_line
 		rich_description += '[color=yellow] Uses: '+str(charges)
 	return rich_description
-
-func getBasicDescription():
-	var out = ''
-	
-	for i in range(basic_effects.size()):
-		var effect = basic_effects[i]
-		if !effect.has_method('_to_string'):
-			continue
-		out+=effect._to_string()
-		if i != basic_effects.size()-1:
-			out += SettingsGlobals.bb_line
-	
-	return out
 
 func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String:
 	var postions = []
@@ -192,6 +179,7 @@ func getPositionIcon(ignore_active_pos:bool=false, is_enemy:bool=false)-> String
 		postions.reverse()
 	
 	if target_group != TargetGroup.SELF:
+		#print('%s%s%s%s %s%s%s%s' % postions)
 		return '%s%s%s%s %s%s%s%s' % postions
 	else:
 		return '%s%s%s%s' % postions

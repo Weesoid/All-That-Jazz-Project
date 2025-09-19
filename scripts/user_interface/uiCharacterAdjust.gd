@@ -1,6 +1,14 @@
 extends Control
 class_name MemberAdjustUI
 
+enum TempermentTypes {
+	LINGER,
+	BUFF,
+	UNIQUE,
+	DEBUFF,
+	SPECIAL
+}
+
 const SWORD_ICON = "res://images/sprites/icon_weapon.png"
 const SACK_ICON = "res://images/sprites/icon_sack.png"
 
@@ -18,10 +26,9 @@ const SACK_ICON = "res://images/sprites/icon_sack.png"
 @onready var charm_slot_c = $Character/StatAdjusters/SlotC
 @onready var equipment_select_point = $SubmenuPoint
 @onready var formation_button = $Formation/ChangeFormation
-@onready var infliction = $Character/Panel/Label/Infliction
+@onready var infliction = $Stats/HSplitContainer/VFlowContainer/Temperment/Infliction
 @onready var temperments = $Stats/HSplitContainer/VFlowContainer
-@onready var primary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/Primary/PrimaryTemperment
-@onready var secondary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/Secondary/PrimaryTemperment
+@onready var primary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment
 @onready var character_view = $Character/Panel/Marker2D
 @onready var character_name = $Character/Panel/Label
 @onready var weapon_durability = $Character/StatAdjusters/Weapon/Label
@@ -65,7 +72,7 @@ func loadMembers(set_focus:bool=true, preview_member:bool=false):
 func loadMemberInfo(member: ResCombatant, button: Button=null):
 	character_name.text = member.name.to_upper()
 	updateCharacterView(member)
-	
+		
 	if changing_formation and selected_combatant == null:
 		selected_combatant = member
 		button.add_theme_color_override('font_color', Color.YELLOW)
@@ -107,10 +114,15 @@ func updateCharacterView(member: ResPlayerCombatant):
 		character_view.add_child(character_scene)
 		character_scene.collision.disabled = true
 		character_scene.combatant_resource.getAnimator().play('RESET')
-		if !changing_formation:
-			var cast_anim = ['Cast_Misc', 'Cast_Melee', 'Cast_Ranged'].pick_random()
-			await character_scene.doAnimation(cast_anim)
+		await character_scene.combatant_resource.getAnimator().animation_finished
 		character_scene.playIdle()
+#		await get_tree().process_frame
+		#await character_scene.tree_entered
+#		character_scene.combatant_resource.getAnimator().play('RESET')
+#		await character_scene.combatant_resource.getAnimator().animation_finished
+#		if !changing_formation:
+#			var cast_anim = ['Cast_Misc', 'Cast_Melee', 'Cast_Ranged'].pick_random()
+#			await character_scene.doAnimation(cast_anim)
 
 func swapMembers(member_a: ResCombatant, member_b: ResCombatant):
 	var team = OverworldGlobals.getCombatantSquad('Player')
@@ -130,9 +142,14 @@ func loadAbilities():
 		if PlayerGlobals.team_level < ability.required_level:
 			continue
 		createAbilityButton(ability, pool)
+	
+#	for i in range(32):
+#		createAbilityButton(load("res://resources/combat/abilities/BasicAttack.tres"), pool)
 
 func clearChildren(parent):
 	for child in parent.get_children():
+		if child.name.to_lower().contains('exclude'):
+			continue
 		parent.remove_child(child)
 		child.queue_free()
 
@@ -316,34 +333,73 @@ func showCombatantsOnButtons():
 
 func updateTemperments():
 	clearChildren(primary_temperments)
-	clearChildren(secondary_temperments)
-	selected_combatant.applyTemperments(true)
-	for temperment in selected_combatant.temperment['primary']:
-		primary_temperments.add_child(createTempermentLabel(temperment, 'primary'))
-	for temperment in selected_combatant.temperment['secondary']:
-		secondary_temperments.add_child(createTempermentLabel(temperment, 'secondary'))
+	selected_combatant.applyTemperments()
+	selected_combatant.temperment.sort_custom(func(a,b): return getTempermentType(a) < getTempermentType(b))
+	
+	# primary_temperments
+	print()
+	for temperment in selected_combatant.temperment:
+		primary_temperments.add_child(createTempermentLabel(temperment))
 	if selected_combatant.hasEquippedWeapon() and !selected_combatant.equipped_weapon.canUse(selected_combatant):
 		selected_combatant.unequipWeapon()
 
-func createTempermentLabel(temperment: String, type: String):
-	var stat_tag
-	var bb='[center]'
-	if type == 'primary':
-		stat_tag = 'pt_'
-	elif type == 'secondary':
-		stat_tag = 'st_'
+func createTempermentLabel(temperment: String):
+	var bb = '[table=2][cell]'+getBBTempermentIcon(temperment)+'[/cell]'
+	var temperment_name = temperment.capitalize()
 	var temperment_label = RichTextLabel.new()
+	if temperment_name.to_lower().contains('linger|'):
+		temperment_name = temperment_name.split('|')[1].capitalize()
 	temperment_label.bbcode_enabled = true
 	temperment_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	temperment_label.fit_content = true
-	temperment_label.text = bb+temperment.capitalize()
-	temperment_label.tooltip_text = formatModifiers(selected_combatant.stat_modifiers[stat_tag+temperment], false)
+	if getTempermentType(temperment) == TempermentTypes.LINGER:
+		var icon_color = CombatGlobals.loadStatusEffect(temperment.split('|')[1]).getIconColor(true)
+		temperment_label.text = bb+'[cell]'+icon_color+temperment_name+'[/color][/cell][/color][/table]'
+	else:
+		temperment_label.text = bb+'[cell]'+temperment_name+'[/cell][/table]'
+	temperment_label.tooltip_text = formatModifiers(selected_combatant.stat_modifiers[temperment], false)
 	return temperment_label
+
+func getBBTempermentIcon(temperment:String):
+	if getTempermentType(temperment)==TempermentTypes.BUFF:
+		return '[img %s]res://images/sprites/icon_buff.png[/img]' % SettingsGlobals.ui_colors['up-bb'].replace('[','').replace(']','')
+	elif getTempermentType(temperment)==TempermentTypes.DEBUFF:
+		return '[img %s]res://images/sprites/icon_debuff.png[/img]' % SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
+	elif getTempermentType(temperment)==TempermentTypes.UNIQUE:
+		return '[img %s]res://images/sprites/icon_unique_buff.png[/img]' % SettingsGlobals.ui_colors['special-bb'].replace('[','').replace(']','')
+	elif getTempermentType(temperment)==TempermentTypes.LINGER:
+		return temperment.split('|')[3]
+
+func getTempermentType(temperment)->TempermentTypes:
+	if temperment.to_lower().contains('linger|'):
+		return TempermentTypes.LINGER
+	
+	var positive_count = 0
+	var negative_count = 0
+	
+	for i in selected_combatant.stat_modifiers[temperment]:
+		var value = selected_combatant.stat_modifiers[temperment][i]
+		if value > 0:
+			positive_count += 1
+		elif value < 0:
+			negative_count += 1
+	
+	if negative_count == 0:
+		return TempermentTypes.BUFF
+	elif positive_count == 0:
+		return TempermentTypes.DEBUFF
+	elif positive_count > 0 and negative_count > 0:
+		return TempermentTypes.UNIQUE
+	else:
+		return TempermentTypes.SPECIAL
 
 func formatModifiers(stat_dict: Dictionary, bb_code:bool=true) -> String:
 	var result = ""
 	for key in stat_dict.keys():
 		var value = stat_dict[key]
+		if value == 0:
+			continue
+		
 		if value is float: 
 			value *= 100.0
 		if stat_dict[key] > 0 and stat_dict[key]:

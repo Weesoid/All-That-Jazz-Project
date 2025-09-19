@@ -12,8 +12,6 @@ func applyPulseEffect():
 				continue
 			elif mode == GenericPatroller.State.IDLE and body.state == GenericPatroller.State.CHASING:
 				continue
-#			elif mode == 1 and (body.state == 2 or body.state == 3):
-#				continue
 			
 			if dynamic_pulse: # Dynamic pulse
 				if body.state == GenericPatroller.State.IDLE: # If patroller is patrolling (soothe), alert patrol

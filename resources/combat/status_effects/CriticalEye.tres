@@ -5,22 +5,22 @@
 [ext_resource type="Texture2D" uid="uid://cgpfext1pbx5t" path="res://images/status_icons/icon_crit_eye.png" id="3_2so27"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_frn68"]
 
-[sub_resource type="Resource" id="Resource_3tlie"]
+[sub_resource type="Resource" id="Resource_up2uk"]
 script = ExtResource("1_t0wjm")
 status_change = {
 "accuracy": 0.0,
-"brawn": 0.0,
-"crit": 1.0,
-"crit_mult": 0.0,
-"grit": 0.0,
+"crit": 2.0,
+"crit_dmg": 0.0,
+"damage": 0,
+"defense": 0.0,
 "handling": 0,
 "heal_mult": 0.0,
 "health": 0,
-"hustle": 0,
-"resist": 0.0
+"resist": 0.0,
+"speed": 0
 }
 rank_scaling = true
-apply_once = true
+apply_once = false
 message = ""
 sound_effect = ""
 
@@ -28,7 +28,7 @@ sound_effect = ""
 script = ExtResource("3_frn68")
 name = "Critical Eye"
 description = "+200% Critical chance for one attack."
-basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_3tlie")])
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_up2uk")])
 status_script = ExtResource("1_e0mox")
 effect_type = 0
 remove_when = Array[int]([0, 1])

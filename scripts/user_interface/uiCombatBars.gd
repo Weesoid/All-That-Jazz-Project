@@ -24,19 +24,9 @@ var previous_value = 0
 var current_bar_value = 100
 
 func _ready():
-#	CombatGlobals.call_indicator.connect(
-#		func setAnimation(anim_string, combatant):
-#			received_combatant = combatant
-#			indicator_animation = anim_string
-#			)
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
-	#CombatGlobals.manual_call_indicator_bb.connect(manualCallIndicatorBB)
-#	if attached_combatant is ResEnemyCombatant:
-#		pulse_gradient_sprite.self_modulate = Color.RED
-#		turn_gradient_sprite.modulate = Color.RED
 	select_target.attached_combatant = attached_combatant
 	previous_value = attached_combatant.getMaxHealth()
-	#turn_charges.filled_modulate = SettingsGlobals.ui_colors['up']
 
 func _process(_delta):
 	updateBars()
@@ -105,22 +95,36 @@ func setFaderBarValue(value):
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
 	if attached_combatant == combatant and indicator.visible:
+		await get_tree().process_frame
 		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
+		secondary_indicator.modulate = Color.TRANSPARENT
 		var y_placement = 0
+		#var wait = 0
 		for child in secondary_prompts.get_children():
 			y_placement -= 8
+			#wait += 0.2
+		#create_tween().tween_property(secondary_indicator,modulate)
 		secondary_prompts.add_child(secondary_indicator)
+		#await get_tree().create_timer(wait).timeout
+		secondary_indicator.modulate = Color.WHITE
 		secondary_indicator.playAnimation(indicator.global_position+Vector2(0,y_placement), text, animation)
-
-#func manualCallIndicatorBB(combatant: ResCombatant, text: String, animation: String, bb_code: String):
-#	if attached_combatant == combatant and indicator.visible:
-#		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
-#		var y_placement = 0
-#		for child in secondary_prompts.get_children():
-#			y_placement -= 8
-#		secondary_prompts.add_child(secondary_indicator)
-#		secondary_indicator.playAnimation(indicator.global_position+Vector2(0,y_placement), bb_code+text, animation)
-
+		match animation:
+			'Status_Up':
+				var up_indicator = load("res://scenes/animations_quick/StatusRankUp.tscn").instantiate()
+				#up_indicator.modulate = Color.WHITE
+				secondary_indicator.add_child(up_indicator)
+			'Status_Resisted':
+				var up_indicator = load("res://scenes/animations_quick/StatusResisted.tscn").instantiate()
+				#up_indicator.modulate = Color.WHITE
+				secondary_indicator.add_child(up_indicator)
+			'Status_Added':
+				var up_indicator = load("res://scenes/animations_quick/StatusAdded.tscn").instantiate()
+				#up_indicator.modulate = Color.WHITE
+				secondary_indicator.add_child(up_indicator)
+			'Status_Max':
+				var up_indicator = load("res://scenes/animations_quick/StatusMaxed.tscn").instantiate()
+				#up_indicator.modulate = Color.WHITE
+				secondary_indicator.add_child(up_indicator)
 func setBarVisibility(set_to:bool):
 	if set_to:
 		health_bar_fader.modulate = Color.WHITE

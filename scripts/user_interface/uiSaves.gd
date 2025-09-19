@@ -57,7 +57,7 @@ func createSaveButton(save_name: String):
 	button.focus_entered.connect(
 		func():
 			if mode == Modes.LOAD:
-				button.hold_time = 10.0
+				button.hold_time = 3.0
 			else:
 				button.hold_time = -1
 	)

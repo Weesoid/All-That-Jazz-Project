@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://8aufe1ycaau4"]
+[gd_scene load_steps=13 format=3 uid="uid://8aufe1ycaau4"]
 
 [ext_resource type="Texture2D" uid="uid://b3mr0w65get7p" path="res://images/animations/campfire.png" id="1_f1dl0"]
 [ext_resource type="Script" path="res://scripts/environment/escSavePoint.gd" id="1_ve4xx"]
+[ext_resource type="PackedScene" uid="uid://b57tm5xnp0h5c" path="res://scenes/user_interface/CombatBarsMini.tscn" id="2_m1oiv"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
 [ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
 [ext_resource type="Texture2D" uid="uid://bkybrnpuy5xws" path="res://images/sprites/watch_mark.png" id="5_yiib7"]
@@ -113,16 +114,28 @@ script = ExtResource("1_ve4xx")
 [node name="Sprite2D" type="Sprite2D" parent="RestSpots"]
 position = Vector2(-40, -32)
 
+[node name="CombatBars" parent="RestSpots/Sprite2D" instance=ExtResource("2_m1oiv")]
+visible = false
+
 [node name="Sprite2D2" type="Sprite2D" parent="RestSpots"]
 position = Vector2(40, -32)
 flip_h = true
 
+[node name="CombatBars" parent="RestSpots/Sprite2D2" instance=ExtResource("2_m1oiv")]
+visible = false
+
 [node name="Sprite2D3" type="Sprite2D" parent="RestSpots"]
 position = Vector2(-80, -32)
+
+[node name="CombatBars" parent="RestSpots/Sprite2D3" instance=ExtResource("2_m1oiv")]
+visible = false
 
 [node name="Sprite2D4" type="Sprite2D" parent="RestSpots"]
 position = Vector2(80, -32)
 flip_h = true
+
+[node name="CombatBars" parent="RestSpots/Sprite2D4" instance=ExtResource("2_m1oiv")]
+visible = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -32)
@@ -138,7 +151,6 @@ libraries = {
 position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_m7jmf")
 show_ui = true
-move_player = false
 cooldown = 3.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

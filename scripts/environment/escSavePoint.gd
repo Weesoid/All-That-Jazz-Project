@@ -8,7 +8,7 @@ class_name SavePoint
 @onready var sfx = $AudioStreamPlayer2
 @onready var watch_mark = $Sprite2D2
 @onready var watch_mark_animator = $Sprite2D2/AnimationPlayer
-var mini_bars = []
+#var mini_bars = []
 var combatant_squad: ResEnemyCombatant
 signal done
 
@@ -38,35 +38,29 @@ func exit():
 	animator.play("RESET")
 	OverworldGlobals.fadeFollowers(Color.WHITE)
 	for sprite in rest_spots.get_children():
+		if sprite.has_node('CombatBars'):
+			sprite.get_node('CombatBars').attached_combatant = null
+			sprite.get_node('CombatBars').hide()
+	for sprite in rest_spots.get_children():
 		sprite.texture = null
-	for bar in mini_bars:
-		bar.queue_free()
 	watch_mark_animator.play("RESET")
 	OverworldGlobals.player.sprite.show()
-	mini_bars = []
 	OverworldGlobals.player.player_camera.hideOverlay(1.5)
 	await get_tree().process_frame
 	OverworldGlobals.player.camping=false
 
 func addRestSprite(combatant: ResPlayerCombatant):
 	for sprite in rest_spots.get_children():
-		if sprite.texture != null: continue
+		if sprite.texture != null: 
+			continue
 		sprite.texture = combatant.rest_sprite
-		addCombatBar(combatant, sprite)
+		sprite.get_node('CombatBars').attached_combatant = combatant
+		sprite.get_node('CombatBars').show()
 		return
 
-func addCombatBar(combatant:ResPlayerCombatant,rest_texture:Sprite2D):
-	var combat_bars = load("res://scenes/user_interface/CombatBarsMini.tscn").instantiate()
-	combat_bars.attached_combatant = combatant
-	combat_bars.rest_sprite = rest_texture
-	#combat_bars.selector.pressed.connect()
-	rest_texture.add_child(combat_bars)
-	combat_bars.hide()
-	mini_bars.append(combat_bars)
-
 func setBarVisibility(set_to:bool):
-	for bar in mini_bars:
-		bar.visible = set_to
+	for sprite in rest_spots.get_children():
+		if sprite.texture != null: sprite.get_node('CombatBars').visible = set_to
 
 func showWatchMark(combatant: ResPlayerCombatant, reverse:bool=false):
 	watch_mark.global_position = getRestSprite(combatant).global_position

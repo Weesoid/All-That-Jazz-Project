@@ -23,7 +23,6 @@ sound_effect = ""
 
 [resource]
 script = ExtResource("1_5ugit")
-auto_name = false
 name = "Poison"
 description = "Target takes damage overtime."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_h03bo")])
@@ -37,7 +36,7 @@ style = 0
 max_duration = 3
 extend_duration = 1
 apply_extend_duration = false
-max_rank = 10
+max_rank = 3
 tick_on_apply = false
 tick_any_turn = false
 do_ticks = true

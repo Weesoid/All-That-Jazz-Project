@@ -39,6 +39,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
+	#CLEAN
 	if cannotAct() and !['Fading, KO'].has(animation) or animation == '': 
 		await get_tree().create_timer(0.25).timeout
 		return
@@ -50,9 +51,13 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 #	if CombatGlobals.getCombatScene().has_node('QTE'):
 #		await CombatGlobals.qte_finished
 #		await CombatGlobals.getCombatScene().get_node('QTE').tree_exited
-	if !animator.get_animation_list().has(animation): animation = 'Cast_Misc'
+	if !animator.get_animation_list().has(animation): 
+		if animator.get_animation_list().has('Cast_Misc'):
+			animation = 'Cast_Misc'
+		else:
+			animation = 'Cast_Melee'
 	combatant_resource.stopBreatheTween()
-	
+	#CLEAN
 	if script != null: hit_script = script
 	if animation == 'Cast_Ranged' and data.has('target') and CombatGlobals.inCombat():
 		setProjectileTarget(data['target'], data['frame_time'], data['ability'])
@@ -61,6 +66,8 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	else:
 		animator.play(animation, -1)
 	await animator.animation_finished
+	#CLEAN
+	
 	if CombatGlobals.inCombat() and CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	#animator.play('RESET')

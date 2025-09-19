@@ -34,7 +34,7 @@ func _ready():
 		group.spawn()
 	for save_point in getSavePoints():
 		save_point.loadCombatantSquad()
-
+	
 func getLogMapEvent():
 	for entry in PlayerGlobals.map_logs[scene_file_path]:
 		if entry is Dictionary and entry.has('map_events'): return entry

@@ -22,9 +22,9 @@ theme_override_constants/margin_bottom = 8
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="TabContainer" type="GridContainer" parent="MarginContainer/ScrollContainer"]
+[node name="TabContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer"]
 layout_mode = 2
-columns = 8
+alignment = 1
 
 [node name="Space" type="Label" parent="."]
 layout_mode = 2

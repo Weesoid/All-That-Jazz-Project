@@ -7,8 +7,8 @@ class_name PlayerScene
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var player_animator = $WalkingAnimations
 @onready var animation_player = $AnimationPlayer
-@onready var interaction_prompt = $PlayerInteractionBubble
-@onready var interaction_prompt_animator = $PlayerInteractionBubble/BubbleAnimator
+#@onready var interaction_prompt = $PlayerInteractionBubble
+#@onready var interaction_prompt_animator = $PlayerInteractionBubble/BubbleAnimator
 @onready var animation_tree = $AnimationTree
 @onready var cast_animator = $PowerAnimator
 @onready var player_direction = $PlayerDirection
@@ -75,7 +75,7 @@ func _ready():
 
 func _process(_delta):
 	updateAnimationParameters()
-	animateInteract()
+	#animateInteract()
 
 func getPosOffset()-> Vector2:
 	return global_position+sprite.offset
@@ -299,15 +299,20 @@ func _unhandled_input(_event: InputEvent):
 	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu() and !camping:
 		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	# Interaction handling
-	if Input.is_action_just_pressed("ui_select") and !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing:
+	if Input.is_action_just_pressed("ui_select"):
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			#velocity = Vector2.ZERO CHANGE LATER
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
+	if Input.is_action_just_pressed("ui_cheat_mode"):
+		OverworldGlobals.changeToCombat('Entity')
 #	if Input.is_action_just_pressed('ui_accept'):
 #		PlayerGlobals.addCombatantTemperment(OverworldGlobals.getCombatantSquad('Player').pick_random())
+
+func canInteract():
+	return !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing
 
 func isMobile():
 	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0
@@ -389,12 +394,12 @@ func canUsePower():
 	
 	return !power_listening and can_move and isMobile()
 
-func animateInteract():
-	if interaction_detector.get_overlapping_areas().size() > 0 and is_processing_input() and interaction_detector.get_overlapping_areas()[0].visible and !channeling_power and can_move:
-		interaction_prompt.visible = true
-		interaction_prompt_animator.play('Interact')
-	else:
-		interaction_prompt_animator.play('RESET')
+#func animateInteract():
+#	if interaction_detector.get_overlapping_areas().size() > 0 and is_processing_input() and interaction_detector.get_overlapping_areas()[0].visible and !channeling_power and can_move:
+#		interaction_prompt.visible = true
+#		interaction_prompt_animator.play('Interact')
+#	else:
+#		interaction_prompt_animator.play('RESET')
 
 func drawBow():
 	if (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0) and !PlayerGlobals.equipNewArrowType():

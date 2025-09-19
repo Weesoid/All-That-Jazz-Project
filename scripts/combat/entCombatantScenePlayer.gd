@@ -7,26 +7,28 @@ class_name PlayerCombatantScene
 
 var blocking: bool = false
 var allow_block: bool = false
-var weapon: WeaponScene
+#var weapon: WeaponScene
 
 func _ready():
-	CombatGlobals.click_block.connect(block)
 	block_timer.timeout.connect(checkHasBlockModifier)
+
 func _exit_tree():
 	if combatant_resource.stat_modifiers.has('block'):
 		CombatGlobals.resetStat(combatant_resource, 'block')
+	if block_timer.timeout.is_connected(checkHasBlockModifier):
+		block_timer.timeout.disconnect(checkHasBlockModifier)
 
 func checkHasBlockModifier():
 	if combatant_resource.stat_modifiers.has('block'):
 		CombatGlobals.resetStat(combatant_resource, 'block')
 
-func playWeaponAttack():
-	weapon.reparent(unsheathe_point, false)
-	weapon.showWeapon()
-
-func sheatheWeapon():
-	weapon.reparent(sheathe_point, false)
-	weapon.showWeapon(true)
+#func playWeaponAttack():
+#	weapon.reparent(unsheathe_point, false)
+#	weapon.showWeapon()
+#
+#func sheatheWeapon():
+#	weapon.reparent(sheathe_point, false)
+#	weapon.showWeapon(true)
 
 func setBlocking(set_to: bool):
 	blocking = set_to

@@ -12,7 +12,7 @@ func _to_string():
 	return str(name)
 
 func getInformation():
-	var out = OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
+	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	out += description
 	return out
 
