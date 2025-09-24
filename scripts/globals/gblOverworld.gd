@@ -409,7 +409,7 @@ func showGameOver(end_sentence: String=''):
 	player.z_index = 20
 	player.resetStates()
 	await get_tree().process_frame
-	get_tree().
+	#get_tree().
 	getCurrentMap().queue_free()
 	get_tree().change_scene_to_file("res://scenes/user_interface/GameOver.tscn")
 	#playEntityAnimation('Player', animation)

@@ -79,6 +79,7 @@ func initializeStatus():
 		duration = max_duration
 	else:
 		duration = extend_duration
+	
 	CombatGlobals.status_effect_added.emit(afflicted_combatant, self)
 
 func onHitTick(combatant, caster, received_value):

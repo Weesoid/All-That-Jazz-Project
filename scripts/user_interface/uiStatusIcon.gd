@@ -35,8 +35,5 @@ func _process(_delta):
 		duration.self_modulate = Color.WHITE
 		rank.modulate = Color.TRANSPARENT
 
-func _on_tree_exiting():
+func _on_tree_exited():
 	flicker_tween.kill()
-
-func _to_string():
-	return 'PENISITUS'
