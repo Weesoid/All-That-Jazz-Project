@@ -306,7 +306,7 @@ func _unhandled_input(_event: InputEvent):
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
-	if Input.is_action_just_pressed("ui_cheat_mode"):
+	if Input.is_action_just_pressed("ui_text_backspace"):
 		OverworldGlobals.changeToCombat('Entity')
 #	if Input.is_action_just_pressed('ui_accept'):
 #		PlayerGlobals.addCombatantTemperment(OverworldGlobals.getCombatantSquad('Player').pick_random())

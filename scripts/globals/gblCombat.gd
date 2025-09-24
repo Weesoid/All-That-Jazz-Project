@@ -20,6 +20,8 @@ signal animation_done
 signal exp_updated(value: float, max_value: float)
 signal received_combatant_value(combatant: ResCombatant, caster: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
+signal status_effect_added(combatant: ResCombatant, status_effect: ResStatusEffect)
+signal status_effect_removed(combatant: ResCombatant, status_effect: ResStatusEffect)
 #signal manual_call_indicator_bb(combatant: ResCombatant, text: String, animation: String, bb: String)
 signal execute_ability(target, ability: ResAbility)
 signal qte_finished()

@@ -3,7 +3,7 @@ extends Control
 @onready var buttons= $VBoxContainer
 @onready var end_sentence = $EndSentence
 @onready var animator = $AnimationPlayer
-@onready var saves = $Saves
+#@onready var saves = $Saves
 @onready var penalty = $Penalty
 var sounds = [
 	"res://audio/sounds/488375__wobesound__deathgameoverv2.ogg",
@@ -14,7 +14,7 @@ var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.save_name
 
 func _ready():
 	randomize()
-	OverworldGlobals.shakeCamera(20,20)
+	#OverworldGlobals.shakeCamera(20,20)
 	var random_penalty = randf_range(0.2, 0.3)
 	penalty.text = '-'+str(int(random_penalty*100))+'% Slips and Morale.'
 	var reduced_currency = PlayerGlobals.currency - int(random_penalty * PlayerGlobals.currency)
@@ -39,7 +39,7 @@ func _ready():
 func _on_yes_pressed():
 	buttons.hide()
 	penalty.hide()
-	#if FileAccess.file_exists("res://saves/%s.tres" % PlayerGlobals.save_name):
+	#await get_tree().process_frame
 	SaveLoadGlobals.loadSaveFile()
 
 func _on_no_pressed():

@@ -153,6 +153,7 @@ func _process(_delta):
 	#$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
 	#ui_attribute_view.combatant = target_combatant
 	#round_counter.text = str(round_count)
+	
 	match target_state:
 		TargetState.SINGLE: playerSelectSingleTarget()
 		TargetState.MULTI: playerSelectMultiTarget()
@@ -351,6 +352,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 				combatant.acted = true
+				combatant.combatant_scene.get_parent().get_node('CombatBars').hide()
 				total_experience += combatant.getExperience()
 			if combatant.spawn_on_death != null:
 				replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
@@ -367,6 +369,7 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 				combatant.acted = true
+				combatant.combatant_scene.get_parent().get_node('CombatBars').hide()
 			if !fading:
 				await get_tree().create_timer(0.25).timeout
 #********************************************************************************
@@ -381,7 +384,8 @@ func calculateEscapeChance()-> float:
 		hustle_allies += combatant.base_stat_values['speed']
 	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
 
-func toggleUI(visibility: bool):
+func toggleUI(visibility: bool): 
+#	TEMP
 #	for marker in enemy_container_markers:
 #		if marker.get_child_count() != 0:
 #			marker.get_child(0).get_node('CombatBars').visible = visibility
@@ -555,9 +559,6 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		team_container = team_container_markers
 	else:
 		team_container = enemy_container_markers
-#	var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
-#	combat_bars.attached_combatant = combatant
-#	combatant.combatant_scene.add_child(combat_bars)
 	if do_tween:
 		if combatant is ResPlayerCombatant:
 			combatant.combatant_scene.global_position = Vector2(-100, 0)
@@ -577,6 +578,11 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	for marker in team_container:
 		if marker.get_child_count() != 0: continue
 		marker.add_child(combatant.combatant_scene)
+		var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
+		combat_bars.attached_combatant = combatant
+		combatant.combatant_scene.add_child(combat_bars)
+		combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
+		combatant.combatant_scene.get_node('CombatBars').show()
 		break
 	if combatant is ResPlayerCombatant and combatant.isDead():
 		combatant.combatant_scene.doAnimation('Fading')
@@ -604,6 +610,7 @@ func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, anim
 	#writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
+	combatant.combatant_scene.get_parent().get_node('CombatBars').hide()
 	setSignals(combatant,false)
 	combatants.erase(combatant)
 	combatant_turn_order.erase(combatant)
@@ -1051,10 +1058,10 @@ func sortCombatantsByPosition()-> Array[ResCombatant]:
 	reversed_array.reverse()
 	for combatant in reversed_array:
 		if combatant.get_child_count() == 0: continue
-		out.append(combatant.get_child(0).combatant_resource)
+		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
 	for combatant in enemy_container_markers:
 		if combatant.get_child_count() == 0: continue
-		out.append(combatant.get_child(0).combatant_resource)
+		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
 	return out
 
 func addTargetClickButton(combatant: ResCombatant):

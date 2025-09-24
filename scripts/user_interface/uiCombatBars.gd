@@ -19,18 +19,23 @@ class_name CombatBar
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 @onready var target_clicker = $TargetClicker
 var indicator_animation = "Show"
-var attached_combatant: ResCombatant
+var attached_combatant: ResCombatant # Attaching this seems to cause the leak, isolate
 var previous_value = 0
 var current_bar_value = 100
 
 func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
-	select_target.attached_combatant = attached_combatant
+	CombatGlobals.status_effect_added.connect(addStatusIcon)
+	CombatGlobals.status_effect_removed.connect(removeStatusIcon)
+	for effect in attached_combatant.status_effects:
+		addStatusIcon(attached_combatant, effect)
 	previous_value = attached_combatant.getMaxHealth()
 
 func _process(_delta):
+	if CombatGlobals.getCombatScene().combat_result != -1:
+		queue_free()
+	
 	updateBars()
-	updateStatusEffects()
 	if CombatGlobals.getCombatScene().active_combatant == attached_combatant:
 		turn_gradient.get_parent().show()
 		turn_gradient.play('Loop')
@@ -56,19 +61,33 @@ func updateBars():
 	else:
 		health_bar.show()
 
-func updateStatusEffects():
-	for effect in attached_combatant.status_effects:
-		if status_effects.get_children().has(effect.icon) or permanent_status_effects.get_children().has(effect.icon) or effect.icon == null: continue
-		var tick_down = load("res://scenes/user_interface/StatusEffectTickDown.tscn").instantiate()
-		tick_down.attached_status = effect
-		var icon = effect.icon
-		icon.tooltip_text = effect.name+': '+effect.description
-		#icon.expand_mode = icon.EXPAND_FIT_WIDTH_PROPORTIONAL
-		icon.add_child(tick_down)
-		if effect.permanent:
-			permanent_status_effects.add_child(icon)
-		else:
-			status_effects.add_child(icon)
+func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
+	if combatant != attached_combatant:
+		return
+	
+	var tick_down = load("res://scenes/user_interface/StatusIcon.tscn").instantiate()
+	tick_down.attached_status = effect
+	if effect.permanent:
+		permanent_status_effects.add_child(tick_down)
+	else:
+		status_effects.add_child(tick_down)
+	print('added %s to %s' % [effect, combatant])
+
+func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
+	if combatant != attached_combatant:
+		return
+	
+	var effect_container
+	if effect.permanent:
+		effect_container = permanent_status_effects
+	else:
+		effect_container = status_effects
+	
+	for icon in effect_container.get_children():
+		if icon.attached_status == effect:
+			effect_container.remove_child(icon)
+			icon.queue_free()
+			return
 
 func _on_health_bar_value_changed(value):
 	animateFaderBar(previous_value, attached_combatant.stat_values['health'])
@@ -111,20 +130,17 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 		match animation:
 			'Status_Up':
 				var up_indicator = load("res://scenes/animations_quick/StatusRankUp.tscn").instantiate()
-				#up_indicator.modulate = Color.WHITE
 				secondary_indicator.add_child(up_indicator)
 			'Status_Resisted':
 				var up_indicator = load("res://scenes/animations_quick/StatusResisted.tscn").instantiate()
-				#up_indicator.modulate = Color.WHITE
 				secondary_indicator.add_child(up_indicator)
 			'Status_Added':
 				var up_indicator = load("res://scenes/animations_quick/StatusAdded.tscn").instantiate()
-				#up_indicator.modulate = Color.WHITE
 				secondary_indicator.add_child(up_indicator)
 			'Status_Max':
 				var up_indicator = load("res://scenes/animations_quick/StatusMaxed.tscn").instantiate()
-				#up_indicator.modulate = Color.WHITE
 				secondary_indicator.add_child(up_indicator)
+
 func setBarVisibility(set_to:bool):
 	if set_to:
 		health_bar_fader.modulate = Color.WHITE
@@ -156,3 +172,14 @@ func _on_target_clicker_focus_entered():
 	var combat_scene = CombatGlobals.getCombatScene()
 	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 	combat_scene.targetCombatant(attached_combatant)
+
+func _on_tree_exiting():
+	for i in range(status_effects.get_child_count()-1,-1,-1):
+		print(status_effects)
+		var effect_icon = status_effects.get_children()[i]
+		removeStatusIcon(attached_combatant, effect_icon.attached_status)
+
+	for i in range(permanent_status_effects.get_child_count()-1,-1,-1):
+		print(permanent_status_effects)
+		var effect_icon = permanent_status_effects.get_children()[i]
+		removeStatusIcon(attached_combatant, effect_icon.attached_status)

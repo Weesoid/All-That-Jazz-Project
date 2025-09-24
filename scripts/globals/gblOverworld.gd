@@ -401,33 +401,31 @@ func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and player.has_node('DebugComponent')
 
 func showGameOver(end_sentence: String=''):
-	if player.player_camera.get_node('UI').has_node('GameOver'):
-		return
-	if inMenu(): 
-		showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	destroyAllPatrollers()
 	player.setUIVisibility(false)
 	player.resetStates()
 	setPlayerInput(false)
 	player.set_process_unhandled_input(false)
 	player.z_index = 20
-	#playEntityAnimation('Player', animation)
-	var menu: Control = load("res://scenes/user_interface/GameOver.tscn").instantiate()
-	menu.z_index = 20
 	player.resetStates()
-	setMouseController(true)
-	player.player_camera.get_node('UI').add_child(menu)
-	if end_sentence == '': 
-		end_sentence = [
-			"You perished.", 
-			"Well that's unfortunate.",
-			"Sorry!",
-			"There is nobility in the attempt.",
-			"Don't give up!",
-			"Try again.",
-			"Let's hope the penalty isn't too high."
-		].pick_random()
-	menu.end_sentence.text = end_sentence
+	await get_tree().process_frame
+	get_tree().
+	getCurrentMap().queue_free()
+	get_tree().change_scene_to_file("res://scenes/user_interface/GameOver.tscn")
+	#playEntityAnimation('Player', animation)
+	#var menu: Control = load().instantiate()
+	#setMouseController(true)
+#	if end_sentence == '': 
+#		end_sentence = [
+#			"You perished.", 
+#			"Well that's unfortunate.",
+#			"Sorry!",
+#			"There is nobility in the attempt.",
+#			"Don't give up!",
+#			"Try again.",
+#			"Let's hope the penalty isn't too high."
+#		].pick_random()
+#	menu.end_sentence.text = end_sentence
 
 func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=false):
 	var tween = create_tween()

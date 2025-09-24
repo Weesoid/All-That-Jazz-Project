@@ -8,7 +8,6 @@ class_name CombatBarsMini
 @onready var selector = $Selector
 @onready var prompts = $Marker2D
 var attached_combatant: ResPlayerCombatant
-#var highlight_tween: Tween
 var added_lingers = []
 
 func _ready():

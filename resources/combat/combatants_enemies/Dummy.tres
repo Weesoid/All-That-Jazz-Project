@@ -23,7 +23,7 @@ stat_values = {
 "accuracy": 0.95,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 1,
+"damage": 22,
 "defense": 0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,

@@ -210,7 +210,7 @@ func destroy(give_drops=false, check_rewards:bool=true):
 		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
 		combatant_squad.addDrops()
 		OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
-	
+	flicker_tween.kill()
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()
 	if check_rewards:

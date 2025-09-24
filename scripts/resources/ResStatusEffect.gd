@@ -59,12 +59,12 @@ var current_rank = 1
 var afflicted_combatant: ResCombatant
 var attached_data
 var status_visuals
-var icon: TextureRect
+#var icon: TextureRect
 
 func initializeStatus():
-	icon = TextureRect.new()
-	icon.texture = texture
-	icon.self_modulate = getIconColor()
+	#icon = TextureRect.new()
+	#icon.texture = texture
+	#icon.self_modulate = getIconColor()
 	
 	if packed_scene != null:
 		status_visuals = packed_scene.instantiate()
@@ -79,6 +79,7 @@ func initializeStatus():
 		duration = max_duration
 	else:
 		duration = extend_duration
+	CombatGlobals.status_effect_added.emit(afflicted_combatant, self)
 
 func onHitTick(combatant, caster, received_value):
 	if combatant == afflicted_combatant:
@@ -102,9 +103,8 @@ func removeStatusEffect():
 	elif afflicted_combatant is ResPlayerCombatant and lingers and afflicted_combatant.lingering_effects.has(name.replace(' ','')) and resistable:
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, getMessageIcon(), 'Status_Added')
 	
-	if is_instance_valid(icon):
-		icon.queue_free()
 	afflicted_combatant.status_effects.erase(self)
+	CombatGlobals.status_effect_removed.emit(afflicted_combatant, self)
 
 func tick(update_duration=true, override_permanent=false, apply_effects=true):
 	if (!permanent and update_duration) or override_permanent: 

@@ -11,10 +11,7 @@
 [resource]
 script = ExtResource("2_vmsk2")
 ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_43nme")])
-base_temperment = {
-"primary": ["unyielding"],
-"secondary": ["stubborn", "rigid"]
-}
+base_temperment = Array[String]([])
 follower_texture = ExtResource("3_qv2st")
 mandatory = true
 rest_sprite = ExtResource("5_clolb")
@@ -35,7 +32,7 @@ stat_values = {
 "heal_mult": 1.0,
 "health": 20,
 "resist": 0.05,
-"speed": 1
+"speed": 8
 }
 scale_stats = {
 "accuracy": false,

@@ -29,7 +29,7 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	#await CombatGlobals.getCombatScene().get_tree().create_timer(0.5).timeout
 	if  CombatGlobals.getCombatScene().combat_result >= 1:
 		CombatGlobals.applyFaded(target)
-		CombatGlobals.calculateHealing(target, int(target.base_stat_values['health']*0.25),true,false)
+		CombatGlobals.calculateHealing(target, int(target.base_stat_values['health']*0.25),false,false)
 	elif target.stat_values['health'] <= 0.0 and CombatGlobals.getCombatScene().combat_result != 1:
 		CombatGlobals.addStatusEffect(target, 'KnockOut')
 	else:

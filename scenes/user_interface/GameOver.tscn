@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://baedkuu18iwg4"]
+[gd_scene load_steps=7 format=3 uid="uid://baedkuu18iwg4"]
 
-[ext_resource type="PackedScene" uid="uid://dpdurcfiprjbj" path="res://scenes/user_interface/Saves.tscn" id="1_1gutg"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameOver.gd" id="1_gbj7h"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_41vgo"]
 [ext_resource type="Theme" uid="uid://cuu2oxc3xqlvt" path="res://design/SideButtonHighlights.tres" id="4_ottt2"]
@@ -172,16 +171,6 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gbj7h")
-
-[node name="Saves" parent="." instance=ExtResource("1_1gutg")]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.388889
-anchor_top = 0.450617
-anchor_right = 0.388889
-anchor_bottom = 0.450617
-mode = 1
 
 [node name="EndSentence" type="Label" parent="."]
 layout_mode = 1
