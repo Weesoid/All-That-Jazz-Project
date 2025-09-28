@@ -24,7 +24,7 @@ var previous_value = 0
 var current_bar_value = 100
 
 func _ready():
-	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
+	#CombatGlobals.manual_call_indicator.connect(manualCallIndicator) # LEAK HERE
 	CombatGlobals.status_effect_added.connect(addStatusIcon)
 	CombatGlobals.status_effect_removed.connect(removeStatusIcon)
 	for effect in attached_combatant.status_effects:
@@ -71,7 +71,7 @@ func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 		permanent_status_effects.add_child(tick_down)
 	else:
 		status_effects.add_child(tick_down)
-	print('added %s to %s' % [effect, combatant])
+	#print('added %s to %s' % [effect, combatant])
 
 func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	if combatant != attached_combatant:
@@ -178,8 +178,12 @@ func _on_tree_exiting():
 		print(status_effects)
 		var effect_icon = status_effects.get_children()[i]
 		removeStatusIcon(attached_combatant, effect_icon.attached_status)
-
+	
 	for i in range(permanent_status_effects.get_child_count()-1,-1,-1):
 		print(permanent_status_effects)
 		var effect_icon = permanent_status_effects.get_children()[i]
 		removeStatusIcon(attached_combatant, effect_icon.attached_status)
+
+
+func _on_tree_exited():
+	pass # Replace with function body.

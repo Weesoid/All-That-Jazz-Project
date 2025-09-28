@@ -32,7 +32,8 @@ func saveGame(save_name: String, save_current_map:bool=true):
 	OverworldGlobals.showPrompt('[color=yellow]Game saved[/color]!')
 	done_saving.emit()
 
-func loadGame(saved_game: SavedGame):
+func loadGame(save_name: String):
+	var saved_game = load("res://saves/%s.tres" % save_name)
 	is_loading = true
 	get_tree().change_scene_to_file(saved_game.current_map_path)
 	await get_tree().create_timer(0.01).timeout
@@ -59,7 +60,6 @@ func loadGame(saved_game: SavedGame):
 	
 	session_start = Time.get_unix_time_from_system()
 	current_playtime = saved_game.playtime
-	OverworldGlobals.showPrompt('[color=yellow]Game loaded[/color]!')
 	done_loading.emit()
 	is_loading = false
 	OverworldGlobals.getCurrentMap().show()
@@ -71,7 +71,7 @@ func loadSaveFile(save_name: String = PlayerGlobals.save_name):
 	QuestGlobals.resetVariables()
 	SaveLoadGlobals.resetVariables()
 	await get_tree().process_frame
-	loadGame(load("res://saves/%s.tres" % save_name))
+	loadGame(save_name)
 
 func resetVariables():
 	is_loading = false

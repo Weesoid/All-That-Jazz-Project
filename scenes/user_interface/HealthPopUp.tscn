@@ -78,3 +78,5 @@ alignment = 1
 libraries = {
 "": SubResource("AnimationLibrary_0k5fj")
 }
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]

@@ -18,3 +18,8 @@ func loadCombatants():
 		if combatant.isDead(): 
 			bar.modulate = Color.RED
 		main_container.add_child(bar)
+
+
+
+func _on_tree_exited():
+	pass # Replace with function body.

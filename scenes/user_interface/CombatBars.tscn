@@ -440,6 +440,7 @@ modulate = Color(1, 1, 1, 0.180392)
 position = Vector2(16, 33)
 texture = ExtResource("8_fh81n")
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="value_changed" from="HealthBar" to="." method="_on_health_bar_value_changed"]
 [connection signal="focus_entered" from="TargetClicker" to="." method="_on_target_clicker_focus_entered"]

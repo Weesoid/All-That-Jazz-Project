@@ -156,7 +156,6 @@ layer_1/tile_data = PackedInt32Array(-1, 0, 3, -65536, 131072, 3)
 
 [node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 1
-enabled = false
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
 position = Vector2(224, 127)

@@ -210,7 +210,8 @@ func destroy(give_drops=false, check_rewards:bool=true):
 		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
 		combatant_squad.addDrops()
 		OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
-	flicker_tween.kill()
+	if is_instance_valid(flicker_tween):
+		flicker_tween.kill()
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()
 	if check_rewards:
@@ -218,5 +219,6 @@ func destroy(give_drops=false, check_rewards:bool=true):
 		patroller_group.checkGiveRewards()
 
 func playFootstep():
-	if is_on_floor():
-		FootstepSoundManager.playFootstep(global_position,-10,0.5)
+	pass
+#	if is_on_floor():
+#		FootstepSoundManager.playFootstep(global_position,-10,0.5)

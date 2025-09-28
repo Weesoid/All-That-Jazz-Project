@@ -156,11 +156,10 @@ func setMouseController(set_to:bool):
 		var mouse_controller = load("res://scenes/user_interface/MouseController.tscn").instantiate()
 		add_child(mouse_controller)
 		Input.warp_mouse(Vector2(DisplayServer.screen_get_size()/2))
-	else:
-		if has_node('MouseController'): get_node('MouseController').queue_free()
+	elif has_node('MouseController'): 
+		get_node('MouseController').queue_free()
 
 func closeMenu(menu: Control):
-	#player.player_camera.hideOverlay()
 	player.setUIVisibility(true)
 	setMouseController(false)
 	menu.queue_free()
@@ -612,14 +611,13 @@ func shootProjectile(projectile: Projectile, origin, direction: float):
 #********************************************************************************
 # Disgusting...... absolutely disgusting...............
 func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericPatroller=null):
-	# Check validity
 	if entering_combat:
 		return
 	if get_parent().has_node('CombatScene'):
 		await getCurrentMap().get_node('CombatScene').tree_exited
-#	if getCurrentMap().has_node('Balloon'):
-#		getCurrentMap().get_node('Balloon').queue_free()
-#		await getCurrentMap().get_node('Balloon').tree_exited # LEAK 1
+	if getCurrentMap().has_node('Balloon'):
+		getCurrentMap().get_node('Balloon').queue_free()
+		await getCurrentMap().get_node('Balloon').tree_exited
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
 		return
@@ -665,7 +663,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		var duped_combatant = combatant.duplicate()
 		for effect in enemy_squad.afflicted_status_effects:
 			duped_combatant.lingering_effects.append(effect)
-		combat_scene.combatants.append(combatant)
+		combat_scene.combatants.append(duped_combatant)
 	combat_scene.combat_entity = combat_entity
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
@@ -683,14 +681,14 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
-	#await combat_bubble.animator.animation_finished
-	#await get_tree().create_timer(0.5).timeout
-	#var battle_transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
-	#player.player_camera.add_child(battle_transition)
-	#battle_transition.get_node('AnimationPlayer').play('In')
-	#await battle_transition.get_node('AnimationPlayer').animation_finished
-	#player.player_camera.get_node('BattleStart').queue_free()
-	#combat_bubble.queue_free()
+		#await combat_bubble.animator.animation_finished
+		#await get_tree().create_timer(0.5).timeout
+		#var battle_transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
+		#player.player_camera.add_child(battle_transition)
+		#battle_transition.get_node('AnimationPlayer').play('In')
+		#await battle_transition.get_node('AnimationPlayer').animation_finished
+		#player.player_camera.get_node('BattleStart').queue_free()
+		#combat_bubble.queue_free()
 	get_parent().add_child(combat_scene)
 	#await combat_scene.tree_entered
 	combat_enetered.emit()
@@ -699,14 +697,14 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		combat_scene.combat_dialogue = getComponent(entity_name, 'CombatDialogue')
 	getCurrentMap().hide()
 	await combat_scene.combat_done
-#	await get_tree().create_timer(0.5).timeout
+	
 	# Exit combat
+	get_tree().paused = false
 	moveCamera('Player', 0.0, player.sprite.offset)
 	OverworldGlobals.moveCamera('RESET',0.25)
 	OverworldGlobals.zoomCamera(Vector2(1,1),0.25)
-	var combat_results = -1 #combat_scene.combat_result
+	var combat_results = combat_scene.combat_result
 	player.player_camera.make_current()
-	get_tree().paused = false
 	getCurrentMap().show()
 	player.resetStates()
 	for combatant in getCombatantSquad('Player'):
@@ -716,6 +714,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	OverworldGlobals.player.setUIVisibility(true)
 #	battle_transition.get_node('AnimationPlayer').play('Out')
 	if combat_entity is GenericPatroller and combat_results == 1:
+		addPatrollerPulse(player, 180.0, 2)
 		combat_entity.destroy()
 #	await battle_transition.get_node('AnimationPlayer').animation_finished
 #	battle_transition.queue_free()
@@ -730,8 +729,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	if combat_results == 1 and give_non_pg_reward:
 		giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank)
 		combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
+	elif combat_results == 0:
+		showGameOver('')
 
 func giveRewardBank(reward_bank: Dictionary):
+	return # Temp
 	# UI Map clear indicator handling
 	var map = getCurrentMap()
 	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
@@ -804,8 +806,6 @@ func isPlayerSquadDead():
 	return true
 
 func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
-	OverworldGlobals.player.player_camera.shake(15.0,10.0)
-	
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
 		member.stat_values['health'] -= int(CombatGlobals.useDamageFormula(member, damage))
@@ -813,15 +813,17 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 			member.stat_values['health'] = 1
 		if member.isDead():
 			OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
-	if isPlayerSquadDead() and !death_message.is_empty():
-		randomize()
-		showGameOver(death_message.pick_random())
-	elif isPlayerSquadDead():
-		showGameOver('')
-	playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
-	party_damaged.emit()
-	var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
-	OverworldGlobals.player.player_camera.get_node('Marker2D').add_child(pop_up)
+	
+	if !isPlayerSquadDead():
+		OverworldGlobals.player.player_camera.shake(15.0,10.0)
+		playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
+		party_damaged.emit()
+		var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
+		OverworldGlobals.player.player_camera.get_node('Marker2D').add_child(pop_up)
+	else:
+		await get_tree().process_frame
+		SaveLoadGlobals.loadSaveFile()
+		#showGameOver()
 
 func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:bool=true,lethal:bool=false):
 	if combatant.isDead():

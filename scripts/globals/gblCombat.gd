@@ -48,7 +48,6 @@ func calculateDamage(caster, target, modifier, can_miss = true, can_crit = true,
 	
 	if target is ResPlayerCombatant and target.combatant_scene.blocking:
 		can_miss=false
-	#print(bonus_stats)
 	if randomRoll(caster.stat_values['accuracy']+getBonusStat(bonus_stats, 'accuracy', target)) and can_miss:
 		damageTarget(caster, target, modifier, can_crit, sound, indicator_bb_code, bonus_stats)
 		return true
@@ -722,7 +721,11 @@ func applyFaded(target: ResCombatant):
 	var escalated_level = getFadedLevel(target)+1
 	
 	# Remove previous faded
-	target.temperment.erase(getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
+	#print('erasing ', getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
+	#print('from ', target.temperment)
+	#target.temperment.erase(getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
+	#print(getFadedStatus(target))
+	removeLingeringEffect(target,getFadedStatus(target))
 	target.lingering_effects.erase(applyFadedStatus(escalated_level-1))
 	if inCombat():
 		removeStatusEffect(target, applyFadedStatus(escalated_level-1,true))

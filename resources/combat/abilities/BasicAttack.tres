@@ -95,5 +95,9 @@ tension_cost = 0
 instant_cast = false
 required_level = 0
 mutation = {
-"basic_effects": [SubResource("Resource_i8w1i")]
+"basic_effects": [SubResource("Resource_i8w1i")],
+"target_position": {
+"max": 3,
+"min": 0
+}
 }

@@ -101,7 +101,6 @@ func _ready():
 		await addCombatant(combatant, false, '', true)
 	for combatant in dead_combatants:
 		combatants.erase(combatant)
-	
 	if battle_music_path != "":
 		battle_music.stream = load(battle_music_path)
 		battle_music.play()
@@ -126,7 +125,6 @@ func _ready():
 
 	active_combatant.act()
 #	active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
-
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
 
@@ -147,7 +145,7 @@ func _ready():
 	combat_ui.initialize()
 	#await get_tree().process_frame
 	#attemptEscape()
-
+	print('full')
 func _process(_delta):
 	#print(combatant_turn_order)
 	#$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
@@ -352,7 +350,8 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 				clearStatusEffects(combatant)
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 				combatant.acted = true
-				combatant.combatant_scene.get_parent().get_node('CombatBars').hide()
+				if combatant.combatant_scene.has_node('CombatBars'):
+					combatant.combatant_scene.get_node('CombatBars').hide()
 				total_experience += combatant.getExperience()
 			if combatant.spawn_on_death != null:
 				replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
@@ -369,7 +368,8 @@ func removeDeadCombatants(fading=true, is_valid_check=true):
 			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
 				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 				combatant.acted = true
-				combatant.combatant_scene.get_parent().get_node('CombatBars').hide()
+				if combatant.combatant_scene.has_node('CombatBars'):
+					combatant.combatant_scene.get_node('CombatBars').hide()
 			if !fading:
 				await get_tree().create_timer(0.25).timeout
 #********************************************************************************
@@ -403,10 +403,10 @@ func toggleUI(visibility: bool):
 
 func setUIModulation(ui_modulate: Color, duration:float=0.1):
 	for marker in enemy_container_markers:
-		if marker.get_child_count() != 0:
+		if marker.get_child_count() != 0 and marker.get_child(0).combatant_scene.has_node('CombatBars'):
 			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
 	for marker in team_container_markers:
-		if marker.get_child_count() != 0:
+		if marker.get_child_count() != 0 and marker.get_child(0).combatant_scene.has_node('CombatBars'):
 			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
 	
 	for child in combat_camera.get_children():
@@ -578,11 +578,11 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	for marker in team_container:
 		if marker.get_child_count() != 0: continue
 		marker.add_child(combatant.combatant_scene)
-		var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
-		combat_bars.attached_combatant = combatant
-		combatant.combatant_scene.add_child(combat_bars)
-		combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
-		combatant.combatant_scene.get_node('CombatBars').show()
+#		var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
+#		combat_bars.attached_combatant = combatant
+#		combatant.combatant_scene.add_child(combat_bars)
+#		combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
+#		combatant.combatant_scene.get_node('CombatBars').show()
 		break
 	if combatant is ResPlayerCombatant and combatant.isDead():
 		combatant.combatant_scene.doAnimation('Fading')
@@ -835,7 +835,7 @@ func concludeCombat(results: int):
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant, false)
 		setSignals(combatant,false)
-		if results == 0 or getDeadCombatants('team').size() > 0: 
+		if combat_result == 0 or getDeadCombatants('team').size() > 0: 
 			await get_tree().create_timer(0.25).timeout
 	target_state = TargetState.NONE
 	target_index = 0
@@ -847,7 +847,7 @@ func concludeCombat(results: int):
 	await get_tree().create_timer(1.0).timeout
 	toggleUI(false)
 	combat_ui.hideUI()
-	if results == 1:
+	if combat_result == 1:
 		if round_count <= 4:
 			morale_bonus += 0.25
 			loot_bonus += 1
@@ -858,7 +858,6 @@ func concludeCombat(results: int):
 		if CombatGlobals.tension == 0:
 			morale_bonus += 0.25
 			bonuses.append('Exhausted Tension!')
-		
 		reward_bank['experience'] += total_experience * morale_bonus
 		for enemy in getCombatantGroup('enemies'):
 			var enemy_drops = enemy.getDrops()
@@ -866,14 +865,12 @@ func concludeCombat(results: int):
 			enemy_drops.merge(barter_drops)
 			addDropToBank(enemy_drops)
 			drops.merge(enemy_drops)
-		if loot_bonus > 1: # Disgusting
+		if loot_bonus > 1:
 			for i in range(loot_bonus):
 					for enemy in getCombatantGroup('enemies'):
 						var enemy_drops = enemy.getDrops()
 						addDropToBank(enemy_drops)
 						drops.merge(enemy_drops)
-	
-	if results == 1:
 		var bc_ui = load("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 		bc_ui.morale = morale_before
 		bc_ui.drops = drops
@@ -895,10 +892,6 @@ func concludeCombat(results: int):
 	if combat_dialogue != null: 
 		combat_dialogue.disconnectSignal()
 		end_sentence = combat_dialogue.end_sentence
-	if results == 0:
-		OverworldGlobals.showGameOver(end_sentence)
-	else:
-		OverworldGlobals.addPatrollerPulse(OverworldGlobals.player, 180.0, 2)
 	CombatGlobals.tension = 0
 	OverworldGlobals.setMouseController(false)
 	queue_free()
@@ -1126,7 +1119,7 @@ func setSignals(combatant:ResCombatant, connect_signals:bool):
 			combatant.player_turn.connect(on_player_turn)
 		if !combatant.enemy_turn.is_connected(on_enemy_turn):
 			combatant.enemy_turn.connect(on_enemy_turn)
-
+	
 	else:
 		if combatant.player_turn.is_connected(on_player_turn):
 			combatant.player_turn.disconnect(on_player_turn)

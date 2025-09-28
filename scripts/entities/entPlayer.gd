@@ -51,26 +51,16 @@ signal dived
 signal phased
 
 func _ready():
-	#name = 'Willis'
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	animation_tree.active = true
 	
 	PlayerGlobals.loadSquad()
-	#PlayerGlobals.initializeBenchedTeam()
 	SaveLoadGlobals.session_start = Time.get_unix_time_from_system()
 	if SettingsGlobals.cheat_mode and !has_node('DebugComponent'):
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
 	default_camera_pos = player_camera.position
 	OverworldGlobals.setMouseController(false)
-	# For testing only del later...
-	#await get_tree().process_frame
-	#PlayerGlobals.healCombatants()
-#	await get_tree().process_frame
-#	if !OverworldGlobals.getCurrentMap().SAFE:
-#		#print('pluh')
-#		Input.action_press('ui_bow')
-	
 	OverworldGlobals.player = self
 
 func _process(_delta):

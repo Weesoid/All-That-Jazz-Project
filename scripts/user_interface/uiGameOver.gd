@@ -10,17 +10,19 @@ var sounds = [
 	"res://audio/sounds/488376__wobesound__deathgameoverv1.ogg"
 ]
 var current_currency = PlayerGlobals.currency
-var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.save_name)
 
 func _ready():
 	randomize()
 	#OverworldGlobals.shakeCamera(20,20)
+	var saved_game: SavedGame = load("res://saves/%s.tres" % PlayerGlobals.save_name)
 	var random_penalty = randf_range(0.2, 0.3)
-	penalty.text = '-'+str(int(random_penalty*100))+'% Slips and Morale.'
 	var reduced_currency = PlayerGlobals.currency - int(random_penalty * PlayerGlobals.currency)
 	var reduced_exp = PlayerGlobals.current_exp - int(random_penalty * PlayerGlobals.getRequiredExp())
-	if reduced_currency < 0: reduced_currency = 0
-	if reduced_exp < 0: reduced_exp = 0
+	penalty.text = '-'+str(int(random_penalty*100))+'% Slips and Morale.'
+	if reduced_currency < 0: 
+		reduced_currency = 0
+	if reduced_exp < 0: 
+		reduced_exp = 0
 	for data in saved_game.save_data:
 		if data is PlayerSaveData:
 			data.currency = reduced_currency
@@ -32,14 +34,12 @@ func _ready():
 	
 	animator.play('Show')
 	OverworldGlobals.playSound("res://audio/sounds/252198__pepingrillin__rocket_impact.ogg")
-	#OverworldGlobals.playSound(sounds.pick_random())
 	OverworldGlobals.setMouseController(true)
 	OverworldGlobals.setMenuFocus(buttons)
 
 func _on_yes_pressed():
 	buttons.hide()
 	penalty.hide()
-	#await get_tree().process_frame
 	SaveLoadGlobals.loadSaveFile()
 
 func _on_no_pressed():

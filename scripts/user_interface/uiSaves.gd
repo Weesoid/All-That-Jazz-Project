@@ -84,7 +84,7 @@ func slotPressed(save_name: String, button: Button):
 			queue_free()
 		Modes.LOAD: 
 			PlayerGlobals.save_name = save_name.get_basename()
-			SaveLoadGlobals.loadGame(load("res://saves/%s.tres" % save_name))
+			SaveLoadGlobals.loadGame(save_name)
 		Modes.NEW_GAME:
 			PlayerGlobals.save_name = generateSaveName()
 			OverworldGlobals.changeMap('res://scenes/maps/Sidescroller.tscn', '0,0,0', 'FastTravel', false, true)
