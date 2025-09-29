@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cw0gvoxm7mdqr"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiFastTravel.gd" id="1_vesp7"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_46a5y"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_46a5y"]
 [ext_resource type="StyleBox" uid="uid://c22qxunue5s3x" path="res://design/PanelNoRight.tres" id="3_l4lig"]
 
 [node name="FastTravel" type="Control"]

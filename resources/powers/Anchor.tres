@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_7iidr")
 input_map = "sss"
-name = "Anch"
+name = "Anchor"
 description = ""
 power_script = ExtResource("2_u3uft")
 crystal_cost = 0

@@ -8,7 +8,6 @@
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_picfb")
-NAME = "Wump2"
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1

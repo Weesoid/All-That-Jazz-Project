@@ -10,6 +10,6 @@ else:
 	- I delivered it. [if isObjectiveActive("Get That Item", "Tell Questy")]
 		GenericNPC: Oh how delicious!
 		do completeQuestObjective("Get That Item", "Tell Questy", 0)
-		do addPower("Anchor")
+		#do addPower("Anchor")
 
 => END

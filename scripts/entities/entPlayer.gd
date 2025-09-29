@@ -7,8 +7,6 @@ class_name PlayerScene
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var player_animator = $WalkingAnimations
 @onready var animation_player = $AnimationPlayer
-#@onready var interaction_prompt = $PlayerInteractionBubble
-#@onready var interaction_prompt_animator = $PlayerInteractionBubble/BubbleAnimator
 @onready var animation_tree = $AnimationTree
 @onready var cast_animator = $PowerAnimator
 @onready var player_direction = $PlayerDirection
@@ -45,6 +43,7 @@ var diving = false
 var dive_strength:float=-125
 var invincible = false
 var camping = false
+var do_gravity:bool = true
 
 signal jumped(jump_velocity)
 signal dived
@@ -109,7 +108,7 @@ func setPatrollerCollisionExceptions(set_to:bool):
 func _physics_process(delta):
 	#print(velocity.x)
 	# Gravity
-	if not is_on_floor() and !climbing:
+	if not is_on_floor() and !climbing and do_gravity:
 		if bow_draw_strength > 0.0:
 			setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		velocity.x = 0
@@ -297,6 +296,7 @@ func _unhandled_input(_event: InputEvent):
 			interactables[0].interact()
 			return
 	if Input.is_action_just_pressed("ui_text_backspace"):
+		#get_tree().change_scene_to_file("res://EmptyScene.tscn")
 		OverworldGlobals.changeToCombat('Entity')
 #	if Input.is_action_just_pressed('ui_accept'):
 #		PlayerGlobals.addCombatantTemperment(OverworldGlobals.getCombatantSquad('Player').pick_random())

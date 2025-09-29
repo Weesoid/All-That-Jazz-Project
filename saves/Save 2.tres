@@ -1,0 +1,165 @@
+[gd_resource type="Resource" script_class="SavedGame" load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_7iwhg"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_ga2y8"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataCombatant.gd" id="3_f2mq8"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="4_j072u"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_m4dsj"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_o0m7a"]
+
+[sub_resource type="Resource" id="Resource_y2lft"]
+script = ExtResource("1_7iwhg")
+position = Vector2(82.7608, 20.9334)
+scene_path = "res://scenes/entities/Player.tscn"
+direction = -90
+
+[sub_resource type="Resource" id="Resource_vbcv0"]
+script = ExtResource("2_ga2y8")
+quests = Array[String]([])
+quest_objectives_data = {}
+
+[sub_resource type="Resource" id="Resource_iqor7"]
+script = ExtResource("3_f2mq8")
+charms = {
+0: "",
+1: "",
+2: ""
+}
+stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 99,
+"defense": 0.0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 24.0,
+"resist": 0.05,
+"speed": 8
+}
+base_stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 99,
+"defense": 0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 24,
+"resist": 0.05,
+"speed": 8
+}
+mandatory = true
+lingering_effects = Array[String]([])
+initialized = true
+stat_points = 3
+stat_point_allocations = {
+"damage": 0,
+"defense": 0,
+"handling": 0
+}
+temperment = Array[String]([])
+file_references = {
+"active_abilities": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicAttack.tres"],
+"equipped_weapon": ["", 0]
+}
+
+[sub_resource type="Resource" id="Resource_76bv6"]
+script = ExtResource("3_f2mq8")
+charms = {
+0: "",
+1: "",
+2: ""
+}
+stat_values = {
+"accuracy": 1.12,
+"crit": 0.0,
+"crit_dmg": 1.25,
+"damage": 7,
+"defense": 0.0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 36.0,
+"resist": 0.05,
+"speed": 40
+}
+base_stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 4,
+"defense": 0,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 36,
+"resist": 0.05,
+"speed": 44
+}
+mandatory = false
+lingering_effects = Array[String]([])
+initialized = true
+stat_points = 0
+stat_point_allocations = {
+"damage": 3,
+"defense": 0,
+"handling": 0
+}
+temperment = Array[String](["clever", "keen", "rigid", "clumsy", "heavy_handed"])
+file_references = {
+"active_abilities": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicAttack.tres"],
+"equipped_weapon": ["", 0]
+}
+
+[sub_resource type="Resource" id="Resource_ve5d0"]
+script = ExtResource("4_j072u")
+team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
+map_logs = {
+"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup"],
+"res://scenes/maps/SidescrollerB.tscn": [],
+"res://scenes/maps/SidescrollerC.tscn": [],
+"res://scenes/maps/SidescrollerD.tscn": [],
+"res://scenes/maps/SidescrollerE.tscn": [],
+"res://scenes/maps/SidescrollerF.tscn": [],
+"res://scenes/maps/_BaseMap.tscn": []
+}
+equipped_arrow = "res://resources/items/ArrowSleeper.tres"
+equipped_blessing = ""
+currency = 7324
+team_level = 3
+current_exp = 373
+progression_data = {}
+team_formation = Array[String](["res://resources/combat/combatants_player/Archie.tres"])
+combatant_save_data = {
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_76bv6"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_iqor7")
+}
+unlocked_abilities = {}
+added_abilities = {}
+max_team_level = 5
+known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
+rested = false
+
+[sub_resource type="Resource" id="Resource_0phe7"]
+script = ExtResource("5_m4dsj")
+inventory = {
+"res://resources/items/ArrowSleeper.tres": 76,
+"res://resources/items/ScrapSalvage.tres": 116
+}
+crafted_items = Array[String]([])
+
+[resource]
+script = ExtResource("6_o0m7a")
+name = "Save 2 - 00:05:29
+Morale 3
+Node2D"
+playtime = 330.509
+current_map_path = "res://scenes/maps/Sidescroller.tscn"
+save_data = [SubResource("Resource_y2lft"), SubResource("Resource_vbcv0"), SubResource("Resource_ve5d0"), SubResource("Resource_0phe7")]

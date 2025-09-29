@@ -10,8 +10,8 @@
 [sub_resource type="Resource" id="Resource_swyfo"]
 script = ExtResource("1_wjv6f")
 sprite = ExtResource("2_3p64n")
-base_move_speed = 20.0
-alerted_speed_multiplier = 5.0
+base_move_speed = 0.0
+alerted_speed_multiplier = 0.0
 chase_speed_multiplier = 13.0
 min_action_distance = 25.0
 direction = -1
@@ -23,8 +23,8 @@ stun_time = 0.0
 script = ExtResource("4_26nm3")
 projectile = ExtResource("3_mgjne")
 sprite = ExtResource("5_kw6u8")
-base_move_speed = 20.0
-alerted_speed_multiplier = 5.0
+base_move_speed = 0.0
+alerted_speed_multiplier = 0.0
 chase_speed_multiplier = 13.0
 min_action_distance = 250.0
 direction = -1

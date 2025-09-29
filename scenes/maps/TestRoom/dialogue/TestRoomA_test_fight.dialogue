@@ -35,5 +35,6 @@ do changeMap("res://scenes/maps/TestRoom/TestRoomC.tscn", "0,0,0", "FastTravel")
 => END
 
 ~ fight
-do changeToCombat("Entity")
+do queueCombat("Entity")
+#Entity: So be it........
 => END

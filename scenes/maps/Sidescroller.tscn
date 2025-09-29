@@ -157,6 +157,7 @@ layer_1/tile_data = PackedInt32Array(-1, 0, 3, -65536, 131072, 3)
 [node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 1
 enabled = false
+special_chance = 0.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
 position = Vector2(224, 127)
@@ -178,7 +179,7 @@ position = Vector2(163, -50)
 
 [node name="PatrollerGroup2" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 2
-enabled = false
+special_chance = 0.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup2"]
 position = Vector2(528, 163)
@@ -191,7 +192,7 @@ position = Vector2(-34, -4)
 segment_count = 3
 
 [node name="FastTravel" parent="." instance=ExtResource("3_t6mhi")]
-position = Vector2(208, 0)
+position = Vector2(243, 192)
 
 [node name="ShopKeep" parent="." instance=ExtResource("6_8oxsm")]
 position = Vector2(56, 0)

@@ -17,8 +17,11 @@ func _on_settings_pressed():
 
 
 func _on_return_menu_pressed():
-	#SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
-	#await get_tree().process_frame
+	PlayerGlobals.resetVariables(false)
+	InventoryGlobals.resetVariables()
+	OverworldGlobals.resetVariables()
+	QuestGlobals.resetVariables()
+	SaveLoadGlobals.resetVariables()
 	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")
 
 

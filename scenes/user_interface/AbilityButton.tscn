@@ -4,7 +4,7 @@
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_kvnrr"]
 [ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="1_vio2q"]
 [ext_resource type="AudioStream" uid="uid://dtcwqqchfejm1" path="res://audio/sounds/709597__alexcoover__unsheath-arrow.ogg" id="3_wmurb"]
-[ext_resource type="Texture2D" uid="uid://l8tr2uv4y35t" path="res://images/ability_icons/forward.png" id="4_ckhx1"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="5_2mr4l"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="6_kjrva"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="7_217m4"]
 
@@ -252,7 +252,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(12, 12)
 mouse_filter = 2
-texture = ExtResource("4_ckhx1")
+texture = ExtResource("5_2mr4l")
 
 [node name="Charges" type="Label" parent="TextureRect"]
 visible = false

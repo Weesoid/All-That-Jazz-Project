@@ -4,10 +4,10 @@
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="5_w8f37"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="8_n1e11"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Safe" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_3qpcp")
-NAME = "Wump2"
+map_name = "Safeus Maximus"
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1

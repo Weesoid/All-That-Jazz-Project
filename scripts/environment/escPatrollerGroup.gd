@@ -11,6 +11,7 @@ var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
 
 func spawn():
 	if !enabled:
+		PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
 		return
 	if !isCleared():
 		destroy_objectives = rollDestroyObjectives()
@@ -76,7 +77,7 @@ func giveRewards(ignore_stalker:bool=false):
 	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
 	OverworldGlobals.giveRewardBank(reward_bank)
 	map.checkGiveClearRewards()
-	#SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
+	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 
 func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_destroyables:bool=true):
 	if random_unclear:

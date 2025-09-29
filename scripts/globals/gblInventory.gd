@@ -17,10 +17,10 @@ signal added_item_to_inventory
 func loadItemResource(resource_name: String)-> ResItem:
 	return load("res://resources/items/"+resource_name+".tres")
 
-func addItem(item_name: String, count=1):
+func addItem(item_name: String, count:int=1):
 	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item '%s' not found!" % item_name)
-	addItemResource(item, count, inventory)
+	addItemResource(item, count)
 
 func getRecipeResult(item_name_array: Array, get_raw_string=false):
 	var item = recipes[item_name_array].split('.')
@@ -51,12 +51,13 @@ func craftItem(item_array: Array[ResItem]):
 		if !crafted_items.has(craft_data[0]):
 			crafted_items.append(craft_data[0])
 
-func addItemResource(item: ResItem, count=1, show_message=true, check_restrictions=true):
+func addItemResource(item: ResItem, count:int=1, show_message:bool=true, check_restrictions=true):
+	print('is show m', show_message)
 	if (!canAdd(item,count,show_message) or count == 0) and check_restrictions:
 		return
 	
 	if item is ResStackItem and inventory.has(item):
-		inventory[inventory.find(item)].add(count)
+		inventory[inventory.find(item)].add(count, show_message)
 	
 	elif item is ResStackItem:
 		if item.stack <= 0: item.stack = 1

@@ -68,12 +68,13 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 	
+	
 	doCollisionAction()
 	match state:
 		State.IDLE: patrol()
 		State.CHASING: chase()
 		State.STUNNED: stun()
-	
+
 	animateWalk()
 	move_and_slide()
 
@@ -189,6 +190,7 @@ func flickerTween(play:bool):
 	
 	var patroller_sprite = get_node('Sprite2D')
 	if play:
+		flicker_tween.stop()
 		patroller_sprite.modulate = Color.DARK_GRAY
 		flicker_tween.play()
 	else:
@@ -210,8 +212,6 @@ func destroy(give_drops=false, check_rewards:bool=true):
 		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
 		combatant_squad.addDrops()
 		OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
-	if is_instance_valid(flicker_tween):
-		flicker_tween.kill()
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()
 	if check_rewards:
@@ -222,3 +222,8 @@ func playFootstep():
 	pass
 #	if is_on_floor():
 #		FootstepSoundManager.playFootstep(global_position,-10,0.5)
+
+
+func _on_detect_bar_tree_exited():
+	if is_instance_valid(flicker_tween):
+		flicker_tween.kill()

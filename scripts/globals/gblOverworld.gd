@@ -307,8 +307,8 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
 #		delayed_rewards = getCurrentMap().REWARD_BANK
-	
 	if show_transition:
+		player.do_gravity=false
 		player.velocity = Vector2.ZERO
 		setPlayerInput(false, true)
 		await showTransition('FadeIn', player)
@@ -611,14 +611,18 @@ func shootProjectile(projectile: Projectile, origin, direction: float):
 #********************************************************************************
 # COMBAT RELATED FUNCTIONS AND UTILITIES
 #********************************************************************************
+## Used to queue combat after dialogue!
+func queueCombat(entity_name: String, data: Dictionary={}):
+	DialogueManager.dialogue_ended.connect(func(_dialogue): changeToCombat(entity_name,data),4)
+
 # Disgusting...... absolutely disgusting...............
 func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericPatroller=null):
 	if entering_combat:
 		return
 	if get_parent().has_node('CombatScene'):
 		await getCurrentMap().get_node('CombatScene').tree_exited
-	if getCurrentMap().has_node('Balloon'):
-		getCurrentMap().get_node('Balloon').queue_free()
+#	if getCurrentMap().has_node('Balloon'):
+#		getCurrentMap().get_node('Balloon').queue_free()
 		await getCurrentMap().get_node('Balloon').tree_exited
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
 		showGameOver('You could not defend yourself!')
@@ -736,8 +740,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		showGameOver('')
 
 func giveRewardBank(reward_bank: Dictionary,message:String=''):
-	# UI Map clear indicator handling
 	var map = getCurrentMap()
+	# UI Map clear indicator handling
 	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = reward_bank['experience']
 	OverworldGlobals.player.player_camera.get_node('UI').add_child(map_clear_indicator)

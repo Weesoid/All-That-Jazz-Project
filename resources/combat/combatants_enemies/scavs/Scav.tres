@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=6 format=3 uid="uid://541ffogrb12k"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_gyudi"]
+[ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_pmbof"]
 [ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="1_tsf88"]
-[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_vy0fi"]
 [ext_resource type="PackedScene" path="res://scenes/combatants/Scav.tscn" id="3_lb1qm"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_qikbh"]
 
@@ -24,7 +24,7 @@ stat_values = {
 "accuracy": 0.95,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 4,
+"damage": 1,
 "defense": 0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
@@ -48,6 +48,6 @@ scale_stats = {
 "resist": false,
 "speed": true
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_vy0fi")])
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_pmbof")])
 max_turn_charges = 1
 ai_package = ExtResource("1_tsf88")

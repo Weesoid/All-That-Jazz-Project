@@ -729,8 +729,9 @@ func applyFaded(target: ResCombatant):
 	#print('erasing ', getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
 	#print('from ', target.temperment)
 	#target.temperment.erase(getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
-	#print(getFadedStatus(target))
-	removeLingeringEffect(target,getFadedStatus(target))
+	#print(getFadedStatus(target))d
+	if getFadedLevel(target) > 0:
+		removeLingeringEffect(target,getFadedStatus(target))
 	target.lingering_effects.erase(applyFadedStatus(escalated_level-1))
 	if inCombat():
 		removeStatusEffect(target, applyFadedStatus(escalated_level-1,true))
