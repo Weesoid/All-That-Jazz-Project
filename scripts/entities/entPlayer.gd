@@ -44,10 +44,12 @@ var dive_strength:float=-125
 var invincible = false
 var camping = false
 var do_gravity:bool = true
+var do_land_flag
 
 signal jumped(jump_velocity)
 signal dived
 signal phased
+signal landed
 
 func _ready():
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
@@ -61,6 +63,7 @@ func _ready():
 	default_camera_pos = player_camera.position
 	OverworldGlobals.setMouseController(false)
 	OverworldGlobals.player = self
+	landed.connect(playFootstep)
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -114,6 +117,7 @@ func _physics_process(delta):
 		velocity.x = 0
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 		fall_damage += 1
+		do_land_flag=true
 	
 	# Fall damage
 	if fall_damage != 0 and get_node('CombatantSquadComponent').combatant_squad.size() > 0 and is_on_floor():
@@ -130,6 +134,9 @@ func _physics_process(delta):
 		can_move = true
 		resetAnimation()
 	elif is_on_floor():
+		if do_land_flag: 
+			landed.emit()
+			do_land_flag=false
 		fall_damage = 0
 	
 	# Movement inputs
@@ -196,7 +203,7 @@ func _physics_process(delta):
 	elif sprinting and PlayerGlobals.overworld_stats['stamina'] < 0.0:
 		setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		ANIMATION_SPEED = 0.0
-	elif !sprinting and PlayerGlobals.overworld_stats['stamina'] < 100 and stamina_regen:
+	elif !sprinting and PlayerGlobals.overworld_stats['stamina'] < 100 and stamina_regen and is_on_floor():
 		PlayerGlobals.overworld_stats['stamina'] += PlayerGlobals.overworld_stats['stamina_gain']
 	if (!sprinting or PlayerGlobals.overworld_stats['stamina'] <= 0.0) and bow_draw_strength == 0.0:
 		setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
@@ -221,7 +228,7 @@ func canDoStaminaAction(cost:float):
 
 
 func isMovementAllowed():
-	return can_move and is_processing_input() and isMobile()
+	return can_move and is_processing_input() and isMobile() and !animation_player.is_playing()
 
 func canDive():
 	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0 and ((Input.is_action_pressed('ui_move_left') or Input.is_action_pressed('ui_move_right')) and !Input.is_action_pressed('ui_move_up'))
@@ -292,6 +299,7 @@ func _unhandled_input(_event: InputEvent):
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			#velocity = Vector2.ZERO CHANGE LATER
+			velocity.move_toward(Vector2.ZERO,get_physics_process_delta_time())
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
@@ -302,7 +310,7 @@ func _unhandled_input(_event: InputEvent):
 #		PlayerGlobals.addCombatantTemperment(OverworldGlobals.getCombatantSquad('Player').pick_random())
 
 func canInteract():
-	return !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing
+	return !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing and !animation_player.is_playing()
 
 func isMobile():
 	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0
@@ -353,7 +361,7 @@ func resetStates():
 	power_inputs = ''
 	cancelPower()
 	#player_camera.quiver.select_name.text = ''
-	player_camera.quiver.visible = false
+	#player_camera.quiver.visible = false
 	Input.action_release("ui_bow_draw")
 
 func resetAnimation():

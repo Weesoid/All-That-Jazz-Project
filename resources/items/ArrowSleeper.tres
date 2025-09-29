@@ -9,7 +9,6 @@ script = ExtResource("1_ry84n")
 overworld_effect = ExtResource("1_5yufo")
 max_stack = 99
 barter_item = false
-auto_name = true
 name = "Sleeper Arrow"
 icon = ExtResource("1_geln6")
 description = "SDGSDG"

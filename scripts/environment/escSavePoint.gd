@@ -27,7 +27,8 @@ func interact():
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
 	PlayerGlobals.overworld_stats['stamina'] = 100.0
 	OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
-	animator.play("Lit")
+	if OverworldGlobals.getCurrentMap().map_properties.has(MapData.MapProperties.COLD):
+		animator.play("Lit")
 	OverworldGlobals.moveCamera(self, 0, Vector2(0,-30))
 	await OverworldGlobals.zoomCamera(Vector2(3,3),1,true)
 	OverworldGlobals.player.sprite.hide()

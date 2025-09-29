@@ -8,6 +8,13 @@ func _on_body_exited(body):
 func _input(_event):
 	if OverworldGlobals.player == null or !playerInClimbable() or get_parent().must_shoot or !OverworldGlobals.player.isMovementAllowed() or !OverworldGlobals.player.climb_cooldown.is_stopped():
 		return
+	if PlayerGlobals.overworld_stats['stamina'] <= 0.0:
+		OverworldGlobals.player.climb_cooldown.start()
+		OverworldGlobals.player.climbing = false
+		OverworldGlobals.player.jump()
+		OverworldGlobals.player.toggleClimbAnimation(false)
+		if !OverworldGlobals.player.get_collision_mask_value(1):
+			OverworldGlobals.player.set_collision_mask_value(1, true)
 	
 	if  OverworldGlobals.player.climbing and get_parent().isPlayerOnEnterArea() and Input.is_action_pressed("ui_move_up"):
 		get_parent().jumpRope(-220)

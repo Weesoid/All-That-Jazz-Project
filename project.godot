@@ -44,10 +44,6 @@ window/size/window_height_override=800
 window/stretch/mode="viewport"
 mouse_cursor/custom_image="res://images/sprites/cursor.png"
 
-[editor]
-
-run/main_run_args="--verbose"
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/imrp/plugin.cfg")

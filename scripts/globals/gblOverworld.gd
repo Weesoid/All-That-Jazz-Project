@@ -613,7 +613,7 @@ func shootProjectile(projectile: Projectile, origin, direction: float):
 #********************************************************************************
 ## Used to queue combat after dialogue!
 func queueCombat(entity_name: String, data: Dictionary={}):
-	DialogueManager.dialogue_ended.connect(func(_dialogue): changeToCombat(entity_name,data),4)
+	DialogueManager.dialogue_ended.connect(func(_dialogue): changeToCombat(entity_name,data),CONNECT_ONE_SHOT)
 
 # Disgusting...... absolutely disgusting...............
 func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericPatroller=null):
@@ -829,6 +829,7 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 		var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
 		OverworldGlobals.player.player_camera.get_node('Marker2D').add_child(pop_up)
 	else:
+		player.do_gravity=false
 		setPlayerInput(false,true)
 		await get_tree().create_timer(0.25).timeout
 		showGameOver()

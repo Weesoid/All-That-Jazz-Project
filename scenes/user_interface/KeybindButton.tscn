@@ -1,6 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://b1dlw2ahcaep2"]
+[gd_scene load_steps=5 format=3 uid="uid://b1dlw2ahcaep2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiKeybindButton.gd" id="1_364vn"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_55s45"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7yoxy"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_356ww"]
+bg_color = Color(1, 1, 1, 0.466667)
 
 [node name="KeybindButton" type="Button"]
 custom_minimum_size = Vector2(0, 24)
@@ -16,16 +27,17 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 6
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Action" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-mouse_filter = 1
 text = "Test"
 vertical_alignment = 1
 
@@ -33,18 +45,34 @@ vertical_alignment = 1
 z_index = -1
 layout_mode = 2
 size_flags_horizontal = 3
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="Input" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-mouse_filter = 1
 text = "Test"
 vertical_alignment = 1
 uppercase = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
-[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[node name="HoldProgress" type="ProgressBar" parent="." node_paths=PackedStringArray("timer")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_7yoxy")
+theme_override_styles/fill = SubResource("StyleBoxFlat_356ww")
+value = 25.0
+show_percentage = false
+script = ExtResource("2_55s45")
+timer = NodePath("../HoldTimer")
+
+[node name="HoldTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HoldDelay" type="Timer" parent="."]
+one_shot = true

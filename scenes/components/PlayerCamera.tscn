@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://crqkcqks48t2k"]
+[gd_scene load_steps=26 format=3 uid="uid://crqkcqks48t2k"]
 
 [ext_resource type="Script" path="res://scripts/components/ascPlayerCamera.gd" id="1_1hnbr"]
 [ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="2_wxyfx"]
@@ -20,6 +20,78 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_wg1qm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lpfc3"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ene6d"]
+_data = {
+"RESET": SubResource("Animation_wg1qm"),
+"Show": SubResource("Animation_lpfc3")
+}
+
+[sub_resource type="Animation" id="Animation_5b6cm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_bqxfv"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kgpen"]
+_data = {
+"RESET": SubResource("Animation_5b6cm"),
+"Show": SubResource("Animation_bqxfv")
+}
 
 [sub_resource type="GDScript" id="GDScript_lueap"]
 script/source = "extends VBoxContainer
@@ -140,18 +212,18 @@ offset_right = 149.0
 offset_bottom = 54.0
 
 [node name="ClearProgress" type="VBoxContainer" parent="UI"]
-offset_left = 32.0
-offset_top = 16.0
-offset_right = 148.0
-offset_bottom = 345.0
+offset_left = 16.0
+offset_top = -16.0
+offset_right = 132.0
+offset_bottom = 313.0
 mouse_filter = 0
 alignment = 2
 
 [node name="StaminaBar" type="ProgressBar" parent="UI"]
-offset_left = 264.0
-offset_top = 328.0
-offset_right = 376.0
-offset_bottom = 335.0
+offset_left = 17.0
+offset_top = 336.0
+offset_right = 129.0
+offset_bottom = 343.0
 theme_override_styles/background = SubResource("StyleBoxFlat_846aw")
 theme_override_styles/fill = SubResource("StyleBoxFlat_to3hk")
 value = 50.0
@@ -159,55 +231,67 @@ show_percentage = false
 script = ExtResource("3_e80uh")
 
 [node name="TextureRect" type="TextureRect" parent="UI/StaminaBar"]
-layout_mode = 0
-offset_left = -9.0
-offset_top = -6.0
-offset_right = 7.0
-offset_bottom = 10.0
-texture = ExtResource("4_aqqua")
-
-[node name="Ammo" type="Label" parent="UI"]
-z_index = 1
-offset_left = 472.0
-offset_top = 328.0
-offset_right = 588.0
-offset_bottom = 351.0
-mouse_filter = 0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 16
-text = "1000"
-horizontal_alignment = 2
-vertical_alignment = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/Ammo"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 120.0
-offset_top = -19.5
-offset_right = 152.0
-offset_bottom = 13.5
+offset_left = -10.0
+offset_top = -8.0
+offset_right = 6.0
+offset_bottom = 8.0
+grow_vertical = 2
+texture = ExtResource("4_aqqua")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/StaminaBar"]
+libraries = {
+"": SubResource("AnimationLibrary_ene6d")
+}
+
+[node name="Ammo" type="Label" parent="UI"]
+z_index = 1
+offset_left = 19.0
+offset_top = 312.0
+offset_right = 135.0
+offset_bottom = 335.0
+mouse_filter = 0
+theme = ExtResource("7_ogyax")
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "1000"
+vertical_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Ammo"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -17.0
+offset_top = -10.0
+offset_right = -1.0
+offset_bottom = 10.0
 grow_vertical = 2
 texture = ExtResource("5_dj7uq")
-stretch_mode = 4
+stretch_mode = 3
 
 [node name="Quiver" type="HBoxContainer" parent="UI"]
-offset_left = 272.0
-offset_top = 288.0
-offset_right = 632.0
-offset_bottom = 320.0
-theme_override_constants/separation = -12
-alignment = 2
+visible = false
+offset_left = 18.0
+offset_top = 296.0
+offset_right = 145.0
+offset_bottom = 322.0
+theme_override_constants/separation = -10
 script = ExtResource("7_ko14o")
 
 [node name="TextureRect" type="TextureRect" parent="UI/Quiver"]
-visible = false
 layout_mode = 2
 texture = ExtResource("5_dj7uq")
-expand_mode = 3
-stretch_mode = 4
+stretch_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Quiver"]
+libraries = {
+"": SubResource("AnimationLibrary_kgpen")
+}
 
 [node name="VoidCrystals" type="Label" parent="UI"]
 offset_left = 19.0
@@ -254,23 +338,30 @@ scale = Vector2(2, 2)
 [node name="SaveIndicator" type="Control" parent="UI"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
-anchors_preset = 2
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = -32.0
+offset_left = -24.0
+offset_top = -24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
 grow_vertical = 0
 
 [node name="Label" type="Label" parent="UI/SaveIndicator"]
-layout_mode = 0
-offset_left = 17.0
-offset_top = -8.0
-offset_right = 60.0
-offset_bottom = 21.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -14.5
+offset_right = -5.0
+offset_bottom = 14.5
+grow_vertical = 2
 theme = ExtResource("7_ogyax")
-text = "SAVING..."
+text = "SAVING"
 vertical_alignment = 1
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="UI/SaveIndicator"]
@@ -309,3 +400,5 @@ offset_top = 72.0
 offset_right = 437.0
 offset_bottom = 209.0
 color = Color(0, 0, 0, 0)
+
+[connection signal="value_changed" from="UI/StaminaBar" to="UI/StaminaBar" method="_on_value_changed"]

@@ -6,6 +6,9 @@ enum PatrollerClearState {
 	PARTIAL_CLEAR,
 	FULL_CLEAR
 }
+enum MapProperties {
+	COLD
+}
 
 @export var map_name: String
 @export_multiline var description: String
@@ -18,6 +21,7 @@ enum PatrollerClearState {
 	'bonus_experience':null,
 	'reward_item': preload("res://_Resource.tres")
 }
+@export var map_properties: Array[MapProperties]
 var done_loading_map:bool = false
 
 func _ready():
@@ -44,6 +48,9 @@ func _ready():
 func getLogMapEvent():
 	for entry in PlayerGlobals.map_logs[scene_file_path]:
 		if entry is Dictionary and entry.has('map_events'): return entry
+
+func hasMapProperty(property:MapProperties):
+	return map_properties.has(property)
 
 func removeEmptyEvents():
 	for key in events.keys():

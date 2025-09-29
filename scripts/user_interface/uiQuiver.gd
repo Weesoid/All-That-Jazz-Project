@@ -1,5 +1,6 @@
 extends Container
 
+@onready var fader = $AnimationPlayer
 var current_index = -1
 
 func _input(event):
@@ -56,8 +57,8 @@ func updateArrowSelect():
 func loadOtherArrows(arrow: ResProjectileAmmo):
 	var texture = TextureRect.new()
 	texture.texture = arrow.icon
-	texture.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+	#texture.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	
 	if PlayerGlobals.equipped_arrow != arrow:
 		#texture.expand_mode = TextureRect.EXPAND_KEEP_SIZE

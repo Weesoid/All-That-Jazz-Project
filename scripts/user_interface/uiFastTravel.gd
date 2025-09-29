@@ -11,6 +11,9 @@ func _ready():
 
 func loadFastTravelButtons():
 	for location in PlayerGlobals.map_logs.keys():
+		if !FileAccess.file_exists(location):
+			continue
+		
 		var button = OverworldGlobals.createCustomButton()
 		var map:MapData = load(location).instantiate()
 		button.text = map.name

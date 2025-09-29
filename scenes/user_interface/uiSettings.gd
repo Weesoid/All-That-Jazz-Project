@@ -144,7 +144,7 @@ func changeSoundsVolume(value):
 func loadKeybinds(device: String, _device_index:int=0):
 	for child in keybind_container.get_children():
 		child.queue_free()
-	
+	await get_tree().process_frame
 	for action in editable_keybinds.keys():
 		var button: KeybindButton = load("res://scenes/user_interface/KeybindButton.tscn").instantiate()
 		button.find_child('Action').text = str(editable_keybinds[action])
