@@ -193,5 +193,6 @@ libraries = {
 "": SubResource("AnimationLibrary_kawqj")
 }
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
 [connection signal="spoke" from="Balloon/MarginContainer/DialogueLabel" to="." method="_on_dialogue_label_spoke"]

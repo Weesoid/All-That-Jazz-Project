@@ -11,6 +11,7 @@ class_name PlayerCamera
 @onready var color_overlay = $UI/ColorOverlay
 @onready var reward_banks = $UI/ClearProgress
 @onready var ammo_tex = $UI/Ammo/TextureRect
+@onready var save_indicator = $UI/SaveIndicator/AnimationPlayer
 var player: PlayerScene = OverworldGlobals.player
 
 func _ready():
@@ -24,7 +25,7 @@ func _process(delta):
 	if shake_strength != 0:
 		shake_strength = lerpf(shake_strength, 0, shake_speed * delta)
 		offset = Vector2(randf_range(-shake_strength,shake_strength), randf_range(-shake_strength,shake_strength))
-	# TO DO: Move this to input..!
+	
 	if player.bow_mode:
 		ammo_count.show()
 		ammo_count.text = str(PlayerGlobals.equipped_arrow.stack)
@@ -77,3 +78,7 @@ func addRewardBank(patroller_group: PatrollerGroup):
 func clearRewardBanks():
 	for child in reward_banks.get_children():
 		child.queue_free()
+
+func showSaveIndicator():
+	if !save_indicator.is_playing():
+		save_indicator.play("Show")

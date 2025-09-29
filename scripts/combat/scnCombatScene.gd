@@ -66,6 +66,7 @@ var is_combatant_moving = false
 var initial_damage: float = 0.0
 var combat_entity
 var reward_bank
+var ability_executing:bool=false
 
 signal confirm
 signal target_selected
@@ -163,7 +164,7 @@ func _unhandled_input(_event):
 	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
 		moveOnslaught(1)
 	
-	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and !onslaught_mode: 
+	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and !onslaught_mode and !ability_executing: 
 		resetUI()
 		
 #	if Input.is_action_just_pressed('ui_home'):
@@ -177,6 +178,7 @@ func _unhandled_input(_event):
 		inspectTarget(false)
 
 func on_player_turn():
+	ability_executing=false
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
 	if active_combatant.ai_package != null:
 		if has_node('QTE'): await CombatGlobals.qte_finished
@@ -197,6 +199,7 @@ func on_player_turn():
 	end_turn()
 
 func on_enemy_turn():
+	ability_executing=false
 	CombatGlobals.active_combatant_changed.emit(active_combatant)
 	if has_node('QTE'): 
 		await CombatGlobals.qte_finished
@@ -461,6 +464,7 @@ func removeTargetToken(target, caster):
 		target_combatant.removeTokens(ResStatusEffect.RemoveType.GET_TARGETED)
 
 func executeAbility():
+	ability_executing=true
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	active_combatant.combatant_scene.z_index = 100
@@ -578,11 +582,11 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 	for marker in team_container:
 		if marker.get_child_count() != 0: continue
 		marker.add_child(combatant.combatant_scene)
-#		var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
-#		combat_bars.attached_combatant = combatant
-#		combatant.combatant_scene.add_child(combat_bars)
-#		combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
-#		combatant.combatant_scene.get_node('CombatBars').show()
+		var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
+		combat_bars.attached_combatant = combatant
+		combatant.combatant_scene.add_child(combat_bars)
+		combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
+		combatant.combatant_scene.get_node('CombatBars').show()
 		break
 	if combatant is ResPlayerCombatant and combatant.isDead():
 		combatant.combatant_scene.doAnimation('Fading')

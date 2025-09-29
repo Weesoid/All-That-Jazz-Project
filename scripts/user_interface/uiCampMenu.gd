@@ -27,7 +27,7 @@ var wake_events = [
 signal update_count(count, item)
 
 func _ready():
-	rest_button.disabled = PlayerGlobals.rested
+	rest_button.disabled = PlayerGlobals.rested and save_point.mind_rested
 	showContainer(action_container)
 	update_count.connect(updateCount)
 	for child in save_point.rest_spots.get_children():
@@ -195,6 +195,7 @@ func fillCampItemContainer():
 				button.modulate = Color.WHITE
 				unhighlightAll()
 				)
+		button.description_offset=Vector2(0,116)
 		camp_item_container.add_child(button)
 
 func updateCount(count, item):

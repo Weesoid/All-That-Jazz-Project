@@ -40,7 +40,7 @@ func interact():
 	if get_parent().has_method('exit'):
 		await get_parent().exit()
 	exit()
-	
+
 func moveFollowers():
 	for follower in PlayerGlobals.getActiveFollowers():
 		OverworldGlobals.moveEntity(str(follower.name), follower.getFollowPoint(Vector2(direction,0)))
@@ -51,7 +51,7 @@ func moveFollowers():
 				follower.stopWalkAnimation()
 				)
 
-func  enter():
+func enter():
 	cooldown_timer.start(cooldown)
 	# Disable inputs /  Hide UI
 	OverworldGlobals.player.player_camera.cinematic_bars.visible = true

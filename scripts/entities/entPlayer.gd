@@ -535,7 +535,7 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 		can_move = false
 
 func setUIVisibility(set_visibility:bool):
-	var exceptions = ['ColorOverlay', 'PlayerPrompt']
+	var exceptions = ['ColorOverlay', 'PlayerPrompt','SaveIndicator']
 	for child in player_camera.get_node('UI').get_children():
 		if child is Control and !exceptions.has(child.name): 
 			match set_visibility:
@@ -593,3 +593,6 @@ func saveData(save_data: Array):
 func loadData():
 	get_parent().remove_child(self)
 	queue_free()
+
+#func _on_tree_exiting():
+#	animation_player.play('RESET')

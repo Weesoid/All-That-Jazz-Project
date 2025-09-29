@@ -87,13 +87,13 @@ func addItemResource(item: ResItem, count=1, show_message=true, check_restrictio
 	added_item_to_inventory.emit()
 	sortItems()
 
-func giveItemDict(item_dict:Dictionary):
+func giveItemDict(item_dict:Dictionary,show_message:bool=true):
 	for item in item_dict.keys():
 		if item is ResStackItem:
-			addItemResource(item, item_dict[item])
+			addItemResource(item, item_dict[item],show_message)
 		else:
 			for i in range(item_dict[item]): 
-				addItemResource(item)
+				addItemResource(item,1,show_message)
 
 func hasItem(item_name, count:int=0, check_equipped:bool=true):
 	if item_name is String and check_equipped:

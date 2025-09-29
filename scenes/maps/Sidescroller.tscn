@@ -156,6 +156,7 @@ layer_1/tile_data = PackedInt32Array(-1, 0, 3, -65536, 131072, 3)
 
 [node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 1
+enabled = false
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
 position = Vector2(224, 127)
@@ -225,6 +226,7 @@ dialogue_resource = ExtResource("15_21t34")
 
 [node name="SavePoint" parent="." instance=ExtResource("16_jpex5")]
 position = Vector2(113, 0)
+mind_rested = false
 
 [node name="Rope2" parent="." instance=ExtResource("3_gkab1")]
 position = Vector2(14, -5)

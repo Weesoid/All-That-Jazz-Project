@@ -2,6 +2,7 @@ extends Node2D
 class_name SavePoint
 
 @export var music_paths: Array[String] = []
+@export var mind_rested:bool=true
 @onready var rest_spots = $RestSpots
 @onready var animator = $AnimationPlayer
 @onready var music = $AudioStreamPlayer
@@ -19,6 +20,7 @@ func fightCombatantSquad():
 	OverworldGlobals.changeToCombat(name)
 
 func interact():
+	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	OverworldGlobals.player.camping=true
 	OverworldGlobals.destroyAllPatrollers(true)
 	OverworldGlobals.setPlayerInput(false)
@@ -48,6 +50,7 @@ func exit():
 	OverworldGlobals.player.player_camera.hideOverlay(1.5)
 	await get_tree().process_frame
 	OverworldGlobals.player.camping=false
+	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 
 func addRestSprite(combatant: ResPlayerCombatant):
 	for sprite in rest_spots.get_children():

@@ -246,3 +246,7 @@ func _on_dialogue_label_spoke(letter: String, letter_index: int, speed: float) -
 
 func _on_panel_resized():
 	handle_resize()
+
+
+func _on_tree_exited():
+	pass # Replace with function body.

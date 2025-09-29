@@ -29,7 +29,8 @@ func saveGame(save_name: String, save_current_map:bool=true):
 	saved_game.playtime = current_playtime + (Time.get_unix_time_from_system() - session_start)
 	saved_game.name = '%s - %s\nMorale %s\n%s' % [save_name, Time.get_time_string_from_unix_time(int(current_playtime) + int(Time.get_unix_time_from_system() - session_start)), PlayerGlobals.team_level, OverworldGlobals.getCurrentMap().name]
 	ResourceSaver.save(saved_game, "res://saves/%s.tres" % save_name)
-	OverworldGlobals.showPrompt('[color=yellow]Game saved[/color]!')
+	#OverworldGlobals.showPrompt('[color=yellow]Game saved[/color]!')
+	OverworldGlobals.player.player_camera.showSaveIndicator()
 	done_saving.emit()
 
 func loadGame(save_name: String):

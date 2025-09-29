@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://2rqc25bhve85"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_euxcq"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_65u5p"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="3_o718s"]
+
+[resource]
+script = ExtResource("1_euxcq")
+name = "Burnout"
+description = "Target cannot gain TP."
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
+status_script = ExtResource("2_65u5p")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+texture = ExtResource("3_o718s")
+style = 2
+max_duration = 3
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = false
+tick_any_turn = false
+do_ticks = false
+resistable = true
+permanent = false
+lingers = false
+persist_on_dead = false
+sounds = {
+"apply": "",
+"expire": ""
+}

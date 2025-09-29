@@ -702,7 +702,12 @@ func getFactionName(faction_value:int):
 func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
 	return enemy.tier+1 <= PlayerGlobals.getLevelTier()
 
-func addTension(amount: int,from_target:CombatantScene=null):
+func addTension(amount: int,from_target:CombatantScene=null,gainer:ResPlayerCombatant=null):
+	if gainer != null and gainer.hasStatusEffect('Burnout'):
+		# manual call indicator
+		gainer.getStatusEffect('Burnout').tick()
+		return
+	
 	var previous_tension = tension
 	if tension + amount > 8:
 		tension = 8

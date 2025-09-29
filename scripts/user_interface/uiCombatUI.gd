@@ -32,7 +32,7 @@ const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
 
 var tension_orig_pos
 var rounds_orig_pos
-
+var ui_visible:bool
 
 func _ready():
 	tension_orig_pos = tension_whole.position
@@ -273,6 +273,7 @@ func writeCombatLog(mesesage:String):
 	combat_log_animator.play("Hide")
 
 func hideUI():
+	ui_visible=false
 	ability_buttons.hide()
 	escape_button.hide()
 	setRoundsVisible(false)
@@ -281,6 +282,7 @@ func hideUI():
 
 
 func showUI(set_focus:bool=false):
+	ui_visible=true
 	create_tween().tween_property(self,'modulate',Color.WHITE,0.25).set_ease(Tween.EASE_IN)
 	hideMovements()
 	ability_buttons.show()

@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var label = $Label
 @onready var animator = $AnimationPlayer
+@onready var tween: Tween
 
 func playAnimation(pos: Vector2, text: String, animation: String,time:float=1.0):
 	randomize()
@@ -10,10 +11,13 @@ func playAnimation(pos: Vector2, text: String, animation: String,time:float=1.0)
 	label.text = '[center]'+str(text)
 	animator.play(animation)
 	await get_tree().create_timer(0.5).timeout
-	var tween = create_tween()
+	tween = create_tween()
 	tween.set_parallel()
 	tween.tween_property(self, 'modulate', Color.TRANSPARENT, time-0.2).set_trans(Tween.TRANS_EXPO)
 	tween.tween_property(self, 'global_position', global_position+random_vector, 1.0).set_trans(Tween.TRANS_SINE)
-	await tween.finished
+	await get_tree().create_timer(0.25).timeout
 	queue_free()
 
+func _on_tree_exited():
+	if is_instance_valid(tween):
+		tween.kill()

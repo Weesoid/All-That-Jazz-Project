@@ -523,3 +523,5 @@ root_node = NodePath("../Label")
 libraries = {
 "": SubResource("AnimationLibrary_vqiv1")
 }
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]

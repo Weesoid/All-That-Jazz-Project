@@ -19,7 +19,6 @@ func loadCombatants():
 			bar.modulate = Color.RED
 		main_container.add_child(bar)
 
-
-
 func _on_tree_exited():
-	pass # Replace with function body.
+	for bar in main_container.get_children():
+		bar.queue_free()

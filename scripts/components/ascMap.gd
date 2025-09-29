@@ -21,6 +21,7 @@ enum PatrollerClearState {
 var done_loading_map:bool = false
 
 func _ready():
+	#get_tree().node_removed.connect(_on_node_removed)
 	if SaveLoadGlobals.is_loading:
 		await SaveLoadGlobals.done_loading
 	if !has_node('Player'): 
@@ -34,7 +35,12 @@ func _ready():
 		group.spawn()
 	for save_point in getSavePoints():
 		save_point.loadCombatantSquad()
-	
+
+#func _on_node_removed(node: Node):
+#	await get_tree().process_frame
+#	if is_instance_valid(node) and not node.is_queued_for_deletion():
+#		print("Node is removed from tree but not freed: %s" % node.get_path())
+
 func getLogMapEvent():
 	for entry in PlayerGlobals.map_logs[scene_file_path]:
 		if entry is Dictionary and entry.has('map_events'): return entry
@@ -74,7 +80,7 @@ func checkGiveClearRewards():
 	if events.has('reward_item'):
 		InventoryGlobals.addItemResource(events['reward_item'])
 	if events.has('bonus_loot'):
-		InventoryGlobals.giveItemDict(events['bonus_loot'])
+		InventoryGlobals.giveItemDict(events['bonus_loot'],false)
 	if events.has('bonus_experience'):
 		PlayerGlobals.addExperience(events['bonus_experience'])
 	

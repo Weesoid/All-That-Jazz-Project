@@ -316,6 +316,7 @@ descriptions = {
 "title": "Pass"
 }
 hold_time = 0.25
+hold_delay = 0.25
 
 [node name="EscapeButton" parent="." instance=ExtResource("1_xjxjm")]
 layout_mode = 1

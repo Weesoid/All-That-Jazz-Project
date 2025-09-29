@@ -428,6 +428,7 @@ func showGameOver(end_sentence: String=''):
 
 func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=false):
 	var tween = create_tween()
+	tween.finished.connect(tween.kill)
 	if to is String and to.to_upper() == 'RESET':
 		tween.tween_property(player.player_camera, 'position', player.default_camera_pos, duration)
 	elif to is String:
@@ -441,6 +442,7 @@ func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=
 
 func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
 	var tween = create_tween()
+	tween.finished.connect(tween.kill)
 	if player.player_camera.zoom < zoom:
 		tween.set_ease(Tween.EASE_IN)
 	else:
@@ -461,7 +463,7 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	var balloon: Node = ExampleBalloonScene.instantiate()
 	
 	if get_parent().has_node('CombatScene'):
-		get_parent().get_node('CombatScene').add_child(balloon)
+		get_parent().get_node('CombatScene').add_child(balloon) # TO-DO TEST THIS
 	else:
 		get_tree().current_scene.add_child(balloon)
 	#balloon.global_position = OverworldGlobals.player.getPosOffset()+Vector2(margin.size.x/2,-80)
@@ -628,6 +630,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	entering_combat=true
 	
 	# Enter combat
+	#await get_tree().create_timer(0.5).timeout
 	var combat_entity 
 	var give_non_pg_reward:bool=false
 	if patroller == null:
@@ -701,8 +704,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	# Exit combat
 	get_tree().paused = false
 	moveCamera('Player', 0.0, player.sprite.offset)
-	OverworldGlobals.moveCamera('RESET',0.25)
-	OverworldGlobals.zoomCamera(Vector2(1,1),0.25)
+	moveCamera('RESET',0.25)
+	zoomCamera(Vector2(1,1),0.25)
 	var combat_results = combat_scene.combat_result
 	player.player_camera.make_current()
 	getCurrentMap().show()
@@ -727,26 +730,27 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_exited.emit()
 	entering_combat=false
 	if combat_results == 1 and give_non_pg_reward:
-		giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank)
+		giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank, 'ADVERSARY DEFEATED !')
 		combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
 	elif combat_results == 0:
 		showGameOver('')
 
-func giveRewardBank(reward_bank: Dictionary):
-	return # Temp
+func giveRewardBank(reward_bank: Dictionary,message:String=''):
 	# UI Map clear indicator handling
 	var map = getCurrentMap()
 	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
 	map_clear_indicator.added_exp = reward_bank['experience']
 	OverworldGlobals.player.player_camera.get_node('UI').add_child(map_clear_indicator)
-	if map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
+	if message != '':
+		map_clear_indicator.message.text = message
+	elif map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
 		map_clear_indicator.message.text = 'AREA CLEARED !'
 	map_clear_indicator.showAnimation(true, reward_bank)
 	
 	# Actual giving of rewards
 	PlayerGlobals.rested = false
 	PlayerGlobals.addExperience(reward_bank['experience'])
-	InventoryGlobals.giveItemDict(reward_bank['loot'])
+	InventoryGlobals.giveItemDict(reward_bank['loot'],false)
 	
 	# Current map handling
 	if map.events.has('bonus_loot'): # Add generated multipliers later
@@ -821,9 +825,9 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 		var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
 		OverworldGlobals.player.player_camera.get_node('Marker2D').add_child(pop_up)
 	else:
-		await get_tree().process_frame
-		SaveLoadGlobals.loadSaveFile()
-		#showGameOver()
+		setPlayerInput(false,true)
+		await get_tree().create_timer(0.25).timeout
+		showGameOver()
 
 func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:bool=true,lethal:bool=false):
 	if combatant.isDead():
@@ -862,10 +866,6 @@ func isPlayerAlive()-> bool:
 		if !combatant.isDead(): return true
 	
 	return false
-
-func restorePlayerView():
-	player.player_camera.make_current()
-	get_tree().paused = false
 
 func freezeFrame(time_scale: float=0.3, duration: float=1.0):
 	Engine.time_scale = time_scale

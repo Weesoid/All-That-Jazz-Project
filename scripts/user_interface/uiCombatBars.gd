@@ -18,13 +18,14 @@ class_name CombatBar
 @onready var select_target = $SelectTarget
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 @onready var target_clicker = $TargetClicker
+@onready var combat_scene = CombatGlobals.getCombatScene()
 var indicator_animation = "Show"
-var attached_combatant: ResCombatant # Attaching this seems to cause the leak, isolate
+var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
 
 func _ready():
-	#CombatGlobals.manual_call_indicator.connect(manualCallIndicator) # LEAK HERE
+	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 	CombatGlobals.status_effect_added.connect(addStatusIcon)
 	CombatGlobals.status_effect_removed.connect(removeStatusIcon)
 	for effect in attached_combatant.status_effects:
@@ -32,9 +33,6 @@ func _ready():
 	previous_value = attached_combatant.getMaxHealth()
 
 func _process(_delta):
-	if CombatGlobals.getCombatScene().combat_result != -1:
-		queue_free()
-	
 	updateBars()
 	if CombatGlobals.getCombatScene().active_combatant == attached_combatant:
 		turn_gradient.get_parent().show()
@@ -113,8 +111,7 @@ func setFaderBarValue(value):
 
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
-	if attached_combatant == combatant and indicator.visible:
-		await get_tree().process_frame
+	if attached_combatant == combatant and indicator.visible and combat_scene.isCombatValid():
 		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
 		secondary_indicator.modulate = Color.TRANSPARENT
 		var y_placement = 0
@@ -156,7 +153,6 @@ func disableClicker():
 	target_clicker.hide()
 
 func _on_target_clicker_pressed():
-	var combat_scene = CombatGlobals.getCombatScene()
 	if combat_scene.target_state == combat_scene.TargetState.SINGLE:
 		combat_scene.target_combatant = attached_combatant
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
@@ -164,12 +160,10 @@ func _on_target_clicker_pressed():
 	combat_scene.removeTargetButtons()
 
 func _on_target_clicker_mouse_entered():
-	var combat_scene = CombatGlobals.getCombatScene()
 	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 	combat_scene.targetCombatant(attached_combatant)
 
 func _on_target_clicker_focus_entered():
-	var combat_scene = CombatGlobals.getCombatScene()
 	OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 	combat_scene.targetCombatant(attached_combatant)
 
