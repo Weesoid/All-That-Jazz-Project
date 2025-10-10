@@ -1,23 +1,19 @@
-[gd_scene load_steps=23 format=3 uid="uid://c36dx7g860omy"]
+[gd_scene load_steps=19 format=3 uid="uid://c36dx7g860omy"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
+[ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="3_h8pff"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="4_1mewq"]
-[ext_resource type="PackedScene" path="res://scenes/user_interface/CharacterEquip.tscn" id="4_npgsb"]
+[ext_resource type="PackedScene" uid="uid://bbsj2rb4t3ft8" path="res://scenes/user_interface/CharacterEquip.tscn" id="4_npgsb"]
 [ext_resource type="PackedScene" uid="uid://w0tbffefweuv" path="res://scenes/user_interface/AttributeAdjust.tscn" id="4_ukx4i"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
-[ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="6_8ov74"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
+[ext_resource type="Texture2D" uid="uid://dp2j72h30680c" path="res://images/sprites/icon_combat_item.png" id="8_m1s3x"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="9_c41m6"]
 [ext_resource type="Texture2D" uid="uid://b5g6jj3vikya6" path="res://images/sprites/button_stat_up_normal.png" id="9_tpi3e"]
-[ext_resource type="Texture2D" uid="uid://1mlve38nj36f" path="res://images/sprites/button_stat_up_click.png" id="10_4r0fd"]
-[ext_resource type="Texture2D" uid="uid://bugw5mwiotf4p" path="res://images/sprites/button_stat_up_clicked.png" id="10_pflur"]
-[ext_resource type="Texture2D" uid="uid://b06e1qlqqneug" path="res://images/sprites/button_stat_up_disable.png" id="11_fxkff"]
-[ext_resource type="Texture2D" uid="uid://cch30a3qwm6ow" path="res://images/sprites/button_stat_up_hover.png" id="11_wmyvu"]
-[ext_resource type="Texture2D" uid="uid://c7q8kf270mlom" path="res://images/sprites/icon_weapon.png" id="12_edjrd"]
+[ext_resource type="Texture2D" uid="uid://bw0cxrqo1ci10" path="res://images/sprites/icon_charm.png" id="10_uf4ke"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="13_dxqj5"]
-[ext_resource type="Texture2D" uid="uid://b6otb3unpofi5" path="res://images/sprites/icon_sack.png" id="13_p5npw"]
 [ext_resource type="Texture2D" uid="uid://bei8dr7bb8bfq" path="res://images/sprites/icon_rotating_arrows.png" id="14_dhwtn"]
 [ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="18_sjp7i"]
 [ext_resource type="Texture2D" uid="uid://bid2yp6x5ds0a" path="res://images/sprites/icon_half_face.png" id="21_46t30"]
@@ -87,27 +83,26 @@ custom_minimum_size = Vector2(168, 0)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_s7p7p")
 
-[node name="Button" type="TextureButton" parent="Character/Panel"]
-layout_mode = 2
-offset_left = 132.0
-offset_top = 200.0
-offset_right = 164.0
-offset_bottom = 232.0
-texture_normal = ExtResource("9_tpi3e")
-texture_pressed = ExtResource("10_pflur")
-texture_hover = ExtResource("11_wmyvu")
-texture_disabled = ExtResource("11_fxkff")
-texture_focused = ExtResource("10_4r0fd")
+[node name="Button" parent="Character/Panel" instance=ExtResource("3_h8pff")]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 0
+offset_left = 133.0
+offset_top = 201.0
+offset_right = 161.0
+offset_bottom = 229.0
+texture = ExtResource("9_tpi3e")
 
 [node name="Label" type="Label" parent="Character/Panel/Button"]
-layout_mode = 0
-offset_left = 21.0
-offset_top = 2.0
-offset_right = 61.0
-offset_bottom = 25.0
-mouse_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 13.0
+grow_horizontal = 0
 theme = ExtResource("8_hty5i")
 text = "25"
+horizontal_alignment = 2
 
 [node name="Label" type="Label" parent="Character/Panel"]
 layout_mode = 1
@@ -138,7 +133,7 @@ size_flags_vertical = 8
 [node name="Weapon" parent="Character/StatAdjusters" instance=ExtResource("2_s185n")]
 layout_mode = 2
 theme = ExtResource("5_004gj")
-icon = ExtResource("12_edjrd")
+icon = ExtResource("8_m1s3x")
 alignment = 2
 icon_alignment = 1
 
@@ -158,20 +153,20 @@ vertical_alignment = 2
 [node name="SlotA" parent="Character/StatAdjusters" instance=ExtResource("2_s185n")]
 layout_mode = 2
 theme = ExtResource("5_004gj")
-icon = ExtResource("13_p5npw")
+icon = ExtResource("10_uf4ke")
 icon_alignment = 1
 
 [node name="SlotB" parent="Character/StatAdjusters" instance=ExtResource("2_s185n")]
 layout_mode = 2
 theme = ExtResource("5_004gj")
-icon = ExtResource("13_p5npw")
+icon = ExtResource("10_uf4ke")
 icon_alignment = 1
 
 [node name="SlotC" parent="Character/StatAdjusters" instance=ExtResource("2_s185n")]
 visible = false
 layout_mode = 2
 theme = ExtResource("5_004gj")
-icon = ExtResource("6_8ov74")
+icon = ExtResource("10_uf4ke")
 
 [node name="SubMenus" type="Control" parent="Character"]
 custom_minimum_size = Vector2(0, 100)
@@ -200,7 +195,7 @@ offset_left = 84.0
 offset_top = 152.0
 offset_right = 84.0
 offset_bottom = 152.0
-return_button = NodePath("../../Panel/Button")
+return_button = NodePath("")
 
 [node name="Stats" type="MarginContainer" parent="."]
 layout_mode = 2

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="ResCampItem" load_steps=5 format=3 uid="uid://dorqpf5we3uoi"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="1_8e2li"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="5_276r5"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemCamp.gd" id="6_r1feb"]
+
+[sub_resource type="Resource" id="Resource_6412b"]
+script = ExtResource("1_8e2li")
+heal = 15
+use_multiplier = false
+cast_animation = ""
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[resource]
+script = ExtResource("6_r1feb")
+effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_6412b")])
+party_wide = true
+max_stack = 6
+barter_item = false
+name = "Pure Heal"
+icon = ExtResource("5_276r5")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

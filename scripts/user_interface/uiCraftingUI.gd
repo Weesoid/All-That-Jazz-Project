@@ -1,264 +1,293 @@
 extends Control
 
-@onready var base = $Craftables/CenterContainer/GridContainer
-@onready var repair_button = $Repair
-@onready var recipe_button = $Recipes
-@onready var component_core = $Craftables/CenterContainer/GridContainer/CoreComp
-@onready var component_a = $Craftables/CenterContainer/GridContainer/CompA
-@onready var component_b = $Craftables/CenterContainer/GridContainer/CompB
-@onready var craft_button = $Craftables/CenterContainer/GridContainer/Craft
-@onready var item_select = $ItemSelect
-@onready var item_select_buttons = $ItemSelect/MarginContainer/SelectCharms/VBoxContainer
-@onready var additional_repair_buttons = $RepairButtons
-var all_components: Array[ResItem] = [null, null, null]
+const MINI_INVENTORY = preload("res://scenes/user_interface/MiniInventory.tscn")
+const MINI_INV_RECIPES = preload("res://scenes/user_interface/MiniRecipes.tscn")
+const PLUS_ICON = preload("res://images/sprites/icon_plus.png")
+const CRAFT_ICON = preload("res://images/sprites/icon_resources.png")
 
-func _process(_delta):
-	if InventoryGlobals.recipes.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) != null:
-		craft_button.icon = InventoryGlobals.getRecipeResult(recipeToString()).icon
-		craft_button.text = 'Craft %s' % InventoryGlobals.getRecipeResult(recipeToString()).name	
-		craft_button.show()
-		craft_button.disabled = canAddToInventory()
-	elif InventoryGlobals.recipes.has(recipeToString()) and InventoryGlobals.getRecipeResult(recipeToString()) == null:
-		craft_button.text = 'UH OH! PLEASE SHOW WEES THIS INVALID RECIPE!!!'
-		craft_button.show()
-		craft_button.disabled = true
-	else:
-		craft_button.hide()
+@onready var base = $Craftables/VBoxContainer/CenterContainer/GridContainer
+@onready var recipes_button = $Craftables/VBoxContainer/OtherActions/Recipes
+@onready var repair_button = $Craftables/VBoxContainer/OtherActions/Repair
+@onready var recipe_button = $Craftables/VBoxContainer/OtherActions/Recipes
+@onready var component_a = $Craftables/VBoxContainer/CenterContainer/GridContainer/CompA
+@onready var component_b = $Craftables/VBoxContainer/CenterContainer/GridContainer/CompB
+@onready var component_c = $Craftables/VBoxContainer/CenterContainer/GridContainer/CompC
+@onready var craft_button = $Craftables/VBoxContainer/CenterContainer/GridContainer/Craft
+var all_components: Array[String] = ['', '', '']
+var is_crafting:bool=false
+signal update_recipes
+
+func _on_ready():
+	component_a.pressed.connect(func(): showItems(component_a, 0))
+	component_b.pressed.connect(func(): showItems(component_b, 1))
+	component_c.pressed.connect(func(): showItems(component_c, 2))
+	craft_button.connect('pressed', craft)
+	OverworldGlobals.setMenuFocus(base)
 
 func canRepair(min_scrap: int):
 	return !InventoryGlobals.hasItem('Scrap Salvage') or InventoryGlobals.getItem('Scrap Salvage').stack < min_scrap
 
-func _on_ready():
-	component_core.pressed.connect(func(): showItems(component_core, 0))
-	component_a.pressed.connect(func(): showItems(component_a, 1))
-	component_b.pressed.connect(func(): showItems(component_b, 2))
-	craft_button.connect('pressed', craft)
-	OverworldGlobals.setMenuFocus(base)
-	if InventoryGlobals.crafted_items.is_empty():
-		recipe_button.hide()
-
 func canAddToInventory():
-	var result_data = InventoryGlobals.getRecipeResult(recipeToString(), true)
-	if result_data[1] != null and result_data[0] is ResStackItem:
-		return !InventoryGlobals.canAdd(result_data[0], int(result_data[1]), false)
-	else:
-		return !InventoryGlobals.canAdd(result_data[0], 1, false)
+	var result = InventoryGlobals.getRecipeResult(all_components)
+	return InventoryGlobals.canAdd(result[0], int(result[1]), false) and InventoryGlobals.canCraft(result[0].getFilename())
 
-
-func recipeToString()-> Array:
-	var out = [null, null, null]
-	for i in range(3):
-		if all_components[i] != null:
-			out[i] = all_components[i].name
-	
-	return out
-
-func craft():
+func craft(grab_focus:bool=true):
 	InventoryGlobals.craftItem(all_components)
-	for i in range(all_components.size()):
-		if all_components[i] == null: continue
-		InventoryGlobals.removeItemResource(all_components[i], 1, false)
+	OverworldGlobals.playSound("res://audio/sounds/580812__silverillusionist__craft-item-2.ogg")
+	
+	for i in range(3):
 		updateComponentSlot(i)
 	
-	if !InventoryGlobals.recipes.has(recipeToString()):
-		component_core.grab_focus()
+	craft_button.disabled = !canAddToInventory()
+	checkRecipeResult()
+	if grab_focus and !InventoryGlobals.recipes.has(all_components):
+		component_c.grab_focus()
+	showPopTween(craft_button)
+
 
 func updateComponentSlot(slot: int):
-	var item = all_components[slot]
-	if !InventoryGlobals.hasItem(item):
-		removeItemFromSlot(slot)
-	elif item is ResStackItem:
-		match slot:
-			0: 
-				component_core.text = '%s x%s' % [item.name, item.stack]
-			1:
-				component_a.text = '%s x%s' % [item.name, item.stack]
-			2:
-				component_b.text = '%s x%s' % [item.name, item.stack]
+	if all_components[slot] == '':
+		return
+	
+	var item = load("res://resources/items/%s.tres"%all_components[slot])
+	var button = base.get_child(slot)
+	button.icon = item.icon
+	
+	if item is ResStackItem:
+		button.self_modulate = Color.WHITE
+		button.get_node('Label').modulate = Color.WHITE
+		button.get_node('Label').text = str(item.stack)
+		button.get_node('Label').show()
+		if item.stack <= 0:
+			button.self_modulate = Color.RED
+	else:
+		button.get_node('Label').text = ''
+		button.get_node('Label').hide()
 
 func showItems(slot_button: Button, slot: int):
-	for child in item_select_buttons.get_children():
-		item_select_buttons.remove_child(child)
-		child.queue_free()
-	
-	item_select.show()
-	var cancel_button = OverworldGlobals.createCustomButton()
-	cancel_button.theme = load("res://design/ItemButtons.tres")
-	cancel_button.icon = load('res://images/sprites/icon_cross.png')
-	cancel_button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	cancel_button.click_sound = load("res://audio/sounds/421418__jaszunio15__click_200.ogg")
-	cancel_button.pressed.connect(
-		func():
-			if all_components[slot] != null:
-				removeItemFromSlot(slot)
-			item_select.hide()
-			OverworldGlobals.setMenuFocusMode(base, true)
-			OverworldGlobals.setMenuFocusMode(repair_button, true)
-			slot_button.grab_focus()
-	)
-	item_select_buttons.add_child(cancel_button)
-	cancel_button.grab_focus()
-	OverworldGlobals.setMenuFocusMode(base, false)
-	OverworldGlobals.setMenuFocusMode(repair_button, false)
-	for item in InventoryGlobals.inventory:
-		if all_components.has(item): continue
-		var button = OverworldGlobals.createItemButton(item)
-		button.pressed.connect(func(): addItemToSlot(item, slot, slot_button))
-		if item.mandatory: button.disabled = true
-		item_select_buttons.add_child(button)
+	var mini_inv = MINI_INVENTORY.instantiate()
+	slot_button.add_child(mini_inv)
+	mini_inv.showItems(func(item): return !all_components.has(item.getFilename()))
+	mini_inv.exit_button.pressed.connect(
+		func(): 
+			removeItemFromSlot(slot)
+			OverworldGlobals.setMenuFocus(base)
+			)
+	for item in mini_inv.item_button_map.keys():
+		mini_inv.item_button_map[item].pressed.connect(
+			func(): 
+				addItemToSlot(item, slot, slot_button)
+				)
 
 func showRecipes():
-	for child in item_select_buttons.get_children():
-		item_select_buttons.remove_child(child)
-		child.queue_free()
-	
-	item_select.show()
-	var cancel_button = OverworldGlobals.createCustomButton()
-	cancel_button.theme = load("res://design/ItemButtons.tres")
-	cancel_button.icon = load('res://images/sprites/icon_cross.png')
-	cancel_button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	cancel_button.click_sound = load("res://audio/sounds/421418__jaszunio15__click_200.ogg")
-	cancel_button.pressed.connect(
-		func():
-			item_select.hide()
-			OverworldGlobals.setMenuFocusMode(base, true)
-			OverworldGlobals.setMenuFocusMode(repair_button, true)
-	)
-	item_select_buttons.add_child(cancel_button)
-	cancel_button.grab_focus()
-	InventoryGlobals.crafted_items.sort()
-	for recipe in InventoryGlobals.crafted_items:
-		var button = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
-		button.custom_minimum_size = Vector2(32, 32)
-		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		button.icon = load("res://resources/items/%s.tres" % recipe).icon
-		button.theme = load("res://design/ItemButtons.tres")
-		button.pressed.connect(func(): useRecipe(recipe))
-		button.mouse_entered.connect(func(): showRecipeDescription(recipe))
-		button.focus_entered.connect(func(): showRecipeDescription(recipe))
-		item_select_buttons.add_child(button)
+	var mini_recipes = MINI_INV_RECIPES.instantiate()
+	recipe_button.add_child(mini_recipes)
+	mini_recipes.showItems()
+	for item in mini_recipes.item_button_map.keys():
+		var button = mini_recipes.item_button_map[item]
+		update_recipes.connect(button.updateDisabled)
+		button.held_press.connect(
+			func(): 
+				useRecipe(item.getFilename())
+				update_recipes.emit()
+				)
 
 func showWeaponRepair():
-	for child in item_select_buttons.get_children():
-		item_select_buttons.remove_child(child)
-		child.queue_free()
-	
-	item_select.show()
-	#additional_repair_buttons.show()
-	var cancel_button = OverworldGlobals.createCustomButton()
-	cancel_button.name = 'CancelButton'
-	cancel_button.theme = load("res://design/ItemButtons.tres")
-	cancel_button.icon = load('res://images/sprites/icon_cross.png')
-	cancel_button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	cancel_button.click_sound = load("res://audio/sounds/421418__jaszunio15__click_200.ogg")
-	cancel_button.pressed.connect(
-		func():
-			additional_repair_buttons.hide()
-			item_select.hide()
-			OverworldGlobals.setMenuFocusMode(base, true)
-			OverworldGlobals.setMenuFocusMode(repair_button, true)
-	)
-	var weapons = InventoryGlobals.inventory.filter(func(item): return item is ResWeapon)
-	var active_weapons = []
-	checkCanRepair(weapons)
-	for member in OverworldGlobals.getCombatantSquad('Player'):
-		if member.hasEquippedWeapon(): active_weapons.append(member.equipped_weapon)
-	weapons.append_array(active_weapons)
-	
-	item_select_buttons.add_child(cancel_button)
-	cancel_button.grab_focus()
-	OverworldGlobals.setMenuFocusMode(base, false)
-	OverworldGlobals.setMenuFocusMode(repair_button, false)
-	for weapon in weapons:
-		var button = OverworldGlobals.createItemButton(weapon)
-		button.pressed.connect(
-			func(): 
-				InventoryGlobals.removeItemWithName('Scrap Salvage')
-				weapon.restoreDurability(weapon.max_durability)
-				button.disabled = true
-				checkCanRepair(weapons)
-				)
-		if weapon.durability >= weapon.max_durability or !InventoryGlobals.hasItem('Scrap Salvage'): 
-			button.disabled = true
-		item_select_buttons.add_child(button)
+	pass
+#	for child in item_select_buttons.get_children():
+#		item_select_buttons.remove_child(child)
+#		child.queue_free()
+#
+#	item_select.show()
+#	#additional_repair_buttons.show()
+#	var cancel_button = OverworldGlobals.createCustomButton()
+#	cancel_button.name = 'CancelButton'
+#	cancel_button.theme = load("res://design/ItemButtons.tres")
+#	cancel_button.icon = load('res://images/sprites/icon_cross.png')
+#	cancel_button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
+#	cancel_button.click_sound = load("res://audio/sounds/421418__jaszunio15__click_200.ogg")
+#	cancel_button.pressed.connect(
+#		func():
+#			additional_repair_buttons.hide()
+#			item_select.hide()
+#			OverworldGlobals.setMenuFocusMode(base, true)
+#			OverworldGlobals.setMenuFocusMode(repair_button, true)
+#	)
+#	var weapons = InventoryGlobals.inventory.filter(func(item): return item is ResWeapon)
+#	var active_weapons = []
+#	checkCanRepair(weapons)
+#	for member in OverworldGlobals.getCombatantSquad('Player'):
+#		if member.hasEquippedWeapon(): active_weapons.append(member.equipped_weapon)
+#	weapons.append_array(active_weapons)
+#
+#	item_select_buttons.add_child(cancel_button)
+#	cancel_button.grab_focus()
+#	OverworldGlobals.setMenuFocusMode(base, false)
+#	OverworldGlobals.setMenuFocusMode(repair_button, false)
+#	for weapon in weapons:
+#		var button = OverworldGlobals.createItemButton(weapon)
+#		button.pressed.connect(
+#			func(): 
+#				InventoryGlobals.removeItemWithName('Scrap Salvage')
+#				weapon.restoreDurability(weapon.max_durability)
+#				button.disabled = true
+#				checkCanRepair(weapons)
+#				)
+#		if weapon.durability >= weapon.max_durability or !InventoryGlobals.hasItem('Scrap Salvage'): 
+#			button.disabled = true
+#		item_select_buttons.add_child(button)
 
-func checkCanRepair(weapons: Array):
-	if !InventoryGlobals.hasItem('Scrap Salvage'): 
-		for button in item_select_buttons.get_children(): 
-			if button.name == 'CancelButton': continue
-			button.disabled = true
-	#$RepairButtons/RepairAll.disabled = canRepair(weapons.size())
-	#$RepairButtons/RepairEquipped.disabled = canRepair(active_weapons.size())
+#func checkCanRepair(weapons: Array):
+#	if !InventoryGlobals.hasItem('Scrap Salvage'): 
+#		for button in item_select_buttons.get_children(): 
+#			if button.name == 'CancelButton': continue
+#			button.disabled = true
 
-func addItemToSlot(item: ResItem, slot:int, slot_button: Button):
+func addItemToSlot(item: ResItem, slot:int, slot_button: Button,grab_focus:bool=true):
 	slot_button.modulate = Color.WHITE
 	if item.mandatory:
 		return
-	else:
-		slot_button.icon = item.icon
-		if item is ResStackItem:
-			slot_button.text = '%s x%s' % [item.name, item.stack]
-		else:
-			slot_button.text = item.name
-		
-		all_components[slot] = item
-		item_select.hide()
 	
+	all_components[slot] = item.getFilename()
+	updateComponentSlot(slot)
+	updateAccesibleButtons()
 	OverworldGlobals.setMenuFocusMode(base, true)
 	OverworldGlobals.setMenuFocusMode(repair_button, true)
-	slot_button.grab_focus()
+	showPopTween(slot_button)
+	if grab_focus:
+		slot_button.grab_focus()
+	checkRecipeResult()
+
+func showPopTween(button:Button):
+	button.scale = Vector2(1.25,1.25)
+	button.set_anchors_preset(Control.PRESET_CENTER)
+	create_tween().tween_property(button,'scale',Vector2(1,1),0.25)
+
+func checkRecipeResult():
+	var result = InventoryGlobals.getRecipeResult(all_components)
+	
+	if result == null:
+		craft_button.icon = CRAFT_ICON
+		craft_button.get_node('RequiredLabel').hide()
+		craft_button.get_node('Label').hide()
+		craft_button.get_node('Label').modulate = Color.WHITE
+		craft_button.disabled = true
+		hideRequiredAmounts()
+	else:
+		craft_button.icon = result[0].icon
+		if result[0] is ResStackItem and InventoryGlobals.hasItem(result[0]):
+			var stack_item = InventoryGlobals.getItem(result[0])
+			craft_button.get_node('Label').text = str(stack_item.stack)
+			craft_button.get_node('Label').show()
+			if stack_item.stack >= stack_item.max_stack:
+				craft_button.get_node('Label').modulate = Color.YELLOW
+			else:
+				craft_button.get_node('Label').modulate = Color.WHITE
+		else:
+			craft_button.get_node('Label').hide()
+		craft_button.get_node('RequiredLabel').text = 'x'+str(result[1])
+		craft_button.get_node('RequiredLabel').show()
+		craft_button.disabled = !canAddToInventory()
+		showRequiredAmounts(InventoryGlobals.getItemRecipe(result[0].getFilename()))
+
+func showRequiredAmounts(recipe):
+	var i = 0
+	for component in recipe.keys():
+		var button = base.get_child(i)
+		var item = load("res://resources/items/%s.tres" % component)
+		if InventoryGlobals.hasItem(item,recipe[component]):
+			button.get_node('Label').modulate = Color.WHITE
+		else:
+			button.get_node('Label').modulate = Color.RED
+		
+		button.get_node('RequiredLabel').text = 'x'+str(recipe[component])
+		button.get_node('RequiredLabel').show()
+		i += 1
+	
+	
+func hideRequiredAmounts():
+	for i in range(3):
+		base.get_child(i).get_node('RequiredLabel').hide()
 
 func removeItemFromSlot(slot: int):
-	match slot:
-		0:
-			component_core.text = 'CORE COMPONENT'
-			component_core.icon = load("res://images/sprites/icon_plus.png")
-			component_core.modulate = Color.WHITE
-		1:
-			component_a.text = 'COMPONENT A'
-			component_a.icon = load("res://images/sprites/icon_plus.png")
-			component_a.modulate = Color.WHITE
-		2:
-			component_b.text = 'COMPONENT B'
-			component_b.icon = load("res://images/sprites/icon_plus.png")
-			component_b.modulate = Color.WHITE
-	
-	all_components[slot] = null
+	#base.get_child(slot).scale = Vector2(1.25,1.25)
+	#create_tween().tween_property(base.get_child(slot),'scale',Vector2(1,1),0.25)
+	all_components[slot] = ''
+	updateDisabledButtons()
+	checkRecipeResult()
 
-func useRecipe(item: String):
+func updateAccesibleButtons():
+	for i in range(all_components.size()):
+		if all_components[i] != '' and i+1 != all_components.size() and base.get_children()[i+1].disabled:
+			base.get_children()[i+1].disabled=false
+			break
+
+func updateDisabledButtons():
+	var disable_button=false
+	for i in range(all_components.size()):
+		if all_components[i] == '':
+			disable_button = true
+			resetButton(base.get_children()[i])
+			if i != 0:
+				base.get_children()[i].disabled=true
+			continue
+		
+		if disable_button:
+			resetButton(base.get_children()[i])
+			base.get_children()[i].disabled=true
+			all_components[i] = ''
+	updateAccesibleButtons()
+
+func resetButton(button):
+	button.icon = PLUS_ICON
+	button.get_node('Label').modulate = Color.WHITE
+	button.self_modulate = Color.WHITE
+	button.get_node('Label').hide()
+	button.get_node('RequiredLabel').hide()
+
+func useRecipe(item_filename: String):
+	if is_crafting:
+		return
+	
+	is_crafting = true
 	for i in range(3):
 		removeItemFromSlot(i)
+	var recipe = InventoryGlobals.getItemRecipe(item_filename)
+	var i = 0
+	OverworldGlobals.playSound("res://audio/sounds/421461__jaszunio15__click_46.ogg")
+	for component_filename in recipe.keys():
+		var item = load("res://resources/items/%s.tres" % component_filename)
+		addItemToSlot(item,i,base.get_child(i),false)
+		i += 1
+	craft(false)
 	
+	is_crafting = false
 #	if item.split('.').size() > 1:
 #		item = item.split('.')[0]
-	for result in InventoryGlobals.recipes.keys():
-		if InventoryGlobals.recipes[result].split('.')[0] == item:
-			var i = 0
-			for component in result:
-				if InventoryGlobals.hasItem(component, 0, false):
-					addItemToSlot(InventoryGlobals.getItem(component), i, base.get_child(i))
-				elif component != null:
-					base.get_child(i).text = '%s' % component
-					base.get_child(i).icon = load("res://images/sprites/cross.png")
-					base.get_child(i).modulate = Color.DARK_GRAY
-				i += 1
+#	for result in InventoryGlobals.recipes.keys():
+#		if InventoryGlobals.recipes[result].split('.')[0] == item:
+#			var i = 0
+#			for component in result:
+#				if InventoryGlobals.hasItem(component, 0, false):
+#					addItemToSlot(InventoryGlobals.getItem(load("res://resources/items/%s.tres") % component), i, base.get_child(i))
+#				i += 1
 
-func showRecipeDescription(item_name: String):
-	var out
-	for recipe in InventoryGlobals.recipes.keys():
-		if InventoryGlobals.recipes[recipe].split('.')[0] == item_name:
-			out += load("res://resources/items/%s.tres" % item_name).getInformation()+'\n\nRecipe: '
-			var i = 1
-			for component in recipe:
-				if component != null:
-					if InventoryGlobals.hasItem(component, 0, false):
-						out += component
-					else:
-						out += '[color=red]'+component+'[/color]'
-					if i != recipe.filter(func(a): return a != null).size():
-						out += ', '
-					i += 1
-	
+#func showRecipeDescription(item_name: String):
+#	var out
+#	for recipe in InventoryGlobals.recipes.keys():
+#		if InventoryGlobals.recipes[recipe].split('.')[0] == item_name:
+#			out += load("res://resources/items/%s.tres" % item_name).getInformation()+'\n\nRecipe: '
+#			var i = 1
+#			for component in recipe:
+#				if component != null:
+#					if InventoryGlobals.hasItem(component, 0, false):
+#						out += component
+#					else:
+#						out += '[color=red]'+component+'[/color]'
+#					if i != recipe.filter(func(a): return a != null).size():
+#						out += ', '
+#					i += 1
+#
 	#item_select_info_general.text = out
 
 func _on_repair_pressed():
@@ -272,3 +301,6 @@ func _on_repair_all_pressed():
 
 func _on_repair_equipped_pressed():
 	InventoryGlobals.repairAllItems(true)
+
+func _on_component_pressed():
+	pass # Replace with function body.

@@ -9,8 +9,8 @@ enum TempermentTypes {
 	SPECIAL
 }
 
-const SWORD_ICON = "res://images/sprites/icon_weapon.png"
-const SACK_ICON = "res://images/sprites/icon_sack.png"
+const SWORD_ICON = "res://images/sprites/icon_combat_item.png"
+const SACK_ICON = "res://images/sprites/icon_charm.png"
 
 @export var show_temperments = false
 @onready var pool = $Abilities/MarginContainer/ScrollContainer/VBoxContainer

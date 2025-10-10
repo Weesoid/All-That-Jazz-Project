@@ -3,56 +3,98 @@ extends Node
 var inventory: Array[ResItem] = [] # Marked for indirect reference. Load per item, skip if !file_exists.
 var crafted_items: Array[String] = []
 var recipes: Dictionary = {
-	# In-game name -> .tres name
-	['Scrap Salvage', null, null]: 'ArrowJunk.8',
-	['Junk Arrow', 'Scrap Salvage', null]: 'Arrow.2',
-	['Arrow', 'Scrap Salvage', null]: 'ArrowSleeper',
-	['Murder Charm', 'Scrap Salvage', null]: 'CharmStoneWall',
-	['Scrap Salvage', 'Precious Salvage', null]: 'CharmMurder',
+	# .tres name -> .tres name
+	{'ScrapSalvage': 1}: 'ArrowJunk.8',
+	{'ArrowJunk': 1, 'ScrapSalvage': 2}: 'Arrow.2',
+	{'Arrow': 1, 'ScrapSalvage': 1}: 'ArrowSleeper.1',
+	{'MurderCharm': 1, 'ScrapSalvage': 1}: 'CharmStoneWall.1',
+	{'ScrapSalvage': 12, 'ArrowJunk': 16,'ArrowSleeper':1}: 'CharmMurder.1',
 }
 var max_inventory: int = 500
 
 signal added_item_to_inventory
 
+
 func loadItemResource(resource_name: String)-> ResItem:
 	return load("res://resources/items/"+resource_name+".tres")
 
-func addItem(item_name: String, count:int=1):
+func addItem(item_name: String, count:int=1, show_message:bool=true):
 	var item = load("res://resources/items/"+item_name+".tres")
 	assert(item!=null, "Item '%s' not found!" % item_name)
-	addItemResource(item, count)
+	addItemResource(item, count,show_message)
 
-func getRecipeResult(item_name_array: Array, get_raw_string=false):
-	var item = recipes[item_name_array].split('.')
-	var output = [null, null]
+func canCraft(item_filename: String):
+	var recipe = getItemRecipe(item_filename)
+	for component in recipe.keys():
+		var item = load("res://resources/items/%s.tres"%component)
+		var count = recipe[component]
+		if !InventoryGlobals.hasItem(item,count):
+			return false
 	
-	if !FileAccess.file_exists("res://resources/items/"+item[0]+".tres"):
-		return null
-	
-	if get_raw_string:
-		output[0] = load("res://resources/items/"+item[0]+".tres")
-		if item.size() > 1: output[1] = int(item[1])
-		return output
-	else:
-		return load("res://resources/items/"+item[0]+".tres")
+	return true
 
-func craftItem(item_array: Array[ResItem]):
-	var out = [null, null, null]
-	for i in range(item_array.size()):
-		if item_array[i] != null:
-			out[i] = item_array[i].name
+func getItemRecipe(item_filename:String)-> Dictionary:
+	var craftables = recipes.values()
+	var recipe_idx:int = -1
 	
-	if recipes.has(out):
-		var craft_data = recipes[out].split('.')
-		if craft_data.size() > 1:
-			addItem(craft_data[0], int(craft_data[1]))
-		else:
-			addItem(craft_data[0])
-		if !crafted_items.has(craft_data[0]):
-			crafted_items.append(craft_data[0])
+	for i in range(recipes.values().size()):
+		if craftables[i].split('.')[0] == item_filename:
+			recipe_idx = i
+			break
+	
+	return recipes.keys()[recipe_idx]
+
+## Returns [ItemResource, Craft Count] e.g. [ScrapSalvage, 3]
+func getRecipeResult(recipe):
+	var recipe_key
+	if recipe is Array:
+		recipe = recipe.filter(func(item_filename): return item_filename != '')
+		if !getBaseRecipes().has(recipe):
+			return null
+		recipe_key = getRecipeFromBase(recipe)
+	elif recipe is Dictionary:
+		if !recipes.keys().has(recipe):
+			return null
+		recipe_key = recipe
+	
+	var result_filename = recipes[recipe_key].split('.')
+	return [load("res://resources/items/%s.tres" % result_filename[0]), int(result_filename[1])]
+
+func getCraftCount(item):
+	for rec in recipes.keys():
+		if recipes[rec].split('.')[0] == item:
+			return recipes[rec].split('.')[1]
+
+func craftItem(base_recipe: Array):
+	base_recipe = base_recipe.filter(func(item_filename): return item_filename != '')
+	assert(getBaseRecipes().has(base_recipe), 'Recipe: %s not found!' % str(base_recipe))
+	if !canCraft(getRecipeResult(base_recipe)[0].getFilename()):
+		return
+	
+	var recipe = getRecipeFromBase(base_recipe)
+	var craft_data = recipes[recipe].split('.')
+	addItem(craft_data[0], int(craft_data[1]),false)
+	
+	if !crafted_items.has(craft_data[0]):
+		crafted_items.append(craft_data[0])
+	
+	for item_filepath in recipe.keys():
+		var item = load("res://resources/items/%s.tres" % item_filepath)
+		var count = recipe[item_filepath]
+		InventoryGlobals.removeItemResource(item, count, false)
+
+func getBaseRecipes()->Array:
+	var base_recipes = []
+	
+	for recipe in recipes.keys():
+		base_recipes.append(recipe.keys())
+	
+	return base_recipes
+
+func getRecipeFromBase(base_recipe:Array)-> Dictionary:
+	return recipes.keys()[getBaseRecipes().find(base_recipe)]
 
 func addItemResource(item: ResItem, count:int=1, show_message:bool=true, check_restrictions=true):
-	print('is show m', show_message)
 	if (!canAdd(item,count,show_message) or count == 0) and check_restrictions:
 		return
 	
@@ -196,7 +238,7 @@ func canAdd(item, count:int=1, show_prompt=true):
 	if inventory.size() >= max_inventory:
 		if show_prompt: OverworldGlobals.showPrompt('[color=pink]You canot have more than %s items. How did you even manage this?[/color]' % max_inventory, 15)
 		return false
-	elif item is ResEquippable and hasItem(item):
+	elif item is ResWeapon and hasItem(item):
 		if show_prompt: OverworldGlobals.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item.name) and item.stack == item.max_stack and item.max_stack > 0:

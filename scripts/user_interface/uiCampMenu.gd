@@ -1,15 +1,15 @@
 extends Control
 
-@onready var action_container = $HBoxContainer
-@onready var camp_item_container = $HBoxContainer2
-@onready var eat_button = $HBoxContainer/Eat
-@onready var craft_button = $HBoxContainer/Craft
-@onready var travel_button = $HBoxContainer/FastTravel
-@onready var back_button = $BackButton
-@onready var rest_button = $HBoxContainer/Rest
-@onready var no_rest_button = $HBoxContainer/NoRest
+#@onready var action_container = $HBoxContainer
+@onready var main_bar = $CampBar
+@onready var camp_item_container = $CampBar/MainBar/ScrollContainer/CampItems
+@onready var craft_button = $CampBar/MainBar/OtherActions/Craft
+@onready var travel_button = $CampBar/MainBar/OtherActions/FastTravel
+@onready var rest_button = $CampBar/RestOptions/Rest
+@onready var no_rest_button = $CampBar/RestOptions/NoRest
 @onready var rest_ui = $RestStuff
 @onready var confirm_rest = $RestStuff/ConfirmRest
+@onready var back_button = $BackButton
 @onready var squad = OverworldGlobals.getCombatantSquad('Player')
 @onready var save_point: SavePoint = OverworldGlobals.getCurrentMap().get_node('SavePoint')
 @onready var player_ui_path = OverworldGlobals.player.player_camera.get_node('UI')
@@ -23,12 +23,19 @@ var wake_events = [
 	'damage',
 	'status_effect'
 	]
+var cam_default_pos:Vector2
 
 signal update_count(count, item)
 
 func _ready():
+	cam_default_pos = OverworldGlobals.player.player_camera.global_position
 	rest_button.disabled = PlayerGlobals.rested and save_point.mind_rested
-	showContainer(action_container)
+	#showContainer(action_container)
+	fillCampItemContainer()
+	#OverworldGlobals.setMenuFocus(camp_item_container)
+	tweenButtons(camp_item_container.get_children())
+	tweenButtons($CampBar/RestOptions.get_children())
+	tweenButtons($CampBar/MainBar/OtherActions.get_children())
 	update_count.connect(updateCount)
 	for child in save_point.rest_spots.get_children():
 		if child.texture == null:
@@ -47,7 +54,7 @@ func _ready():
 					if guard_combatant != null:
 						confirm_rest.text = 'REST'
 					else:
-						confirm_rest.text = 'SKIP WATCH'
+						confirm_rest.text = 'SKIP GUARD'
 				elif camp_item != null:
 					camp_item.applyEffects(combatant)
 					camp_item.take(1)
@@ -73,7 +80,7 @@ func unhighlightAll():
 		member.get_node('CombatBars').stopHighlight()
 
 func _on_eat_pressed():
-	fillCampItemContainer()
+	#fillCampItemContainer()
 	save_point.setBarVisibility(true)
 	showContainer(camp_item_container)
 
@@ -83,66 +90,105 @@ func _on_craft_pressed():
 func _on_fast_travel_pressed():
 	loadUserInterface("res://scenes/user_interface/FastTravel.tscn")
 
-func setButtons(set_to:bool):
-	for button in action_container.get_children():
-		button.visible = set_to
+func _on_game_menu_pressed():
+	loadUserInterface("res://scenes/user_interface/GameMenu.tscn")
 
-func loadUserInterface(path):
+#func setButtons(set_to:bool):
+#	for button in action_container.get_children():
+#		button.visible = set_to
+
+func loadUserInterface(path,offset:Vector2=Vector2(0,64)):
+	setMainBarVisibility(false)
 	var ui = load(path).instantiate()
+	ui.modulate = Color.TRANSPARENT
 	ui.name = 'Menu'
-	setButtons(false)
 	player_ui_path.add_child(ui)
+	ui.position += offset
+	create_tween().tween_property(ui,'position',ui.position-offset,0.25).set_ease(Tween.EASE_IN)#.set_trans(Tween.TRANS_CUBIC)
+	create_tween().tween_property(ui,'modulate',Color.WHITE,0.3)
 	back_button.show()
 
-func tweenAbilityButtons(buttons: Array):
+func tweenButtons(buttons: Array):
 	for button in buttons:
 		button.modulate = Color.TRANSPARENT
 	await get_tree().process_frame
+	var sound_reducer = 1
 	for button in buttons:
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-		tween.tween_property(button, 'scale', Vector2(1.1,1.1), 0.005)
-		tween.tween_property(button, 'scale', Vector2(1.0,1.0), 0.05)
+		tween.finished.connect(func():OverworldGlobals.playSound('536805__egomassive__gun_2.ogg',-6.0-sound_reducer),CONNECT_ONE_SHOT)
+		tween.tween_property(button, 'scale', Vector2(1.1,1.1), 0.5)
+		tween.tween_property(button, 'scale', Vector2(1.0,1.0), 0.25)
 		tween.set_parallel(true)
-		tween.tween_property(button, 'modulate', Color.WHITE, 0.0025)
-		await tween.finished
-		OverworldGlobals.playSound('536805__egomassive__gun_2.ogg',-6.0)
+		tween.tween_property(button, 'modulate', Color.WHITE, 0.05)
+		await get_tree().create_timer(0.05).timeout
+		sound_reducer += 0.5
 
 func _on_back_button_pressed():
+	if !back_button.visible:
+		return
+	
+	if select_guard:
+		rest_ui.hide()
+		OverworldGlobals.moveCamera(cam_default_pos,0.5)
+		if guard_combatant != null:
+			save_point.showWatchMark(guard_combatant, true)
+			guard_combatant = null
+		select_guard = false
 	back_button.hide()
 	if player_ui_path.has_node('Menu'):
 		player_ui_path.get_node('Menu').queue_free()
-	for child in camp_item_container.get_children():
-		child.queue_free()
-	save_point.setBarVisibility(false)
+#	for child in camp_item_container.get_children():
+#		child.queue_free()
+	setMainBarVisibility(true)
+	#save_point.setBarVisibility(false)
 	unhighlightAll()
-	setButtons(true)
-	showContainer(action_container)
+#	fillCampItemContainer()
+#	setButtons(true)
+#	showContainer(action_container)
 
+func setMainBarVisibility(set_to:bool,duration:float=0.25):
+	#showContainer(camp_item_container)
+	if set_to:
+		main_bar.show()
+		create_tween().tween_property(main_bar,'position',main_bar.position-Vector2(0,64),duration).set_ease(Tween.EASE_OUT)
+		create_tween().tween_property(main_bar,'modulate',Color.WHITE,duration)
+	else:
+		create_tween().tween_property(main_bar,'position',main_bar.position+Vector2(0,64),duration).set_ease(Tween.EASE_IN)
+		create_tween().tween_property(main_bar,'modulate',Color.TRANSPARENT,duration)
+		get_tree().create_timer(duration)
+		main_bar.hide()
+	
+	
 func showContainer(container):
 	for control in get_children().filter(func(control): return control is Container):
 		control.hide()
 	if container == null:
 		return
-	if container != action_container:
-		back_button.show()
-	else:
-		back_button.hide()
+#	if container != action_container:
+#		back_button.show()
+#	else:
+	back_button.hide()
 	container.show()
 	OverworldGlobals.setMenuFocus(container)
-	await tweenAbilityButtons(container.get_children())
+	await tweenButtons(container.get_children())
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_show_menu") and (player_ui_path.has_node('Menu') or camp_item_container.visible):
 		_on_back_button_pressed()
 
 func _on_rest_pressed():
-	showContainer(null)
-	setButtons(false)
+	
+	setMainBarVisibility(false)
+#	showContainer(null)
+#	setButtons(false)
+	OverworldGlobals.moveCamera(save_point,0.5, Vector2(0,-30))
 	save_point.setBarVisibility(true)
 	select_guard = true
 	rest_ui.show()
+	back_button.show()
 
 func _on_confirm_rest_pressed():
+	setMainBarVisibility(false)
 	PlayerGlobals.rested = true
 	rest_ui.hide()
 	save_point.setBarVisibility(false)
@@ -162,6 +208,7 @@ func _on_confirm_rest_pressed():
 func pickRandomEvent():
 	randomize()
 	var event = wake_events.pick_random()
+
 	match event: # TO DO: Event notifs... barks?
 		'fight':
 			save_point.fightCombatantSquad()
@@ -186,7 +233,10 @@ func restCombatant(combatant: ResPlayerCombatant):
 	CombatGlobals.calculateHealing(combatant, combatant.getMaxHealth()*0.05)
 
 func fillCampItemContainer():
+	# temp, butchered rn, fix when done w ui
 	for item in getCampItems():
+#		if item == null or item.icoon == null: #temp
+#			continue
 		var button = OverworldGlobals.createItemButton(item)
 		button.pressed.connect(
 			func():
@@ -195,7 +245,7 @@ func fillCampItemContainer():
 				button.modulate = Color.WHITE
 				unhighlightAll()
 				)
-		button.description_offset=Vector2(0,116)
+		#button.description_offset=Vector2(0,116)
 		camp_item_container.add_child(button)
 
 func updateCount(count, item):
@@ -232,12 +282,9 @@ func getCampItems():
 	return InventoryGlobals.inventory.filter(func(item): return item is ResCampItem)
 
 func _on_no_rest_pressed():
-	action_container.hide()
+#	action_container.hide()
+	setMainBarVisibility(false)
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
 	#await get_tree().create_timer(1.5).timeout
 	save_point.done.emit()
 	queue_free()
-
-func _on_inventory_pressed():
-	loadUserInterface("res://scenes/user_interface/GameMenu.tscn")
-

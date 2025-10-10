@@ -87,7 +87,7 @@ func slotPressed(save_name: String, button: Button):
 			SaveLoadGlobals.loadGame(save_name)
 		Modes.NEW_GAME:
 			PlayerGlobals.save_name = generateSaveName()
-			OverworldGlobals.changeMap('res://scenes/maps/Sidescroller.tscn', '0,0,0', 'FastTravel', false, true)
+			OverworldGlobals.changeMap('res://scenes/maps/Sidescroller.tscn', '0,0,0', ['FastTravel'], false, true)
 			for combatant in PlayerGlobals.team: combatant.initializeCombatant(false)
 
 func saveGame(save_name: String, button: Button):

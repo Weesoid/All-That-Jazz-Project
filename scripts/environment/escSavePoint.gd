@@ -10,11 +10,13 @@ class_name SavePoint
 @onready var watch_mark = $Sprite2D2
 @onready var watch_mark_animator = $Sprite2D2/AnimationPlayer
 #var mini_bars = []
-var combatant_squad: ResEnemyCombatant
+var combatant_squad: EnemyCombatantSquad
 signal done
 
 func loadCombatantSquad():
-	add_child(CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)) # Changge to current map faction later
+	combatant_squad = CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)
+	combatant_squad.can_escape = false
+	add_child(combatant_squad) # Changge to current map faction later
 
 func fightCombatantSquad():
 	OverworldGlobals.changeToCombat(name)
@@ -24,17 +26,17 @@ func interact():
 	OverworldGlobals.player.camping=true
 	OverworldGlobals.destroyAllPatrollers(true)
 	OverworldGlobals.setPlayerInput(false)
-	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
+	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1)
 	PlayerGlobals.overworld_stats['stamina'] = 100.0
 	OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
 	if OverworldGlobals.getCurrentMap().map_properties.has(MapData.MapProperties.COLD):
 		animator.play("Lit")
-	OverworldGlobals.moveCamera(self, 0, Vector2(0,-30))
+	OverworldGlobals.moveCamera(self,0,Vector2(0,-10))
 	await OverworldGlobals.zoomCamera(Vector2(3,3),1,true)
 	OverworldGlobals.player.sprite.hide()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		addRestSprite(combatant)
-	await OverworldGlobals.player.player_camera.hideOverlay(1.5)
+	await OverworldGlobals.player.player_camera.hideOverlay(0.5)
 
 func exit():
 	await done

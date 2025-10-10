@@ -10,7 +10,7 @@ func _process(_delta):
 	value = PlayerGlobals.overworld_stats['stamina']
 
 
-func _on_value_changed(value):
+func _on_value_changed(_value):
 	if value >= max_value and changing:
 		changing=false
 		fader.play_backwards("Show")

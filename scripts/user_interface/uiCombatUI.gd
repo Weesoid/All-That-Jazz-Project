@@ -3,7 +3,8 @@ class_name CombatUI
 
 const COMBAT_GEAR_ICON = preload("res://images/ability_icons/combat_gear.png")
 const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
-
+const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
+#DialogueManager
 @export var tension_color:Color = SettingsGlobals.ui_colors['up']
 @export var tension_particles_db:float = -8.0
 @onready var ability_buttons = $AbilityContainer
@@ -117,7 +118,7 @@ func spawnTensionParticles(target:CombatantScene, tp_amount:int,is_player:bool):
 				OverworldGlobals.playSound("res://audio/sounds/27_sword_miss_3.ogg",tension_particles_db,pitch,false)
 				)
 		tp_particle.modulate = Color.TRANSPARENT
-		tp_particle.texture = load("res://images/sprites/tp_particle.png")
+		tp_particle.texture = TP_PARTICLE_TEXTURE
 		combat_scene.add_child(tp_particle)
 		tp_particle.global_position = target.global_position
 		create_tween().tween_property(tp_particle,'modulate',tension_color,0.3)
@@ -139,7 +140,7 @@ func attractTensionParticles(target:CombatantScene, tp_amount:int):
 		var tp_particle = Sprite2D.new()
 		tween.finished.connect(func(): pulseAnimation(tp_particle,target.combatant_resource.getSprite(),false))
 		tp_particle.modulate = tension_color
-		tp_particle.texture = load("res://images/sprites/tp_particle.png")
+		tp_particle.texture = TP_PARTICLE_TEXTURE
 		combat_scene.add_child(tp_particle)
 		tp_particle.global_position = combat_scene.tp_particle_magnet.global_position
 		create_tween().tween_property(tp_particle,'modulate',Color.TRANSPARENT,0.24)

@@ -83,6 +83,3 @@ func showSaveIndicator():
 	if !save_indicator.is_playing():
 		save_indicator.play("Show")
 
-
-func _on_stamina_bar_value_changed(value):
-	pass # Replace with function body.

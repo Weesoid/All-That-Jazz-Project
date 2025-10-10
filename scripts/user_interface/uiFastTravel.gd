@@ -83,7 +83,7 @@ func checkTravel(location):
 
 func travel(location):
 	OverworldGlobals.closeMenu(self)
-	OverworldGlobals.changeMap(location, '0,0,0', 'FastTravel')
+	OverworldGlobals.changeMap(location, '0,0,0', ['SavePoint','FastTravel'])
 
 func _on_debug_button_pressed():
 	PlayerGlobals.randomizeMapEvents(OverworldGlobals.getCurrentMap().scene_file_path)

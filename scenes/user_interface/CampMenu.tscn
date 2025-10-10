@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cimeplqfltcgd"]
+[gd_scene load_steps=10 format=3 uid="uid://cimeplqfltcgd"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCampMenu.gd" id="1_nstr8"]
-[ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="2_ejioi"]
-[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_clnrx"]
 [ext_resource type="Theme" uid="uid://clgfgqvh2f440" path="res://design/BorderfulButton.tres" id="4_fshuc"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="4_hfpgg"]
+[ext_resource type="Texture2D" uid="uid://bd8vp562frwnh" path="res://images/sprites/button_hammer_normal.png" id="4_qaxaj"]
+[ext_resource type="Texture2D" uid="uid://dd2hvxqa8mrra" path="res://images/sprites/button_gang_normal.png" id="5_5vk30"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="5_hxrhj"]
+[ext_resource type="Texture2D" uid="uid://36ou1mhhbvwi" path="res://images/sprites/button_pinpoint_normal.png" id="6_jy7n5"]
+[ext_resource type="Texture2D" uid="uid://dvdvx1rqxctbc" path="res://images/sprites/camp_down.png" id="8_bv36u"]
+[ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="10_prij7"]
 
 [node name="CampMenu" type="Control"]
 layout_mode = 3
@@ -20,74 +23,134 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_nstr8")
 
-[node name="HBoxContainer" type="HFlowContainer" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -112.0
-offset_top = -132.0
-offset_right = 20.0
-offset_bottom = -80.0
-grow_horizontal = 2
-scale = Vector2(2, 2)
-pivot_offset = Vector2(156, 16)
+[node name="CampBar" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RestOptions" type="HBoxContainer" parent="CampBar"]
+layout_mode = 0
+offset_left = -320.0
+offset_top = 148.0
+offset_right = 320.0
+offset_bottom = 176.0
 alignment = 1
 
-[node name="Eat" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
-layout_mode = 2
-description_text = "Sex"
-description_offset = Vector2(0, 50)
-
-[node name="Craft" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
-layout_mode = 2
-descriptions = {
-"description": "asdf",
-"icon": ExtResource("3_clnrx"),
-"title": "Boingloings"
-}
-
-[node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
-layout_mode = 2
-
-[node name="Inventory" parent="HBoxContainer" instance=ExtResource("2_ejioi")]
-layout_mode = 2
-
-[node name="Rest" parent="HBoxContainer" instance=ExtResource("4_hfpgg")]
+[node name="Rest" parent="CampBar/RestOptions" instance=ExtResource("4_hfpgg")]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 theme = ExtResource("4_fshuc")
 text = "REST"
 alignment = 1
 
-[node name="NoRest" parent="HBoxContainer" instance=ExtResource("4_hfpgg")]
+[node name="NoRest" parent="CampBar/RestOptions" instance=ExtResource("4_hfpgg")]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 theme = ExtResource("4_fshuc")
 text = "CARRY ON"
+hold_time = 0.25
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+[node name="MainBar" type="Control" parent="CampBar"]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 7
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-offset_left = -152.0
-offset_top = -132.0
-offset_right = 152.0
-offset_bottom = -92.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = 164.0
+offset_right = -20.0
+offset_bottom = 164.0
 grow_horizontal = 2
-scale = Vector2(2, 2)
-pivot_offset = Vector2(152, 22.5)
+grow_vertical = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CampBar/MainBar"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -128.0
+offset_right = 94.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(88, 32)
+follow_focus = true
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="CampItems" type="HBoxContainer" parent="CampBar/MainBar/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 alignment = 1
 
-[node name="BackButton" type="Button" parent="."]
+[node name="CustomButton" parent="CampBar/MainBar/ScrollContainer/CampItems" instance=ExtResource("4_hfpgg")]
+visible = false
+layout_mode = 2
+
+[node name="CustomButton2" parent="CampBar/MainBar/ScrollContainer/CampItems" instance=ExtResource("4_hfpgg")]
+visible = false
+layout_mode = 2
+
+[node name="CustomButton3" parent="CampBar/MainBar/ScrollContainer/CampItems" instance=ExtResource("4_hfpgg")]
+visible = false
+layout_mode = 2
+
+[node name="CustomButton4" parent="CampBar/MainBar/ScrollContainer/CampItems" instance=ExtResource("4_hfpgg")]
+visible = false
+layout_mode = 2
+
+[node name="OtherActions" type="VBoxContainer" parent="CampBar/MainBar"]
+layout_mode = 2
+offset_left = -128.0
+offset_top = -120.0
+offset_right = -96.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(15, 42)
+alignment = 1
+
+[node name="Craft" parent="CampBar/MainBar/OtherActions" instance=ExtResource("10_prij7")]
+layout_mode = 2
+texture = ExtResource("4_qaxaj")
+description_text = "test"
+hold_delay = 0.5
+
+[node name="GameMenu" parent="CampBar/MainBar/OtherActions" instance=ExtResource("10_prij7")]
+layout_mode = 2
+texture = ExtResource("5_5vk30")
+hold_delay = 0.5
+
+[node name="FastTravel" parent="CampBar/MainBar/OtherActions" instance=ExtResource("10_prij7")]
+layout_mode = 2
+texture = ExtResource("6_jy7n5")
+description_text = "test"
+hold_delay = 0.5
+
+[node name="Panel" type="Panel" parent="CampBar/MainBar"]
+visible = false
+z_index = -1
 layout_mode = 0
-offset_left = -304.0
+offset_left = -112.0
+offset_top = -80.0
+offset_right = 112.0
+offset_bottom = 8.0
+mouse_filter = 2
+
+[node name="BackButton" parent="." instance=ExtResource("10_prij7")]
+visible = false
+custom_minimum_size = Vector2(56, 12)
+layout_mode = 0
+offset_left = -56.0
 offset_top = 148.0
-offset_right = -248.0
-offset_bottom = 170.0
-text = "BACK"
-alignment = 0
+offset_right = 56.0
+offset_bottom = 172.0
+texture = ExtResource("8_bv36u")
+hold_delay = 0.5
 
 [node name="RestStuff" type="Control" parent="."]
 visible = false
@@ -97,30 +160,30 @@ offset_bottom = 40.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="RestStuff"]
 layout_mode = 0
-offset_left = -104.0
+offset_left = -280.0
 offset_top = -156.0
 offset_bottom = -134.0
 scale = Vector2(2, 2)
 theme = ExtResource("5_hxrhj")
 bbcode_enabled = true
-text = "[center][outline_size=2][outline_color=black]Select Guard"
+text = "[center][outline_size=2][outline_color=black]Who Will Stand Guard?"
 fit_content = true
 
-[node name="ConfirmRest" type="Button" parent="RestStuff"]
+[node name="ConfirmRest" parent="RestStuff" instance=ExtResource("4_hfpgg")]
 layout_mode = 0
-offset_left = -80.0
-offset_top = 132.0
-offset_right = 80.0
-offset_bottom = 164.0
+offset_left = -64.0
+offset_top = 116.0
+offset_right = 66.0
+offset_bottom = 146.0
 theme = ExtResource("4_fshuc")
-theme_override_font_sizes/font_size = 16
 text = "SKIP GUARD"
+alignment = 1
+hold_time = 0.25
 
-[connection signal="pressed" from="HBoxContainer/Eat" to="." method="_on_eat_pressed"]
-[connection signal="pressed" from="HBoxContainer/Craft" to="." method="_on_craft_pressed"]
-[connection signal="pressed" from="HBoxContainer/FastTravel" to="." method="_on_fast_travel_pressed"]
-[connection signal="pressed" from="HBoxContainer/Inventory" to="." method="_on_inventory_pressed"]
-[connection signal="pressed" from="HBoxContainer/Rest" to="." method="_on_rest_pressed"]
-[connection signal="pressed" from="HBoxContainer/NoRest" to="." method="_on_no_rest_pressed"]
+[connection signal="pressed" from="CampBar/RestOptions/Rest" to="." method="_on_rest_pressed"]
+[connection signal="held_press" from="CampBar/RestOptions/NoRest" to="." method="_on_no_rest_pressed"]
+[connection signal="pressed" from="CampBar/MainBar/OtherActions/Craft" to="." method="_on_craft_pressed"]
+[connection signal="pressed" from="CampBar/MainBar/OtherActions/GameMenu" to="." method="_on_game_menu_pressed"]
+[connection signal="pressed" from="CampBar/MainBar/OtherActions/FastTravel" to="." method="_on_fast_travel_pressed"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="RestStuff/ConfirmRest" to="." method="_on_confirm_rest_pressed"]
+[connection signal="held_press" from="RestStuff/ConfirmRest" to="." method="_on_confirm_rest_pressed"]

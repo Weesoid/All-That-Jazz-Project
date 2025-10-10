@@ -5,10 +5,9 @@
 
 [resource]
 script = ExtResource("3_layds")
-max_stack = 0
+max_stack = 16
 barter_item = false
-auto_name = true
-name = ""
+name = "Junk Arrow"
 icon = ExtResource("1_1uwfi")
 description = ""
 value = 0

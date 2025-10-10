@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://ibwpkjc2lj4a"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_3qpcp"]
+[ext_resource type="PackedScene" uid="uid://8aufe1ycaau4" path="res://scenes/entities_interactable/SavePoint.tscn" id="3_n11qw"]
 [ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="5_w8f37"]
-[ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="8_n1e11"]
 
 [node name="Safe" type="Node2D"]
 y_sort_enabled = true
@@ -23,5 +23,5 @@ layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array()
 
-[node name="FastTravel" parent="." instance=ExtResource("8_n1e11")]
-position = Vector2(211, 193)
+[node name="SavePoint" parent="." instance=ExtResource("3_n11qw")]
+position = Vector2(119, 192)

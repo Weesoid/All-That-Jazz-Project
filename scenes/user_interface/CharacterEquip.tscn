@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://bbsj2rb4t3ft8"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterEquip.gd" id="1_3gpyr"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_jmc6r"]
@@ -107,7 +107,7 @@ layout_mode = 2
 layout_mode = 2
 columns = 5
 
-[node name="CustomButton" parent="PanelContainer/MarginContainer/ScrollContainer/GridContainer" instance=ExtResource("3_3kub0")]
+[node name="ExitButton" parent="PanelContainer/MarginContainer/ScrollContainer/GridContainer" instance=ExtResource("3_3kub0")]
 layout_mode = 2
 theme = ExtResource("1_jmc6r")
 icon = ExtResource("5_iu1jn")
@@ -118,4 +118,4 @@ libraries = {
 "": SubResource("AnimationLibrary_t4ejn")
 }
 
-[connection signal="pressed" from="PanelContainer/MarginContainer/ScrollContainer/GridContainer/CustomButton" to="." method="_on_custom_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/ScrollContainer/GridContainer/ExitButton" to="." method="_on_exit_button_pressed"]

@@ -25,6 +25,8 @@ func apply(combatant: ResPlayerCombatant):
 func getInformation():
 	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	out += CombatGlobals.getBasicEffectsDescription(effects,false)
+	if party_wide:
+		out = out.replace('Target', 'Party')
 	if description != '':
 		out += '\n'+description
 	return out

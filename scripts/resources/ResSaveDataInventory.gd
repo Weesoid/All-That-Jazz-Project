@@ -20,8 +20,11 @@ func loadInventory():
 		if !FileAccess.file_exists(item_path): continue
 		
 		var item = load(item_path)
+		item.parent_item = item_path
+		
 		if item is ResStackItem:
 			item.stack = inventory[item_path]
+			item.updateItem()
 		elif item is ResWeapon:
 			item.durability = inventory[item_path]
 		elif item is ResCharm:

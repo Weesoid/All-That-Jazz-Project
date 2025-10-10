@@ -4,6 +4,7 @@ enum PlayerType {
 	WILLIS,
 	ARCHIE
 }
+
 var entering_combat:bool=false
 var player_type: PlayerType = PlayerType.WILLIS
 var delayed_rewards: Dictionary
@@ -153,7 +154,7 @@ func setMouseController(set_to:bool):
 		return
 	
 	if set_to:
-		var mouse_controller = load("res://scenes/user_interface/MouseController.tscn").instantiate()
+		var mouse_controller = load('res://scenes/user_interface/MouseController.tscn').instantiate()
 		add_child(mouse_controller)
 		Input.warp_mouse(Vector2(DisplayServer.screen_get_size()/2))
 	elif has_node('MouseController'): 
@@ -231,14 +232,13 @@ func createCustomButton(theme: Theme = load("res://design/DefaultTheme.tres"))->
 	button.theme = theme
 	return button
 
-func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true)-> CustomButton:
+func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true, white_borders:bool=false)-> CustomButton:
 	var button: CustomButton = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
 	button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
 	button.click_sound = load("res://audio/sounds/421461__jaszunio15__click_46.ogg")
 	button.custom_minimum_size.x = 32
 	button.custom_minimum_size.y = 32
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	#button.expand_icon = true
 	button.icon = item.icon
 	button.tooltip_text = item.name
 	button.description_text = item.getInformation()
@@ -248,6 +248,8 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		label.text = str(item.stack)
 		label.theme = load("res://design/OutlinedLabel.tres")
 		label.name = 'Count'
+#		if item.stack >= item.max_stack:
+#			label.modulate = Color.YELLOW
 		button.add_child(label)
 	
 	if value_modifier != 0.0:
@@ -304,7 +306,7 @@ func createAbilityButton(ability: ResAbility)-> CustomAbilityButton:
 func showPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.player.player_camera.prompt.showPrompt(message, time, audio_file)
 
-func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: String='',show_transition:bool=true,save:bool=false):
+func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Array[String]=[],show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
 #		delayed_rewards = getCurrentMap().REWARD_BANK
 	if show_transition:
@@ -326,8 +328,11 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Str
 	var coords = coordinates.split(',')
 	getCurrentMap().add_child(player)
 	#await player.tree_entered
-	if to_entity != '':
-		player.global_position = getEntity(to_entity).global_position + Vector2(0, 20)
+	if !to_entity.is_empty():
+		for ent in to_entity:
+			if getCurrentMap().has_node(ent):
+				player.global_position = getEntity(ent).global_position + Vector2(0, 20)
+				break
 	else:
 		player.global_position = Vector2(float(coords[0]),float(coords[1]))
 	match int(coords[2]):

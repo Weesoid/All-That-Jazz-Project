@@ -1,5 +1,9 @@
 extends Control
 
+const KEYBIND_BUTTON = preload("res://scenes/user_interface/KeybindButton.tscn")
+const DEFAULT_SETTINGS = preload("res://default_settings.tres")
+const SAVED_SETTINGS = preload("res://saved_settings.tres")
+
 @onready var fps = $PanelContainer/General/ScrollContainer/VBoxContainer/FPSCap/Label/FPS
 @onready var vol_master = $PanelContainer/General/ScrollContainer/VBoxContainer/Master/Label/Volume
 @onready var vol_music = $PanelContainer/General/ScrollContainer/VBoxContainer/MusicSlider/Label/Volume
@@ -73,9 +77,9 @@ func _ready():
 		resolution_options.add_item(resolution)
 	loadKeybinds(InputHelper.device)
 	if FileAccess.file_exists('saved_settings.tres'):
-		await loadSettings(load('res://saved_settings.tres'), false)
+		await loadSettings(SAVED_SETTINGS, false)
 	else:
-		await loadSettings(load('res://default_settings.tres'), false)
+		await loadSettings(DEFAULT_SETTINGS, false)
 	#InputHelper.device_changed.connect(loadKeybinds)
 	window_options.item_selected.connect(changeWindowMode)
 	resolution_options.item_selected.connect(changeResolution)
@@ -146,7 +150,7 @@ func loadKeybinds(device: String, _device_index:int=0):
 		child.queue_free()
 	await get_tree().process_frame
 	for action in editable_keybinds.keys():
-		var button: KeybindButton = load("res://scenes/user_interface/KeybindButton.tscn").instantiate()
+		var button: KeybindButton = KEYBIND_BUTTON.instantiate()
 		button.find_child('Action').text = str(editable_keybinds[action])
 		if device == 'keyboard':
 			button.find_child('Input').text = InputHelper.get_label_for_input(InputHelper.get_keyboard_input_for_action(action)) 
@@ -259,7 +263,7 @@ func _on_apply_settings_pressed():
 	apply_button.hide()
 
 func _on_default_settings_pressed():
-	loadSettings(load('default_settings.tres'))
+	loadSettings(DEFAULT_SETTINGS)
 
 func _on_panel_container_tab_changed(tab):
 	await get_tree().process_frame

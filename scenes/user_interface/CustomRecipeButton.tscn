@@ -1,0 +1,235 @@
+[gd_scene load_steps=8 format=3 uid="uid://dy35hpoj5rc77"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiCustomRecipeButton.gd" id="1_6rihq"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="2_x1vqf"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_yrno1"]
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="3_fg3cm"]
+[ext_resource type="Texture2D" uid="uid://qnp78d4380ei" path="res://images/sprites/arrow_up_small.png" id="4_njyym"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icdui"]
+bg_color = Color(1, 1, 1, 0.466667)
+
+[node name="CustomButton" type="Button"]
+custom_minimum_size = Vector2(160, 38)
+offset_right = 160.0
+offset_bottom = 38.0
+alignment = 0
+script = ExtResource("1_6rihq")
+hold_time = 0.25
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CompA" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_x1vqf")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CompA"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("3_fg3cm")
+text = "x10"
+horizontal_alignment = 1
+
+[node name="CurrentCount" type="Label" parent="MarginContainer/HBoxContainer/CompA"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -1.0
+offset_bottom = 12.0
+grow_horizontal = 2
+theme = ExtResource("3_fg3cm")
+text = "67"
+horizontal_alignment = 1
+
+[node name="CompB" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_x1vqf")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CompB"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("3_fg3cm")
+text = "x10"
+horizontal_alignment = 1
+
+[node name="CurrentCount" type="Label" parent="MarginContainer/HBoxContainer/CompB"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -1.0
+offset_bottom = 12.0
+grow_horizontal = 2
+theme = ExtResource("3_fg3cm")
+text = "67"
+horizontal_alignment = 1
+
+[node name="CompC" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_x1vqf")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CompC"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("3_fg3cm")
+text = "x10"
+horizontal_alignment = 1
+
+[node name="CurrentCount" type="Label" parent="MarginContainer/HBoxContainer/CompC"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -1.0
+offset_bottom = 12.0
+grow_horizontal = 2
+theme = ExtResource("3_fg3cm")
+text = "67"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 16
+text = "->"
+horizontal_alignment = 2
+
+[node name="Item" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("2_x1vqf")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Item"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("3_fg3cm")
+text = "x10"
+horizontal_alignment = 1
+
+[node name="CurrentCount" type="Label" parent="MarginContainer/HBoxContainer/Item"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -1.0
+offset_bottom = 12.0
+grow_horizontal = 2
+theme = ExtResource("3_fg3cm")
+text = "67"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Item"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Arrow" type="TextureRect" parent="MarginContainer/HBoxContainer/Item"]
+layout_mode = 2
+offset_left = -5.99999
+offset_top = 13.0
+offset_right = -5.99999
+offset_bottom = 39.0
+rotation = 1.5708
+size_flags_horizontal = 10
+texture = ExtResource("4_njyym")
+expand_mode = 4
+stretch_mode = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Sounds"
+
+[node name="HoldProgress" type="ProgressBar" parent="." node_paths=PackedStringArray("timer")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_mumdi")
+theme_override_styles/fill = SubResource("StyleBoxFlat_icdui")
+value = 25.0
+show_percentage = false
+script = ExtResource("2_yrno1")
+timer = NodePath("../HoldTimer")
+
+[node name="HoldTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HoldDelay" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]

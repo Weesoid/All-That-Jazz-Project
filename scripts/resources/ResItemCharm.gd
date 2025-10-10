@@ -5,6 +5,8 @@ class_name ResCharm
 @export var unique: bool = false
 
 func updateItem():
+	if !FileAccess.file_exists(parent_item):
+		InventoryGlobals.inventory.erase(self)
 	var updated_item = load(parent_item)
 	name = updated_item.name
 	icon = updated_item.icon

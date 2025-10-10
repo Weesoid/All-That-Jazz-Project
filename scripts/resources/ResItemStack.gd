@@ -15,7 +15,8 @@ func add(count: int, show_prompt=true):
 
 func updateItem():
 	if !FileAccess.file_exists(parent_item):
-		InventoryGlobals.removeItemResource(self)
+		InventoryGlobals.inventory.erase(self)
+		#InventoryGlobals.removeItemResource(self)
 		return
 	
 	var loaded_parent_item = load(parent_item)
@@ -26,6 +27,11 @@ func updateItem():
 	mandatory = loaded_parent_item.mandatory
 	max_stack = loaded_parent_item.max_stack
 	barter_item = loaded_parent_item.barter_item
+	print(max_stack)
+	if max_stack > 0 and stack > max_stack:
+		stack = max_stack
+	if stack < 0:
+		InventoryGlobals.inventory.erase(self)
 
 func take(count: int):
 	stack -= count

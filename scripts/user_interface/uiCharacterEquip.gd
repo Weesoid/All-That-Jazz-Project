@@ -1,10 +1,11 @@
 extends Control
 class_name EquipmentInterface
 
-@onready var unequip_button = $PanelContainer/MarginContainer/ScrollContainer/GridContainer/CustomButton
+#@onready var unequip_button = $PanelContainer/MarginContainer/ScrollContainer/GridContainer/CustomButton
 @onready var equipment = $PanelContainer/MarginContainer/ScrollContainer/GridContainer
 @onready var animator = $AnimationPlayer
 signal equipped_item
+
 ## 0 = Charms, 1 = Weapons
 func showEquipment(type:int, combatant: ResPlayerCombatant, slot: int):
 	clearButtons()
@@ -13,12 +14,11 @@ func showEquipment(type:int, combatant: ResPlayerCombatant, slot: int):
 	if type == 0:
 		for item in inventory.filter(func(item): return item is ResCharm):
 			addButton(combatant, item, slot)
-			
 	elif type == 1:
 		for item in inventory.filter(func(item): return item is ResWeapon):
 			addButton(combatant, item, slot)
 	
-	unequip_button.grab_focus()
+	#unequip_button.grab_focus()
 	animator.play("Show")
 
 func addButton(combatant, item, slot):
@@ -34,6 +34,7 @@ func equipItem(combatant: ResPlayerCombatant, item: ResItem, slot: int):
 	elif item is ResWeapon:
 		combatant.equipWeapon(item)
 	equipped_item.emit()
+	OverworldGlobals.playSound("res://audio/sounds/421461__jaszunio15__click_46.ogg")
 	queue_free()
 
 func clearButtons():

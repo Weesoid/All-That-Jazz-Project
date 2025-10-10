@@ -1,118 +1,257 @@
-[gd_scene load_steps=9 format=3 uid="uid://c36nhmt43udrv"]
+[gd_scene load_steps=13 format=3 uid="uid://c36nhmt43udrv"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCraftingUI.gd" id="1_y6pgg"]
-[ext_resource type="PackedScene" uid="uid://b0f85fb7fa5hj" path="res://scenes/user_interface/CustomButton.tscn" id="2_3ycts"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_3ycts"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="2_fqj8l"]
 [ext_resource type="AudioStream" uid="uid://c0g8aj1yokb81" path="res://audio/sounds/580813__silverillusionist__craft-item-3.ogg" id="3_iry6e"]
 [ext_resource type="Texture2D" uid="uid://dkdxn0jh6oty0" path="res://images/sprites/icon_plus.png" id="3_m17c3"]
-[ext_resource type="AudioStream" uid="uid://bngusvjprdqlt" path="res://audio/sounds/580812__silverillusionist__craft-item-2.ogg" id="5_0hxak"]
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="6_m87ni"]
+[ext_resource type="Texture2D" uid="uid://gc571ukvy2xi" path="res://images/sprites/icon_resources.png" id="6_mh15s"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="6_yxexq"]
+[ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="8_0nyp3"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_6vwdi"]
+[ext_resource type="Texture2D" uid="uid://giu1c5mkvqfg" path="res://images/sprites/icon_repair.png" id="9_mqi73"]
+[ext_resource type="Texture2D" uid="uid://daxwwykl5vrk1" path="res://images/sprites/icon_recipes.png" id="10_ei0u0"]
 
 [node name="uiCrafting" type="Control"]
 layout_mode = 3
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
 script = ExtResource("1_y6pgg")
 
-[node name="Craftables" type="PanelContainer" parent="."]
+[node name="Craftables" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 offset_left = -124.0
-offset_top = -91.5
+offset_top = -112.0
 offset_right = 124.0
-offset_bottom = 91.5
+offset_bottom = -32.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="Craftables"]
+[node name="Panel" type="Panel" parent="Craftables"]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="GridContainer" type="VBoxContainer" parent="Craftables/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Craftables"]
 layout_mode = 2
+alignment = 1
 
-[node name="CoreComp" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
-custom_minimum_size = Vector2(175, 0)
+[node name="OtherActions" type="HBoxContainer" parent="Craftables/VBoxContainer"]
 layout_mode = 2
+alignment = 1
+
+[node name="Recipes" parent="Craftables/VBoxContainer/OtherActions" instance=ExtResource("8_0nyp3")]
+layout_mode = 2
+texture = ExtResource("10_ei0u0")
+hold_delay = 0.5
+
+[node name="Repair" parent="Craftables/VBoxContainer/OtherActions" instance=ExtResource("8_0nyp3")]
+layout_mode = 2
+texture = ExtResource("9_mqi73")
+hold_delay = 0.5
+
+[node name="CenterContainer" type="CenterContainer" parent="Craftables/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="GridContainer" type="HBoxContainer" parent="Craftables/VBoxContainer/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CompA" parent="Craftables/VBoxContainer/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 1
 theme = ExtResource("2_fqj8l")
-text = "CORE COMPONENT"
 icon = ExtResource("3_m17c3")
-alignment = 2
+alignment = 1
+icon_alignment = 1
 
-[node name="CompA" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
-custom_minimum_size = Vector2(175, 0)
-layout_mode = 2
-theme = ExtResource("2_fqj8l")
-text = "COMPONENT A"
-icon = ExtResource("3_m17c3")
-alignment = 2
-
-[node name="CompB" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
-custom_minimum_size = Vector2(175, 0)
-layout_mode = 2
-theme = ExtResource("2_fqj8l")
-text = "COMPONENT B"
-icon = ExtResource("3_m17c3")
-alignment = 2
-
-[node name="Craft" parent="Craftables/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
-custom_minimum_size = Vector2(175, 0)
-layout_mode = 2
-theme = ExtResource("2_fqj8l")
-text = "CRAFT"
-click_sound = ExtResource("5_0hxak")
-
-[node name="Repair" parent="." instance=ExtResource("2_3ycts")]
-layout_mode = 2
-offset_left = -120.0
-offset_top = 89.0
-offset_right = -50.0
-offset_bottom = 111.0
-theme = ExtResource("6_yxexq")
-text = "REPAIR GEAR"
-click_sound = ExtResource("3_iry6e")
-
-[node name="Recipes" parent="." instance=ExtResource("2_3ycts")]
-layout_mode = 2
-offset_left = -40.0
-offset_top = 89.0
-offset_right = 9.0
-offset_bottom = 111.0
-theme = ExtResource("6_yxexq")
-text = "RECIPES"
-click_sound = ExtResource("3_iry6e")
-
-[node name="ItemSelect" type="PanelContainer" parent="."]
+[node name="Label" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/CompA"]
 visible = false
-layout_mode = 0
-offset_left = -160.0
-offset_top = -114.0
-offset_right = 160.0
-offset_bottom = 116.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 13.0
+grow_horizontal = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="ItemSelect"]
-layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
+[node name="RequiredLabel" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/CompA"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 1
+vertical_alignment = 2
 
-[node name="SelectCharms" type="ScrollContainer" parent="ItemSelect/MarginContainer"]
-custom_minimum_size = Vector2(7.866, 0)
+[node name="CompB" parent="Craftables/VBoxContainer/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+theme = ExtResource("2_fqj8l")
+disabled = true
+icon = ExtResource("3_m17c3")
+alignment = 1
+icon_alignment = 1
 
-[node name="VBoxContainer" type="GridContainer" parent="ItemSelect/MarginContainer/SelectCharms"]
+[node name="Label" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/CompB"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 13.0
+grow_horizontal = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 2
+
+[node name="RequiredLabel" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/CompB"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="CompC" parent="Craftables/VBoxContainer/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-columns = 8
+theme = ExtResource("2_fqj8l")
+disabled = true
+icon = ExtResource("3_m17c3")
+alignment = 1
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/CompC"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 13.0
+grow_horizontal = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 2
+
+[node name="RequiredLabel" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/CompC"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Label" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Craft" parent="Craftables/VBoxContainer/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_fqj8l")
+disabled = true
+icon = ExtResource("6_mh15s")
+alignment = 1
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/Craft"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = -3.0
+offset_bottom = 10.0
+grow_horizontal = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 2
+
+[node name="RequiredLabel" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer/Craft"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("6_m87ni")
+text = "67"
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="RepairButtons" type="Control" parent="."]
 visible = false
@@ -154,7 +293,9 @@ text = "[img]res://images/sprites/item_unknown.png[/img] 25"
 fit_content = true
 
 [connection signal="ready" from="." to="." method="_on_ready"]
-[connection signal="pressed" from="Repair" to="." method="_on_repair_pressed"]
-[connection signal="pressed" from="Recipes" to="." method="_on_recipes_pressed"]
+[connection signal="pressed" from="Craftables/VBoxContainer/OtherActions/Recipes" to="." method="_on_recipes_pressed"]
+[connection signal="pressed" from="Craftables/VBoxContainer/CenterContainer/GridContainer/CompA" to="." method="_on_component_pressed"]
+[connection signal="pressed" from="Craftables/VBoxContainer/CenterContainer/GridContainer/CompB" to="." method="_on_component_pressed"]
+[connection signal="pressed" from="Craftables/VBoxContainer/CenterContainer/GridContainer/CompC" to="." method="_on_component_pressed"]
 [connection signal="pressed" from="RepairButtons/RepairAll" to="." method="_on_repair_all_pressed"]
 [connection signal="pressed" from="RepairButtons/RepairEquipped" to="." method="_on_repair_equipped_pressed"]

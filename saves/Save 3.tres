@@ -7,13 +7,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_0flrc"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_5xxa5"]
 
-[sub_resource type="Resource" id="Resource_4mvyu"]
+[sub_resource type="Resource" id="Resource_krhja"]
 script = ExtResource("1_rcfk0")
-position = Vector2(104.134, 20.9332)
+position = Vector2(144.001, 212.932)
 scene_path = "res://scenes/entities/Player.tscn"
-direction = -90
+direction = 90
 
-[sub_resource type="Resource" id="Resource_kasl4"]
+[sub_resource type="Resource" id="Resource_amoxe"]
 script = ExtResource("2_lte1a")
 quests = Array[String](["res://resources/quests/GetThatItem.tres"])
 quest_objectives_data = {
@@ -25,7 +25,7 @@ quest_objectives_data = {
 }
 }
 
-[sub_resource type="Resource" id="Resource_0fyb0"]
+[sub_resource type="Resource" id="Resource_8vi8v"]
 script = ExtResource("3_4t4ir")
 charms = {
 0: "",
@@ -36,15 +36,15 @@ stat_values = {
 "accuracy": 0.95,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 99.0,
+"damage": 99,
 "defense": 0.0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
-"handling": 0.0,
+"handling": 0,
 "heal_mult": 1.0,
-"health": -2,
+"health": -2.0,
 "resist": 0.05,
-"speed": 8.0
+"speed": 8
 }
 base_stat_values = {
 "accuracy": 0.95,
@@ -75,7 +75,7 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_5m2r3"]
+[sub_resource type="Resource" id="Resource_qccyn"]
 script = ExtResource("3_4t4ir")
 charms = {
 0: "",
@@ -125,12 +125,12 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_nhd6i"]
+[sub_resource type="Resource" id="Resource_a7s77"]
 script = ExtResource("4_a0mmx")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 map_logs = {
 "res://scenes/maps/HuntingGrounds.tscn": [],
-"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup2"],
+"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup"],
 "res://scenes/maps/SidescrollerB.tscn": [],
 "res://scenes/maps/SidescrollerC.tscn": [],
 "res://scenes/maps/SidescrollerD.tscn": [],
@@ -140,14 +140,14 @@ map_logs = {
 }
 equipped_arrow = "res://resources/items/ArrowJunk.tres"
 equipped_blessing = ""
-currency = 304
+currency = 230
 team_level = 2
-current_exp = 182
+current_exp = 51
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_5m2r3"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_0fyb0")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_qccyn"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_8vi8v")
 }
 unlocked_abilities = {}
 added_abilities = {}
@@ -155,7 +155,7 @@ max_team_level = 5
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_tsem7"]
+[sub_resource type="Resource" id="Resource_v0eqk"]
 script = ExtResource("5_0flrc")
 inventory = {
 "res://resources/items/ArrowJunk.tres": 100,
@@ -167,9 +167,9 @@ crafted_items = Array[String]([])
 
 [resource]
 script = ExtResource("6_5xxa5")
-name = "Save 3 - 00:23:33
+name = "Save 3 - 00:23:43
 Morale 2
-Node2D"
-playtime = 1413.27
-current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_4mvyu"), SubResource("Resource_kasl4"), SubResource("Resource_nhd6i"), SubResource("Resource_tsem7")]
+Safe"
+playtime = 1423.47
+current_map_path = "res://scenes/maps/SidescrollerB.tscn"
+save_data = [SubResource("Resource_krhja"), SubResource("Resource_amoxe"), SubResource("Resource_a7s77"), SubResource("Resource_v0eqk")]

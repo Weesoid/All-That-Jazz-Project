@@ -5,10 +5,9 @@
 
 [resource]
 script = ExtResource("2_rbww4")
-max_stack = 0
+max_stack = 6
 barter_item = false
-auto_name = true
-name = ""
+name = "Arrow"
 icon = ExtResource("1_kqrt4")
 description = ""
 value = 0

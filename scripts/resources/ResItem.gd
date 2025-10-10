@@ -22,6 +22,12 @@ func getGeneralInfo():
 		out += '[img]res://images/sprites/trade_slip.png[/img]%s	' % value
 	return out
 
+func getFilename()-> String:
+	if parent_item != '':
+		return parent_item.get_file().replace('.tres','')
+	else:
+		return resource_path.get_file().replace('.tres','')
+
 func getRarity():
 	if value <= 0 and value < 100:
 		return 0 # Common
