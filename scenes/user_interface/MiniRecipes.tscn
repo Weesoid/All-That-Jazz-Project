@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cbrc0vjbilbwg"]
+[gd_scene load_steps=13 format=3 uid="uid://cbrc0vjbilbwg"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiMiniRecipes.gd" id="1_h6qy0"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="2_hqaue"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://gc571ukvy2xi" path="res://images/sprites/icon_resources.png" id="4_h3hhc"]
 [ext_resource type="Texture2D" uid="uid://dkwkoprestgl2" path="res://images/sprites/icon_camp_item.png" id="5_ki666"]
 [ext_resource type="Texture2D" uid="uid://dp2j72h30680c" path="res://images/sprites/icon_combat_item.png" id="6_0e2ho"]
+[ext_resource type="Texture2D" uid="uid://cqjhmuvbye63b" path="res://images/sprites/icon_projectiles.png" id="6_miibg"]
 [ext_resource type="Texture2D" uid="uid://bw0cxrqo1ci10" path="res://images/sprites/icon_charm.png" id="7_kdyl2"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="8_7nm2x"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="9_eknq3"]
@@ -19,6 +20,7 @@ anchor_left = 0.5
 anchor_right = 0.5
 grow_horizontal = 2
 script = ExtResource("1_h6qy0")
+hide_empty_categories = true
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -59,6 +61,11 @@ layout_mode = 2
 texture = ExtResource("5_ki666")
 hold_delay = 0.5
 
+[node name="AmmoItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
+layout_mode = 2
+texture = ExtResource("6_miibg")
+hold_delay = 0.5
+
 [node name="CombatItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
 layout_mode = 2
 texture = ExtResource("6_0e2ho")
@@ -92,6 +99,15 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="CampItems" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CampItems"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AmmoItems" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AmmoItems" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/AmmoItems"]
 layout_mode = 2
 size_flags_horizontal = 3
 

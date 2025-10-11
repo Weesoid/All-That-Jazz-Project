@@ -6,14 +6,14 @@ var recipes: Dictionary = {
 	# .tres name -> .tres name
 	{'ScrapSalvage': 1}: 'ArrowJunk.8',
 	{'ArrowJunk': 1, 'ScrapSalvage': 2}: 'Arrow.2',
-	{'Arrow': 1, 'ScrapSalvage': 1}: 'ArrowSleeper.1',
+	{'Arrow': 1, 'ScrapSalvage': 1,'CharmMurder':1}: 'ArrowSleeper.1',
 	{'MurderCharm': 1, 'ScrapSalvage': 1}: 'CharmStoneWall.1',
 	{'ScrapSalvage': 12, 'ArrowJunk': 16,'ArrowSleeper':1}: 'CharmMurder.1',
 }
 var max_inventory: int = 500
 
 signal added_item_to_inventory
-
+signal stack_item_changed(item, new_stack, old_stack)
 
 func loadItemResource(resource_name: String)-> ResItem:
 	return load("res://resources/items/"+resource_name+".tres")

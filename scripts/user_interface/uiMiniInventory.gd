@@ -6,11 +6,13 @@ class_name MiniInventory
 @onready var categories = $PanelContainer/MarginContainer/VBoxContainer/Categories
 @onready var resource_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/Resources
 @onready var camp_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/CampItems
+@onready var ammo_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/AmmoItems
 @onready var combat_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/CombatItems
 @onready var charm_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/Charms
 @onready var mini_inv = $PanelContainer/MarginContainer/VBoxContainer
 @onready var items = $PanelContainer/MarginContainer/VBoxContainer/Resources/Resources
 @onready var camp_items = $PanelContainer/MarginContainer/VBoxContainer/CampItems/CampItems
+@onready var ammo_items = $PanelContainer/MarginContainer/VBoxContainer/AmmoItems/AmmoItems
 @onready var combat_items = $PanelContainer/MarginContainer/VBoxContainer/CombatItems/CombatItems
 @onready var charms = $PanelContainer/MarginContainer/VBoxContainer/Charms/Charms
 @onready var exit_button = $PanelContainer/MarginContainer/VBoxContainer/Resources/Resources/ExitButton
@@ -28,6 +30,7 @@ func _ready():
 	create_tween().tween_property(self, 'modulate', Color.WHITE, 0.25)
 	resource_category.pressed.connect(func(): changeCategories('Resources'))
 	camp_category.pressed.connect(func(): changeCategories('CampItems'))
+	ammo_category.pressed.connect(func(): changeCategories('AmmoItems'))
 	combat_category.pressed.connect(func(): changeCategories('CombatItems'))
 	charm_category.pressed.connect(func(): changeCategories('Charms'))
 	for category in categories.get_children():
@@ -42,13 +45,15 @@ func showItems(filter:Callable=func(_item):pass):
 	if !hide_empty_categories:
 		resource_category.setDisabled(isCategoryEmpty(items))
 		camp_category.setDisabled(isCategoryEmpty(camp_items))
+		ammo_category.setDisabled(isCategoryEmpty(ammo_items))
 		combat_category.setDisabled(isCategoryEmpty(combat_items))
 		charm_category.setDisabled(isCategoryEmpty(charms))
 	else:
-		resource_category.visible = isCategoryEmpty(items)
-		camp_category.visible = isCategoryEmpty(camp_items)
-		combat_category.visible = isCategoryEmpty(combat_items)
-		charm_category.visible = isCategoryEmpty(charms)
+		resource_category.visible = !isCategoryEmpty(items)
+		camp_category.visible = !isCategoryEmpty(camp_items)
+		ammo_category.visible = !isCategoryEmpty(ammo_items)
+		combat_category.visible = !isCategoryEmpty(combat_items)
+		charm_category.visible = !isCategoryEmpty(charms)
 	
 	OverworldGlobals.setMenuFocus(resource_category)
 
@@ -59,6 +64,9 @@ func addButton(item:ResItem):
 	var button = OverworldGlobals.createItemButton(item)
 	if item is ResCampItem:
 		camp_items.add_child(button)
+	elif item is ResProjectileAmmo:
+		print('juggalo')
+		ammo_items.add_child(button)
 	elif item is ResWeapon:
 		combat_items.add_child(button)
 	elif item is ResCharm:

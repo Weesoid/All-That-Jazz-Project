@@ -7,9 +7,11 @@ var stack = 1
 
 func add(count: int, show_prompt=true):
 	if (count + stack <= max_stack and max_stack != 0) or max_stack == 0:
+		InventoryGlobals.stack_item_changed.emit(self, stack+count, stack)
 		stack += count
 		if show_prompt: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [name, stack])
 	else:
+		InventoryGlobals.stack_item_changed.emit(self, max_stack, stack)
 		stack = max_stack
 		if show_prompt: OverworldGlobals.showPrompt('[color=yellow]%s[color=white] max stack reached.' % [name])
 
@@ -34,6 +36,7 @@ func updateItem():
 		InventoryGlobals.inventory.erase(self)
 
 func take(count: int):
+	InventoryGlobals.stack_item_changed.emit(self, stack-count, stack)
 	stack -= count
 	if stack <= 0:
 		InventoryGlobals.inventory.erase(self)

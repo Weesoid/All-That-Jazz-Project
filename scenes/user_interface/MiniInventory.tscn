@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://by0ydg0m5o6ur"]
+[gd_scene load_steps=13 format=3 uid="uid://by0ydg0m5o6ur"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiMiniInventory.gd" id="1_cylm1"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_jmc6r"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dkwkoprestgl2" path="res://images/sprites/icon_camp_item.png" id="5_ivxlf"]
 [ext_resource type="Texture2D" uid="uid://bw0cxrqo1ci10" path="res://images/sprites/icon_charm.png" id="6_0d57u"]
 [ext_resource type="Texture2D" uid="uid://ch3hfjxwctukl" path="res://images/sprites/dialogue_tail.png" id="6_sonsa"]
+[ext_resource type="Texture2D" uid="uid://cqjhmuvbye63b" path="res://images/sprites/icon_projectiles.png" id="6_w4wt0"]
 
 [node name="MiniInventory" type="Control"]
 layout_mode = 3
@@ -59,6 +60,12 @@ layout_mode = 2
 texture = ExtResource("5_ivxlf")
 hold_delay = 0.5
 
+[node name="AmmoItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+texture = ExtResource("6_w4wt0")
+hold_delay = 0.5
+
 [node name="CombatItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
 layout_mode = 2
 texture = ExtResource("4_qh0kw")
@@ -90,6 +97,15 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="CampItems" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CampItems"]
+layout_mode = 2
+columns = 7
+
+[node name="AmmoItems" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AmmoItems" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/AmmoItems"]
 layout_mode = 2
 columns = 7
 

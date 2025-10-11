@@ -25,8 +25,6 @@ var wake_events = [
 	]
 var cam_default_pos:Vector2
 
-signal update_count(count, item)
-
 func _ready():
 	cam_default_pos = OverworldGlobals.player.player_camera.global_position
 	rest_button.disabled = PlayerGlobals.rested and save_point.mind_rested
@@ -36,7 +34,6 @@ func _ready():
 	tweenButtons(camp_item_container.get_children())
 	tweenButtons($CampBar/RestOptions.get_children())
 	tweenButtons($CampBar/MainBar/OtherActions.get_children())
-	update_count.connect(updateCount)
 	for child in save_point.rest_spots.get_children():
 		if child.texture == null:
 			continue
@@ -55,10 +52,9 @@ func _ready():
 						confirm_rest.text = 'REST'
 					else:
 						confirm_rest.text = 'SKIP GUARD'
-				elif camp_item != null:
+				elif camp_item != null and camp_item.stack > 0:
 					camp_item.applyEffects(combatant)
 					camp_item.take(1)
-					update_count.emit(camp_item.stack, camp_item)
 					updateCombatants()
 		)
 		mini_bar.selector.focus_entered.connect(
@@ -247,13 +243,6 @@ func fillCampItemContainer():
 				)
 		#button.description_offset=Vector2(0,116)
 		camp_item_container.add_child(button)
-
-func updateCount(count, item):
-	var button = getItemButton(item)
-	button.get_node('Count').text = str(count)
-	if count <= 0:
-		button.queue_free()
-		camp_item = null
 
 func getItemButton(item: ResItem):
 	for button in camp_item_container.get_children():

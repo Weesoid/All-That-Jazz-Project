@@ -28,8 +28,8 @@ func grabTabFocus(tab:int):
 	var menu = tabs.get_tab_control(tab)
 	if menu.name == 'PARTY':
 		menu = menu.pool
-	elif menu.name == 'INVENTORY':
-		menu = menu.get_child(0).inventory_grid
+#	elif menu.name == 'INVENTORY':
+#		menu = menu.get_child(0).inventory_grid
 	elif menu.name == 'QUESTS':
 		var quests = menu.get_child(0).ongoing_quests
 		if quests.get_children().size() == 1:

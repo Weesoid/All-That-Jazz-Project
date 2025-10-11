@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cnl74ivmm3b70"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiShop.gd" id="1_fvlk8"]
-[ext_resource type="PackedScene" path="res://scenes/user_interface/CustomButton.tscn" id="2_n4cm8"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_n4cm8"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="3_4lwis"]
 [ext_resource type="PackedScene" uid="uid://cshiwdcttktbe" path="res://scenes/user_interface/CurrencyView.tscn" id="3_xf0c8"]
 

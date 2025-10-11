@@ -244,13 +244,8 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	button.description_text = item.getInformation()
 	button.description_offset = Vector2(0, -28)
 	if item is ResStackItem and show_count:
-		var label = Label.new()
-		label.text = str(item.stack)
-		label.theme = load("res://design/OutlinedLabel.tres")
-		label.name = 'Count'
-#		if item.stack >= item.max_stack:
-#			label.modulate = Color.YELLOW
-		button.add_child(label)
+		var count_label = StackCountLabel.new(item)
+		button.add_child(count_label)
 	
 	if value_modifier != 0.0:
 		var label = Label.new()

@@ -21,10 +21,163 @@ theme_override_constants/margin_bottom = 8
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
 layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
 
-[node name="TabContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer"]
+[node name="HFlowContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
 layout_mode = 2
-alignment = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Items" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Items"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Items/Label"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/ScrollContainer/HFlowContainer/Items/Label/VBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/sprites/icon_resources.png[/img] ITEMS"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/HFlowContainer/Items/Label/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Items"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Ammo" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Ammo"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Ammo/Label"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/ScrollContainer/HFlowContainer/Ammo/Label/VBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/sprites/icon_projectiles.png[/img] AMMO"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/HFlowContainer/Ammo/Label/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Ammo"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CampItems" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CampItems"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CampItems/Label"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/ScrollContainer/HFlowContainer/CampItems/Label/VBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/sprites/icon_camp_item.png[/img] CAMP ITEMS"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/HFlowContainer/CampItems/Label/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CampItems"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CombatItems" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label/VBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/sprites/icon_combat_item.png[/img] COMBAT ITEMS"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Charms" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Charms"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Charms/Label"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/ScrollContainer/HFlowContainer/Charms/Label/VBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/sprites/icon_charm.png[/img] CHARMS"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/HFlowContainer/Charms/Label/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Charms"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Space" type="Label" parent="."]
 layout_mode = 2
