@@ -24,7 +24,7 @@ func moveEnterArea(pos: Vector2):
 	top_pin.position = pos
 
 func isPlayerOnEnterArea():
-	return top_pin.get_overlapping_bodies().has(OverworldGlobals.player)
+	return is_instance_valid(top_pin) and top_pin.get_overlapping_bodies().has(OverworldGlobals.player)
 
 func createSegment():
 	var segment = load("res://scenes/environment/RopeSegment.tscn").instantiate()

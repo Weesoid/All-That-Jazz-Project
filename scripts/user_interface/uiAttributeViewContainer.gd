@@ -35,7 +35,6 @@ func _process(_delta):
 		else:
 			healm_val.text = 'BROKEN'
 	
-		#highlightModifiedStats(hp_val, 'health')
 		highlightModifiedStats(brawn_val, 'damage')
 		highlightModifiedStats(grit_val, 'defense')
 		highlightModifiedStats(handling_val, 'handling')
@@ -55,6 +54,7 @@ func calcDamage(val:String):
 		'max': return round(damage+variance)
 
 func highlightModifiedStats(value_node, stat):
+
 	if combatant.stat_values[stat] > combatant.base_stat_values[stat]:
 		value_node.modulate = SettingsGlobals.ui_colors['up']
 	elif combatant.stat_values[stat] < combatant.base_stat_values[stat]:

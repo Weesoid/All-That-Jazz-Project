@@ -3,6 +3,7 @@ class_name MiniInventory
 
 @export var hide_empty_categories:bool=false
 @export var show_tail:bool=true
+
 @onready var categories = $PanelContainer/MarginContainer/VBoxContainer/Categories
 @onready var resource_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/Resources
 @onready var camp_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/CampItems
@@ -19,6 +20,10 @@ class_name MiniInventory
 @onready var tail = $Tail
 
 var item_button_map:Dictionary = {}
+
+#func _init(p_hide_empty_categories, p_show_tail):
+#	hide_empty_categories = p_hide_empty_categories
+#	show_tail = p_show_tail
 
 func _ready():
 	if !show_tail:
@@ -55,17 +60,28 @@ func showItems(filter:Callable=func(_item):pass):
 		combat_category.visible = !isCategoryEmpty(combat_items)
 		charm_category.visible = !isCategoryEmpty(charms)
 	
-	OverworldGlobals.setMenuFocus(resource_category)
+	focusFirstFilled()
+
+func focusFirstFilled():
+	for category in categories.get_children():
+		var node_path='PanelContainer/MarginContainer/VBoxContainer/%s/%s' % [category.name,category.name]
+		if !has_node(node_path):
+			continue
+		
+		var category_container = get_node(node_path)
+		if category_container.get_children().filter(func(item): return item != exit_button).size() > 0:
+			print(category.name)
+			changeCategories(category.name)
+			return
 
 func isCategoryEmpty(category)-> bool:
-	return category.get_child_count() == 0
+	return category.get_children().filter(func(button): return button != exit_button).size() == 0
 
-func addButton(item:ResItem):
+func addButton(item):
 	var button = OverworldGlobals.createItemButton(item)
 	if item is ResCampItem:
 		camp_items.add_child(button)
 	elif item is ResProjectileAmmo:
-		print('juggalo')
 		ammo_items.add_child(button)
 	elif item is ResWeapon:
 		combat_items.add_child(button)

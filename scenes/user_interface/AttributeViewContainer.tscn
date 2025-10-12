@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dmb8cwivijlnn"]
+[gd_scene load_steps=7 format=3 uid="uid://dmb8cwivijlnn"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeViewContainer.gd" id="1_4r38l"]
+[ext_resource type="PackedScene" uid="uid://ddd26djy4282k" path="res://scenes/user_interface/BarNotcher.tscn" id="2_jnjvq"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="2_l6363"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_orqiy"]
 
@@ -96,6 +97,11 @@ uppercase = true
 [node name="ProgressBar" type="ProgressBar" parent="Grit"]
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+
+[node name="BarNotcher" parent="Grit/ProgressBar" instance=ExtResource("2_jnjvq")]
+layout_mode = 1
+notch_thresholds = Array[float]([0.7])
+notch_color = Color(1, 1, 1, 0.74902)
 
 [node name="Handling" type="HSplitContainer" parent="."]
 layout_mode = 2

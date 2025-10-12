@@ -7,13 +7,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_m4dsj"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_o0m7a"]
 
-[sub_resource type="Resource" id="Resource_hnb81"]
+[sub_resource type="Resource" id="Resource_240s8"]
 script = ExtResource("1_7iwhg")
-position = Vector2(101.146, 20.9253)
+position = Vector2(80.7554, 20.9338)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = -90
 
-[sub_resource type="Resource" id="Resource_n50wn"]
+[sub_resource type="Resource" id="Resource_yowc0"]
 script = ExtResource("2_ga2y8")
 quests = Array[String](["res://resources/quests/GetThatItem.tres"])
 quest_objectives_data = {
@@ -25,43 +25,43 @@ quest_objectives_data = {
 }
 }
 
-[sub_resource type="Resource" id="Resource_470wo"]
+[sub_resource type="Resource" id="Resource_0uth1"]
 script = ExtResource("3_f2mq8")
 charms = {
-0: "",
-1: "",
+0: "res://resources/items/CharmMurder.tres",
+1: "res://resources/items/CharmMurder.tres",
 2: ""
 }
 stat_values = {
 "accuracy": 0.85,
-"crit": 2.05,
+"crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 102.0,
-"defense": 0.02,
+"damage": 7.0,
+"defense": 0.7,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": -4.0,
-"heal_mult": -0.5,
-"health": 12.0,
+"heal_mult": -0.25,
+"health": 8,
 "resist": -0.38,
-"speed": 2.0
+"speed": -4.0
 }
 base_stat_values = {
 "accuracy": 0.95,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 99,
-"defense": 0,
+"damage": 4,
+"defense": 0.68,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
 "health": 28,
 "resist": 0.05,
-"speed": 8
+"speed": 1
 }
 mandatory = true
-lingering_effects = Array[String](["FadedIII", "CriticalEye", "FadedII"])
+lingering_effects = Array[String](["FadedII"])
 initialized = true
 stat_points = 0
 stat_point_allocations = {
@@ -69,32 +69,32 @@ stat_point_allocations = {
 "defense": 2,
 "handling": 0
 }
-temperment = Array[String](["linger|Faded II|{ \"accuracy\": 0, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": -0.5, \"health\": 0, \"resist\": -0.15, \"speed\": -2 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded2.png[/img]", "linger|Faded I|{ \"accuracy\": 0, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": -0.25, \"health\": 0, \"resist\": 0, \"speed\": -1 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded1.png[/img]", "linger|Faded III|{ \"accuracy\": -0.1, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": -4, \"heal_mult\": -0.75, \"health\": 0, \"resist\": -0.3, \"speed\": -3 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded3.png[/img]", "linger|Critical Eye|{ \"accuracy\": 0, \"crit\": 2, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": 0, \"health\": 0, \"resist\": 0, \"speed\": 0 }|[img color=GOLD]res://images/status_icons/icon_crit_eye.png[/img]", "linger|Faded II|{ \"accuracy\": 0, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": -0.5, \"health\": 0, \"resist\": -0.15, \"speed\": -2 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded2.png[/img]"])
+temperment = Array[String](["linger|Faded II|{ \"accuracy\": 0, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": -0.5, \"health\": 0, \"resist\": -0.15, \"speed\": -2 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded2.png[/img]", "linger|Faded III|{ \"accuracy\": -0.1, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": -4, \"heal_mult\": -0.75, \"health\": 0, \"resist\": -0.3, \"speed\": -3 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded3.png[/img]", "linger|Faded II|{ \"accuracy\": 0, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": -0.5, \"health\": 0, \"resist\": -0.15, \"speed\": -2 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded2.png[/img]"])
 file_references = {
 "active_abilities": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
-"equipped_weapon": ["", 0]
+"equipped_weapon": ["res://resources/items/SlashBlade.tres", 0]
 }
 
-[sub_resource type="Resource" id="Resource_o7g5l"]
+[sub_resource type="Resource" id="Resource_r2q8l"]
 script = ExtResource("3_f2mq8")
 charms = {
 0: "res://resources/items/CharmMurder.tres",
-1: "",
+1: "res://resources/items/RushDown.tres",
 2: ""
 }
 stat_values = {
-"accuracy": 1.02,
-"crit": 2.0,
+"accuracy": 0.87,
+"crit": -0.25,
 "crit_dmg": 1.25,
-"damage": 4.0,
+"damage": 4,
 "defense": 0.04,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
-"handling": -4.0,
-"heal_mult": 0.25,
-"health": 15.0,
-"resist": -0.21,
-"speed": 37.0
+"handling": 0,
+"heal_mult": 1.0,
+"health": 42,
+"resist": 0.09,
+"speed": 40
 }
 base_stat_values = {
 "accuracy": 0.95,
@@ -111,7 +111,7 @@ base_stat_values = {
 "speed": 44
 }
 mandatory = false
-lingering_effects = Array[String](["FadedIII", "CriticalEye"])
+lingering_effects = Array[String]([])
 initialized = true
 stat_points = 1
 stat_point_allocations = {
@@ -119,17 +119,17 @@ stat_point_allocations = {
 "defense": 4,
 "handling": 0
 }
-temperment = Array[String](["linger|Faded III|{ \"accuracy\": -0.1, \"crit\": 0, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": -4, \"heal_mult\": -0.75, \"health\": 0, \"resist\": -0.3, \"speed\": -3 }|[img color=STEEL_BLUE]res://images/status_icons/icon_faded3.png[/img]", "linger|Critical Eye|{ \"accuracy\": 0, \"crit\": 2, \"crit_dmg\": 0, \"damage\": 0, \"defense\": 0, \"handling\": 0, \"heal_mult\": 0, \"health\": 0, \"resist\": 0, \"speed\": 0 }|[img color=GOLD]res://images/status_icons/icon_crit_eye.png[/img]", "clever", "keen", "rigid", "clumsy", "heavy_handed"])
+temperment = Array[String](["clever", "keen", "rigid", "clumsy", "heavy_handed"])
 file_references = {
-"active_abilities": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Advance.tres", "res://resources/combat/abilities/Recede.tres"],
-"equipped_weapon": ["", 0]
+"active_abilities": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Counter.tres"],
+"equipped_weapon": ["res://resources/items/QuickBlade.tres", 0]
 }
 
-[sub_resource type="Resource" id="Resource_atpb3"]
+[sub_resource type="Resource" id="Resource_yvk42"]
 script = ExtResource("4_j072u")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 map_logs = {
-"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup"],
+"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup"],
 "res://scenes/maps/SidescrollerB.tscn": [],
 "res://scenes/maps/SidescrollerC.tscn": [&"PatrollerGroup", &"PatrollerGroup"],
 "res://scenes/maps/SidescrollerD.tscn": [{
@@ -141,16 +141,16 @@ map_logs = {
 "res://scenes/maps/SidescrollerF.tscn": [],
 "res://scenes/maps/_BaseMap.tscn": []
 }
-equipped_arrow = "res://resources/items/ArrowSleeper.tres"
+equipped_arrow = "res://resources/items/ArrowJunk.tres"
 equipped_blessing = ""
-currency = 7
+currency = 6
 team_level = 5
-current_exp = 0
+current_exp = 621
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_o7g5l"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_470wo")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_r2q8l"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_0uth1")
 }
 unlocked_abilities = {}
 added_abilities = {}
@@ -158,21 +158,23 @@ max_team_level = 5
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_sewl7"]
+[sub_resource type="Resource" id="Resource_hx505"]
 script = ExtResource("5_m4dsj")
 inventory = {
 "res://resources/items/Arrow.tres": 6,
 "res://resources/items/ArrowJunk.tres": 16,
-"res://resources/items/ArrowSleeper.tres": 15,
-"res://resources/items/ScrapSalvage.tres": 100
+"res://resources/items/BarterSalvage20.tres": 11,
+"res://resources/items/ExtraRations.tres": 3,
+"res://resources/items/Rations.tres": 3,
+"res://resources/items/ScrapSalvage.tres": 2
 }
 crafted_items = Array[String](["ArrowJunk", "Arrow", "ArrowSleeper", "CharmMurder"])
 
 [resource]
 script = ExtResource("6_o0m7a")
-name = "Save 2 - 04:16:48
+name = "Save 2 - 06:02:58
 Morale 5
 Node2D"
-playtime = 15409.1
+playtime = 21778.3
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_hnb81"), SubResource("Resource_n50wn"), SubResource("Resource_atpb3"), SubResource("Resource_sewl7")]
+save_data = [SubResource("Resource_240s8"), SubResource("Resource_yowc0"), SubResource("Resource_yvk42"), SubResource("Resource_hx505")]

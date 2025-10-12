@@ -76,7 +76,7 @@ required_effect = {
 "rank": 0,
 "status_effect": null
 }
-charges = 0
+charges = 3
 can_target_self = false
 can_target_dead = false
 dead_target_params = {

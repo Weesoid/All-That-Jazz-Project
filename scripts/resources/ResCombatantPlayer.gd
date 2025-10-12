@@ -153,6 +153,9 @@ func unequipWeapon():
 func hasEquippedWeapon()-> bool:
 	return equipped_weapon != null
 
+func hasWeapon(weapon:ResWeapon):
+	return equipped_weapon == weapon
+
 func equipCharm(charm: ResCharm, slot: int):
 	if InventoryGlobals.getItem(charm) != null:
 		InventoryGlobals.removeItemResource(charm, 1, false, true)

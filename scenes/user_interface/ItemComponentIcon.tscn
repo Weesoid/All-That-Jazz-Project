@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://cllnwecy8w0yp"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_lstmg"]
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="2_cqrv0"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiItemComponentIcon.gd" id="2_xc1n7"]
+
+[node name="ItemComponentIcon" type="TextureRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+texture = ExtResource("1_lstmg")
+stretch_mode = 3
+script = ExtResource("2_xc1n7")
+
+[node name="CurrentCount" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -1.0
+offset_bottom = 12.0
+grow_horizontal = 2
+theme = ExtResource("2_cqrv0")
+text = "67"
+horizontal_alignment = 1
+
+[node name="RequiredCount" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(40, 0)
+theme = ExtResource("2_cqrv0")
+text = "x10"
+horizontal_alignment = 1

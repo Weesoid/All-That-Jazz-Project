@@ -16,6 +16,7 @@ signal party_damaged
 signal combat_enetered
 signal combat_exited
 signal group_cleared(group:PatrollerGroup)
+signal update_inventory
 
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
@@ -145,6 +146,28 @@ func showMenu(path: String):
 	else:
 		if isPlayerCheating(): player.get_node('DebugComponent').show()
 		closeMenu(main_menu)
+
+## press_type: 0: Press, 1: Held press
+func showMiniMenu(menu, action_button:Button, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
+	var mini_menu = menu.instantiate()
+	action_button.add_child(mini_menu)
+	mini_menu.z_index = 10
+	mini_menu.showItems(item_filter)
+	for item in mini_menu.item_button_map.keys():
+		var button = mini_menu.item_button_map[item]
+		
+		if press_type == 0:
+			button.pressed.connect(button_function.bind(item))
+			if secondary_button_function != null: button.held_press.connect(secondary_button_function.bind(item))
+		elif press_type == 1:
+			button.held_press.connect(button_function.bind(item))
+			if secondary_button_function != null: button.pressed.connect(secondary_button_function.bind(item))
+		if button.has_method('updateInformation'):
+			update_inventory.connect(button.updateInformation)
+#			if press_type == 0:
+#				button.pressed.connect(func(): update_inventory.emit())
+#			elif press_type == 1:
+#				button.held_press.connect(func(): update_inventory.emit())
 
 func canShowMenu():
 	return player.is_on_floor()

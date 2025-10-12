@@ -6,7 +6,7 @@ const RECIPE_BUTTON = preload("res://scenes/user_interface/CustomRecipeButton.ts
 func showItems(filter:Callable=func(_item):pass):
 	var inventory = InventoryGlobals.crafted_items
 	for item in inventory:
-		addButtonx(item)
+		addButton(item)
 	
 	if !hide_empty_categories:
 		resource_category.setDisabled(isCategoryEmpty(items))
@@ -21,23 +21,23 @@ func showItems(filter:Callable=func(_item):pass):
 		combat_category.visible = !isCategoryEmpty(combat_items)
 		charm_category.visible = !isCategoryEmpty(charms)
 	
-	OverworldGlobals.setMenuFocus(resource_category)
+	focusFirstFilled()
 
-func addButtonx(item_name:String):
+func addButton(item):
 	var button = RECIPE_BUTTON.instantiate()
-	button.item_filename = item_name
-	var item = load("res://resources/items/%s.tres" % item_name)
+	button.item_filename = item
+	var item_resource = load("res://resources/items/%s.tres" % item)
 	
-	if item is ResCampItem:
+	if item_resource is ResCampItem:
 		camp_items.add_child(button)
-	elif item is ResProjectileAmmo:
+	elif item_resource is ResProjectileAmmo:
 		ammo_items.add_child(button)
-	elif item is ResWeapon:
+	elif item_resource is ResWeapon:
 		combat_items.add_child(button)
-	elif item is ResCharm:
+	elif item_resource is ResCharm:
 		charms.add_child(button)
 	else:
 		items.add_child(button)
 	
 	button.focus_exited.connect(checkInFocus)
-	item_button_map[item] = button
+	item_button_map[item_resource] = button

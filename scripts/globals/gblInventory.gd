@@ -6,8 +6,8 @@ var recipes: Dictionary = {
 	# .tres name -> .tres name
 	{'ScrapSalvage': 1}: 'ArrowJunk.8',
 	{'ArrowJunk': 1, 'ScrapSalvage': 2}: 'Arrow.2',
-	{'Arrow': 1, 'ScrapSalvage': 1,'CharmMurder':1}: 'ArrowSleeper.1',
-	{'MurderCharm': 1, 'ScrapSalvage': 1}: 'CharmStoneWall.1',
+	{'Arrow': 1, 'ScrapSalvage': 1,'CharmMurder':3}: 'ArrowSleeper.1',
+	{'CharmMurder': 1, 'ScrapSalvage': 1}: 'CharmStoneWall.1',
 	{'ScrapSalvage': 12, 'ArrowJunk': 16,'ArrowSleeper':1}: 'CharmMurder.1',
 }
 var max_inventory: int = 500
@@ -28,7 +28,7 @@ func canCraft(item_filename: String):
 	for component in recipe.keys():
 		var item = load("res://resources/items/%s.tres"%component)
 		var count = recipe[component]
-		if !InventoryGlobals.hasItem(item,count):
+		if !InventoryGlobals.hasItem(item,count,false):
 			return false
 	
 	return true
@@ -81,6 +81,8 @@ func craftItem(base_recipe: Array):
 	for item_filepath in recipe.keys():
 		var item = load("res://resources/items/%s.tres" % item_filepath)
 		var count = recipe[item_filepath]
+		if item.name == 'MURDERNUS':
+			print('rape: ',count)
 		InventoryGlobals.removeItemResource(item, count, false)
 
 func getBaseRecipes()->Array:
@@ -138,39 +140,34 @@ func giveItemDict(item_dict:Dictionary,show_message:bool=true):
 			for i in range(item_dict[item]): 
 				addItemResource(item,1,show_message)
 
-func hasItem(item_name, count:int=0, check_equipped:bool=true):
-	if item_name is String and check_equipped:
-		for combatant in PlayerGlobals.team:
-			if combatant.equipped_weapon != null and combatant.equipped_weapon.name == item_name:
+func hasItem(item_key, count:int=1, check_equipped:bool=true):
+	var find_item: ResItem
+	if item_key is String:
+		assert(FileAccess.file_exists("res://resources/items/%s.tres" % item_key), 'Path to %s item does not exist!' % item_key)
+		find_item = load("res://resources/items/%s.tres" % item_key)
+	elif item_key is ResItem:
+		find_item = item_key
+	else:
+		assert(true, 'Unknown item key type: %s'%item_key)
+	
+	if find_item is ResEquippable and check_equipped:
+		for member in PlayerGlobals.team:
+			if find_item is ResWeapon and member.hasWeapon(find_item):
 				return true
-			for charm in combatant.charms.values():
-				if charm == null: 
-					continue
-				elif charm.name == item_name:
-					return true
-	elif item_name is ResItem and check_equipped:
-		for combatant in PlayerGlobals.team:
-			if combatant.equipped_weapon == item_name:
-				return true
-			elif combatant.charms.values().has(item_name):
+			elif find_item is ResCharm and member.hasCharm(find_item):
 				return true
 	
-	if item_name is String:
-		for item in inventory:
-			if item is ResStackItem and count > 0 and item.stack >= count and item.name == item_name:
-				return true
-			elif (item is ResStackItem and count <= 0) or (!item is ResStackItem):
-				if item.name == item_name:
-					return true
-				else:
-					continue
-	elif item_name is ResItem:
-		if count > 0 and inventory.has(item_name) and getItem(item_name).stack >= count:
-			return true
-		elif count <= 0:
-			return inventory.has(item_name)
+	if find_item is ResStackItem:
+		var stack_items: Array = inventory.filter(func(item): return item is ResStackItem)
+		return stack_items.has(find_item) and stack_items[stack_items.find(find_item)].stack >= count
+	elif find_item is ResCharm:
+		return getCharms(find_item).size() >= count
 	
-	return false
+	return inventory.has(find_item)
+
+func getCharms(charm:ResCharm)-> Array:
+	var parent_charm = load("res://resources/items/%s.tres"%charm.getFilename())
+	return inventory.filter(func(item): return parent_charm.resource_path == item.parent_item)
 
 func getEquippedWeapons()-> Array:
 	var out = []
@@ -183,7 +180,10 @@ func getNonMandatoryItems():
 	return inventory.filter(func(item): return !item.mandatory)
 
 func getItem(item):
-	if item is ResItem:
+	if item is ResCharm:
+		print(getCharms(item))
+		return getCharms(item)[0]
+	elif item is ResItem:
 		return inventory[inventory.find(item)]
 	elif item is String:
 		return getItemWithName(item)
@@ -206,8 +206,11 @@ func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 		OverworldGlobals.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
 		return
 	
-	if item is ResEquippable:
-		if item.isEquipped(): item.unequip()
+	if item is ResCharm:
+		for i in range(count):
+			inventory.erase(getCharms(item)[0])
+		if prompt: OverworldGlobals.showPrompt('%sx [color=yellow]%s[/color] were removed.' % [count, item])
+	elif item is ResEquippable:
 		inventory.erase(item)
 		if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] removed.' % item)
 	
@@ -229,7 +232,7 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 	if !canAdd(item.reference_item, count) or count <= 0:
 		return
 	
-	if hasItem(item.name):
+	if hasItem(item):
 		incrementStackItem(item.name, count)
 	else:
 		addItemResource(item.reference_item, count)
@@ -241,7 +244,7 @@ func canAdd(item, count:int=1, show_prompt=true):
 	elif item is ResWeapon and hasItem(item):
 		if show_prompt: OverworldGlobals.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
-	elif item is ResStackItem and hasItem(item.name) and item.stack == item.max_stack and item.max_stack > 0:
+	elif item is ResStackItem and hasItem(item) and item.stack == item.max_stack and item.max_stack > 0:
 		if show_prompt: OverworldGlobals.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
 	

@@ -20,6 +20,7 @@ anchor_left = 0.5
 anchor_right = 0.5
 grow_horizontal = 2
 script = ExtResource("1_cylm1")
+hide_empty_categories = true
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -61,7 +62,6 @@ texture = ExtResource("5_ivxlf")
 hold_delay = 0.5
 
 [node name="AmmoItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
-custom_minimum_size = Vector2(12, 12)
 layout_mode = 2
 texture = ExtResource("6_w4wt0")
 hold_delay = 0.5

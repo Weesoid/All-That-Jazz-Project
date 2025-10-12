@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddd26djy4282k"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiBarNotcher.gd" id="1_hufag"]
+[ext_resource type="Texture2D" uid="uid://bmmd3evoqcnlw" path="res://images/sprites/bar_notch.png" id="1_qsl1o"]
+
+[node name="BarNotcher" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hufag")
+
+[node name="Notch" type="Control" parent="."]
+visible = false
+modulate = Color(1, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 0
+offset_bottom = 12.0
+
+[node name="UpNotch" type="TextureRect" parent="Notch"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -3.0
+offset_top = -1.0
+offset_right = 3.0
+offset_bottom = 3.0
+grow_horizontal = 2
+texture = ExtResource("1_qsl1o")
+stretch_mode = 3
+
+[node name="DownNotch" type="TextureRect" parent="Notch"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 3.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("1_qsl1o")
+stretch_mode = 3
+flip_v = true
+
+[connection signal="size_flags_changed" from="." to="." method="_on_size_flags_changed"]

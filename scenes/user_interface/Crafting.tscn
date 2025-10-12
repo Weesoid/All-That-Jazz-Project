@@ -39,6 +39,8 @@ offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
 
 [node name="Panel" type="Panel" parent="Craftables"]
 custom_minimum_size = Vector2(0, 64)
@@ -202,6 +204,7 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="Label" type="Label" parent="Craftables/VBoxContainer/CenterContainer/GridContainer"]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "="
@@ -211,7 +214,6 @@ vertical_alignment = 1
 [node name="Craft" parent="Craftables/VBoxContainer/CenterContainer/GridContainer" instance=ExtResource("2_3ycts")]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-size_flags_horizontal = 3
 theme = ExtResource("2_fqj8l")
 disabled = true
 icon = ExtResource("6_mh15s")
@@ -294,6 +296,7 @@ fit_content = true
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="pressed" from="Craftables/VBoxContainer/OtherActions/Recipes" to="." method="_on_recipes_pressed"]
+[connection signal="pressed" from="Craftables/VBoxContainer/OtherActions/Repair" to="." method="_on_repair_pressed"]
 [connection signal="pressed" from="Craftables/VBoxContainer/CenterContainer/GridContainer/CompA" to="." method="_on_component_pressed"]
 [connection signal="pressed" from="Craftables/VBoxContainer/CenterContainer/GridContainer/CompB" to="." method="_on_component_pressed"]
 [connection signal="pressed" from="Craftables/VBoxContainer/CenterContainer/GridContainer/CompC" to="." method="_on_component_pressed"]

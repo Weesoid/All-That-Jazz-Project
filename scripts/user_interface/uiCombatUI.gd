@@ -176,7 +176,7 @@ func showAbilities(combatant: ResCombatant):
 	if combatant.equipped_weapon != null:
 		setButtonDisabled(gear_button,false,false)
 		gear_button.ability = combatant.equipped_weapon.effect
-		gear_button.custom_charge = ability_buttons.equipped_weapon.durability
+		gear_button.custom_charge = combatant.equipped_weapon.durability
 		if !combatant.equipped_weapon.effect.enabled or combatant.equipped_weapon.durability <= 0:
 			setButtonDisabled(gear_button,true,false)
 		giveButtonFunction(gear_button,combatant.equipped_weapon.effect,combatant.equipped_weapon)

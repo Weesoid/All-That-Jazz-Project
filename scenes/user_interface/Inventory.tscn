@@ -119,36 +119,6 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CombatItems" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="RichTextLabel" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label/VBoxContainer"]
-custom_minimum_size = Vector2(110, 0)
-layout_mode = 2
-bbcode_enabled = true
-text = "[img]res://images/sprites/icon_combat_item.png[/img] COMBAT ITEMS"
-fit_content = true
-autowrap_mode = 0
-
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label/VBoxContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems"]
-layout_mode = 2
-size_flags_vertical = 3
-
 [node name="Charms" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -176,6 +146,36 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/Charms"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CombatItems" type="VBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label/VBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/sprites/icon_combat_item.png[/img] COMBAT ITEMS"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Label/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Items" type="HFlowContainer" parent="MarginContainer/ScrollContainer/HFlowContainer/CombatItems"]
 layout_mode = 2
 size_flags_vertical = 3
 

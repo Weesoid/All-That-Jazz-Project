@@ -9,6 +9,7 @@ enum TempermentTypes {
 	SPECIAL
 }
 
+const EQUIP_MENU = preload("res://scenes/user_interface/MiniInventory.tscn")
 const SWORD_ICON = "res://images/sprites/icon_combat_item.png"
 const SACK_ICON = "res://images/sprites/icon_charm.png"
 
@@ -230,51 +231,61 @@ func getOtherMemberScenes(except_name: String=''):
 	return out
 
 func _on_weapon_pressed():
-	await showEquipment(1, -1, 
-	func(): 
-		if selected_combatant.hasEquippedWeapon():
-			selected_combatant.unequipWeapon()
+	OverworldGlobals.showMiniMenu(
+		EQUIP_MENU,
+		weapon_button,
+		0,
+		func(item): 
+			selected_combatant.equipWeapon(item)
+			updateEquipped(),
+		func(item): return item is ResWeapon and item.canUse(selected_combatant)
 		)
-	updateEquipped()
-	weapon_button.grab_focus()
 
 func _on_slot_a_pressed():
-	if selected_combatant.charms[0] != null: 
-		selected_combatant.unequipCharm(0)
-		charm_slot_a.icon = load(SACK_ICON)
-	await showEquipment(0, 0)
-	updateEquipped()
-	charm_slot_a.grab_focus()
+	OverworldGlobals.showMiniMenu(
+		EQUIP_MENU,
+		charm_slot_a,
+		0,
+		func(item): 
+			selected_combatant.equipCharm(item,0)
+			updateEquipped(),
+		func(item): return item is ResCharm and !selected_combatant.hasCharm(item)
+		)
 
 func _on_slot_b_pressed():
-	if selected_combatant.charms[1] != null: 
-		selected_combatant.unequipCharm(1)
-		charm_slot_b.icon = load(SACK_ICON)
-	await showEquipment(0, 1)
-	updateEquipped()
-	charm_slot_b.grab_focus()
+	OverworldGlobals.showMiniMenu(
+		EQUIP_MENU,
+		charm_slot_b,
+		0,
+		func(item): 
+			selected_combatant.equipCharm(item,1)
+			updateEquipped(),
+		func(item): return item is ResCharm and !selected_combatant.hasCharm(item)
+		)
 
 func _on_slot_c_pressed():
-	if selected_combatant.charms[2] != null: 
-		selected_combatant.unequipCharm(2)
-		charm_slot_c.icon = load(SACK_ICON)
-	await showEquipment(0, 2)
-	updateEquipped()
-	charm_slot_c.grab_focus()
+	OverworldGlobals.showMiniMenu(
+		EQUIP_MENU,
+		charm_slot_c,
+		0,
+		func(item): 
+			selected_combatant.equipCharm(item,2)
+			updateEquipped(),
+		func(item): return item is ResCharm and !selected_combatant.hasCharm(item)
+		)
 
 func showEquipment(type:int, slot:int, unequip_button_function: Callable=func():pass):
-	var equipment: EquipmentInterface = load("res://scenes/user_interface/CharacterEquip.tscn").instantiate()
-	equipment_select_point.add_child(equipment)
-	equipment.z_index = 10
-	equipment.showEquipment(type, selected_combatant, slot)
-	equipment.unequip_button.pressed.connect(unequip_button_function)
-	await equipment.equipped_item
+	OverworldGlobals.showMiniMenu(
+		EQUIP_MENU,
+		weapon_button,
+		0,
+		func(item): 
+			selected_combatant.equipWeapon(item)
+			updateEquipped(),
+		func(item): return item is ResWeapon
+		)
 
 func updateEquipped():
-	await get_tree().process_frame
-	if equipment_select_point.has_node('CharacterEquip'):
-		equipment_select_point.get_node('CharacterEquip').equipped_item.emit()
-		equipment_select_point.get_node('CharacterEquip').queue_free()
 	if selected_combatant == null:
 		return
 	

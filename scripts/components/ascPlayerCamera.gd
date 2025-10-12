@@ -37,9 +37,9 @@ func _input(_event):
 	if player == null:
 		return
 	
-	if player.canUsePower() and InventoryGlobals.hasItem('Void Resonance Crystal'):
+	if player.canUsePower() and InventoryGlobals.hasItem('VoidCrystal'):
 		crystal_count.show()
-		crystal_count.text = str(InventoryGlobals.getItem('Void Resonance Crystal').stack)
+		crystal_count.text = str(InventoryGlobals.getItem('VoidCrystal').stack)
 
 func flashStamina(color:Color):
 	var tween = create_tween().chain()

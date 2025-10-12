@@ -2,23 +2,23 @@
 extends Node
 
 var save_name
-var team: Array[ResPlayerCombatant] # Marked for indirect reference. Load per item, skip if !file_exists.
-var team_formation: Array[ResCombatant] # Marked for indirect reference. Load per item, skip if !file_exists.
+var team: Array[ResPlayerCombatant] 
+var team_formation: Array[ResCombatant] 
 var map_logs: Dictionary = {}
 var power: GDScript
-var known_powers: Array = [load("res://resources/powers/Stealth.tres")]  # Marked for indirect reference. Load per item, skip if !file_exists.
-var equipped_arrow: ResProjectileAmmo # Marked for indirect reference. Load item, skip if !file_exists.
-var equipped_blessing: ResBlessing # Marked for indirect reference. Load item, skip if !file_exists.
+var known_powers: Array = [load("res://resources/powers/Stealth.tres")] 
+var equipped_arrow: ResProjectileAmmo 
+var equipped_blessing: ResBlessing 
 var currency = 10000
 var team_level = 1
 var max_team_level = 5
 var current_exp = 0
-var progression_data: Dictionary = {} # This'll be handy later...
+var progression_data: Dictionary = {} 
 ## Abilities unlocked from the combatant's ability pool.
-var unlocked_abilities: Dictionary = {}  # Marked for indirect reference.
+var unlocked_abilities: Dictionary = {}
 ## Abilities added to combatant through outside means.
-var added_abilities: Dictionary = {}  # Marked for indirect reference.
-var current_stalker: ResStalkerData # Marked for indirect reference. Load item, skip if !file_exists.
+var added_abilities: Dictionary = {} 
+var current_stalker: ResStalkerData 
 var rested:bool
 
 var overworld_stats: Dictionary = {

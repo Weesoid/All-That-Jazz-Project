@@ -9,7 +9,7 @@ class_name ResCombatant
 @export var stat_values = {
 	'health': 20,
 	'damage': 4,
-	'defense': 0,
+	'defense': 0.0,
 	'handling': 0,
 	'speed': 1,
 	'accuracy': 0.95,

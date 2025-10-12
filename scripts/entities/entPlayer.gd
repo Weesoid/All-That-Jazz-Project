@@ -328,14 +328,14 @@ func executePower():
 	for power in PlayerGlobals.known_powers:
 		if power.input_map == power_inputs and power.input_map != null: 
 			if canCastPower(power): 
-				InventoryGlobals.removeItemWithName('Void Resonance Crystal', power.crystal_cost)
+				InventoryGlobals.removeItemWithName('VoidCrystal', power.crystal_cost)
 				power.power_script.executePower(self)
 			elif !canCastPower(power) and power_inputs.length() >= 3:
 				OverworldGlobals.showPrompt("Not enough [color=yellow]Void Crystals[/color].")
 			return
 
 func canCastPower(power: ResPower):
-	return (power.crystal_cost != 0 and InventoryGlobals.hasItem('Void Resonance Crystal',power.crystal_cost)) or power.crystal_cost == 0
+	return (power.crystal_cost != 0 and InventoryGlobals.hasItem('VoidCrystal',power.crystal_cost)) or power.crystal_cost == 0
 
 func cancelPower():
 	Input.action_release("ui_gambit")
