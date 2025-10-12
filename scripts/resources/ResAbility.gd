@@ -83,8 +83,8 @@ func canUse(caster: ResCombatant, targets=null):
 		return false
 	if required_effect['status_effect'] != null and !(caster.hasStatusEffect(required_effect['status_effect'].name) and caster.getStatusEffect(required_effect['status_effect'].name).current_rank >= required_effect['rank']):
 		return false
-	if charges > 0:
-		return CombatGlobals.getCombatScene().getChargesLeft(caster, self) > 0
+	if charges > 0 and CombatGlobals.getCombatScene().getChargesLeft(caster, self) <= 0:
+		return false
 	
 	if targets == null or targets is ResCombatant:
 		return isCombatantInRange(caster, 'caster')

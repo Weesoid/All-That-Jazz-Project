@@ -326,7 +326,7 @@ func addMapLog(map_path: String, entry=null):
 			map_logs[map_path] = [entry]
 		else:
 			map_logs[map_path] = []
-	elif entry != null:
+	elif entry != null and !map_logs[map_path].has(entry):
 		map_logs[map_path].append(entry)
 	
 

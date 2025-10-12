@@ -7,13 +7,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_m4dsj"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_o0m7a"]
 
-[sub_resource type="Resource" id="Resource_240s8"]
+[sub_resource type="Resource" id="Resource_utl2n"]
 script = ExtResource("1_7iwhg")
-position = Vector2(80.7554, 20.9338)
+position = Vector2(89.0889, 20.9338)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = -90
 
-[sub_resource type="Resource" id="Resource_yowc0"]
+[sub_resource type="Resource" id="Resource_2m0e5"]
 script = ExtResource("2_ga2y8")
 quests = Array[String](["res://resources/quests/GetThatItem.tres"])
 quest_objectives_data = {
@@ -25,7 +25,7 @@ quest_objectives_data = {
 }
 }
 
-[sub_resource type="Resource" id="Resource_0uth1"]
+[sub_resource type="Resource" id="Resource_mpg30"]
 script = ExtResource("3_f2mq8")
 charms = {
 0: "res://resources/items/CharmMurder.tres",
@@ -42,7 +42,7 @@ stat_values = {
 "dmg_variance": 0.25,
 "handling": -4.0,
 "heal_mult": -0.25,
-"health": 8,
+"health": 8.0,
 "resist": -0.38,
 "speed": -4.0
 }
@@ -75,7 +75,7 @@ file_references = {
 "equipped_weapon": ["res://resources/items/SlashBlade.tres", 0]
 }
 
-[sub_resource type="Resource" id="Resource_r2q8l"]
+[sub_resource type="Resource" id="Resource_j8gwq"]
 script = ExtResource("3_f2mq8")
 charms = {
 0: "res://resources/items/CharmMurder.tres",
@@ -92,7 +92,7 @@ stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 42,
+"health": 42.0,
 "resist": 0.09,
 "speed": 40
 }
@@ -125,11 +125,11 @@ file_references = {
 "equipped_weapon": ["res://resources/items/QuickBlade.tres", 0]
 }
 
-[sub_resource type="Resource" id="Resource_yvk42"]
+[sub_resource type="Resource" id="Resource_h8as4"]
 script = ExtResource("4_j072u")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 map_logs = {
-"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup2", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup", &"PatrollerGroup"],
+"res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup"],
 "res://scenes/maps/SidescrollerB.tscn": [],
 "res://scenes/maps/SidescrollerC.tscn": [&"PatrollerGroup", &"PatrollerGroup"],
 "res://scenes/maps/SidescrollerD.tscn": [{
@@ -149,8 +149,8 @@ current_exp = 621
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_r2q8l"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_0uth1")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_j8gwq"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_mpg30")
 }
 unlocked_abilities = {}
 added_abilities = {}
@@ -158,7 +158,7 @@ max_team_level = 5
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_hx505"]
+[sub_resource type="Resource" id="Resource_qif5j"]
 script = ExtResource("5_m4dsj")
 inventory = {
 "res://resources/items/Arrow.tres": 6,
@@ -172,9 +172,9 @@ crafted_items = Array[String](["ArrowJunk", "Arrow", "ArrowSleeper", "CharmMurde
 
 [resource]
 script = ExtResource("6_o0m7a")
-name = "Save 2 - 06:02:58
+name = "Save 2 - 06:03:07
 Morale 5
 Node2D"
-playtime = 21778.3
+playtime = 21787.6
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_240s8"), SubResource("Resource_yowc0"), SubResource("Resource_yvk42"), SubResource("Resource_hx505")]
+save_data = [SubResource("Resource_utl2n"), SubResource("Resource_2m0e5"), SubResource("Resource_h8as4"), SubResource("Resource_qif5j")]
