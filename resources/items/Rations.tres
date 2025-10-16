@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_w5uhc"]
 script = ExtResource("1_ysrfq")
 heal = 20
-use_multiplier = true
+use_multiplier = false
 cast_animation = ""
 condition = ""
 is_combo_effect = false
@@ -21,7 +21,6 @@ effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubRes
 party_wide = false
 max_stack = 16
 barter_item = false
-auto_name = true
 name = "Rations"
 icon = ExtResource("2_ev6bp")
 description = ""

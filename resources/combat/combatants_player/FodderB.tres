@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://bt532t46m244f"]
+
+[ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_75ftx"]
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_8xf0c"]
+[ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="3_5mpe4"]
+[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/character_sprites/willis/willis_follower.png" id="4_1a2ry"]
+[ext_resource type="PackedScene" uid="uid://hojidodoc70i" path="res://scenes/combatants/Willis.tscn" id="5_88x02"]
+[ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/character_sprites/willis/rest_willis.png" id="6_awv7g"]
+[ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="7_vv14d"]
+
+[resource]
+script = ExtResource("7_vv14d")
+ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_75ftx"), ExtResource("2_8xf0c")])
+base_temperment = Array[String]([])
+follower_texture = ExtResource("4_1a2ry")
+mandatory = true
+rest_sprite = ExtResource("6_awv7g")
+stat_multiplier = 0.01
+name = "Foddette the Fodder"
+packed_scene = ExtResource("5_88x02")
+bullet_texture = ExtResource("3_5mpe4")
+description = "FODDER B"
+stat_values = {
+"accuracy": 0.95,
+"crit": 0.05,
+"crit_dmg": 1.5,
+"damage": 4,
+"defense": 0.68,
+"dmg_modifier": 1.0,
+"dmg_variance": 0.25,
+"handling": 0,
+"heal_mult": 1.0,
+"health": 20,
+"resist": 0.05,
+"speed": 1
+}
+scale_stats = {
+"accuracy": false,
+"crit": false,
+"crit_dmg": false,
+"damage": true,
+"defense": true,
+"dmg_modifier": false,
+"dmg_variance": false,
+"handling": false,
+"heal_mult": false,
+"health": true,
+"resist": false,
+"speed": true
+}
+ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+max_turn_charges = 1

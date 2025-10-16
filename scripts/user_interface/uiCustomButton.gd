@@ -14,7 +14,7 @@ class_name CustomButton
 @export var hold_key: Array[String] = ["ui_accept","ui_click"]
 @export var hold_time:float = -1
 @export var hold_delay:float=0.25
-
+@export var hold_ignore_disabled:bool=true
 var random_pitch = 0.1
 
 signal held_press
@@ -53,7 +53,7 @@ func showDescription():
 	side_description.showDescription(description_text, description_offset)
 
 func checkHoldInputs():
-	if disabled:
+	if disabled and !hold_ignore_disabled:
 		return
 	
 	if isHoldKey('pressed') and has_focus() and hold_time > 0:

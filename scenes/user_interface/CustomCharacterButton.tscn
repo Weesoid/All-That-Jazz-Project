@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://b327bgddv541c"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiCustomCharacterButton.gd" id="1_id5n4"]
+[ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="1_slvah"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_nukre"]
+[ext_resource type="Texture2D" uid="uid://65lihmvh5umv" path="res://images/sprites/empty_diamond.png" id="3_ftmgc"]
+[ext_resource type="Texture2D" uid="uid://n3be8sd47yqk" path="res://images/character_sprites/archie/rest_archie.png" id="4_pru8c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icdui"]
+bg_color = Color(1, 1, 1, 0.466667)
+
+[node name="CustomButton" type="Button"]
+custom_minimum_size = Vector2(64, 64)
+offset_right = 64.0
+offset_bottom = 64.0
+theme = ExtResource("1_slvah")
+alignment = 2
+script = ExtResource("1_id5n4")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+clip_children = 2
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_ftmgc")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -40.0
+offset_right = 32.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_pru8c")
+
+[node name="HoldProgress" type="ProgressBar" parent="TextureRect" node_paths=PackedStringArray("timer")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_mumdi")
+theme_override_styles/fill = SubResource("StyleBoxFlat_icdui")
+value = 25.0
+show_percentage = false
+script = ExtResource("2_nukre")
+timer = NodePath("../../HoldTimer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Sounds"
+
+[node name="HoldTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HoldDelay" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]

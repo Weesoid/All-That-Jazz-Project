@@ -9,7 +9,7 @@ class_name PlayerCamera
 @onready var power_input_container = $UI/PowerInputs
 @onready var quiver = $UI/Quiver
 @onready var color_overlay = $UI/ColorOverlay
-@onready var reward_banks = $UI/ClearProgress
+#@onready var reward_banks = $UI/ClearProgressf
 @onready var ammo_tex = $UI/Ammo/TextureRect
 @onready var save_indicator = $UI/SaveIndicator/AnimationPlayer
 var player: PlayerScene = OverworldGlobals.player
@@ -64,20 +64,20 @@ func hideOverlay(duration:float=0.25):
 	color_overlay.hide()
 	color_overlay.modulate = Color.TRANSPARENT
 
-func addRewardBank(patroller_group: PatrollerGroup):
-	for bank in reward_banks.get_children():
-		if bank.patroller_group == patroller_group:
-			bank.updateBank(patroller_group.reward_bank)
-			return
-	
-	var bank_ui = load("res://scenes/user_interface/RewardBank.tscn").instantiate()
-	bank_ui.patroller_group = patroller_group
-	reward_banks.add_child(bank_ui)
-	bank_ui.updateBank(patroller_group.reward_bank)
-
-func clearRewardBanks():
-	for child in reward_banks.get_children():
-		child.queue_free()
+#func addRewardBank(patroller_group: PatrollerGroup):
+#	for bank in reward_banks.get_children():
+#		if bank.patroller_group == patroller_group:
+#			bank.updateBank(patroller_group.reward_bank)
+#			return
+#
+#	var bank_ui = load("res://scenes/user_interface/RewardBank.tscn").instantiate()
+#	bank_ui.patroller_group = patroller_group
+#	reward_banks.add_child(bank_ui)
+#	bank_ui.updateBank(patroller_group.reward_bank)
+#
+#func clearRewardBanks():
+#	for child in reward_banks.get_children():
+#		child.queue_free()
 
 func showSaveIndicator():
 	if !save_indicator.is_playing():

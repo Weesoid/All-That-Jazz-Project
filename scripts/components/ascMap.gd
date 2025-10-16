@@ -20,7 +20,7 @@ enum MapProperties {
 	'bonus_loot':null,
 	'bonus_experience':null,
 	'reward_item': preload("res://_Resource.tres")
-}
+	}
 @export var map_properties: Array[MapProperties]
 var done_loading_map:bool = false
 
@@ -98,4 +98,4 @@ func clearPatrollers():
 		PlayerGlobals.addMapLog(scene_file_path, group.name)
 
 func getSavePoints():
-	return  get_children().filter(func(child): return child is SavePoint)
+	return get_children().filter(func(child): return child is SavePoint)

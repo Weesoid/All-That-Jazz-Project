@@ -27,7 +27,7 @@ func initializePlayerParty():
 			member.initializeCombatant()
 			member.combatant_scene.free()
 	
-	loadFollowers()
+	#loadFollowers()
 
 func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
 	player.can_move = enabled
@@ -126,26 +126,38 @@ func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 	elif teleport_to is String:
 		getEntity(entity_name).global_position = getEntity(teleport_to).global_position + offset
 
-func showMenu(path: String):
+func showMenu(path: String, as_submenu:bool=false):
 	if !canShowMenu():
 		return
 	
 	var main_menu: Control = load(path).instantiate()
-	#main_menu.scale = Vector2.ZERO
-	main_menu.name = 'uiMenu'
-	player.suddenStop()
-	player.resetStates()
-	player.setUIVisibility(false)
-	setPlayerInput(false)
-	if !inMenu():
-		#player.player_camera.showOverlay(Color.BLACK, 0.5)
-		if isPlayerCheating(): player.get_node('DebugComponent').hide()
-		setMouseController(true)
-		player.player_camera.get_node('UI').add_child(main_menu)
+	if !as_submenu:
+		main_menu.name = 'uiMenu'
+		player.suddenStop()
+		player.resetStates()
+		player.setUIVisibility(false)
 		setPlayerInput(false)
+		if !inMenu():
+			if isPlayerCheating(): player.get_node('DebugComponent').hide()
+			setMouseController(true)
+			player.player_camera.get_node('UI').add_child(main_menu)
+			setPlayerInput(false)
+		else:
+			if isPlayerCheating(): player.get_node('DebugComponent').show()
+			closeMenu(main_menu)
 	else:
-		if isPlayerCheating(): player.get_node('DebugComponent').show()
-		closeMenu(main_menu)
+		if !inSubmenu():
+			main_menu.name = 'uiSubmenu'
+			main_menu.z_index = 99
+			player.player_camera.get_node('UI').get_node('uiMenu').add_child(main_menu)
+		else:
+			closeSubmenu()
+
+func closeSubmenu():
+	if !player.player_camera.get_node('UI').get_node('uiMenu').has_node('uiSubmenu'):
+		return
+	
+	player.player_camera.get_node('UI').get_node('uiMenu').get_node('uiSubmenu').queue_free()
 
 ## press_type: 0: Press, 1: Held press
 func showMiniMenu(menu, action_button:Button, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
@@ -192,6 +204,9 @@ func closeMenu(menu: Control):
 
 func inMenu():
 	return player.player_camera.get_node('UI').has_node('uiMenu')
+
+func inSubmenu():
+	return player.player_camera.get_node('UI').get_node('uiMenu').has_node('uiSubmenu')
 
 func setControlFocus(control):
 	for child in control.get_children():
@@ -400,7 +415,7 @@ func getAllPatrollers():
 func destroyAllPatrollers(respawn:bool=false):
 	for patroller in getAllPatrollers():
 		patroller.destroy(false,false)
-	player.player_camera.clearRewardBanks()
+	#player.player_camera.clearRewardBanks()
 	await get_tree().process_frame
 	for group in getCurrentMap().getPatrolGroups():
 		group.reward_bank = {'loot':{},'experience':0.0}
@@ -507,6 +522,7 @@ func loadFollowers():
 			follower_scene.global_position = player.global_position+Vector2(0, -32)
 			#follower_scene.sprite.offset.y = -24 
 			getCurrentMap().add_child.call_deferred(follower_scene)
+			#follower_scene.visible = player.visible
 			#await follower_scene.tree_entered
 
 func fadeFollowers(color: Color):

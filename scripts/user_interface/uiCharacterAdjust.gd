@@ -14,6 +14,7 @@ const SWORD_ICON = "res://images/sprites/icon_combat_item.png"
 const SACK_ICON = "res://images/sprites/icon_charm.png"
 
 @export var show_temperments = false
+@export var show_current_party = true
 @onready var pool = $Abilities/MarginContainer/ScrollContainer/VBoxContainer
 @onready var member_container = $Formation/Members/HBoxContainer
 @onready var stat_points = $Character/Panel/Button/Label
@@ -56,7 +57,8 @@ func _ready():
 	loadMembers()
 	if !OverworldGlobals.getCombatantSquad('Player').is_empty():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
-
+	member_container.visible = show_current_party
+	formation_button.visible = show_current_party
 func loadMembers(set_focus:bool=true, preview_member:bool=false):
 	for child in member_container.get_children():
 		child.queue_free()

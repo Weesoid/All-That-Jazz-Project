@@ -23,7 +23,7 @@
 [node name="CharacterAdjust" type="HFlowContainer"]
 offset_top = 32.0
 offset_right = 640.0
-offset_bottom = 273.0
+offset_bottom = 298.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
@@ -40,6 +40,7 @@ layout_mode = 2
 theme_override_constants/margin_top = 12
 
 [node name="Control Exclude" type="Control" parent="Abilities/MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -91,6 +92,7 @@ offset_top = 201.0
 offset_right = 161.0
 offset_bottom = 229.0
 texture = ExtResource("9_tpi3e")
+hold_ignore_disabled = null
 
 [node name="Label" type="Label" parent="Character/Panel/Button"]
 layout_mode = 1

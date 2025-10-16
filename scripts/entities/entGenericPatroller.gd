@@ -211,7 +211,7 @@ func destroy(give_drops=false, check_rewards:bool=true):
 		var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
 		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
 		combatant_squad.addDrops()
-		OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
+		#OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()
 	if check_rewards:

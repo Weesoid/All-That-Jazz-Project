@@ -236,10 +236,8 @@ func addCombatantToTeam(combatant_id):
 			combatant = load(combatant_id)
 	elif combatant_id is ResCombatant:
 		combatant = combatant_id
-	#if combatant.temperment['primary'] == []:
-	#	combatant.temperment['primary'].append(PlayerGlobals.primary_temperments.keys().pick_random())
-	#if combatant.temperment['secondary'] == []:
-	#	combatant.temperment['secondary'].append(PlayerGlobals.secondary_temperments.keys().pick_random())
+	if team.has(combatant):
+		return
 	combatant.stat_points = team_level
 	team.append(combatant)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.name)
@@ -268,7 +266,7 @@ func removeCombatant(combatant_id: ResPlayerCombatant):
 	for member in removed_combatants:
 		OverworldGlobals.getCombatantSquad('Player').erase(member)
 	team_formation = OverworldGlobals.player.squad.combatant_squad
-	overwriteTeam()
+	#overwriteTeam()
 
 func loadSquad():
 	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.team_formation)
@@ -519,7 +517,9 @@ func resetVariables(reset_save_name:bool=true):
 		save_name = null
 	team = [
 		loadPlayerCombatant("res://resources/combat/combatants_player/Willis.tres"), 
-		loadPlayerCombatant("res://resources/combat/combatants_player/Archie.tres")
+		loadPlayerCombatant("res://resources/combat/combatants_player/Archie.tres"),
+		loadPlayerCombatant("res://resources/combat/combatants_player/FodderA.tres"),
+		loadPlayerCombatant("res://resources/combat/combatants_player/FodderB.tres"),
 		]
 	team_formation = []
 	#FOLLOWERS = []

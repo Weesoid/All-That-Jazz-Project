@@ -1,94 +1,58 @@
 extends Control
 class_name RosterSelector
 
+const CHARACTER_BUTTON = preload("res://scenes/user_interface/CustomCharacterButton.tscn")
+
 @export var char_page: MemberAdjustUI
 @onready var member_container = $ScrollContainer/HBoxContainer
 @onready var inspecting_label = $Label
 @onready var inspect_mark = $InspectIcon
-
-func _process(_delta):
-	if char_page != null and char_page.changing_formation:
-		hide()
-	elif char_page != null:
-		show()
+@onready var cancel_button = $ScrollContainer/HBoxContainer/CancelButton
+@onready var character_sheet: CharacterSheet = $CharacterSheet
+var remove_member:ResPlayerCombatant
+signal added_character(character:ResPlayerCombatant)
+signal removed_character(character:ResPlayerCombatant)
 
 func _ready():
 	loadMembers()
 
-func loadMembers():
+func loadMembers(replace_member: ResPlayerCombatant=null):
+	character_sheet.hide()
+	for child in member_container.get_children():
+		if child == cancel_button: continue
+		child.queue_free()
+	await get_tree().process_frame
 	var team = PlayerGlobals.team
-	team.sort_custom(func(a,b): return a.name < b.name)
-	team.sort_custom(func(a,b): return isMemberMandatory(a) > isMemberMandatory(b))
 	for member in team:
-		var member_button = createMemberButton(member)
+		var member_button: CustomCharacterButton = CHARACTER_BUTTON.instantiate()
+		member_button.character = member
 		member_container.add_child(member_button)
+		member_button.setDisabled(OverworldGlobals.getCombatantSquad('Player').has(member))
+		member_button.pressed.connect(addToActive.bind(member,replace_member),CONNECT_ONE_SHOT)
+		member_button.held_press.connect(func(): character_sheet.showCharacter(member))
+		member_button.hold_time = 0.25
+		member_button.description_text = member.description
+		member_button.hold_ignore_disabled = true
+	if replace_member != null:
+		remove_member = replace_member
 
-func isMemberMandatory(member: ResPlayerCombatant):
-	match member.mandatory:
-		true: return 1
-		false: return 0
-
-func createMemberButton(member: ResPlayerCombatant):
-	member.initializeCombatant(false)
-	var button = OverworldGlobals.createCustomButton()
-	#button.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD
-	button.text = member.name
-	button.pressed.connect(func(): addToActive(member, button))
-#	button.mouse_exited.connect(func(): inspecting_label.text = '')
-#	button.focus_exited.connect(func(): inspecting_label.text = '')
-	button.focus_entered.connect(func(): hoverButton(member, button))
-	button.mouse_entered.connect(func(): hoverButton(member, button))
-	button.theme = load("res://design/PartyButtonsReversed.tres")
-	if OverworldGlobals.getCombatantSquad('Player').has(member):
-		if member.isInflicted():
-			button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_mark.png"))
-		else:
-			button.add_theme_icon_override('icon', load("res://images/sprites/icon_mark.png"))
-	else:
-		button.remove_theme_icon_override('icon')
-	if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
-		button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_icon.png"))
-	if member.mandatory and OverworldGlobals.getCombatantSquadComponent('Player').hasMember(member.name): 
-		button.disabled = true
-	return button
-
-func addToActive(member: ResCombatant, button: Button):
-	if OverworldGlobals.player.squad.combatant_squad.size() == 4 and !OverworldGlobals.player.squad.combatant_squad.has(member):
+func addToActive(member: ResPlayerCombatant, replace_member:ResPlayerCombatant=null):
+	print('rep: %s w %s'% [replace_member, member])
+	if OverworldGlobals.getCombatantSquad('Player').size() == 4 and !OverworldGlobals.getCombatantSquad('Player').has(member):
 		OverworldGlobals.showPrompt('You have a full party!')
 		return
+	if !OverworldGlobals.getCombatantSquad('Player').has(member) and replace_member == null:
+		member.initializeCombatant(false)
+		OverworldGlobals.getCombatantSquad('Player').append(member)
+	elif replace_member != null:
+		member.initializeCombatant(false)
+		OverworldGlobals.getCombatantSquad('Player')[OverworldGlobals.getCombatantSquad('Player').find(replace_member)] = member
 	
-	if !OverworldGlobals.player.squad.combatant_squad.has(member) and button != null:
-		OverworldGlobals.player.squad.combatant_squad.append(member)
-		OverworldGlobals.initializePlayerParty()
-		if member.isInflicted():
-			button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_mark.png"))
-		else:
-			button.add_theme_icon_override('icon', load("res://images/sprites/icon_mark.png"))
-	elif button != null:
-		OverworldGlobals.player.squad.combatant_squad.erase(member)
-		#PlayerGlobals.removeFollower()
-		OverworldGlobals.loadFollowers()
-		if member.isInflicted() and !OverworldGlobals.getCombatantSquad('Player').has(member):
-			button.add_theme_icon_override('icon', load("res://images/sprites/inflicted_icon.png"))
-		else:
-			button.remove_theme_icon_override('icon')
-	PlayerGlobals.team_formation = OverworldGlobals.player.squad.combatant_squad
-	await get_tree().process_frame
-	char_page.loadMembers()
+	OverworldGlobals.initializePlayerParty()
+	PlayerGlobals.team_formation = OverworldGlobals.getCombatantSquad('Player')
+	added_character.emit(member)
 
-func hoverButton(member: ResPlayerCombatant, button: Button):
-	if Input.is_action_pressed('ui_sprint'):
-		if OverworldGlobals.player.squad.combatant_squad.has(member):
-			for mem_button in char_page.member_container.get_children():
-				if mem_button.text == member.name:
-					inspect_mark.hide()
-					mem_button.pressed.emit()
-					return
-		else:
-			char_page.loadMemberInfo(member)
-			inspect_mark.show()
-			inspect_mark.global_position = button.global_position+Vector2(button.size.x-2, button.size.y/8)
-#			for body in char_page.getOtherMemberScenes():
-#				body.modulate = Color(Color.WHITE, 0.25)
-#				body.combatant_resource.getAnimator().play('RESET')
-#				body.combatant_resource.stopBreatheTween()
+func removeFromActive():
+	OverworldGlobals.getCombatantSquad('Player').erase(remove_member)
+	removed_character.emit(remove_member)
+	remove_member = null
