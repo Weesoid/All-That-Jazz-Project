@@ -43,7 +43,16 @@ func _to_string():
 	elif (damage_type == DamageType.RANGED or damage_type == DamageType.RANGED_PIERCING) or cast_animation['animation'].to_lower().contains('ranged'):
 		out += "[img]res://images/sprites/icon_range.png[/img] "
 	
-	out += SettingsGlobals.colorValueBB(damage_modifier*100,100.0)+'%[/color]\n'
+	if damage_modifier > 1.0 or damage_modifier < 1.0:
+		var sign
+		if damage_modifier > 1.0:
+			sign = SettingsGlobals.ui_colors['up-bb']+'+[/color]'
+		elif damage_modifier < 1.0:
+			sign = SettingsGlobals.ui_colors['down-bb']+'-[/color]'
+		out += sign+SettingsGlobals.colorValueBB(damage_modifier*100,100.0)+'%[/color]\n'
+	else:
+		out += '\n'
+	
 	var i = 1
 	for key in bonus_stats.keys():
 		var bonus_stat_str = key.split('/')[0]

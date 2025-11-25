@@ -23,6 +23,7 @@ const ADD_ROSTER_ICON = preload("res://images/sprites/plus_icon_big.png")
 @onready var save_point: SavePoint = OverworldGlobals.getCurrentMap().get_node('SavePoint')
 @onready var player_ui_path = OverworldGlobals.player.player_camera.get_node('UI')
 @onready var sub_menus = $Submenus
+@onready var roster_button = $OtherActions/GameMenu
 @onready var roster: RosterSelector = $Submenus/Roster
 @onready var fast_travel = $Submenus/FastTravel
 @onready var crafting = $Submenus/Crafting
@@ -101,6 +102,7 @@ func _ready():
 				)
 		mini_bar.selector.focus_exited.connect(func(): setButtonActionTexture(null))
 	create_tween().tween_property(self, 'modulate',Color.WHITE,0.5)
+	roster_button.setDisabled(OverworldGlobals.getCurrentMap().getClearState() != MapData.PatrollerClearState.FULL_CLEAR) 
 
 func addRestSprite(character: ResPlayerCombatant): 
 	save_point.addRestSprite(character,selected_pos)

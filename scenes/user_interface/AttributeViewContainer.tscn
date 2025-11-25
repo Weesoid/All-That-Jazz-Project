@@ -222,6 +222,24 @@ text = "0"
 vertical_alignment = 1
 uppercase = true
 
+[node name="Resilience" type="HSplitContainer" parent="."]
+visible = false
+layout_mode = 2
+tooltip_text = "Resistance from damage (caps out at 70%)."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Resilience"]
+layout_mode = 2
+text = "GUTS"
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Resilience"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
+value = 100.0
+
 [node name="AttributeView" type="HBoxContainer" parent="."]
 visible = false
 layout_mode = 2

@@ -86,5 +86,5 @@ func formatModifiers(stat_dict: Dictionary) -> String:
 			if value is float: 
 				result += str(value) + "% " +key.to_upper().replace('_', ' ') +  "\n"
 			else:
-				result += str(value) + " " +key.to_upper().replace('_', ' ') + "\n"
+				result += str(value) + " " +key.to_upper().replacee('_', ' ') + "\n"
 	return result

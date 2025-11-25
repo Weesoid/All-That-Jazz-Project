@@ -25,14 +25,11 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage_modifier = 1.0
+damage_modifier = 1.25
 can_miss = true
 can_crit = true
 bonus_stats = {
-"accuracy/hp:>:0.9": 1.0,
-"crit/hp:>:0.5": 2.0,
-"status_effect/hp:>:0.8": "Poison,Combo",
-"tp": 2
+"crit": 0.33
 }
 return_pos = true
 indicator_bb = ""
