@@ -168,6 +168,9 @@ func _on_target_clicker_focus_entered():
 	combat_scene.targetCombatant(attached_combatant)
 
 func _on_tree_exiting():
+	if !is_queued_for_deletion():
+		return
+	
 	for i in range(status_effects.get_child_count()-1,-1,-1):
 		print(status_effects)
 		var effect_icon = status_effects.get_children()[i]

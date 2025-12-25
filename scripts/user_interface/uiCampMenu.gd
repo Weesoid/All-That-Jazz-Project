@@ -72,7 +72,6 @@ func _ready():
 					if !isCampItemValid():
 						setButtonActionTexture(null)
 				elif mode == Mode.ROSTER:
-					print(selected_pos)
 					selected_pos = save_point.rest_spots.get_children().find(mini_bar.get_parent())
 					pulseButtonActionTexture(mini_bar,false,false)
 					showRoster(mini_bar.attached_combatant)
@@ -91,18 +90,26 @@ func _ready():
 		mini_bar.selector.focus_entered.connect(
 			func(): 
 				if mode == Mode.ROSTER:
-					if mini_bar.attached_combatant != null:
-						setButtonActionTexture(SWITCH_ROSTER_ICON,mini_bar)
-					else:
+					if mini_bar.attached_combatant == null:
 						setButtonActionTexture(ADD_ROSTER_ICON,mini_bar)
-					if roster.visible:
-						hideRoster()
+						return
+					if mini_bar.attached_combatant.mandatory:
+						mini_bar.selector.disabled = true
+						return
+					
+					setButtonActionTexture(SWITCH_ROSTER_ICON,mini_bar)
+					#if roster.visible:
+					#	hideRoster()
 				elif mode == Mode.CAMP and isCampItemValid(): 
 					setButtonActionTexture(camp_item.icon,mini_bar,camp_item.party_wide)
 				)
 		mini_bar.selector.focus_exited.connect(func(): setButtonActionTexture(null))
 	create_tween().tween_property(self, 'modulate',Color.WHITE,0.5)
 	roster_button.setDisabled(OverworldGlobals.getCurrentMap().getClearState() != MapData.PatrollerClearState.FULL_CLEAR) 
+
+func _input(event):
+	if Input.is_action_just_pressed("ui_alt_cancel") and roster.visible:
+		hideRoster()
 
 func addRestSprite(character: ResPlayerCombatant): 
 	save_point.addRestSprite(character,selected_pos)

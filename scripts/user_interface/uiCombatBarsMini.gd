@@ -20,7 +20,6 @@ func _ready():
 	updateStatusEffects()
 
 func setCombatant(combatant:ResPlayerCombatant):
-	#print(self ,': setting to ', combatant)
 	if !combatant.initialized:
 		combatant.initializeCombatant(false)
 	attached_combatant = combatant

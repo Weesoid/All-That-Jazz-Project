@@ -56,6 +56,7 @@ func exit():
 	await get_tree().process_frame
 	OverworldGlobals.player.camping=false
 	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
+	await get_tree().process_frame
 
 func addRestSprite(combatant: ResPlayerCombatant,pos:int=-1):
 	if pos >= 0:

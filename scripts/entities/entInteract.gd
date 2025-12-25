@@ -100,7 +100,7 @@ func exit():
 
 
 func _on_area_entered(area):
-	if area == OverworldGlobals.player.interaction_detector and OverworldGlobals.player.canInteract():
+	if area == OverworldGlobals.player.interaction_detector and OverworldGlobals.player.canInteract() and cooldown_timer.is_stopped():
 		interact_animator.play("Show")
 
 
@@ -109,5 +109,5 @@ func _on_area_exited(area):
 		interact_animator.play("RESET")
 
 func _on_timer_timeout():
-	if get_overlapping_areas().has(OverworldGlobals.player.interaction_detector) and OverworldGlobals.player.canInteract():
+	if get_overlapping_areas().has(OverworldGlobals.player.interaction_detector) and OverworldGlobals.player.canInteract() and cooldown_timer.is_stopped():
 		interact_animator.play("Show")

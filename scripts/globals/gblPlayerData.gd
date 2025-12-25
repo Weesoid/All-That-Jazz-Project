@@ -489,6 +489,7 @@ func loadData(save_data: PlayerSaveData):
 	for combatant in team:
 		if !FileAccess.file_exists(combatant.resource_path):
 			continue
+		print(save_data.combatant_save_data[combatant.resource_path])
 		save_data.combatant_save_data[combatant.resource_path].loadData(combatant)
 		await get_tree().process_frame
 		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')

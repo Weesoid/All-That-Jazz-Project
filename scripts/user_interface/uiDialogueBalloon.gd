@@ -109,10 +109,12 @@ func determinePlayerSpeaker():
 		return 'Archie'
 
 func setSizePosition(speaker:String):
+	balloon.modulate=Color.TRANSPARENT # Duct tape
 	balloon.custom_minimum_size.x = min(balloon.size.x, MAX_WIDTH)
 	if balloon.size.x > MAX_WIDTH:
 		dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 		balloon.custom_minimum_size.y = balloon.size.y
+	await get_tree().process_frame
 	await get_tree().process_frame
 	
 	var speaker_entity = OverworldGlobals.getEntity(speaker)
@@ -123,6 +125,7 @@ func setSizePosition(speaker:String):
 	var cam_position = Vector2(entity_position.x,entity_position.y+OverworldGlobals.player.default_camera_pos.y)
 	global_position.x = entity_position.x - (balloon.size.x/2)
 	global_position.y = entity_position.y - (48+balloon.size.y)
+	print(global_position)
 	OverworldGlobals.moveCamera(cam_position)
 	animator.play("Show")
 
