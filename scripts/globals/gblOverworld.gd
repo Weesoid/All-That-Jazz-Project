@@ -760,7 +760,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	OverworldGlobals.player.setUIVisibility(true)
 #	battle_transition.get_node('AnimationPlayer').play('Out')
 	if combat_entity is GenericPatroller and combat_results == 1:
-		addPatrollerPulse(player, 180.0, 2)
+		addPatrollerPulse(player, 180.0, GenericPatroller.State.CHASING)
 		combat_entity.destroy()
 #	await battle_transition.get_node('AnimationPlayer').animation_finished
 #	battle_transition.queue_free()
@@ -768,6 +768,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
 	if combat_results != 0:
+		addPatrollerPulse(player, 180.0, GenericPatroller.State.STUNNED)
 		await get_tree().process_frame
 		setPlayerInput(true)
 	combat_exited.emit()

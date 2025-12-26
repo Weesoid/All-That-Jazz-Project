@@ -7,18 +7,18 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_g2lk5"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_pb7l8"]
 
-[sub_resource type="Resource" id="Resource_ruia6"]
+[sub_resource type="Resource" id="Resource_17rq4"]
 script = ExtResource("1_7yaen")
-position = Vector2(93.8571, 20.9338)
+position = Vector2(77.6366, 20.9253)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = -90
 
-[sub_resource type="Resource" id="Resource_0vbcy"]
+[sub_resource type="Resource" id="Resource_mc486"]
 script = ExtResource("2_lo8cv")
 quests = Array[String]([])
 quest_objectives_data = {}
 
-[sub_resource type="Resource" id="Resource_2ljtk"]
+[sub_resource type="Resource" id="Resource_xg44x"]
 script = ExtResource("3_e4823")
 charms = {
 0: "",
@@ -35,7 +35,7 @@ stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 8.0,
+"health": 12.0,
 "resist": 0.05,
 "speed": 1
 }
@@ -68,7 +68,7 @@ file_references = {
 "equipped_weapon": ["res://resources/items/QuickBlade.tres", 5]
 }
 
-[sub_resource type="Resource" id="Resource_y7chd"]
+[sub_resource type="Resource" id="Resource_uhoa5"]
 script = ExtResource("3_e4823")
 charms = {
 0: "",
@@ -85,7 +85,7 @@ stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 33.0,
+"health": 31.0,
 "resist": 0.05,
 "speed": 40
 }
@@ -118,7 +118,7 @@ file_references = {
 "equipped_weapon": ["res://resources/items/SlashBlade.tres", 100]
 }
 
-[sub_resource type="Resource" id="Resource_2m7b8"]
+[sub_resource type="Resource" id="Resource_l37ot"]
 script = ExtResource("3_e4823")
 charms = {
 0: "",
@@ -168,7 +168,7 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_q3uag"]
+[sub_resource type="Resource" id="Resource_3lees"]
 script = ExtResource("3_e4823")
 charms = {
 0: "",
@@ -218,7 +218,7 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_tp1yn"]
+[sub_resource type="Resource" id="Resource_uqgs7"]
 script = ExtResource("4_eufpr")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres", "res://resources/combat/combatants_player/FodderA.tres", "res://resources/combat/combatants_player/FodderB.tres"])
 map_logs = {
@@ -234,14 +234,14 @@ equipped_arrow = "res://resources/items/ArrowSleeper.tres"
 equipped_blessing = ""
 currency = 7455
 team_level = 2
-current_exp = 43
+current_exp = 155
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_y7chd"),
-"res://resources/combat/combatants_player/FodderA.tres": SubResource("Resource_2m7b8"),
-"res://resources/combat/combatants_player/FodderB.tres": SubResource("Resource_q3uag"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_2ljtk")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_uhoa5"),
+"res://resources/combat/combatants_player/FodderA.tres": SubResource("Resource_l37ot"),
+"res://resources/combat/combatants_player/FodderB.tres": SubResource("Resource_3lees"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_xg44x")
 }
 unlocked_abilities = {}
 added_abilities = {}
@@ -249,20 +249,20 @@ max_team_level = 5
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_8m245"]
+[sub_resource type="Resource" id="Resource_dayal"]
 script = ExtResource("5_g2lk5")
 inventory = {
 "res://resources/items/ArrowSleeper.tres": 13,
 "res://resources/items/BarterSalvage20.tres": 1,
-"res://resources/items/ScrapSalvage.tres": 3
+"res://resources/items/ScrapSalvage.tres": 18
 }
 crafted_items = Array[String]([])
 
 [resource]
 script = ExtResource("6_pb7l8")
-name = "Save 1 - 00:03:30
+name = "Save 1 - 00:05:06
 Morale 2
 Node2D"
-playtime = 210.985
+playtime = 307.447
 current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_ruia6"), SubResource("Resource_0vbcy"), SubResource("Resource_tp1yn"), SubResource("Resource_8m245")]
+save_data = [SubResource("Resource_17rq4"), SubResource("Resource_mc486"), SubResource("Resource_uqgs7"), SubResource("Resource_dayal")]

@@ -358,6 +358,7 @@ func hideMovements():
 	movements.hide()
 
 func _on_pass_pressed():
+	combat_scene.selected_ability = null
 	combat_scene.confirm.emit()
 	hideUI()
 

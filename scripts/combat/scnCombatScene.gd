@@ -305,6 +305,7 @@ func end_turn(combatant_act=true):
 			await CombatGlobals.qte_finished
 			await get_node('QTE').tree_exited
 		setActiveCombatant()
+	
 	if selected_ability != null and selected_ability.isMutated():
 		selected_ability.restoreProperties()
 	

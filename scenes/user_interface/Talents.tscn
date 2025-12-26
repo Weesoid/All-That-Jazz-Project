@@ -1,0 +1,135 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7gej8jx4qymi"]
+
+[ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="1_3utei"]
+[ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="2_258f4"]
+[ext_resource type="Texture2D" uid="uid://bei8dr7bb8bfq" path="res://images/sprites/icon_rotating_arrows.png" id="3_xad53"]
+
+[node name="Talents" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="BaseTalents" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="HBoxContainer/BaseTalents"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]BASE TALENTS"
+fit_content = true
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/BaseTalents"]
+layout_mode = 2
+
+[node name="Talents" type="GridContainer" parent="HBoxContainer/BaseTalents/CenterContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="CustomButton" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton2" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton3" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton4" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton5" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton6" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton7" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton8" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton9" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton10" parent="HBoxContainer/BaseTalents/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="Specialisation" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="CenterContainer" parent="HBoxContainer/Specialisation"]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="HBoxContainer/Specialisation/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]TEST"
+fit_content = true
+
+[node name="Switch" parent="HBoxContainer/Specialisation/HBoxContainer" instance=ExtResource("2_258f4")]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("3_xad53")
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/Specialisation"]
+layout_mode = 2
+
+[node name="Talents" type="GridContainer" parent="HBoxContainer/Specialisation/CenterContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="CustomButton" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton2" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton3" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton4" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton5" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton6" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton7" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton8" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton9" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CustomButton10" parent="HBoxContainer/Specialisation/CenterContainer/Talents" instance=ExtResource("1_3utei")]
+layout_mode = 2
+
+[node name="CenterContainer2" type="CenterContainer" parent="HBoxContainer/Specialisation"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="CustomButton" parent="Control" instance=ExtResource("2_258f4")]
+layout_mode = 2
+offset_left = -32.0
+offset_top = 168.0
+offset_right = -8.0
+offset_bottom = 192.0
+size_flags_horizontal = 0
