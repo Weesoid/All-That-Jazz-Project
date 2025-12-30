@@ -11,7 +11,7 @@ status_change = {
 "crit": 0.0,
 "crit_dmg": 0.0,
 "damage": 0,
-"defense": 0.05,
+"defense": 0.03,
 "handling": 0,
 "heal_mult": 0.0,
 "health": 0,
@@ -30,4 +30,4 @@ name = "Bolstered"
 description = "For power!!!!!!!!!"
 icon = ExtResource("1_1dvqv")
 max_rank = 4
-required_level = 0
+required_level = 3

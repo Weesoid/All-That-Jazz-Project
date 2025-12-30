@@ -200,7 +200,8 @@ func setButtonDisabled(set_to: bool):
 			button.setDisabled(!selected_combatant.ability_set.has(button.ability))
 	
 	for button in equipped_charms.get_children():
-		button.disabled = set_to
+		button.setDisabled(set_to)
+	
 	toggle_temperments.disabled = set_to
 
 func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
@@ -448,7 +449,7 @@ func _on_show_temperments_pressed():
 
 
 func _on_toggle_view_pressed():
-	var offset = talent_menu.size.x-48
+	var offset = talent_menu.size.x-50
 	var modulate_tween = create_tween()
 	var pos_tween = create_tween()
 	if !talent_menu_out:

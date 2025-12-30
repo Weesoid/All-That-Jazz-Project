@@ -117,3 +117,12 @@ func exit_focus_feedback():
 		audio_player.stop()
 	if has_node('ButtonDescription'):
 		get_node('ButtonDescription').remove()
+
+func setDisabled(set_to:bool):
+	disabled = set_to
+	if disabled:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		focus_mode = Control.FOCUS_NONE
+	else:
+		mouse_filter = Control.MOUSE_FILTER_STOP
+		focus_mode = Control.FOCUS_ALL

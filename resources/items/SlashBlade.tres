@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResWeapon" load_steps=5 format=3 uid="uid://v8qj7oi3bvdk"]
 
 [ext_resource type="Resource" uid="uid://qup6bens47pb" path="res://resources/combat/abilities_weapons/SlashBladeSlash.tres" id="1_5kkis"]
-[ext_resource type="Texture2D" uid="uid://cit7u633e48db" path="res://images/sprites/icon_fast_cast.png" id="2_erc5x"]
+[ext_resource type="Texture2D" uid="uid://bid2yp6x5ds0a" path="res://images/sprites/icon_half_face.png" id="2_5w0rd"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_thh0s"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_hn2aj"]
 
@@ -25,7 +25,7 @@ stat_modifications = {
 "speed": 0
 }
 name = "Slash Blade"
-icon = ExtResource("2_erc5x")
+icon = ExtResource("2_5w0rd")
 description = ""
 value = 0
 mandatory = false

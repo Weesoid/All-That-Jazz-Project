@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="ResStatTalent" load_steps=5 format=3 uid="uid://cow3xpurjygfe"]
+
+[ext_resource type="Texture2D" uid="uid://dla3fy2egfys5" path="res://images/talent_icons/default.png" id="1_ckhoq"]
+[ext_resource type="Script" path="res://scripts/resources/ResTalentStatMod.gd" id="2_p5hh1"]
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="3_2801w"]
+
+[sub_resource type="Resource" id="Resource_cgub5"]
+script = ExtResource("3_2801w")
+status_change = {
+"accuracy": 0.0,
+"crit": 0.0,
+"crit_dmg": 0.03,
+"damage": 0,
+"defense": 0.0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 0,
+"resist": 0.0,
+"speed": 0
+}
+rank_scaling = true
+apply_once = false
+message = ""
+sound_effect = ""
+
+[resource]
+script = ExtResource("2_p5hh1")
+stat_modifiers = SubResource("Resource_cgub5")
+name = "Slugger"
+description = ""
+icon = ExtResource("1_ckhoq")
+max_rank = 4
+required_level = 7

@@ -49,5 +49,10 @@ func setDisabled(set_to: bool):
 	disabled = set_to
 	if disabled:
 		dimButton()
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		focus_mode = Control.FOCUS_NONE
 	else:
 		undimButton()
+		mouse_filter = Control.MOUSE_FILTER_STOP
+		focus_mode = Control.FOCUS_ALL
+

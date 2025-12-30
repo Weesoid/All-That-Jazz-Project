@@ -25,7 +25,10 @@ func loadTalents(p_combatant: ResPlayerCombatant):
 	
 	for talent in combatant.talent_list.keys():
 		getContainer('BaseTalents','title').text = talent.to_upper().replace('_',' ')
-		for t in combatant.talent_list[talent]:
+		var sorted_list = combatant.talent_list[talent]
+		sorted_list = sorted_list.filter(func(talent): return talent.required_level <= PlayerGlobals.team_level)
+		sorted_list.sort_custom(func(a,b): return a.required_level < b.required_level)
+		for t in sorted_list:
 			var button = OverworldGlobals.createTalentButton(t,combatant)
 			button.pressed.connect(talentPressed.bind(t))
 			button.pressed.connect(button.updateRank)
@@ -35,6 +38,7 @@ func loadTalents(p_combatant: ResPlayerCombatant):
 					button.updateRank()
 					)
 			getContainer('BaseTalents','talents').add_child(button)
+	
 	for talent in combatant.talent_list.keys():
 		getContainer('Path','title').text = talent.to_upper().replace('_',' ')
 		for t in combatant.talent_list[talent]:
@@ -65,9 +69,6 @@ func talentPressed(talent: ResTalent):
 	combatant.activateTalent(talent)
 	combatant.stat_points -= 1
 	updatePointCount()
-#	print(combatant.active_talents)
-#	print(CombatGlobals.getStatChangeString(combatant.stat_values))
-#	print(combatant.stat_modifiers)
 
 func talentDumped(talent: ResTalent):
 	if !combatant.active_talents.has(talent):
@@ -76,9 +77,6 @@ func talentDumped(talent: ResTalent):
 	combatant.stat_points += combatant.active_talents[talent]
 	updatePointCount()
 	combatant.removeTalent(talent)
-#	print(combatant.active_talents)
-#	print(CombatGlobals.getStatChangeString(combatant.stat_values))
-#	print(combatant.stat_modifiers)
 
 func updatePointCount():
 	var current_count = combatant.stat_points

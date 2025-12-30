@@ -30,4 +30,4 @@ name = "Tinkerer"
 description = ""
 icon = ExtResource("1_3s5v0")
 max_rank = 1
-required_level = 0
+required_level = 8

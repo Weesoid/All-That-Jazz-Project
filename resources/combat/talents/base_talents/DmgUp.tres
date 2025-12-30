@@ -30,4 +30,4 @@ name = "Ruthless"
 description = ""
 icon = ExtResource("1_wbbd4")
 max_rank = 8
-required_level = 0
+required_level = 2
