@@ -181,7 +181,6 @@ func getNonMandatoryItems():
 
 func getItem(item):
 	if item is ResCharm:
-		print(getCharms(item))
 		return getCharms(item)[0]
 	elif item is ResItem:
 		return inventory[inventory.find(item)]

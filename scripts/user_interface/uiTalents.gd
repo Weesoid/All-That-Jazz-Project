@@ -3,8 +3,13 @@ extends Control
 
 @onready var base_container = $MarginContainer/HBoxContainer
 @onready var points = $MarginContainer/Points
-@export var combatant: ResPlayerCombatant
+@export var combatant: ResPlayerCombatant #= preload("res://resources/combat/combatants_player/Willis.tres")
 var out:bool=false
+
+#func _ready():
+#	combatant.initializeCombatant(false)
+#	await get_tree().process_frame
+#	loadTalents(combatant)
 
 func loadTalents(p_combatant: ResPlayerCombatant):
 	for child in getContainer('BaseTalents','talents').get_children():

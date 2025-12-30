@@ -80,6 +80,7 @@ offset_right = 320.0
 offset_bottom = 133.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_k45et")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_ncn8h")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_xuu8a")

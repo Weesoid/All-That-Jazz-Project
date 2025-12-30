@@ -66,7 +66,8 @@ func loadMembers(set_focus:bool=true, preview_member:bool=false):
 func loadMemberInfo(member: ResCombatant, button: Button=null):
 	character_name.text = member.name.to_upper()
 	updateCharacterView(member)
-	
+	if talent_menu_out:
+		_on_toggle_view_pressed()
 	if changing_formation and selected_combatant == null:
 		selected_combatant = member
 		button.add_theme_color_override('font_color', Color.YELLOW)
@@ -90,6 +91,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 			dimInactiveAbilities()
 		if selected_combatant.isInflicted():
 			addStatusEffectIcons()
+
 	talent_menu.loadTalents(selected_combatant)
 	attrib_view.combatant = selected_combatant
 	if has_node('Roster'):
@@ -183,22 +185,20 @@ func createAbilityButton(ability, location):
 
 func dimInactiveAbilities():
 	for ability_button in pool.get_children():
-		if !selected_combatant.ability_set.has(ability_button.ability):
-			ability_button.disabled = true
-			ability_button.dimButton()
+		ability_button.setDisabled(!selected_combatant.ability_set.has(ability_button.ability))
 
 func undimAbilities():
 	for ability_button in pool.get_children():
-		ability_button.disabled = false
-		ability_button.undimButton()
+		ability_button.setDisabled(false)
+		#ability_button.disabled = false
+		#ability_button.undimButton()
 
 func setButtonDisabled(set_to: bool):
 	for button in pool.get_children():
-		#if selected_combatant.ability_set.has(button.ability) and !button.disabled:
-		if selected_combatant.ability_set.has(button.ability):
-			button.setDisabled(set_to)
-		#else:
-			
+		button.setDisabled(set_to)
+		if selected_combatant.ability_set.size() >= 4 and !set_to:
+			button.setDisabled(!selected_combatant.ability_set.has(button.ability))
+	
 	for button in equipped_charms.get_children():
 		button.disabled = set_to
 	toggle_temperments.disabled = set_to
@@ -454,13 +454,13 @@ func _on_toggle_view_pressed():
 	if !talent_menu_out:
 		talent_menu.show()
 		OverworldGlobals.setControlFocus(talent_menu.getContainer('BaseTalents', 'talents'))
-		pos_tween.tween_property(talent_menu, 'position', talent_menu.position+Vector2(offset,0),0.25)
-		modulate_tween.tween_property(talent_menu,'modulate',Color.WHITE,0.3)
+		pos_tween.tween_property(talent_menu, 'position', talent_menu.position+Vector2(offset,0),0.25).set_trans(Tween.TRANS_CUBIC)
+		modulate_tween.tween_property(talent_menu,'modulate',Color.WHITE,0.2)
 		talent_menu_out = true
 		setButtonDisabled(true)
 	else:
-		pos_tween.tween_property(talent_menu, 'position', talent_menu.position-Vector2(offset,0),0.25)
-		modulate_tween.tween_property(talent_menu,'modulate',Color.TRANSPARENT,0.3)
+		pos_tween.tween_property(talent_menu, 'position', talent_menu.position-Vector2(offset,0),0.25).set_trans(Tween.TRANS_CUBIC)
+		modulate_tween.tween_property(talent_menu,'modulate',Color.TRANSPARENT,0.2)
 		talent_menu_out = false
 		setButtonDisabled(false)
 		await modulate_tween.finished

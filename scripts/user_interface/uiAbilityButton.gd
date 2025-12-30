@@ -50,7 +50,7 @@ func setDisabled(set_to:bool):
 	else:
 		undimButton()
 		disabled=false
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _on_pressed():
 	press_feedback()
