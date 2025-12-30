@@ -335,6 +335,13 @@ func createAbilityButton(ability: ResAbility)-> CustomAbilityButton:
 		button.theme = load("res://design/AbilityButtonsOutCombat.tres")
 	return button
 
+func createTalentButton(talent: ResTalent, combatant:ResPlayerCombatant)-> CustomTalentButton:
+	var button: CustomTalentButton = load("res://scenes/user_interface/TalentButton.tscn").instantiate()
+	button.talent = talent
+	button.combatant = combatant
+	if button.outside_combat:
+		button.theme = load("res://design/AbilityButtonsOutCombat.tres")
+	return button
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
 	OverworldGlobals.player.player_camera.prompt.showPrompt(message, time, audio_file)

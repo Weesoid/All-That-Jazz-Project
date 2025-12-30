@@ -40,25 +40,7 @@ func removeEmptyModifications():
 
 func getStringStats():
 	removeEmptyModifications()
-	var result = ""
-	for key in stat_modifications.keys():
-		var val = stat_modifications[key]
-		if val is float: 
-			val *= 100.0
-		if stat_modifications[key] > 0 and stat_modifications[key]:
-			result += SettingsGlobals.ui_colors['up-bb']
-			if val is float: 
-				result += "+" + str(val) + "% " +key.to_upper().replace('_', ' ') + "\n"
-			else:
-				result += "+" + str(val) + " " +key.to_upper().replace('_', ' ') +  "\n"
-		else:
-			result += SettingsGlobals.ui_colors['down-bb'] #'[color=ORANGE_RED]'
-			if val is float: 
-				result += str(val) + "% " +key.to_upper().replace('_', ' ') +  "\n"
-			else:
-				result += str(val) + " " +key.to_upper().replace('_', ' ') + "\n"
-		result += '[/color]'
-	return result
+	return CombatGlobals.getStatChangeString(stat_modifications)
 
 func isEquipped():
 	return equipped_combatant != null

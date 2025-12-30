@@ -28,7 +28,7 @@ func _init(
 	charms = saveCharms(p_charms)
 	stat_values = p_stat_values
 	base_stat_values = p_base_stat_values
-	#mandatory = p_mandatory
+	mandatory = p_mandatory
 	lingering_effects.assign(p_lingering_effects)
 	initialized = p_initialized
 	stat_points = p_stat_points
@@ -38,7 +38,7 @@ func _init(
 
 func loadData(combatant: ResPlayerCombatant):
 	combatant.charms = loadCharms()
-	#combatant.mandatory = mandatory NOTE: Might need to return if you have to change mando flag dynamically (e.g. character is mando for a certain time)
+	combatant.mandatory = mandatory #NOTE: Might need to return if you have to change mando flag dynamically (e.g. character is mando for a certain time)
 	combatant.lingering_effects = lingering_effects
 	combatant.initialized = initialized
 	combatant.stat_points = stat_points

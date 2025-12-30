@@ -1,56 +1,52 @@
 extends CustomButton
-class_name CustomAbilityButton
+class_name CustomTalentButton
 
-@onready var ability_icon = $TextureRect
+@onready var talent_icon = $TextureRect
 @onready var icon_animator = $TextureRect/AnimationPlayer
 @onready var description_label = $PanelContainer/RichTextLabel
 @onready var description_panel = $PanelContainer
 @onready var description_animator = $PanelContainer/AnimationPlayer
 @onready var charges = $TextureRect/Charges
 
-@export var ability: ResAbility
+@export var combatant: ResPlayerCombatant
+@export var talent: ResTalent
 @export var descriptions: Dictionary = {
 	'title': '',
 	'description': '',
-	'icon': preload("res://images/ability_icons/default.png")
+	'icon': preload("res://images/talent_icons/default.png")
 }
 @export var custom_charge: int = -1
-@export var outside_combat: bool = false
+@export var outside_combat: bool = true
+
+
+#func _init(p_talent:ResTalent, p_combtant:ResPlayerCombatant):
+#	talent = p_talent
+#	combatant = p_combtant
 
 func _ready():
+	if talent == null:
+		return
 	$TextureRect/HoldProgress.modulate=hold_color
-	if ability != null:
-		ability_icon.texture = ability.icon
-		description_label.text = ability.getRichDescription(true)
-		description_panel.hide()
-		if custom_charge > -1:
-			charges.text = str(custom_charge)
-			charges.show()
-		elif ability.charges > 0:
-			if !outside_combat:
-				charges.text = str(CombatGlobals.getCombatScene().getChargesLeft(CombatGlobals.getCombatScene().active_combatant, ability))
-			else:
-				charges.text = str(ability.charges)
-			charges.show()
-		if disabled:
-			ability_icon.modulate = Color.DIM_GRAY
-		if outside_combat:
-			custom_minimum_size = Vector2(48,48)
-			ability_icon.size = Vector2(24,24)
-			ability_icon.set_anchors_preset(Control.PRESET_CENTER)
-	else:
-		description_label.text = descriptions['title'].to_upper()+'\n'+descriptions['description']
-		ability_icon.texture = descriptions['icon']
+	updateRank()
+	talent_icon.texture = talent.icon
+	if disabled:
+		talent_icon.modulate = Color.DIM_GRAY
+	if outside_combat:
+		custom_minimum_size = Vector2(48,48)
+		talent_icon.size = Vector2(24,24)
+		talent_icon.set_anchors_preset(Control.PRESET_CENTER)
 
-func setDisabled(set_to:bool):
-	if set_to:
-		dimButton()
-		disabled=true
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
+func updateRank():
+	if combatant.active_talents.has(talent):
+		var current_rank = combatant.active_talents[talent]
+		charges.text = str(current_rank)+'/'+str(talent.max_rank)
+		if current_rank >= talent.max_rank:
+			charges.modulate = Color.YELLOW
+		else:
+			charges.modulate = Color.WHITE
 	else:
-		undimButton()
-		disabled=false
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		charges.modulate = Color.DIM_GRAY
+		charges.text = str('0/'+str(talent.max_rank))
 
 func _on_pressed():
 	press_feedback()
@@ -90,7 +86,7 @@ func showDescription():
 	if outside_combat:
 		var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
 		add_child(side_description)
-		side_description.showDescription(ability.getRichDescription(), Vector2(128,32))
+		side_description.showDescription('[center]'+talent.getRichDescription(), Vector2(128,32))
 	else:
 		description_panel.show()
 		description_animator.play("ShowDescription")
@@ -101,16 +97,16 @@ func hideDescription():
 	description_panel.hide()
 
 func dimButton():
-	if ability_icon != null:
-		ability_icon.modulate = Color.DIM_GRAY
+	if talent_icon != null:
+		talent_icon.modulate = Color.DIM_GRAY
 
 func undimButton():
-	if ability_icon != null:
-		ability_icon.modulate = Color.WHITE
+	if talent_icon != null:
+		talent_icon.modulate = Color.WHITE
 
 func _on_visibility_changed():
-	if ability_icon != null:
-		ability_icon.self_modulate = Color.WHITE
+	if talent_icon != null:
+		talent_icon.self_modulate = Color.WHITE
 
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
@@ -121,7 +117,7 @@ func focus_feedback():
 	
 	z_index = 99
 	if outside_combat:
-		ability_icon.self_modulate = Color.YELLOW
+		talent_icon.self_modulate = Color.YELLOW
 	else:
 		icon_animator.play("Focus")
 

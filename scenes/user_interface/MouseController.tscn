@@ -7,6 +7,6 @@ process_mode = 3
 script = ExtResource("1_imfa2")
 
 [node name="FadeOutTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 10.0
 
 [connection signal="timeout" from="FadeOutTimer" to="." method="_on_fade_out_timer_timeout"]

@@ -1,18 +1,17 @@
-[gd_scene load_steps=19 format=3 uid="uid://c36dx7g860omy"]
+[gd_scene load_steps=18 format=3 uid="uid://c36dx7g860omy"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
-[ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="3_h8pff"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="4_1mewq"]
 [ext_resource type="PackedScene" uid="uid://bbsj2rb4t3ft8" path="res://scenes/user_interface/CharacterEquip.tscn" id="4_npgsb"]
-[ext_resource type="PackedScene" uid="uid://w0tbffefweuv" path="res://scenes/user_interface/AttributeAdjust.tscn" id="4_ukx4i"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
 [ext_resource type="Texture2D" uid="uid://dp2j72h30680c" path="res://images/sprites/icon_combat_item.png" id="8_m1s3x"]
 [ext_resource type="Theme" uid="uid://8fwfbjhf8xix" path="res://design/PartyButtons.tres" id="9_c41m6"]
-[ext_resource type="Texture2D" uid="uid://b5g6jj3vikya6" path="res://images/sprites/button_stat_up_normal.png" id="9_tpi3e"]
 [ext_resource type="Texture2D" uid="uid://bw0cxrqo1ci10" path="res://images/sprites/icon_charm.png" id="10_uf4ke"]
+[ext_resource type="PackedScene" uid="uid://c7gej8jx4qymi" path="res://scenes/user_interface/Talents.tscn" id="12_7c3kv"]
+[ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="12_mfhva"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="13_dxqj5"]
 [ext_resource type="Texture2D" uid="uid://bei8dr7bb8bfq" path="res://images/sprites/icon_rotating_arrows.png" id="14_dhwtn"]
 [ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="18_sjp7i"]
@@ -29,6 +28,35 @@ size_flags_vertical = 4
 mouse_filter = 2
 alignment = 1
 script = ExtResource("1_iqbvd")
+
+[node name="TalentControl" type="Control" parent="."]
+z_index = 1
+layout_mode = 2
+mouse_filter = 1
+
+[node name="ToggleView" parent="TalentControl" instance=ExtResource("12_mfhva")]
+top_level = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 344.0
+offset_top = -92.0
+offset_right = 368.1
+offset_bottom = -68.0
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="Talents" parent="TalentControl" instance=ExtResource("12_7c3kv")]
+visible = false
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+offset_left = -120.0
+offset_top = -8.0
+offset_bottom = 18.0
+grow_horizontal = 0
 
 [node name="Abilities" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(155, 0)
@@ -83,28 +111,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(168, 0)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_s7p7p")
-
-[node name="Button" parent="Character/Panel" instance=ExtResource("3_h8pff")]
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 0
-offset_left = 133.0
-offset_top = 201.0
-offset_right = 161.0
-offset_bottom = 229.0
-texture = ExtResource("9_tpi3e")
-hold_ignore_disabled = null
-
-[node name="Label" type="Label" parent="Character/Panel/Button"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 13.0
-grow_horizontal = 0
-theme = ExtResource("8_hty5i")
-text = "25"
-horizontal_alignment = 2
 
 [node name="Label" type="Label" parent="Character/Panel"]
 layout_mode = 1
@@ -183,21 +189,6 @@ offset_left = -8.0
 offset_top = 2.0
 offset_right = -8.0
 offset_bottom = 2.0
-
-[node name="AttributeAdjust" parent="Character/SubMenus" node_paths=PackedStringArray("return_button") instance=ExtResource("4_ukx4i")]
-visible = false
-z_index = 1
-layout_mode = 2
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 84.0
-offset_top = 152.0
-offset_right = 84.0
-offset_bottom = 152.0
-return_button = NodePath("")
 
 [node name="Stats" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -342,7 +333,7 @@ icon_alignment = 1
 [node name="SubmenuPoint" type="Marker2D" parent="."]
 position = Vector2(272, 248)
 
-[connection signal="pressed" from="Character/Panel/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="TalentControl/ToggleView" to="." method="_on_toggle_view_pressed"]
 [connection signal="pressed" from="Character/StatAdjusters/Weapon" to="." method="_on_weapon_pressed"]
 [connection signal="pressed" from="Character/StatAdjusters/SlotA" to="." method="_on_slot_a_pressed"]
 [connection signal="pressed" from="Character/StatAdjusters/SlotB" to="." method="_on_slot_b_pressed"]

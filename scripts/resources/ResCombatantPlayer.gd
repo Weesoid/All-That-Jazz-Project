@@ -26,10 +26,37 @@ var stat_point_allocations = {
 	'handling': 0
 } # Change to talent shit
 var active_talents = {} # {talent: rank}
-var talent_list = {'base_talents':[]}
+var talent_list = {}
 var temperment: Array[String] = []
 var base_health: int
 var initialized = false
+
+func loadTalents():
+	var base_talents=ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
+	talent_list['base_talents'] = []
+	for talent in base_talents:
+		talent_list['base_talents'].append(talent)
+
+func applyTalents():
+	for talent in active_talents.keys():
+		if talent is ResStatTalent:
+			print('modifyin!')
+			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]), 'talent_'+talent.name)
+
+func activateTalent(talent: ResTalent):
+	if talent in active_talents.keys() and talent.max_rank < active_talents[talent]+1:
+		return
+	
+	if talent not in active_talents.keys():
+		active_talents[talent] = 1
+	else:
+		active_talents[talent] += 1
+	applyTalents()
+
+func removeTalent(talent:ResTalent):
+	if talent in active_talents.keys():
+		CombatGlobals.resetStat(self,'talent_'+talent.name)
+		active_talents.erase(talent)
 
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:
@@ -47,6 +74,9 @@ func initializeCombatant(do_scene:bool=true):
 	#loadActiveAbilities()
 	if !base_temperment.is_empty() and temperment.is_empty():
 		temperment = base_temperment
+	
+	loadTalents()
+	applyTalents()
 	
 	applyTemperments()
 

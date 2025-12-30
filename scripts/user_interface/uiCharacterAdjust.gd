@@ -17,10 +17,6 @@ const SACK_ICON = "res://images/sprites/icon_charm.png"
 @export var show_current_party = true
 @onready var pool = $Abilities/MarginContainer/ScrollContainer/VBoxContainer
 @onready var member_container = $Formation/Members/HBoxContainer
-@onready var stat_points = $Character/Panel/Button/Label
-@onready var show_attrib_adjust = $Character/Panel/Button
-@onready var attrib_adjust = $Character/SubMenus/AttributeAdjust
-@onready var attrib_view = $Stats/HSplitContainer/AttributeView
 @onready var equipped_charms = $Character/StatAdjusters
 @onready var weapon_button = $Character/StatAdjusters/Weapon
 @onready var charm_slot_a = $Character/StatAdjusters/SlotA
@@ -35,17 +31,11 @@ const SACK_ICON = "res://images/sprites/icon_charm.png"
 @onready var character_name = $Character/Panel/Label
 @onready var weapon_durability = $Character/StatAdjusters/Weapon/Label
 @onready var toggle_temperments = $Formation/ShowTemperments
+@onready var talent_menu = $TalentControl/Talents
+@onready var attrib_view = $Stats/HSplitContainer/AttributeView
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
-
-func _process(_delta):
-	if selected_combatant != null:
-		attrib_view.combatant = selected_combatant
-		attrib_adjust.combatant = selected_combatant
-		if selected_combatant.stat_points > 0:
-			stat_points.text = str(selected_combatant.stat_points)
-		else:
-			stat_points.text = ''
+var talent_menu_out:bool=false
 
 func addStatusEffectIcons():
 	for child in infliction.get_children():
@@ -59,6 +49,7 @@ func _ready():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 	member_container.visible = show_current_party
 	formation_button.visible = show_current_party
+
 func loadMembers(set_focus:bool=true, preview_member:bool=false):
 	for child in member_container.get_children():
 		child.queue_free()
@@ -75,7 +66,7 @@ func loadMembers(set_focus:bool=true, preview_member:bool=false):
 func loadMemberInfo(member: ResCombatant, button: Button=null):
 	character_name.text = member.name.to_upper()
 	updateCharacterView(member)
-		
+	
 	if changing_formation and selected_combatant == null:
 		selected_combatant = member
 		button.add_theme_color_override('font_color', Color.YELLOW)
@@ -91,7 +82,6 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		selected_combatant = null
 	else:
 		selected_combatant = member
-		attrib_adjust.hide()
 		loadAbilities()
 		updateTemperments()
 		updateEquipped()
@@ -100,7 +90,8 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 			dimInactiveAbilities()
 		if selected_combatant.isInflicted():
 			addStatusEffectIcons()
-	
+	talent_menu.loadTalents(selected_combatant)
+	attrib_view.combatant = selected_combatant
 	if has_node('Roster'):
 		get_node('Roster').inspect_mark.hide()
 
@@ -203,11 +194,13 @@ func undimAbilities():
 
 func setButtonDisabled(set_to: bool):
 	for button in pool.get_children():
-		button.disabled = set_to
-		button.dimButton()
+		#if selected_combatant.ability_set.has(button.ability) and !button.disabled:
+		if selected_combatant.ability_set.has(button.ability):
+			button.setDisabled(set_to)
+		#else:
+			
 	for button in equipped_charms.get_children():
 		button.disabled = set_to
-	show_attrib_adjust.disabled = set_to
 	toggle_temperments.disabled = set_to
 
 func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
@@ -323,7 +316,6 @@ func _on_change_formation_pressed():
 	if equipment_select_point.has_node('CharacterEquip'):
 		equipment_select_point.get_node('CharacterEquip').equipped_item.emit()
 		equipment_select_point.get_node('CharacterEquip').queue_free()
-	attrib_adjust.hide()
 	changing_formation = !changing_formation
 	
 	if changing_formation:
@@ -431,14 +423,14 @@ func formatModifiers(stat_dict: Dictionary, bb_code:bool=true) -> String:
 	return result
 
 
-func _on_button_pressed():
-	if attrib_adjust.visible:
-		setButtonDisabled(false)
-		attrib_adjust.hidePanel()
-	else:
-		setButtonDisabled(true)
-		attrib_adjust.showPanel()
-		attrib_adjust.focus()
+#func _on_button_pressed():
+#	if attrib_adjust.visible:
+#		setButtonDisabled(false)
+#		attrib_adjust.hidePanel()
+#	else:
+#		setButtonDisabled(true)
+#		attrib_adjust.showPanel()
+#		attrib_adjust.focus()
 
 func grabFocus():
 	OverworldGlobals.setMenuFocus(pool)
@@ -453,3 +445,23 @@ func _on_show_temperments_pressed():
 		temperments.show()
 		toggle_temperments.icon = load("res://images/sprites/icon_half_face_b.png")
 		toggle_temperments.tooltip_text = 'Hide Temperments'
+
+
+func _on_toggle_view_pressed():
+	var offset = talent_menu.size.x-48
+	var modulate_tween = create_tween()
+	var pos_tween = create_tween()
+	if !talent_menu_out:
+		talent_menu.show()
+		OverworldGlobals.setControlFocus(talent_menu.getContainer('BaseTalents', 'talents'))
+		pos_tween.tween_property(talent_menu, 'position', talent_menu.position+Vector2(offset,0),0.25)
+		modulate_tween.tween_property(talent_menu,'modulate',Color.WHITE,0.3)
+		talent_menu_out = true
+		setButtonDisabled(true)
+	else:
+		pos_tween.tween_property(talent_menu, 'position', talent_menu.position-Vector2(offset,0),0.25)
+		modulate_tween.tween_property(talent_menu,'modulate',Color.TRANSPARENT,0.3)
+		talent_menu_out = false
+		setButtonDisabled(false)
+		await modulate_tween.finished
+		talent_menu.hide()

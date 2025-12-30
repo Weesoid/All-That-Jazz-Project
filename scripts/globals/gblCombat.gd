@@ -774,6 +774,7 @@ func applyFadedStatus(level: int, add_space:bool=false):
 func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 	var out = ''
 	
+	print(basic_effects)
 	for i in range(basic_effects.size()):
 		var effect = basic_effects[i]
 		if !effect.has_method('_to_string'):
@@ -784,3 +785,24 @@ func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 		elif !seperator:
 			out += '\n'
 	return out
+
+func getStatChangeString(stat_modifications:Dictionary):
+	var result = ""
+	for key in stat_modifications.keys():
+		var val = stat_modifications[key]
+		if val is float: 
+			val *= 100.0
+		if stat_modifications[key] > 0 and stat_modifications[key]:
+			result += SettingsGlobals.ui_colors['up-bb']
+			if val is float: 
+				result += "+" + str(val) + "% " +key.to_upper().replace('_', ' ') + "\n"
+			else:
+				result += "+" + str(val) + " " +key.to_upper().replace('_', ' ') +  "\n"
+		else:
+			result += SettingsGlobals.ui_colors['down-bb'] #'[color=ORANGE_RED]'
+			if val is float: 
+				result += str(val) + "% " +key.to_upper().replace('_', ' ') +  "\n"
+			else:
+				result += str(val) + " " +key.to_upper().replace('_', ' ') + "\n"
+		result += '[/color]'
+	return result

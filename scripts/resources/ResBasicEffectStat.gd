@@ -15,7 +15,7 @@ class_name ResStatChangeEffect
 }
 @export var rank_scaling = true
 
-func getStatChanges(current_rank: int=0):
+func getStatChanges(current_rank: int=1):
 	var out = {}
 	for key in status_change.keys():
 		if status_change[key] != 0: 
@@ -23,3 +23,6 @@ func getStatChanges(current_rank: int=0):
 			if current_rank != 0:
 				out[key] *= current_rank
 	return out
+
+func _to_string():
+	return CombatGlobals.getStatChangeString(getStatChanges())
