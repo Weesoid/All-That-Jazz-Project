@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://vedm8h64ew7u"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://vedm8h64ew7u"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_rxpyl"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yx7md"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectMove.gd" id="2_7nh4x"]
 [ext_resource type="Texture2D" uid="uid://cjh3mqatg2p5o" path="res://images/ability_icons/recede.png" id="3_8pd82"]
-[ext_resource type="Texture2D" uid="uid://cld1dw3meacb4" path="res://images/ability_icons/recede_r.png" id="4_xgcga"]
 
 [sub_resource type="Resource" id="Resource_0v1j4"]
 script = ExtResource("2_7nh4x")
@@ -48,9 +47,3 @@ target_position = {
 tension_cost = 0
 instant_cast = false
 required_level = 0
-mutation = {
-"icon": ExtResource("4_xgcga"),
-"instant_cast": true,
-"name": "Rushing Recede",
-"tension_cost": 4
-}

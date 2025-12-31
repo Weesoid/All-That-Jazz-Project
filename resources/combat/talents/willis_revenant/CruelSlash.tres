@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="ResAbilityTalent" load_steps=6 format=3 uid="uid://ba88woh64mdmt"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="1_etuu6"]
+[ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_npoym"]
+[ext_resource type="Texture2D" uid="uid://dla3fy2egfys5" path="res://images/talent_icons/default.png" id="1_y1qnu"]
+[ext_resource type="Script" path="res://scripts/resources/ResTalentAbility.gd" id="2_ma678"]
+
+[sub_resource type="Resource" id="Resource_qwj8a"]
+script = ExtResource("1_etuu6")
+damage_type = 0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+damage_modifier = 1.0
+can_miss = true
+can_crit = true
+bonus_stats = {
+"damage/hp:>:0.75": 999
+}
+return_pos = true
+indicator_bb = ""
+plant_self_on_combo = false
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[resource]
+script = ExtResource("2_ma678")
+affected_ability = ExtResource("1_npoym")
+effects = {
+"basic_effects": [SubResource("Resource_qwj8a")],
+"target_position": {
+"max": 4,
+"min": 0
+}
+}
+name = "Cruel Slash"
+description = ""
+icon = ExtResource("1_y1qnu")
+max_rank = 1
+required_level = 0

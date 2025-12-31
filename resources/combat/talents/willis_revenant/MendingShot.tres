@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResAbilityTalent" load_steps=4 format=3 uid="uid://ct24yskshmhcx"]
+
+[ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="1_jxa61"]
+[ext_resource type="Texture2D" uid="uid://dla3fy2egfys5" path="res://images/talent_icons/default.png" id="2_10pox"]
+[ext_resource type="Script" path="res://scripts/resources/ResTalentAbility.gd" id="3_rw1rr"]
+
+[resource]
+script = ExtResource("3_rw1rr")
+affected_ability = ExtResource("1_jxa61")
+effects = {}
+apply_type = 0
+name = "Mending Shot"
+description = ""
+icon = ExtResource("2_10pox")
+max_rank = 1
+required_level = 0

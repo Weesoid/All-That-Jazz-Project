@@ -223,21 +223,21 @@ func giveButtonFunction(button:CustomAbilityButton, ability:ResAbility,weapon:Re
 				setTensionBarVisible(true)
 				showTensionCost(ability.tension_cost)
 			)
-	if button.ability.canMutate():
-		button.hold_time = 0.4
-		button.held_press.connect(
-			func():
-				if !button.ability.isMutated():
-					button.ability.mutateProperties()
-					button._ready()
-					button.showDescription()
-					canUseAbility(button)
-				else:
-					button.ability.restoreProperties()
-					button._ready()
-					button.showDescription()
-					canUseAbility(button)
-		)
+#	if button.ability.canMutate():
+#		button.hold_time = 0.4
+#		button.held_press.connect(
+#			func():
+#				if !button.ability.isMutated():
+#					button.ability.mutateProperties()
+#					button._ready()
+#					button.showDescription()
+#					canUseAbility(button)
+#				else:
+#					button.ability.restoreProperties()
+#					button._ready()
+#					button.showDescription()
+#					canUseAbility(button)
+#		)
 	
 	if !ability.enabled or !ability.canUse(active_combatant, combatants):
 		setButtonDisabled(button,true,false)

@@ -774,7 +774,6 @@ func applyFadedStatus(level: int, add_space:bool=false):
 func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 	var out = ''
 	
-	print(basic_effects)
 	for i in range(basic_effects.size()):
 		var effect = basic_effects[i]
 		if !effect.has_method('_to_string'):

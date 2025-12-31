@@ -23,9 +23,6 @@ mouse_filter = 2
 layout_mode = 2
 show_current_party = false
 
-[node name="Button" parent="CharacterAdjust/Character/Panel" index="0"]
-hold_ignore_disabled = true
-
 [node name="ChangeFormation" parent="CharacterAdjust/Formation" index="1"]
 visible = false
 

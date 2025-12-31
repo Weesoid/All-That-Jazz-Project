@@ -48,4 +48,3 @@ target_position = {
 tension_cost = 0
 instant_cast = true
 required_level = 0
-mutation = {}

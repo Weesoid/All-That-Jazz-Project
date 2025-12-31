@@ -66,6 +66,7 @@ func loadMembers(set_focus:bool=true, preview_member:bool=false):
 func loadMemberInfo(member: ResCombatant, button: Button=null):
 	character_name.text = member.name.to_upper()
 	updateCharacterView(member)
+	member.applyAbilityMutations()
 	if talent_menu_out:
 		_on_toggle_view_pressed()
 	if changing_formation and selected_combatant == null:
@@ -112,13 +113,6 @@ func updateCharacterView(member: ResPlayerCombatant):
 		character_scene.combatant_resource.getAnimator().play('RESET')
 		await character_scene.combatant_resource.getAnimator().animation_finished
 		character_scene.playIdle()
-#		await get_tree().process_frame
-		#await character_scene.tree_entered
-#		character_scene.combatant_resource.getAnimator().play('RESET')
-#		await character_scene.combatant_resource.getAnimator().animation_finished
-#		if !changing_formation:
-#			var cast_anim = ['Cast_Misc', 'Cast_Melee', 'Cast_Ranged'].pick_random()
-#			await character_scene.doAnimation(cast_anim)
 
 func swapMembers(member_a: ResCombatant, member_b: ResCombatant):
 	var team = OverworldGlobals.getCombatantSquad('Player')

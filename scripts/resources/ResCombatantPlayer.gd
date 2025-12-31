@@ -8,6 +8,7 @@ class_name ResPlayerCombatant
 @export var mandatory = false
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
 @export var stat_multiplier = 0.01
+@export var talents: Array[String]
 
 var file_references: Dictionary = {
 	'active_abilities': [],
@@ -25,37 +26,54 @@ var stat_point_allocations = {
 	'defense': 0,
 	'handling': 0
 } # Change to talent shit
-var active_talents = {} # {talent: rank}
+var active_talents = {}
 var talent_list = {}
 var temperment: Array[String] = []
 var base_health: int
 var initialized = false
 
 func loadTalents():
-	var base_talents=ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
-	talent_list['base_talents'] = []
-	for talent in base_talents:
-		talent_list['base_talents'].append(talent)
+	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
+	
+	for path in talents:
+		talent_list[path] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/%s/" % path)
 
 func applyTalents():
 	for talent in active_talents.keys():
 		if talent is ResStatTalent:
-			print('modifyin!')
 			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]), 'talent_'+talent.name)
+		elif talent is ResAbilityTalent:
+			ability_pool[ability_pool.find(talent.affected_ability)].mutateProperties(talent.effects)
 
-func activateTalent(talent: ResTalent):
+func getAbilityMutations():
+	return active_talents.keys().filter(func(talent): return talent is ResAbilityTalent)
+
+func applyAbilityMutations():
+	clearAbilityMutations()
+	for mutation in getAbilityMutations():
+		ability_pool[ability_pool.find(mutation.affected_ability)].mutateProperties(mutation.effects)
+
+func clearAbilityMutations():
+	for ability in ability_pool.filter(func(ability): return ability.mutated):
+		ability.restoreProperties()
+
+func activateTalent(talent: ResTalent, count:int=1):
 	if talent in active_talents.keys() and talent.max_rank < active_talents[talent]+1:
 		return
 	
 	if talent not in active_talents.keys():
-		active_talents[talent] = 1
+		active_talents[talent] = count
 	else:
-		active_talents[talent] += 1
+		active_talents[talent] += count
 	applyTalents()
 
 func removeTalent(talent:ResTalent):
 	if talent in active_talents.keys():
-		CombatGlobals.resetStat(self,'talent_'+talent.name)
+		if talent is ResStatTalent:
+			CombatGlobals.resetStat(self,'talent_'+talent.name)
+		elif talent is ResAbilityTalent:
+			ability_pool[ability_pool.find(talent.affected_ability)].restoreProperties()
+		
 		active_talents.erase(talent)
 
 func initializeCombatant(do_scene:bool=true):

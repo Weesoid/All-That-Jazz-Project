@@ -144,15 +144,8 @@ func _ready():
 		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
 
 	combat_ui.initialize()
-	#await get_tree().process_frame
-	#attemptEscape()
-	print('full')
+
 func _process(_delta):
-	#print(combatant_turn_order)
-	#$CombatCamera/Interface/Label.text = str(Engine.get_frames_per_second())
-	#ui_attribute_view.combatant = target_combatant
-	#round_counter.text = str(round_count)
-	
 	match target_state:
 		TargetState.SINGLE: playerSelectSingleTarget()
 		TargetState.MULTI: playerSelectMultiTarget()
@@ -306,8 +299,10 @@ func end_turn(combatant_act=true):
 			await get_node('QTE').tree_exited
 		setActiveCombatant()
 	
-	if selected_ability != null and selected_ability.isMutated():
-		selected_ability.restoreProperties()
+	if active_combatant is ResPlayerCombatant:
+		active_combatant.applyAbilityMutations()
+	else:
+		active_combatant.clearAbilityMutations()
 	
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
@@ -559,6 +554,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		return
 	var team_container
 	combatant.initializeCombatant()
+	combatant.clearAbilityMutations()
 	setSignals(combatant,true)
 	if combatant is ResPlayerCombatant:
 		team_container = team_container_markers
@@ -624,6 +620,8 @@ func removeCombatant(combatant: ResCombatant):
 # Cast Ability for players
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
+	# Mutate ability
+	
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
 	if ability.target_type == ResAbility.TargetType.MULTI:
 		addTargetClickButton(active_combatant)
@@ -1124,7 +1122,6 @@ func setSignals(combatant:ResCombatant, connect_signals:bool):
 			combatant.player_turn.connect(on_player_turn)
 		if !combatant.enemy_turn.is_connected(on_enemy_turn):
 			combatant.enemy_turn.connect(on_enemy_turn)
-	
 	else:
 		if combatant.player_turn.is_connected(on_player_turn):
 			combatant.player_turn.disconnect(on_player_turn)

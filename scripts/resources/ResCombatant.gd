@@ -202,6 +202,10 @@ func updateHealth(amount: int):
 	if stat_values['health'] >= base_stat_values['health'] or percent_health == 1:
 		stat_values['health'] = base_stat_values['health']
 
+func clearAbilityMutations():
+	for ability in ability_set.filter(func(ability): return ability.mutated):
+		ability.restoreProperties()
+
 func _to_string():
 	return str(name)
 

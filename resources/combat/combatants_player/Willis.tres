@@ -16,6 +16,7 @@ follower_texture = ExtResource("3_qv2st")
 mandatory = true
 rest_sprite = ExtResource("5_clolb")
 stat_multiplier = 0.01
+talents = Array[String](["willis_revenant"])
 name = "Willis Flynt"
 packed_scene = ExtResource("3_f2l1f")
 bullet_texture = ExtResource("2_wn1q6")

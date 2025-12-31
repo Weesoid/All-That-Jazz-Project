@@ -30,12 +30,12 @@ enum TargetGroup {
 @export var tension_cost: int = 0
 @export var instant_cast: bool = false
 @export var required_level = 0
-@export var mutation: Dictionary = {}
 
 var current_effect: ResAbilityEffect
 var current_charge: int
 var enabled: bool = true
 var default_properties:Dictionary={}
+var mutated:bool =false
 
 signal single_target(type)
 signal multi_target(type)
@@ -191,20 +191,14 @@ func isBasicAbility():
 	return basic_effects.size() > 0
 
 func isOnslaught():
-	for effect in basic_effects:
-		if effect is ResOnslaughtEffect: return true
-	
-	return false
+	return basic_effects.filter(func(effect): return effect is ResOnslaughtEffect).size() > 0
 
-func canMutate():
-	return !mutation.is_empty()
-
-func mutateProperties():
-	if isMutated():
+func mutateProperties(mutation: Dictionary):
+	if mutated:
 		return
 	
 	for property in mutation.keys():
-		assert(get(property) != mutation[property], "Warning! %s property is the same as it's mutation." % property)
+		#assert(get(property) != mutation[property], "Warning! %s property is the same as it's mutation." % property)
 		
 		if mutation[property] is Array:
 			var array = []
@@ -214,6 +208,8 @@ func mutateProperties():
 		else:
 			default_properties[property] = get(property)
 			set(property,mutation[property])
+	
+	mutated = true
 
 func restoreProperties():
 	for property in default_properties.keys():
@@ -221,11 +217,4 @@ func restoreProperties():
 			get(property).assign(default_properties[property])
 		else:
 			set(property,default_properties[property])
-
-func isMutated():
-	var the_same = 0
-	for property in mutation.keys():
-		if get(property) == mutation[property]:
-			the_same += 1
-	
-	return the_same == mutation.size()
+	mutated = false
