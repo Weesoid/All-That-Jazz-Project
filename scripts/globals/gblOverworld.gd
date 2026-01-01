@@ -908,11 +908,11 @@ func addLingerEffect(combatant: ResCombatant, effect):
 	else:
 		if status_effect.getStatusModiferEffect() != null and combatant is ResPlayerCombatant:
 			combatant.temperment.append(CombatGlobals.getTempermentModiferID(status_effect, status_effect.getStatusModiferEffect().status_change))
+			combatant.applyTemperments()
 		
 		combatant.lingering_effects.append(effect)
 		return true
-		
-		
+
 func isPlayerAlive()-> bool:
 	for combatant in getCombatantSquad('Player'):
 		if !combatant.isDead(): return true

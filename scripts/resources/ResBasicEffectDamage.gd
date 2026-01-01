@@ -10,3 +10,6 @@ class_name ResStatusDamageEffect
 @export var trigger_on_hits:bool = false
 @export var sound_path:String = ''
 @export var indicator_bb:  String = ''
+
+func _to_string():
+	return str(damage)

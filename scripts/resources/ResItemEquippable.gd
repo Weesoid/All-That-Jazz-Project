@@ -40,7 +40,7 @@ func removeEmptyModifications():
 
 func getStringStats():
 	removeEmptyModifications()
-	return CombatGlobals.getStatChangeString(stat_modifications)
+	return CombatGlobals.getStatListString(stat_modifications)
 
 func isEquipped():
 	return equipped_combatant != null

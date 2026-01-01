@@ -785,7 +785,7 @@ func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 			out += '\n'
 	return out
 
-func getStatChangeString(stat_modifications:Dictionary):
+func getStatListString(stat_modifications:Dictionary):
 	var result = ""
 	for key in stat_modifications.keys():
 		var val = stat_modifications[key]

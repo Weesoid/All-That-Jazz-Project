@@ -41,11 +41,11 @@ func updateValue():
 	for i in range(max_value):
 		var rect: TextureRect = TextureRect.new()
 		rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-		if filled != value:
+		if value >= 0 and filled != value:
 			rect.texture = filled_circle
 			rect.modulate = filled_modulate
 			filled += 1
-		elif filled == value and show_max:
+		elif (filled == value or value < 0) and show_max:
 			rect.texture = empty_circle
 			rect.modulate = empty_modulate
 			rect.scale = Vector2(1.25,1.25)

@@ -1,25 +1,25 @@
 [gd_resource type="Resource" script_class="SavedGame" load_steps=15 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_7yaen"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_lo8cv"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataCombatant.gd" id="3_e4823"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="4_eufpr"]
-[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_g2lk5"]
-[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_pb7l8"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataEntity.gd" id="1_5yma3"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataQuests.gd" id="2_1meah"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataCombatant.gd" id="3_1mmln"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataPlayer.gd" id="4_5ly3f"]
+[ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_q73h5"]
+[ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_03hmj"]
 
-[sub_resource type="Resource" id="Resource_nnruw"]
-script = ExtResource("1_7yaen")
-position = Vector2(-117, 20.9338)
+[sub_resource type="Resource" id="Resource_it863"]
+script = ExtResource("1_5yma3")
+position = Vector2(140.667, 212.997)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_4qvje"]
-script = ExtResource("2_lo8cv")
+[sub_resource type="Resource" id="Resource_6qymo"]
+script = ExtResource("2_1meah")
 quests = Array[String]([])
 quest_objectives_data = {}
 
-[sub_resource type="Resource" id="Resource_b24xc"]
-script = ExtResource("3_e4823")
+[sub_resource type="Resource" id="Resource_ekv3d"]
+script = ExtResource("3_1mmln")
 charms = {
 0: "",
 1: "",
@@ -29,15 +29,15 @@ stat_values = {
 "accuracy": 0.95,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 4,
+"damage": 4.0,
 "defense": 0.68,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
-"handling": 1,
+"handling": 1.0,
 "heal_mult": 1.0,
-"health": 28,
+"health": 20,
 "resist": 0.05,
-"speed": 1
+"speed": 1.0
 }
 base_stat_values = {
 "accuracy": 0.95,
@@ -49,14 +49,14 @@ base_stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 28,
+"health": 20,
 "resist": 0.05,
 "speed": 1
 }
 mandatory = true
 lingering_effects = Array[String]([])
 initialized = true
-stat_points = 14
+stat_points = 1
 stat_point_allocations = {
 "damage": 0,
 "defense": 0,
@@ -68,8 +68,8 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_665rn"]
-script = ExtResource("3_e4823")
+[sub_resource type="Resource" id="Resource_upuv5"]
+script = ExtResource("3_1mmln")
 charms = {
 0: "",
 1: "",
@@ -80,12 +80,12 @@ stat_values = {
 "crit": 0.0,
 "crit_dmg": 1.25,
 "damage": 4,
-"defense": 0.0,
+"defense": 0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 42,
+"health": 30,
 "resist": 0.05,
 "speed": 40
 }
@@ -99,14 +99,14 @@ base_stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 42,
+"health": 30,
 "resist": 0.05,
 "speed": 44
 }
 mandatory = false
 lingering_effects = Array[String]([])
 initialized = true
-stat_points = 5
+stat_points = 1
 stat_point_allocations = {
 "damage": 0,
 "defense": 0,
@@ -114,12 +114,12 @@ stat_point_allocations = {
 }
 temperment = Array[String](["clever", "keen", "rigid", "clumsy", "heavy_handed"])
 file_references = {
-"active_abilities": ["res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
+"active_abilities": ["res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Advance.tres", "res://resources/combat/abilities/Defend.tres"],
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_mxnwb"]
-script = ExtResource("3_e4823")
+[sub_resource type="Resource" id="Resource_fa0dl"]
+script = ExtResource("3_1mmln")
 charms = {
 0: "",
 1: "",
@@ -135,7 +135,7 @@ stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 28,
+"health": 20,
 "resist": 0.05,
 "speed": 1
 }
@@ -149,14 +149,14 @@ base_stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 28,
+"health": 20,
 "resist": 0.05,
 "speed": 1
 }
 mandatory = false
 lingering_effects = Array[String]([])
 initialized = true
-stat_points = 5
+stat_points = 1
 stat_point_allocations = {
 "damage": 0,
 "defense": 0,
@@ -168,8 +168,8 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_07asy"]
-script = ExtResource("3_e4823")
+[sub_resource type="Resource" id="Resource_weudk"]
+script = ExtResource("3_1mmln")
 charms = {
 0: "",
 1: "",
@@ -185,7 +185,7 @@ stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 28,
+"health": 20,
 "resist": 0.05,
 "speed": 1
 }
@@ -199,14 +199,14 @@ base_stat_values = {
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 28,
+"health": 20,
 "resist": 0.05,
 "speed": 1
 }
 mandatory = false
 lingering_effects = Array[String]([])
 initialized = true
-stat_points = 5
+stat_points = 1
 stat_point_allocations = {
 "damage": 0,
 "defense": 0,
@@ -218,8 +218,8 @@ file_references = {
 "equipped_weapon": ["", 0]
 }
 
-[sub_resource type="Resource" id="Resource_45uw7"]
-script = ExtResource("4_eufpr")
+[sub_resource type="Resource" id="Resource_0o3v1"]
+script = ExtResource("4_5ly3f")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres", "res://resources/combat/combatants_player/FodderA.tres", "res://resources/combat/combatants_player/FodderB.tres"])
 map_logs = {
 "res://scenes/maps/Sidescroller.tscn": [&"PatrollerGroup"],
@@ -233,15 +233,15 @@ map_logs = {
 equipped_arrow = ""
 equipped_blessing = ""
 currency = 10000
-team_level = 5
-current_exp = 673
+team_level = 1
+current_exp = 0
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_665rn"),
-"res://resources/combat/combatants_player/FodderA.tres": SubResource("Resource_mxnwb"),
-"res://resources/combat/combatants_player/FodderB.tres": SubResource("Resource_07asy"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_b24xc")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_upuv5"),
+"res://resources/combat/combatants_player/FodderA.tres": SubResource("Resource_fa0dl"),
+"res://resources/combat/combatants_player/FodderB.tres": SubResource("Resource_weudk"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_ekv3d")
 }
 unlocked_abilities = {}
 added_abilities = {}
@@ -249,16 +249,16 @@ max_team_level = 5
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_0yrfq"]
-script = ExtResource("5_g2lk5")
+[sub_resource type="Resource" id="Resource_2b2xw"]
+script = ExtResource("5_q73h5")
 inventory = {}
 crafted_items = Array[String]([])
 
 [resource]
-script = ExtResource("6_pb7l8")
-name = "Save 1 - 00:01:25
-Morale 5
-Node2D"
-playtime = 86.307
-current_map_path = "res://scenes/maps/Sidescroller.tscn"
-save_data = [SubResource("Resource_nnruw"), SubResource("Resource_4qvje"), SubResource("Resource_45uw7"), SubResource("Resource_0yrfq")]
+script = ExtResource("6_03hmj")
+name = "Save 2 - 00:02:12
+Morale 1
+Safe"
+playtime = 132.915
+current_map_path = "res://scenes/maps/SidescrollerB.tscn"
+save_data = [SubResource("Resource_it863"), SubResource("Resource_6qymo"), SubResource("Resource_0o3v1"), SubResource("Resource_2b2xw")]

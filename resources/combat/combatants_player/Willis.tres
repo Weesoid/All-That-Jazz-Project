@@ -11,7 +11,7 @@
 [resource]
 script = ExtResource("2_vmsk2")
 ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_43nme")])
-base_temperment = Array[String]([])
+base_temperment = Array[String](["clever"])
 follower_texture = ExtResource("3_qv2st")
 mandatory = true
 rest_sprite = ExtResource("5_clolb")

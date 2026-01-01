@@ -49,6 +49,11 @@ func _ready():
 		loadMemberInfo(OverworldGlobals.getCombatantSquad('Player')[0])
 	member_container.visible = show_current_party
 	formation_button.visible = show_current_party
+	talent_menu.talent_interacted.connect(
+		func():
+			addStatusEffectIcons()
+			updateTemperments()
+	)
 
 func loadMembers(set_focus:bool=true, preview_member:bool=false):
 	for child in member_container.get_children():
@@ -86,12 +91,11 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		selected_combatant = member
 		loadAbilities()
 		updateTemperments()
+		addStatusEffectIcons()
 		updateEquipped()
 	if selected_combatant != null:
 		if selected_combatant.ability_set.size() >= 4:
 			dimInactiveAbilities()
-		if selected_combatant.isInflicted():
-			addStatusEffectIcons()
 
 	talent_menu.loadTalents(selected_combatant)
 	attrib_view.combatant = selected_combatant

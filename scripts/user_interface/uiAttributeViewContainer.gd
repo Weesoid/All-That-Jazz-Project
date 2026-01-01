@@ -27,11 +27,11 @@ func _process(_delta):
 		else:
 			hustle_val.text = 'IMMOBILIZED'
 		acc_val.value = combatant.stat_values['accuracy'] * 100
-		crit_d_val.text = str(combatant.stat_values['crit_dmg'])
+		crit_d_val.text = '+'+str(round((combatant.stat_values['crit_dmg']*100)-100))+'%'
 		crit_val.value = combatant.stat_values['crit'] * 100
 		resist_val.value = combatant.stat_values['resist'] * 100
 		if combatant.stat_values['heal_mult'] > 0:
-			healm_val.text = str(combatant.stat_values['heal_mult'])
+			healm_val.text = '+'+str(round((combatant.stat_values['heal_mult']*100)-100))+'%'
 		else:
 			healm_val.text = 'BROKEN'
 	
@@ -54,13 +54,14 @@ func calcDamage(val:String):
 		'max': return round(damage+variance)
 
 func highlightModifiedStats(value_node, stat):
-
-	if combatant.stat_values[stat] > combatant.base_stat_values[stat]:
+#	if stat == 'crit':
+#		print(combatant.stat_values[stat], ' | ', combatant.base_stat_values[stat])
+	if combatant.stat_values[stat] == combatant.base_stat_values[stat]:
+		value_node.modulate = Color.WHITE
+	elif combatant.stat_values[stat] > combatant.base_stat_values[stat]:
 		value_node.modulate = SettingsGlobals.ui_colors['up']
 	elif combatant.stat_values[stat] < combatant.base_stat_values[stat]:
 		value_node.modulate = SettingsGlobals.ui_colors['down']
-	elif combatant.stat_values[stat] == combatant.base_stat_values[stat]:
-		value_node.modulate = Color.WHITE
 
 func getAbilities(view_combatant:ResCombatant):
 	var ability_set = '[table=2]'

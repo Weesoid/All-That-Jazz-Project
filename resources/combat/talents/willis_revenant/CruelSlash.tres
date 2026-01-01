@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResAbilityTalent" load_steps=6 format=3 uid="uid://ba88woh64mdmt"]
+[gd_resource type="Resource" script_class="ResAbilityTalent" load_steps=7 format=3 uid="uid://ba88woh64mdmt"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="1_etuu6"]
 [ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_npoym"]
 [ext_resource type="Texture2D" uid="uid://dla3fy2egfys5" path="res://images/talent_icons/default.png" id="1_y1qnu"]
 [ext_resource type="Script" path="res://scripts/resources/ResTalentAbility.gd" id="2_ma678"]
+[ext_resource type="Resource" uid="uid://1bodse2aq30j" path="res://resources/combat/talents/willis_revenant/Vendetta.tres" id="4_6iy2k"]
 
 [sub_resource type="Resource" id="Resource_qwj8a"]
 script = ExtResource("1_etuu6")
@@ -42,3 +43,4 @@ description = ""
 icon = ExtResource("1_y1qnu")
 max_rank = 1
 required_level = 0
+required_talent = ExtResource("4_6iy2k")

@@ -133,6 +133,9 @@ func animateStatusEffect():
 		if afflicted_combatant is ResEnemyCombatant and !afflicted_combatant.combatant_scene is PlayerCombatantScene:
 			status_visuals.rotation_degrees = -180
 
+func getRichDescription():
+	return CombatGlobals.getBasicEffectsDescription(basic_effects)
+
 func getDescription():
 	var out_description = description
 	if max_rank > 1: out_description += ' (%s/%s)' % [current_rank, max_rank]
@@ -184,6 +187,8 @@ func getStatusModiferEffect():
 			return effect
 	
 	return null
+
+
 
 #func getFilename():
 #	return resource_path.get_file().replace('.tres','')

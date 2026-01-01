@@ -884,6 +884,8 @@ func concludeCombat(results: int):
 		bc_ui.queue_free()
 	else:
 		OverworldGlobals.playSound("res://audio/sounds/51_Flee_02.ogg")
+	for combatant in getCombatantGroup('team'):
+		combatant.applyTalents()
 	
 	transition_scene.visible = true
 	transition.play('In')

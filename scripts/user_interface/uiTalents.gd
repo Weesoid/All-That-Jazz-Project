@@ -1,9 +1,9 @@
 extends Control
 
-
 @onready var base_container = $MarginContainer/HBoxContainer
 @onready var points = $MarginContainer/Points
 @export var combatant: ResPlayerCombatant #= preload("res://resources/combat/combatants_player/Willis.tres")
+signal talent_interacted
 var out:bool=false
 
 #func _ready():
@@ -28,7 +28,6 @@ func loadTalents(p_combatant: ResPlayerCombatant):
 		else:
 			loadTalentList('Path', talent)
 			$MarginContainer/HBoxContainer/Path.show()
-	print(combatant.getAbilityMutations())
 
 func loadTalentList(container:String, talent: String):
 	getContainer(container,'title').text = talent.to_upper().replace('_',' ')
@@ -44,7 +43,18 @@ func loadTalentList(container:String, talent: String):
 				talentPressed(t,true)
 				button.updateRank()
 				)
+		
 		getContainer(container,'talents').add_child(button)
+	updateAccesibility()
+
+func updateAccesibility():
+	for button in getContainer('Path','talents').get_children():
+		if button.talent.required_talent == null: continue
+		var has_requirement = combatant.active_talents.has(button.talent.required_talent)
+		button.setDisabled(!has_requirement)
+		if !has_requirement and combatant.active_talents.has(button.talent):
+			talentDumped(button.talent,false)
+			button.updateRank()
 
 func getContainer(container_name:String, get_container:String):
 	for item in base_container.get_children():
@@ -54,7 +64,7 @@ func getContainer(container_name:String, get_container:String):
 			elif get_container == 'talents':
 				return item.get_node('CenterContainer').get_node('Talents')
 
-func talentPressed(talent: ResTalent, max_out:bool=false):
+func talentPressed(talent: ResTalent, max_out:bool=false, emit:bool=true):
 	if Input.is_action_pressed("ui_sprint"): #and combatant.stat_points >= (talent.max_rank - combatant.active_talents.get(talent,0)):
 		talentDumped(talent)
 		return
@@ -73,19 +83,25 @@ func talentPressed(talent: ResTalent, max_out:bool=false):
 	combatant.activateTalent(talent, increase)
 	combatant.stat_points -= increase
 	updatePointCount()
+	updateAccesibility()
+	if emit:
+		talent_interacted.emit()
 
-func pulsePoints():
-	var tween = get_tree().create_tween().set_parallel(false)
-	tween.tween_property(points,'self_modulate',Color.RED,0.25)
-	tween.tween_property(points,'self_modulate',Color.WHITE,0.25)
-
-func talentDumped(talent: ResTalent):
+func talentDumped(talent: ResTalent,emit:bool=true):
 	if !combatant.active_talents.has(talent):
 		return
 	
 	combatant.stat_points += combatant.active_talents[talent]
 	updatePointCount()
 	combatant.removeTalent(talent)
+	updateAccesibility()
+	if emit:
+		talent_interacted.emit()
+
+func pulsePoints():
+	var tween = get_tree().create_tween().set_parallel(false)
+	tween.tween_property(points,'self_modulate',Color.RED,0.25)
+	tween.tween_property(points,'self_modulate',Color.WHITE,0.25)
 
 func updatePointCount():
 	var current_count = combatant.stat_points

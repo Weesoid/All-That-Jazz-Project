@@ -44,6 +44,8 @@ func applyTalents():
 			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]), 'talent_'+talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].mutateProperties(talent.effects)
+		elif talent is ResStatusEffectTalent:
+			OverworldGlobals.addLingerEffect(self, talent.status_effect)
 
 func getAbilityMutations():
 	return active_talents.keys().filter(func(talent): return talent is ResAbilityTalent)
@@ -73,7 +75,8 @@ func removeTalent(talent:ResTalent):
 			CombatGlobals.resetStat(self,'talent_'+talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].restoreProperties()
-		
+		elif talent is ResStatusEffectTalent:
+			CombatGlobals.removeLingeringEffect(self, talent.status_effect)
 		active_talents.erase(talent)
 
 func initializeCombatant(do_scene:bool=true):

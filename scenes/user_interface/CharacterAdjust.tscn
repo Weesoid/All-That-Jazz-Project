@@ -220,6 +220,7 @@ layout_mode = 2
 
 [node name="Temperment" type="HFlowContainer" parent="Stats/HSplitContainer/VFlowContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="Infliction" type="HBoxContainer" parent="Stats/HSplitContainer/VFlowContainer/Temperment"]
 z_index = 2

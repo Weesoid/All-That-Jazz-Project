@@ -25,4 +25,4 @@ func getStatChanges(current_rank: int=1):
 	return out
 
 func _to_string():
-	return CombatGlobals.getStatChangeString(getStatChanges())
+	return CombatGlobals.getStatListString(getStatChanges())

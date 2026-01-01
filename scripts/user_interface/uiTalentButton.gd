@@ -132,3 +132,15 @@ func exit_focus_feedback():
 	icon_animator.play('RESET')
 	if description_panel.visible: 
 		hideDescription()
+
+func setDisabled(set_to:bool):
+	if set_to:
+		dimButton()
+		disabled=true
+		#mouse_filter = Control.MOUSE_FILTER_IGNORE
+		#focus_mode = Control.FOCUS_NONE
+	else:
+		undimButton()
+		disabled=false
+		#mouse_filter = Control.MOUSE_FILTER_STOP
+		#focus_mode = Control.FOCUS_ALL
