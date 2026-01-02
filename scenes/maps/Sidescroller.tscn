@@ -179,6 +179,7 @@ position = Vector2(163, -50)
 
 [node name="PatrollerGroup2" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 2
+enabled = false
 special_chance = 0.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup2"]

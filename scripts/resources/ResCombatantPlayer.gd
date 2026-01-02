@@ -12,7 +12,8 @@ class_name ResPlayerCombatant
 
 var file_references: Dictionary = {
 	'active_abilities': [],
-	'equipped_weapon': ['',0] # [path, durability] ; Handles save data of equipped weapons.
+	'equipped_weapon': ['',0], # [path, durability] ; Handles save data of equipped weapons.
+	'active_talents': {}
 }
 var equipped_weapon: ResWeapon
 var stat_points = 1
@@ -67,6 +68,8 @@ func activateTalent(talent: ResTalent, count:int=1):
 		active_talents[talent] = count
 	else:
 		active_talents[talent] += count
+	
+	file_references['active_talents'][talent.resource_path] = active_talents[talent]
 	applyTalents()
 
 func removeTalent(talent:ResTalent):
@@ -78,6 +81,8 @@ func removeTalent(talent:ResTalent):
 		elif talent is ResStatusEffectTalent:
 			CombatGlobals.removeLingeringEffect(self, talent.status_effect)
 		active_talents.erase(talent)
+	
+	file_references['active_talents'].erase(talent)
 
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:
@@ -115,9 +120,16 @@ func loadFileReferences():
 			remove.append(ability_path)
 			continue
 		ability_set.append(load(ability_path))
+	for talent_path in file_references['active_talents']:
+		if !FileAccess.file_exists(talent_path):
+			remove.append(talent_path)
+			continue
+		active_talents[load(talent_path)] = file_references['active_talents'][talent_path]
+	
 	for ability_path in remove:
 		file_references['active_abilities'].erase(ability_path)
 	remove.clear()
+	
 	
 	if FileAccess.file_exists(file_references['equipped_weapon'][0]):
 		var weapon = load(file_references['equipped_weapon'][0])

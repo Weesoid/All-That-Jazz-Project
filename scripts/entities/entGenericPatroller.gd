@@ -220,8 +220,8 @@ func destroy(give_drops=false, check_rewards:bool=true):
 
 func playFootstep():
 	pass
-#	if is_on_floor():
-#		FootstepSoundManager.playFootstep(global_position,-10,0.5)
+	#	if is_on_floor():
+	#		FootstepSoundManager.playFootstep(global_position,-10,0.5)
 
 
 func _on_detect_bar_tree_exited():

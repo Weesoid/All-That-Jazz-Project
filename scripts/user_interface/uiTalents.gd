@@ -14,20 +14,20 @@ var out:bool=false
 func loadTalents(p_combatant: ResPlayerCombatant):
 	for child in getContainer('BaseTalents','talents').get_children():
 		child.queue_free()
-		var body = CharacterBody2D.new()
 		await child.tree_exited
 	for child in getContainer('Path','talents').get_children():
 		child.queue_free()
-		var body = CharacterBody2D.new()
 		await child.tree_exited
-	$MarginContainer/HBoxContainer/Path.hide()
+	#$MarginContainer/HBoxContainer/Path.hide()
 	combatant = p_combatant
 	for talent in combatant.talent_list.keys():
 		if talent == 'base_talents':
 			loadTalentList('BaseTalents', talent)
 		else:
 			loadTalentList('Path', talent)
-			$MarginContainer/HBoxContainer/Path.show()
+			#$MarginContainer/HBoxContainer/Path.show()
+	updatePointCount()
+	#print_orphan_nodes()\
 
 func loadTalentList(container:String, talent: String):
 	getContainer(container,'title').text = talent.to_upper().replace('_',' ')
@@ -45,6 +45,7 @@ func loadTalentList(container:String, talent: String):
 				)
 		
 		getContainer(container,'talents').add_child(button)
+	#print_orphan_nodes()
 	updateAccesibility()
 
 func updateAccesibility():

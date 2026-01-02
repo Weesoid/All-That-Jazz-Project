@@ -65,7 +65,7 @@ caster_position = {
 "min": 0
 }
 target_position = {
-"max": 0,
+"max": 3,
 "min": 0
 }
 tension_cost = 0
