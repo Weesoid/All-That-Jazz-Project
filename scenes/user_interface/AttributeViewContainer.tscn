@@ -67,7 +67,7 @@ vertical_alignment = 1
 
 [node name="Brawn" type="HSplitContainer" parent="."]
 layout_mode = 2
-tooltip_text = "Bonus damage for damaging abilities."
+tooltip_text = "Damage character deals."
 split_offset = 50
 dragger_visibility = 1
 
@@ -189,13 +189,13 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
 [node name="Dodge" type="HSplitContainer" parent="."]
 layout_mode = 2
-tooltip_text = "Critical damage."
+tooltip_text = "Critical damage multiplier."
 split_offset = 50
 dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Dodge"]
 layout_mode = 2
-text = "CRIT DMG."
+text = "CRIT AMP."
 vertical_alignment = 1
 uppercase = true
 
@@ -213,7 +213,7 @@ dragger_visibility = 1
 
 [node name="Label" type="Label" parent="HealMult"]
 layout_mode = 2
-text = "HEAL M."
+text = "HEAL AMP."
 vertical_alignment = 1
 
 [node name="Value" type="Label" parent="HealMult"]

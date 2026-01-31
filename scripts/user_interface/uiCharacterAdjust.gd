@@ -33,6 +33,7 @@ const SACK_ICON = "res://images/sprites/icon_charm.png"
 @onready var toggle_temperments = $Formation/ShowTemperments
 @onready var talent_menu = $TalentControl/Talents
 @onready var attrib_view = $Stats/HSplitContainer/AttributeView
+@onready var stat_point_count = $TalentControl/ToggleView/StatPointCount
 var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
 var talent_menu_out:bool=false
@@ -53,6 +54,7 @@ func _ready():
 		func():
 			addStatusEffectIcons()
 			updateTemperments()
+			updateStatPointCount()
 	)
 
 func loadMembers(set_focus:bool=true, preview_member:bool=false):
@@ -96,6 +98,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 	if selected_combatant != null:
 		if selected_combatant.ability_set.size() >= 4:
 			dimInactiveAbilities()
+		updateStatPointCount()
 
 	talent_menu.loadTalents(selected_combatant)
 	attrib_view.combatant = selected_combatant
@@ -457,10 +460,21 @@ func _on_toggle_view_pressed():
 		modulate_tween.tween_property(talent_menu,'modulate',Color.WHITE,0.2)
 		talent_menu_out = true
 		setButtonDisabled(true)
+		stat_point_count.hide()
 	else:
 		pos_tween.tween_property(talent_menu, 'position', talent_menu.position-Vector2(offset,0),0.25).set_trans(Tween.TRANS_CUBIC)
 		modulate_tween.tween_property(talent_menu,'modulate',Color.TRANSPARENT,0.2)
 		talent_menu_out = false
 		setButtonDisabled(false)
+		stat_point_count.show()
 		await modulate_tween.finished
 		talent_menu.hide()
+
+func updateStatPointCount():
+	if selected_combatant.stat_points > 0:
+		stat_point_count.self_modulate = Color.WHITE
+	else:
+		stat_point_count.self_modulate = Color.TRANSPARENT
+	
+	stat_point_count.text = str(selected_combatant.stat_points)
+	

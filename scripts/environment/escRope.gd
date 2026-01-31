@@ -70,7 +70,7 @@ func initializeRope():
 			createPinJoint(segments[segments.size()-2].get_path(), segments[segments.size()-1].get_path())
 		if must_shoot and !Engine.is_editor_hint():
 			await get_tree().create_timer(0.08).timeout
-	
+	segments[segments.size()-1].useLastRopeTexture()
 	if must_shoot and !Engine.is_editor_hint():
 		must_shoot = false
 	if !Engine.is_editor_hint():
@@ -86,4 +86,3 @@ func jumpRope(jump_strength=-200.0):
 	OverworldGlobals.player.climbing = false
 	OverworldGlobals.player.toggleClimbAnimation(false)
 	OverworldGlobals.player.jump(jump_strength)
-	#apply_force(Vector2(50.0*OverworldGlobals.player.velocity.x,0))

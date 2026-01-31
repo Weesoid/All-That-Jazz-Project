@@ -144,3 +144,16 @@ func setDisabled(set_to:bool):
 		disabled=false
 		#mouse_filter = Control.MOUSE_FILTER_STOP
 		#focus_mode = Control.FOCUS_ALL
+
+func press_feedback():
+	if click_sound == null: return
+	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
+	audio_player.stop()
+	audio_player.stream = click_sound
+	audio_player.play()
+	pulseSize()
+
+func pulseSize():
+	var size_tween = create_tween()
+	size_tween.tween_property(talent_icon, 'scale', Vector2(1.5,1.5),0.05).set_ease(Tween.EASE_IN)
+	size_tween.tween_property(talent_icon, 'scale', Vector2(1.0,1.0),0.1).set_ease(Tween.EASE_OUT)

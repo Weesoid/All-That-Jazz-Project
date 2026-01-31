@@ -81,8 +81,6 @@ func craftItem(base_recipe: Array):
 	for item_filepath in recipe.keys():
 		var item = load("res://resources/items/%s.tres" % item_filepath)
 		var count = recipe[item_filepath]
-		if item.name == 'MURDERNUS':
-			print('rape: ',count)
 		InventoryGlobals.removeItemResource(item, count, false)
 
 func getBaseRecipes()->Array:

@@ -1,27 +1,53 @@
-[gd_scene load_steps=13 format=3 uid="uid://8aufe1ycaau4"]
+[gd_scene load_steps=14 format=3 uid="uid://8aufe1ycaau4"]
 
 [ext_resource type="Texture2D" uid="uid://b3mr0w65get7p" path="res://images/animations/campfire.png" id="1_f1dl0"]
 [ext_resource type="Script" path="res://scripts/environment/escSavePoint.gd" id="1_ve4xx"]
 [ext_resource type="PackedScene" uid="uid://b57tm5xnp0h5c" path="res://scenes/user_interface/CombatBarsMini.tscn" id="2_m1oiv"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
 [ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
+[ext_resource type="Texture2D" uid="uid://ckm4oy0b0pagn" path="res://images/animations/campfire_flame.png" id="4_r53ak"]
 [ext_resource type="Texture2D" uid="uid://bkybrnpuy5xws" path="res://images/sprites/watch_mark.png" id="5_yiib7"]
 
 [sub_resource type="Animation" id="Animation_yegji"]
 resource_name = "Lit"
-length = 0.6
 loop_mode = 1
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"toggleAnimFlip"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flame:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [1, 2, 3]
+"values": [1, 2, 3, 4, 5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Flame:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_c4qki"]
@@ -29,14 +55,14 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Flame:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0]
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mj52v"]
@@ -137,10 +163,16 @@ flip_h = true
 [node name="CombatBars" parent="RestSpots/Sprite2D4" instance=ExtResource("2_m1oiv")]
 visible = false
 
+[node name="Flame" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -32)
+texture = ExtResource("4_r53ak")
+hframes = 6
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -32)
 texture = ExtResource("1_f1dl0")
-hframes = 4
+hframes = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

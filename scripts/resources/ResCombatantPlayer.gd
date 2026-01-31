@@ -26,7 +26,7 @@ var stat_point_allocations = {
 	'damage': 0, # Hmmm what to do....... Change to dmg_modifier!
 	'defense': 0,
 	'handling': 0
-} # Change to talent shit
+} # Change to talent 
 var active_talents = {}
 var talent_list = {}
 var temperment: Array[String] = []

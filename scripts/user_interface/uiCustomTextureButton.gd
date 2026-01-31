@@ -7,15 +7,16 @@ class_name CustomTextureButton
 		texture = p_texture
 		if Engine.is_editor_hint():
 			_ready()
-#@export var minimum_size:float = 24
 @onready var texture_button = $TextureRect
 
 func _ready():
 	$TextureRect/HoldProgress.modulate=hold_color
 	if texture != null:
 		texture_button.texture = texture
+		
 	custom_minimum_size = texture_button.size/2
 	setDisabled(disabled)
+	texture_button.set_anchors_preset(Control.PRESET_CENTER)
 
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
@@ -23,8 +24,6 @@ func focus_feedback():
 	audio_player.stop()
 	audio_player.stream = focused_entered_sound
 	audio_player.play()
-#	texture_button.scale = Vector2(1.5,1.5)
-#	texture_button.rotation_degrees = 1
 	texture_button.self_modulate = Color.YELLOW
 
 func exit_focus_feedback():
@@ -55,4 +54,3 @@ func setDisabled(set_to: bool):
 		undimButton()
 		mouse_filter = Control.MOUSE_FILTER_STOP
 		focus_mode = Control.FOCUS_ALL
-

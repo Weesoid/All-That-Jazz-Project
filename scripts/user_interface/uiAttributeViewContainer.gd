@@ -27,11 +27,11 @@ func _process(_delta):
 		else:
 			hustle_val.text = 'IMMOBILIZED'
 		acc_val.value = combatant.stat_values['accuracy'] * 100
-		crit_d_val.text = '+'+str(round((combatant.stat_values['crit_dmg']*100)-100))+'%'
+		crit_d_val.text = str(round((combatant.stat_values['crit_dmg']*100)-100))+'%'
 		crit_val.value = combatant.stat_values['crit'] * 100
 		resist_val.value = combatant.stat_values['resist'] * 100
 		if combatant.stat_values['heal_mult'] > 0:
-			healm_val.text = '+'+str(round((combatant.stat_values['heal_mult']*100)-100))+'%'
+			healm_val.text = str(round((combatant.stat_values['heal_mult']*100)-100))+'%'
 		else:
 			healm_val.text = 'BROKEN'
 	

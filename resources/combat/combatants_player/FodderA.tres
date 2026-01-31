@@ -1,22 +1,24 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://cd5r32rnqq6ks"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=9 format=3 uid="uid://cd5r32rnqq6ks"]
 
 [ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ic5dt"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_gtfo3"]
+[ext_resource type="Resource" uid="uid://cvjlkid4m1aae" path="res://resources/combat/abilities/BasicMisc.tres" id="3_6d41e"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="3_8yngu"]
-[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/character_sprites/willis/willis_follower.png" id="4_e7dur"]
+[ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/character_sprites/huck/huck_follower.png" id="4_2iyqn"]
 [ext_resource type="PackedScene" uid="uid://hojidodoc70i" path="res://scenes/combatants/Willis.tscn" id="5_l2tuv"]
 [ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/character_sprites/willis/rest_willis.png" id="6_qur0t"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="7_rlsd5"]
 
 [resource]
 script = ExtResource("7_rlsd5")
-ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ic5dt"), ExtResource("2_gtfo3")])
+ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ic5dt"), ExtResource("2_gtfo3"), ExtResource("3_6d41e")])
 base_temperment = Array[String]([])
-follower_texture = ExtResource("4_e7dur")
+follower_texture = ExtResource("4_2iyqn")
 mandatory = false
 rest_sprite = ExtResource("6_qur0t")
 stat_multiplier = 0.01
-name = "Foddie the Fodder"
+talents = Array[String]([])
+name = "John Huck"
 packed_scene = ExtResource("5_l2tuv")
 bullet_texture = ExtResource("3_8yngu")
 description = "FODDER A"

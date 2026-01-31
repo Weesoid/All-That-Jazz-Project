@@ -161,7 +161,7 @@ func _physics_process(delta):
 		
 		# Jump detector
 		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO and isFacingUp()  and canDoStaminaAction(5) :
-			jump(-225.0)
+			jump(-255.0)
 		elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
 			phase()
 	
@@ -367,7 +367,7 @@ func resetStates():
 func resetAnimation():
 	animation_player.play("RESET")
 
-func canDrawBow()-> bool:
+func canDrawBow()-> bool: 
 	if OverworldGlobals.inMenu():
 		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):

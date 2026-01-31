@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://c36dx7g860omy"]
+[gd_scene load_steps=22 format=3 uid="uid://c36dx7g860omy"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharacterAdjust.gd" id="1_iqbvd"]
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
+[ext_resource type="Texture2D" uid="uid://cykjvip637jaq" path="res://images/sprites/icon_subclass.png" id="3_crog7"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="4_1mewq"]
 [ext_resource type="PackedScene" uid="uid://bbsj2rb4t3ft8" path="res://scenes/user_interface/CharacterEquip.tscn" id="4_npgsb"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
@@ -16,6 +17,17 @@
 [ext_resource type="Texture2D" uid="uid://bei8dr7bb8bfq" path="res://images/sprites/icon_rotating_arrows.png" id="14_dhwtn"]
 [ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="18_sjp7i"]
 [ext_resource type="Texture2D" uid="uid://bid2yp6x5ds0a" path="res://images/sprites/icon_half_face.png" id="21_46t30"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k0sls"]
+
+[sub_resource type="Gradient" id="Gradient_nk4xi"]
+offsets = PackedFloat32Array(0, 0.476744, 1)
+colors = PackedColorArray(0.14902, 0.14902, 0.14902, 0, 0.15, 0.15, 0.15, 1, 0.160784, 0.160784, 0.160784, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_boo1m"]
+gradient = SubResource("Gradient_nk4xi")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qba66"]
 
@@ -35,7 +47,6 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="ToggleView" parent="TalentControl" instance=ExtResource("12_mfhva")]
-custom_minimum_size = Vector2(16, 16)
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -46,6 +57,22 @@ offset_right = 320.1
 offset_bottom = -59.0
 grow_vertical = 2
 size_flags_horizontal = 0
+texture = ExtResource("3_crog7")
+description_text = "View and apply talents."
+
+[node name="StatPointCount" type="Label" parent="TalentControl/ToggleView"]
+modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.1
+offset_right = -0.100006
+offset_bottom = 13.0
+grow_horizontal = 0
+theme = ExtResource("8_hty5i")
+text = "12"
+horizontal_alignment = 2
 
 [node name="Talents" parent="TalentControl" instance=ExtResource("12_7c3kv")]
 visible = false
@@ -115,7 +142,17 @@ mouse_filter = 2
 custom_minimum_size = Vector2(168, 0)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = ExtResource("2_s7p7p")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k0sls")
+
+[node name="TextureRect" type="TextureRect" parent="Character/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_boo1m")
 
 [node name="Label" type="Label" parent="Character/Panel"]
 layout_mode = 1

@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://cvjlkid4m1aae"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_2dvec"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_mnv40"]
+[ext_resource type="Resource" uid="uid://47lduof3c088" path="res://resources/combat/status_effects/CriticalEye.tres" id="3_d88y8"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_wjsqd"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_00swq"]
+
+[sub_resource type="Resource" id="Resource_52yc8"]
+script = ExtResource("2_mnv40")
+target = 0
+status_effect = ExtResource("3_d88y8")
+cast_animation = "Cast_Misc"
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[resource]
+script = ExtResource("4_00swq")
+name = "Miscy"
+description = ""
+icon = ExtResource("3_wjsqd")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_52yc8")])
+ability_script = ExtResource("1_2dvec")
+target_type = 0
+target_group = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+charges = 0
+can_target_self = true
+can_target_dead = false
+dead_target_params = {
+"only_dead": false,
+"only_faded": true
+}
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = true
+required_level = 0

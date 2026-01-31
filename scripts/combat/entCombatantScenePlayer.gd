@@ -22,14 +22,6 @@ func checkHasBlockModifier():
 	if combatant_resource.stat_modifiers.has('block'):
 		CombatGlobals.resetStat(combatant_resource, 'block')
 
-#func playWeaponAttack():
-#	weapon.reparent(unsheathe_point, false)
-#	weapon.showWeapon()
-#
-#func sheatheWeapon():
-#	weapon.reparent(sheathe_point, false)
-#	weapon.showWeapon(true)
-
 func setBlocking(set_to: bool):
 	blocking = set_to
 	if blocking:

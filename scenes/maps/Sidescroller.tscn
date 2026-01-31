@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="PackedScene" uid="uid://b6rlytpeavs4h" path="res://scenes/environment/TileMap.tscn" id="2_76a3s"]
-[ext_resource type="TileSet" uid="uid://by4v7w1m0goe3" path="res://resources/tilesets/Wastes.tres" id="2_h477p"]
 [ext_resource type="PackedScene" uid="uid://dvstysplrop1t" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
+[ext_resource type="TileSet" uid="uid://dd7xgc75lojfx" path="res://resources/tilesets/Sand.tres" id="3_pfyuo"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="3_t6mhi"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="5_rwctp"]
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="6_8oxsm"]
@@ -142,17 +142,41 @@ _data = {
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
+map_properties = Array[int]([0])
 
 [node name="TileMap" parent="." instance=ExtResource("2_76a3s")]
-tile_set = ExtResource("2_h477p")
-layer_0/tile_data = PackedInt32Array(327675, 65536, 0, 327671, 65536, 0, 327672, 65536, 0, 327673, 65536, 0, 327674, 65536, 0, 327676, 65536, 0, 327677, 65536, 0, 327678, 65536, 0, 327679, 65536, 0, 262144, 65536, 0, 262145, 65536, 0, 262146, 65536, 0, 262147, 65536, 0, 262148, 65536, 0, 262149, 65536, 0, 262150, 65536, 0, 262151, 65536, 0, 262152, 65536, 0, 262153, 65536, 0, 262154, 65536, 0, 262155, 65536, 0, 262156, 65536, 0, 262157, 65536, 0, 262158, 65536, 0, 262159, 65536, 0, 262160, 65536, 0, 262161, 65536, 0, 262162, 65536, 0, 65529, 0, 0, 65530, 131072, 0, 131066, 131072, 1, 196602, 131072, 1, 262138, 131072, 1, 131065, 0, 1, 196601, 0, 1, 262137, 0, 1, 65532, 0, 0, 4, 131072, 0, 65533, 65536, 0, 65534, 65536, 0, 65535, 65536, 0, 0, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 131069, 65536, 1, 196605, 65536, 1, 262141, 65536, 1, 131070, 65536, 1, 196606, 65536, 1, 262142, 65536, 1, 131071, 65536, 1, 196607, 65536, 1, 262143, 65536, 1, 65536, 65536, 1, 131072, 65536, 1, 196608, 65536, 1, 65537, 65536, 1, 131073, 65536, 1, 196609, 65536, 1, 65538, 65536, 1, 131074, 65536, 1, 196610, 65536, 1, 65539, 65536, 1, 131075, 65536, 1, 196611, 65536, 1, 65540, 131072, 1, 131076, 131072, 1, 196612, 131072, 1, 131068, 0, 1, 196604, 0, 1, 262140, 0, 1, -65535, 65536, 0, -65534, 65536, 0, -65533, 65536, 0, -65532, 131072, 0, -65536, 0, 0)
+tile_set = ExtResource("3_pfyuo")
+cell_quadrant_size = 64
+layer_0/name = "Ground"
+layer_0/tile_data = PackedInt32Array(196613, 196610, 2, 131077, 196610, 0)
 layer_1/name = ""
 layer_1/enabled = true
 layer_1/modulate = Color(1, 1, 1, 1)
 layer_1/y_sort_enabled = false
 layer_1/y_sort_origin = 0
 layer_1/z_index = 0
-layer_1/tile_data = PackedInt32Array(-1, 0, 3, -65536, 131072, 3)
+layer_1/tile_data = PackedInt32Array(262141, 131074, 1, 196605, 131074, 2, 131069, 131074, 2, 65533, 131074, 0, 262140, 65538, 2, 196604, 65538, 2, 131068, 65538, 2, 65532, 65538, 0, 262139, 65538, 2, 196603, 65538, 2, 131067, 65538, 1, 65531, 65538, 0, 262138, 65538, 2, 196602, 65538, 2, 131066, 65538, 1, 65530, 65538, 0, 262137, 2, 2, 196601, 2, 2, 131065, 2, 2, 65529, 2, 0, 65535, 2, 0, 196611, 131074, 2, 131075, 131074, 2, 65539, 131074, 1, 3, 131074, 0, 196610, 65538, 1, 131074, 65538, 2, 65538, 65538, 1, 2, 65538, 0, 196609, 65538, 2, 131073, 65538, 2, 65537, 65538, 2, 1, 65538, 0, 196608, 65538, 1, 131072, 65538, 2, 65536, 65538, 1, 0, 65538, 0, 262143, 2, 2, 196607, 2, 1, 131071, 2, 2)
+layer_2/name = ""
+layer_2/enabled = true
+layer_2/modulate = Color(1, 1, 1, 1)
+layer_2/y_sort_enabled = false
+layer_2/y_sort_origin = 0
+layer_2/z_index = 0
+layer_2/tile_data = PackedInt32Array(262141, 131074, 1, 196605, 131074, 1, 131069, 131074, 0, 262140, 65538, 1, 196604, 65538, 2, 131068, 65538, 0, 262139, 65538, 1, 196603, 65538, 2, 131067, 65538, 0, 262138, 2, 2, 196602, 2, 1, 131066, 2, 0, 196610, 131074, 1, 131074, 131074, 2, 65538, 131074, 0, 196609, 65538, 2, 131073, 65538, 2, 65537, 65538, 0, 196608, 65538, 2, 131072, 65538, 2, 65536, 65538, 0, 262143, 2, 2, 196607, 2, 2, 131071, 2, 0)
+layer_3/name = ""
+layer_3/enabled = true
+layer_3/modulate = Color(1, 1, 1, 1)
+layer_3/y_sort_enabled = false
+layer_3/y_sort_origin = 0
+layer_3/z_index = 0
+layer_3/tile_data = PackedInt32Array(262141, 131074, 1, 196605, 131074, 0, 262140, 65538, 2, 196604, 65538, 0, 262139, 2, 1, 196603, 2, 0, 196609, 131074, 2, 131073, 131074, 0, 196608, 65538, 1, 131072, 65538, 0, 262143, 2, 1, 196607, 2, 0)
+layer_4/name = ""
+layer_4/enabled = true
+layer_4/modulate = Color(1, 1, 1, 1)
+layer_4/y_sort_enabled = false
+layer_4/y_sort_origin = 0
+layer_4/z_index = 0
+layer_4/tile_data = PackedInt32Array(196612, 65538, 0, 196611, 65538, 0, 196610, 65538, 0, 196609, 65538, 0, 196608, 65538, 0, 262143, 65538, 0, 262142, 65538, 0, 262141, 65538, 0, 262140, 65538, 0, 262139, 65538, 0, 262138, 65538, 0, 262137, 65538, 0, 262136, 2, 0, 589828, 65538, 2, 524292, 65538, 1, 458756, 65538, 1, 393220, 65538, 1, 327684, 65538, 1, 262148, 65538, 1, 589827, 65538, 1, 524291, 65538, 1, 458755, 65538, 1, 393219, 65538, 1, 327683, 65538, 1, 262147, 65538, 1, 589826, 65538, 1, 524290, 65538, 1, 458754, 65538, 1, 393218, 65538, 1, 327682, 65538, 1, 262146, 65538, 1, 589825, 65538, 1, 524289, 65538, 1, 458753, 65538, 1, 393217, 65538, 1, 327681, 65538, 1, 262145, 65538, 1, 589824, 65538, 1, 524288, 65538, 1, 458752, 65538, 1, 393216, 65538, 1, 327680, 65538, 1, 262144, 65538, 1, 655359, 65538, 1, 589823, 65538, 1, 524287, 65538, 1, 458751, 65538, 1, 393215, 65538, 1, 327679, 65538, 1, 655358, 65538, 1, 589822, 65538, 1, 524286, 65538, 1, 458750, 65538, 1, 393214, 65538, 1, 327678, 65538, 1, 655357, 65538, 1, 589821, 65538, 1, 524285, 65538, 1, 458749, 65538, 1, 393213, 65538, 1, 327677, 65538, 1, 655356, 65538, 1, 589820, 65538, 1, 524284, 65538, 1, 458748, 65538, 1, 393212, 65538, 1, 327676, 65538, 1, 655355, 65538, 1, 589819, 65538, 1, 524283, 65538, 1, 458747, 65538, 1, 393211, 65538, 1, 327675, 65538, 1, 655354, 65538, 1, 589818, 65538, 1, 524282, 65538, 1, 458746, 65538, 1, 393210, 65538, 1, 327674, 65538, 1, 655353, 65538, 1, 589817, 65538, 1, 524281, 65538, 1, 458745, 65538, 1, 393209, 65538, 1, 327673, 65538, 1, 655352, 2, 1, 589816, 2, 1, 524280, 2, 1, 458744, 2, 1, 393208, 2, 1, 327672, 2, 1, 589830, 131074, 2, 524294, 131074, 1, 458758, 131074, 1, 393222, 131074, 1, 327686, 131074, 1, 262150, 131074, 1, 196614, 131074, 0, 589829, 65538, 2, 524293, 65538, 1, 458757, 65538, 1, 393221, 65538, 1, 327685, 65538, 1, 262149, 65538, 1, 196613, 65538, 0)
 
 [node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 1
@@ -183,29 +207,33 @@ enabled = false
 special_chance = 0.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup2"]
+visible = false
 position = Vector2(528, 163)
 
 [node name="SpawnPoint2" type="Marker2D" parent="PatrollerGroup2"]
 position = Vector2(574, 165)
 
 [node name="Rope" parent="." instance=ExtResource("3_gkab1")]
-position = Vector2(-34, -4)
-segment_count = 3
+position = Vector2(234, -4)
+segment_count = 1
 
 [node name="FastTravel" parent="." instance=ExtResource("3_t6mhi")]
+visible = false
 position = Vector2(243, 192)
 
 [node name="ShopKeep" parent="." instance=ExtResource("6_8oxsm")]
+visible = false
 position = Vector2(56, 0)
 
 [node name="ShopWares" parent="ShopKeep" instance=ExtResource("6_ppbds")]
 god_shop = true
 
 [node name="PartyManager" parent="." instance=ExtResource("5_rwctp")]
+visible = false
 position = Vector2(155, 0)
 
 [node name="Entity" type="CharacterBody2D" parent="."]
-position = Vector2(-161, -20)
+position = Vector2(-412, -20)
 
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
 do_reinforcements = false
@@ -230,11 +258,8 @@ dialogue_resource = ExtResource("15_21t34")
 position = Vector2(113, 0)
 mind_rested = false
 
-[node name="Rope2" parent="." instance=ExtResource("3_gkab1")]
-position = Vector2(14, -5)
-segment_count = 3
-
 [node name="Animator" type="CharacterBody2D" parent="."]
+visible = false
 position = Vector2(-97, 168)
 collision_layer = 0
 
@@ -258,6 +283,7 @@ libraries = {
 }
 
 [node name="MrMan" type="CharacterBody2D" parent="."]
+visible = false
 position = Vector2(-280, -12)
 
 [node name="Sprite2D" type="Sprite2D" parent="MrMan"]
@@ -268,8 +294,11 @@ texture = ExtResource("24_qqfd5")
 dialogue_resource = ExtResource("25_m8hhu")
 
 [node name="GenericNPC" parent="." instance=ExtResource("21_cchwb")]
+visible = false
 position = Vector2(57, -48)
 texture = ExtResource("22_b8a2s")
 
 [node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]
 dialogue_resource = ExtResource("23_uupkl")
+move_player = true
+move_followers = true

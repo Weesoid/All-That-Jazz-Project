@@ -210,6 +210,7 @@ offset_left = 32.0
 offset_top = 32.0
 offset_right = 149.0
 offset_bottom = 54.0
+metadata/_edit_use_anchors_ = true
 
 [node name="ClearProgress" type="VBoxContainer" parent="UI"]
 visible = false
@@ -230,6 +231,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_to3hk")
 value = 50.0
 show_percentage = false
 script = ExtResource("3_e80uh")
+metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect" type="TextureRect" parent="UI/StaminaBar"]
 layout_mode = 1
@@ -242,6 +244,7 @@ offset_right = 6.0
 offset_bottom = 8.0
 grow_vertical = 2
 texture = ExtResource("4_aqqua")
+metadata/_edit_use_anchors_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/StaminaBar"]
 libraries = {
@@ -260,6 +263,7 @@ theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 16
 text = "1000"
 vertical_alignment = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect" type="TextureRect" parent="UI/Ammo"]
 z_index = -1
@@ -274,6 +278,7 @@ offset_bottom = 10.0
 grow_vertical = 2
 texture = ExtResource("5_dj7uq")
 stretch_mode = 3
+metadata/_edit_use_anchors_ = true
 
 [node name="Quiver" type="HBoxContainer" parent="UI"]
 visible = false

@@ -25,12 +25,10 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage_modifier = 1.25
+damage_modifier = 1.0
 can_miss = true
 can_crit = true
-bonus_stats = {
-"crit": 0.33
-}
+bonus_stats = {}
 return_pos = true
 indicator_bb = ""
 plant_self_on_combo = false

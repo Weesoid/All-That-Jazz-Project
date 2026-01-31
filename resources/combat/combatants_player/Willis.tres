@@ -5,14 +5,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="2_vmsk2"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_wn1q6"]
 [ext_resource type="PackedScene" uid="uid://hojidodoc70i" path="res://scenes/combatants/Willis.tscn" id="3_f2l1f"]
-[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/character_sprites/willis/willis_follower.png" id="3_qv2st"]
+[ext_resource type="Resource" uid="uid://cvjlkid4m1aae" path="res://resources/combat/abilities/BasicMisc.tres" id="3_xqwg4"]
 [ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/character_sprites/willis/rest_willis.png" id="5_clolb"]
 
 [resource]
 script = ExtResource("2_vmsk2")
-ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_43nme")])
+ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_43nme"), ExtResource("3_xqwg4")])
 base_temperment = Array[String](["clever"])
-follower_texture = ExtResource("3_qv2st")
 mandatory = true
 rest_sprite = ExtResource("5_clolb")
 stat_multiplier = 0.01
@@ -26,9 +25,9 @@ stat_values = {
 "crit": 0.05,
 "crit_dmg": 1.5,
 "damage": 4,
-"defense": 0.68,
+"defense": 0.0,
 "dmg_modifier": 1.0,
-"dmg_variance": 0.25,
+"dmg_variance": 0.2,
 "handling": 0,
 "heal_mult": 1.0,
 "health": 20,

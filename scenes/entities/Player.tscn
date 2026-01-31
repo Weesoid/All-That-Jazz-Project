@@ -286,7 +286,7 @@ tracks/4/path = NodePath("AnimationSprite:scale")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.1),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(1.05, 1.05), Vector2(1, 1)]
@@ -2301,10 +2301,10 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [6, 7, 8, 7]
+"values": [6]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -2841,7 +2841,7 @@ states/Walk/position = Vector2(-191, 149)
 "states/Walk Bow/node" = SubResource("AnimationNodeBlendSpace2D_v7p5t")
 "states/Walk Bow/position" = Vector2(-191, -81.226)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_tus5o"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_vn7n0"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_ivvpp"), "Idle", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_d4yll"), "Idle Bow", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_pwvh3"), "Walk Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_di8f5"), "Idle Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_xc2fq"), "Idle Bow", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_yyjk8"), "Draw Bow", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_f5ypq"), "Shoot Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_13w0k"), "Idle Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_052le"), "Idle", "Void_Call", SubResource("AnimationNodeStateMachineTransition_7rfp5"), "Void_Call", "Void_Charge", SubResource("AnimationNodeStateMachineTransition_ctdd1"), "Void_Charge", "Void_Calm", SubResource("AnimationNodeStateMachineTransition_sxu5c"), "Void_Calm", "Idle", SubResource("AnimationNodeStateMachineTransition_t3elc"), "Draw Bow", "Idle", SubResource("AnimationNodeStateMachineTransition_87fsc"), "Walk Bow", "Void_Call", SubResource("AnimationNodeStateMachineTransition_n3d2h"), "Walk", "Void_Call", SubResource("AnimationNodeStateMachineTransition_c2w6y"), "Draw Bow", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_a12pg"), "Draw Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_dkf3g"), "Draw Bow Walk", "Draw Bow", SubResource("AnimationNodeStateMachineTransition_j2agf"), "Draw Bow Walk", "Shoot Bow", SubResource("AnimationNodeStateMachineTransition_46kqf"), "Draw Bow Walk", "Walk Bow", SubResource("AnimationNodeStateMachineTransition_rwk1u"), "Walk Bow", "Draw Bow Walk", SubResource("AnimationNodeStateMachineTransition_imlol"), "Idle Bow", "Melee", SubResource("AnimationNodeStateMachineTransition_iq35y"), "Melee", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_wm4dt"), "Idle Bow", "Climb_Idle", SubResource("AnimationNodeStateMachineTransition_xj8uw"), "Idle", "Climb_Idle", SubResource("AnimationNodeStateMachineTransition_v1kr8"), "Climb_Idle", "Idle Bow", SubResource("AnimationNodeStateMachineTransition_qxirn"), "Climb_Idle", "Idle", SubResource("AnimationNodeStateMachineTransition_adhns"), "Climb", "Climb_Idle", SubResource("AnimationNodeStateMachineTransition_cbwp0"), "Climb_Idle", "Climb", SubResource("AnimationNodeStateMachineTransition_u4256"), "Idle", "Melee", SubResource("AnimationNodeStateMachineTransition_u8mwp"), "Melee", "Idle", SubResource("AnimationNodeStateMachineTransition_w02bq")]
-graph_offset = Vector2(-286.852, -278.14)
+graph_offset = Vector2(-286.852, -1.36808)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_7ym7e"]
 
@@ -2860,10 +2860,10 @@ one_shot = true
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
-offset = Vector2(0, -24)
+offset = Vector2(0, -33)
 hframes = 9
 vframes = 6
-frame = 19
+frame = 6
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2895,15 +2895,14 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 1.5708
+rotation = 3.14159
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
-position = Vector2(0, 6)
+position = Vector2(0, 16)
 collision_layer = 2
 collision_mask = 2
 
 [node name="InteractionColShape" type="CollisionShape2D" parent="PlayerDirection/InteractionDetector"]
-position = Vector2(0, 21)
 shape = SubResource("RectangleShape2D_b8rwl")
 debug_color = Color(0.917647, 0.996078, 0, 0.419608)
 
@@ -2916,10 +2915,10 @@ default_color = Color(1, 0, 0, 0.392157)
 [node name="MeleeHitbox" parent="PlayerDirection" instance=ExtResource("6_31qdv")]
 
 [node name="Area2D" type="Area2D" parent="PlayerDirection"]
+position = Vector2(0, 56)
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDirection/Area2D"]
-position = Vector2(0, 45)
 shape = SubResource("RectangleShape2D_6ul7c")
 debug_color = Color(0.490196, 0.584314, 0, 0.419608)
 
@@ -2971,7 +2970,7 @@ parameters/Idle/blend_position = Vector2(-0.00563908, -0.569321)
 "parameters/Idle Bow/blend_position" = Vector2(0.0338346, 0.119438)
 parameters/Melee/blend_position = Vector2(0.00607288, 1.1)
 "parameters/Shoot Bow/blend_position" = Vector2(0.0914634, -0.546707)
-parameters/Walk/blend_position = Vector2(-0.0708502, 0.086921)
+parameters/Walk/blend_position = Vector2(0.036626, 0.072455)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

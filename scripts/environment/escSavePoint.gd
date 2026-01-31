@@ -11,6 +11,7 @@ const EMPTY_MEMBER_ICON = preload("res://images/sprites/add_member.png")
 @onready var sfx = $AudioStreamPlayer2
 @onready var watch_mark = $Sprite2D2
 @onready var watch_mark_animator = $Sprite2D2/AnimationPlayer
+@onready var flame_sprite = $Flame
 #var mini_bars = []
 var combatant_squad: EnemyCombatantSquad
 signal done
@@ -135,3 +136,6 @@ func getCombatBars(only_visible:bool)-> Array[CombatBarsMini]:
 			continue
 		out.append(sprite.get_node('CombatBars'))
 	return out
+
+func toggleAnimFlip():
+	flame_sprite.flip_h = !flame_sprite.flip_h

@@ -17,7 +17,7 @@ class_name ResCombatant
 	'crit_dmg': 1.5,
 	'heal_mult': 1.0,
 	'resist': 0.05,
-	'dmg_variance': 0.25,
+	'dmg_variance': 0.2,
 	'dmg_modifier': 1.0
 }
 @export var scale_stats: Dictionary = {

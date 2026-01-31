@@ -31,13 +31,13 @@ static func applyHitEffects(target,caster, _value, status_effect: ResStatusEffec
 			target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'target'=caster.combatant_scene,'frame_time'=0.7,'ability'=null,'anim_speed'=2.0})
 	if !target.hasStatusEffect('Guard'):
 		CombatGlobals.removeStatusEffect(target, 'Riposte')
-	
+
 static func determineRiposte(target, caster):
 	var distance = target.combatant_scene.global_position.distance_to(caster.combatant_scene.global_position)
 	if distance > 40:
 		return 'Cast_Ranged'
 	else:
-		return 'Cast_Melee'
+		return 'Cast_Riposte' if 'Cast_Riposte' in target.combatant_scene.animator.get_animation_list() else 'Cast_Melee'
 
 static func endEffects(_target: ResCombatant, _status_effect: ResStatusEffect):
 	pass

@@ -77,7 +77,9 @@ func talentPressed(talent: ResTalent, max_out:bool=false, emit:bool=true):
 	var increase = 1
 	if max_out:
 		increase = talent.max_rank - combatant.active_talents.get(talent,0)
-		if combatant.stat_points < increase:
+		if combatant.stat_points > 0 and combatant.stat_points < talent.max_rank:
+			increase = combatant.stat_points
+		elif combatant.stat_points <= 0:
 			pulsePoints()
 			return
 	

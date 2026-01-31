@@ -1,6 +1,8 @@
 extends RigidBody2D
 class_name RopeSegment
 
+@onready var END_TEXTURE = preload("res://images/sprites/rope_seg_bottom.png")
+@onready var sprite = $CollisionShape2D/Sprite2D
 var player_on_segment = false
 
 func _on_area_2d_body_entered(body):
@@ -23,3 +25,5 @@ func _input(_event):
 		get_parent().jumpRope()
 		apply_force(Vector2(50.0*OverworldGlobals.player.velocity.x,0))
 
+func useLastRopeTexture():
+	sprite.texture = END_TEXTURE
