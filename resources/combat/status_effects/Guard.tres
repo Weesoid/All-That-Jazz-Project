@@ -26,6 +26,7 @@ resistable = false
 permanent = true
 lingers = false
 persist_on_dead = false
+hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""

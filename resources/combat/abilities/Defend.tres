@@ -1,28 +1,16 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://n15uy40oimtq"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=7 format=3 uid="uid://n15uy40oimtq"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_v8or2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_b4evy"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_ellp4"]
 [ext_resource type="Resource" uid="uid://03nkxcn0qwjq" path="res://resources/combat/status_effects/Guard.tres" id="3_yylv3"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="4_5o705"]
 [ext_resource type="Texture2D" uid="uid://mdq0i44s7xd3" path="res://images/ability_icons/defend.png" id="4_f5m2x"]
-
-[sub_resource type="Resource" id="Resource_cjjuq"]
-script = ExtResource("4_5o705")
-heal = 5
-use_multiplier = false
-cast_animation = ""
-condition = "c/hp:<:0.0"
-is_combo_effect = false
-sound_effect = ""
-animation_time = 0.0
-animate_on = 0
 
 [sub_resource type="Resource" id="Resource_io7yr"]
 script = ExtResource("2_b4evy")
 target = 1
 status_effect = ExtResource("3_yylv3")
-cast_animation = "Cast_Block"
+cast_animation = "Block"
 condition = ""
 is_combo_effect = false
 sound_effect = ""
@@ -34,7 +22,7 @@ script = ExtResource("3_ellp4")
 name = "Defend"
 description = ""
 icon = ExtResource("4_f5m2x")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_cjjuq"), SubResource("Resource_io7yr")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_io7yr")])
 ability_script = ExtResource("1_v8or2")
 target_type = 0
 target_group = 2

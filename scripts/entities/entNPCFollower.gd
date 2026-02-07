@@ -3,6 +3,7 @@ class_name NPCFollower
 
 @onready var animator = $WalkingAnimations
 @onready var sprite = $Sprite2D
+@onready var top_sprite = $JumpPhaseSprite
 
 var texture: Texture
 var host_combatant: ResPlayerCombatant
@@ -10,28 +11,35 @@ var speed_multiplier:float = 1.1
 var follow_offset=48
 var follow_index:int
 
+signal landed
+var do_land_flag:bool=true
+
 func _ready():
 	name = host_combatant.name.split(' ')[0]
 	sprite.texture = texture
+	await get_tree().process_frame # temp
 	add_collision_exception_with(OverworldGlobals.player)
 	OverworldGlobals.player.jumped.connect(jump)
 	OverworldGlobals.player.phased.connect(phase)
 	OverworldGlobals.player.dived.connect(dive)
+	landed.connect(func(): toggleTopSprite(false))
 
 func playFootstep():
 	if is_on_floor() and modulate == Color.WHITE:
 		FootstepSoundManager.playFootstep(global_position,-10)
 
 func jump(jump_velocity):
-	if !OverworldGlobals.player.is_on_floor() or speed_multiplier < 1.1:
+	if !OverworldGlobals.player.is_on_floor() or !is_on_floor() or speed_multiplier < 1.1:
 		return
 	z_index = 99
-	updateSprite()
 	if checkSameXPos():
 		fadeInOut()
 	global_position = OverworldGlobals.player.global_position+Vector2(0,-32)
+	updateSprite()
 	await get_tree().create_timer(0.1*follow_index).timeout
+	showTopSprite(6)
 	velocity.y = jump_velocity
+	do_land_flag = true
 
 func dive():
 	fadeInOut()
@@ -44,20 +52,23 @@ func dive():
 	elif direction == -90:
 		sprite.flip_h = true
 	animator.play('Dive')
+	do_land_flag = true
 
 func phase():
 	if speed_multiplier < 1.1:
 		return
 	if z_index != 0:
 		z_index = 0
-	updateSprite()
 	if checkSameXPos():
 		fadeInOut()
 	global_position.x = OverworldGlobals.player.global_position.x
+	updateSprite()
 	await get_tree().create_timer(0.1*follow_index).timeout
+	showTopSprite(0)
 	set_collision_mask_value(1, false)
 	await get_tree().create_timer(0.1).timeout
 	set_collision_mask_value(1, true)
+	do_land_flag = true
 
 func checkSameXPos():
 	return ceil(global_position.x) != ceil(OverworldGlobals.player.global_position.x)
@@ -78,6 +89,10 @@ func _physics_process(delta):
 #		queue_free()
 	if not is_on_floor():
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
+	elif do_land_flag:
+		landed.emit()
+		do_land_flag = false
+	
 	if speed_multiplier < 1.0:
 		return
 	if OverworldGlobals.player.sprinting:
@@ -101,7 +116,7 @@ func _physics_process(delta):
 		velocity.x = snappedf(direction.x*(OverworldGlobals.player.speed),100.0)
 		updateSprite()
 	else:
-		velocity.x = move_toward(velocity.x, 0, (OverworldGlobals.player.speed*speed_multiplier)) # Stop walking
+		velocity.x = move_toward(velocity.x, 0, (OverworldGlobals.player.speed*speed_multiplier))
 		stopWalkAnimation()
 	if global_position.distance_to(OverworldGlobals.player.global_position) > 300 and !OverworldGlobals.player.climbing:
 		fadeInOut()
@@ -131,12 +146,23 @@ func updateSprite():
 	elif player_direction == -90:
 		animator.play('Walk_Right')
 	elif player_direction == 0:
+		print('fuh')
 		animator.play('Walk_Down')
 	elif player_direction == 179:
+		print('juh')
 		animator.play('Walk_Up')
 
+## 0 = phase, 6 = jump
+func showTopSprite(set_frame:int):
+	toggleTopSprite(true)
+	top_sprite.frame=set_frame
+
+func toggleTopSprite(toggle_to:bool):
+	sprite.visible = !toggle_to
+	top_sprite.visible = toggle_to
+
 func stopWalkAnimation():
-	if !animator.current_animation.contains('Walk'):
+	if !animator.current_animation.contains('Walk') or !animator.is_playing():
 		return
 	
 	animator.seek(1, true)

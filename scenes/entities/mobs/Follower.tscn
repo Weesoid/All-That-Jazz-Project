@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://bm7u5gnsux8sp"]
 
 [ext_resource type="Script" path="res://scripts/entities/entNPCFollower.gd" id="1_ddcxm"]
-[ext_resource type="Texture2D" uid="uid://cavix0rkwc0ho" path="res://images/character_sprites/willis/willis_follower.png" id="2_skjm7"]
+[ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/character_sprites/huck/huck_follower.png" id="2_tswjs"]
 
 [sub_resource type="Animation" id="Animation_ndr0a"]
 resource_name = "Dive"
@@ -13,30 +13,18 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
+"times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [9, 4]
+"values": [2, 4]
 }
-tracks/1/type = "value"
+tracks/1/type = "method"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.15, 1.15), Vector2(1.15, 1.15), Vector2(1, 1)]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -70,18 +58,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_31icp"]
@@ -233,12 +209,20 @@ libraries = {
 }
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -24)
-texture = ExtResource("2_skjm7")
+position = Vector2(0, -33)
+texture = ExtResource("2_tswjs")
 offset = Vector2(0, 1)
 hframes = 3
 vframes = 4
 frame = 1
+
+[node name="JumpPhaseSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -33)
+texture = ExtResource("2_tswjs")
+offset = Vector2(0, 1)
+hframes = 3
+vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)

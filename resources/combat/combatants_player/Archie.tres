@@ -3,12 +3,12 @@
 [ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="2_8v6wo"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_i8m6m"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_mba6b"]
-[ext_resource type="PackedScene" path="res://scenes/combatants/Archie.tscn" id="2_qq2m6"]
 [ext_resource type="Resource" uid="uid://ccudum5or588g" path="res://resources/combat/abilities/Counter.tres" id="3_q5w68"]
 [ext_resource type="Resource" uid="uid://n15uy40oimtq" path="res://resources/combat/abilities/Defend.tres" id="4_e2iex"]
 [ext_resource type="Texture2D" uid="uid://n3be8sd47yqk" path="res://images/character_sprites/archie/rest_archie.png" id="5_b1vt3"]
 [ext_resource type="Resource" uid="uid://vedm8h64ew7u" path="res://resources/combat/abilities/Recede.tres" id="5_v0avs"]
 [ext_resource type="Resource" uid="uid://ol8t3xlrcx8b" path="res://resources/combat/abilities/Advance.tres" id="6_hn22q"]
+[ext_resource type="PackedScene" uid="uid://bqe7unaj4matg" path="res://scenes/combatants/Huck.tscn" id="8_7u0fs"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="11_avhlp"]
 
 [resource]
@@ -18,8 +18,9 @@ base_temperment = Array[String](["rigid", "clever", "clumsy", "keen", "heavy_han
 mandatory = false
 rest_sprite = ExtResource("5_b1vt3")
 stat_multiplier = 0.01
+talents = Array[String]([])
 name = "Archie Flynt"
-packed_scene = ExtResource("2_qq2m6")
+packed_scene = ExtResource("8_7u0fs")
 bullet_texture = ExtResource("2_i8m6m")
 description = "The man, the myth, the legend!"
 stat_values = {

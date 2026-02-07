@@ -11,6 +11,7 @@ func _ready():
 	texture = attached_status.texture
 	self_modulate = attached_status.getIconColor()
 	tooltip_text = attached_status.getDescription()
+	
 
 func _process(_delta):
 	if attached_status.permanent and attached_status.duration <= 1: 

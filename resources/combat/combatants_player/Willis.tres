@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=8 format=3 uid="uid://cohe0ng5gyu4h"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=10 format=3 uid="uid://cohe0ng5gyu4h"]
 
 [ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_43nme"]
@@ -7,6 +7,27 @@
 [ext_resource type="PackedScene" uid="uid://hojidodoc70i" path="res://scenes/combatants/Willis.tscn" id="3_f2l1f"]
 [ext_resource type="Resource" uid="uid://cvjlkid4m1aae" path="res://resources/combat/abilities/BasicMisc.tres" id="3_xqwg4"]
 [ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/character_sprites/willis/rest_willis.png" id="5_clolb"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="7_v6yry"]
+
+[sub_resource type="Resource" id="Resource_il5bs"]
+script = ExtResource("7_v6yry")
+damage_type = 3
+cast_animation = {
+"animation": "Cast_Riposte",
+"go_to_target": false
+}
+damage_modifier = 1.0
+can_miss = true
+can_crit = true
+bonus_stats = {}
+return_pos = true
+indicator_bb = ""
+plant_self_on_combo = false
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("2_vmsk2")
@@ -30,7 +51,7 @@ stat_values = {
 "dmg_variance": 0.2,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 20,
+"health": 999,
 "resist": 0.05,
 "speed": 1
 }
@@ -50,3 +71,4 @@ scale_stats = {
 }
 ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 max_turn_charges = 1
+riposte_effect = SubResource("Resource_il5bs")

@@ -552,34 +552,34 @@ bus = &"Music"
 [node name="TurnTimer" type="Timer" parent="."]
 
 [node name="TeamContainer" type="Node2D" parent="."]
-position = Vector2(-8, -72)
+position = Vector2(-24, -72)
 
 [node name="Position1" type="Marker2D" parent="TeamContainer"]
-position = Vector2(-30, 58)
+position = Vector2(-16, 56)
 
 [node name="Position2" type="Marker2D" parent="TeamContainer"]
-position = Vector2(-62, 58)
+position = Vector2(-64, 56)
 
 [node name="Position3" type="Marker2D" parent="TeamContainer"]
-position = Vector2(-94, 58)
+position = Vector2(-112, 56)
 
 [node name="Position4" type="Marker2D" parent="TeamContainer"]
-position = Vector2(-126, 58)
+position = Vector2(-160, 56)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(8, -72)
+position = Vector2(16, -72)
 
 [node name="Position1" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(26, 58)
+position = Vector2(16, 56)
 
 [node name="Position2" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(58, 58)
+position = Vector2(56, 56)
 
 [node name="Position3" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(90, 58)
+position = Vector2(96, 56)
 
 [node name="Position4" type="Marker2D" parent="EnemyContainer"]
-position = Vector2(122, 58)
+position = Vector2(136, 56)
 
 [node name="OnslaughtContainer" type="Node2D" parent="."]
 visible = false
@@ -690,11 +690,11 @@ scale = Vector2(0.166667, 0.375)
 texture = ExtResource("8_3ofn8")
 
 [node name="CombatCamera" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
-limit_left = -170
-limit_top = -170
-limit_right = 170
-limit_bottom = 170
+zoom = Vector2(1.6, 1.6)
+limit_left = -220
+limit_top = -220
+limit_right = 220
+limit_bottom = 220
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
@@ -822,11 +822,12 @@ offset_right = -470.0
 offset_bottom = -247.0
 
 [node name="Flasher" type="ColorRect" parent="CombatCamera"]
+visible = false
 z_index = 999
-offset_left = -268.0
-offset_top = -130.0
-offset_right = 278.0
-offset_bottom = 135.0
+offset_left = -248.0
+offset_top = -128.0
+offset_right = 298.0
+offset_bottom = 137.0
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 

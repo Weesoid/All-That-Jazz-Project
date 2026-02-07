@@ -165,6 +165,7 @@ func pulseAnimation(tp_particle, pulse_on=tension_icon,do_scale=true):
 	tp_particle.queue_free()
 
 func showAbilities(combatant: ResCombatant):
+	await get_tree().process_frame
 	for child in ability_buttons.get_children():
 		if child is Button:
 			child.queue_free()

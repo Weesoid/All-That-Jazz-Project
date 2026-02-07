@@ -6,13 +6,13 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 		target.combatant_scene.collision.set_deferred('disabled',true)
 		#if target is ResPlayerCombatant:
 		#	if target.combatant_scene.weapon != null: target.combatant_scene.weapon.hide()
-		target.combatant_scene.playIdle('KO')
+		#target.combatant_scene.playIdle('KO')
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if CombatGlobals.getCombatScene().combat_result >= 1 and (target is ResPlayerCombatant and target.mandatory): 
 		CombatGlobals.calculateHealing(target, int(target.base_stat_values['health']*0.25),false)
 		CombatGlobals.playSecondWindTween(target)
-		target.combatant_scene.playIdle('Idle')
+		#target.combatant_scene.playIdle('Idle')
 		CombatGlobals.applyFaded(target)
 	elif CombatGlobals.getCombatScene().combat_result == 0:
 		CombatGlobals.applyFaded(target)

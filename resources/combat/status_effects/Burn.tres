@@ -22,7 +22,6 @@ sound_effect = ""
 
 [resource]
 script = ExtResource("1_aq2jt")
-auto_name = false
 name = "Burn"
 description = "Burn baby burn!"
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_6ki17")])

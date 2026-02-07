@@ -1,69 +1,18 @@
-[gd_scene load_steps=26 format=3 uid="uid://by2x5bgg618kl"]
+[gd_scene load_steps=24 format=3 uid="uid://by2x5bgg618kl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="PackedScene" uid="uid://yuje0oodg6y2" path="res://scenes/user_interface/Indicator.tscn" id="3_2wqip"]
 [ext_resource type="Texture2D" uid="uid://f6daxcssdpdj" path="res://images/sprites/circle_empty_small.png" id="3_8o7jm"]
 [ext_resource type="Texture2D" uid="uid://bep2p4oa635yk" path="res://images/sprites/circle_filled_small.png" id="3_e74cw"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
+[ext_resource type="Texture2D" uid="uid://cx2p5jjfb7jmw" path="res://images/sprites/icon_wing.png" id="4_rpvfk"]
 [ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="6_1sh2p"]
 [ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="7_b4v4h"]
+[ext_resource type="PackedScene" uid="uid://dcacy1i0raeql" path="res://scenes/user_interface/AutoScrollContainer.tscn" id="7_n56iy"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="8_fh81n"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diu1g"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c6utw"]
-bg_color = Color(0.780392, 0, 0.0117647, 1)
-
-[sub_resource type="Animation" id="Animation_eit6l"]
-resource_name = "FadeIn"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:theme_override_styles/fill:bg_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0.780392, 0, 0.0117647, 0), Color(0.780392, 0, 0.0117647, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_sq7lx"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:theme_override_styles/fill:bg_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.780392, 0, 0.0117647, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ea25p"]
-_data = {
-"FadeIn": SubResource("Animation_eit6l"),
-"RESET": SubResource("Animation_sq7lx")
-}
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kau5d"]
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
+[ext_resource type="Texture2D" uid="uid://cccrvcn7bhykq" path="res://images/sprites/health_bar_under.png" id="10_iwynr"]
+[ext_resource type="Texture2D" uid="uid://d3ouvhymj2yy3" path="res://images/sprites/health_bar_progress.png" id="11_jndj7"]
 
 [sub_resource type="Gradient" id="Gradient_12uoa"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -90,22 +39,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
+tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.0625, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -130,22 +67,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 2
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0.126, 2), Vector2(0.359375, 2)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
@@ -170,9 +95,9 @@ tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1.5, 3),
-"transitions": PackedFloat32Array(1, 1, 1),
+"transitions": PackedFloat32Array(1, 1.03526, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.392157), Color(1, 1, 1, 1)]
+"values": [Color(0.878431, 0.878431, 0.878431, 1), Color(0.878431, 0.878431, 0.878431, 0.345098), Color(0.878431, 0.878431, 0.878431, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -185,6 +110,30 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.489583, 0.132812)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(16, -1)]
 }
 
 [sub_resource type="Animation" id="Animation_8gmg6"]
@@ -269,26 +218,26 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale")
+tracks/2/path = NodePath(".:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0.390625, 0.453125)]
+"values": [3.14159]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath(".:rotation")
+tracks/3/path = NodePath(".:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [3.14159]
+"values": [Vector2(0.489583, 0.132812)]
 }
 
 [sub_resource type="Animation" id="Animation_p01ae"]
@@ -303,50 +252,64 @@ _data = {
 }
 
 [node name="CombatBars" type="Node2D"]
-z_index = 20
+z_index = 999
 script = ExtResource("1_i2y2p")
 
-[node name="HealthBarFader" type="ProgressBar" parent="."]
+[node name="HealthBarFader" type="TextureProgressBar" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -12.0
+offset_left = -16.0
 offset_top = 26.0
-offset_right = 12.0
+offset_right = 16.0
 offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_diu1g")
-theme_override_styles/fill = SubResource("StyleBoxFlat_c6utw")
 value = 75.0
-show_percentage = false
+texture_under = ExtResource("10_iwynr")
+texture_progress = ExtResource("11_jndj7")
+texture_progress_offset = Vector2(2, 1)
+tint_under = Color(0, 0, 0, 1)
+tint_progress = Color(1, 0, 0, 1)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HealthBarFader"]
-libraries = {
-"": SubResource("AnimationLibrary_ea25p")
-}
-
-[node name="HealthBar" type="ProgressBar" parent="."]
+[node name="HealthBar" type="TextureProgressBar" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -12.0
+offset_left = -16.0
 offset_top = 26.0
-offset_right = 12.0
+offset_right = 16.0
 offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_kau5d")
 value = 50.0
-show_percentage = false
+texture_progress = ExtResource("11_jndj7")
+texture_progress_offset = Vector2(2, 1)
+tint_under = Color(0, 0, 0, 1)
+
+[node name="CenterWings" type="TextureRect" parent="HealthBar"]
+visible = false
+layout_mode = 0
+offset_top = -2.0
+offset_right = 32.0
+texture = ExtResource("4_rpvfk")
+
+[node name="CenterStatusContainer" type="CenterContainer" parent="HealthBar"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -5.0
+offset_bottom = -1.0
+grow_horizontal = 2
 
 [node name="TurnCharges" parent="HealthBar" instance=ExtResource("3_ivcce")]
+visible = false
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -376,30 +339,29 @@ text = "100"
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="StatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
+[node name="StatusEffectContainer" parent="HealthBar" instance=ExtResource("7_n56iy")]
 layout_mode = 0
-offset_left = -3.0
-offset_top = -50.0
-offset_right = 27.0
-offset_bottom = -2.0
-theme_override_constants/h_separation = 1
-theme_override_constants/v_separation = 1
+offset_left = 1.0
+offset_top = -14.0
+offset_right = 31.0
+offset_bottom = -4.0
 
 [node name="PermaStatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
-layout_mode = 2
-offset_left = -8.0
-offset_top = 7.0
-offset_right = 32.0
-offset_bottom = 39.0
+layout_mode = 0
+offset_left = -4.0
+offset_top = 8.0
+offset_right = 36.0
+offset_bottom = 16.0
 mouse_filter = 2
 theme_override_constants/h_separation = 1
-theme_override_constants/v_separation = 1
+theme_override_constants/v_separation = 0
 alignment = 1
 
 [node name="TurnPulser" type="Sprite2D" parent="HealthBar"]
+visible = false
 modulate = Color(1, 1, 1, 0)
 position = Vector2(12, -34)
-scale = Vector2(0.0625, 1)
+scale = Vector2(0.359375, 2)
 texture = SubResource("GradientTexture2D_7aykj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HealthBar/TurnPulser"]
@@ -411,7 +373,7 @@ libraries = {
 z_index = -1
 position = Vector2(12.5, -9.5)
 rotation = 3.14159
-scale = Vector2(0.390625, 0.453125)
+scale = Vector2(0.489583, 0.132812)
 texture = SubResource("GradientTexture2D_7aykj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HealthBar/TurnGradient"]
@@ -420,9 +382,10 @@ libraries = {
 }
 
 [node name="Indicator" parent="." instance=ExtResource("3_2wqip")]
-position = Vector2(0, 3.8147e-06)
+position = Vector2(-1.19209e-07, 1.29247e-26)
 
 [node name="SelectTarget" parent="." instance=ExtResource("4_x0qas")]
+visible = false
 
 [node name="Marker2D" type="Marker2D" parent="."]
 

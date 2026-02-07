@@ -6,7 +6,6 @@
 
 [resource]
 script = ExtResource("2_sesnd")
-auto_name = true
 name = "Fading"
 description = "Target is on the brink."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
@@ -15,8 +14,9 @@ effect_type = 0
 remove_when = Array[int]([3, 2])
 remove_style = 0
 texture = ExtResource("3_2taei")
-style = 2
-max_duration = 3
+style = 5
+custom_style_color = Color(0.701961, 0, 0, 1)
+max_duration = 6
 extend_duration = 0
 apply_extend_duration = false
 max_rank = 0
@@ -27,6 +27,7 @@ resistable = false
 permanent = false
 lingers = false
 persist_on_dead = true
+hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""

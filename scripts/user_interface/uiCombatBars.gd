@@ -3,10 +3,10 @@ class_name CombatBar
 
 @onready var health_bar = $HealthBar
 @onready var health_bar_fader = $HealthBarFader
-@onready var health_bar_fader_animator = $HealthBarFader/AnimationPlayer
 @onready var absolute_health = $HealthBar/AbsoluteHealth
 @onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
+@onready var center_status_effects = $HealthBar/CenterStatusContainer
 @onready var indicator = $Indicator
 @onready var indicator_label = $Indicator/Label
 @onready var indicator_animator = $Indicator/AnimationPlayer
@@ -18,7 +18,9 @@ class_name CombatBar
 @onready var select_target = $SelectTarget
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 @onready var target_clicker = $TargetClicker
+@onready var center_border = $HealthBar/CenterWings
 @onready var combat_scene = CombatGlobals.getCombatScene()
+
 var indicator_animation = "Show"
 var attached_combatant: ResCombatant
 var previous_value = 0
@@ -31,6 +33,8 @@ func _ready():
 	for effect in attached_combatant.status_effects:
 		addStatusIcon(attached_combatant, effect)
 	previous_value = attached_combatant.getMaxHealth()
+	health_bar_fader.modulate=Color.BLACK
+	#$TextureProgressBar/ShieldCrest/AnimationPlayer.play("Show")
 
 func _process(_delta):
 	updateBars()
@@ -60,15 +64,24 @@ func updateBars():
 		health_bar.show()
 
 func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
-	if combatant != attached_combatant:
+	#if combatant == attached_combatant and effect.name == 'Guard':
+	#	shield_crest.show()
+	#	shield_crest.get_node("Label").text = str(effect.duration)
+	if combatant != attached_combatant or effect.hide_icon:
 		return
 	
 	var tick_down = load("res://scenes/user_interface/StatusIcon.tscn").instantiate()
 	tick_down.attached_status = effect
-	if effect.permanent:
+	if effect.name == 'Guard' or effect.name == 'Fading':
+		await get_tree().process_frame
+		center_status_effects.add_child(tick_down)
+		center_border.show()
+		center_border.modulate = effect.getIconColor()
+		health_bar.tint_under = effect.getIconColor()
+	elif effect.permanent:
 		permanent_status_effects.add_child(tick_down)
 	else:
-		status_effects.add_child(tick_down)
+		status_effects.add_icon(tick_down)
 	#print('added %s to %s' % [effect, combatant])
 
 func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
@@ -76,10 +89,14 @@ func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 		return
 	
 	var effect_container
-	if effect.permanent:
+	if effect.name == 'Guard' or effect.name == 'Fading':
+		center_border.hide()
+		effect_container = center_status_effects
+		health_bar.tint_under = Color.BLACK
+	elif effect.permanent:
 		effect_container = permanent_status_effects
 	else:
-		effect_container = status_effects
+		effect_container = status_effects.container
 	
 	for icon in effect_container.get_children():
 		if icon.attached_status == effect:
@@ -95,16 +112,18 @@ func animateFaderBar(prev_val, value):
 	if prev_val == value:
 		return
 	
+	health_bar_fader.modulate=Color.WHITE
 	health_bar_fader.max_value = attached_combatant.getMaxHealth()
 	health_bar_fader.value = prev_val
-	if prev_val > value:
-		health_bar_fader.modulate = Color.YELLOW
-	elif prev_val < value:
-		health_bar_fader.modulate = Color.GREEN
-	await get_tree().create_timer(0.25).timeout
-	var tween = create_tween().set_parallel(true)
-	tween.tween_method(setFaderBarValue, prev_val, value, 0.3)
-	tween.tween_property(health_bar_fader, 'modulate', Color.BLACK, 0.4)
+#	if prev_val > value:
+#		health_bar_fader.modulate = Color.YELLOW
+#	elif prev_val < value:
+#		health_bar_fader.modulate = Color.GREEN
+	await get_tree().create_timer(0.5).timeout
+	var tween = create_tween()
+	tween.tween_method(setFaderBarValue, prev_val, value, 0.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	await tween.finished
+	health_bar_fader.modulate=Color.BLACK
 
 func setFaderBarValue(value):
 	health_bar_fader.value = value
@@ -140,11 +159,17 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 
 func setBarVisibility(set_to:bool):
 	if set_to:
-		health_bar_fader.modulate = Color.WHITE
-		health_bar.modulate = Color.WHITE
+		create_tween().tween_property(health_bar_fader, 'self_modulate',Color.WHITE,0.22)
+		create_tween().tween_property(health_bar, 'modulate',Color.WHITE,0.22)
+		#modulate = Color.WHITE
+		#health_bar_fader.modulate = Color.WHITE
+		#health_bar.modulate = Color.WHITE
 	else:
-		health_bar_fader.modulate = Color.TRANSPARENT
-		health_bar.modulate = Color.TRANSPARENT
+		create_tween().tween_property(health_bar_fader, 'self_modulate',Color.TRANSPARENT,0.22)
+		create_tween().tween_property(health_bar, 'modulate',Color.TRANSPARENT,0.22)
+		#modulate = Color.TRANSPARENT
+		#health_bar_fader.modulate = Color.TRANSPARENT
+		#health_bar.modulate = Color.TRANSPARENT
 
 func enableClicker():
 	target_clicker.show()

@@ -612,7 +612,7 @@ func showQuickAnimation(animation_id, location, animation_name:String='Show', hi
 	animation.animation_name = animation_name
 	#animation.process_mode = Node.PROCESS_MODE_ALWAYS
 	#animation.z_index = 999
-	if !inCombat():
+	if !inCombat(): # FIX LATER
 		if location is Node2D:
 			if hide_scene: location.hide()
 			location.call_deferred('add_child',animation)
@@ -623,8 +623,12 @@ func showQuickAnimation(animation_id, location, animation_name:String='Show', hi
 			animation.global_position = location
 			getCurrentMap().call_deferred('add_child',animation)
 	else:
-		animation.global_position = location
-		CombatGlobals.getCombatScene().add_child(animation)
+		if location is Node2D:
+			if hide_scene: location.hide()
+			location.call_deferred('add_child',animation)
+		elif location is Vector2:
+			animation.global_position = location
+			CombatGlobals.getCombatScene().add_child(animation)
 	await animation.ready
 	if wait:
 		await animation.animation_player.animation_finished

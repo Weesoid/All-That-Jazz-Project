@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=7 format=3 uid="uid://blm4dyw2h22m2"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://blm4dyw2h22m2"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
-[ext_resource type="PackedScene" uid="uid://cmu5v5d578wll" path="res://scenes/animations_status_effects/Poison.tscn" id="1_qebaw"]
 [ext_resource type="Script" path="res://scripts/resources/ResBasicEffectDamage.gd" id="1_va5wg"]
 [ext_resource type="Texture2D" uid="uid://cws4qm00g4avt" path="res://images/status_icons/icon_poison.png" id="3_1sqmf"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="4_3i67t"]
@@ -27,7 +26,6 @@ name = "Poison"
 description = "Target takes damage overtime."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_h03bo")])
 status_script = ExtResource("4_3i67t")
-packed_scene = ExtResource("1_qebaw")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
@@ -44,6 +42,7 @@ resistable = true
 permanent = false
 lingers = false
 persist_on_dead = false
+hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""

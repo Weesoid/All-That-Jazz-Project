@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcacy1i0raeql"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiAutoScrollContainer.gd" id="1_hsjde"]
+[ext_resource type="Texture2D" uid="uid://c8uhy71dk2k50" path="res://images/status_icons/icon_riposte.png" id="2_iyy2x"]
+
+[node name="AutoScroller" type="ColorRect"]
+clip_contents = true
+offset_right = 40.0
+offset_bottom = 16.0
+color = Color(1, 0, 0, 0)
+script = ExtResource("1_hsjde")
+
+[node name="TestIcon" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("2_iyy2x")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[connection signal="child_entered_tree" from="HBoxContainer" to="." method="_on_h_box_container_child_entered_tree"]

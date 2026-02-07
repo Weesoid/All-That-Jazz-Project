@@ -82,6 +82,7 @@ signal combat_done
 #	reward_bank = p_ #placeholder
 
 func _ready():
+	flasher.show()
 	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()

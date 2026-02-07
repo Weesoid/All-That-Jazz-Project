@@ -1,9 +1,11 @@
 static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.apply_once:
+		var throbber = load("res://scenes/animations_quick/SpriteThrobber.tscn")
 		target.combatant_scene.moveTo(target.combatant_scene.get_parent(), 0.25, Vector2(0,0), true)
 		CombatGlobals.playFadingTween(target)
-		target.combatant_scene.playIdle('Fading')
-		CombatGlobals.modifyStat(target, {'speed': -999}, status_effect.name)
+		target.combatant_scene.playIdle('Hurt')
+		OverworldGlobals.showQuickAnimation(throbber, target.getSprite())
+		#CombatGlobals.modifyStat(target, {'speed': -999}, status_effect.name)
 		target.combatant_scene.blocking = false
 	
 	if CombatGlobals.randomRoll(0.025) and canAddQTE(status_effect):
@@ -25,8 +27,11 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 static func canAddQTE(status_effect: ResStatusEffect)-> bool:
 	return status_effect.duration != status_effect.max_duration - 1 and status_effect.duration > 0 and !CombatGlobals.getCombatScene().has_node('QTE') and CombatGlobals.getCombatScene().isCombatValid() and status_effect.afflicted_combatant.isDead()
 
-static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	#await CombatGlobals.getCombatScene().get_tree().create_timer(0.5).timeout
+static func endEffects(target: ResCombatant, _status_effect: ResStatusEffect):
+	var throbber_list = target.getSprite().get_children().filter(func(child): return child.has_meta('is_sprite_throbber'))
+	if throbber_list.size() > 0:
+		throbber_list[0].queue_free()
+	
 	if  CombatGlobals.getCombatScene().combat_result >= 1:
 		CombatGlobals.applyFaded(target)
 		CombatGlobals.calculateHealing(target, int(target.base_stat_values['health']*0.25),false,false)
@@ -35,6 +40,6 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	else:
 		CombatGlobals.applyFaded(target)
 		CombatGlobals.playSecondWindTween(target)
-		target.combatant_scene.idle_animation = 'Idle'
+		target.combatant_scene.playIdle('Idle')
 	
-	CombatGlobals.resetStat(target, status_effect.name)
+	#CombatGlobals.resetStat(target, status_effect.name)

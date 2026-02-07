@@ -5,8 +5,8 @@
 [ext_resource type="Resource" uid="uid://cvjlkid4m1aae" path="res://resources/combat/abilities/BasicMisc.tres" id="3_6d41e"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="3_8yngu"]
 [ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/character_sprites/huck/huck_follower.png" id="4_2iyqn"]
-[ext_resource type="PackedScene" uid="uid://hojidodoc70i" path="res://scenes/combatants/Willis.tscn" id="5_l2tuv"]
-[ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/character_sprites/willis/rest_willis.png" id="6_qur0t"]
+[ext_resource type="PackedScene" uid="uid://bqe7unaj4matg" path="res://scenes/combatants/Huck.tscn" id="6_csx4u"]
+[ext_resource type="Texture2D" uid="uid://cxyp2od4rl1ln" path="res://images/character_sprites/huck/rest_huck.png" id="7_i8uri"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="7_rlsd5"]
 
 [resource]
@@ -15,11 +15,11 @@ ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtReso
 base_temperment = Array[String]([])
 follower_texture = ExtResource("4_2iyqn")
 mandatory = false
-rest_sprite = ExtResource("6_qur0t")
+rest_sprite = ExtResource("7_i8uri")
 stat_multiplier = 0.01
 talents = Array[String]([])
 name = "John Huck"
-packed_scene = ExtResource("5_l2tuv")
+packed_scene = ExtResource("6_csx4u")
 bullet_texture = ExtResource("3_8yngu")
 description = "FODDER A"
 stat_values = {

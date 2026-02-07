@@ -16,6 +16,7 @@ follower_texture = ExtResource("4_1a2ry")
 mandatory = false
 rest_sprite = ExtResource("6_awv7g")
 stat_multiplier = 0.01
+talents = Array[String]([])
 name = "Foddette the Fodder"
 packed_scene = ExtResource("5_88x02")
 bullet_texture = ExtResource("3_5mpe4")

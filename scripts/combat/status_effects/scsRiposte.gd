@@ -15,7 +15,7 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 		CombatGlobals.calculateDamage(
 			caster, 
 			target, 
-			0.75,
+			0.5,
 			true,
 			true,
 			'',
@@ -34,7 +34,7 @@ static func applyHitEffects(target,caster, _value, status_effect: ResStatusEffec
 
 static func determineRiposte(target, caster):
 	var distance = target.combatant_scene.global_position.distance_to(caster.combatant_scene.global_position)
-	if distance > 40:
+	if distance > 60:
 		return 'Cast_Ranged'
 	else:
 		return 'Cast_Riposte' if 'Cast_Riposte' in target.combatant_scene.animator.get_animation_list() else 'Cast_Melee'

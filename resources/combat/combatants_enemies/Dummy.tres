@@ -23,15 +23,15 @@ stat_values = {
 "accuracy": 0.95,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 22,
+"damage": 40,
 "defense": 0,
 "dmg_modifier": 1.0,
 "dmg_variance": 0.25,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 999,
+"health": 9999,
 "resist": 0.01,
-"speed": -5
+"speed": -10
 }
 scale_stats = {
 "accuracy": false,

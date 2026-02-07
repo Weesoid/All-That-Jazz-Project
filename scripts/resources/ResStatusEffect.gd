@@ -25,7 +25,8 @@ enum StatusStyle {
 	BUFF,
 	DEBUFF,
 	UNIQUE,
-	SPECIAL
+	SPECIAL,
+	CUSTOM
 }
 
 ## NOTE: Always name status effects with the following convention: File-GuardBreak.tres;Name-Guard Break
@@ -39,6 +40,7 @@ enum StatusStyle {
 @export var remove_style: RemoveStyle
 @export var texture: Texture = preload("res://images/status_icons/icon_unknown.png")
 @export var style: StatusStyle
+@export var custom_style_color: Color
 @export var max_duration: int = 1
 @export var extend_duration: int = 1
 @export var apply_extend_duration:  bool = false
@@ -51,8 +53,8 @@ enum StatusStyle {
 @export var permanent: bool = false
 @export var lingers: bool = false
 @export var persist_on_dead: bool = false
+@export var hide_icon = false
 @export var sounds: Dictionary = {'apply':'', 'expire':''}
-
 var apply_once = true
 var duration
 var current_rank = 1
@@ -154,7 +156,8 @@ func getMessageIcon():
 		color_bb = SettingsGlobals.ui_colors['unique-bb'].replace('[','').replace(']','')
 	elif style==StatusStyle.SPECIAL:
 		color_bb = SettingsGlobals.ui_colors['special-bb'].replace('[','').replace(']','')
-	
+	elif style == StatusStyle.CUSTOM:
+		color_bb = getIconColor(true)
 	return '[img %s]%s[/img]' % [color_bb,texture.get_path()]
 
 func getIconColor(as_bb:bool=false):
@@ -178,6 +181,11 @@ func getIconColor(as_bb:bool=false):
 			return SettingsGlobals.ui_colors['special-bb']
 		else:
 			return SettingsGlobals.ui_colors['special']
+	elif style == StatusStyle.CUSTOM:
+		if as_bb:
+			return '[color=%s]' % custom_style_color.to_html()
+		else:
+			return custom_style_color
 	
 	return Color.WHITE
 

@@ -6,7 +6,6 @@
 
 [resource]
 script = ExtResource("2_6madc")
-auto_name = false
 name = "Guard Break"
 description = "Target cannot guard."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
@@ -16,6 +15,7 @@ remove_when = Array[int]([])
 remove_style = 0
 texture = ExtResource("2_ed8oo")
 style = 2
+custom_style_color = Color(0, 0, 0, 1)
 max_duration = 4
 extend_duration = 1
 apply_extend_duration = false
@@ -27,6 +27,7 @@ resistable = false
 permanent = false
 lingers = false
 persist_on_dead = true
+hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""

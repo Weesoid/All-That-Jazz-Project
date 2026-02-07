@@ -330,8 +330,8 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 	
 	if inCombat() and trigger_on_heal and base_healing >= 1:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
-	if inCombat() and target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
-		target.combatant_scene.playIdle('Idle')
+	#if inCombat() and target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
+	#	target.combatant_scene.playIdle('Idle')
 	if !inCombat() and from_death:
 		applyFaded(target)
 
@@ -372,28 +372,30 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 		await animation.playAnimation(target.combatant_scene.position)
 
 func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
-	if !target.stat_modifiers.keys().has('block'):
-		randomize()
-		if sound_path == '':
-			OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
-			if target is ResEnemyCombatant:
-				OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
-			else:
-				OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
-		#getCombatScene().combat_camera.shake(50.0, 50.0)
+	if target.stat_modifiers.keys().has('block'):
 		playHurtTween(target, damage)
-		playFlashTween(target, Color.RED)
-		if target.isDead():
-			getCombatScene().combat_camera.shake(25.0, 10.0)
-			if target is ResEnemyCombatant:
-				playAnimation(target, 'KO')
-				OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
-			elif target is ResPlayerCombatant:
-				OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
-		if inCombat() and sound_path != '':
-			OverworldGlobals.playSound(sound_path, -8.0)
-	else:
 		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
+		return
+	
+	randomize()
+	if sound_path == '':
+		OverworldGlobals.playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
+		if target is ResEnemyCombatant:
+			OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
+		else:
+			OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
+	if target.isDead():
+		getCombatScene().combat_camera.shake(25.0, 10.0)
+		if target is ResEnemyCombatant:
+			OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
+		elif target is ResPlayerCombatant:
+			target.combatant_scene.playIdle('Hurt')
+			OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
+	target.combatant_scene.doAnimation('Hurt',null,{'no_anim_fallback':true,'low_priority':true,'bypass_invalid_pause':true})
+	playHurtTween(target, damage)
+	playFlashTween(target, Color.RED)
+	if inCombat() and sound_path != '':
+		OverworldGlobals.playSound(sound_path, -8.0)
 
 func playDodgeTween(target: ResCombatant):
 	OverworldGlobals.playSound('607862__department64__whipstick-28.ogg')
@@ -409,6 +411,8 @@ func playHurtTween(target: ResCombatant, damage):
 	sprite_shaker.shake_speed = 12.0
 	sprite_shaker.shake_strength = 25.0 + (damage*0.1)
 	sprite.add_child(sprite_shaker)
+
+#func play 
 
 func playFlashTween(target: ResCombatant, color:Color):
 	var tween = getCombatScene().create_tween()
@@ -443,11 +447,11 @@ func playKnockOutTween(target: ResCombatant):
 	tween.tween_property(target.combatant_scene, 'scale', Vector2(1, 1), 0.15)
 	await tween.finished
 
-func playAnimation(target: ResCombatant, animation_name: String):
-	if !target.getAnimator().get_animation_list().has(animation_name):
-		return
-	
-	target.getAnimator().play(animation_name)
+#func playAnimation(target: ResCombatant, animation_name: String):
+#	if !target.getAnimator().get_animation_list().has(animation_name):
+#		return
+#
+#	target.getAnimator().play(animation_name)
 
 func showWarning(target: CombatantScene):
 	var warning = load("res://scenes/user_interface/TargetWarning.tscn").instantiate()
@@ -461,7 +465,8 @@ func setCombatantVisibility(target: CombatantScene, set_to:bool):
 	else:
 		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
 		target.z_index = 0
-	#target.get_node('CombatBars').setBarVisibility(set_to)
+	#if !target.combatant_resource.hasStatusEffect('KnockOut'):
+	target.get_node('CombatBars').setBarVisibility(set_to)
 
 func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1, offset:Vector2=Vector2.ZERO):
 	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
@@ -473,15 +478,6 @@ func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1,
 	getCombatScene().call_deferred('add_child',qte)
 	await qte_finished
 	return qte
-
-func playCombatantAnimation(combatant_name: String, animation_name: String, wait=true):
-	for combatant in getCombatScene().combatants:
-		if combatant.name == combatant_name:
-			if wait:
-				await combatant.combatant_scene.doAnimation(animation_name)
-			else:
-				combatant.combatant_scene.doAnimation(animation_name)
-			return
 
 func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
 	var target

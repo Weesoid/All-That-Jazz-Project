@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=7 format=3 uid="uid://dyc0vgj27xe47"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://dyc0vgj27xe47"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_1nsxs"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_hdjcb"]
-[ext_resource type="PackedScene" uid="uid://0ppcd1mqxfsw" path="res://scenes/animations_status_effects/Disrupted.tscn" id="2_wu7dm"]
 [ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="3_lpmcj"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="4_rcuq1"]
 
@@ -27,12 +26,10 @@ sound_effect = ""
 
 [resource]
 script = ExtResource("4_rcuq1")
-auto_name = false
 name = "Disrupted"
 description = ""
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_80tah")])
 status_script = ExtResource("2_hdjcb")
-packed_scene = ExtResource("2_wu7dm")
 effect_type = 0
 remove_when = Array[int]([1])
 remove_style = 0
@@ -49,6 +46,7 @@ resistable = false
 permanent = true
 lingers = false
 persist_on_dead = false
+hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""
