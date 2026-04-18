@@ -15,6 +15,7 @@ remove_when = Array[int]([4])
 remove_style = 1
 texture = ExtResource("3_mek1h")
 style = 1
+custom_style_color = Color(0, 0, 0, 1)
 max_duration = 3
 extend_duration = 1
 apply_extend_duration = false

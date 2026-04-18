@@ -206,9 +206,11 @@ func stringifyBonusStatConditions(conditions: Array, unit:String='Target')->Stri
 func stringifySpecialStat(stat: String,value:String):
 	if stat == 'status_effect':
 		var out = 'Apply '
-		for effect in value.split(','):
+		for effect in value.split('+'):
+			var effect_data = effect.split('^')
+			effect = effect_data[0]
 			out += loadStatusEffect(effect).getMessageIcon()+' '
-			
+			if effect_data.size() > 1: out += stringifyStatusOverrides(effect_data[1])+' '
 		return out
 	elif stat == 'move':
 		var out = ''
@@ -222,6 +224,14 @@ func stringifySpecialStat(stat: String,value:String):
 		return 'Non-lethal'
 	elif stat == 'tp':
 		return 'Gain '+value+'[img]res://images/sprites/icon_tp.png[/img]'
+
+func stringifyStatusOverrides(overrides:String):
+	var overrides_dict = JSON.parse_string(overrides)
+	var out = '' # TODO Add color
+	if overrides_dict.has('max_duration') and overrides_dict.has('be_tickdmg'):
+		out += '%s (%s turns)' % [overrides_dict['max_duration'], overrides_dict['be_tickdmg']['damage']]
+	
+	return out
 
 func hasStatCondition(key):
 	return key.contains('/')
@@ -272,9 +282,14 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
 	
 	if checkSpecialStat('status_effect', bonus_stats, target):
-		var status_effects = getBonusStatValue(bonus_stats, 'status_effect').split(',')
+		var status_effects = getBonusStatValue(bonus_stats, 'status_effect').split('+')
 		for effect in status_effects:
-			addStatusEffect(target, effect)
+			var override_data = {}
+			if effect.contains('^'):
+				override_data = JSON.parse_string(effect.split('^')[1])
+				effect = effect.split('^')[0]
+			addStatusEffect(target, effect, true, override_data)
+	
 	if checkSpecialStat('move', bonus_stats, target):
 		var move_data = getBonusStatValue(bonus_stats, 'move').split(',')
 		var direction
@@ -297,21 +312,25 @@ func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 
 func useDamageFormula(target: ResCombatant, damage):
 	var grit = target.stat_values['defense']
-	if grit > 0.7 and (inCombat() and !target.combatant_scene.blocking):
+	if grit > 0.7: #and (inCombat() and !getCombatScene().active_combatant.combatant_scene.blocking):  # TODO Change this to check a bonus stat "blocking" or smth. Implement it once u get stuff like "healing skill" etc online
 		grit = 0.7
 	var out_damage = damage - (grit * damage)
 	if out_damage < 0.0: 
 		out_damage = 0
 	return out_damage
 
+func calculatePercentHealing(target: ResCombatant, percentage:float, use_mult:bool=true, trigger_on_heal:bool=true):
+	calculateHealing(target, ceil(target.getMaxHealth()*percentage), use_mult, trigger_on_heal)
+
 func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:bool=true):
 	var from_death:bool=false
+	
 	if target is CombatantScene:
 		target = target.combatant_resource
 	if target.stat_values['health'] < 0:
 		target.stat_values['health'] = 0
 		from_death=true
-	base_healing = valueVariate(base_healing, 0.15)
+	base_healing = valueVariate(base_healing, 0.1)
 	if use_mult:
 		base_healing *= target.stat_values['heal_mult']
 	if base_healing <= 0: 
@@ -495,13 +514,12 @@ func moveCombatCamera(target_name: String, duration:float=0.25, wait=true):
 #********************************************************************************
 # STATUS effect HANDLING
 #********************************************************************************
-func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
+func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, override_data:Dictionary={}):
 	var status_effect: ResStatusEffect
 	var path
 	if effect is String:
 		path = str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")
-		if !FileAccess.file_exists(path):
-			return
+		assert(FileAccess.file_exists(path), 'Could not find "%s" effect!' % effect)
 		status_effect = load(str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")).duplicate()
 	elif effect is ResStatusEffect:
 		path = effect.resource_path
@@ -512,7 +530,18 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 	if status_effect.resistable:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_STATUSED)
 	
-	if !target.getStatusEffectNames().has(status_effect.name):
+	for property in override_data.keys():
+		if property.contains('be_'):
+			var effect_overrides = override_data[property]
+			var id = property.split('_')[1]
+			var basic_effect = findBasicEffect(id, status_effect)
+			for basic_effect_property in effect_overrides:
+				basic_effect.set(basic_effect_property, effect_overrides[basic_effect_property])
+		else:
+			print('setting %s to %s' % [property, override_data[property]])
+			status_effect.set(property, override_data[property])
+	
+	if !target.getStatusEffectNames().has(status_effect.name) or status_effect.seperate_instances:
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.status_effects.append(status_effect)
@@ -534,6 +563,13 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false):
 			manual_call_indicator.emit(target, 'Afflicted %s!' % status_effect.name, 'Lingering')
 	
 	checkReactions(target)
+
+func findBasicEffect(identifer:String, status_effect: ResStatusEffect)-> ResBasicEffect:
+	for effect in status_effect.basic_effects:
+		if effect.identifier == identifer: return effect
+	
+	assert(false, 'Could not find identifer "%s" in "%s" basic effects.' % [identifer, status_effect])
+	return null
 
 func getTempermentModiferID(status_effect:ResStatusEffect,status_modifications:Dictionary):
 	return 'linger|'+status_effect.name+'|'+str(status_modifications)+'|'+status_effect.getMessageIcon()

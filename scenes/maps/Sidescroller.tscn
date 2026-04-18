@@ -180,23 +180,10 @@ layer_4/tile_data = PackedInt32Array(196612, 65538, 0, 196611, 65538, 0, 196610,
 
 [node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 1
-enabled = false
 special_chance = 0.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(224, 127)
-
-[node name="SpawnPoint2" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(123, 153)
-
-[node name="SpawnPoint3" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(105, -43)
-
-[node name="SpawnPoint5" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(178, -45)
-
-[node name="SpawnPoint4" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(141, -42)
+position = Vector2(-97, 68)
 
 [node name="Chance 1" type="Marker2D" parent="PatrollerGroup"]
 position = Vector2(163, -50)
@@ -237,7 +224,7 @@ position = Vector2(-412, -20)
 
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
 do_reinforcements = false
-combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc")])
+combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc"), ExtResource("11_2bouc")])
 afflicted_status_effects = Array[String](["CriticalEye"])
 
 [node name="CombatDialogue" parent="Entity" instance=ExtResource("11_fghhp")]

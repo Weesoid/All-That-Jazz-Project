@@ -313,9 +313,10 @@ func end_turn(combatant_act=true):
 		active_combatant.act()
 #		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
-		if is_instance_valid(active_combatant.combatant_scene):
+		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead():
+			moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
-			await showCannotAct('Immobile!')
+			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE
 		end_turn()
 		return
 	if await checkWin(): 

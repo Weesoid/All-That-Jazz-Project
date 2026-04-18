@@ -22,9 +22,12 @@ enum DamageType {
 ## 		s = Status effect ex. crit/s:bleed
 ##		combo =  Only execute if target has combo token. Combo token is consumed. ex. crit/combo:0.75
 ##			combo! = The same as combo but it will not consume the combo token. ex. crit/combo!:0.75
+##		% = Chance to trigger. ex. crit/%:0.5
 ## 	Special stats:
 ## 		execute = Execute combatant on a certain health threshold ex. "execute": 0.5 (executes at 50% health)
-##		status_effect = Apply status effect ex. "status_effect": "Poison" (Must use file sys name) ("Poison,Riposte" will add an array of status effects)
+##		status_effect = Apply status effect ex. "status_effect": "Poison" (Must use file sys name) 
+##			"Poison+Riposte" Will add an array of status effects
+##			"status_effect": "Poison^{"duration":6,"be_<identifier>":{"damange",9}}" Will override status effects properties
 ##		move = Move the target combatant. e.g. "move": "f,1" (Means forward one space) (b,2 would mean backward 2 spaces)
 @export var bonus_stats: Dictionary
 @export var return_pos: bool = true

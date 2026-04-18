@@ -6,6 +6,7 @@ class_name CombatantScene
 @export var combatant_resource: ResCombatant
 
 var idle_animation: String = 'Idle'
+var temporary_idle:String
 #var rank_position: Vector2
 var hit_script: GDScript
 
@@ -83,14 +84,19 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 func cannotAct()-> bool:
 	return combatant_resource.isDead() and !combatant_resource.hasStatusEffect('Fading')
 
-func playIdle(new_idle:String=''):
+func playIdle(new_idle:String='',is_temporary:bool=false):
 	if !animator.get_animation_list().has(new_idle) and new_idle != '':
 		return
 	if new_idle != '':
 		idle_animation = new_idle
+	
 	combatant_resource.resetSprite()
 	combatant_resource.startBreatheTween(false)
-	animator.play(idle_animation)
+	if temporary_idle != '' and idle_animation != temporary_idle:
+		animator.play(temporary_idle)
+		temporary_idle = ''
+	else:
+		animator.play(idle_animation)
 
 func setProjectileTarget(target: CombatantScene, frame_time: float, ability: ResAbility, animation:String="Cast_Ranged"):
 	var anim: Animation = animator.get_animation(animation)

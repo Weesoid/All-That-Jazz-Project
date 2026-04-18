@@ -96,7 +96,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		addStatusEffectIcons()
 		updateEquipped()
 	if selected_combatant != null:
-		if selected_combatant.ability_set.size() >= 4:
+		if selected_combatant.ability_set.size() >= PlayerGlobals.ability_cap:
 			dimInactiveAbilities()
 		updateStatPointCount()
 
@@ -177,9 +177,9 @@ func createAbilityButton(ability, location):
 			else:
 				button.remove_theme_icon_override('icon')
 			
-			if selected_combatant.ability_set.size() >= 4:
+			if selected_combatant.ability_set.size() >= PlayerGlobals.ability_cap:
 				dimInactiveAbilities()
-			elif selected_combatant.ability_set.size() < 4:
+			elif selected_combatant.ability_set.size() < PlayerGlobals.ability_cap:
 				undimAbilities()
 	)
 	location.add_child(button)
@@ -197,7 +197,7 @@ func undimAbilities():
 func setButtonDisabled(set_to: bool):
 	for button in pool.get_children():
 		button.setDisabled(set_to)
-		if selected_combatant.ability_set.size() >= 4 and !set_to:
+		if selected_combatant.ability_set.size() >= PlayerGlobals.ability_cap and !set_to:
 			button.setDisabled(!selected_combatant.ability_set.has(button.ability))
 	
 	for button in equipped_charms.get_children():

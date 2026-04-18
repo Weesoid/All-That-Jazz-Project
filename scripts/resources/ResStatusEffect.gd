@@ -38,6 +38,7 @@ enum StatusStyle {
 @export var effect_type: EffectType
 @export var remove_when: Array[RemoveType]
 @export var remove_style: RemoveStyle
+@export var seperate_instances:bool=false
 @export var texture: Texture = preload("res://images/status_icons/icon_unknown.png")
 @export var style: StatusStyle
 @export var custom_style_color: Color

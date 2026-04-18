@@ -194,7 +194,7 @@ func showAbilities(combatant: ResCombatant):
 	canUseAbility(defend_button)
 	
 	await get_tree().process_frame
-	if getAbilityButtons().size() < 4:
+	if getAbilityButtons().size() < PlayerGlobals.ability_cap:
 		fillInvalid()
 	
 	await get_tree().process_frame
@@ -298,7 +298,7 @@ func showUI(set_focus:bool=false):
 		OverworldGlobals.setMenuFocus(ability_buttons)
 
 func fillInvalid():
-	for i in range(4-getAbilityButtons().size()):
+	for i in range(PlayerGlobals.ability_cap-getAbilityButtons().size()):
 		var button: CustomAbilityButton = load("res://scenes/user_interface/AbilityButton.tscn").instantiate()
 		button.descriptions['icon'] = EMPTY_ABILITY_ICON
 		ability_buttons.add_child(button)

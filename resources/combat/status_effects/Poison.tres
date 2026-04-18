@@ -7,7 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_h03bo"]
 script = ExtResource("1_va5wg")
-damage = 2
+damage = 1
 rank_scaling = true
 use_damage_formula = false
 bonus_stats = {}
@@ -19,6 +19,7 @@ indicator_bb = "[color=purple][img]res://images/status_icons/icon_poison.png[/im
 apply_once = false
 message = ""
 sound_effect = ""
+identifier = "tickdmg"
 
 [resource]
 script = ExtResource("1_5ugit")
@@ -29,12 +30,14 @@ status_script = ExtResource("4_3i67t")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
+seperate_instances = true
 texture = ExtResource("3_1sqmf")
 style = 0
-max_duration = 3
+custom_style_color = Color(0, 0, 0, 1)
+max_duration = 1
 extend_duration = 1
 apply_extend_duration = false
-max_rank = 3
+max_rank = 0
 tick_on_apply = false
 tick_any_turn = false
 do_ticks = true

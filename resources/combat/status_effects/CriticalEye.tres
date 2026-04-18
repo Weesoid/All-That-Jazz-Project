@@ -23,6 +23,7 @@ rank_scaling = true
 apply_once = false
 message = ""
 sound_effect = ""
+identifier = ""
 
 [resource]
 script = ExtResource("3_frn68")
@@ -33,6 +34,7 @@ status_script = ExtResource("1_e0mox")
 effect_type = 0
 remove_when = Array[int]([0, 1])
 remove_style = 0
+seperate_instances = false
 texture = ExtResource("3_2so27")
 style = 1
 custom_style_color = Color(0, 0, 0, 1)

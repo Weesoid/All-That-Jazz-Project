@@ -19,6 +19,7 @@ enum State {
 @onready var edge_check_left = $EdgeCheckLeft
 @onready var melee_hitbox = $MeleeHitbox
 @onready var sprite = $Sprite2D
+@onready var combat_hitbox = $CombatHitbox/CollisionShape2D2
 
 @export var base_move_speed: float = 20.0
 @export var alerted_speed_multiplier: float = 5.0
@@ -69,7 +70,7 @@ func _physics_process(delta):
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 	
 	
-	doCollisionAction()
+	#doCollisionAction()
 	match state:
 		State.IDLE: patrol()
 		State.CHASING: chase()
@@ -155,15 +156,6 @@ func animateWalk():
 		animator.seek(1, true)
 		animator.pause()
 
-func doCollisionAction():
-	if get_slide_collision_count() == 0 or !OverworldGlobals.getCurrentMap().done_loading_map or !canEnterCombat():
-		return
-	
-	if get_last_slide_collision().get_collider() is PlayerScene and canEnterCombat():
-		combat_switch = false
-		chase_indicator_animator.play("RESET")
-		OverworldGlobals.changeToCombat(str(name),{},self)
-
 func doAction():
 	combat_switch = false
 	velocity.x = 0
@@ -227,3 +219,14 @@ func playFootstep():
 func _on_detect_bar_tree_exited():
 	if is_instance_valid(flicker_tween):
 		flicker_tween.kill()
+
+
+func _on_combat_hitbox_body_entered(body):
+	print('AGHHH ', body)
+	if !OverworldGlobals.getCurrentMap().done_loading_map or !canEnterCombat():
+		return
+	
+	if body is PlayerScene and canEnterCombat():
+		combat_switch = false
+		chase_indicator_animator.play("RESET")
+		OverworldGlobals.changeToCombat(str(name),{},self)

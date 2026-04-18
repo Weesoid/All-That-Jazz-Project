@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cwb1nk6unobbo"]
+[gd_scene load_steps=16 format=3 uid="uid://cwb1nk6unobbo"]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatroller.gd" id="1_khwtj"]
 [ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/character_sprites/faction_scavs/scav_patrol_chaser.png" id="2_1ek2d"]
@@ -7,6 +7,10 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b7sqp"]
 size = Vector2(23, 30)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_02spe"]
+radius = 11.0
+height = 32.0
 
 [sub_resource type="Animation" id="Animation_54o4m"]
 length = 0.001
@@ -314,6 +318,17 @@ position = Vector2(1.5, 0)
 shape = SubResource("RectangleShape2D_b7sqp")
 debug_color = Color(0.992157, 0, 0.247059, 0.419608)
 
+[node name="CombatHitbox" type="Area2D" parent="."]
+position = Vector2(0, -15)
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="CombatHitbox"]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_02spe")
+debug_color = Color(0.992157, 0.658824, 0.247059, 0.419608)
+
 [node name="ChaseIndicator" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(0, -65)
@@ -342,6 +357,10 @@ one_shot = true
 wait_time = 3.0
 one_shot = true
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_xy57u")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1000
 position = Vector2(0, -32)
@@ -350,10 +369,6 @@ flip_h = true
 hframes = 3
 vframes = 2
 frame = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -15)
-shape = SubResource("CapsuleShape2D_xy57u")
 
 [node name="LineOfSight" type="RayCast2D" parent="."]
 position = Vector2(0, -16)
@@ -376,6 +391,7 @@ libraries = {
 [node name="Marker2D" type="Marker2D" parent="."]
 
 [connection signal="body_entered" from="MeleeHitbox" to="." method="_on_melee_hitbox_body_entered"]
+[connection signal="body_entered" from="CombatHitbox" to="." method="_on_combat_hitbox_body_entered"]
 [connection signal="tree_exited" from="DetectBar" to="." method="_on_detect_bar_tree_exited"]
 [connection signal="timeout" from="DetectTimer" to="." method="_on_detect_timer_timeout"]
 [connection signal="timeout" from="StunTimer" to="." method="_on_stun_timer_timeout"]

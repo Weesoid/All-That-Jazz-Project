@@ -7,7 +7,7 @@ static func applyEffects(target, status_effect:ResStatusEffect):
 	
 	if !target.hasStatusEffect('Guard Break'):
 		if target.stat_values['health'] <= 0 and status_effect.apply_once:
-			CombatGlobals.calculateHealing(target, 5,false)
+			CombatGlobals.calculatePercentHealing(target, 0.1,false)
 		target.combatant_scene.setBlocking(true)
 		status_effect.attached_data = 1
 	else:

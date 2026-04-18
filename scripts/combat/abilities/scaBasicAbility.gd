@@ -1,5 +1,6 @@
 # Cast animations, gap closing, etc.
 static func animate(caster: CombatantScene, target, ability:ResAbility):
+	print(ability.basic_effects)
 	for effect in ability.basic_effects:
 		ability.current_effect = effect
 		#print(ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource))
@@ -54,6 +55,9 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		elif effect is ResAddTPEffect:
 			CombatGlobals.addTension(effect.add_amount)
 			await applyEffects(caster, target, ability)
+		elif ability.current_effect is ResChangeIdleEffect:
+			target.temporary_idle = ability.current_effect.idle_name
+			target.playIdle()
 	
 	#if caster == CombatGlobals.getCombatScene().active_combatant:
 	await CombatGlobals.getCombatScene().get_tree().process_frame

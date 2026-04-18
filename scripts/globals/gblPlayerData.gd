@@ -20,6 +20,7 @@ var unlocked_abilities: Dictionary = {}
 var added_abilities: Dictionary = {} 
 var current_stalker: ResStalkerData 
 var rested:bool
+var ability_cap = 5
 
 var overworld_stats: Dictionary = {
 	'stamina': 100.0,
@@ -244,7 +245,7 @@ func addCombatantToTeam(combatant_id):
 
 func setAbilityActive(combatant: ResPlayerCombatant, ability: ResAbility, set_active:bool):
 	if set_active:
-		if combatant.ability_set.size() >= 4:
+		if combatant.ability_set.size() >= PlayerGlobals.ability_cap:
 			return false
 		combatant.file_references['active_abilities'].append(ability.resource_path)
 		combatant.ability_set.append(load(ability.resource_path))

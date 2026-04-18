@@ -515,7 +515,7 @@ func updateAnimationParameters():
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
-	if Input.is_action_just_pressed("ui_melee") and canMelee() and canDoStaminaAction(5.0): 
+	if Input.is_action_just_pressed("ui_melee") and canMelee() and canDoStaminaAction(25.0): 
 		undrawBowAnimation()
 		suddenStop()
 		animation_tree["parameters/conditions/melee"] = true

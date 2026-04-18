@@ -703,6 +703,7 @@ script = ExtResource("2_dcn2q")
 [node name="FadeBars" type="Node2D" parent="CombatCamera"]
 
 [node name="Sprite2D" type="Sprite2D" parent="CombatCamera/FadeBars"]
+visible = false
 modulate = Color(0, 0, 0, 1)
 position = Vector2(0, -89.5)
 scale = Vector2(8, 0.890625)
@@ -710,7 +711,7 @@ texture = SubResource("GradientTexture2D_j26mw")
 
 [node name="Sprite2D2" type="Sprite2D" parent="CombatCamera/FadeBars"]
 modulate = Color(0, 0, 0, 1)
-position = Vector2(3.30438e-07, 84.2202)
+position = Vector2(2.31608e-05, 93.2256)
 rotation = 3.14159
 scale = Vector2(8.01788, 1.00874)
 texture = SubResource("GradientTexture2D_j26mw")
