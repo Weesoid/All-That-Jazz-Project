@@ -122,6 +122,7 @@ func chase():
 	# action
 	if flat_pos.distance_to(flat_palyer_pos) <= min_action_distance and canDoAction():
 		doAction()
+		$MeleeCooldownBar.start()
 	elif combat_switch and !animator.current_animation.contains('Action'):
 		# chase!
 		direction = int((flat_pos.direction_to(flat_palyer_pos)).x)

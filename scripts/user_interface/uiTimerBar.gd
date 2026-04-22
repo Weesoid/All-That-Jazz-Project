@@ -7,7 +7,7 @@ func _ready():
 	# check for queue conditions
 	modulate=color
 
-func _process(_delta):
+func _process(_delta): # TODO Have this on a signal
 	if !timer.is_stopped():
 		show()
 		max_value = timer.wait_time

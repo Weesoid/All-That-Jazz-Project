@@ -40,11 +40,6 @@ required_effect = {
 }
 charges = 0
 can_target_self = false
-can_target_dead = false
-dead_target_params = {
-"only_dead": false,
-"only_faded": true
-}
 caster_position = {
 "max": 3,
 "min": 0

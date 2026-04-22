@@ -295,9 +295,6 @@ func pickRandomEvent():
 				OverworldGlobals.addLingerEffect(combatant, effect)
 
 func restCombatant(combatant: ResPlayerCombatant):
-	if CombatGlobals.getFadedLevel(combatant)>0:
-		CombatGlobals.removeLingeringEffect(combatant, CombatGlobals.getFadedStatus(combatant))
-	
 	CombatGlobals.calculateHealing(combatant, combatant.getMaxHealth()*0.05)
 
 func fillCampItemContainer(clear_previous:bool=false):

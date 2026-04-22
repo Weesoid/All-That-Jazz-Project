@@ -18,6 +18,8 @@ class_name PlayerScene
 @onready var animation_sprite = $AnimationSprite
 @onready var collision_shape: CollisionShape2D = $PlayerCollision
 @onready var climb_cooldown: Timer = $ClimbCooldown
+@onready var melee_cooldown: Timer = $MeleeCooldown
+@onready var melee_bar = $MeleeCooldownBar
 @onready var melee_hitbox = $PlayerDirection/MeleeHitbox
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
@@ -515,7 +517,7 @@ func updateAnimationParameters():
 			else:
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
-	if Input.is_action_just_pressed("ui_melee") and canMelee() and canDoStaminaAction(25.0): 
+	if Input.is_action_just_pressed("ui_melee") and canMelee(): 
 		undrawBowAnimation()
 		suddenStop()
 		animation_tree["parameters/conditions/melee"] = true
@@ -523,13 +525,22 @@ func updateAnimationParameters():
 		await animation_tree.animation_finished
 		animation_tree["parameters/conditions/melee"] = false
 		can_move = true 
+		melee_cooldown.start()
+		melee_bar.start()
 
 func playDrawSound():
 	if bow_draw_strength < 1:
 		OverworldGlobals.playSound("res://audio/sounds/bow-loading-38752.ogg")
 
 func canMelee():
-	return can_move and !animation_tree["parameters/conditions/shoot_bow"] and isFacingSide() and bow_mode and !diving and is_on_floor() and !OverworldGlobals.inMenu()
+	return can_move and \
+		melee_cooldown.is_stopped() and \
+		!animation_tree["parameters/conditions/shoot_bow"] and \
+		isFacingSide() and \
+		bow_mode and \
+		!diving and \
+		is_on_floor() and \
+		!OverworldGlobals.inMenu()
 
 func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	if stop_sprint:

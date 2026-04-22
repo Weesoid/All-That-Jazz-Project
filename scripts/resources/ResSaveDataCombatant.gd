@@ -39,11 +39,12 @@ func _init(
 func loadData(combatant: ResPlayerCombatant):
 	combatant.charms = loadCharms()
 	combatant.mandatory = mandatory #NOTE: Might need to return if you have to change mando flag dynamically (e.g. character is mando for a certain time)
-	combatant.lingering_effects = lingering_effects
+	combatant.lingering_effects = lingering_effects.filter(func(effect): return FileAccess.file_exists("res://resources/combat/status_effects/"+effect+".tres"))
 	combatant.initialized = initialized
 	combatant.stat_points = stat_points
 	combatant.stat_point_allocations = stat_point_allocations
-	combatant.temperment = temperment
+	combatant.temperment = loadTemperments()
+	print(combatant.temperment)
 	combatant.file_references = file_references
 
 func saveCharms(p_charms):
@@ -55,6 +56,17 @@ func saveCharms(p_charms):
 		else:
 			out[i] = p_charms[key].parent_item
 		i += 1
+	
+	return out
+
+func loadTemperments():
+	var out: Array[String] = []
+	for temp in temperment:
+		if temp.contains('|'):
+			var path = "res://resources/combat/status_effects/"+temp.split('|')[1].replace(' ', '')+".tres"
+			if FileAccess.file_exists(path): out.append(temp)
+		else:
+			out.append(temp)
 	
 	return out
 

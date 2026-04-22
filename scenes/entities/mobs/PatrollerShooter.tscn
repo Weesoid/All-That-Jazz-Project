@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://h3jcrbcpoq0y"]
+[gd_scene load_steps=18 format=3 uid="uid://h3jcrbcpoq0y"]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatrollerShooter.gd" id="1_y3dnd"]
 [ext_resource type="Texture2D" uid="uid://oqxgdnxhjr2c" path="res://images/sprites/exclamation.png" id="2_lk1s1"]
 [ext_resource type="Resource" uid="uid://dmk3rgyjgpgy6" path="res://resources/projectiles/DamageProjectile.tres" id="2_tx426"]
 [ext_resource type="PackedScene" uid="uid://c4tte42jxqyy" path="res://scenes/user_interface/PatrollerDetectBar.tscn" id="3_twibo"]
 [ext_resource type="Texture2D" uid="uid://c68ktd0q26eqy" path="res://images/character_sprites/faction_scavs/scav_patrol_shooter.png" id="4_08kkb"]
+[ext_resource type="PackedScene" uid="uid://i21m5gws8dde" path="res://scenes/user_interface/MeleeCooldownBar.tscn" id="6_05fcw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b7sqp"]
 size = Vector2(23, 30)
@@ -103,7 +104,7 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_jhjch"]
 resource_name = "Action"
-length = 1.5
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -400,6 +401,7 @@ wait_time = 0.5
 one_shot = true
 
 [node name="ActionCooldown" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true
 
 [node name="StunTimer" type="Timer" parent="."]
@@ -436,6 +438,11 @@ target_position = Vector2(0, 14)
 libraries = {
 "": SubResource("AnimationLibrary_sx3aq")
 }
+
+[node name="MeleeCooldownBar" parent="." node_paths=PackedStringArray("melee_timer") instance=ExtResource("6_05fcw")]
+offset_top = -72.0
+offset_bottom = -63.0
+melee_timer = NodePath("../ActionCooldown")
 
 [connection signal="body_entered" from="MeleeHitbox" to="." method="_on_melee_hitbox_body_entered"]
 [connection signal="timeout" from="DetectTimer" to="." method="_on_detect_timer_timeout"]

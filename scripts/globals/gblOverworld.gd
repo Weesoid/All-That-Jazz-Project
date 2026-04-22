@@ -381,7 +381,8 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
 #	if OverworldGlobals.getCurrentMap().SAFE:
-	OverworldGlobals.loadFollowers()
+	if getCurrentMap().getClearState() == MapData.PatrollerClearState.FULL_CLEAR:
+		OverworldGlobals.loadFollowers()
 	if save:
 		SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	getCurrentMap().show()
@@ -392,7 +393,6 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 		getCurrentMap().giveRewards()
 		await SaveLoadGlobals.done_saving
 		delayed_rewards.clear()
-	
 	#print(getCurrentMap().name, ' <=========================================')
 
 func forceGiveRewards():

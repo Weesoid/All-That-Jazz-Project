@@ -42,6 +42,7 @@ func addStatusEffectIcons():
 	for child in infliction.get_children():
 		child.queue_free()
 	for effect in selected_combatant.lingering_effects:
+		print(selected_combatant.lingering_effects)
 		infliction.add_child(OverworldGlobals.createStatusEffectIcon(effect))
 
 func _ready():

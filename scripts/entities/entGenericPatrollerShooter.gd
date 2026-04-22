@@ -15,12 +15,14 @@ func doAction():
 		line_of_sight.rotation -= PI/2
 	velocity.x = move_toward(velocity.x, 0, speed)
 	action_cooldown.start()
+	$MeleeCooldownBar.start()
 	var shot = projectile.getProjectile()
 	shot.global_position = global_position + Vector2(0, -10)
 	shot.shooter = self
 	get_tree().current_scene.add_child(shot)
 	shot.rotation = line_of_sight.rotation + 1.57079994678497
 	animator.play('Action')
+	
 
 func chase():
 	# check y

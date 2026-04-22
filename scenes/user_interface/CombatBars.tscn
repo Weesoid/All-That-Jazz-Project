@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://f6daxcssdpdj" path="res://images/sprites/circle_empty_small.png" id="3_8o7jm"]
 [ext_resource type="Texture2D" uid="uid://bep2p4oa635yk" path="res://images/sprites/circle_filled_small.png" id="3_e74cw"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
-[ext_resource type="Texture2D" uid="uid://cx2p5jjfb7jmw" path="res://images/sprites/icon_wing.png" id="4_rpvfk"]
 [ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="6_1sh2p"]
 [ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="7_b4v4h"]
@@ -13,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="8_fh81n"]
 [ext_resource type="Texture2D" uid="uid://cccrvcn7bhykq" path="res://images/sprites/health_bar_under.png" id="10_iwynr"]
 [ext_resource type="Texture2D" uid="uid://d3ouvhymj2yy3" path="res://images/sprites/health_bar_progress.png" id="11_jndj7"]
+[ext_resource type="PackedScene" uid="uid://ddd26djy4282k" path="res://scenes/user_interface/BarNotcher.tscn" id="14_0t6wq"]
 
 [sub_resource type="Gradient" id="Gradient_12uoa"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -288,24 +288,19 @@ offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-value = 50.0
+value = 33.0
 texture_progress = ExtResource("11_jndj7")
 texture_progress_offset = Vector2(2, 1)
 tint_under = Color(0, 0, 0, 1)
-
-[node name="CenterWings" type="TextureRect" parent="HealthBar"]
-visible = false
-layout_mode = 0
-offset_top = -2.0
-offset_right = 32.0
-texture = ExtResource("4_rpvfk")
 
 [node name="CenterStatusContainer" type="CenterContainer" parent="HealthBar"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = -5.0
-offset_bottom = -1.0
+offset_left = -17.0
+offset_top = -3.0
+offset_right = -17.0
+offset_bottom = 1.0
 grow_horizontal = 2
 
 [node name="TurnCharges" parent="HealthBar" instance=ExtResource("3_ivcce")]
@@ -341,17 +336,17 @@ vertical_alignment = 2
 
 [node name="StatusEffectContainer" parent="HealthBar" instance=ExtResource("7_n56iy")]
 layout_mode = 0
-offset_left = 1.0
-offset_top = -14.0
-offset_right = 31.0
-offset_bottom = -4.0
+offset_left = 2.0
+offset_top = -74.0
+offset_right = 32.0
+offset_bottom = -64.0
 
 [node name="PermaStatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
 layout_mode = 0
 offset_left = -4.0
-offset_top = 8.0
+offset_top = 5.0
 offset_right = 36.0
-offset_bottom = 16.0
+offset_bottom = 13.0
 mouse_filter = 2
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 0
@@ -380,6 +375,11 @@ texture = SubResource("GradientTexture2D_7aykj")
 libraries = {
 "": SubResource("AnimationLibrary_813j3")
 }
+
+[node name="BarNotcher" parent="HealthBar" instance=ExtResource("14_0t6wq")]
+visible = false
+layout_mode = 1
+threshold_percent = 0.33
 
 [node name="Indicator" parent="." instance=ExtResource("3_2wqip")]
 position = Vector2(-1.19209e-07, 1.29247e-26)

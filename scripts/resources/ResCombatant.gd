@@ -12,13 +12,14 @@ class_name ResCombatant
 	'defense': 0.0,
 	'handling': 0,
 	'speed': 1,
-	'accuracy': 0.95,
+	'accuracy': 0.97,
 	'crit': 0.05,
 	'crit_dmg': 1.5,
 	'heal_mult': 1.0,
 	'resist': 0.05,
 	'dmg_variance': 0.1,
-	'dmg_modifier': 1.0
+	'dmg_modifier': 1.0,
+	'resolve': 3
 }
 @export var scale_stats: Dictionary = {
 	'health': true,
@@ -32,12 +33,15 @@ class_name ResCombatant
 	'heal_mult': false,
 	'resist': false,
 	'dmg_variance': false,
-	'dmg_modifier': false
+	'dmg_modifier': false,
+	'resolve': false
 }
 @export var ability_set: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var max_turn_charges = 1
 @export var riposte_effect: ResDamageEffect
 @export var ai_package: GDScript
+var resolve_gate:bool=true
+var resolve_dot_shield:bool=false
 var turn_charges: int
 var stat_modifiers = {}
 var status_effects: Array[ResStatusEffect]
@@ -137,6 +141,9 @@ func removeTokens(remove_type: int):
 func getMaxHealth():
 	return base_stat_values['health']
 
+func getMaxResolve():
+	return base_stat_values['resolve']
+
 func getStatusEffect(stat_name: String)-> ResStatusEffect:
 	for status in status_effects:
 		if status.name.to_lower() == stat_name.to_lower():
@@ -151,11 +158,14 @@ func hasStatusEffect(stat_name: String)-> bool:
 	
 	return false
 
-func isDead()-> bool:
-	return stat_values['health'] < 1.0
+func isDead(check_resolve: bool=false)-> bool:
+	return stat_values['health'] < 1.0 and (!check_resolve or (check_resolve and stat_values['resolve'] <= 0))
+
+func isOnBrink():
+	return stat_values['health'] < 1.0 and stat_values['resolve'] >= 0
 
 func isImmobilized()-> bool:
-	return (stat_values['speed'] < -99 and !hasStatusEffect('Fading')) or hasStatusEffect('Stunned')
+	return stat_values['speed'] < -99 or hasStatusEffect('Stunned')
 
 func getStringStats(current_stats=false):
 	var result = ""

@@ -111,14 +111,14 @@ func _ready():
 	for combatant in combatants:
 		tickStatusEffects(combatant, false, false, true)
 		tickStatusEffects(combatant, true, false, true)
-
+	
 	if initial_damage > 0.0:
 		for combatant in getCombatantGroup('enemies'):
 			await get_tree().create_timer(0.05).timeout
 			CombatGlobals.calculateRawDamage(combatant, combatant.getMaxHealth()*initial_damage)
-
+	
 	await removeDeadCombatants(false)
-
+	
 	rollTurns()
 	setActiveCombatant(false)
 	while active_combatant.isImmobilized():
@@ -213,6 +213,7 @@ func useAIPackage():
 		if target_combatant != null:
 			if selected_ability.charges > 0: updateAbilityChargeTracker(active_combatant, selected_ability)
 			executeAbility()
+		if active_combatant.isDead(): print('XXX ', selected_ability)
 	else:
 		showCannotAct('Pass!', true)
 	
@@ -227,7 +228,7 @@ func end_turn(combatant_act=true):
 	if combatant_act and (selected_ability == null or !selected_ability.instant_cast):
 		tickStatusEffects(active_combatant, false, true, false, false) # Tick down ON TURN statuses
 	for combatant in combatants: # Check for survivors!
-		if combatant.isDead(): continue
+		if combatant.isDead(true): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
 	if combatant_act and (selected_ability == null or !selected_ability.instant_cast):
 		active_combatant.turn_charges -= 1
@@ -263,11 +264,12 @@ func end_turn(combatant_act=true):
 	CombatGlobals.dialogue_signal.emit(turn_title)
 	
 	for combatant in combatants:
-		if combatant.isDead(): continue
+		if combatant.isDead(true): continue
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true) # Tick PER TURN statuses (e.g. tick even tho its not the combatant's)
 		CombatGlobals.dialogue_signal.emit(combatant)
 	removeDeadCombatants()
+	
 	
 	# Reset values
 	run_once = true
@@ -282,7 +284,7 @@ func end_turn(combatant_act=true):
 		bonus_escape_chance -= 0.25
 		var replace = []
 		for combatant in combatants:
-			if combatant.isDead() and combatant is ResEnemyCombatant: replace.append(combatant)
+			if combatant.isDead(true) and combatant is ResEnemyCombatant: replace.append(combatant)
 		for combatant in replace:
 			var replacement: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
 			replacement.drop_pool = {}
@@ -304,6 +306,7 @@ func end_turn(combatant_act=true):
 		active_combatant.applyAbilityMutations()
 	else:
 		active_combatant.clearAbilityMutations()
+	active_combatant.resolve_dot_shield = false
 	
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
@@ -313,7 +316,7 @@ func end_turn(combatant_act=true):
 		active_combatant.act()
 #		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
-		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead():
+		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead(true):
 			moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE
@@ -341,38 +344,22 @@ func getTickOnTurnEffects(combatant: ResCombatant):
 		if !effect.tick_any_turn: out.append(effect)
 	return out
 
-func removeDeadCombatants(fading=true, is_valid_check=true):
+func removeDeadCombatants(is_valid_check=true):
 	if !isCombatValid() and is_valid_check: return
 	
 	for combatant in getDeadCombatants():
 		combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
+		if !combatant.getStatusEffectNames().has('Knock Out'): 
+			#clearStatusEffects(combatant)
+			CombatGlobals.addStatusEffect(combatant, 'KnockOut')
+			combatant.acted = true
+			if combatant.combatant_scene.has_node('CombatBars'):
+				combatant.combatant_scene.get_node('CombatBars').hide()
 		if combatant is ResEnemyCombatant:
-			if !combatant.getStatusEffectNames().has('Knock Out'): 
-				clearStatusEffects(combatant)
-				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
-				combatant.acted = true
-				if combatant.combatant_scene.has_node('CombatBars'):
-					combatant.combatant_scene.get_node('CombatBars').hide()
-				total_experience += combatant.getExperience()
-			if combatant.spawn_on_death != null:
-				replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
-		elif combatant is ResPlayerCombatant:
-			if !combatant.hasStatusEffect('Fading') and !combatant.hasStatusEffect('Knock Out') and fading: 
-				clearStatusEffects(combatant)
-				if (combatant.hasStatusEffect('Faded IV') and CombatGlobals.randomRoll(0.5)):
-					CombatGlobals.addStatusEffect(combatant, 'Fading')
-				elif combatant.hasStatusEffect('Faded IV'):
-					CombatGlobals.addStatusEffect(combatant, 'KnockOut')
-					combatant.acted = true
-				else:
-					CombatGlobals.addStatusEffect(combatant, 'Fading')
-			elif !combatant.getStatusEffectNames().has('Knock Out') and !fading:
-				CombatGlobals.addStatusEffect(combatant, 'KnockOut')
-				combatant.acted = true
-				if combatant.combatant_scene.has_node('CombatBars'):
-					combatant.combatant_scene.get_node('CombatBars').hide()
-			if !fading:
-				await get_tree().create_timer(0.25).timeout
+			total_experience += combatant.getExperience()
+		if combatant.spawn_on_death != null:
+			replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
+
 #********************************************************************************
 # BASE combatant_scene NODE CONTROL
 #********************************************************************************
@@ -587,10 +574,9 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
 		combatant.combatant_scene.get_node('CombatBars').show()
 		break
-	if combatant is ResPlayerCombatant and combatant.isDead():
-		combatant.combatant_scene.doAnimation('Fading')
-	else:
-		combatant.combatant_scene.doAnimation('Idle')
+#	if combatant is ResPlayerCombatant and combatant.isDead():
+#		combatant.combatant_scene.doAnimation('Fading')
+	combatant.combatant_scene.doAnimation('Idle')
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
 	if do_tween:
@@ -654,8 +640,6 @@ func getChargesLeft(combatant: ResCombatant, ability: ResAbility):
 		return ability_charge_tracker[combatant][ability]
 	else:
 		return ability.charges
-	
-	#secondary_description.show()
 
 func getDeadCombatants(type: String=''):
 	var dead_combatants = combatants.duplicate()
@@ -663,10 +647,11 @@ func getDeadCombatants(type: String=''):
 		dead_combatants = dead_combatants.filter(func(combatant): return combatant is ResEnemyCombatant)
 	elif type == 'team':
 		dead_combatants = dead_combatants.filter(func(combatant): return combatant is ResPlayerCombatant)
-	return dead_combatants.filter(func getDead(combatant): return combatant.isDead())
+	
+	return dead_combatants.filter(func getDead(combatant): return combatant.isDead(true))
 
 func targetCombatant(combatant: ResCombatant):
-	if !combatants.has(combatant) or combatant.isDead():
+	if !combatants.has(combatant): #or combatant.isDead():
 		return
 	
 	if valid_targets is Array:
@@ -685,7 +670,7 @@ func rollTurns():
 	OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
 	combatant_turn_order.clear()
 	for combatant in combatants:
-		if combatant.isDead() and !combatant.hasStatusEffect('Fading'): continue
+		if combatant.isDead(true): continue
 		randomize()
 		combatant.acted = false
 		combatant.turn_charges = combatant.max_turn_charges
@@ -721,16 +706,13 @@ func getCombatantGroup(type: String)-> Array[ResCombatant]:
 func isCombatantGroupDead(type: String):
 	var group = getCombatantGroup(type)
 	for combatant in group:
-		if !combatant.isDead():
+		if !combatant.isDead(true):
 			return false
 	
 	return true
 
 func isCombatValid()-> bool:
 	return !isCombatantGroupDead('team') and !isCombatantGroupDead('enemies')
-
-func getLivingCombatants():
-	return combatants.duplicate().filter(func(combatant: ResCombatant): return !combatant.isDead())
 
 func renameDuplicates():
 	var seen = []
@@ -767,16 +749,10 @@ func checkDialogue():
 	
 	return combat_dialogue.dialogue_triggered
 
-func clearStatusEffects(combatant: ResCombatant, ignore_faded:bool=true):
-	var effects = combatant.status_effects.filter(func(effect: ResStatusEffect):return !effect.persist_on_dead)
-	if ignore_faded:
-		effects.filter(func(effect: ResStatusEffect):return !effect.name.contains('Faded'))
-		while !effects.is_empty():
-			effects[0].removeStatusEffect()
-			effects.remove_at(0)
-	else:
-		while !combatant.status_effects.is_empty():
-			combatant.status_effects[0].removeStatusEffect()
+func clearStatusEffects(combatant: ResCombatant):
+	var effects = combatant.status_effects
+	while !combatant.status_effects.is_empty():
+		combatant.status_effects[0].removeStatusEffect()
 
 # This is disgusting but whatever
 func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duration=true, only_permanent=false, do_tick=true):
@@ -787,8 +763,8 @@ func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duratio
 		if (per_turn and !effect.tick_any_turn) or (!per_turn and effect.tick_any_turn): 
 			continue
 		effect.tick(update_duration, false, do_tick)
-		if effect.name == 'Fading' and update_duration: 
-			CombatGlobals.manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['down-bb']+effect.getMessageIcon()+' ...!', 'Resist')
+#		if effect.name == 'Fading' and update_duration: 
+#			CombatGlobals.manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['down-bb']+effect.getMessageIcon()+' ...!', 'Resist')
 
 func refreshInstantCasts(combatant: ResCombatant):
 	for ability in combatant.ability_set:
@@ -832,13 +808,13 @@ func runAbility():
 func concludeCombat(results: int):
 	if combat_result != -1: return
 	if !turn_timer.is_stopped(): stopTimer()
-	removeDeadCombatants(true, false)
+	removeDeadCombatants(false)
 	combat_result = results
 	battle_music.stop()
 	moveCamera(camera_position)
 	for combatant in combatants:
 		refreshInstantCasts(combatant)
-		clearStatusEffects(combatant, false)
+		clearStatusEffects(combatant)
 		setSignals(combatant,false)
 		if combat_result == 0 or getDeadCombatants('team').size() > 0: 
 			await get_tree().create_timer(0.25).timeout

@@ -84,13 +84,13 @@ horizontal_alignment = 1
 
 [node name="Grit" type="HSplitContainer" parent="."]
 layout_mode = 2
-tooltip_text = "Resistance from damage (caps out at 70%)."
+tooltip_text = "Percentage resistance from damage (caps out at 70%)."
 split_offset = 50
 dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Grit"]
 layout_mode = 2
-text = "DEFENSE"
+text = "ENDURANCE"
 vertical_alignment = 1
 uppercase = true
 
@@ -126,7 +126,7 @@ dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Hustle"]
 layout_mode = 2
-text = "Hustle"
+text = "Speed"
 vertical_alignment = 1
 uppercase = true
 
@@ -187,6 +187,10 @@ uppercase = true
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
+[node name="BarNotcher" parent="Crit/ProgressBar" instance=ExtResource("2_jnjvq")]
+layout_mode = 1
+threshold_percent = 0.33
+
 [node name="Dodge" type="HSplitContainer" parent="."]
 layout_mode = 2
 tooltip_text = "Critical damage multiplier."
@@ -222,23 +226,38 @@ text = "0"
 vertical_alignment = 1
 uppercase = true
 
-[node name="Resilience" type="HSplitContainer" parent="."]
-visible = false
+[node name="Tolerance" type="HSplitContainer" parent="."]
 layout_mode = 2
-tooltip_text = "Resistance from damage (caps out at 70%)."
+tooltip_text = "How much consumables character can use."
+split_offset = 50
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="Tolerance"]
+layout_mode = 2
+text = "STRAIN"
+vertical_alignment = 1
+uppercase = true
+
+[node name="CustomCountBar" parent="Tolerance" instance=ExtResource("2_l6363")]
+layout_mode = 2
+max_value = 4
+
+[node name="Resilience" type="HSplitContainer" parent="."]
+layout_mode = 2
+tooltip_text = "Hits before getting knocked out."
 split_offset = 50
 dragger_visibility = 1
 
 [node name="Label" type="Label" parent="Resilience"]
 layout_mode = 2
-text = "GUTS"
+text = "Resolve"
 vertical_alignment = 1
 uppercase = true
 
-[node name="ProgressBar" type="ProgressBar" parent="Resilience"]
+[node name="CustomCountBar" parent="Resilience" instance=ExtResource("2_l6363")]
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
-value = 100.0
+value = 3
+max_value = 3
 
 [node name="AttributeView" type="HBoxContainer" parent="."]
 visible = false

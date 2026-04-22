@@ -53,7 +53,7 @@ enum StatusStyle {
 @export var resistable: bool = true
 @export var permanent: bool = false
 @export var lingers: bool = false
-@export var persist_on_dead: bool = false
+@export var remove_on_brink: bool = false
 @export var hide_icon = false
 @export var sounds: Dictionary = {'apply':'', 'expire':''}
 var apply_once = true
@@ -99,11 +99,10 @@ func removeStatusEffect():
 		status_script.endEffects(afflicted_combatant, self)
 	if status_visuals != null:
 		status_visuals.queue_free()
-#	if lingers and afflicted_combatant is ResPlayerCombatant and getStatusModiferEffect() != null:
-#		afflicted_combatant.temperment.erase(CombatGlobals.getTempermentModiferID(self,getStatusModiferEffect().status_change))
-	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.stat_values['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and lingers and !persist_on_dead and resistable:
-		afflicted_combatant.lingering_effects.erase(name)
-		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '[s]%s' % getMessageIcon(), 'Resist')
+#	This code lets status effects like Poison linger despite the end of combat, maybe not necessary anymore
+#	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.stat_values['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and lingers and !persist_on_dead and resistable:
+#		afflicted_combatant.lingering_effects.erase(name)
+#		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '[s]%s' % getMessageIcon(), 'Resist')
 	elif afflicted_combatant is ResPlayerCombatant and lingers and afflicted_combatant.lingering_effects.has(name.replace(' ','')) and resistable:
 		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, getMessageIcon(), 'Status_Added')
 	
@@ -118,10 +117,8 @@ func tick(update_duration=true, override_permanent=false, apply_effects=true):
 		status_script.applyEffects(afflicted_combatant, self)
 	
 	apply_once = false
-	if ((duration <= 0 and ((permanent and !remove_when.is_empty()) or !permanent)) or (afflicted_combatant.isDead() and !persist_on_dead)) and status_script != null:
-		#print('Removing ', self)
+	if ((duration <= 0 and ((permanent and !remove_when.is_empty()) or !permanent)) or (afflicted_combatant.isOnBrink() and remove_on_brink)) and status_script != null: #or (afflicted_combatant.isDead() and !persist_on_dead)
 		removeStatusEffect()
-# ['Knock Out', 'Fading', 'Deathmark'].has(name)
 
 func animateStatusEffect():
 	if status_visuals == null:

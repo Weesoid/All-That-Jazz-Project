@@ -18,9 +18,9 @@ class_name CombatBar
 @onready var select_target = $SelectTarget
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 @onready var target_clicker = $TargetClicker
-@onready var center_border = $HealthBar/CenterWings
+#@onready var center_border = $HealthBar/CenterWings
 @onready var combat_scene = CombatGlobals.getCombatScene()
-
+@onready var notches = $HealthBar/BarNotcher
 var indicator_animation = "Show"
 var attached_combatant: ResCombatant
 var previous_value = 0
@@ -34,6 +34,8 @@ func _ready():
 		addStatusIcon(attached_combatant, effect)
 	previous_value = attached_combatant.getMaxHealth()
 	health_bar_fader.modulate=Color.BLACK
+	#$HealthBar/HFlowContainer/TextureRect.modulate = SettingsGlobals.ui_colors['up']
+	#$HealthBar/HFlowContainer/TextureRect2.modulate = SettingsGlobals.ui_colors['down']
 	#$TextureProgressBar/ShieldCrest/AnimationPlayer.play("Show")
 
 func _process(_delta):
@@ -53,8 +55,15 @@ func _process(_delta):
 		absolute_health.hide()
 
 func updateBars():
-	health_bar.max_value = int(attached_combatant.base_stat_values['health'])
-	health_bar.value = int(attached_combatant.stat_values['health'])
+	if !attached_combatant.isDead():
+		health_bar.max_value = int(attached_combatant.getMaxHealth())
+		health_bar.value = int(attached_combatant.stat_values['health'])
+	else:
+		notches.show()
+		#health_bar.self_modulate=Color.RED
+		health_bar.max_value = int(attached_combatant.getMaxResolve())
+		health_bar.value = int(attached_combatant.stat_values['resolve'])
+	
 	absolute_health.text = str(health_bar.value)
 	turn_charges.value = attached_combatant.turn_charges
 	turn_charges.max_value = attached_combatant.max_turn_charges
@@ -72,11 +81,11 @@ func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	
 	var tick_down = load("res://scenes/user_interface/StatusIcon.tscn").instantiate()
 	tick_down.attached_status = effect
-	if effect.name == 'Guard' or effect.name == 'Fading':
+	if effect.name == 'Guard':
 		await get_tree().process_frame
 		center_status_effects.add_child(tick_down)
-		center_border.show()
-		center_border.modulate = effect.getIconColor()
+		#center_border.show()
+		#center_border.modulate = effect.getIconColor()
 		health_bar.tint_under = effect.getIconColor()
 	elif effect.permanent:
 		permanent_status_effects.add_child(tick_down)
@@ -89,8 +98,8 @@ func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 		return
 	
 	var effect_container
-	if effect.name == 'Guard' or effect.name == 'Fading':
-		center_border.hide()
+	if effect.name == 'Guard':
+		#center_border.hide()
 		effect_container = center_status_effects
 		health_bar.tint_under = Color.BLACK
 	elif effect.permanent:
@@ -113,8 +122,12 @@ func animateFaderBar(prev_val, value):
 		return
 	
 	health_bar_fader.modulate=Color.WHITE
-	health_bar_fader.max_value = attached_combatant.getMaxHealth()
-	health_bar_fader.value = prev_val
+	if !attached_combatant.isDead():
+		health_bar_fader.max_value = attached_combatant.getMaxHealth()
+		health_bar_fader.value = prev_val
+	else:
+		health_bar_fader.max_value =attached_combatant.getMaxResolve()
+		health_bar_fader.value = attached_combatant.stat_values['resolve']
 #	if prev_val > value:
 #		health_bar_fader.modulate = Color.YELLOW
 #	elif prev_val < value:

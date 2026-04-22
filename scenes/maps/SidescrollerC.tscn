@@ -8,6 +8,7 @@
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_picfb")
+map_name = "FAGHHH"
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
@@ -28,6 +29,7 @@ position = Vector2(211, 193)
 
 [node name="PatrollerGroup" type="Node" parent="."]
 script = ExtResource("7_l7pbn")
+special_chance = 1.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
 position = Vector2(391, 141)

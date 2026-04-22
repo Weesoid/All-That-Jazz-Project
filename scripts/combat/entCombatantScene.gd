@@ -82,7 +82,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	hit_script = null
 
 func cannotAct()-> bool:
-	return combatant_resource.isDead() and !combatant_resource.hasStatusEffect('Fading')
+	return combatant_resource.isDead(true) #and !combatant_resource.hasStatusEffect('Fading')
 
 func playIdle(new_idle:String='',is_temporary:bool=false):
 	if !animator.get_animation_list().has(new_idle) and new_idle != '':

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://cvjlkid4m1aae"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=11 format=3 uid="uid://cvjlkid4m1aae"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_2dvec"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_mnv40"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_wjsqd"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_00swq"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectChangeIdle.gd" id="5_dhuov"]
+[ext_resource type="Resource" uid="uid://w3qwgxv70emm" path="res://resources/combat/status_effects/Poised.tres" id="5_l42po"]
 
 [sub_resource type="Resource" id="Resource_14p5h"]
 script = ExtResource("2_mnv40")
@@ -28,12 +29,23 @@ sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
+[sub_resource type="Resource" id="Resource_ty7hq"]
+script = ExtResource("2_mnv40")
+target = 0
+status_effect = ExtResource("5_l42po")
+cast_animation = ""
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
 [resource]
 script = ExtResource("4_00swq")
 name = "Miscy"
 description = ""
 icon = ExtResource("3_wjsqd")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_14p5h"), SubResource("Resource_era6v")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_14p5h"), SubResource("Resource_era6v"), SubResource("Resource_ty7hq")])
 ability_script = ExtResource("1_2dvec")
 target_type = 0
 target_group = 2
@@ -56,6 +68,6 @@ target_position = {
 "max": 3,
 "min": 0
 }
-tension_cost = 2
+tension_cost = 0
 instant_cast = true
 required_level = 0

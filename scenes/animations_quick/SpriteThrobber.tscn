@@ -47,7 +47,7 @@ _data = {
 "Show": SubResource("Animation_t8xob")
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="Throbber" type="Node2D"]
 script = ExtResource("1_jc5p0")
 metadata/is_sprite_throbber = true
 

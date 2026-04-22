@@ -20,6 +20,4 @@ func createIcon(combatant: ResCombatant):
 	atlas.atlas = combatant.combatant_scene.get_node('Sprite').texture
 	icon.texture = atlas
 	icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
-	if combatant.hasStatusEffect('Fading'):
-		icon.modulate.a = 0.25
 	return icon

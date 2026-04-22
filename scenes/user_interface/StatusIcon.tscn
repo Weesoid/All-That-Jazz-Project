@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://dcwbl5wpwb8dc"]
+[gd_scene load_steps=5 format=3 uid="uid://dcwbl5wpwb8dc"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiStatusIcon.gd" id="1_aytai"]
+[ext_resource type="Shader" path="res://shaders/Outline.gdshader" id="1_xd8us"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="2_saqgj"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vtwqe"]
+shader = ExtResource("1_xd8us")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/corner_pixel = true
+
 [node name="StatusIcon" type="TextureRect"]
+material = SubResource("ShaderMaterial_vtwqe")
 script = ExtResource("1_aytai")
 
 [node name="Duration" type="Label" parent="."]
@@ -21,8 +28,9 @@ grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.5, 0.5)
 mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 text = "10"
 horizontal_alignment = 2
 vertical_alignment = 2
@@ -35,7 +43,7 @@ offset_right = 94.0
 offset_bottom = 23.0
 mouse_filter = 1
 theme = ExtResource("2_saqgj")
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 text = "1"
 horizontal_alignment = 2
 vertical_alignment = 2

@@ -39,22 +39,24 @@ mandatory = true
 rest_sprite = ExtResource("5_clolb")
 stat_multiplier = 0.01
 talents = Array[String](["willis_revenant"])
+max_strain = 3
 name = "Willis Flynt"
 packed_scene = ExtResource("3_f2l1f")
 bullet_texture = ExtResource("2_wn1q6")
 description = "Just a lil dude"
 stat_values = {
-"accuracy": 0.95,
+"accuracy": 0.97,
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 4,
+"damage": 9,
 "defense": 0.0,
 "dmg_modifier": 1.0,
-"dmg_variance": 0.2,
+"dmg_variance": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 999,
+"health": 20,
 "resist": 0.05,
+"resolve": 3,
 "speed": 1
 }
 scale_stats = {
@@ -69,6 +71,7 @@ scale_stats = {
 "heal_mult": false,
 "health": true,
 "resist": false,
+"resolve": false,
 "speed": true
 }
 ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])

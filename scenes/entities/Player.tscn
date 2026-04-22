@@ -1,8 +1,8 @@
 [gd_scene load_steps=154 format=3 uid="uid://doc3puk0lkp31"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_ivxm1"]
+[ext_resource type="PackedScene" uid="uid://i21m5gws8dde" path="res://scenes/user_interface/MeleeCooldownBar.tscn" id="2_mk8cj"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
-[ext_resource type="Texture2D" uid="uid://dso7nlpdot0vv" path="res://images/character_sprites/archie/player_alt.png" id="3_mamid"]
 [ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="3_y84xx"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/character_sprites/willis/player.png" id="5_nms4n"]
 [ext_resource type="PackedScene" uid="uid://cdkunqmsd5yml" path="res://scenes/components/MeleeHitbox.tscn" id="6_31qdv"]
@@ -1733,82 +1733,70 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("3_mamid")]
+"update": 0,
+"values": [Vector2(0, -20)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
+tracks/1/path = NodePath(".:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -20)]
+"update": 1,
+"values": [false]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
+tracks/2/path = NodePath(".:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [1]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
+tracks/3/path = NodePath("../PlayerDirection:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
+"update": 0,
+"values": [0.0]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../PlayerDirection:rotation")
+tracks/4/path = NodePath("../PlayerDirection/MeleeHitbox:monitoring")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
+"update": 1,
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../PlayerDirection/MeleeHitbox:monitoring")
+tracks/5/path = NodePath(".:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath(".:scale")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -2851,10 +2839,17 @@ collision_mask = 17
 script = ExtResource("1_ivxm1")
 dialogue_name = "Willis"
 
+[node name="MeleeCooldownBar" parent="." node_paths=PackedStringArray("melee_timer") instance=ExtResource("2_mk8cj")]
+melee_timer = NodePath("../MeleeCooldown")
+
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
 
 [node name="ClimbCooldown" type="Timer" parent="."]
 wait_time = 3.0
+one_shot = true
+
+[node name="MeleeCooldown" type="Timer" parent="."]
+wait_time = 5.0
 one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -2863,7 +2858,7 @@ texture = ExtResource("5_nms4n")
 offset = Vector2(0, -33)
 hframes = 9
 vframes = 6
-frame = 6
+frame = 1
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2895,7 +2890,6 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 3.14159
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 16)
@@ -2928,6 +2922,7 @@ position = Vector2(0, -33)
 shape = SubResource("CapsuleShape2D_8i7nm")
 
 [node name="PlayerCamera" parent="." instance=ExtResource("10_ay08a")]
+position = Vector2(0, -122)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

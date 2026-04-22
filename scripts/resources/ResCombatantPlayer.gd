@@ -9,6 +9,7 @@ class_name ResPlayerCombatant
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
 @export var stat_multiplier = 0.01
 @export var talents: Array[String]
+@export var max_strain:int=3
 
 var file_references: Dictionary = {
 	'active_abilities': [],

@@ -12,7 +12,7 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage_modifier = 1.0
+damage_modifier = 0.01
 can_miss = true
 can_crit = true
 bonus_stats = {
@@ -42,11 +42,6 @@ required_effect = {
 }
 charges = 0
 can_target_self = false
-can_target_dead = false
-dead_target_params = {
-"only_dead": false,
-"only_faded": true
-}
 caster_position = {
 "max": 3,
 "min": 0
@@ -56,6 +51,5 @@ target_position = {
 "min": 0
 }
 tension_cost = 0
-instant_cast = false
+instant_cast = true
 required_level = 0
-test = "AAAAAAAAAAAAHHHHHHHHHHHH"

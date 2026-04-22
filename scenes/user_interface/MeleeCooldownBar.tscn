@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://i21m5gws8dde"]
+
+[ext_resource type="Texture2D" uid="uid://bh3md2v1dwl0b" path="res://images/sprites/sword_bar_under.png" id="1_5vnp6"]
+[ext_resource type="Texture2D" uid="uid://ujhgd2wtf4c8" path="res://images/sprites/sword_bar_over.png" id="2_wuxu0"]
+[ext_resource type="Texture2D" uid="uid://cmrx20fr6vo3n" path="res://images/sprites/sword_bar_progress.png" id="3_5ddbl"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiMeleeCooldownBar.gd" id="4_wtxc6"]
+
+[node name="MeleeCooldownBar" type="TextureProgressBar"]
+self_modulate = Color(1, 1, 1, 0.501961)
+offset_left = -16.0
+offset_top = -95.0
+offset_right = 16.0
+offset_bottom = -86.0
+value = 50.0
+texture_under = ExtResource("1_5vnp6")
+texture_over = ExtResource("2_wuxu0")
+texture_progress = ExtResource("3_5ddbl")
+tint_over = Color(0, 0, 0, 1)
+script = ExtResource("4_wtxc6")

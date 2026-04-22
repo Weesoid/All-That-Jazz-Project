@@ -161,8 +161,8 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			)
 		if target.combatant_resource.stat_modifiers.keys().has('block') and target.combatant_resource.hasStatusEffect('Guard') and target.combatant_resource.getStatusEffect('Guard').duration+1 <= target.combatant_resource.getStatusEffect('Guard').max_duration:
 			target.combatant_resource.getStatusEffect('Guard').duration += 1
-		if target.combatant_resource.isDead():
-			target.animator.play('Fading')
+#		if target.combatant_resource.isDead():
+#			target.animator.play('Fading')
 		if ability.current_effect.target == ability.current_effect.Target.MULTI:
 			for combatant in CombatGlobals.getCombatScene().getCombatantGroup('team'):
 				if !combatant.isDead() and !target.combatant_resource.stat_modifiers.keys().has('block') and combatant != target.combatant_resource: 

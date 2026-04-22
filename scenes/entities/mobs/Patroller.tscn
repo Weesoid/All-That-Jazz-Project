@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://cwb1nk6unobbo"]
+[gd_scene load_steps=17 format=3 uid="uid://cwb1nk6unobbo"]
 
 [ext_resource type="Script" path="res://scripts/entities/entGenericPatroller.gd" id="1_khwtj"]
 [ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/character_sprites/faction_scavs/scav_patrol_chaser.png" id="2_1ek2d"]
 [ext_resource type="PackedScene" uid="uid://c4tte42jxqyy" path="res://scenes/user_interface/PatrollerDetectBar.tscn" id="2_8gvrl"]
 [ext_resource type="Texture2D" uid="uid://oqxgdnxhjr2c" path="res://images/sprites/exclamation.png" id="2_p0bs2"]
+[ext_resource type="PackedScene" uid="uid://i21m5gws8dde" path="res://scenes/user_interface/MeleeCooldownBar.tscn" id="5_srpdq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b7sqp"]
 size = Vector2(23, 30)
@@ -331,7 +332,7 @@ debug_color = Color(0.992157, 0.658824, 0.247059, 0.419608)
 
 [node name="ChaseIndicator" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(0, -65)
+position = Vector2(16, -32)
 texture = ExtResource("2_p0bs2")
 offset = Vector2(0, -14.3636)
 
@@ -389,6 +390,12 @@ libraries = {
 }
 
 [node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="MeleeCooldownBar" parent="." node_paths=PackedStringArray("melee_timer") instance=ExtResource("5_srpdq")]
+offset_top = -72.0
+offset_bottom = -63.0
+tint_progress = Color(1, 0, 0, 1)
+melee_timer = NodePath("../ActionCooldown")
 
 [connection signal="body_entered" from="MeleeHitbox" to="." method="_on_melee_hitbox_body_entered"]
 [connection signal="body_entered" from="CombatHitbox" to="." method="_on_combat_hitbox_body_entered"]

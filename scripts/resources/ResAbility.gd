@@ -23,8 +23,6 @@ enum TargetGroup {
 @export var required_effect: Dictionary = {'status_effect': null, 'rank': 0}
 @export var charges: int = 0
 @export var can_target_self: bool = false
-@export var can_target_dead: bool = false
-@export var dead_target_params = {'only_dead':false, 'only_faded': true}
 @export var caster_position: Dictionary = {'min':0, 'max':3}
 @export var target_position: Dictionary = {'min':0, 'max':3}
 @export var tension_cost: int = 0
@@ -50,16 +48,13 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 	combatants = combatants.filter(func(combatant: ResCombatant): return is_instance_valid(combatant.combatant_scene))
 	if target_group == TargetGroup.SELF:
 		return CombatGlobals.getCombatScene().active_combatant
-	if !can_target_dead:
-		combatants = combatants.filter(func(combatant): return !combatant.isDead())
+#	if !can_target_dead:
+#		combatants = combatants.filter(func(combatant): return !combatant.isDead())
 	if !can_target_self:
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
 	if target_group == TargetGroup.ALLIES or target_group == TargetGroup.ENEMIES:
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))
-	if dead_target_params['only_dead']:
-		combatants = combatants.filter(func(combatant): return combatant.isDead())
-	if dead_target_params['only_faded']:
-		combatants = combatants.filter(func(combatant): return (combatant.isDead() and combatant.hasStatusEffect('Fading') or !combatant.isDead()))
+	combatants = combatants.filter(func(combatant): return !combatant.isDead(true))
 	
 	if is_caster_player:
 		match target_group:

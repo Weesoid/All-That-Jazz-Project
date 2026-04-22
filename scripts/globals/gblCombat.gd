@@ -267,19 +267,28 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		caster.removeTokens(ResStatusEffect.RemoveType.HIT)
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
-	if caster != null and target.isDead() and abs(target.stat_values['health']) >= target.getMaxHealth() * 0.25:
-		calculateHealing(caster, caster.getMaxHealth()*0.15)
-		if caster is ResPlayerCombatant:
-			addTension(1, target.combatant_scene)
-			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
-	
-	playHurtAnimation(target, damage, sound)
+#	if caster != null and target.isDead() and abs(target.stat_values['health']) >= target.getMaxHealth() * 0.25:
+#		calculateHealing(caster, caster.getMaxHealth()*0.15)
+#		if caster is ResPlayerCombatant:
+#			addTension(1, target.combatant_scene)
+#			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
 	
 	# The wall of post damage effects
-	if hasBonusStat(bonus_stats, 'execute') and target.stat_values['health'] <= getBonusStat(bonus_stats, 'execute', target)*target.getMaxHealth():
-		OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", target.combatant_scene.global_position)
-		target.stat_values['health'] -= 999
-		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
+	# Rework this later
+#	if hasBonusStat(bonus_stats, 'execute') and target.stat_values['health'] <= getBonusStat(bonus_stats, 'execute', target)*target.getMaxHealth():
+#		OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", target.combatant_scene.global_position)
+#		target.stat_values['health'] -= 999
+#		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
+	print(target, ' has dot? ', target.resolve_dot_shield)
+	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate:
+		target.stat_values['resolve'] -= 1
+		if bonus_stats.has('is_dot'): target.resolve_dot_shield = true
+	elif target.isDead() and target.resolve_gate:
+		if !target.getSprite().has_node('Throbber'):
+			var throbber = load("res://scenes/animations_quick/SpriteThrobber.tscn")
+			OverworldGlobals.showQuickAnimation(throbber, target.getSprite())
+		OverworldGlobals.freezeFrame(0.3, 0.5)
+		target.resolve_gate=false
 	
 	if checkSpecialStat('status_effect', bonus_stats, target):
 		var status_effects = getBonusStatValue(bonus_stats, 'status_effect').split('+')
@@ -297,10 +306,12 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			'f': direction = 1
 			'b': direction = -1
 		getCombatScene().changeCombatantPosition(target, direction,false,int(move_data[1]))
+	
 	if hasBonusStat(bonus_stats, 'tp') and caster is ResPlayerCombatant:
 		addTension(getBonusStat(bonus_stats,'tp',target), target.combatant_scene)
-
-	if target.isDead():
+	
+	playHurtAnimation(target, damage, sound)
+	if target.isDead(true):
 		OverworldGlobals.freezeFrame()
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
@@ -349,10 +360,6 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 	
 	if inCombat() and trigger_on_heal and base_healing >= 1:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
-	#if inCombat() and target.combatant_scene.animator.current_animation == 'Fading' and !target.isDead():
-	#	target.combatant_scene.playIdle('Idle')
-	if !inCombat() and from_death:
-		applyFaded(target)
 
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
@@ -403,7 +410,7 @@ func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 			OverworldGlobals.playSound('524950__magnuswaker__punch-hard-%s.ogg' % randi_range(1, 2), -6.0)
 		else:
 			OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
-	if target.isDead():
+	if target.isDead(true):
 		getCombatScene().combat_camera.shake(25.0, 10.0)
 		if target is ResEnemyCombatant:
 			OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
@@ -529,6 +536,8 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		return
 	if status_effect.resistable:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_STATUSED)
+	if status_effect.remove_on_brink and target.isOnBrink():
+		return
 	
 	for property in override_data.keys():
 		if property.contains('be_'):
@@ -653,8 +662,6 @@ func inCombat()-> bool:
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 	if status_effect_name.contains('linger|'):
 		status_effect_name = status_effect_name.split('|')[1]
-	if !status_effect_name.contains('Faded'):
-		status_effect_name = status_effect_name.capitalize()
 	
 	return load(str("res://resources/combat/status_effects/"+status_effect_name.replace(' ', '')+".tres"))
 
@@ -748,60 +755,6 @@ func addTension(amount: int,from_target:CombatantScene=null,gainer:ResPlayerComb
 	else:
 		tension += amount
 	tension_changed.emit(previous_tension, tension,from_target)
-
-func applyFaded(target: ResCombatant):
-	if inCombat() and (getCombatScene().combat_result != -1 and getFadedLevel(target) == 0):
-		OverworldGlobals.addLingerEffect(target,'FadedI')
-		return
-	if inCombat() and (getCombatScene().combat_result != -1 and getFadedLevel(target) >= 4):
-		return
-	var escalated_level = getFadedLevel(target)+1
-	
-	# Remove previous faded
-	#print('erasing ', getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
-	#print('from ', target.temperment)
-	#target.temperment.erase(getTempermentModiferID(getFadedStatus(target), getFadedStatus(target).getStatusModiferEffect().status_change))
-	#print(getFadedStatus(target))d
-	if getFadedLevel(target) > 0:
-		removeLingeringEffect(target,getFadedStatus(target))
-	target.lingering_effects.erase(applyFadedStatus(escalated_level-1))
-	if inCombat():
-		removeStatusEffect(target, applyFadedStatus(escalated_level-1,true))
-	
-	# Add escalated faded level
-	if inCombat():
-		addStatusEffect(target, applyFadedStatus(escalated_level,true))
-	OverworldGlobals.addLingerEffect(target,applyFadedStatus(escalated_level))
-
-func getFadedLevel(target: ResCombatant):
-	if target.hasStatusEffect('Faded I') or target.lingering_effects.has('FadedI'):
-		return 1
-	elif target.hasStatusEffect('Faded II') or target.lingering_effects.has('FadedII'):
-		return 2
-	elif target.hasStatusEffect('Faded III') or target.lingering_effects.has('FadedIII'):
-		return 3
-	elif target.hasStatusEffect('Faded IV') or target.lingering_effects.has('FadedIV'):
-		return 4
-	else:
-		return 0
-
-func getFadedStatus(target:ResCombatant)-> ResStatusEffect:
-	for effect in target.lingering_effects:
-		if effect.contains('Faded'):
-			return loadStatusEffect(effect.replace(' ',''))
-	
-	return null
-
-func applyFadedStatus(level: int, add_space:bool=false):
-	var out = ''
-	match level:
-		1: out = 'FadedI'
-		2: out =  'FadedII'
-		3: out =  'FadedIII'
-		4: out =  'FadedIV'
-	if add_space:
-		out = out.insert(5, ' ')
-	return out
 
 func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 	var out = ''

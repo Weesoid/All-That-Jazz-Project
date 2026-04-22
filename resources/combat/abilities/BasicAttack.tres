@@ -28,9 +28,7 @@ cast_animation = {
 damage_modifier = 1.0
 can_miss = true
 can_crit = true
-bonus_stats = {
-"status_effect": "Stunned"
-}
+bonus_stats = {}
 return_pos = true
 indicator_bb = ""
 plant_self_on_combo = false
@@ -55,11 +53,6 @@ required_effect = {
 }
 charges = 0
 can_target_self = false
-can_target_dead = false
-dead_target_params = {
-"only_dead": false,
-"only_faded": true
-}
 caster_position = {
 "max": 3,
 "min": 0

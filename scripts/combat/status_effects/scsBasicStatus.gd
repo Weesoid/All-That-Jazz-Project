@@ -15,6 +15,7 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 			var damage = effect.damage
 			if effect.rank_scaling:
 				damage *= status_effect.current_rank
+			effect.bonus_stats['is_dot']=true
 			CombatGlobals.calculateRawDamage(
 				status_effect.afflicted_combatant, 
 				damage, 

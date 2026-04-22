@@ -516,6 +516,7 @@ _data = {
 script = ExtResource("1_m0pn3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 2
 texture = ExtResource("2_14c8g")
 flip_h = true
 hframes = 10
