@@ -1,19 +1,10 @@
 extends Control
 class_name MemberAdjustUI
 
-enum TempermentTypes {
-	LINGER,
-	BUFF,
-	UNIQUE,
-	DEBUFF,
-	SPECIAL
-}
-
 const EQUIP_MENU = preload("res://scenes/user_interface/MiniInventory.tscn")
 const SWORD_ICON = "res://images/sprites/icon_combat_item.png"
 const SACK_ICON = "res://images/sprites/icon_charm.png"
 
-@export var show_temperments = false
 @export var show_current_party = true
 @onready var pool = $Abilities/MarginContainer/ScrollContainer/VBoxContainer
 @onready var member_container = $Formation/Members/HBoxContainer
@@ -24,13 +15,9 @@ const SACK_ICON = "res://images/sprites/icon_charm.png"
 @onready var charm_slot_c = $Character/StatAdjusters/SlotC
 @onready var equipment_select_point = $SubmenuPoint
 @onready var formation_button = $Formation/ChangeFormation
-@onready var infliction = $Stats/HSplitContainer/VFlowContainer/Temperment/Infliction
-@onready var temperments = $Stats/HSplitContainer/VFlowContainer
-@onready var primary_temperments = $Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment
 @onready var character_view = $Character/Panel/Marker2D
 @onready var character_name = $Character/Panel/Label
 @onready var weapon_durability = $Character/StatAdjusters/Weapon/Label
-@onready var toggle_temperments = $Formation/ShowTemperments
 @onready var talent_menu = $TalentControl/Talents
 @onready var attrib_view = $Stats/HSplitContainer/AttributeView
 @onready var stat_point_count = $TalentControl/ToggleView/StatPointCount
@@ -38,12 +25,11 @@ var selected_combatant: ResPlayerCombatant
 var changing_formation: bool = false
 var talent_menu_out:bool=false
 
-func addStatusEffectIcons():
-	for child in infliction.get_children():
-		child.queue_free()
-	for effect in selected_combatant.lingering_effects:
-		print(selected_combatant.lingering_effects)
-		infliction.add_child(OverworldGlobals.createStatusEffectIcon(effect))
+#func addStatusEffectIcons():
+#	for child in infliction.get_children():
+#		child.queue_free()
+#	for effect in selected_combatant.lingering_effects:
+#		infliction.add_child(OverworldGlobals.createStatusEffectIcon(effect))
 
 func _ready():
 	loadMembers()
@@ -53,8 +39,9 @@ func _ready():
 	formation_button.visible = show_current_party
 	talent_menu.talent_interacted.connect(
 		func():
-			addStatusEffectIcons()
-			updateTemperments()
+			#addStatusEffectIcons()
+			#updateTemperments()
+			$Stats/HSplitContainer/TraitContainer.updateTraits(selected_combatant)
 			updateStatPointCount()
 	)
 
@@ -93,8 +80,9 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 	else:
 		selected_combatant = member
 		loadAbilities()
-		updateTemperments()
-		addStatusEffectIcons()
+		#updateTemperments()
+		$Stats/HSplitContainer/TraitContainer.updateTraits(selected_combatant)
+		#addStatusEffectIcons()
 		updateEquipped()
 	if selected_combatant != null:
 		if selected_combatant.ability_set.size() >= PlayerGlobals.ability_cap:
@@ -203,8 +191,6 @@ func setButtonDisabled(set_to: bool):
 	
 	for button in equipped_charms.get_children():
 		button.setDisabled(set_to)
-	
-	toggle_temperments.disabled = set_to
 
 func createMemberButton(member: ResCombatant, preview_combatant:bool=false):
 	var button = OverworldGlobals.createCustomButton(load("res://design/PartyButtons.tres"))
@@ -339,116 +325,8 @@ func showCombatantsOnButtons():
 		combatant.initializeCombatant()
 		child.add_child(combatant.combatant_scene)
 
-func updateTemperments():
-	clearChildren(primary_temperments)
-	selected_combatant.applyTemperments()
-	selected_combatant.temperment.sort_custom(func(a,b): return getTempermentType(a) < getTempermentType(b))
-	
-	# primary_temperments
-	print()
-	for temperment in selected_combatant.temperment:
-		primary_temperments.add_child(createTempermentLabel(temperment))
-	if selected_combatant.hasEquippedWeapon() and !selected_combatant.equipped_weapon.canUse(selected_combatant):
-		selected_combatant.unequipWeapon()
-
-func createTempermentLabel(temperment: String):
-	var bb = '[table=2][cell]'+getBBTempermentIcon(temperment)+'[/cell]'
-	var temperment_name = temperment.capitalize()
-	var temperment_label = RichTextLabel.new()
-	if temperment_name.to_lower().contains('linger|'):
-		temperment_name = temperment_name.split('|')[1].capitalize()
-	temperment_label.bbcode_enabled = true
-	temperment_label.autowrap_mode = TextServer.AUTOWRAP_OFF
-	temperment_label.fit_content = true
-	if getTempermentType(temperment) == TempermentTypes.LINGER:
-		var icon_color = CombatGlobals.loadStatusEffect(temperment.split('|')[1]).getIconColor(true)
-		temperment_label.text = bb+'[cell]'+icon_color+temperment_name+'[/color][/cell][/color][/table]'
-	else:
-		temperment_label.text = bb+'[cell]'+temperment_name+'[/cell][/table]'
-	temperment_label.tooltip_text = formatModifiers(selected_combatant.stat_modifiers[temperment], false)
-	return temperment_label
-
-func getBBTempermentIcon(temperment:String):
-	if getTempermentType(temperment)==TempermentTypes.BUFF:
-		return '[img %s]res://images/sprites/icon_buff.png[/img]' % SettingsGlobals.ui_colors['up-bb'].replace('[','').replace(']','')
-	elif getTempermentType(temperment)==TempermentTypes.DEBUFF:
-		return '[img %s]res://images/sprites/icon_debuff.png[/img]' % SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
-	elif getTempermentType(temperment)==TempermentTypes.UNIQUE:
-		return '[img %s]res://images/sprites/icon_unique_buff.png[/img]' % SettingsGlobals.ui_colors['special-bb'].replace('[','').replace(']','')
-	elif getTempermentType(temperment)==TempermentTypes.LINGER:
-		return temperment.split('|')[3]
-
-func getTempermentType(temperment)->TempermentTypes:
-	if temperment.to_lower().contains('linger|'):
-		return TempermentTypes.LINGER
-	
-	var positive_count = 0
-	var negative_count = 0
-	
-	for i in selected_combatant.stat_modifiers[temperment]:
-		var value = selected_combatant.stat_modifiers[temperment][i]
-		if value > 0:
-			positive_count += 1
-		elif value < 0:
-			negative_count += 1
-	
-	if negative_count == 0:
-		return TempermentTypes.BUFF
-	elif positive_count == 0:
-		return TempermentTypes.DEBUFF
-	elif positive_count > 0 and negative_count > 0:
-		return TempermentTypes.UNIQUE
-	else:
-		return TempermentTypes.SPECIAL
-
-func formatModifiers(stat_dict: Dictionary, bb_code:bool=true) -> String:
-	var result = ""
-	for key in stat_dict.keys():
-		var value = stat_dict[key]
-		if value == 0:
-			continue
-		
-		if value is float: 
-			value *= 100.0
-		if stat_dict[key] > 0 and stat_dict[key]:
-			if bb_code: result += '[color=GREEN_YELLOW]'
-			if value is float: 
-				result += "+" + str(value) + "% " +key.to_upper().replace('_', ' ') + "\n"
-			else:
-				result += "+" + str(value) + " " +key.to_upper().replace('_', ' ') +  "\n"
-		else:
-			if bb_code: result += '[color=ORANGE_RED]'
-			if value is float: 
-				result += str(value) + "% " +key.to_upper().replace('_', ' ') +  "\n"
-			else:
-				result += str(value) + " " +key.to_upper().replace('_', ' ') + "\n"
-		if bb_code: result += '[/color]'
-	return result
-
-
-#func _on_button_pressed():
-#	if attrib_adjust.visible:
-#		setButtonDisabled(false)
-#		attrib_adjust.hidePanel()
-#	else:
-#		setButtonDisabled(true)
-#		attrib_adjust.showPanel()
-#		attrib_adjust.focus()
-
 func grabFocus():
 	OverworldGlobals.setMenuFocus(pool)
-
-
-func _on_show_temperments_pressed():
-	if temperments.visible:
-		temperments.hide()
-		toggle_temperments.icon = load("res://images/sprites/icon_half_face.png")
-		toggle_temperments.tooltip_text = 'Show Temperments'
-	else:
-		temperments.show()
-		toggle_temperments.icon = load("res://images/sprites/icon_half_face_b.png")
-		toggle_temperments.tooltip_text = 'Hide Temperments'
-
 
 func _on_toggle_view_pressed():
 	var offset = talent_menu.size.x-50

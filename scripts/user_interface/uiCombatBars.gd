@@ -7,10 +7,7 @@ class_name CombatBar
 @onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
 @onready var center_status_effects = $HealthBar/CenterStatusContainer
-@onready var indicator = $Indicator
-@onready var indicator_label = $Indicator/Label
-@onready var indicator_animator = $Indicator/AnimationPlayer
-@onready var secondary_prompts = $Marker2D
+@onready var indicator_spawn_point = $Marker2D
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
 @onready var pulse_gradient = $HealthBar/TurnPulser/AnimationPlayer
 @onready var turn_gradient_sprite = $HealthBar/TurnGradient
@@ -18,13 +15,12 @@ class_name CombatBar
 @onready var select_target = $SelectTarget
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 @onready var target_clicker = $TargetClicker
-#@onready var center_border = $HealthBar/CenterWings
 @onready var combat_scene = CombatGlobals.getCombatScene()
 @onready var notches = $HealthBar/BarNotcher
-var indicator_animation = "Show"
 var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
+var indicator_direction:int
 
 func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
@@ -34,6 +30,7 @@ func _ready():
 		addStatusIcon(attached_combatant, effect)
 	previous_value = attached_combatant.getMaxHealth()
 	health_bar_fader.modulate=Color.BLACK
+	indicator_direction = [-1,1].pick_random()
 	#$HealthBar/HFlowContainer/TextureRect.modulate = SettingsGlobals.ui_colors['up']
 	#$HealthBar/HFlowContainer/TextureRect2.modulate = SettingsGlobals.ui_colors['down']
 	#$TextureProgressBar/ShieldCrest/AnimationPlayer.play("Show")
@@ -143,32 +140,21 @@ func setFaderBarValue(value):
 
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
-	if attached_combatant == combatant and indicator.visible and combat_scene.isCombatValid():
-		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
-		secondary_indicator.modulate = Color.TRANSPARENT
-		var y_placement = 0
-		#var wait = 0
-		for child in secondary_prompts.get_children():
-			y_placement -= 8
-			#wait += 0.2
-		#create_tween().tween_property(secondary_indicator,modulate)
-		secondary_prompts.add_child(secondary_indicator)
-		#await get_tree().create_timer(wait).timeout
-		secondary_indicator.modulate = Color.WHITE
-		secondary_indicator.playAnimation(indicator.global_position+Vector2(0,y_placement), text, animation)
-		match animation:
-			'Status_Up':
-				var up_indicator = load("res://scenes/animations_quick/StatusRankUp.tscn").instantiate()
-				secondary_indicator.add_child(up_indicator)
-			'Status_Resisted':
-				var up_indicator = load("res://scenes/animations_quick/StatusResisted.tscn").instantiate()
-				secondary_indicator.add_child(up_indicator)
-			'Status_Added':
-				var up_indicator = load("res://scenes/animations_quick/StatusAdded.tscn").instantiate()
-				secondary_indicator.add_child(up_indicator)
-			'Status_Max':
-				var up_indicator = load("res://scenes/animations_quick/StatusMaxed.tscn").instantiate()
-				secondary_indicator.add_child(up_indicator)
+	if attached_combatant == combatant and indicator_spawn_point.visible and combat_scene.isCombatValid():
+		var range = 24
+		var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
+		indicator.modulate = Color.TRANSPARENT
+		indicator_spawn_point.add_child(indicator)
+		indicator.modulate = Color.WHITE
+		indicator.playAnimation(
+			indicator.global_position+Vector2(indicator_direction*range,randf_range(-range,range)), 
+			text, 
+			animation
+			)
+		indicator_direction *= -1
+
+func getIndicatorCount():
+	return indicator_spawn_point.get_children().filter(func(child): return child is Indicator).size()
 
 func setBarVisibility(set_to:bool):
 	if set_to:

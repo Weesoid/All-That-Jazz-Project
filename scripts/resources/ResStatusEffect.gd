@@ -52,7 +52,6 @@ enum StatusStyle {
 @export var do_ticks: bool = true
 @export var resistable: bool = true
 @export var permanent: bool = false
-@export var lingers: bool = false
 @export var remove_on_brink: bool = false
 @export var hide_icon = false
 @export var sounds: Dictionary = {'apply':'', 'expire':''}
@@ -103,8 +102,8 @@ func removeStatusEffect():
 #	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.stat_values['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and lingers and !persist_on_dead and resistable:
 #		afflicted_combatant.lingering_effects.erase(name)
 #		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '[s]%s' % getMessageIcon(), 'Resist')
-	elif afflicted_combatant is ResPlayerCombatant and lingers and afflicted_combatant.lingering_effects.has(name.replace(' ','')) and resistable:
-		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, getMessageIcon(), 'Status_Added')
+#	elif afflicted_combatant is ResPlayerCombatant and lingers and afflicted_combatant.lingering_effects.has(name.replace(' ','')) and resistable:
+#		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, getMessageIcon(), 'Status_Added')
 	
 	afflicted_combatant.status_effects.erase(self)
 	CombatGlobals.status_effect_removed.emit(afflicted_combatant, self)
@@ -155,7 +154,7 @@ func getMessageIcon():
 	elif style==StatusStyle.SPECIAL:
 		color_bb = SettingsGlobals.ui_colors['special-bb'].replace('[','').replace(']','')
 	elif style == StatusStyle.CUSTOM:
-		color_bb = getIconColor(true)
+		color_bb = getIconColor(true).replace('[','').replace(']','')
 	return '[img %s]%s[/img]' % [color_bb,texture.get_path()]
 
 func getIconColor(as_bb:bool=false):
@@ -194,7 +193,7 @@ func getStatusModiferEffect():
 	
 	return null
 
-
-
-#func getFilename():
-#	return resource_path.get_file().replace('.tres','')
+func getFilename():
+	var filename=resource_path.get_file().replace('.tres','')
+	assert(name.replace(' ','') == filename, '%s has invalid naming format! (%s)' % [name, resource_path])
+	return name.replace(' ','')

@@ -3,7 +3,7 @@ class_name ResPlayerCombatant
 
 @export var ability_pool: Array[ResAbility]
 @export var guard_effect: ResStatusEffect = load("res://resources/combat/status_effects/Riposte.tres")
-@export var base_temperment: Array[String] = []
+@export var base_traits: Array[String] = []
 @export var follower_texture: Texture
 @export var mandatory = false
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
@@ -30,7 +30,7 @@ var stat_point_allocations = {
 } # Change to talent 
 var active_talents = {}
 var talent_list = {}
-var temperment: Array[String] = []
+var traits: Array[String] = []
 var base_health: int
 var initialized = false
 
@@ -46,8 +46,6 @@ func applyTalents():
 			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]), 'talent_'+talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].mutateProperties(talent.effects)
-		elif talent is ResStatusEffectTalent:
-			OverworldGlobals.addLingerEffect(self, talent.status_effect)
 
 func getAbilityMutations():
 	return active_talents.keys().filter(func(talent): return talent is ResAbilityTalent)
@@ -79,8 +77,8 @@ func removeTalent(talent:ResTalent):
 			CombatGlobals.resetStat(self,'talent_'+talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].restoreProperties()
-		elif talent is ResStatusEffectTalent:
-			CombatGlobals.removeLingeringEffect(self, talent.status_effect)
+#		elif talent is ResStatusEffectTalent:
+#			CombatGlobals.removeLingeringEffect(self, talent.status_effect)
 		active_talents.erase(talent)
 	
 	file_references['active_talents'].erase(talent)
@@ -99,13 +97,14 @@ func initializeCombatant(do_scene:bool=true):
 		applyStatusEffects()
 	
 	#loadActiveAbilities()
-	if !base_temperment.is_empty() and temperment.is_empty():
-		temperment = base_temperment
+	if !base_traits.is_empty() and traits.is_empty():
+		traits = base_traits
+
 	
 	loadTalents()
 	applyTalents()
-	
-	applyTemperments()
+	applyTraits()
+	applyStoredStatusEffects()
 
 func getScenePreview():
 	combatant_scene = packed_scene.instantiate()
@@ -137,15 +136,49 @@ func loadFileReferences():
 		weapon.equip(self)
 		equipped_weapon.durability = file_references['equipped_weapon'][1]
 
-func applyTemperments():
-	if temperment.is_empty():
+func applyTraits():
+	if traits.is_empty():
 		return
 	
-	for temp in temperment:
-		if (PlayerGlobals.temperments.keys().has(temp) and !stat_modifiers.keys().has(temp)):
-			CombatGlobals.modifyStat(self, PlayerGlobals.temperments[temp], temp)
-		elif temp.contains('linger|'):
-			CombatGlobals.modifyStat(self, JSON.parse_string(temp.split('|')[2]), temp)
+	for t in traits:
+		if (PlayerGlobals.trait_presets.keys().has(t) and !stat_modifiers.keys().has(t)):
+			CombatGlobals.modifyStat(self, PlayerGlobals.trait_presets[t], t)
+		elif t.split('/').size() > 1:
+			var trait_data = t.split('/')
+			CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0])
+
+func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={}):
+	if data.has('append') and stat_modifiers.has(trait_name):
+		stat_mods = CombatGlobals.appendStatModifications(stat_modifiers[trait_name],stat_mods)
+	
+	var input_trait = trait_name+'/'+JSON.stringify(stat_mods)
+	if !data.is_empty():
+		input_trait += '/'+JSON.stringify(data)
+	
+	# Filter out duplicate trait, replace with latest addition
+	traits = traits.filter(func(t): return t.split('/')[0].to_lower() != trait_name.to_lower()) 
+	traits.append(input_trait)
+	
+	applyTraits()
+	print(traits)
+
+func removeTrait(trait_name:String):
+	removeStatModification(trait_name)
+	for t in traits:
+		var trait_data = t.split('/')
+		if trait_data[0] == trait_name:
+			traits.erase(t)
+	
+	applyTraits()
+
+func getTraitsWithFlag(key:String):
+	var out = []
+	for t in traits:
+		var trait_data = t.split('/')
+		if trait_data.size() >= 3 and trait_data[3].has(key):
+			out.append(t)
+	
+	return out
 
 func scaleStats():
 	var stat_increase = {}
@@ -166,18 +199,18 @@ func applyStatusEffects():
 		if charm == null or charm.status_effect == null: 
 			continue
 		CombatGlobals.addStatusEffect(self, charm.status_effect.name)
-	for effect in lingering_effects:
-		CombatGlobals.addStatusEffect(self, effect)
+#	for effect in lingering_effects:
+#		CombatGlobals.addStatusEffect(self, effect)
 
-func isInflicted()-> bool:
-	return !lingering_effects.is_empty()
+#func isInflicted()-> bool:
+#	return !lingering_effects.is_empty()
 
-func getLingeringEffectsString():
-	var out = 'During combat:\n'
-	for effect in lingering_effects:
-		var status_effect = CombatGlobals.loadStatusEffect(effect)
-		out += '%s - %s\n' % [status_effect.name, status_effect.description]
-	return out
+#func getLingeringEffectsString():
+#	var out = 'During combat:\n'
+#	for effect in lingering_effects:
+#		var status_effect = CombatGlobals.loadStatusEffect(effect)
+#		out += '%s - %s\n' % [status_effect.name, status_effect.description]
+#	return out
 
 func applyEquipmentModifications():
 	for charm in charms:
@@ -272,7 +305,7 @@ func reset():
 	if base_health != null:
 		stat_values['health'] = base_health
 	ability_set = []
-	lingering_effects = []
+	#lingering_effects = []
 	equipped_weapon = null
 	stat_points = 1
 	stat_modifiers = {}
@@ -286,5 +319,5 @@ func reset():
 		'defense': 0,
 		'handling': 0
 	}
-	temperment = []
+	traits = []
 

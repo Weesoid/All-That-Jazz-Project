@@ -34,8 +34,8 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	if target is ResPlayerCombatant and (target.lingering_effects.has(status_effect.name.replace(' ','')) and !status_effect.lingers):
-		CombatGlobals.removeLingeringEffect(target, status_effect)
+#	if target is ResPlayerCombatant and (target.lingering_effects.has(status_effect.name.replace(' ','')) and !status_effect.lingers):
+#		CombatGlobals.removeLingeringEffect(target, status_effect)
 	if target.stat_modifiers.has(status_effect.name):
 		CombatGlobals.resetStat(target, status_effect.name)
 
@@ -61,12 +61,12 @@ static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffe
 	else:
 		scale = 0
 	
-	if status_effect.lingers and target is ResPlayerCombatant and !target.temperment.has(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change)):
-		target.temperment.append(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change))
-		target.applyTemperments()
-	elif !status_effect.lingers:
-		CombatGlobals.modifyStat(
-			status_effect.afflicted_combatant, 
-			effect.getStatChanges(scale), 
-			status_effect.name
-			)
+#	if status_effect.lingers and target is ResPlayerCombatant and !target.temperment.has(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change)):
+#		target.temperment.append(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change))
+#		target.applyTemperments()
+#	elif !status_effect.lingers:
+	CombatGlobals.modifyStat(
+		status_effect.afflicted_combatant, 
+		effect.getStatChanges(scale), 
+		status_effect.name
+		)

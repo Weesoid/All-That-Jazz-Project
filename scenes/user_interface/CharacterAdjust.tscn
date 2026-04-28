@@ -4,7 +4,6 @@
 [ext_resource type="StyleBox" uid="uid://bepui5u2c7sbt" path="res://design/BorderlessContiner.tres" id="2_s7p7p"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_s185n"]
 [ext_resource type="Texture2D" uid="uid://cykjvip637jaq" path="res://images/sprites/icon_subclass.png" id="3_crog7"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="4_1mewq"]
 [ext_resource type="PackedScene" uid="uid://bbsj2rb4t3ft8" path="res://scenes/user_interface/CharacterEquip.tscn" id="4_npgsb"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="5_004gj"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_hty5i"]
@@ -14,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://c7gej8jx4qymi" path="res://scenes/user_interface/Talents.tscn" id="12_7c3kv"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="12_mfhva"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="13_dxqj5"]
+[ext_resource type="PackedScene" uid="uid://b4ahjj82o47ap" path="res://scenes/user_interface/TraitViewer.tscn" id="14_brtaa"]
 [ext_resource type="Texture2D" uid="uid://bei8dr7bb8bfq" path="res://images/sprites/icon_rotating_arrows.png" id="14_dhwtn"]
 [ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="18_sjp7i"]
 [ext_resource type="Texture2D" uid="uid://bid2yp6x5ds0a" path="res://images/sprites/icon_half_face.png" id="21_46t30"]
@@ -251,95 +251,11 @@ layout_mode = 2
 [node name="Spacer" type="Control" parent="Stats/HSplitContainer"]
 layout_mode = 2
 
-[node name="VFlowContainer" type="VBoxContainer" parent="Stats/HSplitContainer"]
-custom_minimum_size = Vector2(105, 0)
-layout_mode = 2
-
-[node name="Temperment" type="HFlowContainer" parent="Stats/HSplitContainer/VFlowContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Infliction" type="HBoxContainer" parent="Stats/HSplitContainer/VFlowContainer/Temperment"]
-z_index = 2
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("8_hty5i")
-alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="Stats/HSplitContainer/VFlowContainer/Temperment/Infliction"]
+[node name="VFlowContainer" parent="Stats/HSplitContainer" instance=ExtResource("14_brtaa")]
 visible = false
 layout_mode = 2
-texture = ExtResource("4_1mewq")
 
-[node name="PrimaryTemperment" type="VBoxContainer" parent="Stats/HSplitContainer/VFlowContainer/Temperment"]
-layout_mode = 2
-theme_override_constants/separation = -8
-
-[node name="TempermentsTitle Exclude" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-visible = false
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]TEMPERMENTS"
-fit_content = true
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="RichTextLabel4" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="RichTextLabel5" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="RichTextLabel6" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="RichTextLabel7" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="RichTextLabel8" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="Stats/HSplitContainer/VFlowContainer/Temperment/PrimaryTemperment"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]Primary Temper"
-fit_content = true
-autowrap_mode = 0
-
-[node name="HSeparator" type="HSeparator" parent="Stats/HSplitContainer/VFlowContainer/Temperment"]
-visible = false
+[node name="TraitContainer" parent="Stats/HSplitContainer" instance=ExtResource("14_brtaa")]
 layout_mode = 2
 
 [node name="Spacer" type="Control" parent="."]

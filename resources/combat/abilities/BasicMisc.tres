@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=11 format=3 uid="uid://cvjlkid4m1aae"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://cvjlkid4m1aae"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_2dvec"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_mnv40"]
-[ext_resource type="Resource" uid="uid://47lduof3c088" path="res://resources/combat/status_effects/CriticalEye.tres" id="3_o43cl"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_7nubk"]
+[ext_resource type="Resource" uid="uid://47lduof3c088" path="res://resources/combat/status_effects/CriticalEye.tres" id="3_jf363"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_wjsqd"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_00swq"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectChangeIdle.gd" id="5_dhuov"]
-[ext_resource type="Resource" uid="uid://w3qwgxv70emm" path="res://resources/combat/status_effects/Poised.tres" id="5_l42po"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectChangeIdle.gd" id="4_eqmyb"]
 
-[sub_resource type="Resource" id="Resource_14p5h"]
-script = ExtResource("2_mnv40")
+[sub_resource type="Resource" id="Resource_4jl72"]
+script = ExtResource("2_7nubk")
 target = 0
-status_effect = ExtResource("3_o43cl")
+status_effect = ExtResource("3_jf363")
 cast_animation = "Cast_Misc"
 condition = ""
 is_combo_effect = false
@@ -19,21 +18,10 @@ sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_era6v"]
-script = ExtResource("5_dhuov")
+[sub_resource type="Resource" id="Resource_kcyqn"]
+script = ExtResource("4_eqmyb")
 idle_name = "Idle_Alt"
-reset_after = false
-condition = ""
-is_combo_effect = false
-sound_effect = ""
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_ty7hq"]
-script = ExtResource("2_mnv40")
-target = 0
-status_effect = ExtResource("5_l42po")
-cast_animation = ""
+reset_after = true
 condition = ""
 is_combo_effect = false
 sound_effect = ""
@@ -45,7 +33,7 @@ script = ExtResource("4_00swq")
 name = "Miscy"
 description = ""
 icon = ExtResource("3_wjsqd")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_14p5h"), SubResource("Resource_era6v"), SubResource("Resource_ty7hq")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_4jl72"), SubResource("Resource_kcyqn")])
 ability_script = ExtResource("1_2dvec")
 target_type = 0
 target_group = 2
@@ -55,11 +43,6 @@ required_effect = {
 }
 charges = 0
 can_target_self = true
-can_target_dead = false
-dead_target_params = {
-"only_dead": false,
-"only_faded": true
-}
 caster_position = {
 "max": 3,
 "min": 0

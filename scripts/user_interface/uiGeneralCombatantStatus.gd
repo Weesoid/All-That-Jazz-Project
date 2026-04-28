@@ -11,9 +11,9 @@ func _process(_delta):
 	char_health.max_value = combatant.getMaxHealth()
 #	for status_effect in combatant.lingering_effects:
 #		char_effects.add_child(CombatGlobals.getStatusEffect(status_effect).icon)
-	if combatant.isInflicted():
-		char_name.add_theme_color_override("font_color", Color.ORANGE)
-		char_health.tooltip_text = combatant.getLingeringEffectsString()
-	else:
-		char_name.add_theme_color_override("font_color", Color.WHITE)
-		char_name.tooltip_text = ''
+#	if combatant.isInflicted():
+#		char_name.add_theme_color_override("font_color", Color.ORANGE)
+#		char_health.tooltip_text = combatant.getLingeringEffectsString()
+#	else:
+	char_name.add_theme_color_override("font_color", Color.WHITE)
+	char_name.tooltip_text = ''

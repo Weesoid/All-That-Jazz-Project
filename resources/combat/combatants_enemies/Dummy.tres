@@ -29,10 +29,10 @@ stat_values = {
 "dmg_variance": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 12,
-"resist": 0.05,
+"health": 999,
+"resist": 0.25,
 "resolve": 3,
-"speed": -1
+"speed": -8
 }
 scale_stats = {
 "accuracy": false,

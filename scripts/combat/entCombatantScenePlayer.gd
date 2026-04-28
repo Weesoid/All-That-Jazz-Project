@@ -49,7 +49,6 @@ func canBlock()-> bool:
 		and allow_block \
 		and (!combat_scene.active_combatant is ResPlayerCombatant or combat_scene.onslaught_mode) \
 		and block_timer.is_stopped() \
-		and !combatant_resource.isDead() \
 		and combatant_resource is ResPlayerCombatant \
 		and is_targeted
 

@@ -10,14 +10,14 @@ class_name CombatBarsMini
 @onready var health_bar_fader = $HealthBarFader
 @onready var action_texture = $Selector/ActionTexture
 var attached_combatant: ResPlayerCombatant
-var added_lingers = []
+#var added_lingers = []
 var previous_value
 var default_action_pos: Vector2
 
 func _ready():
 	default_action_pos = action_texture.position
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
-	updateStatusEffects()
+	#updateStatusEffects()
 
 func setCombatant(combatant:ResPlayerCombatant):
 	if !combatant.initialized:
@@ -25,7 +25,7 @@ func setCombatant(combatant:ResPlayerCombatant):
 	attached_combatant = combatant
 	previous_value = attached_combatant.stat_values['health']
 	updateBars()
-	updateStatusEffects()
+	#updateStatusEffects()
 
 func setActionTexture(texture: Texture):
 	var tween = create_tween().set_parallel()
@@ -53,7 +53,7 @@ func pulseActionTexture(reset_view:bool=true):
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
 	if attached_combatant == combatant:
-		var secondary_indicator = load("res://scenes/user_interface/SecondaryIndicator.tscn").instantiate()
+		var secondary_indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
 		var y_placement = 0
 		for child in prompts.get_children():
 			y_placement -= 8
@@ -69,17 +69,17 @@ func updateBars():
 	health_bar.max_value = int(attached_combatant.base_stat_values['health'])
 	health_bar.value = int(attached_combatant.stat_values['health'])
 
-func updateStatusEffects():
-	if attached_combatant == null:
-		return
-	for linger_effect in attached_combatant.lingering_effects:
-		if added_lingers.has(linger_effect):
-			continue
-		if linger_effect.contains('linger|'):
-			linger_effect = linger_effect.split('|')[1].replace(' ','')
-		
-		status_effects.add_child(OverworldGlobals.createStatusEffectIcon(linger_effect,TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL))
-		added_lingers.append(linger_effect)
+#func updateStatusEffects():
+#	if attached_combatant == null:
+#		return
+#	for linger_effect in attached_combatant.lingering_effects:
+#		if added_lingers.has(linger_effect):
+#			continue
+#		if linger_effect.contains('linger|'):
+#			linger_effect = linger_effect.split('|')[1].replace(' ','')
+#
+#		status_effects.add_child(OverworldGlobals.createStatusEffectIcon(linger_effect,TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL))
+#		added_lingers.append(linger_effect)
 
 func highlightCombatant():
 	health_bar.get_node('ProgressBarTrueValues').show()

@@ -12,6 +12,7 @@ extends Control
 @onready var resist_val = $Resist/ProgressBar
 @onready var healm_val = $HealMult/Value
 @onready var hp_text = $Health/ProgressBar/HealthValues
+@onready var resolve_val = $Resilience/CustomCountBar
 
 func _process(_delta):
 	if combatant != null:
@@ -34,7 +35,9 @@ func _process(_delta):
 			healm_val.text = str(round((combatant.stat_values['heal_mult']*100)-100))+'%'
 		else:
 			healm_val.text = 'BROKEN'
-	
+		resolve_val.value = combatant.stat_values['resolve']
+		resolve_val.max_value = combatant.getMaxResolve()
+		
 		highlightModifiedStats(brawn_val, 'damage')
 		highlightModifiedStats(grit_val, 'defense')
 		highlightModifiedStats(handling_val, 'handling')
@@ -44,6 +47,7 @@ func _process(_delta):
 		highlightModifiedStats(crit_val, 'crit')
 		highlightModifiedStats(resist_val, 'resist')
 		highlightModifiedStats(healm_val, 'heal_mult')
+		highlightModifiedStats(resolve_val, 'resolve')
 
 func calcDamage(val:String):
 	var damage = combatant.stat_values['damage']*combatant.stat_values['dmg_modifier']

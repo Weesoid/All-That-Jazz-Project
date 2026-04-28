@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4ahjj82o47ap"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiTraitViewer.gd" id="1_opl13"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="1_pfj0a"]
+[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="2_c7wou"]
+
+[node name="TraitContainer" type="VBoxContainer"]
+custom_minimum_size = Vector2(105, 0)
+offset_right = 105.0
+offset_bottom = 50.0
+script = ExtResource("1_opl13")
+
+[node name="Temperment" type="HFlowContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Infliction" type="HBoxContainer" parent="Temperment"]
+visible = false
+z_index = 2
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_pfj0a")
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Temperment/Infliction"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_c7wou")
+
+[node name="TraitContainer" type="VBoxContainer" parent="Temperment"]
+layout_mode = 2
+theme_override_constants/separation = -8
+
+[node name="TempermentsTitle Exclude" type="RichTextLabel" parent="Temperment/TraitContainer"]
+visible = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]TEMPERMENTS"
+fit_content = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Temperment/TraitContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/buff.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Temperment/TraitContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/debuff.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Temperment/TraitContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/quirk.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="Temperment"]
+visible = false
+layout_mode = 2

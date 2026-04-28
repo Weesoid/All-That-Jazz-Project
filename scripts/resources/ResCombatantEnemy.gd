@@ -31,14 +31,15 @@ func initializeCombatant():
 	combatant_scene.combatant_resource = self
 	base_stat_values = stat_values.duplicate()
 	scaleStats()
-	applyStatusEffects()
+	#applyStatusEffects()
+	applyStoredStatusEffects()
 
 func act():
 	enemy_turn.emit()
 
-func applyStatusEffects():
-	for effect in lingering_effects:
-		CombatGlobals.addStatusEffect(self, effect)
+#func applyStatusEffects():
+#	for effect in lingering_effects:
+#		CombatGlobals.addStatusEffect(self, effect)
 
 func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 	return ai_package.selectTarget(combatant_array)

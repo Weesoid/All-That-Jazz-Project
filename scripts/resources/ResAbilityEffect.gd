@@ -16,7 +16,6 @@ enum AnimateOn {
 
 func checkConditions(target: ResCombatant, caster: ResCombatant)-> bool:
 	if condition == '':
-		#print(self, ': true!')
 		return true
 	
 	var condition_data = condition.split('/')

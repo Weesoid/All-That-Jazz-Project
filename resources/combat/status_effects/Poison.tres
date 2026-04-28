@@ -15,7 +15,7 @@ crit_chance = -1.0
 variation = -1.0
 trigger_on_hits = false
 sound_path = "res://audio/sounds/46_Poison_01.ogg"
-indicator_bb = "[color=purple][img]res://images/status_icons/icon_poison.png[/img]"
+indicator_bb = "[color=purple][img color=purple]res://images/status_icons/icon_poison.png[/img]"
 apply_once = false
 message = ""
 sound_effect = ""
@@ -32,8 +32,8 @@ remove_when = Array[int]([])
 remove_style = 0
 seperate_instances = true
 texture = ExtResource("3_1sqmf")
-style = 0
-custom_style_color = Color(0, 0, 0, 1)
+style = 5
+custom_style_color = Color(0.74902, 0, 0.654902, 1)
 max_duration = 1
 extend_duration = 1
 apply_extend_duration = false
@@ -43,7 +43,6 @@ tick_any_turn = false
 do_ticks = true
 resistable = true
 permanent = false
-lingers = false
 remove_on_brink = false
 hide_icon = false
 sounds = {

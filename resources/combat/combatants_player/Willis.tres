@@ -34,7 +34,7 @@ animate_on = 0
 [resource]
 script = ExtResource("2_vmsk2")
 ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_43nme"), ExtResource("3_xqwg4"), ExtResource("4_nd134"), ExtResource("5_nj581")])
-base_temperment = Array[String](["clever"])
+base_traits = Array[String](["clever", "smartass", "stubborn"])
 mandatory = true
 rest_sprite = ExtResource("5_clolb")
 stat_multiplier = 0.01

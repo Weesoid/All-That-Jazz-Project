@@ -29,10 +29,10 @@ var overworld_stats: Dictionary = {
 	'sprint_speed': 200.0,
 	'sprint_drain': 0.25,
 	'stamina_gain': 0.15
-}
-var temperments: Dictionary = {
+} 
+var trait_presets: Dictionary = {
 	# Buffs
-	'clever': {'handling': 1},
+	'clever': {'handling': 1,'speed':2},
 	'quick': {'speed': 2},
 	'acute': {'crit':0.02},
 	'hard_hitter': {'crit_dmg': 0.1},
@@ -43,10 +43,10 @@ var temperments: Dictionary = {
 	'limber': {'heal_mult':0.05},
 	
 	# Quirks
-	'smartass': {'handling': 2, 'damage': -3,'defense': -0.12},
-	'frantic': {'speed': 4, 'accuracy': -0.1},
+	'smartass': {'handling': 2, 'damage': -4},
+	'frantic': {'speed': 3, 'accuracy': -0.1},
 	'daredevil': {'crit':0.1, 'accuracy':-0.1},
-	'crude': {'crit_dmg': 0.25, 'crit':-0.15},
+	'crude': {'crit_dmg': 0.25, 'crit':-0.2},
 	'reckless': {'damage': 4, 'defense': -0.15},
 	'headstrong': {'defense': 0.15, 'damage': -4},
 	'hardened': {'resist': 0.35, 'crit': -0.1},
@@ -272,19 +272,19 @@ func removeCombatant(combatant_id: ResPlayerCombatant):
 func loadSquad():
 	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.team_formation)
 
-func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/random'):
-	if combatant.temperment.size() >= 6:
-		return
-	
-	if temperment == '/random':
-		randomize()
-		var random_temperment = temperments.keys().filter(func(key): return !combatant.temperment.has(key)).pick_random()
-		OverworldGlobals.showPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
-		combatant.temperment.append(random_temperment)
-	else:
-		combatant.temperment.append(temperment)
-	
-	combatant.applyTemperments()
+#func addCombatantTemperment(combatant: ResPlayerCombatant, temperment: String='/random'):
+#	if combatant.temperment.size() >= 6:
+#		return
+#
+#	if temperment == '/random':
+#		randomize()
+#		var random_temperment = temperments.keys().filter(func(key): return !combatant.temperment.has(key)).pick_random()
+#		OverworldGlobals.showPrompt('[color=yellow]%s[/color] gained [color=yellow]%s[/color]' % [combatant, random_temperment.capitalize()])
+#		combatant.temperment.append(random_temperment)
+#	else:
+#		combatant.temperment.append(temperment)
+#
+#	combatant.applyTemperments()
 
 func hasFollower(follower_combatant: ResPlayerCombatant):
 	for f in getActiveFollowers():
@@ -317,7 +317,7 @@ func healCombatants(percent_heal:float=1.0,cure: bool=true):
 	for combatant in team:
 		if !combatant.initialized: combatant.initializeCombatant(false)
 		combatant.stat_values['health'] = int(combatant.base_stat_values['health'] * percent_heal)
-		if cure: combatant.lingering_effects.clear()
+		#if cure: combatant.lingering_effects.clear()
 
 func addMapLog(map_path: String, entry=null):
 	if !map_logs.has(map_path):
@@ -454,11 +454,11 @@ func saveData(save_data: Array):
 				combatant.stat_values,
 				combatant.base_stat_values,
 				combatant.mandatory,
-				combatant.lingering_effects,
+				#combatant.lingering_effects,
 				combatant.initialized,
 				combatant.stat_points,
 				combatant.stat_point_allocations,
-				combatant.temperment,
+				combatant.traits,
 				combatant.file_references,
 			)
 	
@@ -497,6 +497,10 @@ func loadData(save_data: PlayerSaveData):
 			if charm != null:
 				charm.updateItem()
 				charm.equip(combatant)
+		#combatant.addTrait('Criticalium', {'crit':0.25})
+		#combatant.addTrait('Criticalium', {'accuracy':0.25})
+		#combatant.addTrait('My Custom Disease', {'accuracy':-0.25},{'disease':true})
+		#combatant.removeTrait('Criticalium')
 		combatant.initializeCombatant(false)
 		combatant.updateCombatant(save_data)
 		combatant.initializeCombatant(false)

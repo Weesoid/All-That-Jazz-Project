@@ -710,16 +710,16 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var combat_id = combat_entity.get_node('CombatantSquadComponent').unique_id
 	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
 	var map_events = getCurrentMap().events
-	if map_events.has('patroller_effect'):
-		enemy_squad.addLingeringEffect(map_events['patroller_effect'])
+#	if map_events.has('patroller_effect'):
+#		enemy_squad.addLingeringEffect(map_events['patroller_effect'])
 	combat_scene.combatants.append_array(getCombatantSquad('Player'))
-	for combatant in getCombatantSquad('Player'):
-		combatant.lingering_effects.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
+#	for combatant in getCombatantSquad('Player'):
+#		combatant.lingering_effects.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
 	for combatant in enemy_squad.combatant_squad:
 		if combatant == null: continue
 		var duped_combatant = combatant.duplicate()
-		for effect in enemy_squad.afflicted_status_effects:
-			duped_combatant.lingering_effects.append(effect)
+#		for effect in enemy_squad.afflicted_status_effects:
+#			duped_combatant.lingering_effects.append(effect)
 		combat_scene.combatants.append(duped_combatant)
 	combat_scene.combat_entity = combat_entity
 	if data.keys().has('combat_event'):
@@ -738,16 +738,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
-		#await combat_bubble.animator.animation_finished
-		#await get_tree().create_timer(0.5).timeout
-		#var battle_transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
-		#player.player_camera.add_child(battle_transition)
-		#battle_transition.get_node('AnimationPlayer').play('In')
-		#await battle_transition.get_node('AnimationPlayer').animation_finished
-		#player.player_camera.get_node('BattleStart').queue_free()
-		#combat_bubble.queue_free()
 	get_parent().add_child(combat_scene)
-	#await combat_scene.tree_entered
 	combat_enetered.emit()
 	combat_scene.combat_camera.make_current()
 	if combat_entity.has_node('CombatDialogue'):
@@ -764,17 +755,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	player.player_camera.make_current()
 	getCurrentMap().show()
 	player.resetStates()
-	for combatant in getCombatantSquad('Player'):
-		for effect in getCombatantSquadComponent('Player').afflicted_status_effects:
-			combatant.lingering_effects.erase(effect)
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
 	OverworldGlobals.player.setUIVisibility(true)
-#	battle_transition.get_node('AnimationPlayer').play('Out')
 	if combat_entity is GenericPatroller and combat_results == 1:
 		addPatrollerPulse(player, 180.0, GenericPatroller.State.CHASING)
 		combat_entity.destroy()
-#	await battle_transition.get_node('AnimationPlayer').animation_finished
-#	battle_transition.queue_free()
 	if hasCombatDialogue(entity_name) and combat_results == 1:
 		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
@@ -900,22 +885,22 @@ func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:
 	CombatGlobals.manual_call_indicator.emit(combatant, '[color=red]'+str(damage), 'Damage')
 	playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
 
-func addLingerEffect(combatant: ResCombatant, effect):
-	if effect is ResStatusEffect:
-		effect = effect.resource_path.get_file().replace('.tres','')
-	if effect == '':
-		return
-	
-	var status_effect:ResStatusEffect = CombatGlobals.loadStatusEffect(effect)
-	if combatant.lingering_effects.has(effect):
-		return false
-	else:
-		if status_effect.getStatusModiferEffect() != null and combatant is ResPlayerCombatant:
-			combatant.temperment.append(CombatGlobals.getTempermentModiferID(status_effect, status_effect.getStatusModiferEffect().status_change))
-			combatant.applyTemperments()
-		
-		combatant.lingering_effects.append(effect)
-		return true
+#func addLingerEffect(combatant: ResCombatant, effect):
+#	if effect is ResStatusEffect:
+#		effect = effect.resource_path.get_file().replace('.tres','')
+#	if effect == '':
+#		return
+#
+#	var status_effect:ResStatusEffect = CombatGlobals.loadStatusEffect(effect)
+#	if combatant.lingering_effects.has(effect):
+#		return false
+#	else:
+#		if status_effect.getStatusModiferEffect() != null and combatant is ResPlayerCombatant:
+#			combatant.temperment.append(CombatGlobals.getTempermentModiferID(status_effect, status_effect.getStatusModiferEffect().status_change))
+#			combatant.applyTemperments()
+#
+#		combatant.lingering_effects.append(effect)
+#		return true
 
 func isPlayerAlive()-> bool:
 	for combatant in getCombatantSquad('Player'):

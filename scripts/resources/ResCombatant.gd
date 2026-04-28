@@ -45,7 +45,9 @@ var resolve_dot_shield:bool=false
 var turn_charges: int
 var stat_modifiers = {}
 var status_effects: Array[ResStatusEffect]
-var lingering_effects: Array[String]
+## Status effects gained from the overworld or means outside of combat, stores them as their filenames. 
+var stored_status_effects: Array[String] 
+#var lingering_effects: Array[String]
 var base_stat_values: Dictionary
 var acted: bool
 var combatant_scene: CombatantScene
@@ -185,6 +187,12 @@ func getStringStats(current_stats=false):
 	
 	return result
 
+# TODO add pooling check
+func appendStatModification(modifier_id:String, append_stats: Dictionary):
+	for modifier in stat_modifiers.keys():
+		if modifier == modifier_id:
+			stat_modifiers[modifier_id] = CombatGlobals.appendStatModifications(stat_modifiers[modifier_id], append_stats)
+
 func applyStatModifications(modifier_id: String):
 	for modifier in stat_modifiers.keys():
 		if modifier == modifier_id:
@@ -218,6 +226,23 @@ func clearAbilityMutations():
 
 func _to_string():
 	return str(name)
+
+func applyStoredStatusEffects():
+	stored_status_effects.reverse()
+	for effect in stored_status_effects:
+		CombatGlobals.addStatusEffect(self, effect)
+		stored_status_effects.erase(effect)
+
+# TODO: Add persist tag that won't be removed on apply
+func storeStatusEffect(effect: ResStatusEffect, persistent:bool=false):
+	if persistent:
+		stored_status_effects.append(effect.getFilename()+'/persist')
+	else:
+		stored_status_effects.append(effect.getFilename())
+
+# TODO: Remove based on effect
+func unstoreStatusEffect(effect: ResStatusEffect):
+	pass
 
 #func freeBreathingTweens():
 #	stopBreatheTween()

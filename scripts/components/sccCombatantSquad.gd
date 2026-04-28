@@ -10,11 +10,11 @@ func isTeamDead()->bool:
 		if member.isDead(): dead_count += 1
 	return dead_count == combatant_squad.size()
 
-func addLingeringEffect(status_effect_name: String):
-	afflicted_status_effects.append(status_effect_name)
-
-func removeLingeringEffect(status_effect_name: String):
-	afflicted_status_effects.erase(status_effect_name)
+#func addLingeringEffect(status_effect_name: String):
+#	afflicted_status_effects.append(status_effect_name)
+#
+#func removeLingeringEffect(status_effect_name: String):
+#	afflicted_status_effects.erase(status_effect_name)
 
 func getMember(member_name: String)-> ResCombatant:
 	for member in combatant_squad:

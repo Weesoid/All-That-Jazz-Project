@@ -13,6 +13,7 @@ status_script = ExtResource("2_sh6iq")
 effect_type = 1
 remove_when = Array[int]([4])
 remove_style = 1
+seperate_instances = false
 texture = ExtResource("3_mek1h")
 style = 1
 custom_style_color = Color(0, 0, 0, 1)
@@ -25,8 +26,7 @@ tick_any_turn = false
 do_ticks = true
 resistable = false
 permanent = true
-lingers = false
-persist_on_dead = false
+remove_on_brink = false
 hide_icon = false
 sounds = {
 "apply": "",

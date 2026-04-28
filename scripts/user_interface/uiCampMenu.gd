@@ -143,8 +143,10 @@ func pulseButtonActionTexture(bar:CombatBarsMini,party_wide:bool=false,reset_vie
 		bar.pulseActionTexture(reset_view)
 
 func updateCombatants():
-	for combatant in squad:
-		getRestSprite(combatant).get_node('CombatBars').updateStatusEffects()
+	pass
+	
+	#for combatant in squad:
+	#	getRestSprite(combatant).get_node('CombatBars').updateStatusEffects()
 
 func isCampItemValid():
 	return camp_item != null and camp_item.stack > 0
@@ -291,8 +293,8 @@ func pickRandomEvent():
 			InventoryGlobals.removeItemResource(item,count)
 		'status_effect':
 			var effect = ['Poison', 'Burn'].pick_random()
-			for combatant in squad:
-				OverworldGlobals.addLingerEffect(combatant, effect)
+#			for combatant in squad:
+#				OverworldGlobals.addLingerEffect(combatant, effect)
 
 func restCombatant(combatant: ResPlayerCombatant):
 	CombatGlobals.calculateHealing(combatant, combatant.getMaxHealth()*0.05)

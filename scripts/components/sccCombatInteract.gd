@@ -5,7 +5,7 @@ var interacted = false
 var patroller_name: String
 
 func _ready():
-	OverworldGlobals.getCombatantSquadComponent(get_parent().name).addLingeringEffect('Stunned')
+	#OverworldGlobals.getCombatantSquadComponent(get_parent().name).addLingeringEffect('Stunned')
 	if get_parent() is PlayerScene:
 		OverworldGlobals.shakeCamera()
 		OverworldGlobals.playEntityAnimation('Player', 'Stun')
@@ -31,7 +31,7 @@ func interact():
 		queue_free()
 
 func _exit_tree():
-	OverworldGlobals.getCombatantSquadComponent(get_parent().name).removeLingeringEffect('Dazed')
+	#OverworldGlobals.getCombatantSquadComponent(get_parent().name).removeLingeringEffect('Dazed')
 	if get_parent() is PlayerScene:
 		get_parent().resetAnimation()
 

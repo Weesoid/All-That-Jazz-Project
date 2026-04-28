@@ -47,8 +47,7 @@ tick_any_turn = false
 do_ticks = false
 resistable = false
 permanent = true
-lingers = false
-persist_on_dead = false
+remove_on_brink = false
 hide_icon = false
 sounds = {
 "apply": "",

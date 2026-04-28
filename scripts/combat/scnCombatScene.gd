@@ -307,7 +307,6 @@ func end_turn(combatant_act=true):
 	else:
 		active_combatant.clearAbilityMutations()
 	active_combatant.resolve_dot_shield = false
-	
 	if checkDialogue():
 		await DialogueManager.dialogue_ended
 	
@@ -816,8 +815,12 @@ func concludeCombat(results: int):
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant)
 		setSignals(combatant,false)
+		active_combatant.resolve_dot_shield = false
+		active_combatant.resolve_gate = true
 		if combat_result == 0 or getDeadCombatants('team').size() > 0: 
 			await get_tree().create_timer(0.25).timeout
+		if (combat_result == 1 or combat_result == 2) and combatant.isOnBrink() and combatant is ResPlayerCombatant:
+			CombatGlobals.calculateHealing(combatant, combatant.getMaxHealth()*0.1,false,false)
 	target_state = TargetState.NONE
 	target_index = 0
 	var morale_bonus = 1

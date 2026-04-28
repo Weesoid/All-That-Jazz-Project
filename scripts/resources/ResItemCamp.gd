@@ -20,7 +20,8 @@ func apply(combatant: ResPlayerCombatant):
 		elif effect is ResCustomDamageEffect:
 			OverworldGlobals.damageMember(combatant, effect.damage, effect.use_damage_formula)
 		elif effect is ResApplyStatusEffect:
-			OverworldGlobals.addLingerEffect(combatant, effect.status_effect)
+			combatant.stored_status_effects.append(effect.status_effect.getFilename())
+			#OverworldGlobals.addLingerEffect(combatant, effect.status_effect)
 
 func getInformation():
 	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'

@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_g0kd2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yj0nf"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_3qdm0"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_uhs14"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_hgmaq"]
 
-[sub_resource type="Resource" id="Resource_n8164"]
-script = ExtResource("2_3qdm0")
+[sub_resource type="Resource" id="Resource_gi8ow"]
+script = ExtResource("2_uhs14")
 damage_type = 1
 cast_animation = {
 "animation": "",
@@ -30,7 +30,7 @@ script = ExtResource("1_yj0nf")
 name = "Projectiliun"
 description = ""
 icon = ExtResource("3_hgmaq")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_n8164")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_gi8ow")])
 ability_script = ExtResource("1_g0kd2")
 target_type = 0
 target_group = 1

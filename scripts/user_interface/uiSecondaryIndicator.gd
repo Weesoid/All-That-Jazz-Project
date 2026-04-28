@@ -1,23 +1,26 @@
 extends Node2D
+class_name Indicator
 
 @onready var label = $Label
 @onready var animator = $AnimationPlayer
 @onready var tween: Tween
+@onready var pos_tween: Tween
 
-func playAnimation(pos: Vector2, text: String, animation: String,time:float=1.0):
+#func _ready():
+#	label.add_theme_constant_override("outline_size",99)
+
+func playAnimation(pos: Vector2, text: String, animation: String,time:float=1.5):
 	randomize()
-	var random_vector = Vector2(randf_range(-24,24),randf_range(-24,24))
-	global_position = pos
+	tween = create_tween()
+	pos_tween = create_tween()
+	pos_tween.tween_property(self, 'global_position',pos,time).set_ease(Tween.EASE_IN_OUT)
 	label.text = '[center]'+str(text)
 	animator.play(animation)
-	await get_tree().create_timer(0.5).timeout
-	tween = create_tween()
-	tween.set_parallel()
-	tween.tween_property(self, 'modulate', Color.TRANSPARENT, time-0.2).set_trans(Tween.TRANS_EXPO)
-	tween.tween_property(self, 'global_position', global_position+random_vector, 1.0).set_trans(Tween.TRANS_SINE)
-	await get_tree().create_timer(0.25).timeout
+	tween.tween_property(self, 'modulate', Color.TRANSPARENT,time).set_trans(Tween.TRANS_EXPO)
+	await tween.finished
 	queue_free()
 
 func _on_tree_exited():
 	if is_instance_valid(tween):
 		tween.kill()
+		pos_tween.kill()
