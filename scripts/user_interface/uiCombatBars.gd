@@ -139,15 +139,24 @@ func setFaderBarValue(value):
 	health_bar_fader.value = value
 
 
-func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
+func manualCallIndicator(combatant: ResCombatant, text: String, animation: String,top_position:bool=false):
 	if attached_combatant == combatant and indicator_spawn_point.visible and combat_scene.isCombatValid():
 		var range = 24
 		var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
+		var final_pos:Vector2
+		
+		if top_position:
+			final_pos = Vector2(0,-range)
+		else:
+			final_pos = Vector2(indicator_direction*range,randf_range(-range,range))
+		
 		indicator.modulate = Color.TRANSPARENT
 		indicator_spawn_point.add_child(indicator)
+		if top_position:
+			indicator.global_position += final_pos
 		indicator.modulate = Color.WHITE
 		indicator.playAnimation(
-			indicator.global_position+Vector2(indicator_direction*range,randf_range(-range,range)), 
+			indicator.global_position+final_pos,
 			text, 
 			animation
 			)

@@ -57,6 +57,16 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		elif ability.current_effect is ResChangeIdleEffect and target.temporary_idle != ability.current_effect.idle_name:
 			target.temporary_idle = ability.current_effect.idle_name
 			target.playIdle()
+		elif ability.current_effect is ResStatModifierEffect:
+			print('zaza')
+			target.combatant_resource.addTemporaryModifer(
+				ability.name, 
+				ability.current_effect.duration,
+				ability.current_effect.getModifications(),
+				ability.current_effect.stacks,
+				ability.current_effect.duration_type == ResStatModifierEffect.DurationType.BATTLE
+				)
+			#CombatGlobals.modifyStat(target.combatant_resource, ability.current_effect.getModifications(), ability.name, ability.current_effect.stacks,true)
 	
 	#if caster == CombatGlobals.getCombatScene().active_combatant:
 	await CombatGlobals.getCombatScene().get_tree().process_frame
@@ -88,7 +98,7 @@ static func playAnimation(ability: ResAbility, target):
 	elif ability.current_effect.animation != null:
 		CombatGlobals.playAbilityAnimation(target, ability.current_effect.animation, ability.current_effect.animation_time)
 
-# Combat values calculations (damage, healing, etc.)
+# Combat values calculations (damage, healing, etc.) APPLIES ON ATTACK HITBOX
 static func applyToTarget(caster, target, ability: ResAbility):
 	if ability.current_effect is ResDamageEffect:
 		if CombatGlobals.calculateDamage(

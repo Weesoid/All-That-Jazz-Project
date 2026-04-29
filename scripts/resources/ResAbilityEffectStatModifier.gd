@@ -2,8 +2,8 @@ extends ResAbilityEffect
 class_name ResStatModifierEffect
 
 enum DurationType {
-	TEMPORARY,
-	PERMANENT
+	TURNS,
+	BATTLE
 }
 
 @export var stat_modifications: = {
@@ -21,5 +21,19 @@ enum DurationType {
 	'dmg_modifier': 0.0,
 	'resolve': 0
 }
-@export var duration_type: DurationType= DurationType.TEMPORARY
-@export var duration:int
+@export var duration_type: DurationType= DurationType.TURNS
+@export var duration:int=1
+@export var stacks: bool=false
+
+func getModifications()-> Dictionary:
+	var out={}
+	for stat in stat_modifications:
+		if stat_modifications[stat] == 0.0:
+			continue
+		
+		out[stat] = stat_modifications[stat]
+	
+	return out
+
+func _to_string():
+	return CombatGlobals.getStatListString(stat_modifications)

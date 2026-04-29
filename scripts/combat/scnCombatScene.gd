@@ -227,6 +227,7 @@ func end_turn(combatant_act=true):
 		return
 	if combatant_act and (selected_ability == null or !selected_ability.instant_cast):
 		tickStatusEffects(active_combatant, false, true, false, false) # Tick down ON TURN statuses
+		active_combatant.tickTemporaryModifiers('turns')
 	for combatant in combatants: # Check for survivors!
 		if combatant.isDead(true): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
@@ -335,6 +336,7 @@ func setActiveCombatant(tick_effect=true):
 	active_combatant = combatant_turn_order[0][0]
 	if tick_effect:
 		tickStatusEffects(active_combatant, false, false, false) # Tick ON TURN statuses (e.g. tick only on combatant's turn)
+		active_combatant.tickTemporaryModifiers('turns')
 		removeDeadCombatants()
 
 func getTickOnTurnEffects(combatant: ResCombatant):
@@ -815,6 +817,8 @@ func concludeCombat(results: int):
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant)
 		setSignals(combatant,false)
+		clearTempModifiers(combatant,'turns')
+		combatant.tickTemporaryModifiers('battle')
 		active_combatant.resolve_dot_shield = false
 		active_combatant.resolve_gate = true
 		if combat_result == 0 or getDeadCombatants('team').size() > 0: 
@@ -1110,3 +1114,7 @@ func setSignals(combatant:ResCombatant, connect_signals:bool):
 			combatant.player_turn.disconnect(on_player_turn)
 		if combatant.enemy_turn.is_connected(on_enemy_turn):
 			combatant.enemy_turn.disconnect(on_enemy_turn)
+
+func clearTempModifiers(combatant: ResCombatant, type:String):
+	for modifier in combatant.getTemporaryModifierKeys(type):
+		combatant.removeTemporaryModifier(modifier)

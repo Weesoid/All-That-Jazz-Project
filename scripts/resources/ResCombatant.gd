@@ -44,9 +44,11 @@ var resolve_gate:bool=true
 var resolve_dot_shield:bool=false
 var turn_charges: int
 var stat_modifiers = {}
+# {"tempmodifier/turns:12_My Name!":6,"tempmodifier/battle:1_My Name!":1}
+var temp_modifier_tracker = {}
 var status_effects: Array[ResStatusEffect]
 ## Status effects gained from the overworld or means outside of combat, stores them as their filenames. 
-var stored_status_effects: Array[String] 
+var stored_status_effects: Array[String]
 #var lingering_effects: Array[String]
 var base_stat_values: Dictionary
 var acted: bool
@@ -199,9 +201,61 @@ func applyStatModifications(modifier_id: String):
 			for stat in stat_modifiers[modifier]:
 				if stat == 'health':
 					updateHealth(stat_modifiers[modifier][stat])
-				else:
+				elif stat_values.has(stat):
 					stat_values[stat] += stat_modifiers[modifier][stat]
+				else:
+					stat_values[stat] = stat
 			return
+
+# TODO?  Update handling. Replace outdated modifiers based on modifier_id?
+func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false):
+	var key
+	var data
+	if per_battle:
+		data = 'tempmod/battle/'+JSON.stringify(stat_dict)
+	else:
+		data = 'tempmod/turns/'+JSON.stringify(stat_dict)
+	key = data+'|'+modifier_id # Will look smth like: tempmod/battle/{"damage":67}|<modifier id>
+	
+	CombatGlobals.modifyStat(self, stat_dict, key, append_stats,true)
+	temp_modifier_tracker[key] = duration
+
+func applyTemporaryModifiers():
+	for key in temp_modifier_tracker:
+		if !stat_modifiers.has(key):
+			CombatGlobals.modifyStat(self, JSON.parse_string(key.split('/')[2]), key)
+
+func tickTemporaryModifiers(type:String):
+	assert(type == 'turns' or type == 'battle', 'Type can only be: "turns" or "battle" !')
+	var tracker_keys
+	if type == 'turns':
+		tracker_keys = temp_modifier_tracker.keys().filter(func(key): return key.contains('/turns'))
+	elif type == 'battle':
+		tracker_keys = temp_modifier_tracker.keys().filter(func(key): return key.contains('/battle'))
+	
+	#if name.contains('Willis'): print('!!!!!!!!!!!!!> keyz: '+str(tracker_keys))
+	for key in tracker_keys:
+		temp_modifier_tracker[key] -= 1
+		if temp_modifier_tracker[key] <= 0:
+			removeTemporaryModifier(key)
+			#print('removing ', key, ' !')
+	#if name.contains('Willis'):  print('!!!!!!!!!!!!!> curr tracker: '+str(temp_modifier_tracker))
+
+func removeTemporaryModifier(key:String):
+	if stat_modifiers.has(key):
+		removeStatModification(key)
+	if temp_modifier_tracker.has(key):
+		temp_modifier_tracker.erase(key)
+
+func getTemporaryModifierKeys(type:String='/'):
+	assert(type == 'turns' or type == 'battle' or type == '/', 'Type can only be: "turns" or "battle" !')
+	var out = []
+	
+	for modifier in stat_modifiers:
+		if modifier.contains('tempmod/') and modifier.contains(type): 
+			out.append(modifier)
+	
+	return out
 
 func removeStatModification(modifier_id: String):
 	for modifier in stat_modifiers.keys():

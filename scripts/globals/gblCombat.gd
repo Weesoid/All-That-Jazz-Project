@@ -396,7 +396,7 @@ func valueVariate(value, percent_variance: float):
 	value += randf_range(variation*-1, variation)
 	return round(value)
 
-func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false):
+func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, show_indicator:bool=false):
 	if append_stat:
 		target.appendStatModification(modifier_id, stat_modifications)
 	else:
@@ -404,6 +404,13 @@ func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_i
 	
 	target.stat_modifiers[modifier_id] = stat_modifications
 	target.applyStatModifications(modifier_id)
+	
+	if inCombat() and show_indicator:
+		var string_stats = CombatGlobals.getStatListString(stat_modifications).split('\n')
+		print(string_stats)
+		for stat_message in string_stats:
+			manual_call_indicator.emit(target, stat_message.replace('[/color]',''),'Show',true)
+			await get_tree().create_timer(0.25).timeout
 
 # TODO "var out" so that order of parameters dont matter
 func appendStatModifications(stat_mods:Dictionary, appending_stat_mods:Dictionary)-> Dictionary:
@@ -691,7 +698,7 @@ func getCombatScene()-> CombatScene:
 	return get_parent().get_node('CombatScene')
 
 func inCombat()-> bool:
-	return get_parent().has_node('CombatScene')
+	return get_parent().has_node('CombatScene') and is_instance_valid(get_parent().get_node('CombatScene'))
 
 func loadStatusEffect(status_effect_name: String)-> ResStatusEffect:
 #	if status_effect_name.contains('linger|'):
@@ -808,6 +815,9 @@ func getStatListString(stat_modifications:Dictionary, do_colors:bool=true):
 	for key in stat_modifications.keys():
 		
 		var val = stat_modifications[key]
+		if val == 0.0:
+			continue
+		
 		if stat_modifications[key] > 0 and stat_modifications[key]:
 			if do_colors: result += SettingsGlobals.ui_colors['up-bb']
 			if fmod(val, 1.0) != 0: 

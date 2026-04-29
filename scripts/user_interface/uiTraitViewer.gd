@@ -1,3 +1,4 @@
+# TODO: Rn, traits and temp mods aren't properly unified (syntax wisse), fix it
 extends VBoxContainer
 
 enum TraitTypes {
@@ -19,10 +20,13 @@ func updateTraits(set_combatant: ResPlayerCombatant=null):
 		child.queue_free()
 	
 	selected_combatant.applyTraits()
-	selected_combatant.traits.sort_custom(func(a,b): return getTraitType(a) < getTraitType(b))
+	var all_modifiers = selected_combatant.traits.duplicate()
+	all_modifiers.append_array(selected_combatant.getTemporaryModifierKeys('battle'))
+	all_modifiers.sort_custom(func(a,b): return getTraitType(a) < getTraitType(b))
 	
-	for p_trait in selected_combatant.traits:
+	for p_trait in all_modifiers:
 		trait_container.add_child(createTraitLabel(p_trait))
+	
 	if selected_combatant.hasEquippedWeapon() and !selected_combatant.equipped_weapon.canUse(selected_combatant):
 		selected_combatant.unequipWeapon()
 
@@ -33,8 +37,12 @@ func createTraitLabel(p_trait: String):
 	trait_label.bbcode_enabled = true
 	trait_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	trait_label.fit_content = true
-	trait_label.text = bb+'[cell]'+trait_name+'[/cell][/table]'
-	trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[getTraitName(p_trait)],false)
+	if p_trait.contains('|'):
+		trait_label.text = bb+'[cell]'+p_trait.split('|')[1]+' (%s Battles)' % selected_combatant.temp_modifier_tracker[p_trait]+'[/cell][/table]'
+		trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[p_trait],false)
+	else:
+		trait_label.text = bb+'[cell]'+trait_name+'[/cell][/table]'
+		trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[getTraitName(p_trait)],false)
 	return trait_label
 
 func getBBTraitIcon(p_trait:String):
@@ -48,9 +56,14 @@ func getBBTraitIcon(p_trait:String):
 func getTraitType(p_trait)->TraitTypes:
 	var positive_count = 0
 	var negative_count = 0
+	var modifier_id 
+	if p_trait.contains('|'):
+		modifier_id = p_trait
+	else:
+		modifier_id = getTraitName(p_trait)
 	
-	for i in selected_combatant.stat_modifiers[getTraitName(p_trait)]:
-		var value = selected_combatant.stat_modifiers[getTraitName(p_trait)][i]
+	for i in selected_combatant.stat_modifiers[modifier_id]:
+		var value = selected_combatant.stat_modifiers[modifier_id][i]
 		if value > 0:
 			positive_count += 1
 		elif value < 0:

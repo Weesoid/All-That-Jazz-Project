@@ -104,6 +104,7 @@ func initializeCombatant(do_scene:bool=true):
 	loadTalents()
 	applyTalents()
 	applyTraits()
+	applyTemporaryModifiers()
 	applyStoredStatusEffects()
 
 func getScenePreview():

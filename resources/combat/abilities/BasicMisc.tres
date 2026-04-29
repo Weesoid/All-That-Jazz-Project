@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=9 format=3 uid="uid://cvjlkid4m1aae"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=11 format=3 uid="uid://cvjlkid4m1aae"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_2dvec"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_7nubk"]
@@ -6,8 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_wjsqd"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_00swq"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectChangeIdle.gd" id="4_eqmyb"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatModifier.gd" id="5_ym7hq"]
 
-[sub_resource type="Resource" id="Resource_4jl72"]
+[sub_resource type="Resource" id="Resource_h104k"]
 script = ExtResource("2_7nubk")
 target = 0
 status_effect = ExtResource("3_jf363")
@@ -18,7 +19,33 @@ sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_kcyqn"]
+[sub_resource type="Resource" id="Resource_p5v4t"]
+script = ExtResource("5_ym7hq")
+stat_modifications = {
+"accuracy": 0.25,
+"crit": 0.25,
+"crit_dmg": 0.25,
+"damage": 12,
+"defense": 0.0,
+"dmg_modifier": 0.0,
+"dmg_variance": 0.0,
+"handling": 0,
+"heal_mult": -0.25,
+"health": 0,
+"resist": -0.25,
+"resolve": 0,
+"speed": 0
+}
+duration_type = 1
+duration = 3
+stacks = false
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_sa5fv"]
 script = ExtResource("4_eqmyb")
 idle_name = "Idle_Alt"
 reset_after = true
@@ -33,7 +60,7 @@ script = ExtResource("4_00swq")
 name = "Miscy"
 description = ""
 icon = ExtResource("3_wjsqd")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_4jl72"), SubResource("Resource_kcyqn")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_h104k"), SubResource("Resource_p5v4t"), SubResource("Resource_sa5fv")])
 ability_script = ExtResource("1_2dvec")
 target_type = 0
 target_group = 2
