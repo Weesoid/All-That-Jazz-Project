@@ -61,15 +61,17 @@ func _ready():
 #		if child.texture == null:
 #			continue
 		var mini_bar: CombatBarsMini = child.get_node('CombatBars')
-		#var combatant = mini_bar.attached_combatant
+		if mini_bar.attached_combatant != null:
+			mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
 		mini_bar.selector.pressed.connect(
 			func():
-				if mode == Mode.CAMP and isCampItemValid():
+				if mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant) and camp_item.canApply(mini_bar.attached_combatant):
 					camp_item.applyEffects(mini_bar.attached_combatant)
 					camp_item.take(1)
 					updateCombatants()
 					pulseButtonActionTexture(mini_bar, camp_item.party_wide)
-					if !isCampItemValid():
+					mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
+					if !isCampItemValid(mini_bar.attached_combatant):
 						setButtonActionTexture(null)
 				elif mode == Mode.ROSTER:
 					selected_pos = save_point.rest_spots.get_children().find(mini_bar.get_parent())
@@ -100,7 +102,7 @@ func _ready():
 					setButtonActionTexture(SWITCH_ROSTER_ICON,mini_bar)
 					#if roster.visible:
 					#	hideRoster()
-				elif mode == Mode.CAMP and isCampItemValid(): 
+				elif mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant): 
 					setButtonActionTexture(camp_item.icon,mini_bar,camp_item.party_wide)
 				)
 		mini_bar.selector.focus_exited.connect(func(): setButtonActionTexture(null))
@@ -131,14 +133,18 @@ func setButtonActionTexture(texture:Texture,bar: CombatBarsMini=null,party_wide:
 	
 	if bar == null or party_wide:
 		for mini_bar in save_point.getCombatBars(true):
-			mini_bar.setActionTexture(texture)
+			if isCampItemValid(mini_bar.attached_combatant): mini_bar.setActionTexture(texture)
 	else:
 		bar.setActionTexture(texture)
 
 func pulseButtonActionTexture(bar:CombatBarsMini,party_wide:bool=false,reset_view:bool=true):
 	if party_wide:
 		for mini_bar in save_point.getCombatBars(true):
-			mini_bar.pulseActionTexture(reset_view)
+			if isCampItemValid(mini_bar.attached_combatant):
+				mini_bar.pulseActionTexture(reset_view)
+			else:
+				mini_bar.unsetActionTexture()
+			mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
 	else:
 		bar.pulseActionTexture(reset_view)
 
@@ -148,8 +154,8 @@ func updateCombatants():
 	#for combatant in squad:
 	#	getRestSprite(combatant).get_node('CombatBars').updateStatusEffects()
 
-func isCampItemValid():
-	return camp_item != null and camp_item.stack > 0
+func isCampItemValid(combatant:ResPlayerCombatant):
+	return camp_item != null and camp_item.stack > 0 and camp_item.canApply(combatant)
 
 func _on_eat_pressed():
 	#fillCampItemContainer()

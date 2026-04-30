@@ -10,5 +10,8 @@ func _process(delta):
 		offset = Vector2(randf_range(-shake_strength,shake_strength), randf_range(-shake_strength,shake_strength))
 
 func shake(strength: float, speed: float):
+	if CombatGlobals.inCombat() and CombatGlobals.getCombatScene().rebuking:
+		return
+	
 	shake_speed = speed
 	shake_strength = strength

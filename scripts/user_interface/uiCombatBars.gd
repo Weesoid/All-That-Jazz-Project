@@ -16,7 +16,8 @@ class_name CombatBar
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 @onready var target_clicker = $TargetClicker
 @onready var combat_scene = CombatGlobals.getCombatScene()
-@onready var notches = $HealthBar/BarNotcher
+#@onready var notches = $HealthBar/BarNotcher
+@onready var resolve_bar = $HealthBar/CustomCountBar
 var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
@@ -31,6 +32,10 @@ func _ready():
 	previous_value = attached_combatant.getMaxHealth()
 	health_bar_fader.modulate=Color.BLACK
 	indicator_direction = [-1,1].pick_random()
+	#notches.threshold_percent = (100/attached_combatant.getMaxResolve())*0.01
+	#print(notches.threshold_percent)
+	#print(notches.)
+	#notches.addNotches()
 	#$HealthBar/HFlowContainer/TextureRect.modulate = SettingsGlobals.ui_colors['up']
 	#$HealthBar/HFlowContainer/TextureRect2.modulate = SettingsGlobals.ui_colors['down']
 	#$TextureProgressBar/ShieldCrest/AnimationPlayer.play("Show")
@@ -53,21 +58,28 @@ func _process(_delta):
 
 func updateBars():
 	if !attached_combatant.isDead():
-		health_bar.max_value = int(attached_combatant.getMaxHealth())
-		health_bar.value = int(attached_combatant.stat_values['health'])
+		#health_bar.show()
+		#health_bar_fader.show()
+		health_bar_fader.modulate=Color.WHITE
+		resolve_bar.hide()
 	else:
-		notches.show()
-		#health_bar.self_modulate=Color.RED
-		health_bar.max_value = int(attached_combatant.getMaxResolve())
-		health_bar.value = int(attached_combatant.stat_values['resolve'])
+		#health_bar.hide()
+		#health_bar_fader.hide()
+		health_bar_fader.modulate=Color.RED
+		resolve_bar.show()
 	
+	health_bar.max_value = int(attached_combatant.getMaxHealth())
+	health_bar.value = int(attached_combatant.stat_values['health'])
+	if attached_combatant.isDead():
+		resolve_bar.max_value = attached_combatant.getMaxResolve()
+		resolve_bar.setValue(attached_combatant.stat_values['resolve'])
 	absolute_health.text = str(health_bar.value)
 	turn_charges.value = attached_combatant.turn_charges
 	turn_charges.max_value = attached_combatant.max_turn_charges
-	if attached_combatant.hasStatusEffect('Knock Out'):
-		health_bar.hide()
-	else:
-		health_bar.show()
+#	if attached_combatant.hasStatusEffect('Knock Out'):
+#		health_bar.hide()
+#	else:
+#		health_bar.show()
 
 func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	#if combatant == attached_combatant and effect.name == 'Guard':
@@ -119,12 +131,11 @@ func animateFaderBar(prev_val, value):
 		return
 	
 	health_bar_fader.modulate=Color.WHITE
-	if !attached_combatant.isDead():
-		health_bar_fader.max_value = attached_combatant.getMaxHealth()
-		health_bar_fader.value = prev_val
+	health_bar_fader.max_value = attached_combatant.getMaxHealth()
+	if attached_combatant.isDead():
+		health_bar_fader.value = attached_combatant.getMaxHealth()
 	else:
-		health_bar_fader.max_value =attached_combatant.getMaxResolve()
-		health_bar_fader.value = attached_combatant.stat_values['resolve']
+		health_bar_fader.value = prev_val
 #	if prev_val > value:
 #		health_bar_fader.modulate = Color.YELLOW
 #	elif prev_val < value:

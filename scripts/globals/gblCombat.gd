@@ -281,16 +281,18 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 #		target.stat_values['health'] -= 999
 #		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
 	## Resolve handling
-	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0:
-		target.stat_values['resolve'] -= 1
+	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and !target.stat_modifiers.has('block'): 
+		if target.stat_values['resolve'] - 1 <= 0 and randomRoll(target.stat_values.get('rebuke_chance',0.0)):
+			doRebuke(target)
+		else:
+			target.stat_values['resolve'] -= 1
+			if target is ResPlayerCombatant: addInjury(target, 1.0-target.stat_values['resist'])
+	elif target.isDead() and target.resolve_gate:
+		playBrinkEffects(target)
+		#OverworldGlobals.freezeFrame(0.3, 0.5)
+		target.resolve_gate=false
 		if target is ResPlayerCombatant:
 			addInjury(target, 1.0-target.stat_values['resist'])
-	elif target.isDead() and target.resolve_gate:
-		if !target.getSprite().has_node('Throbber'):
-			var throbber = load("res://scenes/animations_quick/SpriteThrobber.tscn")
-			OverworldGlobals.showQuickAnimation(throbber, target.getSprite())
-		OverworldGlobals.freezeFrame(0.3, 0.5)
-		target.resolve_gate=false
 	if target.isDead() and bonus_stats.has('is_dot'): 
 		target.resolve_dot_shield = true
 	
@@ -318,21 +320,60 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	if target.isDead(true):
 		OverworldGlobals.freezeFrame()
 
+func playBrinkEffects(target):
+	if target.getSprite().has_node('Throbber'):
+		return
+	
+	var throbber = load("res://scenes/animations_quick/SpriteThrobber.tscn")
+	OverworldGlobals.showQuickAnimation(throbber, target.getSprite())
+	target.combatant_scene.playIdle('Hurt')
+
+func removeBrinkEffects(target):
+	if target.getSprite().has_node('Throbber'):
+		target.getSprite().get_node('Throbber').queue_free()
+	target.combatant_scene.playIdle('Idle')
+
+func doRebuke(target: ResCombatant):
+	getCombatScene().rebuking=true
+	var riposte_anim = 'Cast_Riposte' if 'Cast_Riposte' in target.combatant_scene.animator.get_animation_list() else 'Cast_Melee'
+	removeStatusEffect(target,'Guard Break')
+	addStatusEffect(target,'Guard')
+	target.combatant_scene.doAnimation(riposte_anim, target.getStatusEffect('Riposte').status_script, {'anim_speed'=1.5})
+	healResolve(target,99)
+	if target is ResPlayerCombatant:
+		for injury in target.getTraitsWithFlag('injury'):
+			target.removeTrait(injury)
+	#await get_tree().process_frame
+	OverworldGlobals.playSound("res://audio/sounds/744329__fairsonicstudio__bbrs_sfx_soulretrieve.ogg")
+	OverworldGlobals.playSound(['165491__chripei__victory-cry-reverb-2.ogg', '165492__chripei__victory-cry-reverb-1.ogg'].pick_random())
+	getCombatScene().setUIModulation(Color.TRANSPARENT)
+	getCombatScene().playRebukeText()
+	await getCombatScene().zoomCamera(Vector2(0.75,0.75),0.1)
+	await OverworldGlobals.freezeFrame(0.075, 2.8)
+	getCombatScene().setUIModulation(Color.WHITE)
+	calculatePercentHealing(target,1.0,false)
+	getCombatScene().rebuking=false
+
 func addInjury(combatant: ResPlayerCombatant, chance:float):
 	if !randomRoll(chance):
+		manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['up-bb']+'Injury Resisted!', 'Show',true)
 		return
 	var injuries = {
-		'Bum Leg': {'speed':-2},
-		'Broken Arm': {'damage':-3},
+		'Bum Leg': {'speed':-1},
+		'Broken Arm': {'damage':-1},
 		'Concussion': {'handling':-1},
-		'Gouged Eye': {'accuracy':-0.05},
-		'Shellshock': {'crit':-0.05,'crit_dmg':-0.05},
-		'Broken Ribs': {'defense':-0.05},
-		'Infected Wound': {'resist':-0.05}
+		'Gouged Eye': {'accuracy':-0.03},
+		'Shellshock': {'crit':-0.03,'crit_dmg':-0.03},
+		'Broken Ribs': {'defense':-0.03},
+		'Infected Wound': {'resist':-0.03}
 	}
-	var chosen_injury = 'Broken Arm'
-	
-	combatant.addTrait(chosen_injury, injuries[chosen_injury],{'injury':true,'append':true})
+	var chosen_injury = injuries.keys().pick_random()
+	combatant.addTrait(
+		chosen_injury, 
+		injuries[chosen_injury],
+		{'injury':true,'append':true},
+		' [img %s]res://images/status_icons/injury.png[/img]'%SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
+		)
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
@@ -343,7 +384,7 @@ func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
 
 func useDamageFormula(target: ResCombatant, damage):
 	var grit = target.stat_values['defense']
-	if grit > 0.7: #and (inCombat() and !getCombatScene().active_combatant.combatant_scene.blocking):  # TODO Change this to check a bonus stat "blocking" or smth. Implement it once u get stuff like "healing skill" etc online
+	if grit > 0.7 and !target.stat_modifiers.has('block'):  # TODO Change this to check a bonus stat "blocking" or smth. Implement it once u get stuff like "healing skill" etc online
 		grit = 0.7
 	var out_damage = damage - (grit * damage)
 	if out_damage < 0.0: 
@@ -358,8 +399,10 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 	
 	if target is CombatantScene:
 		target = target.combatant_resource
-	if target.stat_values['health'] < 0:
+	if target.isDead():
 		target.stat_values['health'] = 0
+		removeBrinkEffects(target)
+		target.resolve_gate=true
 		from_death=true
 	base_healing = valueVariate(base_healing, 0.1)
 	if use_mult:
@@ -381,6 +424,11 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 	if inCombat() and trigger_on_heal and base_healing >= 1:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
 
+func healResolve(target: ResCombatant, amount:int):
+	target.stat_values['resolve'] += amount
+	if target.stat_values['resolve'] > target.getMaxResolve():
+		target.stat_values['resolve'] = target.getMaxResolve()
+
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
 	if percent_chance > 1.0:
@@ -396,31 +444,45 @@ func valueVariate(value, percent_variance: float):
 	value += randf_range(variation*-1, variation)
 	return round(value)
 
-func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, show_indicator:bool=false):
-	if append_stat:
-		target.appendStatModification(modifier_id, stat_modifications)
-	else:
-		target.removeStatModification(modifier_id)
+func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, show_indicator:bool=false,append_indiactor:String=''):
+	var change_relevant:bool=false
+	if append_stat and target.stat_modifiers.has(modifier_id):
+		stat_modifications = appendStatModifications(stat_modifications, target.stat_modifiers[modifier_id])
+		change_relevant=true
+	elif !target.stat_modifiers.has(modifier_id):
+		change_relevant=true
 	
+	target.removeStatModification(modifier_id)
 	target.stat_modifiers[modifier_id] = stat_modifications
 	target.applyStatModifications(modifier_id)
 	
-	if inCombat() and show_indicator:
+	if (inCombat() or OverworldGlobals.player.camping) and show_indicator and change_relevant:
 		var string_stats = CombatGlobals.getStatListString(stat_modifications).split('\n')
-		print(string_stats)
 		for stat_message in string_stats:
-			manual_call_indicator.emit(target, stat_message.replace('[/color]',''),'Show',true)
+			var mes = stat_message.replace('[/color]','')
+			if mes == '': continue
+			manual_call_indicator.emit(target, mes+append_indiactor,'Show',true)
 			await get_tree().create_timer(0.25).timeout
 
 # TODO "var out" so that order of parameters dont matter
-func appendStatModifications(stat_mods:Dictionary, appending_stat_mods:Dictionary)-> Dictionary:
-	for stat in appending_stat_mods.keys():
-		if stat_mods.has(stat):
-			stat_mods[stat] += appending_stat_mods[stat]
-		else:
-			stat_mods[stat] = appending_stat_mods[stat]
+func appendStatModifications(modifiers_a:Dictionary, modifiers_b:Dictionary)-> Dictionary:
+	var out = {}
+	var appending_dict: Dictionary
 	
-	return stat_mods
+	if modifiers_a.size() > modifiers_b.size() or modifiers_a.size() == modifiers_b.size():
+		out = modifiers_a
+		appending_dict = modifiers_b
+	elif modifiers_a.size() < modifiers_b.size():
+		out = modifiers_b
+		appending_dict = modifiers_a
+	
+	for stat in appending_dict.keys():
+		if out.has(stat):
+			out[stat] += appending_dict[stat]
+		else:
+			out[stat] = appending_dict[stat]
+	
+	return out
 
 func resetStat(target: ResCombatant, modifier_id: String):
 	target.removeStatModification(modifier_id)
@@ -788,8 +850,8 @@ func addTension(amount: int,from_target:CombatantScene=null,gainer:ResPlayerComb
 		return
 	
 	var previous_tension = tension
-	if tension + amount > 8:
-		tension = 8
+	if tension + amount > 4:
+		tension = 4
 	elif tension + amount < 0:
 		tension = 0
 	else:

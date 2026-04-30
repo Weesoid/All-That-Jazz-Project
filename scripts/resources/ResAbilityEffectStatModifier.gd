@@ -36,4 +36,16 @@ func getModifications()-> Dictionary:
 	return out
 
 func _to_string():
-	return CombatGlobals.getStatListString(stat_modifications)
+	var out = CombatGlobals.getStatListString(stat_modifications)
+	out += str(duration)
+	
+	if duration_type == DurationType.TURNS: 
+		out += ' Turns'
+	elif duration_type == DurationType.BATTLE: 
+		out += ' Battles'
+	
+	if stacks:
+		out += ' (Stacks)'
+	
+	
+	return out

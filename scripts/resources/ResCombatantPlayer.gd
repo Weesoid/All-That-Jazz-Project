@@ -9,7 +9,6 @@ class_name ResPlayerCombatant
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
 @export var stat_multiplier = 0.01
 @export var talents: Array[String]
-@export var max_strain:int=3
 
 var file_references: Dictionary = {
 	'active_abilities': [],
@@ -33,6 +32,7 @@ var talent_list = {}
 var traits: Array[String] = []
 var base_health: int
 var initialized = false
+var max_strain:int=4
 
 func loadTalents():
 	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
@@ -43,7 +43,7 @@ func loadTalents():
 func applyTalents():
 	for talent in active_talents.keys():
 		if talent is ResStatTalent:
-			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]), 'talent_'+talent.name)
+			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]), talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].mutateProperties(talent.effects)
 
@@ -74,7 +74,7 @@ func activateTalent(talent: ResTalent, count:int=1):
 func removeTalent(talent:ResTalent):
 	if talent in active_talents.keys():
 		if talent is ResStatTalent:
-			CombatGlobals.resetStat(self,'talent_'+talent.name)
+			CombatGlobals.resetStat(self,talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].restoreProperties()
 #		elif talent is ResStatusEffectTalent:
@@ -93,6 +93,10 @@ func initializeCombatant(do_scene:bool=true):
 		initialized = true
 	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
+	if !stat_modifiers.has('base_rebuke'):
+		CombatGlobals.modifyStat(self, {'rebuke_chance':1.03},'base_rebuke')
+	if !stat_values.has('strain'):
+		stat_values['strain']=0
 	if CombatGlobals.inCombat():
 		applyStatusEffects()
 	
@@ -103,7 +107,7 @@ func initializeCombatant(do_scene:bool=true):
 	
 	loadTalents()
 	applyTalents()
-	applyTraits()
+	applyAllTraits()
 	applyTemporaryModifiers()
 	applyStoredStatusEffects()
 
@@ -137,18 +141,22 @@ func loadFileReferences():
 		weapon.equip(self)
 		equipped_weapon.durability = file_references['equipped_weapon'][1]
 
-func applyTraits():
+func applyAllTraits():
 	if traits.is_empty():
 		return
 	
 	for t in traits:
-		if (PlayerGlobals.trait_presets.keys().has(t) and !stat_modifiers.keys().has(t)):
-			CombatGlobals.modifyStat(self, PlayerGlobals.trait_presets[t], t)
-		elif t.split('/').size() > 1:
-			var trait_data = t.split('/')
-			CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0])
+		applyTrait(t,false)
 
-func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={}):
+func applyTrait(t,show_indicator,append_indicator:String=''):
+	if (PlayerGlobals.trait_presets.keys().has(t) and !stat_modifiers.keys().has(t)):
+		CombatGlobals.modifyStat(self, PlayerGlobals.trait_presets[t], t,true)
+	elif t.split('/').size() > 1:
+		var trait_data = t.split('/')
+		CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0], false, show_indicator,append_indicator)
+
+# Trait data is a dictionary that contains unique trait data. E.g. <Trait name>/{"damage":69}/{"disease":true} can be a element in the traits array
+func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={},append_indicator:String=''):
 	if data.has('append') and stat_modifiers.has(trait_name):
 		stat_mods = CombatGlobals.appendStatModifications(stat_modifiers[trait_name],stat_mods)
 	
@@ -160,23 +168,21 @@ func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={}):
 	traits = traits.filter(func(t): return t.split('/')[0].to_lower() != trait_name.to_lower()) 
 	traits.append(input_trait)
 	
-	applyTraits()
-	print(traits)
+	if CombatGlobals.inCombat():
+		applyTrait(input_trait,true,append_indicator)
+	else:
+		applyAllTraits()
 
 func removeTrait(trait_name:String):
-	removeStatModification(trait_name)
-	for t in traits:
-		var trait_data = t.split('/')
-		if trait_data[0] == trait_name:
-			traits.erase(t)
-	
-	applyTraits()
+	removeStatModification(trait_name.split('/')[0])
+	if traits.has(trait_name):
+		traits.erase(trait_name)
 
 func getTraitsWithFlag(key:String):
 	var out = []
 	for t in traits:
 		var trait_data = t.split('/')
-		if trait_data.size() >= 3 and trait_data[3].has(key):
+		if trait_data.size() >= 3 and trait_data[2].contains(key):
 			out.append(t)
 	
 	return out

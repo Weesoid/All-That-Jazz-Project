@@ -195,7 +195,7 @@ offset_top = 8.0
 offset_right = -99.0
 offset_bottom = 8.0
 value = 3
-max_value = 8
+max_value = 4
 process = false
 
 [node name="TextureRect" type="TextureRect" parent="Tension"]

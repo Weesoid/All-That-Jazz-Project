@@ -67,6 +67,7 @@ var initial_damage: float = 0.0
 var combat_entity
 var reward_bank
 var ability_executing:bool=false
+var rebuking:bool=false
 
 signal confirm
 signal target_selected
@@ -220,7 +221,13 @@ func useAIPackage():
 	await confirm
 	end_turn()
 
+func playRebukeText():
+	$CombatCamera/Interface/RichTextLabel/AnimationPlayer.play('Show')
+
 func end_turn(combatant_act=true):
+	if combat_camera.zoom !=Vector2(1.6,1.6):
+		setCameraZoom(Vector2(1.6,1.6))
+	
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	if await checkWin(): 
@@ -239,6 +246,11 @@ func end_turn(combatant_act=true):
 	
 	if allCombatantsActed() and combatant_turn_order.is_empty():
 		rollTurns()
+		# Pacing, purely cosmetic. Remove if sluggish
+		await get_tree().create_timer(0.75).timeout
+		OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
+		moveCamera(camera_position)
+		# Pacing, purely cosmetic. Remove if sluggish
 		end_turn(false)
 		return
 	
@@ -358,8 +370,8 @@ func removeDeadCombatants(is_valid_check=true):
 				combatant.combatant_scene.get_node('CombatBars').hide()
 		if combatant is ResEnemyCombatant:
 			total_experience += combatant.getExperience()
-		if combatant.spawn_on_death != null:
-			replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
+			if combatant.spawn_on_death != null:
+				replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
 
 #********************************************************************************
 # BASE combatant_scene NODE CONTROL
@@ -392,10 +404,10 @@ func toggleUI(visibility: bool):
 
 func setUIModulation(ui_modulate: Color, duration:float=0.1):
 	for marker in enemy_container_markers:
-		if marker.get_child_count() != 0 and marker.get_child(0).combatant_scene.has_node('CombatBars'):
+		if marker.get_child_count() != 0 and marker.get_child(0).has_node('CombatBars'):
 			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
 	for marker in team_container_markers:
-		if marker.get_child_count() != 0 and marker.get_child(0).combatant_scene.has_node('CombatBars'):
+		if marker.get_child_count() != 0 and marker.get_child(0).has_node('CombatBars'):
 			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
 	
 	for child in combat_camera.get_children():
@@ -505,6 +517,7 @@ func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
 		target.combatant_scene.allow_block = true
 		CombatGlobals.showWarning(target.combatant_scene)
+		#OverworldGlobals.freezeFrame(0.3,0.25)
 
 func revokeBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
@@ -537,6 +550,11 @@ func moveCamera(target: Vector2, speed=0.25):
 func zoomCamera(zoom: Vector2, speed=0.25):
 	var tween = create_tween()
 	tween.tween_property(combat_camera, 'zoom', combat_camera.zoom+zoom, speed)
+	await tween.finished
+
+func setCameraZoom(set_zoom: Vector2, speed=0.25):
+	var tween = create_tween()
+	tween.tween_property(combat_camera, 'zoom', set_zoom, speed)
 	await tween.finished
 
 func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:String='', do_tween:bool=false):
@@ -668,7 +686,6 @@ func addDropToBank(loot_drops: Dictionary):
 			reward_bank['loot'][loot] = loot_drops[loot]
 
 func rollTurns():
-	OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
 	combatant_turn_order.clear()
 	for combatant in combatants:
 		if combatant.isDead(true): continue
@@ -819,6 +836,7 @@ func concludeCombat(results: int):
 		setSignals(combatant,false)
 		clearTempModifiers(combatant,'turns')
 		combatant.tickTemporaryModifiers('battle')
+		combatant.clearStrain()
 		active_combatant.resolve_dot_shield = false
 		active_combatant.resolve_gate = true
 		if combat_result == 0 or getDeadCombatants('team').size() > 0: 

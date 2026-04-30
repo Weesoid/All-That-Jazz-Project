@@ -83,6 +83,7 @@ text = "10-19"
 horizontal_alignment = 1
 
 [node name="Grit" type="HSplitContainer" parent="."]
+visible = false
 layout_mode = 2
 tooltip_text = "Percentage resistance from damage (caps out at 70%)."
 split_offset = 50
@@ -138,7 +139,7 @@ uppercase = true
 
 [node name="Accuracy" type="HSplitContainer" parent="."]
 layout_mode = 2
-tooltip_text = "Chance to land missable abilities."
+tooltip_text = "Chance to land  abilities that can miss."
 split_offset = 50
 dragger_visibility = 1
 
@@ -157,7 +158,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
 
 [node name="Resist" type="HSplitContainer" parent="."]
 layout_mode = 2
-tooltip_text = "Chance to resist status effects."
+tooltip_text = "Chance to resist negative effects."
 split_offset = 50
 dragger_visibility = 1
 
@@ -228,7 +229,7 @@ uppercase = true
 
 [node name="Tolerance" type="HSplitContainer" parent="."]
 layout_mode = 2
-tooltip_text = "How much consumables character can use."
+tooltip_text = "Item consumption limit."
 split_offset = 50
 dragger_visibility = 1
 

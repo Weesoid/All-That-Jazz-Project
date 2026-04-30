@@ -34,8 +34,8 @@ func interact():
 	OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
 	if OverworldGlobals.getCurrentMap().map_properties.has(MapData.MapProperties.COLD):
 		animator.play("Lit")
-	OverworldGlobals.moveCamera(self,0,Vector2(0,-10))
-	await OverworldGlobals.zoomCamera(Vector2(3,3),0.5,true)
+	OverworldGlobals.moveCamera(self,0,Vector2(0,-24))
+	await OverworldGlobals.zoomCamera(Vector2(2,2),0.5,true)
 	OverworldGlobals.player.sprite.hide()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		addRestSprite(combatant)

@@ -349,6 +349,10 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Array[String]=[],show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
 #		delayed_rewards = getCurrentMap().REWARD_BANK
+	for combatant in PlayerGlobals.team:
+		for temp_mod in combatant.getTemporaryModifierKeys('battle'):
+			combatant.removeTemporaryModifier(temp_mod)
+	
 	if show_transition:
 		player.do_gravity=false
 		player.velocity = Vector2.ZERO

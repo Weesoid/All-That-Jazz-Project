@@ -6,7 +6,8 @@ enum TraitTypes {
 	BUFF,
 	UNIQUE,
 	DEBUFF,
-	SPECIAL
+	SPECIAL,
+	INJURY
 }
 
 @onready var trait_container = $Temperment/TraitContainer
@@ -19,9 +20,9 @@ func updateTraits(set_combatant: ResPlayerCombatant=null):
 	for child in trait_container.get_children():
 		child.queue_free()
 	
-	selected_combatant.applyTraits()
+	selected_combatant.applyAllTraits()
 	var all_modifiers = selected_combatant.traits.duplicate()
-	all_modifiers.append_array(selected_combatant.getTemporaryModifierKeys('battle'))
+	all_modifiers.append_array(selected_combatant.getTemporaryModifierKeys('/'))
 	all_modifiers.sort_custom(func(a,b): return getTraitType(a) < getTraitType(b))
 	
 	for p_trait in all_modifiers:
@@ -38,7 +39,12 @@ func createTraitLabel(p_trait: String):
 	trait_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	trait_label.fit_content = true
 	if p_trait.contains('|'):
-		trait_label.text = bb+'[cell]'+p_trait.split('|')[1]+' (%s Battles)' % selected_combatant.temp_modifier_tracker[p_trait]+'[/cell][/table]'
+		var duration_type = ''
+		if p_trait.contains('battle/'):
+			duration_type = 'Battles'
+		elif p_trait.contains('turns/'):
+			duration_type = 'Turns'
+		trait_label.text = bb+'[cell]'+p_trait.split('|')[1]+' (%s %s)' % [selected_combatant.temp_modifier_tracker[p_trait], duration_type]+'[/cell][/table]'
 		trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[p_trait],false)
 	else:
 		trait_label.text = bb+'[cell]'+trait_name+'[/cell][/table]'
@@ -52,7 +58,9 @@ func getBBTraitIcon(p_trait:String):
 		return '[img %s]res://images/status_icons/debuff.png[/img]' % SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
 	elif getTraitType(p_trait)==TraitTypes.UNIQUE:
 		return '[img %s]res://images/status_icons/quirk.png[/img]' % SettingsGlobals.ui_colors['special-bb'].replace('[','').replace(']','')
-
+	elif getTraitType(p_trait)==TraitTypes.INJURY:
+		return '[img %s]res://images/status_icons/injury.png[/img]' % SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
+	
 func getTraitType(p_trait)->TraitTypes:
 	var positive_count = 0
 	var negative_count = 0
@@ -61,6 +69,9 @@ func getTraitType(p_trait)->TraitTypes:
 		modifier_id = p_trait
 	else:
 		modifier_id = getTraitName(p_trait)
+	
+	if selected_combatant.getTraitsWithFlag('injury').has(p_trait):
+		return TraitTypes.INJURY
 	
 	for i in selected_combatant.stat_modifiers[modifier_id]:
 		var value = selected_combatant.stat_modifiers[modifier_id][i]

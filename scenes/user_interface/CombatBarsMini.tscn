@@ -1,16 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://b57tm5xnp0h5c"]
+[gd_scene load_steps=14 format=3 uid="uid://b57tm5xnp0h5c"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBarsMini.gd" id="1_0kb5o"]
+[ext_resource type="Texture2D" uid="uid://cccrvcn7bhykq" path="res://images/sprites/health_bar_under.png" id="2_8g8wo"]
 [ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="2_nm6g7"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_ro8a5"]
 [ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="3_2nlcb"]
+[ext_resource type="Texture2D" uid="uid://d3ouvhymj2yy3" path="res://images/sprites/health_bar_progress.png" id="3_kfjl1"]
 [ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="4_seedu"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diu1g"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c6utw"]
-bg_color = Color(0.780392, 0, 0.0117647, 1)
+[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="8_adtnc"]
+[ext_resource type="Texture2D" uid="uid://da5chbauvphss" path="res://images/sprites/outlined_circle_empty.png" id="9_pyvaa"]
+[ext_resource type="Texture2D" uid="uid://cqfesavmoprif" path="res://images/sprites/outlined_circle_filled.png" id="10_mimle"]
 
 [sub_resource type="Animation" id="Animation_eit6l"]
 resource_name = "FadeIn"
@@ -49,24 +48,12 @@ _data = {
 "RESET": SubResource("Animation_sq7lx")
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kau5d"]
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
-expand_margin_left = 1.0
-expand_margin_top = 1.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
-
 [node name="CombatBars" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0kb5o")
 
-[node name="HealthBarFader" type="ProgressBar" parent="."]
+[node name="HealthBarFader" type="TextureProgressBar" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -80,33 +67,36 @@ offset_bottom = 39.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_diu1g")
-theme_override_styles/fill = SubResource("StyleBoxFlat_c6utw")
 value = 75.0
-show_percentage = false
+texture_under = ExtResource("2_8g8wo")
+texture_progress = ExtResource("3_kfjl1")
+texture_progress_offset = Vector2(2, 1)
+tint_under = Color(0, 0, 0, 1)
+tint_progress = Color(1, 0, 0, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HealthBarFader"]
 libraries = {
 "": SubResource("AnimationLibrary_ea25p")
 }
 
-[node name="HealthBar" type="ProgressBar" parent="."]
+[node name="HealthBar" type="TextureProgressBar" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -9.0
-offset_top = 36.0
-offset_right = 9.0
-offset_bottom = 38.0
+offset_left = -16.0
+offset_top = 35.0
+offset_right = 16.0
+offset_bottom = 39.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_kau5d")
 value = 50.0
-show_percentage = false
+texture_progress = ExtResource("3_kfjl1")
+texture_progress_offset = Vector2(2, 1)
+tint_under = Color(0, 0, 0, 1)
 
 [node name="PermaStatusEffectContainer" type="HBoxContainer" parent="HealthBar"]
 layout_mode = 2
@@ -118,18 +108,17 @@ theme_override_constants/separation = 0
 alignment = 1
 
 [node name="ProgressBarTrueValues" parent="HealthBar" instance=ExtResource("2_nm6g7")]
-visible = false
+z_index = 1
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = -1.0
-offset_top = -2.0
-offset_right = 60.0
-offset_bottom = 11.0
+offset_top = -3.0
+offset_right = 64.0
+offset_bottom = 10.0
 grow_horizontal = 1
 grow_vertical = 1
-scale = Vector2(0.33, 0.33)
+scale = Vector2(0.5, 0.5)
 horizontal_alignment = 1
 
 [node name="Selector" parent="." instance=ExtResource("2_ro8a5")]
@@ -159,8 +148,25 @@ texture = ExtResource("4_seedu")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 
+[node name="StrainBar" parent="." instance=ExtResource("8_adtnc")]
+layout_mode = 1
+offset_top = 29.0
+offset_bottom = 29.0
+value = 3
+max_value = 4
+process = false
+empty_circle = ExtResource("9_pyvaa")
+filled_circle = ExtResource("10_mimle")
+
+[node name="HBoxContainer" parent="StrainBar" index="0"]
+offset_top = 2.0
+offset_bottom = 2.0
+theme_override_constants/separation = 0
+
 [connection signal="value_changed" from="HealthBar" to="." method="_on_health_bar_value_changed"]
 [connection signal="focus_entered" from="Selector" to="." method="highlightCombatant"]
 [connection signal="focus_exited" from="Selector" to="." method="stopHighlight"]
 [connection signal="mouse_entered" from="Selector" to="." method="highlightCombatant"]
 [connection signal="mouse_exited" from="Selector" to="." method="stopHighlight"]
+
+[editable path="StrainBar"]

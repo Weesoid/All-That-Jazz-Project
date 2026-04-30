@@ -8,6 +8,7 @@ class_name CustomCountBar
 @export var process:bool=true
 @export var empty_circle: Texture = preload("res://images/sprites/circle_empty.png")
 @export var filled_circle: Texture = preload("res://images/sprites/circle_filled.png")
+@export var hide_empty:bool=false
 var filled_modulate:Color = Color.WHITE
 var empty_modulate:Color = Color.WHITE
 
@@ -39,18 +40,22 @@ func updateValue():
 	for child in container.get_children(): 
 		child.queue_free()
 	for i in range(max_value):
-		var rect: TextureRect = TextureRect.new()
-		rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 		if value >= 0 and filled != value:
+			var rect: TextureRect = TextureRect.new()
+			rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 			rect.texture = filled_circle
 			rect.modulate = filled_modulate
 			filled += 1
+			rect.pivot_offset = rect.texture.get_size()/2
+			container.add_child(rect)
 		elif (filled == value or value < 0) and show_max:
+			var rect: TextureRect = TextureRect.new()
+			rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 			rect.texture = empty_circle
 			rect.modulate = empty_modulate
 			rect.scale = Vector2(1.25,1.25)
-		rect.pivot_offset = rect.texture.get_size()/2
-		container.add_child(rect)
+			rect.pivot_offset = rect.texture.get_size()/2
+			container.add_child(rect)
 
 func getCircles(type:String='all'):
 	match type:

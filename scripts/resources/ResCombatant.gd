@@ -46,6 +46,7 @@ var turn_charges: int
 var stat_modifiers = {}
 # {"tempmodifier/turns:12_My Name!":6,"tempmodifier/battle:1_My Name!":1}
 var temp_modifier_tracker = {}
+var item_strain_tracker = {}
 var status_effects: Array[ResStatusEffect]
 ## Status effects gained from the overworld or means outside of combat, stores them as their filenames. 
 var stored_status_effects: Array[String]
@@ -204,7 +205,7 @@ func applyStatModifications(modifier_id: String):
 				elif stat_values.has(stat):
 					stat_values[stat] += stat_modifiers[modifier][stat]
 				else:
-					stat_values[stat] = stat
+					stat_values[stat] = stat_modifiers[modifier][stat]
 			return
 
 # TODO?  Update handling. Replace outdated modifiers based on modifier_id?
@@ -223,7 +224,7 @@ func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary
 func applyTemporaryModifiers():
 	for key in temp_modifier_tracker:
 		if !stat_modifiers.has(key):
-			CombatGlobals.modifyStat(self, JSON.parse_string(key.split('/')[2]), key)
+			CombatGlobals.modifyStat(self, JSON.parse_string(key.split('|')[0].split('/')[2]), key)
 
 func tickTemporaryModifiers(type:String):
 	assert(type == 'turns' or type == 'battle', 'Type can only be: "turns" or "battle" !')
@@ -246,6 +247,27 @@ func removeTemporaryModifier(key:String):
 		removeStatModification(key)
 	if temp_modifier_tracker.has(key):
 		temp_modifier_tracker.erase(key)
+	if item_strain_tracker.has(key):
+		recoverStrain(item_strain_tracker[key])
+		item_strain_tracker.erase(key)
+
+func addStrain(key:String,strain:int):
+	stat_values['strain'] += strain
+	if item_strain_tracker.has(key):
+		item_strain_tracker[key] += strain
+	else:
+		item_strain_tracker[key] = strain
+
+func clearStrain():
+	for key in item_strain_tracker.keys():
+		if key.contains('tempmod/'):
+			continue
+		recoverStrain(item_strain_tracker[key])
+
+func recoverStrain(amount:int):
+	stat_values['strain'] -= amount
+	if stat_values['strain'] < 0: 
+		stat_values['strain'] = 0
 
 func getTemporaryModifierKeys(type:String='/'):
 	assert(type == 'turns' or type == 'battle' or type == '/', 'Type can only be: "turns" or "battle" !')

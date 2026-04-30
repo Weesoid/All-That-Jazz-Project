@@ -77,3 +77,4 @@ scale_stats = {
 ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 max_turn_charges = 1
 riposte_effect = SubResource("Resource_il5bs")
+rebuke_chance = 0.0

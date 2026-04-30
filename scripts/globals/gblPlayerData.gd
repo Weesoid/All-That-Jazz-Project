@@ -460,6 +460,7 @@ func saveData(save_data: Array):
 				combatant.stat_point_allocations,
 				combatant.traits,
 				combatant.file_references,
+				combatant.temp_modifier_tracker
 			)
 	
 	save_data.append(data)

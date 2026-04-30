@@ -9,6 +9,7 @@ class_name CombatBarsMini
 @onready var prompts = $Marker2D
 @onready var health_bar_fader = $HealthBarFader
 @onready var action_texture = $Selector/ActionTexture
+@onready var strain_bar = $StrainBar
 var attached_combatant: ResPlayerCombatant
 #var added_lingers = []
 var previous_value
@@ -51,14 +52,28 @@ func pulseActionTexture(reset_view:bool=true):
 		await tween.finished
 		setActionTexture(action_texture.texture)
 
-func manualCallIndicator(combatant: ResCombatant, text: String, animation: String):
-	if attached_combatant == combatant:
-		var secondary_indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
-		var y_placement = 0
-		for child in prompts.get_children():
-			y_placement -= 8
-		prompts.add_child(secondary_indicator)
-		secondary_indicator.playAnimation(prompts.global_position+Vector2(0,y_placement), text, animation)
+func manualCallIndicator(combatant: ResCombatant, text: String, animation: String,top_position:bool=false):
+	if attached_combatant == combatant and prompts.visible:
+		var range = 8
+		var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
+		var final_pos:Vector2
+		
+		if top_position:
+			final_pos = Vector2(0,-range)
+		else:
+			final_pos = Vector2(range,randf_range(-range,range))
+		
+		indicator.modulate = Color.TRANSPARENT
+		prompts.add_child(indicator)
+		if top_position:
+			indicator.global_position += final_pos
+		indicator.modulate = Color.WHITE
+		indicator.playAnimation(
+			indicator.global_position+final_pos,
+			text, 
+			animation
+			)
+		#indicator_direction *= -1
 
 func _process(_delta):
 	if attached_combatant == null:

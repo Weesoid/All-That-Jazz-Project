@@ -12,28 +12,30 @@
 [resource]
 script = ExtResource("7_rlsd5")
 ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ic5dt"), ExtResource("2_gtfo3"), ExtResource("3_6d41e")])
-base_temperment = Array[String]([])
+base_traits = Array[String]([])
 follower_texture = ExtResource("4_2iyqn")
 mandatory = false
 rest_sprite = ExtResource("7_i8uri")
 stat_multiplier = 0.01
 talents = Array[String]([])
+max_strain = 3
 name = "John Huck"
 packed_scene = ExtResource("6_csx4u")
 bullet_texture = ExtResource("3_8yngu")
 description = "FODDER A"
 stat_values = {
-"accuracy": 0.95,
+"accuracy": 0.97,
 "crit": 0.05,
 "crit_dmg": 1.5,
 "damage": 4,
-"defense": 0.68,
+"defense": 0.0,
 "dmg_modifier": 1.0,
-"dmg_variance": 0.25,
+"dmg_variance": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
 "health": 20,
 "resist": 0.05,
+"resolve": 3,
 "speed": 1
 }
 scale_stats = {
@@ -52,3 +54,4 @@ scale_stats = {
 }
 ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 max_turn_charges = 1
+rebuke_chance = 0.0

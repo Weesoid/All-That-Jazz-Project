@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResCampItem" load_steps=5 format=3 uid="uid://dorqpf5we3uoi"]
+[gd_resource type="Resource" script_class="ResCampItem" load_steps=6 format=3 uid="uid://dorqpf5we3uoi"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="1_8e2li"]
-[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="5_276r5"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatModifier.gd" id="2_hxptb"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCamp.gd" id="6_r1feb"]
 
 [sub_resource type="Resource" id="Resource_6412b"]
@@ -15,15 +15,41 @@ sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
+[sub_resource type="Resource" id="Resource_ulp6k"]
+script = ExtResource("2_hxptb")
+stat_modifications = {
+"accuracy": 0.0,
+"crit": 0.0,
+"crit_dmg": 0.0,
+"damage": 99,
+"defense": 0.0,
+"dmg_modifier": 0.0,
+"dmg_variance": 0.0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 0,
+"resist": 0.0,
+"resolve": 0,
+"speed": 0
+}
+duration_type = 1
+duration = 2
+stacks = false
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
 [resource]
 script = ExtResource("6_r1feb")
-effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_6412b")])
-party_wide = true
+effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_6412b"), SubResource("Resource_ulp6k")])
+strain = 3
+party_wide = false
 max_stack = 6
-barter_item = false
+barter_item = null
 name = "Pure Heal"
-icon = ExtResource("5_276r5")
-description = ""
-value = 0
-mandatory = false
-parent_item = ""
+description = null
+value = null
+mandatory = null
+parent_item = null
