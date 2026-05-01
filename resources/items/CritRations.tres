@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ResCampItem" load_steps=9 format=3 uid="uid://bj2a6hj115868"]
+[gd_resource type="Resource" script_class="ResCampItem" load_steps=10 format=3 uid="uid://bj2a6hj115868"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_cn55c"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCamp.gd" id="3_rxa8f"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectCustomDamage.gd" id="3_x0wcf"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatModifier.gd" id="4_0wxiw"]
 [ext_resource type="Resource" uid="uid://47lduof3c088" path="res://resources/combat/status_effects/CriticalEye.tres" id="4_8wdhu"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="5_8lt7w"]
 
 [sub_resource type="Resource" id="Resource_lnm2y"]
 script = ExtResource("3_x0wcf")
@@ -70,6 +71,7 @@ party_wide = true
 max_stack = 16
 barter_item = null
 name = "Crit Rations"
+icon = ExtResource("5_8lt7w")
 description = null
 value = null
 mandatory = null

@@ -133,3 +133,13 @@ func _on_health_bar_value_changed(value):
 func _on_selector_pressed():
 	if action_texture.texture != null:
 		pulseActionTexture()
+
+func fadeStrainBar(fade_to: Color):
+	create_tween().tween_property(strain_bar, 'modulate',fade_to,0.25)
+
+
+func _on_strain_bar_value_changed(value):
+	if value > 0:
+		fadeStrainBar(Color.WHITE)
+	elif value <= 0:
+		fadeStrainBar(Color.TRANSPARENT)

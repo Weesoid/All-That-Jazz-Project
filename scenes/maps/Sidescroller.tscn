@@ -289,7 +289,6 @@ texture = ExtResource("24_qqfd5")
 dialogue_resource = ExtResource("25_m8hhu")
 
 [node name="GenericNPC" parent="." instance=ExtResource("21_cchwb")]
-visible = false
 position = Vector2(57, -48)
 texture = ExtResource("22_b8a2s")
 

@@ -202,10 +202,14 @@ func applyStatModifications(modifier_id: String):
 			for stat in stat_modifiers[modifier]:
 				if stat == 'health':
 					updateHealth(stat_modifiers[modifier][stat])
+				elif stat == 'resolve':
+					updateResolve(stat_modifiers[modifier][stat])
 				elif stat_values.has(stat):
 					stat_values[stat] += stat_modifiers[modifier][stat]
 				else:
 					stat_values[stat] = stat_modifiers[modifier][stat]
+				#if stat == 'resolve':
+				#	CombatGlobals.healResolve(self,stat_modifiers[modifier][stat])
 			return
 
 # TODO?  Update handling. Replace outdated modifiers based on modifier_id?
@@ -247,9 +251,24 @@ func removeTemporaryModifier(key:String):
 		removeStatModification(key)
 	if temp_modifier_tracker.has(key):
 		temp_modifier_tracker.erase(key)
-	if item_strain_tracker.has(key):
-		recoverStrain(item_strain_tracker[key])
-		item_strain_tracker.erase(key)
+	
+	if !key.contains('|'): return
+	
+	var strain_key = key.split('|')[1]
+	if !isStrainItemActive(key) and item_strain_tracker.has(strain_key):
+		recoverStrain(item_strain_tracker[strain_key])
+		item_strain_tracker.erase(strain_key)
+
+func isStrainItemActive(key:String):
+	if key.contains('|'):
+		key = key.split("|")[1]
+	for modifier in stat_modifiers.keys():
+		if !modifier.contains('|'): 
+			continue
+		if modifier.split('|')[1] == key:
+			return true
+	
+	return false
 
 func addStrain(key:String,strain:int):
 	stat_values['strain'] += strain
@@ -260,14 +279,22 @@ func addStrain(key:String,strain:int):
 
 func clearStrain():
 	for key in item_strain_tracker.keys():
-		if key.contains('tempmod/'):
+		if isStrainItemActive(key):
+			print('strain item %s active, skipping' % key)
 			continue
+		print('recovering strain from: '+key)
 		recoverStrain(item_strain_tracker[key])
 
 func recoverStrain(amount:int):
 	stat_values['strain'] -= amount
 	if stat_values['strain'] < 0: 
 		stat_values['strain'] = 0
+
+func loadStrain():
+	print( self,': ',item_strain_tracker)
+	for key in item_strain_tracker.keys():
+		print(self, ' straining ', key)
+		stat_values['strain'] += item_strain_tracker[key]
 
 func getTemporaryModifierKeys(type:String='/'):
 	assert(type == 'turns' or type == 'battle' or type == '/', 'Type can only be: "turns" or "battle" !')
@@ -285,6 +312,8 @@ func removeStatModification(modifier_id: String):
 			for stat in stat_modifiers[modifier]:
 				if stat == 'health':
 					updateHealth(-stat_modifiers[modifier][stat])
+				elif stat == 'resolve':
+					updateResolve(-stat_modifiers[modifier][stat])
 				else:
 					stat_values[stat] -= stat_modifiers[modifier][stat]
 			stat_modifiers.erase(modifier)
@@ -295,6 +324,13 @@ func updateHealth(amount: int):
 	base_stat_values['health'] += amount
 	if stat_values['health'] >= base_stat_values['health'] or percent_health == 1:
 		stat_values['health'] = base_stat_values['health']
+
+func updateResolve(amount: int, heal_resolve:bool=true):
+	base_stat_values['resolve'] += amount
+	if base_stat_values['resolve'] < stat_values['resolve']:
+		stat_values['resolve'] = base_stat_values['resolve']
+	if amount > 0 and heal_resolve:
+		CombatGlobals.healResolve(self, amount)
 
 func clearAbilityMutations():
 	for ability in ability_set.filter(func(ability): return ability.mutated):
@@ -309,7 +345,6 @@ func applyStoredStatusEffects():
 		CombatGlobals.addStatusEffect(self, effect)
 		stored_status_effects.erase(effect)
 
-# TODO: Add persist tag that won't be removed on apply
 func storeStatusEffect(effect: ResStatusEffect, persistent:bool=false):
 	if persistent:
 		stored_status_effects.append(effect.getFilename()+'/persist')

@@ -1,4 +1,3 @@
-# TODO: Rn, traits and temp mods aren't properly unified (syntax wisse), fix it
 extends VBoxContainer
 
 enum TraitTypes {

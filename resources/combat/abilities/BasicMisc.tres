@@ -50,7 +50,7 @@ stat_modifications = {
 }
 duration_type = 0
 duration = 1
-stacks = true
+stacks = false
 condition = ""
 is_combo_effect = false
 sound_effect = ""

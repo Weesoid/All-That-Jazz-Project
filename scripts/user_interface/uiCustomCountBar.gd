@@ -1,7 +1,8 @@
 extends Control
 class_name CustomCountBar
 
-@onready var container = $HBoxContainer
+@onready var h_container = $HBoxContainer
+@onready var v_container = $VBoxContainer
 @export var value: int = 0
 @export var max_value: int = 0
 @export var show_max: bool = true
@@ -9,10 +10,18 @@ class_name CustomCountBar
 @export var empty_circle: Texture = preload("res://images/sprites/circle_empty.png")
 @export var filled_circle: Texture = preload("res://images/sprites/circle_filled.png")
 @export var hide_empty:bool=false
+@export var vertical:bool=false
+var container: Container
 var filled_modulate:Color = Color.WHITE
 var empty_modulate:Color = Color.WHITE
+signal value_changed(value)
 
 func _ready():
+	if vertical:
+		container = v_container
+	else:
+		container = h_container
+	
 	if !process:
 		process_mode = Node.PROCESS_MODE_DISABLED
 
@@ -34,6 +43,7 @@ func valuesCorrect()-> bool:
 func setValue(p_value):
 	value = p_value
 	updateValue()
+	value_changed.emit(value)
 
 func updateValue():
 	var filled = 0

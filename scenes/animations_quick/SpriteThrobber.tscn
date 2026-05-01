@@ -35,10 +35,10 @@ tracks/0/path = NodePath("Sprite2D:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1.2, 1.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Color(0.878431, 0, 0, 0.478431), Color(0.878431, 0, 0, 0.784314), Color(0.878431, 0, 0, 0.478431), Color(0.878431, 0, 0, 0.784314), Color(0.878431, 0, 0, 0.478431), Color(0.878431, 0, 0, 0), Color(0.878431, 0, 0, 0)]
+"values": [Color(0.878431, 0, 0, 0.478431), Color(0.878431, 0, 0, 0.784314), Color(0.878431, 0, 0, 0.478431), Color(0.878431, 0, 0, 0.784314), Color(0.878431, 0, 0, 0.478431), Color(0.878431, 0, 0, 0.254902)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4w5q2"]

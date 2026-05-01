@@ -32,7 +32,6 @@ var talent_list = {}
 var traits: Array[String] = []
 var base_health: int
 var initialized = false
-var max_strain:int=4
 
 func loadTalents():
 	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
@@ -82,6 +81,8 @@ func removeTalent(talent:ResTalent):
 		active_talents.erase(talent)
 	
 	file_references['active_talents'].erase(talent)
+
+var strain_loaded=false
 
 func initializeCombatant(do_scene:bool=true):
 	if do_scene:

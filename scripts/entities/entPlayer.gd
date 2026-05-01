@@ -54,6 +54,7 @@ signal phased
 signal landed
 
 func _ready():
+	print('Test1'.contains('Test'))
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	animation_tree.active = true
 	

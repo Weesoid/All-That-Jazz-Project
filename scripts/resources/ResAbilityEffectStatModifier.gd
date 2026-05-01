@@ -36,7 +36,10 @@ func getModifications()-> Dictionary:
 	return out
 
 func _to_string():
-	var out = CombatGlobals.getStatListString(stat_modifications)
+	var out = stringifyCondition()
+	if out != '':
+		out += '\n'
+	out += CombatGlobals.getStatListString(stat_modifications)
 	out += str(duration)
 	
 	if duration_type == DurationType.TURNS: 

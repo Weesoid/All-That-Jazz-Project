@@ -23,9 +23,9 @@ func _physics_process(delta):
 		move_and_slide()
 
 func setSprite(remove_sprite:bool=false):
-	if remove_sprite:
+	if remove_sprite and !Engine.is_editor_hint():
 		sprite.texture = null
-	else:
+	elif !Engine.is_editor_hint():
 		sprite.texture = texture
 		sprite.position.y = -(sprite.texture.get_height()/2)
 

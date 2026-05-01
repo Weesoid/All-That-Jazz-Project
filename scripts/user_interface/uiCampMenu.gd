@@ -51,9 +51,6 @@ func _ready():
 	cam_default_pos = OverworldGlobals.player.player_camera.global_position
 	rest_button.disabled = PlayerGlobals.rested and save_point.mind_rested
 	fillCampItemContainer()
-	#tweenButtons(camp_item_container.get_children())
-	#tweenButtons($CampBar/RestOptions.get_children())
-	#tweenButtons($CampBar/MainBar/OtherActions.get_children())
 	roster.added_character.connect(addRestSprite)
 	roster.removed_character.connect(removeRestSprite)
 	
@@ -71,6 +68,7 @@ func _ready():
 					updateCombatants()
 					pulseButtonActionTexture(mini_bar, camp_item.party_wide)
 					mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
+
 					if !isCampItemValid(mini_bar.attached_combatant):
 						setButtonActionTexture(null)
 				elif mode == Mode.ROSTER:

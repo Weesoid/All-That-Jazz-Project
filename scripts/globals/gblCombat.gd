@@ -141,7 +141,11 @@ func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResC
 	#print('Outted: ',conditions)
 	return checkConditions(conditions, target)
 
-func checkConditions(conditions: Array, target: ResCombatant)->bool:
+func checkConditions(conditions, target: ResCombatant)->bool:
+	if conditions is String:
+		conditions = conditions.split('/')
+	if conditions[0] == '':
+		return true
 	#print('zugley: ',conditions)
 	#print(conditions)
 	for condition in conditions:
@@ -178,7 +182,6 @@ func checkConditions(conditions: Array, target: ResCombatant)->bool:
 			'combo!': # ex. crit/combo!
 				return target.hasStatusEffect('Combo')
 			'%': # ex. crit/%:0.50
-				print('that')
 				return randomRoll(float(condition_data[1]))
 	
 	#assert(false,'Incorrect format! '+str(conditions))
@@ -286,13 +289,12 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			doRebuke(target)
 		else:
 			target.stat_values['resolve'] -= 1
-			if target is ResPlayerCombatant: addInjury(target, 1.0-target.stat_values['resist'])
+			addInjury(target, 1.0-target.stat_values['resist'])
 	elif target.isDead() and target.resolve_gate:
 		playBrinkEffects(target)
 		#OverworldGlobals.freezeFrame(0.3, 0.5)
 		target.resolve_gate=false
-		if target is ResPlayerCombatant:
-			addInjury(target, 1.0-target.stat_values['resist'])
+		addInjury(target, 1.0-target.stat_values['resist'])
 	if target.isDead() and bonus_stats.has('is_dot'): 
 		target.resolve_dot_shield = true
 	
@@ -354,7 +356,7 @@ func doRebuke(target: ResCombatant):
 	calculatePercentHealing(target,1.0,false)
 	getCombatScene().rebuking=false
 
-func addInjury(combatant: ResPlayerCombatant, chance:float):
+func addInjury(combatant: ResCombatant, chance:float):
 	if !randomRoll(chance):
 		manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['up-bb']+'Injury Resisted!', 'Show',true)
 		return
@@ -368,12 +370,22 @@ func addInjury(combatant: ResPlayerCombatant, chance:float):
 		'Infected Wound': {'resist':-0.03}
 	}
 	var chosen_injury = injuries.keys().pick_random()
-	combatant.addTrait(
-		chosen_injury, 
-		injuries[chosen_injury],
-		{'injury':true,'append':true},
-		' [img %s]res://images/status_icons/injury.png[/img]'%SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
-		)
+	
+	if combatant is ResPlayerCombatant:
+		combatant.addTrait(
+			chosen_injury, 
+			injuries[chosen_injury],
+			{'injury':true,'append':true},
+			' [img %s]res://images/status_icons/injury.png[/img]'%SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
+			)
+	else:
+		combatant.addTemporaryModifer(
+			chosen_injury,
+			1,
+			injuries[chosen_injury],
+			true,
+			true
+			)
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
@@ -446,6 +458,7 @@ func valueVariate(value, percent_variance: float):
 
 func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, show_indicator:bool=false,append_indiactor:String=''):
 	var change_relevant:bool=false
+	var stats_added = stat_modifications.duplicate()
 	if append_stat and target.stat_modifiers.has(modifier_id):
 		stat_modifications = appendStatModifications(stat_modifications, target.stat_modifiers[modifier_id])
 		change_relevant=true
@@ -457,7 +470,7 @@ func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_i
 	target.applyStatModifications(modifier_id)
 	
 	if (inCombat() or OverworldGlobals.player.camping) and show_indicator and change_relevant:
-		var string_stats = CombatGlobals.getStatListString(stat_modifications).split('\n')
+		var string_stats = CombatGlobals.getStatListString(stats_added).split('\n')
 		for stat_message in string_stats:
 			var mes = stat_message.replace('[/color]','')
 			if mes == '': continue

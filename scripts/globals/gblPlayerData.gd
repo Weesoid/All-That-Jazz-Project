@@ -460,7 +460,8 @@ func saveData(save_data: Array):
 				combatant.stat_point_allocations,
 				combatant.traits,
 				combatant.file_references,
-				combatant.temp_modifier_tracker
+				combatant.temp_modifier_tracker,
+				combatant.item_strain_tracker
 			)
 	
 	save_data.append(data)
@@ -498,10 +499,7 @@ func loadData(save_data: PlayerSaveData):
 			if charm != null:
 				charm.updateItem()
 				charm.equip(combatant)
-		#combatant.addTrait('Criticalium', {'crit':0.25})
-		#combatant.addTrait('Criticalium', {'accuracy':0.25})
-		#combatant.addTrait('My Custom Disease', {'accuracy':-0.25},{'disease':true})
-		#combatant.removeTrait('Criticalium')
+		combatant.loadStrain()
 		combatant.initializeCombatant(false)
 		combatant.updateCombatant(save_data)
 		combatant.initializeCombatant(false)

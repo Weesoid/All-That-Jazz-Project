@@ -37,8 +37,9 @@ func _ready():
 	done_loading_map = true
 	for group in getPatrolGroups():
 		group.spawn()
-	for save_point in getSavePoints():
-		save_point.loadCombatantSquad()
+	# TODO Fix bug here, figure out what happened, save file 1
+	#for save_point in getSavePoints():
+	#	save_point.loadCombatantSquad()
 
 #func _on_node_removed(node: Node):
 #	await get_tree().process_frame
