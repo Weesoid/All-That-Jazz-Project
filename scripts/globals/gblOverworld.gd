@@ -856,7 +856,7 @@ func isPlayerSquadDead():
 func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
-		member.stat_values['health'] -= int(CombatGlobals.useDamageFormula(member, damage))
+		member.stat_values['health'] -= int(damage)
 		if !lethal and member.isDead():
 			member.stat_values['health'] = 1
 		if member.isDead():
@@ -874,12 +874,12 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 		await get_tree().create_timer(0.25).timeout
 		showGameOver()
 
+# Damage combatant out of combat
 func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:bool=true,lethal:bool=false):
 	if combatant.isDead():
 		return
 	OverworldGlobals.player.player_camera.shake(15.0,10.0)
-	if use_damage_formula:
-		damage = int(CombatGlobals.useDamageFormula(combatant, damage))
+	damage = int(damage)
 	
 	combatant.stat_values['health'] -= damage
 	if !lethal and combatant.isDead():
@@ -888,23 +888,6 @@ func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:
 		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	CombatGlobals.manual_call_indicator.emit(combatant, '[color=red]'+str(damage), 'Damage')
 	playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
-
-#func addLingerEffect(combatant: ResCombatant, effect):
-#	if effect is ResStatusEffect:
-#		effect = effect.resource_path.get_file().replace('.tres','')
-#	if effect == '':
-#		return
-#
-#	var status_effect:ResStatusEffect = CombatGlobals.loadStatusEffect(effect)
-#	if combatant.lingering_effects.has(effect):
-#		return false
-#	else:
-#		if status_effect.getStatusModiferEffect() != null and combatant is ResPlayerCombatant:
-#			combatant.temperment.append(CombatGlobals.getTempermentModiferID(status_effect, status_effect.getStatusModiferEffect().status_change))
-#			combatant.applyTemperments()
-#
-#		combatant.lingering_effects.append(effect)
-#		return true
 
 func isPlayerAlive()-> bool:
 	for combatant in getCombatantSquad('Player'):

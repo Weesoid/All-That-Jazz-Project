@@ -9,7 +9,7 @@ enum TraitTypes {
 	INJURY
 }
 
-@onready var trait_container = $Temperment/TraitContainer
+@onready var trait_container = $TraitContainer
 var selected_combatant: ResPlayerCombatant
 
 func updateTraits(set_combatant: ResPlayerCombatant=null):

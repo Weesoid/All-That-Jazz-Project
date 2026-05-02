@@ -33,11 +33,11 @@ charges = 0
 can_target_self = false
 caster_position = {
 "max": 3,
-"min": 0
+"min": 1
 }
 target_position = {
 "max": 3,
-"min": 1
+"min": 0
 }
 tension_cost = 0
 instant_cast = false

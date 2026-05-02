@@ -1,282 +1,80 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmb8cwivijlnn"]
+[gd_scene load_steps=3 format=3 uid="uid://dmb8cwivijlnn"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeViewContainer.gd" id="1_4r38l"]
-[ext_resource type="PackedScene" uid="uid://ddd26djy4282k" path="res://scenes/user_interface/BarNotcher.tscn" id="2_jnjvq"]
-[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="2_l6363"]
-[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_orqiy"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 2
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-expand_margin_left = 1.0
-expand_margin_top = 1.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nfvwe"]
+[ext_resource type="PackedScene" uid="uid://g62bg1lxkua1" path="res://scenes/user_interface/StatLabel.tscn" id="2_e1jn3"]
 
 [node name="VFlowContainer" type="VBoxContainer"]
-offset_left = 4.0
-offset_right = 115.0
-offset_bottom = 182.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 alignment = 1
 script = ExtResource("1_4r38l")
 
-[node name="Health" type="HSplitContainer" parent="."]
+[node name="Health" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
-tooltip_text = "How much damage character can take before getting knocked out."
-split_offset = 50
-dragger_visibility = 1
+track_stat = "health"
+bar_base_stat_as_max = true
+highlight_increase = false
+highlight_decrease = false
 
-[node name="Label" type="Label" parent="Health"]
+[node name="Damage" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
-text = "Health
-"
-vertical_alignment = 1
-uppercase = true
+track_stat = "Damage"
+visual = 2
+label_style = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="Health"]
+[node name="Speed" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
-value = 50.0
+track_stat = "Speed"
+visual = 2
 
-[node name="HealthValues" type="Label" parent="Health/ProgressBar"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -39.5
-offset_top = -7.0
-offset_right = 39.5
-offset_bottom = 7.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-text = "100/100"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Brawn" type="HSplitContainer" parent="."]
+[node name="Crit" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
-tooltip_text = "Damage character deals."
-split_offset = 50
-dragger_visibility = 1
+track_stat = "Crit"
+visual = 2
+label_style = 1
 
-[node name="Label" type="Label" parent="Brawn"]
-layout_mode = 2
-text = "DAMAGE"
-vertical_alignment = 1
-uppercase = true
-
-[node name="ProgressBar" type="Label" parent="Brawn"]
-layout_mode = 2
-text = "10-19"
-horizontal_alignment = 1
-
-[node name="Grit" type="HSplitContainer" parent="."]
+[node name="CritDmg" parent="." instance=ExtResource("2_e1jn3")]
 visible = false
 layout_mode = 2
-tooltip_text = "Percentage resistance from damage (caps out at 70%)."
-split_offset = 50
-dragger_visibility = 1
+track_stat = "crit_dmg"
+visual = 2
+label_style = 1
+label_percentage_reduce_by_100 = true
 
-[node name="Label" type="Label" parent="Grit"]
-layout_mode = 2
-text = "ENDURANCE"
-vertical_alignment = 1
-uppercase = true
-
-[node name="ProgressBar" type="ProgressBar" parent="Grit"]
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
-
-[node name="BarNotcher" parent="Grit/ProgressBar" instance=ExtResource("2_jnjvq")]
-layout_mode = 1
-notch_thresholds = Array[float]([0.7])
-notch_color = Color(1, 1, 1, 0.74902)
-
-[node name="Handling" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Rank of weapon character can use."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Handling"]
-layout_mode = 2
-text = "Handling"
-vertical_alignment = 1
-uppercase = true
-
-[node name="CustomCountBar" parent="Handling" instance=ExtResource("2_l6363")]
-layout_mode = 2
-
-[node name="Hustle" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Determines turn order. Higher, the better."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Hustle"]
-layout_mode = 2
-text = "Speed"
-vertical_alignment = 1
-uppercase = true
-
-[node name="Value" type="Label" parent="Hustle"]
-layout_mode = 2
-text = "0"
-vertical_alignment = 1
-uppercase = true
-
-[node name="Accuracy" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Chance to land  abilities that can miss."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Accuracy"]
-layout_mode = 2
-text = "Accuracy"
-vertical_alignment = 1
-uppercase = true
-
-[node name="ProgressBar" type="ProgressBar" parent="Accuracy"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
-
-[node name="Resist" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Chance to resist negative effects."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Resist"]
-layout_mode = 2
-text = "Resist"
-vertical_alignment = 1
-uppercase = true
-
-[node name="ProgressBar" type="ProgressBar" parent="Resist"]
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
-
-[node name="Crit" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Chance to land criticals."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Crit"]
-layout_mode = 2
-text = "Crit"
-vertical_alignment = 1
-uppercase = true
-
-[node name="ProgressBar" type="ProgressBar" parent="Crit"]
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_1k67d")
-
-[node name="BarNotcher" parent="Crit/ProgressBar" instance=ExtResource("2_jnjvq")]
-layout_mode = 1
-threshold_percent = 0.33
-
-[node name="Dodge" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Critical damage multiplier."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Dodge"]
-layout_mode = 2
-text = "CRIT AMP."
-vertical_alignment = 1
-uppercase = true
-
-[node name="Value" type="Label" parent="Dodge"]
-layout_mode = 2
-text = "1.5"
-vertical_alignment = 1
-uppercase = true
-
-[node name="HealMult" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Heal multiplier."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="HealMult"]
-layout_mode = 2
-text = "HEAL AMP."
-vertical_alignment = 1
-
-[node name="Value" type="Label" parent="HealMult"]
-layout_mode = 2
-text = "0"
-vertical_alignment = 1
-uppercase = true
-
-[node name="Tolerance" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Item consumption limit."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Tolerance"]
-layout_mode = 2
-text = "STRAIN"
-vertical_alignment = 1
-uppercase = true
-
-[node name="CustomCountBar" parent="Tolerance" instance=ExtResource("2_l6363")]
-layout_mode = 2
-max_value = 4
-
-[node name="Resilience" type="HSplitContainer" parent="."]
-layout_mode = 2
-tooltip_text = "Hits before getting knocked out."
-split_offset = 50
-dragger_visibility = 1
-
-[node name="Label" type="Label" parent="Resilience"]
-layout_mode = 2
-text = "Resolve"
-vertical_alignment = 1
-uppercase = true
-
-[node name="CustomCountBar" parent="Resilience" instance=ExtResource("2_l6363")]
-layout_mode = 2
-value = 3
-max_value = 3
-
-[node name="AttributeView" type="HBoxContainer" parent="."]
+[node name="HealMult" parent="." instance=ExtResource("2_e1jn3")]
 visible = false
 layout_mode = 2
+track_stat = "heal_mult"
+visual = 2
+label_style = 1
+label_percentage_reduce_by_100 = true
 
-[node name="Panel" type="Panel" parent="AttributeView"]
+[node name="Resist" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_nfvwe")
+track_stat = "Resist"
+visual = 2
+label_style = 1
 
-[node name="Abilities" type="RichTextLabel" parent="AttributeView"]
+[node name="Handling" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("3_orqiy")
-bbcode_enabled = true
+track_stat = "Handling"
+visual = 1
+count_bar_max_value = 4
 
-[node name="Debug" type="Label" parent="AttributeView"]
-z_index = 101
+[node name="Strain" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
-theme = ExtResource("3_orqiy")
-theme_override_font_sizes/font_size = 8
-autowrap_mode = 3
+track_stat = "strain"
+visual = 1
+count_bar_max_value = 4
+highlight_decrease = false
+
+[node name="Resolve" parent="." instance=ExtResource("2_e1jn3")]
+layout_mode = 2
+track_stat = "resolve"
+visual = 1
+bar_base_stat_as_max = true

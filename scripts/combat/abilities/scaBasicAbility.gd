@@ -18,11 +18,11 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await doAttackAnimations(caster, target, ability, effect)
 		elif effect is ResCustomDamageEffect:
 			if effect.cast_animation != '': await caster.doAnimation(effect.cast_animation)
-			await applyEffects(caster, target, ability)
+			await applyAbilityEffects(caster, target, ability)
 		elif effect is ResApplyStatusEffect:
 			if caster != null:
 				await caster.doAnimation(effect.cast_animation)
-			await applyEffects(caster, target, ability)
+			await applyAbilityEffects(caster, target, ability)
 		elif effect is ResMoveEffect:
 			if effect.target == effect.Target.CASTER:
 				target = caster
@@ -34,7 +34,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, -1, true, effect.move_count)
 		elif effect is ResHealEffect:
 			await caster.doAnimation(effect.cast_animation)
-			await applyEffects(caster, target, ability)
+			await applyAbilityEffects(caster, target, ability)
 		elif effect is ResCommandAbilityEffect:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 			await CombatGlobals.get_tree().create_timer(0.5).timeout
@@ -53,12 +53,11 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			target.get_node('CombatBars').show()
 		elif effect is ResAddTPEffect:
 			CombatGlobals.addTension(effect.add_amount)
-			await applyEffects(caster, target, ability)
+			await applyAbilityEffects(caster, target, ability)
 		elif ability.current_effect is ResChangeIdleEffect and target.temporary_idle != ability.current_effect.idle_name:
 			target.temporary_idle = ability.current_effect.idle_name
 			target.playIdle()
 		elif ability.current_effect is ResStatModifierEffect:
-			print('zaza')
 			target.combatant_resource.addTemporaryModifer(
 				ability.name, 
 				ability.current_effect.duration,
@@ -72,8 +71,8 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 	await CombatGlobals.getCombatScene().get_tree().process_frame
 	CombatGlobals.ability_finished.emit()
 
-# Determine if target(s) is single or multi
-static func applyEffects(caster: CombatantScene, target, ability: ResAbility):
+# Determine if target(s) are single or multi then apply ability effects
+static func applyAbilityEffects(caster: CombatantScene, target, ability: ResAbility):
 	if ability.current_effect == null:
 		ability.current_effect = ability.basic_effects[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
 	
@@ -101,17 +100,17 @@ static func playAnimation(ability: ResAbility, target):
 # Combat values calculations (damage, healing, etc.) APPLIES ON ATTACK HITBOX
 static func applyToTarget(caster, target, ability: ResAbility):
 	if ability.current_effect is ResDamageEffect:
-		if CombatGlobals.calculateDamage(
+		CombatGlobals.calculateDamage(
 				caster, 
-				target, ability.current_effect.damage_modifier, 
-				ability.current_effect.can_miss, 
+				target, 
+				ability.current_effect.damage_modifier, 
 				ability.current_effect.can_crit, 
 				'', 
 				ability.current_effect.indicator_bb,
 				ability.current_effect.bonus_stats
-				):
-				if ability.current_effect.plant_self_on_combo and target.combatant_resource.hasStatusEffect('Combo'):
-					ability.current_effect.do_not_return_pos = true
+				)
+		if ability.current_effect.plant_self_on_combo and target.combatant_resource.hasStatusEffect('Combo'):
+			ability.current_effect.do_not_return_pos = true
 		
 		if (target.combatant_resource.hasStatusEffect('Combo') and ability.current_effect.is_combo_effect) and !ability.current_effect.plant_self_on_combo:
 			#CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
@@ -130,7 +129,6 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			caster, 
 			ability.current_effect.can_crit, 
 			ability.current_effect.crit_chance, 
-			ability.current_effect.can_miss, 
 			ability.current_effect.variation, 
 			ability.current_effect.trigger_on_hits, 
 			'', 
@@ -158,7 +156,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			target.combatant_resource, 
 			ability.current_effect.damage, 
 			caster.combatant_resource, 
-			true, 
+			#true, 
 			-1, 
 			false, 
 			caster.combatant_resource.stat_values['dmg_variance'],
@@ -179,9 +177,9 @@ static func applyToTarget(caster, target, ability: ResAbility):
 						target.combatant_resource, 
 						ability.current_effect.damage, 
 						caster.combatant_resource, 
-						true, 
-						-1, 
 						false, 
+						-1, 
+					#	false, 
 						caster.combatant_resource.stat_values['dmg_variance'], 
 						false,
 						'', 

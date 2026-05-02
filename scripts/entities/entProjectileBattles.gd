@@ -12,12 +12,12 @@ func _on_body_entered(body):
 		else:
 			body.doAnimation('Cast_Melee')
 		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
-		hit_script.applyEffects(shooter, body, ability)
+		hit_script.applyAbilityEffects(shooter, body, ability)
 		queue_free()
 	elif body is CombatantScene and !CombatGlobals.isSameCombatantType(shooter, body) and target == null:
-		hit_script.applyEffects(shooter, body, ability)
+		hit_script.applyAbilityEffects(shooter, body, ability)
 	elif target != null and body == target:
-		hit_script.applyEffects(shooter, body, ability)
+		hit_script.applyAbilityEffects(shooter, body, ability)
 		queue_free()
 
 func _exit_tree():

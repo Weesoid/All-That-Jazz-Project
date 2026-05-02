@@ -34,14 +34,14 @@ func _process(_delta):
 		hp_val.value = combatant.stat_values['health']
 		hp_val.max_value = combatant.base_stat_values['health']
 		brawn_val.text = str('%s - %s' % [calcDamage('min'),calcDamage('max')])
-		grit_val.value = combatant.stat_values['defense'] * 100
+#		grit_val.value = combatant.stat_values['defense'] * 100
 		handling_val.max_value = 4
 		handling_val.value = combatant.stat_values['handling']
 		if combatant.stat_values['speed'] >= -99:
 			hustle_val.text = str(combatant.stat_values['speed'])
 		else:
 			hustle_val.text = 'IMMOBILIZED'
-		acc_val.value = combatant.stat_values['accuracy'] * 100
+		#acc_val.value = combatant.stat_values['accuracy'] * 100
 		crit_d_val.text = str(combatant.stat_values['crit_dmg'])
 		crit_val.value = combatant.stat_values['crit'] * 100
 		resist_val.value = combatant.stat_values['resist'] * 100
@@ -56,10 +56,10 @@ func _process(_delta):
 	
 		#highlightModifiedStats(hp_val, 'health')
 		highlightModifiedStats(brawn_val, 'damage')
-		highlightModifiedStats(grit_val, 'defense')
+#		highlightModifiedStats(grit_val, 'defense')
 		highlightModifiedStats(handling_val, 'handling')
 		highlightModifiedStats(hustle_val, 'speed')
-		highlightModifiedStats(acc_val, 'accuracy')
+		#highlightModifiedStats(acc_val, 'accuracy')
 		highlightModifiedStats(crit_d_val, 'crit_dmg')
 		highlightModifiedStats(crit_val, 'crit')
 		highlightModifiedStats(resist_val, 'resist')

@@ -3,8 +3,8 @@ static func applyEffects(caster: CombatantScene , target: CombatantScene, _abili
 		caster, 
 		target, 
 		-0.75,
+		#true,
 		true,
-		false,
 		'',
 		'',
 		{'status_effect': 'Knockback'}

@@ -126,7 +126,7 @@ func shootProjectile(target: CombatantScene, ability: ResAbility):
 
 func _on_hit_box_body_entered(body):
 	if hit_script != null and body != self and body is CombatantScene and !CombatGlobals.isSameCombatantType(self, body): 
-		hit_script.applyEffects(self, body, CombatGlobals.getCombatScene().selected_ability)
+		hit_script.applyAbilityEffects(self, body, CombatGlobals.getCombatScene().selected_ability)
 
 func _to_string():
 	return combatant_resource.name

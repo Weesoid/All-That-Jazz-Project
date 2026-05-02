@@ -17,7 +17,11 @@ var ui_colors: Dictionary = {
 	'up-bb': '[color=GOLD]',
 	'down-bb': '[color=STEEL_BLUE]',
 	'special-bb':'[color=TURQUOISE]',
-	'unique-bb':'[color=ORANGE]'
+	'unique-bb':'[color=ORANGE]',
+	'up-bb-nobracket': 'color=GOLD',
+	'down-bb-nobracket': 'color=STEEL_BLUE',
+	'special-bb-nobracket':'color=TURQUOISE',
+	'unique-bb-nobracket':'color=ORANGE'
 }
 var bb_line:String = '\n[color=transparent]a[/color][img]res://images/sprites/bb_line.png[/img][color=transparent]a[/color]\n'
 

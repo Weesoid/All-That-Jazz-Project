@@ -17,7 +17,7 @@ damage_modifier = 1.0
 can_miss = true
 can_crit = true
 bonus_stats = {
-"status_effect": "Poison^{\"max_duration\":6,\"be_tickdmg\":{\"damage\":9}}"
+"status_effect": "Poison^{\"max_duration\":1,\"be_tickdmg\":{\"damage\":1}}"
 }
 return_pos = true
 indicator_bb = ""
@@ -63,5 +63,5 @@ target_position = {
 "min": 0
 }
 tension_cost = 0
-instant_cast = true
+instant_cast = false
 required_level = 0

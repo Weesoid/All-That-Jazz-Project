@@ -37,21 +37,21 @@ var trait_presets: Dictionary = {
 	'acute': {'crit':0.02},
 	'hard_hitter': {'crit_dmg': 0.1},
 	'mighty': {'damage': 4},
-	'stalwart': {'defense': 0.05},
+	#'stalwart': {'defense': 0.05},
 	'resilient': {'resist': 0.05},
-	'keen': {'accuracy':0.02},
+	#'keen': {'accuracy':0.02},
 	'limber': {'heal_mult':0.05},
 	
 	# Quirks
 	'smartass': {'handling': 2, 'damage': -4},
-	'frantic': {'speed': 3, 'accuracy': -0.1},
-	'daredevil': {'crit':0.1, 'accuracy':-0.1},
+	#'frantic': {'speed': 3, 'accuracy': -0.1},
+	#'daredevil': {'crit':0.1, 'accuracy':-0.1},
 	'crude': {'crit_dmg': 0.25, 'crit':-0.2},
-	'reckless': {'damage': 4, 'defense': -0.15},
-	'headstrong': {'defense': 0.15, 'damage': -4},
+	#'reckless': {'damage': 4, 'defense': -0.15},
+	#'headstrong': {'defense': 0.15, 'damage': -4},
 	'hardened': {'resist': 0.35, 'crit': -0.1},
-	'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_dmg': -0.25},
-	'selfish': {'heal_mult':0.25, 'defense': -0.2},
+	#'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_dmg': -0.25},
+	#'selfish': {'heal_mult':0.25, 'defense': -0.2},
 	
 	# Debuffs
 	'heavy_handed': {'handling': -1},
@@ -59,9 +59,9 @@ var trait_presets: Dictionary = {
 	'bad_luck': {'crit':-0.05},
 	'dud_hitter': {'crit_dmg': -0.25},
 	'wimpy': {'damage': -2},
-	'soft': {'defense': -0.1},
+	#'soft': {'defense': -0.1},
 	'sickly': {'resist': -0.05},
-	'oblivious': {'accuracy':-0.05},
+	#'oblivious': {'accuracy':-0.05},
 	'stubborn': {'heal_mult':-0.15}
 }
 
@@ -378,7 +378,7 @@ func generateMapEvent():
 			match random_event:
 				'combat_event': events['combat_event'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
 				'additional_enemies': events['additional_enemies'] = CombatGlobals.back_up_enemies.pick_random()
-				'patroller_effect': events['patroller_effect'] = ['CriticalEye','Riposte'].pick_random()
+				'patroller_effect': events['patroller_effect'] = ['CriticalEye'].pick_random()
 				'reward_item': events['reward_item'] = ResourceGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.unique).pick_random()
 				'bonus_loot': events['bonus_loot'] = {}
 				'bonus_experience': events['bonus_experience'] = 0
@@ -457,7 +457,7 @@ func saveData(save_data: Array):
 				#combatant.lingering_effects,
 				combatant.initialized,
 				combatant.stat_points,
-				combatant.stat_point_allocations,
+				#combatant.stat_point_allocations,
 				combatant.traits,
 				combatant.file_references,
 				combatant.temp_modifier_tracker,
@@ -494,7 +494,7 @@ func loadData(save_data: PlayerSaveData):
 			continue
 		save_data.combatant_save_data[combatant.resource_path].loadData(combatant)
 		await get_tree().process_frame
-		CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
+		#CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.charms.values():
 			if charm != null:
 				charm.updateItem()

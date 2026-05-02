@@ -2,7 +2,6 @@ extends ResCombatant
 class_name ResPlayerCombatant
 
 @export var ability_pool: Array[ResAbility]
-@export var guard_effect: ResStatusEffect = load("res://resources/combat/status_effects/Riposte.tres")
 @export var base_traits: Array[String] = []
 @export var follower_texture: Texture
 @export var mandatory = false
@@ -22,11 +21,6 @@ var charms = {
 	1: null,
 	2: null
 }
-var stat_point_allocations = {
-	'damage': 0, # Hmmm what to do....... Change to dmg_modifier!
-	'defense': 0,
-	'handling': 0
-} # Change to talent 
 var active_talents = {}
 var talent_list = {}
 var traits: Array[String] = []
@@ -95,7 +89,7 @@ func initializeCombatant(do_scene:bool=true):
 	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
 	if !stat_modifiers.has('base_rebuke'):
-		CombatGlobals.modifyStat(self, {'rebuke_chance':1.03},'base_rebuke')
+		CombatGlobals.modifyStat(self, {'rebuke_chance':0.25},'base_rebuke')
 	if !stat_values.has('strain'):
 		stat_values['strain']=0
 	if CombatGlobals.inCombat():
@@ -188,11 +182,6 @@ func getTraitsWithFlag(key:String):
 	
 	return out
 
-func scaleStats():
-	var stat_increase = {}
-	stat_increase['health'] = (base_health * (1 + ((PlayerGlobals.team_level-1)*0.1))) - base_health
-	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
-
 func updateCombatant(save_data: PlayerSaveData):
 	loadFileReferences()
 	var path = resource_path
@@ -224,16 +213,16 @@ func applyEquipmentModifications():
 	for charm in charms:
 		charm.applyStatModifications()
 
-func getAllocationModifier()-> Dictionary:
-	var out = stat_point_allocations.duplicate()
-	out['resist'] = out['defense']
-	for stat in out.keys():
-		if (stat == 'handling' or stat == 'damage') and out.has(stat):
-			out[stat] *= 1
-		elif stat == 'defense' and out.has(stat):
-			out['defense'] *= stat_multiplier
-			out['resist'] *= stat_multiplier
-	return out
+#func getAllocationModifier()-> Dictionary:
+#	var out = stat_point_allocations.duplicate()
+#	out['resist'] = out['defense']
+#	for stat in out.keys():
+#		if (stat == 'handling' or stat == 'damage') and out.has(stat):
+#			out[stat] *= 1
+#		elif stat == 'defense' and out.has(stat):
+#			out['defense'] *= stat_multiplier
+#			out['resist'] *= stat_multiplier
+#	return out
 
 func removeEquipmentModifications():
 	for charm in charms:
@@ -308,8 +297,15 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	return enemy.duplicate()
 
 func reset():
+	print('resetting!')
 	for modification in stat_modifiers.keys():
 		removeStatModification(modification)
+	for t in traits:
+		removeTrait(t)
+	for temp_effect in temp_modifier_tracker:
+		removeTemporaryModifier(temp_effect)
+#	for key in item_strain_tracker:
+#		ite
 	if base_health != null:
 		stat_values['health'] = base_health
 	ability_set = []
@@ -322,10 +318,13 @@ func reset():
 		1: null,
 		2: null
 	}
-	stat_point_allocations = {
-		'damage': 0,
-		'defense': 0,
-		'handling': 0
-	}
+#	stat_point_allocations = {
+#		'damage': 0,
+#		'defense': 0,
+#		'handling': 0
+#	}
 	traits = []
+	temp_modifier_tracker = {}
+	item_strain_tracker = {}
+	print(stat_modifiers)
 

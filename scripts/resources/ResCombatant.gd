@@ -9,32 +9,26 @@ class_name ResCombatant
 @export var stat_values = {
 	'health': 20,
 	'damage': 4,
-	'defense': 0.0,
 	'handling': 0,
 	'speed': 1,
-	'accuracy': 0.97,
 	'crit': 0.05,
 	'crit_dmg': 1.5,
 	'heal_mult': 1.0,
 	'resist': 0.05,
 	'dmg_variance': 0.1,
-	'dmg_modifier': 1.0,
 	'resolve': 3
 }
 @export var scale_stats: Dictionary = {
-	'health': true,
-	'damage': true,
-	'defense': true,
-	'handling': false,
-	'speed': true,
-	'accuracy': false,
-	'crit': false,
-	'crit_dmg': false,
-	'heal_mult': false,
-	'resist': false,
-	'dmg_variance': false,
-	'dmg_modifier': false,
-	'resolve': false
+	'health': 0.0,
+	'damage': 0.0,
+	'handling': 0.0,
+	'speed': 0.0,
+	'crit': 0.0,
+	'crit_dmg': 0.0,
+	'heal_mult': 0.0,
+	'resist': 0.0,
+	'dmg_variance': 0.0,
+	'resolve': 0.0
 }
 @export var ability_set: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var max_turn_charges = 1
@@ -44,7 +38,6 @@ var resolve_gate:bool=true
 var resolve_dot_shield:bool=false
 var turn_charges: int
 var stat_modifiers = {}
-# {"tempmodifier/turns:12_My Name!":6,"tempmodifier/battle:1_My Name!":1}
 var temp_modifier_tracker = {}
 var item_strain_tracker = {}
 var status_effects: Array[ResStatusEffect]
@@ -112,17 +105,21 @@ func act():
 	pass
 
 func scaleStats():
-	var stat_increase = {}
-	for stat in stat_values.keys():
-		if scale_stats[stat]: 
-			# Increase stat by 10% of the character's base stat value (value at lvl1) per level
-			# 20HP > 22 > 24
-			# 0.25 > 0.27 > 0.3
-			# 8 > 9 > 10
-			stat_increase[stat] = (base_stat_values[stat] * (1 + ((PlayerGlobals.team_level-1)*0.1))) - base_stat_values[stat]
-#		if (stat == 'health' or  stat == 'speed') and base_stat_values[stat]:
-#			stat_increase[stat] = int(stat_increase[stat])
-	CombatGlobals.modifyStat(self, stat_increase, 'scaled_stats')
+	var stat_bonuses = {}
+	
+	for stat in scale_stats.keys():
+		var scaled_stat
+		if stat_values[stat] is int:
+			scaled_stat = floor(scale_stats[stat] * (PlayerGlobals.team_level-1))
+		else:
+			scaled_stat = snapped(scale_stats[stat] * (PlayerGlobals.team_level-1),0.01)
+		if scaled_stat <= 0:
+			continue
+		
+		stat_bonuses[stat] = scaled_stat
+	print(stat_bonuses)
+	#if !stat_bonuses.is_empty():
+	CombatGlobals.modifyStat(self, stat_bonuses, 'scaled_stats')
 
 func getSprite()-> Sprite2D:
 	return combatant_scene.get_node('Sprite2D')
@@ -213,7 +210,7 @@ func applyStatModifications(modifier_id: String):
 			return
 
 # TODO?  Update handling. Replace outdated modifiers based on modifier_id?
-func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false):
+func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false,show_indicator:bool=true):
 	var key
 	var data
 	if per_battle:
@@ -222,7 +219,7 @@ func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary
 		data = 'tempmod/turns/'+JSON.stringify(stat_dict)
 	key = data+'|'+modifier_id # Will look smth like: tempmod/battle/{"damage":67}|<modifier id>
 	
-	CombatGlobals.modifyStat(self, stat_dict, key, append_stats,true)
+	CombatGlobals.modifyStat(self, stat_dict, key, append_stats,show_indicator)
 	temp_modifier_tracker[key] = duration
 
 func applyTemporaryModifiers():

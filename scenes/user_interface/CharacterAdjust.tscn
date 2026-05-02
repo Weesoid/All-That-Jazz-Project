@@ -84,6 +84,32 @@ offset_top = -8.0
 offset_bottom = 18.0
 grow_horizontal = 0
 
+[node name="Stats" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Panel" type="Panel" parent="Stats"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_s7p7p")
+
+[node name="HSplitContainer" type="HBoxContainer" parent="Stats"]
+layout_mode = 2
+
+[node name="AttributeView" parent="Stats/HSplitContainer" instance=ExtResource("18_sjp7i")]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Stats/HSplitContainer"]
+layout_mode = 2
+
+[node name="VFlowContainer" parent="Stats/HSplitContainer" instance=ExtResource("14_brtaa")]
+visible = false
+layout_mode = 2
+
+[node name="TraitContainer" parent="Stats/HSplitContainer" instance=ExtResource("14_brtaa")]
+layout_mode = 2
+
 [node name="Abilities" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(155, 0)
 layout_mode = 2
@@ -233,31 +259,6 @@ offset_top = 2.0
 offset_right = -8.0
 offset_bottom = 2.0
 
-[node name="Stats" type="MarginContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel" type="Panel" parent="Stats"]
-layout_mode = 2
-theme_override_styles/panel = ExtResource("2_s7p7p")
-
-[node name="HSplitContainer" type="HBoxContainer" parent="Stats"]
-layout_mode = 2
-
-[node name="AttributeView" parent="Stats/HSplitContainer" instance=ExtResource("18_sjp7i")]
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="Stats/HSplitContainer"]
-layout_mode = 2
-
-[node name="VFlowContainer" parent="Stats/HSplitContainer" instance=ExtResource("14_brtaa")]
-visible = false
-layout_mode = 2
-
-[node name="TraitContainer" parent="Stats/HSplitContainer" instance=ExtResource("14_brtaa")]
-layout_mode = 2
-
 [node name="Spacer" type="Control" parent="."]
 custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
@@ -291,6 +292,7 @@ icon = ExtResource("21_46t30")
 icon_alignment = 1
 
 [node name="SubmenuPoint" type="Marker2D" parent="."]
+visible = false
 position = Vector2(272, 248)
 
 [connection signal="pressed" from="TalentControl/ToggleView" to="." method="_on_toggle_view_pressed"]

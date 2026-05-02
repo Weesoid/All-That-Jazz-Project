@@ -8,7 +8,7 @@ class_name CombatantSaveData
 #@export var lingering_effects:Array[String]
 @export var initialized:bool
 @export var stat_points: int
-@export var stat_point_allocations: Dictionary
+#@export var stat_point_allocations: Dictionary
 @export var traits: Array[String]
 @export var file_references: Dictionary
 @export var temp_modifier_tracker: Dictionary
@@ -22,7 +22,7 @@ func _init(
 	#p_lingering_effects = [],
 	p_initialized = false,
 	p_stat_points = 0,
-	p_stat_point_allocations = {},
+	#p_stat_point_allocations = {},
 	p_traits = [],
 	p_file_references = {},
 	p_temp_modifier_tracker = {},
@@ -36,7 +36,7 @@ func _init(
 	#lingering_effects.assign(p_lingering_effects)
 	initialized = p_initialized
 	stat_points = p_stat_points
-	stat_point_allocations = p_stat_point_allocations
+	#stat_point_allocations = p_stat_point_allocations
 	traits.assign(p_traits)
 	file_references = p_file_references
 	temp_modifier_tracker = p_temp_modifier_tracker
@@ -48,7 +48,7 @@ func loadData(combatant: ResPlayerCombatant):
 	#combatant.lingering_effects = lingering_effects.filter(func(effect): return FileAccess.file_exists("res://resources/combat/status_effects/"+effect+".tres"))
 	combatant.initialized = initialized
 	combatant.stat_points = stat_points
-	combatant.stat_point_allocations = stat_point_allocations
+	#combatant.stat_point_allocations = stat_point_allocations
 	combatant.traits = loadTraits()
 	combatant.file_references = file_references
 	combatant.temp_modifier_tracker = temp_modifier_tracker

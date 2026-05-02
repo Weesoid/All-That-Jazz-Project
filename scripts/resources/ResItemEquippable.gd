@@ -4,10 +4,8 @@ class_name ResEquippable
 @export var stat_modifications = {
 	'health': 0,
 	'damage': 0,
-	'defense': 0.0,
 	'handling': 0,
 	'speed': 0,
-	'accuracy': 0.0,
 	'crit_mult': 0.0,
 	'crit': 0.0,
 	'heal_mult': 0.0,

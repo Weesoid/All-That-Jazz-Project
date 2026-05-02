@@ -2,7 +2,7 @@ static func applyEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	if status_effect.effect_type != ResStatusEffect.EffectType.ON_HIT: 
 		runEffects(target, status_effect)
 
-static func applyHitEffects(target: ResCombatant, _caster: ResCombatant, _value, status_effect: ResStatusEffect):
+static func applyOnHitEffects(target: ResCombatant, _caster: ResCombatant, _value, status_effect: ResStatusEffect):
 	runEffects(target, status_effect)
 
 static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
@@ -22,7 +22,6 @@ static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
 				null,
 				true, 
 				effect.crit_chance, 
-				false, 
 				effect.variation, 
 				effect.trigger_on_hits, 
 				effect.sound_path,

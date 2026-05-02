@@ -49,5 +49,5 @@ target_position = {
 "min": 0
 }
 tension_cost = 0
-instant_cast = true
+instant_cast = false
 required_level = 0

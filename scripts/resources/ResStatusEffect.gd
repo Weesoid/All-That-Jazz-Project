@@ -56,7 +56,7 @@ enum StatusStyle {
 @export var hide_icon = false
 @export var sounds: Dictionary = {'apply':'', 'expire':''}
 var apply_once = true
-var duration
+var duration:int
 var current_rank = 1
 var afflicted_combatant: ResCombatant
 var attached_data
@@ -86,7 +86,7 @@ func initializeStatus():
 
 func onHitTick(combatant, caster, received_value):
 	if combatant == afflicted_combatant:
-		status_script.applyHitEffects(afflicted_combatant, caster, received_value, self)
+		status_script.applyOnHitEffects(afflicted_combatant, caster, received_value, self)
 
 func removeStatusEffect():
 	if effect_type == EffectType.ON_HIT and CombatGlobals.received_combatant_value.is_connected(onHitTick):

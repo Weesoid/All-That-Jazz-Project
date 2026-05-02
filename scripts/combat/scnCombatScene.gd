@@ -48,7 +48,8 @@ var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
-var camera_position: Vector2 = Vector2(0, 5)
+var default_camera_position: Vector2 = Vector2(0, 5)
+var default_camera_zoom:Vector2 = Vector2(1.6,1.6)
 var enemy_reinforcements: Array[ResCombatant]
 var bonus_escape_chance = 1.0
 var onslaught_mode = false
@@ -139,7 +140,7 @@ func _ready():
 		reward_bank = combat_entity.patroller_group.reward_bank
 	else:
 		reward_bank = combat_entity.get_node('CombatantSquadComponent').reward_bank
-
+	
 	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
 		OverworldGlobals.getCurrentMap().get_node('StalkerEngage').queue_free()
 	if OverworldGlobals.getCurrentMap().has_node('Stalker'):
@@ -186,7 +187,7 @@ func on_player_turn():
 		await get_node('QTE').tree_exited
 	
 	Input.action_release("ui_accept")
-	moveCamera(camera_position)
+	moveCamera(default_camera_position)
 	combat_ui.showAbilities(active_combatant)
 	if turn_time > 0.0:
 		startTimer()
@@ -205,7 +206,7 @@ func on_enemy_turn():
 
 func useAIPackage():
 	selected_ability = active_combatant.ai_package.selectAbility(active_combatant.ability_set, active_combatant)
-	if selected_ability != null:
+	if selected_ability != null and !active_combatant.isDead(true):
 		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), active_combatant is ResPlayerCombatant)
 		if selected_ability.getTargetType() == 1 and selected_ability.target_group != 2:
 			target_combatant = active_combatant.ai_package.selectTarget(valid_targets)
@@ -215,10 +216,11 @@ func useAIPackage():
 			if selected_ability.charges > 0: updateAbilityChargeTracker(active_combatant, selected_ability)
 			executeAbility()
 		if active_combatant.isDead(): print('XXX ', selected_ability)
-	else:
+	elif !active_combatant.isDead(true):
 		showCannotAct('Pass!', true)
 	
-	await confirm
+	if !active_combatant.isDead(true):
+		await confirm
 	end_turn()
 
 func playRebukeText():
@@ -227,6 +229,9 @@ func playRebukeText():
 func end_turn(combatant_act=true):
 	if combat_camera.zoom !=Vector2(1.6,1.6):
 		setCameraZoom(Vector2(1.6,1.6))
+	for combatant in combatants:
+		combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(true)
+	#setUIModulation(Color.WHITE)
 	
 	if !turn_timer.is_stopped(): 
 		stopTimer()
@@ -247,9 +252,9 @@ func end_turn(combatant_act=true):
 	if allCombatantsActed() and combatant_turn_order.is_empty():
 		rollTurns()
 		# Pacing, purely cosmetic. Remove if sluggish
-		await get_tree().create_timer(0.75).timeout
-		OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
-		moveCamera(camera_position)
+		#await get_tree().create_timer(0.75).timeout
+		#OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
+		#moveCamera(camera_position)
 		# Pacing, purely cosmetic. Remove if sluggish
 		end_turn(false)
 		return
@@ -362,9 +367,9 @@ func removeDeadCombatants(is_valid_check=true):
 	
 	for combatant in getDeadCombatants():
 		combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
-		if !combatant.getStatusEffectNames().has('Knock Out'): 
+		if !combatant.isDead(true): 
 			#clearStatusEffects(combatant)
-			CombatGlobals.addStatusEffect(combatant, 'KnockOut')
+			#CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 			combatant.acted = true
 			if combatant.combatant_scene.has_node('CombatBars'):
 				combatant.combatant_scene.get_node('CombatBars').hide()
@@ -472,8 +477,7 @@ func executeAbility():
 	if target_combatant is ResPlayerCombatant:
 		allowBlocking(target_combatant)
 	elif target_combatant is Array:
-		for target in target_combatant: 
-			allowBlocking(target)
+		for target in target_combatant: allowBlocking(target)
 	
 	if active_combatant is ResPlayerCombatant:
 		CombatGlobals.addTension(-selected_ability.tension_cost)
@@ -487,7 +491,7 @@ func executeAbility():
 	if selected_ability.target_type == ResAbility.TargetType.SINGLE and !selected_ability.isOnslaught():
 		moveCamera(target_combatant.combatant_scene.global_position)
 	elif selected_ability.target_type == ResAbility.TargetType.SINGLE and selected_ability.isOnslaught():
-		moveCamera(camera_position)
+		moveCamera(default_camera_position)
 	elif selected_ability.target_type == ResAbility.TargetType.MULTI:
 		moveCamera(target_combatant[0].combatant_scene.global_position)
 	CombatGlobals.ability_casted.emit(selected_ability)
@@ -515,8 +519,15 @@ func executeAbility():
 
 func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
+		var guard_zoom = default_camera_zoom+Vector2(0.2,0.2)
 		target.combatant_scene.allow_block = true
 		CombatGlobals.showWarning(target.combatant_scene)
+		#setUIModulation(Color.TRANSPARENT)
+		target.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
+		active_combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
+		await get_tree().process_frame
+		if combat_camera.zoom != guard_zoom:
+			setCameraZoom(guard_zoom)
 		#OverworldGlobals.freezeFrame(0.3,0.25)
 
 func revokeBlocking(target: ResCombatant):
@@ -829,7 +840,7 @@ func concludeCombat(results: int):
 	removeDeadCombatants(false)
 	combat_result = results
 	battle_music.stop()
-	moveCamera(camera_position)
+	moveCamera(default_camera_position)
 	for combatant in combatants:
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant)
@@ -1006,7 +1017,7 @@ func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
 		combatant.combatant_scene.allow_block = set_to
 	
 	for target in combatants:
-		if !target.hasStatusEffect('Knock Out') and target != combatant:
+		if target.isDead() and target != combatant:
 			target.combatant_scene.collision.disabled = set_to
 	if set_to:
 		team_hp_bar.process_mode = Node.PROCESS_MODE_INHERIT
@@ -1099,7 +1110,7 @@ func battleFlash(animation: String, color: Color):
 	flasher_animator.play(animation)
 
 func resetUI():
-	moveCamera(camera_position)
+	moveCamera(default_camera_position)
 	removeTargetButtons()
 	combat_ui.showUI(true)
 	target_state = TargetState.NONE
@@ -1136,3 +1147,40 @@ func setSignals(combatant:ResCombatant, connect_signals:bool):
 func clearTempModifiers(combatant: ResCombatant, type:String):
 	for modifier in combatant.getTemporaryModifierKeys(type):
 		combatant.removeTemporaryModifier(modifier)
+
+func doRebuke(target: ResCombatant, caster: ResCombatant):
+	var guard_effect:ResStatusEffect
+#	var base_rebuke_chance:float = target.stat_modifiers['base_rebuke']['rebuke_chance']
+	rebuking=true
+	
+	# Do riposte
+	CombatGlobals.removeStatusEffect(target,'Guard Break')
+	CombatGlobals.addStatusEffect(target,'Guard',true,{'bonus_duration':1})
+	guard_effect=target.getStatusEffect('Guard')
+	guard_effect.status_script.doRiposte(target,caster,guard_effect)
+	
+	# Heal ouchies
+	CombatGlobals.healResolve(target,99)
+	if target is ResPlayerCombatant:
+		for injury in target.getTraitsWithFlag('injury'):
+			target.removeTrait(injury)
+	
+	# Do visual effects
+	OverworldGlobals.playSound("res://audio/sounds/744329__fairsonicstudio__bbrs_sfx_soulretrieve.ogg")
+	OverworldGlobals.playSound(['165491__chripei__victory-cry-reverb-2.ogg', '165492__chripei__victory-cry-reverb-1.ogg'].pick_random())
+	setUIModulation(Color.TRANSPARENT)
+	playRebukeText()
+	await zoomCamera(Vector2(0.75,0.75),0.1)
+	await OverworldGlobals.freezeFrame(0.075, 2.8)
+	setUIModulation(Color.WHITE)
+	CombatGlobals.calculatePercentHealing(target,1.0,false)
+#	target.addTemporaryModifer(
+#		'rebuke_penalty',
+#		1,
+#		{'rebuke_chance':-base_rebuke_chance/2},
+#		false,
+#		true,
+#		false
+#		)
+	
+	rebuking=false

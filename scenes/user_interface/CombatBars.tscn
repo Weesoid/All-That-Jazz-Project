@@ -294,16 +294,6 @@ texture_progress = ExtResource("11_jndj7")
 texture_progress_offset = Vector2(2, 1)
 tint_under = Color(0, 0, 0, 1)
 
-[node name="CenterStatusContainer" type="CenterContainer" parent="HealthBar"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = -17.0
-offset_top = -3.0
-offset_right = -17.0
-offset_bottom = 1.0
-grow_horizontal = 2
-
 [node name="TurnCharges" parent="HealthBar" instance=ExtResource("3_ivcce")]
 visible = false
 layout_mode = 1
@@ -335,10 +325,10 @@ vertical_alignment = 2
 
 [node name="StatusEffectContainer" parent="HealthBar" instance=ExtResource("7_n56iy")]
 layout_mode = 0
-offset_left = 2.0
-offset_top = -74.0
-offset_right = 32.0
-offset_bottom = -64.0
+offset_left = 1.0
+offset_top = -14.0
+offset_right = 31.0
+offset_bottom = -4.0
 
 [node name="PermaStatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
 layout_mode = 0

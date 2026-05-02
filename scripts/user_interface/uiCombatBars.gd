@@ -6,7 +6,7 @@ class_name CombatBar
 @onready var absolute_health = $HealthBar/AbsoluteHealth
 @onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
-@onready var center_status_effects = $HealthBar/CenterStatusContainer
+#@onready var center_status_effects = $HealthBar/CenterStatusContainer
 @onready var indicator_spawn_point = $Marker2D
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
 @onready var pulse_gradient = $HealthBar/TurnPulser/AnimationPlayer
@@ -90,13 +90,13 @@ func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	
 	var tick_down = load("res://scenes/user_interface/StatusIcon.tscn").instantiate()
 	tick_down.attached_status = effect
-	if effect.name == 'Guard':
-		await get_tree().process_frame
-		center_status_effects.add_child(tick_down)
-		#center_border.show()
-		#center_border.modulate = effect.getIconColor()
-		health_bar.tint_under = effect.getIconColor()
-	elif effect.permanent:
+#	if effect.name == 'Guard':
+#		await get_tree().process_frame
+#		center_status_effects.add_child(tick_down)
+#		#center_border.show()
+#		#center_border.modulate = effect.getIconColor()
+#		health_bar.tint_under = effect.getIconColor()
+	if effect.permanent:
 		permanent_status_effects.add_child(tick_down)
 	else:
 		status_effects.add_icon(tick_down)
@@ -107,11 +107,11 @@ func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 		return
 	
 	var effect_container
-	if effect.name == 'Guard':
-		#center_border.hide()
-		effect_container = center_status_effects
-		health_bar.tint_under = Color.BLACK
-	elif effect.permanent:
+#	if effect.name == 'Guard':
+#		#center_border.hide()
+#		effect_container = center_status_effects
+#		health_bar.tint_under = Color.BLACK
+	if effect.permanent:
 		effect_container = permanent_status_effects
 	else:
 		effect_container = status_effects.container
@@ -225,6 +225,13 @@ func _on_tree_exiting():
 		var effect_icon = permanent_status_effects.get_children()[i]
 		removeStatusIcon(attached_combatant, effect_icon.attached_status)
 
+func setStatusVisibility(set_to:bool):
+	if set_to:
+		create_tween().tween_property(status_effects,'modulate',Color.WHITE,0.25)
+		create_tween().tween_property(permanent_status_effects,'modulate',Color.WHITE,0.25)
+	else:
+		create_tween().tween_property(status_effects,'modulate',Color.TRANSPARENT,0.25)
+		create_tween().tween_property(permanent_status_effects,'modulate',Color.TRANSPARENT,0.25)
 
 func _on_tree_exited():
 	pass # Replace with function body.
