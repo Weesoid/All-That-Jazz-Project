@@ -83,6 +83,7 @@ func slotPressed(save_name: String, button: Button):
 			OverworldGlobals.playSound("542003__rob_marion__gasp_lock-and-load.ogg")
 			queue_free()
 		Modes.LOAD: 
+			print('loading into ', save_name)
 			PlayerGlobals.save_name = save_name.get_basename()
 			SaveLoadGlobals.loadGame(save_name)
 		Modes.NEW_GAME:

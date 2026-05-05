@@ -7,16 +7,23 @@ class_name CustomTextureButton
 		texture = p_texture
 		if Engine.is_editor_hint():
 			_ready()
+@export var auto_resize:bool=true
 @onready var texture_button = $TextureRect
-
 func _ready():
 	$TextureRect/HoldProgress.modulate=hold_color
 	if texture != null:
 		texture_button.texture = texture
 		
-	custom_minimum_size = texture_button.size/2
+	if auto_resize:
+		custom_minimum_size = texture_button.size/2
 	setDisabled(disabled)
 	texture_button.set_anchors_preset(Control.PRESET_CENTER)
+
+func setTexture(tex:Texture):
+	texture_button.texture = tex
+
+func getTexture()-> TextureRect:
+	return texture_button
 
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return

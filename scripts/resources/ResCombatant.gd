@@ -39,7 +39,6 @@ var resolve_dot_shield:bool=false
 var turn_charges: int
 var stat_modifiers = {}
 var temp_modifier_tracker = {}
-var item_strain_tracker = {}
 var status_effects: Array[ResStatusEffect]
 ## Status effects gained from the overworld or means outside of combat, stores them as their filenames. 
 var stored_status_effects: Array[String]
@@ -187,7 +186,6 @@ func getStringStats(current_stats=false):
 	
 	return result
 
-# TODO add pooling check
 func appendStatModification(modifier_id:String, append_stats: Dictionary):
 	for modifier in stat_modifiers.keys():
 		if modifier == modifier_id:
@@ -226,6 +224,8 @@ func applyTemporaryModifiers():
 	for key in temp_modifier_tracker:
 		if !stat_modifiers.has(key):
 			CombatGlobals.modifyStat(self, JSON.parse_string(key.split('|')[0].split('/')[2]), key)
+	
+	#removeEmptyStats()
 
 func tickTemporaryModifiers(type:String):
 	assert(type == 'turns' or type == 'battle', 'Type can only be: "turns" or "battle" !')
@@ -248,50 +248,6 @@ func removeTemporaryModifier(key:String):
 		removeStatModification(key)
 	if temp_modifier_tracker.has(key):
 		temp_modifier_tracker.erase(key)
-	
-	if !key.contains('|'): return
-	
-	var strain_key = key.split('|')[1]
-	if !isStrainItemActive(key) and item_strain_tracker.has(strain_key):
-		recoverStrain(item_strain_tracker[strain_key])
-		item_strain_tracker.erase(strain_key)
-
-func isStrainItemActive(key:String):
-	if key.contains('|'):
-		key = key.split("|")[1]
-	for modifier in stat_modifiers.keys():
-		if !modifier.contains('|'): 
-			continue
-		if modifier.split('|')[1] == key:
-			return true
-	
-	return false
-
-func addStrain(key:String,strain:int):
-	stat_values['strain'] += strain
-	if item_strain_tracker.has(key):
-		item_strain_tracker[key] += strain
-	else:
-		item_strain_tracker[key] = strain
-
-func clearStrain():
-	for key in item_strain_tracker.keys():
-		if isStrainItemActive(key):
-			print('strain item %s active, skipping' % key)
-			continue
-		print('recovering strain from: '+key)
-		recoverStrain(item_strain_tracker[key])
-
-func recoverStrain(amount:int):
-	stat_values['strain'] -= amount
-	if stat_values['strain'] < 0: 
-		stat_values['strain'] = 0
-
-func loadStrain():
-	print( self,': ',item_strain_tracker)
-	for key in item_strain_tracker.keys():
-		print(self, ' straining ', key)
-		stat_values['strain'] += item_strain_tracker[key]
 
 func getTemporaryModifierKeys(type:String='/'):
 	assert(type == 'turns' or type == 'battle' or type == '/', 'Type can only be: "turns" or "battle" !')
@@ -315,7 +271,19 @@ func removeStatModification(modifier_id: String):
 					stat_values[stat] -= stat_modifiers[modifier][stat]
 			stat_modifiers.erase(modifier)
 			return
+	
+	#removeEmptyStats()
 
+func removeEmptyStats():
+	var stat_keys = stat_modifiers.keys()
+	stat_keys.reverse()
+	for stat in stat_modifiers.keys():
+		if !base_stat_values.keys().has(stat):
+			continue
+		if stat_modifiers[stat] == 0.0:
+			stat_modifiers.erase(stat)
+
+# TODO: Figure out a wway to handle negative health via statmodifiers
 func updateHealth(amount: int):
 	var percent_health = float(stat_values['health']) / float(base_stat_values['health'])
 	base_stat_values['health'] += amount

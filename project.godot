@@ -29,6 +29,7 @@ SettingsGlobals="*res://scripts/globals/gblSettings.gd"
 ResourceGlobals="*res://scripts/globals/gblResourceManager.gd"
 FootstepSoundManager="*res://scripts/globals/gblFootstepSoundManager.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
+CombatExtras="*res://scripts/globals_constants/cgblCombatStatExtras.gd"
 
 [dialogue_manager]
 

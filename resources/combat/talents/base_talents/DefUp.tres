@@ -7,14 +7,12 @@
 [sub_resource type="Resource" id="Resource_p7u2i"]
 script = ExtResource("3_25ncq")
 status_change = {
-"accuracy": 0.0,
 "crit": 0.0,
 "crit_dmg": 0.0,
 "damage": 0,
-"defense": 0.03,
 "handling": 0,
 "heal_mult": 0.0,
-"health": 0,
+"health": 1,
 "resist": 0.0,
 "speed": 0
 }
@@ -22,6 +20,7 @@ rank_scaling = true
 apply_once = false
 message = ""
 sound_effect = ""
+identifier = ""
 
 [resource]
 script = ExtResource("1_iglog")

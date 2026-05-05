@@ -6,11 +6,6 @@ extends Control
 signal talent_interacted
 var out:bool=false
 
-#func _ready():
-#	combatant.initializeCombatant(false)
-#	await get_tree().process_frame
-#	loadTalents(combatant)
-
 func loadTalents(p_combatant: ResPlayerCombatant):
 	for child in getContainer('BaseTalents','talents').get_children():
 		child.queue_free()
@@ -30,7 +25,7 @@ func loadTalents(p_combatant: ResPlayerCombatant):
 	#print_orphan_nodes()\
 
 func loadTalentList(container:String, talent: String):
-	getContainer(container,'title').text = talent.to_upper().replace('_',' ')
+	#getContainer(container,'title').text = talent.to_upper().replace('_',' ')
 	var sorted_list = combatant.talent_list[talent]
 	sorted_list = sorted_list.filter(func(talent): return talent.required_level <= PlayerGlobals.team_level)
 	sorted_list.sort_custom(func(a,b): return a.required_level < b.required_level)

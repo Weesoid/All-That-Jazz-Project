@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://by0ydg0m5o6ur"]
+[gd_scene load_steps=14 format=3 uid="uid://by0ydg0m5o6ur"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiMiniInventory.gd" id="1_cylm1"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_jmc6r"]
@@ -12,129 +12,127 @@
 [ext_resource type="Texture2D" uid="uid://bw0cxrqo1ci10" path="res://images/sprites/icon_charm.png" id="6_0d57u"]
 [ext_resource type="Texture2D" uid="uid://ch3hfjxwctukl" path="res://images/sprites/dialogue_tail.png" id="6_sonsa"]
 [ext_resource type="Texture2D" uid="uid://cqjhmuvbye63b" path="res://images/sprites/icon_projectiles.png" id="6_w4wt0"]
+[ext_resource type="PackedScene" uid="uid://dthmcavca2rtr" path="res://scenes/user_interface/ItemDropArea.tscn" id="13_c8blg"]
 
-[node name="MiniInventory" type="Control"]
-layout_mode = 3
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-grow_horizontal = 2
-script = ExtResource("1_cylm1")
-hide_empty_categories = true
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+[node name="PanelContainer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -136.0
-offset_top = -168.0
-offset_right = 136.0
-offset_bottom = -8.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme = ExtResource("2_rjs3c")
+script = ExtResource("1_cylm1")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Categories" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Categories" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Resources" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
+[node name="Resources" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
 layout_mode = 2
 texture = ExtResource("4_hs3nd")
+auto_resize = true
 hold_delay = 0.5
 
-[node name="CampItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
+[node name="CampItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
 layout_mode = 2
 texture = ExtResource("5_ivxlf")
+auto_resize = true
 hold_delay = 0.5
 
-[node name="AmmoItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
+[node name="AmmoItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
 layout_mode = 2
 texture = ExtResource("6_w4wt0")
+auto_resize = true
 hold_delay = 0.5
 
-[node name="CombatItems" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
+[node name="CombatItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
 layout_mode = 2
 texture = ExtResource("4_qh0kw")
+auto_resize = true
 hold_delay = 0.5
 
-[node name="Charms" parent="PanelContainer/MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
+[node name="Charms" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
 layout_mode = 2
 texture = ExtResource("6_0d57u")
+auto_resize = true
 hold_delay = 0.5
 
-[node name="Resources" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Resources" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+vertical_scroll_mode = 3
 
-[node name="Resources" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Resources"]
+[node name="Resources" type="HFlowContainer" parent="MarginContainer/VBoxContainer/Resources"]
 layout_mode = 2
-columns = 7
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="ExitButton" parent="PanelContainer/MarginContainer/VBoxContainer/Resources/Resources" instance=ExtResource("3_3kub0")]
+[node name="ExitButton" parent="MarginContainer/VBoxContainer/Resources/Resources" instance=ExtResource("3_3kub0")]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 theme = ExtResource("1_jmc6r")
 icon = ExtResource("5_iu1jn")
 icon_alignment = 1
 
-[node name="CampItems" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CampItems" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CampItems" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CampItems"]
+[node name="CampItems" type="HFlowContainer" parent="MarginContainer/VBoxContainer/CampItems"]
 layout_mode = 2
-columns = 7
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="AmmoItems" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Charms" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+
+[node name="Charms" type="HFlowContainer" parent="MarginContainer/VBoxContainer/Charms"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CombatItems" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AmmoItems" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/AmmoItems"]
+[node name="CombatItems" type="HFlowContainer" parent="MarginContainer/VBoxContainer/CombatItems"]
 layout_mode = 2
-columns = 7
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="CombatItems" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="AmmoItems" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CombatItems" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CombatItems"]
+[node name="AmmoItems" type="HFlowContainer" parent="MarginContainer/VBoxContainer/AmmoItems"]
 layout_mode = 2
-columns = 7
-
-[node name="Charms" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Charms" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Charms"]
-layout_mode = 2
-columns = 7
 
 [node name="Tail" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(1, 1, 0, 1)
-position = Vector2(-0.464527, 2.03051e-08)
+position = Vector2(2, 2)
 rotation = -1.5708
 scale = Vector2(0.65137, 1.12852)
 texture = ExtResource("6_sonsa")
 offset = Vector2(8, 0)
 
-[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
-[connection signal="focus_exited" from="PanelContainer/MarginContainer/VBoxContainer/Resources/Resources/ExitButton" to="." method="checkInFocus"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Resources/Resources/ExitButton" to="." method="_on_custom_button_pressed"]
+[node name="ItemDropDetector" parent="." instance=ExtResource("13_c8blg")]

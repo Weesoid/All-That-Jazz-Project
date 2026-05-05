@@ -27,6 +27,34 @@ var traits: Array[String] = []
 var base_health: int
 var initialized = false
 
+func initializeCombatant(do_scene:bool=true):
+	if do_scene:
+		combatant_scene = packed_scene.instantiate()
+		combatant_scene.combatant_resource = self
+	if !initialized:
+		base_stat_values = stat_values.duplicate()
+		base_health = stat_values['health']
+		initialized = true
+	if !stat_modifiers.keys().has('scaled_stats'):
+		scaleStats()
+	if !stat_modifiers.has('base_rebuke'):
+		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:0.25},'base_rebuke')
+	if !stat_values.has('strain'):
+		stat_values['strain']=0
+	if CombatGlobals.inCombat():
+		applyStatusEffects()
+	
+	#loadActiveAbilities()
+	if !base_traits.is_empty() and traits.is_empty():
+		traits = base_traits
+	
+	
+	loadTalents()
+	applyTalents()
+	applyAllTraits()
+	applyTemporaryModifiers()
+	applyStoredStatusEffects()
+
 func loadTalents():
 	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
 	
@@ -76,36 +104,6 @@ func removeTalent(talent:ResTalent):
 	
 	file_references['active_talents'].erase(talent)
 
-var strain_loaded=false
-
-func initializeCombatant(do_scene:bool=true):
-	if do_scene:
-		combatant_scene = packed_scene.instantiate()
-		combatant_scene.combatant_resource = self
-	if !initialized:
-		base_stat_values = stat_values.duplicate()
-		base_health = stat_values['health']
-		initialized = true
-	if !stat_modifiers.keys().has('scaled_stats'):
-		scaleStats()
-	if !stat_modifiers.has('base_rebuke'):
-		CombatGlobals.modifyStat(self, {'rebuke_chance':0.25},'base_rebuke')
-	if !stat_values.has('strain'):
-		stat_values['strain']=0
-	if CombatGlobals.inCombat():
-		applyStatusEffects()
-	
-	#loadActiveAbilities()
-	if !base_traits.is_empty() and traits.is_empty():
-		traits = base_traits
-
-	
-	loadTalents()
-	applyTalents()
-	applyAllTraits()
-	applyTemporaryModifiers()
-	applyStoredStatusEffects()
-
 func getScenePreview():
 	combatant_scene = packed_scene.instantiate()
 	combatant_scene.combatant_resource = self
@@ -139,7 +137,7 @@ func loadFileReferences():
 func applyAllTraits():
 	if traits.is_empty():
 		return
-	
+	if name.contains('Willis'): print('Traits being applied: ', traits, ' (%s)' % PlayerGlobals.save_name)
 	for t in traits:
 		applyTrait(t,false)
 
@@ -254,6 +252,8 @@ func hasWeapon(weapon:ResWeapon):
 
 func equipCharm(charm: ResCharm, slot: int):
 	if InventoryGlobals.getItem(charm) != null:
+		if charms[slot] != null:
+			unequipCharm(slot)
 		InventoryGlobals.removeItemResource(charm, 1, false, true)
 		charm.equip(self)
 		charms[slot] = charm
@@ -267,7 +267,6 @@ func unequipCharm(slot: int):
 	CombatGlobals.resetStat(self, charms[slot].name)
 	InventoryGlobals.addItemResource(charms[slot], 1, false, false)
 	charms[slot] = null
-	OverworldGlobals.playSound("res://audio/sounds/421418__jaszunio15__click_200.ogg")
 
 func hasCharm(charm: ResCharm):
 	for equipped_charm in charms.values():
@@ -297,7 +296,6 @@ func convertToEnemy(appended_name: String)-> ResEnemyCombatant:
 	return enemy.duplicate()
 
 func reset():
-	print('resetting!')
 	for modification in stat_modifiers.keys():
 		removeStatModification(modification)
 	for t in traits:
@@ -325,6 +323,6 @@ func reset():
 #	}
 	traits = []
 	temp_modifier_tracker = {}
-	item_strain_tracker = {}
-	print(stat_modifiers)
+	#item_strain_tracker = {}
+	active_talents = {}
 

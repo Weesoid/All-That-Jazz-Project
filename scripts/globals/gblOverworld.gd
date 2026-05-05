@@ -176,10 +176,20 @@ func showMiniMenu(menu, action_button:Button, press_type:int, button_function:Ca
 			if secondary_button_function != null: button.pressed.connect(secondary_button_function.bind(item))
 		if button.has_method('updateInformation'):
 			update_inventory.connect(button.updateInformation)
-#			if press_type == 0:
-#				button.pressed.connect(func(): update_inventory.emit())
-#			elif press_type == 1:
-#				button.held_press.connect(func(): update_inventory.emit())
+
+func addMiniInventoryActions(mini_menu:MiniInventory, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
+	mini_menu.showItems(item_filter)
+	for item in mini_menu.item_button_map.keys():
+		var button = mini_menu.item_button_map[item]
+		
+		if press_type == 0:
+			button.pressed.connect(button_function.bind(item))
+			if secondary_button_function != null: button.held_press.connect(secondary_button_function.bind(item))
+		elif press_type == 1:
+			button.held_press.connect(button_function.bind(item))
+			if secondary_button_function != null: button.pressed.connect(secondary_button_function.bind(item))
+		if button.has_method('updateInformation'):
+			update_inventory.connect(button.updateInformation)
 
 func canShowMenu():
 	return player.is_on_floor()
@@ -270,8 +280,9 @@ func createCustomButton(theme: Theme = load("res://design/DefaultTheme.tres"))->
 	button.theme = theme
 	return button
 
-func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true, white_borders:bool=false)-> CustomButton:
-	var button: CustomButton = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
+func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true, white_borders:bool=false)-> ItemButton:
+	var button: CustomButton = load("res://scenes/user_interface/CustomItemButton.tscn").instantiate()
+	button.item = item
 	button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
 	button.click_sound = load("res://audio/sounds/421461__jaszunio15__click_46.ogg")
 	button.custom_minimum_size.x = 32

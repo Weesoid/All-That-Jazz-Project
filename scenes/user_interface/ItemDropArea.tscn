@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dthmcavca2rtr"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiItemDropArea.gd" id="1_genw3"]
+
+[node name="ItemDropDetector" type="Node"]
+script = ExtResource("1_genw3")

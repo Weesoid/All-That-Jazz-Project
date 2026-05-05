@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="1_e0mox"]
 [ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="1_t0wjm"]
-[ext_resource type="Texture2D" uid="uid://cgpfext1pbx5t" path="res://images/status_icons/icon_crit_eye.png" id="3_2so27"]
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="3_frn68"]
+[ext_resource type="Texture2D" uid="uid://brp05sc88uhqu" path="res://images/status_icons/shining_sword.png" id="4_xhaii"]
 
 [sub_resource type="Resource" id="Resource_up2uk"]
 script = ExtResource("1_t0wjm")
@@ -35,7 +35,7 @@ effect_type = 0
 remove_when = Array[int]([0, 1])
 remove_style = 0
 seperate_instances = false
-texture = ExtResource("3_2so27")
+texture = ExtResource("4_xhaii")
 style = 1
 custom_style_color = Color(0, 0, 0, 1)
 max_duration = 1

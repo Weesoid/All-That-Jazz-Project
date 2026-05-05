@@ -5,7 +5,7 @@ class_name CustomButton
 @onready var hold_timer = $HoldTimer
 @onready var delay_timer = $HoldDelay
 
-@export var description_text: String
+@export_multiline var description_text: String
 @export var description_offset: Vector2= Vector2.ZERO
 @export var focused_entered_sound: AudioStream = preload("res://audio/sounds/421465__jaszunio15__click_5.ogg")
 @export var click_sound: AudioStream = preload("res://audio/sounds/421469__jaszunio15__click_149.ogg")
@@ -22,6 +22,10 @@ signal hold_started
 
 func _ready():
 	$HoldProgress.modulate=hold_color
+	ready()
+
+func ready():
+	pass
 
 func _on_focus_entered():
 	focus_feedback()

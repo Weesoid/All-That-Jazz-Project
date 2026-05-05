@@ -25,7 +25,7 @@ func centerSelf():
 
 func interact():
 	assert(dialogue_resource != null, '%s has no dialogue resource' % get_parent().name)
-	if !OverworldGlobals.player.canInteract():
+	if !OverworldGlobals.player.canInteract() or !get_parent().visible:
 		return
 	if !cooldown_timer.is_stopped():
 		return

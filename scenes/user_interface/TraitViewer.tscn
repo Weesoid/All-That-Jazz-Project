@@ -2,42 +2,145 @@
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiTraitViewer.gd" id="1_opl13"]
 
-[node name="TraitContainer" type="VBoxContainer"]
+[node name="ModifierViewer" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_opl13")
 
-[node name="TraitContainer" type="VBoxContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+
+[node name="Traits" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = -8
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TraitContainer"]
+[node name="Title" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Traits"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/quirk.png[/img] TRAITS"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Traits"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[img]res://images/status_icons/buff.png[/img] Primary Temper"
 fit_content = true
 autowrap_mode = 0
 
-[node name="RichTextLabel3" type="RichTextLabel" parent="TraitContainer"]
+[node name="RichTextLabel3" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Traits"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[img]res://images/status_icons/debuff.png[/img] Primary Temper"
 fit_content = true
 autowrap_mode = 0
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="TraitContainer"]
+[node name="RichTextLabel2" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Traits"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[img]res://images/status_icons/quirk.png[/img] Primary Temper"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TempermentsTitle Exclude" type="RichTextLabel" parent="TraitContainer"]
+[node name="TempermentsTitle Exclude" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Traits"]
 visible = false
 layout_mode = 2
 bbcode_enabled = true
 text = "[center]TEMPERMENTS"
 fit_content = true
+
+[node name="Injuries" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = -8
+
+[node name="Title" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Injuries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/injury.png[/img] INJURIES"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Injuries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/buff.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Injuries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/debuff.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Injuries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/quirk.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="TempermentsTitle Exclude" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Injuries"]
+visible = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]TEMPERMENTS"
+fit_content = true
+
+[node name="Temporaries" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = -8
+
+[node name="Title" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Temporaries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/hourglass.png[/img] TEMPORARY"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Temporaries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/buff.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Temporaries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/debuff.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Temporaries"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[img]res://images/status_icons/quirk.png[/img] Primary Temper"
+fit_content = true
+autowrap_mode = 0
+
+[node name="TempermentsTitle Exclude" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/Temporaries"]
+visible = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]TEMPERMENTS"
+fit_content = true
+
+[node name="Spacer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+alignment = 1

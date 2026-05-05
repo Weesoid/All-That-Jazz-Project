@@ -4,7 +4,8 @@ extends Control
 @onready var experience_current = $Experience/Label
 @onready var level = $Experience/Level
 @onready var tabs = $TabContainer
-
+@onready var sheet = $TabContainer/CHARACTER/CharacterSheet
+@onready var drop_area = $DropArea
 func _ready():
 	experience_bar.max_value = PlayerGlobals.getRequiredExp()
 	experience_bar.value = PlayerGlobals.current_exp
@@ -14,7 +15,10 @@ func _ready():
 	#	var bar = load("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 	#	general_party_bars.add_child(bar)
 	#	bar.combatant = combatant
+	#drop_area.item_dropped.connect(sheet.equipment.addButton)
 	grabTabFocus(tabs.current_tab)
+	#await get_tree().process_frame
+	#print(sheet)
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed('ui_tab_right') and tabs.current_tab + 1 < tabs.get_tab_count():

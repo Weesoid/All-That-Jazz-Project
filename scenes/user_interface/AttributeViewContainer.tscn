@@ -3,15 +3,11 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiAttributeViewContainer.gd" id="1_4r38l"]
 [ext_resource type="PackedScene" uid="uid://g62bg1lxkua1" path="res://scenes/user_interface/StatLabel.tscn" id="2_e1jn3"]
 
-[node name="VFlowContainer" type="VBoxContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
+[node name="AttributeView" type="VBoxContainer"]
+offset_right = 640.0
+offset_bottom = 360.0
 size_flags_vertical = 3
-alignment = 1
+alignment = 2
 script = ExtResource("1_4r38l")
 
 [node name="Health" parent="." instance=ExtResource("2_e1jn3")]
@@ -38,40 +34,24 @@ track_stat = "Crit"
 visual = 2
 label_style = 1
 
-[node name="CritDmg" parent="." instance=ExtResource("2_e1jn3")]
-visible = false
-layout_mode = 2
-track_stat = "crit_dmg"
-visual = 2
-label_style = 1
-label_percentage_reduce_by_100 = true
-
-[node name="HealMult" parent="." instance=ExtResource("2_e1jn3")]
-visible = false
-layout_mode = 2
-track_stat = "heal_mult"
-visual = 2
-label_style = 1
-label_percentage_reduce_by_100 = true
-
 [node name="Resist" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
 track_stat = "Resist"
 visual = 2
 label_style = 1
 
+[node name="Strain" parent="." instance=ExtResource("2_e1jn3")]
+layout_mode = 2
+track_stat = "strain"
+visual = 1
+count_bar_max_value = 6
+highlight_decrease = false
+
 [node name="Handling" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2
 track_stat = "Handling"
 visual = 1
 count_bar_max_value = 4
-
-[node name="Strain" parent="." instance=ExtResource("2_e1jn3")]
-layout_mode = 2
-track_stat = "strain"
-visual = 1
-count_bar_max_value = 4
-highlight_decrease = false
 
 [node name="Resolve" parent="." instance=ExtResource("2_e1jn3")]
 layout_mode = 2

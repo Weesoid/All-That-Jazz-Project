@@ -224,8 +224,8 @@ alignment = 2
 
 [node name="StaminaBar" type="ProgressBar" parent="UI"]
 anchors_preset = -1
-anchor_left = 0.034375
-anchor_top = 0.00833333
+anchor_left = -0.034375
+anchor_top = -0.00555556
 anchor_right = -0.034375
 anchor_bottom = -0.00555556
 offset_left = 264.0

@@ -1,26 +1,23 @@
 [gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://cyhy0db3choa7"]
 
-[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_irrdj"]
+[ext_resource type="Texture2D" uid="uid://ccre7bmdc0170" path="res://images/sprites/shield_n_sword.png" id="1_xgy1g"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_p3o31"]
 
 [resource]
 script = ExtResource("2_p3o31")
 unique = false
 stat_modifications = {
-"accuracy": 0.0,
 "crit": 0.0,
 "crit_mult": 0.0,
 "damage": 0,
-"defense": 0.0,
 "handling": 0,
 "heal_mult": 0.0,
 "health": 0,
-"resist": 0.0,
+"resist": 250.0,
 "speed": 0
 }
-auto_name = true
-name = ""
-icon = ExtResource("1_irrdj")
+name = "Resistor"
+icon = ExtResource("1_xgy1g")
 description = ""
 value = 0
 mandatory = false

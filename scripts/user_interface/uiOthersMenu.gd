@@ -17,7 +17,7 @@ func _on_settings_pressed():
 
 
 func _on_return_menu_pressed():
-	PlayerGlobals.resetVariables(false)
+	PlayerGlobals.resetVariables()
 	InventoryGlobals.resetVariables()
 	OverworldGlobals.resetVariables()
 	QuestGlobals.resetVariables()

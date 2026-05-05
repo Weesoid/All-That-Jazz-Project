@@ -40,7 +40,6 @@ auto_complete = true
 
 [resource]
 script = ExtResource("1_ayys1")
-name = "Get That Item"
 description = "Tems is a wretched whore and I hate her so fucking much."
 objectives = Array[ExtResource("1_5s5hl")]([SubResource("Resource_kubhv"), SubResource("Resource_m0g22"), SubResource("Resource_wil1a"), SubResource("Resource_7vsf3")])
 completed = false

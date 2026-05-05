@@ -1,5 +1,6 @@
 #@tool
 extends HSplitContainer
+class_name StatLabel
 
 enum StatVisuals {
 	BAR,
@@ -29,6 +30,8 @@ enum LabelStyle {
 @onready var count_bar = $Value/CustomCountBar
 @onready var label = $Value/Label
 
+var scale_bb = '[img color=%s]res://images/status_icons/small_buff.png[/img]'%SettingsGlobals.ui_colors['up-bb-nobracket']
+
 func _ready():
 	track_stat = track_stat.to_lower()
 	bar.hide()
@@ -42,17 +45,23 @@ func _ready():
 		StatVisuals.BAR: bar.show()
 		StatVisuals.COUNT_BAR: count_bar.show()
 		StatVisuals.LABEL: label.show()
-
+	
+	if CombatExtras.STAT_DESCRIPTIONS.has(track_stat):
+		tooltip_text = CombatExtras.STAT_DESCRIPTIONS[track_stat]
+	
 func _process(delta):
 	if combatant == null:
 		return
-	
-	if combatant.scale_stats.get(track_stat,0) > 0:
-		stat_text.modulate = SettingsGlobals.ui_colors['unique']
+	if combatant.stat_values[track_stat] == 0.0 and !CombatExtras.BASE_STATS.has(track_stat):
+		hide()
 	else:
-		stat_text.modulate = Color.WHITE
+		show()
+	#CombatGlobals.OtherStats['']
+	if combatant.scale_stats.get(track_stat,0) > 0:
+		stat_text.text = scale_bb+' '+track_stat.to_upper()
+	else:
+		stat_text.text = track_stat.to_upper()
 	
-	stat_text.text = track_stat.to_upper()
 	match visual:
 		StatVisuals.BAR: updateBar()
 		StatVisuals.COUNT_BAR: updateCountBar()
@@ -85,7 +94,7 @@ func updateLabel():
 		LabelStyle.DAMAGE_RANGE: label.text = str('%s - %s' % [calcDamage('min'),calcDamage('max')])
 
 func calcDamage(val:String):
-	var damage = combatant.stat_values['damage']*combatant.stat_values.get('dmg_modifier',1.0)
+	var damage = combatant.stat_values['damage']*combatant.stat_values.get(CombatExtras.DAMAGE_MODIFIER,1.0)
 	var variance = (damage*combatant.stat_values['dmg_variance'])
 	
 	match val:
@@ -93,14 +102,16 @@ func calcDamage(val:String):
 		'max': return round(damage+variance)
 
 func highlightChange():
+	if !combatant.base_stat_values.has(track_stat):
+		return
+	
 	var base_stat_value
 	if combatant.base_stat_values.has(track_stat):
 		base_stat_value = combatant.base_stat_values[track_stat]
 	elif count_bar_max_value > 0:
 		base_stat_value = count_bar_max_value
-	if track_stat == 'handling' and combatant.name.contains('Willis'): print(getUnscaledTrackStat())
-	
-	if getUnscaledTrackStat() == base_stat_value:
+	#if track_stat == 'handling' and combatant.name.contains('Willis'): print(getUnscaledTrackStat())
+	if is_equal_approx(getUnscaledTrackStat(), base_stat_value):
 		value.modulate = Color.WHITE
 	elif getUnscaledTrackStat() > base_stat_value and highlight_increase:
 		value.modulate = SettingsGlobals.ui_colors['up']

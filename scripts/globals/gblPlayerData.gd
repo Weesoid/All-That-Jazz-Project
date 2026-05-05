@@ -1,7 +1,7 @@
 # Rename this to gblPlayerData
 extends Node
 
-var save_name
+var save_name:String
 var team: Array[ResPlayerCombatant] 
 var team_formation: Array[ResCombatant] 
 var map_logs: Dictionary = {}
@@ -21,6 +21,7 @@ var added_abilities: Dictionary = {}
 var current_stalker: ResStalkerData 
 var rested:bool
 var ability_cap = 5
+var strain_cap = 6
 
 var overworld_stats: Dictionary = {
 	'stamina': 100.0,
@@ -313,7 +314,7 @@ func setFollowersMotion(enable:bool):
 			follower.speed_multiplier = 0.0
 			follower.stopWalkAnimation()
 
-func healCombatants(percent_heal:float=1.0,cure: bool=true):
+func healCombatants(percent_heal:float=1.0):
 	for combatant in team:
 		if !combatant.initialized: combatant.initializeCombatant(false)
 		combatant.stat_values['health'] = int(combatant.base_stat_values['health'] * percent_heal)
@@ -461,7 +462,7 @@ func saveData(save_data: Array):
 				combatant.traits,
 				combatant.file_references,
 				combatant.temp_modifier_tracker,
-				combatant.item_strain_tracker
+				#combatant.item_strain_tracker
 			)
 	
 	save_data.append(data)
@@ -499,7 +500,7 @@ func loadData(save_data: PlayerSaveData):
 			if charm != null:
 				charm.updateItem()
 				charm.equip(combatant)
-		combatant.loadStrain()
+		#combatant.loadStrain()
 		combatant.initializeCombatant(false)
 		combatant.updateCombatant(save_data)
 		combatant.initializeCombatant(false)
@@ -518,7 +519,7 @@ func resetVariables(reset_save_name:bool=true):
 		member.reset()
 	
 	if reset_save_name:
-		save_name = null
+		save_name = ''
 	team = [
 		loadPlayerCombatant("res://resources/combat/combatants_player/Willis.tres"), 
 		loadPlayerCombatant("res://resources/combat/combatants_player/Archie.tres"),

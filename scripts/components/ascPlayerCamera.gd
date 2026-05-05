@@ -12,6 +12,7 @@ class_name PlayerCamera
 #@onready var reward_banks = $UI/ClearProgressf
 @onready var ammo_tex = $UI/Ammo/TextureRect
 @onready var save_indicator = $UI/SaveIndicator/AnimationPlayer
+#@onready var item_drop_area = $UI/DropArea
 var player: PlayerScene = OverworldGlobals.player
 
 func _ready():

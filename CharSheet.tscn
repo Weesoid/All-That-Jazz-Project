@@ -1,0 +1,218 @@
+[gd_scene load_steps=18 format=3 uid="uid://5eqqls4xx8iu"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiCharSheet.gd" id="1_rjlo0"]
+[ext_resource type="Resource" uid="uid://cohe0ng5gyu4h" path="res://resources/combat/combatants_player/Willis.tres" id="2_m3n0x"]
+[ext_resource type="PackedScene" uid="uid://b4ahjj82o47ap" path="res://scenes/user_interface/TraitViewer.tscn" id="2_sie86"]
+[ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="3_2vum2"]
+[ext_resource type="PackedScene" uid="uid://c7gej8jx4qymi" path="res://scenes/user_interface/Talents.tscn" id="3_5cq52"]
+[ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="3_yxlso"]
+[ext_resource type="PackedScene" uid="uid://dsm2cjvaptwls" path="res://scenes/user_interface/AbilitiesContainer.tscn" id="4_54gjm"]
+[ext_resource type="Texture2D" uid="uid://dsb034qw3x2mf" path="res://images/sprites/abilities_icon.png" id="4_epdrq"]
+[ext_resource type="Texture2D" uid="uid://cgxbv7ymo7vn7" path="res://images/sprites/crossed_swords.png" id="7_xwp5c"]
+[ext_resource type="Texture2D" uid="uid://ccre7bmdc0170" path="res://images/sprites/shield_n_sword.png" id="9_nr02g"]
+[ext_resource type="PackedScene" uid="uid://covj2vpfron6x" path="res://scenes/user_interface/CustomItemDropButton.tscn" id="11_bkdfs"]
+[ext_resource type="Texture2D" uid="uid://b6otb3unpofi5" path="res://images/sprites/icon_sack.png" id="11_llh6e"]
+[ext_resource type="PackedScene" uid="uid://b68qkjahvueeo" path="res://scenes/user_interface/AutoAttributeViewContainer.tscn" id="11_m2ko1"]
+[ext_resource type="Texture2D" uid="uid://biboupl0greug" path="res://images/sprites/icon_combat_item_trans.png" id="12_7p8h7"]
+[ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="17_5qdjy"]
+
+[sub_resource type="Gradient" id="Gradient_nk4xi"]
+offsets = PackedFloat32Array(0, 0.476744, 1)
+colors = PackedColorArray(0.14902, 0.14902, 0.14902, 0, 0.15, 0.15, 0.15, 1, 0.160784, 0.160784, 0.160784, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kwx66"]
+gradient = SubResource("Gradient_nk4xi")
+height = 36
+fill_from = Vector2(0.2, 0.4)
+fill_to = Vector2(0.8, 0.6)
+
+[node name="CharacterSheet" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rjlo0")
+viewed_combatant = ExtResource("2_m3n0x")
+
+[node name="Sheet" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = -32
+columns = 3
+
+[node name="LeftBeef" type="VSplitContainer" parent="Sheet"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+split_offset = -999
+dragger_visibility = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Sheet/LeftBeef"]
+layout_mode = 2
+size_flags_vertical = 2
+alignment = 1
+
+[node name="ToggleAbilityModifiers" parent="Sheet/LeftBeef/HBoxContainer" instance=ExtResource("3_2vum2")]
+layout_mode = 2
+texture = ExtResource("4_epdrq")
+
+[node name="AbilitiesViewer" type="MarginContainer" parent="Sheet/LeftBeef"]
+layout_mode = 2
+
+[node name="AbilityContainer" parent="Sheet/LeftBeef/AbilitiesViewer" instance=ExtResource("4_54gjm")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Sheet/LeftBeef/AbilitiesViewer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="ShowTalents" parent="Sheet/LeftBeef/AbilitiesViewer/HBoxContainer" instance=ExtResource("3_2vum2")]
+layout_mode = 2
+texture = ExtResource("7_xwp5c")
+
+[node name="Label" type="Label" parent="Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 13.0
+grow_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "25"
+horizontal_alignment = 2
+
+[node name="ModifierViewer" parent="Sheet/LeftBeef" instance=ExtResource("2_sie86")]
+visible = false
+layout_mode = 2
+
+[node name="Center" type="MarginContainer" parent="Sheet"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Sheet/Center"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_kwx66")
+
+[node name="Label" type="Label" parent="Sheet/Center"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 16
+text = "ARCHIE FLYNT"
+horizontal_alignment = 1
+
+[node name="CharacterPosition" type="Control" parent="Sheet/Center"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Marker2D" type="Marker2D" parent="Sheet/Center/CharacterPosition"]
+
+[node name="Control" type="Control" parent="Sheet/Center"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Right" type="VSplitContainer" parent="Sheet"]
+layout_mode = 2
+size_flags_horizontal = 3
+split_offset = -999
+dragger_visibility = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Sheet/Right"]
+layout_mode = 2
+size_flags_vertical = 2
+alignment = 1
+
+[node name="ToggleStats" parent="Sheet/Right/HBoxContainer2" instance=ExtResource("3_2vum2")]
+layout_mode = 2
+texture = ExtResource("9_nr02g")
+
+[node name="VBoxContainer" type="VSplitContainer" parent="Sheet/Right"]
+layout_mode = 2
+split_offset = 999
+dragger_visibility = 1
+
+[node name="AttributeViewContainer" parent="Sheet/Right/VBoxContainer" instance=ExtResource("3_yxlso")]
+layout_mode = 2
+alignment = 0
+
+[node name="AutoAttributeView" parent="Sheet/Right/VBoxContainer" instance=ExtResource("11_m2ko1")]
+visible = false
+layout_mode = 2
+
+[node name="Equipment" type="HBoxContainer" parent="Sheet/Right/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="ToggleEquipment" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("3_2vum2")]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("11_llh6e")
+auto_resize = false
+
+[node name="Weapon" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("11_bkdfs")]
+layout_mode = 2
+combatant = ExtResource("2_m3n0x")
+slot = -1
+empty_icon = ExtResource("12_7p8h7")
+
+[node name="SlotA" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("11_bkdfs")]
+layout_mode = 2
+combatant = ExtResource("2_m3n0x")
+
+[node name="SlotB" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("11_bkdfs")]
+layout_mode = 2
+slot = 1
+
+[node name="SlotC" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("11_bkdfs")]
+visible = false
+layout_mode = 2
+slot = 2
+
+[node name="Talents" parent="." instance=ExtResource("3_5cq52")]
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_right = 0.0
+offset_right = 192.0
+offset_bottom = -32.0
+grow_horizontal = 1
+
+[node name="MiniInventory" parent="." instance=ExtResource("17_5qdjy")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -92.0
+offset_right = 80.0
+offset_bottom = 140.0
+hide_empty_categories = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="pressed" from="Sheet/LeftBeef/HBoxContainer/ToggleAbilityModifiers" to="." method="_on_toggle_ability_modifiers_pressed"]
+[connection signal="pressed" from="Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents" to="." method="_on_show_talents_pressed"]
+[connection signal="pressed" from="Sheet/Right/HBoxContainer2/ToggleStats" to="." method="_on_toggle_stats_pressed"]
+[connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/ToggleEquipment" to="." method="equipmentButtonPressed"]
+[connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/Weapon" to="." method="equipmentButtonPressed"]
+[connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/SlotA" to="." method="equipmentButtonPressed"]
+[connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/SlotB" to="." method="equipmentButtonPressed"]
+[connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/SlotC" to="." method="equipmentButtonPressed"]

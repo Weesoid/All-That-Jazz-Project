@@ -81,7 +81,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		selected_combatant = member
 		loadAbilities()
 		#updateTemperments()
-		$Stats/HSplitContainer/TraitContainer.updateTraits(selected_combatant)
+		$Stats/HSplitContainer/TraitContainer.loadModifiers(selected_combatant)
 		#addStatusEffectIcons()
 		updateEquipped()
 	if selected_combatant != null:
@@ -90,7 +90,7 @@ func loadMemberInfo(member: ResCombatant, button: Button=null):
 		updateStatPointCount()
 
 	talent_menu.loadTalents(selected_combatant)
-	attrib_view.combatant = selected_combatant
+#	attrib_view.combatant = selected_combatant
 	if has_node('Roster'):
 		get_node('Roster').inspect_mark.hide()
 
@@ -100,7 +100,6 @@ func updateCharacterView(member: ResPlayerCombatant):
 		character_view.remove_child(last_member)
 		last_member.queue_free()
 	
-	#member.initializeCombatant()
 	var character_scene = member.getScenePreview()
 	if character_scene:
 		character_scene.scale = Vector2(2,2)
@@ -117,17 +116,18 @@ func swapMembers(member_a: ResCombatant, member_b: ResCombatant):
 	team[member_a_pos] = member_b
 
 func loadAbilities():
-	clearChildren(pool)
-	if selected_combatant.ability_pool.is_empty():
-		return
-	
-	for ability in selected_combatant.ability_pool:
-		if ability == null:
-			selected_combatant.ability_pool.erase(ability)
-			continue
-		if PlayerGlobals.team_level < ability.required_level:
-			continue
-		createAbilityButton(ability, pool)
+	pass
+#	clearChildren(pool)
+#	if selected_combatant.ability_pool.is_empty():
+#		return
+#
+#	for ability in selected_combatant.ability_pool:
+#		if ability == null:
+#			selected_combatant.ability_pool.erase(ability)
+#			continue
+#		if PlayerGlobals.team_level < ability.required_level:
+#			continue
+#		createAbilityButton(ability, pool)
 	
 #	for i in range(32):
 #		createAbilityButton(load("res://resources/combat/abilities/BasicAttack.tres"), pool)
@@ -174,8 +174,9 @@ func createAbilityButton(ability, location):
 	location.add_child(button)
 
 func dimInactiveAbilities():
-	for ability_button in pool.get_children():
-		ability_button.setDisabled(!selected_combatant.ability_set.has(ability_button.ability))
+	pass
+#	for ability_button in pool.get_children():
+#		ability_button.setDisabled(!selected_combatant.ability_set.has(ability_button.ability))
 
 func undimAbilities():
 	for ability_button in pool.get_children():
@@ -274,7 +275,6 @@ func updateEquipped():
 		return
 	
 	if selected_combatant.equipped_weapon != null:
-		#weapon_button.text = selected_combatant.equipped_weapon.name
 		weapon_button.icon = selected_combatant.equipped_weapon.icon
 		weapon_durability.text = '%s / %s' % [selected_combatant.equipped_weapon.durability, selected_combatant.equipped_weapon.max_durability]
 		if selected_combatant.equipped_weapon.durability <= 0:
@@ -356,4 +356,3 @@ func updateStatPointCount():
 		stat_point_count.self_modulate = Color.TRANSPARENT
 	
 	stat_point_count.text = str(selected_combatant.stat_points)
-	

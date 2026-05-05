@@ -9,6 +9,9 @@ var FACTION_PATROLLER_PROPERTIES = {
 var back_up_enemies = [
 	'res://resources/combat/combatants_enemies/mercenaries/'
 ]
+const OtherStats = {
+	'heal_skill': 'heal_skill'
+}
 
 var tension: int = 0
 var critical_bb = '[img color=red]res://images/status_icons/icon_crit_eye.png[/img][color=red]'
@@ -36,6 +39,7 @@ signal tension_changed(previous_tension,current_tension,from_target)
 #********************************************************************************
 func emit_exp_updated(value, max_value):
 	exp_updated.emit(value, max_value)
+	#OtherStats['heal_skill']
 
 #********************************************************************************
 # ability EFFECTS & UTILITY
@@ -68,7 +72,7 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 
 ## Basic damage calculations
 func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, can_crit: bool, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary = {}):
-	var damage = (caster.stat_values['damage']+getBonusStat(bonus_stats, 'damage', target)) * modifier * caster.stat_values.get('dmg_modifier',1.0)
+	var damage = (caster.stat_values['damage']+getBonusStat(bonus_stats, 'damage', target)) * modifier * caster.stat_values.get(CombatExtras.DAMAGE_MODIFIER,1.0)
 	damage = valueVariate(damage, caster.stat_values['dmg_variance'])
 	if target.stat_modifiers.has('block'):
 		damage = 0
@@ -255,21 +259,10 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		caster.removeTokens(ResStatusEffect.RemoveType.HIT)
 	if trigger_on_hits:
 		received_combatant_value.emit(target, caster, int(damage))
-#	if caster != null and target.isDead() and abs(target.stat_values['health']) >= target.getMaxHealth() * 0.25:
-#		calculateHealing(caster, caster.getMaxHealth()*0.15)
-#		if caster is ResPlayerCombatant:
-#			addTension(1, target.combatant_scene)
-#			manual_call_indicator.emit(target, "OVERKILL", 'Wallop')
-	
-	# The wall of post damage effects
-	# Rework this later to bonus resolve dmg... 
-#	if hasBonusStat(bonus_stats, 'execute') and target.stat_values['health'] <= getBonusStat(bonus_stats, 'execute', target)*target.getMaxHealth():
-#		OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn", target.combatant_scene.global_position)
-#		target.stat_values['health'] -= 999
-#		manual_call_indicator.emit(target, 'EXECUTED!', 'Damage')
+		
 	## Resolve handling
 	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and !target.stat_modifiers.has('block'): 
-		if target.stat_values['resolve'] - 1 <= 0 and randomRoll(target.stat_values.get('rebuke_chance',0.0)):
+		if target.stat_values['resolve'] - 1 <= 0 and randomRoll(target.stat_values.get(CombatExtras.REBUKE_CHANCE,0.0)):
 			getCombatScene().doRebuke(target,caster)
 		else:
 			target.stat_values['resolve'] -= 1
@@ -328,12 +321,12 @@ func addInjury(combatant: ResCombatant, chance:float):
 	var injuries = {
 		'Bum Leg': {'speed':-1},
 		'Broken Arm': {'damage':-1},
-		'Concussion': {'handling':-1},
-		#'Gouged Eye': {'accuracy':-0.03},
 		'Shellshock': {'crit':-0.03,'crit_dmg':-0.03},
-		#'Broken Ribs': {'defense':-0.03},
 		'Infected Wound': {'resist':-0.03}
 	}
+	if combatant is ResPlayerCombatant:
+		injuries['Concussion'] = {'handling':-1}
+	
 	var chosen_injury = injuries.keys().pick_random()
 	
 	if combatant is ResPlayerCombatant:
@@ -354,19 +347,6 @@ func addInjury(combatant: ResCombatant, chance:float):
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
-
-#func checkMissCases(target: ResCombatant, caster: ResCombatant, damage):
-#	if target.getStatusEffectNames().has('Riposte'):
-#		target.getStatusEffect('Riposte').onHitTick(target, caster, damage)
-
-#func useDamageFormula(target: ResCombatant, damage):
-#	var grit = target.stat_values['defense']
-#	if grit > 0.7 and !target.stat_modifiers.has('block'):  # TODO Change this to check a bonus stat "blocking" or smth. Implement it once u get stuff like "healing skill" etc online
-#		grit = 0.7
-#	var out_damage = damage - (grit * damage)
-#	if out_damage < 0.0: 
-#		out_damage = 0
-#	return out_damage
 
 func calculatePercentHealing(target: ResCombatant, percentage:float, use_mult:bool=true, trigger_on_heal:bool=true):
 	calculateHealing(target, ceil(target.getMaxHealth()*percentage), use_mult, trigger_on_heal)
@@ -433,14 +413,16 @@ func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_i
 	target.removeStatModification(modifier_id)
 	target.stat_modifiers[modifier_id] = stat_modifications
 	target.applyStatModifications(modifier_id)
-	# (inCombat() or OverworldGlobals.player.camping)
-	if inCombat() and show_indicator and change_relevant:
-		var string_stats = CombatGlobals.getStatListString(stats_added).split('\n')
-		for stat_message in string_stats:
-			var mes = stat_message.replace('[/color]','')
-			if mes == '': continue
-			manual_call_indicator.emit(target, mes+append_indiactor,'Show',true)
-			await get_tree().create_timer(0.25).timeout
+	
+	if show_indicator:
+		await get_tree().process_frame
+		if (inCombat() or (OverworldGlobals.player != null and OverworldGlobals.player.camping)) and change_relevant:
+			var string_stats = CombatGlobals.getStatListString(stats_added).split('\n')
+			for stat_message in string_stats:
+				var mes = stat_message.replace('[/color]','')
+				if mes == '': continue
+				manual_call_indicator.emit(target, mes+append_indiactor,'Show',true)
+				await get_tree().create_timer(0.5).timeout
 
 # TODO "var out" so that order of parameters dont matter
 func appendStatModifications(modifiers_a:Dictionary, modifiers_b:Dictionary)-> Dictionary:
@@ -657,48 +639,10 @@ func findBasicEffect(identifer:String, status_effect: ResStatusEffect)-> ResBasi
 	assert(false, 'Could not find identifer "%s" in "%s" basic effects.' % [identifer, status_effect])
 	return null
 
-#func getTempermentModiferID(status_effect:ResStatusEffect,status_modifications:Dictionary):
-#	return 'linger|'+status_effect.name+'|'+str(status_modifications)+'|'+status_effect.getMessageIcon()
-
 func removeStatusEffect(combatant: ResCombatant, effect_name:String):
 	for effect in combatant.status_effects:
 		if effect.name.to_lower() == effect_name.to_lower():
 			effect.removeStatusEffect()
-
-#func removeLingeringEffect(combatant: ResPlayerCombatant, linger_effect:ResStatusEffect):
-#	assert(linger_effect.lingers or combatant.lingering_effects.has(linger_effect.name.replace(' ','')), '%s must be a lingering effect OR is included in combatant lingering effects array' % linger_effect)
-#
-#	for i in range(combatant.lingering_effects.size()-1,-1,-1):
-#		var effect = combatant.lingering_effects[i]
-#		if effect.to_lower() == linger_effect.name.to_lower().replace(' ',''):
-#			combatant.lingering_effects.remove_at(i)
-#			break
-#
-#	if linger_effect.getStatusModiferEffect() != null:
-#		var modifier_id = getTempermentModiferID(linger_effect,linger_effect.getStatusModiferEffect().status_change)
-#		for temp in combatant.temperment:
-#			if temp.split('|').size() > 1 and modifier_id.split('|')[1].to_lower() == temp.split('|')[1].to_lower():
-#				resetStat(combatant, temp)
-#				combatant.temperment.erase(temp)
-#				break
-
-#func checkReactions(target: ResCombatant):
-#	if target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Chilled'):
-#		runReaction(target, 'Burn', 'Chilled', load("res://resources/combat/abilities_reactions/Scald.tres"))
-#	elif target.getStatusEffectNames().has('Jolted') and target.getStatusEffectNames().has('Poison'):
-#		runReaction(target, 'Jolted', 'Poison', load("res://resources/combat/abilities_reactions/Catalyze.tres"))
-#	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Jolted'):
-#		runReaction(target, 'Chilled', 'Jolted', load("res://resources/combat/abilities_reactions/Disrupt.tres"))
-#	elif target.getStatusEffectNames().has('Chilled') and target.getStatusEffectNames().has('Poison'):
-#		runReaction(target, 'Chilled', 'Poison', load("res://resources/combat/abilities_reactions/Vulnerate.tres"))
-#	elif target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Poison'):
-#		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Cauterize.tres"))
-#		removeStatusEffect(target, 'Burn')
-#		removeStatusEffect(target, 'Poison')
-#	elif target.getStatusEffectNames().has('Burn') and target.getStatusEffectNames().has('Jolted'):
-#		execute_ability.emit(target, load("res://resources/combat/abilities_reactions/Fulgurate.tres"))
-#		removeStatusEffect(target, 'Burn')
-#		removeStatusEffect(target, 'Jolted')
 
 func runReaction(target: ResCombatant, effectA: String, effectB: String, reaction: ResAbility):
 	removeStatusEffect(target, effectA)

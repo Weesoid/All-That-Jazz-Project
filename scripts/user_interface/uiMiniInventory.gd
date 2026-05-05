@@ -4,20 +4,21 @@ class_name MiniInventory
 @export var hide_empty_categories:bool=false
 @export var show_tail:bool=true
 
-@onready var categories = $PanelContainer/MarginContainer/VBoxContainer/Categories
-@onready var resource_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/Resources
-@onready var camp_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/CampItems
-@onready var ammo_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/AmmoItems
-@onready var combat_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/CombatItems
-@onready var charm_category = $PanelContainer/MarginContainer/VBoxContainer/Categories/Charms
-@onready var mini_inv = $PanelContainer/MarginContainer/VBoxContainer
-@onready var items = $PanelContainer/MarginContainer/VBoxContainer/Resources/Resources
-@onready var camp_items = $PanelContainer/MarginContainer/VBoxContainer/CampItems/CampItems
-@onready var ammo_items = $PanelContainer/MarginContainer/VBoxContainer/AmmoItems/AmmoItems
-@onready var combat_items = $PanelContainer/MarginContainer/VBoxContainer/CombatItems/CombatItems
-@onready var charms = $PanelContainer/MarginContainer/VBoxContainer/Charms/Charms
-@onready var exit_button = $PanelContainer/MarginContainer/VBoxContainer/Resources/Resources/ExitButton
+@onready var categories = $MarginContainer/VBoxContainer/Categories
+@onready var resource_category = $MarginContainer/VBoxContainer/Categories/Resources
+@onready var camp_category = $MarginContainer/VBoxContainer/Categories/CampItems
+@onready var ammo_category = $MarginContainer/VBoxContainer/Categories/AmmoItems
+@onready var combat_category = $MarginContainer/VBoxContainer/Categories/CombatItems
+@onready var charm_category = $MarginContainer/VBoxContainer/Categories/Charms
+@onready var mini_inv = $MarginContainer/VBoxContainer
+@onready var items = $MarginContainer/VBoxContainer/Resources/Resources
+@onready var camp_items = $MarginContainer/VBoxContainer/CampItems/CampItems
+@onready var ammo_items = $MarginContainer/VBoxContainer/AmmoItems/AmmoItems
+@onready var combat_items = $MarginContainer/VBoxContainer/CombatItems/CombatItems
+@onready var charms = $MarginContainer/VBoxContainer/Charms/Charms
+@onready var exit_button = $MarginContainer/VBoxContainer/Resources/Resources/ExitButton
 @onready var tail = $Tail
+@onready var drop_area = $ItemDropDetector
 
 var item_button_map:Dictionary = {}
 
@@ -28,11 +29,11 @@ var item_button_map:Dictionary = {}
 func _ready():
 	if !show_tail:
 		tail.hide()
-	var orignal_pos = position
-	modulate = Color.TRANSPARENT
-	position += Vector2(0,16)
-	create_tween().tween_property(self, 'position', orignal_pos, 0.25)
-	create_tween().tween_property(self, 'modulate', Color.WHITE, 0.25)
+	#var orignal_pos = position
+	#modulate = Color.TRANSPARENT
+	#position += Vector2(0,16)
+	#create_tween().tween_property(self, 'position', orignal_pos, 0.25)
+	#create_tween().tween_property(self, 'modulate', Color.WHITE, 0.25)
 	resource_category.pressed.connect(func(): changeCategories('Resources'))
 	camp_category.pressed.connect(func(): changeCategories('CampItems'))
 	ammo_category.pressed.connect(func(): changeCategories('AmmoItems'))
@@ -40,6 +41,7 @@ func _ready():
 	charm_category.pressed.connect(func(): changeCategories('Charms'))
 	for category in categories.get_children():
 		category.focus_exited.connect(checkInFocus)
+	drop_area.item_dropped.connect(addButton)
 
 func showItems(filter:Callable=func(_item):pass):
 	var inventory = InventoryGlobals.inventory.filter(filter)
@@ -62,15 +64,21 @@ func showItems(filter:Callable=func(_item):pass):
 	
 	focusFirstFilled()
 
+func removeItem(item: ResItem):
+	if !item_button_map.has(item):
+		return
+	
+	item_button_map[item].queue_free()
+	item_button_map.erase(item)
+
 func focusFirstFilled():
 	for category in categories.get_children():
-		var node_path='PanelContainer/MarginContainer/VBoxContainer/%s/%s' % [category.name,category.name]
+		var node_path='MarginContainer/VBoxContainer/%s/%s' % [category.name,category.name]
 		if !has_node(node_path):
 			continue
 		
 		var category_container = get_node(node_path)
-		if category_container.get_children().filter(func(item): return item != exit_button).size() > 0:
-			print(category.name)
+		if !isCategoryEmpty(category_container):
 			changeCategories(category.name)
 			return
 
@@ -90,16 +98,17 @@ func addButton(item):
 	else:
 		items.add_child(button)
 	
-	button.pressed.connect(
-		func():
-			OverworldGlobals.playSound("res://audio/sounds/421461__jaszunio15__click_46.ogg")
-			queue_free()
-			)
+	button.item_dragging.connect(removeItem)
+#	if function != null:
+#		button.pressed.connect(function)
 	button.focus_exited.connect(checkInFocus)
 	item_button_map[item] = button
 
+
+
 func _on_custom_button_pressed():
-	queue_free()
+	pass
+	#queue_free()
 
 func changeCategories(change_to: String):
 	for child in mini_inv.get_children():
@@ -123,10 +132,24 @@ func hasFocus()->bool:
 	
 	return false
 
+func reset():
+	clearChildren(camp_items)
+	clearChildren(ammo_items)
+	clearChildren(combat_items)
+	clearChildren(charms)
+	clearChildren(items)
+	item_button_map.clear()
+
+func clearChildren(menu):
+	for child in menu.get_children(): 
+		if child == exit_button: continue
+		child.queue_free()
+
 func checkInFocus():
-	await get_tree().process_frame
-	if !hasFocus(): #and modulate == Color.WHITE:
-		queue_free()
+	#await get_tree().process_frame
+	pass
+	#if !hasFocus(): #and modulate == Color.WHITE:
+	#	queue_free()
 
 func _on_tree_exiting():
 	pass

@@ -1,26 +1,24 @@
 [gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://cfftuy32qslx6"]
 
-[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_rv82y"]
+[ext_resource type="Texture2D" uid="uid://yle8fosxhnxt" path="res://images/sprites/sword.png" id="1_8ie25"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_wpvfv"]
 
 [resource]
 script = ExtResource("2_wpvfv")
 unique = false
 stat_modifications = {
-"accuracy": 0.0,
-"brawn": 0.0,
 "crit": 0.0,
-"crit_mult": 0.0,
-"grit": 0.0,
+"crit_mult": 0.5,
+"damage": 0,
 "handling": 0,
 "heal_mult": 0.0,
+"healing_skill": 0.25,
 "health": 0,
-"hustle": 0,
-"resist": 0.0
+"resist": 0.0,
+"speed": 0
 }
-auto_name = true
-name = ""
-icon = ExtResource("1_rv82y")
+name = "Testet"
+icon = ExtResource("1_8ie25")
 description = ""
 value = 0
 mandatory = false

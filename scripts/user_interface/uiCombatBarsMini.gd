@@ -18,6 +18,7 @@ var default_action_pos: Vector2
 func _ready():
 	default_action_pos = action_texture.position
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
+	strain_bar.max_value = PlayerGlobals.strain_cap
 	#updateStatusEffects()
 
 func setCombatant(combatant:ResPlayerCombatant):

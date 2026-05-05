@@ -1,26 +1,23 @@
 [gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://bnxkiqhfrjpug"]
 
-[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_w2xow"]
+[ext_resource type="Texture2D" uid="uid://d0ixypo21elbp" path="res://images/status_icons/camp_item.png" id="1_u3xa6"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_ulvy6"]
 
 [resource]
 script = ExtResource("2_ulvy6")
 unique = false
 stat_modifications = {
-"accuracy": 0.0,
 "crit": 0.0,
 "crit_mult": 0.0,
 "damage": 0,
-"defense": 0.0,
 "handling": 0,
 "heal_mult": 0.0,
-"health": 0,
+"health": 20,
 "resist": 0.0,
 "speed": 0
 }
-auto_name = true
-name = ""
-icon = ExtResource("1_w2xow")
+name = "Healthifier"
+icon = ExtResource("1_u3xa6")
 description = ""
 value = 0
 mandatory = false

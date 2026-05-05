@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://b68qkjahvueeo"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiAutoAttributeViewContainer.gd" id="1_qkf0w"]
+
+[node name="AutoAttributeView" type="VBoxContainer"]
+offset_right = 640.0
+offset_bottom = 360.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_qkf0w")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

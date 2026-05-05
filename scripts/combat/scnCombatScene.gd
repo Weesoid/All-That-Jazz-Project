@@ -334,7 +334,7 @@ func end_turn(combatant_act=true):
 #		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
 		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead(true):
-			moveCamera(active_combatant.combatant_scene.global_position)
+			if target_combatant is ResCombatant and !target_combatant.hasStatusEffect('Guard'): moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE
 		end_turn()
@@ -847,7 +847,7 @@ func concludeCombat(results: int):
 		setSignals(combatant,false)
 		clearTempModifiers(combatant,'turns')
 		combatant.tickTemporaryModifiers('battle')
-		combatant.clearStrain()
+		#combatant.clearStrain()
 		active_combatant.resolve_dot_shield = false
 		active_combatant.resolve_gate = true
 		if combat_result == 0 or getDeadCombatants('team').size() > 0: 

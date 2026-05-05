@@ -22,6 +22,7 @@ offset_bottom = 48.0
 theme = ExtResource("1_71mgr")
 alignment = 0
 script = ExtResource("1_qamu6")
+auto_resize = null
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
