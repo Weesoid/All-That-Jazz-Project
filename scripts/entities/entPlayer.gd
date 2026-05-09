@@ -45,6 +45,7 @@ var diving = false
 var dive_strength:float=-125
 var invincible = false
 var camping = false
+var current_camp_spot:SavePoint
 var do_gravity:bool = true
 var do_land_flag
 

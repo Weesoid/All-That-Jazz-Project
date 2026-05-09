@@ -5,7 +5,7 @@ extends Control
 @onready var level = $Experience/Level
 @onready var tabs = $TabContainer
 @onready var sheet = $TabContainer/CHARACTER/CharacterSheet
-@onready var drop_area = $DropArea
+
 func _ready():
 	experience_bar.max_value = PlayerGlobals.getRequiredExp()
 	experience_bar.value = PlayerGlobals.current_exp

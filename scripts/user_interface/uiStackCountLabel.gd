@@ -9,7 +9,7 @@ func _init(p_item):
 
 func _enter_tree():
 	updateCount(item, item.stack, -1)
-	theme = load("res://design/OutlinedLabelThin.tres")
+	theme = load("res://design/OutlinedLabel.tres")
 
 func updateCount(changed_item, new_stack, _old_stack):
 	if changed_item != item:

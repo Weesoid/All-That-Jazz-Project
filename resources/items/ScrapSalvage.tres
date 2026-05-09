@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://bc3yscth1qntp"]
 
-[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_55b5r"]
+[ext_resource type="Texture2D" uid="uid://b4e0jwb01k7gc" path="res://images/item_icons/scrap_metal.png" id="1_0qaqa"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="1_tfqii"]
 
 [resource]
 script = ExtResource("1_tfqii")
-max_stack = 0
+max_stack = 9999
 barter_item = false
-name = "Scrap Salvage"
-icon = ExtResource("1_55b5r")
+name = "Scrap Metal"
+icon = ExtResource("1_0qaqa")
 description = ""
 value = 0
 mandatory = false

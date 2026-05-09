@@ -297,5 +297,5 @@ move_player = true
 move_followers = true
 
 [node name="Rope2" parent="." instance=ExtResource("3_gkab1")]
-position = Vector2(145, 96)
+position = Vector2(145, 97)
 segment_count = 3

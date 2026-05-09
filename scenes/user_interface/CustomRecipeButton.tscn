@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dy35hpoj5rc77"]
+[gd_scene load_steps=7 format=3 uid="uid://dy35hpoj5rc77"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomRecipeButton.gd" id="1_6rihq"]
 [ext_resource type="PackedScene" uid="uid://cllnwecy8w0yp" path="res://scenes/user_interface/ItemComponentIcon.tscn" id="2_jm54d"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_yrno1"]
+[ext_resource type="Texture2D" uid="uid://c6scpci5m38wp" path="res://images/status_icons/hammer.png" id="3_7hwfh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -15,12 +16,18 @@ border_blend = true
 bg_color = Color(1, 1, 1, 0.466667)
 
 [node name="CustomButton" type="Button"]
-custom_minimum_size = Vector2(160, 38)
-offset_right = 160.0
-offset_bottom = 38.0
+custom_minimum_size = Vector2(0, 32)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
 alignment = 0
 script = ExtResource("1_6rihq")
 hold_time = 0.25
+hold_delay = 0.05
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -34,33 +41,45 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+split_offset = 999
+dragger_visibility = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ItemComponentIcon" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
+[node name="ItemComponentIcon" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 0
-expand_mode = 2
+size_flags_horizontal = 2
 
-[node name="ItemComponentIcon2" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
+[node name="ItemComponentIcon2" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 4
-expand_mode = 2
+size_flags_horizontal = 2
 
-[node name="ItemComponentIcon3" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
+[node name="ItemComponentIcon3" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 4
-expand_mode = 2
+size_flags_horizontal = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="ItemComponentIcon4" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
+visible = false
 layout_mode = 2
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_horizontal = 2
 
-[node name="ItemComponentIcon4" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_jm54d")]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("3_7hwfh")
+stretch_mode = 3
+
+[node name="Result" parent="MarginContainer/HBoxContainer/HBoxContainer2" instance=ExtResource("2_jm54d")]
 layout_mode = 2
 size_flags_horizontal = 10
 
@@ -90,6 +109,7 @@ one_shot = true
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="held_press" from="." to="." method="_on_held_press"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -295,6 +295,10 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	if item is ResStackItem and show_count:
 		var count_label = StackCountLabel.new(item)
 		button.add_child(count_label)
+	elif item is ResWeapon:
+		var durability_bar = load("res://scenes/user_interface/DurabilityBar.tscn").instantiate()
+		durability_bar.weapon = item
+		button.add_child(durability_bar)
 	
 	if value_modifier != 0.0:
 		var label = Label.new()
@@ -323,7 +327,7 @@ func createItemIcon(item: ResItem, count:int):
 	icon.pivot_offset = Vector2(icon.size.x/2,icon.size.y/2)
 	var count_label = Label.new()
 	count_label.text = str(count)
-	count_label.theme = load("res://design/OutlinedLabelThin.tres")
+	count_label.theme = load("res://design/OutlinedLabel.tres")
 	count_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	icon.add_child(count_label)
 	return icon

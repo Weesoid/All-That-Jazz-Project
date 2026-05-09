@@ -7,6 +7,7 @@ class_name InventoryUI
 @onready var combat_container = $MarginContainer/ScrollContainer/HFlowContainer/CombatItems/Items
 @onready var charm_container = $MarginContainer/ScrollContainer/HFlowContainer/Charms/Items
 @onready var space_label = $Space
+
 var show_space:bool=false
 
 func _ready():

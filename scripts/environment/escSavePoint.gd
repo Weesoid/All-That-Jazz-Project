@@ -27,19 +27,21 @@ func fightCombatantSquad():
 func interact():
 	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	OverworldGlobals.player.camping=true
+	OverworldGlobals.player.current_camp_spot = self
 	OverworldGlobals.destroyAllPatrollers(true)
 	OverworldGlobals.setPlayerInput(false)
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 0.5)
-	PlayerGlobals.overworld_stats['stamina'] = 100.0
+	#PlayerGlobals.overworld_stats['stamina'] = 100.0
 	OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
 	if OverworldGlobals.getCurrentMap().map_properties.has(MapData.MapProperties.COLD):
 		animator.play("Lit")
-	OverworldGlobals.moveCamera(self,0,Vector2(0,-24))
+	OverworldGlobals.moveCamera(self,0,Vector2(0,-32))
 	await OverworldGlobals.zoomCamera(Vector2(2,2),0.5,true)
 	OverworldGlobals.player.sprite.hide()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		addRestSprite(combatant)
 	await OverworldGlobals.player.player_camera.hideOverlay(0.5)
+	OverworldGlobals.moveCamera(self,0.5,Vector2(44,-32))
 
 func exit():
 	await done
@@ -56,6 +58,7 @@ func exit():
 	OverworldGlobals.player.player_camera.hideOverlay(0.5)
 	await get_tree().process_frame
 	OverworldGlobals.player.camping=false
+	OverworldGlobals.player.current_camp_spot=null
 	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	await get_tree().process_frame
 
@@ -139,3 +142,9 @@ func getCombatBars(only_visible:bool)-> Array[CombatBarsMini]:
 
 func toggleAnimFlip():
 	flame_sprite.flip_h = !flame_sprite.flip_h
+
+func getCampBars():
+	var out = []
+	for child in rest_spots.get_children():
+		out.append(child.get_node('CombatBars'))
+	return out

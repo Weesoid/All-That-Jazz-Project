@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://csqkcvvj78upd"]
+
+[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_4wm17"]
+[ext_resource type="Texture2D" uid="uid://b4axx3p6kyvmo" path="res://images/sprites/icon_charm_trans.png" id="2_5t832"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiCustomItemSlotButton.gd" id="3_65x4r"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="5_1hvbt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icdui"]
+bg_color = Color(1, 1, 1, 0.466667)
+
+[node name="CustomButton" type="Button"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 12.0
+offset_bottom = 12.0
+theme = ExtResource("1_4wm17")
+icon = ExtResource("2_5t832")
+icon_alignment = 1
+script = ExtResource("3_65x4r")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Sounds"
+
+[node name="HoldProgress" type="ProgressBar" parent="." node_paths=PackedStringArray("timer")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_mumdi")
+theme_override_styles/fill = SubResource("StyleBoxFlat_icdui")
+value = 25.0
+show_percentage = false
+script = ExtResource("5_1hvbt")
+timer = NodePath("../HoldTimer")
+
+[node name="HoldTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HoldDelay" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]

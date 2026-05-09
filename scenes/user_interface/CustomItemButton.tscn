@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://0eiolcx87vuh"]
+[gd_scene load_steps=7 format=3 uid="uid://0eiolcx87vuh"]
 
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_yrp6h"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomItemButton.gd" id="2_dd5ro"]
+[ext_resource type="Texture2D" uid="uid://cwmgug742co0t" path="res://images/sprites/icon_sack_trans.png" id="2_j7iea"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_iak7o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
@@ -18,6 +19,7 @@ bg_color = Color(1, 1, 1, 0.466667)
 offset_right = 48.0
 offset_bottom = 48.0
 theme = ExtResource("1_yrp6h")
+icon = ExtResource("2_j7iea")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("2_dd5ro")

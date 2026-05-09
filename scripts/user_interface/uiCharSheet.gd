@@ -42,7 +42,7 @@ func _ready():
 	equipment_starting_pos = equipment.position
 	talents_offscreen_pos = talents.position + Vector2(-128,0)
 	equipment_offscreen_pos = equipment.position + Vector2(0,64)
-	equipment.exit_button.pressed.connect(unequipItem)
+	#equipment.exit_button.pressed.connect(unequipItem)
 	setCombatant(viewed_combatant)
 	equip_slot_a.combatant = viewed_combatant
 	equip_slot_b.combatant = viewed_combatant

@@ -358,7 +358,7 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 		target = target.combatant_resource
 	if target.isDead():
 		target.stat_values['health'] = 0
-		removeBrinkEffects(target)
+		if inCombat(): removeBrinkEffects(target)
 		target.resolve_gate=true
 		from_death=true
 	base_healing = valueVariate(base_healing, 0.1)
@@ -422,7 +422,7 @@ func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_i
 				var mes = stat_message.replace('[/color]','')
 				if mes == '': continue
 				manual_call_indicator.emit(target, mes+append_indiactor,'Show',true)
-				await get_tree().create_timer(0.5).timeout
+				await get_tree().create_timer(0.25).timeout
 
 # TODO "var out" so that order of parameters dont matter
 func appendStatModifications(modifiers_a:Dictionary, modifiers_b:Dictionary)-> Dictionary:

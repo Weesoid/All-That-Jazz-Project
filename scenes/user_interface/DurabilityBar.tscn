@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://rnmhg7xo8gm4"]
+
+[ext_resource type="Script" path="res://scenes/user_interface/DurabilityBar.gd" id="1_tk8pm"]
+[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="2_iqida"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xy74u"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
+border_color = Color(0.301961, 0.301961, 0.301961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q1ntf"]
+bg_color = Color(1, 1, 1, 1)
+border_color = Color(0, 0, 0, 1)
+
+[node name="Durability" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_tk8pm")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+modulate = Color(0.501961, 0.968627, 0, 1)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -7.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_xy74u")
+theme_override_styles/fill = SubResource("StyleBoxFlat_q1ntf")
+max_value = 16.0
+value = 8.0
+show_percentage = false
+
+[node name="ProgressBarTrueValues" parent="ProgressBar" instance=ExtResource("2_iqida")]
+layout_mode = 1
+offset_top = -5.0
+offset_bottom = 1.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 4
+horizontal_alignment = 1

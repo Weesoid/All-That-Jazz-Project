@@ -2,7 +2,7 @@ extends CustomDragDropButton
 class_name ItemButton
 
 @export var item:ResItem
-@export var empty_icon:Texture = load("res://images/sprites/icon_charm_trans.png")
+@export var empty_icon:Texture = preload("res://images/sprites/icon_charm_trans.png")
 signal item_dragging(item)
 
 func _get_drag_data(at_position):
@@ -16,8 +16,13 @@ func _get_drag_data(at_position):
 #	print(data)
 
 func ready():
-	if item == null:
+	setItem(item)
+
+func setItem(data: ResItem):
+	item = data
+	if data != null:
+		icon = data.icon
+		description_text = data.getInformation()
+	else:
 		icon = empty_icon
-		return
-	
-	icon = item.icon
+		description_text = ''

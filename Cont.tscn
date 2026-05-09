@@ -1,10 +1,19 @@
 [gd_scene load_steps=6 format=3 uid="uid://cspyw01mf3mrl"]
 
-[ext_resource type="PackedScene" uid="uid://b25f22ls0t34b" path="res://scenes/user_interface/CustomDragDropButton.tscn" id="1_nanrl"]
-[ext_resource type="Texture2D" uid="uid://dp2j72h30680c" path="res://images/sprites/icon_combat_item.png" id="2_047n4"]
 [ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="3_5e8sv"]
+[ext_resource type="PackedScene" uid="uid://bpysmuqphlqeo" path="res://scenes/user_interface/CustomCampButton.tscn" id="3_8u3n2"]
+[ext_resource type="Resource" uid="uid://cohe0ng5gyu4h" path="res://resources/combat/combatants_player/Willis.tres" id="4_aj6o2"]
 [ext_resource type="Resource" uid="uid://b0qa7cs8isk56" path="res://resources/items/Rations.tres" id="4_revr5"]
-[ext_resource type="Resource" uid="uid://cdpk5o3ahct04" path="res://resources/items/CharmMurder.tres" id="5_pdr5s"]
+
+[sub_resource type="GDScript" id="GDScript_r0aat"]
+script/source = "extends Control
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var willis = load(\"res://resources/combat/combatants_player/Willis.tres\")
+	willis.initializeCombatant(false)
+"
 
 [node name="Cont" type="Control"]
 layout_mode = 3
@@ -13,55 +22,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = SubResource("GDScript_r0aat")
 
-[node name="CustomButton" parent="." instance=ExtResource("1_nanrl")]
+[node name="CustomButton" parent="." instance=ExtResource("3_5e8sv")]
 layout_mode = 0
-offset_left = 38.0
-offset_top = 32.0
-offset_right = 86.0
-offset_bottom = 80.0
-icon = ExtResource("2_047n4")
-
-[node name="CustomButton2" parent="." instance=ExtResource("1_nanrl")]
-layout_mode = 0
-offset_left = 103.0
-offset_top = 36.0
-offset_right = 151.0
-offset_bottom = 84.0
-
-[node name="CustomButton3" parent="." instance=ExtResource("3_5e8sv")]
-layout_mode = 0
-offset_left = 117.0
-offset_top = 123.0
-offset_right = 165.0
-offset_bottom = 171.0
+offset_left = 158.0
+offset_top = 245.0
+offset_right = 206.0
+offset_bottom = 293.0
 item = ExtResource("4_revr5")
 
-[node name="CustomButton4" parent="." instance=ExtResource("3_5e8sv")]
-layout_mode = 0
-offset_left = 233.0
-offset_top = 115.0
-offset_right = 281.0
-offset_bottom = 163.0
-item = ExtResource("5_pdr5s")
-
-[node name="CustomButton5" parent="." instance=ExtResource("3_5e8sv")]
-layout_mode = 0
-offset_left = 116.0
-offset_top = 279.0
-offset_right = 164.0
-offset_bottom = 327.0
-
-[node name="CustomButton6" parent="." instance=ExtResource("3_5e8sv")]
-layout_mode = 0
-offset_left = 61.0
-offset_top = 277.0
-offset_right = 109.0
-offset_bottom = 325.0
-
-[node name="CustomButton7" parent="." instance=ExtResource("3_5e8sv")]
-layout_mode = 0
-offset_left = 243.0
-offset_top = 231.0
-offset_right = 291.0
-offset_bottom = 279.0
+[node name="CustomButton2" parent="." instance=ExtResource("3_8u3n2")]
+self_modulate = Color(1, 1, 1, 1)
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 246.0
+offset_top = 210.0
+offset_right = 315.0
+offset_bottom = 304.0
+grow_horizontal = 1
+grow_vertical = 1
+combatant = ExtResource("4_aj6o2")

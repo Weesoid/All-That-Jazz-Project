@@ -15,6 +15,7 @@ class_name CustomButton
 @export var hold_time:float = -1
 @export var hold_delay:float=0.25
 @export var hold_ignore_disabled:bool=true
+@export var description_on_focus:bool=false
 var random_pitch = 0.1
 
 signal held_press
@@ -102,17 +103,12 @@ func cancelPress():
 
 func press_feedback():
 	if click_sound == null: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = click_sound
-	audio_player.play()
+	playSound(click_sound)
 
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = focused_entered_sound
-	audio_player.play()
+	playSound(focused_entered_sound)
+	if description_on_focus: showDescription()
 
 func exit_focus_feedback():
 	delay_timer.stop()
@@ -130,3 +126,9 @@ func setDisabled(set_to:bool):
 	else:
 		mouse_filter = Control.MOUSE_FILTER_STOP
 		focus_mode = Control.FOCUS_ALL
+
+func playSound(audio_stream:AudioStream):
+	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
+	audio_player.stop()
+	audio_player.stream = audio_stream
+	audio_player.play()

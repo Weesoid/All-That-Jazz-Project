@@ -168,6 +168,7 @@ visible = false
 position = Vector2(0, -32)
 texture = ExtResource("4_r53ak")
 hframes = 6
+frame = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -32)
@@ -184,6 +185,7 @@ position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_m7jmf")
 show_ui = true
 cooldown = 3.0
+await_parent = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 

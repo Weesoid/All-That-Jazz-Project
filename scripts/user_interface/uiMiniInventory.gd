@@ -2,7 +2,11 @@ extends Control
 class_name MiniInventory
 
 @export var hide_empty_categories:bool=false
-@export var show_tail:bool=true
+@export var remove_dragged_items:bool=true
+@export var yellow_border:bool=true
+@export var description_offset=Vector2(0,0)
+@export var remove_drop_detector:bool=false
+@export var update_inventory:bool=true
 
 @onready var categories = $MarginContainer/VBoxContainer/Categories
 @onready var resource_category = $MarginContainer/VBoxContainer/Categories/Resources
@@ -16,19 +20,13 @@ class_name MiniInventory
 @onready var ammo_items = $MarginContainer/VBoxContainer/AmmoItems/AmmoItems
 @onready var combat_items = $MarginContainer/VBoxContainer/CombatItems/CombatItems
 @onready var charms = $MarginContainer/VBoxContainer/Charms/Charms
-@onready var exit_button = $MarginContainer/VBoxContainer/Resources/Resources/ExitButton
-@onready var tail = $Tail
-@onready var drop_area = $ItemDropDetector
+@onready var drop_detector = $ItemDropDetector
 
 var item_button_map:Dictionary = {}
 
-#func _init(p_hide_empty_categories, p_show_tail):
-#	hide_empty_categories = p_hide_empty_categories
-#	show_tail = p_show_tail
-
 func _ready():
-	if !show_tail:
-		tail.hide()
+	if !yellow_border:
+		theme = null
 	#var orignal_pos = position
 	#modulate = Color.TRANSPARENT
 	#position += Vector2(0,16)
@@ -39,16 +37,27 @@ func _ready():
 	ammo_category.pressed.connect(func(): changeCategories('AmmoItems'))
 	combat_category.pressed.connect(func(): changeCategories('CombatItems'))
 	charm_category.pressed.connect(func(): changeCategories('Charms'))
-	for category in categories.get_children():
-		category.focus_exited.connect(checkInFocus)
-	drop_area.item_dropped.connect(addButton)
+#	for category in categories.get_children():
+#		category.focus_exited.connect(checkInFocus)
+	if remove_dragged_items and !remove_drop_detector:
+		drop_detector.item_not_dropped.connect(addButton)
+	if remove_drop_detector:
+		drop_detector.queue_free()
+	if update_inventory:
+		InventoryGlobals.added_item_to_inventory.connect(addButton)
+		InventoryGlobals.removed_item_from_inventory.connect(removeItem)
 
-func showItems(filter:Callable=func(_item):pass):
-	var inventory = InventoryGlobals.inventory.filter(filter)
-	inventory.sort_custom(func(a,b): return a.name < b.name)
+func showItems(filter:Callable=func(_item):return true):
+	var inventory = getItemCatalog(filter)
+	
 	for item in inventory:
 		addButton(item)
 	
+	updateCategories()
+	focusFirstFilled()
+
+func updateCategories():
+	await get_tree().process_frame
 	if !hide_empty_categories:
 		resource_category.setDisabled(isCategoryEmpty(items))
 		camp_category.setDisabled(isCategoryEmpty(camp_items))
@@ -61,8 +70,6 @@ func showItems(filter:Callable=func(_item):pass):
 		ammo_category.visible = !isCategoryEmpty(ammo_items)
 		combat_category.visible = !isCategoryEmpty(combat_items)
 		charm_category.visible = !isCategoryEmpty(charms)
-	
-	focusFirstFilled()
 
 func removeItem(item: ResItem):
 	if !item_button_map.has(item):
@@ -70,6 +77,7 @@ func removeItem(item: ResItem):
 	
 	item_button_map[item].queue_free()
 	item_button_map.erase(item)
+	updateCategories()
 
 func focusFirstFilled():
 	for category in categories.get_children():
@@ -83,10 +91,17 @@ func focusFirstFilled():
 			return
 
 func isCategoryEmpty(category)-> bool:
-	return category.get_children().filter(func(button): return button != exit_button).size() == 0
+	if category == charms: print('chrans: ', category.get_children())
+	return category.get_children().size() == 0
 
-func addButton(item):
-	var button = OverworldGlobals.createItemButton(item)
+func addButton(item,_count=null):
+	if item_button_map.has(item) and item is ResStackItem:
+		return
+	
+	var button = createButton(item)
+	if item is String and FileAccess.file_exists("res://resources/items/%s.tres" % item):
+		item = load("res://resources/items/%s.tres" % item)
+	
 	if item is ResCampItem:
 		camp_items.add_child(button)
 	elif item is ResProjectileAmmo:
@@ -98,13 +113,22 @@ func addButton(item):
 	else:
 		items.add_child(button)
 	
-	button.item_dragging.connect(removeItem)
+	if remove_dragged_items and button is CustomDragDropButton:
+		button.item_dragging.connect(removeItem)
+	button.description_offset = description_offset
 #	if function != null:
 #		button.pressed.connect(function)
-	button.focus_exited.connect(checkInFocus)
+#	button.focus_exited.connect(checkInFocus)
+	updateCategories()
 	item_button_map[item] = button
 
+func createButton(item):
+	return OverworldGlobals.createItemButton(item)
 
+func getItemCatalog(filter):
+	var catalog = InventoryGlobals.inventory.filter(filter)
+	catalog.sort_custom(func(a,b): return a.name < b.name)
+	return catalog
 
 func _on_custom_button_pressed():
 	pass
@@ -116,15 +140,11 @@ func changeCategories(change_to: String):
 			child.hide()
 		elif child.name == change_to:
 			child.show()
-			exit_button.reparent(child.get_child(0))
-			child.get_child(0).move_child(exit_button,0)
 
 func hasFocus()->bool:
 	if is_queued_for_deletion():
 		return true
 	
-	if exit_button.has_focus():
-		return true
 	for child in categories.get_children():
 		if child.has_focus(): return true
 	for item in item_button_map.keys():
@@ -142,16 +162,4 @@ func reset():
 
 func clearChildren(menu):
 	for child in menu.get_children(): 
-		if child == exit_button: continue
 		child.queue_free()
-
-func checkInFocus():
-	#await get_tree().process_frame
-	pass
-	#if !hasFocus(): #and modulate == Color.WHITE:
-	#	queue_free()
-
-func _on_tree_exiting():
-	pass
-#	if get_parent() != null and !is_queued_for_deletion():
-#		get_parent().grab_focus()

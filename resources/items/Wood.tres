@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://lan7r1qpxbte"]
+
+[ext_resource type="Texture2D" uid="uid://bn1w0m68et6df" path="res://images/item_icons/wood.png" id="1_1xovm"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_re0yn"]
+
+[resource]
+script = ExtResource("2_re0yn")
+max_stack = 9999
+barter_item = false
+name = "Wood"
+icon = ExtResource("1_1xovm")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""

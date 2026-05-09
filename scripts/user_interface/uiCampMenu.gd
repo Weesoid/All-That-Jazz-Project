@@ -50,66 +50,66 @@ func _ready():
 	default_roster_pos = roster.position
 	cam_default_pos = OverworldGlobals.player.player_camera.global_position
 	rest_button.disabled = PlayerGlobals.rested and save_point.mind_rested
-	fillCampItemContainer()
-	roster.added_character.connect(addRestSprite)
-	roster.removed_character.connect(removeRestSprite)
-	
-	for child in save_point.rest_spots.get_children():
-#		if child.texture == null:
-#			continue
-		var mini_bar: CombatBarsMini = child.get_node('CombatBars')
-		if mini_bar.attached_combatant != null:
-			mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
-		mini_bar.selector.pressed.connect(
-			func():
-				if mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant) and camp_item.canApply(mini_bar.attached_combatant):
-					camp_item.applyEffects(mini_bar.attached_combatant)
-					camp_item.take(1)
-					updateCombatants()
-					pulseButtonActionTexture(mini_bar, camp_item.party_wide)
-					mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
+#	fillCampItemContainer()
+#	roster.added_character.connect(addRestSprite)
+#	roster.removed_character.connect(removeRestSprite)
+#
+#	for child in save_point.rest_spots.get_children():
+##		if child.texture == null:
+##			continue
+#		var mini_bar: CombatBarsMini = child.get_node('CombatBars')
+#		if mini_bar.attached_combatant != null:
+#			mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
+#		mini_bar.selector.pressed.connect(
+#			func():
+#				if mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant) and camp_item.canApply(mini_bar.attached_combatant):
+#					camp_item.applyEffects(mini_bar.attached_combatant)
+#					camp_item.take(1)
+#					updateCombatants()
+#					pulseButtonActionTexture(mini_bar, camp_item.party_wide)
+#					mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
+#
+#					if !isCampItemValid(mini_bar.attached_combatant):
+#						setButtonActionTexture(null)
+#				elif mode == Mode.ROSTER:
+#					selected_pos = save_point.rest_spots.get_children().find(mini_bar.get_parent())
+#					pulseButtonActionTexture(mini_bar,false,false)
+#					showRoster(mini_bar.attached_combatant)
+#				elif mode == Mode.SELECT_GUARD:
+#					if guard_combatant == mini_bar.attached_combatant:
+#						save_point.showWatchMark(guard_combatant,true)
+#						guard_combatant = null
+#					else:
+#						guard_combatant = mini_bar.attached_combatant
+#						save_point.showWatchMark(guard_combatant)
+#					if guard_combatant != null:
+#						confirm_rest.text = 'REST'
+#					else:
+#						confirm_rest.text = 'SKIP GUARD'
+#		)
+#		mini_bar.selector.focus_entered.connect(
+#			func(): 
+#				if mode == Mode.ROSTER:
+#					if mini_bar.attached_combatant == null:
+#						setButtonActionTexture(ADD_ROSTER_ICON,mini_bar)
+#						return
+#					if mini_bar.attached_combatant.mandatory:
+#						mini_bar.selector.disabled = true
+#						return
+#
+#					setButtonActionTexture(SWITCH_ROSTER_ICON,mini_bar)
+#					#if roster.visible:
+#					#	hideRoster()
+#				elif mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant): 
+#					setButtonActionTexture(camp_item.icon,mini_bar,camp_item.party_wide)
+#				)
+#		mini_bar.selector.focus_exited.connect(func(): setButtonActionTexture(null))
+#	create_tween().tween_property(self, 'modulate',Color.WHITE,0.5)
+#	roster_button.setDisabled(OverworldGlobals.getCurrentMap().getClearState() != MapData.PatrollerClearState.FULL_CLEAR) 
 
-					if !isCampItemValid(mini_bar.attached_combatant):
-						setButtonActionTexture(null)
-				elif mode == Mode.ROSTER:
-					selected_pos = save_point.rest_spots.get_children().find(mini_bar.get_parent())
-					pulseButtonActionTexture(mini_bar,false,false)
-					showRoster(mini_bar.attached_combatant)
-				elif mode == Mode.SELECT_GUARD:
-					if guard_combatant == mini_bar.attached_combatant:
-						save_point.showWatchMark(guard_combatant,true)
-						guard_combatant = null
-					else:
-						guard_combatant = mini_bar.attached_combatant
-						save_point.showWatchMark(guard_combatant)
-					if guard_combatant != null:
-						confirm_rest.text = 'REST'
-					else:
-						confirm_rest.text = 'SKIP GUARD'
-		)
-		mini_bar.selector.focus_entered.connect(
-			func(): 
-				if mode == Mode.ROSTER:
-					if mini_bar.attached_combatant == null:
-						setButtonActionTexture(ADD_ROSTER_ICON,mini_bar)
-						return
-					if mini_bar.attached_combatant.mandatory:
-						mini_bar.selector.disabled = true
-						return
-					
-					setButtonActionTexture(SWITCH_ROSTER_ICON,mini_bar)
-					#if roster.visible:
-					#	hideRoster()
-				elif mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant): 
-					setButtonActionTexture(camp_item.icon,mini_bar,camp_item.party_wide)
-				)
-		mini_bar.selector.focus_exited.connect(func(): setButtonActionTexture(null))
-	create_tween().tween_property(self, 'modulate',Color.WHITE,0.5)
-	roster_button.setDisabled(OverworldGlobals.getCurrentMap().getClearState() != MapData.PatrollerClearState.FULL_CLEAR) 
-
-func _input(event):
-	if Input.is_action_just_pressed("ui_alt_cancel") and roster.visible:
-		hideRoster()
+#func _input(event):
+#	if Input.is_action_just_pressed("ui_alt_cancel") and roster.visible:
+#		hideRoster()
 
 func addRestSprite(character: ResPlayerCombatant): 
 	save_point.addRestSprite(character,selected_pos)

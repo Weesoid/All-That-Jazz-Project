@@ -8,6 +8,7 @@ extends Area2D
 @export var show_followers: bool = true
 @export var move_followers:bool = false
 @export var cooldown: float = 1.0
+@export var await_parent:bool=true
 @onready var cooldown_timer = $Timer
 @onready var interact_animator = $Sprite2D/AnimationPlayer
 
@@ -33,12 +34,18 @@ func interact():
 	await enter()
 	interact_animator.play("RESET")
 	if get_parent().has_method('interact'):
-		await get_parent().interact()
+		if await_parent:
+			await get_parent().interact()
+		else:
+			get_parent().interact()
 	OverworldGlobals.showDialogueBox(dialogue_resource, dialogue_start)
 	if !show_ui:
 		await DialogueManager.dialogue_ended
 	if get_parent().has_method('exit'):
-		await get_parent().exit()
+		if await_parent:
+			await get_parent().interact()
+		else:
+			get_parent().interact()
 	exit()
 
 func moveFollowers():

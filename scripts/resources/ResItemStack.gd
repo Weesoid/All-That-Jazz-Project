@@ -1,7 +1,7 @@
 extends ResItem
 class_name ResStackItem
 
-@export var max_stack = 0
+@export var max_stack = 9999
 @export var barter_item:bool = false
 var stack = 1
 

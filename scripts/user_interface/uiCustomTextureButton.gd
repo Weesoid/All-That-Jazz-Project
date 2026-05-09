@@ -27,11 +27,8 @@ func getTexture()-> TextureRect:
 
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = focused_entered_sound
-	audio_player.play()
-	texture_button.self_modulate = Color.YELLOW
+	playSound(focused_entered_sound)
+	if description_on_focus: showDescription()
 
 func exit_focus_feedback():
 	delay_timer.stop()

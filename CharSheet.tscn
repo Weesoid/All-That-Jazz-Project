@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://5eqqls4xx8iu"]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharSheet.gd" id="1_rjlo0"]
 [ext_resource type="Resource" uid="uid://cohe0ng5gyu4h" path="res://resources/combat/combatants_player/Willis.tres" id="2_m3n0x"]
@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dsb034qw3x2mf" path="res://images/sprites/abilities_icon.png" id="4_epdrq"]
 [ext_resource type="Texture2D" uid="uid://cgxbv7ymo7vn7" path="res://images/sprites/crossed_swords.png" id="7_xwp5c"]
 [ext_resource type="Texture2D" uid="uid://ccre7bmdc0170" path="res://images/sprites/shield_n_sword.png" id="9_nr02g"]
-[ext_resource type="PackedScene" uid="uid://covj2vpfron6x" path="res://scenes/user_interface/CustomItemDropButton.tscn" id="11_bkdfs"]
+[ext_resource type="PackedScene" uid="uid://covj2vpfron6x" path="res://scenes/user_interface/CustomEquipSlotButton.tscn" id="11_bkdfs"]
 [ext_resource type="Texture2D" uid="uid://b6otb3unpofi5" path="res://images/sprites/icon_sack.png" id="11_llh6e"]
 [ext_resource type="PackedScene" uid="uid://b68qkjahvueeo" path="res://scenes/user_interface/AutoAttributeViewContainer.tscn" id="11_m2ko1"]
 [ext_resource type="Texture2D" uid="uid://biboupl0greug" path="res://images/sprites/icon_combat_item_trans.png" id="12_7p8h7"]
@@ -61,6 +61,7 @@ alignment = 1
 [node name="ToggleAbilityModifiers" parent="Sheet/LeftBeef/HBoxContainer" instance=ExtResource("3_2vum2")]
 layout_mode = 2
 texture = ExtResource("4_epdrq")
+auto_resize = true
 
 [node name="AbilitiesViewer" type="MarginContainer" parent="Sheet/LeftBeef"]
 layout_mode = 2
@@ -76,6 +77,7 @@ alignment = 1
 [node name="ShowTalents" parent="Sheet/LeftBeef/AbilitiesViewer/HBoxContainer" instance=ExtResource("3_2vum2")]
 layout_mode = 2
 texture = ExtResource("7_xwp5c")
+auto_resize = true
 
 [node name="Label" type="Label" parent="Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents"]
 layout_mode = 1
@@ -136,6 +138,7 @@ alignment = 1
 [node name="ToggleStats" parent="Sheet/Right/HBoxContainer2" instance=ExtResource("3_2vum2")]
 layout_mode = 2
 texture = ExtResource("9_nr02g")
+auto_resize = true
 
 [node name="VBoxContainer" type="VSplitContainer" parent="Sheet/Right"]
 layout_mode = 2
@@ -157,7 +160,6 @@ alignment = 1
 
 [node name="ToggleEquipment" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("3_2vum2")]
 visible = false
-custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = ExtResource("11_llh6e")
 auto_resize = false

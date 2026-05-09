@@ -7,7 +7,7 @@ class_name ResCampItem
 @export var party_wide: bool
 
 func canApply(combatant: ResPlayerCombatant):
-	return (combatant.stat_values['strain']+strain) <= PlayerGlobals.strain_cap
+	return (combatant.stat_values['strain']+strain) <= PlayerGlobals.strain_cap# and !combatant.isDead(true)
 
 func applyEffects(combatant: ResPlayerCombatant):
 	if party_wide:
