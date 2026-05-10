@@ -1,10 +1,12 @@
 extends ItemSlot
 class_name EquipSlot
 
+@onready var durability = $Durability
 @export var combatant:ResPlayerCombatant
 @export_range(-1,2) var slot:int
 
 func _get_drag_data(at_position):
+	durability.hide()
 	if item == null:
 		return
 	
@@ -24,6 +26,7 @@ func _can_drop_data(_at_position, data):
 	return ((slot != -1 and data is ResCharm and !combatant.hasCharm(data) and InventoryGlobals.getCharms(data).size() > 0) or (slot == -1 and data is ResWeapon and data.canUse(combatant)))
 
 func _drop_data(_at_position, data):
+	durability.hide()
 	var previous_item=item
 	setItem(data)
 	
@@ -31,6 +34,8 @@ func _drop_data(_at_position, data):
 		combatant.equipCharm(data,slot)
 	elif data is ResWeapon:
 		combatant.equipWeapon(data)
+		durability.setWeapon(data)
+		durability.show()
 	
 	drop_feedback()
 	item_received.emit(item, previous_item)

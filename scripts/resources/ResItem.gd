@@ -35,3 +35,6 @@ func getRarity():
 		return 1 # Rare
 	else:
 		return 2 # Epic
+
+func getIconBB():
+	return OverworldGlobals.insertTextureCode(icon)

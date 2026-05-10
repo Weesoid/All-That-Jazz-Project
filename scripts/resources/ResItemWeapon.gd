@@ -41,6 +41,7 @@ func repair(repair_amount: int):
 		durability += repair_amount
 	
 	InventoryGlobals.removeItemResource(repair_item,repair_cost*repair_amount)
+	InventoryGlobals.item_repaired.emit(self, durability)
 #	if durability == max_durability:
 #		OverworldGlobals.showPrompt('[color=yellow]%s[/color] fully repaired.' % name)
 
@@ -51,15 +52,20 @@ func canUse(combatant: ResCombatant):
 	return combatant.stat_values['handling'] >= handling_requirement
 
 func getInformation():
-	var handling_bb = '[img]res://images/sprites/circle_filled.png[/img]'
-	var handling_requirement_text = ''
-	var out = OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
+	var handling_bb = '[img]res://images/sprites/circle_filled_small.png[/img]'
+	var handling_requirement_text = '[center]'
+	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	for i in range(handling_requirement):
-		handling_requirement_text += handling_bb
-	out += handling_requirement_text+'\n'
-	out += description + '\n\n'
+		handling_requirement_text += handling_bb+' '
+	#handling_requirement_text += '[/center]'
+	out += handling_requirement_text
+	if description != '':
+		out += '\n'+description
+	out += SettingsGlobals.bb_line
 	out += effect.getRichDescription()
-	out += ' [color=yellow] Uses: %s/%s' % [durability,max_durability]
+	out += SettingsGlobals.bb_line
+	out += '\n[color=yellow] Uses: %s/%s' % [durability,max_durability]+'[/color] '
+	out += '('+ str(repair_cost)+ OverworldGlobals.insertTextureCode(repair_item.icon)+')'
 	return out
 
 func getGeneralInfo():

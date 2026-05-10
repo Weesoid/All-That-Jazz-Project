@@ -6,3 +6,4 @@ class_name ResBasicEffect
 @export var sound_effect: String = ''
 ## Used to be able to be found and have it's properties overriden in the addStatusEffect() function CANNOT CONTAIN UNDERSCORE(_)
 @export var identifier: String = ''
+@export var apply_on_expiry:bool=false

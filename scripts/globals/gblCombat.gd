@@ -156,6 +156,7 @@ func checkConditions(conditions, target: ResCombatant)->bool:
 				
 				return target.hasStatusEffect(condition_data[1]) and rank_condition
 			'hp': # ex. hp:>:0.5 or hp:<:0.45
+				print(target.stat_values['health'], ' vs ', float(condition_data[2])*target.getMaxHealth())
 				if condition_data[1] == '>':
 					#print('supple')
 					return target.stat_values['health'] >= float(condition_data[2])*target.getMaxHealth()
@@ -271,7 +272,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		playBrinkEffects(target)
 		#OverworldGlobals.freezeFrame(0.3, 0.5)
 		target.resolve_gate=false
-		addInjury(target, 1.0-target.stat_values['resist'])
+		addInjury(target, 1.0-target.stat_values['resist'],true)
 	if target.isDead() and bonus_stats.has('is_dot'): 
 		target.resolve_dot_shield = true
 	
@@ -314,26 +315,33 @@ func removeBrinkEffects(target):
 		target.getSprite().get_node('Throbber').queue_free()
 	target.combatant_scene.playIdle('Idle')
 
-func addInjury(combatant: ResCombatant, chance:float):
+func addInjury(combatant: ResCombatant, chance:float,is_grevious:bool=false):
 	if !randomRoll(chance):
 		manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['up-bb']+'Injury Resisted!', 'Show',true)
 		return
 	var injuries = {
 		'Bum Leg': {'speed':-1},
 		'Broken Arm': {'damage':-1},
-		'Shellshock': {'crit':-0.03,'crit_dmg':-0.03},
+		'Shellshocked': {'crit':-0.03},
+		'Pulled Muscle': {'crit_dmg':-0.03},
 		'Infected Wound': {'resist':-0.03}
+		# Broken ribs: dmg taken +2%
+		
 	}
 	if combatant is ResPlayerCombatant:
-		injuries['Concussion'] = {'handling':-1}
+		injuries['Concussed'] = {'handling':-1}
+	if is_grevious:
+		for key in injuries: injuries[key] = multiplyStatModifications(injuries[key],10.0)
 	
 	var chosen_injury = injuries.keys().pick_random()
+	var flag = 'injury' if !is_grevious else 'grevious_injury'
+	var append_name = '' if !is_grevious else 'Greviously '
 	
 	if combatant is ResPlayerCombatant:
 		combatant.addTrait(
-			chosen_injury, 
+			append_name+chosen_injury, 
 			injuries[chosen_injury],
-			{'injury':true,'append':true},
+			{flag:true,'append':true},
 			' [img %s]res://images/status_icons/injury.png[/img]'%SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
 			)
 	else:
@@ -344,6 +352,15 @@ func addInjury(combatant: ResCombatant, chance:float):
 			true,
 			true
 			)
+
+func removeInjury(combatant: ResPlayerCombatant,chance:float, count:int):
+	var injuries = combatant.getTraitsWithFlag('injury')
+	if count > injuries.size():
+		count = injuries.size()
+	for i in range(count):
+		var chosen_injury = injuries.pick_random()
+		injuries.erase(chosen_injury)
+		combatant.removeTrait(chosen_injury)
 
 func checkSpecialStat(special_stat: String, bonus_stats: Dictionary, target: ResCombatant):
 	return hasBonusStat(bonus_stats, special_stat) and checkBonusStatConditions(bonus_stats, special_stat, target)
@@ -442,6 +459,12 @@ func appendStatModifications(modifiers_a:Dictionary, modifiers_b:Dictionary)-> D
 		else:
 			out[stat] = appending_dict[stat]
 	
+	return out
+
+func multiplyStatModifications(modifiers:Dictionary, multiply:float):
+	var out = {}
+	for stat in modifiers.keys():
+		out[stat] = modifiers[stat]*multiply
 	return out
 
 func resetStat(target: ResCombatant, modifier_id: String):
@@ -732,7 +755,8 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	if squad_size > 4: squad_size = 4
 	squad.fill_empty = true
 	squad.enemy_pool = getFactionEnemies(faction)
-	if map_events.has('additional_enemies'):
+	print(map_events)
+	if map_events.has('additional_enemies') and map_events['additional_enemies'] != null:
 		squad.enemy_pool.append_array(ResourceGlobals.loadArrayFromPath(map_events['additional_enemies']))
 	squad.enemy_pool = squad.enemy_pool.filter(func(combatant): return isWithinPlayerTier(combatant))
 	squad.combatant_squad.resize(squad_size)

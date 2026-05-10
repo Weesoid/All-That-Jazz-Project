@@ -254,6 +254,7 @@ offset_bottom = 9.20001
 scale = Vector2(1e-05, 1e-05)
 pivot_offset = Vector2(122, 13)
 size_flags_horizontal = 4
+mouse_filter = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 bbcode_enabled = true

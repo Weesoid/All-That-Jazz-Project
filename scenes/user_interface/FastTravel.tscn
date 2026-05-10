@@ -1,77 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://cw0gvoxm7mdqr"]
+[gd_scene load_steps=2 format=3 uid="uid://cw0gvoxm7mdqr"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiFastTravel.gd" id="1_vesp7"]
-[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="2_46a5y"]
-[ext_resource type="StyleBox" uid="uid://c22qxunue5s3x" path="res://design/PanelNoRight.tres" id="3_l4lig"]
 
 [node name="FastTravel" type="Control"]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 script = ExtResource("1_vesp7")
 
-[node name="DebugButton" parent="." instance=ExtResource("2_46a5y")]
-layout_mode = 1
-offset_left = 80.0
-offset_top = -140.0
-offset_right = 168.0
-offset_bottom = -118.0
-text = "REROLL"
-
-[node name="PanelContainer2" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = -240.0
-offset_top = -140.0
-offset_right = -80.0
-offset_bottom = -100.0
-theme_override_styles/panel = ExtResource("3_l4lig")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer2"]
-layout_mode = 2
-bbcode_enabled = true
-
-[node name="PanelContainer3" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = -240.0
-offset_top = -92.0
-offset_right = -80.0
-offset_bottom = -52.0
-theme_override_styles/panel = ExtResource("3_l4lig")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer3"]
-layout_mode = 2
-bbcode_enabled = true
-
-[node name="FastTravelAreas" type="PanelContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -80.0
-offset_top = -148.0
-offset_right = 80.0
-offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+vertical_scroll_mode = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="FastTravelAreas"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="FastTravelAreas/MarginContainer"]
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="FastTravelAreas/MarginContainer/ScrollContainer"]
-layout_mode = 2
-
-[connection signal="pressed" from="DebugButton" to="." method="_on_debug_button_pressed"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1

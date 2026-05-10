@@ -28,16 +28,22 @@ func doPopTween():
 	scale_tween.tween_property(self,'scale',Vector2(1.25,1.25),0.1).set_ease(Tween.EASE_IN)
 	scale_tween.tween_property(self,'scale',Vector2(1,1),0.25).set_ease(Tween.EASE_OUT)
 
-func update_counts():
+func update_counts(is_repair:bool=false):
 	var item_count = InventoryGlobals.getItemCount(item)
-	if item.name.contains('Rushy'):
-		print('rushy ic ', item_count)
 	
+#	if is_weapon_component_repair and !is_result:
+#		var has_weapon = InventoryGlobals.hasItem(item)
+#		required_count.text = '1' if has_weapon else '0'
+#		modulate = Color.DARK_RED if !has_weapon else Color.WHITE
 	if !is_result:
 		required_count.text = '%s/%s' % [str(item_count), str(required)]
 		modulate = Color.DARK_RED if required > item_count else Color.WHITE
 	else:
-		var count_string = getCurrentCountString(item)
+		var count_string
+		if is_repair: 
+			count_string = getCurrentDurabilityString(item)
+		else:
+			count_string = getCurrentCountString(item)
 		required_count.text = count_string[0]
 		required_count.modulate = count_string[1]
 
@@ -54,3 +60,6 @@ static func getCurrentCountString(p_item: ResItem):
 		return [str('%s/%s' % [item_count, max]), Color.YELLOW if item_count == max else Color.WHITE]
 	else:
 		return [str(item_count), Color.YELLOW if item_count == max else Color.WHITE]
+
+static func getCurrentDurabilityString(p_weapon:ResWeapon):
+	return [str(p_weapon.durability)+'/'+str(p_weapon.max_durability), Color.YELLOW if p_weapon.durability == p_weapon.max_durability else Color.WHITE]

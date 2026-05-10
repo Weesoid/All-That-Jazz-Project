@@ -4,13 +4,15 @@ class_name DurabilityBar
 @onready var bar = $ProgressBar
 var weapon: ResWeapon
 
-#func _init(p_weapon):
-#	weapon = p_weapon
-
-	#InventoryGlobals.stack_item_changed.connect(updateCount)
-
-func _ready():
-	print(weapon)
+func setWeapon(p_weapon):
+	weapon = p_weapon
 	bar.value = weapon.durability
 	bar.max_value = weapon.max_durability
 
+func _ready():
+	if weapon != null:
+		setWeapon(weapon)
+		InventoryGlobals.item_repaired.connect(update_values.unbind(2))
+
+func update_values():
+	bar.value = weapon.durability

@@ -556,7 +556,7 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 		can_move = false
 
 func setUIVisibility(set_visibility:bool):
-	var exceptions = ['ColorOverlay', 'PlayerPrompt','SaveIndicator']
+	var exceptions = ['ColorOverlay', 'PlayerPrompt','SaveIndicator','BigLabel']
 	for child in player_camera.get_node('UI').get_children():
 		if child is Control and !exceptions.has(child.name): 
 			match set_visibility:

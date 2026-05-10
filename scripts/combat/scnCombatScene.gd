@@ -463,7 +463,7 @@ func inspectTarget(inspect:bool):
 		ui_inspect_target.hide()
 
 func removeTargetToken(target, caster):
-	if !CombatGlobals.isSameCombatantType(target,caster):
+	if target is ResCombatant and !CombatGlobals.isSameCombatantType(target,caster):
 		target_combatant.removeTokens(ResStatusEffect.RemoveType.GET_TARGETED)
 
 func executeAbility():
@@ -741,7 +741,7 @@ func isCombatantGroupDead(type: String):
 	return true
 
 func isCombatValid()-> bool:
-	return !isCombatantGroupDead('team') and !isCombatantGroupDead('enemies')
+	return (!isCombatantGroupDead('team') and !isCombatantGroupDead('enemies')) or combat_result != 2
 
 func renameDuplicates():
 	var seen = []

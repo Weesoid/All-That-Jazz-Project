@@ -27,18 +27,13 @@ var item_button_map:Dictionary = {}
 func _ready():
 	if !yellow_border:
 		theme = null
-	#var orignal_pos = position
-	#modulate = Color.TRANSPARENT
-	#position += Vector2(0,16)
-	#create_tween().tween_property(self, 'position', orignal_pos, 0.25)
-	#create_tween().tween_property(self, 'modulate', Color.WHITE, 0.25)
+	
 	resource_category.pressed.connect(func(): changeCategories('Resources'))
 	camp_category.pressed.connect(func(): changeCategories('CampItems'))
 	ammo_category.pressed.connect(func(): changeCategories('AmmoItems'))
 	combat_category.pressed.connect(func(): changeCategories('CombatItems'))
 	charm_category.pressed.connect(func(): changeCategories('Charms'))
-#	for category in categories.get_children():
-#		category.focus_exited.connect(checkInFocus)
+
 	if remove_dragged_items and !remove_drop_detector:
 		drop_detector.item_not_dropped.connect(addButton)
 	if remove_drop_detector:
@@ -46,6 +41,11 @@ func _ready():
 	if update_inventory:
 		InventoryGlobals.added_item_to_inventory.connect(addButton)
 		InventoryGlobals.removed_item_from_inventory.connect(removeItem)
+	
+	inheritorReady()
+
+func inheritorReady():
+	pass
 
 func showItems(filter:Callable=func(_item):return true):
 	var inventory = getItemCatalog(filter)
@@ -91,7 +91,6 @@ func focusFirstFilled():
 			return
 
 func isCategoryEmpty(category)-> bool:
-	if category == charms: print('chrans: ', category.get_children())
 	return category.get_children().size() == 0
 
 func addButton(item,_count=null):
@@ -116,9 +115,6 @@ func addButton(item,_count=null):
 	if remove_dragged_items and button is CustomDragDropButton:
 		button.item_dragging.connect(removeItem)
 	button.description_offset = description_offset
-#	if function != null:
-#		button.pressed.connect(function)
-#	button.focus_exited.connect(checkInFocus)
 	updateCategories()
 	item_button_map[item] = button
 

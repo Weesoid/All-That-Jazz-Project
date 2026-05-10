@@ -1,376 +1,206 @@
 extends Control
+class_name CampMenu
 
-enum Mode {
-	CAMP,
-	SELECT_GUARD,
-	ROSTER
-}
+const INV_ICON = preload("res://images/sprites/sack_inverted.png")
+const FAST_TRAVEL_ICON = preload("res://images/sprites/button_pinpoint_normal.png")
 
-const SWITCH_ROSTER_ICON = preload("res://images/sprites/icon_rotating_arrows.png")
-const ADD_ROSTER_ICON = preload("res://images/sprites/plus_icon_big.png")
-
-#@onready var action_container = $HBoxContainer
-@onready var action_bar = $OtherActions
-@onready var camping = $Submenus/Camp
-@onready var camp_item_container = $Submenus/Camp/MainBar/ScrollContainer/CampItems
-@onready var craft_button = $OtherActions/Craft
-@onready var travel_button = $OtherActions/FastTravel
-@onready var rest_button = $Submenus/Camp/RestOptions/Rest
-@onready var no_rest_button = $Submenus/Camp/RestOptions/NoRest
-@onready var rest_ui = $RestStuff
-@onready var confirm_rest = $RestStuff/HBoxContainer/ConfirmRest
-@onready var squad = OverworldGlobals.getCombatantSquad('Player')
-@onready var save_point: SavePoint = OverworldGlobals.getCurrentMap().get_node('SavePoint')
-@onready var player_ui_path = OverworldGlobals.player.player_camera.get_node('UI')
-@onready var sub_menus = $Submenus
-@onready var roster_button = $OtherActions/GameMenu
-@onready var roster: RosterSelector = $Submenus/Roster
-@onready var fast_travel = $Submenus/FastTravel
-@onready var crafting = $Submenus/Crafting
-var camp_item: ResCampItem
-var camp_target: ResPlayerCombatant
-var mode: Mode = Mode.CAMP
-#var select_guard:bool = false
-var guard_combatant: ResPlayerCombatant
-var wake_events = [
-	'fight',
-	'steal',
-	'damage',
-	'status_effect'
-	]
-var cam_default_pos:Vector2
-var default_roster_pos:Vector2
-
-var selected_pos:int
+@onready var inventory: MiniInventory = $MiniInventory
+@onready var crafting: CraftingMenu = $uiCrafting
+@onready var fast_travel = $FastTravel
+@onready var fast_travel_button = $HBoxContainer/FastTravel
+@onready var crafting_button = $HBoxContainer/Crafting
+@onready var buttons = $HBoxContainer
+@onready var gradient = $TextureRect
+@onready var guard_label = $Label
+@onready var rest_options = $RestOptions
+@onready var rest_button = $HBoxContainer/Rest
+@onready var ambush_label = $Sprite2D
+var save_point:SavePoint
+var camp_bars
+var original_positions: Dictionary
+var guard_combatant:ResPlayerCombatant
+var rest_mode:bool=false
+var done:bool=false
 
 func _ready():
-	modulate = Color.TRANSPARENT
-	for combatant in ResourceGlobals.loadArrayFromPath("res://resources/combat/combatants_player/"):
-		PlayerGlobals.addCombatantToTeam(combatant)
-	default_roster_pos = roster.position
-	cam_default_pos = OverworldGlobals.player.player_camera.global_position
-	rest_button.disabled = PlayerGlobals.rested and save_point.mind_rested
-#	fillCampItemContainer()
-#	roster.added_character.connect(addRestSprite)
-#	roster.removed_character.connect(removeRestSprite)
-#
-#	for child in save_point.rest_spots.get_children():
-##		if child.texture == null:
-##			continue
-#		var mini_bar: CombatBarsMini = child.get_node('CombatBars')
-#		if mini_bar.attached_combatant != null:
-#			mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
-#		mini_bar.selector.pressed.connect(
-#			func():
-#				if mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant) and camp_item.canApply(mini_bar.attached_combatant):
-#					camp_item.applyEffects(mini_bar.attached_combatant)
-#					camp_item.take(1)
-#					updateCombatants()
-#					pulseButtonActionTexture(mini_bar, camp_item.party_wide)
-#					mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
-#
-#					if !isCampItemValid(mini_bar.attached_combatant):
-#						setButtonActionTexture(null)
-#				elif mode == Mode.ROSTER:
-#					selected_pos = save_point.rest_spots.get_children().find(mini_bar.get_parent())
-#					pulseButtonActionTexture(mini_bar,false,false)
-#					showRoster(mini_bar.attached_combatant)
-#				elif mode == Mode.SELECT_GUARD:
-#					if guard_combatant == mini_bar.attached_combatant:
-#						save_point.showWatchMark(guard_combatant,true)
-#						guard_combatant = null
-#					else:
-#						guard_combatant = mini_bar.attached_combatant
-#						save_point.showWatchMark(guard_combatant)
-#					if guard_combatant != null:
-#						confirm_rest.text = 'REST'
-#					else:
-#						confirm_rest.text = 'SKIP GUARD'
-#		)
-#		mini_bar.selector.focus_entered.connect(
-#			func(): 
-#				if mode == Mode.ROSTER:
-#					if mini_bar.attached_combatant == null:
-#						setButtonActionTexture(ADD_ROSTER_ICON,mini_bar)
-#						return
-#					if mini_bar.attached_combatant.mandatory:
-#						mini_bar.selector.disabled = true
-#						return
-#
-#					setButtonActionTexture(SWITCH_ROSTER_ICON,mini_bar)
-#					#if roster.visible:
-#					#	hideRoster()
-#				elif mode == Mode.CAMP and isCampItemValid(mini_bar.attached_combatant): 
-#					setButtonActionTexture(camp_item.icon,mini_bar,camp_item.party_wide)
-#				)
-#		mini_bar.selector.focus_exited.connect(func(): setButtonActionTexture(null))
-#	create_tween().tween_property(self, 'modulate',Color.WHITE,0.5)
-#	roster_button.setDisabled(OverworldGlobals.getCurrentMap().getClearState() != MapData.PatrollerClearState.FULL_CLEAR) 
+	modulate=Color.TRANSPARENT
+	camp_bars = OverworldGlobals.player.current_camp_spot.getCampBars()
+	for bar in camp_bars:
+		bar.camp_button.party_wide_item_hovered.connect(showPartyItem)
+		bar.camp_button.mouse_exited.connect(hideAllItems)
+		bar.camp_button.pressed.connect(func(): setGuard(bar))
+	
+	inventory.showItems()
+	original_positions[crafting] = crafting.position
+	original_positions[inventory] = inventory.position
+	original_positions[fast_travel] = fast_travel.position
+	original_positions[buttons] = buttons.position
+	original_positions[gradient] = gradient.position
+	original_positions[guard_label] = guard_label.position
+	original_positions[rest_options] = rest_options.position
+	setMenuVisibility(crafting, false)
+	setMenuVisibility(fast_travel, false)
+	setMenuVisibility(guard_label,false,true)
+	setMenuVisibility(rest_options,false,true,0.5,true)
+	inventory.drop_detector.item_dropped.connect(clearPartyItem)
+	inventory.drop_detector.item_dropped.connect(updateStrainBars)
+	rest_button.setDisabled(PlayerGlobals.rested)
+	setFullMenuVisibility(false)
+	await get_tree().create_timer(0.25).timeout
+	setFullMenuVisibility(true)
+	done=true
 
-#func _input(event):
-#	if Input.is_action_just_pressed("ui_alt_cancel") and roster.visible:
-#		hideRoster()
+func restockItem(item: ResStackItem):
+	if item.stack > 0: inventory.addButton(item)
 
-func addRestSprite(character: ResPlayerCombatant): 
-	save_point.addRestSprite(character,selected_pos)
-	hideRoster()
+func showPartyItem(item: ResCampItem):
+	for bar in camp_bars:
+		if bar.attached_combatant != null: bar.camp_button.showAction(item)
 
-func removeRestSprite(character):
-	save_point.removeRestSprite(character)
-	hideRoster()
-	save_point.showEmptyMembers()
+# DUCT TAPE
+func _process(delta):
+	if !done:
+		modulate = Color.TRANSPARENT
 
-func setButtonActionTexture(texture:Texture,bar: CombatBarsMini=null,party_wide:bool=false):
-	if texture == null:
-		if party_wide or bar == null:
-			for mini_bar in save_point.getCombatBars(true):
-				mini_bar.unsetActionTexture()
-		else:
-			bar.unsetActionTexture()
+func clearPartyItem(item: ResCampItem):
+	if !item.party_wide:
 		return
-	
-	if bar == null or party_wide:
-		for mini_bar in save_point.getCombatBars(true):
-			if isCampItemValid(mini_bar.attached_combatant): mini_bar.setActionTexture(texture)
+	hideAllItems()
+
+func hideAllItems():
+	for bar in camp_bars:
+		if bar.attached_combatant != null: bar.camp_button.showAction(null)
+
+func updateStrainBars(_item):
+	for bar in camp_bars:
+		if bar.attached_combatant != null: bar.updateStrainBar()
+
+func setFullMenuVisibility(set_to:bool):
+	var tween = create_tween()
+	if set_to:
+		tween.tween_property(self,'modulate',Color.WHITE,0.5)
 	else:
-		bar.setActionTexture(texture)
+		tween.tween_property(self,'modulate',Color.TRANSPARENT,0.5)
 
-func pulseButtonActionTexture(bar:CombatBarsMini,party_wide:bool=false,reset_view:bool=true):
-	if party_wide:
-		for mini_bar in save_point.getCombatBars(true):
-			if isCampItemValid(mini_bar.attached_combatant):
-				mini_bar.pulseActionTexture(reset_view)
-			else:
-				mini_bar.unsetActionTexture()
-			mini_bar.strain_bar.setValue(mini_bar.attached_combatant.stat_values['strain'])
+func setMenuVisibility(menu:Control, set_to:bool, offset_to_top:bool=false,duration:float=0.25, invert_direction:bool=false):
+	var tween = create_tween().set_parallel()
+	var offset = Vector2(128,0) if !offset_to_top else Vector2(0,-128)
+	if invert_direction: offset *= -1
+	var pos = original_positions[menu]
+	var offscreen_pos = pos+offset
+	if set_to:
+		menu.show()
+		tween.tween_property(menu,'modulate',Color.WHITE,duration)
+		tween.tween_property(menu,'position',pos,duration)
 	else:
-		bar.pulseActionTexture(reset_view)
-
-func updateCombatants():
-	pass
-	
-	#for combatant in squad:
-	#	getRestSprite(combatant).get_node('CombatBars').updateStatusEffects()
-
-func isCampItemValid(combatant:ResPlayerCombatant):
-	return camp_item != null and camp_item.stack > 0 and camp_item.canApply(combatant)
-
-func _on_eat_pressed():
-	#fillCampItemContainer()
-	save_point.setBarVisibility(true)
-	showContainer(camp_item_container)
-
-func _on_craft_pressed():
-	showSubmenu(crafting)
-
-func _on_fast_travel_pressed():
-	showSubmenu(fast_travel)
-
-func _on_game_menu_pressed():
-	hideSubmenus()
-	for bar in save_point.getCombatBars(true): 
-		bar.show()
-	mode = Mode.ROSTER
-	save_point.showEmptyMembers()
-	#showRoster()
-	#setMainBarVisibility(false)
-	#back_button.show()
-
-func showRoster(replace_combatant:ResPlayerCombatant=null):
-	roster.loadMembers(replace_combatant)
-	roster.show()
-	roster.modulate = Color.TRANSPARENT
-	save_point.showEmptyMembers()
-	roster.position += Vector2(0,64)
-	create_tween().tween_property(roster,'position',default_roster_pos,0.2).set_ease(Tween.EASE_IN)#.set_trans(Tween.TRANS_CUBIC)
-	create_tween().tween_property(roster,'modulate',Color.WHITE,0.15)
-
-func hideRoster():
-	var offset = Vector2(0,64)
-	create_tween().tween_property(roster,'position',roster.position+offset,0.1).set_ease(Tween.EASE_IN)#.set_trans(Tween.TRANS_CUBIC)
-	create_tween().tween_property(roster,'modulate',Color.TRANSPARENT,0.15)
-	#setMainBarVisibility(false)
-	await get_tree().create_timer(0.3).timeout
-	roster.hide()
-#func setButtons(set_to:bool):
-#	for button in action_container.get_children():
-#		button.visible = set_to
-
-func showSubmenu(menu:Control, hide_bars:bool=true):
-	#OverworldGlobals.closeSubmenu()
-	save_point.hideEmptyMembers()
-	if hide_bars:
-		for bar in save_point.getCombatBars(true): bar.hide()
-	else:
-		for bar in save_point.getCombatBars(true): bar.show()
-	
-	for sub_menu in sub_menus.get_children():
-		sub_menu.visible = menu == sub_menu
-	#menu.show()
-	#back_button.show()
-
-#	var ui = load(path).instantiate()
-#	ui.modulate = Color.TRANSPARENT
-#	ui.name = 'Menu'
-#	player_ui_path.add_child(ui)
-#	ui.position += offset
-#	create_tween().tween_property(ui,'position',ui.position-offset,0.25).set_ease(Tween.EASE_IN)#.set_trans(Tween.TRANS_CUBIC)
-#	create_tween().tween_property(ui,'modulate',Color.WHITE,0.3)
-#	back_button.show()
-
-func tweenButtons(buttons: Array):
-	for button in buttons:
-		button.modulate = Color.TRANSPARENT
-	await get_tree().process_frame
-	var sound_reducer = 1
-	for button in buttons:
-		var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-		tween.finished.connect(func():OverworldGlobals.playSound('536805__egomassive__gun_2.ogg',-6.0-sound_reducer),CONNECT_ONE_SHOT)
-		tween.tween_property(button, 'scale', Vector2(1.1,1.1), 0.5)
-		tween.tween_property(button, 'scale', Vector2(1.0,1.0), 0.25)
-		tween.set_parallel(true)
-		tween.tween_property(button, 'modulate', Color.WHITE, 0.05)
-		await get_tree().create_timer(0.05).timeout
-		sound_reducer += 0.5
-	
-	
-func showContainer(container):
-	for control in get_children().filter(func(control): return control is Container):
-		control.hide()
-	if container == null:
-		return
-	container.show()
-	OverworldGlobals.setMenuFocus(container)
-	#await tweenButtons(container.get_children())
-
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_show_menu"):
-		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn",true)
-		#hideSubmenus()
-
-func _on_rest_pressed():
-	action_bar.hide()
-	hideSubmenus()
-	OverworldGlobals.moveCamera(save_point,0.5, Vector2(0,-30))
-	save_point.setBarVisibility(true)
-	mode = Mode.SELECT_GUARD
-	rest_ui.show()
-
-func hideSubmenus():
-	for menu in sub_menus.get_children():
+		tween.tween_property(menu,'modulate',Color.TRANSPARENT,duration)
+		tween.tween_property(menu,'position',offscreen_pos,duration)
+		await tween.finished
 		menu.hide()
 
-func _on_confirm_rest_pressed():
-	#setMainBarVisibility(false)
-	hide()
-	PlayerGlobals.rested = true
-	rest_ui.hide()
-	save_point.setBarVisibility(false)
-	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
+func setBaseMenuVisibility(set_to:bool, entire_menu:bool=true):
+	setMenuVisibility(inventory, set_to)
+	setMenuVisibility(buttons, set_to)
+	setMenuVisibility(gradient, set_to)
+	if entire_menu:
+		setMenuVisibility(fast_travel, set_to)
+		setMenuVisibility(crafting, set_to)
+
+func _on_crafting_pressed():
+	#setMenuVisibility(fast_travel,false)
+	#setMenuVisibility(inventory,true)
+	if fast_travel.visible:
+		fast_travel_button.pressed.emit()
+	
+	crafting.resetCrafting()
+	setMenuVisibility(crafting, crafting.position != original_positions[crafting])
+
+
+func _on_fast_travel_pressed():
+	if crafting.visible:
+		crafting_button.pressed.emit()
+	setMenuVisibility(inventory, fast_travel.position == original_positions[fast_travel])
+	await setMenuVisibility(fast_travel, fast_travel.position != original_positions[fast_travel])
+	if fast_travel.visible:
+		fast_travel_button.setTexture(INV_ICON)
+		fast_travel_button.description_text = '[center]INVENTORY'
+	else:
+		fast_travel_button.setTexture(FAST_TRAVEL_ICON)
+		fast_travel_button.description_text = '[center]FAST TRAVEL'
+
+func setGuard(bar:CombatBarsMini):
+	if !rest_mode:
+		return
+	for other_bar in camp_bars:
+		other_bar.setWatchmark(false)
+	if bar == null:
+		guard_combatant=null
+		return
+	
+	if bar.attached_combatant == guard_combatant:
+		guard_combatant = null
+		bar.setWatchmark(false)
+	else:
+		guard_combatant = bar.attached_combatant
+		bar.setWatchmark(true)
+
+func _on_rest_held_press():
+	OverworldGlobals.player.current_camp_spot.setCamToRestPos()
+	rest_mode=true
+	setBaseMenuVisibility(false)
+	setMenuVisibility(guard_label,true,true,0.5)
+	setMenuVisibility(rest_options,true,true,0.5,true)
+
+
+func _on_custom_button_held_press():
+	#PlayerGlobals.rested = true
+	var squad = OverworldGlobals.getCombatantSquad("Player")
 	for combatant in squad:
 		if combatant == guard_combatant: continue
 		restCombatant(combatant)
-	await get_tree().create_timer(1.5).timeout
-	
-	if  guard_combatant == null and CombatGlobals.randomRoll(0.75):
-		await pickRandomEvent()
-	else:
-		await get_tree().create_timer(1.5).timeout
-	OverworldGlobals.getCurrentMap().get_node('SavePoint').done.emit()
-	queue_free()
-
-func pickRandomEvent():
-	randomize()
-	var event = wake_events.pick_random()
-
-	match event: # TO DO: Event notifs... barks?
-		'fight':
-			save_point.fightCombatantSquad()
-			OverworldGlobals.player.player_camera.hideOverlay(0)
-		'damage':
-			OverworldGlobals.damageParty(10,[],false)
-		'steal':
-			var item = InventoryGlobals.getNonMandatoryItems().pick_random()
-			var count = 1
-			if item is ResStackItem:
-				count = ceil(item.stack*randf_range(0.25,0.5))
-			InventoryGlobals.removeItemResource(item,count)
-		'status_effect':
-			var effect = ['Poison', 'Burn'].pick_random()
-#			for combatant in squad:
-#				OverworldGlobals.addLingerEffect(combatant, effect)
+	await doScreenFade()
+	await get_tree().create_timer(1).timeout
+	if guard_combatant == null and CombatGlobals.randomRoll(0.75):
+		for combatant in squad: combatant.storeStatusEffect(CombatGlobals.loadStatusEffect('Stunned'))
+		OverworldGlobals.player.player_camera.playBigLabelAnimation('Show_Ambush')
+		OverworldGlobals.player.current_camp_spot.fightCombatantSquad()
+		await OverworldGlobals.combat_enetered
+		OverworldGlobals.player.player_camera.hideOverlay(0.1)
+		await OverworldGlobals.combat_exited
+#	else:
+	doExitTransition(false)
 
 func restCombatant(combatant: ResPlayerCombatant):
-	CombatGlobals.calculateHealing(combatant, combatant.getMaxHealth()*0.05)
-
-func fillCampItemContainer(clear_previous:bool=false):
-	if clear_previous:
-		camp_item = null
-		for item in camp_item_container.get_children():
-			item.queue_free()
-		await get_tree().process_frame
-	for item in getCampItems():
-#		if item == null or item.icoon == null: #temp
-#			continue
-		var button = OverworldGlobals.createItemButton(item)
-		button.pressed.connect(
-			func():
-				camp_item = item
-				piss(Color(Color.DARK_GRAY, 0.5))
-				button.modulate = Color.WHITE
-				#unhighlightAll()
-				)
-		#button.description_offset=Vector2(0,116)
-		camp_item_container.add_child(button)
-
-func getItemButton(item: ResItem):
-	for button in camp_item_container.get_children():
-		if button.tooltip_text == item.name:
-			return button
-
-func piss(scales):
-	for button in camp_item_container.get_children():
-		button.modulate = scales
-
-func getRestSprite(combatant: ResPlayerCombatant):
-	for sprite in save_point.rest_spots.get_children():
-		if sprite.texture == null: continue
-		
-		if sprite.get_node('CombatBars').attached_combatant == combatant:
-			return sprite
-
-func getAllRestSprites():
-	var out = []
-	for sprite in save_point.rest_spots.get_children():
-		if sprite.texture == null: continue
-		out.append(sprite)
-	return out
-
-func getCampItems():
-	return InventoryGlobals.inventory.filter(func(item): return item is ResCampItem)
-
-func _on_no_rest_pressed():
-#	action_container.hide()
-	#setMainBarVisibility(false)
-	hide()
-	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 0.5)
-	#await get_tree().create_timer(1.5).timeout
-	save_point.done.emit()
-	queue_free()
-
-
-func _on_camp_pressed():
-	fillCampItemContainer(true)
-	mode = Mode.CAMP
-	showSubmenu(camping,false)
-	await get_tree().create_timer(0.5).timeout
-
+	randomize()
+	var random_stat_boost= ['speed', 'damage', 'resolve'].pick_random()
+	#var heal_missing_health = ceil(combatant.getMissingHealth()*0.15)
+	combatant.addTemporaryModifer('Well Rested',3,{'resist':0.1,random_stat_boost:1,'health':5},false,true)
+	#if heal_missing_health > 0:
+	CombatGlobals.calculateHealing(combatant, ceil(combatant.getMaxHealth()*0.05),false)
+	CombatGlobals.healResolve(combatant,99)
+	CombatGlobals.removeInjury(combatant,0.15,randi_range(1,2))
 
 func _on_return_pressed():
-	rest_ui.hide()
-	OverworldGlobals.moveCamera(cam_default_pos,0.5)
-	if guard_combatant != null:
-		save_point.showWatchMark(guard_combatant, true)
-		guard_combatant = null
-	action_bar.show()
-	showSubmenu(camping)
+	setGuard(null)
+	rest_mode=false
+	OverworldGlobals.player.current_camp_spot.setCamToMenuPos()
+	setMenuVisibility(guard_label,false,true,0.5)
+	setMenuVisibility(rest_options,false,true,0.5,true)
+	setBaseMenuVisibility(true,false)
+
+func _on_embark_held_press():
+	doExitTransition()
+
+func doExitTransition(do_screen_fade:bool=true):
+	print('doing exit!!!!!!!!!!!!')
+	if do_screen_fade: await doScreenFade()
+	#await get_tree().process_frame
+	setGuard(null)
+	OverworldGlobals.player.current_camp_spot.done.emit()
+	queue_free()
+
+func doScreenFade():
+	setBaseMenuVisibility(false)
+	await setFullMenuVisibility(false)
+	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
+	await get_tree().create_timer(1.0).timeout

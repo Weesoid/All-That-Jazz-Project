@@ -65,6 +65,9 @@ func hideOverlay(duration:float=0.25):
 	color_overlay.hide()
 	color_overlay.modulate = Color.TRANSPARENT
 
+func playBigLabelAnimation(animation:String):
+	$UI/BigLabel/AnimationPlayer.play(animation)
+
 #func addRewardBank(patroller_group: PatrollerGroup):
 #	for bank in reward_banks.get_children():
 #		if bank.patroller_group == patroller_group:

@@ -17,6 +17,7 @@ var max_inventory: int = 500
 signal removed_item_from_inventory(item)
 signal added_item_to_inventory(item, amount)
 signal stack_item_changed(item, new_stack, old_stack)
+signal item_repaired(weapon, new_durability)
 
 func loadItemResource(resource_name: String)-> ResItem:
 	assert(FileAccess.file_exists("res://resources/items/"+resource_name+".tres"), 'Item %s in path "res://resources/items/%s.tres" does not exist!' % [resource_name, resource_name])
@@ -30,11 +31,16 @@ func addItem(item_name: String, count:int=1, show_message:bool=true):
 ## Returns [ItemResource, Craft Count] e.g. ["ScrapSalvage", 3]
 func getRecipeResult(input_recipe)-> Array:
 	input_recipe.sort()
+	
 	for crafted_item in recipes.keys():
 		var check_recipe = recipes[crafted_item].keys()
 		check_recipe.sort()
-		if input_recipe == check_recipe:
-			var output = crafted_item.split('.')
+		if input_recipe != check_recipe: continue
+		var output = crafted_item.split('.')
+		print(output)
+		if output.size() > 1 and output[1] == 'repair':
+			return [output[0],1,'is_repair_recipe']
+		else:
 			return [output[0],int(output[1])] if output.size() == 2 else [output[0],1]
 	
 	return []
@@ -64,6 +70,8 @@ func craftItem(item_to_craft:ResItem):
 		removeItemResource(item,recipe[item_filename])
 	
 	addItem(craft_result[0],int(craft_result[1]))
+	if !crafted_items.has(craft_result[0]):
+		crafted_items.append(craft_result[0])
 
 func canCraft(item:ResItem):
 	var recipe = getRecipe(item)
@@ -77,11 +85,39 @@ func canCraft(item:ResItem):
 	
 	return true
 
+func addAllRepairRecipes():
+	var all_weapons = inventory.filter(func(item): return item is ResWeapon)
+	var equipped_weapons = getEquippedWeapons()
+	all_weapons.append_array(equipped_weapons)
+	
+	print('all weps: ', all_weapons)
+	for weapon in all_weapons:
+		addRepairRecipe(weapon)
+	
+
+func addRepairRecipe(item:ResWeapon):
+	recipes[item.getFilename()+'.repair'] = {item.getFilename():1, item.repair_item.getFilename(): item.repair_cost}
+
+func getRepairRecipes():
+	var out = {}
+	print('tb: ', recipes)
+	var repair_recipe_keys = recipes.keys().filter(func(key): return key.contains('.repair'))
+	for key in repair_recipe_keys:
+		out[key] = recipes[key]
+	return out
+
 func getItemCount(item:ResItem):
+	var append_count=0
 	if item is ResStackItem:
 		return item.stack if hasItem(item) else 0
+	if item is ResWeapon:
+		append_count = getEquippedWeapons().count(item)
 	
-	return inventory.filter(func(itm): return itm.getFilename() == item.getFilename()).size()
+	
+	return inventory.filter(func(itm): return itm.getFilename() == item.getFilename()).size()+append_count
+
+#func itemInRecipe(item:ResItem, recipe):
+#	for 
 
 func addItemResource(item: ResItem, count:int=1, show_message:bool=true, check_restrictions=true):
 	if (!canAdd(item,count,show_message) or count == 0) and check_restrictions:
@@ -110,8 +146,8 @@ func addItemResource(item: ResItem, count:int=1, show_message:bool=true, check_r
 	elif item is ResWeapon and check_restrictions:
 		item.durability = item.max_durability
 		inventory.append(item)
+		addRepairRecipe(item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
-	
 	else:
 		inventory.append(item)
 		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
@@ -160,7 +196,9 @@ func getCharms(charm:ResCharm)-> Array:
 func getEquippedWeapons()-> Array:
 	var out = []
 	for combatant in PlayerGlobals.team:
-		if combatant.equipped_weapon != null:
+		print('checking ', combatant)
+		if combatant.hasEquippedWeapon(): 
+			print('founded!!!!')
 			out.append(combatant.equipped_weapon)
 	return out
 
@@ -312,6 +350,7 @@ func saveData(save_data: Array):
 func loadData(save_data: InventorySaveData):
 	inventory.assign(save_data.loadInventory())
 	crafted_items = save_data.crafted_items
+	#addAllRepairRecipes()
 
 func resetVariables():
 	inventory = []

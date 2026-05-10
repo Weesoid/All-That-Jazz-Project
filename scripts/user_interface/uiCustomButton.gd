@@ -57,6 +57,10 @@ func showDescription():
 	add_child(side_description)
 	side_description.showDescription(description_text, description_offset)
 
+func hideDescription():
+	if has_node('ButtonDescription'):
+		get_node('ButtonDescription').remove()
+
 func checkHoldInputs():
 	if disabled and !hold_ignore_disabled:
 		return
@@ -104,6 +108,8 @@ func cancelPress():
 func press_feedback():
 	if click_sound == null: return
 	playSound(click_sound)
+	if description_on_focus:
+		hideDescription()
 
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return

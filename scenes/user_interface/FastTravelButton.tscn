@@ -1,11 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://covj2vpfron6x"]
+[gd_scene load_steps=4 format=3 uid="uid://dqf4iby7efdty"]
 
-[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_5jv70"]
-[ext_resource type="Texture2D" uid="uid://b4axx3p6kyvmo" path="res://images/sprites/icon_charm_trans.png" id="2_gvaob"]
-[ext_resource type="Script" path="res://scripts/user_interface/uiCustomItemEquipButton.gd" id="3_yvy67"]
-[ext_resource type="AudioStream" uid="uid://cpf8uotcxcdvj" path="res://audio/sounds/421453__jaszunio15__click_190.ogg" id="4_2257t"]
-[ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="5_begng"]
-[ext_resource type="PackedScene" uid="uid://rnmhg7xo8gm4" path="res://scenes/user_interface/DurabilityBar.tscn" id="6_yxr8f"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_iodif"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -18,14 +13,13 @@ border_blend = true
 bg_color = Color(1, 1, 1, 0.466667)
 
 [node name="CustomButton" type="Button"]
-custom_minimum_size = Vector2(32, 32)
-offset_right = 12.0
-offset_bottom = 12.0
-theme = ExtResource("1_5jv70")
-icon = ExtResource("2_gvaob")
-icon_alignment = 1
-script = ExtResource("3_yvy67")
-focused_entered_sound = ExtResource("4_2257t")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Place Name"
+alignment = 2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"Sounds"
@@ -42,7 +36,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_mumdi")
 theme_override_styles/fill = SubResource("StyleBoxFlat_icdui")
 value = 25.0
 show_percentage = false
-script = ExtResource("5_begng")
+script = ExtResource("2_iodif")
 timer = NodePath("../HoldTimer")
 
 [node name="HoldTimer" type="Timer" parent="."]
@@ -50,10 +44,6 @@ one_shot = true
 
 [node name="HoldDelay" type="Timer" parent="."]
 one_shot = true
-
-[node name="Durability" parent="." instance=ExtResource("6_yxr8f")]
-visible = false
-layout_mode = 1
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

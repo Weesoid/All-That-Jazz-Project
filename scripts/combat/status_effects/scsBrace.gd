@@ -2,14 +2,17 @@
 static func applyEffects(target, status_effect:ResStatusEffect):
 	if target.stat_modifiers.keys().has('block') and !target.combatant_scene.allow_block:
 		CombatGlobals.resetStat(target, 'block')
-	
-	if !target.hasStatusEffect('Guard Break'):
-		if target.stat_values['health'] <= 0 and status_effect.apply_once:
-			CombatGlobals.calculatePercentHealing(target, 0.1,false)
-		target.combatant_scene.setBlocking(true)
-		status_effect.attached_data = 1
-	else:
-		status_effect.removeStatusEffect()
+#	if target.stat_values['health'] <= 0 and status_effect.apply_once:
+#		CombatGlobals.calculatePercentHealing(target, 0.1,false)
+	target.combatant_scene.setBlocking(true)
+	status_effect.attached_data = 1
+#	if !target.hasStatusEffect('Guard Break'):
+#		if target.stat_values['health'] <= 0 and status_effect.apply_once:
+#			CombatGlobals.calculatePercentHealing(target, 0.1,false)
+#		target.combatant_scene.setBlocking(true)
+#		status_effect.attached_data = 1
+#	else:
+#		status_effect.removeStatusEffect()
 
 static func applyOnHitEffects(target, caster, _value, status_effect):
 	if target is ResPlayerCombatant and target.stat_modifiers.keys().has('block'):

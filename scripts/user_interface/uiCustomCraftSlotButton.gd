@@ -39,11 +39,27 @@ func setItem(data: ResItem):
 		count_label.hide()
 
 func update_count(item_to_craft:ResItem):
-	if item_to_craft == null:
-		if item != null: count_label.text = str(InventoryGlobals.getItemCount(item))
+	await get_tree().process_frame
+	if item == null:
 		return
 	
-	if item != null:
+	var out = str(InventoryGlobals.getItemCount(item))
+	var append=''
+	print('item 2 craaft is : ',item_to_craft)
+	if item_to_craft != null:
+		print('calcing required cunts on  ', item_to_craft)
 		var recipe_dict = InventoryGlobals.getRecipe(item_to_craft)
-		if recipe_dict.has(item.getFilename()):
-			count_label.text = str(InventoryGlobals.getItemCount(item))+'/'+str(recipe_dict[item.getFilename()])
+		if recipe_dict.has(item.getFilename()): append = '/'+str(recipe_dict[item.getFilename()])
+	print('append for %s is %s !' % [item, append])
+	count_label.text = out+append
+#	if item_to_craft == null:
+#		if item != null: count_label.text = str(InventoryGlobals.getItemCount(item))
+#		return
+#
+#	if item != null:
+#		var recipe_dict = InventoryGlobals.getRecipe(item_to_craft)
+#		if recipe_dict.has(item.getFilename()):
+#			count_label.text = str(InventoryGlobals.getItemCount(item))+'/'+str(recipe_dict[item.getFilename()])
+
+#func get_count():
+	

@@ -1,7 +1,7 @@
 extends Node2D
 class_name SavePoint
 
-const EMPTY_MEMBER_ICON = preload("res://images/sprites/add_member.png")
+#const EMPTY_MEMBER_ICON = preload("res://images/sprites/add_member.png")
 
 @export var music_paths: Array[String] = []
 @export var mind_rested:bool=true
@@ -9,20 +9,28 @@ const EMPTY_MEMBER_ICON = preload("res://images/sprites/add_member.png")
 @onready var animator = $AnimationPlayer
 @onready var music = $AudioStreamPlayer
 @onready var sfx = $AudioStreamPlayer2
-@onready var watch_mark = $Sprite2D2
-@onready var watch_mark_animator = $Sprite2D2/AnimationPlayer
 @onready var flame_sprite = $Flame
+var rest_cam_offset = Vector2(0,-48)
+var menu_cam_offset = Vector2(44,-32)
 #var mini_bars = []
 var combatant_squad: EnemyCombatantSquad
 signal done
+signal ambush_ended
+
+func _ready():
+	done.connect(exit)
+	loadCombatantSquad()
 
 func loadCombatantSquad():
 	combatant_squad = CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)
 	combatant_squad.can_escape = false
-	add_child(combatant_squad) # Changge to current map faction later
+	add_child(combatant_squad) # Change to current map faction later
 
 func fightCombatantSquad():
 	OverworldGlobals.changeToCombat(name)
+	await OverworldGlobals.combat_exited
+	ambush_ended.emit()
+	print('zaza blazaza')
 
 func interact():
 	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
@@ -39,12 +47,16 @@ func interact():
 	await OverworldGlobals.zoomCamera(Vector2(2,2),0.5,true)
 	OverworldGlobals.player.sprite.hide()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
+		print('adding ', combatant)
 		addRestSprite(combatant)
 	await OverworldGlobals.player.player_camera.hideOverlay(0.5)
-	OverworldGlobals.moveCamera(self,0.5,Vector2(44,-32))
+	OverworldGlobals.moveCamera(self,0.5,menu_cam_offset)
+	
 
 func exit():
 	await done
+#	await done
+#	print('zaza')
 	animator.play("RESET")
 	OverworldGlobals.fadeFollowers(Color.WHITE)
 	for sprite in rest_spots.get_children():
@@ -53,7 +65,6 @@ func exit():
 			sprite.get_node('CombatBars').hide()
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
-	watch_mark_animator.play("RESET")
 	OverworldGlobals.player.sprite.show()
 	OverworldGlobals.player.player_camera.hideOverlay(0.5)
 	await get_tree().process_frame
@@ -61,6 +72,9 @@ func exit():
 	OverworldGlobals.player.current_camp_spot=null
 	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	await get_tree().process_frame
+	OverworldGlobals.moveCamera("RESET",0.5)
+	OverworldGlobals.zoomCamera(Vector2(1,1),0.5)
+	OverworldGlobals.setPlayerInput(true)
 
 func addRestSprite(combatant: ResPlayerCombatant,pos:int=-1):
 	if pos >= 0:
@@ -69,7 +83,7 @@ func addRestSprite(combatant: ResPlayerCombatant,pos:int=-1):
 		return
 	
 	for sprite in rest_spots.get_children():
-		if sprite.texture != null and sprite.texture != EMPTY_MEMBER_ICON: 
+		if sprite.texture != null: 
 			continue
 		setSprite(sprite,combatant)
 		return
@@ -93,14 +107,14 @@ func removeRestSprite(character:ResPlayerCombatant):
 func showEmptyMembers():
 	for sprite in rest_spots.get_children():
 		if sprite.texture == null:
-			sprite.texture = EMPTY_MEMBER_ICON
+			#sprite.texture = EMPTY_MEMBER_ICON
 			sprite.get_node('CombatBars').fader_bar.modulate = Color.TRANSPARENT
 			sprite.get_node('CombatBars').health_bar.modulate = Color.TRANSPARENT
 			sprite.get_node('CombatBars').show()
 
 func hideEmptyMembers():
 	for sprite in rest_spots.get_children():
-		if sprite.texture == EMPTY_MEMBER_ICON:
+		if sprite.texture == null:
 			sprite.texture = null
 			sprite.get_node('CombatBars').hide()
 
@@ -115,15 +129,6 @@ func getResterPosition(character: ResPlayerCombatant)-> int:
 func setBarVisibility(set_to:bool):
 	for sprite in rest_spots.get_children():
 		if sprite.texture != null: sprite.get_node('CombatBars').visible = set_to
-
-func showWatchMark(combatant: ResPlayerCombatant, reverse:bool=false):
-	watch_mark.global_position = getRestSprite(combatant).global_position
-	if reverse:
-		watch_mark_animator.play_backwards("Show")
-	else:
-		watch_mark_animator.play("RESET")
-		await watch_mark_animator.animation_finished
-		watch_mark_animator.play("Show")
 
 func getRestSprite(combatant: ResPlayerCombatant):
 	for sprite in rest_spots.get_children():
@@ -148,3 +153,9 @@ func getCampBars():
 	for child in rest_spots.get_children():
 		out.append(child.get_node('CombatBars'))
 	return out
+
+func setCamToRestPos():
+	OverworldGlobals.moveCamera(self,0.5,rest_cam_offset)
+
+func setCamToMenuPos():
+	OverworldGlobals.moveCamera(self,0.5,menu_cam_offset)

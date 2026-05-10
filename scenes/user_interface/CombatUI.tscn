@@ -190,6 +190,7 @@ grow_vertical = 0
 size_flags_vertical = 8
 
 [node name="TensionBar" parent="Tension" instance=ExtResource("7_8it53")]
+layout_mode = 1
 offset_left = -99.0
 offset_top = 8.0
 offset_right = -99.0

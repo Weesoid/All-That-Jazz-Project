@@ -1,8 +1,6 @@
 extends Control
 
-@onready var travel_panel = $FastTravelAreas/MarginContainer/ScrollContainer/VBoxContainer
-@onready var description = $PanelContainer2/RichTextLabel
-@onready var event_description = $PanelContainer3/RichTextLabel
+@onready var travel_panel = $ScrollContainer/VBoxContainer
 var map_component_data = {}
 
 func _ready():
@@ -15,6 +13,7 @@ func loadFastTravelButtons():
 			continue
 		
 		var button = OverworldGlobals.createCustomButton()
+		button.alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		var map:MapData = load(location).instantiate()
 		button.text = map.name
 		button.pressed.connect(
@@ -24,14 +23,14 @@ func loadFastTravelButtons():
 				else:
 					travel(location)
 				)
-		button.focus_entered.connect(
-			func():
-				getMapInfo(location)
-		)
-		button.mouse_entered.connect(
-			func():
-				getMapInfo(location)
-		)
+#		button.focus_entered.connect(
+#			func():
+#				getMapInfo(location)
+#		)
+#		button.mouse_entered.connect(
+#			func():
+#				getMapInfo(location)
+#		)
 		button.tooltip_text=str(PlayerGlobals.map_logs[location])
 		if map.getClearState() != MapData.PatrollerClearState.FULL_CLEAR and PlayerGlobals.hasMapEvent(location):
 			button.icon = load("res://images/sprites/icon_patrol_spawned.png")
@@ -46,27 +45,29 @@ func loadFastTravelButtons():
 	OverworldGlobals.setMenuFocus(travel_panel)
 
 func getMapInfo(path):
-	var map: MapData = load(path).instantiate()
-	var map_log = PlayerGlobals.map_logs[map.scene_file_path]
-	var total_patrols = map.getPatrolGroups().size()
-	var cleared_patrols = map_log.filter(func(entry): return entry is String and entry.contains('PatrollerGroup')).size()
-	getMapEventInfo(map_log)
-	description.text = 'Status: %s' % map.getVerbalClearState()
-	if total_patrols > 0 or cleared_patrols != total_patrols: 
-		if cleared_patrols > 0:
-			description.text += ' (%s/%s)' % [str(cleared_patrols),total_patrols]
-		description.text += '\nFaction: '+str(CombatGlobals.Enemy_Factions.keys()[map.occupying_faction])
-	
-	map.queue_free()
+	pass
+#	var map: MapData = load(path).instantiate()
+#	var map_log = PlayerGlobals.map_logs[map.scene_file_path]
+#	var total_patrols = map.getPatrolGroups().size()
+#	var cleared_patrols = map_log.filter(func(entry): return entry is String and entry.contains('PatrollerGroup')).size()
+#	getMapEventInfo(map_log)
+#	description.text = 'Status: %s' % map.getVerbalClearState()
+#	if total_patrols > 0 or cleared_patrols != total_patrols: 
+#		if cleared_patrols > 0:
+#			description.text += ' (%s/%s)' % [str(cleared_patrols),total_patrols]
+#		description.text += '\nFaction: '+str(CombatGlobals.Enemy_Factions.keys()[map.occupying_faction])
+#
+#	map.queue_free()
 
 func getMapEventInfo(map_log: Array):
-	event_description.hide()
-	
-	for entry in map_log:
-		if entry is Dictionary and entry.has('map_events'):
-			event_description.text = str(entry)
-			event_description.show()
-			return
+	pass
+#	event_description.hide()
+#
+#	for entry in map_log:
+#		if entry is Dictionary and entry.has('map_events'):
+#			event_description.text = str(entry)
+#			event_description.show()
+#			return
 
 func checkTravel(location):
 	var confirm_dialog: CustomConfirmationDialogue = load("res://scenes/user_interface/ConfirmationDialog.tscn").instantiate()

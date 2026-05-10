@@ -9,14 +9,18 @@ class_name CombatBarsMini
 @onready var health_bar_fader = $HealthBarFader
 @onready var strain_bar = $StrainBar
 @onready var camp_button = $CharacterCampButton
+@onready var upper_icon = $Watchmark
+var upper_icon_original_pos
 var attached_combatant: ResPlayerCombatant
 var previous_value
 var default_action_pos: Vector2
 
 func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
+	upper_icon_original_pos = upper_icon.position
 	#camp_button.item_received.connect(updateStrainBar)
 	strain_bar.max_value = PlayerGlobals.strain_cap
+	setWatchmark(false)
 	#updateStatusEffects()
 
 func setCombatant(combatant:ResPlayerCombatant):
@@ -111,9 +115,19 @@ func updateStrainBar():
 func fadeStrainBar(fade_to: Color):
 	create_tween().tween_property(strain_bar, 'modulate',fade_to,0.25)
 
-func _on_strain_bar_value_changed(value):
-	pass
-#	if value > 0:
-#		fadeStrainBar(Color.WHITE)
-#	elif value <= 0:
-#		fadeStrainBar(Color.TRANSPARENT)
+func setWatchmark(set_to:bool):
+	var tween = create_tween().set_parallel()
+	var offscreen_offset = Vector2(0,-8)
+	if set_to:
+		tween.tween_property(upper_icon, 'position', upper_icon_original_pos,0.25)
+		tween.tween_property(upper_icon, 'modulate', Color.WHITE,0.2)
+	else:
+		tween.tween_property(upper_icon, 'position', upper_icon_original_pos+offscreen_offset,0.25)
+		tween.tween_property(upper_icon, 'modulate', Color.TRANSPARENT,0.2)
+
+func _on_character_camp_button_focus_entered():
+	get_parent().get_node('Throbber').show()
+
+
+func _on_character_camp_button_focus_exited():
+	get_parent().get_node('Throbber').hide()

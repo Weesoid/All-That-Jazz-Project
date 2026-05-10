@@ -508,7 +508,7 @@ func loadData(save_data: PlayerSaveData):
 	# TO DO: Fade followers based on interaction instead...?
 #	if OverworldGlobals.getCurrentMap().SAFE:
 #		OverworldGlobals.loadFollowers()
-	
+	InventoryGlobals.addAllRepairRecipes()
 	overworld_stats['stamina'] = 100.0 # DO NOT TOUCH STAMINA FOR BLESSINGS!
 
 func loadPlayerCombatant(path)-> ResPlayerCombatant:

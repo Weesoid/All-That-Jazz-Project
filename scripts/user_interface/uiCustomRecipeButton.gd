@@ -1,9 +1,12 @@
 extends CustomButton
 class_name RecipeButton
 
+const ANVIL_ICON = preload("res://images/sprites/icon_repair.png")
 @export var item: ResItem
 @onready var comp_container = $MarginContainer/HBoxContainer/HBoxContainer
 @onready var result_item: ItemComponentIcon = $MarginContainer/HBoxContainer/HBoxContainer2/Result
+@onready var hammer_texture = $MarginContainer/HBoxContainer/HBoxContainer2/TextureRect
+var is_repair_recipe:bool=false
 var recipe
 var recipe_result
 var icons_initialized:bool=false
@@ -21,6 +24,8 @@ func _ready():
 	update()
 	hold_delay = 0.05
 	hold_time = 0.2
+	if is_repair_recipe:
+		hammer_texture.texture = ANVIL_ICON
 
 func update():
 	if !icons_initialized:
@@ -29,7 +34,8 @@ func update():
 		if ico.item == null: continue
 		ico.update_counts()
 	
-	result_item.update_counts()
+	result_item.update_counts(is_repair_recipe)
+	#setDisabled(!canCraftOrRepair())
 
 func initializeIcons():
 	var recipe = InventoryGlobals.getRecipe(item)
@@ -41,9 +47,15 @@ func initializeIcons():
 		component_icon.setItem(InventoryGlobals.loadItemResource(comp), recipe[comp])
 		component_icon.show()
 		icon_count += 1
-	result_item.setItem(item,1,InventoryGlobals.getCraftCount(item.getFilename()))
+	if is_repair_recipe:
+		result_item.setItem(item,1,1)
+	else:
+		result_item.setItem(item,1,InventoryGlobals.getCraftCount(item.getFilename()))
 	icons_initialized = true
 
 func _on_held_press():
-	if InventoryGlobals.canCraft(item):
+	if canCraftOrRepair():
 		craft_item.emit(item)
+
+func canCraftOrRepair():
+	return (!is_repair_recipe and InventoryGlobals.canCraft(item)) or (is_repair_recipe and item.canRepair(1))

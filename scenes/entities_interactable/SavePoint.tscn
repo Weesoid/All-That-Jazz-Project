@@ -1,12 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://8aufe1ycaau4"]
+[gd_scene load_steps=11 format=3 uid="uid://8aufe1ycaau4"]
 
 [ext_resource type="Texture2D" uid="uid://b3mr0w65get7p" path="res://images/animations/campfire.png" id="1_f1dl0"]
 [ext_resource type="Script" path="res://scripts/environment/escSavePoint.gd" id="1_ve4xx"]
 [ext_resource type="PackedScene" uid="uid://b57tm5xnp0h5c" path="res://scenes/user_interface/CombatBarsMini.tscn" id="2_m1oiv"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="2_pey47"]
+[ext_resource type="PackedScene" uid="uid://bu1snmn3oudes" path="res://scenes/animations_quick/SpriteThrobber.tscn" id="3_8t726"]
 [ext_resource type="Resource" uid="uid://bqr7ahia0utx" path="res://resources/dialogue/open_saves.dialogue" id="3_m7jmf"]
 [ext_resource type="Texture2D" uid="uid://ckm4oy0b0pagn" path="res://images/animations/campfire_flame.png" id="4_r53ak"]
-[ext_resource type="Texture2D" uid="uid://bkybrnpuy5xws" path="res://images/sprites/watch_mark.png" id="5_yiib7"]
 
 [sub_resource type="Animation" id="Animation_yegji"]
 resource_name = "Lit"
@@ -71,97 +71,70 @@ _data = {
 "RESET": SubResource("Animation_c4qki")
 }
 
-[sub_resource type="Animation" id="Animation_7wm1a"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D2:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D2:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_2w112"]
-resource_name = "Show"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D2:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(1.5, 1.5), Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D2:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_2sgs6"]
-_data = {
-"RESET": SubResource("Animation_7wm1a"),
-"Show": SubResource("Animation_2w112")
-}
-
 [node name="SavePoint" type="Node2D"]
 script = ExtResource("1_ve4xx")
 
 [node name="RestSpots" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="RestSpots"]
+clip_children = 2
 position = Vector2(-40, -32)
 
 [node name="CombatBars" parent="RestSpots/Sprite2D" instance=ExtResource("2_m1oiv")]
 visible = false
+z_index = 1
+focus_neighbor_left = NodePath("../../Sprite2D3/CombatBars")
+focus_neighbor_right = NodePath("../../Sprite2D2/CombatBars")
+
+[node name="Throbber" parent="RestSpots/Sprite2D" instance=ExtResource("3_8t726")]
+visible = false
+scale = Vector2(0.274, 0.274)
+animation_name = "Show_Yellow"
 
 [node name="Sprite2D2" type="Sprite2D" parent="RestSpots"]
+clip_children = 2
 position = Vector2(40, -32)
 flip_h = true
 
 [node name="CombatBars" parent="RestSpots/Sprite2D2" instance=ExtResource("2_m1oiv")]
 visible = false
+z_index = 1
+focus_neighbor_left = NodePath("../../Sprite2D/CombatBars")
+focus_neighbor_right = NodePath("../../Sprite2D4/CombatBars")
+
+[node name="Throbber" parent="RestSpots/Sprite2D2" instance=ExtResource("3_8t726")]
+visible = false
+scale = Vector2(0.274, 0.274)
+animation_name = "Show_Yellow"
 
 [node name="Sprite2D3" type="Sprite2D" parent="RestSpots"]
+clip_children = 2
 position = Vector2(-80, -32)
 
 [node name="CombatBars" parent="RestSpots/Sprite2D3" instance=ExtResource("2_m1oiv")]
 visible = false
+z_index = 1
+focus_neighbor_left = NodePath("../../Sprite2D/CombatBars")
+
+[node name="Throbber" parent="RestSpots/Sprite2D3" instance=ExtResource("3_8t726")]
+visible = false
+scale = Vector2(0.274, 0.274)
+animation_name = "Show_Yellow"
 
 [node name="Sprite2D4" type="Sprite2D" parent="RestSpots"]
+clip_children = 2
 position = Vector2(80, -32)
 flip_h = true
 
 [node name="CombatBars" parent="RestSpots/Sprite2D4" instance=ExtResource("2_m1oiv")]
 visible = false
+z_index = 1
+focus_neighbor_left = NodePath("../../Sprite2D2/CombatBars")
+
+[node name="Throbber" parent="RestSpots/Sprite2D4" instance=ExtResource("3_8t726")]
+visible = false
+scale = Vector2(0.274, 0.274)
+animation_name = "Show_Yellow"
 
 [node name="Flame" type="Sprite2D" parent="."]
 visible = false
@@ -185,20 +158,7 @@ position = Vector2(0, -16)
 dialogue_resource = ExtResource("3_m7jmf")
 show_ui = true
 cooldown = 3.0
-await_parent = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
-
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
-position = Vector2(0, 8)
-texture = ExtResource("5_yiib7")
-offset = Vector2(0, -30)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D2"]
-root_node = NodePath("../..")
-libraries = {
-"": SubResource("AnimationLibrary_2sgs6")
-}

@@ -145,13 +145,11 @@ func setDisabled(set_to:bool):
 		#mouse_filter = Control.MOUSE_FILTER_STOP
 		#focus_mode = Control.FOCUS_ALL
 
-func press_feedback():
-	if click_sound == null: return
-	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)
-	audio_player.stop()
-	audio_player.stream = click_sound
-	audio_player.play()
-	pulseSize()
+#func press_feedback():
+#	if click_sound == null: return
+#	playSound(click_sound)
+#	if description_on_focus:
+#		hideDescription()
 
 func pulseSize():
 	var size_tween = create_tween()

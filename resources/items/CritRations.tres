@@ -11,7 +11,7 @@
 script = ExtResource("3_x0wcf")
 use_caster = false
 cast_animation = ""
-damage = 10
+damage = 2
 use_damage_formula = false
 crit_chance = 0.0
 variation = -1.0
@@ -67,7 +67,7 @@ animate_on = 0
 script = ExtResource("3_rxa8f")
 effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_lnm2y"), SubResource("Resource_wjp4c"), SubResource("Resource_l1yid")])
 strain = 1
-party_wide = true
+party_wide = false
 max_stack = 0
 barter_item = null
 name = "Crit Rations"

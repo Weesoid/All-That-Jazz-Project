@@ -350,10 +350,10 @@ func canUseAbility(button: CustomAbilityButton):
 	var active_combatant = combat_scene.active_combatant
 	var combatants = combat_scene.combatants
 	
-	if button.ability.name == 'Defend':
-		setButtonDisabled(button, active_combatant.hasStatusEffect('Guard') or active_combatant.hasStatusEffect('Guard Break'),false)
-	else:
-		setButtonDisabled(button, !(button.ability.enabled and button.ability.canUse(active_combatant, combatants)),false)
+	#if button.ability.name == 'Defend':
+	#	setButtonDisabled(button, active_combatant.hasStatusEffect('Guard') or active_combatant.hasStatusEffect('Guard Break'),false)
+	#else:
+	setButtonDisabled(button, !(button.ability.enabled and button.ability.canUse(active_combatant, combatants)),false)
 
 func hideMovements():
 	movements.hide()

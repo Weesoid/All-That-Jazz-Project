@@ -215,6 +215,9 @@ func closeMenu(menu: Control):
 func inMenu():
 	return player.player_camera.get_node('UI').has_node('uiMenu')
 
+func getMenu():
+	return player.player_camera.get_node('UI').get_node('uiMenu')
+
 func inSubmenu():
 	return player.player_camera.get_node('UI').get_node('uiMenu').has_node('uiSubmenu')
 
@@ -299,6 +302,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		var durability_bar = load("res://scenes/user_interface/DurabilityBar.tscn").instantiate()
 		durability_bar.weapon = item
 		button.add_child(durability_bar)
+		#durability_bar.setWeapon(item)
 	
 	if value_modifier != 0.0:
 		var label = Label.new()
@@ -698,7 +702,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		return
 	if patroller != null and !is_instance_valid(patroller):
 		return
-	if inMenu():
+	if inMenu() and !getMenu() is CampMenu:
 		showMenu("res://scenes/user_interface/PauseMenu.tscn")
 	entering_combat=true
 	
@@ -706,6 +710,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	#await get_tree().create_timer(0.5).timeout
 	var combat_entity 
 	var give_non_pg_reward:bool=false
+	var player_squad = getCombatantSquad('Player')
 	if patroller == null:
 		combat_entity = getEntity(entity_name)
 		give_non_pg_reward=true
@@ -717,8 +722,10 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	await zoomCamera(Vector2(2,2), 0.1, true)
 	setPlayerInput(false)
 #	showCombatStartBars()
+	for member in player_squad:
+		member.storeStatusEffect('Guard')
 	if combat_entity is GenericPatroller and combat_entity.state != 1:
-		for member in getCombatantSquad('Player'): CombatGlobals.addStatusEffect(member, 'CriticalEye')
+		for member in player_squad: CombatGlobals.addStatusEffect(member, 'CriticalEye')
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_3.ogg")
 	else:
 		playSound("808013__artninja__tmnt_2012_inspired_smokebomb_sounds_05202025_1.ogg")
@@ -867,6 +874,8 @@ func isPlayerSquadDead():
 			return false
 	
 	return true
+
+
 
 func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	for member in getCombatantSquad('Player'):

@@ -1,21 +1,30 @@
-[gd_scene load_steps=11 format=3 uid="uid://cimeplqfltcgd"]
+[gd_scene load_steps=16 format=3 uid="uid://ca04yuaidlo7v"]
 
-[ext_resource type="Script" path="res://scripts/user_interface/uiNEWWCampMenu.gd" id="1_gr40e"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiCampMenu.gd" id="1_gr40e"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="2_e0123"]
 [ext_resource type="Texture2D" uid="uid://bd8vp562frwnh" path="res://images/sprites/button_hammer_normal.png" id="3_4eso8"]
 [ext_resource type="PackedScene" uid="uid://c36nhmt43udrv" path="res://scenes/user_interface/Crafting.tscn" id="3_tmwur"]
 [ext_resource type="Texture2D" uid="uid://36ou1mhhbvwi" path="res://images/sprites/button_pinpoint_normal.png" id="4_acfgp"]
 [ext_resource type="Texture2D" uid="uid://by81ic0dfnm67" path="res://images/sprites/icon_camp.png" id="7_3vebw"]
 [ext_resource type="Texture2D" uid="uid://bnagfxcsc0wmt" path="res://images/sprites/forward.png" id="8_2b6pd"]
+[ext_resource type="PackedScene" uid="uid://cw0gvoxm7mdqr" path="res://scenes/user_interface/FastTravel.tscn" id="9_ebjm5"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="10_2yobm"]
+[ext_resource type="Theme" uid="uid://clgfgqvh2f440" path="res://design/BorderfulButton.tres" id="10_5gn5l"]
+[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="10_r6qj5"]
 [ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="12_7weyb"]
 
 [sub_resource type="Gradient" id="Gradient_qhaqm"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ak45j"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jy7cm"]
 gradient = SubResource("Gradient_qhaqm")
 fill_from = Vector2(1, 0.5)
 fill_to = Vector2(0.2, 0.5)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ak45j"]
+gradient = SubResource("Gradient_qhaqm")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.4, 0.3)
 
 [node name="CampMenu" type="Control"]
 layout_mode = 3
@@ -28,6 +37,7 @@ mouse_filter = 2
 script = ExtResource("1_gr40e")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.490196)
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -36,7 +46,8 @@ anchor_bottom = 1.0
 offset_left = -248.0
 grow_horizontal = 0
 grow_vertical = 2
-texture = SubResource("GradientTexture2D_ak45j")
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_jy7cm")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -51,9 +62,9 @@ alignment = 1
 visible = false
 layout_mode = 1
 offset_left = 248.0
-offset_top = 8.0
+offset_top = 48.0
 offset_right = -192.0
-offset_bottom = -40.0
+offset_bottom = -80.0
 
 [node name="MiniInventory" parent="." instance=ExtResource("12_7weyb")]
 layout_mode = 1
@@ -67,6 +78,15 @@ grow_horizontal = 0
 remove_dragged_items = false
 yellow_border = false
 description_offset = Vector2(-106, 24)
+
+[node name="FastTravel" parent="." instance=ExtResource("9_ebjm5")]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+offset_left = -184.0
+offset_top = 48.0
+offset_bottom = -48.0
+grow_horizontal = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -90,7 +110,6 @@ description_offset = Vector2(8, -8)
 description_on_focus = true
 
 [node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_e0123")]
-visible = false
 layout_mode = 2
 texture = ExtResource("4_acfgp")
 description_text = "[center]FAST TRAVEL"
@@ -115,4 +134,76 @@ hold_time = 0.25
 hold_delay = 0.05
 description_on_focus = true
 
+[node name="RestOptions" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="RestOptions"]
+modulate = Color(1, 1, 1, 0.490196)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -640.0
+offset_top = -16.0
+offset_bottom = 8.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_ak45j")
+
+[node name="RestOptions" type="HBoxContainer" parent="RestOptions"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 216.0
+offset_top = -40.0
+offset_right = -216.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("10_5gn5l")
+alignment = 1
+
+[node name="Return" parent="RestOptions/RestOptions" instance=ExtResource("10_r6qj5")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "GO BACK"
+alignment = 1
+
+[node name="Confirm" parent="RestOptions/RestOptions" instance=ExtResource("10_r6qj5")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "REST"
+alignment = 1
+hold_time = 0.25
+hold_delay = 0.05
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 24.0
+offset_bottom = 47.0
+grow_horizontal = 2
+theme = ExtResource("10_2yobm")
+theme_override_font_sizes/font_size = 16
+text = "Who will stand guard?"
+horizontal_alignment = 1
+uppercase = true
+
 [connection signal="pressed" from="HBoxContainer/Crafting" to="." method="_on_crafting_pressed"]
+[connection signal="pressed" from="HBoxContainer/FastTravel" to="." method="_on_fast_travel_pressed"]
+[connection signal="held_press" from="HBoxContainer/Rest" to="." method="_on_rest_held_press"]
+[connection signal="held_press" from="HBoxContainer/Embark" to="." method="_on_embark_held_press"]
+[connection signal="pressed" from="RestOptions/RestOptions/Return" to="." method="_on_return_pressed"]
+[connection signal="held_press" from="RestOptions/RestOptions/Confirm" to="." method="_on_custom_button_held_press"]

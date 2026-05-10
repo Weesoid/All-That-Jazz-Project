@@ -5,11 +5,13 @@ class_name CraftingMenu
 @onready var result_slot = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result
 @onready var result_slot_add = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/AddLabel
 @onready var result_slot_count = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/CurrentCount
+@onready var result_durability = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/Durability
 @onready var recipe_menu: MiniRecipes = $MiniRecipes
 var current_recipe = []
 var craft_item: ResItem
 var craft_count:int=-1
 var crafting_slots
+var repair_mode:bool=false
 signal recipe_found(item)
 
 func _ready():
@@ -23,6 +25,7 @@ func _ready():
 		InventoryGlobals.removed_item_from_inventory.connect(button.update.unbind(1))
 		InventoryGlobals.added_item_to_inventory.connect(button.update.unbind(2))
 		InventoryGlobals.stack_item_changed.connect(button.update.unbind(3))
+		InventoryGlobals.item_repaired.connect(button.update.unbind(2).bind(craft_item))
 	if InventoryGlobals.crafted_items.size() > 0:
 		recipe_menu.show()
 
@@ -39,6 +42,7 @@ func connectSlots():
 		InventoryGlobals.removed_item_from_inventory.connect(slot.update_count.unbind(1).bind(craft_item))
 		InventoryGlobals.added_item_to_inventory.connect(slot.update_count.unbind(2).bind(craft_item))
 		InventoryGlobals.stack_item_changed.connect(slot.update_count.unbind(3).bind(craft_item))
+		InventoryGlobals.item_repaired.connect(slot.update_count.unbind(2).bind(craft_item))
 
 func addMaterial(item:ResItem, _last_item, slot:ItemSlot):
 	current_recipe.append(item.getFilename())
@@ -52,6 +56,7 @@ func removeMaterial(item: ResItem):
 
 func showResult():
 	var result = InventoryGlobals.getRecipeResult(current_recipe)
+	repair_mode = result.has('is_repair_recipe')
 	if result.is_empty():
 		craft_item = null
 		craft_count = -1
@@ -59,7 +64,11 @@ func showResult():
 		craft_item = InventoryGlobals.loadItemResource(result[0])
 		craft_count = result[1]
 	
-	result_slot.disabled = (craft_item == null or craft_count == -1) or !InventoryGlobals.canCraft(craft_item)
+	if repair_mode:
+		result_slot.disabled = !craft_item.canRepair(craft_count)
+	else:
+		result_slot.disabled = (craft_item == null or craft_count == -1) or !InventoryGlobals.canCraft(craft_item)
+	#if repair_mode: print((craft_item == null or craft_count == -1), ' or ', !InventoryGlobals.canCraft(craft_item))
 	recipe_found.emit(craft_item)
 	if craft_item != null:
 		highlightMissingItems(craft_item)
@@ -71,13 +80,20 @@ func _on_result_pressed():
 	if craft_item == null or craft_count == -1:
 		return
 	
-	InventoryGlobals.craftItem(craft_item)
+	if repair_mode:
+		craft_item.repair(1)
+	else:
+		InventoryGlobals.craftItem(craft_item)
+	
 	highlightMissingItems(craft_item)
 	updateResultSlot()
-	if !InventoryGlobals.canCraft(craft_item):
+	if (!repair_mode and !InventoryGlobals.canCraft(craft_item)) or (repair_mode and !craft_item.canRepair(craft_count)):
 		result_slot.disabled = true
 		craft_item = null
 		craft_count = -1
+#	print('inputting: ', craft_item)
+#	for slot in crafting_slots:
+#		slot.update_count(craft_item)
 
 func highlightMissingItems(item_to_craft:ResItem):
 	await get_tree().process_frame
@@ -99,22 +115,35 @@ func resetSlotColors():
 func updateResultSlot():
 	if craft_item == null:
 		result_slot.setItem(null)
+	else:
+		result_slot.setItem(craft_item)
+	setResultLabels()
+
+func setResultLabels():
+	if craft_item == null:
+		result_durability.hide()
 		result_slot_add.hide()
 		result_slot_count.hide()
-	else:
+	elif repair_mode:
+		result_durability.setWeapon(craft_item)
+		result_slot_add.text = "1"
+		result_durability.show()
+		result_slot_add.show()
+		result_slot_count.hide()
+	elif craft_item != null:
 		var count_data = ItemComponentIcon.getCurrentCountString(craft_item)
-		result_slot.setItem(craft_item)
-		result_slot_add.text = '+'+str(InventoryGlobals.getCraftCount(craft_item.getFilename()))
 		result_slot_count.text = count_data[0]
 		result_slot_count.modulate = count_data[1]
+		result_slot_add.text = '+'+str(InventoryGlobals.getCraftCount(craft_item.getFilename()))
 		result_slot_add.show()
 		result_slot_count.show() 
+		result_durability.hide()
 		if !InventoryGlobals.canCraft(craft_item):
 			result_slot_add.hide()
 
 func autoCraft(item:ResItem):
-	if !InventoryGlobals.canCraft(item):
-		return
+#	if !InventoryGlobals.canCraft(item):
+#		return
 	
 	var recipe = InventoryGlobals.getRecipe(item)
 	var recipe_items = recipe.keys()

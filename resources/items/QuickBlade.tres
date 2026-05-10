@@ -1,23 +1,62 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=5 format=3 uid="uid://cale4wnbby412"]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=10 format=3 uid="uid://cale4wnbby412"]
 
-[ext_resource type="Resource" uid="uid://qup6bens47pb" path="res://resources/combat/abilities_weapons/SlashBladeSlash.tres" id="1_bu0h0"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_u73i0"]
 [ext_resource type="Texture2D" uid="uid://bid2yp6x5ds0a" path="res://images/sprites/icon_half_face.png" id="2_33r1h"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="2_yyv8d"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_1y3i6"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_n80xq"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="4_r6esg"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_y5rn6"]
+
+[sub_resource type="Resource" id="Resource_i8ewo"]
+script = ExtResource("2_yyv8d")
+heal = 25
+use_multiplier = true
+cast_animation = ""
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_tvvrh"]
+script = ExtResource("4_y5rn6")
+name = "Healing Pulse"
+description = ""
+icon = ExtResource("3_1y3i6")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_i8ewo")])
+ability_script = ExtResource("1_u73i0")
+target_type = 1
+target_group = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+charges = 0
+can_target_self = true
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0
 
 [resource]
 script = ExtResource("4_r6esg")
-effect = ExtResource("1_bu0h0")
-handling_requirement = -100
-max_durability = 5
+effect = SubResource("Resource_tvvrh")
+handling_requirement = -99
+max_durability = 20
 repair_item = ExtResource("3_n80xq")
-repair_cost = 3
+repair_cost = 90
 stat_modifications = {
-"accuracy": 0.0,
 "crit": 0.0,
 "crit_mult": 0.0,
 "damage": 0,
-"defense": 0.0,
 "handling": 0,
 "heal_mult": 0.0,
 "health": 0,
@@ -26,7 +65,7 @@ stat_modifications = {
 }
 name = "Quick Blade"
 icon = ExtResource("2_33r1h")
-description = "BOOPIS"
+description = ""
 value = 0
 mandatory = false
 parent_item = ""

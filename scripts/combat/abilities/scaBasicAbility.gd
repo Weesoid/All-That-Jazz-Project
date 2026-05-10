@@ -66,7 +66,8 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 				ability.current_effect.duration_type == ResStatModifierEffect.DurationType.BATTLE
 				)
 			#CombatGlobals.modifyStat(target.combatant_resource, ability.current_effect.getModifications(), ability.name, ability.current_effect.stacks,true)
-	
+		elif ability.current_effect is ResCleanseEffect:
+			CombatGlobals.removeStatusEffect(target.combatant_resource, ability.current_effect.cleanse_status.name)
 	#if caster == CombatGlobals.getCombatScene().active_combatant:
 	await CombatGlobals.getCombatScene().get_tree().process_frame
 	CombatGlobals.ability_finished.emit()

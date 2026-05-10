@@ -142,6 +142,9 @@ func removeTokens(remove_type: int):
 func getMaxHealth():
 	return base_stat_values['health']
 
+func getMissingHealth():
+	return base_stat_values['health'] - stat_values['health']
+
 func getMaxResolve():
 	return base_stat_values['resolve']
 
@@ -310,7 +313,11 @@ func applyStoredStatusEffects():
 		CombatGlobals.addStatusEffect(self, effect)
 		stored_status_effects.erase(effect)
 
-func storeStatusEffect(effect: ResStatusEffect, persistent:bool=false):
+func storeStatusEffect(effect, persistent:bool=false):
+	#assert(effect is ResStatusEffect or effect)
+	if effect is String:
+		effect = CombatGlobals.loadStatusEffect(effect)
+	
 	if persistent:
 		stored_status_effects.append(effect.getFilename()+'/persist')
 	else:
