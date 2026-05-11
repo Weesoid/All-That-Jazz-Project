@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_i8cl7")
-window_mode = 2
+window_mode = 0
 resolution = 0
 fps_cap = 60
-vsync = true
+vsync = false
 master_vol = 1.0
 music_vol = 0.204
 sound_vol = 1.0

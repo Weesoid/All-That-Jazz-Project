@@ -42,9 +42,11 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	var expiry_effects = status_effect.basic_effects.filter(func(effect): return effect.apply_on_expiry)
 	if target.stat_modifiers.has(status_effect.name):
 		CombatGlobals.resetStat(target, status_effect.name)
+	print('is val?! ', CombatGlobals.getCombatScene().isCombatValid())
 	if !CombatGlobals.getCombatScene().isCombatValid():
 		return
 	
+	print('running expiries!')
 	for effect in expiry_effects:
 		run(effect, target, status_effect)
 

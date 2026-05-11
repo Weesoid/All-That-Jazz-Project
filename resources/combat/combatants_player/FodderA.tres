@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=9 format=3 uid="uid://cd5r32rnqq6ks"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=10 format=3 uid="uid://cd5r32rnqq6ks"]
 
 [ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ic5dt"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_gtfo3"]
 [ext_resource type="Resource" uid="uid://cvjlkid4m1aae" path="res://resources/combat/abilities/BasicMisc.tres" id="3_6d41e"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="3_8yngu"]
 [ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/character_sprites/huck/huck_follower.png" id="4_2iyqn"]
+[ext_resource type="Texture2D" uid="uid://68stwkmd5vob" path="res://images/character_sprites/huck/huck_portrait.png" id="5_p6vgu"]
 [ext_resource type="PackedScene" uid="uid://bqe7unaj4matg" path="res://scenes/combatants/Huck.tscn" id="6_csx4u"]
 [ext_resource type="Texture2D" uid="uid://cxyp2od4rl1ln" path="res://images/character_sprites/huck/rest_huck.png" id="7_i8uri"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="7_rlsd5"]
@@ -16,9 +17,11 @@ base_traits = Array[String]([])
 follower_texture = ExtResource("4_2iyqn")
 mandatory = false
 rest_sprite = ExtResource("7_i8uri")
+character_portrait = ExtResource("5_p6vgu")
 stat_multiplier = 0.01
 talents = Array[String]([])
 name = "John Huck"
+preferred_alias = "Huck"
 packed_scene = ExtResource("6_csx4u")
 bullet_texture = ExtResource("3_8yngu")
 description = "FODDER A"

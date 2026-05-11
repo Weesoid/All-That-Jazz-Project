@@ -139,6 +139,7 @@ func showMenu(path: String, as_submenu:bool=false):
 		setPlayerInput(false)
 		if !inMenu():
 			if isPlayerCheating(): player.get_node('DebugComponent').hide()
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			setMouseController(true)
 			player.player_camera.get_node('UI').add_child(main_menu)
 			setPlayerInput(false)
@@ -360,6 +361,11 @@ func createTalentButton(talent: ResTalent, combatant:ResPlayerCombatant)-> Custo
 	button.combatant = combatant
 	if button.outside_combat:
 		button.theme = load("res://design/AbilityButtonsOutCombat.tres")
+	return button
+
+func createCharacterButton(combatant:ResPlayerCombatant)-> CharacterButton:
+	var button: CharacterButton = load("res://scenes/user_interface/CharacterButton.tscn").instantiate()
+	button.combatant = combatant
 	return button
 
 func showPrompt(message: String, time=5.0, audio_file = ''):

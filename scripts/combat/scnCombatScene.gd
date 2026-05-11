@@ -136,9 +136,9 @@ func _ready():
 	OverworldGlobals.setMouseController(true)
 
 	# Handle overworld stuff
-	if combat_entity is GenericPatroller:
+	if combat_entity != null and combat_entity is GenericPatroller:
 		reward_bank = combat_entity.patroller_group.reward_bank
-	else:
+	elif combat_entity != null:
 		reward_bank = combat_entity.get_node('CombatantSquadComponent').reward_bank
 	
 	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
@@ -595,17 +595,13 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		for turn_charge in range(combatant.max_turn_charges):
 			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
 			combatant_turn_order.append([combatant, rolled_speed])
-	for marker in team_container:
-		if marker.get_child_count() != 0: continue
-		marker.add_child(combatant.combatant_scene)
-		var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
-		combat_bars.attached_combatant = combatant
-		combatant.combatant_scene.add_child(combat_bars)
-		combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
-		combatant.combatant_scene.get_node('CombatBars').show()
-		break
-#	if combatant is ResPlayerCombatant and combatant.isDead():
-#		combatant.combatant_scene.doAnimation('Fading')
+	
+	if combatant.assigned_position != -1:
+		team_container[combatant.assigned_position].add_child(combatant.combatant_scene)
+	else:
+		autoFillPosition(combatant,team_container)
+	giveCombatBar(combatant)
+	
 	combatant.combatant_scene.doAnimation('Idle')
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
@@ -615,6 +611,19 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
 	
 	combatant.startBreatheTween(true)
+
+func autoFillPosition(combatant:ResCombatant, team_container):
+	for marker in team_container:
+		if marker.get_child_count() != 0: continue
+		marker.add_child(combatant.combatant_scene)
+		break
+
+func giveCombatBar(combatant:ResCombatant):
+	var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
+	combat_bars.attached_combatant = combatant
+	combatant.combatant_scene.add_child(combat_bars)
+	combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
+	combatant.combatant_scene.get_node('CombatBars').show()
 
 func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):
 	combatants.erase(combatant)
@@ -741,7 +750,7 @@ func isCombatantGroupDead(type: String):
 	return true
 
 func isCombatValid()-> bool:
-	return (!isCombatantGroupDead('team') and !isCombatantGroupDead('enemies')) or combat_result != 2
+	return !isCombatantGroupDead('team') and !isCombatantGroupDead('enemies') and combat_result != 2
 
 func renameDuplicates():
 	var seen = []

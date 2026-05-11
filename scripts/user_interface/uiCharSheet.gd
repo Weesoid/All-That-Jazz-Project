@@ -18,7 +18,7 @@ const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 @onready var talents = $Talents
 @onready var equipment = $MiniInventory
 @onready var equip_slot_weapon = $Sheet/Right/VBoxContainer/Equipment/Weapon
-@onready var weapon_durability_label = $Sheet/Right/VBoxContainer/Equipment/Weapon/Label
+#@onready var weapon_durability_label = $Sheet/Right/VBoxContainer/Equipment/Weapon/Label
 @onready var equip_slot_a = $Sheet/Right/VBoxContainer/Equipment/SlotA
 @onready var equip_slot_b = $Sheet/Right/VBoxContainer/Equipment/SlotB
 @onready var equip_slot_c = $Sheet/Right/VBoxContainer/Equipment/SlotC
@@ -33,6 +33,7 @@ var talents_offscreen_pos:Vector2
 var equipment_starting_pos:Vector2
 var equipment_offscreen_pos:Vector2
 var selected_equip_slot:int=0
+var loaded_characters = []
 
 var prev_pos: Vector2 
 
@@ -58,6 +59,8 @@ func replaceEquippable(item_equipped, item_replaced):
 		equipment.addButton(item_replaced)
 
 func setCombatant(combatant: ResPlayerCombatant):
+	abilities_container.clear()
+	#await get_tree().process_frame
 	modifier_viewer.loadModifiers(combatant)
 	attribute_viewer.setCombatant(combatant)
 	other_attribute_viewer.setCombatant(combatant)
@@ -65,6 +68,7 @@ func setCombatant(combatant: ResPlayerCombatant):
 	updateCharacterView(combatant)
 	updateEquipped()
 
+# TODO Load all character views and store them for toggle
 func updateCharacterView(member: ResPlayerCombatant):
 	if character_view.has_node('CharacterBody2D'):
 		var last_member = character_view.get_node('CharacterBody2D')

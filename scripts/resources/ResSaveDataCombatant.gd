@@ -12,6 +12,7 @@ class_name CombatantSaveData
 @export var traits: Array[String]
 @export var file_references: Dictionary
 @export var temp_modifier_tracker: Dictionary
+@export var assigned_position:int
 #@export var item_strain_tracker: Dictionary
 
 func _init(
@@ -26,6 +27,7 @@ func _init(
 	p_traits = [],
 	p_file_references = {},
 	p_temp_modifier_tracker = {},
+	p_assigned_position=-1
 	#p_item_strain_tracker = {}
 ):
 	#lingering_effects.assign(p_lingering_effects)
@@ -40,6 +42,7 @@ func _init(
 	traits.assign(p_traits)
 	file_references = p_file_references
 	temp_modifier_tracker = p_temp_modifier_tracker
+	assigned_position = p_assigned_position
 	#item_strain_tracker = p_item_strain_tracker
 
 func loadData(combatant: ResPlayerCombatant):
@@ -52,6 +55,7 @@ func loadData(combatant: ResPlayerCombatant):
 	combatant.traits = loadTraits()
 	combatant.file_references = file_references
 	combatant.temp_modifier_tracker = temp_modifier_tracker
+	combatant.assigned_position = assigned_position
 	#combatant.item_strain_tracker = item_strain_tracker
 
 func saveCharms(p_charms):

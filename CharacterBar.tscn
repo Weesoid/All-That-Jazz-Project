@@ -1,0 +1,107 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Texture2D" uid="uid://lh1un7rx2h1n" path="res://images/character_sprites/willis/willis_portrait.png" id="1_wb1m6"]
+[ext_resource type="Texture2D" uid="uid://cbxwnmbhjpkeh" path="res://images/sprites/char_border.png" id="2_b5m3g"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_i6yjr"]
+[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="4_fwgo2"]
+
+[sub_resource type="Gradient" id="Gradient_4nri6"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f0hi0"]
+gradient = SubResource("Gradient_4nri6")
+fill_from = Vector2(0.5, 0.9)
+fill_to = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_g7meh"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_85spd"]
+gradient = SubResource("Gradient_g7meh")
+
+[node name="MainBar" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite2D" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+offset_right = 32.0
+grow_vertical = 0
+texture = ExtResource("1_wb1m6")
+expand_mode = 3
+
+[node name="Border" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+offset_right = 32.0
+grow_vertical = 0
+texture = ExtResource("2_b5m3g")
+stretch_mode = 3
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+clip_children = 2
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = -6.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+value = 50.0
+show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="ProgressBar"]
+visible = false
+z_index = -1
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -64.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("GradientTexture2D_f0hi0")
+
+[node name="Label" type="Label" parent="ProgressBar"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1.0
+offset_top = -13.0
+offset_right = 54.0
+grow_vertical = 2
+theme = ExtResource("3_i6yjr")
+text = "Willis"
+
+[node name="ProgressBarTrueValues" parent="ProgressBar" instance=ExtResource("4_fwgo2")]
+layout_mode = 1
+offset_top = -2.0
+offset_bottom = 3.0
+theme_override_font_sizes/font_size = 4
+horizontal_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="ProgressBar"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -47.0
+offset_right = 68.0
+offset_bottom = 17.0
+texture = SubResource("GradientTexture2D_85spd")

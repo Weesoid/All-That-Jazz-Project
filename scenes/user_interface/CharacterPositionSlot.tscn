@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://7fibmhku182d"]
+
+[ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="1_p60es"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiCharacterPositionSlot.gd" id="2_wcg0h"]
+
+[sub_resource type="Gradient" id="Gradient_ojlet"]
+offsets = PackedFloat32Array(0, 0.824427)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_83tdr"]
+gradient = SubResource("Gradient_ojlet")
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1)
+
+[node name="CharacterSlot" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_p60es")
+script = ExtResource("2_wcg0h")
+metadata/_edit_horizontal_guides_ = []
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_83tdr")
+expand_mode = 1
+
+[node name="CharacterButtonContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[connection signal="child_entered_tree" from="CharacterButtonContainer" to="." method="_on_character_button_container_child_entered_tree"]

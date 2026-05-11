@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://cspyw01mf3mrl"]
 
-[ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="3_5e8sv"]
-[ext_resource type="PackedScene" uid="uid://bpysmuqphlqeo" path="res://scenes/user_interface/CustomCampButton.tscn" id="3_8u3n2"]
-[ext_resource type="Resource" uid="uid://cohe0ng5gyu4h" path="res://resources/combat/combatants_player/Willis.tres" id="4_aj6o2"]
-[ext_resource type="Resource" uid="uid://b0qa7cs8isk56" path="res://resources/items/Rations.tres" id="4_revr5"]
+[ext_resource type="PackedScene" uid="uid://7fibmhku182d" path="res://scenes/user_interface/CharacterPositionSlot.tscn" id="1_rdtts"]
+[ext_resource type="PackedScene" uid="uid://maahusohnamc" path="res://scenes/user_interface/CharacterButton.tscn" id="1_y3bst"]
+[ext_resource type="Resource" uid="uid://cohe0ng5gyu4h" path="res://resources/combat/combatants_player/Willis.tres" id="2_571nx"]
+[ext_resource type="Resource" uid="uid://cd5r32rnqq6ks" path="res://resources/combat/combatants_player/FodderA.tres" id="3_7b1mr"]
 
 [sub_resource type="GDScript" id="GDScript_r0aat"]
 script/source = "extends Control
@@ -12,7 +12,9 @@ script/source = "extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var willis = load(\"res://resources/combat/combatants_player/Willis.tres\")
+	var huck = load(\"res://resources/combat/combatants_player/FodderA.tres\")
 	willis.initializeCombatant(false)
+	huck.initializeCombatant(false)
 "
 
 [node name="Cont" type="Control"]
@@ -24,24 +26,46 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_r0aat")
 
-[node name="CustomButton" parent="." instance=ExtResource("3_5e8sv")]
-layout_mode = 0
-offset_left = 158.0
-offset_top = 245.0
-offset_right = 206.0
-offset_bottom = 293.0
-item = ExtResource("4_revr5")
-
-[node name="CustomButton2" parent="." instance=ExtResource("3_8u3n2")]
-self_modulate = Color(1, 1, 1, 1)
-layout_mode = 1
+[node name="CharacterButton" parent="." instance=ExtResource("1_y3bst")]
+layout_mode = 2
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 246.0
-offset_top = 210.0
-offset_right = 315.0
-offset_bottom = 304.0
-grow_horizontal = 1
-grow_vertical = 1
-combatant = ExtResource("4_aj6o2")
+offset_left = 248.0
+offset_top = 112.0
+offset_right = 405.0
+offset_bottom = 144.0
+combatant = ExtResource("2_571nx")
+
+[node name="CharacterButton2" parent="." instance=ExtResource("1_y3bst")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 88.0
+offset_top = 176.0
+offset_right = 245.0
+offset_bottom = 208.0
+combatant = ExtResource("3_7b1mr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 152.0
+offset_right = 520.0
+offset_bottom = 192.0
+
+[node name="CharacterSlot" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
+layout_mode = 2
+
+[node name="CharacterSlot2" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
+layout_mode = 2
+formation_position = 1
+
+[node name="CharacterSlot3" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
+layout_mode = 2
+formation_position = 2
+
+[node name="CharacterSlot4" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
+layout_mode = 2
+formation_position = 3

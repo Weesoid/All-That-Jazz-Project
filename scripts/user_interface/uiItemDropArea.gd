@@ -8,15 +8,15 @@ signal item_dropped(item)
 var dragged_item:ResItem=null
 
 func _notification(what):
-	if what == NOTIFICATION_DRAG_BEGIN:
+	if what == NOTIFICATION_DRAG_BEGIN and get_viewport().gui_get_drag_data() is ResItem:
 		dragged_item = get_viewport().gui_get_drag_data()
 		drag_started.emit(dragged_item)
 	
-	if what == NOTIFICATION_DRAG_END and !get_viewport().gui_is_drag_successful():
+	if what == NOTIFICATION_DRAG_END and !get_viewport().gui_is_drag_successful() and dragged_item != null:
 		item_not_dropped.emit(dragged_item)
 		dragged_item = null
 	
-	if what == NOTIFICATION_DRAG_END and get_viewport().gui_is_drag_successful():
+	if what == NOTIFICATION_DRAG_END and get_viewport().gui_is_drag_successful() and dragged_item != null:
 		item_dropped.emit(dragged_item)
 		dragged_item = null
 

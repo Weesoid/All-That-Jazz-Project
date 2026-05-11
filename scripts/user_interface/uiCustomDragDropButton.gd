@@ -8,5 +8,7 @@ func getPreview():
 	icon_texture.expand_mode=1
 	icon_texture.size = icon.get_size()*2
 	preview.add_child(icon_texture)
+	#icon_texture.position -= preview.size/2
 	preview.z_index=4000
 	return preview
+

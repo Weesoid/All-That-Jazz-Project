@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=10 format=3 uid="uid://cohe0ng5gyu4h"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=11 format=3 uid="uid://cohe0ng5gyu4h"]
 
 [ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://shhdhoteyxnb" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_43nme"]
@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://dtuo8rjewsxxd" path="res://resources/combat/abilities/BasicProjectileExtra.tres" id="4_nd134"]
 [ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/character_sprites/willis/rest_willis.png" id="5_clolb"]
 [ext_resource type="Resource" uid="uid://cbu52ciuiwyfq" path="res://resources/combat/abilities/BasicAttackExtra.tres" id="5_nj581"]
+[ext_resource type="Texture2D" uid="uid://lh1un7rx2h1n" path="res://images/character_sprites/willis/willis_portrait.png" id="7_n85fj"]
 
 [resource]
 script = ExtResource("2_vmsk2")
@@ -16,9 +17,11 @@ ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtReso
 base_traits = Array[String]([])
 mandatory = true
 rest_sprite = ExtResource("5_clolb")
+character_portrait = ExtResource("7_n85fj")
 stat_multiplier = 0.01
 talents = Array[String](["willis_revenant"])
 name = "Willis Flynt"
+preferred_alias = ""
 packed_scene = ExtResource("3_f2l1f")
 bullet_texture = ExtResource("2_wn1q6")
 description = "Just a lil dude"

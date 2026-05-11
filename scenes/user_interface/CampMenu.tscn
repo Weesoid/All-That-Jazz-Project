@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="12_7weyb"]
 
 [sub_resource type="Gradient" id="Gradient_qhaqm"]
+offsets = PackedFloat32Array(0.00763359, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jy7cm"]

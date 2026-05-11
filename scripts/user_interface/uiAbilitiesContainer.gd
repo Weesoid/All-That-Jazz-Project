@@ -61,3 +61,7 @@ func dimInactiveAbilities(combatant):
 func undimAbilities():
 	for ability_button in pool.get_children():
 		ability_button.setDisabled(false)
+
+func clear():
+	for button in pool.get_children():
+		button.queue_free()

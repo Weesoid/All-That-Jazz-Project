@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://maahusohnamc"]
+
+[ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="1_nhdy3"]
+[ext_resource type="Script" path="res://scripts/user_interface/CharacterButton.gd" id="2_1t7qn"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_4cwev"]
+[ext_resource type="PackedScene" uid="uid://cvt7iywcifdfq" path="res://scenes/user_interface/CharacterBar.tscn" id="4_owkil"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icdui"]
+bg_color = Color(1, 1, 1, 0.466667)
+
+[node name="CharacterButton" type="Button"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = ExtResource("1_nhdy3")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("2_1t7qn")
+metadata/_edit_horizontal_guides_ = []
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Sounds"
+
+[node name="HoldProgress" type="ProgressBar" parent="." node_paths=PackedStringArray("timer")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_mumdi")
+theme_override_styles/fill = SubResource("StyleBoxFlat_icdui")
+value = 25.0
+show_percentage = false
+script = ExtResource("2_4cwev")
+timer = NodePath("../HoldTimer")
+
+[node name="HoldTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HoldDelay" type="Timer" parent="."]
+one_shot = true
+
+[node name="Bar" parent="." instance=ExtResource("4_owkil")]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+offset_top = -32.0
+grow_vertical = 0
+pivot_offset = Vector2(320, 37)
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered_bar_motion"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited_bar_motion"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="pressed" from="." to="." method="_on_pressed_emit_combatant"]
+[connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]

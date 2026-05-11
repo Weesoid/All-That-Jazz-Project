@@ -29,14 +29,15 @@ static func applyOnHitEffects(target, caster, _value, status_effect):
 
 static func endEffects(target, _status_effect: ResStatusEffect):
 	target.combatant_scene.setBlocking(false)
+	if target.stat_modifiers.keys().has('block') and !target.combatant_scene.allow_block:
+		CombatGlobals.resetStat(target, 'block')
+	if !CombatGlobals.getCombatScene().isCombatValid():
+		return
+	
 	if !target.hasStatusEffect('Guard Break'):
 		CombatGlobals.addStatusEffect(target, 'GuardBreak')
 	else:
 		CombatGlobals.removeStatusEffect(target, 'Guard Break')
-	if target.stat_modifiers.keys().has('block') and !target.combatant_scene.allow_block:
-		CombatGlobals.resetStat(target, 'block')
-	if target.hasStatusEffect('Riposte'):
-		CombatGlobals.removeStatusEffect(target, 'Riposte')
 
 # Riposte code
 static func doRiposte(target, caster, status_effect):

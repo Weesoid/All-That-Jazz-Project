@@ -24,6 +24,7 @@ apply_once = false
 message = ""
 sound_effect = ""
 identifier = ""
+apply_on_expiry = false
 
 [resource]
 script = ExtResource("3_frn68")

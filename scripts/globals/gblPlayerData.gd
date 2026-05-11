@@ -462,6 +462,7 @@ func saveData(save_data: Array):
 				combatant.traits,
 				combatant.file_references,
 				combatant.temp_modifier_tracker,
+				combatant.assigned_position
 				#combatant.item_strain_tracker
 			)
 	

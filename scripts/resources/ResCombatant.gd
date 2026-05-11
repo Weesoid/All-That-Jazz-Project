@@ -3,6 +3,7 @@ extends Resource
 class_name ResCombatant
 
 @export var name: String
+@export var preferred_alias:String
 @export var packed_scene: PackedScene
 @export var bullet_texture: Texture2D
 @export_multiline var description: String
@@ -16,7 +17,7 @@ class_name ResCombatant
 	'heal_mult': 1.0,
 	'resist': 0.05,
 	'dmg_variance': 0.1,
-	'resolve': 3
+	'resolve': 0
 }
 @export var scale_stats: Dictionary = {
 	'health': 0.0,
@@ -48,6 +49,7 @@ var acted: bool
 var combatant_scene: CombatantScene
 var pos_tween: Tween
 var scale_tween: Tween
+var assigned_position:int = -1
 
 signal enemy_turn
 signal player_turn
