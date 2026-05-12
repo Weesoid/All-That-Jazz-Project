@@ -15,6 +15,15 @@ func _ready():
 	var huck = load(\"res://resources/combat/combatants_player/FodderA.tres\")
 	willis.initializeCombatant(false)
 	huck.initializeCombatant(false)
+	#var t_tree: ResTalentTree = load(\"res://resources/combat/talent_trees/BaseTalents.tres\")
+	#var tal_path = t_tree.talents[1].resource_path
+	#print(tal_path)
+	#var tal = load(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_6100s\")
+	#print(ResourceLoader.exists(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_6100s\"))
+	#print(t_tree.has_cach)
+	#print(t_tree.)
+	print(ResourceLoader.has_cached(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_bg3uw\"))
+	print(ResourceLoader.load(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_bg3uw\"))
 "
 
 [node name="Cont" type="Control"]

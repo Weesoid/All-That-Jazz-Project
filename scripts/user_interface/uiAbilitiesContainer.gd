@@ -14,7 +14,7 @@ func loadAbilities(combatant: ResPlayerCombatant):
 			continue
 		createAbilityButton(ability, combatant)
 	
-	loadDebug(combatant)
+	#loadDebug(combatant)
 
 func loadDebug(combatant):
 	for i in range(10):

@@ -141,19 +141,19 @@ _data = {
 script = ExtResource("1_sp4ed")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -31)
+position = Vector2(-0.5, -63.5)
 texture = ExtResource("1_0dpyg")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(-4, -26)
+position = Vector2(-4.5, -58.5)
 texture = ExtResource("1_0dpyg")
 
 [node name="Sprite2D4" type="Sprite2D" parent="."]
-position = Vector2(0, -21)
+position = Vector2(-0.5, -53.5)
 texture = ExtResource("1_0dpyg")
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
-position = Vector2(4, -26)
+position = Vector2(3.5, -58.5)
 texture = ExtResource("1_0dpyg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

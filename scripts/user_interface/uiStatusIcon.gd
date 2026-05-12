@@ -12,7 +12,7 @@ func _ready():
 	self_modulate = attached_status.getIconColor()
 	tooltip_text = attached_status.getDescription()
 	
-
+# TODO Scrap flicker tween, crashes too much, use animator instead
 func _process(_delta):
 	if attached_status.permanent and attached_status.duration <= 1: 
 		duration.text = ''

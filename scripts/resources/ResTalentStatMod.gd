@@ -11,4 +11,4 @@ func getRichDescription()-> String:
 	if !description.is_empty():
 		#d = SettingsGlobals.bb_line
 		d += '[color=dim_gray]" %s "' % description
-	return '%s\n%s%s' % [name.to_upper(), CombatGlobals.getBasicEffectsDescription([stat_modifiers]),d]
+	return '%s (%s)\n%s%s' % [name.to_upper(), str(cost), CombatGlobals.getBasicEffectsDescription([stat_modifiers]),d]

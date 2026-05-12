@@ -1,9 +1,108 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=5 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=12 format=3 uid="uid://ewb80noaamii"]
 
-[ext_resource type="Resource" uid="uid://btd50tvrm5mdc" path="res://resources/combat/abilities/BasicAttack.tres" id="1_1dte0"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_copga"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
 [ext_resource type="PackedScene" uid="uid://dlyobrhrmag7g" path="res://scenes/combatants/BadWillis.tscn" id="1_qr0qk"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="1_w1nhd"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_1qn5g"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_6ap5u"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_8wcyw"]
+
+[sub_resource type="Resource" id="Resource_tyjqq"]
+script = ExtResource("2_1qn5g")
+damage_type = 0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+damage_modifier = 1.0
+can_miss = true
+can_crit = true
+bonus_stats = {}
+return_pos = true
+indicator_bb = ""
+plant_self_on_combo = false
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_g67en"]
+script = ExtResource("4_8wcyw")
+name = ""
+description = ""
+icon = ExtResource("3_6ap5u")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_tyjqq")])
+ability_script = ExtResource("1_copga")
+target_type = 0
+target_group = 1
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+charges = 0
+can_target_self = false
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0
+
+[sub_resource type="Resource" id="Resource_sjce2"]
+script = ExtResource("2_1qn5g")
+damage_type = 1
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+damage_modifier = 1.5
+can_miss = true
+can_crit = true
+bonus_stats = {
+"status_effect": "Stunned"
+}
+return_pos = true
+indicator_bb = ""
+plant_self_on_combo = false
+condition = ""
+is_combo_effect = false
+sound_effect = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_xqviw"]
+script = ExtResource("4_8wcyw")
+name = ""
+description = ""
+icon = ExtResource("3_6ap5u")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_sjce2")])
+ability_script = ExtResource("1_copga")
+target_type = 0
+target_group = 1
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+charges = 0
+can_target_self = false
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0
 
 [resource]
 script = ExtResource("1_hgql2")
@@ -23,26 +122,27 @@ description = ""
 stat_values = {
 "crit": 0.05,
 "crit_dmg": 1.5,
-"damage": 2,
+"damage": 4,
 "dmg_variance": 0.1,
 "handling": 0,
 "heal_mult": 1.0,
-"health": 32,
+"health": 20,
 "resist": 0.05,
 "resolve": 0,
-"speed": 0
+"speed": 1
 }
 scale_stats = {
 "crit": 0.0,
 "crit_dmg": 0.0,
-"damage": 0,
+"damage": 0.0,
 "dmg_variance": 0.0,
-"handling": 0,
+"handling": 0.0,
 "heal_mult": 0.0,
-"health": 0,
+"health": 0.0,
 "resist": 0.0,
-"resolve": 0,
-"speed": 0
+"resolve": 0.0,
+"speed": 0.0
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_1dte0")])
+ability_set = Array[ExtResource("4_8wcyw")]([SubResource("Resource_g67en"), SubResource("Resource_xqviw")])
 max_turn_charges = 1
+assigned_position = 3

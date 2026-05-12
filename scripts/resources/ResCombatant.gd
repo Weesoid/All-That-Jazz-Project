@@ -34,6 +34,7 @@ class_name ResCombatant
 @export var ability_set: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var max_turn_charges = 1
 @export var riposte_effect: ResDamageEffect
+@export var assigned_position:int = -1
 @export var ai_package: GDScript
 var resolve_gate:bool=true
 var resolve_dot_shield:bool=false
@@ -49,7 +50,6 @@ var acted: bool
 var combatant_scene: CombatantScene
 var pos_tween: Tween
 var scale_tween: Tween
-var assigned_position:int = -1
 
 signal enemy_turn
 signal player_turn
@@ -312,8 +312,10 @@ func _to_string():
 func applyStoredStatusEffects():
 	stored_status_effects.reverse()
 	for effect in stored_status_effects:
-		CombatGlobals.addStatusEffect(self, effect)
-		stored_status_effects.erase(effect)
+		var effect_data = effect.split('/')
+		CombatGlobals.addStatusEffect(self, effect_data[0])
+		if effect_data.size()==1: 
+			stored_status_effects.erase(effect)
 
 func storeStatusEffect(effect, persistent:bool=false):
 	#assert(effect is ResStatusEffect or effect)
@@ -326,8 +328,10 @@ func storeStatusEffect(effect, persistent:bool=false):
 		stored_status_effects.append(effect.getFilename())
 
 # TODO: Remove based on effect
-func unstoreStatusEffect(effect: ResStatusEffect):
-	pass
+func unstoreStatusEffect(remove_effect: ResStatusEffect):
+	for effect in stored_status_effects:
+		var effect_data = effect.split('/')
+		if effect_data[0] == remove_effect.getFilename(): stored_status_effects.erase(effect)
 
 #func freeBreathingTweens():
 #	stopBreatheTween()

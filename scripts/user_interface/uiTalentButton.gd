@@ -18,6 +18,7 @@ class_name CustomTalentButton
 @export var custom_charge: int = -1
 @export var outside_combat: bool = true
 
+var initial_pos:Vector2
 
 #func _init(p_talent:ResTalent, p_combtant:ResPlayerCombatant):
 #	talent = p_talent
@@ -35,10 +36,12 @@ func _ready():
 		custom_minimum_size = Vector2(48,48)
 		talent_icon.size = Vector2(24,24)
 		talent_icon.set_anchors_preset(Control.PRESET_CENTER)
+	await get_tree().process_frame
+	initial_pos = talent_icon.position
 
 func updateRank():
 	if combatant.active_talents.has(talent):
-		var current_rank = combatant.active_talents[talent]
+		var current_rank = combatant.active_talents[talent]['rank']
 		charges.text = str(current_rank)+'/'+str(talent.max_rank)
 		if current_rank >= talent.max_rank:
 			charges.modulate = Color.YELLOW
@@ -50,7 +53,8 @@ func updateRank():
 
 func _on_pressed():
 	press_feedback()
-	icon_animator.play('Pressed')
+	pulseSize()
+	#icon_animator.play('Pressed')
 
 func _on_focus_entered():
 	focus_feedback()
@@ -116,10 +120,10 @@ func focus_feedback():
 	audio_player.play()
 	
 	z_index = 99
-	if outside_combat:
-		talent_icon.self_modulate = Color.YELLOW
-	else:
-		icon_animator.play("Focus")
+	#if outside_combat:
+	#	talent_icon.self_modulate = Color.YELLOW
+	##else:
+	icon_animator.play("Focus")
 
 func exit_focus_feedback():
 	delay_timer.stop()
@@ -152,6 +156,7 @@ func setDisabled(set_to:bool):
 #		hideDescription()
 
 func pulseSize():
+	var offset = Vector2(0,-8)
 	var size_tween = create_tween()
-	size_tween.tween_property(talent_icon, 'scale', Vector2(1.5,1.5),0.05).set_ease(Tween.EASE_IN)
-	size_tween.tween_property(talent_icon, 'scale', Vector2(1.0,1.0),0.1).set_ease(Tween.EASE_OUT)
+	size_tween.tween_property(talent_icon, 'position', initial_pos+offset,0.05).set_ease(Tween.EASE_IN)
+	size_tween.tween_property(talent_icon, 'position', initial_pos,0.1).set_ease(Tween.EASE_OUT)

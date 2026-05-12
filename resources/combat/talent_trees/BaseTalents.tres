@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="ResTalentTree" load_steps=9 format=3 uid="uid://s6fo2fxv6en2"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResTalentTree.gd" id="1_sljqb"]
+[ext_resource type="Texture2D" uid="uid://dla3fy2egfys5" path="res://images/talent_icons/default.png" id="2_s1wmg"]
+[ext_resource type="Script" path="res://scripts/resources/ResTalentStatMod.gd" id="3_6uodi"]
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectStat.gd" id="4_rgpau"]
+[ext_resource type="Script" path="res://scripts/resources/ResTalent.gd" id="5_tv6il"]
+
+[sub_resource type="Resource" id="Resource_16h0a"]
+script = ExtResource("4_rgpau")
+status_change = {
+"crit": 0.0,
+"crit_dmg": 0.0,
+"damage": 0,
+"handling": 0,
+"heal_mult": 0.0,
+"health": 2,
+"resist": 0.0,
+"speed": 0
+}
+rank_scaling = true
+apply_once = false
+message = ""
+sound_effect = ""
+identifier = ""
+apply_on_expiry = false
+
+[sub_resource type="Resource" id="Resource_th837"]
+script = ExtResource("3_6uodi")
+stat_modifiers = SubResource("Resource_16h0a")
+name = "Healthy"
+description = ""
+icon = ExtResource("2_s1wmg")
+cost = 1
+max_rank = 5
+required_level = 0
+
+[sub_resource type="Resource" id="Resource_bg3uw"]
+script = ExtResource("5_tv6il")
+name = "DumpyChan"
+description = ""
+icon = ExtResource("2_s1wmg")
+cost = 5
+max_rank = 4
+required_level = 0
+
+[resource]
+script = ExtResource("1_sljqb")
+name = "Talents"
+talents = Array[ExtResource("5_tv6il")]([SubResource("Resource_th837"), SubResource("Resource_bg3uw")])

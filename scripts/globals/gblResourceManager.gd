@@ -95,3 +95,8 @@ func getResourcePath(resource):
 
 func isResourcePlaceholder(resource: Resource):
 	return resource.resource_path.get_file()[0] == '_'
+
+func unexpectedTalentData(talent_value):
+	return !talent_value is Dictionary or \
+		(!talent_value.has('rank') or !talent_value.has('cost')) or \
+		(!talent_value['rank'] is int or !talent_value['cost'] is int) 

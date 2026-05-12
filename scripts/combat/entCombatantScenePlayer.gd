@@ -34,8 +34,8 @@ func setBlocking(set_to: bool):
 
 func block(bonus_grit: float=999.0):
 	if canBlock():
-		# MARKED FOR REPLACE
-		CombatGlobals.modifyStat(combatant_resource, {'defense': bonus_grit}, 'block')
+		"res://images/sprites/daze_diamond.png"# MARKED FOR REPLACE
+		CombatGlobals.modifyStat(combatant_resource, {'resist': bonus_grit}, 'block')
 		doAnimation('Block', null, {'skip_pause'=true})
 		await animator.animation_finished
 		CombatGlobals.resetStat(combatant_resource, 'block')

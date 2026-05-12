@@ -272,7 +272,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		playBrinkEffects(target)
 		#OverworldGlobals.freezeFrame(0.3, 0.5)
 		target.resolve_gate=false
-		addInjury(target, 1.0-target.stat_values['resist'],true)
+		addInjury(target, 1.0-target.stat_values['resist'])
 	if target.isDead() and bonus_stats.has('is_dot'): 
 		target.resolve_dot_shield = true
 	

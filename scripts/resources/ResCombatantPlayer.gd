@@ -8,12 +8,13 @@ class_name ResPlayerCombatant
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
 @export var character_portrait:Texture = load("res://images/character_sprites/char_icon_missing.png")
 @export var stat_multiplier = 0.01
+@export var talent_trees: Array[ResTalentTree] = [CombatExtras.BASE_TALENTS]
 @export var talents: Array[String]
 
 var file_references: Dictionary = {
 	'active_abilities': [],
 	'equipped_weapon': ['',0], # [path, durability] ; Handles save data of equipped weapons.
-	'active_talents': {}
+	'active_talents': {} # {<talent path>: {<rank>:int, <cost>:int} ; Nested dict that records stat_points invested by player.
 }
 var equipped_weapon: ResWeapon
 var stat_points = 1
@@ -23,7 +24,7 @@ var charms = {
 	2: null
 }
 var active_talents = {}
-var talent_list = {}
+var talent_list: Array[ResTalentTree] = [CombatExtras.BASE_TALENTS]
 var traits: Array[String] = []
 var base_health: int
 var initialized = false
@@ -50,24 +51,26 @@ func initializeCombatant(do_scene:bool=true):
 		traits = base_traits
 	
 	
-	loadTalents()
+#	loadTalents()
 	applyTalents()
 	applyAllTraits()
 	applyTemporaryModifiers()
 	applyStoredStatusEffects()
 
-func loadTalents():
-	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
-	
-	for path in talents:
-		talent_list[path] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/%s/" % path)
+#func loadTalents():
+#	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
+#
+#	for path in talents:
+#		talent_list[path] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/%s/" % path)
 
 func applyTalents():
 	for talent in active_talents.keys():
 		if talent is ResStatTalent:
-			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]), talent.name)
+			CombatGlobals.modifyStat(self, talent.getStatModifiers(active_talents[talent]['rank']), talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].mutateProperties(talent.effects)
+		elif talent is ResStatusEffectTalent:
+			storeStatusEffect(talent.status_effect,true)
 
 func getAbilityMutations():
 	return active_talents.keys().filter(func(talent): return talent is ResAbilityTalent)
@@ -82,28 +85,37 @@ func clearAbilityMutations():
 		ability.restoreProperties()
 
 func activateTalent(talent: ResTalent, count:int=1):
-	if talent in active_talents.keys() and talent.max_rank < active_talents[talent]+1:
+	if talent in active_talents.keys() and talent.max_rank < active_talents[talent]['rank']+1:
 		return
 	
+	stat_points -= talent.cost*count
 	if talent not in active_talents.keys():
-		active_talents[talent] = count
+		active_talents[talent] = {'rank':count,'cost':talent.cost}
 	else:
-		active_talents[talent] += count
+		active_talents[talent]['rank'] += count
 	
-	file_references['active_talents'][talent.resource_path] = active_talents[talent]
+	file_references['active_talents'][talent.resource_path] = {'rank':active_talents[talent]['rank'],'cost':talent.cost}
 	applyTalents()
 
 func removeTalent(talent:ResTalent):
+	stat_points += talent.getTotalCost(active_talents[talent]['rank'])
+	
 	if talent in active_talents.keys():
 		if talent is ResStatTalent:
 			CombatGlobals.resetStat(self,talent.name)
 		elif talent is ResAbilityTalent:
 			ability_pool[ability_pool.find(talent.affected_ability)].restoreProperties()
-#		elif talent is ResStatusEffectTalent:
-#			CombatGlobals.removeLingeringEffect(self, talent.status_effect)
+		elif talent is ResStatusEffectTalent:
+			unstoreStatusEffect(talent.status_effect)
 		active_talents.erase(talent)
 	
-	file_references['active_talents'].erase(talent)
+	file_references['active_talents'].erase(talent.resource_path)
+
+func getTalentData(talent:ResTalent, data:String,default=null):
+	if active_talents.has(talent):
+		return active_talents[talent][data]
+	else:
+		return default
 
 func getScenePreview():
 	combatant_scene = packed_scene.instantiate()
@@ -112,23 +124,40 @@ func getScenePreview():
 	return combatant_scene
 
 func loadFileReferences():
-	var remove = []
+	var remove = {
+		'active_abilities': [],
+		'active_talents': []
+	}
 	
 	for ability_path in file_references['active_abilities']:
 		if !FileAccess.file_exists(ability_path):
-			remove.append(ability_path)
+			remove['active_abilities'].append(ability_path)
 			continue
 		ability_set.append(load(ability_path))
+	
 	for talent_path in file_references['active_talents']:
-		if !FileAccess.file_exists(talent_path):
-			remove.append(talent_path)
+		var talent_val = file_references['active_talents'][talent_path]
+		if ResourceGlobals.unexpectedTalentData(talent_val): # Unexpected data fallback (first of it's kind!)
+			remove['active_talents'].append_array(file_references['active_talents'].keys())
+			stat_points = PlayerGlobals.team_level
+			break
+		
+		var updated_talent:ResTalent = ResourceLoader.load(talent_path)
+		var recorded_rank = file_references['active_talents'][talent_path]['rank']
+		var recorded_cost = file_references['active_talents'][talent_path]['cost']
+		if !ResourceLoader.has_cached(talent_path) or (updated_talent.cost != recorded_cost or updated_talent.max_rank < recorded_rank):
+			remove['active_talents'].append(talent_path)
+			stat_points += recorded_rank*recorded_cost
 			continue
+		
 		active_talents[load(talent_path)] = file_references['active_talents'][talent_path]
 	
-	for ability_path in remove:
-		file_references['active_abilities'].erase(ability_path)
-	remove.clear()
+	for error_reference in remove['active_abilities']:
+		file_references['active_abilities'].erase(error_reference)
+	for error_reference in remove['active_talents']:
+		file_references['active_talents'].erase(error_reference)
 	
+	remove.clear()
 	
 	if FileAccess.file_exists(file_references['equipped_weapon'][0]):
 		var weapon = load(file_references['equipped_weapon'][0])

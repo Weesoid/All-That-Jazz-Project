@@ -19,6 +19,7 @@ mandatory = false
 rest_sprite = ExtResource("7_i8uri")
 character_portrait = ExtResource("5_p6vgu")
 stat_multiplier = 0.01
+talent_trees = Array[Resource("res://scripts/resources/ResTalentTree.gd")]([])
 talents = Array[String]([])
 name = "John Huck"
 preferred_alias = "Huck"
@@ -51,3 +52,4 @@ scale_stats = {
 }
 ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
 max_turn_charges = 1
+assigned_position = -1

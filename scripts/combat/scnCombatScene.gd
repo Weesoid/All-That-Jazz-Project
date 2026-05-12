@@ -334,7 +334,9 @@ func end_turn(combatant_act=true):
 #		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
 		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead(true):
-			if target_combatant is ResCombatant and !target_combatant.hasStatusEffect('Guard'): moveCamera(active_combatant.combatant_scene.global_position)
+			if target_combatant is ResCombatant and !target_combatant.hasStatusEffect('Guard'): 
+				print('moving to active !')
+				moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE
 		end_turn()
@@ -488,11 +490,13 @@ func executeAbility():
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant.combatant_scene, selected_ability)
 	else:
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant, selected_ability)
-	if selected_ability.target_type == ResAbility.TargetType.SINGLE and !selected_ability.isOnslaught():
+	if selected_ability.target_type == ResAbility.TargetType.SINGLE:
+		if target_combatant.hasStatusEffect('Guard'): 
+			zoomCamera(Vector2(0.05,0.05))
 		moveCamera(target_combatant.combatant_scene.global_position)
-	elif selected_ability.target_type == ResAbility.TargetType.SINGLE and selected_ability.isOnslaught():
-		moveCamera(default_camera_position)
 	elif selected_ability.target_type == ResAbility.TargetType.MULTI:
+		if target_combatant.filter(func(combatant): return combatant.hasStatusEffect('Guard')).size() > 0:
+			zoomCamera(Vector2(0.05,0.05))
 		moveCamera(target_combatant[0].combatant_scene.global_position)
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
@@ -519,15 +523,16 @@ func executeAbility():
 
 func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
-		var guard_zoom = default_camera_zoom+Vector2(0.2,0.2)
+		#var guard_zoom = default_camera_zoom+Vector2(0.05,0.05)
 		target.combatant_scene.allow_block = true
 		CombatGlobals.showWarning(target.combatant_scene)
+		#CombatGlobals.showWarning(active_combatant.combatant_scene)
 		#setUIModulation(Color.TRANSPARENT)
 		target.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
 		active_combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
-		await get_tree().process_frame
-		if combat_camera.zoom != guard_zoom:
-			setCameraZoom(guard_zoom)
+#		await get_tree().process_frame
+#		if combat_camera.zoom != guard_zoom:
+#			setCameraZoom(guard_zoom)
 		#OverworldGlobals.freezeFrame(0.3,0.25)
 
 func revokeBlocking(target: ResCombatant):
@@ -596,7 +601,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
 			combatant_turn_order.append([combatant, rolled_speed])
 	
-	if combatant.assigned_position != -1:
+	if combatant.assigned_position != -1 and team_container[combatant.assigned_position].get_children().size()==0:
 		team_container[combatant.assigned_position].add_child(combatant.combatant_scene)
 	else:
 		autoFillPosition(combatant,team_container)

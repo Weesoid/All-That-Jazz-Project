@@ -1,5 +1,7 @@
 extends Node
 
+const BASE_TALENTS = preload("res://resources/combat/talent_trees/BaseTalents.tres")
+
 const HEAL_SKILL = 'heal_skill' # Percent increase to heal skill
 const REBUKE_CHANCE = 'rebuke_chance' 
 const DAMAGE_MODIFIER = 'dmg_modifier'

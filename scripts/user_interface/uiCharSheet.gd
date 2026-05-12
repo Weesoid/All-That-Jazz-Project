@@ -27,6 +27,7 @@ const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 @onready var toggle_ability_modifier_button = $Sheet/LeftBeef/HBoxContainer/ToggleAbilityModifiers
 @onready var ability_view = $Sheet/LeftBeef/AbilitiesViewer
 @onready var modifier_view = $Sheet/LeftBeef/ModifierViewer
+@onready var stat_point_count = $Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents/Label
 
 var talents_starting_pos:Vector2
 var talents_offscreen_pos:Vector2
@@ -53,6 +54,7 @@ func _ready():
 	equip_slot_a.item_received.connect(replaceEquippable)
 	equip_slot_b.item_received.connect(replaceEquippable)
 	equip_slot_c.item_received.connect(replaceEquippable)
+	talents.talent_interacted.connect(updateStatPoints)
 
 func replaceEquippable(item_equipped, item_replaced):
 	if item_replaced != null:
@@ -67,6 +69,10 @@ func setCombatant(combatant: ResPlayerCombatant):
 	abilities_container.loadAbilities(combatant)
 	updateCharacterView(combatant)
 	updateEquipped()
+	updateStatPoints()
+
+func updateStatPoints():
+	stat_point_count.text = str(viewed_combatant.stat_points)
 
 # TODO Load all character views and store them for toggle
 func updateCharacterView(member: ResPlayerCombatant):
