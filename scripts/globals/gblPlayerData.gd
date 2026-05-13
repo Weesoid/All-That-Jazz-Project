@@ -36,34 +36,34 @@ var trait_presets: Dictionary = {
 	'clever': {'handling': 1,'speed':2},
 	'quick': {'speed': 2},
 	'acute': {'crit':0.02},
-	'hard_hitter': {'crit_dmg': 0.1},
+	'hard_hitter': {'crit_amp': 0.1},
 	'mighty': {'damage': 4},
 	#'stalwart': {'defense': 0.05},
 	'resilient': {'resist': 0.05},
 	#'keen': {'accuracy':0.02},
-	'limber': {'heal_mult':0.05},
+	'limber': {'heal_amp':0.05},
 	
 	# Quirks
-	'smartass': {'handling': 2, 'damage': -4},
+	'smartass': {'handling': 2},#, 'damage': -1},
 	#'frantic': {'speed': 3, 'accuracy': -0.1},
 	#'daredevil': {'crit':0.1, 'accuracy':-0.1},
-	'crude': {'crit_dmg': 0.25, 'crit':-0.2},
+	'crude': {'crit_amp': 0.25, 'crit':-0.2},
 	#'reckless': {'damage': 4, 'defense': -0.15},
 	#'headstrong': {'defense': 0.15, 'damage': -4},
 	'hardened': {'resist': 0.35, 'crit': -0.1},
-	#'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_dmg': -0.25},
-	#'selfish': {'heal_mult':0.25, 'defense': -0.2},
+	#'rigid': {'accuracy':0.15, 'crit': -0.05, 'crit_amp': -0.25},
+	#'selfish': {'heal_amp':0.25, 'defense': -0.2},
 	
 	# Debuffs
 	'heavy_handed': {'handling': -1},
 	'clumsy': {'speed': -4},
 	'bad_luck': {'crit':-0.05},
-	'dud_hitter': {'crit_dmg': -0.25},
+	'dud_hitter': {'crit_amp': -0.25},
 	'wimpy': {'damage': -2},
 	#'soft': {'defense': -0.1},
 	'sickly': {'resist': -0.05},
 	#'oblivious': {'accuracy':-0.05},
-	'stubborn': {'heal_mult':-0.15}
+	'stubborn': {'heal_amp':-0.5}
 }
 
 signal level_up

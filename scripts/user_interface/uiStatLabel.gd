@@ -48,7 +48,8 @@ func _ready():
 	
 	if CombatExtras.STAT_DESCRIPTIONS.has(track_stat):
 		tooltip_text = CombatExtras.STAT_DESCRIPTIONS[track_stat]
-	
+
+# TODO Change to sig
 func _process(delta):
 	if combatant == null:
 		return
@@ -58,9 +59,9 @@ func _process(delta):
 		show()
 	#CombatGlobals.OtherStats['']
 	if combatant.scale_stats.get(track_stat,0) > 0:
-		stat_text.text = scale_bb+' '+track_stat.to_upper()
+		stat_text.text = SettingsGlobals.longhandWord(scale_bb+' '+track_stat).to_upper()
 	else:
-		stat_text.text = track_stat.to_upper()
+		stat_text.text = SettingsGlobals.longhandWord(track_stat).to_upper()
 	
 	match visual:
 		StatVisuals.BAR: updateBar()
@@ -94,7 +95,7 @@ func updateLabel():
 		LabelStyle.DAMAGE_RANGE: label.text = str('%s - %s' % [calcDamage('min'),calcDamage('max')])
 
 func calcDamage(val:String):
-	var damage = combatant.stat_values['damage']*combatant.stat_values.get(CombatExtras.DAMAGE_MODIFIER,1.0)
+	var damage = combatant.stat_values['damage']*CombatGlobals.calcDamageModifier(combatant)
 	var variance = (damage*combatant.stat_values['dmg_variance'])
 	
 	match val:

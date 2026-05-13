@@ -5,6 +5,26 @@ class_name EquipSlot
 @export var combatant:ResPlayerCombatant
 @export_range(-1,2) var slot:int
 
+func setCombatant(p_combatant:ResPlayerCombatant):
+	combatant = p_combatant
+	durability.hide()
+	if slot >= 0:
+		setItem(combatant.charms[slot])
+	else:
+		setItem(combatant.equipped_weapon)
+
+func setItem(data: ResItem):
+	if item != null:
+		item_replaced.emit(item)
+	item = data
+	if data != null:
+		icon = data.icon
+		description_text = data.getInformation()
+	else:
+		icon = empty_icon
+		description_text = ''
+	if data is ResWeapon: durability.show()
+
 func _get_drag_data(at_position):
 	durability.hide()
 	if item == null:

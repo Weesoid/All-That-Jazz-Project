@@ -47,14 +47,14 @@ func _process(_delta):
 		turn_gradient.play('Loop')
 	else:
 		turn_gradient.get_parent().hide()
-	if CombatGlobals.getCombatScene().target_state != 0:
-		select_target.show()
-	else:
-		select_target.hide()
-	if CombatGlobals.getCombatScene().ui_inspect_target.visible:
-		absolute_health.show()
-	else:
-		absolute_health.hide()
+	#if CombatGlobals.getCombatScene().target_state != 0:
+	#	select_target.show()
+	#else:
+	#	select_target.hide()
+	#if CombatGlobals.getCombatScene().ui_inspect_target.visible:
+	#	absolute_health.show()
+	#else:
+	#	absolute_health.hide()
 
 func updateBars():
 	if !attached_combatant.isDead():
@@ -73,7 +73,7 @@ func updateBars():
 	if attached_combatant.isDead():
 		resolve_bar.max_value = attached_combatant.getMaxResolve()
 		resolve_bar.setValue(attached_combatant.stat_values['resolve'])
-	absolute_health.text = str(health_bar.value)
+	#absolute_health.text = str(health_bar.value)
 	turn_charges.value = attached_combatant.turn_charges
 	turn_charges.max_value = attached_combatant.max_turn_charges
 #	if attached_combatant.hasStatusEffect('Knock Out'):

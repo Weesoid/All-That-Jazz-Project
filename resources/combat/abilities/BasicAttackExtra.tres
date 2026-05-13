@@ -9,22 +9,21 @@
 [sub_resource type="Resource" id="Resource_hown7"]
 script = ExtResource("2_4s00p")
 damage_type = 0
+bonus_stats = {
+"status_effect": "Poison^{\"max_duration\":1,\"be_tickdmg\":{\"damage\":1}}"
+}
+damage_modifier = 1.0
 cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-damage_modifier = 1.0
 can_miss = true
 can_crit = true
-bonus_stats = {
-"status_effect": "Poison^{\"max_duration\":1,\"be_tickdmg\":{\"damage\":1}}"
-}
 return_pos = true
-indicator_bb = ""
 plant_self_on_combo = false
+indicator_bb = ""
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
@@ -35,7 +34,6 @@ direction = 0
 move_count = 1
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
@@ -48,12 +46,6 @@ basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([
 ability_script = ExtResource("1_xfjkp")
 target_type = 0
 target_group = 1
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-charges = 0
-can_target_self = false
 caster_position = {
 "max": 3,
 "min": 0
@@ -61,6 +53,11 @@ caster_position = {
 target_position = {
 "max": 3,
 "min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
 }
 tension_cost = 0
 instant_cast = false

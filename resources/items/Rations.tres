@@ -11,7 +11,6 @@ use_multiplier = false
 cast_animation = ""
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 

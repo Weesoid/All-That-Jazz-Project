@@ -11,8 +11,8 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		
 		if effect.animate_on == 1:
 			await playAnimation(ability, caster)
-		if effect.sound_effect != '': 
-			OverworldGlobals.playSound(effect.sound_effect)
+		if effect.sound_effect != null: 
+			OverworldGlobals.playSound(effect.resource_path)
 		
 		if effect is ResDamageEffect:
 			await doAttackAnimations(caster, target, ability, effect)
@@ -191,7 +191,13 @@ static func applyToTarget(caster, target, ability: ResAbility):
 
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResDamageEffect):
-	if damage_effect.damage_type == damage_effect.DamageType.MELEE:
+	if damage_effect.cast_animation['animation'] != '':
+		if damage_effect.cast_animation['go_to_target']:
+			await caster.moveTo(target)
+		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ability_script)
+		if damage_effect.cast_animation['go_to_target']:
+			await returnToPosition(damage_effect, caster)
+	elif damage_effect.damage_type == damage_effect.DamageType.MELEE:
 		await caster.moveTo(target)
 		await caster.doAnimation('Cast_Melee', ability.ability_script) # SPEED UP {'anim_speed':1.5}
 		await returnToPosition(damage_effect, caster)
@@ -199,12 +205,6 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 		await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=target,'frame_time'=0.4,'ability'=ability})
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
 		await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=null,'frame_time'=0.4,'ability'=ability})
-	elif damage_effect.damage_type == damage_effect.DamageType.CUSTOM:
-		if damage_effect.cast_animation['go_to_target']:
-			await caster.moveTo(target)
-		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ability_script)
-		if damage_effect.cast_animation['go_to_target']:
-			await returnToPosition(damage_effect, caster)
 
 static func returnToPosition(damage_effect: ResDamageEffect, caster: CombatantScene):
 	if damage_effect.return_pos and !damage_effect.do_not_return_pos:

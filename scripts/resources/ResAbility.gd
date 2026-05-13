@@ -19,12 +19,11 @@ enum TargetGroup {
 @export var basic_effects: Array[ResAbilityEffect]
 @export var ability_script: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
 @export var target_type: TargetType
-@export var target_group: TargetGroup
-@export var required_effect: Dictionary = {'status_effect': null, 'rank': 0}
-@export var charges: int = 0
-@export var can_target_self: bool = false
+@export var target_group: TargetGroup = TargetGroup.ENEMIES
 @export var caster_position: Dictionary = {'min':0, 'max':3}
 @export var target_position: Dictionary = {'min':0, 'max':3}
+@export var charges: int = 0
+@export var required_effect: Dictionary = {'status_effect': null, 'rank': 0}
 @export var tension_cost: int = 0
 @export var instant_cast: bool = false
 @export var required_level = 0
@@ -50,7 +49,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 		return CombatGlobals.getCombatScene().active_combatant
 #	if !can_target_dead:
 #		combatants = combatants.filter(func(combatant): return !combatant.isDead())
-	if !can_target_self:
+	if target_group != TargetGroup.ALLIES:
 		combatants.erase(CombatGlobals.getCombatScene().active_combatant)
 	if target_group == TargetGroup.ALLIES or target_group == TargetGroup.ENEMIES:
 		combatants = combatants.filter(func(combatant): return isCombatantInRange(combatant, 'target'))

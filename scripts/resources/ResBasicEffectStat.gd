@@ -6,9 +6,7 @@ class_name ResStatChangeEffect
 	'damage': 0,
 	'handling': 0,
 	'speed': 0,
-	'crit_dmg': 0.0,
 	'crit': 0.0,
-	'heal_mult': 0.0,
 	'resist': 0.0
 }
 @export var rank_scaling = true

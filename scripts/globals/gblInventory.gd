@@ -12,9 +12,10 @@ var recipes: Dictionary = {
 	'RushDown':{'CritRations': 1, 'ExtraRations': 1,'Rations':1, 'ScrapSalvage':1},
 	'ScrapSalvage.1':{'ArrowJunk': 1}
 }
-var max_inventory: int = 500
+var max_inventory: int = 1000
 
 signal removed_item_from_inventory(item)
+signal item_equipped(item)
 signal added_item_to_inventory(item, amount)
 signal stack_item_changed(item, new_stack, old_stack)
 signal item_repaired(weapon, new_durability)
@@ -196,9 +197,7 @@ func getCharms(charm:ResCharm)-> Array:
 func getEquippedWeapons()-> Array:
 	var out = []
 	for combatant in PlayerGlobals.team:
-		print('checking ', combatant)
 		if combatant.hasEquippedWeapon(): 
-			print('founded!!!!')
 			out.append(combatant.equipped_weapon)
 	return out
 

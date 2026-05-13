@@ -25,6 +25,7 @@ var initial_pos:Vector2
 #	combatant = p_combtant
 
 func _ready():
+	#print(talent_icon.position, ' pulsaation')
 	if talent == null:
 		return
 	$TextureRect/HoldProgress.modulate=hold_color
@@ -38,6 +39,7 @@ func _ready():
 		talent_icon.set_anchors_preset(Control.PRESET_CENTER)
 	await get_tree().process_frame
 	initial_pos = talent_icon.position
+	#print(initial_pos, ' rec')
 
 func updateRank():
 	if combatant.active_talents.has(talent):
@@ -158,5 +160,7 @@ func setDisabled(set_to:bool):
 func pulseSize():
 	var offset = Vector2(0,-8)
 	var size_tween = create_tween()
-	size_tween.tween_property(talent_icon, 'position', initial_pos+offset,0.05).set_ease(Tween.EASE_IN)
-	size_tween.tween_property(talent_icon, 'position', initial_pos,0.1).set_ease(Tween.EASE_OUT)
+	print(talent_icon.position, ' b4')
+	size_tween.tween_property(talent_icon, 'position', Vector2(12,12)+offset,0.05).set_ease(Tween.EASE_IN)
+	size_tween.tween_property(talent_icon, 'position', Vector2(12,12),0.1).set_ease(Tween.EASE_OUT)
+	print(talent_icon.position, ' idgaf')

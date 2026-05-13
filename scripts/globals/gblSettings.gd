@@ -66,3 +66,14 @@ func doSprint()-> bool:
 
 func stopSprint()-> bool:
 	return (Input.is_action_just_released("ui_sprint") and !SettingsGlobals.toggle_sprint) or (Input.is_action_just_pressed("ui_sprint") and SettingsGlobals.toggle_sprint) and OverworldGlobals.player.sprinting
+
+func longhandWord(word:String):
+	word = word.replace('_', ' ')
+	word = word.to_lower()
+	var word_split = word.split(' ')
+	for i in range(word_split.size()):
+		match word_split[i]:
+			'dmg': word_split.set(i, 'damage')
+			'amp': word_split.set(i, 'amp.')
+	
+	return " ".join(word_split)

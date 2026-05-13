@@ -8,7 +8,6 @@ class_name ResEquippable
 	'speed': 0,
 	'crit_mult': 0.0,
 	'crit': 0.0,
-	'heal_mult': 0.0,
 	'resist': 0.0
 }
 var equipped_combatant: ResCombatant

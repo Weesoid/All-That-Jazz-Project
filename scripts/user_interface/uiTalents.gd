@@ -4,7 +4,7 @@ extends Control
 @onready var talent_buttons = $MarginContainer/HBoxContainer/BaseTalents/CenterContainer/Talents
 @onready var points = $MarginContainer/Points
 @export var combatant: ResPlayerCombatant #= preload("res://resources/combat/combatants_player/Willis.tres")
-signal talent_interacted
+signal talent_interacted(combatant)
 
 func loadTalents(p_combatant: ResPlayerCombatant, talent_tree_name:String='Talents'):
 	for button in talent_buttons.get_children():
@@ -24,7 +24,8 @@ func addTalentButton(talent, combatant):
 	button.held_press.connect(talentPressed.bind(talent,true))
 	button.pressed.connect(button.updateRank)
 	button.held_press.connect(button.updateRank)
-	button.pressed.connect(func(): talent_interacted.emit())
+	button.pressed.connect(func(): talent_interacted.emit(combatant))
+	button.held_press.connect(func(): talent_interacted.emit(combatant))
 	return button
 
 func talentPressed(talent: ResTalent, max_out:bool=false, emit:bool=true):
@@ -41,9 +42,9 @@ func talentPressed(talent: ResTalent, max_out:bool=false, emit:bool=true):
 		return
 	
 	combatant.activateTalent(talent, rank_up)
-	updatePointCount()
+#	updatePointCount()
 	if emit:
-		talent_interacted.emit()
+		talent_interacted.emit(combatant)
 
 func canAddTalent(talent: ResTalent, add_ranks:int):
 	var current_rank = combatant.getTalentData(talent,'rank',0)
@@ -56,23 +57,23 @@ func talentDumped(talent: ResTalent,emit:bool=true):
 		return
 	
 	#combatant.stat_points += combatant.active_talents[talent]['cost']*combatant.active_talents[talent]['rank']
-	updatePointCount()
+#	updatePointCount()
 	combatant.removeTalent(talent)
 	#updateAccesibility()
 	if emit:
 		talent_interacted.emit()
 
-func pulsePoints():
-	var tween = get_tree().create_tween().set_parallel(false)
-	tween.tween_property(points,'self_modulate',Color.RED,0.25)
-	tween.tween_property(points,'self_modulate',Color.WHITE,0.25)
-
-func updatePointCount():
-	var current_count = combatant.stat_points
-	if current_count > 0:
-		points.modulate = Color.YELLOW
-	else:
-		points.modulate = Color.DIM_GRAY
-	
-	points.text = '  '+str(current_count)
+#func pulsePoints():
+#	var tween = get_tree().create_tween().set_parallel(false)
+#	tween.tween_property(points,'self_modulate',Color.RED,0.25)
+#	tween.tween_property(points,'self_modulate',Color.WHITE,0.25)
+#
+#func updatePointCount():
+#	var current_count = combatant.stat_points
+#	if current_count > 0:
+#		points.modulate = Color.YELLOW
+#	else:
+#		points.modulate = Color.DIM_GRAY
+#
+#	points.text = '  '+str(current_count)
 

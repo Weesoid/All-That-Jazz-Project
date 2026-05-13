@@ -302,6 +302,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	elif item is ResWeapon:
 		var durability_bar = load("res://scenes/user_interface/DurabilityBar.tscn").instantiate()
 		durability_bar.weapon = item
+		InventoryGlobals.item_repaired.connect(durability_bar.update_values)
 		button.add_child(durability_bar)
 		#durability_bar.setWeapon(item)
 	
@@ -321,8 +322,17 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		button.theme = load("res://design/ItemButtonsMandatory.tres")
 	else:
 		button.theme = load("res://design/ItemButtons.tres")
-	#TEMP
 	
+#	InventoryGlobals.removed_item_from_inventory.connect(
+#		(func(removed_item):
+#			print(removed_item == item)).unbind(1)
+#	)
+#	if item is ResEquippable:
+#		InventoryGlobals.item_equipped.connect(
+#			func(removed_item):
+#				if button.item == removed_item:
+#					button.queue_free()
+#		)
 	return button
 
 func createItemIcon(item: ResItem, count:int):

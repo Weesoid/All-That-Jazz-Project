@@ -43,7 +43,8 @@ func _ready():
 		InventoryGlobals.removed_item_from_inventory.connect(removeItem)
 	
 	inheritorReady()
-
+	focusFirstFilled()
+	
 func inheritorReady():
 	pass
 
@@ -70,6 +71,8 @@ func updateCategories():
 		ammo_category.visible = !isCategoryEmpty(ammo_items)
 		combat_category.visible = !isCategoryEmpty(combat_items)
 		charm_category.visible = !isCategoryEmpty(charms)
+
+
 
 func removeItem(item: ResItem):
 	if !item_button_map.has(item):

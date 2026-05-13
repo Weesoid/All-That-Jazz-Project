@@ -34,7 +34,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rjlo0")
-viewed_combatant = ExtResource("2_m3n0x")
 
 [node name="Sheet" type="GridContainer" parent="."]
 layout_mode = 1
@@ -202,6 +201,7 @@ offset_top = -92.0
 offset_right = 80.0
 offset_bottom = 140.0
 hide_empty_categories = true
+remove_dragged_items = false
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25

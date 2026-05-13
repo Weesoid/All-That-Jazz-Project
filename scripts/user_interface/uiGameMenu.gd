@@ -20,14 +20,15 @@ func _ready():
 	#await get_tree().process_frame
 	#print(sheet)
 	var slot:int=0
-	for character in OverworldGlobals.getCombatantSquad('Player'):
+	var squad = OverworldGlobals.getCombatantSquad('Player')
+	for character in squad:
 		var char = OverworldGlobals.createCharacterButton(character)
 		if character.assigned_position == -1:
 			getFirstEmptySlot().addCharacter(char)
 		else:
 			getSlot(character.assigned_position).addCharacter(char)
 		char.character_presssed.connect(sheet.setCombatant)
-
+	sheet.setCombatant(squad[0])
 
 func getFirstEmptySlot():
 	for slot in character_slots.get_children():

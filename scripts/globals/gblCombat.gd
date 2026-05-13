@@ -32,6 +32,11 @@ signal ability_finished
 signal ability_casted(ability: ResAbility)
 signal active_combatant_changed(combatant: ResCombatant)
 signal tension_changed(previous_tension,current_tension,from_target)
+signal extra_stat_added(combatant,stat)
+
+# To be added
+signal health_changed(health, combatant)
+signal tp_changed(health, combatant)
 
 
 #********************************************************************************
@@ -39,7 +44,6 @@ signal tension_changed(previous_tension,current_tension,from_target)
 #********************************************************************************
 func emit_exp_updated(value, max_value):
 	exp_updated.emit(value, max_value)
-	#OtherStats['heal_skill']
 
 #********************************************************************************
 # ability EFFECTS & UTILITY
@@ -65,26 +69,29 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
 	if can_crit and ((caster != null and randomRoll(caster.stat_values['crit']+getBonusStat(bonus_stats, 'crit', target))) or (crit_chance != -1.0 and randomRoll(crit_chance+getBonusStat(bonus_stats, 'crit', target)))):
-		damage = doCritEffects(damage, caster, 2.0+getBonusStat(bonus_stats,'crit_dmg', target), true)
+		damage = doCritEffects(damage, caster, getBonusStat(bonus_stats,CombatExtras.CRIT_AMP, target))
 		indicator_bb_code += critical_bb
 	target.stat_values['health'] -= int(damage)
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits, bonus_stats)
 
 ## Basic damage calculations
 func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, can_crit: bool, sound:String='', indicator_bb_code: String='', bonus_stats: Dictionary = {}):
-	var damage = (caster.stat_values['damage']+getBonusStat(bonus_stats, 'damage', target)) * modifier * caster.stat_values.get(CombatExtras.DAMAGE_MODIFIER,1.0)
+	var damage = (caster.stat_values['damage']+getBonusStat(bonus_stats, 'damage', target)) * calcDamageModifier(caster) * modifier
 	damage = valueVariate(damage, caster.stat_values['dmg_variance'])
 	if target.stat_modifiers.has('block'):
 		damage = 0
 	
 	if randomRoll(caster.stat_values['crit']+getBonusStat(bonus_stats, 'crit', target)) and can_crit:
-		damage = doCritEffects(damage, caster, getBonusStat(bonus_stats,'crit_dmg', target),true)
+		damage = doCritEffects(damage, caster, getBonusStat(bonus_stats,CombatExtras.CRIT_AMP, target))
 		indicator_bb_code += critical_bb
 	if checkSpecialStat('non-lethal', bonus_stats, target) and target.stat_values['health']-damage <= 0:
 		damage = 0
 	
 	target.stat_values['health'] -= int(damage)
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, true, bonus_stats)
+
+func calcDamageModifier(combatant:ResCombatant):
+	return (1+combatant.stat_values.get(CombatExtras.DAMAGE_MODIFIER,0))
 
 func getBonusStat(bonus_stats: Dictionary, key: String, target: ResCombatant):
 	if hasBonusStat(bonus_stats, key) and checkBonusStatConditions(bonus_stats, key, target):
@@ -110,23 +117,15 @@ func getBonusStatValue(bonus_stats: Dictionary, key: String):
 				return bonus_stats[stat]
 
 func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResCombatant)-> bool:
-	#print('ASS ', bonus_stats, ' / ', key)
 	var conditions: Array
-	#print('key -------------- ', key)
-	#print(bonus_stats)
 	for stat in bonus_stats.keys():
-	#	print('checking! ',stat.split('/'))
-		#print('ch1: ', stat.split('/')[0])
-		#print('ch2: ',stat.split('/').size())
 		if key == stat.split('/')[0] and (stat.split('/').size() > 1):
 			conditions = stat.split('/')
 			conditions.remove_at(0)
 			break
 		elif key == stat.split('/')[0]:
-			#print('bruh')
 			return true
 	
-	#print('Outted: ',conditions)
 	return checkConditions(conditions, target)
 
 func checkConditions(conditions, target: ResCombatant)->bool:
@@ -235,14 +234,15 @@ func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
 	playDodgeTween(target)
 	#checkMissCases(target, caster, damage)
 
-func doCritEffects(base_damage, caster: ResCombatant, crit_damage:float=2.0, stack_crit_damage:bool=false):
+func doCritEffects(base_damage, caster: ResCombatant, bonus_mult:float=0.0):
+	var base_mult = 1.5
 	if  caster != null:
-		if stack_crit_damage:
-			base_damage *= (caster.stat_values['crit_dmg']+crit_damage)
-		else:
-			base_damage *= caster.stat_values['crit_dmg']
+		var modified_crit_dmg = max(1.1,base_mult+caster.stat_values.get(CombatExtras.CRIT_AMP,0)+bonus_mult)
+		print('modified dmg! ', modified_crit_dmg)
+		base_damage *= (modified_crit_dmg)
 	else:
-		base_damage *= crit_damage
+		base_damage *= base_mult+bonus_mult
+	base_damage = ceil(base_damage)
 	getCombatScene().combat_camera.shake(15.0, 10.0)
 	OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
 	return base_damage
@@ -323,7 +323,7 @@ func addInjury(combatant: ResCombatant, chance:float,is_grevious:bool=false):
 		'Bum Leg': {'speed':-1},
 		'Broken Arm': {'damage':-1},
 		'Shellshocked': {'crit':-0.03},
-		'Pulled Muscle': {'crit_dmg':-0.03},
+		'Pulled Muscle': {'crit_amp':-0.03},
 		'Infected Wound': {'resist':-0.03}
 		# Broken ribs: dmg taken +2%
 		
@@ -380,9 +380,7 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 		from_death=true
 	base_healing = valueVariate(base_healing, 0.1)
 	if use_mult:
-		base_healing *= target.stat_values['heal_mult']
-	if base_healing <= 0: 
-		base_healing = 0
+		base_healing *= max(0, 1.0+target.stat_values.get(CombatExtras.HEAL_AMP,0))
 	
 	if target.stat_values['health'] + base_healing > target.getMaxHealth():
 		target.stat_values['health'] = target.getMaxHealth()

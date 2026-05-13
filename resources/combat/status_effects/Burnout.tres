@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_euxcq"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_65u5p"]
-[ext_resource type="Texture2D" uid="uid://bxo1x4evsvja7" path="res://images/status_icons/icon_unknown.png" id="3_o718s"]
+[ext_resource type="Texture2D" uid="uid://c7pdkxob3l2qs" path="res://images/status_icons/burnout.png" id="3_5yrv4"]
 
 [resource]
 script = ExtResource("1_euxcq")
@@ -13,8 +13,10 @@ status_script = ExtResource("2_65u5p")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
-texture = ExtResource("3_o718s")
+seperate_instances = false
+texture = ExtResource("3_5yrv4")
 style = 2
+custom_style_color = Color(0, 0, 0, 1)
 max_duration = 3
 extend_duration = 1
 apply_extend_duration = false
@@ -24,8 +26,8 @@ tick_any_turn = false
 do_ticks = false
 resistable = true
 permanent = false
-lingers = false
-persist_on_dead = false
+remove_on_brink = false
+hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""

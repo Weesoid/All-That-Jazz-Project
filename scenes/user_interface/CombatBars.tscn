@@ -309,20 +309,6 @@ grow_horizontal = 0
 empty_circle = ExtResource("3_8o7jm")
 filled_circle = ExtResource("3_e74cw")
 
-[node name="AbsoluteHealth" type="Label" parent="HealthBar"]
-visible = false
-layout_mode = 0
-offset_left = -6.0
-offset_top = -17.0
-offset_right = 26.0
-offset_bottom = 6.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 8
-text = "100"
-horizontal_alignment = 2
-vertical_alignment = 2
-
 [node name="StatusEffectContainer" parent="HealthBar" instance=ExtResource("7_n56iy")]
 layout_mode = 0
 offset_left = 1.0

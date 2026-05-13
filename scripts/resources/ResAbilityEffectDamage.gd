@@ -5,17 +5,11 @@ class_name ResDamageEffect
 enum DamageType {
 	MELEE,
 	RANGED,
-	RANGED_PIERCING,
-	CUSTOM
+	RANGED_PIERCING
 }
 
 ## Animation the caster will do.
 @export var damage_type: DamageType
-## Only applicable if damage type is "Custom". What animation the caster will do.
-@export var cast_animation: Dictionary= {'animation': '', 'go_to_target': false} 
-@export var damage_modifier: float = 1.0
-@export var can_miss: bool = true
-@export var can_crit: bool = true
 ## Additional stats to be applied on usage.
 ## Conditions:
 ## 		hp = Health threshold ex. crit/hp:>:0.5 or crit/hp:<:0.75
@@ -30,9 +24,14 @@ enum DamageType {
 ##			"status_effect": "Poison^{"duration":6,"be_<identifier>":{"damange",9}}" Will override status effects properties
 ##		move = Move the target combatant. e.g. "move": "f,1" (Means forward one space) (b,2 would mean backward 2 spaces)
 @export var bonus_stats: Dictionary
+@export var damage_modifier: float = 1.0
+## Only applicable if damage type is "Custom". What animation the caster will do.
+@export var cast_animation: Dictionary= {'animation': '', 'go_to_target': false} 
+@export var can_miss: bool = true
+@export var can_crit: bool = true
 @export var return_pos: bool = true
-@export var indicator_bb:  String = ''
 @export var plant_self_on_combo: bool
+@export var indicator_bb:  String = ''
 var do_not_return_pos: bool=false
 
 func _to_string():

@@ -13,8 +13,6 @@ class_name ResCombatant
 	'handling': 0,
 	'speed': 1,
 	'crit': 0.05,
-	'crit_dmg': 1.5,
-	'heal_mult': 1.0,
 	'resist': 0.05,
 	'dmg_variance': 0.1,
 	'resolve': 0
@@ -25,8 +23,6 @@ class_name ResCombatant
 	'handling': 0.0,
 	'speed': 0.0,
 	'crit': 0.0,
-	'crit_dmg': 0.0,
-	'heal_mult': 0.0,
 	'resist': 0.0,
 	'dmg_variance': 0.0,
 	'resolve': 0.0
@@ -118,7 +114,6 @@ func scaleStats():
 			continue
 		
 		stat_bonuses[stat] = scaled_stat
-	print(stat_bonuses)
 	#if !stat_bonuses.is_empty():
 	CombatGlobals.modifyStat(self, stat_bonuses, 'scaled_stats')
 
@@ -208,8 +203,9 @@ func applyStatModifications(modifier_id: String):
 					stat_values[stat] += stat_modifiers[modifier][stat]
 				else:
 					stat_values[stat] = stat_modifiers[modifier][stat]
+					CombatGlobals.extra_stat_added.emit(self,stat)
 				#if stat == 'resolve':
-				#	CombatGlobals.healResolve(self,stat_modifiers[modifier][stat])
+				#	CombatGlobals.healResolve(self,stat_modifiers[modifier][stat]
 			return
 
 # TODO?  Update handling. Replace outdated modifiers based on modifier_id?

@@ -10,11 +10,13 @@ stat_modifications = {
 "crit": 0.0,
 "crit_mult": 0.0,
 "damage": 0,
+"dmg_modifier": 1.25,
 "handling": 0,
 "heal_mult": 0.0,
 "health": 0,
+"rebuke_chance": 0.99,
 "resist": 0.0,
-"speed": 88
+"speed": 1
 }
 name = "Rushy"
 icon = ExtResource("1_sv2ve")

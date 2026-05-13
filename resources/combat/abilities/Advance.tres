@@ -12,7 +12,6 @@ direction = 0
 move_count = 1
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
@@ -25,12 +24,6 @@ basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([
 ability_script = ExtResource("1_20jjo")
 target_type = 0
 target_group = 2
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-charges = 0
-can_target_self = false
 caster_position = {
 "max": 3,
 "min": 1
@@ -38,6 +31,11 @@ caster_position = {
 target_position = {
 "max": 3,
 "min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
 }
 tension_cost = 0
 instant_cast = false

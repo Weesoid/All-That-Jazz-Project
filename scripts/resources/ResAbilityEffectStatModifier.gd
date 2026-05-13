@@ -12,8 +12,6 @@ enum DurationType {
 	'handling': 0,
 	'speed': 0,
 	'crit': 0.0,
-	'crit_dmg': 0.0,
-	'heal_mult': 0.0,
 	'resist': 0.0,
 	'dmg_variance': 0.0,
 	'resolve': 0

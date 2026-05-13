@@ -41,6 +41,8 @@ func initializeCombatant(do_scene:bool=true):
 		scaleStats()
 	if !stat_modifiers.has('base_rebuke'):
 		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:0.25},'base_rebuke')
+	if !stat_modifiers.has('base_resolve'):
+		CombatGlobals.modifyStat(self, {'resolve':3},'base_rebuke')
 	if !stat_values.has('strain'):
 		stat_values['strain']=0
 	if CombatGlobals.inCombat():
@@ -167,7 +169,6 @@ func loadFileReferences():
 func applyAllTraits():
 	if traits.is_empty():
 		return
-	if name.contains('Willis'): print('Traits being applied: ', traits, ' (%s)' % PlayerGlobals.save_name)
 	for t in traits:
 		applyTrait(t,false)
 
@@ -264,7 +265,7 @@ func equipWeapon(weapon: ResWeapon):
 		InventoryGlobals.removeItemResource(weapon, 1, false, true)
 		weapon.equip(self)
 		file_references['equipped_weapon'] = [weapon.resource_path,weapon.durability]
-		#print(file_references['equipped_weapon'])
+		InventoryGlobals.item_equipped.emit(weapon)
 		return
 
 func unequipWeapon():
@@ -287,6 +288,7 @@ func equipCharm(charm: ResCharm, slot: int):
 		InventoryGlobals.removeItemResource(charm, 1, false, true)
 		charm.equip(self)
 		charms[slot] = charm
+		InventoryGlobals.item_equipped.emit(charm)
 		return
 
 func unequipCharm(slot: int):

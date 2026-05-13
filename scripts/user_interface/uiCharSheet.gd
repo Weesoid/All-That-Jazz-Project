@@ -8,7 +8,6 @@ const SHIELD_SWORD_ICON = preload("res://images/sprites/shield_n_sword.png")
 const ABILITIES_ICON = preload("res://images/sprites/abilities_icon.png")
 const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 
-@export var viewed_combatant: ResPlayerCombatant
 @onready var modifier_viewer = $Sheet/LeftBeef/ModifierViewer
 @onready var attribute_viewer = $Sheet/Right/VBoxContainer/AttributeViewContainer
 @onready var other_attribute_viewer = $Sheet/Right/VBoxContainer/AutoAttributeView
@@ -29,50 +28,56 @@ const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 @onready var modifier_view = $Sheet/LeftBeef/ModifierViewer
 @onready var stat_point_count = $Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents/Label
 
-var talents_starting_pos:Vector2
-var talents_offscreen_pos:Vector2
-var equipment_starting_pos:Vector2
-var equipment_offscreen_pos:Vector2
+var submenu_positions = {}
 var selected_equip_slot:int=0
 var loaded_characters = []
-
 var prev_pos: Vector2 
+
+signal combatant_switched
 
 func _ready():
 	await get_tree().process_frame
-	talents_starting_pos = talents.position
-	equipment_starting_pos = equipment.position
-	talents_offscreen_pos = talents.position + Vector2(-128,0)
-	equipment_offscreen_pos = equipment.position + Vector2(0,64)
-	#equipment.exit_button.pressed.connect(unequipItem)
-	setCombatant(viewed_combatant)
-	equip_slot_a.combatant = viewed_combatant
-	equip_slot_b.combatant = viewed_combatant
-	equip_slot_c.combatant = viewed_combatant
-	# TODO Fix bug where dropping doesn't place replaced item back in inv
+	submenu_positions[talents] = talents.position
+	submenu_positions[equipment] = equipment.position
+	submenu_positions['talents-offset'] = Vector2(-128,0)
+	submenu_positions['equipment-offset'] = Vector2(0,64)
 	equip_slot_weapon.item_received.connect(replaceEquippable)
 	equip_slot_a.item_received.connect(replaceEquippable)
 	equip_slot_b.item_received.connect(replaceEquippable)
 	equip_slot_c.item_received.connect(replaceEquippable)
 	talents.talent_interacted.connect(updateStatPoints)
+	combatant_switched.connect(hideSubmenus.unbind(1))
+
+func hideSubmenus():
+	animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
+	animateSubmenu(false, talents,submenu_positions['talents-offset'])
 
 func replaceEquippable(item_equipped, item_replaced):
 	if item_replaced != null:
 		equipment.addButton(item_replaced)
+	if equipment.item_button_map.is_empty():
+		animateSubmenu(false,equipment,submenu_positions['equipment-offset'])
 
 func setCombatant(combatant: ResPlayerCombatant):
+	combatant_switched.emit(combatant)
 	abilities_container.clear()
-	#await get_tree().process_frame
 	modifier_viewer.loadModifiers(combatant)
 	attribute_viewer.setCombatant(combatant)
-	other_attribute_viewer.setCombatant(combatant)
+	other_attribute_viewer.setCombatant(combatant,true)
 	abilities_container.loadAbilities(combatant)
+	talents.loadTalents(combatant)
 	updateCharacterView(combatant)
-	updateEquipped()
-	updateStatPoints()
+	setEquipSlots(combatant)
+	updateStatPoints(combatant)
 
-func updateStatPoints():
-	stat_point_count.text = str(viewed_combatant.stat_points)
+func setEquipSlots(combatant:ResPlayerCombatant):
+	equip_slot_weapon.setCombatant(combatant)
+	equip_slot_a.setCombatant(combatant)
+	equip_slot_b.setCombatant(combatant)
+	equip_slot_c.setCombatant(combatant)
+
+func updateStatPoints(combatant:ResCombatant):
+	stat_point_count.text = str(combatant.stat_points)
 
 # TODO Load all character views and store them for toggle
 func updateCharacterView(member: ResPlayerCombatant):
@@ -93,8 +98,7 @@ func updateCharacterView(member: ResPlayerCombatant):
 
 
 func _on_show_talents_pressed():
-	animateSubmenu(talents.visible, talents, talents_starting_pos, talents_offscreen_pos)
-	talents.loadTalents(viewed_combatant)
+	animateSubmenu(!talents.visible, talents, submenu_positions['talents-offset'])
 
 func _on_slot_a_pressed():
 	selected_equip_slot=0
@@ -108,6 +112,10 @@ func _on_slot_c_pressed():
 func equipmentButtonPressed():
 	if !press_cooldown.is_stopped():
 		return
+	var all_equippables = InventoryGlobals.inventory.filter(func(item): return item is ResEquippable)
+	if all_equippables.is_empty():
+		CombatGlobals.spawnIndicator(get_global_mouse_position(), 'No equipment!')
+		return
 	
 	press_cooldown.start()
 	if equipment.visible:
@@ -115,8 +123,11 @@ func equipmentButtonPressed():
 	else:
 		loadEquipment()
 	
-	animateSubmenu(equipment.visible, equipment, equipment_starting_pos, equipment_offscreen_pos)
-
+	animateSubmenu(!equipment.visible, equipment, submenu_positions['equipment-offset'])
+	if equipment.visible:
+		await get_tree().process_frame
+		equipment.focusFirstFilled()
+	
 func loadEquipment():
 	equipment.reset()
 	OverworldGlobals.addMiniInventoryActions(
@@ -126,43 +137,16 @@ func loadEquipment():
 		func(item): return item is ResEquippable #and !viewed_combatant.hasCharm(item)
 		)
 
-func equipCharm(item: ResCharm,slot:int):
-	if viewed_combatant.charms[slot] != null:
-		viewed_combatant.unequipCharm(slot)
-	
-	viewed_combatant.equipCharm(item,slot)
-	loadEquipment()
-	updateEquipped()
-
-func unequipItem():
-	if selected_equip_slot > -1:
-		viewed_combatant.unequipCharm(selected_equip_slot)
-		#OverworldGlobals.playSound("res://audio/sounds/421418__jaszunio15__click_200.ogg")
-	else:
-		viewed_combatant.unequipWeapon()
-		#OverworldGlobals.playSound("res://audio/sounds/421418__jaszunio15__click_200.ogg")
-	equipment.reset()
-	animateSubmenu(true, equipment, equipment_starting_pos, equipment_offscreen_pos)
-	updateEquipped()
-
-func updateEquipped():
-	if viewed_combatant == null:
-		return
-	
-	equip_slot_weapon.setItem(viewed_combatant.equipped_weapon)
-	equip_slot_a.setItem(viewed_combatant.charms[0])
-	equip_slot_b.setItem(viewed_combatant.charms[1])
-	equip_slot_c.setItem(viewed_combatant.charms[2])
-
-func animateSubmenu(set_visible:bool, submenu:Control, starting_pos:Vector2, offscreen_pos:Vector2):
+func animateSubmenu(set_visible:bool, submenu:Control, offscreen_offset:Vector2):
 	var tween = create_tween().set_parallel()
-	if !set_visible:
+	var offscreen_pos = submenu_positions[submenu]+offscreen_offset
+	if set_visible:
 		tween.set_ease(Tween.EASE_IN)
 		submenu.modulate = Color.TRANSPARENT
 		submenu.position = offscreen_pos
 		submenu.show()
 		tween.tween_property(submenu,'modulate',Color.WHITE,0.2)
-		tween.tween_property(submenu,'position',starting_pos,0.25)
+		tween.tween_property(submenu,'position',submenu_positions[submenu],0.25)
 	else:
 		tween.set_ease(Tween.EASE_OUT)
 		tween.tween_property(submenu,'modulate',Color.TRANSPARENT,0.2)
