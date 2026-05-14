@@ -2,17 +2,26 @@ extends Control
 class_name DurabilityBar
 
 @onready var bar = $ProgressBar
-var weapon: ResWeapon
+var item: ResItem
 
-func setWeapon(p_weapon):
-	weapon = p_weapon
-	bar.value = weapon.durability
-	bar.max_value = weapon.max_durability
+func setItem(p_item):
+	item = p_item
+	bar.value = item.durability
+	bar.max_value = item.max_durability
+	if !InventoryGlobals.item_repaired.is_connected(update_values):
+		InventoryGlobals.item_repaired.connect(update_values.unbind(2))
+	if !InventoryGlobals.item_used.is_connected(update_values):
+		InventoryGlobals.item_used.connect(update_values.unbind(1))
 
 func _ready():
-	if weapon != null:
-		setWeapon(weapon)
-		InventoryGlobals.item_repaired.connect(update_values.unbind(2))
+	if item != null:
+		setItem(item)
+		if !InventoryGlobals.item_repaired.is_connected(update_values):
+			InventoryGlobals.item_repaired.connect(update_values.unbind(2))
+		if !InventoryGlobals.item_used.is_connected(update_values):
+			InventoryGlobals.item_used.connect(update_values.unbind(1))
 
 func update_values():
-	bar.value = weapon.durability
+	bar.value = item.durability
+	bar.max_value = item.max_durability
+	print('zasz: ', str(bar.value))

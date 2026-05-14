@@ -15,7 +15,6 @@ use_multiplier = true
 cast_animation = ""
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
@@ -28,12 +27,6 @@ basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([
 ability_script = ExtResource("1_u73i0")
 target_type = 1
 target_group = 0
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-charges = 0
-can_target_self = true
 caster_position = {
 "max": 3,
 "min": 0
@@ -42,6 +35,11 @@ target_position = {
 "max": 3,
 "min": 0
 }
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
 tension_cost = 0
 instant_cast = false
 required_level = 0
@@ -49,7 +47,7 @@ required_level = 0
 [resource]
 script = ExtResource("4_r6esg")
 effect = SubResource("Resource_tvvrh")
-handling_requirement = -99
+handling_requirement = 1
 max_durability = 20
 repair_item = ExtResource("3_n80xq")
 repair_cost = 90
@@ -69,3 +67,4 @@ description = ""
 value = 0
 mandatory = false
 parent_item = ""
+allow_duplicates = false

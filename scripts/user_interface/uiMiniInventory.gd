@@ -20,9 +20,12 @@ class_name MiniInventory
 @onready var ammo_items = $MarginContainer/VBoxContainer/AmmoItems/AmmoItems
 @onready var combat_items = $MarginContainer/VBoxContainer/CombatItems/CombatItems
 @onready var charms = $MarginContainer/VBoxContainer/Charms/Charms
-@onready var drop_detector = $ItemDropDetector
+#@onready var drop_detector = $ItemDropDetector
 
 var item_button_map:Dictionary = {}
+
+signal item_button_added(button)
+signal item_button_removed(item)
 
 func _ready():
 	if !yellow_border:
@@ -34,10 +37,10 @@ func _ready():
 	combat_category.pressed.connect(func(): changeCategories('CombatItems'))
 	charm_category.pressed.connect(func(): changeCategories('Charms'))
 
-	if remove_dragged_items and !remove_drop_detector:
-		drop_detector.item_not_dropped.connect(addButton)
-	if remove_drop_detector:
-		drop_detector.queue_free()
+#	if remove_dragged_items and !remove_drop_detector:
+#		drop_detector.item_not_dropped.connect(addButton)
+#	if remove_drop_detector:
+#		drop_detector.queue_free()
 	if update_inventory:
 		InventoryGlobals.added_item_to_inventory.connect(addButton)
 		InventoryGlobals.removed_item_from_inventory.connect(removeItem)
@@ -74,13 +77,6 @@ func updateCategories():
 
 
 
-func removeItem(item: ResItem):
-	if !item_button_map.has(item):
-		return
-	
-	item_button_map[item].queue_free()
-	item_button_map.erase(item)
-	updateCategories()
 
 func focusFirstFilled():
 	for category in categories.get_children():
@@ -99,7 +95,7 @@ func isCategoryEmpty(category)-> bool:
 func addButton(item,_count=null):
 	if item_button_map.has(item) and item is ResStackItem:
 		return
-	
+	print('attempting to add!')
 	var button = createButton(item)
 	if item is String and FileAccess.file_exists("res://resources/items/%s.tres" % item):
 		item = load("res://resources/items/%s.tres" % item)
@@ -119,7 +115,33 @@ func addButton(item,_count=null):
 		button.item_dragging.connect(removeItem)
 	button.description_offset = description_offset
 	updateCategories()
-	item_button_map[item] = button
+	addButtonToMap(item, button)
+	item_button_added.emit(button)
+
+
+func removeItem(item: ResItem):
+	if !item_button_map.has(item):
+		return
+	
+	item_button_map[item][0].queue_free()
+	item_button_map[item].remove_at(0)
+	if item_button_map[item].is_empty():
+		item_button_map.erase(item)
+	updateCategories()
+	item_button_removed.emit(item)
+
+func addButtonToMap(item,button):
+	if item_button_map.has(item):
+		item_button_map[item].append(button)
+	else:
+		item_button_map[item] = [button]
+
+func getButtons():
+	var out = []
+	for buttons in item_button_map.values():
+		print(buttons)
+		out.append_array(buttons)
+	return out
 
 func createButton(item):
 	return OverworldGlobals.createItemButton(item)
@@ -131,7 +153,6 @@ func getItemCatalog(filter):
 
 func _on_custom_button_pressed():
 	pass
-	#queue_free()
 
 func changeCategories(change_to: String):
 	for child in mini_inv.get_children():

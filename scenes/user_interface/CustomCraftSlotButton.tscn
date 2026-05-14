@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cueh0gxx74d6r"]
+[gd_scene load_steps=9 format=3 uid="uid://cueh0gxx74d6r"]
 
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_6f8l3"]
 [ext_resource type="Texture2D" uid="uid://cwmgug742co0t" path="res://images/sprites/icon_sack_trans.png" id="2_axtaa"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomCraftSlotButton.gd" id="2_tlray"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_u731w"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="5_g1cku"]
+[ext_resource type="PackedScene" uid="uid://rnmhg7xo8gm4" path="res://scenes/user_interface/DurabilityBar.tscn" id="6_hapmd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -68,6 +69,9 @@ theme_override_font_sizes/font_size = 6
 text = "67/6"
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="Durability" parent="." instance=ExtResource("6_hapmd")]
+layout_mode = 1
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

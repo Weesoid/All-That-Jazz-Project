@@ -11,6 +11,7 @@ func _ready():
 	experience_bar.value = PlayerGlobals.current_exp
 	experience_current.text = '%s / %s' % [PlayerGlobals.current_exp, PlayerGlobals.getRequiredExp()]
 	level.text =  str(PlayerGlobals.team_level)
+	$TabContainer/INVENTORY/MiniInventory.showItems()
 	#for combatant in OverworldGlobals.getCombatantSquad('Player'):
 	#	var bar = load("res://scenes/user_interface/GeneralCombatantStatus.tscn").instantiate()
 	#	general_party_bars.add_child(bar)

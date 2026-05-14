@@ -10,17 +10,11 @@ script = ExtResource("3_yst25")
 name = "Slash Blade Slash"
 description = ""
 icon = ExtResource("3_76x4d")
-animation = ExtResource("2_xsh4e")
 basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+animation = ExtResource("2_xsh4e")
 ability_script = ExtResource("1_deot3")
 target_type = 0
 target_group = 1
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-charges = 0
-can_target_self = false
 caster_position = {
 "max": 3,
 "min": 0
@@ -28,6 +22,11 @@ caster_position = {
 target_position = {
 "max": 3,
 "min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
 }
 tension_cost = 0
 instant_cast = false

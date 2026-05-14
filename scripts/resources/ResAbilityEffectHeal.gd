@@ -6,4 +6,4 @@ class_name ResHealEffect
 @export var cast_animation: String = ''
 
 func _to_string():
-	return stringifyCondition()+'[color=green]Heal %s' % str(heal) #+ ' (Flat)' if !use_multiplier else '' + '[/color]'
+	return stringifyCondition()+'[color=green]Heal %s%s [/color]' % [str(heal), ' (Flat)' if !use_multiplier else ''] #+ ' (Flat)' if !use_multiplier else '' + '[/color]'

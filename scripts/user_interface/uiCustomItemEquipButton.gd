@@ -6,24 +6,32 @@ class_name EquipSlot
 @export_range(-1,2) var slot:int
 
 func setCombatant(p_combatant:ResPlayerCombatant):
+#	if p_combatant == combatant:
+#		return
+	
 	combatant = p_combatant
 	durability.hide()
 	if slot >= 0:
 		setItem(combatant.charms[slot])
 	else:
 		setItem(combatant.equipped_weapon)
+		if combatant.equipped_weapon != null: 
+			durability.setItem(combatant.equipped_weapon)
+			durability.show()
 
-func setItem(data: ResItem):
-	if item != null:
-		item_replaced.emit(item)
-	item = data
-	if data != null:
-		icon = data.icon
-		description_text = data.getInformation()
-	else:
-		icon = empty_icon
-		description_text = ''
-	if data is ResWeapon: durability.show()
+#func setItem(data: ResItem):
+#	if item != null:
+#		item_replaced.emit(item)
+#	item = data
+#	if data != null:
+#		icon = data.icon
+#		description_text = data.getInformation()
+#	else:
+#		icon = empty_icon
+#		description_text = ''
+	#if item != null and data.isRepairable(): 
+	#	durability.setItem(data)
+	#	durability.show()
 
 func _get_drag_data(at_position):
 	durability.hide()
@@ -43,7 +51,7 @@ func _get_drag_data(at_position):
 	return item_copy
 
 func _can_drop_data(_at_position, data):
-	return ((slot != -1 and data is ResCharm and !combatant.hasCharm(data) and InventoryGlobals.getCharms(data).size() > 0) or (slot == -1 and data is ResWeapon and data.canUse(combatant)))
+	return ((slot != -1 and data is ResCharm and !combatant.hasCharm(data) and InventoryGlobals.getCharms(data).size() > 0) or (slot == -1 and data is ResWeapon))
 
 func _drop_data(_at_position, data):
 	durability.hide()
@@ -52,9 +60,9 @@ func _drop_data(_at_position, data):
 	
 	if data is ResCharm:
 		combatant.equipCharm(data,slot)
-	elif data is ResWeapon:
+	elif data.isRepairable():
 		combatant.equipWeapon(data)
-		durability.setWeapon(data)
+		durability.setItem(data)
 		durability.show()
 	
 	drop_feedback()

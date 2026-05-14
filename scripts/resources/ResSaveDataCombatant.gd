@@ -65,7 +65,7 @@ func saveCharms(p_charms):
 		if p_charms[key] == null:
 			out[i] = ''
 		else:
-			out[i] = p_charms[key].parent_item
+			out[i] = p_charms[key].resource_path
 		i += 1
 	
 	return out
@@ -89,7 +89,7 @@ func loadCharms():
 			out[i] = null
 		else:
 			var loaded_charm = load(charms[charm])
-			loaded_charm.parent_item = charms[charm]
+			#loaded_charm.resource_path = charms[charm]
 			out[i] = loaded_charm
 		i += 1
 	

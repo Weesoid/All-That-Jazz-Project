@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://0eiolcx87vuh"]
+[gd_scene load_steps=8 format=3 uid="uid://0eiolcx87vuh"]
 
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_yrp6h"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomItemButton.gd" id="2_dd5ro"]
 [ext_resource type="Texture2D" uid="uid://cwmgug742co0t" path="res://images/sprites/icon_sack_trans.png" id="2_j7iea"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_iak7o"]
+[ext_resource type="PackedScene" uid="uid://rnmhg7xo8gm4" path="res://scenes/user_interface/DurabilityBar.tscn" id="5_t2euj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -47,6 +48,9 @@ one_shot = true
 
 [node name="HoldDelay" type="Timer" parent="."]
 one_shot = true
+
+[node name="Durability" parent="." instance=ExtResource("5_t2euj")]
+layout_mode = 1
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

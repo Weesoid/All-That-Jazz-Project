@@ -5,8 +5,9 @@ class_name ResItem
 @export var icon: Texture = preload("res://images/sprites/item_unknown.png")
 @export_multiline var description: String
 @export var value: int
-@export var mandatory = false
-@export var parent_item: String # A path to the original item, only for duplicated items (e.g. Charms)
+@export var mandatory:bool = false
+#@export var parent_item: String # A path to the original item, only for duplicated items (e.g. Charms)
+@export var allow_duplicates:bool=false
 
 func _to_string():
 	return str(name)
@@ -23,10 +24,10 @@ func getGeneralInfo():
 	return out
 
 func getFilename()-> String:
-	if parent_item != '':
-		return parent_item.get_file().replace('.tres','')
-	else:
-		return resource_path.get_file().replace('.tres','')
+#	if parent_item != '':
+#		return parent_item.get_file().replace('.tres','')
+#	else:
+	return resource_path.get_file().replace('.tres','')
 
 func getRarity():
 	if value <= 0 and value < 100:
@@ -38,3 +39,17 @@ func getRarity():
 
 func getIconBB():
 	return OverworldGlobals.insertTextureCode(icon)
+
+func isRepairable():
+	var conditions_met:int=0
+	
+	for property in get_property_list():
+		var p_name = property.name
+		if p_name == 'max_durability' or p_name == 'durability' or p_name == 'repair_item' or p_name == 'repair_cost':
+			conditions_met += 1
+		if conditions_met == 4:
+			return true
+	
+	return false
+	
+	#print(get_property_list())

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://cekyixtnv6op3"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_2bqis"]
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="2_uisse"]
+
+[resource]
+script = ExtResource("2_2bqis")
+max_stack = 9999
+barter_item = false
+name = "Kindling"
+icon = ExtResource("2_uisse")
+description = "Wood shavings, you can start a fire with this."
+value = 0
+mandatory = false
+is_crafting_tool = false
+parent_item = ""

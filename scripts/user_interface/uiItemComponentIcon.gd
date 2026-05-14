@@ -53,7 +53,7 @@ static func getCurrentCountString(p_item: ResItem):
 	var max:int=-1
 	if p_item is ResStackItem:
 		max = p_item.max_stack
-	elif p_item is ResWeapon:
+	elif p_item.isRepairable():
 		max = 1
 	
 	if max > 0 and max != 9999:
@@ -61,5 +61,5 @@ static func getCurrentCountString(p_item: ResItem):
 	else:
 		return [str(item_count), Color.YELLOW if item_count == max else Color.WHITE]
 
-static func getCurrentDurabilityString(p_weapon:ResWeapon):
+static func getCurrentDurabilityString(p_weapon:ResItem):
 	return [str(p_weapon.durability)+'/'+str(p_weapon.max_durability), Color.YELLOW if p_weapon.durability == p_weapon.max_durability else Color.WHITE]

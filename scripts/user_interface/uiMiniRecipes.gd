@@ -5,6 +5,7 @@ class_name MiniRecipes
 @onready var repair_items = $MarginContainer/VBoxContainer/RepairRecipes/RepairRecipes
 
 func inheritorReady():
+	InventoryGlobals.recipe_added.connect(addButton)
 	repair_category.pressed.connect(func(): changeCategories('RepairRecipes'))
 	loadRepairRecipes()
 
@@ -16,6 +17,9 @@ func createButton(item):
 	var button: RecipeButton = load("res://scenes/user_interface/CustomRecipeButton.tscn").instantiate()
 	button.item = InventoryGlobals.loadItemResource(item)
 	button.is_repair_recipe = is_repair_recipe
+	InventoryGlobals.removed_item_from_inventory.connect(button.update.unbind(1))
+	InventoryGlobals.added_item_to_inventory.connect(button.update.unbind(2))
+	InventoryGlobals.stack_item_changed.connect(button.update.unbind(3))
 	return button
 
 func getItemCatalog(filter):
@@ -30,7 +34,7 @@ func loadRepairRecipes():
 			button.item_dragging.connect(removeItem)
 			button.description_offset = description_offset
 		repair_items.add_child(button)
-		item_button_map[button.item] = button
+		addButtonToMap(recipe, button)
 	updateCategories()
 
 func updateCategories():

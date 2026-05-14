@@ -5,7 +5,7 @@ class_name CraftingMenu
 @onready var result_slot = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result
 @onready var result_slot_add = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/AddLabel
 @onready var result_slot_count = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/CurrentCount
-@onready var result_durability = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/Durability
+#@onready var result_durability = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/Durability
 @onready var recipe_menu: MiniRecipes = $MiniRecipes
 var current_recipe = []
 var craft_item: ResItem
@@ -20,14 +20,15 @@ func _ready():
 	recipe_menu.showItems()
 	await get_tree().process_frame
 	
-	for button in recipe_menu.item_button_map.values():
-		button.craft_item.connect(autoCraft)
-		InventoryGlobals.removed_item_from_inventory.connect(button.update.unbind(1))
-		InventoryGlobals.added_item_to_inventory.connect(button.update.unbind(2))
-		InventoryGlobals.stack_item_changed.connect(button.update.unbind(3))
-		InventoryGlobals.item_repaired.connect(button.update.unbind(2).bind(craft_item))
+	for button in recipe_menu.getButtons():
+		connectRecipeButton(button)
 	if InventoryGlobals.crafted_items.size() > 0:
 		recipe_menu.show()
+	recipe_menu.item_button_added.connect(connectRecipeButton)
+
+func connectRecipeButton(button):
+	button.craft_item.connect(autoCraft)
+	InventoryGlobals.item_repaired.connect(button.update.unbind(2))
 
 # CRAFT HANDLING
 func connectSlots():
@@ -121,13 +122,13 @@ func updateResultSlot():
 
 func setResultLabels():
 	if craft_item == null:
-		result_durability.hide()
+		#result_durability.hide()
 		result_slot_add.hide()
 		result_slot_count.hide()
 	elif repair_mode:
-		result_durability.setWeapon(craft_item)
+		#result_durability.setWeapon(craft_item)
 		result_slot_add.text = "1"
-		result_durability.show()
+		#result_durability.show()
 		result_slot_add.show()
 		result_slot_count.hide()
 	elif craft_item != null:
@@ -137,7 +138,7 @@ func setResultLabels():
 		result_slot_add.text = '+'+str(InventoryGlobals.getCraftCount(craft_item.getFilename()))
 		result_slot_add.show()
 		result_slot_count.show() 
-		result_durability.hide()
+		#result_durability.hide()
 		if !InventoryGlobals.canCraft(craft_item):
 			result_slot_add.hide()
 

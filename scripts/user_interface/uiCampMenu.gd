@@ -42,8 +42,8 @@ func _ready():
 	setMenuVisibility(fast_travel, false)
 	setMenuVisibility(guard_label,false,true)
 	setMenuVisibility(rest_options,false,true,0.5,true)
-	inventory.drop_detector.item_dropped.connect(clearPartyItem)
-	inventory.drop_detector.item_dropped.connect(updateStrainBars)
+	#inventory.drop_detector.item_dropped.connect(clearPartyItem)
+	#inventory.drop_detector.item_dropped.connect(updateStrainBars)
 	rest_button.setDisabled(PlayerGlobals.rested)
 	setFullMenuVisibility(false)
 	await get_tree().create_timer(0.25).timeout

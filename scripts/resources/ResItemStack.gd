@@ -16,20 +16,19 @@ func add(count: int, show_prompt=true):
 		if show_prompt: OverworldGlobals.showPrompt('[color=yellow]%s[color=white] max stack reached.' % [name])
 
 func updateItem():
-	if !FileAccess.file_exists(parent_item):
-		InventoryGlobals.inventory.erase(self)
-		#InventoryGlobals.removeItemResource(self)
-		return
-	
-	var loaded_parent_item = load(parent_item)
-	name = loaded_parent_item.name
-	icon = loaded_parent_item.icon
-	description = loaded_parent_item.description
-	value = loaded_parent_item.value
-	mandatory = loaded_parent_item.mandatory
-	max_stack = loaded_parent_item.max_stack
-	barter_item = loaded_parent_item.barter_item
-	print(max_stack)
+#	if !FileAccess.file_exists(resource_path):
+#		InventoryGlobals.inventory.erase(self)
+#		#InventoryGlobals.removeItemResource(self)
+#		return
+#
+#	var loaded_parent_item = load(parent_item)
+#	name = loaded_parent_item.name
+#	icon = loaded_parent_item.icon
+#	description = loaded_parent_item.description
+#	value = loaded_parent_item.value
+#	mandatory = loaded_parent_item.mandatory
+#	max_stack = loaded_parent_item.max_stack
+#	barter_item = loaded_parent_item.barter_item
 	if max_stack > 0 and stack > max_stack:
 		stack = max_stack
 	if stack < 0:

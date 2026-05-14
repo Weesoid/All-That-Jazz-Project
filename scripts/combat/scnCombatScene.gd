@@ -667,7 +667,7 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	await target_selected
 	runAbility()
 	if weapon != null: 
-		weapon.useDurability()
+		weapon.useDurability(active_combatant)
 	if ability.charges > 0:
 		updateAbilityChargeTracker(active_combatant, ability)
 

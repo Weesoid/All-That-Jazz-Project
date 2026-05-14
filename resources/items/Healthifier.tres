@@ -22,3 +22,4 @@ description = ""
 value = 0
 mandatory = false
 parent_item = ""
+allow_duplicates = true

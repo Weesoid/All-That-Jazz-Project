@@ -258,10 +258,12 @@ func removeEquipmentModifications():
 		charm.removeStatModifications()
 
 func equipWeapon(weapon: ResWeapon):
+	print('equipping ', weapon)
 	if equipped_weapon != null:
 		unequipWeapon()
 		
 	if InventoryGlobals.getItem(weapon) != null:
+		print('equipping... removal!')
 		InventoryGlobals.removeItemResource(weapon, 1, false, true)
 		weapon.equip(self)
 		file_references['equipped_weapon'] = [weapon.resource_path,weapon.durability]
@@ -270,7 +272,7 @@ func equipWeapon(weapon: ResWeapon):
 
 func unequipWeapon():
 	if equipped_weapon != null:
-		equipped_weapon.unequip()
+		equipped_weapon.unequip(self)
 		InventoryGlobals.addItemResource(equipped_weapon, 1, false, false)
 		file_references['equipped_weapon'] = ['',0]
 		equipped_weapon = null
@@ -285,8 +287,8 @@ func equipCharm(charm: ResCharm, slot: int):
 	if InventoryGlobals.getItem(charm) != null:
 		if charms[slot] != null:
 			unequipCharm(slot)
-		InventoryGlobals.removeItemResource(charm, 1, false, true)
 		charm.equip(self)
+		InventoryGlobals.removeItemResource(charm, 1, false, true)
 		charms[slot] = charm
 		InventoryGlobals.item_equipped.emit(charm)
 		return
@@ -295,7 +297,7 @@ func unequipCharm(slot: int):
 	if charms[slot] == null:
 		return
 	
-	charms[slot].unequip()
+	charms[slot].unequip(self)
 	CombatGlobals.resetStat(self, charms[slot].name)
 	InventoryGlobals.addItemResource(charms[slot], 1, false, false)
 	charms[slot] = null

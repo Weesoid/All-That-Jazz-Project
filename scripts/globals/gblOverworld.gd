@@ -161,36 +161,36 @@ func closeSubmenu():
 	player.player_camera.get_node('UI').get_node('uiMenu').get_node('uiSubmenu').queue_free()
 
 ## press_type: 0: Press, 1: Held press
-func showMiniMenu(menu, action_button:Button, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
-	var mini_menu = menu.instantiate()
-	action_button.add_child(mini_menu)
-	mini_menu.z_index = 10
-	mini_menu.showItems(item_filter)
-	for item in mini_menu.item_button_map.keys():
-		var button = mini_menu.item_button_map[item]
-		
-		if press_type == 0:
-			button.pressed.connect(button_function.bind(item))
-			if secondary_button_function != null: button.held_press.connect(secondary_button_function.bind(item))
-		elif press_type == 1:
-			button.held_press.connect(button_function.bind(item))
-			if secondary_button_function != null: button.pressed.connect(secondary_button_function.bind(item))
-		if button.has_method('updateInformation'):
-			update_inventory.connect(button.updateInformation)
+#func showMiniMenu(menu, action_button:Button, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
+#	var mini_menu = menu.instantiate()
+#	action_button.add_child(mini_menu)
+#	mini_menu.z_index = 10
+#	mini_menu.showItems(item_filter)
+#	for item in mini_menu.item_button_map.keys():
+#		var button = mini_menu.item_button_map[item]
+#
+#		if press_type == 0:
+#			button.pressed.connect(button_function.bind(item))
+#			if secondary_button_function != null: button.held_press.connect(secondary_button_function.bind(item))
+#		elif press_type == 1:
+#			button.held_press.connect(button_function.bind(item))
+#			if secondary_button_function != null: button.pressed.connect(secondary_button_function.bind(item))
+#		if button.has_method('updateInformation'):
+#			update_inventory.connect(button.updateInformation)
 
-func addMiniInventoryActions(mini_menu:MiniInventory, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
-	mini_menu.showItems(item_filter)
-	for item in mini_menu.item_button_map.keys():
-		var button = mini_menu.item_button_map[item]
-		
-		if press_type == 0:
-			button.pressed.connect(button_function.bind(item))
-			if secondary_button_function != null: button.held_press.connect(secondary_button_function.bind(item))
-		elif press_type == 1:
-			button.held_press.connect(button_function.bind(item))
-			if secondary_button_function != null: button.pressed.connect(secondary_button_function.bind(item))
-		if button.has_method('updateInformation'):
-			update_inventory.connect(button.updateInformation)
+#func addMiniInventoryActions(mini_menu:MiniInventory, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
+#	mini_menu.showItems(item_filter)
+#	for item in mini_menu.item_button_map.keys():
+#		var button = mini_menu.item_button_map[item]
+#
+#		if press_type == 0:
+#			button.pressed.connect(button_function.bind(item))
+#			if secondary_button_function != null: button.held_press.connect(secondary_button_function.bind(item))
+#		elif press_type == 1:
+#			button.held_press.connect(button_function.bind(item))
+#			if secondary_button_function != null: button.pressed.connect(secondary_button_function.bind(item))
+#		if button.has_method('updateInformation'):
+#			update_inventory.connect(button.updateInformation)
 
 func canShowMenu():
 	return player.is_on_floor()
@@ -299,10 +299,10 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	if item is ResStackItem and show_count:
 		var count_label = StackCountLabel.new(item)
 		button.add_child(count_label)
-	elif item is ResWeapon:
+	elif item.isRepairable():
 		var durability_bar = load("res://scenes/user_interface/DurabilityBar.tscn").instantiate()
-		durability_bar.weapon = item
-		InventoryGlobals.item_repaired.connect(durability_bar.update_values)
+		durability_bar.item = item
+		InventoryGlobals.item_repaired.connect(durability_bar.update_values.unbind(2))
 		button.add_child(durability_bar)
 		#durability_bar.setWeapon(item)
 	

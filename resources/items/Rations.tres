@@ -27,3 +27,4 @@ description = ""
 value = 20
 mandatory = false
 parent_item = ""
+allow_duplicates = false

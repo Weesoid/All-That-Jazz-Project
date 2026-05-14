@@ -10,37 +10,35 @@ class_name ResEquippable
 	'crit': 0.0,
 	'resist': 0.0
 }
-var equipped_combatant: ResCombatant
 
 func equip(_combatant: ResCombatant):
 	pass
 
-func unequip():
+func unequip(_combatant: ResCombatant):
 	pass
 
-func applyStatModifications():
-	removeEmptyModifications()
-	if stat_modifications.is_empty() or !isEquipped(): return
-	CombatGlobals.modifyStat(equipped_combatant, stat_modifications, name)
+#func applyStatModifications():
+#	removeEmptyModifications()
+#	if stat_modifications.is_empty() or !isEquipped(): return
+#	CombatGlobals.modifyStat(equipped_combatant, stat_modifications, name)
+#
+#func removeStatModifications():
+#	removeEmptyModifications()
+#	if stat_modifications.is_empty() or !isEquipped(): return
+#	CombatGlobals.resetStat(equipped_combatant, name)
 
-func removeStatModifications():
-	removeEmptyModifications()
-	if stat_modifications.is_empty() or !isEquipped(): return
-	CombatGlobals.resetStat(equipped_combatant, name)
-
-func removeEmptyModifications():
-	var remove = []
-	for stat in stat_modifications.keys():
-		if stat_modifications[stat] == 0.0: remove.append(stat)
-	for stat in remove:
-		stat_modifications.erase(stat)
+#func removeEmptyModifications():
+#	var remove = []
+#	for stat in stat_modifications.keys():
+#		if stat_modifications[stat] == 0.0: remove.append(stat)
+#	for stat in remove:
+#		stat_modifications.erase(stat)
 
 func getStringStats():
-	removeEmptyModifications()
 	return CombatGlobals.getStatListString(stat_modifications)
 
-func isEquipped():
-	return equipped_combatant != null
+#func isEquipped():
+#	return equipped_combatant != null
 
 func getStatModifications():
 	return stat_modifications

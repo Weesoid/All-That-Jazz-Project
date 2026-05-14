@@ -130,12 +130,13 @@ func equipmentButtonPressed():
 	
 func loadEquipment():
 	equipment.reset()
-	OverworldGlobals.addMiniInventoryActions(
-		equipment,
-		0,
-		func(): pass,
-		func(item): return item is ResEquippable #and !viewed_combatant.hasCharm(item)
-		)
+	equipment.showItems(func(item): return item is ResEquippable)
+#	OverworldGlobals.addMiniInventoryActions(
+#		equipment,
+#		0,
+#		func(): pass,
+#		func(item): return item is ResEquippable #and !viewed_combatant.hasCharm(item)
+#		)
 
 func animateSubmenu(set_visible:bool, submenu:Control, offscreen_offset:Vector2):
 	var tween = create_tween().set_parallel()

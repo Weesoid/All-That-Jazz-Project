@@ -499,7 +499,7 @@ func loadData(save_data: PlayerSaveData):
 		#CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.charms.values():
 			if charm != null:
-				charm.updateItem()
+				#charm.updateItem()
 				charm.equip(combatant)
 		#combatant.loadStrain()
 		combatant.initializeCombatant(false)

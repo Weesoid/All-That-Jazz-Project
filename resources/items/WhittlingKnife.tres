@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResCraftingTool" load_steps=4 format=3 uid="uid://b43blrcw2kq4g"]
+
+[ext_resource type="Texture2D" uid="uid://dg1wpnx1bemgi" path="res://images/item_icons/whittling_knife.png" id="1_j64nu"]
+[ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="2_fhweg"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemCraftingTool.gd" id="2_olbhp"]
+
+[resource]
+script = ExtResource("2_olbhp")
+max_durability = 16
+repair_item = ExtResource("2_fhweg")
+repair_cost = 1
+name = "Whittling Knife"
+icon = ExtResource("1_j64nu")
+description = ""
+value = 0
+mandatory = false
+parent_item = ""
+allow_duplicates = false

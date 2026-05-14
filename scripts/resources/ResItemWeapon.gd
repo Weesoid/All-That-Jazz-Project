@@ -10,46 +10,32 @@ class_name ResWeapon
 var durability: int
 
 func equip(combatant: ResCombatant):
-	if isEquipped():
-		unequip()
-	
-	equipped_combatant = combatant
-	equipped_combatant.equipped_weapon = self
+	combatant.equipped_weapon = self
 	
 	if !stat_modifications.is_empty():
-		applyStatModifications()
+		CombatGlobals.modifyStat(combatant, stat_modifications, name)
 
-func unequip():
+func unequip(combatant: ResCombatant):
 	if !stat_modifications.is_empty():
-		removeStatModifications()
+		CombatGlobals.resetStat(combatant, name)
 	
-	equipped_combatant = null
+	combatant = null
 
-func useDurability():
-	durability -= 1
-	if durability <= 0:
-		durability = 0
-	equipped_combatant.file_references['equipped_weapon'][1] = durability
+func useDurability(combatant: ResCombatant):
+	RepairableItem.useDurability(self)
+	combatant.file_references['equipped_weapon'][1] = durability
 
 func repair(repair_amount: int):
-	if !canRepair(repair_amount):
-		return
-	
-	if (durability + repair_amount) > max_durability:
-		durability = max_durability
-	else:
-		durability += repair_amount
-	
-	InventoryGlobals.removeItemResource(repair_item,repair_cost*repair_amount)
-	InventoryGlobals.item_repaired.emit(self, durability)
-#	if durability == max_durability:
-#		OverworldGlobals.showPrompt('[color=yellow]%s[/color] fully repaired.' % name)
+	RepairableItem.repair(self, repair_amount)
 
 func canRepair(repair_amount:int):
-	return InventoryGlobals.hasItem(repair_item, repair_cost*repair_amount) and durability != max_durability
+	return RepairableItem.canRepair(self, repair_amount)
+
+func isBroken():
+	return RepairableItem.isBroken(self)
 
 func canUse(combatant: ResCombatant):
-	return combatant.stat_values['handling'] >= handling_requirement
+	return combatant.stat_values['handling'] >= handling_requirement and !isBroken()
 
 func getInformation():
 	var handling_bb = '[img]res://images/sprites/circle_filled_small.png[/img]'

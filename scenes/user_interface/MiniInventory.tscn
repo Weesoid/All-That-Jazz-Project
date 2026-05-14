@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://by0ydg0m5o6ur"]
+[gd_scene load_steps=12 format=3 uid="uid://by0ydg0m5o6ur"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiMiniInventory.gd" id="1_cylm1"]
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_jmc6r"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://dkwkoprestgl2" path="res://images/sprites/icon_camp_item.png" id="5_ivxlf"]
 [ext_resource type="Texture2D" uid="uid://bw0cxrqo1ci10" path="res://images/sprites/icon_charm.png" id="6_0d57u"]
 [ext_resource type="Texture2D" uid="uid://cqjhmuvbye63b" path="res://images/sprites/icon_projectiles.png" id="6_w4wt0"]
-[ext_resource type="PackedScene" uid="uid://dthmcavca2rtr" path="res://scenes/user_interface/ItemDropArea.tscn" id="13_c8blg"]
 
 [node name="MiniInventory" type="PanelContainer"]
 anchors_preset = 15
@@ -119,5 +118,3 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="ItemDropDetector" parent="." instance=ExtResource("13_c8blg")]

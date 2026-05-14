@@ -1,8 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dl5lgui67w0wr"]
+[gd_scene load_steps=13 format=3 uid="uid://dl5lgui67w0wr"]
 
-[ext_resource type="PackedScene" uid="uid://iebdjevflk78" path="res://scenes/user_interface/Inventory.tscn" id="1_80xws"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameMenu.gd" id="1_quklc"]
 [ext_resource type="PackedScene" uid="uid://ojvf2nc2mubf" path="res://CharSheet.tscn" id="2_ueswi"]
+[ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="3_iosyv"]
 [ext_resource type="PackedScene" uid="uid://l6g1sleppkxg" path="res://scenes/user_interface/Quest.tscn" id="4_4cqdi"]
 [ext_resource type="PackedScene" uid="uid://b56515n0oi2ut" path="res://scenes/user_interface/OthersMenu.tscn" id="4_7ei7o"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="5_towl0"]
@@ -29,6 +29,8 @@ border_color = Color(1, 1, 1, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xuu8a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1wxdr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n1dr3"]
 bg_color = Color(1, 1, 1, 1)
@@ -105,8 +107,10 @@ theme_override_constants/margin_left = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 29
 
-[node name="PanelContainer2" parent="TabContainer/INVENTORY" instance=ExtResource("1_80xws")]
+[node name="MiniInventory" parent="TabContainer/INVENTORY" instance=ExtResource("3_iosyv")]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_1wxdr")
+remove_dragged_items = false
 
 [node name="QUESTS" type="MarginContainer" parent="TabContainer"]
 visible = false

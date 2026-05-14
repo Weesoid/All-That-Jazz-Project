@@ -3,6 +3,7 @@ class_name ItemButton
 
 @export var item:ResItem
 @export var empty_icon:Texture = preload("res://images/sprites/icon_charm_trans.png")
+@onready var durability_bar = $Durability
 signal item_dragging(item)
 
 func _get_drag_data(at_position):
@@ -19,6 +20,7 @@ func ready():
 	setItem(item)
 
 func setItem(data: ResItem):
+	durability_bar.hide()
 	item = data
 	if data != null:
 		icon = data.icon
@@ -26,3 +28,6 @@ func setItem(data: ResItem):
 	else:
 		icon = empty_icon
 		description_text = ''
+	if data != null and item.isRepairable():
+		durability_bar.setItem(item)
+		durability_bar.show()
