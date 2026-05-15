@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://c3tfc218ar6bt"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_bgex8"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_24j08"]
+
+[resource]
+script = ExtResource("2_24j08")
+max_stack = 9999
+barter_item = false
+name = "Whetstone"
+icon = ExtResource("1_bgex8")
+description = "To sharpen the edges of blades."
+value = 0
+mandatory = false
+allow_duplicates = false

@@ -32,6 +32,7 @@ class_name ResCombatant
 @export var riposte_effect: ResDamageEffect
 @export var assigned_position:int = -1
 @export var ai_package: GDScript
+var percent_health:float
 var resolve_gate:bool=true
 var resolve_dot_shield:bool=false
 var turn_charges: int
@@ -191,23 +192,6 @@ func appendStatModification(modifier_id:String, append_stats: Dictionary):
 		if modifier == modifier_id:
 			stat_modifiers[modifier_id] = CombatGlobals.appendStatModifications(stat_modifiers[modifier_id], append_stats)
 
-func applyStatModifications(modifier_id: String):
-	for modifier in stat_modifiers.keys():
-		if modifier == modifier_id:
-			for stat in stat_modifiers[modifier]:
-				if stat == 'health':
-					updateHealth(stat_modifiers[modifier][stat])
-				elif stat == 'resolve':
-					updateResolve(stat_modifiers[modifier][stat])
-				elif stat_values.has(stat):
-					stat_values[stat] += stat_modifiers[modifier][stat]
-				else:
-					stat_values[stat] = stat_modifiers[modifier][stat]
-					CombatGlobals.extra_stat_added.emit(self,stat)
-				#if stat == 'resolve':
-				#	CombatGlobals.healResolve(self,stat_modifiers[modifier][stat]
-			return
-
 # TODO?  Update handling. Replace outdated modifiers based on modifier_id?
 func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false,show_indicator:bool=true):
 	var key
@@ -245,20 +229,48 @@ func tickTemporaryModifiers(type:String):
 	#if name.contains('Willis'):  print('!!!!!!!!!!!!!> curr tracker: '+str(temp_modifier_tracker))
 
 func removeTemporaryModifier(key:String):
+	if !key.contains('tempmod/'):
+		removeTempModifierWithName(key)
+	
 	if stat_modifiers.has(key):
 		removeStatModification(key)
 	if temp_modifier_tracker.has(key):
 		temp_modifier_tracker.erase(key)
 
-func getTemporaryModifierKeys(type:String='/'):
+func removeTempModifierWithName(key):
+	var temp_mods = getTemporaryModifierKeys()
+	for modifier in temp_mods:
+		if modifier.split('|')[1] == key:
+			removeTemporaryModifier(modifier)
+			return
+
+func hasTemporaryModifier(key:String):
+	return getTemporaryModifierKeys('/',true).has(key)
+
+func getTemporaryModifierKeys(type:String='/', names_only:bool=false):
 	assert(type == 'turns' or type == 'battle' or type == '/', 'Type can only be: "turns" or "battle" !')
 	var out = []
 	
 	for modifier in stat_modifiers:
 		if modifier.contains('tempmod/') and modifier.contains(type): 
-			out.append(modifier)
+			out.append(modifier if !names_only else modifier.split('|')[1])
 	
 	return out
+
+func applyStatModifications(modifier_id: String):
+	for modifier in stat_modifiers.keys():
+		if modifier == modifier_id:
+			for stat in stat_modifiers[modifier]:
+				if stat == 'health':
+					updateHealth(stat_modifiers[modifier][stat])
+				elif stat == 'resolve':
+					updateResolve(stat_modifiers[modifier][stat])
+				elif stat_values.has(stat):
+					stat_values[stat] += stat_modifiers[modifier][stat]
+				else:
+					stat_values[stat] = stat_modifiers[modifier][stat]
+					CombatGlobals.extra_stat_added.emit(self,stat)
+			return
 
 func removeStatModification(modifier_id: String):
 	for modifier in stat_modifiers.keys():
@@ -275,6 +287,17 @@ func removeStatModification(modifier_id: String):
 	
 	#removeEmptyStats()
 
+func changeHealth(value:int,set_to:bool=false):
+	if set_to:
+		stat_values['health'] = value
+	else:
+		stat_values['health'] += value
+	if stat_values['health'] > getMaxHealth():
+		stat_values['health']=getMaxHealth()
+	percent_health = float(stat_values['health'])/float(getMaxHealth())
+	print('PENAR: ',percent_health)
+	#print('p health ', percent_health)
+
 func removeEmptyStats():
 	var stat_keys = stat_modifiers.keys()
 	stat_keys.reverse()
@@ -284,12 +307,18 @@ func removeEmptyStats():
 		if stat_modifiers[stat] == 0.0:
 			stat_modifiers.erase(stat)
 
-# TODO: Figure out a wway to handle negative health via statmodifiers
-func updateHealth(amount: int):
-	var percent_health = float(stat_values['health']) / float(base_stat_values['health'])
+func updateHealth(amount:int):
 	base_stat_values['health'] += amount
-	if stat_values['health'] >= base_stat_values['health'] or percent_health == 1:
-		stat_values['health'] = base_stat_values['health']
+	stat_values['health'] = int(getMaxHealth()*percent_health)
+
+# TODO: Figure out a wway to handle negative health via statmodifiers
+#func updateHealth(amount: int):
+#	pass
+##	var percent_health = float(stat_values['health']) / float(base_stat_values['health'])
+##
+##	base_stat_values['health'] += amount
+##	if stat_values['health'] >= base_stat_values['health'] or percent_health == 1:
+##		stat_values['health'] = base_stat_values['health']
 
 func updateResolve(amount: int, heal_resolve:bool=true):
 	base_stat_values['resolve'] += amount

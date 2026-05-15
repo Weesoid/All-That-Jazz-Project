@@ -15,7 +15,6 @@ const FAST_TRAVEL_ICON = preload("res://images/sprites/button_pinpoint_normal.pn
 @onready var rest_options = $RestOptions
 @onready var rest_button = $HBoxContainer/Rest
 @onready var ambush_label = $Sprite2D
-var save_point:SavePoint
 var camp_bars
 var original_positions: Dictionary
 var guard_combatant:ResPlayerCombatant
@@ -29,7 +28,6 @@ func _ready():
 		bar.camp_button.party_wide_item_hovered.connect(showPartyItem)
 		bar.camp_button.mouse_exited.connect(hideAllItems)
 		bar.camp_button.pressed.connect(func(): setGuard(bar))
-	
 	inventory.showItems()
 	original_positions[crafting] = crafting.position
 	original_positions[inventory] = inventory.position
@@ -44,8 +42,9 @@ func _ready():
 	setMenuVisibility(rest_options,false,true,0.5,true)
 	#inventory.drop_detector.item_dropped.connect(clearPartyItem)
 	#inventory.drop_detector.item_dropped.connect(updateStrainBars)
-	rest_button.setDisabled(PlayerGlobals.rested)
+	rest_button.setDisabled(true)
 	setFullMenuVisibility(false)
+	OverworldGlobals.player.current_camp_spot.camp_kindled.connect(func():rest_button.setDisabled(false))
 	await get_tree().create_timer(0.25).timeout
 	setFullMenuVisibility(true)
 	done=true
@@ -192,7 +191,6 @@ func _on_embark_held_press():
 	doExitTransition()
 
 func doExitTransition(do_screen_fade:bool=true):
-	print('doing exit!!!!!!!!!!!!')
 	if do_screen_fade: await doScreenFade()
 	#await get_tree().process_frame
 	setGuard(null)

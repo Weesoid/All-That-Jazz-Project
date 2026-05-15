@@ -65,6 +65,14 @@ func hideOverlay(duration:float=0.25):
 	color_overlay.hide()
 	color_overlay.modulate = Color.TRANSPARENT
 
+func flashOverlay(color:Color,alpha:float):
+	color_overlay.show()
+	var tween = create_tween().set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(color_overlay,'modulate',Color(color,alpha),0.05)
+	tween.tween_property(color_overlay,'modulate',Color.TRANSPARENT,1.25)
+	await tween.finished
+	color_overlay.hide()
+
 func playBigLabelAnimation(animation:String):
 	$UI/BigLabel/AnimationPlayer.play(animation)
 

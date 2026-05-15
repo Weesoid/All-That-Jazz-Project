@@ -36,5 +36,4 @@ func _on_tree_entered():
 
 
 func _on_size_flags_changed():
-	print('sisssdsd')
-	print(size)
+	pass

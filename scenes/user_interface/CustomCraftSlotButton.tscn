@@ -17,7 +17,7 @@ border_blend = true
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icdui"]
 bg_color = Color(1, 1, 1, 0.466667)
 
-[node name="CustomButton" type="Button"]
+[node name="ItemSlot" type="Button"]
 offset_right = 48.0
 offset_bottom = 48.0
 theme = ExtResource("1_6f8l3")

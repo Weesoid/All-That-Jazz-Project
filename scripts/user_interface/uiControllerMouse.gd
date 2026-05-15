@@ -11,7 +11,6 @@ func _ready():
 
 func _input(event):
 	if event is InputEventJoypadMotion:
-		print('asdfsadf')
 		if event.axis == 2:
 			x_axis = event.axis_value
 		if event.axis == 3:

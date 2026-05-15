@@ -95,7 +95,6 @@ func isCategoryEmpty(category)-> bool:
 func addButton(item,_count=null):
 	if item_button_map.has(item) and item is ResStackItem:
 		return
-	print('attempting to add!')
 	var button = createButton(item)
 	if item is String and FileAccess.file_exists("res://resources/items/%s.tres" % item):
 		item = load("res://resources/items/%s.tres" % item)
@@ -139,7 +138,6 @@ func addButtonToMap(item,button):
 func getButtons():
 	var out = []
 	for buttons in item_button_map.values():
-		print(buttons)
 		out.append_array(buttons)
 	return out
 

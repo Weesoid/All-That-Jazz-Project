@@ -14,7 +14,6 @@ func _ready():
 	scroll_done.connect(scroll_cont)
 
 func scroll_cont():
-	print('scrolling!')
 	container.position.x = size.x+4
 	var tween = create_tween()
 	tween.tween_property(container,'position',Vector2(-container.size.x,0),scroll_time)

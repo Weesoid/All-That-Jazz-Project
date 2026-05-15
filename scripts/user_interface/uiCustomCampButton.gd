@@ -18,7 +18,7 @@ func _can_drop_data(_at_position, data):
 func _drop_data(_at_position, data):
 	data.applyEffects(combatant)
 	data.take(1)
-	item_received.emit(data, combatant)
+	item_received.emit(data)
 	#print(data.stack)
 
 func focus_feedback():

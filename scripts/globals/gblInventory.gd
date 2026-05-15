@@ -108,7 +108,6 @@ func addRepairRecipe(item:ResItem):
 
 func getRepairRecipes():
 	var out = {}
-	print('tb: ', recipes)
 	var repair_recipe_keys = recipes.keys().filter(func(key): return key.contains('.repair'))
 	for key in repair_recipe_keys:
 		out[key] = recipes[key]
@@ -254,7 +253,6 @@ func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 		inventory.erase(item)
 	
 	if !hasItem(item) or item is ResCharm:
-		print('emittarion prime!')
 		removed_item_from_inventory.emit(item)
 
 func incrementStackItem(item_name: String, count):

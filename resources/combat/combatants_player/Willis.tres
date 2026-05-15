@@ -34,7 +34,7 @@ stat_values = {
 "dmg_variance": 0.1,
 "handling": 0,
 "heal_amp": 0.0,
-"health": 20,
+"health": 15,
 "resist": 0.05,
 "resolve": 0,
 "speed": 1

@@ -30,7 +30,7 @@ const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
 @onready var round_counter = $Rounds/RoundCounter
 @onready var round_counter_animator = $Rounds/RoundCounter/AnimationPlayer
 @onready var rushed_movement_timer = $Timer
-
+@onready var weapon_uses = $AbilityContainer/BaseAbilities/BaseAbilities/Gear/TextureRect/Label
 var tension_orig_pos
 var rounds_orig_pos
 var ui_visible:bool
@@ -173,14 +173,17 @@ func showAbilities(combatant: ResCombatant):
 	if !combat_scene.isCombatValid():
 		return
 	
+	weapon_uses.hide()
 	setButtonDisabled(escape_button, !combat_scene.can_escape)
 	if combatant.equipped_weapon != null:
+		weapon_uses.show()
 		setButtonDisabled(gear_button,false,false)
 		gear_button.ability = combatant.equipped_weapon.effect
 		gear_button.custom_charge = combatant.equipped_weapon.durability
 		if !combatant.equipped_weapon.effect.enabled or combatant.equipped_weapon.durability <= 0:
 			setButtonDisabled(gear_button,true,false)
-		giveButtonFunction(gear_button,combatant.equipped_weapon.effect,combatant.equipped_weapon)
+		weapon_uses.text = str(combatant.equipped_weapon.durability)
+		#giveButtonFunction(gear_button,combatant.equipped_weapon.effect,combatant.equipped_weapon)
 	else:
 		setButtonDisabled(gear_button,true,false)
 		gear_button.descriptions['icon'] = COMBAT_GEAR_ICON
@@ -216,32 +219,17 @@ func getAbilityButtons():
 func giveButtonFunction(button:CustomAbilityButton, ability:ResAbility,weapon:ResWeapon=null):
 	var active_combatant = combat_scene.active_combatant
 	var combatants = combat_scene.combatants
-	button.pressed.connect(
-		func(): 
-			combat_scene.forceCastAbility(ability, weapon)
-			hideUI()
-			if ability.tension_cost > 0:
-				setTensionBarVisible(true)
-				showTensionCost(ability.tension_cost)
-			)
-#	if button.ability.canMutate():
-#		button.hold_time = 0.4
-#		button.held_press.connect(
-#			func():
-#				if !button.ability.isMutated():
-#					button.ability.mutateProperties()
-#					button._ready()
-#					button.showDescription()
-#					canUseAbility(button)
-#				else:
-#					button.ability.restoreProperties()
-#					button._ready()
-#					button.showDescription()
-#					canUseAbility(button)
-#		)
+	button.pressed.connect(castAbility.bind(ability))
 	
 	if !ability.enabled or !ability.canUse(active_combatant, combatants):
 		setButtonDisabled(button,true,false)
+
+func castAbility(ability:ResAbility,weapon:ResWeapon=null):
+	combat_scene.forceCastAbility(ability, weapon)
+	hideUI()
+	if ability.tension_cost > 0:
+		setTensionBarVisible(true)
+		showTensionCost(ability.tension_cost)
 
 func tweenAbilityButtons(buttons: Array, sound:String='536805__egomassive__gun_2.ogg'):
 	for button in buttons:
@@ -432,10 +420,15 @@ func setRoundsVisible(set_to:bool):
 		tween.tween_property(rounds,'modulate',Color.TRANSPARENT,0.25)
 
 func _on_move_held_press():
-	print('penitus')
+	pass
 
 func _on_advance_held_press():
 	pass # Replace with function body.
 
 func _on_recede_held_press():
 	pass # Replace with function body.
+
+
+func _on_gear_pressed():
+	var active_combatant = combat_scene.active_combatant
+	castAbility(active_combatant.equipped_weapon.effect, active_combatant.equipped_weapon)

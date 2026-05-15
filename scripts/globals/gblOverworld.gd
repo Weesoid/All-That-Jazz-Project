@@ -69,8 +69,8 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=10
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').moveBody(move_to)
 	elif move_to is String:
 		getEntity(entity_body_name).get_node('ScriptedMovementComponent').target_positions.append(getEntity(move_to).global_position + offset)
-	else:
-		print('Invalid move_to parameter "', move_to, '"')
+#	else:
+#		print('Invalid move_to parameter "', move_to, '"')
 	
 	if wait:
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').movement_finished
@@ -830,7 +830,6 @@ func giveRewardBank(reward_bank: Dictionary,message:String=''):
 	map_clear_indicator.showAnimation(true, reward_bank)
 	
 	# Actual giving of rewards
-	PlayerGlobals.rested = false
 	PlayerGlobals.addExperience(reward_bank['experience'])
 	InventoryGlobals.giveItemDict(reward_bank['loot'],false)
 	
@@ -896,9 +895,10 @@ func isPlayerSquadDead():
 func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
-		member.stat_values['health'] -= int(damage)
+		member.changeHealth(-int(damage))
+		#member.stat_values['health'] -= int(damage)
 		if !lethal and member.isDead():
-			member.stat_values['health'] = 1
+			member.changeHealth(1,true)
 		if member.isDead():
 			OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	
@@ -914,16 +914,19 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 		await get_tree().create_timer(0.25).timeout
 		showGameOver()
 
+func getCamera()-> DynamicCamera:
+	return player.player_camera
+
 # Damage combatant out of combat
 func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:bool=true,lethal:bool=false):
 	if combatant.isDead():
 		return
 	OverworldGlobals.player.player_camera.shake(15.0,10.0)
 	damage = int(damage)
-	
-	combatant.stat_values['health'] -= damage
+	combatant.changeHealth(-int(damage))
+	#combatant.stat_values['health'] -= damage
 	if !lethal and combatant.isDead():
-		combatant.stat_values['health'] = 1
+		combatant.changeHealth(1,true)
 	if combatant.isDead():
 		OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	CombatGlobals.manual_call_indicator.emit(combatant, '[color=red]'+str(damage), 'Damage')

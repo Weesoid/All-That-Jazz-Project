@@ -8,7 +8,7 @@ class_name EquipSlot
 func setCombatant(p_combatant:ResPlayerCombatant):
 #	if p_combatant == combatant:
 #		return
-	
+	modulate =Color.WHITE
 	combatant = p_combatant
 	durability.hide()
 	if slot >= 0:
@@ -18,7 +18,8 @@ func setCombatant(p_combatant:ResPlayerCombatant):
 		if combatant.equipped_weapon != null: 
 			durability.setItem(combatant.equipped_weapon)
 			durability.show()
-
+			if combatant.equipped_weapon.canUse(combatant):
+				modulate =Color.RED
 #func setItem(data: ResItem):
 #	if item != null:
 #		item_replaced.emit(item)
@@ -34,6 +35,7 @@ func setCombatant(p_combatant:ResPlayerCombatant):
 	#	durability.show()
 
 func _get_drag_data(at_position):
+	modulate =Color.WHITE
 	durability.hide()
 	if item == null:
 		return
@@ -55,6 +57,7 @@ func _can_drop_data(_at_position, data):
 
 func _drop_data(_at_position, data):
 	durability.hide()
+	modulate =Color.WHITE
 	var previous_item=item
 	setItem(data)
 	
@@ -64,6 +67,8 @@ func _drop_data(_at_position, data):
 		combatant.equipWeapon(data)
 		durability.setItem(data)
 		durability.show()
+	if data is ResWeapon and data.canUse(combatant):
+		modulate =Color.RED
 	
 	drop_feedback()
-	item_received.emit(item, previous_item)
+	item_received.emit(item)

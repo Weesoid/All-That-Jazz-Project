@@ -71,7 +71,8 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	if can_crit and ((caster != null and randomRoll(caster.stat_values['crit']+getBonusStat(bonus_stats, 'crit', target))) or (crit_chance != -1.0 and randomRoll(crit_chance+getBonusStat(bonus_stats, 'crit', target)))):
 		damage = doCritEffects(damage, caster, getBonusStat(bonus_stats,CombatExtras.CRIT_AMP, target))
 		indicator_bb_code += critical_bb
-	target.stat_values['health'] -= int(damage)
+	target.changeHealth(-int(damage))
+	#target.stat_values['health'] -= int(damage)
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits, bonus_stats)
 
 ## Basic damage calculations
@@ -87,7 +88,8 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, ca
 	if checkSpecialStat('non-lethal', bonus_stats, target) and target.stat_values['health']-damage <= 0:
 		damage = 0
 	
-	target.stat_values['health'] -= int(damage)
+	target.changeHealth(-int(damage))
+	#target.stat_values['health'] -= int(damage)
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, true, bonus_stats)
 
 func calcDamageModifier(combatant:ResCombatant):
@@ -238,7 +240,6 @@ func doCritEffects(base_damage, caster: ResCombatant, bonus_mult:float=0.0):
 	var base_mult = 1.5
 	if  caster != null:
 		var modified_crit_dmg = max(1.1,base_mult+caster.stat_values.get(CombatExtras.CRIT_AMP,0)+bonus_mult)
-		print('modified dmg! ', modified_crit_dmg)
 		base_damage *= (modified_crit_dmg)
 	else:
 		base_damage *= base_mult+bonus_mult
@@ -381,11 +382,12 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 	base_healing = valueVariate(base_healing, 0.1)
 	if use_mult:
 		base_healing *= max(0, 1.0+target.stat_values.get(CombatExtras.HEAL_AMP,0))
+	target.changeHealth(int(base_healing))
 	
-	if target.stat_values['health'] + base_healing > target.getMaxHealth():
-		target.stat_values['health'] = target.getMaxHealth()
-	else:
-		target.stat_values['health'] += int(base_healing)
+#	if target.stat_values['health'] + base_healing > target.getMaxHealth():
+#		target.changeHealth(target.getMaxHealth(),true)
+#	else:
+		#target.stat_values['health'] += int(base_healing)
 	
 	if base_healing >= 1.0:
 		manual_call_indicator.emit(target, '[color=green]'+str(int(base_healing)), 'Damage')

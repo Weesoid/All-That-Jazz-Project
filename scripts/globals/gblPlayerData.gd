@@ -314,12 +314,6 @@ func setFollowersMotion(enable:bool):
 			follower.speed_multiplier = 0.0
 			follower.stopWalkAnimation()
 
-func healCombatants(percent_heal:float=1.0):
-	for combatant in team:
-		if !combatant.initialized: combatant.initializeCombatant(false)
-		combatant.stat_values['health'] = int(combatant.base_stat_values['health'] * percent_heal)
-		#if cure: combatant.lingering_effects.clear()
-
 func addMapLog(map_path: String, entry=null):
 	if !map_logs.has(map_path):
 		if entry != null:
@@ -448,7 +442,6 @@ func saveData(save_data: Array):
 	data.map_logs = map_logs
 	data.progression_data = progression_data
 	data.max_team_level = max_team_level
-	data.rested = rested
 	for combatant in team:
 		data.combatant_save_data[combatant.resource_path] = CombatantSaveData.new(
 				combatant.charms,
@@ -462,7 +455,8 @@ func saveData(save_data: Array):
 				combatant.traits,
 				combatant.file_references,
 				combatant.temp_modifier_tracker,
-				combatant.assigned_position
+				combatant.assigned_position,
+				combatant.percent_health
 				#combatant.item_strain_tracker
 			)
 	
@@ -484,7 +478,6 @@ func loadData(save_data: PlayerSaveData):
 	map_logs = save_data.map_logs
 	progression_data = save_data.progression_data
 	max_team_level = save_data.max_team_level
-	rested = save_data.rested
 	if equipped_blessing != null: equipped_blessing.setBlessing(true)
 	
 	initializeBenchedTeam()
@@ -495,6 +488,7 @@ func loadData(save_data: PlayerSaveData):
 		if !FileAccess.file_exists(combatant.resource_path):
 			continue
 		save_data.combatant_save_data[combatant.resource_path].loadData(combatant)
+		#print('loaded percent health: ', )
 		await get_tree().process_frame
 		#CombatGlobals.modifyStat(combatant, combatant.getAllocationModifier(), 'allocations')
 		for charm in combatant.charms.values():
@@ -505,7 +499,7 @@ func loadData(save_data: PlayerSaveData):
 		combatant.initializeCombatant(false)
 		combatant.updateCombatant(save_data)
 		combatant.initializeCombatant(false)
-	
+		#combatant.stat_values['health'] = combatant.stat_values['health']*combatant.percent_health
 	# TO DO: Fade followers based on interaction instead...?
 #	if OverworldGlobals.getCurrentMap().SAFE:
 #		OverworldGlobals.loadFollowers()

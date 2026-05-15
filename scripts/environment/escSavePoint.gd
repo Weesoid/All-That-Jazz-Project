@@ -7,19 +7,27 @@ class_name SavePoint
 @export var mind_rested:bool=true
 @onready var rest_spots = $RestSpots
 @onready var animator = $AnimationPlayer
-@onready var music = $AudioStreamPlayer
-@onready var sfx = $AudioStreamPlayer2
+@onready var music = $Music
+@onready var ambience = $Ambience
 @onready var flame_sprite = $Flame
+@onready var kindle_slot = $KindlingSlot
+@onready var heads_up_cd = $HeadsUpCooldown
+var camp_music:Array[String]=[
+	"res://audio/music/579851__zhr__relaxation-loop-4.ogg", 
+	"res://audio/music/614096__zhr__calm-emtim-bell-music.ogg"
+]
 var rest_cam_offset = Vector2(0,-48)
 var menu_cam_offset = Vector2(44,-32)
-#var mini_bars = []
+var fire_kindled:bool=false
 var combatant_squad: EnemyCombatantSquad
 signal done
 signal ambush_ended
+signal camp_kindled
 
 func _ready():
 	done.connect(exit)
 	loadCombatantSquad()
+	kindle_slot.can_drop_function = noRestedBuff
 
 func loadCombatantSquad():
 	combatant_squad = CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)
@@ -30,9 +38,9 @@ func fightCombatantSquad():
 	OverworldGlobals.changeToCombat(name)
 	await OverworldGlobals.combat_exited
 	ambush_ended.emit()
-	print('zaza blazaza')
 
 func interact():
+	music.stream=load(camp_music.pick_random())
 	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	OverworldGlobals.player.camping=true
 	OverworldGlobals.player.current_camp_spot = self
@@ -41,23 +49,25 @@ func interact():
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 0.5)
 	#PlayerGlobals.overworld_stats['stamina'] = 100.0
 	OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
-	if OverworldGlobals.getCurrentMap().map_properties.has(MapData.MapProperties.COLD):
-		animator.play("Lit")
+	#if OverworldGlobals.getCurrentMap().map_properties.has(MapData.MapProperties.COLD):
+	#	animator.play("Lit")
 	OverworldGlobals.moveCamera(self,0,Vector2(0,-32))
 	await OverworldGlobals.zoomCamera(Vector2(2,2),0.5,true)
 	OverworldGlobals.player.sprite.hide()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
-		print('adding ', combatant)
 		addRestSprite(combatant)
 	await OverworldGlobals.player.player_camera.hideOverlay(0.5)
-	OverworldGlobals.moveCamera(self,0.5,menu_cam_offset)
-	
+	OverworldGlobals.moveCamera(self,.75,menu_cam_offset)
 
 func exit():
 	await done
 #	await done
 #	print('zaza')
+	music.stop()
+	ambience.stop()
 	animator.play("RESET")
+	for member in PlayerGlobals.team:
+		member.removeTemporaryModifier('Warmth')
 	OverworldGlobals.fadeFollowers(Color.WHITE)
 	for sprite in rest_spots.get_children():
 		if sprite.has_node('CombatBars'):
@@ -67,6 +77,8 @@ func exit():
 		sprite.texture = null
 	OverworldGlobals.player.sprite.show()
 	OverworldGlobals.player.player_camera.hideOverlay(0.5)
+	kindle_slot.setDisabled(false)
+	fire_kindled=false
 	await get_tree().process_frame
 	OverworldGlobals.player.camping=false
 	OverworldGlobals.player.current_camp_spot=null
@@ -159,3 +171,30 @@ func setCamToRestPos():
 
 func setCamToMenuPos():
 	OverworldGlobals.moveCamera(self,0.5,menu_cam_offset)
+
+
+func _on_kindling_slot_item_received(received_item):
+	if fire_kindled:
+		return
+	#O#verworldGlobals.playSound("res://audio/sounds/149831__villen__zapalenie_ognia.ogg")
+	for member in OverworldGlobals.getCombatantSquad('Player'):
+		member.addTemporaryModifer('Warmth',1,{CombatExtras.HEAL_AMP:0.1},false)
+		CombatGlobals.healResolve(member, 1)
+	music.play()
+	ambience.play()
+	InventoryGlobals.removeItemResource(received_item)
+	animator.play("Lit")
+	fire_kindled=true
+	kindle_slot.setDisabled(true)
+	OverworldGlobals.getCamera().flashOverlay(Color.ORANGE,0.5)
+	camp_kindled.emit()
+
+func noRestedBuff():
+	for member in OverworldGlobals.getCombatantSquad('Player'):
+		if member.hasTemporaryModifier('Well Rested'):
+			if heads_up_cd.is_stopped():
+				CombatGlobals.spawnIndicator(OverworldGlobals.player.current_camp_spot.global_position+Vector2(0,-32), 'Already rested!','Show',null,2)
+				heads_up_cd.start()
+			return false
+
+	return true

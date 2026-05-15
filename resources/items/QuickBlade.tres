@@ -47,8 +47,8 @@ required_level = 0
 [resource]
 script = ExtResource("4_r6esg")
 effect = SubResource("Resource_tvvrh")
-handling_requirement = 1
-max_durability = 20
+handling_requirement = 4
+max_durability = 10
 repair_item = ExtResource("3_n80xq")
 repair_cost = 90
 stat_modifications = {
@@ -66,5 +66,3 @@ icon = ExtResource("2_33r1h")
 description = ""
 value = 0
 mandatory = false
-parent_item = ""
-allow_duplicates = false

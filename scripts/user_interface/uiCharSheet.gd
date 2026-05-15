@@ -41,10 +41,10 @@ func _ready():
 	submenu_positions[equipment] = equipment.position
 	submenu_positions['talents-offset'] = Vector2(-128,0)
 	submenu_positions['equipment-offset'] = Vector2(0,64)
-	equip_slot_weapon.item_received.connect(replaceEquippable)
-	equip_slot_a.item_received.connect(replaceEquippable)
-	equip_slot_b.item_received.connect(replaceEquippable)
-	equip_slot_c.item_received.connect(replaceEquippable)
+#	equip_slot_weapon.item_received.connect(replaceEquippable)
+#	equip_slot_a.item_received.connect(replaceEquippable)
+#	equip_slot_b.item_received.connect(replaceEquippable)
+#	equip_slot_c.item_received.connect(replaceEquippable)
 	talents.talent_interacted.connect(updateStatPoints)
 	combatant_switched.connect(hideSubmenus.unbind(1))
 
@@ -52,11 +52,11 @@ func hideSubmenus():
 	animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
 	animateSubmenu(false, talents,submenu_positions['talents-offset'])
 
-func replaceEquippable(item_equipped, item_replaced):
-	if item_replaced != null:
-		equipment.addButton(item_replaced)
-	if equipment.item_button_map.is_empty():
-		animateSubmenu(false,equipment,submenu_positions['equipment-offset'])
+#func replaceEquippable(item_equipped):
+#	if item_replaced != null:
+#		equipment.addButton(item_replaced)
+#	if equipment.item_button_map.is_empty():
+#		animateSubmenu(false,equipment,submenu_positions['equipment-offset'])
 
 func setCombatant(combatant: ResPlayerCombatant):
 	combatant_switched.emit(combatant)

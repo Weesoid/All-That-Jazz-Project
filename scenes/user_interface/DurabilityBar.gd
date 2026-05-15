@@ -24,4 +24,3 @@ func _ready():
 func update_values():
 	bar.value = item.durability
 	bar.max_value = item.max_durability
-	print('zasz: ', str(bar.value))

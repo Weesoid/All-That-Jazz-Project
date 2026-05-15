@@ -1,15 +1,63 @@
-[gd_resource type="Resource" script_class="ResWeapon" load_steps=5 format=3 uid="uid://v8qj7oi3bvdk"]
+[gd_resource type="Resource" script_class="ResWeapon" load_steps=10 format=3 uid="uid://v8qj7oi3bvdk"]
 
-[ext_resource type="Resource" uid="uid://qup6bens47pb" path="res://resources/combat/abilities_weapons/SlashBladeSlash.tres" id="1_5kkis"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_yvf7p"]
 [ext_resource type="Texture2D" uid="uid://bid2yp6x5ds0a" path="res://images/sprites/icon_half_face.png" id="2_5w0rd"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_mi15u"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemWeapon.gd" id="2_thh0s"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_7ude6"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="3_hn2aj"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_gthgk"]
+
+[sub_resource type="Resource" id="Resource_ei452"]
+script = ExtResource("2_mi15u")
+damage_type = 2
+bonus_stats = {}
+damage_modifier = 0.2
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+can_miss = true
+can_crit = true
+return_pos = true
+plant_self_on_combo = false
+indicator_bb = ""
+condition = ""
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_14bjf"]
+script = ExtResource("4_gthgk")
+name = ""
+description = ""
+icon = ExtResource("3_7ude6")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_ei452")])
+ability_script = ExtResource("1_yvf7p")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+required_level = 0
 
 [resource]
 script = ExtResource("2_thh0s")
-effect = ExtResource("1_5kkis")
-handling_requirement = -100
-max_durability = 100
+effect = SubResource("Resource_14bjf")
+handling_requirement = 1
+max_durability = 3
 repair_item = ExtResource("3_hn2aj")
 repair_cost = 1
 stat_modifications = {
@@ -29,4 +77,3 @@ icon = ExtResource("2_5w0rd")
 description = ""
 value = 0
 mandatory = false
-parent_item = ""

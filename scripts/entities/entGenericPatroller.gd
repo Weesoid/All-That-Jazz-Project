@@ -223,7 +223,6 @@ func _on_detect_bar_tree_exited():
 
 
 func _on_combat_hitbox_body_entered(body):
-	print('AGHHH ', body)
 	if !OverworldGlobals.getCurrentMap().done_loading_map or !canEnterCombat():
 		return
 	

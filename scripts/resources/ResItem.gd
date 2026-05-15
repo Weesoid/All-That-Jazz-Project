@@ -7,7 +7,6 @@ class_name ResItem
 @export var value: int
 @export var mandatory:bool = false
 #@export var parent_item: String # A path to the original item, only for duplicated items (e.g. Charms)
-@export var allow_duplicates:bool=false
 
 func _to_string():
 	return str(name)

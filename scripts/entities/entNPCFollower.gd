@@ -146,10 +146,8 @@ func updateSprite():
 	elif player_direction == -90:
 		animator.play('Walk_Right')
 	elif player_direction == 0:
-		print('fuh')
 		animator.play('Walk_Down')
 	elif player_direction == 179:
-		print('juh')
 		animator.play('Walk_Up')
 
 ## 0 = phase, 6 = jump

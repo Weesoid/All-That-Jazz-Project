@@ -164,7 +164,7 @@ func loadFileReferences():
 	if FileAccess.file_exists(file_references['equipped_weapon'][0]):
 		var weapon = load(file_references['equipped_weapon'][0])
 		weapon.equip(self)
-		equipped_weapon.durability = file_references['equipped_weapon'][1]
+		equipped_weapon.durability = min(file_references['equipped_weapon'][1],equipped_weapon.max_durability)
 
 func applyAllTraits():
 	if traits.is_empty():
@@ -213,9 +213,10 @@ func getTraitsWithFlag(key:String):
 
 func updateCombatant(save_data: PlayerSaveData):
 	loadFileReferences()
-	var path = resource_path
-	var percent_health = float(save_data.combatant_save_data[path].stat_values['health']) / float(save_data.combatant_save_data[path].base_stat_values['health'])
-	stat_values['health'] = floor(base_stat_values['health'] * percent_health)
+	#var path = resource_path
+	#var percent_health = float(save_data.combatant_save_data[path].stat_values['health']) / float(save_data.combatant_save_data[path].base_stat_values['health'])
+	#if name.contains('Willis'): print(str(percent_health*100)+'% !!!')
+	#stat_values['health'] = floor(base_stat_values['health'] * percent_health)
 
 func act():
 	player_turn.emit()
@@ -258,12 +259,10 @@ func removeEquipmentModifications():
 		charm.removeStatModifications()
 
 func equipWeapon(weapon: ResWeapon):
-	print('equipping ', weapon)
 	if equipped_weapon != null:
 		unequipWeapon()
 		
 	if InventoryGlobals.getItem(weapon) != null:
-		print('equipping... removal!')
 		InventoryGlobals.removeItemResource(weapon, 1, false, true)
 		weapon.equip(self)
 		file_references['equipped_weapon'] = [weapon.resource_path,weapon.durability]

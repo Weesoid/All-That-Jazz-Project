@@ -22,7 +22,6 @@ trigger_on_hits = false
 indicator_bb = ""
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
@@ -33,7 +32,6 @@ status_effect = ExtResource("4_8wdhu")
 cast_animation = ""
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
@@ -59,14 +57,13 @@ duration = 1
 stacks = true
 condition = ""
 is_combo_effect = false
-sound_effect = ""
 animation_time = 0.0
 animate_on = 0
 
 [resource]
 script = ExtResource("3_rxa8f")
 effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_lnm2y"), SubResource("Resource_wjp4c"), SubResource("Resource_l1yid")])
-strain = 1
+strain = 0
 party_wide = false
 max_stack = 0
 barter_item = null
@@ -75,4 +72,3 @@ icon = ExtResource("5_8lt7w")
 description = null
 value = null
 mandatory = null
-parent_item = null

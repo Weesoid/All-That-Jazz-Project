@@ -45,15 +45,18 @@ func connectSlots():
 		InventoryGlobals.stack_item_changed.connect(slot.update_count.unbind(3).bind(craft_item))
 		InventoryGlobals.item_repaired.connect(slot.update_count.unbind(2).bind(craft_item))
 
-func addMaterial(item:ResItem, _last_item, slot:ItemSlot):
+func addMaterial(item:ResItem, slot:ItemSlot):
 	current_recipe.append(item.getFilename())
 	showResult()
 
 func removeMaterial(item: ResItem):
 	var item_filename = item.getFilename()
-	if current_recipe.has(item_filename):
-		current_recipe.erase(item_filename)
+	#if current_recipe.has(item_filename):
+	current_recipe.erase(item_filename)
 	showResult()
+
+#func replaceMaterial():
+#	removeMaterial()
 
 func showResult():
 	var result = InventoryGlobals.getRecipeResult(current_recipe)

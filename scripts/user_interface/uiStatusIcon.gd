@@ -13,6 +13,8 @@ func _ready():
 	tooltip_text = attached_status.getDescription()
 	
 # TODO Scrap flicker tween, crashes too much, use animator instead
+# Yeah this tween has GOT to go.
+# Turn this shit into a signal
 func _process(_delta):
 	if attached_status.permanent and attached_status.duration <= 1: 
 		duration.text = ''

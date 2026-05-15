@@ -5,7 +5,6 @@ static func useDurability(item:ResItem):
 	item.durability -= 1
 	if item.durability <= 0:
 		item.durability = 0
-	print('emittance')
 	InventoryGlobals.item_used.emit(item)
 
 static func repair(item:ResItem, repair_amount: int):
@@ -21,3 +20,7 @@ static func canRepair(item:ResItem,repair_amount:int):
 
 static func isBroken(item:ResItem):
 	return item.durability < 1
+
+static func update(item:ResItem):
+	item.durability = max(item.durability, item.max_durability)
+	

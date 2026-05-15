@@ -16,7 +16,7 @@ border_blend = true
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icdui"]
 bg_color = Color(1, 1, 1, 0.466667)
 
-[node name="CustomButton" type="Button"]
+[node name="ItemSlot" type="Button"]
 custom_minimum_size = Vector2(32, 32)
 offset_right = 12.0
 offset_bottom = 12.0

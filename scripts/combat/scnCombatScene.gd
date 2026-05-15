@@ -215,7 +215,7 @@ func useAIPackage():
 		if target_combatant != null:
 			if selected_ability.charges > 0: updateAbilityChargeTracker(active_combatant, selected_ability)
 			executeAbility()
-		if active_combatant.isDead(): print('XXX ', selected_ability)
+		#if active_combatant.isDead(): print('XXX ', selected_ability)
 	elif !active_combatant.isDead(true):
 		showCannotAct('Pass!', true)
 	
@@ -335,7 +335,7 @@ func end_turn(combatant_act=true):
 	else:
 		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead(true):
 			if target_combatant is ResCombatant and !target_combatant.hasStatusEffect('Guard'): 
-				print('moving to active !')
+				#print('moving to active !')
 				moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE

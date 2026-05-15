@@ -80,4 +80,4 @@ func _on_audio_stream_player_finished():
 
 
 func _on_load_game_held_press():
-	print('zooble')
+	pass

@@ -29,7 +29,7 @@ func loadInventory():
 			item.stack = inventory[item_path]
 			item.updateItem()
 		elif item.isRepairable():
-			item.durability = inventory[item_path]
+			item.durability = min(inventory[item_path],item.max_durability)
 		#elif item is ResCharm:
 			#item.parent_item = inventory[item_path]
 			#item.updateItem()
