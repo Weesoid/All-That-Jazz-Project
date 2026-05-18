@@ -1,4 +1,5 @@
 extends Control
+class_name GameMenu
 
 @onready var experience_bar = $Experience
 @onready var experience_current = $Experience/Label

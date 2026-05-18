@@ -16,7 +16,7 @@ signal party_damaged
 signal combat_enetered
 signal combat_exited
 signal group_cleared(group:PatrollerGroup)
-signal update_inventory
+#signal update_inventory
 
 func initializePlayerParty():
 	if getCombatantSquad('Player').is_empty():
@@ -379,7 +379,7 @@ func createCharacterButton(combatant:ResPlayerCombatant)-> CharacterButton:
 	return button
 
 func showPrompt(message: String, time=5.0, audio_file = ''):
-	OverworldGlobals.player.player_camera.prompt.showPrompt(message, time, audio_file)
+	OverworldGlobals.player.player_camera.player_ui.player_prompt.showPrompt(message, time, audio_file)
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Array[String]=[],show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():

@@ -99,9 +99,9 @@ func combineStatModifiers(combatant:ResCombatant)-> Array:
 	var longest_duration_modifier = getLongestModiferDuration(all_modifiers)
 	var combined_modifiers = {}
 	for effect in all_modifiers:
-		combined_modifiers = CombatGlobals.appendStatModifications(combined_modifiers, effect.getModifications())
+		combined_modifiers = CombatGlobals.combineDictionaries(combined_modifiers, effect.getModifications())
 	if strain > 0:
-		combined_modifiers = CombatGlobals.appendStatModifications(combined_modifiers, {'strain':strain})
+		combined_modifiers = CombatGlobals.combineDictionaries(combined_modifiers, {'strain':strain})
 	return [combined_modifiers,longest_duration_modifier]
 
 func getLongestModiferDuration(modifier_effects:Array):

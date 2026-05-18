@@ -8,12 +8,12 @@ class_name PlayerScene
 @onready var player_animator = $WalkingAnimations
 @onready var animation_player = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
-@onready var cast_animator = $PowerAnimator
+@onready var cast_animator = $PlayerPower/PowerAnimator
 @onready var player_direction = $PlayerDirection
 @onready var bow_line = $PlayerDirection/BowShotLine
 @onready var squad = $CombatantSquadComponent
 @onready var player_camera: PlayerCamera = $PlayerCamera
-@onready var audio_player = $AudioStreamPlayer2D
+#@onready var audio_player = $AudioStreamPlayer2D
 @onready var drop_detector: Area2D = $PlayerDirection/Area2D
 @onready var animation_sprite = $AnimationSprite
 @onready var collision_shape: CollisionShape2D = $PlayerCollision
@@ -53,6 +53,11 @@ signal jumped(jump_velocity)
 signal dived
 signal phased
 signal landed
+signal bow_shot
+signal bow_equipped
+signal bow_unequipped
+signal bow_drawn
+signal bow_undrawn
 
 func _ready():
 	#print('Test1'.contains('Test'))
@@ -191,7 +196,6 @@ func _physics_process(delta):
 	# Bow
 	if bow_mode and is_processing_input() and PlayerGlobals.equipped_arrow != null:
 		drawBow()
-
 	
 	# Bow / sprint processes
 	if PlayerGlobals.overworld_stats['stamina'] <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
@@ -227,7 +231,7 @@ func canDoStaminaAction(cost:float):
 		PlayerGlobals.overworld_stats['stamina'] -= cost
 		return true
 	else:
-		player_camera.flashStamina(Color.RED)
+		#player_camera.flashStamina(Color.RED)
 		return false
 
 
@@ -272,6 +276,10 @@ func _input(_event):
 	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
 		if bow_draw_strength == 0: 
 			bow_mode = !bow_mode
+			if bow_mode:
+				bow_equipped.emit()
+			else:
+				bow_unequipped.emit()
 		elif bow_draw_strength > 0:
 			undrawBow()
 
@@ -363,7 +371,7 @@ func resetStates():
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	ANIMATION_SPEED = 0.0
 	power_inputs = ''
-	cancelPower()
+	#cancelPower()
 	#player_camera.quiver.select_name.text = ''
 	#player_camera.quiver.visible = false
 	Input.action_release("ui_bow_draw")
@@ -375,7 +383,7 @@ func canDrawBow()-> bool:
 	if OverworldGlobals.inMenu():
 		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
-		OverworldGlobals.showPrompt("No more [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
+		OverworldGlobals.showPrompt("Out of [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
 		return false
 	if PlayerGlobals.equipped_arrow == null:
 		return false
@@ -409,7 +417,9 @@ func drawBow():
 		toggleBowAnimation()
 	
 	if Input.is_action_pressed("ui_bow_draw") and canPullBow():
-		if bow_draw_strength < 1.5: suddenStop(false)
+		if bow_draw_strength < 1.5: 
+			suddenStop(false)
+			bow_drawn.emit()
 		setSpeed(15.0)
 		bow_line.show()
 		bow_line.global_position = global_position + Vector2(0, -10) + sprite.offset
@@ -422,13 +432,14 @@ func drawBow():
 		if !isMobile():
 			bow_draw_strength = 0
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and bow_line.points[1].y < 275:
+			player_camera.flash(Color.WHITE,0.05,0.05)
 			var tween = create_tween()
 			tween.tween_property(sprite, 'self_modulate', Color.INDIAN_RED,0.1)
 			tween.tween_property(sprite, 'self_modulate', Color.WHITE, 0.25)
 			OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg", -8.0)
 			OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/BowReady.tscn",player_direction)
 		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
-			bow_line.points[1].y = 275
+			bow_line.points[1].y = 325
 			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
 	if Input.is_action_just_released("ui_bow_draw") and canShootBow(): 
 		suddenStop()
@@ -451,6 +462,8 @@ func undrawBow():
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	if !can_move:
 		can_move = true
+	bow_undrawn.emit()
+	#bow_unequipped.emit()
 
 func shootProjectile():
 	bow_line.hide()
@@ -462,6 +475,7 @@ func shootProjectile():
 	projectile.name = 'PlayerArrow'
 	get_tree().current_scene.add_child(projectile)
 	projectile.rotation = player_direction.rotation + 1.57079994678497
+	bow_shot.emit()
 
 func shakeCamera(strength:float, shake_speed:float):
 	player_camera.shake(strength,shake_speed)
@@ -520,6 +534,7 @@ func updateAnimationParameters():
 				undrawBow()
 				animation_tree["parameters/conditions/cancel"] = true
 	if Input.is_action_just_pressed("ui_melee") and canMelee(): 
+		player_camera.flash(Color.WHITE,0.1,0.05,1.5)
 		undrawBowAnimation()
 		suddenStop()
 		animation_tree["parameters/conditions/melee"] = true
@@ -556,12 +571,13 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 		can_move = false
 
 func setUIVisibility(set_visibility:bool):
-	var exceptions = ['ColorOverlay', 'PlayerPrompt','SaveIndicator','BigLabel']
-	for child in player_camera.get_node('UI').get_children():
-		if child is Control and !exceptions.has(child.name): 
-			match set_visibility:
-				true: child.modulate.a = 1.0
-				false: child.modulate.a = 0.0
+	pass
+#	var exceptions = ['ColorOverlay', 'PlayerPrompt','SaveIndicator','BigLabel']
+#	for child in player_camera.get_node('UI').get_children():
+#		if child is Control and !exceptions.has(child.name): 
+#			match set_visibility:
+#				true: child.modulate.a = 1.0
+#				false: child.modulate.a = 0.0
 
 func toggleVoidAnimation(enabled: bool):
 	if enabled:

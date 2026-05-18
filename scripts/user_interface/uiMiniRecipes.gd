@@ -19,7 +19,7 @@ func createButton(item):
 	button.is_repair_recipe = is_repair_recipe
 	InventoryGlobals.removed_item_from_inventory.connect(button.update.unbind(1))
 	InventoryGlobals.added_item_to_inventory.connect(button.update.unbind(2))
-	InventoryGlobals.stack_item_changed.connect(button.update.unbind(3))
+	InventoryGlobals.stack_item_changed.connect(button.update.unbind(2))
 	return button
 
 func getItemCatalog(filter):

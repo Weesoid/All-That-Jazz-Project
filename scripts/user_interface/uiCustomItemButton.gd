@@ -31,3 +31,7 @@ func setItem(data: ResItem):
 	if data != null and item.isRepairable():
 		durability_bar.setItem(item)
 		durability_bar.show()
+
+func _force_drag():
+	pass
+	#force_drag(item, getPreview())

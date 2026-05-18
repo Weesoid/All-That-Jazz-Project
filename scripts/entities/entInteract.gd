@@ -53,7 +53,7 @@ func moveFollowers():
 
 func enter():
 	cooldown_timer.start(cooldown)
-	OverworldGlobals.player.player_camera.cinematic_bars.visible = true
+	#OverworldGlobals.player.player_camera.cinematic_bars.visible = true
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.player.setUIVisibility(false)
 	OverworldGlobals.player.sprinting = false
@@ -76,7 +76,7 @@ func enter():
 func exit():
 	cooldown_timer.start(cooldown)
 	# Enable inputs
-	OverworldGlobals.player.player_camera.cinematic_bars.visible = false
+	#OverworldGlobals.player.player_camera.cinematic_bars.visible = false
 	OverworldGlobals.player.setUIVisibility(true)
 	if !OverworldGlobals.inMenu():
 		#print('DBox setting to true!')

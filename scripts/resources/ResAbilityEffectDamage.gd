@@ -1,6 +1,6 @@
 ## Basically the "Attack" action. Requires a caster to execute.
 extends ResAbilityEffect
-class_name ResDamageEffect
+class_name ResAttackEffect
 
 enum DamageType {
 	MELEE,
@@ -10,6 +10,8 @@ enum DamageType {
 
 ## Animation the caster will do.
 @export var damage_type: DamageType
+@export var attack_bonuses: Array[ResAttackBonus]
+@export var damage_modifier: float = 1.0
 ## Additional stats to be applied on usage.
 ## Conditions:
 ## 		hp = Health threshold ex. crit/hp:>:0.5 or crit/hp:<:0.75
@@ -18,13 +20,11 @@ enum DamageType {
 ##			combo! = The same as combo but it will not consume the combo token. ex. crit/combo!:0.75
 ##		% = Chance to trigger. ex. crit/%:0.5
 ## 	Special stats:
-## 		execute = Execute combatant on a certain health threshold ex. "execute": 0.5 (executes at 50% health)
 ##		status_effect = Apply status effect ex. "status_effect": "Poison" (Must use file sys name) 
 ##			"Poison+Riposte" Will add an array of status effects
 ##			"status_effect": "Poison^{"duration":6,"be_<identifier>":{"damange",9}}" Will override status effects properties
 ##		move = Move the target combatant. e.g. "move": "f,1" (Means forward one space) (b,2 would mean backward 2 spaces)
-@export var bonus_stats: Dictionary
-@export var damage_modifier: float = 1.0
+var bonus_stats: Dictionary={}
 ## Only applicable if damage type is "Custom". What animation the caster will do.
 @export var cast_animation: Dictionary= {'animation': '', 'go_to_target': false} 
 @export var can_miss: bool = true
@@ -33,6 +33,23 @@ enum DamageType {
 @export var plant_self_on_combo: bool
 @export var indicator_bb:  String = ''
 var do_not_return_pos: bool=false
+
+func initializeAttackBonuses():
+	for bonus in attack_bonuses:
+		bonus_stats.merge(bonus.getAttackEffect())
+
+func getAttackBonuses(target:ResCombatant):
+	var out = {}
+	
+	for attack_bonus in attack_bonuses:
+		if !attack_bonus.conditionsPassed(target): continue
+		
+		out = CombatGlobals.combineDictionaries(out,attack_bonus.getAttackEffect())
+		#if attack_bonus is ResAttackStats:
+		#elif attack_bonus is ResAttackStatusEffect:
+		#	out = CombatGlobals.combineDictionaries(out,attack_bonus.getEffects())
+	
+	return out 
 
 func _to_string():
 	var out=''
@@ -55,23 +72,21 @@ func _to_string():
 	else:
 		out += '\n'
 	
-	var i = 1
-	for key in bonus_stats.keys():
-		var bonus_stat_str = key.split('/')[0]
-		if CombatGlobals.hasStatCondition(key):
-			out += CombatGlobals.stringifyBonusStatConditions(key.split('/'))+' '
-		
-		if bonus_stats[key] is float:
-			out += SettingsGlobals.colorValueBB(bonus_stats[key]*100,0)+'% '+bonus_stat_str.to_upper()+'[/color]'
-		elif bonus_stats[key] is int:
-			out += SettingsGlobals.colorValueBB(bonus_stats[key],0)+' '+bonus_stat_str.to_upper()+'[/color]'
-		elif bonus_stats[key] is String:
-			out += CombatGlobals.stringifySpecialStat(bonus_stat_str, bonus_stats[key])
-		if i != bonus_stats.size():
-			out += '\n'
-		
-		i += 1
-#		elif bonus_stat_str is ResStatusEffect:
-#			out += '+'+bonus_stats[key].getMessageIcon()+'\n'
+#	var i = 1
+#	for key in bonus_stats.keys():
+#		var bonus_stat_str = key.split('/')[0]
+#		if CombatGlobals.hasStatCondition(key):
+#			out += CombatGlobals.stringifyBonusStatConditions(key.split('/'))+' '
+#
+#		if bonus_stats[key] is float:
+#			out += SettingsGlobals.colorValueBB(bonus_stats[key]*100,0)+'% '+bonus_stat_str.to_upper()+'[/color]'
+#		elif bonus_stats[key] is int:
+#			out += SettingsGlobals.colorValueBB(bonus_stats[key],0)+' '+bonus_stat_str.to_upper()+'[/color]'
+#		elif bonus_stats[key] is String:
+#			out += CombatGlobals.stringifySpecialStat(bonus_stat_str, bonus_stats[key])
+#		if i != bonus_stats.size():
+#			out += '\n'
+#
+#		i += 1
 	
 	return out

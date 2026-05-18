@@ -5,7 +5,7 @@ extends RichTextLabel
 @onready var audio_player = $AudioStreamPlayer
 var prompts = {}
 
-
+# TODO Turn this to process
 func _process(_delta):
 	if prompts.size() > 100:
 		prompts.clear()
@@ -34,7 +34,7 @@ func showPrompt(message: String, time=5.0, audio_file = ''):
 	for msg in prompts.values():
 		if msg[0] == message: return
 	
-	prompts[message] = [message, time, audio_file]
+	prompts[message] = ['[center]'+message, time, audio_file]
 
 func _on_timer_timeout():
 	animatePrompt(0)

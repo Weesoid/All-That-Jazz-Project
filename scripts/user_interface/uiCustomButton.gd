@@ -30,6 +30,7 @@ func ready():
 
 func _on_focus_entered():
 	focus_feedback()
+	get_viewport().warp_mouse(position)
 	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
 		showDescription()
 

@@ -172,12 +172,10 @@ func _on_custom_button_held_press():
 func restCombatant(combatant: ResPlayerCombatant):
 	randomize()
 	var random_stat_boost= ['speed', 'damage', 'resolve'].pick_random()
-	#var heal_missing_health = ceil(combatant.getMissingHealth()*0.15)
 	combatant.addTemporaryModifer('Well Rested',3,{'resist':0.1,random_stat_boost:1,'health':5},false,true)
-	#if heal_missing_health > 0:
 	CombatGlobals.calculateHealing(combatant, ceil(combatant.getMaxHealth()*0.05),false)
-	CombatGlobals.healResolve(combatant,99)
-	CombatGlobals.removeInjury(combatant,0.15,randi_range(1,2))
+	CombatGlobals.healResolve(combatant,1)
+	CombatGlobals.removeInjury(combatant,0.1,randi_range(1,2))
 
 func _on_return_pressed():
 	setGuard(null)

@@ -1,0 +1,115 @@
+[gd_scene load_steps=12 format=3 uid="uid://n3papvpb3ww"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiPlayerUI.gd" id="1_p4f1o"]
+[ext_resource type="Texture2D" uid="uid://ufnq3um8oq72" path="res://images/animations/campfire_whited.png" id="2_wkngm"]
+[ext_resource type="PackedScene" uid="uid://b6b2qvfh6cipk" path="res://scenes/user_interface/StaminaBar.tscn" id="3_hs5ym"]
+[ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="4_mvcks"]
+[ext_resource type="PackedScene" uid="uid://df404duxsvhre" path="res://scenes/user_interface/ItemPickupNotifier.tscn" id="5_r3hld"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ej86h"]
+atlas = ExtResource("2_wkngm")
+region = Rect2(0, 0, 26, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aoktx"]
+atlas = ExtResource("2_wkngm")
+region = Rect2(26, 0, 26, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_beibs"]
+atlas = ExtResource("2_wkngm")
+region = Rect2(52, 0, 26, 29)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_87i7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ej86h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aoktx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_beibs")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_n0gv7"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SaveIndicator:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0nlrm"]
+_data = {
+"Show": SubResource("Animation_n0gv7")
+}
+
+[node name="PlayerUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p4f1o")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+
+[node name="SaveIndicator" type="AnimatedSprite2D" parent="Control"]
+modulate = Color(1, 1, 1, 0)
+sprite_frames = SubResource("SpriteFrames_87i7s")
+autoplay = "default"
+frame_progress = 0.342704
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/SaveIndicator"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_0nlrm")
+}
+
+[node name="StaminaBar" parent="." instance=ExtResource("3_hs5ym")]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 336.0
+offset_right = 368.0
+offset_bottom = 338.0
+
+[node name="PlayerPrompt" parent="." instance=ExtResource("4_mvcks")]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -64.0
+offset_right = 0.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ItemPickupNotifier" parent="." instance=ExtResource("5_r3hld")]
+layout_mode = 1
+anchors_preset = 9
+anchor_right = 0.0
+offset_right = 152.0
+offset_bottom = -80.0
+grow_horizontal = 1

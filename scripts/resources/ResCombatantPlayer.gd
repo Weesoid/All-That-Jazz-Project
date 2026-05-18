@@ -54,6 +54,7 @@ func initializeCombatant(do_scene:bool=true):
 	
 	
 #	loadTalents()
+	loadAbilities()
 	applyTalents()
 	applyAllTraits()
 	applyTemporaryModifiers()
@@ -182,7 +183,7 @@ func applyTrait(t,show_indicator,append_indicator:String=''):
 # Trait data is a dictionary that contains unique trait data. E.g. <Trait name>/{"damage":69}/{"disease":true} can be a element in the traits array
 func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={},append_indicator:String=''):
 	if data.has('append') and stat_modifiers.has(trait_name):
-		stat_mods = CombatGlobals.appendStatModifications(stat_modifiers[trait_name],stat_mods)
+		stat_mods = CombatGlobals.combineDictionaries(stat_modifiers[trait_name],stat_mods)
 	
 	var input_trait = trait_name+'/'+JSON.stringify(stat_mods)
 	if !data.is_empty():

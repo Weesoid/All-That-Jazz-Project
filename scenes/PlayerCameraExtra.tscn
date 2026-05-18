@@ -1,0 +1,531 @@
+[gd_scene load_steps=30 format=3 uid="uid://c4nllb1cmrlbp"]
+
+[ext_resource type="Script" path="res://scripts/components/ascPlayerCamera.gd" id="1_1hnbr"]
+[ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="2_wxyfx"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="3_e80uh"]
+[ext_resource type="Texture2D" uid="uid://141agyx4y73o" path="res://images/sprites/icon_bolt.png" id="4_aqqua"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="5_1u2e0"]
+[ext_resource type="Texture2D" uid="uid://b2tqyyse1shv2" path="res://images/textures/cinematic_spotlight.png" id="5_ciqm1"]
+[ext_resource type="Texture2D" uid="uid://hhwkf2u82bfq" path="res://images/sprites/arrow1.png" id="5_dj7uq"]
+[ext_resource type="Texture2D" uid="uid://ufnq3um8oq72" path="res://images/animations/campfire_whited.png" id="7_1tuxi"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiQuiver.gd" id="7_ko14o"]
+[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="7_ogyax"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_846aw"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_to3hk"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_wg1qm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_lpfc3"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ene6d"]
+_data = {
+"RESET": SubResource("Animation_wg1qm"),
+"Show": SubResource("Animation_lpfc3")
+}
+
+[sub_resource type="Animation" id="Animation_5b6cm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_bqxfv"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kgpen"]
+_data = {
+"RESET": SubResource("Animation_5b6cm"),
+"Show": SubResource("Animation_bqxfv")
+}
+
+[sub_resource type="GDScript" id="GDScript_lueap"]
+script/source = "extends VBoxContainer
+
+@onready var player = OverworldGlobals.player
+
+func _input(event):
+	#print(PlayerGlobals.known_powers)
+	if player == null:
+		return
+	
+	if player.is_processing_input() and player.power_inputs != '' and player.power_listening and (event is InputEventKey or event is InputEventJoypadButton):
+		for power in await getValidPowers(player.power_inputs):
+			add_child(createReference(power))
+	
+	if Input.is_action_just_released('ui_gambit'):
+		await clearReferences()
+
+func clearReferences():
+	for child in get_children():
+		child.queue_free()
+		await child.tree_exited
+
+func createReference(power: ResPower):
+	var reference = preload(\"res://scenes/user_interface/PowerReference.tscn\").instantiate()
+	reference.power = power
+	return reference
+
+func getValidPowers(inputs: String):
+	await clearReferences()
+	var valid_powers = []
+	for power in PlayerGlobals.known_powers:
+		if power.input_map.begins_with(inputs): valid_powers.append(power)
+	return valid_powers
+
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8kwnu"]
+atlas = ExtResource("7_1tuxi")
+region = Rect2(0, 0, 26, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jyibx"]
+atlas = ExtResource("7_1tuxi")
+region = Rect2(26, 0, 26, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqenq"]
+atlas = ExtResource("7_1tuxi")
+region = Rect2(52, 0, 26, 29)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wtc4a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8kwnu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jyibx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqenq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="Animation" id="Animation_7gl3m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0x5bj"]
+resource_name = "Show"
+length = 2.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 2.2, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w41gt"]
+_data = {
+"RESET": SubResource("Animation_7gl3m"),
+"Show": SubResource("Animation_0x5bj")
+}
+
+[sub_resource type="Animation" id="Animation_g6ste"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [""]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jbfhu"]
+resource_name = "Show_Ambush"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["AMBUSH"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1.5, 1.5), Vector2(1, 1), Vector2(0.9, 0.9), Vector2(1.5, 1.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pfxek"]
+_data = {
+"RESET": SubResource("Animation_g6ste"),
+"Show_Ambush": SubResource("Animation_jbfhu")
+}
+
+[node name="PlayerCamera" type="Camera2D"]
+process_mode = 3
+z_index = 99
+position = Vector2(0, -125)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+script = ExtResource("1_1hnbr")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerPrompt" parent="UI" instance=ExtResource("2_wxyfx")]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 149.0
+offset_bottom = 54.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ClearProgress" type="VBoxContainer" parent="UI"]
+visible = false
+offset_left = 16.0
+offset_top = -16.0
+offset_right = 132.0
+offset_bottom = 313.0
+mouse_filter = 0
+alignment = 2
+
+[node name="StaminaBar" type="ProgressBar" parent="UI"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = -0.034375
+anchor_top = -0.00555556
+anchor_right = -0.034375
+anchor_bottom = -0.00555556
+offset_left = 264.0
+offset_top = 308.0
+offset_right = 376.0
+offset_bottom = 315.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_846aw")
+theme_override_styles/fill = SubResource("StyleBoxFlat_to3hk")
+value = 50.0
+show_percentage = false
+script = ExtResource("3_e80uh")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="UI/StaminaBar"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_aqqua")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/StaminaBar"]
+libraries = {
+"": SubResource("AnimationLibrary_ene6d")
+}
+
+[node name="Label" type="Label" parent="UI/StaminaBar"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -37.0
+offset_top = -10.5
+offset_right = 39.0
+offset_bottom = 2.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_1u2e0")
+text = "STAMINA"
+horizontal_alignment = 1
+
+[node name="Ammo" type="Label" parent="UI"]
+z_index = 1
+offset_left = 19.0
+offset_top = 312.0
+offset_right = 135.0
+offset_bottom = 335.0
+mouse_filter = 0
+theme = ExtResource("7_ogyax")
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "1000"
+vertical_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="UI/Ammo"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -17.0
+offset_top = -10.0
+offset_right = -1.0
+offset_bottom = 10.0
+grow_vertical = 2
+texture = ExtResource("5_dj7uq")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Quiver" type="HBoxContainer" parent="UI"]
+visible = false
+offset_left = 18.0
+offset_top = 296.0
+offset_right = 145.0
+offset_bottom = 322.0
+theme_override_constants/separation = -10
+script = ExtResource("7_ko14o")
+
+[node name="TextureRect" type="TextureRect" parent="UI/Quiver"]
+layout_mode = 2
+texture = ExtResource("5_dj7uq")
+stretch_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Quiver"]
+libraries = {
+"": SubResource("AnimationLibrary_kgpen")
+}
+
+[node name="VoidCrystals" type="Label" parent="UI"]
+offset_left = 19.0
+offset_top = -49.0
+offset_right = 59.0
+offset_bottom = -36.0
+mouse_filter = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "3"
+
+[node name="PowerInputs" type="HBoxContainer" parent="UI"]
+offset_left = 296.0
+offset_top = 192.0
+offset_right = 344.0
+offset_bottom = 200.0
+mouse_filter = 0
+alignment = 1
+
+[node name="PowerReference" type="VBoxContainer" parent="UI"]
+offset_left = 464.0
+offset_top = 32.0
+offset_right = 603.0
+offset_bottom = 82.0
+mouse_filter = 0
+script = SubResource("GDScript_lueap")
+
+[node name="SaveIndicator" type="Control" parent="UI"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = -24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="UI/SaveIndicator"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -14.5
+offset_right = -5.0
+offset_bottom = 14.5
+grow_vertical = 2
+theme = ExtResource("7_ogyax")
+text = "SAVING"
+vertical_alignment = 1
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="UI/SaveIndicator"]
+sprite_frames = SubResource("SpriteFrames_wtc4a")
+autoplay = "default"
+frame_progress = 0.731071
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/SaveIndicator"]
+libraries = {
+"": SubResource("AnimationLibrary_w41gt")
+}
+
+[node name="BigLabel" type="Label" parent="UI"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(320, 176)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/BigLabel"]
+libraries = {
+"": SubResource("AnimationLibrary_pfxek")
+}
+
+[node name="CinematicSpotlight" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+z_index = 10
+position = Vector2(1.19209e-07, -20)
+scale = Vector2(0.383333, 0.362963)
+texture = ExtResource("5_ciqm1")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(80, -120)
+
+[node name="CinematicBars" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="CinematicBars"]
+offset_left = -384.0
+offset_top = -136.0
+offset_right = 378.0
+offset_bottom = -70.0
+color = Color(1, 1, 1, 0)
+
+[node name="ColorRect2" type="ColorRect" parent="CinematicBars"]
+offset_left = -441.0
+offset_top = 72.0
+offset_right = 437.0
+offset_bottom = 209.0
+color = Color(0, 0, 0, 0)
+
+[connection signal="value_changed" from="UI/StaminaBar" to="UI/StaminaBar" method="_on_value_changed"]

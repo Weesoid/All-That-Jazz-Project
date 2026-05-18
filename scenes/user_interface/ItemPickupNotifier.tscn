@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://df404duxsvhre"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiItemPickupNotifier.gd" id="1_hf2yk"]
+
+[sub_resource type="Gradient" id="Gradient_b6v33"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oofpf"]
+gradient = SubResource("Gradient_b6v33")
+fill_from = Vector2(1, 0.5)
+fill_to = Vector2(0.2, 0.5)
+
+[node name="ItemPickupNotifier" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_hf2yk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="PickupLabel" type="RichTextLabel" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+bbcode_enabled = true
+fit_content = true
+
+[node name="Background" type="TextureRect" parent="VBoxContainer/PickupLabel"]
+modulate = Color(1, 1, 1, 0.490196)
+self_modulate = Color(0, 0, 0, 1)
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_oofpf")

@@ -29,7 +29,7 @@ class_name ResCombatant
 }
 @export var ability_set: Array[ResAbility] # May need to be refactored to dict for specific selection
 @export var max_turn_charges = 1
-@export var riposte_effect: ResDamageEffect
+@export var riposte_effect: ResAttackEffect
 @export var assigned_position:int = -1
 @export var ai_package: GDScript
 var percent_health:float
@@ -101,6 +101,10 @@ func setBreatheTween(mode:int):
 
 func act():
 	pass
+
+func loadAbilities():
+	for ability in ability_set:
+		if ability.isAttack(): ability.setupAttackBonuses()
 
 func scaleStats():
 	var stat_bonuses = {}
@@ -190,7 +194,7 @@ func getStringStats(current_stats=false):
 func appendStatModification(modifier_id:String, append_stats: Dictionary):
 	for modifier in stat_modifiers.keys():
 		if modifier == modifier_id:
-			stat_modifiers[modifier_id] = CombatGlobals.appendStatModifications(stat_modifiers[modifier_id], append_stats)
+			stat_modifiers[modifier_id] = CombatGlobals.combineDictionaries(stat_modifiers[modifier_id], append_stats)
 
 # TODO?  Update handling. Replace outdated modifiers based on modifier_id?
 func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false,show_indicator:bool=true):

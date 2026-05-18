@@ -1,40 +1,24 @@
-[gd_scene load_steps=154 format=3 uid="uid://doc3puk0lkp31"]
+[gd_scene load_steps=152 format=3 uid="uid://doc3puk0lkp31"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_ivxm1"]
 [ext_resource type="PackedScene" uid="uid://i21m5gws8dde" path="res://scenes/user_interface/MeleeCooldownBar.tscn" id="2_mk8cj"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
-[ext_resource type="Texture2D" uid="uid://b42ljw6hu4i2h" path="res://images/animations/interact.png" id="3_y84xx"]
+[ext_resource type="PackedScene" uid="uid://b3l4n202ialfr" path="res://scenes/user_interface/CurrentArrowView.tscn" id="3_iakdp"]
+[ext_resource type="PackedScene" uid="uid://b6b2qvfh6cipk" path="res://scenes/user_interface/StaminaBar.tscn" id="4_e8xoe"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/character_sprites/willis/player.png" id="5_nms4n"]
 [ext_resource type="PackedScene" uid="uid://cdkunqmsd5yml" path="res://scenes/components/MeleeHitbox.tscn" id="6_31qdv"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
 [ext_resource type="Texture2D" uid="uid://8thn8af4p4s8" path="res://images/character_sprites/archie/player_alt_dive.png" id="8_s7ls0"]
 [ext_resource type="Texture2D" uid="uid://c6iacu5bntvp7" path="res://images/character_sprites/willis/player_dive.png" id="9_30p1c"]
-[ext_resource type="PackedScene" uid="uid://crqkcqks48t2k" path="res://scenes/components/PlayerCamera.tscn" id="10_ay08a"]
+[ext_resource type="PackedScene" uid="uid://cplh3ysdnrlej" path="res://scenes/components/PlayerCamera.tscn" id="10_ay08a"]
 [ext_resource type="Texture2D" uid="uid://c8nn87vbmr36y" path="res://images/character_sprites/willis/faceplant_willis.png" id="10_llrcm"]
 [ext_resource type="Texture2D" uid="uid://emh44pfnyck" path="res://images/animations/player_alt_fall.png" id="10_m77of"]
 [ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="10_wsxx2"]
 [ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_rb05q"]
 [ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="14_w0217"]
 
-[sub_resource type="Animation" id="Animation_b30mo"]
-resource_name = "Interact"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-
-[sub_resource type="Animation" id="Animation_rasdp"]
-resource_name = "RESET"
-loop_mode = 1
+[sub_resource type="Animation" id="Animation_te3tf"]
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -45,13 +29,100 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [4]
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_woxdh"]
+[sub_resource type="Animation" id="Animation_2eywy"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5, 6, 7, 8, 7, 6, 4, 3, 2, 1, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1.25, 1.25), Vector2(1.3, 1.3)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wiltc"]
 _data = {
-"Interact": SubResource("Animation_b30mo"),
-"RESET": SubResource("Animation_rasdp")
+"RESET": SubResource("Animation_te3tf"),
+"Show": SubResource("Animation_2eywy")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b8rwl"]
@@ -590,18 +661,6 @@ tracks/7/keys = {
 "update": 0,
 "values": [Vector2(0, -21.9902)]
 }
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("PlayerCamera/CinematicSpotlight:self_modulate")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_c11le"]
 resource_name = "Stun"
@@ -765,114 +824,6 @@ _data = {
 "RESET": SubResource("Animation_x7qsu"),
 "Stun": SubResource("Animation_c11le"),
 "VoidChannel": SubResource("Animation_ogoem")
-}
-
-[sub_resource type="Animation" id="Animation_te3tf"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_2eywy"]
-resource_name = "Show"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [2, 3, 4, 5, 6, 7, 8, 7, 6, 4, 3, 2, 1, 0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(1.25, 1.25), Vector2(1.3, 1.3)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_wiltc"]
-_data = {
-"RESET": SubResource("Animation_te3tf"),
-"Show": SubResource("Animation_2eywy")
 }
 
 [sub_resource type="Animation" id="Animation_aaa36"]
@@ -2840,7 +2791,26 @@ script = ExtResource("1_ivxm1")
 dialogue_name = "Willis"
 
 [node name="MeleeCooldownBar" parent="." node_paths=PackedStringArray("melee_timer") instance=ExtResource("2_mk8cj")]
+offset_top = -96.0
+offset_bottom = -87.0
+mouse_filter = 2
 melee_timer = NodePath("../MeleeCooldown")
+
+[node name="CurrentArrowView" parent="." instance=ExtResource("3_iakdp")]
+z_index = 2
+offset_left = 0.0
+offset_top = -80.0
+offset_right = 48.0
+offset_bottom = -56.0
+mouse_filter = 2
+
+[node name="StaminaBar" parent="." instance=ExtResource("4_e8xoe")]
+visible = false
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = -14.0
+mouse_filter = 2
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
 
@@ -2858,7 +2828,7 @@ texture = ExtResource("5_nms4n")
 offset = Vector2(0, -33)
 hframes = 9
 vframes = 6
-frame = 1
+frame = 19
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2872,24 +2842,15 @@ position = Vector2(0, -20)
 texture = ExtResource("3_h566x")
 hframes = 9
 
-[node name="PlayerInteractionBubble" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(1, -49)
-scale = Vector2(0.546875, 0.476)
-texture = ExtResource("3_y84xx")
-offset = Vector2(0, -64)
-hframes = 4
-vframes = 2
-frame = 4
-
-[node name="BubbleAnimator" type="AnimationPlayer" parent="PlayerInteractionBubble"]
+[node name="PowerAnimator" type="AnimationPlayer" parent="PlayerPower"]
 libraries = {
-"": SubResource("AnimationLibrary_woxdh")
+"": SubResource("AnimationLibrary_wiltc")
 }
 
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
+rotation = 1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 16)
@@ -2921,18 +2882,9 @@ z_index = 2
 position = Vector2(0, -33)
 shape = SubResource("CapsuleShape2D_8i7nm")
 
-[node name="PlayerCamera" parent="." instance=ExtResource("10_ay08a")]
-position = Vector2(0, -122)
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_c2xtv")
-}
-
-[node name="PowerAnimator" type="AnimationPlayer" parent="."]
-root_node = NodePath("../PlayerPower")
-libraries = {
-"": SubResource("AnimationLibrary_wiltc")
 }
 
 [node name="WalkingAnimations" type="AnimationPlayer" parent="."]
@@ -2968,9 +2920,8 @@ parameters/Melee/blend_position = Vector2(0.00607288, 1.1)
 parameters/Walk/blend_position = Vector2(0.036626, 0.072455)
 "parameters/Walk Bow/blend_position" = Vector2(0, 0)
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-max_polyphony = 8
-
 [node name="OriginPoint" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("14_w0217")
+
+[node name="PlayerCamera" parent="." instance=ExtResource("10_ay08a")]

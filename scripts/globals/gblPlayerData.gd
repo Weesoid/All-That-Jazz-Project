@@ -104,7 +104,7 @@ func applyBlessing(blessing):
 		equipped_blessing.setBlessing(false)
 	if blessing is ResBlessing:
 		equipped_blessing = blessing
-		OverworldGlobals.showPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
+		#OverworldGlobals.showPrompt('You have been graced by blessing of the [color=yellow]%s[/color].' % blessing.blessing_name)
 		blessing.setBlessing(true)
 
 func equipNewArrowType():
@@ -160,7 +160,7 @@ func increaseLevelCap(amount:int=5):
 	max_team_level += amount
 	if current_exp >= getRequiredExp():
 		addExperience(1, true)
-	OverworldGlobals.showPrompt('Level cap increased to [color=yellow]%s[/color]!' % max_team_level)
+	OverworldGlobals.showPrompt('Level cap increased to [color=yellow]%s[/color].' % max_team_level)
 
 func getLevelTier():
 	if team_level < 5:
@@ -242,7 +242,7 @@ func addCombatantToTeam(combatant_id):
 		return
 	combatant.stat_points = team_level
 	team.append(combatant)
-	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your posse!' % combatant.name)
+	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your party!' % combatant.name)
 
 func setAbilityActive(combatant: ResPlayerCombatant, ability: ResAbility, set_active:bool):
 	if set_active:

@@ -128,7 +128,7 @@ func setButtonFunction(selected_item):
 	match mode:
 		1: # BUY
 			if PlayerGlobals.currency < selected_item.value * buy_modifier:
-				OverworldGlobals.showPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.name)
+				#OverworldGlobals.showPrompt('Not enough money for [color=yellow]%s[/color].' % selected_item.name)
 				return
 			
 			if selected_item is ResGhostStackItem:
@@ -150,7 +150,7 @@ func setButtonFunction(selected_item):
 			loadWares(wares_array, selected_item)
 		0: # SELL
 			if selected_item.mandatory:
-				OverworldGlobals.showPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.name)
+				#OverworldGlobals.showPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.name)
 				return
 			
 			OverworldGlobals.setMenuFocusMode(wares, false)

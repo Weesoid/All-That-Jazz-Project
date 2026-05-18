@@ -1,14 +1,49 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://btd50tvrm5mdc"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=13 format=3 uid="uid://bnol4xomec0g1"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_b8xmp"]
+[ext_resource type="Script" path="res://scripts/resources/ResEffectConditionStatus.gd" id="2_lqxy0"]
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusStats.gd" id="2_se6bl"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
+[ext_resource type="Resource" uid="uid://bbox5uqlacm4y" path="res://resources/combat/status_effects/Stunned.tres" id="4_0gokl"]
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusMove.gd" id="5_gf2at"]
+
+[sub_resource type="Resource" id="Resource_gjmlx"]
+script = ExtResource("2_lqxy0")
+status_effect = ExtResource("4_0gokl")
+rank = 0
+
+[sub_resource type="Resource" id="Resource_od3yr"]
+script = ExtResource("2_se6bl")
+stats = {
+"crit": 1.0,
+"crit_amp": 0.0,
+"damage": 99,
+"dmg_modifier": 0.0,
+"execute_dmg": 0,
+"handling": 0,
+"heal_amp": 0.0,
+"heal_skill": 0.0,
+"health": 0,
+"rebuke_chance": 0.0,
+"resist": 0,
+"resolve": 0,
+"riposte_dmg": 0.0,
+"speed": 0,
+"strain": 0
+}
+condition = SubResource("Resource_gjmlx")
+
+[sub_resource type="Resource" id="Resource_3pxrr"]
+script = ExtResource("5_gf2at")
+direction = -1
+move_count = 3
 
 [sub_resource type="Resource" id="Resource_5mepd"]
 script = ExtResource("2_b8xmp")
 damage_type = 0
-bonus_stats = {}
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_od3yr"), SubResource("Resource_3pxrr")])
 damage_modifier = 1.0
 cast_animation = {
 "animation": "",

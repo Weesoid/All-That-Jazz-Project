@@ -49,3 +49,12 @@ func drop_feedback():
 func pick_up_feedback():
 	playSound(pickup_sound)
 
+func _force_drop():
+	pass
+	#if get_viewport().gui_is_dragging():
+	#	SettingsGlobals.click()
+
+
+#func _on_pressed_force_drag():
+#	print('dragqueen')
+#	force_drag(item, getPreview())

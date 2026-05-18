@@ -38,3 +38,30 @@ const BASE_STATS = [
 	"strain",
 	"rebuke_chance"
 ]
+const ALL_STATS = {
+	"health":0,
+	"damage":0,
+	"handling":0, 
+	"speed":0, 
+	"crit":0.0, 
+	"resist":0, 
+	"resolve":0, 
+	"strain":0, 
+	REBUKE_CHANCE:0.0,
+	HEAL_SKILL:0.0,
+	DAMAGE_MODIFIER:0.0,
+	HEAL_AMP:0.0,
+	CRIT_AMP:0.0,
+	EXECUTE:0,
+	RIPOSTE_DMG:0.0
+	}
+#enum Stats {
+#	HEALTH='health',
+#	DAMAGE='damage'
+#}
+
+func getAllCombatStats():
+	var out = []
+	out.append_array(BASE_STATS)
+	out.append_array(get_script().get_script_constant_map().values().filter(func(value): return value is String))
+	return out

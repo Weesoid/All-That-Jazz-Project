@@ -11,7 +11,7 @@ func interact():
 		OverworldGlobals.changeMap(to_scene_path, to_coords)
 	else:
 		visible = false
-		OverworldGlobals.showPrompt("You can't leave yet, there's a job to be done.")
+		#OverworldGlobals.showPrompt("You can't leave yet, there's a job to be done.")
 
 func _on_body_entered(body):
 	if touch_enter and body is PlayerScene and PlayerGlobals.isMapCleared(): 
@@ -19,4 +19,4 @@ func _on_body_entered(body):
 		OverworldGlobals.changeMap(to_scene_path, to_coords)
 	elif touch_enter and body is PlayerScene:
 		visible = false
-		OverworldGlobals.showPrompt("You can't leave yet, there's a job to be done.")
+		#OverworldGlobals.showPrompt("You can't leave yet, there's a job to be done.")

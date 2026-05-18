@@ -12,24 +12,23 @@ enum TargetState {
 @onready var combat_camera = $CombatCamera
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
-@onready var onslaught_container = $OnslaughtContainer
-@onready var onslaught_container_animator = $OnslaughtContainer/AnimationPlayer
 @onready var transition_scene = $CombatCamera/BattleTransition
 @onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
 @onready var battle_back = $ParallaxBackground/AnimationPlayer
-@onready var team_hp_bar = $OnslaughtContainer/ProgressBar
 @onready var turn_timer_bar = $CombatCamera/Interface/TurnTimerBar
 @onready var turn_timer_animator = $CombatCamera/Interface/TurnTimerBar/AnimationPlayer
 @onready var turn_timer = $TurnTimer
 @onready var fade_bars_animator = $CombatCamera/FadeBars/AnimationPlayer
-@onready var flasher = $CombatCamera/Flasher
-@onready var flasher_animator = $CombatCamera/Flasher/AnimationPlayer
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var combat_ui: CombatUI = $CombatCamera/Interface/CombatUI
 @onready var tp_particle_magnet = $TensionParticleMarker
 
+var combatant_positions = {
+	'team': [null,null,null,null],
+	'enemies': [null,null,null,null]
+}
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
@@ -52,8 +51,8 @@ var default_camera_position: Vector2 = Vector2(0, 5)
 var default_camera_zoom:Vector2 = Vector2(1.6,1.6)
 var enemy_reinforcements: Array[ResCombatant]
 var bonus_escape_chance = 1.0
-var onslaught_mode = false
-var onslaught_combatant: ResPlayerCombatant
+#var onslaught_mode = false
+#var onslaught_combatant: ResPlayerCombatant
 var previous_position: Vector2
 var previous_position_player: Vector2
 var tween_running
@@ -84,8 +83,8 @@ signal combat_done
 #	reward_bank = p_ #placeholder
 
 func _ready():
-	flasher.show()
-	team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
+	#flasher.show()
+	#team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
 	
@@ -155,12 +154,12 @@ func _process(_delta):
 		TargetState.INSPECT: playerSelectInspection()
 
 func _unhandled_input(_event):
-	if onslaught_mode and Input.is_action_just_pressed('ui_left') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
-		moveOnslaught(-1)
-	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
-		moveOnslaught(1)
+#	if onslaught_mode and Input.is_action_just_pressed('ui_left') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
+#		moveOnslaught(-1)
+#	if onslaught_mode and Input.is_action_just_pressed('ui_right') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
+#		moveOnslaught(1)
 	
-	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and !onslaught_mode and !ability_executing: 
+	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and !ability_executing: 
 		resetUI()
 		
 #	if Input.is_action_just_pressed('ui_home'):
@@ -652,7 +651,6 @@ func removeCombatant(combatant: ResCombatant):
 # Cast Ability for players
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	selected_ability = ability
-	# Mutate ability
 	
 	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
 	if ability.target_type == ResAbility.TargetType.MULTI:
@@ -1009,56 +1007,56 @@ func moveValid(move:int, current_pos:int, combatant_group)-> bool:
 #	for combatant in tamed_combatants: out.append(combatant)
 #	return out
 
-func moveOnslaught(direction: int):
-	if (direction==1 and onslaught_combatant.combatant_scene.global_position.x+32 > 48) or (direction==-1 and onslaught_combatant.combatant_scene.global_position.x-32 < -48):
-		return
-	else:
-		randomize()
-		OverworldGlobals.playSound("res://audio/sounds/12_human_jump_%s.ogg" % str(randi_range(1,3)))
-	tween_running = true
-	var pos_tween = create_tween().set_trans(Tween.TRANS_BOUNCE)
-	var move = 32 * direction
-	pos_tween.tween_property(onslaught_combatant.combatant_scene, 'global_position', onslaught_combatant.combatant_scene.global_position+Vector2(move, 0), 0.1)
-	await pos_tween.finished
-	tween_running = false
-
-func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
-	await get_tree().process_frame
-	active_combatant.combatant_scene.get_node('CombatBars').visible = false
-	await fadeCombatant(active_combatant.combatant_scene, false)
-	if !combatant.hasStatusEffect('Guard'):
-		combatant.combatant_scene.setBlocking(set_to)
-		combatant.combatant_scene.allow_block = set_to
-	
-	for target in combatants:
-		if target.isDead() and target != combatant:
-			target.combatant_scene.collision.disabled = set_to
-	if set_to:
-		team_hp_bar.process_mode = Node.PROCESS_MODE_INHERIT
-		onslaught_container.show()
-		onslaught_container_animator.play("Show")
-		previous_position = active_combatant.combatant_scene.get_parent().global_position
-		previous_position_player = combatant.combatant_scene.get_parent().global_position
-		active_combatant.combatant_scene.get_parent().global_position = Vector2(0, -16)
-		onslaught_combatant = combatant
-		var tween = CombatGlobals.getCombatScene().create_tween()
-		tween.tween_property(combatant.combatant_scene, 'global_position', onslaught_container.get_children()[0].global_position, 0.25)
-		await tween.finished
-		CombatGlobals.getCombatScene().zoomCamera(Vector2(0.5,0.5))
-	else:
-		team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
-		onslaught_container_animator.play_backwards("Show")
-		onslaught_combatant = null
-		active_combatant.combatant_scene.get_parent().global_position = previous_position
-		combatant.combatant_scene.get_parent().global_position = previous_position_player
-		active_combatant.combatant_scene.get_node('CombatBars').visible = true
-		active_combatant.combatant_scene.moveTo(active_combatant.combatant_scene.get_parent())
-		await combatant.combatant_scene.moveTo(combatant.combatant_scene.get_parent())
-		onslaught_container.hide()
-		CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
-	
-	onslaught_mode = set_to
-	await get_tree().process_frame
+#func moveOnslaught(direction: int):
+#	if (direction==1 and onslaught_combatant.combatant_scene.global_position.x+32 > 48) or (direction==-1 and onslaught_combatant.combatant_scene.global_position.x-32 < -48):
+#		return
+#	else:
+#		randomize()
+#		OverworldGlobals.playSound("res://audio/sounds/12_human_jump_%s.ogg" % str(randi_range(1,3)))
+#	tween_running = true
+#	var pos_tween = create_tween().set_trans(Tween.TRANS_BOUNCE)
+#	var move = 32 * direction
+#	pos_tween.tween_property(onslaught_combatant.combatant_scene, 'global_position', onslaught_combatant.combatant_scene.global_position+Vector2(move, 0), 0.1)
+#	await pos_tween.finished
+#	tween_running = false
+#
+#func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
+#	await get_tree().process_frame
+#	active_combatant.combatant_scene.get_node('CombatBars').visible = false
+#	await fadeCombatant(active_combatant.combatant_scene, false)
+#	if !combatant.hasStatusEffect('Guard'):
+#		combatant.combatant_scene.setBlocking(set_to)
+#		combatant.combatant_scene.allow_block = set_to
+#
+#	for target in combatants:
+#		if target.isDead() and target != combatant:
+#			target.combatant_scene.collision.disabled = set_to
+#	if set_to:
+#		team_hp_bar.process_mode = Node.PROCESS_MODE_INHERIT
+#		onslaught_container.show()
+#		onslaught_container_animator.play("Show")
+#		previous_position = active_combatant.combatant_scene.get_parent().global_position
+#		previous_position_player = combatant.combatant_scene.get_parent().global_position
+#		active_combatant.combatant_scene.get_parent().global_position = Vector2(0, -16)
+#		onslaught_combatant = combatant
+#		var tween = CombatGlobals.getCombatScene().create_tween()
+#		tween.tween_property(combatant.combatant_scene, 'global_position', onslaught_container.get_children()[0].global_position, 0.25)
+#		await tween.finished
+#		CombatGlobals.getCombatScene().zoomCamera(Vector2(0.5,0.5))
+#	else:
+#		team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
+#		onslaught_container_animator.play_backwards("Show")
+#		onslaught_combatant = null
+#		active_combatant.combatant_scene.get_parent().global_position = previous_position
+#		combatant.combatant_scene.get_parent().global_position = previous_position_player
+#		active_combatant.combatant_scene.get_node('CombatBars').visible = true
+#		active_combatant.combatant_scene.moveTo(active_combatant.combatant_scene.get_parent())
+#		await combatant.combatant_scene.moveTo(combatant.combatant_scene.get_parent())
+#		onslaught_container.hide()
+#		CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
+#
+#	onslaught_mode = set_to
+#	await get_tree().process_frame
 
 func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	var tween = CombatGlobals.getCombatScene().create_tween()
@@ -1118,10 +1116,10 @@ func _on_turn_timer_timeout():
 	#resetActionLog()
 	turn_timer_animator.play_backwards("Show")
 	confirm.emit()
-
-func battleFlash(animation: String, color: Color):
-	flasher.modulate = color
-	flasher_animator.play(animation)
+#
+#func battleFlash(animation: String, color: Color):
+#	flasher.modulate = color
+#	flasher_animator.play(animation)
 
 func resetUI():
 	moveCamera(default_camera_position)
@@ -1138,8 +1136,8 @@ func attemptEscape():
 	else:
 		combat_ui.hideUI()
 		var previous_active = active_combatant
-		if !previous_active.hasStatusEffect('Poised'):
-			battleFlash('Flash', Color.YELLOW)
+		#if !previous_active.hasStatusEffect('Poised'):
+		#	battleFlash('Flash', Color.YELLOW)
 		bonus_escape_chance += 0.1
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		if selected_ability != null and selected_ability.instant_cast: selected_ability = null
@@ -1164,7 +1162,7 @@ func clearTempModifiers(combatant: ResCombatant, type:String):
 
 func doRebuke(target: ResCombatant, caster: ResCombatant):
 	var guard_effect:ResStatusEffect
-#	var base_rebuke_chance:float = target.stat_modifiers['base_rebuke']['rebuke_chance']
+	var base_rebuke_chance:float = target.stat_modifiers['base_rebuke']['rebuke_chance']
 	rebuking=true
 	
 	# Do riposte
@@ -1188,13 +1186,13 @@ func doRebuke(target: ResCombatant, caster: ResCombatant):
 	await OverworldGlobals.freezeFrame(0.075, 2.8)
 	setUIModulation(Color.WHITE)
 	CombatGlobals.calculatePercentHealing(target,1.0,false)
-#	target.addTemporaryModifer(
-#		'rebuke_penalty',
-#		1,
-#		{'rebuke_chance':-base_rebuke_chance/2},
-#		false,
-#		true,
-#		false
-#		)
+	target.addTemporaryModifer(
+		'rebuke_penalty',
+		1,
+		{'rebuke_chance':-base_rebuke_chance/2},
+		false,
+		true,
+		false
+		)
 	
 	rebuking=false

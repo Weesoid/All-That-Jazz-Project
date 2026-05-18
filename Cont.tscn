@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cspyw01mf3mrl"]
+[gd_scene load_steps=5 format=3 uid="uid://cspyw01mf3mrl"]
 
-[ext_resource type="PackedScene" uid="uid://7fibmhku182d" path="res://scenes/user_interface/CharacterPositionSlot.tscn" id="1_rdtts"]
-[ext_resource type="PackedScene" uid="uid://maahusohnamc" path="res://scenes/user_interface/CharacterButton.tscn" id="1_y3bst"]
-[ext_resource type="Resource" uid="uid://cohe0ng5gyu4h" path="res://resources/combat/combatants_player/Willis.tres" id="2_571nx"]
-[ext_resource type="Resource" uid="uid://cd5r32rnqq6ks" path="res://resources/combat/combatants_player/FodderA.tres" id="3_7b1mr"]
+[ext_resource type="PackedScene" uid="uid://csqkcvvj78upd" path="res://scenes/user_interface/CustomItemSlotButton.tscn" id="1_2tfuh"]
+[ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="2_6t8cb"]
+[ext_resource type="Resource" uid="uid://dc0gxjvcso6js" path="res://resources/items/Testifier.tres" id="3_yixnw"]
 
 [sub_resource type="GDScript" id="GDScript_r0aat"]
 script/source = "extends Control
@@ -11,19 +10,26 @@ script/source = "extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var willis = load(\"res://resources/combat/combatants_player/Willis.tres\")
-	var huck = load(\"res://resources/combat/combatants_player/FodderA.tres\")
-	willis.initializeCombatant(false)
-	huck.initializeCombatant(false)
-	#var t_tree: ResTalentTree = load(\"res://resources/combat/talent_trees/BaseTalents.tres\")
-	#var tal_path = t_tree.talents[1].resource_path
-	#print(tal_path)
-	#var tal = load(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_6100s\")
-	#print(ResourceLoader.exists(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_6100s\"))
-	#print(t_tree.has_cach)
-	#print(t_tree.)
-	print(ResourceLoader.has_cached(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_bg3uw\"))
-	print(ResourceLoader.load(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_bg3uw\"))
+	pass
+#	print(CombatExtras.ALL_STATS)
+#	var dick = load(\"res://TestAttackStat.tres\")
+#	print(CombatExtras.ALL_STATS)
+#	var dict = {'sexion':12}
+#	dict.merge({'2':1})
+#	print(dict)
+#	var willis = load(\"res://resources/combat/combatants_player/Willis.tres\")
+#	var huck = load(\"res://resources/combat/combatants_player/FodderA.tres\")
+#	willis.initializeCombatant(false)
+#	huck.initializeCombatant(false)
+#	#var t_tree: ResTalentTree = load(\"res://resources/combat/talent_trees/BaseTalents.tres\")
+#	#var tal_path = t_tree.talents[1].resource_path
+#	#print(tal_path)
+#	#var tal = load(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_6100s\")
+#	#print(ResourceLoader.exists(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_6100s\"))
+#	#print(t_tree.has_cach)
+#	#print(t_tree.)
+#	print(ResourceLoader.has_cached(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_bg3uw\"))
+#	print(ResourceLoader.load(\"res://resources/combat/talent_trees/BaseTalents.tres::Resource_bg3uw\"))
 "
 
 [node name="Cont" type="Control"]
@@ -35,46 +41,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_r0aat")
 
-[node name="CharacterButton" parent="." instance=ExtResource("1_y3bst")]
-layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 248.0
-offset_top = 112.0
-offset_right = 405.0
-offset_bottom = 144.0
-combatant = ExtResource("2_571nx")
-
-[node name="CharacterButton2" parent="." instance=ExtResource("1_y3bst")]
-layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 88.0
-offset_top = 176.0
-offset_right = 245.0
-offset_bottom = 208.0
-combatant = ExtResource("3_7b1mr")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="ItemSlot" parent="." instance=ExtResource("1_2tfuh")]
 layout_mode = 0
-offset_left = 72.0
-offset_top = 152.0
-offset_right = 520.0
-offset_bottom = 192.0
+offset_left = 192.0
+offset_top = 144.0
+offset_right = 224.0
+offset_bottom = 176.0
+item_whitelist = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("3_yixnw")])
 
-[node name="CharacterSlot" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
-layout_mode = 2
-
-[node name="CharacterSlot2" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
-layout_mode = 2
-formation_position = 1
-
-[node name="CharacterSlot3" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
-layout_mode = 2
-formation_position = 2
-
-[node name="CharacterSlot4" parent="HBoxContainer" instance=ExtResource("1_rdtts")]
-layout_mode = 2
-formation_position = 3
+[node name="CustomButton" parent="." instance=ExtResource("2_6t8cb")]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 112.0
+offset_right = 320.0
+offset_bottom = 160.0
+item = ExtResource("3_yixnw")

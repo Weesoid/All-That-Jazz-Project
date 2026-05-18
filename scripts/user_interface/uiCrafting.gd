@@ -42,7 +42,7 @@ func connectSlots():
 		recipe_found.connect(slot.update_count)
 		InventoryGlobals.removed_item_from_inventory.connect(slot.update_count.unbind(1).bind(craft_item))
 		InventoryGlobals.added_item_to_inventory.connect(slot.update_count.unbind(2).bind(craft_item))
-		InventoryGlobals.stack_item_changed.connect(slot.update_count.unbind(3).bind(craft_item))
+		InventoryGlobals.stack_item_changed.connect(slot.update_count.unbind(2).bind(craft_item))
 		InventoryGlobals.item_repaired.connect(slot.update_count.unbind(2).bind(craft_item))
 
 func addMaterial(item:ResItem, slot:ItemSlot):

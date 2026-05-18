@@ -40,6 +40,6 @@ func stringifyConditionUnit()-> String:
 
 func stringifyCondition():
 	if condition != '':
-		return CombatGlobals.stringifyBonusStatConditions(condition.split('/'), stringifyConditionUnit())+' '
+		return 'DICK AND BALLS'#CombatGlobals.stringifyBonusStatConditions(condition.split('/'), stringifyConditionUnit())+' '
 	else:
 		return ''

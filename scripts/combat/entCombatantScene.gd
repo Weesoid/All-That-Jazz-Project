@@ -75,7 +75,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	if CombatGlobals.inCombat() and CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	#animator.play('RESET')
-	if !data.has('skip_pause') or (CombatGlobals.inCombat() and !CombatGlobals.getCombatScene().onslaught_mode):
+	if !data.has('skip_pause') or (CombatGlobals.inCombat()):
 		await get_tree().create_timer(0.25).timeout
 	if !data.has('skip_idle'):
 		playIdle()

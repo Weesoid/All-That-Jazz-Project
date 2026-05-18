@@ -77,3 +77,13 @@ func longhandWord(word:String):
 			'amp': word_split.set(i, 'amp.')
 	
 	return " ".join(word_split)
+
+func click():
+	var a = InputEventMouseButton.new()
+	a.position = get_viewport().get_screen_transform() * get_viewport().get_mouse_position()
+	a.button_index = MOUSE_BUTTON_LEFT
+	a.pressed = true
+	Input.parse_input_event(a)
+	await get_tree().process_frame
+	a.pressed = false
+	Input.parse_input_event(a)

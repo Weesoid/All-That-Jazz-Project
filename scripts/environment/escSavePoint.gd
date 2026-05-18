@@ -46,7 +46,8 @@ func interact():
 	OverworldGlobals.player.current_camp_spot = self
 	OverworldGlobals.destroyAllPatrollers(true)
 	OverworldGlobals.setPlayerInput(false)
-	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 0.5)
+	#await OverworldGlobals.player.player_camera.flashOverlay(Color.RED,1.0)
+	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 0.5)
 	#PlayerGlobals.overworld_stats['stamina'] = 100.0
 	OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
 	#if OverworldGlobals.getCurrentMap().map_properties.has(MapData.MapProperties.COLD):
@@ -56,7 +57,7 @@ func interact():
 	OverworldGlobals.player.sprite.hide()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		addRestSprite(combatant)
-	await OverworldGlobals.player.player_camera.hideOverlay(0.5)
+	await OverworldGlobals.player.player_camera.showOverlay(Color.TRANSPARENT,0.5)
 	OverworldGlobals.moveCamera(self,.75,menu_cam_offset)
 
 func exit():
@@ -76,7 +77,7 @@ func exit():
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
 	OverworldGlobals.player.sprite.show()
-	OverworldGlobals.player.player_camera.hideOverlay(0.5)
+	OverworldGlobals.player.player_camera.showOverlay(Color.TRANSPARENT,0.5)
 	kindle_slot.setDisabled(false)
 	fire_kindled=false
 	await get_tree().process_frame
@@ -186,14 +187,15 @@ func _on_kindling_slot_item_received(received_item):
 	animator.play("Lit")
 	fire_kindled=true
 	kindle_slot.setDisabled(true)
-	OverworldGlobals.getCamera().flashOverlay(Color.ORANGE,0.5)
+	OverworldGlobals.getCamera().flash(Color.ORANGE,0.5,0.05,2.0)
 	camp_kindled.emit()
 
 func noRestedBuff():
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		if member.hasTemporaryModifier('Well Rested'):
 			if heads_up_cd.is_stopped():
-				CombatGlobals.spawnIndicator(OverworldGlobals.player.current_camp_spot.global_position+Vector2(0,-32), 'Already rested!','Show',null,2)
+				OverworldGlobals.showPrompt("Already rested.")
+				#CombatGlobals.spawnIndicator(OverworldGlobals.player.current_camp_spot.global_position+Vector2(0,-32), '','Show',null,2)
 				heads_up_cd.start()
 			return false
 

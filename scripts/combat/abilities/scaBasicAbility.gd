@@ -1,12 +1,13 @@
 # Cast animations, gap closing, etc.
 static func animate(caster: CombatantScene, target, ability:ResAbility):
+	print(ability.basic_effects)
 	for effect in ability.basic_effects:
 		ability.current_effect = effect
 		#print(ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource))
-		if (target is CombatantScene and !effect.checkConditions(target.combatant_resource, caster.combatant_resource)) or (effect.is_combo_effect and !canDoCombo(effect, target)):
+		if (target is CombatantScene and !effect.checkConditions(target.combatant_resource, caster.combatant_resource)) or (effect.is_combo_effect and !canDoCombo(effect, target)) or effect == null:
 			#print(effect, ': skipping!')
 			continue
-		elif ability.getTargetType() == 1 and canDoCombo(effect, target) and !effect is ResDamageEffect:
+		elif ability.getTargetType() == 1 and canDoCombo(effect, target) and !effect is ResAttackEffect:
 			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
 		
 		if effect.animate_on == 1:
@@ -14,7 +15,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		if effect.sound_effect != null: 
 			OverworldGlobals.playSound(effect.resource_path)
 		
-		if effect is ResDamageEffect:
+		if effect is ResAttackEffect:
 			await doAttackAnimations(caster, target, ability, effect)
 		elif effect is ResCustomDamageEffect:
 			if effect.cast_animation != '': await caster.doAnimation(effect.cast_animation)
@@ -38,19 +39,6 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		elif effect is ResCommandAbilityEffect:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 			await CombatGlobals.get_tree().create_timer(0.5).timeout
-		elif effect is ResOnslaughtEffect:
-			if effect.target == effect.Target.MULTI:
-				target.get_node('CombatBars').hide()
-				CombatGlobals.getCombatScene().team_hp_bar.show()
-			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, true)
-			CombatGlobals.getCombatScene().fadeCombatant(caster, true)
-			if effect.projectile_frame != null:
-				caster.setProjectileTarget(target, effect.projectile_frame, ability, 'Onslaught')
-			await caster.doAnimation(effect.animation_name, ability.ability_script)
-			#await CombatGlobals.getCombatScene().get_tree().process_frame # This might be stupid.
-			await CombatGlobals.getCombatScene().setOnslaught(target.combatant_resource, false)
-			CombatGlobals.getCombatScene().team_hp_bar.hide()
-			target.get_node('CombatBars').show()
 		elif effect is ResAddTPEffect:
 			CombatGlobals.addTension(effect.add_amount)
 			await applyAbilityEffects(caster, target, ability)
@@ -100,7 +88,7 @@ static func playAnimation(ability: ResAbility, target):
 
 # Combat values calculations (damage, healing, etc.) APPLIES ON ATTACK HITBOX
 static func applyToTarget(caster, target, ability: ResAbility):
-	if ability.current_effect is ResDamageEffect:
+	if ability.current_effect is ResAttackEffect:
 		CombatGlobals.calculateDamage(
 				caster, 
 				target, 
@@ -108,7 +96,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 				ability.current_effect.can_crit, 
 				'', 
 				ability.current_effect.indicator_bb,
-				ability.current_effect.bonus_stats
+				ability.current_effect.getAttackBonuses(target.combatant_resource)
 				)
 		if ability.current_effect.plant_self_on_combo and target.combatant_resource.hasStatusEffect('Combo'):
 			ability.current_effect.do_not_return_pos = true
@@ -134,8 +122,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			ability.current_effect.trigger_on_hits, 
 			'', 
 			ability.current_effect.indicator_bb,
-			ability.current_effect.bonus_stats,
-			ability.current_effect.use_damage_formula
+			ability.current_effect.bonus_stats
 			)
 	
 	elif ability.current_effect is ResApplyStatusEffect:
@@ -151,46 +138,9 @@ static func applyToTarget(caster, target, ability: ResAbility):
 	
 	elif ability.current_effect is ResHealEffect:
 		CombatGlobals.calculateHealing(target, ability.current_effect.heal, ability.current_effect.use_multiplier)
-	
-	elif ability.current_effect is ResOnslaughtEffect:
-		CombatGlobals.calculateRawDamage(
-			target.combatant_resource, 
-			ability.current_effect.damage, 
-			caster.combatant_resource, 
-			#true, 
-			-1, 
-			false, 
-			caster.combatant_resource.stat_values['dmg_variance'],
-			false,
-			'', 
-			'',
-			{},
-			true
-			)
-		if target.combatant_resource.stat_modifiers.keys().has('block') and target.combatant_resource.hasStatusEffect('Guard') and target.combatant_resource.getStatusEffect('Guard').duration+1 <= target.combatant_resource.getStatusEffect('Guard').max_duration:
-			target.combatant_resource.getStatusEffect('Guard').duration += 1
-#		if target.combatant_resource.isDead():
-#			target.animator.play('Fading')
-		if ability.current_effect.target == ability.current_effect.Target.MULTI:
-			for combatant in CombatGlobals.getCombatScene().getCombatantGroup('team'):
-				if !combatant.isDead() and !target.combatant_resource.stat_modifiers.keys().has('block') and combatant != target.combatant_resource: 
-					CombatGlobals.calculateRawDamage(
-						target.combatant_resource, 
-						ability.current_effect.damage, 
-						caster.combatant_resource, 
-						false, 
-						-1, 
-					#	false, 
-						caster.combatant_resource.stat_values['dmg_variance'], 
-						false,
-						'', 
-						'',
-						{},
-						true
-						)
 
 # Attack animations (Ranged, melee)
-static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResDamageEffect):
+static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):
 	if damage_effect.cast_animation['animation'] != '':
 		if damage_effect.cast_animation['go_to_target']:
 			await caster.moveTo(target)
@@ -206,7 +156,7 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
 		await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=null,'frame_time'=0.4,'ability'=ability})
 
-static func returnToPosition(damage_effect: ResDamageEffect, caster: CombatantScene):
+static func returnToPosition(damage_effect: ResAttackEffect, caster: CombatantScene):
 	if damage_effect.return_pos and !damage_effect.do_not_return_pos:
 		await caster.moveTo(caster.get_parent())
 	if damage_effect.do_not_return_pos:

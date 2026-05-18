@@ -30,8 +30,7 @@ static func run(effect,target,status_effect):
 			effect.trigger_on_hits, 
 			effect.sound_path,
 			effect.indicator_bb,
-			effect.bonus_stats,
-			effect.use_damage_formula
+			effect.bonus_stats
 			)
 	elif effect is ResStatusCommandAbility:
 		CombatGlobals.execute_ability.emit(target, effect.ability)

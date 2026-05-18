@@ -4,9 +4,7 @@ var inventory: Array[ResItem] = [] # Marked for indirect reference. Load per ite
 var crafted_items: Array[String] = []
 var recipes: Dictionary = {
 	# .tres name -> .tres name
-	'ArrowJunk.8':{'ScrapSalvage': 1, 'Wood':1},
-	'Arrow.2':{'ArrowJunk': 1, 'ScrapSalvage': 2},
-	'ArrowSleeper':{'Arrow': 1, 'ScrapSalvage': 1,'CharmMurder':3},
+	'Arrow.2':{'ScrapSalvage': 1, 'Wood':1},
 	'Rations':{'CharmMurder': 1, 'ScrapSalvage': 1},
 	'CharmMurder':{'ScrapSalvage': 12, 'ArrowJunk': 16,'ArrowSleeper':1},
 	'RushDown':{'CritRations': 1, 'ExtraRations': 1,'Rations':1, 'ScrapSalvage':1},
@@ -14,11 +12,12 @@ var recipes: Dictionary = {
 	'Kindling':{'Wood':1,'WhittlingKnife':1}
 }
 var max_inventory: int = 1000
+var duplicate_charm_cap:int=50
 
 signal removed_item_from_inventory(item)
 signal item_equipped(item)
 signal added_item_to_inventory(item, amount)
-signal stack_item_changed(item, new_stack, old_stack)
+signal stack_item_changed(item, change_amount)
 signal item_repaired(weapon, new_durability)
 signal item_used(item)
 signal recipe_added(item_recipe)
@@ -74,7 +73,7 @@ func craftItem(item_to_craft:ResItem):
 		if item is ResCraftingTool and !item.isBroken():
 			item.useDurability()
 		elif !item is ResCraftingTool:
-			removeItemResource(item,recipe[item_filename])
+			removeItemResource(item,recipe[item_filename],false)
 	
 	addItem(craft_result[0],int(craft_result[1]))
 	if !crafted_items.has(craft_result[0]):
@@ -131,32 +130,28 @@ func addItemResource(item: ResItem, count:int=1, show_message:bool=true, check_r
 		return
 	
 	if item is ResStackItem and inventory.has(item):
+		if item.stack+count > item.max_stack: count = item.max_stack-item.stack
 		inventory[inventory.find(item)].add(count, show_message)
-	
 	elif item is ResStackItem:
 		if item.stack <= 0: item.stack = 1
 		item.add(count-1, false)
 		inventory.append(item)
-		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.name, item.stack])
 	
 	elif item is ResCharm:
-#		for i in range(count): 
-#			var dupe_item = item.duplicate()
-#			if item.parent_item != '':
-#				dupe_item.parent_item = item.parent_item
-#			else:
-#				dupe_item.parent_item = item.resource_path
-#			dupe_item.removeEmptyModifications()
 		for i in range(count): inventory.append(item)
-		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
+	
 	elif item.isRepairable() and check_restrictions:
 		item.durability = item.max_durability
 		inventory.append(item)
 		addRepairRecipe(item)
-		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
+	
 	else:
 		inventory.append(item)
-		if show_message: OverworldGlobals.showPrompt('Added [color=yellow]%s[/color].' % item)
+	
+#	if item is ResStackItem and show_message: 
+#		OverworldGlobals.showPrompt('Added [color=yellow]%s (%s)[/color].' % [item.name, item.stack])
+#	elif show_message: 
+#		OverworldGlobals.showPrompt('Added [color=yellow][img]' + item.icon.resource_path+'[/img] '+item.name)
 	
 	added_item_to_inventory.emit(item, count)
 	sortItems()
@@ -232,22 +227,22 @@ func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
 	if count == 0:
 		return
 	elif item.mandatory and !ignore_mandatory:
-		OverworldGlobals.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
+		#OverworldGlobals.showPrompt('Cannot remove [color=yellow]%s[/color]! Item is mandatory.' % [item])
 		return
 	
 	if item is ResCharm:
 		for i in range(count):
 			inventory.erase(getCharms(item)[0])
-		if prompt: OverworldGlobals.showPrompt('%sx [color=yellow]%s[/color] were removed.' % [count, item])
+		#if prompt: OverworldGlobals.showPrompt('%sx [color=yellow]%s[/color] were removed.' % [count, item])
 	elif item is ResEquippable:
 		inventory.erase(item)
-		if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] removed.' % item)
+		#if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] removed.' % item)
 	elif item is ResStackItem:
 		item.take(count)
-		if !item is ResProjectileAmmo:
-			if prompt: OverworldGlobals.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.name])
+#		if !item is ResProjectileAmmo:
+#			if prompt: OverworldGlobals.showPrompt('[color=yellow]x%s %s[/color] removed.' % [count, item.name])
 		if item.stack <= 0: 
-			if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.name])
+			#if prompt: OverworldGlobals.showPrompt('[color=yellow]%s[/color] is depleted!' % [item.name])
 			inventory.erase(item)
 	else:
 		inventory.erase(item)
@@ -272,13 +267,16 @@ func takeFromGhostStack(item: ResGhostStackItem, count):
 
 func canAdd(item, count:int=1, show_prompt=true):
 	if inventory.size() >= max_inventory:
-		if show_prompt: OverworldGlobals.showPrompt('[color=pink]You canot have more than %s items. How did you even manage this?[/color]' % max_inventory, 15)
+		if show_prompt: OverworldGlobals.showPrompt('You canot have more than [color=yellow]%s[/color] items. How did you even manage this?' % max_inventory,10)
+		return false
+	elif item is ResCharm and getItemCount(item)+count>duplicate_charm_cap:
+		if show_prompt: OverworldGlobals.showPrompt("Already have enough [color=yellow]%s%s[/color]." % ['[img]'+item.icon.resource_path+'[/img] ',item.name])
 		return false
 	elif (item is ResWeapon or item is ResCraftingTool) and hasItem(item):
-		if show_prompt: OverworldGlobals.showPrompt('Already have [color=yellow]%s[/color].' % [item])
+		#if show_prompt: OverworldGlobals.showPrompt('Already have [color=yellow]%s[/color].' % [item])
 		return false
 	elif item is ResStackItem and hasItem(item) and item.stack == item.max_stack and item.max_stack > 0:
-		if show_prompt: OverworldGlobals.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
+		#if show_prompt: OverworldGlobals.showPrompt('Adding x%s [color=yellow]%s[/color] would exceed the max stack.' % [count, item])
 		return false
 	
 	return true
@@ -350,7 +348,7 @@ func getItemType(item: ResItem)-> float:
 
 # TODO: Update proof removaal of recipes
 func isRecipeValid(item:String)->bool:
-	if !FileAccess.file_exists("res://resources/items/%s.tres" % item) or recipes.has(item):
+	if !FileAccess.file_exists("res://resources/items/%s.tres" % item) or !recipes.has(item):
 		return false
 	
 	for material in recipes[item].keys():
@@ -367,7 +365,7 @@ func saveData(save_data: Array):
 
 func loadData(save_data: InventorySaveData):
 	inventory.assign(save_data.loadInventory())
-	crafted_items = save_data.crafted_items
+	crafted_items = save_data.crafted_items.filter(func(item): return isRecipeValid(item))
 	#addAllRepairRecipes()
 
 func resetVariables():

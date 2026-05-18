@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://b6b2qvfh6cipk"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiStaminaBar.gd" id="1_bi2fb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_owc3l"]
+bg_color = Color(0, 0, 0, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="Animation" id="Animation_8gwrt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_s7126"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wkfp2"]
+_data = {
+"RESET": SubResource("Animation_8gwrt"),
+"Show": SubResource("Animation_s7126")
+}
+
+[node name="StaminaBar" type="ProgressBar"]
+offset_top = 1.0
+offset_right = 32.0
+offset_bottom = 3.0
+theme_override_styles/background = SubResource("StyleBoxFlat_owc3l")
+value = 50.0
+show_percentage = false
+script = ExtResource("1_bi2fb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wkfp2")
+}
+
+[connection signal="value_changed" from="." to="." method="_on_value_changed"]

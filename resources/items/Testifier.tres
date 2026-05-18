@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://cfftuy32qslx6"]
+[gd_resource type="Resource" script_class="ResCharm" load_steps=3 format=3 uid="uid://dc0gxjvcso6js"]
 
-[ext_resource type="Texture2D" uid="uid://yle8fosxhnxt" path="res://images/sprites/sword.png" id="1_8ie25"]
+[ext_resource type="Texture2D" uid="uid://yle8fosxhnxt" path="res://images/item_icons/sword.png" id="1_8ie25"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCharm.gd" id="2_wpvfv"]
 
 [resource]
@@ -22,4 +22,3 @@ icon = ExtResource("1_8ie25")
 description = ""
 value = 0
 mandatory = false
-allow_duplicates = false

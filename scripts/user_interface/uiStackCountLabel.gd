@@ -5,20 +5,20 @@ var item: ResStackItem
 
 func _init(p_item):
 	item = p_item
-	InventoryGlobals.stack_item_changed.connect(updateCount)
+	InventoryGlobals.stack_item_changed.connect(updateCount.unbind(1))
 
 func _enter_tree():
-	updateCount(item, item.stack, -1)
+	updateCount(item)
 	theme = load("res://design/OutlinedLabel.tres")
 
-func updateCount(changed_item, new_stack, _old_stack):
+func updateCount(changed_item):
 	if changed_item != item:
 		return
-	text = str(new_stack)
-	if item.max_stack > 0 and new_stack >= changed_item.max_stack:
+	text = str(changed_item.stack)
+	if item.max_stack > 0 and changed_item.stack >= changed_item.max_stack:
 		modulate = Color.YELLOW
 	else:
 		modulate = Color.WHITE
 	
-	if new_stack <= 0:
+	if changed_item.stack <= 0:
 		get_parent().queue_free()

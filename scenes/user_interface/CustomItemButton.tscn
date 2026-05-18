@@ -22,7 +22,6 @@ offset_bottom = 48.0
 theme = ExtResource("1_yrp6h")
 icon = ExtResource("2_j7iea")
 icon_alignment = 1
-expand_icon = true
 script = ExtResource("2_dd5ro")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -57,4 +56,5 @@ layout_mode = 1
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="pressed" from="." to="." method="_force_drag"]
 [connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]

@@ -38,6 +38,10 @@ signal single_target(type)
 signal multi_target(type)
 signal random_target(type)
 
+func setupAttackBonuses():
+	for effect in basic_effects:
+		if effect is ResAttackEffect: effect.initializeAttackBonuses()
+
 func execute():
 	match target_type:
 		TargetType.SINGLE: single_target.emit(self, 1)
@@ -184,8 +188,14 @@ func setBBColor(image_path:String, bb_color:String):
 func isBasicAbility():
 	return basic_effects.size() > 0
 
-func isOnslaught():
-	return basic_effects.filter(func(effect): return effect is ResOnslaughtEffect).size() > 0
+func isAttack():
+	for effect in basic_effects:
+		if effect is ResAttackEffect: return true
+	
+	return false
+
+#func isOnslaught():
+#	return basic_effects.filter(func(effect): return effect is ResOnslaughtEffect).size() > 0
 
 func mutateProperties(mutation: Dictionary):
 	if mutated:

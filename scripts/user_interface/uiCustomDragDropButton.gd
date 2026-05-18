@@ -12,3 +12,9 @@ func getPreview():
 	preview.z_index=4000
 	return preview
 
+func _force_drag():
+	pass # Replace with function body.
+
+
+func _force_drop():
+	pass # Replace with function body.

@@ -13,7 +13,9 @@ func _process(_delta):
 func _on_value_changed(_value):
 	if value >= max_value and changing:
 		changing=false
+		#create_tween().tween_property(self,'modulate',Color.WHITE,0.5)
 		fader.play_backwards("Show")
 	elif value < max_value and !changing:
 		changing=true
+		#create_tween().tween_property(self,'modulate',Color.TRANSPARENT,0.5)
 		fader.play("Show")
