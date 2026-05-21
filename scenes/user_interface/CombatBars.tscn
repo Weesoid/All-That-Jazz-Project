@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://by2x5bgg618kl"]
+[gd_scene load_steps=33 format=3 uid="uid://by2x5bgg618kl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="Texture2D" uid="uid://f6daxcssdpdj" path="res://images/sprites/circle_empty_small.png" id="3_8o7jm"]
@@ -28,26 +28,38 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(12, -34)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
+tracks/1/path = NodePath(".:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [Vector2(16, -64)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.359375, 2)]
 }
 
 [sub_resource type="Animation" id="Animation_7hjht"]
@@ -56,26 +68,38 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(12, -66), Vector2(12.5, -66)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(16, -64)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.359375, 2), Vector2(0.5, 2)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tmlyo"]
@@ -214,7 +238,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(12.5, -9.5)]
+"values": [Vector2(16, -1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -226,7 +250,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [3.14159]
+"values": [0.0]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -250,6 +274,137 @@ _data = {
 "Loop_Enemy": SubResource("Animation_8gmg6"),
 "RESET": SubResource("Animation_upebf"),
 "Show": SubResource("Animation_p01ae")
+}
+
+[sub_resource type="Gradient" id="Gradient_gcg5v"]
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3mxoa"]
+gradient = SubResource("Gradient_gcg5v")
+fill_from = Vector2(0.5, 0.8)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="Animation" id="Animation_5y5gy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-16, 23)]
+}
+
+[sub_resource type="Animation" id="Animation_56jpw"]
+resource_name = "Show"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -3), Vector2(0, -4), Vector2(0, -3)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sbmrq"]
+_data = {
+"RESET": SubResource("Animation_5y5gy"),
+"Show": SubResource("Animation_56jpw")
+}
+
+[sub_resource type="Animation" id="Animation_qa3k0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TargetGradient:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -26.8627)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TargetGradient:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.515625, 1.836)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TargetGradient:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ox4cc"]
+resource_name = "Show"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TargetGradient:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -27)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TargetGradient:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1.836), Vector2(0.9375, 1.836)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TargetGradient:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.686275)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7dxpw"]
+_data = {
+"RESET": SubResource("Animation_qa3k0"),
+"Show": SubResource("Animation_ox4cc")
 }
 
 [node name="CombatBars" type="Node2D"]
@@ -328,9 +483,8 @@ theme_override_constants/v_separation = 0
 alignment = 1
 
 [node name="TurnPulser" type="Sprite2D" parent="HealthBar"]
-visible = false
 modulate = Color(1, 1, 1, 0)
-position = Vector2(12, -34)
+position = Vector2(16, -64)
 scale = Vector2(0.359375, 2)
 texture = SubResource("GradientTexture2D_7aykj")
 
@@ -341,8 +495,7 @@ libraries = {
 
 [node name="TurnGradient" type="Sprite2D" parent="HealthBar"]
 z_index = -1
-position = Vector2(12.5, -9.5)
-rotation = 3.14159
+position = Vector2(16, -1)
 scale = Vector2(0.489583, 0.132812)
 texture = SubResource("GradientTexture2D_7aykj")
 
@@ -387,6 +540,29 @@ texture = ExtResource("8_fh81n")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="TargetBorder" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-16, 23)
+scale = Vector2(0.5, 1)
+texture = SubResource("GradientTexture2D_3mxoa")
+
+[node name="TargetGradient" type="Sprite2D" parent="TargetBorder"]
+modulate = Color(1, 1, 1, 0)
+z_index = -1
+position = Vector2(0, -26.8627)
+scale = Vector2(0.515625, 1.836)
+texture = SubResource("GradientTexture2D_7aykj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetBorder"]
+libraries = {
+"": SubResource("AnimationLibrary_sbmrq")
+}
+
+[node name="TurnGradientAnimator" type="AnimationPlayer" parent="TargetBorder"]
+libraries = {
+"": SubResource("AnimationLibrary_7dxpw")
+}
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

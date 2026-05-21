@@ -30,8 +30,9 @@ func addPickupLabel(item:ResItem,count:int,remove_item:bool=false):
 	pickup_label.show()
 	
 	label_container.add_child(pickup_label)
+	OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg")
 	tween.tween_property(pickup_label,'modulate', Color.WHITE,0.25)
-	tween.tween_interval(2)
+	tween.tween_interval(2.5)
 	tween.tween_property(pickup_label,'modulate', Color.TRANSPARENT,0.25)
 
 func getAddedText(item:ResItem,count:int,remove_item:bool):

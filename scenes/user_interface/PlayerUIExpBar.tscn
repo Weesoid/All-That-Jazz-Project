@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://db512n1n7dn3o"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiPlayerUIExperienceBar.gd" id="1_yvk3w"]
+[ext_resource type="PackedScene" uid="uid://4w0ius0q08ki" path="res://scenes/user_interface/ExperienceBar.tscn" id="2_cswho"]
+
+[sub_resource type="Gradient" id="Gradient_1ag1i"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tb4t3"]
+gradient = SubResource("Gradient_1ag1i")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0.1)
+
+[node name="PlayerUIExperienceBar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_yvk3w")
+
+[node name="LevelGradient" type="TextureRect" parent="."]
+modulate = Color(1, 1, 0, 0.490196)
+layout_mode = 0
+offset_left = -32.0
+offset_top = -8.0
+offset_right = 672.0
+offset_bottom = 56.0
+texture = SubResource("GradientTexture2D_tb4t3")
+
+[node name="ExperienceBar" parent="." instance=ExtResource("2_cswho")]
+layout_mode = 1
+offset_left = 224.0
+offset_top = 16.0
+offset_right = -224.0
+offset_bottom = -340.0
+show_value = true
+
+[node name="LingerTimer" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+
+[connection signal="timeout" from="LingerTimer" to="." method="_on_linger_timer_timeout"]

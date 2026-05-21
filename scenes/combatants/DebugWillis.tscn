@@ -1,8 +1,15 @@
-[gd_scene load_steps=16 format=3 uid="uid://hojidodoc70i"]
+[gd_scene load_steps=18 format=3 uid="uid://cke17m10rs7u5"]
 
-[ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_y6fp3"]
-[ext_resource type="Texture2D" uid="uid://spy638phe6iq" path="res://images/character_sprites/willis/willis_battler.png" id="2_51w0l"]
-[ext_resource type="Script" path="res://scripts/components/sccBlockTimer.gd" id="3_80gj8"]
+[ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_3j2sh"]
+[ext_resource type="Texture2D" uid="uid://spy638phe6iq" path="res://images/character_sprites/willis/willis_battler.png" id="2_3m8i6"]
+[ext_resource type="Script" path="res://scripts/components/sccBlockTimer.gd" id="3_ttsqb"]
+
+[sub_resource type="Gradient" id="Gradient_ewywm"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6p66n"]
+gradient = SubResource("Gradient_ewywm")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7c24f"]
 radius = 12.0
@@ -314,14 +321,20 @@ _data = {
 }
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-script = ExtResource("1_y6fp3")
+script = ExtResource("1_3j2sh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 clip_children = 2
-texture = ExtResource("2_51w0l")
+texture = ExtResource("2_3m8i6")
 offset = Vector2(0, -10)
 hframes = 6
 vframes = 4
+
+[node name="Sprite2D2" type="Sprite2D" parent="Sprite2D"]
+modulate = Color(1, 0, 1, 1)
+position = Vector2(10, -7)
+scale = Vector2(5.78125, 3.34375)
+texture = SubResource("GradientTexture2D_6p66n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_7c24f")
@@ -349,7 +362,7 @@ offset_bottom = -2.0
 value = 50.0
 fill_mode = 3
 show_percentage = false
-script = ExtResource("3_80gj8")
+script = ExtResource("3_ttsqb")
 
 [node name="BlockTimer" type="Timer" parent="BlockCooldownBar"]
 one_shot = true

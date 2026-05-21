@@ -31,14 +31,14 @@ description = ""
 icon = ExtResource("5_0mly7")
 basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_x0yt7")])
 ability_script = ExtResource("1_xfjkp")
-target_type = 0
+target_type = 1
 target_group = 1
 caster_position = {
-"max": 3,
+"max": 1,
 "min": 0
 }
 target_position = {
-"max": 3,
+"max": 1,
 "min": 0
 }
 charges = 0
@@ -47,5 +47,5 @@ required_effect = {
 "status_effect": null
 }
 tension_cost = 0
-instant_cast = true
+instant_cast = false
 required_level = 0

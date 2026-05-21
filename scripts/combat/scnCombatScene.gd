@@ -1,6 +1,9 @@
 extends Node2D
 class_name CombatScene
 
+const COMBATANT_DISTANCE=40
+const DEFAULT_ZOOM = Vector2(1.5,1.5)
+
 enum TargetState {
 	NONE,
 	SINGLE,
@@ -8,8 +11,10 @@ enum TargetState {
 	INSPECT
 }
 
-@export var combatants: Array[ResCombatant]
+#@export var combatants: Array[ResCombatant]
 @onready var combat_camera = $CombatCamera
+@onready var team_starting_pos = $TeamStartingPos.global_position
+@onready var enemy_starting_pos = $EnemyStartingPos.global_position
 @onready var team_container_markers = $TeamContainer.get_children()
 @onready var enemy_container_markers = $EnemyContainer.get_children()
 @onready var transition_scene = $CombatCamera/BattleTransition
@@ -32,15 +37,13 @@ var combatant_positions = {
 var combatant_turn_order: Array
 var combat_dialogue: CombatDialogue
 var unique_id: String
-var target_state: TargetState = TargetState.NONE # 0=None, 1=Single, 2=Multi
 var active_combatant: ResCombatant
 var valid_targets
 var target_combatant
-var target_index = 0
 var combat_event: ResCombatEvent
 var selected_ability: ResAbility
 var run_once = true
-var total_experience = 0
+#var total_experience = 0
 var turn_count = 0
 var round_count = 0
 var player_turn_count = 0
@@ -65,9 +68,13 @@ var reinforcements_turn: int = 50
 var is_combatant_moving = false
 var initial_damage: float = 0.0
 var combat_entity
-var reward_bank
+var reward_bank={
+	'experience':0,
+	'loot':{}
+	}
 var ability_executing:bool=false
 var rebuking:bool=false
+var targeting:bool=false
 
 signal confirm
 signal target_selected
@@ -75,6 +82,11 @@ signal update_exp(value: float, max_value: float)
 signal move_finished
 signal dialogue_done
 signal combat_done
+signal active_combatant_changed(combatant:ResCombatant)
+signal targeting_started(target_selection:Array[ResCombatant])
+signal targeting_ended
+signal target_hovered(combatant)
+signal target_exit_hover(combatant)
 
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
@@ -83,6 +95,10 @@ signal combat_done
 #	reward_bank = p_ #placeholder
 
 func _ready():
+	pass
+
+
+func initializeCombat(combatants:Array[ResCombatant]):
 	#flasher.show()
 	#team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
@@ -114,7 +130,7 @@ func _ready():
 		tickStatusEffects(combatant, true, false, true)
 	
 	if initial_damage > 0.0:
-		for combatant in getCombatantGroup('enemies'):
+		for combatant in combatant_positions['enemies']:
 			await get_tree().create_timer(0.05).timeout
 			CombatGlobals.calculateRawDamage(combatant, combatant.getMaxHealth()*initial_damage)
 	
@@ -124,34 +140,49 @@ func _ready():
 	setActiveCombatant(false)
 	while active_combatant.isImmobilized():
 		setActiveCombatant(false)
-
-
+	
 	active_combatant.act()
-#	active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
-
+	
 	transition_scene.visible = false
 	OverworldGlobals.setMouseController(true)
-
+	
 	# Handle overworld stuff
-	if combat_entity != null and combat_entity is GenericPatroller:
-		reward_bank = combat_entity.patroller_group.reward_bank
-	elif combat_entity != null:
-		reward_bank = combat_entity.get_node('CombatantSquadComponent').reward_bank
+#	if combat_entity != null and combat_entity is GenericPatroller:
+#		reward_bank = combat_entity.patroller_group.reward_bank
+#	elif combat_entity != null:
+#		reward_bank = combat_entity.get_node('CombatantSquadComponent').reward_bank
 	
 	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
 		OverworldGlobals.getCurrentMap().get_node('StalkerEngage').queue_free()
 	if OverworldGlobals.getCurrentMap().has_node('Stalker'):
 		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
-
+	
 	combat_ui.initialize()
 
-func _process(_delta):
-	match target_state:
-		TargetState.SINGLE: playerSelectSingleTarget()
-		TargetState.MULTI: playerSelectMultiTarget()
-		TargetState.INSPECT: playerSelectInspection()
+func getAllCombatants()-> Array[ResCombatant]:
+	var all_combatants: Array[ResCombatant] = [] 
+	all_combatants.append_array(combatant_positions['team'])
+	all_combatants.append_array(combatant_positions['enemies'])
+	all_combatants = all_combatants.filter(func(combatant): return combatant != null)
+	#print(all_combatants, ' poopoo')
+	return all_combatants
+
+#func sortByPosition(combatant_a, combatant_b):
+#	return getCombatantPosition(combatant_a) < getCombatantPosition(combatant_b)
+
+func getCombatantNames():
+	var out = []
+	for combatant in getAllCombatants():
+		out.append(combatant.name)
+	return out
+
+#func _process(_delta):
+#	match target_state:
+#		TargetState.SINGLE: playerSelectSingleTarget()
+#		TargetState.MULTI: playerSelectMultiTarget()
+#		TargetState.INSPECT: playerSelectInspection()
 
 func _unhandled_input(_event):
 #	if onslaught_mode and Input.is_action_just_pressed('ui_left') and !tween_running and onslaught_combatant != null and !onslaught_combatant.isDead():
@@ -161,20 +192,33 @@ func _unhandled_input(_event):
 	
 	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and !ability_executing: 
 		resetUI()
-		
+	
+	if targeting and Input.is_action_just_pressed("ui_right"):
+		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+		moveTarget('right')
+	if targeting and Input.is_action_just_pressed("ui_left"):
+		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
+		moveTarget('left')
+	if targeting and Input.is_action_just_pressed("ui_accept"):
+		removeTargetButtons()
+		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
+		target_selected.emit()
+	if targeting and Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
+		removeTargetButtons()
+
 #	if Input.is_action_just_pressed('ui_home'):
 #		if action_panel.visible == true:
 #			toggleUI(false)
 #		else:
 #			toggleUI(true)
-	if Input.is_action_pressed("ui_select_arrow") and !ui_inspect_target.visible and target_state == TargetState.SINGLE:
-		inspectTarget(true)
-	elif Input.is_action_just_released("ui_select_arrow") and target_state == TargetState.SINGLE:
-		inspectTarget(false)
+#	if Input.is_action_pressed("ui_select_arrow") and !ui_inspect_target.visible and target_state == TargetState.SINGLE:
+#		inspectTarget(true)
+#	elif Input.is_action_just_released("ui_select_arrow") and target_state == TargetState.SINGLE:
+#		inspectTarget(false)
 
 func on_player_turn():
 	ability_executing=false
-	CombatGlobals.active_combatant_changed.emit(active_combatant)
+	active_combatant_changed.emit(active_combatant)
 	if active_combatant.ai_package != null:
 		if has_node('QTE'): await CombatGlobals.qte_finished
 		if await checkWin(): return
@@ -195,7 +239,7 @@ func on_player_turn():
 
 func on_enemy_turn():
 	ability_executing=false
-	CombatGlobals.active_combatant_changed.emit(active_combatant)
+	active_combatant_changed.emit(active_combatant)
 	if has_node('QTE'): 
 		await CombatGlobals.qte_finished
 	if await checkWin(): 
@@ -206,7 +250,7 @@ func on_enemy_turn():
 func useAIPackage():
 	selected_ability = active_combatant.ai_package.selectAbility(active_combatant.ability_set, active_combatant)
 	if selected_ability != null and !active_combatant.isDead(true):
-		valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), active_combatant is ResPlayerCombatant)
+		valid_targets = selected_ability.getValidTargets(getAllCombatants(), active_combatant is ResPlayerCombatant)
 		if selected_ability.getTargetType() == 1 and selected_ability.target_group != 2:
 			target_combatant = active_combatant.ai_package.selectTarget(valid_targets)
 		else:
@@ -226,9 +270,9 @@ func playRebukeText():
 	$CombatCamera/Interface/RichTextLabel/AnimationPlayer.play('Show')
 
 func end_turn(combatant_act=true):
-	if combat_camera.zoom !=Vector2(1.6,1.6):
-		setCameraZoom(Vector2(1.6,1.6))
-	for combatant in combatants:
+	if combat_camera.zoom != DEFAULT_ZOOM:
+		setCameraZoom(DEFAULT_ZOOM)
+	for combatant in getAllCombatants():
 		combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(true)
 	#setUIModulation(Color.WHITE)
 	
@@ -239,7 +283,7 @@ func end_turn(combatant_act=true):
 	if combatant_act and (selected_ability == null or !selected_ability.instant_cast):
 		tickStatusEffects(active_combatant, false, true, false, false) # Tick down ON TURN statuses
 		active_combatant.tickTemporaryModifiers('turns')
-	for combatant in combatants: # Check for survivors!
+	for combatant in getAllCombatants(): # Check for survivors!
 		if combatant.isDead(true): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
 	if combatant_act and (selected_ability == null or !selected_ability.instant_cast):
@@ -250,11 +294,6 @@ func end_turn(combatant_act=true):
 	
 	if allCombatantsActed() and combatant_turn_order.is_empty():
 		rollTurns()
-		# Pacing, purely cosmetic. Remove if sluggish
-		#await get_tree().create_timer(0.75).timeout
-		#OverworldGlobals.playSound("714571__matrixxx__reverse-time.ogg")
-		#moveCamera(camera_position)
-		# Pacing, purely cosmetic. Remove if sluggish
 		end_turn(false)
 		return
 	
@@ -280,7 +319,7 @@ func end_turn(combatant_act=true):
 	var turn_title = 'turn/%s' % turn_count
 	CombatGlobals.dialogue_signal.emit(turn_title)
 	
-	for combatant in combatants:
+	for combatant in getAllCombatants():
 		if combatant.isDead(true): continue
 		refreshInstantCasts(combatant)
 		tickStatusEffects(combatant, true) # Tick PER TURN statuses (e.g. tick even tho its not the combatant's)
@@ -290,24 +329,24 @@ func end_turn(combatant_act=true):
 	
 	# Reset values
 	run_once = true
-	target_index = 0
+	#target_index = 0
 	
 	# REINFORCEMENTS
 	randomize()
-	if turn_count % (reinforcements_turn-1) == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
+	if turn_count % (reinforcements_turn-1) == 0 and (getDeadCombatants('enemies').size() > 0 or getLivingCombatants('enemies').size() < 4) and isCombatValid() and do_reinforcements:
 		combat_ui.writeCombatLog('Enemy reinforcements are incoming!')
-	if turn_count % reinforcements_turn == 0 and (getDeadCombatants('enemies').size() > 0 or getCombatantGroup('enemies').size() < 4) and isCombatValid() and do_reinforcements:
+	if turn_count % reinforcements_turn == 0 and (getDeadCombatants('enemies').size() > 0 or getLivingCombatants('enemies').size() < 4) and isCombatValid() and do_reinforcements:
 		combat_ui.writeCombatLog('Enemy reinforcements arrived!')
 		bonus_escape_chance -= 0.25
 		var replace = []
-		for combatant in combatants:
+		for combatant in getAllCombatants():
 			if combatant.isDead(true) and combatant is ResEnemyCombatant: replace.append(combatant)
 		for combatant in replace:
 			var replacement: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
-			replacement.drop_pool = {}
+			replacement.drop_pool = []
 			await replaceCombatant(combatant, replacement, "res://scenes/animations_abilities/Reinforcements.tscn")
-		if getCombatantGroup('enemies').size() < 4:
-			var size = getCombatantGroup('enemies').size()
+		if getLivingCombatants('enemies').size() < 4:
+			var size = getLivingCombatants('enemies').size()
 			for i in range(4 - size):
 				var random: ResEnemyCombatant = enemy_reinforcements.pick_random().duplicate()
 				await addCombatant(random, true, "res://scenes/animations_abilities/Reinforcements.tscn")
@@ -337,6 +376,7 @@ func end_turn(combatant_act=true):
 				#print('moving to active !')
 				moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
+			active_combatant_changed.emit(active_combatant)
 			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE
 		end_turn()
 		return
@@ -369,15 +409,24 @@ func removeDeadCombatants(is_valid_check=true):
 	for combatant in getDeadCombatants():
 		combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 		if !combatant.isDead(true): 
-			#clearStatusEffects(combatant)
-			#CombatGlobals.addStatusEffect(combatant, 'KnockOut')
 			combatant.acted = true
-			if combatant.combatant_scene.has_node('CombatBars'):
-				combatant.combatant_scene.get_node('CombatBars').hide()
 		if combatant is ResEnemyCombatant:
-			total_experience += combatant.getExperience()
+			getEnemyDrops(combatant)
+			print('DROPPITY DROP: ', reward_bank['loot'])
 			if combatant.spawn_on_death != null:
 				replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
+
+func getEnemyDrops(combatant:ResEnemyCombatant):
+	if combatant.items_dropped: return
+	reward_bank = CombatGlobals.combineDictionaries(reward_bank, {'experience': combatant.getExperience()})
+	reward_bank['loot'] = CombatGlobals.combineDictionaries(reward_bank['loot'], combatant.getDrops())
+	combatant.items_dropped=true
+
+func getLivingCombatants(group:String):
+	return combatant_positions[group].filter(
+		func(combatant:ResCombatant): 
+			return combatant != null and !combatant.isDead(true)
+			)
 
 #********************************************************************************
 # BASE combatant_scene NODE CONTROL
@@ -385,9 +434,9 @@ func removeDeadCombatants(is_valid_check=true):
 func calculateEscapeChance()-> float:
 	var hustle_enemies = 0
 	var hustle_allies = 0
-	for combatant in getCombatantGroup('enemies'):
+	for combatant in getLivingCombatants('enemies'):
 		hustle_enemies += combatant.base_stat_values['speed']
-	for combatant in getCombatantGroup('team'):
+	for combatant in getLivingCombatants('team'):
 		hustle_allies += combatant.base_stat_values['speed']
 	return snappedf((0.15 + ((hustle_allies-hustle_enemies)*0.01)) + bonus_escape_chance, 0.01)
 
@@ -423,45 +472,16 @@ func setUIModulation(ui_modulate: Color, duration:float=0.1):
 #********************************************************************************
 # ability SELECTION, TARGETING, AND EXECUTION
 #********************************************************************************
-func playerSelectSingleTarget():
-	if getCombatantGroup('enemies').is_empty() or (valid_targets is Array and valid_targets.is_empty()):
-		return
-	
-	if valid_targets is Array:
-		target_combatant = valid_targets[target_index]
-	else:
-		target_combatant = valid_targets
-	moveCamera(target_combatant.combatant_scene.global_position)
-	browseTargetsInputs()
-	confirmCancelInputs()
-
-func playerSelectMultiTarget():
-	if getCombatantGroup('enemies').is_empty():
-		return
-	
-	target_combatant = selected_ability.getValidTargets(combatants, true)
-	confirmCancelInputs()
-
-func playerSelectInspection():
-	valid_targets = sortCombatantsByPosition()
-	target_combatant = valid_targets[target_index]
-	ui_inspect_target.show()
-	ui_attribute_view.combatant = target_combatant
-	
-	moveCamera(target_combatant.combatant_scene.global_position)
-	browseTargetsInputs()
-	confirmCancelInputs()
-
-func inspectTarget(inspect:bool):
-	if !target_combatant is ResCombatant: return
-	
-	ui_attribute_view.combatant = target_combatant
-	if inspect:
-		ui_inspect_target.show()
-		zoomCamera(Vector2(0.25,0.25))
-	else:
-		zoomCamera(Vector2(-0.25,-0.25))
-		ui_inspect_target.hide()
+#func inspectTarget(inspect:bool):
+#	if !target_combatant is ResCombatant: return
+#
+#	ui_attribute_view.combatant = target_combatant
+#	if inspect:
+#		ui_inspect_target.show()
+#		zoomCamera(Vector2(0.25,0.25))
+#	else:
+#		zoomCamera(Vector2(-0.25,-0.25))
+#		ui_inspect_target.hide()
 
 func removeTargetToken(target, caster):
 	if target is ResCombatant and !CombatGlobals.isSameCombatantType(target,caster):
@@ -472,7 +492,7 @@ func executeAbility():
 	if !turn_timer.is_stopped(): 
 		stopTimer()
 	active_combatant.combatant_scene.z_index = 100
-	for combatant in combatants:
+	for combatant in getAllCombatants():
 		if target_combatant is ResCombatant and ((target_combatant != combatant and active_combatant != combatant) or (target_combatant is Array and !target_combatant.has(combatant) and active_combatant != combatant)):
 			CombatGlobals.setCombatantVisibility(combatant.combatant_scene, false)
 	if target_combatant is ResPlayerCombatant:
@@ -484,18 +504,19 @@ func executeAbility():
 		CombatGlobals.addTension(-selected_ability.tension_cost)
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	
+	
 	await get_tree().create_timer(0.25).timeout
 	if target_combatant is ResCombatant:
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant.combatant_scene, selected_ability)
 	else:
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant, selected_ability)
 	if selected_ability.target_type == ResAbility.TargetType.SINGLE:
-		if target_combatant.hasStatusEffect('Guard'): 
-			zoomCamera(Vector2(0.05,0.05))
+		#if target_combatant.hasStatusEffect('Guard'): 
+		zoomCamera(Vector2(0.08,0.08))
 		moveCamera(target_combatant.combatant_scene.global_position)
 	elif selected_ability.target_type == ResAbility.TargetType.MULTI:
-		if target_combatant.filter(func(combatant): return combatant.hasStatusEffect('Guard')).size() > 0:
-			zoomCamera(Vector2(0.05,0.05))
+		#if target_combatant.filter(func(combatant): return combatant.hasStatusEffect('Guard')).size() > 0:
+		zoomCamera(Vector2(0.08,0.08))
 		moveCamera(target_combatant[0].combatant_scene.global_position)
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
@@ -503,7 +524,7 @@ func executeAbility():
 		await CombatGlobals.qte_finished
 		await get_node('QTE').tree_exited
 	Input.action_release("ui_accept")
-	for combatant in combatants:
+	for combatant in getAllCombatants():
 		CombatGlobals.setCombatantVisibility(combatant.combatant_scene, true)
 	var ability_title = 'ability/%s' % selected_ability.resource_path.get_file().trim_suffix('.tres')
 	CombatGlobals.dialogue_signal.emit(ability_title)
@@ -522,35 +543,26 @@ func executeAbility():
 
 func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
-		#var guard_zoom = default_camera_zoom+Vector2(0.05,0.05)
 		target.combatant_scene.allow_block = true
 		CombatGlobals.showWarning(target.combatant_scene)
-		#CombatGlobals.showWarning(active_combatant.combatant_scene)
-		#setUIModulation(Color.TRANSPARENT)
 		target.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
 		active_combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
-#		await get_tree().process_frame
-#		if combat_camera.zoom != guard_zoom:
-#			setCameraZoom(guard_zoom)
-		#OverworldGlobals.freezeFrame(0.3,0.25)
 
 func revokeBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
 		target.combatant_scene.allow_block = false
 
 func skipTurn():
-	target_state = TargetState.NONE
+	#target_state = TargetState.NONE
 	if run_once:
 		Input.action_release("ui_accept")
 		confirm.emit()
-		#combat_ui.hideUI()
-		#action_panel.hide()
 		run_once = false
 
 # For executing combat events and such.
 func commandExecuteAbility(target, ability: ResAbility):
 	if ability.target_type == ResAbility.TargetType.MULTI:
-		target = ability.getValidTargets(combatants, active_combatant is ResPlayerCombatant)
+		target = ability.getValidTargets(getAllCombatants(), active_combatant is ResPlayerCombatant)
 	if ability.isBasicAbility():
 		ability.ability_script.animate(null, target, ability)
 	ability.ability_script.applyEffects(null, target, ability)
@@ -573,96 +585,129 @@ func setCameraZoom(set_zoom: Vector2, speed=0.25):
 	await tween.finished
 
 func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:String='', do_tween:bool=false):
-	if !isCombatValid(): #getCombatantGroup('enemies').size() == 4: 
+	if !isCombatValid() and round_count > 0: #getCombatantGroup('enemies').size() == 4: 
 		return
-	var team_container
+	var allegiance = 'team' if combatant is ResPlayerCombatant else 'enemies'
 	combatant.initializeCombatant()
-	combatant.clearAbilityMutations()
 	setSignals(combatant,true)
-	if combatant is ResPlayerCombatant:
-		team_container = team_container_markers
+	
+	if combatant.assigned_position != -1 and combatant_positions[allegiance][combatant.assigned_position] == null:
+		combatant_positions[allegiance][combatant.assigned_position] = combatant
 	else:
-		team_container = enemy_container_markers
-	if do_tween:
-		if combatant is ResPlayerCombatant:
-			combatant.combatant_scene.global_position = Vector2(-100, 0)
-		else:
-			combatant.combatant_scene.global_position = Vector2(100, 0)
+		autoFillPosition(combatant, allegiance)
+	addCombatantScene(combatant, getCombatantPosition(combatant))
+	#print(combatant_positions['team'], ' / ', combatant_positions['enemies'])
+#	if combatant is ResPlayerCombatant:
+#		team_container = team_container_markers
+#	else:
+#		team_container = enemy_container_markers
+#	if do_tween:
+#		if combatant is ResPlayerCombatant:
+#			combatant.combatant_scene.global_position = Vector2(-100, 0)
+#		else:
+#			combatant.combatant_scene.global_position = Vector2(100, 0)
 	if combatant is ResEnemyCombatant and combatant.is_converted:
 		combatant.combatant_scene.rotation_degrees = -180
 		combatant.combatant_scene.get_node('Sprite2D').flip_v = true
 #		combat_bars.rotation_degrees = 180
-	if spawned:
-		combatants.append(combatant)
-		combatant.acted = false
-		combatant.turn_charges = combatant.max_turn_charges
-		for turn_charge in range(combatant.max_turn_charges):
-			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
-			combatant_turn_order.append([combatant, rolled_speed])
+#	if spawned:
+#		combatants.append(combatant)
+#		combatant.acted = false
+#		combatant.turn_charges = combatant.max_turn_charges
+#		for turn_charge in range(combatant.max_turn_charges):
+#			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
+#			combatant_turn_order.append([combatant, rolled_speed])
 	
-	if combatant.assigned_position != -1 and team_container[combatant.assigned_position].get_children().size()==0:
-		team_container[combatant.assigned_position].add_child(combatant.combatant_scene)
-	else:
-		autoFillPosition(combatant,team_container)
+#	if combatant.assigned_position != -1 and team_container[combatant.assigned_position].get_children().size()==0:
+#		team_container[combatant.assigned_position].add_child(combatant.combatant_scene)
+#	else:
+#		autoFillPosition(combatant,team_container)
 	giveCombatBar(combatant)
 	
 	combatant.combatant_scene.doAnimation('Idle')
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(combatant, load(animation_path), 0.15)
-	if do_tween:
-		var tween = create_tween().tween_property(combatant.combatant_scene, 'global_position', combatant.combatant_scene.get_parent().global_position, 0.15)
-		await tween.finished
-		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
-	
+#	if do_tween:
+#		var tween = create_tween().tween_property(combatant.combatant_scene, 'global_position', combatant.combatant_scene.get_parent().global_position, 0.15)
+#		await tween.finished
+#		OverworldGlobals.playSound("res://audio/sounds/220190__gameaudio__blip-pop.ogg")
+#		if do_tween:
+#		if combatant is ResPlayerCombatant:
+#			combatant.combatant_scene.global_position = Vector2(-100, 0)
+#		else:
+#			combatant.combatant_scene.global_position = Vector2(100, 0)
 	combatant.startBreatheTween(true)
 
-func autoFillPosition(combatant:ResCombatant, team_container):
-	for marker in team_container:
-		if marker.get_child_count() != 0: continue
-		marker.add_child(combatant.combatant_scene)
-		break
+func addCombatantScene(combatant:ResCombatant,pos:int):
+	var scene = combatant.combatant_scene
+	var offset = Vector2(-COMBATANT_DISTANCE,0) if combatant is ResPlayerCombatant else Vector2(COMBATANT_DISTANCE,0)
+	var starting_pos = team_starting_pos if combatant is ResPlayerCombatant else enemy_starting_pos
+	var rank = pos
+	add_child(scene)
+	scene.global_position = starting_pos + (offset * rank)
+
+func getStartingPosition(combatant:ResCombatant):
+	var offset = Vector2(-COMBATANT_DISTANCE,0) if combatant is ResPlayerCombatant else Vector2(COMBATANT_DISTANCE,0)
+	var starting_pos = team_starting_pos if combatant is ResPlayerCombatant else enemy_starting_pos
+	var rank = getCombatantPosition(combatant)
+	return starting_pos + (offset * rank)
+
+func autoFillPosition(combatant:ResCombatant, allegiance:String):
+	#var spot_index=0
+	for spot in range(combatant_positions[allegiance].size()):
+		if combatant_positions[allegiance][spot] != null: continue
+		
+		combatant_positions[allegiance][spot] = combatant
+		return
 
 func giveCombatBar(combatant:ResCombatant):
 	var combat_bars = load("res://scenes/user_interface/CombatBars.tscn").instantiate()
 	combat_bars.attached_combatant = combatant
+	active_combatant_changed.connect(combat_bars.pulseTurn)
+	targeting_started.connect(combat_bars.showTargetSelector)
+	targeting_ended.connect(combat_bars.hideTargetSelector)
+	target_hovered.connect(combat_bars.showGradientHover)
 	combatant.combatant_scene.add_child(combat_bars)
 	combatant.combatant_scene.get_node('CombatBars').attached_combatant = combatant
 	combatant.combatant_scene.get_node('CombatBars').show()
 
 func replaceCombatant(combatant: ResCombatant, new_combatant: ResCombatant, animation_path:String=''):
-	combatants.erase(combatant)
-	combatant_turn_order.erase(combatant)
-	await get_tree().create_timer(0.25).timeout
-	combatant.combatant_scene.queue_free()
-	await combatant.combatant_scene.tree_exited
+	removeCombatant(combatant)
 	addCombatant(new_combatant, true)
 	if animation_path != '':
 		await CombatGlobals.playAbilityAnimation(new_combatant, load(animation_path), 0.15)
-#	escape_button.disabled = true
-	#writeCombatLog("The grasp of the void prevents your escape.")
 
 func removeCombatant(combatant: ResCombatant):
+	var combatant_group = getCombatantGroup(combatant)
+	var combatant_index = combatant_group.find(combatant)
 	combatant.combatant_scene.get_parent().get_node('CombatBars').hide()
 	setSignals(combatant,false)
-	combatants.erase(combatant)
 	combatant_turn_order.erase(combatant)
 	combatant.combatant_scene.queue_free()
+	combatant_group[combatant_index] = null
 
 # Cast Ability for players
 func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
+	targeting=true
 	selected_ability = ability
+	var target_selection:Array[ResCombatant] = []
+	target_selection.assign(selected_ability.getValidTargets(getAllCombatants(), true)) 
+	valid_targets = target_selection
+	moveTarget('')
+	targeting_started.emit(target_selection)
 	
-	valid_targets = selected_ability.getValidTargets(sortCombatantsByPosition(), true)
 	if ability.target_type == ResAbility.TargetType.MULTI:
 		addTargetClickButton(active_combatant)
 	elif valid_targets is Array:
 		for target in valid_targets: addTargetClickButton(target)
 	else:
 		addTargetClickButton(valid_targets)
-	target_state = selected_ability.getTargetType()
+	#target_state = selected_ability.getTargetType()
 	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.target_type == ability.TargetType.SINGLE:
-		targetCombatant(last_used_ability[active_combatant][1])
+		moveTarget(last_used_ability[active_combatant][1])
 	await target_selected
+	targeting=false
+	targeting_ended.emit()
 	runAbility()
 	if weapon != null: 
 		weapon.useDurability(active_combatant)
@@ -684,34 +729,36 @@ func getChargesLeft(combatant: ResCombatant, ability: ResAbility):
 		return ability.charges
 
 func getDeadCombatants(type: String=''):
-	var dead_combatants = combatants.duplicate()
-	if type == 'enemies':
-		dead_combatants = dead_combatants.filter(func(combatant): return combatant is ResEnemyCombatant)
-	elif type == 'team':
-		dead_combatants = dead_combatants.filter(func(combatant): return combatant is ResPlayerCombatant)
-	
-	return dead_combatants.filter(func getDead(combatant): return combatant.isDead(true))
-
-func targetCombatant(combatant: ResCombatant):
-	if !combatants.has(combatant): #or combatant.isDead():
-		return
-	
-	if valid_targets is Array:
-		target_index = valid_targets.find(combatant)
+	var combatants = []
+	if type == '':
+		combatants.append_array(combatant_positions['team'])
+		combatants.append_array(combatant_positions['enemies'])
 	else:
-		target_index = combatant
+		combatants = combatant_positions[type]
+	
+	return combatants.filter(func(combatant:ResCombatant): return combatant != null and combatant.isDead(true)) #dead_combatants.filter(func getDead(combatant): return combatant.isDead(return combatant != null and true))
 
-func addDropToBank(loot_drops: Dictionary):
-	for loot in loot_drops.keys():
-		if reward_bank['loot'].has(loot):
-			reward_bank['loot'][loot] += loot_drops[loot]
-		else:
-			reward_bank['loot'][loot] = loot_drops[loot]
+#func targetCombatant(combatant: ResCombatant):
+#	if !getAllCombatants().has(combatant): #or combatant.isDead():
+#		return
+	
+#	if valid_targets is Array:
+#		target_index = valid_targets.find(combatant)
+#	else:
+#		target_index = combatant
+
+#func addDropToBank(loot_drops: Dictionary):
+#	for loot in loot_drops.keys():
+#		if reward_bank['loot'].has(loot):
+#			reward_bank['loot'][loot] += loot_drops[loot]
+#		else:
+#			reward_bank['loot'][loot] = loot_drops[loot]
 
 func rollTurns():
 	combatant_turn_order.clear()
-	for combatant in combatants:
-		if combatant.isDead(true): continue
+	for combatant in getAllCombatants():
+		if combatant.isDead(true):
+			continue
 		randomize()
 		combatant.acted = false
 		combatant.turn_charges = combatant.max_turn_charges
@@ -724,45 +771,39 @@ func rollTurns():
 	#round_arrow_spinner.play("Spin")
 
 func allCombatantsActed() -> bool:
-	for combatant in combatants:
+	for combatant in getAllCombatants():
 		if !combatant.acted: 
 			return false
 	
 	return true
 
-func getCombatantFromTurnOrder(combatant: ResCombatant)-> ResCombatant:
-	for data in combatant_turn_order:
-		if data[0] == combatant: return combatant
-	
-	return null
+#func getCombatantFromTurnOrder(combatant: ResCombatant)-> ResCombatant:
+#	for data in combatant_turn_order:
+#		if data[0] == combatant: return combatant
+#
+#	return null
 
-## 'team' or 'enemies'
-func getCombatantGroup(type: String)-> Array[ResCombatant]:
-	match type:
-		'team': return combatants.duplicate().filter(func getTeam(combatant): return combatant is ResPlayerCombatant)
-		'enemies': return combatants.duplicate().filter(func getEnemies(combatant): return combatant is ResEnemyCombatant)
-	
-	return [null]
+func getCombatantGroup(combatant:ResCombatant)-> Array[ResCombatant]:
+	return combatant_positions['team'] if combatant is ResPlayerCombatant else combatant_positions['enemies']
+
+func getCombatantPosition(combatant:ResCombatant):
+	return combatant_positions['team'].find(combatant) if combatant is ResPlayerCombatant else combatant_positions['enemies'].find(combatant)
 
 func isCombatantGroupDead(type: String):
-	var group = getCombatantGroup(type)
-	for combatant in group:
-		if !combatant.isDead(true):
-			return false
-	
-	return true
+	return getLivingCombatants(type).size() <= 0
 
 func isCombatValid()-> bool:
 	return !isCombatantGroupDead('team') and !isCombatantGroupDead('enemies') and combat_result != 2
 
 func renameDuplicates():
-	var seen = []
-	for combatant in combatants:
-		if seen.has(combatant.name):
-			seen.append(combatant.name)
-			combatant.name = '%s %s' % [combatant.name, seen.count(combatant.name)]
-		else:
-			seen.append(combatant.name)
+	pass
+#	var seen = []
+#	for combatant in getAllCombatants():
+#		if seen.has(combatant.name):
+#			seen.append(combatant.name)
+#			combatant.name = '%s %s' % [combatant.name, seen.count(combatant.name)]
+#		else:
+#			seen.append(combatant.name)
 
 func checkWin():
 	if isCombatantGroupDead('team'):
@@ -804,43 +845,35 @@ func tickStatusEffects(combatant: ResCombatant, per_turn = false, update_duratio
 		if (per_turn and !effect.tick_any_turn) or (!per_turn and effect.tick_any_turn): 
 			continue
 		effect.tick(update_duration, false, do_tick)
-#		if effect.name == 'Fading' and update_duration: 
-#			CombatGlobals.manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['down-bb']+effect.getMessageIcon()+' ...!', 'Resist')
 
 func refreshInstantCasts(combatant: ResCombatant):
 	for ability in combatant.ability_set:
 		if !ability.enabled and ability.instant_cast: ability.enabled = true
 
-func incrementIndex(index:int, increment: int, limit: int):
-	return (index + increment) % limit
-
-func browseTargetsInputs():
-	if !valid_targets is Array or Input.is_action_pressed('ui_select_arrow'):
-		return
+func moveTarget(target):
+	var index = 0 if target_combatant == null else valid_targets.find(target_combatant)
+	if target is ResCombatant and target.isDead(true): target = ''
 	
-	if Input.is_action_just_pressed("ui_right"):
-		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
-		target_index = incrementIndex(target_index, 1, valid_targets.size())
-	if Input.is_action_just_pressed("ui_left"):
-		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
-		target_index = incrementIndex(target_index, -1, valid_targets.size())
-
-func confirmCancelInputs():
-	if Input.is_action_pressed('ui_select_arrow'):
-		return
-	
-	if Input.is_action_just_pressed("ui_accept") and target_state != 3:
-		removeTargetButtons()
-		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
-		target_selected.emit()
-	if Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
-		removeTargetButtons()
-		#description_panel.hide()
-		#ui_animator.play_backwards('FocusDescription')
-		#resetActionLog()
+	if selected_ability.target_type == ResAbility.TargetType.MULTI:
+		target_combatant = valid_targets
+	elif target is ResCombatant: #and getAllCombatants().has(target):
+		target_combatant = target
+	elif target == '':
+		target_combatant = valid_targets[index] if valid_targets is Array else valid_targets
+	elif target == 'left':
+		target_combatant = valid_targets[min(index-1,valid_targets.size()-1)]
+	elif target == 'right':
+		target_combatant = valid_targets[min(index+1,valid_targets.size()-1)]
+	await get_tree().process_frame
+	target_hovered.emit(target_combatant)
+	if target_combatant is Array:
+		moveCamera(target_combatant[0].combatant_scene.global_position)
+	else:
+		moveCamera(target_combatant.combatant_scene.global_position)
+	#target_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 
 func runAbility():
-	target_state = TargetState.NONE
+	#target_state = TargetState.NONE
 	if run_once:
 		executeAbility()
 		#action_panel.hide()
@@ -849,11 +882,12 @@ func runAbility():
 func concludeCombat(results: int):
 	if combat_result != -1: return
 	if !turn_timer.is_stopped(): stopTimer()
+	targeting = false
 	removeDeadCombatants(false)
 	combat_result = results
 	battle_music.stop()
 	moveCamera(default_camera_position)
-	for combatant in combatants:
+	for combatant in getAllCombatants():
 		refreshInstantCasts(combatant)
 		clearStatusEffects(combatant)
 		setSignals(combatant,false)
@@ -866,8 +900,8 @@ func concludeCombat(results: int):
 			await get_tree().create_timer(0.25).timeout
 		if (combat_result == 1 or combat_result == 2) and combatant.isOnBrink() and combatant is ResPlayerCombatant:
 			CombatGlobals.calculateHealing(combatant, combatant.getMaxHealth()*0.1,false,false)
-	target_state = TargetState.NONE
-	target_index = 0
+	#target_state = TargetState.NONE
+	#target_index = 0
 	var morale_bonus = 1
 	var loot_bonus = 1
 	var morale_before = 0
@@ -887,19 +921,19 @@ func concludeCombat(results: int):
 		if CombatGlobals.tension == 0:
 			morale_bonus += 0.25
 			bonuses.append('Exhausted Tension!')
-		reward_bank['experience'] += total_experience * morale_bonus
-		for enemy in getCombatantGroup('enemies'):
-			var enemy_drops = enemy.getDrops()
-			var barter_drops = enemy.getBarterDrops()
-			enemy_drops.merge(barter_drops)
-			addDropToBank(enemy_drops)
-			drops.merge(enemy_drops)
-		if loot_bonus > 1:
-			for i in range(loot_bonus):
-					for enemy in getCombatantGroup('enemies'):
-						var enemy_drops = enemy.getDrops()
-						addDropToBank(enemy_drops)
-						drops.merge(enemy_drops)
+		reward_bank['experience'] *= morale_bonus
+#		for enemy in combatant_positions['enemies']:
+#			var enemy_drops = enemy.getDrops()
+#			var barter_drops = enemy.getBarterDrops()
+#			enemy_drops.merge(barter_drops)
+#			#addDropToBank(enemy_drops)
+#			drops.merge(enemy_drops)
+#		if loot_bonus > 1:
+#			for i in range(loot_bonus):
+#					for enemy in combatant_positions['enemies']:
+#						var enemy_drops = enemy.getDrops()
+#						#addDropToBank(enemy_drops)
+#						drops.merge(enemy_drops)
 		var bc_ui = load("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 		bc_ui.morale = morale_before
 		bc_ui.drops = drops
@@ -910,7 +944,8 @@ func concludeCombat(results: int):
 		bc_ui.queue_free()
 	else:
 		OverworldGlobals.playSound("res://audio/sounds/51_Flee_02.ogg")
-	for combatant in getCombatantGroup('team'):
+	for combatant in combatant_positions['team']:
+		if combatant == null: continue
 		combatant.applyTalents()
 	
 	transition_scene.visible = true
@@ -957,9 +992,6 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 		combatant_b = combatant_group[current_pos+move_combatant_b_pos]
 	if combatant_b == null: 
 		combatant_b = combatant_group[current_pos+move_combatant_b_pos]
-#	killBreatheTweens(combatant)
-#	if combatant_b != null:
-#		killBreatheTweens(combatant_b.combatant_resource)
 	
 	tween_a.tween_property(combatant.combatant_scene, 'global_position', combatant_b.global_position, 0.18)
 	tween_a_rotation.tween_property(combatant.combatant_scene.get_node('Sprite2D'), 'rotation', 0.25, 0.15)
@@ -993,70 +1025,8 @@ func moveCombatantPosition(combatant: ResCombatant, combatant_group, move: int, 
 			combatant_b.combatant_resource.startBreatheTween(false)
 		combatant.startBreatheTween(false)
 
-#func killBreatheTweens(combatant: ResCombatant):
-#	if combatant.pos_tween != null:
-#		combatant.pos_tween.kill()
-#	if combatant.scale_tween != null:
-#		combatant.scale_tween.kill()
-
 func moveValid(move:int, current_pos:int, combatant_group)-> bool:
 	return (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1)
-
-#func getTamedCombatantsNames():
-#	var out = []
-#	for combatant in tamed_combatants: out.append(combatant)
-#	return out
-
-#func moveOnslaught(direction: int):
-#	if (direction==1 and onslaught_combatant.combatant_scene.global_position.x+32 > 48) or (direction==-1 and onslaught_combatant.combatant_scene.global_position.x-32 < -48):
-#		return
-#	else:
-#		randomize()
-#		OverworldGlobals.playSound("res://audio/sounds/12_human_jump_%s.ogg" % str(randi_range(1,3)))
-#	tween_running = true
-#	var pos_tween = create_tween().set_trans(Tween.TRANS_BOUNCE)
-#	var move = 32 * direction
-#	pos_tween.tween_property(onslaught_combatant.combatant_scene, 'global_position', onslaught_combatant.combatant_scene.global_position+Vector2(move, 0), 0.1)
-#	await pos_tween.finished
-#	tween_running = false
-#
-#func setOnslaught(combatant: ResPlayerCombatant, set_to:bool):
-#	await get_tree().process_frame
-#	active_combatant.combatant_scene.get_node('CombatBars').visible = false
-#	await fadeCombatant(active_combatant.combatant_scene, false)
-#	if !combatant.hasStatusEffect('Guard'):
-#		combatant.combatant_scene.setBlocking(set_to)
-#		combatant.combatant_scene.allow_block = set_to
-#
-#	for target in combatants:
-#		if target.isDead() and target != combatant:
-#			target.combatant_scene.collision.disabled = set_to
-#	if set_to:
-#		team_hp_bar.process_mode = Node.PROCESS_MODE_INHERIT
-#		onslaught_container.show()
-#		onslaught_container_animator.play("Show")
-#		previous_position = active_combatant.combatant_scene.get_parent().global_position
-#		previous_position_player = combatant.combatant_scene.get_parent().global_position
-#		active_combatant.combatant_scene.get_parent().global_position = Vector2(0, -16)
-#		onslaught_combatant = combatant
-#		var tween = CombatGlobals.getCombatScene().create_tween()
-#		tween.tween_property(combatant.combatant_scene, 'global_position', onslaught_container.get_children()[0].global_position, 0.25)
-#		await tween.finished
-#		CombatGlobals.getCombatScene().zoomCamera(Vector2(0.5,0.5))
-#	else:
-#		team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
-#		onslaught_container_animator.play_backwards("Show")
-#		onslaught_combatant = null
-#		active_combatant.combatant_scene.get_parent().global_position = previous_position
-#		combatant.combatant_scene.get_parent().global_position = previous_position_player
-#		active_combatant.combatant_scene.get_node('CombatBars').visible = true
-#		active_combatant.combatant_scene.moveTo(active_combatant.combatant_scene.get_parent())
-#		await combatant.combatant_scene.moveTo(combatant.combatant_scene.get_parent())
-#		onslaught_container.hide()
-#		CombatGlobals.getCombatScene().zoomCamera(Vector2(-0.5,-0.5))
-#
-#	onslaught_mode = set_to
-#	await get_tree().process_frame
 
 func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	var tween = CombatGlobals.getCombatScene().create_tween()
@@ -1066,15 +1036,6 @@ func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.WHITE, 0.0), duration)
 	target.get_node('CombatBars').setBarVisibility(fade_in)
 	await tween.finished
-
-func getCombatantPosition(combatant: ResCombatant=active_combatant)->int:
-	if !is_instance_valid(combatant.combatant_scene):
-		return 5
-	
-	if combatant is ResPlayerCombatant:
-		return team_container_markers.find(combatant.combatant_scene.get_parent())
-	else:
-		return enemy_container_markers.find(combatant.combatant_scene.get_parent())
 
 func sortCombatantsByPosition()-> Array[ResCombatant]:
 	var out: Array[ResCombatant] = []
@@ -1122,11 +1083,13 @@ func _on_turn_timer_timeout():
 #	flasher_animator.play(animation)
 
 func resetUI():
+	targeting=false
+	targeting_ended.emit()
 	moveCamera(default_camera_position)
 	removeTargetButtons()
 	combat_ui.showUI(true)
-	target_state = TargetState.NONE
-	target_index = 0
+	#target_state = TargetState.NONE
+	#target_index = 0
 
 func attemptEscape():
 	if CombatGlobals.randomRoll(calculateEscapeChance()):

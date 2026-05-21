@@ -16,13 +16,14 @@ enum PreferredPosition {
 @export var tier: Tier
 @export var preferred_position: PreferredPosition
 @export var chance_to_drop = 0.5
-@export var drop_count = 1
+#@export var drop_count = 1
 ## Key: Item to be dropped; Value: Vector2 representing drop chance (x) & drop count (y)
-@export var drop_pool = {}
+@export var drop_pool:Array[ResEnemyDrops] = []
 @export var is_converted: bool
 # @export var tamed_combatant: ResCombatant
 
 var spawn_on_death: ResCombatant
+var items_dropped:bool=false
 
 func initializeCombatant():
 	if ai_package == null: 
@@ -33,6 +34,7 @@ func initializeCombatant():
 	scaleStats()
 	#applyStatusEffects()
 	loadAbilities()
+	clearAbilityMutations()
 	applyStoredStatusEffects()
 
 func act():
@@ -58,17 +60,18 @@ func getExperience():
 	return ceil(gain)
 
 func getDrops():
-	if drop_pool.is_empty():
-		return {}
+	if drop_pool.is_empty(): return {}
 	var drops = {}
 	
-	for i in range(drop_count):
-		if CombatGlobals.randomRoll(chance_to_drop): 
-			var item = rollDrops()
-			if drops.has(item):
-				drops[item] += randi_range(1, drop_pool[item].y)
-			else:
-				drops[item] = randi_range(1, drop_pool[item].y)
+	for dropped_item in drop_pool:
+		if !CombatGlobals.randomRoll(dropped_item.drop_chance): continue
+		drops[dropped_item.item] = dropped_item.getDropCount()
+
+#		if drops.has(item):
+#			drops[item] += randi_range(1, drop_pool[item].y)
+#		else:
+#			drops[item] = randi_range(1, drop_pool[item].y)
+	
 	return drops
 
 #func getRawDrops():
@@ -95,15 +98,3 @@ func getBarterDrops():
 			change[InventoryGlobals.loadItemResource('BarterSalvage'+str(denom))] = int(out / denom)
 			out -= int(out / denom)
 	return change
-
-func rollDrops():
-	var total_weight = 0
-	var cum_weight = 0
-	
-	for weight in drop_pool.values():
-		total_weight += weight.x
-	
-	var random_num = randf_range(0,total_weight)
-	for drop in drop_pool:
-		cum_weight += drop_pool[drop].x
-		if random_num <= cum_weight: return drop

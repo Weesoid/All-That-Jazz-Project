@@ -35,7 +35,7 @@ func isCompleted(show_prompt:bool=true):
 			if show_prompt:
 				SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 				QuestGlobals.promptQuestCompleted(self)
-			PlayerGlobals.addExperience(int(PlayerGlobals.getRequiredExp()*experience_reward), show_prompt, true)
+			PlayerGlobals.addExperience(int(PlayerGlobals.getRequiredExp()*experience_reward), true)
 			return completed
 
 func _to_string():

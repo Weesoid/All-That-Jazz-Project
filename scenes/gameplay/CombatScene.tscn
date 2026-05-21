@@ -234,6 +234,12 @@ bus = &"Music"
 
 [node name="TurnTimer" type="Timer" parent="."]
 
+[node name="TeamStartingPos" type="Marker2D" parent="."]
+position = Vector2(-88, -16)
+
+[node name="EnemyStartingPos" type="Marker2D" parent="."]
+position = Vector2(72, -16)
+
 [node name="TeamContainer" type="Node2D" parent="."]
 position = Vector2(-24, -72)
 
@@ -312,6 +318,12 @@ scale = Vector2(0.166667, 0.375)
 texture = ExtResource("8_3ofn8")
 
 [node name="CombatCamera" parent="." instance=ExtResource("5_18n2n")]
+zoom = Vector2(1.5, 1.5)
+limit_left = -205
+limit_top = -205
+limit_right = 205
+limit_bottom = 205
+limit_smoothed = true
 
 [node name="BattleTransition" parent="CombatCamera" instance=ExtResource("6_hscg6")]
 z_index = 1000
@@ -396,3 +408,5 @@ libraries = {
 }
 
 [connection signal="timeout" from="TurnTimer" to="." method="_on_turn_timer_timeout"]
+
+[editable path="CombatCamera"]

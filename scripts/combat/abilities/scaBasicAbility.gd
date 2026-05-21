@@ -1,6 +1,5 @@
 # Cast animations, gap closing, etc.
 static func animate(caster: CombatantScene, target, ability:ResAbility):
-	print(ability.basic_effects)
 	for effect in ability.basic_effects:
 		ability.current_effect = effect
 		#print(ability.current_effect.checkConditions(target.combatant_resource, caster.combatant_resource))
@@ -17,13 +16,16 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		
 		if effect is ResAttackEffect:
 			await doAttackAnimations(caster, target, ability, effect)
+		
 		elif effect is ResCustomDamageEffect:
 			if effect.cast_animation != '': await caster.doAnimation(effect.cast_animation)
 			await applyAbilityEffects(caster, target, ability)
+		
 		elif effect is ResApplyStatusEffect:
 			if caster != null:
 				await caster.doAnimation(effect.cast_animation)
 			await applyAbilityEffects(caster, target, ability)
+		
 		elif effect is ResMoveEffect:
 			if effect.target == effect.Target.CASTER:
 				target = caster
@@ -33,18 +35,23 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, 1, true, effect.move_count)
 			elif effect.direction == effect.Direction.BACK:
 				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, -1, true, effect.move_count)
+		
 		elif effect is ResHealEffect:
 			await caster.doAnimation(effect.cast_animation)
 			await applyAbilityEffects(caster, target, ability)
+		
 		elif effect is ResCommandAbilityEffect:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 			await CombatGlobals.get_tree().create_timer(0.5).timeout
+		
 		elif effect is ResAddTPEffect:
 			CombatGlobals.addTension(effect.add_amount)
 			await applyAbilityEffects(caster, target, ability)
+		
 		elif ability.current_effect is ResChangeIdleEffect and target.temporary_idle != ability.current_effect.idle_name:
 			target.temporary_idle = ability.current_effect.idle_name
 			target.playIdle()
+		
 		elif ability.current_effect is ResStatModifierEffect:
 			target.combatant_resource.addTemporaryModifer(
 				ability.name, 
@@ -53,10 +60,10 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 				ability.current_effect.stacks,
 				ability.current_effect.duration_type == ResStatModifierEffect.DurationType.BATTLE
 				)
-			#CombatGlobals.modifyStat(target.combatant_resource, ability.current_effect.getModifications(), ability.name, ability.current_effect.stacks,true)
+		
 		elif ability.current_effect is ResCleanseEffect:
 			CombatGlobals.removeStatusEffect(target.combatant_resource, ability.current_effect.cleanse_status.name)
-	#if caster == CombatGlobals.getCombatScene().active_combatant:
+	
 	await CombatGlobals.getCombatScene().get_tree().process_frame
 	CombatGlobals.ability_finished.emit()
 
@@ -141,24 +148,32 @@ static func applyToTarget(caster, target, ability: ResAbility):
 
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):
+	print('dingaling: ', target)
+	var animation_data = {}
+	if target is Array[ResCombatant]:
+		animation_data['target_count'] = target.size()
+	
 	if damage_effect.cast_animation['animation'] != '':
 		if damage_effect.cast_animation['go_to_target']:
 			await caster.moveTo(target)
-		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ability_script)
+		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ability_script, animation_data)
 		if damage_effect.cast_animation['go_to_target']:
 			await returnToPosition(damage_effect, caster)
+	
 	elif damage_effect.damage_type == damage_effect.DamageType.MELEE:
 		await caster.moveTo(target)
-		await caster.doAnimation('Cast_Melee', ability.ability_script) # SPEED UP {'anim_speed':1.5}
+		await caster.doAnimation('Cast_Melee', ability.ability_script, animation_data) # SPEED UP {'anim_speed':1.5}
 		await returnToPosition(damage_effect, caster)
+	
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
 		await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=target,'frame_time'=0.4,'ability'=ability})
+	
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
 		await caster.doAnimation('Cast_Ranged', ability.ability_script, {'target'=null,'frame_time'=0.4,'ability'=ability})
 
 static func returnToPosition(damage_effect: ResAttackEffect, caster: CombatantScene):
 	if damage_effect.return_pos and !damage_effect.do_not_return_pos:
-		await caster.moveTo(caster.get_parent())
+		await caster.moveTo(CombatGlobals.getCombatScene().getStartingPosition(caster.combatant_resource))
 	if damage_effect.do_not_return_pos:
 		damage_effect.do_not_return_pos = false
 

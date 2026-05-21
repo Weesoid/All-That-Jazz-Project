@@ -50,6 +50,7 @@ var scale_tween: Tween
 
 signal enemy_turn
 signal player_turn
+signal health_changed(health_value)
 
 func initializeCombatant():
 	pass
@@ -299,7 +300,8 @@ func changeHealth(value:int,set_to:bool=false):
 	if stat_values['health'] > getMaxHealth():
 		stat_values['health']=getMaxHealth()
 	percent_health = float(stat_values['health'])/float(getMaxHealth())
-	print('PENAR: ',percent_health)
+	health_changed.emit(stat_values['health'])
+	#print('PENAR: ',percent_health)
 	#print('p health ', percent_health)
 
 func removeEmptyStats():

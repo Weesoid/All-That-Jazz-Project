@@ -50,7 +50,7 @@ func initialize():
 	for button in movements.get_children():
 		giveButtonFunction(button, button.ability)
 		button._ready()
-		
+	
 	CombatGlobals.tension_changed.connect(setTensionValue)
 
 func setTensionValue(prev_amount:int,amount:int, target:CombatantScene):
@@ -88,7 +88,7 @@ func increaseTensionBarAnimation(circles,increased_amount:int):
 		await get_tree().create_timer(0.1).timeout
 
 func decreaseTensionBarAnimation(circles, decrease_amount:int):
-	combat_scene.battleFlash('Flash', tension_color)
+	#combat_scene.battleFlash('Flash', tension_color)
 	var decreased = 0
 	for circle in circles:
 		if decreased >= decrease_amount:
@@ -218,7 +218,7 @@ func getAbilityButtons():
 
 func giveButtonFunction(button:CustomAbilityButton, ability:ResAbility,weapon:ResWeapon=null):
 	var active_combatant = combat_scene.active_combatant
-	var combatants = combat_scene.combatants
+	var combatants = combat_scene.getAllCombatants()
 	button.pressed.connect(castAbility.bind(ability))
 	
 	if !ability.enabled or !ability.canUse(active_combatant, combatants):
@@ -336,7 +336,7 @@ func showMovements():
 
 func canUseAbility(button: CustomAbilityButton):
 	var active_combatant = combat_scene.active_combatant
-	var combatants = combat_scene.combatants
+	var combatants = combat_scene.getAllCombatants()
 	
 	#if button.ability.name == 'Defend':
 	#	setButtonDisabled(button, active_combatant.hasStatusEffect('Guard') or active_combatant.hasStatusEffect('Guard Break'),false)

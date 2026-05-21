@@ -1,9 +1,7 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://bfov8ax1vkwa8"]
 
 [ext_resource type="Texture2D" uid="uid://yle8fosxhnxt" path="res://images/item_icons/sword.png" id="1_bl4du"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dxkuq"]
-size = Vector2(15, 6)
+[ext_resource type="Script" path="res://scripts/combat/scnAbilityAnimations.gd" id="1_d7ylm"]
 
 [sub_resource type="Animation" id="Animation_q5km3"]
 length = 0.001
@@ -33,7 +31,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_bc5m8"]
-resource_name = "Show"
+resource_name = "Execute"
 length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -62,28 +60,19 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2mfv6"]
 _data = {
-"RESET": SubResource("Animation_q5km3"),
-"Show": SubResource("Animation_bc5m8")
+"Execute": SubResource("Animation_bc5m8"),
+"RESET": SubResource("Animation_q5km3")
 }
 
 [node name="BasicAttack" type="Node2D"]
+script = ExtResource("1_d7ylm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(8, 0)
 rotation = 0.785398
 texture = ExtResource("1_bl4du")
 
-[node name="Area2D" type="Area2D" parent="Sprite2D"]
-position = Vector2(5.68434e-14, 0)
-rotation = -0.785398
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
-position = Vector2(3.5, 1)
-shape = SubResource("RectangleShape2D_dxkuq")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_2mfv6")
 }
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

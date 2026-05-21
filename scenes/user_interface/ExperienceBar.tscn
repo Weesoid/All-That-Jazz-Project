@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://4w0ius0q08ki"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/uiExperienceBar.gd" id="1_8wrwn"]
+[ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="1_i74q5"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="3_blw45"]
+
+[node name="ExperienceBar" type="ProgressBar"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+show_percentage = false
+script = ExtResource("1_8wrwn")
+
+[node name="ProgressBarTrueValues" parent="." instance=ExtResource("1_i74q5")]
+layout_mode = 1
+offset_left = 2.0
+offset_top = 6.0
+offset_right = 2.0
+offset_bottom = 6.0
+
+[node name="Level" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -11.0
+offset_right = 40.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("3_blw45")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 16
+text = "21"
+vertical_alignment = 1

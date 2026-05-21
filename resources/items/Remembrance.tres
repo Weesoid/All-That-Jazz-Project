@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResStackItem" load_steps=3 format=3 uid="uid://doq3s1csscfto"]
+
+[ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="1_oyhlp"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemStack.gd" id="2_47oft"]
+
+[resource]
+script = ExtResource("2_47oft")
+max_stack = 9999
+barter_item = false
+name = "Remembrance"
+icon = ExtResource("1_oyhlp")
+description = "Used to unlock one's abilities, among other things.
+[color=dim_gray]Reflect, rememember, reconcile.[/color]"
+value = 0
+mandatory = false

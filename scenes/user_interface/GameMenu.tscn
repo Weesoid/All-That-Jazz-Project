@@ -1,12 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dl5lgui67w0wr"]
+[gd_scene load_steps=11 format=3 uid="uid://dl5lgui67w0wr"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiGameMenu.gd" id="1_quklc"]
 [ext_resource type="PackedScene" uid="uid://ojvf2nc2mubf" path="res://CharSheet.tscn" id="2_ueswi"]
 [ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="3_iosyv"]
 [ext_resource type="PackedScene" uid="uid://l6g1sleppkxg" path="res://scenes/user_interface/Quest.tscn" id="4_4cqdi"]
-[ext_resource type="PackedScene" uid="uid://b56515n0oi2ut" path="res://scenes/user_interface/OthersMenu.tscn" id="4_7ei7o"]
-[ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="5_towl0"]
 [ext_resource type="PackedScene" uid="uid://7fibmhku182d" path="res://scenes/user_interface/CharacterPositionSlot.tscn" id="7_8qb5x"]
+[ext_resource type="PackedScene" uid="uid://4w0ius0q08ki" path="res://scenes/user_interface/ExperienceBar.tscn" id="7_b4b22"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k45et"]
 content_margin_left = 16.0
@@ -31,11 +30,6 @@ anti_aliasing = false
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xuu8a"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1wxdr"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n1dr3"]
-bg_color = Color(1, 1, 1, 1)
-border_color = Color(0, 0, 0, 1)
-anti_aliasing = false
 
 [node name="GameMenu" type="Control"]
 layout_mode = 3
@@ -112,88 +106,16 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_1wxdr")
 remove_dragged_items = false
 
-[node name="QUESTS" type="MarginContainer" parent="TabContainer"]
+[node name="JOURNAL" type="MarginContainer" parent="TabContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 266)
 layout_mode = 2
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_bottom = 36
 
-[node name="QuestList" parent="TabContainer/QUESTS" instance=ExtResource("4_4cqdi")]
+[node name="QuestList" parent="TabContainer/JOURNAL" instance=ExtResource("4_4cqdi")]
 layout_mode = 2
 alignment = 1
-
-[node name="OTHERS" parent="TabContainer" instance=ExtResource("4_7ei7o")]
-visible = false
-custom_minimum_size = Vector2(0, 266)
-layout_mode = 2
-
-[node name="Experience" type="ProgressBar" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 488.0
-offset_top = 344.0
-offset_right = 616.0
-offset_bottom = 356.0
-size_flags_vertical = 1
-theme_override_styles/fill = SubResource("StyleBoxFlat_n1dr3")
-value = 50.0
-show_percentage = false
-
-[node name="Label" type="Label" parent="Experience"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -54.0
-offset_top = -6.0
-offset_right = 62.0
-offset_bottom = 7.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_towl0")
-text = "50/100"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="Experience"]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -48.0
-offset_top = 5.0
-offset_right = 48.0
-offset_bottom = 18.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_towl0")
-text = "MORALE"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Level" type="Label" parent="Experience"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -3.0
-offset_top = -21.0
-offset_right = 31.0
-offset_bottom = -5.0
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(2, 2)
-theme = ExtResource("5_towl0")
-text = "20"
-vertical_alignment = 1
 
 [node name="CharSlots" type="HBoxContainer" parent="."]
 layout_mode = 0
@@ -216,5 +138,13 @@ formation_position = 1
 
 [node name="CharacterSlot4" parent="CharSlots" instance=ExtResource("7_8qb5x")]
 layout_mode = 2
+
+[node name="ExperienceBar" parent="." instance=ExtResource("7_b4b22")]
+layout_mode = 1
+offset_left = 488.0
+offset_top = 16.0
+offset_right = -40.0
+offset_bottom = -340.0
+show_value = true
 
 [connection signal="tab_changed" from="TabContainer" to="." method="grabTabFocus"]

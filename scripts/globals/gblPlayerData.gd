@@ -67,6 +67,7 @@ var trait_presets: Dictionary = {
 }
 
 signal level_up
+signal experience_added(level_upped:bool)
 
 func _ready():
 	initializeBenchedTeam()
@@ -119,18 +120,20 @@ func equipNewArrowType():
 #********************************************************************************
 # COMBATANT MANAGEMENT
 #********************************************************************************
-func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=false):
+func addExperience(experience: int, bypass_cap:bool=false):
 #	if team_level >= max_team_level and !bypass_cap:
 #		OverworldGlobals.showPrompt('Max party level reached!')
 #		return
-	if show_message and !OverworldGlobals.player.has_node('ExperienceGainBar'):
-		var experience_bar_view = load("res://scenes/user_interface/ExperienceGainBar.tscn").instantiate()
-		experience_bar_view.added_exp = experience
-		OverworldGlobals.player.add_child(experience_bar_view)
+#	if show_message and !OverworldGlobals.player.has_node('ExperienceGainBar'):
+#		var experience_bar_view = load("res://scenes/user_interface/ExperienceGainBar.tscn").instantiate()
+#		experience_bar_view.added_exp = experience
+#		OverworldGlobals.player.add_child(experience_bar_view)
+	var level_upped:bool=false
 	current_exp += experience
 	if team_level >= max_team_level and current_exp >= getRequiredExp() and !bypass_cap:
 		current_exp = getRequiredExp()
 		OverworldGlobals.showPrompt('Max level already reached!')
+		experience_added.emit(true)
 		return
 	if current_exp >= getRequiredExp() and (team_level < max_team_level or bypass_cap):
 		var prev_required = getRequiredExp()
@@ -138,22 +141,25 @@ func addExperience(experience: int, show_message:bool=false, bypass_cap:bool=fal
 		team_level += 1
 		current_exp = 0
 		if team_level <= max_team_level:
+			level_upped=true
 			levelUpCombatants()
-			if prev_exp - prev_required > 0:
-				addExperience(prev_exp - prev_required, show_message, bypass_cap)
+			#if prev_exp - prev_required > 0:
+			#	addExperience(prev_exp - prev_required, bypass_cap)
 		elif team_level >= max_team_level:
-			OverworldGlobals.showPrompt('Max party level reached!')
+			level_upped=true
+			levelUpCombatants()
+			#OverworldGlobals.showPrompt('Max party level reached!')
 	elif current_exp < 0:
 		current_exp = 0
+	experience_added.emit(level_upped)
 
 func levelUpTeam():
 	addExperience(getRequiredExp()-current_exp, true)
 
-func getRequiredExp() -> int:
+func getRequiredExp(level_offset:int=0) -> int:
 	var baseExp = 500.0
 	var expMultiplier = 1.25
-	#print(team_level)
-	var gain = pow(expMultiplier ** (team_level - 1), 1.0/3.0) * baseExp # Chng to cubrrt
+	var gain = pow(expMultiplier ** ((team_level+level_offset) - 1), 1.0/3.0) * baseExp # Chng to cubrrt
 	return int(gain)
 
 func increaseLevelCap(amount:int=5):
@@ -226,7 +232,6 @@ func levelUpCombatants():
 	for combatant in PlayerGlobals.team:
 		combatant.stat_points += 1
 		combatant.scaleStats()
-	OverworldGlobals.showPrompt('Party leveled up to [color=yellow]%s[/color]!' % [team_level])
 	level_up.emit()
 
 func addCombatantToTeam(combatant_id):

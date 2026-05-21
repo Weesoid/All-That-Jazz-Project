@@ -1,8 +1,15 @@
 extends Node2D
 class_name CombatantScene
 
+const HITBOX_OFFSET_POSITION = Vector2(32,0)
+const HURTBOX_RADIUS = 12
+const HURTBOX_HEIGHT = 48
+
 @onready var animator = $AnimationPlayer
 @onready var collision = $CollisionShape2D
+@onready var hitbox = $HitBox
+@onready var hitbox_shape = $HitBox/CollisionShape2D
+@onready var sprite = $Sprite2D
 @export var combatant_resource: ResCombatant
 
 var idle_animation: String = 'Idle'
@@ -11,25 +18,44 @@ var temporary_idle:String
 var hit_script: GDScript
 
 
+func _ready():
+	initializeShapes()
+
+
+func initializeShapes():
+	if combatant_resource is ResEnemyCombatant:
+		sprite.flip_h = true
+	collision.shape.radius = HURTBOX_RADIUS
+	collision.shape.height = HURTBOX_HEIGHT
+	hitbox.position = Vector2.ZERO
+	hitbox_shape.shape.size = Vector2(32,32)
+
 func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
 	if cannotAct() and !ignore_dead: 
 		return
-#	await get_tree().process_frame
-#	if CombatGlobals.getCombatScene().has_node('QTE'):
-#		await CombatGlobals.qte_finished
-#		await CombatGlobals.getCombatScene().get_node('QTE').tree_exited
+	
+	# WHAT THE FUCK IS THIS
 	if target is CombatantScene: 
 		target = target.combatant_resource
+	if target is ResCombatant or target is Array[ResCombatant]:
+		offset = Vector2(40,0)
+	if target is ResEnemyCombatant or (target is Array and target[0] is ResEnemyCombatant):
+		offset *= -1
 	if target is ResCombatant:
 		target = target.combatant_scene
-		if target.combatant_resource is ResEnemyCombatant: 
-			offset = Vector2(-40,0)
-		else:
-			offset = Vector2(40,0)
 	
 	combatant_resource.resetSprite()
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(self, 'global_position', Vector2(target.global_position.x, -14) + offset, duration)
+	var destination
+	if target is Node2D:
+		destination = Vector2(target.global_position.x, -16) + offset 
+	elif target is Array[ResCombatant]:
+		var target_pos = target[0].combatant_scene.global_position
+		destination = Vector2(target_pos.x, -16) + offset 
+	elif target is Vector2:
+		destination = target
+	
+	tween.tween_property(self, 'global_position', destination, duration)
 	await tween.finished
 	#if combatant_resource.isDead() and combatant_resource is ResEnemyCombatant:
 		#playIdle('KO')
@@ -62,7 +88,12 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 		combatant_resource.stopBreatheTween()
 	
 	#CLEAN
-	if script != null: hit_script = script
+	if script != null: 
+		hit_script = script
+		if data.has('target_count'): 
+			resizeHitbox(data['target_count'])
+		else:
+			resizeHitbox(1)
 	if animation == 'Cast_Ranged' and data.has('target') and CombatGlobals.inCombat():
 		setProjectileTarget(data['target'], data['frame_time'], data['ability'])
 	if data.keys().has('anim_speed'):
@@ -80,6 +111,13 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	if !data.has('skip_idle'):
 		playIdle()
 	hit_script = null
+
+func resizeHitbox(target_count:int):
+	var hitbox_size = 32
+	hitbox_shape.shape.size.x = hitbox_size * target_count
+	hitbox_shape.position.x = (hitbox_size/2) * (target_count+1.75)
+	if combatant_resource is ResEnemyCombatant:
+		hitbox_shape.position.x *= -1
 
 func cannotAct()-> bool:
 	return combatant_resource.isDead(true) #and !combatant_resource.hasStatusEffect('Fading')

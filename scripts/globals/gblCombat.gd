@@ -30,9 +30,11 @@ signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
-signal active_combatant_changed(combatant: ResCombatant)
+#signal active_combatant_changed(combatant: ResCombatant)
 signal tension_changed(previous_tension,current_tension,from_target)
 signal extra_stat_added(combatant,stat)
+signal ability_selected(ability)
+signal ability_cancelled(ability)
 
 # To be added
 signal health_changed(health, combatant)
@@ -305,6 +307,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	playHurtAnimation(target, damage, sound)
 	if target.isDead(true):
 		addStatusEffect(target,'Knockback',true)
+		playKnockOutTween(target)
 		target.combatant_scene.collision.set_deferred('disabled',true)
 		OverworldGlobals.freezeFrame()
 
@@ -322,6 +325,8 @@ func removeBrinkEffects(target):
 	target.combatant_scene.playIdle('Idle')
 
 func addInjury(combatant: ResCombatant, chance:float,is_grevious:bool=false):
+	if combatant.isDead(true):
+		return
 	if !randomRoll(chance):
 		manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['up-bb']+'Injury Resisted!', 'Show',true)
 		return
@@ -537,10 +542,11 @@ func playFlashTween(target: ResCombatant, color:Color):
 	var tween = getCombatScene().create_tween()
 	tween.tween_property(target.getSprite(), 'modulate', color, 0.1)
 	tween.tween_property(target.getSprite(), 'modulate', Color.WHITE, 0.2)
-#	if target is ResEnemyCombatant:
-#		getCombatScene().combat_camera.flashOverlay(Color.WHITE,0.5)
-#	else:
-#		getCombatScene().combat_camera.flashOverlay(Color.RED,0.5)
+	
+	if target is ResEnemyCombatant:
+		getCombatScene().combat_camera.flash(Color.WHITE,0.1,0.05)
+	else:
+		getCombatScene().combat_camera.flash(Color.RED,0.1,0.05)
 #	if !target.isDead():
 #		getCombatScene().flasher_animator.play('Flash')
 #	else:
@@ -562,9 +568,11 @@ func playKnockOutTween(target: ResCombatant):
 	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(target.combatant_scene, 'scale', target.combatant_scene.scale + Vector2(-1, 0), 0.15)
-	tween.tween_property(target.combatant_scene, 'scale', Vector2(1, 1), 0.15)
+	tween.tween_property(target.getSprite(), 'modulate', Color.BLACK, 0.75)
+	#tween.tween_interval(3)
+	tween.tween_property(target.getSprite(), 'self_modulate', Color.TRANSPARENT, 0.5)
 	await tween.finished
+	target.combatant_scene.hide()
 
 #func playAnimation(target: ResCombatant, animation_name: String):
 #	if !target.getAnimator().get_animation_list().has(animation_name):

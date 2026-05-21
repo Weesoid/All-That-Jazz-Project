@@ -301,6 +301,9 @@ func isFacingDown():
 	return ceil(player_direction.rotation_degrees) == 0
 
 func _unhandled_input(_event: InputEvent):
+	#if Input.is_action_just_pressed("ui_accept"):
+	#	PlayerGlobals.addExperience(999,true)
+	
 	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu") and !camping:
 		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")

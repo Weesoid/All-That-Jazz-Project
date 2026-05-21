@@ -31,7 +31,9 @@ func flash(color:Color,alpha:float=1.0, fade_in:float=0.1, fade_out:float=0.25):
 		if flashers[flash]: continue
 		
 		flashers[flash]=true
-		var tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT)
+		var tween = get_tree().create_tween() if !CombatGlobals.inCombat() else\
+					CombatGlobals.getCombatScene().create_tween()
+		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.finished.connect(func():flashers[flash]=false)
 		tween.tween_property(flash,'color',Color(color,alpha),fade_in)
 		tween.tween_property(flash,'color',Color.TRANSPARENT,fade_out)
@@ -42,13 +44,3 @@ func showOverlay(color:Color, duration:float=0.25, alpha:float=1.0):
 	var tween = get_tree().create_tween()
 	tween.tween_property(color_overlay,'color',Color(color,alpha if color != Color.TRANSPARENT else 0),duration)
 	await tween.finished
-
-#func showOverlay(color:Color,alpha:float, duration:float=0.25):
-#	for overlay in overlay_tweens:
-#		if overlay_tweens[overlay]:
-#			overlay_tweens[overlay]=true
-#			var tween = get_tree().create_tween()
-#			#tween.finished.connect(func():overlay_tweens[overlay]=false)
-#			tween.tween_property(overlay,'color',Color(color,alpha),duration)
-#			await tween.finished
-#			return

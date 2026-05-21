@@ -4,11 +4,14 @@ class_name PlayerUI
 @onready var save_indicator_animator = $Control/SaveIndicator/AnimationPlayer
 @onready var equipped_arrow_container = $ArrowContainer
 @onready var player_prompt: = $PlayerPrompt
+#@onready var level_gradient = $ExperienceBar/LevelGradient
 
 func _ready():
 	await get_tree().process_frame
-	
 	SaveLoadGlobals.done_saving.connect(showSaveIndicator)
+#	level_gradient.self_modulate=Color.TRANSPARENT
+#	$ExperienceBar.exp_bar_filled.connect(doLevelUpAnimation)
+	#PlayerGlobals.level_up.connect(doLevelUpAnimation)
 
 
 func showSaveIndicator():

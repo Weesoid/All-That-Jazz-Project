@@ -8,6 +8,7 @@ var allow_block: bool = false
 #var weapon: WeaponScene
 
 func _ready():
+	initializeShapes()
 	block_timer.timeout.connect(checkHasBlockModifier)
 	if get_node('Sprite2D').has_node('WarningGradient'):
 		$Sprite2D/WarningGradient/AnimationPlayer.play("Show")

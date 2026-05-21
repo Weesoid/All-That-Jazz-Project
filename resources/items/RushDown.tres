@@ -16,7 +16,7 @@ stat_modifications = {
 "health": 0,
 "rebuke_chance": 0.99,
 "resist": 0.0,
-"speed": 1
+"speed": 8
 }
 name = "Rushy"
 icon = ExtResource("1_hh131")

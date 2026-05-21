@@ -55,6 +55,7 @@ func initializeCombatant(do_scene:bool=true):
 	
 #	loadTalents()
 	loadAbilities()
+	clearAbilityMutations()
 	applyTalents()
 	applyAllTraits()
 	applyTemporaryModifiers()

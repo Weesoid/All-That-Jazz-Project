@@ -130,6 +130,7 @@ func showMenu(path: String, as_submenu:bool=false):
 	if !canShowMenu():
 		return
 	
+	player.player_camera.player_ui.hide()
 	var main_menu: Control = load(path).instantiate()
 	if !as_submenu:
 		main_menu.name = 'uiMenu'
@@ -155,9 +156,9 @@ func showMenu(path: String, as_submenu:bool=false):
 			closeSubmenu()
 
 func closeSubmenu():
+	#player.player_camera.player_ui.show()
 	if !player.player_camera.get_node('UI').get_node('uiMenu').has_node('uiSubmenu'):
 		return
-	
 	player.player_camera.get_node('UI').get_node('uiMenu').get_node('uiSubmenu').queue_free()
 
 ## press_type: 0: Press, 1: Held press
@@ -207,6 +208,7 @@ func setMouseController(set_to:bool):
 		get_node('MouseController').queue_free()
 
 func closeMenu(menu: Control):
+	player.player_camera.player_ui.show()
 	player.setUIVisibility(true)
 	setMouseController(false)
 	menu.queue_free()
@@ -575,11 +577,12 @@ func fadeFollowers(color: Color):
 	for follower in PlayerGlobals.getActiveFollowers():
 		follower.fade(color)
 
-func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
+func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true, end_signal=null):
 	var audio_player = AudioStreamPlayer.new()
 	audio_player.bus = "Sounds"
 	audio_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	audio_player.connect("finished", audio_player.queue_free)
+	if end_signal != null: end_signal.connect(audio_player.queue_free)
 	audio_player.pitch_scale = pitch
 	if filename.begins_with('res://'):
 		audio_player.stream = load(filename)
@@ -590,6 +593,7 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true):
 		randomize()
 		audio_player.pitch_scale += randf_range(0.0, 0.25)
 	audio_player.name = filename
+
 	if inCombat():
 		CombatGlobals.getCombatScene().add_child(audio_player)
 	else:
@@ -752,9 +756,10 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var combat_id = combat_entity.get_node('CombatantSquadComponent').unique_id
 	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
 	var map_events = getCurrentMap().events
+	var combatants:Array[ResCombatant] = []
 #	if map_events.has('patroller_effect'):
 #		enemy_squad.addLingeringEffect(map_events['patroller_effect'])
-	combat_scene.combatants.append_array(getCombatantSquad('Player'))
+	combatants.append_array(getCombatantSquad('Player'))
 #	for combatant in getCombatantSquad('Player'):
 #		combatant.lingering_effects.append_array(getCombatantSquadComponent('Player').afflicted_status_effects)
 	for combatant in enemy_squad.combatant_squad:
@@ -762,7 +767,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		var duped_combatant = combatant.duplicate()
 #		for effect in enemy_squad.afflicted_status_effects:
 #			duped_combatant.lingering_effects.append(effect)
-		combat_scene.combatants.append(duped_combatant)
+		combatants.append(duped_combatant)
 	combat_scene.combat_entity = combat_entity
 	if data.keys().has('combat_event'):
 		combat_scene.combat_event = load("res://resources/combat/events/%s.tres" % data['combat_event'])
@@ -781,6 +786,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
 	get_parent().add_child(combat_scene)
+	combat_scene.initializeCombat(combatants)
 	combat_enetered.emit()
 	combat_scene.combat_camera.make_current()
 	if combat_entity.has_node('CombatDialogue'):
@@ -794,6 +800,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	moveCamera('RESET',0.25)
 	zoomCamera(Vector2(1,1),0.25)
 	var combat_results = combat_scene.combat_result
+	var combat_drops = combat_scene.reward_bank
 	player.player_camera.make_current()
 	getCurrentMap().show()
 	player.resetStates()
@@ -812,32 +819,33 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_exited.emit()
 	entering_combat=false
 	if combat_results == 1 and give_non_pg_reward:
-		giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank, 'ADVERSARY DEFEATED !')
-		combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
+		giveRewardBank(combat_drops)
+		#giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank, 'ADVERSARY DEFEATED !')
+		#combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
 	elif combat_results == 0:
 		showGameOver('')
 
-func giveRewardBank(reward_bank: Dictionary,message:String=''):
-	var map = getCurrentMap()
-	# UI Map clear indicator handling
-	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
-	map_clear_indicator.added_exp = reward_bank['experience']
-	OverworldGlobals.player.player_camera.get_node('UI').add_child(map_clear_indicator)
-	if message != '':
-		map_clear_indicator.message.text = message
-	elif map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
-		map_clear_indicator.message.text = 'AREA CLEARED !'
-	map_clear_indicator.showAnimation(true, reward_bank)
+func giveRewardBank(reward_bank: Dictionary):
+#	var map = getCurrentMap()
+#	# UI Map clear indicator handling
+#	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+#	map_clear_indicator.added_exp = reward_bank['experience']
+#	OverworldGlobals.player.player_camera.get_node('UI').add_child(map_clear_indicator)
+#	if message != '':
+#		map_clear_indicator.message.text = message
+#	elif map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
+#		map_clear_indicator.message.text = 'AREA CLEARED !'
+#	map_clear_indicator.showAnimation(true, reward_bank)
 	
 	# Actual giving of rewards
 	PlayerGlobals.addExperience(reward_bank['experience'])
 	InventoryGlobals.giveItemDict(reward_bank['loot'],false)
 	
 	# Current map handling
-	if map.events.has('bonus_loot'): # Add generated multipliers later
-		appendBonusLoot(reward_bank['loot'])
-	if map.events.has('bonus_experience'):
-		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
+#	if map.events.has('bonus_loot'): # Add generated multipliers later
+#		appendBonusLoot(reward_bank['loot'])
+#	if map.events.has('bonus_experience'):
+#		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
 
 func appendBonusLoot(loot_dict: Dictionary, stack_multiplier:float=0.25):
 	var map = getCurrentMap()

@@ -64,6 +64,7 @@ _data = {
 }
 
 [node name="SkullKill" type="Node2D"]
+z_index = 4096
 script = ExtResource("1_pnkur")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
