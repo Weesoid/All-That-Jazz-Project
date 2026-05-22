@@ -27,16 +27,16 @@ func shake(strength: float, speed: float):
 	shake_strength = strength
 
 func flash(color:Color,alpha:float=1.0, fade_in:float=0.1, fade_out:float=0.25):
-	for flash in flashers:
-		if flashers[flash]: continue
+	for f in flashers:
+		if flashers[f]: continue
 		
-		flashers[flash]=true
+		flashers[f]=true
 		var tween = get_tree().create_tween() if !CombatGlobals.inCombat() else\
 					CombatGlobals.getCombatScene().create_tween()
 		tween.set_ease(Tween.EASE_IN_OUT)
-		tween.finished.connect(func():flashers[flash]=false)
-		tween.tween_property(flash,'color',Color(color,alpha),fade_in)
-		tween.tween_property(flash,'color',Color.TRANSPARENT,fade_out)
+		tween.finished.connect(func():flashers[f]=false)
+		tween.tween_property(f,'color',Color(color,alpha),fade_in)
+		tween.tween_property(f,'color',Color.TRANSPARENT,fade_out)
 		await tween.finished
 		return
 

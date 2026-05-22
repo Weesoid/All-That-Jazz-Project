@@ -194,6 +194,12 @@ func isAttack():
 	
 	return false
 
+func isDamaging():
+	for effect in basic_effects:
+		if effect is ResAttackEffect or effect is ResCustomDamageEffect: return true
+	
+	return false
+
 #func isOnslaught():
 #	return basic_effects.filter(func(effect): return effect is ResOnslaughtEffect).size() > 0
 

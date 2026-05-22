@@ -2,8 +2,8 @@ extends ResAttackBonus
 class_name ResAttackMove
 
 enum Direction {
-	PULL = 1,
-	PUSH = -1
+	PUSH,
+	PULL
 }
 
 @export var direction:Direction
@@ -11,3 +11,6 @@ enum Direction {
 
 func getAttackEffect():
 	return {'move': self}
+
+func getDirection():
+	return 1 if direction == Direction.PUSH else -1

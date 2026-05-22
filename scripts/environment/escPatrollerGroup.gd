@@ -7,7 +7,7 @@ class_name PatrollerGroup
 @export var destroy_objectives: bool = false
 @export var enabled:bool=true
 @export var special_chance:float = 0.25
-var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
+#var reward_bank:Dictionary= {'experience':0.0, 'loot':{}}
 
 func spawn():
 	if !enabled:
@@ -62,22 +62,22 @@ func getSpawnPoints():
 func isChancedSpawn(marker: Node2D):
 	return marker.name.to_lower().contains('chance')
 
-func giveRewards(ignore_stalker:bool=false):
-	var map: MapData = OverworldGlobals.getCurrentMap()
-	await get_tree().process_frame
-	OverworldGlobals.group_cleared.emit(self)
-	# Stalker handling
-	if !OverworldGlobals.isPlayerAlive() or (canSpawnDestructibleObjectives() and getDestructibleObjectives().size() > 0): 
-		return
-	if PlayerGlobals.current_stalker != null and !ignore_stalker and getPatrollers().size() == 0:
-		PlayerGlobals.current_stalker.spawn()
-		PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
-		return
-	
-	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
-	OverworldGlobals.giveRewardBank(reward_bank)
-	map.checkGiveClearRewards()
-	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
+#func giveRewards(ignore_stalker:bool=false):
+#	var map: MapData = OverworldGlobals.getCurrentMap()
+#	await get_tree().process_frame
+#	OverworldGlobals.group_cleared.emit(self)
+#	# Stalker handling
+#	if !OverworldGlobals.isPlayerAlive() or (canSpawnDestructibleObjectives() and getDestructibleObjectives().size() > 0): 
+#		return
+#	if PlayerGlobals.current_stalker != null and !ignore_stalker and getPatrollers().size() == 0:
+#		PlayerGlobals.current_stalker.spawn()
+#		PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
+#		return
+#
+#	PlayerGlobals.addMapLog(get_parent().scene_file_path, name)
+##	OverworldGlobals.giveRewardBank(reward_bank)
+##	map.checkGiveClearRewards()
+#	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 
 func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_destroyables:bool=true):
 	if random_unclear:
@@ -86,7 +86,7 @@ func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_
 	if give_rewards:
 		for patroller in getPatrollers():
 			var combatant_squad = patroller.get_node("CombatantSquadComponent")
-			reward_bank['experience'] += combatant_squad.getExperience()
+			#reward_bank['experience'] += combatant_squad.getExperience()
 			combatant_squad.addDrops()
 	
 	if remove_destroyables:
@@ -106,8 +106,8 @@ func escapePatrollers(random_unclear:bool=true, give_rewards:bool=false, remove_
 		patroller.destroy(true)
 		await get_tree().create_timer(randf_range(0.05, 0.15)).timeout
 
-func checkGiveRewards():
-	if getPatrollers().size() == 0: giveRewards()
+#func checkGiveRewards():
+#	if getPatrollers().size() == 0: giveRewards()
 
 func canSpawnDestructibleObjectives():
 	return destroy_objectives and getSpawnPoints().size() >= 3

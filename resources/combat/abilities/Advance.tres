@@ -26,7 +26,7 @@ target_type = 0
 target_group = 2
 caster_position = {
 "max": 3,
-"min": 1
+"min": 0
 }
 target_position = {
 "max": 3,

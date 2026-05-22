@@ -36,6 +36,8 @@ static func run(effect,target,status_effect):
 		CombatGlobals.execute_ability.emit(target, effect.ability)
 	elif effect is ResStatusAddStatus:
 		CombatGlobals.addStatusEffect(target, effect.status_effect)
+	elif effect is ResStatusCallBackup:
+		CombatGlobals.getCombatScene().callReinforcements()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 	var expiry_effects = status_effect.basic_effects.filter(func(effect): return effect.apply_on_expiry)
@@ -50,7 +52,7 @@ static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
 static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffect):
 	if (!effect.apply_once) or (effect.apply_once and status_effect.apply_once):
 		var message = ''
-		if effect.message != '' and avoidMessageSpam(status_effect):
+		if effect.message != '':
 			message = effect.message
 		if message != '':
 			CombatGlobals.manual_call_indicator.emit(status_effect.afflicted_combatant, message, 'Show')
@@ -59,8 +61,8 @@ static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffec
 	else:
 		return false
 
-static func avoidMessageSpam(status_effect: ResStatusEffect):
-	return (status_effect.tick_any_turn and status_effect.apply_once) or !status_effect.tick_any_turn
+#static func avoidMessageSpam(status_effect: ResStatusEffect):
+#	return (status_effect.tick_any_turn and status_effect.apply_once) or !status_effect.tick_any_turn
 
 static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffect,target:ResCombatant):
 	var scale

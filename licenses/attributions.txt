@@ -45,6 +45,9 @@ Footsteps_6_Dirt_shoe.wav by monte32 -- https://freesound.org/s/353799/ -- Licen
 digital campfire by vekoN -- https://freesound.org/s/537531/ -- License: Creative Commons 0
 Zapalenie_ognia.mp3 by Villen -- https://freesound.org/s/149831/ -- License: Creative Commons 0
 User Interface Elegant Wooden Confirmation Sound by qubodup -- https://freesound.org/s/822568/ -- License: Creative Commons 0
+War Horn Blast by jocmusic -- https://freesound.org/s/482686/ -- License: Creative Commons 0
+Alarm 1.ogg by jobro -- https://freesound.org/s/244113/ -- License: Creative Commons 0
+MGS detected lead.wav by jobro -- https://freesound.org/s/263652/ -- License: Creative Commons 0
 
 [Bow.wav and snippets from arrow and bow in one has been combined to make the bow shoot sound in file '178872__hanbaal__bow.ogg']
 

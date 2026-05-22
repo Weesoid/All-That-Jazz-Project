@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://cqwj2kyl56cxk"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_b33nc"]
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectCallBackup.gd" id="1_ogd71"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_uh8e1"]
+[ext_resource type="Texture2D" uid="uid://cpnm7w6o5y2fb" path="res://images/status_icons/reinforcements.png" id="4_igsc6"]
+
+[sub_resource type="Resource" id="Resource_1ps4b"]
+script = ExtResource("1_ogd71")
+apply_once = false
+message = ""
+sound_effect = "res://audio/sounds/263652__jobro__mgs-detected-lead.ogg"
+identifier = ""
+apply_on_expiry = false
+
+[resource]
+script = ExtResource("1_b33nc")
+name = "Calling Reinforcements"
+description = "This enemy is calling in reinforcements! Kill it!"
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_1ps4b")])
+status_script = ExtResource("2_uh8e1")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+seperate_instances = false
+texture = ExtResource("4_igsc6")
+style = 3
+custom_style_color = Color(0, 0, 0, 1)
+max_duration = 1
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 0
+tick_on_apply = false
+tick_type = 2
+do_ticks = true
+resistable = false
+permanent = false
+remove_on_brink = true
+hide_icon = false
+sounds = {
+"apply": "res://audio/sounds/244113__jobro__alarm-1.ogg",
+"expire": ""
+}

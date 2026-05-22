@@ -81,18 +81,18 @@ func getVerbalClearState():
 		1: return '[color=orange]Partially Cleared[/color]'
 		2: return '[color=green]Fully Cleared[/color]'
 
-func checkGiveClearRewards():
-	if getClearState() != PatrollerClearState.FULL_CLEAR:
-		return
-	
-	if events.has('reward_item'):
-		InventoryGlobals.addItemResource(events['reward_item'])
-	if events.has('bonus_loot'):
-		InventoryGlobals.giveItemDict(events['bonus_loot'],false)
-	if events.has('bonus_experience'):
-		PlayerGlobals.addExperience(events['bonus_experience'])
-	
-	PlayerGlobals.randomizeMapEvents(scene_file_path)
+#func checkGiveClearRewards():
+#	if getClearState() != PatrollerClearState.FULL_CLEAR:
+#		return
+#
+#	if events.has('reward_item'):
+#		InventoryGlobals.addItemResource(events['reward_item'])
+#	if events.has('bonus_loot'):
+#		InventoryGlobals.giveItemDict(events['bonus_loot'],false)
+#	if events.has('bonus_experience'):
+#		PlayerGlobals.addExperience(events['bonus_experience'])
+#
+#	PlayerGlobals.randomizeMapEvents(scene_file_path)
 
 func clearPatrollers():
 	for group in getPatrolGroups():

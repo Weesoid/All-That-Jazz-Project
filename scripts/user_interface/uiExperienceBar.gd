@@ -5,6 +5,7 @@ class_name ExperienceBar
 @onready var true_value = $ProgressBarTrueValues
 @onready var current_level = $Level
 var true_value_positions={}
+#var filling:bool=false
 signal exp_bar_filled
 signal fill_finished
 
@@ -26,6 +27,7 @@ func _ready():
 
 
 func update(level_upped:bool):
+	print('caught!')
 	var end_experience = PlayerGlobals.current_exp if !level_upped else PlayerGlobals.getRequiredExp(-1)
 	var value_tween = get_tree().create_tween()
 	

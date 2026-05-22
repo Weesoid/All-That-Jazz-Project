@@ -29,6 +29,7 @@ preferred_position = 0
 chance_to_drop = 0.5
 drop_pool = Array[ExtResource("3_s53eg")]([SubResource("Resource_35xkp"), SubResource("Resource_8h3gf")])
 is_converted = false
+experience_multiplier = 1.0
 name = "Dummy"
 preferred_alias = ""
 packed_scene = ExtResource("4_4d8jx")
@@ -40,7 +41,7 @@ stat_values = {
 "dmg_variance": 0.1,
 "handling": 0,
 "heal_amp": 0.0,
-"health": 20,
+"health": 90,
 "resist": 0.05,
 "resolve": 0,
 "speed": -8

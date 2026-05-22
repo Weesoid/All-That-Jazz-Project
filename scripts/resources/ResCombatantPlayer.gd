@@ -40,9 +40,10 @@ func initializeCombatant(do_scene:bool=true):
 	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
 	if !stat_modifiers.has('base_rebuke'):
-		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:0.25},'base_rebuke')
+		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:1.25},'base_rebuke')
 	if !stat_modifiers.has('base_resolve'):
-		CombatGlobals.modifyStat(self, {'resolve':3},'base_rebuke')
+		print('adding resolve!')
+		CombatGlobals.modifyStat(self, {'resolve':3},'base_resolve')
 	if !stat_values.has('strain'):
 		stat_values['strain']=0
 	if CombatGlobals.inCombat():
@@ -60,7 +61,7 @@ func initializeCombatant(do_scene:bool=true):
 	applyAllTraits()
 	applyTemporaryModifiers()
 	applyStoredStatusEffects()
-
+	if name.contains('Flynt'): print(stat_modifiers)
 #func loadTalents():
 #	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
 #

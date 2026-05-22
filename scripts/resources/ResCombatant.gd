@@ -51,6 +51,7 @@ var scale_tween: Tween
 signal enemy_turn
 signal player_turn
 signal health_changed(health_value)
+signal resolve_changed
 
 func initializeCombatant():
 	pass
@@ -301,8 +302,14 @@ func changeHealth(value:int,set_to:bool=false):
 		stat_values['health']=getMaxHealth()
 	percent_health = float(stat_values['health'])/float(getMaxHealth())
 	health_changed.emit(stat_values['health'])
-	#print('PENAR: ',percent_health)
-	#print('p health ', percent_health)
+
+func changeResolve(value:int):
+	if name.contains('Flynt'): print('adding resolve! ', value)
+	stat_values['resolve'] += value
+#	if stat_values['resolve'] > getMaxResolve():
+#		stat_values['resolve']=getMaxResolve()
+	if name.contains('Flynt'): print('resolve is now: ', stat_values['resolve'])
+	resolve_changed.emit()
 
 func removeEmptyStats():
 	var stat_keys = stat_modifiers.keys()

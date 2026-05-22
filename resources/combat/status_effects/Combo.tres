@@ -6,7 +6,6 @@
 
 [resource]
 script = ExtResource("4_fbodu")
-auto_name = false
 name = "Combo"
 description = "May apply follow up effects or bonuses."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
@@ -14,19 +13,21 @@ status_script = ExtResource("2_k3wc7")
 effect_type = 0
 remove_when = Array[int]([])
 remove_style = 0
+seperate_instances = false
 texture = ExtResource("2_6lvld")
 style = 4
+custom_style_color = Color(0, 0, 0, 1)
 max_duration = 0
 extend_duration = 1
 apply_extend_duration = false
 max_rank = 0
 tick_on_apply = true
-tick_any_turn = false
-do_ticks = true
+tick_type = 0
+do_ticks = false
 resistable = false
 permanent = true
-lingers = false
-persist_on_dead = false
+remove_on_brink = false
+hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""

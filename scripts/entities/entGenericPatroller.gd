@@ -199,11 +199,13 @@ func _on_melee_hitbox_body_entered(body):
 		OverworldGlobals.damageParty(5)
 		OverworldGlobals.changeToCombat(str(name),{},self)
 
+# TODO Give drops
 func destroy(give_drops=false, check_rewards:bool=true):
-	if give_drops:
-		var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
-		patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
-		combatant_squad.addDrops()
+	#if give_drops:
+	#	continue
+		#var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
+		#patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
+		#combatant_squad.addDrops()
 		#OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()

@@ -12,6 +12,9 @@ func _ready():
 	updateArrowIndicator()
 
 func updateArrowIndicator():
+	if PlayerGlobals.equipped_arrow == null:
+		return
+	
 	if get_child_count() == 0:
 		addArrowCounter()
 	else:

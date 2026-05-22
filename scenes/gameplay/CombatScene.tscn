@@ -235,10 +235,10 @@ bus = &"Music"
 [node name="TurnTimer" type="Timer" parent="."]
 
 [node name="TeamStartingPos" type="Marker2D" parent="."]
-position = Vector2(-88, -16)
+position = Vector2(-64, -16)
 
 [node name="EnemyStartingPos" type="Marker2D" parent="."]
-position = Vector2(72, -16)
+position = Vector2(56, -16)
 
 [node name="TeamContainer" type="Node2D" parent="."]
 position = Vector2(-24, -72)

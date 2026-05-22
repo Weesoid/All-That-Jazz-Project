@@ -1,12 +1,13 @@
 extends Node2D
 class_name CombatBar
 
+#@onready var absolute_health = $HealthBar/AbsoluteHealth
+#@onready var center_status_effects = $HealthBar/CenterStatusContainer
+#@onready var notches = $HealthBar/BarNotcher
 @onready var health_bar = $HealthBar
 @onready var health_bar_fader = $HealthBarFader
-@onready var absolute_health = $HealthBar/AbsoluteHealth
 @onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
-#@onready var center_status_effects = $HealthBar/CenterStatusContainer
 @onready var indicator_spawn_point = $Marker2D
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
 @onready var pulse_gradient = $HealthBar/TurnPulser/AnimationPlayer
@@ -16,7 +17,6 @@ class_name CombatBar
 @onready var turn_charges: CustomCountBar = $HealthBar/TurnCharges
 @onready var target_clicker = $TargetClicker
 @onready var combat_scene = CombatGlobals.getCombatScene()
-#@onready var notches = $HealthBar/BarNotcher
 @onready var resolve_bar = $HealthBar/CustomCountBar
 @onready var target_top_sprite = $TargetBorder
 @onready var target_top = $TargetBorder/AnimationPlayer
@@ -31,6 +31,7 @@ func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 	CombatGlobals.status_effect_added.connect(addStatusIcon)
 	CombatGlobals.status_effect_removed.connect(removeStatusIcon)
+	combat_scene.active_combatant_changed.connect(showActingGradient)
 	for effect in attached_combatant.status_effects:
 		addStatusIcon(attached_combatant, effect)
 	previous_value = attached_combatant.getMaxHealth()
@@ -39,7 +40,9 @@ func _ready():
 	target_top_sprite.hide()
 	target_top.play("Show")
 	attached_combatant.health_changed.connect(updateHealthBar.unbind(1))
+	attached_combatant.resolve_changed.connect(updateResolveBar)
 	updateHealthBar()
+	updateResolveBar()
 	#notches.threshold_percent = (100/attached_combatant.getMaxResolve())*0.01
 	#print(notches.threshold_percent)
 	#print(notches.)
@@ -47,6 +50,12 @@ func _ready():
 	#$HealthBar/HFlowContainer/TextureRect.modulate = SettingsGlobals.ui_colors['up']
 	#$HealthBar/HFlowContainer/TextureRect2.modulate = SettingsGlobals.ui_colors['down']
 	#$TextureProgressBar/ShieldCrest/AnimationPlayer.play("Show")
+
+func showActingGradient(combatant:ResCombatant):
+	if attached_combatant == combatant:
+		turn_gradient.play("Loop")
+	else:
+		turn_gradient.play("RESET")
 
 func pulseTurn(combatant:ResCombatant):
 	if combatant != attached_combatant: return
@@ -95,26 +104,26 @@ func showGradientHover(target):
 	#	absolute_health.hide()
 
 func updateHealthBar():
+	health_bar.max_value = int(attached_combatant.getMaxHealth())
+	health_bar.value = int(attached_combatant.stat_values['health'])
+	turn_charges.value = attached_combatant.turn_charges
+	turn_charges.max_value = attached_combatant.max_turn_charges
 	if !attached_combatant.isDead():
 		health_bar_fader.modulate=Color.WHITE
 		resolve_bar.hide()
 	else:
 		health_bar_fader.modulate=Color.RED
 		resolve_bar.show()
-	
-	health_bar.max_value = int(attached_combatant.getMaxHealth())
-	health_bar.value = int(attached_combatant.stat_values['health'])
-	if attached_combatant.isDead():
-		resolve_bar.max_value = attached_combatant.getMaxResolve()
-		resolve_bar.setValue(attached_combatant.stat_values['resolve'])
-	turn_charges.value = attached_combatant.turn_charges
-	turn_charges.max_value = attached_combatant.max_turn_charges
 	if attached_combatant.isDead(true):
 		create_tween().tween_property(self, 'modulate',Color.TRANSPARENT,0.5)
 		#OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn",attached_combatant.combatant_scene)
 		manualCallIndicator(attached_combatant,'[color=RED]KILLING BLOW!','Show',true)
 		#await tween.finished
 		return
+
+func updateResolveBar():
+	resolve_bar.max_value = attached_combatant.getMaxResolve()
+	resolve_bar.setValue(attached_combatant.stat_values['resolve'])
 
 func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	if combatant != attached_combatant or effect.hide_icon or attached_combatant.isDead(true):

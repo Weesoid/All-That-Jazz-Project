@@ -283,7 +283,8 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		if target.stat_values['resolve'] - 1 <= 0 and randomRoll(target.stat_values.get(CombatExtras.REBUKE_CHANCE,0.0)):
 			getCombatScene().doRebuke(target,caster)
 		else:
-			target.stat_values['resolve'] -= 1
+			target.changeResolve(-1)
+			#target.stat_values['resolve'] -= 1
 			addInjury(target, 1.0-target.stat_values['resist'])
 	elif target.isDead() and target.resolve_gate:
 		playBrinkEffects(target)
@@ -298,7 +299,8 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	
 	if bonus_stats.has('move'):
 		var move_data:ResAttackMove = bonus_stats['move']
-		getCombatScene().changeCombatantPosition(target, move_data.direction,false,move_data.move_count)
+		print('direcyL: ',move_data.direction)
+		getCombatScene().moveCombatant(target, move_data.getDirection(),move_data.move_count)
 	
 	if hasBonusStat(bonus_stats, 'tp') and caster is ResPlayerCombatant:
 		pass # DO LATER
@@ -306,6 +308,8 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	
 	playHurtAnimation(target, damage, sound)
 	if target.isDead(true):
+		for effect in target.status_effects:
+			if effect.remove_on_brink: removeStatusEffect(target, effect.name)
 		addStatusEffect(target,'Knockback',true)
 		playKnockOutTween(target)
 		target.combatant_scene.collision.set_deferred('disabled',true)
@@ -410,7 +414,8 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 		target.removeTokens(ResStatusEffect.RemoveType.GET_HEAL)
 
 func healResolve(target: ResCombatant, amount:int):
-	target.stat_values['resolve'] += amount
+	target.changeResolve(amount)
+	#target.stat_values['resolve'] += amount
 	if target.stat_values['resolve'] > target.getMaxResolve():
 		target.stat_values['resolve'] = target.getMaxResolve()
 
@@ -467,7 +472,7 @@ func combineDictionaries(dict_a:Dictionary, dict_b:Dictionary)-> Dictionary:
 		if out.has(stat) and (out[stat] is int or out[stat] is float):
 			out[stat] += appending_dict[stat]
 		elif out.has(stat) and out[stat] is Array:
-			out[stat].append(appending_dict[stat])
+			out[stat].append_array(appending_dict[stat])
 		else:
 			out[stat] = appending_dict[stat]
 	
@@ -490,10 +495,10 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 	var animation = animation_scene.instantiate()
 	target.combatant_scene.add_child(animation)
 	if time > 0.0:
-		animation.playAnimation(target.combatant_scene.position)
+		animation.playAnimation(target.combatant_scene.global_position)
 		await get_tree().create_timer(time).timeout
 	else:
-		await animation.playAnimation(target.combatant_scene.position)
+		await animation.playAnimation(target.combatant_scene.global_position)
 
 func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 	if target.stat_modifiers.keys().has('block'):
@@ -566,7 +571,7 @@ func playSecondWindTween(target: ResCombatant):
 
 func playKnockOutTween(target: ResCombatant):
 	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
-
+	print('running on ', target.name)
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(target.getSprite(), 'modulate', Color.BLACK, 0.75)
 	#tween.tween_interval(3)
@@ -660,11 +665,11 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		if status_effect.sounds['apply'] != '': OverworldGlobals.playSound(status_effect.sounds['apply'])
 	else:
 		rankUpStatusEffect(target, status_effect)
-		if status_effect.max_rank > 0:
-			if target.getStatusEffect(status_effect.name).current_rank < status_effect.max_rank:
-				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Up')
-			elif target.getStatusEffect(status_effect.name).current_rank >= status_effect.max_rank:
-				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Max')
+#		if status_effect.max_rank > 0:
+#			if target.getStatusEffect(status_effect.name).current_rank < status_effect.max_rank:
+#				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Up')
+#			elif target.getStatusEffect(status_effect.name).current_rank >= status_effect.max_rank:
+#				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Max')
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
 	if target.status_effects.has(status_effect) and !status_effect.hide_icon: # Because some effects get removed on apply!

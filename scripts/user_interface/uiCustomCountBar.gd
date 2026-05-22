@@ -26,8 +26,7 @@ func _ready():
 		process_mode = Node.PROCESS_MODE_DISABLED
 
 func _process(_delta):
-	if !valuesCorrect():
-		updateValue()
+	if !valuesCorrect(): updateValue()
 
 func valuesCorrect()-> bool:
 	var empty = 0

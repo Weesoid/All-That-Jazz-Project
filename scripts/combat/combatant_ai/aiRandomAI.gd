@@ -1,10 +1,10 @@
 static func selectAbility(abilities: Array[ResAbility], caster: ResCombatant):
-	print('received: ', abilities)
+	#print('received: ', abilities)
 	abilities = abilities.filter(
 		func getEnabled(ability: ResAbility):
 			return ability.enabled and ability.canUse(caster, ability.getValidTargets(CombatGlobals.getCombatScene().getAllCombatants(), caster is ResPlayerCombatant))
 	)
-	print(abilities)
+	#print(abilities)
 	if !abilities.is_empty():
 		randomize()
 		return abilities.pick_random()

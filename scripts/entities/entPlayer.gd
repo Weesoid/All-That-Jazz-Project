@@ -302,7 +302,7 @@ func isFacingDown():
 
 func _unhandled_input(_event: InputEvent):
 	#if Input.is_action_just_pressed("ui_accept"):
-	#	PlayerGlobals.addExperience(999,true)
+	#	PlayerGlobals.addExperience(150,true)
 	
 	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu") and !camping:

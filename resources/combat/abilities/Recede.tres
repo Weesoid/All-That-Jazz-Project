@@ -25,11 +25,11 @@ ability_script = ExtResource("1_rxpyl")
 target_type = 0
 target_group = 2
 caster_position = {
-"max": 2,
+"max": 3,
 "min": 0
 }
 target_position = {
-"max": 2,
+"max": 3,
 "min": 0
 }
 charges = 0

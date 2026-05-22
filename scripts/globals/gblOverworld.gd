@@ -7,7 +7,6 @@ enum PlayerType {
 
 var entering_combat:bool=false
 var player_type: PlayerType = PlayerType.WILLIS
-var delayed_rewards: Dictionary
 var player_follower_count = 0
 var player: PlayerScene
 
@@ -429,11 +428,11 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
-	if !delayed_rewards.is_empty():
-		getCurrentMap().REWARD_BANK = delayed_rewards
-		getCurrentMap().giveRewards()
-		await SaveLoadGlobals.done_saving
-		delayed_rewards.clear()
+#	if !delayed_rewards.is_empty():
+#		getCurrentMap().REWARD_BANK = delayed_rewards
+#		getCurrentMap().giveRewards()
+#		await SaveLoadGlobals.done_saving
+#		delayed_rewards.clear()
 	#print(getCurrentMap().name, ' <=========================================')
 
 func forceGiveRewards():
@@ -463,18 +462,17 @@ func getAllPatrollers():
 func destroyAllPatrollers(respawn:bool=false):
 	for patroller in getAllPatrollers():
 		patroller.destroy(false,false)
-	#player.player_camera.clearRewardBanks()
+#	player.player_camera.clearRewardBanks()
 	await get_tree().process_frame
 	for group in getCurrentMap().getPatrolGroups():
-		group.reward_bank = {'loot':{},'experience':0.0}
-		if respawn and !group.isCleared():
-			group.spawn()
-
-func getMapRewardBank(key: String):
-	return get_tree().current_scene.REWARD_BANK[key]
-
-func setMapRewardBank(key: String, value):
-	get_tree().current_scene.REWARD_BANK[key] = value
+#		group.reward_bank = {'loot':{},'experience':0.0}
+		if respawn and !group.isCleared(): group.spawn()
+#
+#func getMapRewardBank(key: String):
+#	return get_tree().current_scene.REWARD_BANK[key]
+#
+#func setMapRewardBank(key: String, value):
+#	get_tree().current_scene.REWARD_BANK[key] = value
 
 #func getTamedNames():
 #	var out = []
@@ -781,7 +779,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_scene.do_reinforcements = enemy_squad.do_reinforcements
 	combat_scene.can_escape = enemy_squad.can_escape
 	combat_scene.turn_time = enemy_squad.turn_time
-	combat_scene.reinforcements_turn = enemy_squad.reinforcements_turn
+	#combat_scene.reinforcements_turn = enemy_squad.reinforcements_turn
 	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
@@ -818,28 +816,28 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		setPlayerInput(true)
 	combat_exited.emit()
 	entering_combat=false
-	if combat_results == 1 and give_non_pg_reward:
-		giveRewardBank(combat_drops)
+#	if combat_results == 1 and give_non_pg_reward:
+#		giveRewardBank(combat_drops)
 		#giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank, 'ADVERSARY DEFEATED !')
 		#combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
-	elif combat_results == 0:
-		showGameOver('')
+#	elif combat_results == 0:
+#		showGameOver('')
 
-func giveRewardBank(reward_bank: Dictionary):
-#	var map = getCurrentMap()
-#	# UI Map clear indicator handling
-#	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
-#	map_clear_indicator.added_exp = reward_bank['experience']
-#	OverworldGlobals.player.player_camera.get_node('UI').add_child(map_clear_indicator)
-#	if message != '':
-#		map_clear_indicator.message.text = message
-#	elif map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
-#		map_clear_indicator.message.text = 'AREA CLEARED !'
-#	map_clear_indicator.showAnimation(true, reward_bank)
-	
-	# Actual giving of rewards
-	PlayerGlobals.addExperience(reward_bank['experience'])
-	InventoryGlobals.giveItemDict(reward_bank['loot'],false)
+#func giveRewardBank(reward_bank: Dictionary):
+##	var map = getCurrentMap()
+##	# UI Map clear indicator handling
+##	var map_clear_indicator = load("res://scenes/user_interface/MapClearedIndicator.tscn").instantiate()
+##	map_clear_indicator.added_exp = reward_bank['experience']
+##	OverworldGlobals.player.player_camera.get_node('UI').add_child(map_clear_indicator)
+##	if message != '':
+##		map_clear_indicator.message.text = message
+##	elif map.getClearState() == map.PatrollerClearState.FULL_CLEAR:
+##		map_clear_indicator.message.text = 'AREA CLEARED !'
+##	map_clear_indicator.showAnimation(true, reward_bank)
+#
+#	# Actual giving of rewards
+#	PlayerGlobals.addExperience(reward_bank['experience'])
+#	InventoryGlobals.giveItemDict(reward_bank['loot'],false)
 	
 	# Current map handling
 #	if map.events.has('bonus_loot'): # Add generated multipliers later

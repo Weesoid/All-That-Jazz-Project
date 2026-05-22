@@ -9,8 +9,7 @@ class_name EnemyCombatantSquad
 @export var turn_time: float = 0.0
 @export var can_escape:bool = true
 @export var do_reinforcements:bool = true
-@export var reinforcements_turn:int = 50
-var reward_bank ={'experience':0.0, 'loot':{}}
+#var reward_bank ={'experience':0.0, 'loot':{}}
 
 func _ready():
 	unique_id = get_parent().name
@@ -49,22 +48,6 @@ func getMajorityFaction()-> int:
 		faction_count[combatant.faction] += 1
 	
 	return faction_count.find_key(faction_count.values().max())
-	
-func getRawDrops():
-	var drops = {}
-	for member in combatant_squad:
-		if member == null: continue
-		drops.merge(member.getDrops())
-		drops.merge(member.getBarterDrops())
-	return drops
-
-func addDrops():
-	var loot_drops = getRawDrops()
-	for loot in loot_drops.keys():
-		if get_parent().patroller_group.reward_bank['loot'].keys().has(loot):
-			get_parent().patroller_group.reward_bank['loot'][loot] += loot_drops[loot]
-		else:
-			get_parent().patroller_group.reward_bank['loot'][loot] = loot_drops[loot]
 
 func getExperience():
 	var out = 0

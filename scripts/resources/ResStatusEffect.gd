@@ -14,7 +14,8 @@ enum RemoveType {
 	GET_TARGETED,
 	GET_STATUSED,
 	ON_TURN,
-	GET_MISSED
+	GET_MISSED,
+	ROUND_START
 }
 enum RemoveStyle {
 	REMOVE,
@@ -27,6 +28,11 @@ enum StatusStyle {
 	UNIQUE,
 	SPECIAL,
 	CUSTOM
+}
+enum TickType {
+	ON_TURN,
+	PER_TURN,
+	ROUND_START
 }
 
 ## NOTE: Always name status effects with the following convention: File-GuardBreak.tres;Name-Guard Break
@@ -48,7 +54,7 @@ enum StatusStyle {
 @export var max_rank: int
 @export var tick_on_apply: bool = true
 ## Do ticks even though it's not the afflicted combatant's turn.
-@export var tick_any_turn: bool
+@export var tick_type: TickType = TickType.ON_TURN
 @export var do_ticks: bool = true
 @export var resistable: bool = true
 @export var permanent: bool = false

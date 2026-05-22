@@ -10,8 +10,7 @@ class_name ResStalkerData
 	"unique_id": "",
 	"turn_time": 0.0,
 	"can_escape": true,
-	"do_reinforcements": true,
-	"reinforcements_turn": 50
+	"do_reinforcements": true
 }
 @export var warning_flash: PackedScene
 @export var flash_follow: bool

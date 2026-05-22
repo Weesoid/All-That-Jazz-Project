@@ -20,6 +20,7 @@ enum PreferredPosition {
 ## Key: Item to be dropped; Value: Vector2 representing drop chance (x) & drop count (y)
 @export var drop_pool:Array[ResEnemyDrops] = []
 @export var is_converted: bool
+@export var experience_multiplier:float = 1.0
 # @export var tamed_combatant: ResCombatant
 
 var spawn_on_death: ResCombatant
@@ -57,7 +58,7 @@ func getExperience():
 		hustle = base_stat_values['speed']*2
 	# TODO Revalue this
 	var gain = (base_stat_values["health"] * 0.2) + (base_stat_values["damage"]) + base_stat_values["handling"] + hustle + ((base_stat_values["crit"] * base_stat_values["crit_amp"]) * 100) + (base_stat_values["heal_amp"] * 1.5) + (base_stat_values["resist"] * 100)
-	return ceil(gain)
+	return ceil(gain)*experience_multiplier
 
 func getDrops():
 	if drop_pool.is_empty(): return {}

@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://dw301yjyxtln0"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectDamage.gd" id="1_baj65"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="2_12g4j"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="3_rklmc"]
+[ext_resource type="Texture2D" uid="uid://cws4qm00g4avt" path="res://images/status_icons/icon_poison.png" id="4_n3f2u"]
+
+[sub_resource type="Resource" id="Resource_h03bo"]
+script = ExtResource("1_baj65")
+damage = 1
+rank_scaling = true
+use_damage_formula = false
+bonus_stats = {}
+crit_chance = -1.0
+variation = -1.0
+trigger_on_hits = false
+sound_path = "res://audio/sounds/46_Poison_01.ogg"
+indicator_bb = "[color=purple][img color=purple]res://images/status_icons/icon_poison.png[/img]"
+apply_once = false
+message = ""
+sound_effect = ""
+identifier = "tickdmg"
+apply_on_expiry = false
+
+[resource]
+script = ExtResource("2_12g4j")
+name = "Burn"
+description = "Target takes damage per turn."
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_h03bo")])
+status_script = ExtResource("3_rklmc")
+effect_type = 0
+remove_when = Array[int]([])
+remove_style = 0
+seperate_instances = false
+texture = ExtResource("4_n3f2u")
+style = 5
+custom_style_color = Color(1, 0.568627, 0, 1)
+max_duration = 8
+extend_duration = 1
+apply_extend_duration = false
+max_rank = 100
+tick_on_apply = false
+tick_type = 1
+do_ticks = true
+resistable = true
+permanent = false
+remove_on_brink = false
+hide_icon = false
+sounds = {
+"apply": "",
+"expire": ""
+}

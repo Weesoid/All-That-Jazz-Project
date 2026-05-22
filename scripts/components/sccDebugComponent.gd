@@ -5,7 +5,7 @@ extends Node2D
 @onready var coordinates = $VBoxContainer/Coordinates
 @onready var playtime_info = $VBoxContainer/PlaytimeInfo
 @onready var equipped_charm = $VBoxContainer/EquippedCharm
-@onready var reward_bank = $VBoxContainer/RewardBank
+#@onready var reward_bank = $VBoxContainer/RewardBank
 @onready var save_name = $VBoxContainer/SaveName
 @onready var speed = $VBoxContainer/Speed
 var clipboard = DisplayServer.clipboard_get()

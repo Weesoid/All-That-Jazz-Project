@@ -32,9 +32,9 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			else:
 				target = target
 			if effect.direction == effect.Direction.FORWARD:
-				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, 1, true, effect.move_count)
+				await CombatGlobals.getCombatScene().moveCombatant(target.combatant_resource, -1, effect.move_count)
 			elif effect.direction == effect.Direction.BACK:
-				await CombatGlobals.getCombatScene().changeCombatantPosition(target.combatant_resource, -1, true, effect.move_count)
+				await CombatGlobals.getCombatScene().moveCombatant(target.combatant_resource, 1, effect.move_count)
 		
 		elif effect is ResHealEffect:
 			await caster.doAnimation(effect.cast_animation)
@@ -173,7 +173,7 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 
 static func returnToPosition(damage_effect: ResAttackEffect, caster: CombatantScene):
 	if damage_effect.return_pos and !damage_effect.do_not_return_pos:
-		await caster.moveTo(CombatGlobals.getCombatScene().getStartingPosition(caster.combatant_resource))
+		await caster.moveTo(CombatGlobals.getCombatScene().getRankPosition(caster.combatant_resource))
 	if damage_effect.do_not_return_pos:
 		damage_effect.do_not_return_pos = false
 

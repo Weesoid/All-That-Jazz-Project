@@ -1,0 +1,2 @@
+extends ResBasicEffect
+class_name ResStatusCallBackup
