@@ -297,9 +297,12 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	if bonus_stats.has('status_effects'):
 		for effect in bonus_stats['status_effects']: addStatusEffect(target, effect, false)
 	
+	if bonus_stats.has('dot_effects'):
+		for dot_data in bonus_stats['dot_effects']: 
+			addStatusEffect(target, dot_data[0], false, dot_data[1])
+	
 	if bonus_stats.has('move'):
 		var move_data:ResAttackMove = bonus_stats['move']
-		print('direcyL: ',move_data.direction)
 		getCombatScene().moveCombatant(target, move_data.getDirection(),move_data.move_count)
 	
 	if hasBonusStat(bonus_stats, 'tp') and caster is ResPlayerCombatant:
@@ -652,6 +655,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 			var id = property.split('_')[1]
 			var basic_effect = findBasicEffect(id, status_effect)
 			for basic_effect_property in effect_overrides:
+				print('setting %s to %s !' % [basic_effect_property, effect_overrides[basic_effect_property]])
 				basic_effect.set(basic_effect_property, effect_overrides[basic_effect_property])
 		elif status_effect.get(property) != null:
 			status_effect.set(property, override_data[property])

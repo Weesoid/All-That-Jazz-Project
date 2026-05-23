@@ -24,7 +24,7 @@ enum DamageType {
 ##			"Poison+Riposte" Will add an array of status effects
 ##			"status_effect": "Poison^{"duration":6,"be_<identifier>":{"damange",9}}" Will override status effects properties
 ##		move = Move the target combatant. e.g. "move": "f,1" (Means forward one space) (b,2 would mean backward 2 spaces)
-var bonus_stats: Dictionary={}
+#var bonus_stats: Dictionary={}
 ## Only applicable if damage type is "Custom". What animation the caster will do.
 @export var cast_animation: Dictionary= {'animation': '', 'go_to_target': false} 
 @export var can_miss: bool = true
@@ -34,20 +34,20 @@ var bonus_stats: Dictionary={}
 @export var indicator_bb:  String = ''
 var do_not_return_pos: bool=false
 
-func initializeAttackBonuses():
-	for bonus in attack_bonuses:
-		bonus_stats.merge(bonus.getAttackEffect())
+#func initializeAttackBonuses():
+#	for bonus in attack_bonuses:
+#		bonus_stats.merge(bonus.getAttackEffect())
 
 func getAttackBonuses(target:ResCombatant):
+	return getPassedAttackBonuses(target, attack_bonuses) 
+
+static func getPassedAttackBonuses(target:ResCombatant, p_attack_bonuses: Array):
 	var out = {}
 	
-	for attack_bonus in attack_bonuses:
-		if !attack_bonus.conditionsPassed(target): continue
-		
+	for attack_bonus in p_attack_bonuses:
+		if !attack_bonus.conditionsPassed(target): 
+			continue
 		out = CombatGlobals.combineDictionaries(out,attack_bonus.getAttackEffect())
-		#if attack_bonus is ResAttackStats:
-		#elif attack_bonus is ResAttackStatusEffect:
-		#	out = CombatGlobals.combineDictionaries(out,attack_bonus.getEffects())
 	
 	return out 
 

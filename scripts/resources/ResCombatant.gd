@@ -104,9 +104,9 @@ func setBreatheTween(mode:int):
 func act():
 	pass
 
-func loadAbilities():
-	for ability in ability_set:
-		if ability.isAttack(): ability.setupAttackBonuses()
+#func loadAbilities():
+#	for ability in ability_set:
+#		if ability.isAttack(): ability.setupAttackBonuses()
 
 func scaleStats():
 	var stat_bonuses = {}

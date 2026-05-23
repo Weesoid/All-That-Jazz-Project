@@ -19,7 +19,7 @@ static func run(effect,target,status_effect):
 		var damage = effect.damage
 		if effect.rank_scaling:
 			damage *= status_effect.current_rank
-		effect.bonus_stats['is_dot']=true
+		#effect.bonus_stats['is_dot']=true
 		CombatGlobals.calculateRawDamage(
 			status_effect.afflicted_combatant, 
 			damage, 
@@ -30,13 +30,14 @@ static func run(effect,target,status_effect):
 			effect.trigger_on_hits, 
 			effect.sound_path,
 			effect.indicator_bb,
-			effect.bonus_stats
+			effect.getAttackBonuses(target)
 			)
 	elif effect is ResStatusCommandAbility:
 		CombatGlobals.execute_ability.emit(target, effect.ability)
 	elif effect is ResStatusAddStatus:
 		CombatGlobals.addStatusEffect(target, effect.status_effect)
 	elif effect is ResStatusCallBackup:
+		print('calling da reinforcements!!!!!!!')
 		CombatGlobals.getCombatScene().callReinforcements()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):

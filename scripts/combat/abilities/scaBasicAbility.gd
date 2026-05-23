@@ -63,7 +63,12 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		
 		elif ability.current_effect is ResCleanseEffect:
 			CombatGlobals.removeStatusEffect(target.combatant_resource, ability.current_effect.cleanse_status.name)
-	
+		
+		elif ability.current_effect is ResDotEffect:
+			var dot_data = ability.current_effect.getDot()
+			print(dot_data)
+			CombatGlobals.addStatusEffect(target.combatant_resource, dot_data[0], false, dot_data[1])
+		
 	await CombatGlobals.getCombatScene().get_tree().process_frame
 	CombatGlobals.ability_finished.emit()
 

@@ -55,7 +55,7 @@ func initializeCombatant(do_scene:bool=true):
 	
 	
 #	loadTalents()
-	loadAbilities()
+	#loadAbilities()
 	clearAbilityMutations()
 	applyTalents()
 	applyAllTraits()

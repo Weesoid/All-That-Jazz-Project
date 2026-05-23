@@ -34,7 +34,7 @@ func initializeCombatant():
 	base_stat_values = stat_values.duplicate()
 	scaleStats()
 	#applyStatusEffects()
-	loadAbilities()
+	#loadAbilities()
 	clearAbilityMutations()
 	applyStoredStatusEffects()
 

@@ -38,9 +38,9 @@ signal single_target(type)
 signal multi_target(type)
 signal random_target(type)
 
-func setupAttackBonuses():
-	for effect in basic_effects:
-		if effect is ResAttackEffect: effect.initializeAttackBonuses()
+#func setupAttackBonuses():
+#	for effect in basic_effects:
+#		if effect is ResAttackEffect: effect.initializeAttackBonuses()
 
 func execute():
 	match target_type:

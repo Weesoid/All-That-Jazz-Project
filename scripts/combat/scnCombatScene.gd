@@ -371,6 +371,7 @@ func usedInstantCastAbility():
 	return selected_ability != null and selected_ability.instant_cast
 
 func canCallReinforcements()->bool:
+	
 	var party_sizes_valid = getLivingCombatants('enemies').size() <= 2 and getLivingCombatants('team').size() >= 2
 	var no_attacks = false
 	if round_count > 3:

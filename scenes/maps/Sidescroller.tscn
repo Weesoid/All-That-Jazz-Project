@@ -234,6 +234,7 @@ position = Vector2(-412, -20)
 
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
 enemy_pool = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("11_2bouc")])
+do_reinforcements = false
 combatant_squad = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("11_2bouc")])
 afflicted_status_effects = Array[String](["CriticalEye"])
 
