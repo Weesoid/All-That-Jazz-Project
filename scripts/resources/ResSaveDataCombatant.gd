@@ -100,18 +100,3 @@ func loadCharms():
 		i += 1
 	
 	return out
-
-#func loadTalents():
-#	var valid_talents = []
-#	for talent_path in file_references['active_talents']:
-#		if !ResourceLoader.has_cached(talent_path): continue
-#
-#		var updated_talent = ResourceLoader.load(talent_path)
-#		var recorded_rank = file_references['active_talents'][talent_path]
-		
-#		if !ResourceLoader.has_cached(talent_path):
-#			remove.append(talent_path)
-#			stat_points += updated_talent.getCost(recorded_rank)
-#			continue
-#
-#		active_talents[load(talent_path)] = file_references['active_talents'][talent_path]

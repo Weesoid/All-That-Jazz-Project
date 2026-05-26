@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ojvf2nc2mubf"]
+[gd_scene load_steps=17 format=3 uid="uid://ojvf2nc2mubf"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCharSheet.gd" id="1_rjlo0"]
 [ext_resource type="Resource" uid="uid://cohe0ng5gyu4h" path="res://resources/combat/combatants_player/Willis.tres" id="2_m3n0x"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://cgxbv7ymo7vn7" path="res://images/sprites/crossed_swords.png" id="7_xwp5c"]
 [ext_resource type="Texture2D" uid="uid://ccre7bmdc0170" path="res://images/sprites/shield_n_sword.png" id="9_nr02g"]
 [ext_resource type="PackedScene" uid="uid://covj2vpfron6x" path="res://scenes/user_interface/CustomEquipSlotButton.tscn" id="11_bkdfs"]
-[ext_resource type="Texture2D" uid="uid://b6otb3unpofi5" path="res://images/sprites/icon_sack.png" id="11_llh6e"]
 [ext_resource type="PackedScene" uid="uid://b68qkjahvueeo" path="res://scenes/user_interface/AutoAttributeViewContainer.tscn" id="11_m2ko1"]
 [ext_resource type="Texture2D" uid="uid://biboupl0greug" path="res://images/sprites/icon_combat_item_trans.png" id="12_7p8h7"]
 [ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="17_5qdjy"]
@@ -67,6 +66,10 @@ layout_mode = 2
 [node name="AbilityContainer" parent="Sheet/LeftBeef/AbilitiesViewer" instance=ExtResource("4_54gjm")]
 layout_mode = 2
 
+[node name="ModifierViewer" parent="Sheet/LeftBeef/AbilitiesViewer" instance=ExtResource("2_sie86")]
+visible = false
+layout_mode = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Sheet/LeftBeef/AbilitiesViewer"]
 layout_mode = 2
 size_flags_vertical = 10
@@ -88,10 +91,6 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 text = "25"
 horizontal_alignment = 2
-
-[node name="ModifierViewer" parent="Sheet/LeftBeef" instance=ExtResource("2_sie86")]
-visible = false
-layout_mode = 2
 
 [node name="Center" type="MarginContainer" parent="Sheet"]
 layout_mode = 2
@@ -118,6 +117,7 @@ size_flags_vertical = 4
 [node name="Marker2D" type="Marker2D" parent="Sheet/Center/CharacterPosition"]
 
 [node name="Control" type="Control" parent="Sheet/Center"]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
@@ -151,14 +151,8 @@ layout_mode = 2
 
 [node name="Equipment" type="HBoxContainer" parent="Sheet/Right/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_vertical = 0
 alignment = 1
-
-[node name="ToggleEquipment" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("3_2vum2")]
-visible = false
-layout_mode = 2
-texture = ExtResource("11_llh6e")
-auto_resize = false
 
 [node name="Weapon" parent="Sheet/Right/VBoxContainer/Equipment" instance=ExtResource("11_bkdfs")]
 layout_mode = 2
@@ -211,7 +205,6 @@ one_shot = true
 [connection signal="pressed" from="Sheet/LeftBeef/HBoxContainer/ToggleAbilityModifiers" to="." method="_on_toggle_ability_modifiers_pressed"]
 [connection signal="pressed" from="Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents" to="." method="_on_show_talents_pressed"]
 [connection signal="pressed" from="Sheet/Right/HBoxContainer2/ToggleStats" to="." method="_on_toggle_stats_pressed"]
-[connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/ToggleEquipment" to="." method="equipmentButtonPressed"]
 [connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/Weapon" to="." method="equipmentButtonPressed"]
 [connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/SlotA" to="." method="equipmentButtonPressed"]
 [connection signal="pressed" from="Sheet/Right/VBoxContainer/Equipment/SlotB" to="." method="equipmentButtonPressed"]

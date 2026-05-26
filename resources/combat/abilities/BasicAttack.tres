@@ -1,26 +1,19 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=10 format=3 uid="uid://bnol4xomec0g1"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://bnol4xomec0g1"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
-[ext_resource type="Script" path="res://scripts/resources/ResDamageOvertimeEffect.gd" id="2_bc1if"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_jyuxu"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusDot.gd" id="3_xxi4i"]
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusTP.gd" id="4_ico1d"]
 
-[sub_resource type="Resource" id="Resource_kp0u2"]
-script = ExtResource("2_bc1if")
-dot_effect = 1
-damage = 6
-duration = 1
-
-[sub_resource type="Resource" id="Resource_aemje"]
-script = ExtResource("3_xxi4i")
-dot_effects = Array[ExtResource("2_bc1if")]([SubResource("Resource_kp0u2")])
+[sub_resource type="Resource" id="Resource_61unx"]
+script = ExtResource("4_ico1d")
+add_amount = 4
 
 [sub_resource type="Resource" id="Resource_yo4e5"]
 script = ExtResource("2_jyuxu")
 damage_type = 0
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_aemje")])
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_61unx")])
 damage_modifier = 1.0
 cast_animation = {
 "animation": "",
@@ -29,10 +22,7 @@ cast_animation = {
 can_miss = true
 can_crit = true
 return_pos = true
-plant_self_on_combo = false
 indicator_bb = ""
-condition = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -60,4 +50,3 @@ required_effect = {
 }
 tension_cost = 0
 instant_cast = true
-required_level = 0

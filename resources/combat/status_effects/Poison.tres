@@ -7,7 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_h03bo"]
 script = ExtResource("1_va5wg")
-damage = 7
+damage = 1
 rank_scaling = true
 attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
 crit_chance = -1.0

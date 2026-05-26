@@ -1,11 +1,55 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=9 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=14 format=3 uid="uid://ewb80noaamii"]
 
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_ghl27"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="1_w1nhd"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="2_le6fy"]
 [ext_resource type="Resource" uid="uid://lan7r1qpxbte" path="res://resources/items/Wood.tres" id="2_rodjc"]
-[ext_resource type="Resource" uid="uid://cbu52ciuiwyfq" path="res://resources/combat/abilities/BasicAttackExtra.tres" id="2_suna3"]
 [ext_resource type="Script" path="res://scripts/resources/ResEnemyDrops.gd" id="3_s53eg"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_sn163"]
 [ext_resource type="PackedScene" uid="uid://cke17m10rs7u5" path="res://scenes/combatants/DebugWillis.tscn" id="4_4d8jx"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="4_e0wdu"]
+
+[sub_resource type="Resource" id="Resource_1l6ex"]
+script = ExtResource("4_e0wdu")
+damage_type = 0
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
+damage_modifier = 1.0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+can_miss = true
+can_crit = true
+return_pos = true
+indicator_bb = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_y4pfv"]
+script = ExtResource("3_sn163")
+name = ""
+description = ""
+icon = ExtResource("2_le6fy")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_1l6ex")])
+ability_script = ExtResource("1_ghl27")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
 
 [sub_resource type="Resource" id="Resource_35xkp"]
 script = ExtResource("3_s53eg")
@@ -37,7 +81,7 @@ description = ""
 stat_values = {
 "crit": 0.05,
 "crit_amp": 0.0,
-"damage": 1,
+"damage": 999,
 "dmg_variance": 0.1,
 "handling": 0,
 "heal_amp": 0.0,
@@ -56,6 +100,6 @@ scale_stats = {
 "resolve": 0.0,
 "speed": 0.0
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("2_suna3")])
+ability_set = Array[ExtResource("3_sn163")]([SubResource("Resource_y4pfv")])
 max_turn_charges = 1
 assigned_position = -1

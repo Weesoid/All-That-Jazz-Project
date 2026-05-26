@@ -14,8 +14,8 @@ func addPickupLabel(item:ResItem,count:int,remove_item:bool=false):
 		return
 	if remove_item and OverworldGlobals.player.current_camp_spot != null:
 		return
-	if OverworldGlobals.getMenu() is GameMenu:
-		return
+#	if OverworldGlobals.getMenu() is GameMenu:
+#		return
 	
 	var pickup_label:RichTextLabel = pickup_label_template.duplicate()
 	var tween:Tween = create_tween()

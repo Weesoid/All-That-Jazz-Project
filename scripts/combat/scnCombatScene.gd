@@ -15,10 +15,10 @@ enum TargetState {
 @onready var combat_camera = $CombatCamera
 @onready var team_starting_pos = $TeamStartingPos.global_position
 @onready var enemy_starting_pos = $EnemyStartingPos.global_position
-@onready var team_container_markers = $TeamContainer.get_children()
-@onready var enemy_container_markers = $EnemyContainer.get_children()
-@onready var transition_scene = $CombatCamera/BattleTransition
-@onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
+#@onready var team_container_markers = $TeamContainer.get_children()
+#@onready var enemy_container_markers = $EnemyContainer.get_children()
+#@onready var transition_scene = $CombatCamera/BattleTransition
+#@onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
 @onready var battle_back = $ParallaxBackground/AnimationPlayer
 @onready var turn_timer_bar = $CombatCamera/Interface/TurnTimerBar
@@ -28,7 +28,7 @@ enum TargetState {
 @onready var ui_inspect_target = $CombatCamera/Interface/Inspect
 @onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var combat_ui: CombatUI = $CombatCamera/Interface/CombatUI
-@onready var tp_particle_magnet = $TensionParticleMarker
+@onready var tension_magnet = $CombatCamera/TensionMagnet
 
 var combatant_positions = {
 	'team': [null,null,null,null],
@@ -107,13 +107,13 @@ func initializeCombat(combatants:Array[ResCombatant]):
 	if OverworldGlobals.getCurrentMap().has_node('Balloon'):
 		OverworldGlobals.getCurrentMap().get_node('Balloon').queue_free()
 	
-	transition_scene.visible = true
+	#transition_scene.visible = true
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
 	
 	battle_back.play('Show')
-	transition.play('Out')
-	await transition.animation_finished
+	#transition.play('Out')
+	#await transition.animation_finished
 	
 	var dead_combatants = []
 	for combatant in combatants:
@@ -148,7 +148,7 @@ func initializeCombat(combatants:Array[ResCombatant]):
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
 	
-	transition_scene.visible = false
+	#transition_scene.visible = false
 	OverworldGlobals.setMouseController(true)
 	
 	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
@@ -174,6 +174,9 @@ func getCombatantNames():
 	for combatant in getAllCombatants():
 		out.append(combatant.name)
 	return out
+
+#func _process(_delta):
+#	print('TP ', CombatGlobals.tension)
 
 #func _process(_delta):
 #	match target_state:
@@ -471,12 +474,12 @@ func toggleUI(visibility: bool):
 		#resetActionLog()
 
 func setUIModulation(ui_modulate: Color, duration:float=0.1):
-	for marker in enemy_container_markers:
-		if marker.get_child_count() != 0 and marker.get_child(0).has_node('CombatBars'):
-			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
-	for marker in team_container_markers:
-		if marker.get_child_count() != 0 and marker.get_child(0).has_node('CombatBars'):
-			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
+#	for marker in enemy_container_markers:
+#		if marker.get_child_count() != 0 and marker.get_child(0).has_node('CombatBars'):
+#			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
+#	for marker in team_container_markers:
+#		if marker.get_child_count() != 0 and marker.get_child(0).has_node('CombatBars'):
+#			create_tween().tween_property(marker.get_child(0).get_node('CombatBars'), 'modulate', ui_modulate, duration)
 	
 	for child in combat_camera.get_children():
 		if child is Control:
@@ -984,9 +987,9 @@ func concludeCombat(results: int):
 		if combatant == null: continue
 		combatant.applyTalents()
 	
-	transition_scene.visible = true
-	transition.play('In')
-	await transition.animation_finished
+	#transition_scene.visible = true
+	#transition.play('In')
+	#await transition.animation_finished
 	
 	combat_done.emit()
 	
@@ -1121,17 +1124,17 @@ func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	target.get_node('CombatBars').setBarVisibility(fade_in)
 	await tween.finished
 
-func sortCombatantsByPosition()-> Array[ResCombatant]:
-	var out: Array[ResCombatant] = []
-	var reversed_array = team_container_markers.duplicate()
-	reversed_array.reverse()
-	for combatant in reversed_array:
-		if combatant.get_child_count() == 0: continue
-		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
-	for combatant in enemy_container_markers:
-		if combatant.get_child_count() == 0: continue
-		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
-	return out
+#func sortCombatantsByPosition()-> Array[ResCombatant]:
+#	var out: Array[ResCombatant] = []
+#	var reversed_array = team_container_markers.duplicate()
+#	reversed_array.reverse()
+#	for combatant in reversed_array:
+#		if combatant.get_child_count() == 0: continue
+#		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
+#	for combatant in enemy_container_markers:
+#		if combatant.get_child_count() == 0: continue
+#		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
+#	return out
 
 func addTargetClickButton(combatant: ResCombatant):
 	return
@@ -1150,8 +1153,8 @@ func startTimer():
 	turn_timer_animator.play("Show")
 
 func stopTimer():
-	if turn_timer.time_left > turn_time*0.25:
-		CombatGlobals.addTension(1)
+	#if turn_timer.time_left > turn_time*0.25:
+	#	CombatGlobals.addTension(1)
 	
 	turn_timer_animator.play_backwards("Show")
 	turn_timer.stop()

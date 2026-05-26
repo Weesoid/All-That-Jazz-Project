@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bkmhlmo28f62i"]
+[gd_scene load_steps=19 format=3 uid="uid://bkmhlmo28f62i"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAbilityButton.gd" id="1_4mlso"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_kvnrr"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="5_2mr4l"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="6_kjrva"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="7_217m4"]
+[ext_resource type="Texture2D" uid="uid://di02uqm8xqrvn" path="res://images/item_icons/remembrance.png" id="8_ltn6x"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="9_a34a7"]
 
 [sub_resource type="Animation" id="Animation_4r8vf"]
 length = 0.001
@@ -269,6 +271,53 @@ text = "23"
 libraries = {
 "": SubResource("AnimationLibrary_2nfra")
 }
+
+[node name="LockIcon" type="Control" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 20)
+mouse_filter = 2
+
+[node name="LockIcon" type="TextureRect" parent="TextureRect/LockIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -1.0
+offset_right = 4.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_ltn6x")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="TextureRect/LockIcon/LockIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -25.0
+offset_top = 1.0
+offset_right = -25.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("9_a34a7")
+text = "9"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="HoldProgress" type="ProgressBar" parent="TextureRect" node_paths=PackedStringArray("timer")]
 layout_mode = 1

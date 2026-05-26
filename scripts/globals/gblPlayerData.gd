@@ -170,11 +170,20 @@ func addCurrency(value: int):
 		currency += value
 
 func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
-	if unlocked_abilities.keys().has(combatant):
-		unlocked_abilities[combatant].append(ability)
-	else:
-		unlocked_abilities[combatant] = []
-		unlocked_abilities[combatant].append(ability)
+	if unlocked_abilities[combatant].has(ability):
+		print('HAZ IT!')
+		return
+	
+	var unlocked_append = {combatant:[ability]}
+	unlocked_abilities = CombatGlobals.combineDictionaries(unlocked_abilities, unlocked_append)
+#	if unlocked_abilities.keys().has(combatant):
+#		unlocked_abilities[combatant].append(ability)
+#	else:
+#		unlocked_abilities[combatant] = []
+#		unlocked_abilities[combatant].append(ability)
+
+func getAbilityCost(combatant: ResPlayerCombatant, ability: ResAbility):
+	return (1 + int(0.5*(unlocked_abilities[combatant].size()-combatant.getStartingAbilityCount())))
 
 func addAbility(combatant, ability):
 	if combatant is String:
@@ -208,7 +217,10 @@ func hasAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 	return combatant.ability_pool.has(ability)
 
 func hasUnlockedAbility(combatant: ResPlayerCombatant, ability: ResAbility):
-	return (unlocked_abilities.keys().has(combatant) and unlocked_abilities[combatant].has(ability)) or ability.required_level == 0
+	return (unlocked_abilities.keys().has(combatant) and unlocked_abilities[combatant].has(ability)) #or ability.required_level == 0
+
+func getLockedAbilities(combatant:ResPlayerCombatant):
+	return combatant.ability_pool.filter(func(ability): return !unlocked_abilities[combatant].has(ability))
 
 func hasActiveTeam()-> bool:
 	return !OverworldGlobals.getCombatantSquad('Player').is_empty()
@@ -216,7 +228,7 @@ func hasActiveTeam()-> bool:
 func levelUpCombatants():
 	for combatant in PlayerGlobals.team:
 		combatant.stat_points += 1
-		combatant.scaleStats()
+		#combatant.scaleStats()
 	level_up.emit()
 
 func addCombatantToTeam(combatant_id):

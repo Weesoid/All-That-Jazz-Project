@@ -26,14 +26,17 @@ func apply(combatant: ResPlayerCombatant):
 	var modifier_data = combineStatModifiers(combatant)
 	
 	for effect in effects:
-		var conditions_passed = CombatGlobals.checkConditions(effect.condition, combatant)
+		var conditions_passed = effect.conditionPassed(combatant)
 		if effect is ResHealEffect and conditions_passed:
-			CombatGlobals.calculateHealing(combatant, effect.heal, effect.use_multiplier)
+			if effect.base_heal > 0: 
+				CombatGlobals.calculateHealing(combatant, effect.base_heal, effect.use_multiplier)
+			if effect.percent_heal > 0.0: 
+				CombatGlobals.calculatePercentHealing(combatant, effect.percent_heal, effect.use_multiplier)
 		elif effect is ResCustomDamageEffect and conditions_passed:
 			OverworldGlobals.damageMember(combatant, effect.damage, effect.use_damage_formula)
 		elif effect is ResApplyStatusEffect and conditions_passed:
 			combatant.stored_status_effects.append(effect.status_effect.getFilename())
-		elif effect is ResStatModifierEffect and !modifiers_added:
+		elif effect is ResStatModifierEffect and !modifiers_added and conditions_passed:
 			var dupe_count = getDupeCount(combatant)
 			if dupe_count > 0 and !count_appended: 
 				key += '^'+str(dupe_count)
@@ -95,7 +98,7 @@ func getDupeCount(combatant:ResCombatant):
 # Returns [<Combined modifier effects, longest duration modifier]
 func combineStatModifiers(combatant:ResCombatant)-> Array:
 	randomize()
-	var all_modifiers=effects.filter(func(effect): return effect is ResStatModifierEffect and CombatGlobals.checkConditions(effect.condition, combatant))
+	var all_modifiers=effects.filter(func(effect): return effect is ResStatModifierEffect and effect.conditionPassed(combatant))
 	var longest_duration_modifier = getLongestModiferDuration(all_modifiers)
 	var combined_modifiers = {}
 	for effect in all_modifiers:

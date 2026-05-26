@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cspyw01mf3mrl"]
+[gd_scene load_steps=4 format=3 uid="uid://cspyw01mf3mrl"]
 
-[ext_resource type="PackedScene" uid="uid://csqkcvvj78upd" path="res://scenes/user_interface/CustomItemSlotButton.tscn" id="1_2tfuh"]
-[ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="2_6t8cb"]
-[ext_resource type="Resource" uid="uid://dc0gxjvcso6js" path="res://resources/items/Testifier.tres" id="3_yixnw"]
+[ext_resource type="PackedScene" uid="uid://cvt7iywcifdfq" path="res://scenes/user_interface/CharacterBar.tscn" id="1_skktb"]
+[ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="2_t62bh"]
 
 [sub_resource type="GDScript" id="GDScript_r0aat"]
 script/source = "extends Control
@@ -10,7 +9,7 @@ script/source = "extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	$CustomButton.setLocked(true)
 #	print(CombatExtras.ALL_STATS)
 #	var dick = load(\"res://TestAttackStat.tres\")
 #	print(CombatExtras.ALL_STATS)
@@ -41,18 +40,22 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_r0aat")
 
-[node name="ItemSlot" parent="." instance=ExtResource("1_2tfuh")]
-layout_mode = 0
-offset_left = 192.0
-offset_top = 144.0
-offset_right = 224.0
-offset_bottom = 176.0
-item_whitelist = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("3_yixnw")])
+[node name="Bar" parent="." instance=ExtResource("1_skktb")]
+layout_mode = 1
+offset_left = 232.0
+offset_top = 72.0
+offset_right = -248.0
+offset_bottom = -168.0
+right_aligned = true
 
-[node name="CustomButton" parent="." instance=ExtResource("2_6t8cb")]
+[node name="CustomButton" parent="." instance=ExtResource("2_t62bh")]
 layout_mode = 0
-offset_left = 272.0
-offset_top = 112.0
-offset_right = 320.0
-offset_bottom = 160.0
-item = ExtResource("3_yixnw")
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 256.0
+offset_top = 80.0
+offset_right = 280.0
+offset_bottom = 104.0
+grow_horizontal = 1
+outside_combat = true

@@ -104,12 +104,6 @@ func removeStatusEffect():
 		status_script.endEffects(afflicted_combatant, self)
 	if status_visuals != null:
 		status_visuals.queue_free()
-#	This code lets status effects like Poison linger despite the end of combat, maybe not necessary anymore
-#	if (CombatGlobals.randomRoll(0.15+afflicted_combatant.stat_values['resist']) or afflicted_combatant.isDead()) and afflicted_combatant is ResPlayerCombatant and lingers and !persist_on_dead and resistable:
-#		afflicted_combatant.lingering_effects.erase(name)
-#		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, '[s]%s' % getMessageIcon(), 'Resist')
-#	elif afflicted_combatant is ResPlayerCombatant and lingers and afflicted_combatant.lingering_effects.has(name.replace(' ','')) and resistable:
-#		CombatGlobals.manual_call_indicator.emit(afflicted_combatant, getMessageIcon(), 'Status_Added')
 	
 	afflicted_combatant.status_effects.erase(self)
 	CombatGlobals.status_effect_removed.emit(afflicted_combatant, self)

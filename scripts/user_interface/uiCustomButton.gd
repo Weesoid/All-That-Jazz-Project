@@ -13,7 +13,7 @@ class_name CustomButton
 @export var hold_color:Color=Color.YELLOW
 @export var hold_key: Array[String] = ["ui_accept","ui_click"]
 @export var hold_time:float = -1
-@export var hold_delay:float=0.25
+@export var hold_delay:float=0.05
 @export var hold_ignore_disabled:bool=true
 @export var description_on_focus:bool=false
 var random_pitch = 0.1

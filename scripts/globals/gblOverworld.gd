@@ -129,7 +129,7 @@ func showMenu(path: String, as_submenu:bool=false):
 	if !canShowMenu():
 		return
 	
-	player.player_camera.player_ui.hide()
+	#player.player_camera.player_ui.hide()
 	var main_menu: Control = load(path).instantiate()
 	if !as_submenu:
 		main_menu.name = 'uiMenu'
@@ -207,7 +207,7 @@ func setMouseController(set_to:bool):
 		get_node('MouseController').queue_free()
 
 func closeMenu(menu: Control):
-	player.player_camera.player_ui.show()
+	#player.player_camera.player_ui.show()
 	player.setUIVisibility(true)
 	setMouseController(false)
 	menu.queue_free()
@@ -898,7 +898,8 @@ func isPlayerSquadDead():
 
 
 
-func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
+func damageParty(damage:int, lethal:bool=false):
+	player.player_camera.flash(Color.RED,0.2,0.05)
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
 		member.changeHealth(-int(damage))
@@ -912,8 +913,8 @@ func damageParty(damage:int, death_message:Array[String]=[],lethal:bool=true):
 		OverworldGlobals.player.player_camera.shake(15.0,10.0)
 		playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
 		party_damaged.emit()
-		var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
-		OverworldGlobals.player.player_camera.get_node('Marker2D').add_child(pop_up)
+		#var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
+		#OverworldGlobals.player.player_camera.add_child(pop_up)
 	else:
 		player.do_gravity=false
 		setPlayerInput(false,true)

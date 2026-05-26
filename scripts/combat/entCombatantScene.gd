@@ -16,6 +16,11 @@ var idle_animation: String = 'Idle'
 var temporary_idle:String
 #var rank_position: Vector2
 var hit_script: GDScript
+var projectile_hit_data: Dictionary = {
+	'target':null,
+	'ability':null,
+	'texture':null
+}
 
 
 func _ready():
@@ -94,8 +99,9 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 			resizeHitbox(data['target_count'])
 		else:
 			resizeHitbox(1)
-	if animation == 'Cast_Ranged' and data.has('target') and CombatGlobals.inCombat():
-		setProjectileTarget(data['target'], data['frame_time'], data['ability'])
+	if animation.contains('Cast_Ranged') and data.has('target') and CombatGlobals.inCombat():
+		var projectile_texture = data['projectile_texture'] if data.has('projectile_texture') else null
+		setProjectileTarget(data['target'], data['ability'], projectile_texture)
 	if data.keys().has('anim_speed'):
 		animator.play(animation, -1, data['anim_speed'])
 	else:
@@ -136,26 +142,22 @@ func playIdle(new_idle:String='',is_temporary:bool=false):
 	else:
 		animator.play(idle_animation)
 
-func setProjectileTarget(target: CombatantScene, frame_time: float, ability: ResAbility, animation:String="Cast_Ranged"):
-	var anim: Animation = animator.get_animation(animation)
-	if anim.find_track(".", Animation.TYPE_METHOD) != null:
-		anim.remove_track(anim.find_track(".", Animation.TYPE_METHOD))
-	var track_index = anim.add_track(Animation.TYPE_METHOD)
-	anim.track_set_path(track_index, ".")
-	anim.track_insert_key(track_index, frame_time, {
-	"method": "shootProjectile",
-	"args": [target, ability],
-	}, 0)
+func setProjectileTarget(target: CombatantScene, ability: ResAbility, texture:Texture=null):
+	projectile_hit_data['target'] = target
+	projectile_hit_data['ability'] = ability
+	projectile_hit_data['texture'] = texture
 
-func shootProjectile(target: CombatantScene, ability: ResAbility):
+func shootProjectile():
 	var projectile = load("res://scenes/entities_disposable/ProjectileBattles.tscn").instantiate()
 	projectile.hit_script = hit_script
-	projectile.ability = ability
+	projectile.ability = projectile_hit_data['ability']
 	projectile.name = 'Projectile'
-	projectile.target = target
+	projectile.target = projectile_hit_data['target']
 	projectile.shooter = self
-	#projectile.SPEED = 1250.0
-	if combatant_resource.bullet_texture != null:
+	projectile.tree_exited.connect(resetProjectileData)
+	if projectile_hit_data['texture'] != null:
+		projectile.get_node('Sprite2D').texture = projectile_hit_data['texture']
+	elif combatant_resource.bullet_texture != null:
 		projectile.get_node('Sprite2D').texture = combatant_resource.bullet_texture
 	projectile.global_position = global_position
 	if combatant_resource is ResEnemyCombatant and scale.x > 0:
@@ -166,8 +168,15 @@ func _on_hit_box_body_entered(body):
 	if hit_script != null and body != self and body is CombatantScene and !CombatGlobals.isSameCombatantType(self, body): 
 		hit_script.applyAbilityEffects(self, body, CombatGlobals.getCombatScene().selected_ability)
 
+func resetProjectileData():
+	projectile_hit_data = {
+		'target':null,
+		'ability':null,
+		'texture':null
+	}
+
 func _to_string():
-	return combatant_resource.name
+	return combatant_resource.name +' (CombatantScene)'
 
 func _exit_tree():
 	if combatant_resource.scale_tween != null and combatant_resource.pos_tween != null:

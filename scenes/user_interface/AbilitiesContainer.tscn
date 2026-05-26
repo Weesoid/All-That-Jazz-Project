@@ -12,13 +12,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_33o88")
 
-[node name="Label" type="RichTextLabel" parent="."]
-visible = false
-layout_mode = 2
-bbcode_enabled = true
-text = "[center]ABILITIES"
-fit_content = true
-
 [node name="AbilityContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3

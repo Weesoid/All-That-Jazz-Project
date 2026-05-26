@@ -1,8 +1,6 @@
-[gd_scene load_steps=33 format=3 uid="uid://by2x5bgg618kl"]
+[gd_scene load_steps=31 format=3 uid="uid://by2x5bgg618kl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
-[ext_resource type="Texture2D" uid="uid://f6daxcssdpdj" path="res://images/sprites/circle_empty_small.png" id="3_8o7jm"]
-[ext_resource type="Texture2D" uid="uid://bep2p4oa635yk" path="res://images/sprites/circle_filled_small.png" id="3_e74cw"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
 [ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="6_1sh2p"]
@@ -461,8 +459,6 @@ offset_top = -7.0
 offset_right = -26.0
 offset_bottom = -7.0
 grow_horizontal = 0
-empty_circle = ExtResource("3_8o7jm")
-filled_circle = ExtResource("3_e74cw")
 
 [node name="StatusEffectContainer" parent="HealthBar" instance=ExtResource("7_n56iy")]
 layout_mode = 0
@@ -512,18 +508,24 @@ auto_notch = false
 
 [node name="CustomCountBar" parent="HealthBar" instance=ExtResource("3_ivcce")]
 layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_bottom = 4.0
+theme_override_constants/separation = -3
+alignment = 1
 show_max = false
 empty_circle = ExtResource("9_u2fdo")
 filled_circle = ExtResource("10_l5fn2")
 
-[node name="HBoxContainer" parent="HealthBar/CustomCountBar" index="0"]
-theme_override_constants/separation = -3
-alignment = 1
-
 [node name="SelectTarget" parent="." instance=ExtResource("4_x0qas")]
 visible = false
 
-[node name="Marker2D" type="Marker2D" parent="."]
+[node name="DamageSpawnPoint" type="Marker2D" parent="."]
+
+[node name="StatusSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, -32)
 
 [node name="TargetClicker" parent="." instance=ExtResource("6_1sh2p")]
 visible = false
@@ -539,7 +541,8 @@ modulate = Color(1, 1, 1, 0.180392)
 position = Vector2(16, 33)
 texture = ExtResource("8_fh81n")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="IndicatorIntervals" type="Timer" parent="."]
+wait_time = 0.25
 one_shot = true
 
 [node name="TargetBorder" type="Sprite2D" parent="."]
@@ -572,5 +575,6 @@ libraries = {
 [connection signal="focus_entered" from="TargetClicker" to="." method="_on_target_clicker_focus_entered"]
 [connection signal="mouse_entered" from="TargetClicker" to="." method="_on_target_clicker_mouse_entered"]
 [connection signal="pressed" from="TargetClicker" to="." method="_on_target_clicker_pressed"]
+[connection signal="timeout" from="IndicatorIntervals" to="." method="_on_indicator_intervals_timeout"]
 
 [editable path="HealthBar/CustomCountBar"]

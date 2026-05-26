@@ -12,8 +12,6 @@
 [sub_resource type="Resource" id="Resource_u7g7t"]
 script = ExtResource("3_ba127")
 cleanse_status = ExtResource("2_iubfv")
-condition = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -22,18 +20,16 @@ script = ExtResource("4_k1wj8")
 target = 1
 status_effect = ExtResource("5_1ytoe")
 cast_animation = ""
-condition = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
 [sub_resource type="Resource" id="Resource_b0dn7"]
 script = ExtResource("4_if1fj")
-heal = 5
+base_heal = 0
+percent_heal = 0.0
 use_multiplier = true
 cast_animation = ""
 condition = "hp:<:0.0"
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -61,4 +57,3 @@ required_effect = {
 }
 tension_cost = 4
 instant_cast = false
-required_level = 0

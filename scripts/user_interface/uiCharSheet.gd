@@ -8,7 +8,7 @@ const SHIELD_SWORD_ICON = preload("res://images/sprites/shield_n_sword.png")
 const ABILITIES_ICON = preload("res://images/sprites/abilities_icon.png")
 const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 
-@onready var modifier_viewer = $Sheet/LeftBeef/ModifierViewer
+@onready var modifier_viewer = $Sheet/LeftBeef/AbilitiesViewer/ModifierViewer
 @onready var attribute_viewer = $Sheet/Right/VBoxContainer/AttributeViewContainer
 @onready var other_attribute_viewer = $Sheet/Right/VBoxContainer/AutoAttributeView
 @onready var abilities_container = $Sheet/LeftBeef/AbilitiesViewer/AbilityContainer
@@ -19,13 +19,13 @@ const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 @onready var equip_slot_weapon = $Sheet/Right/VBoxContainer/Equipment/Weapon
 #@onready var weapon_durability_label = $Sheet/Right/VBoxContainer/Equipment/Weapon/Label
 @onready var equip_slot_a = $Sheet/Right/VBoxContainer/Equipment/SlotA
-@onready var equip_slot_b = $Sheet/Right/VBoxContainer/Equipment/SlotB
+@onready var equip_slot_b =$Sheet/Right/VBoxContainer/Equipment/SlotB
 @onready var equip_slot_c = $Sheet/Right/VBoxContainer/Equipment/SlotC
 @onready var press_cooldown = $Timer
 @onready var toggle_stats_button = $Sheet/Right/HBoxContainer2/ToggleStats
 @onready var toggle_ability_modifier_button = $Sheet/LeftBeef/HBoxContainer/ToggleAbilityModifiers
 @onready var ability_view = $Sheet/LeftBeef/AbilitiesViewer
-@onready var modifier_view = $Sheet/LeftBeef/ModifierViewer
+#@onready var modifier_view = $Sheet/LeftBeef/ModifierViewer
 @onready var stat_point_count = $Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents/Label
 
 var submenu_positions = {}
@@ -169,8 +169,12 @@ func _on_toggle_stats_pressed():
 
 
 func _on_toggle_ability_modifiers_pressed():
-	ability_view.visible = !ability_view.visible
-	modifier_view.visible = !modifier_view.visible
+	if abilities_container.visible:
+		abilities_container.hide()
+		modifier_viewer.show()
+	else:
+		abilities_container.show()
+		modifier_viewer.hide()
 	
 	if ability_view.visible:
 		toggle_ability_modifier_button.setTexture(ABILITIES_ICON)

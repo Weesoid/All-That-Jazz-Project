@@ -160,7 +160,5 @@ func setDisabled(set_to:bool):
 func pulseSize():
 	var offset = Vector2(0,-8)
 	var size_tween = create_tween()
-	print(talent_icon.position, ' b4')
 	size_tween.tween_property(talent_icon, 'position', Vector2(12,12)+offset,0.05).set_ease(Tween.EASE_IN)
 	size_tween.tween_property(talent_icon, 'position', Vector2(12,12),0.1).set_ease(Tween.EASE_OUT)
-	print(talent_icon.position, ' idgaf')

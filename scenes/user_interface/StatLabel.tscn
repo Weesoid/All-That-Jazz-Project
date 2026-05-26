@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://g62bg1lxkua1"]
+[gd_scene load_steps=6 format=3 uid="uid://g62bg1lxkua1"]
 
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="1_065d1"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStatLabel.gd" id="1_jwq5y"]
+[ext_resource type="Texture2D" uid="uid://be12cxsmbvn3b" path="res://images/sprites/circle_empty.png" id="3_xomtb"]
+[ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="4_6ihtj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -41,6 +43,7 @@ fit_content = true
 layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="Value"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -70,14 +73,16 @@ vertical_alignment = 1
 [node name="CustomCountBar" parent="Value" instance=ExtResource("1_065d1")]
 visible = false
 layout_mode = 1
-
-[node name="HBoxContainer" parent="Value/CustomCountBar" index="0"]
-anchors_preset = 14
+anchors_preset = 6
+anchor_left = 1.0
 anchor_top = 0.5
 anchor_bottom = 0.5
-alignment = 2
+grow_horizontal = 0
+empty_circle = ExtResource("3_xomtb")
+filled_circle = ExtResource("4_6ihtj")
 
 [node name="Label" type="Label" parent="Value"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

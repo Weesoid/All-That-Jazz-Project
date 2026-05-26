@@ -15,7 +15,6 @@ duration = 9
 [sub_resource type="Resource" id="Resource_1oq7y"]
 script = ExtResource("3_cau52")
 dot_effect = SubResource("Resource_vud6i")
-condition = ""
 is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
@@ -44,4 +43,3 @@ required_effect = {
 }
 tension_cost = 0
 instant_cast = true
-required_level = 0

@@ -10,8 +10,6 @@ script = ExtResource("2_7nh4x")
 target = 1
 direction = 1
 move_count = 1
-condition = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -39,4 +37,3 @@ required_effect = {
 }
 tension_cost = 0
 instant_cast = false
-required_level = 0

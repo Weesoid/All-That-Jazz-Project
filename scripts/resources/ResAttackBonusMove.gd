@@ -6,8 +6,8 @@ enum Direction {
 	PULL
 }
 
-@export var direction:Direction
-@export_range(1,3) var move_count:int
+@export var direction:Direction=Direction.PUSH
+@export_range(1,3) var move_count:int=1
 
 func getAttackEffect():
 	return {'move': self}

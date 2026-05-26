@@ -11,10 +11,10 @@ class_name ResCombatant
 	'health': 20,
 	'damage': 4,
 	'handling': 0,
-	'speed': 1,
-	'crit': 0.05,
-	'resist': 0.05,
-	'dmg_variance': 0.1,
+	'speed': 0,
+	'crit': 0.0,
+	'resist': 0.0,
+	'dmg_variance': 0.0,
 	'resolve': 0
 }
 @export var scale_stats: Dictionary = {
@@ -50,7 +50,7 @@ var scale_tween: Tween
 
 signal enemy_turn
 signal player_turn
-signal health_changed(health_value)
+signal health_changed(combatant)
 signal resolve_changed
 
 func initializeCombatant():
@@ -114,9 +114,9 @@ func scaleStats():
 	for stat in scale_stats.keys():
 		var scaled_stat
 		if stat_values[stat] is int:
-			scaled_stat = floor(scale_stats[stat] * (PlayerGlobals.team_level-1))
+			scaled_stat = floor(scale_stats[stat] * (PlayerGlobals.team_level))
 		else:
-			scaled_stat = snapped(scale_stats[stat] * (PlayerGlobals.team_level-1),0.01)
+			scaled_stat = snapped(scale_stats[stat] * (PlayerGlobals.team_level),0.01)
 		if scaled_stat <= 0:
 			continue
 		
@@ -301,14 +301,12 @@ func changeHealth(value:int,set_to:bool=false):
 	if stat_values['health'] > getMaxHealth():
 		stat_values['health']=getMaxHealth()
 	percent_health = float(stat_values['health'])/float(getMaxHealth())
-	health_changed.emit(stat_values['health'])
+	health_changed.emit(self)
 
 func changeResolve(value:int):
-	if name.contains('Flynt'): print('adding resolve! ', value)
 	stat_values['resolve'] += value
-#	if stat_values['resolve'] > getMaxResolve():
-#		stat_values['resolve']=getMaxResolve()
-	if name.contains('Flynt'): print('resolve is now: ', stat_values['resolve'])
+	if stat_values['resolve'] > getMaxResolve():
+		stat_values['resolve']=getMaxResolve()
 	resolve_changed.emit()
 
 func removeEmptyStats():

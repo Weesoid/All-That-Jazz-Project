@@ -1,43 +1,29 @@
 extends Control
 class_name CustomCountBar
 
-@onready var h_container = $HBoxContainer
-@onready var v_container = $VBoxContainer
+enum FillTween {
+	NONE,
+	TP_GAIN
+}
+
 @export var value: int = 0
 @export var max_value: int = 0
 @export var show_max: bool = true
-@export var process:bool=true
 @export var empty_circle: Texture = preload("res://images/sprites/circle_empty.png")
 @export var filled_circle: Texture = preload("res://images/sprites/circle_filled.png")
-@export var hide_empty:bool=false
-@export var vertical:bool=false
-var container: Container
+@export var fill_tween := FillTween.NONE
+
 var filled_modulate:Color = Color.WHITE
 var empty_modulate:Color = Color.WHITE
+var tween_running:bool=false
 signal value_changed(value)
 
 func _ready():
-	if vertical:
-		container = v_container
-	else:
-		container = h_container
-	
-	if !process:
-		process_mode = Node.PROCESS_MODE_DISABLED
-
-func _process(_delta):
-	if !valuesCorrect(): updateValue()
-
-func valuesCorrect()-> bool:
-	var empty = 0
-	var filled = 0
-	for circle in container.get_children():
-		if circle.texture == empty_circle: 
-			empty += 1
-		elif circle.texture == filled_circle:
-			filled += 1
-	
-	return empty == max_value and filled == value
+	for i in range(value):
+		add_child(createCircle(filled_circle))
+	for i in range(max_value-value):
+		add_child(createCircle(empty_circle))
+	setValue(value)
 
 func setValue(p_value):
 	value = p_value
@@ -46,31 +32,50 @@ func setValue(p_value):
 
 func updateValue():
 	var filled = 0
-	for child in container.get_children(): 
-		child.queue_free()
-	for i in range(max_value):
-		if value >= 0 and filled != value:
-			var rect: TextureRect = TextureRect.new()
-			rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
-			rect.texture = filled_circle
-			rect.modulate = filled_modulate
+	#var do_tween:bool=true
+	for circle in get_children():
+		if filled < value: 
+			circle.show()
+			circle.texture = filled_circle
 			filled += 1
-			rect.pivot_offset = rect.texture.get_size()/2
-			container.add_child(rect)
-		elif (filled == value or value < 0) and show_max:
-			var rect: TextureRect = TextureRect.new()
-			rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
-			rect.texture = empty_circle
-			rect.modulate = empty_modulate
-			rect.scale = Vector2(1.25,1.25)
-			rect.pivot_offset = rect.texture.get_size()/2
-			container.add_child(rect)
+			if filled == value: 
+				await get_tree().process_frame
+				doFillTween(circle)
+		elif show_max:
+			circle.texture = empty_circle
+		else:
+			circle.hide()
+
+func doFillTween(circle: TextureRect):
+	if fill_tween == FillTween.NONE or tween_running: 
+		return
+	
+	tween_running=true
+	var original_pos = circle.position
+	if fill_tween == FillTween.TP_GAIN:
+		var pos_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		var modulate_tween = create_tween()
+		circle.modulate = SettingsGlobals.ui_colors['up']
+		circle.position = original_pos+Vector2(0,5)
+		modulate_tween.tween_property(circle, 'modulate', Color.WHITE, 2)
+		pos_tween.tween_property(circle, 'position', original_pos,1)
+		await modulate_tween.finished
+	tween_running = false
+
+
+func createCircle(texture: Texture):
+	var rect: TextureRect = TextureRect.new()
+	rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+	rect.texture = texture
+	rect.modulate = filled_modulate if texture == filled_circle else empty_modulate
+	rect.pivot_offset = rect.texture.get_size()/2
+	return rect
 
 func getCircles(type:String='all'):
 	match type:
 		'all':
-			return container.get_children()
+			return get_children()
 		'filled':
-			return container.get_children().filter(func(circle): return circle.texture == filled_circle)
+			return get_children().filter(func(circle): return circle.texture == filled_circle)
 		'empty':
-			return container.get_children().filter(func(circle): return circle.texture == empty_circle)
+			return get_children().filter(func(circle): return circle.texture == empty_circle)

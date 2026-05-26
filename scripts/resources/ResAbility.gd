@@ -26,7 +26,7 @@ enum TargetGroup {
 @export var required_effect: Dictionary = {'status_effect': null, 'rank': 0}
 @export var tension_cost: int = 0
 @export var instant_cast: bool = false
-@export var required_level = 0
+#@export var required_level = 0
 
 var current_effect: ResAbilityEffect
 var current_charge: int
@@ -97,8 +97,8 @@ func isCombatantInRange(combatant: ResCombatant, target_range: String):
 	elif target_range == 'target':
 		return position >= target_position['min'] and position <= target_position['max']
 
-func getCost():
-	return snappedf(100 * pow(required_level, 0.25), 10)
+#func getCost():
+#	return 1
 
 func getTargetType():
 	match target_type:

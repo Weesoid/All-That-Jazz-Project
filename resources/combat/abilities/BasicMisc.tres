@@ -1,82 +1,70 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=14 format=3 uid="uid://cvjlkid4m1aae"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=17 format=3 uid="uid://cvjlkid4m1aae"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_2dvec"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_7nubk"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectAddTP.gd" id="3_28pe6"]
 [ext_resource type="Resource" uid="uid://47lduof3c088" path="res://resources/combat/status_effects/CriticalEye.tres" id="3_jf363"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_wjsqd"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_00swq"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectChangeIdle.gd" id="4_eqmyb"]
+[ext_resource type="Resource" uid="uid://buodxm576ecpk" path="res://resources/combat/status_effects/Taunting.tres" id="4_nehy6"]
+[ext_resource type="Script" path="res://scripts/resources/ResDamageOvertimeEffect.gd" id="5_fldag"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatModifier.gd" id="5_ym7hq"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="6_xwdlr"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDot.gd" id="6_06uwj"]
 
-[sub_resource type="Resource" id="Resource_8i77m"]
-script = ExtResource("6_xwdlr")
-heal = 12
-use_multiplier = true
-cast_animation = ""
-condition = ""
-is_combo_effect = false
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_h104k"]
+[sub_resource type="Resource" id="Resource_n2yeu"]
 script = ExtResource("2_7nubk")
 target = 0
 status_effect = ExtResource("3_jf363")
-cast_animation = "Cast_Misc"
-condition = ""
-is_combo_effect = false
+cast_animation = ""
+is_combo_effect = null
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_p5v4t"]
+[sub_resource type="Resource" id="Resource_3lja3"]
+script = ExtResource("2_7nubk")
+target = 0
+status_effect = ExtResource("4_nehy6")
+cast_animation = ""
+is_combo_effect = null
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_ry0s4"]
+script = ExtResource("5_fldag")
+dot_effect = 1
+damage = 3
+duration = 3
+
+[sub_resource type="Resource" id="Resource_3ceco"]
+script = ExtResource("6_06uwj")
+dot_effect = SubResource("Resource_ry0s4")
+is_combo_effect = null
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_h05cf"]
 script = ExtResource("5_ym7hq")
 stat_modifications = {
-"crit": 0.0,
-"damage": 100,
-"dmg_variance": 0.0,
-"handling": 0,
-"health": 0,
-"resist": 0.0,
-"resolve": 0,
-"speed": 0
+"crit": 1.0,
+"damage": 1,
+"dmg_variance": 1.0,
+"handling": 1,
+"health": 1,
+"resist": 1.0,
+"resolve": 1,
+"speed": 1
 }
 duration_type = 0
 duration = 1
 stacks = false
-condition = ""
-is_combo_effect = false
+is_combo_effect = null
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_sa5fv"]
-script = ExtResource("4_eqmyb")
-idle_name = "Idle_Alt"
-reset_after = true
-condition = ""
-is_combo_effect = false
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_36qet"]
-script = ExtResource("5_ym7hq")
-stat_modifications = {
-"crit": 0.0,
-"crit_dmg": 0.0,
-"damage": 0,
-"dmg_variance": 0.0,
-"handling": 0,
-"heal_mult": 0.0,
-"health": 0,
-"resist": 0.0,
-"resolve": 0,
-"speed": 0
-}
-duration_type = 0
-duration = 1
-stacks = false
-condition = ""
-is_combo_effect = false
+[sub_resource type="Resource" id="Resource_nqsmm"]
+script = ExtResource("3_28pe6")
+add_amount = 1
+is_combo_effect = null
 animation_time = 0.0
 animate_on = 0
 
@@ -85,7 +73,7 @@ script = ExtResource("4_00swq")
 name = "Miscy"
 description = ""
 icon = ExtResource("3_wjsqd")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_8i77m"), SubResource("Resource_h104k"), SubResource("Resource_p5v4t"), SubResource("Resource_sa5fv"), SubResource("Resource_36qet")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_n2yeu"), SubResource("Resource_3lja3"), SubResource("Resource_3ceco"), SubResource("Resource_h05cf"), SubResource("Resource_nqsmm")])
 ability_script = ExtResource("1_2dvec")
 target_type = 0
 target_group = 2
@@ -104,4 +92,3 @@ required_effect = {
 }
 tension_cost = 0
 instant_cast = true
-required_level = 0

@@ -38,7 +38,7 @@ func loadResourcePathArray(path_array):
 	var out = []
 	
 	for path in path_array:
-		if !FileAccess.file_exists(path):
+		if !FileAccess.file_exists(path) and !ResourceLoader.has_cached(path):
 			continue
 		out.append(load(path))
 	
@@ -56,7 +56,7 @@ func getResourcePathArray(array):
 func loadResourcePathDict(dict:Dictionary):
 	var out = {}
 	for key in dict.keys():
-		if !FileAccess.file_exists(key):
+		if !FileAccess.file_exists(key) and !ResourceLoader.has_cached(key):
 			continue
 		if dict[key] is Array:
 			out[load(key)] = loadResourcePathArray(dict[key])
@@ -99,4 +99,5 @@ func isResourcePlaceholder(resource: Resource):
 func unexpectedTalentData(talent_value):
 	return !talent_value is Dictionary or \
 		(!talent_value.has('rank') or !talent_value.has('cost')) or \
-		(!talent_value['rank'] is int or !talent_value['cost'] is int) 
+		(!talent_value['rank'] is int or !talent_value['cost'] is int)  #or \
+		#(combatant.stat_points > PlayerGlobals.team_level)

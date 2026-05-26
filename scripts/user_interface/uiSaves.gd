@@ -54,6 +54,7 @@ func createSaveButton(save_name: String):
 	button.pressed.connect(func(): slotPressed(save_name, button))
 	button.hold_color=Color.RED
 	button.hold_time = 5
+	button.hold_delay = 0.25
 	button.focus_entered.connect(
 		func():
 			if mode == Modes.LOAD:

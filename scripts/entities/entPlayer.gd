@@ -130,11 +130,12 @@ func _physics_process(delta):
 	
 	# Fall damage
 	if fall_damage != 0 and get_node('CombatantSquadComponent').combatant_squad.size() > 0 and is_on_floor():
+		
 		var damage = floor(float(fall_damage)/6.0)
 		if damage < 6:
 			fall_damage = 0
 			return
-		OverworldGlobals.damageParty(damage, ['Faceplant!', "That's gotta hurt.", 'Watch your step!'])
+		OverworldGlobals.damageParty(damage,false)
 		fall_damage = 0
 		suddenStop()
 		resetStates()

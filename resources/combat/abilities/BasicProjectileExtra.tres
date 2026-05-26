@@ -8,12 +8,12 @@
 
 [sub_resource type="Resource" id="Resource_m6rqo"]
 script = ExtResource("2_w17qb")
-direction = 1
+direction = 0
 move_count = 1
 
 [sub_resource type="Resource" id="Resource_o3qoi"]
 script = ExtResource("2_frihu")
-damage_type = 2
+damage_type = 1
 attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_m6rqo")])
 damage_modifier = 1.0
 cast_animation = {
@@ -23,9 +23,7 @@ cast_animation = {
 can_miss = true
 can_crit = true
 return_pos = true
-plant_self_on_combo = false
 indicator_bb = ""
-condition = ""
 is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
@@ -54,4 +52,3 @@ required_effect = {
 }
 tension_cost = 0
 instant_cast = true
-required_level = 0

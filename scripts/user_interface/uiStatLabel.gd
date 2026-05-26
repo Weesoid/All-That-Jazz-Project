@@ -59,7 +59,7 @@ func _process(delta):
 		show()
 	#CombatGlobals.OtherStats['']
 	if combatant.scale_stats.get(track_stat,0) > 0:
-		stat_text.text = SettingsGlobals.longhandWord(scale_bb+' '+track_stat).to_upper()
+		stat_text.text = scale_bb+' '+SettingsGlobals.longhandWord(track_stat).to_upper()
 	else:
 		stat_text.text = SettingsGlobals.longhandWord(track_stat).to_upper()
 	
@@ -96,7 +96,8 @@ func updateLabel():
 
 func calcDamage(val:String):
 	var damage = combatant.stat_values['damage']*CombatGlobals.calcDamageModifier(combatant)
-	var variance = (damage*combatant.stat_values['dmg_variance'])
+	var dmg_variation = CombatGlobals.BASE_VARIATION + combatant.stat_values['dmg_variance']
+	var variance = damage*dmg_variation
 	
 	match val:
 		'min': return round(damage-variance)
@@ -120,9 +121,7 @@ func highlightChange():
 		value.modulate = SettingsGlobals.ui_colors['down']
 
 func getUnscaledTrackStat():
+#	if !combatant.stat_modifiers.has('scaled_stats'):
+#		return 0
+	
 	return combatant.stat_values[track_stat] - combatant.stat_modifiers['scaled_stats'].get(track_stat,0)
-
-#func checkAgainst():
-#	if combatant.base_stat_values.has(track_stat):
-#		return combatant.stat_values[track_stat] == combatant.base_stat_values[track_stat]
-#	elif combatant.stat_values 

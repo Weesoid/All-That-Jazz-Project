@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=12 format=3 uid="uid://cohe0ng5gyu4h"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=34 format=3 uid="uid://cohe0ng5gyu4h"]
 
 [ext_resource type="Resource" uid="uid://bnol4xomec0g1" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_43nme"]
@@ -9,12 +9,270 @@
 [ext_resource type="Resource" uid="uid://dtuo8rjewsxxd" path="res://resources/combat/abilities/BasicProjectileExtra.tres" id="4_nd134"]
 [ext_resource type="Texture2D" uid="uid://cfc4bsc5f1yuo" path="res://images/character_sprites/willis/rest_willis.png" id="5_clolb"]
 [ext_resource type="Resource" uid="uid://cbu52ciuiwyfq" path="res://resources/combat/abilities/BasicAttackExtra.tres" id="5_nj581"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="6_82428"]
+[ext_resource type="Script" path="res://scripts/resources/ResDamageOvertimeEffect.gd" id="7_ekdv1"]
 [ext_resource type="Texture2D" uid="uid://lh1un7rx2h1n" path="res://images/character_sprites/willis/willis_portrait.png" id="7_n85fj"]
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusDot.gd" id="8_oyl0f"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="9_a1mxa"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="10_8dxm1"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="11_fj5br"]
 [ext_resource type="Resource" uid="uid://s6fo2fxv6en2" path="res://resources/combat/talent_trees/BaseTalents.tres" id="11_reilv"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="12_clo5n"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDot.gd" id="13_nufh2"]
+
+[sub_resource type="Resource" id="Resource_6q5mv"]
+script = ExtResource("7_ekdv1")
+dot_effect = 1
+damage = 3
+duration = 3
+
+[sub_resource type="Resource" id="Resource_x5gew"]
+script = ExtResource("8_oyl0f")
+dot_effects = Array[ExtResource("7_ekdv1")]([SubResource("Resource_6q5mv")])
+
+[sub_resource type="Resource" id="Resource_q606o"]
+script = ExtResource("9_a1mxa")
+damage_type = 0
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_x5gew")])
+damage_modifier = 1.0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+can_miss = true
+can_crit = true
+return_pos = true
+indicator_bb = ""
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_qwuxy"]
+script = ExtResource("11_fj5br")
+name = "Test Ability!"
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_q606o")])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_abufr"]
+script = ExtResource("12_clo5n")
+base_heal = 0
+percent_heal = 1.0
+use_multiplier = true
+cast_animation = ""
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_c7tcy"]
+script = ExtResource("11_fj5br")
+name = "Healaria"
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_abufr")])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_84sgc"]
+script = ExtResource("7_ekdv1")
+dot_effect = 1
+damage = 6
+duration = 7
+
+[sub_resource type="Resource" id="Resource_gmy4v"]
+script = ExtResource("13_nufh2")
+dot_effect = SubResource("Resource_84sgc")
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_gmos3"]
+script = ExtResource("11_fj5br")
+name = "Six sevenus poison"
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_gmy4v")])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_q6fmt"]
+script = ExtResource("11_fj5br")
+name = ""
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_lhl2v"]
+script = ExtResource("11_fj5br")
+name = ""
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_crclc"]
+script = ExtResource("11_fj5br")
+name = ""
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_qv2us"]
+script = ExtResource("11_fj5br")
+name = ""
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_okftq"]
+script = ExtResource("11_fj5br")
+name = ""
+description = ""
+icon = ExtResource("10_8dxm1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("6_82428")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
 
 [resource]
 script = ExtResource("2_vmsk2")
-ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_j1bk8"), ExtResource("2_43nme"), ExtResource("3_xqwg4"), ExtResource("4_nd134"), ExtResource("5_nj581")])
+ability_pool = Array[ExtResource("11_fj5br")]([ExtResource("1_j1bk8"), ExtResource("2_43nme"), ExtResource("3_xqwg4"), ExtResource("4_nd134"), ExtResource("5_nj581"), SubResource("Resource_qwuxy"), SubResource("Resource_c7tcy"), SubResource("Resource_gmos3"), SubResource("Resource_q6fmt"), SubResource("Resource_lhl2v"), SubResource("Resource_crclc"), SubResource("Resource_qv2us"), SubResource("Resource_okftq")])
 base_traits = Array[String]([])
 mandatory = true
 rest_sprite = ExtResource("5_clolb")
@@ -28,29 +286,25 @@ packed_scene = ExtResource("3_f2l1f")
 bullet_texture = ExtResource("2_wn1q6")
 description = "Just a lil dude"
 stat_values = {
-"crit": 0.5,
-"crit_amp": 0.0,
+"crit": 0.0,
 "damage": 4,
-"dmg_variance": 0.1,
+"dmg_variance": 0.0,
 "handling": 0,
-"heal_amp": 0.0,
-"health": 15,
-"resist": 0.05,
+"health": 20,
+"resist": 0.0,
 "resolve": 0,
-"speed": 1
+"speed": 0
 }
 scale_stats = {
 "crit": 0.0,
-"crit_amp": 0.0,
-"damage": 0.0,
+"damage": 0.33,
 "dmg_variance": 0.0,
 "handling": 0.0,
-"heal_amp": 0.0,
-"health": 0.0,
+"health": 1.0,
 "resist": 0.0,
 "resolve": 0.0,
 "speed": 0.0
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ability_set = Array[ExtResource("11_fj5br")]([])
 max_turn_charges = 1
 assigned_position = -1

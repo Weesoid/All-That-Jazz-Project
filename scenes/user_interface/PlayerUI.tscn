@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://n3papvpb3ww"]
+[gd_scene load_steps=14 format=3 uid="uid://n3papvpb3ww"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiPlayerUI.gd" id="1_p4f1o"]
 [ext_resource type="Texture2D" uid="uid://ufnq3um8oq72" path="res://images/animations/campfire_whited.png" id="2_wkngm"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bsq30syei0neg" path="res://scenes/user_interface/PlayerPrompt.tscn" id="4_mvcks"]
 [ext_resource type="PackedScene" uid="uid://df404duxsvhre" path="res://scenes/user_interface/ItemPickupNotifier.tscn" id="5_r3hld"]
 [ext_resource type="PackedScene" uid="uid://db512n1n7dn3o" path="res://scenes/user_interface/PlayerUIExpBar.tscn" id="6_eggec"]
+[ext_resource type="PackedScene" uid="uid://dg4x3d37enifs" path="res://scenes/user_interface/HealthPopUp.tscn" id="7_bv5uw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ej86h"]
 atlas = ExtResource("2_wkngm")
@@ -116,4 +117,7 @@ offset_bottom = -80.0
 grow_horizontal = 1
 
 [node name="PlayerUIExperienceBar" parent="." instance=ExtResource("6_eggec")]
+layout_mode = 1
+
+[node name="HealthPopUp" parent="." instance=ExtResource("7_bv5uw")]
 layout_mode = 1

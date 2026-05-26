@@ -8,7 +8,8 @@ class_name CombatBar
 @onready var health_bar_fader = $HealthBarFader
 @onready var status_effects = $HealthBar/StatusEffectContainer
 @onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
-@onready var indicator_spawn_point = $Marker2D
+@onready var indicator_spawn_point = $DamageSpawnPoint
+@onready var status_spawn_point = $StatusSpawnPoint
 @onready var turn_gradient = $HealthBar/TurnGradient/AnimationPlayer
 @onready var pulse_gradient = $HealthBar/TurnPulser/AnimationPlayer
 @onready var turn_gradient_sprite = $HealthBar/TurnGradient
@@ -22,13 +23,16 @@ class_name CombatBar
 @onready var target_top = $TargetBorder/AnimationPlayer
 @onready var target_gradient_sprite = $TargetBorder/TargetGradient
 @onready var target_gradient_animator = $TargetBorder/TurnGradientAnimator
+@onready var indicator_intervals = $IndicatorIntervals
 var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
 var indicator_direction:int
+var indicator_queue: Array[Dictionary] = []
+var indicators_running:bool=false
 
 func _ready():
-	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
+	CombatGlobals.manual_call_indicator.connect(addIndicatorToQueue)
 	CombatGlobals.status_effect_added.connect(addStatusIcon)
 	CombatGlobals.status_effect_removed.connect(removeStatusIcon)
 	combat_scene.active_combatant_changed.connect(showActingGradient)
@@ -43,13 +47,7 @@ func _ready():
 	attached_combatant.resolve_changed.connect(updateResolveBar)
 	updateHealthBar()
 	updateResolveBar()
-	#notches.threshold_percent = (100/attached_combatant.getMaxResolve())*0.01
-	#print(notches.threshold_percent)
-	#print(notches.)
-	#notches.addNotches()
-	#$HealthBar/HFlowContainer/TextureRect.modulate = SettingsGlobals.ui_colors['up']
-	#$HealthBar/HFlowContainer/TextureRect2.modulate = SettingsGlobals.ui_colors['down']
-	#$TextureProgressBar/ShieldCrest/AnimationPlayer.play("Show")
+	animateFaderBar(0,attached_combatant.stat_values['health'])
 
 func showActingGradient(combatant:ResCombatant):
 	if attached_combatant == combatant:
@@ -174,27 +172,42 @@ func setFaderBarValue(value):
 	health_bar_fader.value = value
 
 
+func addIndicatorToQueue(combatant: ResCombatant, text: String, animation: String,top_position:bool=false):
+	if attached_combatant != combatant or !indicator_spawn_point.visible or !combat_scene.isCombatValid():
+		return
+	if !top_position:
+		manualCallIndicator(combatant,text,animation,top_position)
+		return
+	var split_messsage = text.split('\n')
+	if split_messsage.size() == 0: 
+		indicator_queue.append({'combatant': combatant, 'text': text, 'animation': animation, 'top_position':top_position}) 
+	else:
+		for message in split_messsage:
+			message = message.replace('[/color]','')
+			indicator_queue.append({'combatant': combatant, 'text': message, 'animation': animation, 'top_position':top_position}) 
+	
+	if indicator_intervals.is_stopped():
+		indicator_intervals.timeout.emit()
+		indicator_intervals.start()
+#func runQueue():
+#	for indicator in indicator_queue:
+#		manualCallIndicator(indicator['combatant'], indicator['text'], indicator['animation'], indicator['top_position'])
+#		await get_tree().create_timer(0.25).timeout
+
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String,top_position:bool=false):
-	if attached_combatant == combatant and indicator_spawn_point.visible and combat_scene.isCombatValid():
-		var range = 24
-		var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
-		var final_pos:Vector2
-		
-		if top_position:
-			final_pos = Vector2(0,-range)
-		else:
-			final_pos = Vector2(indicator_direction*range,randf_range(-range,range))
-		
-		indicator.modulate = Color.TRANSPARENT
-		indicator_spawn_point.add_child(indicator)
-		if top_position:
-			indicator.global_position += final_pos
-		indicator.modulate = Color.WHITE
-		indicator.playAnimation(
-			indicator.global_position+final_pos,
-			text, 
-			animation
-			)
+	var spawnpoint = indicator_spawn_point if !top_position else status_spawn_point
+	var range = 24
+	var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
+	var final_pos:Vector2 = Vector2(0,-range) if top_position else Vector2(indicator_direction*range,randf_range(-range,range))
+	indicator.modulate = Color.TRANSPARENT
+	spawnpoint.add_child(indicator)
+	indicator.modulate = Color.WHITE
+	indicator.playAnimation(
+		indicator.global_position+final_pos,
+		text, 
+		animation
+		)
+	if !top_position: 
 		indicator_direction *= -1
 
 func getIndicatorCount():
@@ -253,3 +266,12 @@ func setStatusVisibility(set_to:bool):
 
 func _on_tree_exited():
 	pass	
+
+
+func _on_indicator_intervals_timeout():
+	if indicator_queue.size() == 0:
+		return
+	
+	var indicator = indicator_queue.pop_front()
+	manualCallIndicator(indicator['combatant'], indicator['text'], indicator['animation'], indicator['top_position'])
+	indicator_intervals.start()

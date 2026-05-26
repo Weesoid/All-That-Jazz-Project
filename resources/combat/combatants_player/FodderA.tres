@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=12 format=3 uid="uid://cd5r32rnqq6ks"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=27 format=3 uid="uid://cd5r32rnqq6ks"]
 
 [ext_resource type="Resource" uid="uid://bnol4xomec0g1" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ic5dt"]
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_gtfo3"]
@@ -7,14 +7,174 @@
 [ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/character_sprites/huck/huck_follower.png" id="4_2iyqn"]
 [ext_resource type="Resource" uid="uid://cbu52ciuiwyfq" path="res://resources/combat/abilities/BasicAttackExtra.tres" id="4_rjkcl"]
 [ext_resource type="Texture2D" uid="uid://68stwkmd5vob" path="res://images/character_sprites/huck/huck_portrait.png" id="5_p6vgu"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="5_y3601"]
 [ext_resource type="PackedScene" uid="uid://bqe7unaj4matg" path="res://scenes/combatants/Huck.tscn" id="6_csx4u"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="6_ifjgl"]
 [ext_resource type="Texture2D" uid="uid://cxyp2od4rl1ln" path="res://images/character_sprites/huck/rest_huck.png" id="7_i8uri"]
+[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="7_qfcg1"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="7_rlsd5"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="8_plvh5"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="9_fuevt"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="10_cdf4t"]
 [ext_resource type="Resource" uid="uid://s6fo2fxv6en2" path="res://resources/combat/talent_trees/BaseTalents.tres" id="10_wl0yg"]
+[ext_resource type="Resource" uid="uid://bbox5uqlacm4y" path="res://resources/combat/status_effects/Stunned.tres" id="11_83ihk"]
+
+[sub_resource type="Resource" id="Resource_b45js"]
+script = ExtResource("6_ifjgl")
+damage_type = 0
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
+damage_modifier = 1.0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+can_miss = true
+can_crit = true
+return_pos = true
+indicator_bb = ""
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_hvyrf"]
+script = ExtResource("8_plvh5")
+name = "Gargarg"
+description = ""
+icon = ExtResource("7_qfcg1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_b45js")])
+ability_script = ExtResource("5_y3601")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_3tj40"]
+script = ExtResource("6_ifjgl")
+damage_type = 0
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
+damage_modifier = 1.0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+can_miss = true
+can_crit = true
+return_pos = true
+indicator_bb = ""
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_1o6uk"]
+script = ExtResource("8_plvh5")
+name = "FAASFASF"
+description = ""
+icon = ExtResource("7_qfcg1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_3tj40")])
+ability_script = ExtResource("5_y3601")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_0rsok"]
+script = ExtResource("9_fuevt")
+base_heal = 25
+percent_heal = 0.0
+use_multiplier = true
+cast_animation = ""
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_j5fqi"]
+script = ExtResource("8_plvh5")
+name = "SDGSDFGSDG"
+description = ""
+icon = ExtResource("7_qfcg1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_0rsok")])
+ability_script = ExtResource("5_y3601")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_wgrbd"]
+script = ExtResource("10_cdf4t")
+target = 1
+status_effect = ExtResource("11_83ihk")
+cast_animation = ""
+is_combo_effect = false
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_4r665"]
+script = ExtResource("8_plvh5")
+name = "SHASA"
+description = ""
+icon = ExtResource("7_qfcg1")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_wgrbd")])
+ability_script = ExtResource("5_y3601")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
 
 [resource]
 script = ExtResource("7_rlsd5")
-ability_pool = Array[Resource("res://scripts/resources/ResAbility.gd")]([ExtResource("1_ic5dt"), ExtResource("2_gtfo3"), ExtResource("3_6d41e"), ExtResource("4_rjkcl")])
+ability_pool = Array[ExtResource("8_plvh5")]([ExtResource("1_ic5dt"), ExtResource("2_gtfo3"), ExtResource("3_6d41e"), ExtResource("4_rjkcl"), SubResource("Resource_hvyrf"), SubResource("Resource_1o6uk"), SubResource("Resource_j5fqi"), SubResource("Resource_4r665")])
 base_traits = Array[String]([])
 follower_texture = ExtResource("4_2iyqn")
 mandatory = false
@@ -29,29 +189,25 @@ packed_scene = ExtResource("6_csx4u")
 bullet_texture = ExtResource("3_8yngu")
 description = "FODDER A"
 stat_values = {
-"crit": 0.05,
-"crit_amp": 0.0,
+"crit": 0.0,
 "damage": 4,
-"dmg_variance": 0.1,
+"dmg_variance": 0.0,
 "handling": 0,
-"heal_amp": 0.0,
 "health": 20,
-"resist": 0.05,
+"resist": 0.0,
 "resolve": 0,
-"speed": 1
+"speed": 0
 }
 scale_stats = {
 "crit": 0.0,
-"crit_amp": 0.0,
-"damage": 0.0,
+"damage": 0.2,
 "dmg_variance": 0.0,
 "handling": 0.0,
-"heal_amp": 0.0,
-"health": 0.0,
+"health": 1.0,
 "resist": 0.0,
 "resolve": 0.0,
 "speed": 0.0
 }
-ability_set = Array[Resource("res://scripts/resources/ResAbility.gd")]([])
+ability_set = Array[ExtResource("8_plvh5")]([])
 max_turn_charges = 1
 assigned_position = -1

@@ -7,7 +7,8 @@ class_name CustomAbilityButton
 @onready var description_panel = $PanelContainer
 @onready var description_animator = $PanelContainer/AnimationPlayer
 @onready var charges = $TextureRect/Charges
-
+@onready var lock_icon = $TextureRect/LockIcon
+@onready var ability_cost = $TextureRect/LockIcon/LockIcon/Label
 @export var ability: ResAbility
 @export var descriptions: Dictionary = {
 	'title': '',
@@ -16,7 +17,10 @@ class_name CustomAbilityButton
 }
 @export var custom_charge: int = -1
 @export var outside_combat: bool = false
+var default_modulate:Color = Color.WHITE
+var focused_modulate:Color = Color.YELLOW
 
+var is_locked:bool=false
 func _ready():
 	$TextureRect/HoldProgress.modulate=hold_color
 	if ability != null:
@@ -41,6 +45,22 @@ func _ready():
 	else:
 		description_label.text = descriptions['title'].to_upper()+'\n'+descriptions['description']
 		ability_icon.texture = descriptions['icon']
+
+func setLocked(set_to:bool):
+	is_locked = set_to
+	if set_to:
+		default_modulate = Color.DIM_GRAY
+		focused_modulate = Color.DIM_GRAY
+		ability_icon.self_modulate = default_modulate
+		lock_icon.show()
+	else:
+		default_modulate = Color.WHITE
+		focused_modulate = Color.YELLOW
+		ability_icon.self_modulate = default_modulate
+		lock_icon.hide()
+
+func setCost(combatant:ResCombatant):
+	ability_cost.text = str(PlayerGlobals.getAbilityCost(combatant, ability))
 
 func setDisabled(set_to:bool):
 	if set_to:
@@ -108,11 +128,11 @@ func dimButton():
 
 func undimButton():
 	if ability_icon != null:
-		ability_icon.modulate = Color.WHITE
+		ability_icon.modulate = default_modulate
 
 func _on_visibility_changed():
 	if ability_icon != null:
-		ability_icon.self_modulate = Color.WHITE
+		ability_icon.self_modulate = default_modulate
 
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
@@ -123,9 +143,10 @@ func focus_feedback():
 	
 	z_index = 99
 	if outside_combat:
-		ability_icon.self_modulate = Color.YELLOW
+		ability_icon.self_modulate = focused_modulate
 	else:
 		icon_animator.play("Focus")
+	lock_icon.scale = Vector2(1.5,1.5)
 
 func exit_focus_feedback():
 	delay_timer.stop()
@@ -135,6 +156,11 @@ func exit_focus_feedback():
 	if has_node('ButtonDescription'):
 		get_node('ButtonDescription').remove()
 	z_index = 0
-	icon_animator.play('RESET')
+	if !is_locked:
+		icon_animator.play('RESET')
+	else:
+		ability_icon.self_modulate = default_modulate
 	if description_panel.visible: 
 		hideDescription()
+	lock_icon.scale = Vector2(1,1)
+

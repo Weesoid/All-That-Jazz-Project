@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://bm8b8sbn5hofk"]
+
+[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="1_55s7p"]
+[ext_resource type="Script" path="res://scripts/user_interface/uiTensionBar.gd" id="1_rqfnn"]
+[ext_resource type="Texture2D" uid="uid://8pm1is5hmm5c" path="res://images/user_interface/outlined_circle_empty.png" id="3_2icq2"]
+[ext_resource type="Texture2D" uid="uid://bnbmhhurjxnx3" path="res://images/user_interface/outlined_circle_filled.png" id="4_6shjk"]
+
+[sub_resource type="Gradient" id="Gradient_o1g4r"]
+offsets = PackedFloat32Array(0, 0.99458)
+colors = PackedColorArray(0, 0, 0, 0, 1, 0.843137, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oh1hh"]
+gradient = SubResource("Gradient_o1g4r")
+fill_from = Vector2(0.5, 0.4)
+fill_to = Vector2(0.5, 0)
+
+[node name="TensionBar" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 16.0
+grow_horizontal = 2
+script = ExtResource("1_rqfnn")
+
+[node name="Gradient" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -8.0
+offset_right = 648.0
+offset_bottom = 64.0
+texture = SubResource("GradientTexture2D_oh1hh")
+
+[node name="CustomCountBar" parent="." instance=ExtResource("1_55s7p")]
+layout_mode = 1
+anchors_preset = 10
+anchor_bottom = 0.0
+offset_top = 8.0
+offset_bottom = 24.0
+grow_vertical = 1
+size_flags_horizontal = 3
+alignment = 1
+value = 2
+empty_circle = ExtResource("3_2icq2")
+filled_circle = ExtResource("4_6shjk")
+fill_tween = 1

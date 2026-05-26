@@ -4,15 +4,15 @@
 [ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="1_xjxjm"]
 [ext_resource type="Resource" uid="uid://n15uy40oimtq" path="res://resources/combat/abilities/Defend.tres" id="2_mvnss"]
 [ext_resource type="Texture2D" uid="uid://cc77vpghixtg8" path="res://images/ability_icons/move.png" id="2_rufvp"]
-[ext_resource type="Texture2D" uid="uid://c057yn1t2726m" path="res://images/sprites/icon_tp.png" id="4_h2q6l"]
 [ext_resource type="Resource" uid="uid://ol8t3xlrcx8b" path="res://resources/combat/abilities/Advance.tres" id="6_15don"]
-[ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="7_8it53"]
 [ext_resource type="Resource" uid="uid://vedm8h64ew7u" path="res://resources/combat/abilities/Recede.tres" id="7_et8gl"]
 [ext_resource type="Texture2D" uid="uid://du1iddji1w8cp" path="res://images/ability_icons/combat_gear.png" id="8_k8onw"]
 [ext_resource type="Texture2D" uid="uid://booeu7atgv18m" path="res://images/ability_icons/escape.png" id="9_1g12q"]
 [ext_resource type="Texture2D" uid="uid://cac4xj6cte52y" path="res://images/ability_icons/pass.png" id="9_hipl7"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="10_0a084"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="11_udija"]
+[ext_resource type="PackedScene" uid="uid://bm8b8sbn5hofk" path="res://scenes/user_interface/TensionBar.tscn" id="13_0p67n"]
+[ext_resource type="PackedScene" uid="uid://l265si2qk30k" path="res://scenes/user_interface/CombatInspection.tscn" id="14_k44oi"]
 
 [sub_resource type="Animation" id="Animation_k3y2o"]
 resource_name = "Hide"
@@ -172,42 +172,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_xa35n")
-
-[node name="Tension" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = -23.0
-offset_right = 80.0
-offset_bottom = -23.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_vertical = 8
-
-[node name="TensionBar" parent="Tension" instance=ExtResource("7_8it53")]
-layout_mode = 1
-offset_left = -99.0
-offset_top = 8.0
-offset_right = -99.0
-offset_bottom = 8.0
-value = 3
-max_value = 4
-process = false
-
-[node name="TextureRect" type="TextureRect" parent="Tension"]
-layout_mode = 0
-offset_left = -112.0
-offset_top = 6.0
-offset_right = -100.0
-offset_bottom = 18.0
-pivot_offset = Vector2(6, 6)
-texture = ExtResource("4_h2q6l")
 
 [node name="AbilityContainer" type="HFlowContainer" parent="."]
 layout_mode = 1
@@ -429,6 +397,14 @@ libraries = {
 }
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="CombatInspection" parent="." instance=ExtResource("14_k44oi")]
+layout_mode = 1
+mouse_filter = 2
+
+[node name="TensionBar" parent="." instance=ExtResource("13_0p67n")]
+layout_mode = 1
+offset_bottom = 0.0
 
 [connection signal="focus_exited" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_focus_exited"]
 [connection signal="held_press" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_held_press"]

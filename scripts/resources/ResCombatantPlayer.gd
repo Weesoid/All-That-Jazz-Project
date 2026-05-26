@@ -36,13 +36,14 @@ func initializeCombatant(do_scene:bool=true):
 	if !initialized:
 		base_stat_values = stat_values.duplicate()
 		base_health = stat_values['health']
+		for i in range(getStartingAbilityCount()): 
+			PlayerGlobals.unlockAbility(self, ability_pool[i])
 		initialized = true
 	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
 	if !stat_modifiers.has('base_rebuke'):
 		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:1.25},'base_rebuke')
 	if !stat_modifiers.has('base_resolve'):
-		print('adding resolve!')
 		CombatGlobals.modifyStat(self, {'resolve':3},'base_resolve')
 	if !stat_values.has('strain'):
 		stat_values['strain']=0
@@ -61,7 +62,12 @@ func initializeCombatant(do_scene:bool=true):
 	applyAllTraits()
 	applyTemporaryModifiers()
 	applyStoredStatusEffects()
-	if name.contains('Flynt'): print(stat_modifiers)
+
+func getStartingAbilityCount():
+	return 5 if ability_pool.size() >= 5 else ability_pool.size()
+
+	#print('active abili')
+	
 #func loadTalents():
 #	talent_list['base_talents'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/talents/base_talents/")
 #
@@ -140,22 +146,26 @@ func loadFileReferences():
 			continue
 		ability_set.append(load(ability_path))
 	
-	for talent_path in file_references['active_talents']:
-		var talent_val = file_references['active_talents'][talent_path]
-		if ResourceGlobals.unexpectedTalentData(talent_val): # Unexpected data fallback (first of it's kind!)
-			remove['active_talents'].append_array(file_references['active_talents'].keys())
-			stat_points = PlayerGlobals.team_level
-			break
-		
-		var updated_talent:ResTalent = ResourceLoader.load(talent_path)
-		var recorded_rank = file_references['active_talents'][talent_path]['rank']
-		var recorded_cost = file_references['active_talents'][talent_path]['cost']
-		if !ResourceLoader.has_cached(talent_path) or (updated_talent.cost != recorded_cost or updated_talent.max_rank < recorded_rank):
-			remove['active_talents'].append(talent_path)
-			stat_points += recorded_rank*recorded_cost
-			continue
-		
-		active_talents[load(talent_path)] = file_references['active_talents'][talent_path]
+	if stat_points > PlayerGlobals.team_level:
+		stat_points = PlayerGlobals.team_level
+		remove['active_talents'].append_array(file_references['active_talents'].keys())
+	else:
+		for talent_path in file_references['active_talents']:
+			var talent_val = file_references['active_talents'][talent_path]
+			if ResourceGlobals.unexpectedTalentData(talent_val): # Unexpected data fallback (first of it's kind!)
+				remove['active_talents'].append_array(file_references['active_talents'].keys())
+				stat_points = PlayerGlobals.team_level
+				break
+			
+			var updated_talent:ResTalent = ResourceLoader.load(talent_path)
+			var recorded_rank = file_references['active_talents'][talent_path]['rank']
+			var recorded_cost = file_references['active_talents'][talent_path]['cost']
+			if !ResourceLoader.has_cached(talent_path) or (updated_talent.cost != recorded_cost or updated_talent.max_rank < recorded_rank):
+				remove['active_talents'].append(talent_path)
+				stat_points += recorded_rank*recorded_cost
+				continue
+			# Apply to active talents
+			active_talents[load(talent_path)] = file_references['active_talents'][talent_path]
 	
 	for error_reference in remove['active_abilities']:
 		file_references['active_abilities'].erase(error_reference)
@@ -245,17 +255,6 @@ func applyStatusEffects():
 func applyEquipmentModifications():
 	for charm in charms:
 		charm.applyStatModifications()
-
-#func getAllocationModifier()-> Dictionary:
-#	var out = stat_point_allocations.duplicate()
-#	out['resist'] = out['defense']
-#	for stat in out.keys():
-#		if (stat == 'handling' or stat == 'damage') and out.has(stat):
-#			out[stat] *= 1
-#		elif stat == 'defense' and out.has(stat):
-#			out['defense'] *= stat_multiplier
-#			out['resist'] *= stat_multiplier
-#	return out
 
 func removeEquipmentModifications():
 	for charm in charms:
