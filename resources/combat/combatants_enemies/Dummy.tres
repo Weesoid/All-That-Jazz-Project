@@ -40,7 +40,7 @@ caster_position = {
 "min": 0
 }
 target_position = {
-"max": 3,
+"max": 0,
 "min": 0
 }
 charges = 0

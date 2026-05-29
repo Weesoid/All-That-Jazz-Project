@@ -226,6 +226,9 @@ func getTraitsWithFlag(key:String):
 
 func updateCombatant(save_data: PlayerSaveData):
 	loadFileReferences()
+	updateHealth(0)
+	stat_values['resolve'] = saved_resolve
+	#updateResolve(saved_resolve)
 	#var path = resource_path
 	#var percent_health = float(save_data.combatant_save_data[path].stat_values['health']) / float(save_data.combatant_save_data[path].base_stat_values['health'])
 	#if name.contains('Willis'): print(str(percent_health*100)+'% !!!')

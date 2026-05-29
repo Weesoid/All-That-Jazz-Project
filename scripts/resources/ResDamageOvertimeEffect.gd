@@ -23,3 +23,13 @@ func getDotEffect():
 		effect = 'Bleed'
 	
 	return [effect, override_data]
+
+func getDotStatusEffect()-> ResStatusEffect:
+	if dot_effect == DotEffect.BURN:
+		return CombatGlobals.loadStatusEffect('Burn')
+	elif dot_effect == DotEffect.POISON:
+		return CombatGlobals.loadStatusEffect('Poison')
+	elif dot_effect == DotEffect.BLEED:
+		return CombatGlobals.loadStatusEffect('Bleed')
+	
+	return null

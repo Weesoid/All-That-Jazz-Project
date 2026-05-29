@@ -31,14 +31,14 @@ func ready():
 func _on_focus_entered():
 	focus_feedback()
 	get_viewport().warp_mouse(position)
-	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
+	if Input.is_action_pressed("ui_show_info") and description_text != '':
 		showDescription()
 
 func _on_pressed():
 	press_feedback()
 
 func _on_mouse_entered():
-	if Input.is_action_pressed("ui_select_arrow") and description_text != '':
+	if Input.is_action_pressed("ui_show_info") and description_text != '':
 		showDescription()
 	grab_focus()
 
@@ -49,7 +49,7 @@ func _on_focus_exited():
 	exit_focus_feedback()
 
 func _input(_event):
-	if Input.is_action_just_pressed("ui_select_arrow") and has_focus() and description_text != '':
+	if Input.is_action_just_pressed("ui_show_info") and has_focus() and description_text != '':
 		showDescription()
 	checkHoldInputs()
 

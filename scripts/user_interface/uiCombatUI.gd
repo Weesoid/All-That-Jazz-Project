@@ -3,7 +3,7 @@ class_name CombatUI
 
 const COMBAT_GEAR_ICON = preload("res://images/ability_icons/combat_gear.png")
 const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
-const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
+#const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
 #DialogueManager
 @export var tension_color:Color = SettingsGlobals.ui_colors['up']
 @export var tension_particles_db:float = -8.0
@@ -32,6 +32,7 @@ const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
 @onready var rushed_movement_timer = $Timer
 @onready var weapon_uses = $AbilityContainer/BaseAbilities/BaseAbilities/Gear/TextureRect/Label
 @onready var tension_bar = $TensionBar
+@onready var inspector = $CombatInspection
 var tension_orig_pos
 var rounds_orig_pos
 var ui_visible:bool

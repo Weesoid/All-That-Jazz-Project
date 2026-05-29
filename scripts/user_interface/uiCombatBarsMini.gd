@@ -18,19 +18,33 @@ var default_action_pos: Vector2
 func _ready():
 	CombatGlobals.manual_call_indicator.connect(manualCallIndicator)
 	upper_icon_original_pos = upper_icon.position
-	#camp_button.item_received.connect(updateStrainBar)
-	strain_bar.max_value = PlayerGlobals.strain_cap
+	strain_bar.setMax(PlayerGlobals.strain_cap)# = 
 	setWatchmark(false)
+	#OverworldGlobals.end_camp.connect(setConnections.bind(false))
 	#updateStatusEffects()
 
 func setCombatant(combatant:ResPlayerCombatant):
 	if !combatant.initialized:
 		combatant.initializeCombatant(false)
 	attached_combatant = combatant
+	setConnections(true)
 	previous_value = attached_combatant.stat_values['health']
 	camp_button.combatant = combatant
 	updateBars()
+	updateStrainBar()
 	#updateStatusEffects()
+
+func setConnections(set_to:bool):
+	if set_to:
+		if !attached_combatant.health_changed.is_connected(updateBars): 
+			attached_combatant.health_changed.connect(updateBars.unbind(1))
+		if !attached_combatant.health_changed.is_connected(updateStrainBar): 
+			attached_combatant.stat_modified.connect(updateStrainBar.unbind(2))
+	else:
+		if attached_combatant.health_changed.is_connected(updateBars): 
+			attached_combatant.health_changed.disconnect(updateBars)
+		if attached_combatant.stat_modified.is_connected(updateStrainBar): 
+			attached_combatant.stat_modified.disconnect(updateStrainBar)
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String,top_position:bool=false):
 	if attached_combatant == combatant and prompts.visible:
@@ -51,14 +65,9 @@ func manualCallIndicator(combatant: ResCombatant, text: String, animation: Strin
 		indicator.playAnimation(
 			indicator.global_position+final_pos,
 			text, 
-			animation
+			animation,
+			2
 			)
-		#indicator_direction *= -1
-
-func _process(_delta):
-	if attached_combatant == null:
-		return
-	updateBars()
 
 func updateBars():
 	health_bar.max_value = int(attached_combatant.base_stat_values['health'])
@@ -127,7 +136,6 @@ func setWatchmark(set_to:bool):
 
 func _on_character_camp_button_focus_entered():
 	get_parent().get_node('Throbber').show()
-
 
 func _on_character_camp_button_focus_exited():
 	get_parent().get_node('Throbber').hide()

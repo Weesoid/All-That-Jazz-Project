@@ -23,7 +23,7 @@ var ui_colors: Dictionary = {
 	'special-bb-nobracket':'color=TURQUOISE',
 	'unique-bb-nobracket':'color=ORANGE'
 }
-var bb_line:String = '\n[color=transparent]a[/color][img]res://images/sprites/bb_line.png[/img][color=transparent]a[/color]\n'
+var bb_line:String = '\n[color=transparent]a[/color][img]res://images/user_interface/bb_line.png[/img][color=transparent]a[/color]\n'
 
 func colorImgBB(ui_color:String):
 	return '[img '+ui_colors[ui_color].replace('[','').replace(']','')+']'

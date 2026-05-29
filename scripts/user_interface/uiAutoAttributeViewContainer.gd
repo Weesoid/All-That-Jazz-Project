@@ -5,9 +5,6 @@ class_name AutoAttribueViewer
 var tracked_stats:Array[String] = []
 var skip_stats = CombatExtras.BASE_STATS
 
-func _ready():
-	CombatGlobals.extra_stat_added.connect(addStat)
-
 func setCombatant(combatant, clear:bool=false):
 	if combatant == null:
 		return
@@ -18,6 +15,8 @@ func setCombatant(combatant, clear:bool=false):
 	for stat in combatant.stat_values.keys():
 		if skip_stats.has(stat): continue
 		addStat(combatant,stat)
+	if !combatant.extra_stat_added.is_connected(addStat):
+		combatant.extra_stat_added.connect(addStat)
 
 func addStat(combatant, stat):
 	if tracked_stats.has(stat): return

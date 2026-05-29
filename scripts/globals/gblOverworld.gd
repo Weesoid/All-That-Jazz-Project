@@ -15,6 +15,8 @@ signal party_damaged
 signal combat_enetered
 signal combat_exited
 signal group_cleared(group:PatrollerGroup)
+signal start_camp
+signal end_camp
 #signal update_inventory
 
 func initializePlayerParty():
@@ -294,7 +296,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	button.custom_minimum_size.y = 32
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	button.icon = item.icon
-	button.tooltip_text = item.name
+	#button.tooltip_text = item.name
 	button.description_text = item.getInformation()
 	button.description_offset = Vector2(0, -28)
 	if item is ResStackItem and show_count:
@@ -323,7 +325,7 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 		button.theme = load("res://design/ItemButtonsMandatory.tres")
 	else:
 		button.theme = load("res://design/ItemButtons.tres")
-	
+	UIGlobals.addTooltip(button, '[center]'+item.name, CustomTooltip.AnchorPreset.BOTTOM)
 #	InventoryGlobals.removed_item_from_inventory.connect(
 #		(func(removed_item):
 #			print(removed_item == item)).unbind(1)

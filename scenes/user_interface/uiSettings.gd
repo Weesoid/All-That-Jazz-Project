@@ -32,7 +32,7 @@ var editable_keybinds: Dictionary = {
 	'ui_move_right': 'Move Right',
 	'ui_sprint': 'Sprint',
 	'ui_bow': 'Equip Bow',
-	'ui_select_arrow': 'Quiver',
+	'ui_show_info': 'Quiver',
 	'ui_gambit': 'Channel Void',
 	'ui_show_menu': 'Show Menu'
 }

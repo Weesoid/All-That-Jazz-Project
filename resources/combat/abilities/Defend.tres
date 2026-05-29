@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=12 format=3 uid="uid://n15uy40oimtq"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=14 format=3 uid="uid://n15uy40oimtq"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_v8or2"]
 [ext_resource type="Resource" uid="uid://bnnwkaaycfdkg" path="res://resources/combat/status_effects/GuardBreak.tres" id="2_iubfv"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="4_if1fj"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="4_k1wj8"]
 [ext_resource type="Resource" uid="uid://2rqc25bhve85" path="res://resources/combat/status_effects/Burnout.tres" id="5_1ytoe"]
+[ext_resource type="Script" path="res://scripts/resources/ResEffectConditionHealth.gd" id="6_3f6xh"]
 
 [sub_resource type="Resource" id="Resource_u7g7t"]
 script = ExtResource("3_ba127")
@@ -23,13 +24,18 @@ cast_animation = ""
 animation_time = 0.0
 animate_on = 0
 
+[sub_resource type="Resource" id="Resource_1dqu6"]
+script = ExtResource("6_3f6xh")
+inequality = 1
+health_threshold = 0.5
+
 [sub_resource type="Resource" id="Resource_b0dn7"]
 script = ExtResource("4_if1fj")
 base_heal = 0
-percent_heal = 0.0
+percent_heal = 0.25
 use_multiplier = true
 cast_animation = ""
-condition = "hp:<:0.0"
+condition = SubResource("Resource_1dqu6")
 animation_time = 0.0
 animate_on = 0
 
@@ -53,7 +59,7 @@ target_position = {
 charges = 0
 required_effect = {
 "rank": 0,
-"status_effect": ExtResource("2_iubfv")
+"status_effect": null
 }
 tension_cost = 4
 instant_cast = false

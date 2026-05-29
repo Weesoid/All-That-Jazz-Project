@@ -6,3 +6,6 @@ class_name ResChanceCondtion
 func isPassed(combatant:ResCombatant)->bool:
 	randomize()
 	return CombatGlobals.randomRoll(chance)
+
+func _to_string():
+	return '\n(%s%% chance)' % str(int(chance*100))

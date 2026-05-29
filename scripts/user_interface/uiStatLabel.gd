@@ -29,7 +29,7 @@ enum LabelStyle {
 @onready var bar_values = $Value/ProgressBar/MaxValues
 @onready var count_bar = $Value/CustomCountBar
 @onready var label = $Value/Label
-
+#@onready var tooltip = $CustomTooltip
 var scale_bb = '[img color=%s]res://images/status_icons/small_buff.png[/img]'%SettingsGlobals.ui_colors['up-bb-nobracket']
 
 func _ready():
@@ -47,10 +47,24 @@ func _ready():
 		StatVisuals.LABEL: label.show()
 	
 	if CombatExtras.STAT_DESCRIPTIONS.has(track_stat):
-		tooltip_text = CombatExtras.STAT_DESCRIPTIONS[track_stat]
+		UIGlobals.addTooltip(
+			self,
+			CombatExtras.STAT_DESCRIPTIONS[track_stat],
+			CustomTooltip.AnchorPreset.LEFT
+			)
+		#tooltip.setText(CombatExtras.STAT_DESCRIPTIONS[track_stat])
+		#tooltip_text = CombatExtras.STAT_DESCRIPTIONS[track_stat]
+	update()
 
-# TODO Change to sig
-func _process(delta):
+func setCombatant(p_combatant):
+	combatant = p_combatant
+	if !combatant.stat_modified.is_connected(update):
+		combatant.stat_modified.connect(update.unbind(2))
+	if !combatant.stat_removed.is_connected(update):
+		combatant.stat_removed.connect(update.unbind(2))
+	update()
+
+func update():
 	if combatant == null:
 		return
 	if combatant.stat_values[track_stat] == 0.0 and !CombatExtras.BASE_STATS.has(track_stat):
@@ -78,11 +92,13 @@ func updateBar():
 		bar.max_value = 1.0
 
 func updateCountBar():
-	count_bar.value = combatant.stat_values[track_stat]
 	if count_bar_max_value == -1:
-		count_bar.max_value = combatant.base_stat_values[track_stat]
-	else:
-		count_bar.max_value = count_bar_max_value
+		count_bar.setMax(combatant.base_stat_values[track_stat])
+	elif count_bar.max_value != count_bar_max_value:
+		count_bar.setMax(count_bar_max_value)
+	#await get_tree().create_timer(0.25).timeout
+	count_bar.setValue(combatant.stat_values[track_stat])
+#	count_bar.value = combatant.stat_values[track_stat]
 
 func updateLabel():
 	match label_style:
@@ -125,3 +141,13 @@ func getUnscaledTrackStat():
 #		return 0
 	
 	return combatant.stat_values[track_stat] - combatant.stat_modifiers['scaled_stats'].get(track_stat,0)
+
+#func _on_focus_entered():
+#	modulate = Color.YELLOW
+#
+#func _on_focus_exited():
+#	modulate = Color.WHITE
+#
+#
+#func _on_mouse_entered():
+#	grab_focus()

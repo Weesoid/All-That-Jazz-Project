@@ -11,5 +11,5 @@ func isPassed(combatant:ResCombatant):
 		CombatGlobals.removeStatusEffect(combatant, status_effect.name)
 	return is_passed
 
-func getDescription():
-	return 'If %s ' % status_effect.getMessageIcon()
+func _to_string():
+	return '\nwhen target has '+status_effect.getMessageIcon()

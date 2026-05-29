@@ -1,4 +1,4 @@
-extends Control
+extends HBoxContainer
 class_name CustomCountBar
 
 enum FillTween {
@@ -9,6 +9,8 @@ enum FillTween {
 @export var value: int = 0
 @export var max_value: int = 0
 @export var show_max: bool = true
+@export var reverse_order:bool=false
+@export var initialize:bool=true
 @export var empty_circle: Texture = preload("res://images/sprites/circle_empty.png")
 @export var filled_circle: Texture = preload("res://images/sprites/circle_filled.png")
 @export var fill_tween := FillTween.NONE
@@ -19,35 +21,60 @@ var tween_running:bool=false
 signal value_changed(value)
 
 func _ready():
-	for i in range(value):
-		add_child(createCircle(filled_circle))
-	for i in range(max_value-value):
-		add_child(createCircle(empty_circle))
-	setValue(value)
+	if reverse_order:
+		layout_direction = Control.LAYOUT_DIRECTION_RTL
+		#set_alignment(ALIGNMENT_END)
+	if initialize:
+		setMax(max_value)
+		setValue(value)
 
 func setValue(p_value):
 	value = p_value
 	updateValue()
 	value_changed.emit(value)
 
+func setMax(p_max_value):
+	max_value = p_max_value
+	
+	if max_value == get_child_count():
+		return
+	elif max_value > get_child_count():
+		#if get_parent() is TPBar: print('a')
+		for i in range(max_value-get_child_count()):
+			add_child(createCircle(filled_circle))
+	elif max_value < get_child_count():
+		#if get_parent() is TPBar: print('b')
+		for i in range(get_child_count()-max_value):
+			get_children()[-1].queue_free()
+	else:
+		#if get_parent() is TPBar: print('c')
+		for i in range(value):
+			add_child(createCircle(filled_circle))
+		for i in range(max_value-value):
+			add_child(createCircle(empty_circle))
+
 func updateValue():
 	var filled = 0
-	#var do_tween:bool=true
-	for circle in get_children():
+	var circles = get_children()
+	#if reverse_order: circles.reverse()
+	for circle in circles:
 		if filled < value: 
 			circle.show()
 			circle.texture = filled_circle
 			filled += 1
-			if filled == value: 
+			if filled == value and fill_tween != FillTween.NONE: 
 				await get_tree().process_frame
 				doFillTween(circle)
 		elif show_max:
 			circle.texture = empty_circle
 		else:
 			circle.hide()
+#	if reverse_order:
+#		get_children().reverse()
+
 
 func doFillTween(circle: TextureRect):
-	if fill_tween == FillTween.NONE or tween_running: 
+	if tween_running: 
 		return
 	
 	tween_running=true
@@ -57,7 +84,7 @@ func doFillTween(circle: TextureRect):
 		var modulate_tween = create_tween()
 		circle.modulate = SettingsGlobals.ui_colors['up']
 		circle.position = original_pos+Vector2(0,5)
-		modulate_tween.tween_property(circle, 'modulate', Color.WHITE, 2)
+		modulate_tween.tween_property(circle, 'modulate', Color.WHITE, 1.25)
 		pos_tween.tween_property(circle, 'position', original_pos,1)
 		await modulate_tween.finished
 	tween_running = false

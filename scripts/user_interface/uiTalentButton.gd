@@ -60,14 +60,14 @@ func _on_pressed():
 
 func _on_focus_entered():
 	focus_feedback()
-	if Input.is_action_pressed("ui_select_arrow") and has_focus(): 
+	if Input.is_action_pressed("ui_show_info") and has_focus(): 
 		showDescription()
 
 func _on_mouse_entered():
 	focus_feedback()
 	if focus_mode != Control.FOCUS_NONE:
 		grab_focus()
-	if Input.is_action_pressed("ui_select_arrow") and has_focus(): 
+	if Input.is_action_pressed("ui_show_info") and has_focus(): 
 		
 		showDescription()
 
@@ -78,9 +78,9 @@ func _on_focus_exited():
 	exit_focus_feedback()
 
 func _input(_event):
-	if Input.is_action_just_pressed("ui_select_arrow") and !description_panel.visible and has_focus():
+	if Input.is_action_just_pressed("ui_show_info") and !description_panel.visible and has_focus():
 		showDescription()
-	if Input.is_action_just_released("ui_select_arrow") and description_panel.visible:
+	if Input.is_action_just_released("ui_show_info") and description_panel.visible:
 		hideDescription()
 	
 	checkHoldInputs()

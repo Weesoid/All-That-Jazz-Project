@@ -10,14 +10,13 @@ base_heal = 0
 percent_heal = 0.25
 use_multiplier = false
 cast_animation = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
 [resource]
 script = ExtResource("1_fm6vq")
 effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_w5uhc")])
-strain = 0
+strain = 1
 party_wide = false
 max_stack = 16
 barter_item = false

@@ -85,26 +85,11 @@ layout_mode = 1
 offset_top = -30.0
 offset_bottom = -30.0
 mouse_filter = 2
+theme_override_constants/separation = -2
 value = 3
 max_value = 4
-process = false
 empty_circle = ExtResource("9_pyvaa")
 filled_circle = ExtResource("10_mimle")
-
-[node name="HBoxContainer" parent="StrainBar" index="0"]
-offset_top = 2.0
-offset_bottom = 2.0
-mouse_filter = 2
-theme_override_constants/separation = -2
-
-[node name="VBoxContainer" parent="StrainBar" index="1"]
-offset_left = 16.0
-offset_top = 53.0
-offset_right = 16.0
-offset_bottom = 53.0
-mouse_filter = 2
-theme_override_constants/separation = 0
-alignment = 2
 
 [node name="CharacterCampButton" parent="." instance=ExtResource("8_5nq1q")]
 layout_mode = 1

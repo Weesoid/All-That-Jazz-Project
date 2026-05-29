@@ -14,6 +14,7 @@ class_name CombatantSaveData
 @export var temp_modifier_tracker: Dictionary
 @export var assigned_position:int
 @export var percent_health:float
+@export var saved_resolve:int
 #@export var item_strain_tracker: Dictionary
 
 func _init(
@@ -29,7 +30,8 @@ func _init(
 	p_file_references = {},
 	p_temp_modifier_tracker = {},
 	p_assigned_position=-1,
-	p_percent_health=1
+	p_percent_health=1,
+	p_saved_resolve=3
 	#p_item_strain_tracker = {}
 ):
 	#lingering_effects.assign(p_lingering_effects)
@@ -46,6 +48,7 @@ func _init(
 	temp_modifier_tracker = p_temp_modifier_tracker
 	assigned_position = p_assigned_position
 	percent_health = p_percent_health
+	saved_resolve=p_saved_resolve
 	#item_strain_tracker = p_item_strain_tracker
 
 func loadData(combatant: ResPlayerCombatant):
@@ -60,6 +63,7 @@ func loadData(combatant: ResPlayerCombatant):
 	combatant.temp_modifier_tracker = temp_modifier_tracker
 	combatant.assigned_position = assigned_position
 	combatant.percent_health = percent_health
+	combatant.saved_resolve = saved_resolve
 	#if combatant.name.contains('Will'): print(combatant, ' percent health: ',str(percent_health*100),'%')
 	#combatant.stat_values['health'] = int(combatant.getMaxHealth()*percent_health)
 	#combatant.item_strain_tracker = item_strain_tracker

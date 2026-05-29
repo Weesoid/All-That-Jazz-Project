@@ -13,7 +13,8 @@ func loadAbilities(combatant: ResPlayerCombatant):
 		
 		createAbilityButton(ability, combatant)
 	hideLocked(combatant)
-	dimInactiveAbilities(combatant)
+	if combatant.ability_set.size() >= 5:
+		dimInactiveAbilities(combatant)
 	#loadDebug(combatant)
 
 func loadDebug(combatant):
@@ -23,6 +24,7 @@ func loadDebug(combatant):
 func createAbilityButton(ability, combatant):
 	var button: CustomButton = OverworldGlobals.createAbilityButton(ability)
 	var has_unlocked = PlayerGlobals.hasUnlockedAbility(combatant, ability) #or ability.required_level == 0
+	button.description_offset = Vector2(132,128)
 	button.focused_entered_sound = load("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = load("res://audio/sounds/421304__jaszunio15__click_229.ogg")
 	if combatant.ability_set.has(ability):

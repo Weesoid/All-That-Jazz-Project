@@ -13,7 +13,7 @@ const EXECUTE = 'execute_dmg'
 const RIPOSTE_DMG = 'riposte_dmg'
 
 const STAT_DESCRIPTIONS = {
-	"health": "Damage character can sustain before entering brink.", 
+	"health": "Damage character can sustain before going on the brink.", 
 	"damage": "Damage character deals.", 
 	"handling": "Max rank of combat item character can use.", 
 	"speed": "Determiness turn order priority.", 

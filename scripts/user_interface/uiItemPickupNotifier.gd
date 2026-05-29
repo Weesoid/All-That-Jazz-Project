@@ -36,13 +36,16 @@ func addPickupLabel(item:ResItem,count:int,remove_item:bool=false):
 	tween.tween_property(pickup_label,'modulate', Color.TRANSPARENT,0.25)
 
 func getAddedText(item:ResItem,count:int,remove_item:bool):
-	var base_text="[fill][img]res://images/item_icons/.ICON.[/img][color=TRANSPARENT]a[/color].ITEM.[color=TRANSPARENT]a[/color] +.COUNT.[color=TRANSPARENT]a[/color].TOTALCOUNT."
-	base_text=base_text.replace('.ICON.',item.icon.resource_path.get_file())
-	base_text=base_text.replace('.ITEM.',item.name.replace(' ', '[color=TRANSPARENT]a[/color]'))
-	if remove_item:
-		base_text=base_text.replace('+.COUNT.','-'+str(count) if count>0 else str(count))
-	else:
-		base_text=base_text.replace('.COUNT.',str(count))
+	var base_text="[fill][img]<ICON>[/img][color=TRANSPARENT]a[/color]<ITEM>[color=TRANSPARENT]a[/color] +<COUNT>[color=TRANSPARENT]a[/color]<TOTALCOUNT>"
+	base_text=base_text.replace('<ICON>',item.icon.resource_path)
+	base_text=base_text.replace('<ITEM>',item.name.replace(' ', '[color=TRANSPARENT]a[/color]'))
+	#if !FileAccess.file_exists(base_text):
+	#	base_text = item.icon.resource_path
 	
-	base_text=base_text.replace('.TOTALCOUNT.','[color=#FFFFFF80]('+str(InventoryGlobals.getItemCount(item))+')[/color]')
+	if remove_item:
+		base_text=base_text.replace('+<COUNT>','-'+str(count) if count>0 else str(count))
+	else:
+		base_text=base_text.replace('<COUNT>',str(count))
+	
+	base_text=base_text.replace('<TOTALCOUNT>','[color=#FFFFFF80]('+str(InventoryGlobals.getItemCount(item))+')[/color]')
 	return base_text

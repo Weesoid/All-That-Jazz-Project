@@ -3,6 +3,7 @@ class_name CombatScene
 
 const COMBATANT_DISTANCE=40
 const DEFAULT_ZOOM = Vector2(1.5,1.5)
+const DEFAULT_CAM_POS: Vector2 = Vector2(0, 6)
 
 enum TargetState {
 	NONE,
@@ -50,8 +51,8 @@ var player_turn_count = 0
 var enemy_turn_count = 0
 var battle_music_path: String = ""
 var combat_result: int = -1
-var default_camera_position: Vector2 = Vector2(0, 5)
-var default_camera_zoom:Vector2 = Vector2(1.6,1.6)
+
+#var default_camera_zoom:Vector2 = Vector2(1.6,1.6)
 var enemy_reinforcements: Array[ResCombatant]
 var bonus_escape_chance = 1.0
 #var onslaught_mode = false
@@ -96,6 +97,7 @@ signal targeting_started(target_selection:Array[ResCombatant])
 signal targeting_ended
 signal target_hovered(combatant)
 signal target_exit_hover(combatant)
+signal rebuke_finished
 
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
@@ -129,8 +131,7 @@ func initializeCombat(combatants:Array[ResCombatant]):
 	
 	# ACTIVATE COMBAT START STATUSES!
 	for combatant in combatants:
-		tickStatusEffects(combatant, ResStatusEffect.TickType.ON_TURN)
-		tickStatusEffects(combatant, ResStatusEffect.TickType.PER_TURN)
+		tickStatusEffects(combatant, -1)
 	
 	if initial_damage > 0.0:
 		for combatant in combatant_positions['enemies']:
@@ -157,6 +158,7 @@ func initializeCombat(combatants:Array[ResCombatant]):
 		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
 	#print('ENFORCEMENTS: ', enemy_reinforcements)
 	combat_ui.initialize()
+	combat_ui.inspector.setCombatant(active_combatant)
 
 func getAllCombatants()-> Array[ResCombatant]:
 	var all_combatants: Array[ResCombatant] = [] 
@@ -225,12 +227,10 @@ func on_player_turn():
 		await useAIPackage()
 		return
 	
-	if has_node('QTE'):
-		await CombatGlobals.qte_finished
-		await get_node('QTE').tree_exited
-	
 	Input.action_release("ui_accept")
-	moveCamera(default_camera_position)
+	if rebuking:
+		await rebuke_finished
+	moveCamera(DEFAULT_CAM_POS)
 	combat_ui.showAbilities(active_combatant)
 #	if do_reinforcements and doReinforcementWarning():
 #		OverworldGlobals.playSound("res://audio/sounds/39_Absorb_04.ogg")
@@ -283,9 +283,9 @@ func end_turn(combatant_act=true):
 		stopTimer()
 	if await checkWin(): 
 		return
-	if combatant_act and !usedInstantCastAbility():
-		tickStatusEffects(active_combatant, ResStatusEffect.TickType.ON_TURN) # Tick down ON TURN statuses
-		active_combatant.tickTemporaryModifiers('turns')
+	#if combatant_act and !usedInstantCastAbility():
+	#	active_combatant.tickTemporaryModifiers('turns')
+	#	tickStatusEffects(active_combatant, ResStatusEffect.TickType.ON_TURN) # Tick down ON TURN statuses
 	for combatant in getAllCombatants(): # Check for survivors!
 		if combatant.isDead(true): continue
 		CombatGlobals.dialogue_signal.emit(combatant)
@@ -484,7 +484,9 @@ func setUIModulation(ui_modulate: Color, duration:float=0.1):
 	for child in combat_camera.get_children():
 		if child is Control:
 			create_tween().tween_property(child, 'modulate', ui_modulate, duration)
-
+	for combatant in getAllCombatants():
+		var bars = combatant.combatant_scene.get_node('CombatBars')
+		create_tween().tween_property(bars, 'modulate', ui_modulate, duration)
 #********************************************************************************
 # ability SELECTION, TARGETING, AND EXECUTION
 #********************************************************************************
@@ -882,7 +884,7 @@ func clearStatusEffects(combatant: ResCombatant):
 func tickStatusEffects(combatant: ResCombatant, tick_type: int):
 	for i in range(combatant.status_effects.size()-1,-1,-1):
 		var effect = combatant.status_effects[i]
-		if effect.tick_type != tick_type: continue
+		if effect.tick_type != tick_type and tick_type != -1: continue
 		effect.tick()
 
 #func refreshInstantCasts(combatant: ResCombatant):
@@ -925,7 +927,7 @@ func concludeCombat(results: int):
 	removeDeadCombatants(false)
 	combat_result = results
 	battle_music.stop()
-	moveCamera(default_camera_position)
+	moveCamera(DEFAULT_CAM_POS)
 	for combatant in getAllCombatants():
 		#refreshInstantCasts(combatant)
 		clearStatusEffects(combatant)
@@ -1172,7 +1174,7 @@ func _on_turn_timer_timeout():
 func resetUI():
 	targeting=false
 	targeting_ended.emit()
-	moveCamera(default_camera_position)
+	moveCamera(DEFAULT_CAM_POS)
 	removeTargetButtons()
 	combat_ui.showUI(true)
 	#target_state = TargetState.NONE
@@ -1215,19 +1217,22 @@ func doRebuke(target: ResCombatant, caster: ResCombatant):
 	var base_rebuke_chance:float = target.stat_modifiers['base_rebuke']['rebuke_chance']
 	rebuking=true
 	
+	# Heal ouchies
+	CombatGlobals.healResolve(target,99)
+	if target is ResPlayerCombatant:
+		for injury in target.getTraitsWithFlag('injury'): target.removeTrait(injury)
 	# Do riposte
 	CombatGlobals.removeStatusEffect(target,'Guard Break')
 	CombatGlobals.addStatusEffect(target,'Guard',true,{'bonus_duration':1})
 	guard_effect=target.getStatusEffect('Guard')
-	guard_effect.status_script.doRiposte(target,caster,guard_effect)
-	
-	# Heal ouchies
-	CombatGlobals.healResolve(target,99)
-	if target is ResPlayerCombatant:
-		for injury in target.getTraitsWithFlag('injury'):
-			target.removeTrait(injury)
+	if caster != null:
+		guard_effect.status_script.doRiposte(target,caster,guard_effect)
+	else:
+		moveCamera(target.combatant_scene.global_position,0)
 	
 	# Do visual effects
+	toggleUI(false)
+	#setUIModulation(Color.TRANSPARENT)
 	OverworldGlobals.playSound("res://audio/sounds/744329__fairsonicstudio__bbrs_sfx_soulretrieve.ogg")
 	OverworldGlobals.playSound(['165491__chripei__victory-cry-reverb-2.ogg', '165492__chripei__victory-cry-reverb-1.ogg'].pick_random())
 	OverworldGlobals.playSound("res://audio/sounds/482686__jocmusic__war-horn-blast.ogg")
@@ -1245,5 +1250,11 @@ func doRebuke(target: ResCombatant, caster: ResCombatant):
 		true,
 		false
 		)
+	if combat_camera.zoom != DEFAULT_ZOOM:
+		setCameraZoom(DEFAULT_ZOOM)
+	if combat_camera.global_position != DEFAULT_CAM_POS:
+		moveCamera(DEFAULT_CAM_POS)
+	toggleUI(true)
 	
 	rebuking=false
+	rebuke_finished.emit()

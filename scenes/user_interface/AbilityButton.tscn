@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bkmhlmo28f62i"]
+[gd_scene load_steps=20 format=3 uid="uid://bkmhlmo28f62i"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiAbilityButton.gd" id="1_4mlso"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_kvnrr"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="7_217m4"]
 [ext_resource type="Texture2D" uid="uid://di02uqm8xqrvn" path="res://images/item_icons/remembrance.png" id="8_ltn6x"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="9_a34a7"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="10_ct8cy"]
 
 [sub_resource type="Animation" id="Animation_4r8vf"]
 length = 0.001
@@ -206,6 +207,11 @@ clip_text = true
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("1_4mlso")
+description_on_focus = true
+metadata/_edit_horizontal_guides_ = []
+
+[node name="CustomTooltip" parent="." instance=ExtResource("10_ct8cy")]
+layout_mode = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_wmurb")
@@ -241,15 +247,9 @@ libraries = {
 [node name="TextureRect" type="TextureRect" parent="."]
 clip_children = 2
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.0
-offset_top = -12.0
-offset_right = 12.0
-offset_bottom = 12.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(12, 12)

@@ -116,7 +116,7 @@ func getRichDescription(with_name=true)-> String:
 	if tension_cost > 0:
 		rich_description += '	[img]res://images/sprites/icon_tp.png[/img] %s' % tension_cost
 	if instant_cast:
-		rich_description += '	[img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
+		rich_description += ' [img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
 	if isBasicAbility():
 		rich_description += '\n '+CombatGlobals.getBasicEffectsDescription(basic_effects)
 	if description != '':

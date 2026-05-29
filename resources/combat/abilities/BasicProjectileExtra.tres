@@ -24,7 +24,6 @@ can_miss = true
 can_crit = true
 return_pos = true
 indicator_bb = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 

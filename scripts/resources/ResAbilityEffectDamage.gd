@@ -33,7 +33,7 @@ static func getPassedAttackBonuses(target:ResCombatant, p_attack_bonuses: Array)
 func _to_string():
 	var out=''
 	
-	out += stringifyCondition()
+	#out += stringifyCondition()
 #	if is_combo_effect:
 #		out += 'On [img]res://images/status_icons/icon_combo.png[/img]:\n'
 	if damage_type == DamageType.MELEE or cast_animation['animation'].to_lower().contains('melee'):
@@ -50,5 +50,13 @@ func _to_string():
 		out += sign+SettingsGlobals.colorValueBB(damage_modifier*100,100.0)+'%[/color]\n'
 	else:
 		out += '\n'
+	
+	for attack_bonus in attack_bonuses:
+		if !attack_bonus.has_method('_to_string'): continue
+		out += str(attack_bonus)
+		if attack_bonuses.find(attack_bonus)+1 < attack_bonuses.size():
+			out += SettingsGlobals.bb_line
+	#print(out)
+	#out.trim_suffix(SettingsGlobals.bb_line+'\n')
 	
 	return out

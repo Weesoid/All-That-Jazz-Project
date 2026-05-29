@@ -1,4 +1,5 @@
 extends Control
+#class_name CustomTooltip
 
 @onready var text = $PanelContainer/RichTextLabel
 @onready var animator:AnimationPlayer = $AnimationPlayer
@@ -16,8 +17,8 @@ func showDescription(show_text: String, cust_offset:Vector2=Vector2.ZERO):
 func remove():
 	animator.play_backwards('Show')
 	await animator.animation_finished
-	queue_free()
+	#queue_free()
 
 func _unhandled_input(_event):
-	if Input.is_action_just_released("ui_select_arrow"):
+	if Input.is_action_just_released("ui_show_info"):
 		remove()

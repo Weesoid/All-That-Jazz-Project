@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8ptsyt6cpe82"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/entities/entTensionParticle.gd" id="1_fnx7n"]
-[ext_resource type="Texture2D" uid="uid://duw7sb7kkaiyj" path="res://images/user_interface/tp_particle.png" id="2_w6q4n"]
+[ext_resource type="Texture2D" uid="uid://duw7sb7kkaiyj" path="res://images/user_interface/tp_particle_glow.png" id="2_w6q4n"]
 
 [node name="TensionParticle" type="Node2D"]
 script = ExtResource("1_fnx7n")

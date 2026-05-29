@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wk6a66h5sxj2"
-path="res://.godot/imported/tp_particle.png-d663458fb763d4da4af2c57f3e704dd4.ctex"
+uid="uid://duw7sb7kkaiyj"
+path="res://.godot/imported/tp_particle_glow.png-659ed9b2282b83a81691e22521ae4aa9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/sprites/tp_particle.png"
-dest_files=["res://.godot/imported/tp_particle.png-d663458fb763d4da4af2c57f3e704dd4.ctex"]
+source_file="res://images/user_interface/tp_particle_glow.png"
+dest_files=["res://.godot/imported/tp_particle_glow.png-659ed9b2282b83a81691e22521ae4aa9.ctex"]
 
 [params]
 

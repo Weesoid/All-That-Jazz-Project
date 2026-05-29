@@ -5,3 +5,6 @@ class_name ResAttackTP
 
 func getAttackEffect():
 	return {'tp':add_amount}
+
+func _to_string():
+	return ('Gain %s[img]res://images/user_interface/tp_particle.png[/img]' % str(add_amount))+getStringCondition()

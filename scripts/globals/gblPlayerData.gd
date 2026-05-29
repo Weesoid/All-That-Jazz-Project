@@ -170,9 +170,9 @@ func addCurrency(value: int):
 		currency += value
 
 func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
-	if unlocked_abilities[combatant].has(ability):
-		print('HAZ IT!')
-		return
+	#if unlocked_abilities[combatant].has(ability):
+	#	print('HAZ IT!')
+	#	return
 	
 	var unlocked_append = {combatant:[ability]}
 	unlocked_abilities = CombatGlobals.combineDictionaries(unlocked_abilities, unlocked_append)
@@ -458,7 +458,8 @@ func saveData(save_data: Array):
 				combatant.file_references,
 				combatant.temp_modifier_tracker,
 				combatant.assigned_position,
-				combatant.percent_health
+				combatant.percent_health,
+				combatant.saved_resolve
 				#combatant.item_strain_tracker
 			)
 	

@@ -120,7 +120,7 @@ func updateHealthBar():
 		return
 
 func updateResolveBar():
-	resolve_bar.max_value = attached_combatant.getMaxResolve()
+	resolve_bar.setMax(attached_combatant.getMaxResolve())
 	resolve_bar.setValue(attached_combatant.stat_values['resolve'])
 
 func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):

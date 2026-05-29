@@ -11,7 +11,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6kc3e")
-value = 4
-max_value = 4
 empty_circle = ExtResource("2_uox7p")
 filled_circle = ExtResource("3_m34nj")

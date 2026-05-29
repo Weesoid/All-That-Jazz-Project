@@ -73,10 +73,20 @@ func createModifierLabel(p_trait: String):
 		elif p_trait.contains('turns/'):
 			duration_type = 'Turns'
 		trait_label.text = bb+'[cell]'+p_trait.split('|')[1]+' (%s %s)' % [selected_combatant.temp_modifier_tracker[p_trait], duration_type]+'[/cell][/table]'
-		trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[p_trait],false)
+		UIGlobals.addTooltip(
+			trait_label, 
+			CombatGlobals.getStatListString(selected_combatant.stat_modifiers[p_trait]), 
+			CustomTooltip.AnchorPreset.RIGHT
+			)
+		#trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[p_trait],false)
 	else:
 		trait_label.text = bb+'[cell]'+trait_name+'[/cell][/table]'
-		trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[getTraitName(p_trait)],false)
+		UIGlobals.addTooltip(
+			trait_label, 
+			CombatGlobals.getStatListString(selected_combatant.stat_modifiers[getTraitName(p_trait)]), 
+			CustomTooltip.AnchorPreset.RIGHT
+			)
+		#trait_label.tooltip_text = CombatGlobals.getStatListString(selected_combatant.stat_modifiers[getTraitName(p_trait)],false)
 	return trait_label
 
 # TODO modifier class (icon), modifier efffects (color) 

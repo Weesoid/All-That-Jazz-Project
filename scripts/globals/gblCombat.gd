@@ -2,7 +2,7 @@ extends Node
 
 const BASE_CRIT = 0.05
 const BASE_RESIST = 0.05
-const BASE_VARIATION = 0.01
+const BASE_VARIATION = 0.1
 
 enum Enemy_Factions {
 	Scavs
@@ -33,10 +33,11 @@ signal ability_finished
 signal ability_casted(ability: ResAbility)
 #signal active_combatant_changed(combatant: ResCombatant)
 signal tension_changed(gainer,target)
-signal extra_stat_added(combatant,stat)
 signal ability_selected(ability)
 signal ability_cancelled(ability)
-
+#signal extra_stat_added(combatant,stat)
+#signal stat_modified(combatant, stat_dict)
+#signal stat_removed(combatant, stat_dict)
 # To be added
 signal tp_changed(health, combatant)
 
@@ -285,6 +286,13 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	
 	if bonus_stats.has('tp') and caster is ResPlayerCombatant:
 		addTension(bonus_stats['tp'], caster, target)
+	
+	if bonus_stats.has('stat_modifiers'):
+		var attack_modifier: ResAttackBonusStatModifiers = bonus_stats['stat_modifiers']
+		var ability = getCombatScene().selected_ability
+		var key = ability.name if ability.name != '' else str(caster.name+' Ability '+str(caster.ability_set.find(ability)))
+		target.addTemporaryModifer(key, attack_modifier.duration, attack_modifier.stat_modifiers, attack_modifier.stacks, attack_modifier.per_battle)
+		#modifyStat(target, attack_modifier.stat_modifiers, key, attack_modifier.stacks, true)
 	
 	playHurtAnimation(target, damage, sound)
 	if target.isDead(true):
@@ -812,7 +820,8 @@ func addTension(amount: int,gainer:ResPlayerCombatant=null,target:ResCombatant=n
 			tp_particle.expulse(expulse_target)
 			await get_tree().create_timer(0.1).timeout
 		#tp_particle.global_position = from_target.global_position
-	#tp_particle.global_position = from_target.global_position
+	elif amount < 0:
+		getCombatScene().combat_ui.tension_bar.update()
 
 func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 	var out = ''
@@ -829,7 +838,7 @@ func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 			out += '\n'
 	return out
 
-func getStatListString(stat_modifications:Dictionary, do_colors:bool=true):
+func getStatListString(stat_modifications:Dictionary, do_colors:bool=true, cut_bb_color:bool=true):
 	var result = ""
 	for key in stat_modifications.keys():
 		
@@ -849,5 +858,6 @@ func getStatListString(stat_modifications:Dictionary, do_colors:bool=true):
 				result += str(val*100) + "% " +key.to_upper().replace('_', ' ') +  "\n"
 			else:
 				result += str(val) + " " +key.to_upper().replace('_', ' ') + "\n"
-		if do_colors: result += '[/color]'
+		if do_colors and cut_bb_color: result += '[/color]'
+	
 	return result

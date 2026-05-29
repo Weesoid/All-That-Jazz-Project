@@ -40,6 +40,7 @@ func fightCombatantSquad():
 	ambush_ended.emit()
 
 func interact():
+	OverworldGlobals.start_camp.emit()
 	music.stream=load(camp_music.pick_random())
 	SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	OverworldGlobals.player.camping=true
@@ -62,18 +63,21 @@ func interact():
 
 func exit():
 	await done
-#	await done
-#	print('zaza')
+	OverworldGlobals.end_camp.emit()
 	music.stop()
 	ambience.stop()
 	animator.play("RESET")
 	for member in PlayerGlobals.team:
 		member.removeTemporaryModifier('Warmth')
 	OverworldGlobals.fadeFollowers(Color.WHITE)
+	
 	for sprite in rest_spots.get_children():
-		if sprite.has_node('CombatBars'):
-			sprite.get_node('CombatBars').attached_combatant = null
-			sprite.get_node('CombatBars').hide()
+		removeRestSprite(sprite.get_node('CombatBars').attached_combatant)
+#	removeRestSprite()
+#	for sprite in rest_spots.get_children():
+#		if sprite.has_node('CombatBars'):
+#			sprite.get_node('CombatBars').attached_combatant = null
+#			sprite.get_node('CombatBars').hide()
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
 	OverworldGlobals.player.sprite.show()
@@ -112,8 +116,11 @@ func setSprite(sprite: Sprite2D, combatant:ResPlayerCombatant):
 
 func removeRestSprite(character:ResPlayerCombatant):
 	for sprite in rest_spots.get_children():
+		if sprite.get_node('CombatBars').attached_combatant == null:
+			continue
 		if sprite.get_node('CombatBars').attached_combatant == character:
 			sprite.texture = null
+			sprite.get_node('CombatBars').setConnections(false)
 			sprite.get_node('CombatBars').attached_combatant = null
 			sprite.get_node('CombatBars').hide()
 

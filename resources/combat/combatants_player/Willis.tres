@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=34 format=3 uid="uid://cohe0ng5gyu4h"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=37 format=3 uid="uid://cohe0ng5gyu4h"]
 
 [ext_resource type="Resource" uid="uid://bnol4xomec0g1" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_43nme"]
@@ -12,28 +12,20 @@
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="6_82428"]
 [ext_resource type="Script" path="res://scripts/resources/ResDamageOvertimeEffect.gd" id="7_ekdv1"]
 [ext_resource type="Texture2D" uid="uid://lh1un7rx2h1n" path="res://images/character_sprites/willis/willis_portrait.png" id="7_n85fj"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusDot.gd" id="8_oyl0f"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="9_a1mxa"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="10_8dxm1"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="11_fj5br"]
 [ext_resource type="Resource" uid="uid://s6fo2fxv6en2" path="res://resources/combat/talent_trees/BaseTalents.tres" id="11_reilv"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="12_clo5n"]
+[ext_resource type="Script" path="res://scripts/resources/ResEffectConditionStatus.gd" id="13_hr6vs"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDot.gd" id="13_nufh2"]
-
-[sub_resource type="Resource" id="Resource_6q5mv"]
-script = ExtResource("7_ekdv1")
-dot_effect = 1
-damage = 3
-duration = 3
-
-[sub_resource type="Resource" id="Resource_x5gew"]
-script = ExtResource("8_oyl0f")
-dot_effects = Array[ExtResource("7_ekdv1")]([SubResource("Resource_6q5mv")])
+[ext_resource type="Resource" uid="uid://8s6r5kod7gys" path="res://resources/combat/status_effects/Combo.tres" id="14_flkef"]
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusStats.gd" id="15_no474"]
 
 [sub_resource type="Resource" id="Resource_q606o"]
 script = ExtResource("9_a1mxa")
 damage_type = 0
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_x5gew")])
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
 damage_modifier = 1.0
 cast_animation = {
 "animation": "",
@@ -43,7 +35,6 @@ can_miss = true
 can_crit = true
 return_pos = true
 indicator_bb = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -78,7 +69,6 @@ base_heal = 0
 percent_heal = 1.0
 use_multiplier = true
 cast_animation = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -116,7 +106,6 @@ duration = 7
 [sub_resource type="Resource" id="Resource_gmy4v"]
 script = ExtResource("13_nufh2")
 dot_effect = SubResource("Resource_84sgc")
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -145,12 +134,55 @@ required_effect = {
 tension_cost = 0
 instant_cast = false
 
+[sub_resource type="Resource" id="Resource_v7v3p"]
+script = ExtResource("13_hr6vs")
+status_effect = ExtResource("14_flkef")
+rank = 0
+remove_effect = true
+
+[sub_resource type="Resource" id="Resource_2yp3a"]
+script = ExtResource("15_no474")
+stats = {
+"crit": 0.0,
+"crit_amp": 0.0,
+"damage": 0,
+"dmg_modifier": 2.0,
+"execute_dmg": 0,
+"handling": 0,
+"heal_amp": 0.0,
+"heal_skill": 0.0,
+"health": 0,
+"rebuke_chance": 0.0,
+"resist": 0,
+"resolve": 0,
+"riposte_dmg": 0.0,
+"speed": 0,
+"strain": 0
+}
+condition = SubResource("Resource_v7v3p")
+
+[sub_resource type="Resource" id="Resource_ysmb7"]
+script = ExtResource("9_a1mxa")
+damage_type = 1
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_2yp3a")])
+damage_modifier = 1.0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+can_miss = true
+can_crit = true
+return_pos = true
+indicator_bb = ""
+animation_time = 0.0
+animate_on = 0
+
 [sub_resource type="Resource" id="Resource_q6fmt"]
 script = ExtResource("11_fj5br")
-name = ""
+name = "Comonium"
 description = ""
 icon = ExtResource("10_8dxm1")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_ysmb7")])
 ability_script = ExtResource("6_82428")
 target_type = 0
 target_group = 1
@@ -297,10 +329,10 @@ stat_values = {
 }
 scale_stats = {
 "crit": 0.0,
-"damage": 0.33,
+"damage": 0.0,
 "dmg_variance": 0.0,
 "handling": 0.0,
-"health": 1.0,
+"health": 0.0,
 "resist": 0.0,
 "resolve": 0.0,
 "speed": 0.0

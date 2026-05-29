@@ -14,4 +14,6 @@ func isPassed(combatant:ResCombatant):
 		return combatant.stat_values['health'] >= combatant.getMaxHealth()*health_threshold
 	else:
 		return combatant.stat_values['health'] <= combatant.getMaxHealth()*health_threshold
-	#return combatant.hasStatusEffect(status_effect.name) and combatant.getStatusEffect(status_effect.name).current_rank >= rank
+
+func _to_string():
+	return '\nwhen target HP %s %s%%' % ['<' if inequality == Inequality.LESS_THAN else '>', str(int(health_threshold*100))]

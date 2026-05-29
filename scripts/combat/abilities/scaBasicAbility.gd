@@ -148,7 +148,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 		if ability.current_effect.base_heal > 0: 
 			CombatGlobals.calculateHealing(target, ability.current_effect.base_heal, ability.current_effect.use_multiplier)
 		if ability.current_effect.percent_heal > 0.0: 
-			CombatGlobals.calculatePercentHealing(target, ability.current_effect.percent_heal, ability.current_effect.use_multiplier)
+			CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_effect.percent_heal, ability.current_effect.use_multiplier)
 		
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):

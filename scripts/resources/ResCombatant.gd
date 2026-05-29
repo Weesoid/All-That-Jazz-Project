@@ -33,6 +33,7 @@ class_name ResCombatant
 @export var assigned_position:int = -1
 @export var ai_package: GDScript
 var percent_health:float
+var saved_resolve:int
 var resolve_gate:bool=true
 var resolve_dot_shield:bool=false
 var turn_charges: int
@@ -52,6 +53,9 @@ signal enemy_turn
 signal player_turn
 signal health_changed(combatant)
 signal resolve_changed
+signal stat_modified(combatant, stat_dict)
+signal stat_removed(combatant, stat_dict)
+signal extra_stat_added(combatant, stat)
 
 func initializeCombatant():
 	pass
@@ -270,12 +274,13 @@ func applyStatModifications(modifier_id: String):
 				if stat == 'health':
 					updateHealth(stat_modifiers[modifier][stat])
 				elif stat == 'resolve':
-					updateResolve(stat_modifiers[modifier][stat])
+					updateResolve(stat_modifiers[modifier][stat],false)
 				elif stat_values.has(stat):
 					stat_values[stat] += stat_modifiers[modifier][stat]
 				else:
 					stat_values[stat] = stat_modifiers[modifier][stat]
-					CombatGlobals.extra_stat_added.emit(self,stat)
+					extra_stat_added.emit(self,stat)
+			stat_modified.emit(self, stat_modifiers[modifier_id])
 			return
 
 func removeStatModification(modifier_id: String):
@@ -285,9 +290,10 @@ func removeStatModification(modifier_id: String):
 				if stat == 'health':
 					updateHealth(-stat_modifiers[modifier][stat])
 				elif stat == 'resolve':
-					updateResolve(-stat_modifiers[modifier][stat])
+					updateResolve(-stat_modifiers[modifier][stat],false)
 				else:
 					stat_values[stat] -= stat_modifiers[modifier][stat]
+			stat_removed.emit(self, stat_modifiers[modifier_id])
 			stat_modifiers.erase(modifier)
 			return
 	
@@ -307,6 +313,7 @@ func changeResolve(value:int):
 	stat_values['resolve'] += value
 	if stat_values['resolve'] > getMaxResolve():
 		stat_values['resolve']=getMaxResolve()
+	saved_resolve = stat_values['resolve']
 	resolve_changed.emit()
 
 func removeEmptyStats():

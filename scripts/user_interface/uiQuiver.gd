@@ -9,7 +9,7 @@ func _input(event):
 	if arrows.is_empty():
 		return
 	
-	if Input.is_action_just_pressed("ui_select_arrow") and OverworldGlobals.player.is_processing_input():
+	if Input.is_action_just_pressed("ui_show_info") and OverworldGlobals.player.is_processing_input():
 		for child in get_children():
 			child.queue_free()
 			await child.tree_exited
@@ -17,7 +17,7 @@ func _input(event):
 			loadOtherArrows(arrow)
 		current_index = arrows.find(PlayerGlobals.equipped_arrow)
 		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg")
-	if Input.is_action_pressed("ui_select_arrow") and OverworldGlobals.player.is_processing_input():
+	if Input.is_action_pressed("ui_show_info") and OverworldGlobals.player.is_processing_input():
 		visible = true
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
@@ -33,7 +33,7 @@ func _input(event):
 			if event.button_index == JOY_BUTTON_A and event.pressed:
 				current_index -= 1
 				updateArrowSelect()
-	if Input.is_action_just_released('ui_select_arrow'):
+	if Input.is_action_just_released('ui_show_info'):
 		visible = false
 
 func updateArrowSelect():
