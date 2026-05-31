@@ -24,7 +24,8 @@ func _ready():
 	var slot:int=0
 	var squad = OverworldGlobals.getCombatantSquad('Player')
 	for character in squad:
-		var char = OverworldGlobals.createCharacterButton(character)
+		print('making for ', character)
+		var char = UIGlobals.createCharacterButton(character)
 		if character.assigned_position == -1:
 			getFirstEmptySlot().addCharacter(char)
 		else:

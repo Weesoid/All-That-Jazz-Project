@@ -112,7 +112,6 @@ func addButton(item,_count=null):
 	
 	if remove_dragged_items and button is CustomDragDropButton:
 		button.item_dragging.connect(removeItem)
-	button.description_offset = description_offset
 	updateCategories()
 	addButtonToMap(item, button)
 	item_button_added.emit(button)
@@ -142,7 +141,7 @@ func getButtons():
 	return out
 
 func createButton(item):
-	return OverworldGlobals.createItemButton(item)
+	return UIGlobals.createItemButton(item)
 
 func getItemCatalog(filter):
 	var catalog = InventoryGlobals.inventory.filter(filter)

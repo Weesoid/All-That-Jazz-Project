@@ -11,5 +11,4 @@ func _to_string():
 	for effect in status_effects:
 		effect_icons += effect.getMessageIcon() +', '
 	effect_icons = effect_icons.trim_suffix(', ')
-	print(effect_icons)
 	return target_text+effect_icons+getStringCondition()

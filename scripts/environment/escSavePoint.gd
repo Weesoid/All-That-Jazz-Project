@@ -73,11 +73,6 @@ func exit():
 	
 	for sprite in rest_spots.get_children():
 		removeRestSprite(sprite.get_node('CombatBars').attached_combatant)
-#	removeRestSprite()
-#	for sprite in rest_spots.get_children():
-#		if sprite.has_node('CombatBars'):
-#			sprite.get_node('CombatBars').attached_combatant = null
-#			sprite.get_node('CombatBars').hide()
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
 	OverworldGlobals.player.sprite.show()
@@ -187,7 +182,7 @@ func _on_kindling_slot_item_received(received_item):
 	#O#verworldGlobals.playSound("res://audio/sounds/149831__villen__zapalenie_ognia.ogg")
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		member.addTemporaryModifer('Warmth',1,{CombatExtras.HEAL_AMP:0.1},false)
-		CombatGlobals.healResolve(member, 1)
+	
 	music.play()
 	ambience.play()
 	InventoryGlobals.removeItemResource(received_item)

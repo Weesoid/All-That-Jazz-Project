@@ -276,7 +276,6 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		for effect in bonus_stats['status_effects']: addStatusEffect(target, effect, false)
 	
 	if bonus_stats.has('dot_effect'):
-		print('beluga whale')
 		var dot_data = bonus_stats['dot_effect']
 		addStatusEffect(target, dot_data[0], false, dot_data[1])
 	
@@ -291,7 +290,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		var attack_modifier: ResAttackBonusStatModifiers = bonus_stats['stat_modifiers']
 		var ability = getCombatScene().selected_ability
 		var key = ability.name if ability.name != '' else str(caster.name+' Ability '+str(caster.ability_set.find(ability)))
-		target.addTemporaryModifer(key, attack_modifier.duration, attack_modifier.stat_modifiers, attack_modifier.stacks, attack_modifier.per_battle)
+		target.addTemporaryModifer(key, attack_modifier.duration, attack_modifier.stat_modifiers, attack_modifier.stacks, attack_modifier.per_battle, attack_modifier.resistable)
 		#modifyStat(target, attack_modifier.stat_modifiers, key, attack_modifier.stacks, true)
 	
 	playHurtAnimation(target, damage, sound)
@@ -422,7 +421,12 @@ func valueVariate(value, percent_variance: float):
 	value += randf_range(variation*-1, variation)
 	return round(value)
 
-func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, show_indicator:bool=false,append_indiactor:String=''):
+func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, resistable:bool=false, show_indicator:bool=false,append_indiactor:String=''):
+	if resistable and randomRoll(BASE_RESIST+target.stat_values['resist']):
+		var debuff_icon = '[img %s]res://images/status_icons/debuff.png[/img]' % SettingsGlobals.ui_colors['down-bb-nobracket']
+		manual_call_indicator.emit(target, debuff_icon+' [color=dark_gray]Resist', 'Resist', true)
+		return
+	
 	var change_relevant:bool=false
 	var stats_added = stat_modifications.duplicate()
 	if append_stat and target.stat_modifiers.has(modifier_id):
@@ -435,7 +439,7 @@ func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_i
 	target.stat_modifiers[modifier_id] = stat_modifications
 	target.applyStatModifications(modifier_id)
 	
-	if show_indicator:
+	if show_indicator and change_relevant:
 		manual_call_indicator.emit(target, CombatGlobals.getStatListString(stats_added),'Show',true)
 #		await get_tree().process_frame
 #		# move this to combatbars
@@ -560,7 +564,6 @@ func playSecondWindTween(target: ResCombatant):
 
 func playKnockOutTween(target: ResCombatant):
 	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
-	print('running on ', target.name)
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(target.getSprite(), 'modulate', Color.BLACK, 0.75)
 	#tween.tween_interval(3)
@@ -587,7 +590,8 @@ func setCombatantVisibility(target: CombatantScene, set_to:bool):
 		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.TRANSPARENT, 1.0), 0.15)
 		target.z_index = 0
 	#if !target.combatant_resource.hasStatusEffect('KnockOut'):
-	target.get_node('CombatBars').setBarVisibility(set_to)
+	if target.has_node('CombatBars'):
+		target.get_node('CombatBars').setBarVisibility(set_to)
 
 func spawnQuickTimeEvent(target: CombatantScene, type: String, max_points:int=1, offset:Vector2=Vector2.ZERO):
 	OverworldGlobals.playSound('542044__rob_marion__gasp_ui_confirm.ogg')
@@ -641,7 +645,6 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 			var id = property.split('_')[1]
 			var basic_effect = findBasicEffect(id, status_effect)
 			for basic_effect_property in effect_overrides:
-				print('setting %s to %s !' % [basic_effect_property, effect_overrides[basic_effect_property]])
 				basic_effect.set(basic_effect_property, effect_overrides[basic_effect_property])
 		elif status_effect.get(property) != null:
 			status_effect.set(property, override_data[property])
@@ -810,7 +813,6 @@ func addTension(amount: int,gainer:ResPlayerCombatant=null,target:ResCombatant=n
 	#show_particle = amount > 0 and tension < 4
 	
 	tension_changed.emit(gainer,target)
-	print('amount arrived: ',amount)
 	if amount > 0 and gainer != null:
 		for i in range(amount):
 			var expulse_target = target.combatant_scene if target != null else gainer.combatant_scene

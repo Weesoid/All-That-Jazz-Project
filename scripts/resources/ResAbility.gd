@@ -87,7 +87,10 @@ func canUse(caster: ResCombatant, targets=null):
 	if targets == null or targets is ResCombatant:
 		return isCombatantInRange(caster, 'caster')
 	else:
-		var valid_targets = getValidTargets(targets, caster is ResPlayerCombatant)
+		var assigned_targets: Array[ResCombatant] = []
+		assigned_targets.assign(targets)
+		var valid_targets = getValidTargets(assigned_targets, caster is ResPlayerCombatant)
+		
 		return isCombatantInRange(caster, 'caster') and ((valid_targets is Array and !valid_targets.is_empty()) or (valid_targets is ResCombatant))
 
 func isCombatantInRange(combatant: ResCombatant, target_range: String):
@@ -129,7 +132,7 @@ func getRichDescription(with_name=true)-> String:
 		if required_effect['rank'] > 0:
 			rank = effect.getIconColor(true)+str(required_effect['rank'])
 		rich_description += '[color=yellow]Requires[/color] %s%s' % [rank, effect.getMessageIcon()]
-	if charges > 0 and !OverworldGlobals.inCombat():
+	if charges > 0 and !CombatGlobals.inCombat():
 		rich_description += SettingsGlobals.bb_line
 		rich_description += '[color=yellow] Uses: '+str(charges)
 	return rich_description

@@ -11,7 +11,12 @@ func _ready():
 	flicker_tween.stop()
 	texture = attached_status.texture
 	self_modulate = attached_status.getIconColor()
-	tooltip_text = attached_status.getDescription()
+	UIGlobals.addTooltip(
+		self, 
+		attached_status.getDescription(),
+		CustomTooltip.AnchorPreset.BOTTOM
+		)
+	#tooltip_text = attached_status.getDescription()
 
 # TODO Scrap flicker tween, crashes too much, use animator instead
 # Yeah this tween has GOT to go.

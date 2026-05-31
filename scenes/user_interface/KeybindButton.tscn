@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b1dlw2ahcaep2"]
+[gd_scene load_steps=6 format=3 uid="uid://b1dlw2ahcaep2"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiKeybindButton.gd" id="1_364vn"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_55s45"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="2_o3fnd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7yoxy"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -19,6 +20,9 @@ offset_right = 152.0
 offset_bottom = 18.0
 alignment = 0
 script = ExtResource("1_364vn")
+
+[node name="CustomTooltip" parent="." instance=ExtResource("2_o3fnd")]
+layout_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

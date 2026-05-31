@@ -19,7 +19,7 @@ func updateBank(rewards:Dictionary):
 	
 	patrol_label.text = getPatrolName(patroller_group.name)
 	for item in rewards['loot']:
-		var icon = OverworldGlobals.createItemIcon(item, rewards['loot'][item])
+		var icon = UIGlobals.createItemIcon(item, rewards['loot'][item])
 		loot_container.add_child(icon)
 		popIcon(icon)
 	experience.text = 'Morale: %s' % str(rewards['experience'])

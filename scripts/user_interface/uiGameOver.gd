@@ -34,8 +34,8 @@ func _ready():
 	
 	animator.play('Show')
 	OverworldGlobals.playSound("res://audio/sounds/252198__pepingrillin__rocket_impact.ogg")
-	OverworldGlobals.setMouseController(true)
-	OverworldGlobals.setMenuFocus(buttons)
+	UIGlobals.setMouseController(true)
+	UIGlobals.setMenuFocus(buttons)
 
 func _on_yes_pressed():
 	buttons.hide()

@@ -4,9 +4,9 @@ class_name CustomButton
 @onready var audio_player = $AudioStreamPlayer
 @onready var hold_timer = $HoldTimer
 @onready var delay_timer = $HoldDelay
+@onready var tooltip = $CustomTooltip
 
 @export_multiline var description_text: String
-@export var description_offset: Vector2= Vector2.ZERO
 @export var focused_entered_sound: AudioStream = preload("res://audio/sounds/421465__jaszunio15__click_5.ogg")
 @export var click_sound: AudioStream = preload("res://audio/sounds/421469__jaszunio15__click_149.ogg")
 @export var hold_sound: AudioStream = preload("res://audio/sounds/loading sfx loopable.ogg")
@@ -23,23 +23,23 @@ signal hold_started
 
 func _ready():
 	$HoldProgress.modulate=hold_color
-	ready()
+	setTooltip()
+	#ready()
 
-func ready():
-	pass
+func setTooltip():
+	if description_text == '':
+		tooltip.queue_free()
+	else:
+		tooltip.setText(description_text)
 
 func _on_focus_entered():
 	focus_feedback()
 	get_viewport().warp_mouse(position)
-	if Input.is_action_pressed("ui_show_info") and description_text != '':
-		showDescription()
 
 func _on_pressed():
 	press_feedback()
 
 func _on_mouse_entered():
-	if Input.is_action_pressed("ui_show_info") and description_text != '':
-		showDescription()
 	grab_focus()
 
 func _on_mouse_exited():
@@ -49,14 +49,12 @@ func _on_focus_exited():
 	exit_focus_feedback()
 
 func _input(_event):
-	if Input.is_action_just_pressed("ui_show_info") and has_focus() and description_text != '':
-		showDescription()
 	checkHoldInputs()
 
-func showDescription():
-	var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
-	add_child(side_description)
-	side_description.showDescription(description_text, description_offset)
+#func showDescription():
+#	var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
+#	add_child(side_description)
+#	side_description.showDescription(description_text, description_offset)
 
 func hideDescription():
 	if has_node('ButtonDescription'):
@@ -115,7 +113,6 @@ func press_feedback():
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
 	playSound(focused_entered_sound)
-	if description_on_focus: showDescription()
 
 func exit_focus_feedback():
 	delay_timer.stop()

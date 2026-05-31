@@ -17,7 +17,6 @@ func _ready():
 	if !show_value:
 		true_value.position = true_value_positions['hidden']
 		true_value.modulate = Color.TRANSPARENT
-	print('eggular: ', PlayerGlobals.current_exp)
 	#value = PlayerGlobals.current_exp
 	# FUCKING WHYYYYYYYY
 	get_tree().create_tween().tween_property(self,'value',PlayerGlobals.current_exp,0)
@@ -27,7 +26,6 @@ func _ready():
 
 
 func update(level_upped:bool):
-	print('caught!')
 	var end_experience = PlayerGlobals.current_exp if !level_upped else PlayerGlobals.getRequiredExp(-1)
 	var value_tween = get_tree().create_tween()
 	

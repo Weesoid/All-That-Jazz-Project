@@ -6,6 +6,11 @@ class_name ItemButton
 @onready var durability_bar = $Durability
 signal item_dragging(item)
 
+func _ready():
+	setItem(item)
+	$HoldProgress.modulate=hold_color
+	setTooltip()
+
 func _get_drag_data(at_position):
 	if item == null:
 		return
@@ -16,8 +21,8 @@ func _get_drag_data(at_position):
 #func _drop_data(_at_position, data):
 #	print(data)
 
-func ready():
-	setItem(item)
+#func ready():
+#	setItem(item)
 
 func setItem(data: ResItem):
 	durability_bar.hide()

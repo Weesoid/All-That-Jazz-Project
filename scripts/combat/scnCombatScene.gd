@@ -98,6 +98,7 @@ signal targeting_ended
 signal target_hovered(combatant)
 signal target_exit_hover(combatant)
 signal rebuke_finished
+signal round_concluded
 
 #********************************************************************************
 # INITIALIZATION AND COMBAT LOOP
@@ -150,7 +151,7 @@ func initializeCombat(combatants:Array[ResCombatant]):
 		combat_dialogue.initialize()
 	
 	#transition_scene.visible = false
-	OverworldGlobals.setMouseController(true)
+	UIGlobals.setMouseController(true)
 	
 	if OverworldGlobals.getCurrentMap().has_node('StalkerEngage'):
 		OverworldGlobals.getCurrentMap().get_node('StalkerEngage').queue_free()
@@ -202,30 +203,28 @@ func _unhandled_input(_event):
 		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 		moveTarget('left')
 	if targeting and Input.is_action_just_pressed("ui_accept"):
+		if isInspecting(): releaseInspect()
 		removeTargetButtons()
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
 	if targeting and Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
 		removeTargetButtons()
-
-#	if Input.is_action_just_pressed('ui_home'):
-#		if action_panel.visible == true:
-#			toggleUI(false)
-#		else:
-#			toggleUI(true)
-#	if Input.is_action_pressed("ui_select_arrow") and !ui_inspect_target.visible and target_state == TargetState.SINGLE:
-#		inspectTarget(true)
-#	elif Input.is_action_just_released("ui_select_arrow") and target_state == TargetState.SINGLE:
-#		inspectTarget(false)
+	if targeting and Input.is_action_just_pressed("ui_show_info"):
+		inspectTarget()
+	elif targeting and Input.is_action_just_released("ui_show_info"):
+		releaseInspect()
 
 func on_player_turn():
 	ability_executing=false
 	active_combatant_changed.emit(active_combatant)
-	if active_combatant.ai_package != null:
+	if active_combatant.ai_package != null and round_count < 64:
 		if has_node('QTE'): await CombatGlobals.qte_finished
 		if await checkWin(): return
 		await useAIPackage()
 		return
+	elif round_count == 64:
+		OverworldGlobals.playSound("res://audio/sounds/263652__jobro__mgs-detected-lead.ogg")
+		attemptEscape()
 	
 	Input.action_release("ui_accept")
 	if rebuking:
@@ -277,6 +276,7 @@ func end_turn(combatant_act=true):
 	if combat_camera.zoom != DEFAULT_ZOOM:
 		setCameraZoom(DEFAULT_ZOOM)
 	for combatant in getAllCombatants():
+		if !combatant.combatant_scene.has_node('CombatBars'):continue
 		combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(true)
 	
 	if !turn_timer.is_stopped(): 
@@ -307,11 +307,9 @@ func end_turn(combatant_act=true):
 		enemy_turn_count += 1
 	
 	if is_combatant_moving:
-		print('waiting for move...........') 
 		#await move_finished
 		await get_tree().create_timer(0.25).timeout
 		is_combatant_moving = false
-		print('DONE MOVING!')
 		#await get_tree().create_timer(0.25).timeout
 	
 	if combat_event != null and turn_count % combat_event.turn_trigger == 0:
@@ -566,6 +564,8 @@ func executeAbility():
 func recordAbilityHistory(acting_combatant:ResCombatant, use_ability:ResAbility):
 	if !ability_history.has(round_count):
 		ability_history[round_count] = {}
+	if ability_history.size() >= 8:
+		ability_history.erase(ability_history.keys()[0])
 	
 	if ability_history[round_count].has(acting_combatant):
 		var record = {acting_combatant:[use_ability]}
@@ -589,8 +589,9 @@ func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
 		target.combatant_scene.allow_block = true
 		CombatGlobals.showWarning(target.combatant_scene)
-		target.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
-		active_combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
+		if target.combatant_scene.has_node('CombatBars'):
+			target.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
+			active_combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
 
 func revokeBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
@@ -653,7 +654,7 @@ func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:Str
 			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
 			combatant_turn_order.append([combatant, rolled_speed])
 	
-	giveCombatBar(combatant)
+	#giveCombatBar(combatant)
 	
 	combatant.combatant_scene.doAnimation('Idle')
 	if animation_path != '':
@@ -796,12 +797,13 @@ func rollTurns():
 			combatant_turn_order.append([combatant, rolled_speed])
 	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
 	round_count += 1
-	combat_ui.updateRoundCounter(round_count)
+#	combat_ui.updateRoundCounter(round_count)
 	if !ability_history.has(round_count): 
 		ability_history[round_count] = {}
 	if canCallReinforcements():
 		var caller = getLivingCombatants('enemies').pick_random()
 		CombatGlobals.addStatusEffect(caller, 'CallingReinforcements')
+	round_concluded.emit()
 
 func callReinforcements():
 	combat_camera.flash(SettingsGlobals.ui_colors['unique'], 0.5,0.05,1.0)
@@ -911,7 +913,20 @@ func moveTarget(target):
 		moveCamera(target_combatant[0].combatant_scene.global_position)
 	else:
 		moveCamera(target_combatant.combatant_scene.global_position)
-	#target_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
+
+func inspectTarget():
+	combat_ui.inspector.show()
+	combat_ui.inspector.setCombatant(target_combatant if target_combatant is ResCombatant else target_combatant[0])
+	setUIModulation(Color.TRANSPARENT)
+	zoomCamera(Vector2(0.5,0.5))
+
+func releaseInspect():
+	combat_ui.inspector.hide()
+	setUIModulation(Color.WHITE)
+	setCameraZoom(DEFAULT_ZOOM,0.1)
+
+func isInspecting():
+	return combat_ui.inspector.visible
 
 func runAbility():
 	#target_state = TargetState.NONE
@@ -1000,7 +1015,7 @@ func concludeCombat(results: int):
 		combat_dialogue.disconnectSignal()
 		end_sentence = combat_dialogue.end_sentence
 	CombatGlobals.tension = 0
-	OverworldGlobals.setMouseController(false)
+	UIGlobals.setMouseController(false)
 	queue_free()
 
 ## NOTE: If do_reparent is false, the combatant scene will be reparented AFTER the moving action based on their current position.
@@ -1055,6 +1070,7 @@ func moveCombatantScenes(group: String, direction:int):
 		if getRankPosition(combatant) == scene.global_position: continue
 		
 		var move_tween = CombatGlobals.getCombatScene().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
+		move_tween.finished.connect(move_tween.kill)
 		move_tween.tween_property(scene, 'global_position', getRankPosition(combatant),0.25)
 		move_tween.tween_property(combatant.getSprite(), 'rotation', 0.2*direction,0.25)
 		move_tween.set_parallel(false)
@@ -1065,57 +1081,6 @@ func moveCombatantScenes(group: String, direction:int):
 
 func moveCombatantToEmpty(combatant):
 	var group = 'enemies' if combatant is ResEnemyCombatant else 'team'
-	
-
-#	var current_pos = combatant_group.find(combatant.combatant_scene.get_parent())
-#	if !moveValid(move, current_pos, combatant_group): return
-#	var combatant_prev_pos = combatant.combatant_scene.global_position
-#	var tween_a = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_SINE)
-#	var tween_a_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_SINE) # ROTAT
-#	var tween_b
-#	var combatant_b
-#	var move_combatant_b_pos = move * -1
-#	if combatant_group[current_pos+move_combatant_b_pos].get_child_count() > 0:
-#		combatant_b = combatant_group[current_pos+move_combatant_b_pos].get_child(0)
-#	else:
-#		combatant_b = combatant_group[current_pos+move_combatant_b_pos]
-#	if combatant_b == null: 
-#		combatant_b = combatant_group[current_pos+move_combatant_b_pos]
-#
-#	tween_a.tween_property(combatant.combatant_scene, 'global_position', combatant_b.global_position, 0.18)
-#	tween_a_rotation.tween_property(combatant.combatant_scene.get_node('Sprite2D'), 'rotation', 0.25, 0.15)
-#	tween_a_rotation.tween_property(combatant.combatant_scene.get_node('Sprite2D'), 'rotation', 0, 0.15)
-#	if do_reparent: combatant.combatant_scene.reparent(combatant_group[current_pos+move_combatant_b_pos])
-#
-#	if combatant_b is CombatantScene:
-#		tween_b = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-#		var tween_b_rotation = CombatGlobals.getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-#		tween_b.tween_property(combatant_b, 'global_position', combatant_prev_pos, 0.2)
-#		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', -0.25, 0.15)
-#		if do_reparent: combatant_b.reparent(combatant_group[current_pos])
-#		tween_b_rotation.tween_property(combatant_b.get_node('Sprite2D'), 'rotation', 0, 0.15)
-#
-#	if !do_reparent:
-#		if tween_a.is_running():
-#			await tween_a.finished
-#		if tween_b != null and tween_b.is_running():
-#			await tween_b.finished
-#		await get_tree().process_frame
-#		combatant.combatant_scene.reparent(combatant_group[current_pos+move_combatant_b_pos])
-#		combatant.startBreatheTween(true)
-#		if combatant_b is CombatantScene: 
-#			combatant_b.reparent(combatant_group[current_pos])
-#			combatant_b.combatant_resource.startBreatheTween(true)
-#	else:
-#		if tween_a.is_running():
-#			await tween_a.finished
-#		if tween_b != null and tween_b.is_running():
-#			await tween_b.finished
-#			combatant_b.combatant_resource.startBreatheTween(false)
-#		combatant.startBreatheTween(false)
-
-#func moveValid(move:int, current_pos:int, combatant_group)-> bool:
-#	return (move == 1 and current_pos-1 >= 0) or (move == -1 and current_pos+1 <= combatant_group.size()-1)
 
 func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	var tween = CombatGlobals.getCombatScene().create_tween()
@@ -1125,18 +1090,6 @@ func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 		tween.tween_property(target.get_node('Sprite2D'), 'modulate', Color(Color.WHITE, 0.0), duration)
 	target.get_node('CombatBars').setBarVisibility(fade_in)
 	await tween.finished
-
-#func sortCombatantsByPosition()-> Array[ResCombatant]:
-#	var out: Array[ResCombatant] = []
-#	var reversed_array = team_container_markers.duplicate()
-#	reversed_array.reverse()
-#	for combatant in reversed_array:
-#		if combatant.get_child_count() == 0: continue
-#		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
-#	for combatant in enemy_container_markers:
-#		if combatant.get_child_count() == 0: continue
-#		out.append(combatant.get_child(0).combatant_resource) # Might be a problem after replacing
-#	return out
 
 func addTargetClickButton(combatant: ResCombatant):
 	return
@@ -1163,13 +1116,8 @@ func stopTimer():
 	#turn_timer_bar.process_mode = Node.PROCESS_MODE_DISABLED
 
 func _on_turn_timer_timeout():
-	#resetActionLog()
 	turn_timer_animator.play_backwards("Show")
 	confirm.emit()
-#
-#func battleFlash(animation: String, color: Color):
-#	flasher.modulate = color
-#	flasher_animator.play(animation)
 
 func resetUI():
 	targeting=false
@@ -1177,8 +1125,6 @@ func resetUI():
 	moveCamera(DEFAULT_CAM_POS)
 	removeTargetButtons()
 	combat_ui.showUI(true)
-	#target_state = TargetState.NONE
-	#target_index = 0
 
 func attemptEscape():
 	if CombatGlobals.randomRoll(calculateEscapeChance()):
@@ -1188,8 +1134,6 @@ func attemptEscape():
 	else:
 		combat_ui.hideUI()
 		var previous_active = active_combatant
-		#if !previous_active.hasStatusEffect('Poised'):
-		#	battleFlash('Flash', Color.YELLOW)
 		bonus_escape_chance += 0.1
 		OverworldGlobals.playSound("res://audio/sounds/033_Denied_03.ogg")
 		if !usedInstantCastAbility(): selected_ability = null
@@ -1232,7 +1176,6 @@ func doRebuke(target: ResCombatant, caster: ResCombatant):
 	
 	# Do visual effects
 	toggleUI(false)
-	#setUIModulation(Color.TRANSPARENT)
 	OverworldGlobals.playSound("res://audio/sounds/744329__fairsonicstudio__bbrs_sfx_soulretrieve.ogg")
 	OverworldGlobals.playSound(['165491__chripei__victory-cry-reverb-2.ogg', '165492__chripei__victory-cry-reverb-1.ogg'].pick_random())
 	OverworldGlobals.playSound("res://audio/sounds/482686__jocmusic__war-horn-blast.ogg")

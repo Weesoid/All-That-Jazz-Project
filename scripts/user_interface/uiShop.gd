@@ -34,7 +34,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		toggle_button.text = 'Shop'
 	
 	for item in array:
-		var button = OverworldGlobals.createItemButton(item, 0.0, mode!=1)
+		var button = UIGlobals.createItemButton(item, 0.0, mode!=1)
 		var label = Label.new()
 		if item.value * modifier <= 0:
 			label.text = 'Free'
@@ -95,7 +95,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 			button.grab_focus()
 		
 	if focus_item == null: 
-		OverworldGlobals.setMenuFocus(wares)
+		UIGlobals.setMenuFocus(wares)
 
 func clearButtons():
 	for child in wares.get_children():
@@ -132,11 +132,11 @@ func setButtonFunction(selected_item):
 				return
 			
 			if selected_item is ResGhostStackItem:
-				OverworldGlobals.setMenuFocusMode(wares, false)
-				OverworldGlobals.setMenuFocusMode(toggle_button, false)
+				UIGlobals.setMenuFocusMode(wares, false)
+				UIGlobals.setMenuFocusMode(toggle_button, false)
 				var amount = await loadSlider(selected_item)
-				OverworldGlobals.setMenuFocusMode(wares, true)
-				OverworldGlobals.setMenuFocusMode(toggle_button, true)
+				UIGlobals.setMenuFocusMode(wares, true)
+				UIGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
 				PlayerGlobals.currency -= (floor(selected_item.value * buy_modifier) * amount)
 				showChange(-floor(selected_item.value * buy_modifier) * amount)
@@ -153,11 +153,11 @@ func setButtonFunction(selected_item):
 				#OverworldGlobals.showPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.name)
 				return
 			
-			OverworldGlobals.setMenuFocusMode(wares, false)
-			OverworldGlobals.setMenuFocusMode(toggle_button, false)
+			UIGlobals.setMenuFocusMode(wares, false)
+			UIGlobals.setMenuFocusMode(toggle_button, false)
 			var amount = await loadSlider(selected_item)
-			OverworldGlobals.setMenuFocusMode(wares, true)
-			OverworldGlobals.setMenuFocusMode(toggle_button, true)
+			UIGlobals.setMenuFocusMode(wares, true)
+			UIGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
 			PlayerGlobals.currency += (floor(selected_item.value * sell_modifier) * amount)
 			showChange(floor(selected_item.value * sell_modifier) * amount)
@@ -165,7 +165,7 @@ func setButtonFunction(selected_item):
 			if amount > 0:
 				OverworldGlobals.playSound("res://audio/sounds/488399__wobesound__sellingbig.ogg")
 			if !InventoryGlobals.hasItem(selected_item):
-				OverworldGlobals.setMenuFocus(wares)
+				UIGlobals.setMenuFocus(wares)
 
 func _on_toggle_mode_pressed():
 	match mode:

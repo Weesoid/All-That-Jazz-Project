@@ -71,6 +71,7 @@ stat_modifiers = {
 duration = 1
 per_battle = true
 stacks = false
+resistable = true
 
 [sub_resource type="Resource" id="Resource_oe8ks"]
 script = ExtResource("7_akl4w")
@@ -124,4 +125,4 @@ required_effect = {
 "status_effect": null
 }
 tension_cost = 0
-instant_cast = true
+instant_cast = false

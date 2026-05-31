@@ -34,7 +34,7 @@ UIGlobals="*res://scripts/globals/gblUserInterfaceGlobals.gd"
 
 [dialogue_manager]
 
-general/states=["Globals", "CombatGlobals", "OverworldGlobals", "PlayerGlobals", "InventoryGlobals", "QuestGlobals"]
+general/states=["Globals", "CombatGlobals", "OverworldGlobals", "PlayerGlobals", "InventoryGlobals", "QuestGlobals", "UIGlobals"]
 
 [display]
 

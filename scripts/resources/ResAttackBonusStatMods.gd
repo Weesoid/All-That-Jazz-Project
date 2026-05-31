@@ -5,13 +5,13 @@ class_name ResAttackBonusStatModifiers
 @export var duration:int=1
 @export var per_battle:bool=false
 @export var stacks:bool=false
+@export var resistable:bool=true
 
 func getAttackEffect():
 	return {'stat_modifiers': self}
 
 func _to_string():
 	var out = CombatGlobals.getStatListString(stat_modifiers,true).replace('\n',', ')
-	print(out)
 	out = out.trim_suffix(', [/color]')
 	out += '[/color]'
 	out +=  ' (%s %s)' % [str(duration), 'Turns' if !per_battle else 'Battles']

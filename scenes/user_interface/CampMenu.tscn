@@ -107,32 +107,26 @@ alignment = 1
 layout_mode = 2
 texture = ExtResource("3_4eso8")
 description_text = "[center]CRAFT/REPAIR"
-description_offset = Vector2(8, -8)
 description_on_focus = true
 
 [node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("4_acfgp")
 description_text = "[center]FAST TRAVEL"
-description_offset = Vector2(8, -8)
 description_on_focus = true
 
 [node name="Rest" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("7_3vebw")
 description_text = "[center]REST"
-description_offset = Vector2(8, -8)
 hold_time = 0.5
-hold_delay = 0.05
 description_on_focus = true
 
 [node name="Embark" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("8_2b6pd")
 description_text = "[center]EMBARK"
-description_offset = Vector2(8, -8)
 hold_time = 0.25
-hold_delay = 0.05
 description_on_focus = true
 
 [node name="RestOptions" type="Control" parent="."]
@@ -187,7 +181,6 @@ size_flags_horizontal = 3
 text = "REST"
 alignment = 1
 hold_time = 0.25
-hold_delay = 0.05
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1

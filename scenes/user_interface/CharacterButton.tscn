@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://maahusohnamc"]
+[gd_scene load_steps=8 format=3 uid="uid://maahusohnamc"]
 
 [ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="1_nhdy3"]
 [ext_resource type="Script" path="res://scripts/user_interface/CharacterButton.gd" id="2_1t7qn"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_4cwev"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="3_j74ek"]
 [ext_resource type="PackedScene" uid="uid://cvt7iywcifdfq" path="res://scenes/user_interface/CharacterBar.tscn" id="4_owkil"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
@@ -28,6 +29,9 @@ icon_alignment = 1
 expand_icon = true
 script = ExtResource("2_1t7qn")
 metadata/_edit_horizontal_guides_ = []
+
+[node name="CustomTooltip" parent="." instance=ExtResource("3_j74ek")]
+layout_mode = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"Sounds"

@@ -22,9 +22,8 @@ func loadDebug(combatant):
 		createAbilityButton(combatant.ability_pool.pick_random(), combatant)
 
 func createAbilityButton(ability, combatant):
-	var button: CustomButton = OverworldGlobals.createAbilityButton(ability)
+	var button: CustomButton = UIGlobals.createAbilityButton(ability)
 	var has_unlocked = PlayerGlobals.hasUnlockedAbility(combatant, ability) #or ability.required_level == 0
-	button.description_offset = Vector2(132,128)
 	button.focused_entered_sound = load("res://audio/sounds/421354__jaszunio15__click_31.ogg")
 	button.click_sound = load("res://audio/sounds/421304__jaszunio15__click_229.ogg")
 	if combatant.ability_set.has(ability):

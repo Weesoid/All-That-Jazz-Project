@@ -60,47 +60,17 @@ func _on_pressed():
 
 func _on_focus_entered():
 	focus_feedback()
-	if Input.is_action_pressed("ui_show_info") and has_focus(): 
-		showDescription()
 
 func _on_mouse_entered():
 	focus_feedback()
 	if focus_mode != Control.FOCUS_NONE:
 		grab_focus()
-	if Input.is_action_pressed("ui_show_info") and has_focus(): 
-		
-		showDescription()
 
 func _on_mouse_exited():
 	exit_focus_feedback()
 
 func _on_focus_exited():
 	exit_focus_feedback()
-
-func _input(_event):
-	if Input.is_action_just_pressed("ui_show_info") and !description_panel.visible and has_focus():
-		showDescription()
-	if Input.is_action_just_released("ui_show_info") and description_panel.visible:
-		hideDescription()
-	
-	checkHoldInputs()
-
-func showDescription():
-	if description_label.text.replace('\n','') == '':
-		return
-	
-	if outside_combat:
-		var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
-		add_child(side_description)
-		side_description.showDescription('[center]'+talent.getRichDescription(), Vector2(128,32))
-	else:
-		description_panel.show()
-		description_animator.play("ShowDescription")
-
-func hideDescription():
-	description_animator.play_backwards("ShowDescription")
-	await description_animator.animation_finished
-	description_panel.hide()
 
 func dimButton():
 	if talent_icon != null:

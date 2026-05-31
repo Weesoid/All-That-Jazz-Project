@@ -57,7 +57,7 @@ func getExperience():
 	else:
 		hustle = base_stat_values['speed']*2
 	# TODO Revalue this
-	var gain = (base_stat_values["health"] * 0.2) + (base_stat_values["damage"]) + base_stat_values["handling"] + hustle + ((base_stat_values["crit"] * base_stat_values["crit_amp"]) * 100) + (base_stat_values["heal_amp"] * 1.5) + (base_stat_values["resist"] * 100)
+	var gain = 100
 	return ceil(gain)*experience_multiplier
 
 func getDrops():

@@ -70,7 +70,7 @@ func _ready():
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
 	default_camera_pos = player_camera.position
-	OverworldGlobals.setMouseController(false)
+	UIGlobals.setMouseController(false)
 	OverworldGlobals.player = self
 	landed.connect(playFootstep)
 
@@ -307,9 +307,9 @@ func _unhandled_input(_event: InputEvent):
 	
 	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu") and !camping:
-		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
-	if Input.is_action_just_pressed("ui_cancel") and OverworldGlobals.inMenu() and !camping:
-		OverworldGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
+		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
+	if Input.is_action_just_pressed("ui_cancel") and UIGlobals.inMenu() and !camping:
+		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	# Interaction handling
 	if Input.is_action_just_pressed("ui_select"):
 		var interactables = interaction_detector.get_overlapping_areas()
@@ -326,7 +326,7 @@ func _unhandled_input(_event: InputEvent):
 #		PlayerGlobals.addCombatantTemperment(OverworldGlobals.getCombatantSquad('Player').pick_random())
 
 func canInteract():
-	return !channeling_power and can_move and !OverworldGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing and !animation_player.is_playing()
+	return !channeling_power and can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing and !animation_player.is_playing()
 
 func isMobile():
 	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0
@@ -384,7 +384,7 @@ func resetAnimation():
 	animation_player.play("RESET")
 
 func canDrawBow()-> bool: 
-	if OverworldGlobals.inMenu():
+	if UIGlobals.inMenu():
 		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
 		OverworldGlobals.showPrompt("Out of [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
@@ -399,7 +399,7 @@ func canDrawBow()-> bool:
 	return true
 
 func canUsePower():
-	if OverworldGlobals.inMenu():
+	if UIGlobals.inMenu():
 		return false
 	if bow_draw_strength != 0.0:
 		return false
@@ -454,7 +454,7 @@ func drawBow():
 		
 
 func canPullBow():
-	return !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !OverworldGlobals.inMenu() and can_move and isMobile() and !diving and (isFacingSide() or isFacingUp())
+	return !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !UIGlobals.inMenu() and can_move and isMobile() and !diving and (isFacingSide() or isFacingUp())
 
 func canShootBow()-> bool:
 	return can_move and bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile() and velocity.x == 0
@@ -561,7 +561,7 @@ func canMelee():
 		bow_mode and \
 		!diving and \
 		is_on_floor() and \
-		!OverworldGlobals.inMenu()
+		!UIGlobals.inMenu()
 
 func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	if stop_sprint:

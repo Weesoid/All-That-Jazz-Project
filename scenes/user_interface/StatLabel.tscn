@@ -2,16 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="1_065d1"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStatLabel.gd" id="1_jwq5y"]
-[ext_resource type="Texture2D" uid="uid://be12cxsmbvn3b" path="res://images/sprites/circle_empty.png" id="3_xomtb"]
-[ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="4_6ihtj"]
+[ext_resource type="Texture2D" uid="uid://8pm1is5hmm5c" path="res://images/user_interface/outlined_circle_empty.png" id="3_7k4eq"]
+[ext_resource type="Texture2D" uid="uid://bnbmhhurjxnx3" path="res://images/user_interface/outlined_circle_filled.png" id="4_d3ixt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k67d"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 2
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
+bg_color = Color(0, 0, 0, 0.784314)
 expand_margin_left = 1.0
 expand_margin_top = 1.0
 expand_margin_right = 1.0
@@ -35,8 +30,6 @@ script = ExtResource("1_jwq5y")
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
 bbcode_enabled = true
 text = "STAT"
 fit_content = true
@@ -75,6 +68,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CustomCountBar" parent="Value" instance=ExtResource("1_065d1")]
+visible = false
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -82,8 +76,8 @@ anchor_bottom = 0.5
 mouse_filter = 2
 reverse_order = true
 initialize = false
-empty_circle = ExtResource("3_xomtb")
-filled_circle = ExtResource("4_6ihtj")
+empty_circle = ExtResource("3_7k4eq")
+filled_circle = ExtResource("4_d3ixt")
 
 [node name="Label" type="Label" parent="Value"]
 visible = false

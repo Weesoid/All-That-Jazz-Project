@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bpkffg1rqjdpp"]
+[gd_scene load_steps=6 format=3 uid="uid://bpkffg1rqjdpp"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomButton.gd" id="1_nr25w"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="2_xl5qf"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_y3hcb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
@@ -18,6 +19,9 @@ offset_right = 48.0
 offset_bottom = 48.0
 alignment = 0
 script = ExtResource("1_nr25w")
+
+[node name="CustomTooltip" parent="." instance=ExtResource("2_xl5qf")]
+layout_mode = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"Sounds"

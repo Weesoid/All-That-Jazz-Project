@@ -14,7 +14,7 @@ const FAST_TRAVEL_ICON = preload("res://images/sprites/button_pinpoint_normal.pn
 @onready var guard_label = $Label
 @onready var rest_options = $RestOptions
 @onready var rest_button = $HBoxContainer/Rest
-@onready var ambush_label = $Sprite2D
+#@onready var ambush_label = $Sprite2D
 var camp_bars
 var original_positions: Dictionary
 var guard_combatant:ResPlayerCombatant
@@ -155,7 +155,9 @@ func _on_custom_button_held_press():
 	#PlayerGlobals.rested = true
 	var squad = OverworldGlobals.getCombatantSquad("Player")
 	for combatant in squad:
-		if combatant == guard_combatant: continue
+		if combatant == guard_combatant: 
+			CombatGlobals.healResolve(combatant,1)
+			continue
 		restCombatant(combatant)
 	await doScreenFade()
 	await get_tree().create_timer(1).timeout
@@ -174,7 +176,7 @@ func restCombatant(combatant: ResPlayerCombatant):
 	var random_stat_boost= ['speed', 'damage', 'resolve'].pick_random()
 	combatant.addTemporaryModifer('Well Rested',3,{'resist':0.1,random_stat_boost:1,'health':5},false,true)
 	CombatGlobals.calculateHealing(combatant, ceil(combatant.getMaxHealth()*0.05),false)
-	CombatGlobals.healResolve(combatant,1)
+	CombatGlobals.healResolve(combatant,3)
 	CombatGlobals.removeInjury(combatant,0.1,randi_range(1,2))
 
 func _on_return_pressed():

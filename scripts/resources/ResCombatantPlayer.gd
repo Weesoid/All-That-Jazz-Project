@@ -190,7 +190,7 @@ func applyTrait(t,show_indicator,append_indicator:String=''):
 		CombatGlobals.modifyStat(self, PlayerGlobals.trait_presets[t], t,true)
 	elif t.split('/').size() > 1:
 		var trait_data = t.split('/')
-		CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0], false, show_indicator,append_indicator)
+		CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0], false, false, show_indicator,append_indicator)
 
 # Trait data is a dictionary that contains unique trait data. E.g. <Trait name>/{"damage":69}/{"disease":true} can be a element in the traits array
 func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={},append_indicator:String=''):

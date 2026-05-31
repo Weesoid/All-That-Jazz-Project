@@ -10,7 +10,7 @@ func _ready():
 	InventoryGlobals.stack_item_changed.connect(func(item,count): if count<0: addPickupLabel(item,count,true))
 
 func addPickupLabel(item:ResItem,count:int,remove_item:bool=false):
-	if (item is ResProjectileAmmo and remove_item and !OverworldGlobals.inMenu()): 
+	if (item is ResProjectileAmmo and remove_item and !UIGlobals.inMenu()): 
 		return
 	if remove_item and OverworldGlobals.player.current_camp_spot != null:
 		return

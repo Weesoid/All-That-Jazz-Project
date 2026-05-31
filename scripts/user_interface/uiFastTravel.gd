@@ -12,7 +12,7 @@ func loadFastTravelButtons():
 		if !FileAccess.file_exists(location):
 			continue
 		
-		var button = OverworldGlobals.createCustomButton()
+		var button = UIGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		var map:MapData = load(location).instantiate()
 		button.text = map.name
@@ -42,7 +42,7 @@ func loadFastTravelButtons():
 		travel_panel.add_child(button)
 		map.queue_free()
 	
-	OverworldGlobals.setMenuFocus(travel_panel)
+	UIGlobals.setMenuFocus(travel_panel)
 
 func getMapInfo(path):
 	pass
@@ -80,10 +80,10 @@ func checkTravel(location):
 			PlayerGlobals.randomizeMapEvents(location)
 			travel(location)
 			)
-	confirm_dialog.no_button.pressed.connect(func():OverworldGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
+	confirm_dialog.no_button.pressed.connect(func():UIGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
 
 func travel(location):
-	OverworldGlobals.closeMenu(self)
+	UIGlobals.closeMenu(self)
 	OverworldGlobals.changeMap(location, '0,0,0', ['SavePoint','FastTravel'])
 
 func _on_debug_button_pressed():

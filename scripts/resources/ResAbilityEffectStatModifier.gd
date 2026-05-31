@@ -19,7 +19,7 @@ enum DurationType {
 @export var duration_type: DurationType= DurationType.TURNS
 @export var duration:int=1
 @export var stacks: bool=false
-
+@export var resistable:bool=false
 func getModifications()-> Dictionary:
 	var out={}
 	for stat in stat_modifications:

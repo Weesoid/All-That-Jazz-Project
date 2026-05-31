@@ -12,7 +12,7 @@ func _to_string():
 	return str(name)
 
 func getInformation():
-	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
+	var out = '[center]'+UIGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	out += description
 	return out
 
@@ -37,7 +37,7 @@ func getRarity():
 		return 2 # Epic
 
 func getIconBB():
-	return OverworldGlobals.insertTextureCode(icon)
+	return UIGlobals.insertTextureCode(icon)
 
 func isRepairable():
 	var conditions_met:int=0

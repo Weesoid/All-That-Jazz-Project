@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://c87gpcles4gjo"]
+[gd_scene load_steps=8 format=3 uid="uid://c87gpcles4gjo"]
 
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_71mgr"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomTextureButton.gd" id="1_qamu6"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_7jaf6"]
 [ext_resource type="Texture2D" uid="uid://dd2hvxqa8mrra" path="res://images/sprites/button_gang_normal.png" id="2_enk3j"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="3_cyndd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -22,6 +23,9 @@ offset_bottom = 48.0
 theme = ExtResource("1_71mgr")
 alignment = 0
 script = ExtResource("1_qamu6")
+
+[node name="CustomTooltip" parent="." instance=ExtResource("3_cyndd")]
+layout_mode = 0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1

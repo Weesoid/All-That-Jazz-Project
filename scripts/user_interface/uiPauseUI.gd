@@ -72,7 +72,7 @@ func _on_quit_pressed():
 #		confirm_dialog.yes_button.text = 'Quit'
 #		confirm_dialog.no_button.text = 'Return'
 #		confirm_dialog.yes_button.pressed.connect(leaveToMain)
-#		confirm_dialog.no_button.pressed.connect(func():OverworldGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
+#		confirm_dialog.no_button.pressed.connect(func():UIGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
 
 func leaveToMain():
 	get_tree().change_scene_to_file("res://scenes/user_interface/StartMenu.tscn")
@@ -94,4 +94,4 @@ func disableButtons():
 
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_show_menu"):
-		OverworldGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")
+		UIGlobals.showMenu("res://scenes/user_interface/PauseMenu.tscn")

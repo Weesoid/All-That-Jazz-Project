@@ -46,7 +46,8 @@ func apply(combatant: ResPlayerCombatant):
 				modifier_data[1].duration,
 				modifier_data[0],
 				effect.stacks,
-				modifier_data[1].duration_type == ResStatModifierEffect.DurationType.BATTLE
+				modifier_data[1].duration_type == ResStatModifierEffect.DurationType.BATTLE,
+				modifier_data[1].resistable
 				)
 			modifiers_added = true
 			strain_added = true
@@ -124,7 +125,7 @@ func getLongestModiferDuration(modifier_effects:Array):
 	return longest_modifier
 
 func getInformation():
-	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
+	var out = '[center]'+UIGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	out += strainCostLabel()+'\n'
 	out += CombatGlobals.getBasicEffectsDescription(effects)
 	if party_wide:

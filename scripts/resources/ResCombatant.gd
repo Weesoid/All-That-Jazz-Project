@@ -108,10 +108,6 @@ func setBreatheTween(mode:int):
 func act():
 	pass
 
-#func loadAbilities():
-#	for ability in ability_set:
-#		if ability.isAttack(): ability.setupAttackBonuses()
-
 func scaleStats():
 	var stat_bonuses = {}
 	
@@ -203,7 +199,7 @@ func appendStatModification(modifier_id:String, append_stats: Dictionary):
 			stat_modifiers[modifier_id] = CombatGlobals.combineDictionaries(stat_modifiers[modifier_id], append_stats)
 
 # TODO?  Update handling. Replace outdated modifiers based on modifier_id?
-func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false,show_indicator:bool=true):
+func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false, resistable:bool=false,show_indicator:bool=true):
 	var key
 	var data
 	if per_battle:
@@ -212,7 +208,7 @@ func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary
 		data = 'tempmod/turns/'+JSON.stringify(stat_dict)
 	key = data+'|'+modifier_id # Will look smth like: tempmod/battle/{"damage":67}|<modifier id>
 	
-	CombatGlobals.modifyStat(self, stat_dict, key, append_stats,show_indicator)
+	CombatGlobals.modifyStat(self, stat_dict, key, append_stats,resistable,show_indicator)
 	temp_modifier_tracker[key] = duration
 
 func applyTemporaryModifiers():

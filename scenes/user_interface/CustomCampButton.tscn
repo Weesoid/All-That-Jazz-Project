@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bpysmuqphlqeo"]
+[gd_scene load_steps=8 format=3 uid="uid://bpysmuqphlqeo"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomCampButton.gd" id="2_hjpw3"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="2_qbrtl"]
 [ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="3_gmt77"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_lmbce"]
 [ext_resource type="Texture2D" uid="uid://nyr8hffx6x17" path="res://images/sprites/icon_cross.png" id="3_s0b2d"]
@@ -25,6 +26,9 @@ grow_vertical = 2
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("2_hjpw3")
+
+[node name="CustomTooltip" parent="." instance=ExtResource("2_qbrtl")]
+layout_mode = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"Sounds"

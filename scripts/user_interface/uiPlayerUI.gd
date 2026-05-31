@@ -32,7 +32,7 @@ func updateArrowIndicator():
 			addArrowCounter()
 
 func addArrowCounter():
-	var arrow_button = OverworldGlobals.createItemButton(PlayerGlobals.equipped_arrow)
+	var arrow_button = UIGlobals.createItemButton(PlayerGlobals.equipped_arrow)
 	var count_label = getCountLabel(arrow_button)
 	arrow_button.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	arrow_button.focus_mode=Control.FOCUS_NONE

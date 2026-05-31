@@ -168,7 +168,7 @@ func loadKeybinds(device: String, _device_index:int=0):
 				button.find_child('Input').text = 'Awaiting input...'
 				await done_rebinding
 				await loadKeybinds(InputHelper.device)
-				OverworldGlobals.setMenuFocus(keybind_container)
+				UIGlobals.setMenuFocus(keybind_container)
 				apply_button.show()
 				)
 	
@@ -271,7 +271,7 @@ func _on_panel_container_tab_changed(tab):
 		0:
 			window_options.grab_focus()
 		1: 
-			OverworldGlobals.setMenuFocus(keybind_container)
+			UIGlobals.setMenuFocus(keybind_container)
 
 func addSound(ui_element: Control):
 	ui_element.focus_entered.connect(playFocusSound)

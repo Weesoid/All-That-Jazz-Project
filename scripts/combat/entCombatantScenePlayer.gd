@@ -55,7 +55,7 @@ func canBlock()-> bool:
 		and is_targeted
 
 func _input(_event):
-	if Input.is_action_just_pressed('ui_accept') and OverworldGlobals.inCombat():
+	if Input.is_action_just_pressed('ui_accept') and CombatGlobals.inCombat():
 		block()
 
 

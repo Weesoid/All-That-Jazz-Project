@@ -222,5 +222,5 @@ func _on_dialogue_label_spoke(letter: String, letter_index: int, speed: float) -
 
 func _exit_tree():
 	pass
-	#OverworldGlobals.setMouseController(false)
+	#UIGlobals.setMouseController(false)
 	#get_tree().create_tween().tween_property(OverworldGlobals.getPlayer().player_camera, 'zoom', Vector2(2, 2), 0.5)

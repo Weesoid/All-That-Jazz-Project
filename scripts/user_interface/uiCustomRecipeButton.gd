@@ -20,13 +20,13 @@ func _ready():
 	for ico in comp_container.get_children():
 		ico.hide()
 	$HoldProgress.modulate=hold_color
-	description_text = item.getInformation()
+	setTooltip()
 	update()
 	hold_delay = 0.05
 	hold_time = 0.2
 	if is_repair_recipe:
 		hammer_texture.texture = ANVIL_ICON
-
+	
 func update():
 	if !icons_initialized:
 		initializeIcons()

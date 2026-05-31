@@ -6,12 +6,12 @@ class_name CharacterSlot
 @export_range(0,3) var formation_position:int = 0
 var assign_position:bool=true
 
-func _can_drop_data(at_position, data):
+func _can_drop_data(_at_position, data):
 	return data is CharacterButton
 
-func _drop_data(at_position, data):
+func _drop_data(_at_position, data):
 	addCharacter(data)
-
+	
 func addCharacter(button: CharacterButton):
 	if character_button_container.get_children().size() > 0:
 		var current_button = character_button_container.get_children()[0]

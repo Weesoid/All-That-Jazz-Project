@@ -24,6 +24,8 @@ class_name CombatBar
 @onready var target_gradient_sprite = $TargetBorder/TargetGradient
 @onready var target_gradient_animator = $TargetBorder/TurnGradientAnimator
 @onready var indicator_intervals = $IndicatorIntervals
+@onready var stat_buff_arrow = $HealthBar/BuffIcon
+@onready var stat_debuff_arrow = $HealthBar/DebuffIcon
 var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
@@ -48,6 +50,15 @@ func _ready():
 	updateHealthBar()
 	updateResolveBar()
 	animateFaderBar(0,attached_combatant.stat_values['health'])
+	stat_buff_arrow.self_modulate = SettingsGlobals.ui_colors['up']
+	UIGlobals.addTooltip(
+		stat_buff_arrow,
+		'SEX',
+		CustomTooltip.AnchorPreset.TOP,
+		0.0,
+		true
+		)
+	stat_debuff_arrow.self_modulate = SettingsGlobals.ui_colors['down']
 
 func showActingGradient(combatant:ResCombatant):
 	if attached_combatant == combatant:

@@ -14,9 +14,10 @@ signal item_received(item)
 signal item_dragged(item)
 signal item_replaced(previous_item)
 
-func ready():
+func _ready():
 	icon = empty_icon
-	description_offset = Vector2(0,-32)
+	$HoldProgress.modulate=hold_color
+	setTooltip()
 
 func setItem(data: ResItem):
 	durability_bar.hide()

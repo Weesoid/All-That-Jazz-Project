@@ -55,7 +55,8 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 				ability.current_effect.duration,
 				ability.current_effect.getModifications(),
 				ability.current_effect.stacks,
-				ability.current_effect.duration_type == ResStatModifierEffect.DurationType.BATTLE
+				ability.current_effect.duration_type == ResStatModifierEffect.DurationType.BATTLE,
+				ability.current_effect.resistable
 				)
 		
 		elif ability.current_effect is ResCleanseEffect:

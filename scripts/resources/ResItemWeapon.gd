@@ -40,7 +40,7 @@ func canUse(combatant: ResCombatant):
 func getInformation():
 	var handling_bb = '[img]res://images/sprites/circle_filled_small.png[/img]'
 	var handling_requirement_text = '[center]'
-	var out = '[center]'+OverworldGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
+	var out = '[center]'+UIGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
 	for i in range(handling_requirement):
 		handling_requirement_text += handling_bb+' '
 	#handling_requirement_text += '[/center]'
@@ -51,7 +51,7 @@ func getInformation():
 	out += effect.getRichDescription()
 	out += SettingsGlobals.bb_line
 	out += '\n[color=yellow] Uses: %s/%s' % [durability,max_durability]+'[/color] '
-	out += '('+ str(repair_cost)+ OverworldGlobals.insertTextureCode(repair_item.icon)+')'
+	out += '('+ str(repair_cost)+ UIGlobals.insertTextureCode(repair_item.icon)+')'
 	return out
 
 func getGeneralInfo():

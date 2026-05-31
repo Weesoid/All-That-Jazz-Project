@@ -17,7 +17,7 @@ var run_once = true
 
 func _ready():
 	for quest in QuestGlobals.quests:
-		var button = OverworldGlobals.createCustomButton()
+		var button = UIGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text = str(quest.name)
 		button.focus_entered.connect(

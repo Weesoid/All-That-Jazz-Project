@@ -9,15 +9,16 @@ class_name CustomTextureButton
 			_ready()
 @export var auto_resize:bool=true
 @onready var texture_button = $TextureRect
+
 func _ready():
 	$TextureRect/HoldProgress.modulate=hold_color
 	if texture != null:
 		texture_button.texture = texture
-		
 	if auto_resize:
 		custom_minimum_size = texture_button.size/2
 	setDisabled(disabled)
 	texture_button.set_anchors_preset(Control.PRESET_CENTER)
+	setTooltip()
 
 func setTexture(tex:Texture):
 	texture_button.texture = tex
@@ -28,7 +29,6 @@ func getTexture()-> TextureRect:
 func focus_feedback():
 	if focused_entered_sound == null or focus_mode == FOCUS_NONE: return
 	playSound(focused_entered_sound)
-	if description_on_focus: showDescription()
 
 func exit_focus_feedback():
 	delay_timer.stop()

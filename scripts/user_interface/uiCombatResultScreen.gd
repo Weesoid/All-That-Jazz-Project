@@ -43,7 +43,7 @@ func setExperienceBar():
 
 func showLoot():
 	for drop in reward_bank['loot'].keys():
-		var icon = OverworldGlobals.createItemIcon(drop,reward_bank['loot'][drop])
+		var icon = UIGlobals.createItemIcon(drop,reward_bank['loot'][drop])
 		if drops.has(drop):
 			var tween = create_tween()
 			var tween_b = create_tween()

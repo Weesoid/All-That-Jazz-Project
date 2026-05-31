@@ -25,9 +25,9 @@ const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
 @onready var move_back_button = $AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede
 @onready var defend_button = $AbilityContainer/BaseAbilities/BaseAbilities/Defend
 @onready var movements = $AbilityContainer/BaseAbilities/BaseAbilities/Movements
-@onready var rounds = $Rounds
-@onready var round_text = $Rounds/RoundText
-@onready var round_counter = $Rounds/RoundCounter
+#@onready var rounds = $Rounds
+#@onready var round_text = $Rounds/RoundText
+#@onready var round_counter = $Rounds/RoundCounter
 @onready var round_counter_animator = $Rounds/RoundCounter/AnimationPlayer
 @onready var rushed_movement_timer = $Timer
 @onready var weapon_uses = $AbilityContainer/BaseAbilities/BaseAbilities/Gear/TextureRect/Label
@@ -39,7 +39,7 @@ var ui_visible:bool
 
 func _ready():
 #	tension_orig_pos = tension_whole.position
-	rounds_orig_pos = rounds.position
+#	rounds_orig_pos = rounds.position
 #	tension_bar.setValue(CombatGlobals.tension)
 	hideUI()
 
@@ -192,7 +192,7 @@ func showAbilities(combatant: ResCombatant):
 		gear_button.ability_icon.texture = gear_button.descriptions['icon']
 	
 	for ability in combatant.ability_set: 
-		var button = OverworldGlobals.createAbilityButton(ability)
+		var button = UIGlobals.createAbilityButton(ability)
 		giveButtonFunction(button,ability)
 		ability_buttons.add_child(button)
 		ability_buttons.move_child(button,0)
@@ -213,7 +213,7 @@ func showAbilities(combatant: ResCombatant):
 			if child.ability == last_used_ability[combatant][0]: 
 				child.grab_focus()
 	else:
-		OverworldGlobals.setMenuFocus(ability_buttons)
+		UIGlobals.setMenuFocus(ability_buttons)
 
 func getAbilityButtons():
 	return ability_buttons.get_children().filter(func(control): return control is Button)
@@ -268,7 +268,7 @@ func hideUI():
 	ui_visible=false
 	ability_buttons.hide()
 	escape_button.hide()
-	setRoundsVisible(false)
+#	setRoundsVisible(false)
 #	setTensionBarVisible(false)
 	#resetMovements()
 
@@ -279,13 +279,13 @@ func showUI(set_focus:bool=false):
 	hideMovements()
 	ability_buttons.show()
 	escape_button.show()
-	setRoundsVisible(true)
+	#setRoundsVisible(true)
 #	setTensionBarVisible(true)
 	tweenAbilityButtons(getAbilityButtons())
 	tweenAbilityButtons(base_abilities.get_children(),'')
 	#resetMovements()
 	if set_focus:
-		OverworldGlobals.setMenuFocus(ability_buttons)
+		UIGlobals.setMenuFocus(ability_buttons)
 
 func fillInvalid():
 	for i in range(PlayerGlobals.ability_cap-getAbilityButtons().size()):
@@ -370,14 +370,14 @@ func _on_recede_focus_exited():
 		setButtonDisabled(move_button,false)
 		move_button._on_focus_exited()
 
-func updateRoundCounter(count:int):
-	setRoundsVisible(true)
-	round_counter.text = str(count)
-	if int(round_counter.text) <= 4:
-		round_text.text = '[wave]Round'
-	else:
-		round_text.text = 'Round'
-	round_counter_animator.play("New_Round")
+#func updateRoundCounter(count:int):
+#	setRoundsVisible(true)
+#	round_counter.text = str(count)
+#	if int(round_counter.text) <= 4:
+#		round_text.text = '[wave]Round'
+#	else:
+#		round_text.text = 'Round'
+#	round_counter_animator.play("New_Round")
 
 func setButtonDisabled(button:CustomAbilityButton,set_to:bool, set_focus=true):
 	button.disabled = set_to
@@ -412,14 +412,14 @@ func setButtonDisabled(button:CustomAbilityButton,set_to:bool, set_focus=true):
 #	for circle in tension_bar.getCircles():
 #		circle.modulate = Color.WHITE
 
-func setRoundsVisible(set_to:bool):
-	var tween = create_tween().set_parallel()
-	if set_to:
-		tween.tween_property(rounds,'position',rounds_orig_pos,0.25)
-		tween.tween_property(rounds,'modulate',Color.WHITE,0.25)
-	else:
-		tween.tween_property(rounds,'position',rounds_orig_pos+Vector2(0,-8),0.25)
-		tween.tween_property(rounds,'modulate',Color.TRANSPARENT,0.25)
+#func setRoundsVisible(set_to:bool):
+#	var tween = create_tween().set_parallel()
+#	if set_to:
+#		tween.tween_property(rounds,'position',rounds_orig_pos,0.25)
+#		tween.tween_property(rounds,'modulate',Color.WHITE,0.25)
+#	else:
+#		tween.tween_property(rounds,'position',rounds_orig_pos+Vector2(0,-8),0.25)
+#		tween.tween_property(rounds,'modulate',Color.TRANSPARENT,0.25)
 
 func _on_move_held_press():
 	pass

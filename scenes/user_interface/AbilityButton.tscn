@@ -212,6 +212,9 @@ metadata/_edit_horizontal_guides_ = []
 
 [node name="CustomTooltip" parent="." instance=ExtResource("10_ct8cy")]
 layout_mode = 0
+tooltip_position = 2
+show_on_hover = false
+spacing = 16
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_wmurb")

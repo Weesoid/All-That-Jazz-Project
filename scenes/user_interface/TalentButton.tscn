@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://df7dh0yl6gwe4"]
+[gd_scene load_steps=18 format=3 uid="uid://df7dh0yl6gwe4"]
 
 [ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="1_82po1"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTalentButton.gd" id="2_d3hhd"]
 [ext_resource type="AudioStream" uid="uid://dtcwqqchfejm1" path="res://audio/sounds/709597__alexcoover__unsheath-arrow.ogg" id="3_dsdb2"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="3_u03a2"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="4_n6heo"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="5_xlh4h"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="6_mnfoi"]
@@ -182,6 +183,9 @@ expand_icon = true
 script = ExtResource("2_d3hhd")
 hold_time = 0.15
 hold_delay = 0.15
+
+[node name="CustomTooltip" parent="." instance=ExtResource("3_u03a2")]
+layout_mode = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_dsdb2")

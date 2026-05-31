@@ -348,14 +348,26 @@ func getItemType(item: ResItem)-> float:
 
 # TODO: Update proof removaal of recipes
 func isRecipeValid(item:String)->bool:
-	if !FileAccess.file_exists("res://resources/items/%s.tres" % item) or !recipes.has(item):
+	if !FileAccess.file_exists("res://resources/items/%s.tres" % item) or !recipeExists(item):
 		return false
 	
-	for material in recipes[item].keys():
+	for material in findRecipe(item):
 		if !FileAccess.file_exists("res://resources/items/%s.tres" % item):
 			return false
 	
 	return true
+
+func recipeExists(item:String):
+	for recipe_item in recipes.keys():
+		if recipe_item.split('.')[0] == item: return true
+	
+	return false
+
+func findRecipe(item:String):
+	for recipe_item in recipes.keys():
+		if recipe_item.split('.')[0] == item: return recipes[recipe_item]
+	
+	return null
 
 func saveData(save_data: Array):
 	var data = InventorySaveData.new()

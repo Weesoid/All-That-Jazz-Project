@@ -19,7 +19,7 @@ func loadTalents(p_combatant: ResPlayerCombatant, talent_tree_name:String='Talen
 		break
 
 func addTalentButton(talent, combatant):
-	var button = OverworldGlobals.createTalentButton(talent,combatant)
+	var button = UIGlobals.createTalentButton(talent,combatant)
 	button.pressed.connect(talentPressed.bind(talent))
 	button.held_press.connect(talentPressed.bind(talent,true))
 	button.pressed.connect(button.updateRank)

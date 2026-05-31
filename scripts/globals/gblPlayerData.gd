@@ -151,7 +151,7 @@ func increaseLevelCap(amount:int=5):
 	max_team_level += amount
 	if current_exp >= getRequiredExp():
 		addExperience(1, true)
-	OverworldGlobals.showPrompt('Level cap increased to [color=yellow]%s[/color].' % max_team_level)
+	UIGlobals.showPrompt('Level cap increased to [color=yellow]%s[/color].' % max_team_level)
 
 func getLevelTier():
 	if team_level < 5:
@@ -173,6 +173,8 @@ func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 	#if unlocked_abilities[combatant].has(ability):
 	#	print('HAZ IT!')
 	#	return
+	if unlocked_abilities[combatant].has(ability):
+		return
 	
 	var unlocked_append = {combatant:[ability]}
 	unlocked_abilities = CombatGlobals.combineDictionaries(unlocked_abilities, unlocked_append)

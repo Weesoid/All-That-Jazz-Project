@@ -22,6 +22,7 @@ enum LabelStyle {
 @export var label_percentage_reduce_by_100:bool=false
 @export var highlight_increase:bool=true
 @export var highlight_decrease:bool=true
+@export var tooltip_pos: CustomTooltip.AnchorPreset = CustomTooltip.AnchorPreset.LEFT
 
 @onready var stat_text = $Stat
 @onready var value = $Value
@@ -50,10 +51,11 @@ func _ready():
 		UIGlobals.addTooltip(
 			self,
 			CombatExtras.STAT_DESCRIPTIONS[track_stat],
-			CustomTooltip.AnchorPreset.LEFT
+			tooltip_pos
 			)
 		#tooltip.setText(CombatExtras.STAT_DESCRIPTIONS[track_stat])
 		#tooltip_text = CombatExtras.STAT_DESCRIPTIONS[track_stat]
+	
 	update()
 
 func setCombatant(p_combatant):
@@ -65,7 +67,7 @@ func setCombatant(p_combatant):
 	update()
 
 func update():
-	if combatant == null:
+	if combatant == null or !combatant.stat_values.has(track_stat):
 		return
 	if combatant.stat_values[track_stat] == 0.0 and !CombatExtras.BASE_STATS.has(track_stat):
 		hide()

@@ -8,7 +8,9 @@ var initial_bar_pos:Vector2
 var tween_running:bool=false
 signal character_presssed(character)
 
-func ready():
+func _ready():
+	$HoldProgress.modulate = hold_color
+	setTooltip()
 	await get_tree().process_frame
 	initial_bar_pos = bar.position
 	bar.setCharacter(combatant)

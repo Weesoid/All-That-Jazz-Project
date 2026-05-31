@@ -23,7 +23,7 @@ func _ready():
 	else:
 		mode = Modes.SAVE
 		createSaveButton(PlayerGlobals.save_name)
-	OverworldGlobals.setMenuFocus(panel)
+	UIGlobals.setMenuFocus(panel)
 	initial_mode = mode
 
 func createSaveButtons():
@@ -40,10 +40,10 @@ func createSaveButtons():
 		print("An error occurred when trying to access the path.")
 		print(path)
 	
-	OverworldGlobals.setMenuFocus(panel)
+	UIGlobals.setMenuFocus(panel)
 
 func createSaveButton(save_name: String):
-	var button: Button = OverworldGlobals.createCustomButton()
+	var button: Button = UIGlobals.createCustomButton()
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if ResourceLoader.exists("res://saves/%s.tres" % save_name):
 		#await get_tree().process_frame
@@ -124,5 +124,5 @@ func generateSaveName()-> String:
 func _exit_tree():
 	if get_tree().current_scene.name != 'StartMenu':
 		OverworldGlobals.setPlayerInput(true)
-		OverworldGlobals.setMouseController(false)
+		UIGlobals.setMouseController(false)
 

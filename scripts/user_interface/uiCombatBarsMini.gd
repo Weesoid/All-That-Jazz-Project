@@ -73,18 +73,6 @@ func updateBars():
 	health_bar.max_value = int(attached_combatant.base_stat_values['health'])
 	health_bar.value = int(attached_combatant.stat_values['health'])
 
-#func updateStatusEffects():
-#	if attached_combatant == null:
-#		return
-#	for linger_effect in attached_combatant.lingering_effects:
-#		if added_lingers.has(linger_effect):
-#			continue
-#		if linger_effect.contains('linger|'):
-#			linger_effect = linger_effect.split('|')[1].replace(' ','')
-#
-#		status_effects.add_child(OverworldGlobals.createStatusEffectIcon(linger_effect,TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL))
-#		added_lingers.append(linger_effect)
-
 func highlightCombatant():
 	health_bar.get_node('ProgressBarTrueValues').show()
 

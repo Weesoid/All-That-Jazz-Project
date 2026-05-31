@@ -9,6 +9,7 @@ class_name CustomAbilityButton
 @onready var charges = $TextureRect/Charges
 @onready var lock_icon = $TextureRect/LockIcon
 @onready var ability_cost = $TextureRect/LockIcon/LockIcon/Label
+
 @export var ability: ResAbility
 @export var descriptions: Dictionary = {
 	'title': '',
@@ -21,6 +22,7 @@ var default_modulate:Color = Color.WHITE
 var focused_modulate:Color = Color.YELLOW
 
 var is_locked:bool=false
+
 func _ready():
 	$TextureRect/HoldProgress.modulate=hold_color
 	if ability != null:
@@ -42,10 +44,14 @@ func _ready():
 			custom_minimum_size = Vector2(48,48)
 			ability_icon.set_deferred('size', Vector2(24,24))
 			ability_icon.set_anchors_preset(Control.PRESET_CENTER)
+			tooltip.tooltip_position = CustomTooltip.AnchorPreset.RIGHT
+			tooltip.spacing = 8
+			tooltip.setShowHover(true)
+		tooltip.setText(ability.getRichDescription())
 	else:
 		description_label.text = descriptions['title'].to_upper()+'\n'+descriptions['description']
 		ability_icon.texture = descriptions['icon']
-	$CustomTooltip.setText(ability.getRichDescription())
+		tooltip.queue_free()
 
 func setLocked(set_to:bool):
 	is_locked = set_to
@@ -81,56 +87,17 @@ func _on_pressed():
 
 func _on_focus_entered():
 	focus_feedback()
-	if (Input.is_action_pressed("ui_show_info") or description_on_focus) and has_focus(): 
-		showDescription()
 
 func _on_mouse_entered():
 	focus_feedback()
 	if focus_mode != Control.FOCUS_NONE:
 		grab_focus()
-	if (Input.is_action_pressed("ui_show_info") or description_on_focus) and has_focus(): 
-		
-		showDescription()
 
 func _on_mouse_exited():
 	exit_focus_feedback()
 
 func _on_focus_exited():
 	exit_focus_feedback()
-
-func _input(_event):
-	if Input.is_action_just_pressed("ui_show_info") and !description_panel.visible and has_focus():
-		showDescription()
-	if Input.is_action_just_released("ui_show_info") and description_panel.visible:
-		hideDescription()
-	
-	checkHoldInputs()
-
-func showDescription():
-	pass
-	#$PopupPanel.show()
-	#$PopupPanel/CustomTooltip/RichTextLabel.text = (ability.getRichDescription())
-#	$CustomTooltip/RichTextLabel$PopupPanel/CustomTooltip/RichTextLabel
-#	$CustomTooltip.show()
-	#print($TextureRect/ButtonDescription)
-#	$TextureRect/ButtonDescription.show()
-#	if description_label.text.replace('\n','') == '':
-#		return
-#
-#	if outside_combat:
-#		var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
-#		add_child(side_description)
-#		side_description.showDescription(ability.getRichDescription(), Vector2(0,0))
-#	else:
-#		description_panel.show()
-#		description_animator.play("ShowDescription")
-
-func hideDescription():
-	pass
-	#$CustomTooltip.hide()
-	#description_animator.play_backwards("ShowDescription")
-	#await description_animator.animation_finished
-	#description_panel.hide()
 
 func dimButton():
 	if ability_icon != null:

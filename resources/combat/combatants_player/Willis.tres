@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=37 format=3 uid="uid://cohe0ng5gyu4h"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=38 format=3 uid="uid://cohe0ng5gyu4h"]
 
 [ext_resource type="Resource" uid="uid://bnol4xomec0g1" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_43nme"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDot.gd" id="13_nufh2"]
 [ext_resource type="Resource" uid="uid://8s6r5kod7gys" path="res://resources/combat/status_effects/Combo.tres" id="14_flkef"]
 [ext_resource type="Script" path="res://scripts/resources/ResAttackBonusStats.gd" id="15_no474"]
+[ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="16_hymot"]
 
 [sub_resource type="Resource" id="Resource_q606o"]
 script = ExtResource("9_a1mxa")
@@ -319,10 +320,10 @@ bullet_texture = ExtResource("2_wn1q6")
 description = "Just a lil dude"
 stat_values = {
 "crit": 0.0,
-"damage": 4,
+"damage": 1,
 "dmg_variance": 0.0,
 "handling": 0,
-"health": 20,
+"health": 999,
 "resist": 0.0,
 "resolve": 0,
 "speed": 0
@@ -340,3 +341,4 @@ scale_stats = {
 ability_set = Array[ExtResource("11_fj5br")]([])
 max_turn_charges = 1
 assigned_position = -1
+ai_package = ExtResource("16_hymot")

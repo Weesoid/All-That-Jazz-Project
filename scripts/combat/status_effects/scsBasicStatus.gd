@@ -37,7 +37,6 @@ static func run(effect,target,status_effect):
 	elif effect is ResStatusAddStatus:
 		CombatGlobals.addStatusEffect(target, effect.status_effect)
 	elif effect is ResStatusCallBackup:
-		print('calling da reinforcements!!!!!!!')
 		CombatGlobals.getCombatScene().callReinforcements()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
@@ -72,10 +71,6 @@ static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffe
 	else:
 		scale = 0
 	
-#	if status_effect.lingers and target is ResPlayerCombatant and !target.temperment.has(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change)):
-#		target.temperment.append(CombatGlobals.getTempermentModiferID(status_effect,effect.status_change))
-#		target.applyTemperments()
-#	elif !status_effect.lingers:
 	CombatGlobals.modifyStat(
 		status_effect.afflicted_combatant, 
 		effect.getStatChanges(scale), 

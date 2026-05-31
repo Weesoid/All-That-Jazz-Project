@@ -1,19 +1,36 @@
-[gd_scene load_steps=6 format=3 uid="uid://l265si2qk30k"]
+[gd_scene load_steps=10 format=3 uid="uid://l265si2qk30k"]
 
 [ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="1_i5qkw"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatInspection.gd" id="1_u4lvu"]
+[ext_resource type="PackedScene" uid="uid://b68qkjahvueeo" path="res://scenes/user_interface/AutoAttributeViewContainer.tscn" id="2_rw42w"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fts0v"]
+[sub_resource type="Gradient" id="Gradient_goeu5"]
+offsets = PackedFloat32Array(0, 0.993827)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uqvyo"]
+gradient = SubResource("Gradient_goeu5")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
 
 [sub_resource type="Gradient" id="Gradient_ik7yg"]
 colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_223px"]
 gradient = SubResource("Gradient_ik7yg")
-fill_from = Vector2(1, 0.6)
+fill_from = Vector2(1, 0.603659)
 fill_to = Vector2(0.1, 0.6)
 
+[sub_resource type="Gradient" id="Gradient_74ugl"]
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uktmt"]
+gradient = SubResource("Gradient_74ugl")
+fill_from = Vector2(0, 0.3)
+fill_to = Vector2(1, 0.3)
+
 [node name="CombatInspection" type="Control"]
+z_index = 4096
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,33 +39,210 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_u4lvu")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="Rounds" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 9
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -8.0
-offset_top = 79.0
-offset_right = 144.0
-offset_bottom = -91.0
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_fts0v")
+offset_top = -25.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="Rounds"]
 layout_mode = 2
-texture = SubResource("GradientTexture2D_223px")
+texture = SubResource("GradientTexture2D_uqvyo")
+expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Rounds"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 7
+theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="AttributeView" parent="PanelContainer/MarginContainer" instance=ExtResource("1_i5qkw")]
+[node name="Label" type="Label" parent="Rounds/MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 8
+text = "ROUND 1"
+horizontal_alignment = 1
+vertical_alignment = 2
+uppercase = true
+
+[node name="Attributes" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.443056
+anchor_bottom = 0.443056
+offset_top = -103.5
+offset_right = 152.0
+offset_bottom = 120.5
+grow_vertical = 2
+pivot_offset = Vector2(0, 79.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Attributes"]
+layout_mode = 2
+
+[node name="Name" type="MarginContainer" parent="Attributes/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Attributes/VBoxContainer/Name"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_223px")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Attributes/VBoxContainer/Name"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Label" type="Label" parent="Attributes/VBoxContainer/Name/MarginContainer"]
+layout_mode = 2
+text = "NAME"
+vertical_alignment = 2
+uppercase = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Attributes/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Attributes/VBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_223px")
+expand_mode = 1
+
+[node name="AutoAttributeView" parent="Attributes/VBoxContainer/MarginContainer" instance=ExtResource("2_rw42w")]
+visible = false
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/separation = -4
+tooltip_position = 0
+
+[node name="AttributeView" parent="Attributes/VBoxContainer/MarginContainer" instance=ExtResource("1_i5qkw")]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/separation = -4
+alignment = 1
+tooltip_position = 0
+
+[node name="Abilities" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -116.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Abilities"]
+layout_mode = 2
+
+[node name="Label" type="MarginContainer" parent="Abilities/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Abilities/VBoxContainer/Label"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_uktmt")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Abilities/VBoxContainer/Label"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Label" type="Label" parent="Abilities/VBoxContainer/Label/MarginContainer"]
+layout_mode = 2
+text = "ABILITIES"
+horizontal_alignment = 2
+vertical_alignment = 2
+uppercase = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Abilities/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Abilities/VBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_uktmt")
+expand_mode = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Abilities/VBoxContainer/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 3
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Abilities/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Strain" parent="PanelContainer/MarginContainer/AttributeView" index="5"]
-visible = false
+[node name="Modifiers" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 4.0
+offset_bottom = 116.0
+grow_horizontal = 0
+grow_vertical = 2
 
-[editable path="PanelContainer/MarginContainer/AttributeView"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Modifiers"]
+layout_mode = 2
+
+[node name="Label" type="MarginContainer" parent="Modifiers/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Modifiers/VBoxContainer/Label"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_uktmt")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Modifiers/VBoxContainer/Label"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Label" type="Label" parent="Modifiers/VBoxContainer/Label/MarginContainer"]
+layout_mode = 2
+text = "STATUS & MODIFIERS"
+horizontal_alignment = 2
+vertical_alignment = 2
+uppercase = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Modifiers/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Modifiers/VBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_uktmt")
+expand_mode = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Modifiers/VBoxContainer/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Modifiers/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_constants/separation = -8

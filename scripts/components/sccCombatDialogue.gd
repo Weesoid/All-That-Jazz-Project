@@ -48,7 +48,7 @@ func showDialogueBox(title: String):
 		return
 	
 	CombatGlobals.getCombatScene().toggleUI(false)
-	OverworldGlobals.showDialogueBox(dialogue_resource, title)
+	UIGlobals.showDialogueBox(dialogue_resource, title)
 	dialogue_triggered = true
 	await DialogueManager.dialogue_ended
 	CombatGlobals.getCombatScene().toggleUI(true)

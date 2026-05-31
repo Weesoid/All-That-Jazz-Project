@@ -34,7 +34,7 @@ func interact():
 	interact_animator.play("RESET")
 	if get_parent().has_method('interact'):
 		await get_parent().interact()
-	OverworldGlobals.showDialogueBox(dialogue_resource, dialogue_start)
+	UIGlobals.showDialogueBox(dialogue_resource, dialogue_start)
 	if !show_ui: 
 		await DialogueManager.dialogue_ended
 	if get_parent().has_method('exit'):
@@ -57,7 +57,7 @@ func enter():
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.player.setUIVisibility(false)
 	OverworldGlobals.player.sprinting = false
-	OverworldGlobals.setMouseController(true)
+	UIGlobals.setMouseController(true)
 	PlayerGlobals.setFollowersMotion(false)
 	
 	# Move player
@@ -78,9 +78,9 @@ func exit():
 	# Enable inputs
 	#OverworldGlobals.player.player_camera.cinematic_bars.visible = false
 	OverworldGlobals.player.setUIVisibility(true)
-	if !OverworldGlobals.inMenu():
+	if !UIGlobals.inMenu():
 		#print('DBox setting to true!')
-		if !OverworldGlobals.inCombat(): OverworldGlobals.setMouseController(false)
+		if !CombatGlobals.inCombat(): UIGlobals.setMouseController(false)
 		OverworldGlobals.setPlayerInput(true)
 	
 	# Reset player stuff

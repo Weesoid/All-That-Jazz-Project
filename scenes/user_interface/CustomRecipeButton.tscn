@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dy35hpoj5rc77"]
+[gd_scene load_steps=8 format=3 uid="uid://dy35hpoj5rc77"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomRecipeButton.gd" id="1_6rihq"]
 [ext_resource type="PackedScene" uid="uid://cllnwecy8w0yp" path="res://scenes/user_interface/ItemComponentIcon.tscn" id="2_jm54d"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="2_l0x5q"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_yrno1"]
 [ext_resource type="Texture2D" uid="uid://c6scpci5m38wp" path="res://images/status_icons/hammer.png" id="3_7hwfh"]
 
@@ -27,7 +28,9 @@ size_flags_vertical = 0
 alignment = 0
 script = ExtResource("1_6rihq")
 hold_time = 0.25
-hold_delay = 0.05
+
+[node name="CustomTooltip" parent="." instance=ExtResource("2_l0x5q")]
+layout_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://by2x5bgg618kl"]
+[gd_scene load_steps=32 format=3 uid="uid://by2x5bgg618kl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
@@ -7,11 +7,12 @@
 [ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="7_b4v4h"]
 [ext_resource type="PackedScene" uid="uid://dcacy1i0raeql" path="res://scenes/user_interface/AutoScrollContainer.tscn" id="7_n56iy"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="8_fh81n"]
+[ext_resource type="Texture2D" uid="uid://b3r54kv430r53" path="res://images/user_interface/small_pointer_buff.png" id="8_su0qf"]
+[ext_resource type="Texture2D" uid="uid://bgfcctl5x1ogw" path="res://images/user_interface/small_pointer_debuff.png" id="9_sorgb"]
 [ext_resource type="Texture2D" uid="uid://en0cw26urr2v" path="res://images/sprites/resolve_bar_empty.png" id="9_u2fdo"]
 [ext_resource type="Texture2D" uid="uid://cccrvcn7bhykq" path="res://images/sprites/health_bar_under.png" id="10_iwynr"]
 [ext_resource type="Texture2D" uid="uid://dcbmh0ebjbbom" path="res://images/sprites/resolve_bar_filled.png" id="10_l5fn2"]
 [ext_resource type="Texture2D" uid="uid://d3ouvhymj2yy3" path="res://images/sprites/health_bar_progress.png" id="11_jndj7"]
-[ext_resource type="PackedScene" uid="uid://ddd26djy4282k" path="res://scenes/user_interface/BarNotcher.tscn" id="14_0t6wq"]
 
 [sub_resource type="Gradient" id="Gradient_12uoa"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -408,6 +409,7 @@ _data = {
 [node name="CombatBars" type="Node2D"]
 z_index = 999
 script = ExtResource("1_i2y2p")
+metadata/_edit_vertical_guides_ = []
 
 [node name="HealthBarFader" type="TextureProgressBar" parent="."]
 anchors_preset = 7
@@ -501,11 +503,6 @@ libraries = {
 "": SubResource("AnimationLibrary_813j3")
 }
 
-[node name="BarNotcher" parent="HealthBar" instance=ExtResource("14_0t6wq")]
-visible = false
-layout_mode = 1
-auto_notch = false
-
 [node name="CustomCountBar" parent="HealthBar" instance=ExtResource("3_ivcce")]
 layout_mode = 1
 anchors_preset = 14
@@ -518,6 +515,35 @@ alignment = 1
 show_max = false
 empty_circle = ExtResource("9_u2fdo")
 filled_circle = ExtResource("10_l5fn2")
+
+[node name="BuffIcon" type="TextureRect" parent="HealthBar"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_vertical = 2
+texture = ExtResource("8_su0qf")
+expand_mode = 1
+
+[node name="DebuffIcon" type="TextureRect" parent="HealthBar"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -3.0
+offset_right = 3.0
+offset_bottom = 2.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("9_sorgb")
+expand_mode = 1
 
 [node name="SelectTarget" parent="." instance=ExtResource("4_x0qas")]
 visible = false

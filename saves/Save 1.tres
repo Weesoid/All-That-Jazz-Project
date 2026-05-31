@@ -7,13 +7,13 @@
 [ext_resource type="Script" path="res://scripts/resources/ResSaveDataInventory.gd" id="5_g2lk5"]
 [ext_resource type="Script" path="res://scripts/resources/ResSavedGame.gd" id="6_pb7l8"]
 
-[sub_resource type="Resource" id="Resource_gdpp5"]
+[sub_resource type="Resource" id="Resource_50pmo"]
 script = ExtResource("1_7yaen")
-position = Vector2(133.998, 212.934)
+position = Vector2(-377.081, 20.9395)
 scene_path = "res://scenes/entities/Player.tscn"
 direction = 90
 
-[sub_resource type="Resource" id="Resource_7ohbj"]
+[sub_resource type="Resource" id="Resource_3pd4q"]
 script = ExtResource("2_lo8cv")
 quests = Array[String](["res://resources/quests/GetThatItem.tres"])
 quest_objectives_data = {
@@ -25,10 +25,10 @@ quest_objectives_data = {
 }
 }
 
-[sub_resource type="Resource" id="Resource_kiqmu"]
+[sub_resource type="Resource" id="Resource_40i4q"]
 script = ExtResource("3_e4823")
 charms = {
-0: "res://resources/items/Testifier.tres",
+0: "",
 1: "",
 2: ""
 }
@@ -36,27 +36,24 @@ stat_values = {
 "accuracy": 0.25,
 "crit": 0.0,
 "crit_amp": -0.25,
-"crit_dmg": 0.25,
-"crit_mult": 0.0,
+"crit_dmg": 0.1,
 "damage": 4,
 "dmg_variance": 0.0,
 "handling": 3,
 "heal_amp": -0.5,
-"heal_mult": 0.0,
-"healing_skill": 0.0,
-"health": 40,
+"health": 16,
 "rebuke_chance": 1.25,
 "resist": 0.0,
 "resolve": 3,
 "speed": 1.0,
-"strain": 6
+"strain": 2.0
 }
 base_stat_values = {
 "crit": 0.0,
 "damage": 4,
 "dmg_variance": 0.0,
 "handling": 0,
-"health": 40,
+"health": 20,
 "resist": 0.0,
 "resolve": 3,
 "speed": 0
@@ -66,23 +63,19 @@ initialized = true
 stat_points = 24
 traits = Array[String](["clever", "Criticalium/{\"accuracy\":0.25}", "smartass", "stubborn", "My Custom Disease/{\"crit_amp\":-0.25}/{\"disease\":true}", "Bum Leg/{\"speed\":-1}/{\"append\":true,\"injury\":true}"])
 file_references = {
-"active_abilities": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicAttackExtra.tres"],
+"active_abilities": ["res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres"],
 "active_talents": {},
 "equipped_weapon": ["", 0]
 }
 temp_modifier_tracker = {
 "tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations": 1,
-"tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations^1": 1,
-"tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations^2": 1,
-"tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations^3": 1,
-"tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations^4": 1,
-"tempmod/battle/{\"strain\":1}|Rations^5": 1
+"tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations^1": 1
 }
 assigned_position = 0
-percent_health = 1.0
+percent_health = 0.8
 saved_resolve = 3
 
-[sub_resource type="Resource" id="Resource_6jasu"]
+[sub_resource type="Resource" id="Resource_o7lg0"]
 script = ExtResource("3_e4823")
 charms = {
 0: "",
@@ -127,7 +120,7 @@ assigned_position = -1
 percent_health = 1.0
 saved_resolve = 3
 
-[sub_resource type="Resource" id="Resource_h2mwy"]
+[sub_resource type="Resource" id="Resource_wxhpn"]
 script = ExtResource("3_e4823")
 charms = {
 0: "",
@@ -138,20 +131,19 @@ stat_values = {
 "accuracy": 0.25,
 "crit": 0.0,
 "crit_amp": -0.5,
-"crit_dmg": 0.1,
+"crit_dmg": 0.05,
 "crit_mult": 0.0,
 "damage": 2.0,
 "defense": 0.0,
 "dmg_variance": 0.0,
 "handling": -1.0,
-"heal_amp": 0.0,
 "heal_mult": 0.0,
-"health": 28,
+"health": 30,
 "rebuke_chance": 1.25,
 "resist": -0.03,
 "resolve": 3,
 "speed": -3.0,
-"strain": 6
+"strain": 2.0
 }
 base_stat_values = {
 "crit": 0.0,
@@ -168,7 +160,7 @@ initialized = true
 stat_points = 20
 traits = Array[String](["Criticalium/{\"accuracy\":0.25}", "My Custom Disease/{\"crit_amp\":-0.5}/{\"disease\":true}", "Infected Wound/{\"resist\":-0.03}/{\"append\":true,\"injury\":true}", "Concussed/{\"handling\":-1}/{\"append\":true,\"injury\":true}", "Broken Arm/{\"damage\":-2}/{\"append\":true,\"injury\":true}", "Bum Leg/{\"speed\":-3}/{\"append\":true,\"injury\":true}"])
 file_references = {
-"active_abilities": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
+"active_abilities": ["res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres"],
 "active_talents": {
 "res://resources/combat/talent_trees/BaseTalents.tres::Resource_bg3uw": {
 "cost": 5,
@@ -183,17 +175,13 @@ file_references = {
 }
 temp_modifier_tracker = {
 "tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations": 1,
-"tempmod/battle/{\"crit_dmg\":0.05,\"strain\":1}|Crit Rations^4": 1,
-"tempmod/battle/{\"strain\":1}|Rations": 1,
-"tempmod/battle/{\"strain\":1}|Rations^1": 1,
-"tempmod/battle/{\"strain\":1}|Rations^2": 1,
-"tempmod/battle/{\"strain\":1}|Rations^3": 1
+"tempmod/battle/{\"strain\":1}|Rations": 1
 }
 assigned_position = 2
-percent_health = 0.933333
+percent_health = 1.0
 saved_resolve = 3
 
-[sub_resource type="Resource" id="Resource_jy4tf"]
+[sub_resource type="Resource" id="Resource_x8f11"]
 script = ExtResource("3_e4823")
 charms = {
 0: "",
@@ -240,7 +228,7 @@ assigned_position = -1
 percent_health = 1.0
 saved_resolve = 3
 
-[sub_resource type="Resource" id="Resource_xjsbj"]
+[sub_resource type="Resource" id="Resource_hxp6w"]
 script = ExtResource("4_eufpr")
 team = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/Archie.tres", "res://resources/combat/combatants_player/FodderA.tres", "res://resources/combat/combatants_player/FodderB.tres"])
 map_logs = {
@@ -268,45 +256,45 @@ current_exp = 780
 progression_data = {}
 team_formation = Array[String](["res://resources/combat/combatants_player/Willis.tres", "res://resources/combat/combatants_player/FodderA.tres"])
 combatant_save_data = {
-"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_6jasu"),
-"res://resources/combat/combatants_player/FodderA.tres": SubResource("Resource_h2mwy"),
-"res://resources/combat/combatants_player/FodderB.tres": SubResource("Resource_jy4tf"),
-"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_kiqmu")
+"res://resources/combat/combatants_player/Archie.tres": SubResource("Resource_o7lg0"),
+"res://resources/combat/combatants_player/FodderA.tres": SubResource("Resource_wxhpn"),
+"res://resources/combat/combatants_player/FodderB.tres": SubResource("Resource_x8f11"),
+"res://resources/combat/combatants_player/Willis.tres": SubResource("Resource_40i4q")
 }
 unlocked_abilities = {
-"res://resources/combat/combatants_player/Archie.tres": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres"],
-"res://resources/combat/combatants_player/FodderA.tres": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf", "res://resources/combat/combatants_player/FodderA.tres::Resource_1o6uk", "res://resources/combat/combatants_player/FodderA.tres::Resource_j5fqi", "res://resources/combat/combatants_player/FodderA.tres::Resource_4r665", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf"],
-"res://resources/combat/combatants_player/FodderB.tres": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
-"res://resources/combat/combatants_player/Willis.tres": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/Willis.tres::Resource_qwuxy", "res://resources/combat/combatants_player/Willis.tres::Resource_c7tcy", "res://resources/combat/combatants_player/Willis.tres::Resource_gmos3", "res://resources/combat/combatants_player/Willis.tres::Resource_q6fmt", "res://resources/combat/combatants_player/Willis.tres::Resource_lhl2v", "res://resources/combat/combatants_player/Willis.tres::Resource_crclc", "res://resources/combat/combatants_player/Willis.tres::Resource_qv2us", "res://resources/combat/combatants_player/Willis.tres::Resource_okftq", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres"]
+"res://resources/combat/combatants_player/Archie.tres": ["res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/Counter.tres", "res://resources/combat/abilities/Defend.tres", "res://resources/combat/abilities/Recede.tres"],
+"res://resources/combat/combatants_player/FodderA.tres": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicAttackExtra.tres", "res://resources/combat/combatants_player/FodderA.tres::Resource_hvyrf"],
+"res://resources/combat/combatants_player/FodderB.tres": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres"],
+"res://resources/combat/combatants_player/Willis.tres": ["res://resources/combat/abilities/BasicAttack.tres", "res://resources/combat/abilities/BasicProjectile.tres", "res://resources/combat/abilities/BasicMisc.tres", "res://resources/combat/abilities/BasicProjectileExtra.tres", "res://resources/combat/abilities/BasicAttackExtra.tres"]
 }
 added_abilities = {}
 max_team_level = 25
 known_powers = Array[String](["res://resources/powers/Stealth.tres", "res://resources/powers/Anchor.tres"])
 rested = false
 
-[sub_resource type="Resource" id="Resource_x0f2e"]
+[sub_resource type="Resource" id="Resource_ga2q7"]
 script = ExtResource("5_g2lk5")
 inventory = {
-"res://resources/items/Arrow.tres": 3,
-"res://resources/items/CritRations.tres": 86,
-"res://resources/items/Kindling.tres": 89,
+"res://resources/items/Arrow.tres": 4,
+"res://resources/items/CritRations.tres": 83,
+"res://resources/items/Kindling.tres": 104,
 "res://resources/items/QuickBlade.tres": 2,
-"res://resources/items/Rations.tres": 1,
 "res://resources/items/Remembrance.tres": 5,
 "res://resources/items/Resistor.tres": "res://resources/items/Resistor.tres",
 "res://resources/items/RushDown.tres": "res://resources/items/RushDown.tres",
-"res://resources/items/ScrapSalvage.tres": 15,
+"res://resources/items/ScrapSalvage.tres": 5,
+"res://resources/items/Testifier.tres": "res://resources/items/Testifier.tres",
 "res://resources/items/Whetstone.tres": 9967,
-"res://resources/items/WhittlingKnife.tres": 16,
-"res://resources/items/Wood.tres": 2993
+"res://resources/items/WhittlingKnife.tres": 0,
+"res://resources/items/Wood.tres": 2968
 }
-crafted_items = Array[String](["Kindling"])
+crafted_items = Array[String](["Kindling", "Arrow"])
 
 [resource]
 script = ExtResource("6_pb7l8")
-name = "Save 1 - 16:33:34
+name = "Save 1 - 18:00:27
 Morale 24
-Safe"
-playtime = 59615.4
-current_map_path = "res://scenes/maps/SidescrollerB.tscn"
-save_data = [SubResource("Resource_gdpp5"), SubResource("Resource_7ohbj"), SubResource("Resource_xjsbj"), SubResource("Resource_x0f2e")]
+Node2D"
+playtime = 64828.5
+current_map_path = "res://scenes/maps/Sidescroller.tscn"
+save_data = [SubResource("Resource_50pmo"), SubResource("Resource_3pd4q"), SubResource("Resource_hxp6w"), SubResource("Resource_ga2q7")]

@@ -7,4 +7,4 @@ class_name CustomConfirmationDialogue
 @onready var no_button = $HBoxContainer/No
 
 func _ready():
-	OverworldGlobals.setMenuFocus(container)
+	UIGlobals.setMenuFocus(container)

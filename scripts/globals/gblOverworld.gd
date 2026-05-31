@@ -127,40 +127,7 @@ func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 	elif teleport_to is String:
 		getEntity(entity_name).global_position = getEntity(teleport_to).global_position + offset
 
-func showMenu(path: String, as_submenu:bool=false):
-	if !canShowMenu():
-		return
-	
-	#player.player_camera.player_ui.hide()
-	var main_menu: Control = load(path).instantiate()
-	if !as_submenu:
-		main_menu.name = 'uiMenu'
-		player.suddenStop()
-		player.resetStates()
-		player.setUIVisibility(false)
-		setPlayerInput(false)
-		if !inMenu():
-			if isPlayerCheating(): player.get_node('DebugComponent').hide()
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			setMouseController(true)
-			player.player_camera.get_node('UI').add_child(main_menu)
-			setPlayerInput(false)
-		else:
-			if isPlayerCheating(): player.get_node('DebugComponent').show()
-			closeMenu(main_menu)
-	else:
-		if !inSubmenu():
-			main_menu.name = 'uiSubmenu'
-			main_menu.z_index = 99
-			player.player_camera.get_node('UI').get_node('uiMenu').add_child(main_menu)
-		else:
-			closeSubmenu()
 
-func closeSubmenu():
-	#player.player_camera.player_ui.show()
-	if !player.player_camera.get_node('UI').get_node('uiMenu').has_node('uiSubmenu'):
-		return
-	player.player_camera.get_node('UI').get_node('uiMenu').get_node('uiSubmenu').queue_free()
 
 ## press_type: 0: Press, 1: Held press
 #func showMiniMenu(menu, action_button:Button, press_type:int, button_function:Callable, item_filter:Callable=func(_item):pass, secondary_button_function=null):
@@ -194,195 +161,14 @@ func closeSubmenu():
 #		if button.has_method('updateInformation'):
 #			update_inventory.connect(button.updateInformation)
 
-func canShowMenu():
-	return player.is_on_floor()
-
-func setMouseController(set_to:bool):
-	if has_node('MouseController') and set_to:
-		return
-	
-	if set_to:
-		var mouse_controller = load('res://scenes/user_interface/MouseController.tscn').instantiate()
-		add_child(mouse_controller)
-		Input.warp_mouse(Vector2(DisplayServer.screen_get_size()/2))
-	elif has_node('MouseController'): 
-		get_node('MouseController').queue_free()
-
-func closeMenu(menu: Control):
-	#player.player_camera.player_ui.show()
-	player.setUIVisibility(true)
-	setMouseController(false)
-	menu.queue_free()
-	player.player_camera.get_node('UI').get_node('uiMenu').queue_free()
-	setPlayerInput(true)
-
-func inMenu():
-	return player.player_camera.get_node('UI').has_node('uiMenu')
-
-func getMenu():
-	return player.player_camera.get_node('UI').get_node('uiMenu')
-
-func inSubmenu():
-	return player.player_camera.get_node('UI').get_node('uiMenu').has_node('uiSubmenu')
-
-func setControlFocus(control):
-	for child in control.get_children():
-		if child is Button:
-			child.grab_focus()
-			return
-		elif child is Container and containerHasButtons(child):
-			getContainerButton(child).grab_focus()
-			return
-
-func setMenuFocus(container: Control):
-	if container.get_child_count() > 0:
-		container.get_child(0).grab_focus()
-
-func setMenuFocusMode(control_item, mode: bool):
-	if control_item is Button:
-		if mode:
-			control_item.focus_mode = Control.FOCUS_ALL
-		else:
-			control_item.focus_mode = Control.FOCUS_NONE
-	elif control_item is Container:
-		for child in control_item.get_children():
-			if child is Button:
-				if mode:
-					child.focus_mode = Control.FOCUS_ALL
-				else:
-					child.focus_mode = Control.FOCUS_NONE
-
-func getContainerButton(container: Container)-> Button:
-	for child in container.get_children():
-		if child is Button:
-			return child
-	return null
-
-func containerHasButtons(container: Container):
-	return container.get_children().filter(func(control): return control is Button).size() > 0
-
-func insertTextureCode(texture: Texture)-> String:
-	return '[img]%s[/img]' % texture.resource_path
-
-func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_description=''):
-	var main_menu: Control = load("res://scenes/user_interface/Shop.tscn").instantiate()
-	main_menu.scale = Vector2.ZERO
-	main_menu.wares_array = getComponent(shopkeeper_name, 'ShopWares').shop_wares
-	main_menu.buy_modifier = buy_mult
-	main_menu.sell_modifier = sell_mult
-	main_menu.open_description = entry_description
-	main_menu.name = 'uiMenu'
-	
-	if !inMenu():
-		setMouseController(true)
-		player.player_camera.get_node('UI').add_child(main_menu)
-		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
-		setPlayerInput(false)
-		#show_player_interaction = false
-	else:
-		closeMenu(main_menu)
-
-func createCustomButton(theme: Theme = load("res://design/DefaultTheme.tres"))-> CustomButton:
-	var button = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
-	button.theme = theme
-	return button
-
-func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true, white_borders:bool=false)-> ItemButton:
-	var button: CustomButton = load("res://scenes/user_interface/CustomItemButton.tscn").instantiate()
-	button.item = item
-	button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
-	button.click_sound = load("res://audio/sounds/421461__jaszunio15__click_46.ogg")
-	button.custom_minimum_size.x = 32
-	button.custom_minimum_size.y = 32
-	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	button.icon = item.icon
-	#button.tooltip_text = item.name
-	button.description_text = item.getInformation()
-	button.description_offset = Vector2(0, -28)
-	if item is ResStackItem and show_count:
-		var count_label = StackCountLabel.new(item)
-		button.add_child(count_label)
-	elif item.isRepairable():
-		var durability_bar = load("res://scenes/user_interface/DurabilityBar.tscn").instantiate()
-		durability_bar.item = item
-		InventoryGlobals.item_repaired.connect(durability_bar.update_values.unbind(2))
-		button.add_child(durability_bar)
-		#durability_bar.setWeapon(item)
-	
-	if value_modifier != 0.0:
-		var label = Label.new()
-		if item.value * value_modifier <= 0:
-			label.text = 'Free'
-			label.add_theme_font_size_override('font_size', 6)
-		else:
-			label.text = str(int(item.value * value_modifier))
-		label.theme = load("res://design/OutlinedLabel.tres")
-		label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-		label.set_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-		button.add_child(label)
-	
-	if item is ResStackItem and item.barter_item: # item.mandatory
-		button.theme = load("res://design/ItemButtonsMandatory.tres")
-	else:
-		button.theme = load("res://design/ItemButtons.tres")
-	UIGlobals.addTooltip(button, '[center]'+item.name, CustomTooltip.AnchorPreset.BOTTOM)
-#	InventoryGlobals.removed_item_from_inventory.connect(
-#		(func(removed_item):
-#			print(removed_item == item)).unbind(1)
-#	)
-#	if item is ResEquippable:
-#		InventoryGlobals.item_equipped.connect(
-#			func(removed_item):
-#				if button.item == removed_item:
-#					button.queue_free()
-#		)
-	return button
-
-func createItemIcon(item: ResItem, count:int):
-	var icon: TextureRect = TextureRect.new()
-	icon.texture = item.icon.duplicate()
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
-	icon.pivot_offset = Vector2(icon.size.x/2,icon.size.y/2)
-	var count_label = Label.new()
-	count_label.text = str(count)
-	count_label.theme = load("res://design/OutlinedLabel.tres")
-	count_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	icon.add_child(count_label)
-	return icon
-
-func createStatusEffectIcon(effect_id,expand=TextureRect.EXPAND_KEEP_SIZE):
-	var effect = CombatGlobals.loadStatusEffect(effect_id)
-	var icon = TextureRect.new()
-	icon.texture = effect.texture
-	icon.self_modulate = effect.getIconColor()
-	icon.tooltip_text = effect.name+': '+effect.description
-	icon.expand_mode = expand
-	#icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
-	return icon
-
-func createAbilityButton(ability: ResAbility)-> CustomAbilityButton:
-	var button: CustomAbilityButton = load("res://scenes/user_interface/AbilityButton.tscn").instantiate()
-	button.ability = ability
-	button.outside_combat = !CombatGlobals.inCombat()
-	if button.outside_combat:
-		button.theme = load("res://design/AbilityButtonsOutCombat.tres")
-	return button
-
-func createTalentButton(talent: ResTalent, combatant:ResPlayerCombatant)-> CustomTalentButton:
-	var button: CustomTalentButton = load("res://scenes/user_interface/TalentButton.tscn").instantiate()
-	button.talent = talent
-	button.combatant = combatant
-	if button.outside_combat:
-		button.theme = load("res://design/AbilityButtonsOutCombat.tres")
-	return button
-
-func createCharacterButton(combatant:ResPlayerCombatant)-> CharacterButton:
-	var button: CharacterButton = load("res://scenes/user_interface/CharacterButton.tscn").instantiate()
-	button.combatant = combatant
-	return button
-
-func showPrompt(message: String, time=5.0, audio_file = ''):
-	OverworldGlobals.player.player_camera.player_ui.player_prompt.showPrompt(message, time, audio_file)
+#func setControlFocus(control):
+#	for child in control.get_children():
+#		if child is Button:
+#			child.grab_focus()
+#			return
+#		elif child is Container and containerHasButtons(child):
+#			getContainerButton(child).grab_focus()
+#			return
 
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Array[String]=[],show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
@@ -464,23 +250,9 @@ func getAllPatrollers():
 func destroyAllPatrollers(respawn:bool=false):
 	for patroller in getAllPatrollers():
 		patroller.destroy(false,false)
-#	player.player_camera.clearRewardBanks()
 	await get_tree().process_frame
 	for group in getCurrentMap().getPatrolGroups():
-#		group.reward_bank = {'loot':{},'experience':0.0}
 		if respawn and !group.isCleared(): group.spawn()
-#
-#func getMapRewardBank(key: String):
-#	return get_tree().current_scene.REWARD_BANK[key]
-#
-#func setMapRewardBank(key: String, value):
-#	get_tree().current_scene.REWARD_BANK[key] = value
-
-#func getTamedNames():
-#	var out = []
-#	for combatant in get_tree().current_scene.REWARD_BANK['tamed']:
-#		out.append(combatant.name)
-#	return out
 
 func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and player.has_node('DebugComponent')
@@ -494,23 +266,8 @@ func showGameOver(end_sentence: String=''):
 	player.z_index = 20
 	player.resetStates()
 	await get_tree().process_frame
-	#get_tree().
 	getCurrentMap().queue_free()
 	get_tree().change_scene_to_file("res://scenes/user_interface/GameOver.tscn")
-	#playEntityAnimation('Player', animation)
-	#var menu: Control = load().instantiate()
-	#setMouseController(true)
-#	if end_sentence == '': 
-#		end_sentence = [
-#			"You perished.", 
-#			"Well that's unfortunate.",
-#			"Sorry!",
-#			"There is nobility in the attempt.",
-#			"Don't give up!",
-#			"Try again.",
-#			"Let's hope the penalty isn't too high."
-#		].pick_random()
-#	menu.end_sentence.text = end_sentence
 
 func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=false):
 	var tween = create_tween()
@@ -540,20 +297,10 @@ func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
 func shakeCamera(strength=30.0, speed=20.0):
 	player.player_camera.shake(strength,speed)
 
-
 #********************************************************************************
 # OVERWORLD FUNCTIONS AND UTILITIES
 #********************************************************************************
-func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game_states: Array = []) -> void:
-	var ExampleBalloonScene = load("res://scenes/user_interface/DialogueBalloon.tscn")
-	var balloon: Node = ExampleBalloonScene.instantiate()
-	
-	if get_parent().has_node('CombatScene'):
-		get_parent().get_node('CombatScene').add_child(balloon) # TO-DO TEST THIS
-	else:
-		get_tree().current_scene.add_child(balloon)
-	#balloon.global_position = OverworldGlobals.player.getPosOffset()+Vector2(margin.size.x/2,-80)
-	balloon.start(resource, title, extra_game_states)
+
 
 func loadFollowers():
 	for follower in OverworldGlobals.getCurrentMap().get_children().filter(func(child): return child is NPCFollower):
@@ -594,7 +341,7 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true, end_signa
 		audio_player.pitch_scale += randf_range(0.0, 0.25)
 	audio_player.name = filename
 
-	if inCombat():
+	if CombatGlobals.inCombat():
 		CombatGlobals.getCombatScene().add_child(audio_player)
 	else:
 		add_child(audio_player)
@@ -655,7 +402,7 @@ func showQuickAnimation(animation_id, location, animation_name:String='Show', hi
 	animation.animation_name = animation_name
 	#animation.process_mode = Node.PROCESS_MODE_ALWAYS
 	#animation.z_index = 999
-	if !inCombat(): # FIX LATER
+	if !CombatGlobals.inCombat(): # FIX LATER
 		if location is Node2D:
 			if hide_scene: location.hide()
 			location.call_deferred('add_child',animation)
@@ -722,8 +469,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		return
 	if patroller != null and !is_instance_valid(patroller):
 		return
-	if inMenu() and !getMenu() is CampMenu:
-		showMenu("res://scenes/user_interface/PauseMenu.tscn")
+	if UIGlobals.inMenu() and !UIGlobals.getMenu() is CampMenu:
+		UIGlobals.closeMenu()
 	entering_combat=true
 	
 	# Enter combat
@@ -809,8 +556,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	if combat_entity is GenericPatroller and combat_results == 1:
 		addPatrollerPulse(player, 180.0, GenericPatroller.State.CHASING)
 		combat_entity.destroy()
-	if hasCombatDialogue(entity_name) and combat_results == 1:
-		showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
+	if UIGlobals.hasCombatDialogue(entity_name) and combat_results == 1:
+		UIGlobals.showDialogueBox(getComponent(entity_name, 'CombatDialogue').dialogue_resource, 'win_aftermath')
 		await DialogueManager.dialogue_ended
 	if combat_results != 0:
 		addPatrollerPulse(player, 180.0, GenericPatroller.State.STUNNED)
@@ -847,27 +594,10 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 #	if map.events.has('bonus_experience'):
 #		map.events['bonus_experience'] += int(reward_bank['experience']*0.25)
 
-func appendBonusLoot(loot_dict: Dictionary, stack_multiplier:float=0.25):
-	var map = getCurrentMap()
-	
-	for item in loot_dict.keys():
-		var stack = ceil(loot_dict[item]*stack_multiplier)
-		if map.events['bonus_loot'].has(item):
-			map.events['bonus_loot'][item] += stack
-		else:
-			map.events['bonus_loot'][item] = stack
 
-func showCombatStartBars():
-	var bars = load("res://scenes/user_interface/BattleStart.tscn").instantiate()
-	player.player_camera.add_child(bars)
-	bars.position = Vector2.ZERO
-	bars.get_node('AnimationPlayer').play('Show')
 
-func inCombat()-> bool:
-	return get_parent().has_node('CombatScene')
-	
-func hasCombatDialogue(entity_name: String)-> bool:
-	return hasEntity(entity_name) and getEntity(entity_name).has_node('CombatDialogue') and getComponent(entity_name, 'CombatDialogue').enabled
+#func inCombat()-> bool:
+#	return get_parent().has_node('CombatScene')
 
 func getCombatantSquad(entity_name: String)-> Array[ResCombatant]:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').combatant_squad
@@ -884,9 +614,6 @@ func setCombatantSquad(entity_name: String, combatants: Array[ResCombatant]):
 
 func getCombatantSquadComponent(entity_name: String)-> CombatantSquad:
 	return get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent')
-
-func afflictCombatantSquad(entity_name: String, status_effect_name: String):
-	getCombatantSquadComponent(entity_name).afflicted_status_effects.append(status_effect_name)
 
 func getComponent(entity_name: String, component_name: String):
 	return get_tree().current_scene.get_node(entity_name).get_node(component_name)

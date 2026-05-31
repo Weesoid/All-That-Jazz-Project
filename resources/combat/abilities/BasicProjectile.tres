@@ -29,7 +29,7 @@ target_type = 0
 target_group = 1
 caster_position = {
 "max": 3,
-"min": 0
+"min": 2
 }
 target_position = {
 "max": 3,
@@ -41,4 +41,4 @@ required_effect = {
 "status_effect": null
 }
 tension_cost = 0
-instant_cast = true
+instant_cast = false

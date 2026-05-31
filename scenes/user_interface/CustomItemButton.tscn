@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://0eiolcx87vuh"]
+[gd_scene load_steps=9 format=3 uid="uid://0eiolcx87vuh"]
 
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_yrp6h"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomItemButton.gd" id="2_dd5ro"]
 [ext_resource type="Texture2D" uid="uid://cwmgug742co0t" path="res://images/sprites/icon_sack_trans.png" id="2_j7iea"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_iak7o"]
+[ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="4_ckwin"]
 [ext_resource type="PackedScene" uid="uid://rnmhg7xo8gm4" path="res://scenes/user_interface/DurabilityBar.tscn" id="5_t2euj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
@@ -23,6 +24,10 @@ theme = ExtResource("1_yrp6h")
 icon = ExtResource("2_j7iea")
 icon_alignment = 1
 script = ExtResource("2_dd5ro")
+
+[node name="CustomTooltip" parent="." instance=ExtResource("4_ckwin")]
+layout_mode = 0
+tooltip_position = 3
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"Sounds"

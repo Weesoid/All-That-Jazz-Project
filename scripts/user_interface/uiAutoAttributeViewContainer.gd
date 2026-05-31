@@ -20,17 +20,19 @@ func setCombatant(combatant, clear:bool=false):
 
 func addStat(combatant, stat):
 	if tracked_stats.has(stat): return
-	stat_container.add_child(createStatTracker(combatant, stat))
+	stat_container.add_child(createStatTracker(combatant, stat, tooltip_position))
+	UIGlobals.setVerticalNeighbors(self)
 
 func clear():
 	for stat_tracker in stat_container.get_children():
 		stat_tracker.queue_free()
 	tracked_stats.clear()
 
-func createStatTracker(combatant, stat):
+func createStatTracker(combatant, stat,tooltip_position:CustomTooltip.AnchorPreset=CustomTooltip.AnchorPreset.LEFT):
 	var tracker = load("res://scenes/user_interface/StatLabel.tscn").instantiate()
 	tracker.track_stat = stat
 	tracker.visual = StatLabel.StatVisuals.LABEL
+	tracker.tooltip_pos = tooltip_position
 	if combatant.stat_values[stat] is float:
 		tracker.label_style = StatLabel.LabelStyle.PERCENTAGE
 	else:
