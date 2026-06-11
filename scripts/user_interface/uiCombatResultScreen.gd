@@ -15,7 +15,6 @@ signal done
 var morale = PlayerGlobals.current_exp
 var bonuses
 var reward_bank
-var drops
 var done_showing = false
 
 func _ready():
@@ -44,17 +43,17 @@ func setExperienceBar():
 func showLoot():
 	for drop in reward_bank['loot'].keys():
 		var icon = UIGlobals.createItemIcon(drop,reward_bank['loot'][drop])
-		if drops.has(drop):
-			var tween = create_tween()
-			var tween_b = create_tween()
-			loot_icons.add_child(icon)
-			tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
-			tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
-			tween_b.tween_property(icon, 'self_modulate', Color.YELLOW, 0.25)
-			tween_b.tween_property(icon, 'self_modulate', Color.WHITE, 1.5)
-			OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
-		else:
-			loot_icons.add_child(icon)
+		loot_icons.add_child(icon)
+		
+		var tween = create_tween()
+		var tween_b = create_tween()
+		#tween.tween_callback(tween.kill)
+		#tween_b.tween_callback(tween.kill)
+		tween.tween_property(icon, 'scale', Vector2(1.25, 1.25), 0.25)
+		tween.tween_property(icon, 'scale', Vector2(1.0, 1.0), 0.5)
+		tween_b.tween_property(icon, 'self_modulate', Color.YELLOW, 0.25)
+		tween_b.tween_property(icon, 'self_modulate', Color.WHITE, 1.5)
+		OverworldGlobals.playSound("res://audio/sounds/651515__1bob__grab-item.ogg", 4.0)
 		await get_tree().create_timer(0.25).timeout
 
 func _unhandled_input(_event):

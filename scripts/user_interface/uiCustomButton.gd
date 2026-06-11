@@ -27,6 +27,9 @@ func _ready():
 	#ready()
 
 func setTooltip():
+	if Engine.is_editor_hint():
+		return
+	
 	if description_text == '':
 		tooltip.queue_free()
 	else:
@@ -34,7 +37,7 @@ func setTooltip():
 
 func _on_focus_entered():
 	focus_feedback()
-	get_viewport().warp_mouse(position)
+	UIGlobals.moveCursorToControl(self)
 
 func _on_pressed():
 	press_feedback()
@@ -50,11 +53,6 @@ func _on_focus_exited():
 
 func _input(_event):
 	checkHoldInputs()
-
-#func showDescription():
-#	var side_description = load("res://scenes/user_interface/ButtonDescription.tscn").instantiate()
-#	add_child(side_description)
-#	side_description.showDescription(description_text, description_offset)
 
 func hideDescription():
 	if has_node('ButtonDescription'):
@@ -75,9 +73,9 @@ func checkHoldInputs():
 		hold_started.emit()
 	if isHoldKey('released') and !delay_timer.is_stopped():
 		delay_timer.stop()
-	if !hold_timer.is_stopped() and (isHoldKey('released') or Input.is_action_just_pressed("ui_alt_cancel")) and has_focus():
-		if Input.is_action_just_pressed("ui_alt_cancel") and has_focus():
-			await cancelPress()
+	if !hold_timer.is_stopped() and (isHoldKey('released')) and has_focus(): # or Input.is_action_just_pressed("ui_alt_cancel"))
+#		if Input.is_action_just_pressed("ui_alt_cancel") and has_focus():
+#			await cancelPress()
 		delay_timer.stop()
 		audio_player.stop()
 		hold_timer.stop()
@@ -107,6 +105,7 @@ func cancelPress():
 func press_feedback():
 	if click_sound == null: return
 	playSound(click_sound)
+	
 	if description_on_focus:
 		hideDescription()
 
@@ -124,12 +123,6 @@ func exit_focus_feedback():
 
 func setDisabled(set_to:bool):
 	disabled = set_to
-	if disabled:
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		focus_mode = Control.FOCUS_NONE
-	else:
-		mouse_filter = Control.MOUSE_FILTER_STOP
-		focus_mode = Control.FOCUS_ALL
 
 func playSound(audio_stream:AudioStream):
 	audio_player.pitch_scale = 1.0 + randf_range(-random_pitch, random_pitch)

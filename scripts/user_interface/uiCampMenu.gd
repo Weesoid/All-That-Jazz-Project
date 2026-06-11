@@ -14,21 +14,28 @@ const FAST_TRAVEL_ICON = preload("res://images/sprites/button_pinpoint_normal.pn
 @onready var guard_label = $Label
 @onready var rest_options = $RestOptions
 @onready var rest_button = $HBoxContainer/Rest
-#@onready var ambush_label = $Sprite2D
+@onready var outside_buttons = $OutsideButtons
+@onready var set_guard_buttons = $SetGuardButtons
+@onready var kindle_slot = $OutsideButtons/KindlingSlot
+var kindling_item = preload("res://resources/items/Kindling.tres")
 var camp_bars
 var original_positions: Dictionary
 var guard_combatant:ResPlayerCombatant
 var rest_mode:bool=false
 var done:bool=false
+var camp_buttons: Array[CustomCampButton]
+#var guard_buttons: Array[CustomButton]
+var camp_spot = OverworldGlobals.player.current_camp_spot
+var last_selected_camper: CustomCampButton = null
+var last_selected_item: ItemButton = null
 
 func _ready():
 	modulate=Color.TRANSPARENT
-	camp_bars = OverworldGlobals.player.current_camp_spot.getCampBars()
-	for bar in camp_bars:
-		bar.camp_button.party_wide_item_hovered.connect(showPartyItem)
-		bar.camp_button.mouse_exited.connect(hideAllItems)
-		bar.camp_button.pressed.connect(func(): setGuard(bar))
+	camp_bars = camp_spot.getCampBars()
+		#bar.pressed.connect(func(): setGuard(bar))
+		#setCampButtonCombatant(bar.attached_combatant, bar.name.trim_prefix('Sprite2D'))
 	inventory.showItems()
+	kindle_slot.can_drop_function = noRestedBuff
 	original_positions[crafting] = crafting.position
 	original_positions[inventory] = inventory.position
 	original_positions[fast_travel] = fast_travel.position
@@ -40,21 +47,87 @@ func _ready():
 	setMenuVisibility(fast_travel, false)
 	setMenuVisibility(guard_label,false,true)
 	setMenuVisibility(rest_options,false,true,0.5,true)
-	#inventory.drop_detector.item_dropped.connect(clearPartyItem)
-	#inventory.drop_detector.item_dropped.connect(updateStrainBars)
 	rest_button.setDisabled(true)
 	setFullMenuVisibility(false)
-	OverworldGlobals.player.current_camp_spot.camp_kindled.connect(func():rest_button.setDisabled(false))
+	camp_buttons.assign(getCharaterCampButtons())
+	#guard_buttons.assign(set_guard_buttons.get_children())
+	for combatant in OverworldGlobals.getCombatantSquad("Player"):
+		var pos = camp_spot.getResterPosition(combatant)
+		setCampButtonCombatant(combatant, pos)
+	for guard_button in set_guard_buttons.get_children():
+		guard_button.pressed.connect(setGuard.bind(guard_button.get_meta('combatant')))
+	for button in camp_buttons:
+		button.party_wide_item_hovered.connect(showPartyItem)
+		button.mouse_exited.connect(hideAllItems)
+		button.item_received.connect(focusInventory)
+		button.item_received.connect(
+			func(item):
+				last_selected_camper = button
+				last_selected_item = inventory.item_button_map[item][0] if inventory.item_button_map.has(item) else null
+				)
+	for button in crafting.crafting_slots:
+		button.item_received.connect(focusInventory)
+		button.item_received.connect(
+			func(item):
+				last_selected_item = inventory.item_button_map[item][0] if inventory.item_button_map.has(item) else null
+				)
+	for item in inventory.getButtons():
+		item.item_dragging.connect(focusCamper)
+	#camp_spot.camp_kindled.connect(func():rest_button.setDisabled(false))
 	await get_tree().create_timer(0.25).timeout
 	setFullMenuVisibility(true)
 	done=true
+
+#func addFocusSnapping(item_button:ItemButton):
+#	item_button.item_dragging.connect(focusCamper.unbind(1))
+
+
+func focusCamper(item):
+	if !UIGlobals.isUsingController() or !get_viewport().gui_is_dragging():
+		return
+	
+	if crafting.visible and InventoryGlobals.recipes.size() > 0:
+		crafting.focusEmptySlot()
+		return
+	elif item == kindling_item:
+		kindle_slot.grab_focus()
+		return
+	elif last_selected_camper != null:
+		last_selected_camper.grab_focus()
+		return
+	
+	for camp_button in camp_buttons:
+		if camp_button.combatant != null:
+			camp_button.grab_focus()
+			return
+
+func focusInventory(item):
+	if !UIGlobals.isUsingController() or !get_viewport().gui_is_dragging():
+		return
+	
+	await get_tree().process_frame
+	if crafting.craft_item != null:
+		crafting.result_slot.grab_focus()
+		return
+	elif last_selected_item != null:
+		last_selected_item.grab_focus()
+		return
+	
+	if !inventory.isCategoryEmpty(inventory.getCategory(item)):
+		inventory.focusCategory(item)
+	else:
+		inventory.focusFirstFilled()
 
 func restockItem(item: ResStackItem):
 	if item.stack > 0: inventory.addButton(item)
 
 func showPartyItem(item: ResCampItem):
-	for bar in camp_bars:
-		if bar.attached_combatant != null: bar.camp_button.showAction(item)
+	for camp_button in camp_buttons:
+		if camp_button.combatant != null:camp_button.showAction(item)
+
+func hideAllItems():
+	for camp_button in camp_buttons:
+		if camp_button.combatant != null: camp_button.showAction(null)
 
 # DUCT TAPE
 func _process(delta):
@@ -66,9 +139,6 @@ func clearPartyItem(item: ResCampItem):
 		return
 	hideAllItems()
 
-func hideAllItems():
-	for bar in camp_bars:
-		if bar.attached_combatant != null: bar.camp_button.showAction(null)
 
 func updateStrainBars(_item):
 	for bar in camp_bars:
@@ -106,14 +176,12 @@ func setBaseMenuVisibility(set_to:bool, entire_menu:bool=true):
 		setMenuVisibility(crafting, set_to)
 
 func _on_crafting_pressed():
-	#setMenuVisibility(fast_travel,false)
-	#setMenuVisibility(inventory,true)
 	if fast_travel.visible:
 		fast_travel_button.pressed.emit()
 	
 	crafting.resetCrafting()
-	setMenuVisibility(crafting, crafting.position != original_positions[crafting])
-
+	await setMenuVisibility(crafting, crafting.position != original_positions[crafting])
+	outside_buttons.visible = !crafting.visible
 
 func _on_fast_travel_pressed():
 	if crafting.visible:
@@ -127,29 +195,33 @@ func _on_fast_travel_pressed():
 		fast_travel_button.setTexture(FAST_TRAVEL_ICON)
 		fast_travel_button.description_text = '[center]FAST TRAVEL'
 
-func setGuard(bar:CombatBarsMini):
+func setGuard(combatant:ResPlayerCombatant):
 	if !rest_mode:
 		return
-	for other_bar in camp_bars:
+	for other_bar in camp_spot.getCombatBars(true):
 		other_bar.setWatchmark(false)
-	if bar == null:
-		guard_combatant=null
-		return
 	
-	if bar.attached_combatant == guard_combatant:
+	if combatant == null:
+		return
+	if combatant == guard_combatant:
 		guard_combatant = null
-		bar.setWatchmark(false)
+		camp_spot.getCombatantBar(combatant).setWatchmark(false)
 	else:
-		guard_combatant = bar.attached_combatant
-		bar.setWatchmark(true)
+		guard_combatant = combatant
+		camp_spot.getCombatantBar(combatant).setWatchmark(true)
+	
+	print('guard is ', guard_combatant)
 
 func _on_rest_held_press():
-	OverworldGlobals.player.current_camp_spot.setCamToRestPos()
+	camp_spot.setCamToRestPos()
+	#for button in set_guard_buttons.get_children():
+	#	if button.visible: button.setDisabled(button.get_meta('combatant').isDead())
+	set_guard_buttons.show()
+	outside_buttons.hide()
 	rest_mode=true
 	setBaseMenuVisibility(false)
 	setMenuVisibility(guard_label,true,true,0.5)
 	setMenuVisibility(rest_options,true,true,0.5,true)
-
 
 func _on_custom_button_held_press():
 	#PlayerGlobals.rested = true
@@ -164,11 +236,11 @@ func _on_custom_button_held_press():
 	if guard_combatant == null and CombatGlobals.randomRoll(0.75):
 		for combatant in squad: combatant.storeStatusEffect(CombatGlobals.loadStatusEffect('Stunned'))
 		OverworldGlobals.player.player_camera.playBigLabelAnimation('Show_Ambush')
-		OverworldGlobals.player.current_camp_spot.fightCombatantSquad()
+		camp_spot.fightCombatantSquad()
 		await OverworldGlobals.combat_enetered
 		OverworldGlobals.player.player_camera.hideOverlay(0.1)
 		await OverworldGlobals.combat_exited
-#	else:
+	
 	doExitTransition(false)
 
 func restCombatant(combatant: ResPlayerCombatant):
@@ -180,9 +252,11 @@ func restCombatant(combatant: ResPlayerCombatant):
 	CombatGlobals.removeInjury(combatant,0.1,randi_range(1,2))
 
 func _on_return_pressed():
+	outside_buttons.hide()
+	set_guard_buttons.hide()
 	setGuard(null)
 	rest_mode=false
-	OverworldGlobals.player.current_camp_spot.setCamToMenuPos()
+	camp_spot.setCamToMenuPos()
 	setMenuVisibility(guard_label,false,true,0.5)
 	setMenuVisibility(rest_options,false,true,0.5,true)
 	setBaseMenuVisibility(true,false)
@@ -194,7 +268,7 @@ func doExitTransition(do_screen_fade:bool=true):
 	if do_screen_fade: await doScreenFade()
 	#await get_tree().process_frame
 	setGuard(null)
-	OverworldGlobals.player.current_camp_spot.done.emit()
+	camp_spot.done.emit()
 	queue_free()
 
 func doScreenFade():
@@ -202,3 +276,37 @@ func doScreenFade():
 	await setFullMenuVisibility(false)
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 1.0, 1.0)
 	await get_tree().create_timer(1.0).timeout
+
+func getCharaterCampButtons():
+	return outside_buttons.get_children().filter(func(control): return control is CustomCampButton)
+
+func setCampButtonCombatant(combatant:ResPlayerCombatant, slot:String):
+	for button in camp_buttons:
+		var button_slot = button.name.trim_prefix('CharacterCampButton')
+		if button_slot == slot:
+			button.combatant = combatant
+			button.show()
+			setGuardMeta(slot)
+			return
+
+func noRestedBuff():
+	for member in OverworldGlobals.getCombatantSquad('Player'):
+		if member.hasTemporaryModifier('Well Rested'):
+#			if heads_up_cd.is_stopped():
+#				UIGlobals.showPrompt("Already rested.")
+#				heads_up_cd.start()
+			return false
+	
+	return true
+
+func _on_kindling_slot_item_received(_item):
+	InventoryGlobals.removeItemResource(kindling_item)
+	kindle_slot.setDisabled(true)
+	rest_button.setDisabled(false)
+	camp_spot.kindleFire()
+
+func setGuardMeta(index:String):
+	var guard_button = set_guard_buttons.get_node('CustomButton'+index)
+	var camp_button = outside_buttons.get_node('CharacterCampButton'+index) 
+	guard_button.set_meta('combatant', camp_button.combatant)
+	guard_button.show()

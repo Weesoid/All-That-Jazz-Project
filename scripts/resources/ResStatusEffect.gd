@@ -30,7 +30,8 @@ enum StatusStyle {
 	CUSTOM
 }
 enum TickType {
-	ON_TURN,
+	TURN_START,
+	TURN_END,
 	PER_TURN,
 	ROUND_START
 }
@@ -54,7 +55,7 @@ enum TickType {
 @export var max_rank: int
 @export var tick_on_apply: bool = true
 ## Do ticks even though it's not the afflicted combatant's turn.
-@export var tick_type: TickType = TickType.ON_TURN
+@export var tick_type: TickType = TickType.TURN_END
 @export var do_ticks: bool = true
 @export var resistable: bool = true
 @export var permanent: bool = false
@@ -68,6 +69,8 @@ var afflicted_combatant: ResCombatant
 var attached_data
 var status_visuals
 #var icon: TextureRect
+signal ticked
+signal expired
 
 func initializeStatus():
 	#icon = TextureRect.new()
@@ -93,6 +96,7 @@ func initializeStatus():
 func onHitTick(combatant, caster, received_value):
 	if combatant == afflicted_combatant:
 		status_script.applyOnHitEffects(afflicted_combatant, caster, received_value, self)
+	ticked.emit()
 
 func removeStatusEffect():
 	if effect_type == EffectType.ON_HIT and CombatGlobals.received_combatant_value.is_connected(onHitTick):
@@ -106,7 +110,8 @@ func removeStatusEffect():
 		status_visuals.queue_free()
 	
 	afflicted_combatant.status_effects.erase(self)
-	CombatGlobals.status_effect_removed.emit(afflicted_combatant, self)
+	#CombatGlobals.status_effect_removed.emit(afflicted_combatant, self)
+	expired.emit()
 
 func tick(update_duration=true, override_permanent=false, apply_effects=true):
 	if (!permanent and update_duration) or override_permanent: 
@@ -118,6 +123,7 @@ func tick(update_duration=true, override_permanent=false, apply_effects=true):
 	apply_once = false
 	if ((duration <= 0 and ((permanent and !remove_when.is_empty()) or !permanent)) or (afflicted_combatant.isOnBrink() and remove_on_brink)) and status_script != null: #or (afflicted_combatant.isDead() and !persist_on_dead)
 		removeStatusEffect()
+	ticked.emit()
 
 func animateStatusEffect():
 	if status_visuals == null:

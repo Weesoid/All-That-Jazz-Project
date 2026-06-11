@@ -20,7 +20,7 @@ func setModifier(p_trait:String, combatant:ResCombatant, left_aligned:bool=false
 			self, 
 			CombatGlobals.getStatListString(combatant.stat_modifiers[p_trait]), 
 			CustomTooltip.AnchorPreset.LEFT if !left_aligned else CustomTooltip.AnchorPreset.RIGHT,
-			0.0,
+			0.2,
 			true
 			)
 	else:
@@ -29,7 +29,7 @@ func setModifier(p_trait:String, combatant:ResCombatant, left_aligned:bool=false
 			self, 
 			CombatGlobals.getStatListString(combatant.stat_modifiers[p_trait.split('/')[0]]), 
 			CustomTooltip.AnchorPreset.LEFT if !left_aligned else CustomTooltip.AnchorPreset.RIGHT,
-			0.0,
+			0.2,
 			true
 			)
 	text += ('[cell]'+getBBmodifierIcon(p_trait,combatant)+'[/cell][/table]')

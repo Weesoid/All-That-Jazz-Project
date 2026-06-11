@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=28 format=3 uid="uid://cd5r32rnqq6ks"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=27 format=3 uid="uid://cd5r32rnqq6ks"]
 
 [ext_resource type="Resource" uid="uid://bnol4xomec0g1" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ic5dt"]
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_gtfo3"]
@@ -18,7 +18,6 @@
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="10_cdf4t"]
 [ext_resource type="Resource" uid="uid://s6fo2fxv6en2" path="res://resources/combat/talent_trees/BaseTalents.tres" id="10_wl0yg"]
 [ext_resource type="Resource" uid="uid://bbox5uqlacm4y" path="res://resources/combat/status_effects/Stunned.tres" id="11_83ihk"]
-[ext_resource type="Script" path="res://scripts/combat/combatant_ai/aiRandomAI.gd" id="12_fkxaw"]
 
 [sub_resource type="Resource" id="Resource_b45js"]
 script = ExtResource("6_ifjgl")
@@ -200,12 +199,11 @@ scale_stats = {
 "damage": 0.0,
 "dmg_variance": 0.0,
 "handling": 0.0,
-"health": 0.0,
-"resist": 0.0,
+"health": 1.0,
+"resist": 0.01,
 "resolve": 0.0,
 "speed": 0.0
 }
 ability_set = Array[ExtResource("8_plvh5")]([])
 max_turn_charges = 1
 assigned_position = -1
-ai_package = ExtResource("12_fkxaw")

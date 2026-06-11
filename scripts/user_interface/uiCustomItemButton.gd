@@ -3,26 +3,21 @@ class_name ItemButton
 
 @export var item:ResItem
 @export var empty_icon:Texture = preload("res://images/sprites/icon_charm_trans.png")
+@export var allow_drag:bool=true
 @onready var durability_bar = $Durability
 signal item_dragging(item)
 
 func _ready():
-	setItem(item)
 	$HoldProgress.modulate=hold_color
+	setItem(item)
 	setTooltip()
 
 func _get_drag_data(at_position):
-	if item == null:
+	if item == null or !allow_drag:
 		return
 	set_drag_preview(getPreview())
 	item_dragging.emit(item)
 	return item
-
-#func _drop_data(_at_position, data):
-#	print(data)
-
-#func ready():
-#	setItem(item)
 
 func setItem(data: ResItem):
 	durability_bar.hide()
@@ -38,5 +33,7 @@ func setItem(data: ResItem):
 		durability_bar.show()
 
 func _force_drag():
-	pass
-	#force_drag(item, getPreview())
+	if !allow_drag:
+		return
+	force_drag(item, getPreview())
+	item_dragging.emit(item)

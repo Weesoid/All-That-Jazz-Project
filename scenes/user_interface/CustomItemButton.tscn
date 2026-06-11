@@ -56,6 +56,8 @@ one_shot = true
 [node name="Durability" parent="." instance=ExtResource("5_t2euj")]
 layout_mode = 1
 
+[node name="DragDelay" type="Timer" parent="."]
+
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

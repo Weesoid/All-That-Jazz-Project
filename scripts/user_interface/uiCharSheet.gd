@@ -3,19 +3,20 @@ class_name CharSheet
 
 const SWORD_ICON = "res://images/sprites/icon_combat_item_trans.png"
 const SACK_ICON = "res://images/sprites/icon_charm_trans.png"
-const SWORD_SHIELD_ICON = preload("res://images/sprites/sword_n_shield.png")
+const BACKPACK_ICON = preload("res://images/sprites/icon_sack.png")
 const SHIELD_SWORD_ICON = preload("res://images/sprites/shield_n_sword.png")
 const ABILITIES_ICON = preload("res://images/sprites/abilities_icon.png")
 const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 
 @onready var modifier_viewer = $Sheet/LeftBeef/AbilitiesViewer/ModifierViewer
-@onready var attribute_viewer = $Sheet/Right/VBoxContainer/AttributeViewContainer
-@onready var other_attribute_viewer = $Sheet/Right/VBoxContainer/AutoAttributeView
+@onready var attributes = $Sheet/Right/VBoxContainer/ScrollContainer
+@onready var attribute_viewer = $Sheet/Right/VBoxContainer/ScrollContainer/Stats/AttributeViewContainer
+@onready var other_attribute_viewer = $Sheet/Right/VBoxContainer/ScrollContainer/Stats/AutoAttributeView
 @onready var abilities_container = $Sheet/LeftBeef/AbilitiesViewer/AbilityContainer
 @onready var character_view = $Sheet/Center/CharacterPosition/Marker2D
 @onready var character_name = $Sheet/Center/Label
 @onready var talents = $Talents
-@onready var equipment = $MiniInventory
+@onready var equipment: MiniInventory = $Sheet/Right/VBoxContainer/MiniInventory
 @onready var equip_slot_weapon = $Sheet/Right/VBoxContainer/Equipment/Weapon
 #@onready var weapon_durability_label = $Sheet/Right/VBoxContainer/Equipment/Weapon/Label
 @onready var equip_slot_a = $Sheet/Right/VBoxContainer/Equipment/SlotA
@@ -47,9 +48,11 @@ func _ready():
 #	equip_slot_c.item_received.connect(replaceEquippable)
 	talents.talent_interacted.connect(updateStatPoints)
 	combatant_switched.connect(hideSubmenus.unbind(1))
+	equipment.item_button_added.connect(connectAutosnap)
+	#equipment.item_button_removed.connect(checkEquipmentHide)
 
 func hideSubmenus():
-	animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
+	#animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
 	animateSubmenu(false, talents,submenu_positions['talents-offset'])
 
 #func replaceEquippable(item_equipped):
@@ -100,17 +103,8 @@ func updateCharacterView(member: ResPlayerCombatant):
 func _on_show_talents_pressed():
 	animateSubmenu(!talents.visible, talents, submenu_positions['talents-offset'])
 
-func _on_slot_a_pressed():
-	selected_equip_slot=0
-
-func _on_slot_b_pressed():
-	selected_equip_slot=1
-
-func _on_slot_c_pressed():
-	selected_equip_slot=2
-
 func equipmentButtonPressed():
-	if !press_cooldown.is_stopped():
+	if !press_cooldown.is_stopped() or equipment.visible:
 		return
 	var all_equippables = InventoryGlobals.inventory.filter(func(item): return item is ResEquippable)
 	if all_equippables.is_empty():
@@ -123,20 +117,45 @@ func equipmentButtonPressed():
 	else:
 		loadEquipment()
 	
-	animateSubmenu(!equipment.visible, equipment, submenu_positions['equipment-offset'])
-	if equipment.visible:
+	if !equipment.visible:
+		animateSubmenu(true, equipment, submenu_positions['equipment-offset'])
+	if UIGlobals.isUsingController():
 		await get_tree().process_frame
 		equipment.focusFirstFilled()
+#	if equipment.visible:
+#		await get_tree().process_frame
+#		equipment.focusFirstFilled()
 	
 func loadEquipment():
 	equipment.reset()
 	equipment.showItems(func(item): return item is ResEquippable)
-#	OverworldGlobals.addMiniInventoryActions(
-#		equipment,
-#		0,
-#		func(): pass,
-#		func(item): return item is ResEquippable #and !viewed_combatant.hasCharm(item)
-#		)
+
+func connectAutosnap(item_button):
+	if !UIGlobals.isUsingController():
+		return
+	
+	item_button.item_dragging.connect(UIGlobals.focusEmptyEquipSlot)
+
+func snapFocusToEquipment(item):
+	if !equipment.visible or equipment.modulate != Color.WHITE:
+		return
+	
+	await get_tree().process_frame
+	if !UIGlobals.isUsingController():
+		if equip_slot_weapon.item == item: equip_slot_weapon.grab_focus()
+		if equip_slot_a.item == item: equip_slot_a.grab_focus()
+		if equip_slot_b.item == item: equip_slot_b.grab_focus()
+		if equip_slot_c.item == item: equip_slot_c.grab_focus()
+		return
+	else:
+		if equipment.getCategory(item).get_child_count() > 0:
+			equipment.focusCategory(item)
+		else:
+			equipment.focusFirstFilled()
+
+func checkEquipmentHide(_item):
+	if equipment.getButtons().size() == 0:
+		animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
 
 func animateSubmenu(set_visible:bool, submenu:Control, offscreen_offset:Vector2):
 	var tween = create_tween().set_parallel()
@@ -157,29 +176,34 @@ func animateSubmenu(set_visible:bool, submenu:Control, offscreen_offset:Vector2)
 
 
 func _on_toggle_stats_pressed():
-	attribute_viewer.visible = !attribute_viewer.visible
-	other_attribute_viewer.visible = !other_attribute_viewer.visible
+	if attributes.visible:
+		attributes.hide()
+		equipment.show()
+	elif equipment.visible:
+		attributes.show()
+		equipment.hide()
 	
-	if attribute_viewer.visible:
+	if attributes.visible:
 		toggle_stats_button.setTexture(SHIELD_SWORD_ICON)
-		toggle_stats_button.getTexture().flip_h = false
+		#toggle_stats_button.getTexture().flip_h = false
 	else:
-		toggle_stats_button.setTexture(SWORD_SHIELD_ICON)
-		toggle_stats_button.getTexture().flip_h = true
+		print('ragh')
+		toggle_stats_button.setTexture(BACKPACK_ICON)
+		loadEquipment()
+		#await get_tree().process_frame
+		#equipment.focusFirstFilled()
+		#toggle_stats_button.getTexture().flip_h = true
 
 
 func _on_toggle_ability_modifiers_pressed():
 	if abilities_container.visible:
 		abilities_container.hide()
 		modifier_viewer.show()
+		toggle_ability_modifier_button.setTexture(MODIFIERS_ICON)
 	else:
 		abilities_container.show()
 		modifier_viewer.hide()
-	
-	if ability_view.visible:
 		toggle_ability_modifier_button.setTexture(ABILITIES_ICON)
-	else:
-		toggle_ability_modifier_button.setTexture(MODIFIERS_ICON)
 
 
 func _on_toggle_equipment_pressed():

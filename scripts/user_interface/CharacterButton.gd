@@ -41,26 +41,22 @@ func _get_drag_data(at_position):
 	return self
 
 func _on_focus_entered_bar_motion():
-	#pass
 	playFocusMotions(true)
 
 func _on_focus_exited_bar_motion():
-	#pass
 	playFocusMotions(false)
 
 func _on_pressed_emit_combatant():
-	print(combatant)
 	character_presssed.emit(combatant)
 
-func _enter_tree():
-	#if bar != null
-	#initial_bar_pos = bar.position
-	#print(position)
-	pass
-	#await get_tree().process_frame
-	#initial_bar_pos = position
+func _on_held_press():
+	if UIGlobals.isUsingController():
+		#await get_tree().process_frame
+		#Input.action_release("ui_click")
+		force_drag(self, getPreview())
 
-func initializeBar():
-	pass
-	#bar.
-
+func _notification(what):
+	if what == NOTIFICATION_DRAG_BEGIN and get_viewport().gui_get_drag_data() == self:
+		modulate = Color(Color.WHITE, 0.5)
+	if what == NOTIFICATION_DRAG_END:
+		modulate = Color.WHITE

@@ -1,47 +1,63 @@
 extends Node
-class_name MouseController
+class_name MouseControllerAdapter
 
 @onready var fade_out_timer = $FadeOutTimer
-var sensitivity: float = 200.0
-var x_axis: float = 0.0
-var y_axis: float = 0.0
+var using_controller:bool=false
+var show_cursor:bool=true
+var clicking:bool=false
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if show_cursor:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 
-func _input(event):
-	if event is InputEventJoypadMotion:
-		if event.axis == 2:
-			x_axis = event.axis_value
-		if event.axis == 3:
-			y_axis = event.axis_value
-		fade_out_timer.stop()
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	if event is InputEventMouseMotion:
-		fade_out_timer.stop()
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	if event is InputEventJoypadButton and event.device == 0 and event.button_index == JOY_AXIS_TRIGGER_RIGHT and event.pressed:
+func _unhandled_input(event):
+	if show_cursor and Input.mouse_mode != Input.MOUSE_MODE_CONFINED: 
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+	
+	var focused = get_viewport().gui_get_focus_owner()
+	var is_dragging = get_viewport().gui_is_dragging()
+	using_controller = event is InputEventJoypadButton or event is InputEventJoypadMotion
+	
+	if using_controller and Input.is_action_just_pressed("ui_accept") and (canDrag(focused) or canDrop(focused)):
+		fastClick()
+	elif !is_dragging and using_controller and Input.is_action_pressed("ui_accept") and !canDrag(focused) and !canDrop(focused):
 		click()
+	elif !is_dragging and using_controller and Input.is_action_just_released("ui_accept") and !canDrag(focused) and !canDrop(focused):
+		releaseClick()
+	
+	elif focused == null and using_controller and UIGlobals.getMenu() != null and OverworldGlobals.player != null:
+		UIGlobals.focusFirstControl()
+
+func canDrag(control:Control)-> bool:
+	return control != null and control.has_method('_force_drag') and !get_viewport().gui_is_dragging() and control.allow_drag
+
+func canDrop(control:Control):
+	if control == null: return false
+	
+	var drag_data = get_viewport().gui_get_drag_data()
+	return get_viewport().gui_is_dragging() and control.has_method('_can_drop_data') and control._can_drop_data(Vector2.ZERO, drag_data)
+
+func fastClick():
+	if clicking:
+		return
+	
+	clicking=true
+	var click_input = InputEventMouseButton.new()
+	click_input.position = get_viewport().get_screen_transform() * get_viewport().get_mouse_position()
+	click_input.button_index = MOUSE_BUTTON_LEFT
+	click_input.pressed = true
+	Input.parse_input_event(click_input)
+	await get_tree().process_frame
+	click_input.pressed = false
+	Input.parse_input_event(click_input)
+	clicking=false
 
 func click():
-	var a = InputEventMouseButton.new()
-	a.position = get_viewport().get_screen_transform() * get_viewport().get_mouse_position()
-	a.button_index = MOUSE_BUTTON_LEFT
-	a.pressed = true
-	Input.parse_input_event(a)
-	await get_tree().process_frame
-	a.pressed = false
-	Input.parse_input_event(a)
+	Input.action_press("ui_click")
 
-func _process(delta):
-	if InputEventJoypadMotion and (x_axis != 0.0 or y_axis != 0.0):
-		var new_mouse_pos = get_viewport().get_mouse_position() + (Vector2(x_axis, y_axis) * sensitivity * delta)
-		get_viewport().warp_mouse(new_mouse_pos)
-	if fade_out_timer.is_stopped():
-		fade_out_timer.start()
+func releaseClick():
+	Input.action_release("ui_click")
 
-func _exit_tree():
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-
-func _on_fade_out_timer_timeout():
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+func _on_tree_exited():
+	if show_cursor:
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)

@@ -1,8 +1,8 @@
 extends Resource
 class_name RepairableItem
 
-static func useDurability(item:ResItem):
-	item.durability -= 1
+static func useDurability(item:ResItem, count:int=1):
+	item.durability -= count
 	if item.durability <= 0:
 		item.durability = 0
 	InventoryGlobals.item_used.emit(item)

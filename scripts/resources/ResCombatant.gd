@@ -289,8 +289,8 @@ func removeStatModification(modifier_id: String):
 					updateResolve(-stat_modifiers[modifier][stat],false)
 				else:
 					stat_values[stat] -= stat_modifiers[modifier][stat]
-			stat_removed.emit(self, stat_modifiers[modifier_id])
 			stat_modifiers.erase(modifier)
+			stat_removed.emit(self, modifier)
 			return
 	
 	#removeEmptyStats()

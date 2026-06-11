@@ -1,13 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://by0ydg0m5o6ur"]
+[gd_scene load_steps=10 format=3 uid="uid://by0ydg0m5o6ur"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiMiniInventory.gd" id="1_cylm1"]
-[ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_jmc6r"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="2_rjs3c"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="3_2cljh"]
-[ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="3_3kub0"]
+[ext_resource type="PackedScene" uid="uid://uvj0h00sirue" path="res://scenes/user_interface/CustomCornerCloserButton.tscn" id="3_kx6j8"]
 [ext_resource type="Texture2D" uid="uid://gc571ukvy2xi" path="res://images/sprites/icon_resources.png" id="4_hs3nd"]
 [ext_resource type="Texture2D" uid="uid://dp2j72h30680c" path="res://images/sprites/icon_combat_item.png" id="4_qh0kw"]
-[ext_resource type="Texture2D" uid="uid://cxqye3hwkqsge" path="res://images/sprites/cross.png" id="5_iu1jn"]
 [ext_resource type="Texture2D" uid="uid://dkwkoprestgl2" path="res://images/sprites/icon_camp_item.png" id="5_ivxlf"]
 [ext_resource type="Texture2D" uid="uid://bw0cxrqo1ci10" path="res://images/sprites/icon_charm.png" id="6_0d57u"]
 [ext_resource type="Texture2D" uid="uid://cqjhmuvbye63b" path="res://images/sprites/icon_projectiles.png" id="6_w4wt0"]
@@ -70,14 +68,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ExitButton" parent="MarginContainer/VBoxContainer/Resources/Resources" instance=ExtResource("3_3kub0")]
-visible = false
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-theme = ExtResource("1_jmc6r")
-icon = ExtResource("5_iu1jn")
-icon_alignment = 1
-
 [node name="CampItems" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
@@ -118,3 +108,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="MenuCloser" parent="." instance=ExtResource("3_kx6j8")]
+layout_mode = 2

@@ -30,11 +30,22 @@ func setVerticalNeighbors(container:VBoxContainer):
 		if i+1 <= nodes.size()-1 and nodes[i+1] != null:
 			stat_label.focus_neighbor_bottom =  nodes[i+1].get_path()
 
-func addFocusMode(control:Control):
+func addFocusMode(control:Control, p_modulate_control:Control=null):
+	var modulate_control = control if p_modulate_control == null else p_modulate_control
+	var default_modulate = modulate_control.modulate
 	control.focus_mode = Control.FOCUS_ALL
-	control.focus_entered.connect(func():control.modulate=Color.YELLOW)
-	control.mouse_entered.connect(func():control.grab_focus())
-	control.focus_exited.connect(func():control.modulate=Color.WHITE)
+	control.focus_entered.connect(
+		func():
+			modulate_control.modulate=Color.YELLOW
+			moveCursorToControl(control)
+			)
+	control.mouse_entered.connect(
+		func(): 
+			if control.focus_mode != Control.FOCUS_NONE:
+				control.grab_focus()
+			)
+	control.focus_exited.connect(func():modulate_control.modulate=default_modulate)
+
 
 func createCustomButton(theme: Theme = load("res://design/DefaultTheme.tres"))-> CustomButton:
 	var button = load("res://scenes/user_interface/CustomButton.tscn").instantiate()
@@ -123,7 +134,7 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_descri
 	main_menu.open_description = entry_description
 	main_menu.name = 'uiMenu'
 	if !inMenu():
-		setMouseController(true)
+		setControllerAdapter(true)
 		OverworldGlobals.player.player_camera.get_node('UI').add_child(main_menu)
 		create_tween().tween_property(main_menu,'scale',Vector2(1.0,1.0),0.15).set_trans(Tween.TRANS_CUBIC)
 		OverworldGlobals.setPlayerInput(false)
@@ -131,26 +142,46 @@ func showShop(shopkeeper_name: String, buy_mult=1.0, sell_mult=0.5, entry_descri
 	else:
 		closeMenu(main_menu)
 
-func setMouseController(set_to:bool):
-	if has_node('MouseController') and set_to:
+func setControllerAdapter(set_to:bool, show_cursor:bool=true):
+	if has_node('ControllerAdapter') and set_to:
 		return
 	
 	if set_to:
-		var mouse_controller = load('res://scenes/user_interface/MouseController.tscn').instantiate()
+		var mouse_controller:MouseControllerAdapter = load('res://scenes/user_interface/MouseController.tscn').instantiate()
+		mouse_controller.show_cursor = show_cursor
 		add_child(mouse_controller)
-		Input.warp_mouse(Vector2(DisplayServer.screen_get_size()/2))
-	elif has_node('MouseController'): 
-		get_node('MouseController').queue_free()
+	elif has_node('ControllerAdapter'): 
+		get_node('ControllerAdapter').queue_free()
+
+func isUsingController()-> bool:
+	return has_node('ControllerAdapter') and get_node('ControllerAdapter').using_controller
+
+func getControllerAdapter()-> MouseControllerAdapter:
+	return get_node('ControllerAdapter')
+
+func moveCursorToControl(control:Control):
+	await get_tree().process_frame
+	if !isUsingController() or !is_instance_valid(control): #or Input.mouse_mode != Input.MOUSE_MODE_CONFINED:
+		return
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	get_viewport().warp_mouse(control.global_position+(control.size/2))
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 
 func inMenu():
 	return OverworldGlobals.player.player_camera.get_node('UI').has_node('uiMenu')
 
 func getMenu():
-	return OverworldGlobals.player.player_camera.get_node('UI').get_node('uiMenu')
+	if OverworldGlobals.player == null:
+		return null
+	if CombatGlobals.inCombat():
+		return CombatGlobals.getCombatScene().combat_ui
+	else:
+		return OverworldGlobals.player.player_camera.get_node('UI').get_node('uiMenu')
 
 func closeMenu(menu: Control=getMenu()):
 	OverworldGlobals.player.setUIVisibility(true)
-	setMouseController(false)
+	setControllerAdapter(false)
 	menu.queue_free()
 	OverworldGlobals.player.player_camera.get_node('UI').get_node('uiMenu').queue_free()
 	OverworldGlobals.setPlayerInput(true)
@@ -170,8 +201,7 @@ func showMenu(path: String, as_submenu:bool=false):
 		if !inMenu():
 			if OverworldGlobals.isPlayerCheating(): 
 				OverworldGlobals.player.get_node('DebugComponent').hide()
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			setMouseController(true)
+			setControllerAdapter(true)
 			OverworldGlobals.player.player_camera.get_node('UI').add_child(main_menu)
 			OverworldGlobals.setPlayerInput(false)
 		else:
@@ -190,44 +220,48 @@ func closeSubmenu():
 		return
 	OverworldGlobals.player.player_camera.get_node('UI').get_node('uiMenu').get_node('uiSubmenu').queue_free()
 
-func setControlFocus(control):
-	for child in control.get_children():
-		if child is Button:
-			child.grab_focus()
-			return
-		elif child is Container and containerHasButtons(child):
-			getContainerButton(child).grab_focus()
-			return
+func focusFirstControl():
+	var visible_buttons = getMenu().find_children("*","Button").filter(func(control): return control.is_visible_in_tree())
+	if visible_buttons.size() == 0:
+		return
+	
+	var focus_button = visible_buttons[0]
+	focus_button.grab_focus()
+	moveCursorToControl(focus_button)
 
-func containerHasButtons(container: Container):
-	return container.get_children().filter(func(control): return control is Button).size() > 0
+func focusEmptyEquipSlot(focused_item:ResItem):
+	var slots = getMenu().find_children("*","EquipSlot")
+	var empty_slots = slots.filter(func(button:ItemSlot):return button.item == null and button._can_drop_data(Vector2.ZERO, focused_item) and button.visible)
+	var focused_slot = empty_slots[0] if empty_slots.size() > 0 else slots[0]
+	
+	focused_slot.grab_focus()
+	moveCursorToControl(focused_slot)
 
-func getContainerButton(container: Container)-> Button:
-	for child in container.get_children():
-		if child is Button:
-			return child
-	return null
+func isEmptyEquipslot(equip_slot):
+	return equip_slot is EquipSlot# and equip_slot.item == null and canFocus(equip_slot) and isUsingController()
 
 func insertTextureCode(texture: Texture)-> String:
 	return '[img]%s[/img]' % texture.resource_path
 
 func setMenuFocus(container: Control):
-	if container.get_child_count() > 0:
-		container.get_child(0).grab_focus()
+	pass
+#	if container.get_child_count() > 0:
+#		container.get_child(0).grab_focus()
 
 func setMenuFocusMode(control_item, mode: bool):
-	if control_item is Button:
-		if mode:
-			control_item.focus_mode = Control.FOCUS_ALL
-		else:
-			control_item.focus_mode = Control.FOCUS_NONE
-	elif control_item is Container:
-		for child in control_item.get_children():
-			if child is Button:
-				if mode:
-					child.focus_mode = Control.FOCUS_ALL
-				else:
-					child.focus_mode = Control.FOCUS_NONE
+	pass
+#	if control_item is Button:
+#		if mode:
+#			control_item.focus_mode = Control.FOCUS_ALL
+#		else:
+#			control_item.focus_mode = Control.FOCUS_NONE
+#	elif control_item is Container:
+#		for child in control_item.get_children():
+#			if child is Button:
+#				if mode:
+#					child.focus_mode = Control.FOCUS_ALL
+#				else:
+#					child.focus_mode = Control.FOCUS_NONE
 
 func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game_states: Array = []) -> void:
 	var ExampleBalloonScene = load("res://scenes/user_interface/DialogueBalloon.tscn")

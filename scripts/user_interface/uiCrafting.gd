@@ -7,6 +7,7 @@ class_name CraftingMenu
 @onready var result_slot_count = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/CurrentCount
 #@onready var result_durability = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Result/Durability
 @onready var recipe_menu: MiniRecipes = $MiniRecipes
+@onready var first_slot = $Panel/MarginContainer/VBoxContainer/HBoxContainer/Slot
 var current_recipe = []
 var craft_item: ResItem
 var craft_count:int=-1
@@ -22,14 +23,20 @@ func _ready():
 	
 	for button in recipe_menu.getButtons():
 		connectRecipeButton(button)
-	if InventoryGlobals.crafted_items.size() > 0:
-		recipe_menu.show()
+
 	recipe_menu.item_button_added.connect(connectRecipeButton)
 
 func connectRecipeButton(button):
 	button.craft_item.connect(autoCraft)
 	InventoryGlobals.item_repaired.connect(button.update.unbind(2))
 
+func focusEmptySlot():
+	for slot in crafting_slots:
+		if slot.item == null: 
+			slot.grab_focus()
+			return
+	
+	first_slot.grab_focus()
 # CRAFT HANDLING
 func connectSlots():
 	for slot in crafting_slots:
@@ -81,23 +88,25 @@ func showResult():
 	updateResultSlot()
 
 func _on_result_pressed():
+	craft()
+
+func craft(count:int=1):
 	if craft_item == null or craft_count == -1:
 		return
 	
 	if repair_mode:
-		craft_item.repair(1)
+		craft_item.repair(count)
+		OverworldGlobals.playSound("res://audio/sounds/580813__silverillusionist__craft-item-3.ogg")
 	else:
-		InventoryGlobals.craftItem(craft_item)
+		InventoryGlobals.craftItem(craft_item,count)
+		OverworldGlobals.playSound("res://audio/sounds/580812__silverillusionist__craft-item-2.ogg")
 	
 	highlightMissingItems(craft_item)
 	updateResultSlot()
-	if (!repair_mode and !InventoryGlobals.canCraft(craft_item)) or (repair_mode and !craft_item.canRepair(craft_count)):
+	if (!repair_mode and !InventoryGlobals.canCraft(craft_item,count)) or (repair_mode and !craft_item.canRepair(craft_count)):
 		result_slot.disabled = true
 		craft_item = null
 		craft_count = -1
-#	print('inputting: ', craft_item)
-#	for slot in crafting_slots:
-#		slot.update_count(craft_item)
 
 func highlightMissingItems(item_to_craft:ResItem):
 	await get_tree().process_frame
@@ -145,10 +154,8 @@ func setResultLabels():
 		if !InventoryGlobals.canCraft(craft_item):
 			result_slot_add.hide()
 
-func autoCraft(item:ResItem):
-#	if !InventoryGlobals.canCraft(item):
-#		return
-	
+func autoCraft(item:ResItem, count:int=1):
+	print('count received: ', count)
 	var recipe = InventoryGlobals.getRecipe(item)
 	var recipe_items = recipe.keys()
 	var recipe_index = 0
@@ -166,8 +173,21 @@ func autoCraft(item:ResItem):
 				await get_tree().create_timer(0.05).timeout
 	
 	await get_tree().process_frame
-	result_slot.pressed.emit()
+	craft(count)
+	#if count == 1:
+	#	result_slot.pressed.emit()
+	#else:
+	#	result_slot.held_press.emit()
 
 func resetCrafting():
 	for slot in crafting_slots:
 		slot.setItem(null)
+
+
+func _on_result_held_press():
+	if craft_item == null:
+		return
+	
+	var max_crafts = InventoryGlobals.getMaxCrafts(craft_item, repair_mode)
+	if max_crafts != null:
+		craft(max_crafts)

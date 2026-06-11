@@ -124,5 +124,4 @@ func generateSaveName()-> String:
 func _exit_tree():
 	if get_tree().current_scene.name != 'StartMenu':
 		OverworldGlobals.setPlayerInput(true)
-		UIGlobals.setMouseController(false)
 

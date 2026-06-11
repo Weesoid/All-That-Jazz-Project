@@ -129,7 +129,7 @@ visible = false
 layout_mode = 1
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Graident" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

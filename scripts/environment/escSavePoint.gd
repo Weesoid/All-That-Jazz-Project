@@ -10,8 +10,9 @@ class_name SavePoint
 @onready var music = $Music
 @onready var ambience = $Ambience
 @onready var flame_sprite = $Flame
-@onready var kindle_slot = $KindlingSlot
+@onready var kindle_slot = $UI/KindlingSlot
 @onready var heads_up_cd = $HeadsUpCooldown
+@onready var ui_layer = $UI
 var camp_music:Array[String]=[
 	"res://audio/music/579851__zhr__relaxation-loop-4.ogg", 
 	"res://audio/music/614096__zhr__calm-emtim-bell-music.ogg"
@@ -22,12 +23,13 @@ var fire_kindled:bool=false
 var combatant_squad: EnemyCombatantSquad
 signal done
 signal ambush_ended
-signal camp_kindled
+signal sprite_added(combatant,slot)
+#signal camp_kindled
+
 
 func _ready():
 	done.connect(exit)
 	loadCombatantSquad()
-	kindle_slot.can_drop_function = noRestedBuff
 
 func loadCombatantSquad():
 	combatant_squad = CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)
@@ -71,13 +73,13 @@ func exit():
 		member.removeTemporaryModifier('Warmth')
 	OverworldGlobals.fadeFollowers(Color.WHITE)
 	
-	for sprite in rest_spots.get_children():
-		removeRestSprite(sprite.get_node('CombatBars').attached_combatant)
+	for bar in ui_layer.get_children():
+		removeRestSprite(bar.attached_combatant)
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
 	OverworldGlobals.player.sprite.show()
 	OverworldGlobals.player.player_camera.showOverlay(Color.TRANSPARENT,0.5)
-	kindle_slot.setDisabled(false)
+	#kindle_slot.setDisabled(false)
 	fire_kindled=false
 	await get_tree().process_frame
 	OverworldGlobals.player.camping=false
@@ -101,23 +103,26 @@ func addRestSprite(combatant: ResPlayerCombatant,pos:int=-1):
 		return
 
 func setSprite(sprite: Sprite2D, combatant:ResPlayerCombatant):
+	var combat_bar_idx = sprite.name.trim_prefix('Sprite2D')
+	var combat_bar = ui_layer.get_node('CombatBars'+combat_bar_idx)
 	sprite.modulate = Color.BLACK
 	sprite.texture = combatant.rest_sprite
-	sprite.get_node('CombatBars').setCombatant(combatant)
-	sprite.get_node('CombatBars').fader_bar.modulate = Color.WHITE
-	sprite.get_node('CombatBars').health_bar.modulate = Color.WHITE
-	sprite.get_node('CombatBars').show()
+	combat_bar.setCombatant(combatant)
+	combat_bar.fader_bar.modulate = Color.WHITE
+	combat_bar.health_bar.modulate = Color.WHITE
+	combat_bar.show()
+	sprite_added.emit(combatant, combat_bar_idx)
 	create_tween().tween_property(sprite,'modulate',Color.WHITE,0.5)
 
 func removeRestSprite(character:ResPlayerCombatant):
-	for sprite in rest_spots.get_children():
-		if sprite.get_node('CombatBars').attached_combatant == null:
+	for sprite in ui_layer.get_children():
+		if sprite.attached_combatant == null:
 			continue
-		if sprite.get_node('CombatBars').attached_combatant == character:
-			sprite.texture = null
-			sprite.get_node('CombatBars').setConnections(false)
-			sprite.get_node('CombatBars').attached_combatant = null
-			sprite.get_node('CombatBars').hide()
+		if sprite.attached_combatant == character:
+			#sprite.texture = null
+			sprite.setConnections(false)
+			sprite.attached_combatant = null
+			sprite.hide()
 
 func showEmptyMembers():
 	for sprite in rest_spots.get_children():
@@ -133,13 +138,13 @@ func hideEmptyMembers():
 			sprite.texture = null
 			sprite.get_node('CombatBars').hide()
 
-func getResterPosition(character: ResPlayerCombatant)-> int:
-	for i in range(rest_spots.get_children().size()):
-		var bar = rest_spots.get_children()[i].get_node('CombatBars')
+func getResterPosition(character: ResPlayerCombatant)-> String:
+	for bar in getCombatBars(true):
+		#var bar = rest_spots.get_children()[i].get_node('CombatBars')
 		if bar.attached_combatant == character:
-			return i 
+			return bar.name.trim_prefix('CombatBars')
 	
-	return -1
+	return '-1'
 
 func setBarVisibility(set_to:bool):
 	for sprite in rest_spots.get_children():
@@ -154,19 +159,23 @@ func getRestSprite(combatant: ResPlayerCombatant):
 
 func getCombatBars(only_visible:bool)-> Array[CombatBarsMini]:
 	var out: Array[CombatBarsMini] = []
-	for sprite in rest_spots.get_children():
-		if only_visible and sprite.texture == null:
+	for control in ui_layer.get_children():
+		if !control is CombatBarsMini or (only_visible and control.attached_combatant == null):
 			continue
-		out.append(sprite.get_node('CombatBars'))
+		out.append(control)
 	return out
+
+func getCombatantBar(combatant:ResPlayerCombatant):
+	for bar in getCombatBars(true):
+		if bar.attached_combatant == combatant: return bar
 
 func toggleAnimFlip():
 	flame_sprite.flip_h = !flame_sprite.flip_h
 
 func getCampBars():
 	var out = []
-	for child in rest_spots.get_children():
-		out.append(child.get_node('CombatBars'))
+	for child in ui_layer.get_children():
+		if child is CombatBarsMini: out.append(child)
 	return out
 
 func setCamToRestPos():
@@ -175,30 +184,19 @@ func setCamToRestPos():
 func setCamToMenuPos():
 	OverworldGlobals.moveCamera(self,0.5,menu_cam_offset)
 
+func grabFocus():
+	print(getCombatBars(true))
+	getCombatBars(true)[0].camp_button.grab_focus()
 
-func _on_kindling_slot_item_received(received_item):
+func kindleFire():
 	if fire_kindled:
 		return
 	#O#verworldGlobals.playSound("res://audio/sounds/149831__villen__zapalenie_ognia.ogg")
 	for member in OverworldGlobals.getCombatantSquad('Player'):
 		member.addTemporaryModifer('Warmth',1,{CombatExtras.HEAL_AMP:0.1},false)
-	
+		CombatGlobals.healResolve(member, 1)
 	music.play()
 	ambience.play()
-	InventoryGlobals.removeItemResource(received_item)
 	animator.play("Lit")
 	fire_kindled=true
-	kindle_slot.setDisabled(true)
 	OverworldGlobals.getCamera().flash(Color.ORANGE,0.5,0.05,2.0)
-	camp_kindled.emit()
-
-func noRestedBuff():
-	for member in OverworldGlobals.getCombatantSquad('Player'):
-		if member.hasTemporaryModifier('Well Rested'):
-			if heads_up_cd.is_stopped():
-				OverworldGlobals.showPrompt("Already rested.")
-				#CombatGlobals.spawnIndicator(OverworldGlobals.player.current_camp_spot.global_position+Vector2(0,-32), '','Show',null,2)
-				heads_up_cd.start()
-			return false
-
-	return true

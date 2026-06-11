@@ -47,15 +47,17 @@ show_percentage = false
 script = ExtResource("5_begng")
 timer = NodePath("../HoldTimer")
 
+[node name="Durability" parent="." instance=ExtResource("6_yxr8f")]
+visible = false
+layout_mode = 1
+
 [node name="HoldTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="HoldDelay" type="Timer" parent="."]
 one_shot = true
 
-[node name="Durability" parent="." instance=ExtResource("6_yxr8f")]
-visible = false
-layout_mode = 1
+[node name="DragDelay" type="Timer" parent="."]
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

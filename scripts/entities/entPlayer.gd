@@ -61,6 +61,7 @@ signal bow_undrawn
 
 func _ready():
 	#print('Test1'.contains('Test'))
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	animation_tree.active = true
 	
@@ -70,7 +71,6 @@ func _ready():
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
 	default_camera_pos = player_camera.position
-	UIGlobals.setMouseController(false)
 	OverworldGlobals.player = self
 	landed.connect(playFootstep)
 
@@ -308,8 +308,8 @@ func _unhandled_input(_event: InputEvent):
 	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu") and !camping:
 		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
-	if Input.is_action_just_pressed("ui_cancel") and UIGlobals.inMenu() and !camping:
-		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
+	#if Input.is_action_just_pressed("ui_cancel") and UIGlobals.inMenu() and !camping:
+	#	UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	# Interaction handling
 	if Input.is_action_just_pressed("ui_select"):
 		var interactables = interaction_detector.get_overlapping_areas()

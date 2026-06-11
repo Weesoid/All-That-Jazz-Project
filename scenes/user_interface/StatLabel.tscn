@@ -21,7 +21,6 @@ offset_top = -11.0
 offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
-focus_mode = 2
 split_offset = -70
 dragger_visibility = 1
 script = ExtResource("1_jwq5y")

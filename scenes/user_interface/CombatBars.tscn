@@ -1,11 +1,10 @@
-[gd_scene load_steps=32 format=3 uid="uid://by2x5bgg618kl"]
+[gd_scene load_steps=31 format=3 uid="uid://by2x5bgg618kl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
 [ext_resource type="PackedScene" uid="uid://ddf6ffhkbkbmv" path="res://scenes/user_interface/SelectTarget.tscn" id="4_x0qas"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="6_1sh2p"]
 [ext_resource type="Theme" uid="uid://mhl6cnoqut45" path="res://design/AbilityButtonsInCombat.tres" id="7_b4v4h"]
-[ext_resource type="PackedScene" uid="uid://dcacy1i0raeql" path="res://scenes/user_interface/AutoScrollContainer.tscn" id="7_n56iy"]
 [ext_resource type="Texture2D" uid="uid://b2354usocunh8" path="res://images/sprites/target.png" id="8_fh81n"]
 [ext_resource type="Texture2D" uid="uid://b3r54kv430r53" path="res://images/user_interface/small_pointer_buff.png" id="8_su0qf"]
 [ext_resource type="Texture2D" uid="uid://bgfcctl5x1ogw" path="res://images/user_interface/small_pointer_debuff.png" id="9_sorgb"]
@@ -462,12 +461,25 @@ offset_right = -26.0
 offset_bottom = -7.0
 grow_horizontal = 0
 
-[node name="StatusEffectContainer" parent="HealthBar" instance=ExtResource("7_n56iy")]
-layout_mode = 0
-offset_left = 1.0
-offset_top = -14.0
-offset_right = 31.0
+[node name="StatusEffects" type="Control" parent="HealthBar"]
+anchors_preset = 0
+offset_left = -2.0
+offset_top = -62.0
+offset_right = 34.0
 offset_bottom = -4.0
+
+[node name="StatusEffectContainer" type="HFlowContainer" parent="HealthBar/StatusEffects"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 0
+alignment = 1
 
 [node name="PermaStatusEffectContainer" type="HFlowContainer" parent="HealthBar"]
 layout_mode = 0

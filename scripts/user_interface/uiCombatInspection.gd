@@ -8,17 +8,20 @@ class_name CombatInspector
 @onready var ability_label_container = $Abilities/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer
 @onready var modifier_label_container = $Modifiers/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer
 @onready var round_count_label = $Rounds/MarginContainer/Label
+@onready var animator = $AnimationPlayer
 var combat_scene: CombatScene
 var current_combatant: ResCombatant
+#var original_positions = {}
 
 func _ready():
-	#strain_label.hide()
+	hide()
 	combat_scene = CombatGlobals.getCombatScene()
 	combat_scene.round_concluded.connect(updateRound)
+#	await get_tree().process_frame
+#	for panel in get_children():
+#		original_positions[panel] = panel.position
 
 func setCombatant(combatant:ResCombatant):
-	#if combatant == current_combatant:
-	#	return
 	clear()
 	current_combatant = combatant
 	await get_tree().process_frame
@@ -38,6 +41,14 @@ func setCombatant(combatant:ResCombatant):
 	await get_tree().process_frame
 	UIGlobals.setVerticalNeighbors(modifier_label_container)
 
+func showInspector():
+	show()
+	animator.play("Show")
+
+func hideInspector():
+	animator.play_backwards("Show")
+	await animator.animation_finished
+	hide()
 func clear():
 	for ability in ability_label_container.get_children():
 		ability.queue_free()

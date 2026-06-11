@@ -13,9 +13,9 @@ var FACTION_PATROLLER_PROPERTIES = {
 var back_up_enemies = [
 	'res://resources/combat/combatants_enemies/mercenaries/'
 ]
-
 var tension: int = 0
 var critical_bb = '[img color=red]res://images/status_icons/icon_crit_eye.png[/img][color=red]'
+
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
 signal dialogue_signal(flag)
@@ -25,22 +25,14 @@ signal exp_updated(value: float, max_value: float)
 signal received_combatant_value(combatant: ResCombatant, caster: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
 signal status_effect_added(combatant: ResCombatant, status_effect: ResStatusEffect)
-signal status_effect_removed(combatant: ResCombatant, status_effect: ResStatusEffect)
-#signal manual_call_indicator_bb(combatant: ResCombatant, text: String, animation: String, bb: String)
 signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
-#signal active_combatant_changed(combatant: ResCombatant)
 signal tension_changed(gainer,target)
 signal ability_selected(ability)
 signal ability_cancelled(ability)
-#signal extra_stat_added(combatant,stat)
-#signal stat_modified(combatant, stat_dict)
-#signal stat_removed(combatant, stat_dict)
-# To be added
 signal tp_changed(health, combatant)
-
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -70,6 +62,8 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	damage += attack_bonuses.get('damage',0)
 	if target.stat_modifiers.has('block'):
 		damage = 0
+	elif damage < 0:
+		damage = 1
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
 	if can_crit and ((caster != null and randomRoll(combatant_crit)) or (crit_chance != -1.0 and randomRoll(damage_crit))):
@@ -87,6 +81,8 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, ca
 	damage = valueVariate(damage, dmg_variation)
 	if target.stat_modifiers.has('block'):
 		damage = 0
+	elif damage < 0:
+		damage = 1
 	
 	if randomRoll(crit_chance) and can_crit:
 		damage = doCritEffects(damage, caster, attack_bonuses.get(CombatExtras.CRIT_AMP,0))
@@ -108,125 +104,11 @@ func getStatChanges(stat_dict:Dictionary):
 	for stat in stat_dict:
 		if stat_dict[stat] != 0: out[stat] = stat_dict[stat]
 	return out
-	
-#	var conditions: Array
-#	for stat in bonus_stats.keys():
-#		if key == stat.split('/')[0] and (stat.split('/').size() > 1):
-#			conditions = stat.split('/')
-#			conditions.remove_at(0)
-#			break
-#		elif key == stat.split('/')[0]:
-#			return true
-#
-#	return checkConditions(conditions, target)
-#
-#func checkConditions(conditions, target: ResCombatant)->bool:
-#	if conditions is String:
-#		conditions = conditions.split('/')
-#	if conditions[0] == '':
-#		return true
-#
-#	for condition in conditions:
-#		var condition_data = condition.split(':')
-#		#if condition_data.contains()
-#		match condition_data[0]:
-#			's': # ex. s:bleed or s:guard:2
-#				if !target.hasStatusEffect(condition_data[1]): 
-#					return false
-#
-#				var rank_condition = true
-#				if condition_data.size() > 2:
-#					var operator = '>'
-#					if condition_data[2].split(',').size() > 1:
-#						operator = condition_data[2].split(',')[1]
-#					match operator:
-#						'>': rank_condition = target.getStatusEffect(condition_data[1]).current_rank >= int(condition_data[2])
-#						'<': rank_condition = target.getStatusEffect(condition_data[1]).current_rank <= int(condition_data[2])
-#						'=': rank_condition = target.getStatusEffect(condition_data[1]).current_rank == int(condition_data[2])
-#
-#				return target.hasStatusEffect(condition_data[1]) and rank_condition
-#			'hp': # ex. hp:>:0.5 or hp:<:0.45
-#				#print(target.stat_values['health'], ' vs ', float(condition_data[2])*target.getMaxHealth())
-#				if condition_data[1] == '>':
-#					#print('supple')
-#					return target.stat_values['health'] >= float(condition_data[2])*target.getMaxHealth()
-#				if condition_data[1] == '<':
-#					#print('sex')
-#					return target.stat_values['health'] <= float(condition_data[2])*target.getMaxHealth()
-#
-#			'combo': # ex crit/combo
-#				if target.hasStatusEffect('Combo'):
-#					target.getStatusEffect('Combo').removeStatusEffect()
-#					manual_call_indicator.emit(target, '%s %sCOMBO !' % [loadStatusEffect('Combo').getMessageIcon(),loadStatusEffect('Combo').getIconColor(true)], 'Show')
-#					return true
-#
-#			'combo!': # ex. crit/combo!
-#				return target.hasStatusEffect('Combo')
-#
-#			'%': # ex. crit/%:0.50
-#				return randomRoll(float(condition_data[1]))
-#
-#	#assert(false,'Incorrect format! '+str(conditions))
-#	return false
-#
-#func stringifyBonusStatConditions(conditions: Array, unit:String='Target')->String:
-#	for condition in conditions:
-#		var condition_data = condition.split(':')
-#		match condition_data[0]:
-#			's': # ex. s:bleed or s:guard:2
-#				return 'If %s '% unit+loadStatusEffect(condition_data[1]).getMessageIcon()
-#			'hp': # ex. hp:>:0.5 or hp:<:0.45
-#				if condition_data[1] == '>':
-#					return 'If %s HP > '% unit+str(float(condition_data[2])*100)+'%'
-#				if condition_data[1] == '<':
-#					return 'If %s HP < '% unit+str(float(condition_data[2])*100)+'%'
-#			'combo': # ex crit/combo
-#				return 'If %s %s' % [unit, loadStatusEffect('Combo').getMessageIcon()]
-#			'combo!': # ex. crit/combo!
-#				return 'If  %s %s' % [unit, loadStatusEffect('Combo').getMessageIcon()]
-#			'%': # ex. crit/%:0.50
-#				return str(float(condition_data[1])*100)+'% chance to'
-#
-#	return 'UNKNOWN CONDITION: '+str(conditions)
-#
-#func stringifySpecialStat(stat: String,value:String):
-#	if stat == 'status_effect':
-#		var out = 'Apply '
-#		for effect in value.split('+'):
-#			var effect_data = effect.split('^')
-#			effect = effect_data[0]
-#			out += loadStatusEffect(effect).getMessageIcon()+' '
-#			if effect_data.size() > 1: out += stringifyStatusOverrides(effect_data[1])+' '
-#		return out
-#	elif stat == 'move':
-#		var out = ''
-#		var movement = value.split(',')
-#		if movement[0] == 'f':
-#			out += '[color=dark_turquoise]Pull '
-#		elif movement[0] == 'b':
-#			out += '[color=dark_turquoise]Push '
-#		return out+' '+str(movement[1])+'[/color]'
-#	elif stat == 'non-lethal':
-#		return 'Non-lethal'
-#	elif stat == 'tp':
-#		return 'Gain '+value+'[img]res://images/sprites/icon_tp.png[/img]'
-#
-#func stringifyStatusOverrides(overrides:String):
-#	var overrides_dict = JSON.parse_string(overrides)
-#	var out = '' # TODO Add color
-#	if overrides_dict.has('max_duration') and overrides_dict.has('be_tickdmg'):
-#		out += '%s (%s turns)' % [overrides_dict['max_duration'], overrides_dict['be_tickdmg']['damage']]
-#
-#	return out
-#
-#func hasStatCondition(key):
-#	return key.contains('/')
 
 func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
 	caster.removeTokens(ResStatusEffect.RemoveType.MISSED)
 	manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 	playDodgeTween(target)
-	#checkMissCases(target, caster, damage)
 
 func doCritEffects(base_damage, caster: ResCombatant, bonus_mult:float=0.0):
 	var base_mult = 1.5
@@ -297,7 +179,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 	if target.isDead(true):
 		for effect in target.status_effects:
 			if effect.remove_on_brink: removeStatusEffect(target, effect.name)
-		addStatusEffect(target,'Knockback',true)
+		#addStatusEffect(target,'Knockback',true)
 		playKnockOutTween(target)
 		target.combatant_scene.collision.set_deferred('disabled',true)
 		OverworldGlobals.freezeFrame()

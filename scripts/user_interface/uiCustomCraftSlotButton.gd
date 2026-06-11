@@ -2,11 +2,10 @@ extends ItemSlot
 class_name CraftingSlot
 
 @onready var count_label = $CountLabel
-
 var current_recipe
 
 func _get_drag_data(at_position):
-	if item == null:
+	if item == null or !drag_delay.is_stopped():
 		return
 	var item_copy = item
 	set_drag_preview(getPreview())
@@ -21,7 +20,6 @@ func _can_drop_data(_at_position, data):
 func _drop_data(_at_position, data):
 	var previous_item=item
 	setItem(data)
-	
 	drop_feedback()
 
 func update_count(item_to_craft:ResItem):
@@ -37,9 +35,10 @@ func update_count(item_to_craft:ResItem):
 		if recipe_dict.has(item.getFilename()): append = '/'+str(recipe_dict[item.getFilename()])
 	count_label.text = out+append
 
-
 func update_count_labels(received_item, last_item):
 	if received_item != null:
 		count_label.show()
 	else:
 		count_label.hide()
+
+	#print('%s v %s', [get_viewport().get_mouse_position(), position])

@@ -154,7 +154,7 @@ func loadKeybinds(device: String, _device_index:int=0):
 		button.find_child('Action').text = str(editable_keybinds[action])
 		if device == 'keyboard':
 			button.find_child('Input').text = InputHelper.get_label_for_input(InputHelper.get_keyboard_input_for_action(action)) 
-		elif ["xbox", "switch", "switch_left_joycon", "switch_right_joycon", "playstation", "steamdeck"].has(device):
+		elif SettingsGlobals.CONTROLLER_DEVICES.has(device):
 			button.find_child('Input').text = InputHelper.get_label_for_input(InputHelper.get_joypad_input_for_action(action)) 
 			if action.contains('move'): button.disabled = true
 		keybind_container.add_child(button)
@@ -180,11 +180,11 @@ func _unhandled_input(event) -> void:
 		if (event is InputEventKey or event is InputEventMouseButton) and event.is_pressed():
 			var current_action = InputHelper.get_keyboard_input_for_action(rebinding_action)
 			accept_event()
-			InputHelper.replace_keyboard_input_for_action(rebinding_action, current_action, event)
+			InputHelper._update_keyboard_input_for_action(rebinding_action, current_action, false)
 		if event is InputEventJoypadButton and event.is_pressed():
 			var current_action = InputHelper.get_joypad_input_for_action(rebinding_action)
 			accept_event()
-			InputHelper.replace_joypad_input_for_action(rebinding_action, current_action, event)
+			InputHelper._update_joypad_input_for_action(rebinding_action, current_action)
 		is_rebinding = false
 		done_rebinding.emit()
 	else:
@@ -228,7 +228,7 @@ func loadSettings(saved_settings: SavedSettings, apply:bool=true):
 	sounds_slider.value = saved_settings.sound_vol
 	sprint_toggle.button_pressed = saved_settings.toggle_sprint
 	cheat_toggle.button_pressed = saved_settings.toggle_cheats
-	InputHelper.deserialize_inputs_for_actions(settings['binds'])
+	#InputHelper.deserialize_inputs_for_actions(settings['binds'])
 	loadKeybinds(InputHelper.device)
 	if apply:
 		_on_apply_settings_pressed()

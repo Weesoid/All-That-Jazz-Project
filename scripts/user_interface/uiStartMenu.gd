@@ -23,7 +23,7 @@ func _ready():
 		SettingsGlobals.applySettings(load('saved_settings.tres'))
 	else:
 		SettingsGlobals.applySettings(load('default_settings.tres'))
-	UIGlobals.setMouseController(true)
+	UIGlobals.setControllerAdapter(true)
 
 func _on_new_game_pressed():
 	var menu = load("res://scenes/user_interface/Saves.tscn").instantiate()

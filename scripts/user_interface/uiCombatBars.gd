@@ -6,7 +6,7 @@ class_name CombatBar
 #@onready var notches = $HealthBar/BarNotcher
 @onready var health_bar = $HealthBar
 @onready var health_bar_fader = $HealthBarFader
-@onready var status_effects = $HealthBar/StatusEffectContainer
+@onready var status_effects = $HealthBar/StatusEffects/StatusEffectContainer
 @onready var permanent_status_effects = $HealthBar/PermaStatusEffectContainer
 @onready var indicator_spawn_point = $DamageSpawnPoint
 @onready var status_spawn_point = $StatusSpawnPoint
@@ -26,6 +26,7 @@ class_name CombatBar
 @onready var indicator_intervals = $IndicatorIntervals
 @onready var stat_buff_arrow = $HealthBar/BuffIcon
 @onready var stat_debuff_arrow = $HealthBar/DebuffIcon
+
 var attached_combatant: ResCombatant
 var previous_value = 0
 var current_bar_value = 100
@@ -36,7 +37,7 @@ var indicators_running:bool=false
 func _ready():
 	CombatGlobals.manual_call_indicator.connect(addIndicatorToQueue)
 	CombatGlobals.status_effect_added.connect(addStatusIcon)
-	CombatGlobals.status_effect_removed.connect(removeStatusIcon)
+	#CombatGlobals.status_effect_removed.connect(removeStatusIcon)
 	combat_scene.active_combatant_changed.connect(showActingGradient)
 	for effect in attached_combatant.status_effects:
 		addStatusIcon(attached_combatant, effect)
@@ -55,7 +56,7 @@ func _ready():
 		stat_buff_arrow,
 		'SEX',
 		CustomTooltip.AnchorPreset.TOP,
-		0.0,
+		0.2,
 		true
 		)
 	stat_debuff_arrow.self_modulate = SettingsGlobals.ui_colors['down']
@@ -143,7 +144,7 @@ func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	if effect.permanent:
 		permanent_status_effects.add_child(tick_down)
 	else:
-		status_effects.add_icon(tick_down)
+		status_effects.add_child(tick_down)
 
 func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	if combatant != attached_combatant:
@@ -276,7 +277,7 @@ func setStatusVisibility(set_to:bool):
 		create_tween().tween_property(permanent_status_effects,'modulate',Color.TRANSPARENT,0.25)
 
 func _on_tree_exited():
-	pass	
+	pass
 
 
 func _on_indicator_intervals_timeout():

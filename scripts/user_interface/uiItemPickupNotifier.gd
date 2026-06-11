@@ -47,5 +47,5 @@ func getAddedText(item:ResItem,count:int,remove_item:bool):
 	else:
 		base_text=base_text.replace('<COUNT>',str(count))
 	
-	base_text=base_text.replace('<TOTALCOUNT>','[color=#FFFFFF80]('+str(InventoryGlobals.getItemCount(item))+')[/color]')
+	base_text=base_text.replace('<TOTALCOUNT>','[color=#FFFFFF80]('+str(InventoryGlobals.getItemCount(item,false))+')[/color]')
 	return base_text

@@ -71,7 +71,7 @@ static func applyAbilityEffects(caster: CombatantScene , target: CombatantScene,
 		CombatGlobals.calculateDamage(
 			caster, 
 			target, 
-			0.5,
+			0.75,
 			#true,
 			true,
 			'',

@@ -3,6 +3,7 @@ extends Control
 @onready var base_container = $MarginContainer/HBoxContainer
 @onready var talent_buttons = $MarginContainer/HBoxContainer/BaseTalents/CenterContainer/Talents
 @onready var points = $MarginContainer/Points
+
 @export var combatant: ResPlayerCombatant #= preload("res://resources/combat/combatants_player/Willis.tres")
 signal talent_interacted(combatant)
 
@@ -22,12 +23,19 @@ func addTalentButton(talent, combatant):
 	var button = UIGlobals.createTalentButton(talent,combatant)
 	button.pressed.connect(talentPressed.bind(talent))
 	button.held_press.connect(talentPressed.bind(talent,true))
+	button.gui_input.connect(dumpTalent.bind(talent))
 	button.pressed.connect(button.updateRank)
 	button.held_press.connect(button.updateRank)
+	button.gui_input.connect(button.updateRank.unbind(1))
 	button.pressed.connect(func(): talent_interacted.emit(combatant))
 	button.held_press.connect(func(): talent_interacted.emit(combatant))
+	button.gui_input.connect(func(_input): talent_interacted.emit(combatant))
 	return button
 
+func dumpTalent(input: InputEvent, talent):
+	if InputMap.action_has_event("ui_alternate_cancel", input) and input.is_pressed():
+		talentDumped(talent)
+	
 func talentPressed(talent: ResTalent, max_out:bool=false, emit:bool=true):
 	var current_rank = combatant.getTalentData(talent,'rank',0)
 	var rank_up = 1 if !max_out else talent.max_rank - current_rank
@@ -35,14 +43,10 @@ func talentPressed(talent: ResTalent, max_out:bool=false, emit:bool=true):
 		rank_up = floor(combatant.stat_points/talent.cost)
 	var cost = talent.cost * rank_up
 	
-	if Input.is_action_pressed("ui_sprint"):
-		talentDumped(talent)
-		return
 	if !canAddTalent(talent, rank_up):
 		return
 	
 	combatant.activateTalent(talent, rank_up)
-#	updatePointCount()
 	if emit:
 		talent_interacted.emit(combatant)
 
@@ -55,25 +59,6 @@ func canAddTalent(talent: ResTalent, add_ranks:int):
 func talentDumped(talent: ResTalent,emit:bool=true):
 	if !combatant.active_talents.has(talent):
 		return
-	
-	#combatant.stat_points += combatant.active_talents[talent]['cost']*combatant.active_talents[talent]['rank']
-#	updatePointCount()
 	combatant.removeTalent(talent)
-	#updateAccesibility()
 	if emit:
 		talent_interacted.emit()
-
-#func pulsePoints():
-#	var tween = get_tree().create_tween().set_parallel(false)
-#	tween.tween_property(points,'self_modulate',Color.RED,0.25)
-#	tween.tween_property(points,'self_modulate',Color.WHITE,0.25)
-#
-#func updatePointCount():
-#	var current_count = combatant.stat_points
-#	if current_count > 0:
-#		points.modulate = Color.YELLOW
-#	else:
-#		points.modulate = Color.DIM_GRAY
-#
-#	points.text = '  '+str(current_count)
-

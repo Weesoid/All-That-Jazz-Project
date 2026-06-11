@@ -6,8 +6,6 @@ class_name EquipSlot
 @export_range(-1,2) var slot:int
 
 func setCombatant(p_combatant:ResPlayerCombatant):
-#	if p_combatant == combatant:
-#		return
 	modulate =Color.WHITE
 	combatant = p_combatant
 	durability.hide()
@@ -20,22 +18,9 @@ func setCombatant(p_combatant:ResPlayerCombatant):
 			durability.show()
 			if combatant.equipped_weapon.canUse(combatant):
 				modulate =Color.RED
-#func setItem(data: ResItem):
-#	if item != null:
-#		item_replaced.emit(item)
-#	item = data
-#	if data != null:
-#		icon = data.icon
-#		description_text = data.getInformation()
-#	else:
-#		icon = empty_icon
-#		description_text = ''
-	#if item != null and data.isRepairable(): 
-	#	durability.setItem(data)
-	#	durability.show()
 
 func _get_drag_data(at_position):
-	modulate =Color.WHITE
+	modulate = Color.WHITE
 	durability.hide()
 	if item == null:
 		return
@@ -68,7 +53,18 @@ func _drop_data(_at_position, data):
 		durability.setItem(data)
 		durability.show()
 	if data is ResWeapon and data.canUse(combatant):
-		modulate =Color.RED
+		modulate = Color.RED
 	
 	drop_feedback()
 	item_received.emit(item)
+	#await get_tree().process_frame
+	#grab_focus()
+
+func _input(event):
+	if has_focus() and Input.is_action_pressed("ui_alternate_cancel"):
+		setItem(null)
+		if slot != -1 and combatant.charms[slot] != null:
+			combatant.unequipCharm(slot)
+		elif slot == -1 and combatant.hasEquippedWeapon():
+			combatant.unequipWeapon()
+		modulate =Color.WHITE

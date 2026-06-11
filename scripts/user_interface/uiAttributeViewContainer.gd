@@ -15,7 +15,9 @@ func setCombatant(combatant, clear:bool=false):
 		await get_tree().process_frame
 	for stat_tracker in get_children():
 		stat_tracker.setCombatant(combatant)
-		stat_tracker.get_node('CustomTooltip').tooltip_position = tooltip_position
+		if stat_tracker.has_node('CustomTooltip'):
+			stat_tracker.get_node('CustomTooltip').tooltip_position = tooltip_position
+	UIGlobals.setVerticalNeighbors(self)
 
 func clear():
 	for stat_tracker in get_children():

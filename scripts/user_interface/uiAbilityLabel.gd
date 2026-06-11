@@ -8,7 +8,7 @@ func setAbility(ability:ResAbility, combatant:ResCombatant):
 		self,
 		ability.getRichDescription(),
 		CustomTooltip.AnchorPreset.LEFT,
-		0.0
+		0.2
 	)
 	if !ability.canUse(combatant):
 		self_modulate = Color(Color.DIM_GRAY,0.5)

@@ -62,7 +62,7 @@ func getRecipe(for_item: ResItem)->Dictionary:
 			return recipes[result]
 	return {}
 
-func craftItem(item_to_craft:ResItem):
+func craftItem(item_to_craft:ResItem, count:int=1):
 	var craft_result = getRecipeResult(getRecipe(item_to_craft).keys())
 	if !canCraft(item_to_craft):
 		return false
@@ -71,16 +71,16 @@ func craftItem(item_to_craft:ResItem):
 	for item_filename in recipe:
 		var item = loadItemResource(item_filename)
 		if item is ResCraftingTool and !item.isBroken():
-			item.useDurability()
+			item.useDurability(count)
 		elif !item is ResCraftingTool:
-			removeItemResource(item,recipe[item_filename],false)
+			removeItemResource(item,recipe[item_filename]*count,false)
 	
-	addItem(craft_result[0],int(craft_result[1]))
+	addItem(craft_result[0],int(craft_result[1])*count)
 	if !crafted_items.has(craft_result[0]):
 		crafted_items.append(craft_result[0])
 		recipe_added.emit(craft_result[0])
 
-func canCraft(item:ResItem):
+func canCraft(item:ResItem, craft_count:int=1):
 	var recipe = getRecipe(item)
 	var count = getRecipeResult(recipe.keys())[1]
 	if recipe.is_empty() or !canAdd(item,count,false):
@@ -88,10 +88,35 @@ func canCraft(item:ResItem):
 	
 	for material in recipe:
 		var loaded_material = loadItemResource(material)
-		if !hasItem(material, recipe[material]) or (loaded_material is ResCraftingTool and loaded_material.isBroken()):
+		if !hasItem(material, recipe[material]*craft_count) or (loaded_material is ResCraftingTool and loaded_material.durability < craft_count):
 			return false
 	
 	return true
+
+func getMaxCrafts(item: ResItem, is_repair:bool=false):
+	if is_repair and hasItem(item.repair_item, item.max_durability - item.durability):
+		return item.max_durability-item.durability
+	elif getRecipe(item).is_empty() or !canCraft(item):
+		return null
+	
+	var recipe = getRecipe(item)
+	var bottleneck:ResItem
+	var bottleneck_max_craft = 9999
+	for material_filename in recipe:
+		var material_cost = recipe[material_filename]
+		var material = loadItemResource(material_filename)
+		print(material , ' is crafting tool? ', material is ResCraftingTool)
+		var max_c = material.durability if material is ResCraftingTool else getItemCount(material) / material_cost
+		if max_c < bottleneck_max_craft:
+			bottleneck = material
+			bottleneck_max_craft = max_c
+	
+	var max_crafts = bottleneck.durability if bottleneck is ResCraftingTool else int(getItemCount(bottleneck) / recipe[bottleneck.getFilename()])
+	if item is ResStackItem:
+		var max_stack = (item.max_stack / getCraftCount(item.getFilename())) - (getItemCount(item) / getCraftCount(item.getFilename()))
+		return min(max_crafts, max_stack)
+	else:
+		return max_crafts
 
 func addAllRepairRecipes():
 	var all_repairables = inventory.filter(func(item): return item.isRepairable())
@@ -100,7 +125,6 @@ func addAllRepairRecipes():
 	
 	for item in all_repairables:
 		addRepairRecipe(item)
-	
 
 func addRepairRecipe(item:ResItem):
 	recipes[item.getFilename()+'.repair'] = {item.getFilename():1, item.repair_item.getFilename(): item.repair_cost}
@@ -112,13 +136,14 @@ func getRepairRecipes():
 		out[key] = recipes[key]
 	return out
 
-func getItemCount(item:ResItem):
+func getItemCount(item:ResItem, count_equipped:bool=true):
 	var append_count=0
 	if item is ResStackItem:
 		return item.stack if hasItem(item) else 0
-	if item is ResWeapon:
+	elif item is ResWeapon and count_equipped:
 		append_count = getEquippedWeapons().count(item)
-	
+	elif item is ResCharm and count_equipped:
+		append_count = getEquippedCharms().count(item)
 	
 	return inventory.filter(func(itm): return itm.getFilename() == item.getFilename()).size()+append_count
 
@@ -199,6 +224,14 @@ func getEquippedWeapons()-> Array:
 	for combatant in PlayerGlobals.team:
 		if combatant.hasEquippedWeapon(): 
 			out.append(combatant.equipped_weapon)
+	return out
+
+func getEquippedCharms()-> Array:
+	var out = []
+	for combatant in PlayerGlobals.team:
+		for charm in combatant.charms.values():
+			if charm != null: out.append(charm)
+	
 	return out
 
 func getNonMandatoryItems():

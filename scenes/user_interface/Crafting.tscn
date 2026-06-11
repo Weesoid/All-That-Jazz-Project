@@ -1,12 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://c36nhmt43udrv"]
+[gd_scene load_steps=10 format=3 uid="uid://b2a3ym1wbpm6v"]
 
 [ext_resource type="PackedScene" uid="uid://cueh0gxx74d6r" path="res://scenes/user_interface/CustomCraftSlotButton.tscn" id="1_73wis"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_ard1k"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCrafting.gd" id="1_kee3e"]
 [ext_resource type="PackedScene" uid="uid://bampaa6cb3ukl" path="res://scenes/user_interface/MiniRecipes.tscn" id="1_vg2cb"]
 [ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="2_6bjuj"]
+[ext_resource type="PackedScene" uid="uid://uvj0h00sirue" path="res://scenes/user_interface/CustomCornerCloserButton.tscn" id="2_psr62"]
 [ext_resource type="Texture2D" uid="uid://c6scpci5m38wp" path="res://images/status_icons/hammer.png" id="4_73a3f"]
-[ext_resource type="AudioStream" uid="uid://bngusvjprdqlt" path="res://audio/sounds/580812__silverillusionist__craft-item-2.ogg" id="7_qku0r"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_8pm36"]
 [ext_resource type="PackedScene" uid="uid://rnmhg7xo8gm4" path="res://scenes/user_interface/DurabilityBar.tscn" id="9_w7xpy"]
 
@@ -35,8 +35,21 @@ offset_bottom = 387.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="MenuCloser" parent="DragDropBlocker" node_paths=PackedStringArray("menu") instance=ExtResource("2_psr62")]
+z_index = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+offset_left = -641.0
+offset_top = 5.0
+offset_right = -1.0
+offset_bottom = 5.0
+grow_horizontal = 0
+grow_vertical = 1
+menu = NodePath("../..")
+
 [node name="MiniRecipes" parent="." instance=ExtResource("1_vg2cb")]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -98,7 +111,10 @@ stretch_mode = 3
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 disabled = true
-click_sound = ExtResource("7_qku0r")
+allow_drag = false
+hold_time = 0.25
+hold_delay = 0.25
+hold_ignore_disabled = false
 
 [node name="AddLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/Result"]
 visible = false
@@ -131,4 +147,5 @@ layout_mode = 1
 layout_mode = 2
 size_flags_vertical = 10
 
+[connection signal="held_press" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/Result" to="." method="_on_result_held_press"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/Result" to="." method="_on_result_pressed"]

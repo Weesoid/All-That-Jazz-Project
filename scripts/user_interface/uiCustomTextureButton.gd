@@ -5,8 +5,7 @@ class_name CustomTextureButton
 @export var texture: Texture: 
 	set(p_texture):
 		texture = p_texture
-		if Engine.is_editor_hint():
-			_ready()
+		if Engine.is_editor_hint() and texture != null: texture_button.texture = texture
 @export var auto_resize:bool=true
 @onready var texture_button = $TextureRect
 
@@ -18,6 +17,7 @@ func _ready():
 		custom_minimum_size = texture_button.size/2
 	setDisabled(disabled)
 	texture_button.set_anchors_preset(Control.PRESET_CENTER)
+	
 	setTooltip()
 
 func setTexture(tex:Texture):
@@ -52,9 +52,5 @@ func setDisabled(set_to: bool):
 	disabled = set_to
 	if disabled:
 		dimButton()
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		focus_mode = Control.FOCUS_NONE
 	else:
 		undimButton()
-		mouse_filter = Control.MOUSE_FILTER_STOP
-		focus_mode = Control.FOCUS_ALL

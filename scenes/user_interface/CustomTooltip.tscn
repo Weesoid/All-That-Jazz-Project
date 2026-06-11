@@ -40,6 +40,7 @@ _data = {
 }
 
 [node name="CustomTooltip" type="PanelContainer"]
+visible = false
 self_modulate = Color(1, 1, 0, 1)
 top_level = true
 z_index = 4096

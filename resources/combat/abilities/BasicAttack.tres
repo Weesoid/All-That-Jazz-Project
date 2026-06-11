@@ -17,7 +17,7 @@
 [sub_resource type="Resource" id="Resource_w0j48"]
 script = ExtResource("2_o3cxo")
 dot_effect = 1
-damage = 6
+damage = 1
 duration = 8
 
 [sub_resource type="Resource" id="Resource_mx2yu"]
@@ -90,7 +90,7 @@ add_amount = 4
 script = ExtResource("2_jyuxu")
 damage_type = 0
 attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_mx2yu"), SubResource("Resource_jh636"), SubResource("Resource_tti4c"), SubResource("Resource_oe8ks"), SubResource("Resource_td1b6"), SubResource("Resource_6201a")])
-damage_modifier = 1.0
+damage_modifier = 0.1
 cast_animation = {
 "animation": "",
 "go_to_target": false
@@ -116,7 +116,7 @@ caster_position = {
 "min": 0
 }
 target_position = {
-"max": 1,
+"max": 3,
 "min": 0
 }
 charges = 0

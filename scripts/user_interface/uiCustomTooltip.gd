@@ -21,7 +21,7 @@ enum TextAlignment {
 @export var tooltip_position: AnchorPreset = AnchorPreset.RIGHT
 @export var show_on_hover:bool=true
 @export var spacing = 8
-@export var show_delay:float = 0.0
+@export var show_delay:float = 0.1
 @export var shrink: bool=false
 #@export var show_on_hover:bool=true
 
@@ -55,7 +55,7 @@ func setShowHover(set_to:bool):
 		parent.mouse_exited.connect(hideTooltip)
 
 func _input(event):
-	if Input.is_action_pressed('ui_show_info') and get_parent_control().has_focus():
+	if Input.is_action_pressed('ui_show_info') and get_parent_control().has_focus() and modulate == Color.TRANSPARENT:
 		showTooltip()
 	if Input.is_action_just_released('ui_show_info'):
 		hideTooltip()

@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiControllerMouse.gd" id="1_imfa2"]
 
-[node name="MouseController" type="Node"]
+[node name="ControllerAdapter" type="Node"]
 process_mode = 3
 script = ExtResource("1_imfa2")
 
 [node name="FadeOutTimer" type="Timer" parent="."]
 wait_time = 10.0
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="timeout" from="FadeOutTimer" to="." method="_on_fade_out_timer_timeout"]

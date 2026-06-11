@@ -9,6 +9,12 @@ class_name ResCampItem
 func canApply(combatant: ResPlayerCombatant):
 	return (combatant.stat_values['strain']+strain) <= PlayerGlobals.strain_cap# and !combatant.isDead(true)
 
+func hasHeal():
+	for effect in effects:
+		if effect is ResHealEffect and effect.condition == null: return true
+	
+	return false
+
 func applyEffects(combatant: ResPlayerCombatant):
 	if party_wide:
 		for member in OverworldGlobals.getCombatantSquad('Player'):

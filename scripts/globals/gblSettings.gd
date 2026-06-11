@@ -1,5 +1,7 @@
 extends Node
 
+const CONTROLLER_DEVICES = ["xbox", "switch", "switch_left_joycon", "switch_right_joycon", "playstation", "steamdeck", "generic"]
+
 var window_modes: Array[String] = ['Fullscreen', 'Borderless Windowed', 'Windowed']
 var resolutions: Dictionary = {
 	'1280x720': Vector2i(1280,720),
@@ -37,7 +39,7 @@ func colorValueBB(value, control_value)-> String:
 		return '[color=white]'+str(value)
 
 func applySettings(settings_data: SavedSettings):
-	InputHelper.deserialize_inputs_for_actions(settings_data.binds)
+	#InputHelper.deserialize_inputs_for_actions(settings_data.binds)
 	match window_modes[settings_data.window_mode]:
 		'Borderless Windowed':
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)

@@ -8,7 +8,7 @@ class_name CombatBarsMini
 @onready var prompts = $Marker2D
 @onready var health_bar_fader = $HealthBarFader
 @onready var strain_bar = $StrainBar
-@onready var camp_button = $CharacterCampButton
+#@onready var camp_button = $CharacterCampButton
 @onready var upper_icon = $Watchmark
 var upper_icon_original_pos
 var attached_combatant: ResPlayerCombatant
@@ -29,7 +29,7 @@ func setCombatant(combatant:ResPlayerCombatant):
 	attached_combatant = combatant
 	setConnections(true)
 	previous_value = attached_combatant.stat_values['health']
-	camp_button.combatant = combatant
+	#camp_button.combatant = combatant
 	updateBars()
 	updateStrainBar()
 	#updateStatusEffects()
@@ -123,7 +123,12 @@ func setWatchmark(set_to:bool):
 		tween.tween_property(upper_icon, 'modulate', Color.TRANSPARENT,0.2)
 
 func _on_character_camp_button_focus_entered():
-	get_parent().get_node('Throbber').show()
+	pass
+	#get_parent().get_node('Throbber').show()
 
 func _on_character_camp_button_focus_exited():
-	get_parent().get_node('Throbber').hide()
+	pass
+	#get_parent().get_node('Throbber').hide()
+
+#func focus():
+#	camp_button.grab_focus()

@@ -57,7 +57,7 @@ func enter():
 	OverworldGlobals.setPlayerInput(false)
 	OverworldGlobals.player.setUIVisibility(false)
 	OverworldGlobals.player.sprinting = false
-	UIGlobals.setMouseController(true)
+	UIGlobals.setControllerAdapter(true)
 	PlayerGlobals.setFollowersMotion(false)
 	
 	# Move player
@@ -80,7 +80,7 @@ func exit():
 	OverworldGlobals.player.setUIVisibility(true)
 	if !UIGlobals.inMenu():
 		#print('DBox setting to true!')
-		if !CombatGlobals.inCombat(): UIGlobals.setMouseController(false)
+		if !CombatGlobals.inCombat(): UIGlobals.setControllerAdapter(false)
 		OverworldGlobals.setPlayerInput(true)
 	
 	# Reset player stuff

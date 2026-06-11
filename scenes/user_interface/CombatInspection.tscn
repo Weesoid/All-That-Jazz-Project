@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://l265si2qk30k"]
+[gd_scene load_steps=13 format=3 uid="uid://l265si2qk30k"]
 
 [ext_resource type="PackedScene" uid="uid://dmb8cwivijlnn" path="res://scenes/user_interface/AttributeViewContainer.tscn" id="1_i5qkw"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatInspection.gd" id="1_u4lvu"]
@@ -28,6 +28,43 @@ colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
 gradient = SubResource("Gradient_74ugl")
 fill_from = Vector2(0, 0.3)
 fill_to = Vector2(1, 0.3)
+
+[sub_resource type="Animation" id="Animation_5wo8i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_vfsq5"]
+resource_name = "Show"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ctnhf"]
+_data = {
+"RESET": SubResource("Animation_5wo8i"),
+"Show": SubResource("Animation_vfsq5")
+}
 
 [node name="CombatInspection" type="Control"]
 z_index = 4096
@@ -245,4 +282,9 @@ vertical_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
-theme_override_constants/separation = -8
+theme_override_constants/separation = -14
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ctnhf")
+}

@@ -25,22 +25,17 @@ const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
 @onready var move_back_button = $AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede
 @onready var defend_button = $AbilityContainer/BaseAbilities/BaseAbilities/Defend
 @onready var movements = $AbilityContainer/BaseAbilities/BaseAbilities/Movements
-#@onready var rounds = $Rounds
-#@onready var round_text = $Rounds/RoundText
-#@onready var round_counter = $Rounds/RoundCounter
 @onready var round_counter_animator = $Rounds/RoundCounter/AnimationPlayer
 @onready var rushed_movement_timer = $Timer
 @onready var weapon_uses = $AbilityContainer/BaseAbilities/BaseAbilities/Gear/TextureRect/Label
 @onready var tension_bar = $TensionBar
 @onready var inspector = $CombatInspection
+@onready var bottom_gradient = $Graident
 var tension_orig_pos
 var rounds_orig_pos
 var ui_visible:bool
 
 func _ready():
-#	tension_orig_pos = tension_whole.position
-#	rounds_orig_pos = rounds.position
-#	tension_bar.setValue(CombatGlobals.tension)
 	hideUI()
 
 func initialize():
@@ -268,21 +263,20 @@ func hideUI():
 	ui_visible=false
 	ability_buttons.hide()
 	escape_button.hide()
-#	setRoundsVisible(false)
-#	setTensionBarVisible(false)
-	#resetMovements()
+	bottom_gradient.hide()
 
-
-func showUI(set_focus:bool=false):
+func showUI(set_focus:bool=false, show_abilities:bool=true):
 	ui_visible=true
 	create_tween().tween_property(self,'modulate',Color.WHITE,0.25).set_ease(Tween.EASE_IN)
 	hideMovements()
 	ability_buttons.show()
 	escape_button.show()
+	bottom_gradient.show()
 	#setRoundsVisible(true)
 #	setTensionBarVisible(true)
-	tweenAbilityButtons(getAbilityButtons())
-	tweenAbilityButtons(base_abilities.get_children(),'')
+	if show_abilities:
+		tweenAbilityButtons(getAbilityButtons())
+		tweenAbilityButtons(base_abilities.get_children(),'')
 	#resetMovements()
 	if set_focus:
 		UIGlobals.setMenuFocus(ability_buttons)
@@ -383,10 +377,10 @@ func setButtonDisabled(button:CustomAbilityButton,set_to:bool, set_focus=true):
 	button.disabled = set_to
 	if button.disabled:
 		button.dimButton()
-		if set_focus: button.focus_mode = Control.FOCUS_NONE
+		#if set_focus: button.focus_mode = Control.FOCUS_NONE
 	else:
 		button.undimButton()
-		if set_focus: button.focus_mode = Control.FOCUS_ALL
+		#if set_focus: button.focus_mode = Control.FOCUS_ALL
 
 #func setTensionBarVisible(set_to:bool):
 #	var tween = create_tween().set_parallel()

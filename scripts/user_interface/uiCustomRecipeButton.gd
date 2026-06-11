@@ -10,7 +10,7 @@ var is_repair_recipe:bool=false
 var recipe
 var recipe_result
 var icons_initialized:bool=false
-signal craft_item(item)
+signal craft_item(item,count)
 
 func setItem(p_item:ResItem):
 	item = p_item
@@ -22,8 +22,8 @@ func _ready():
 	$HoldProgress.modulate=hold_color
 	setTooltip()
 	update()
-	hold_delay = 0.05
-	hold_time = 0.2
+	#hold_delay = 0.05
+	#hold_time = 0.2
 	if is_repair_recipe:
 		hammer_texture.texture = ANVIL_ICON
 	
@@ -54,8 +54,15 @@ func initializeIcons():
 	icons_initialized = true
 
 func _on_held_press():
-	if canCraftOrRepair():
-		craft_item.emit(item)
+	var max_crafts = InventoryGlobals.getMaxCrafts(item, is_repair_recipe)
+	if max_crafts == null:
+		return
+	if canCraftOrRepair(max_crafts):
+		craft_item.emit(item, max_crafts)
 
-func canCraftOrRepair():
-	return (!is_repair_recipe and InventoryGlobals.canCraft(item)) or (is_repair_recipe and item.canRepair(1))
+func craftItem():
+	if canCraftOrRepair(1):
+		craft_item.emit(item, 1)
+
+func canCraftOrRepair(count:int):
+	return (!is_repair_recipe and InventoryGlobals.canCraft(item, count)) or (is_repair_recipe and item.canRepair(1))

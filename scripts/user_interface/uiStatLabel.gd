@@ -55,10 +55,16 @@ func _ready():
 			)
 		#tooltip.setText(CombatExtras.STAT_DESCRIPTIONS[track_stat])
 		#tooltip_text = CombatExtras.STAT_DESCRIPTIONS[track_stat]
-	
-	update()
+	if combatant != null:
+		setCombatant(combatant)
 
 func setCombatant(p_combatant):
+	if combatant != null:
+		if combatant.stat_modified.is_connected(update):
+			combatant.stat_modified.disconnect(update)
+		if combatant.stat_removed.is_connected(update):
+			combatant.stat_removed.disconnect(update)
+	
 	combatant = p_combatant
 	if !combatant.stat_modified.is_connected(update):
 		combatant.stat_modified.connect(update.unbind(2))
@@ -67,31 +73,37 @@ func setCombatant(p_combatant):
 	update()
 
 func update():
+	await get_tree().process_frame
 	if combatant == null or !combatant.stat_values.has(track_stat):
+		hide()
 		return
-	if combatant.stat_values[track_stat] == 0.0 and !CombatExtras.BASE_STATS.has(track_stat):
+	
+	if combatant.stat_values[track_stat] == 0 and !CombatExtras.BASE_STATS.has(track_stat):
 		hide()
 	else:
 		show()
-	#CombatGlobals.OtherStats['']
+	
 	if combatant.scale_stats.get(track_stat,0) > 0:
 		stat_text.text = scale_bb+' '+SettingsGlobals.longhandWord(track_stat).to_upper()
 	else:
 		stat_text.text = SettingsGlobals.longhandWord(track_stat).to_upper()
 	
+	await get_tree().process_frame
 	match visual:
-		StatVisuals.BAR: updateBar()
+		StatVisuals.BAR: 
+			updateBar()
+			print('bar: (%s/%s)' % [bar.value, bar.max_value])
 		StatVisuals.COUNT_BAR: updateCountBar()
 		StatVisuals.LABEL: updateLabel()
 	highlightChange()
 
 func updateBar():
-	bar.value = combatant.stat_values[track_stat]
 	if bar_base_stat_as_max:
 		bar.max_value = combatant.base_stat_values[track_stat]
 		bar_values.text = '%s/%s' % [combatant.stat_values[track_stat], combatant.base_stat_values[track_stat]]
 	else:
 		bar.max_value = 1.0
+	bar.value = combatant.stat_values[track_stat]
 
 func updateCountBar():
 	if count_bar_max_value == -1:
@@ -118,8 +130,8 @@ func calcDamage(val:String):
 	var variance = damage*dmg_variation
 	
 	match val:
-		'min': return round(damage-variance)
-		'max': return round(damage+variance)
+		'min': return max(round(damage-variance), 1)
+		'max': return max(round(damage+variance), 1)
 
 func highlightChange():
 	if !combatant.base_stat_values.has(track_stat):

@@ -1,9 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://ca04yuaidlo7v"]
+[gd_scene load_steps=20 format=3 uid="uid://ca04yuaidlo7v"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCampMenu.gd" id="1_gr40e"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="2_e0123"]
 [ext_resource type="Texture2D" uid="uid://bd8vp562frwnh" path="res://images/sprites/button_hammer_normal.png" id="3_4eso8"]
-[ext_resource type="PackedScene" uid="uid://c36nhmt43udrv" path="res://scenes/user_interface/Crafting.tscn" id="3_tmwur"]
+[ext_resource type="PackedScene" uid="uid://b2a3ym1wbpm6v" path="res://scenes/user_interface/Crafting.tscn" id="3_tmwur"]
 [ext_resource type="Texture2D" uid="uid://36ou1mhhbvwi" path="res://images/sprites/button_pinpoint_normal.png" id="4_acfgp"]
 [ext_resource type="Texture2D" uid="uid://by81ic0dfnm67" path="res://images/sprites/icon_camp.png" id="7_3vebw"]
 [ext_resource type="Texture2D" uid="uid://bnagfxcsc0wmt" path="res://images/sprites/forward.png" id="8_2b6pd"]
@@ -12,6 +12,10 @@
 [ext_resource type="Theme" uid="uid://clgfgqvh2f440" path="res://design/BorderfulButton.tres" id="10_5gn5l"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="10_r6qj5"]
 [ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="12_7weyb"]
+[ext_resource type="PackedScene" uid="uid://bpysmuqphlqeo" path="res://scenes/user_interface/CustomCampButton.tscn" id="13_uq8al"]
+[ext_resource type="PackedScene" uid="uid://s53582o5noca" path="res://scenes/user_interface/CustomItemSlotButton.tscn" id="14_b8omb"]
+[ext_resource type="AudioStream" uid="uid://druxglqmwj4yi" path="res://audio/sounds/149831__villen__zapalenie_ognia.ogg" id="15_q7fa7"]
+[ext_resource type="Resource" uid="uid://cekyixtnv6op3" path="res://resources/items/Kindling.tres" id="16_mgtf2"]
 
 [sub_resource type="Gradient" id="Gradient_qhaqm"]
 offsets = PackedFloat32Array(0.00763359, 1)
@@ -37,6 +41,74 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_gr40e")
 
+[node name="OutsideButtons" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CharacterCampButton3" parent="OutsideButtons" instance=ExtResource("13_uq8al")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 32.0
+offset_top = 128.0
+offset_right = 112.0
+offset_bottom = 248.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="CharacterCampButton1" parent="OutsideButtons" instance=ExtResource("13_uq8al")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 120.0
+offset_top = 128.0
+offset_right = 200.0
+offset_bottom = 248.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="CharacterCampButton2" parent="OutsideButtons" instance=ExtResource("13_uq8al")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 272.0
+offset_top = 128.0
+offset_right = 352.0
+offset_bottom = 248.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="CharacterCampButton4" parent="OutsideButtons" instance=ExtResource("13_uq8al")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 360.0
+offset_top = 128.0
+offset_right = 440.0
+offset_bottom = 248.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="KindlingSlot" parent="OutsideButtons" instance=ExtResource("14_b8omb")]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 208.0
+offset_top = 128.0
+offset_right = 264.0
+offset_bottom = 248.0
+focus_mode = 1
+drop_sound = ExtResource("15_q7fa7")
+item_whitelist = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("16_mgtf2")])
+
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0.490196)
 layout_mode = 1
@@ -50,22 +122,16 @@ grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("GradientTexture2D_jy7cm")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-offset_left = 216.0
-offset_top = 8.0
-offset_right = 240.0
-offset_bottom = 316.0
-size_flags_horizontal = 0
-alignment = 1
-
 [node name="uiCrafting" parent="." instance=ExtResource("3_tmwur")]
 visible = false
 layout_mode = 1
 offset_left = 248.0
-offset_top = 48.0
+offset_top = 8.0
 offset_right = -192.0
-offset_bottom = -80.0
+offset_bottom = -40.0
+
+[node name="MenuCloser" parent="uiCrafting/DragDropBlocker" index="1"]
+mode = 2
 
 [node name="MiniInventory" parent="." instance=ExtResource("12_7weyb")]
 layout_mode = 1
@@ -79,8 +145,10 @@ grow_horizontal = 0
 remove_dragged_items = false
 yellow_border = false
 description_offset = Vector2(-106, 24)
+tooltip_direction = 1
 
 [node name="FastTravel" parent="." instance=ExtResource("9_ebjm5")]
+visible = false
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -106,30 +174,23 @@ alignment = 1
 [node name="Crafting" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("3_4eso8")
-description_text = "[center]CRAFT/REPAIR"
-description_on_focus = true
 
 [node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("4_acfgp")
-description_text = "[center]FAST TRAVEL"
-description_on_focus = true
 
 [node name="Rest" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("7_3vebw")
-description_text = "[center]REST"
 hold_time = 0.5
-description_on_focus = true
 
 [node name="Embark" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("8_2b6pd")
-description_text = "[center]EMBARK"
 hold_time = 0.25
-description_on_focus = true
 
 [node name="RestOptions" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -183,6 +244,7 @@ alignment = 1
 hold_time = 0.25
 
 [node name="Label" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -195,9 +257,65 @@ text = "Who will stand guard?"
 horizontal_alignment = 1
 uppercase = true
 
+[node name="SetGuardButtons" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CustomButton1" parent="SetGuardButtons" instance=ExtResource("10_r6qj5")]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 208.0
+offset_top = 152.0
+offset_right = 272.0
+offset_bottom = 280.0
+focus_neighbor_left = NodePath("../CustomButton3")
+focus_neighbor_right = NodePath("../CustomButton2")
+
+[node name="CustomButton2" parent="SetGuardButtons" instance=ExtResource("10_r6qj5")]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 368.0
+offset_top = 152.0
+offset_right = 432.0
+offset_bottom = 280.0
+focus_neighbor_left = NodePath("../CustomButton1")
+focus_neighbor_right = NodePath("../CustomButton4")
+
+[node name="CustomButton3" parent="SetGuardButtons" instance=ExtResource("10_r6qj5")]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 128.0
+offset_top = 152.0
+offset_right = 192.0
+offset_bottom = 280.0
+focus_neighbor_right = NodePath("../CustomButton1")
+
+[node name="CustomButton4" parent="SetGuardButtons" instance=ExtResource("10_r6qj5")]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 448.0
+offset_top = 152.0
+offset_right = 512.0
+offset_bottom = 280.0
+focus_neighbor_left = NodePath("../CustomButton2")
+
+[connection signal="item_received" from="OutsideButtons/KindlingSlot" to="." method="_on_kindling_slot_item_received"]
+[connection signal="custom_close" from="uiCrafting/DragDropBlocker/MenuCloser" to="." method="_on_crafting_pressed"]
 [connection signal="pressed" from="HBoxContainer/Crafting" to="." method="_on_crafting_pressed"]
 [connection signal="pressed" from="HBoxContainer/FastTravel" to="." method="_on_fast_travel_pressed"]
 [connection signal="held_press" from="HBoxContainer/Rest" to="." method="_on_rest_held_press"]
 [connection signal="held_press" from="HBoxContainer/Embark" to="." method="_on_embark_held_press"]
 [connection signal="pressed" from="RestOptions/RestOptions/Return" to="." method="_on_return_pressed"]
 [connection signal="held_press" from="RestOptions/RestOptions/Confirm" to="." method="_on_custom_button_held_press"]
+
+[editable path="uiCrafting"]

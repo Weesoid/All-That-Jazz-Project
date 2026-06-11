@@ -173,7 +173,7 @@ func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 	#if unlocked_abilities[combatant].has(ability):
 	#	print('HAZ IT!')
 	#	return
-	if unlocked_abilities[combatant].has(ability):
+	if unlocked_abilities.has(combatant) and unlocked_abilities[combatant].has(ability):
 		return
 	
 	var unlocked_append = {combatant:[ability]}

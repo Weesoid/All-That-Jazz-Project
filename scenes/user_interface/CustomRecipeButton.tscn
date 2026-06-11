@@ -27,7 +27,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 alignment = 0
 script = ExtResource("1_6rihq")
+description_text = null
 hold_time = 0.25
+hold_delay = 0.25
 
 [node name="CustomTooltip" parent="." instance=ExtResource("2_l0x5q")]
 layout_mode = 0
@@ -115,5 +117,6 @@ one_shot = true
 [connection signal="held_press" from="." to="." method="_on_held_press"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="craftItem"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]
 [connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]

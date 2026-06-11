@@ -24,9 +24,6 @@ theme = ExtResource("1_71mgr")
 alignment = 0
 script = ExtResource("1_qamu6")
 
-[node name="CustomTooltip" parent="." instance=ExtResource("3_cyndd")]
-layout_mode = 0
-
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -73,6 +70,9 @@ one_shot = true
 
 [node name="HoldDelay" type="Timer" parent="."]
 one_shot = true
+
+[node name="CustomTooltip" parent="." instance=ExtResource("3_cyndd")]
+layout_mode = 0
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

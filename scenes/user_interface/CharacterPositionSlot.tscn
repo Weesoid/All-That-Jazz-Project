@@ -5,7 +5,7 @@
 
 [sub_resource type="Gradient" id="Gradient_ojlet"]
 offsets = PackedFloat32Array(0, 0.824427)
-colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_83tdr"]
 gradient = SubResource("Gradient_ojlet")
@@ -26,6 +26,7 @@ script = ExtResource("2_wcg0h")
 metadata/_edit_horizontal_guides_ = []
 
 [node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -50,3 +51,4 @@ grow_vertical = 0
 mouse_filter = 2
 
 [connection signal="child_entered_tree" from="CharacterButtonContainer" to="." method="_on_character_button_container_child_entered_tree"]
+[connection signal="child_exiting_tree" from="CharacterButtonContainer" to="." method="_on_character_button_container_child_exiting_tree"]

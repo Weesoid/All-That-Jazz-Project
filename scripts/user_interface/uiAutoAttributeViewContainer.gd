@@ -1,11 +1,11 @@
 extends AttributeViewer
 class_name AutoAttribueViewer
 
-@onready var stat_container = $ScrollContainer/VBoxContainer
+@onready var stat_container = $"."
 var tracked_stats:Array[String] = []
 var skip_stats = CombatExtras.BASE_STATS
 
-func setCombatant(combatant, clear:bool=false):
+func setCombatant(combatant:ResCombatant, clear:bool=false):
 	if combatant == null:
 		return
 	if clear:

@@ -7,6 +7,8 @@ class_name MiniInventory
 @export var description_offset=Vector2(0,0)
 @export var remove_drop_detector:bool=false
 @export var update_inventory:bool=true
+@export var tooltip_direction:CustomTooltip.AnchorPreset = CustomTooltip.AnchorPreset.BOTTOM
+@export var show_corner_closer:bool=false
 
 @onready var categories = $MarginContainer/VBoxContainer/Categories
 @onready var resource_category = $MarginContainer/VBoxContainer/Categories/Resources
@@ -20,9 +22,12 @@ class_name MiniInventory
 @onready var ammo_items = $MarginContainer/VBoxContainer/AmmoItems/AmmoItems
 @onready var combat_items = $MarginContainer/VBoxContainer/CombatItems/CombatItems
 @onready var charms = $MarginContainer/VBoxContainer/Charms/Charms
+@onready var closer = $MenuCloser
 #@onready var drop_detector = $ItemDropDetector
 
 var item_button_map:Dictionary = {}
+var category_containers:Dictionary = {}
+var current_category
 
 signal item_button_added(button)
 signal item_button_removed(item)
@@ -36,6 +41,11 @@ func _ready():
 	ammo_category.pressed.connect(func(): changeCategories('AmmoItems'))
 	combat_category.pressed.connect(func(): changeCategories('CombatItems'))
 	charm_category.pressed.connect(func(): changeCategories('Charms'))
+	category_containers[resource_category] = items
+	category_containers[camp_category] = camp_items
+	category_containers[ammo_category] = ammo_items
+	category_containers[combat_category] = combat_items
+	category_containers[charm_category] = charms
 
 #	if remove_dragged_items and !remove_drop_detector:
 #		drop_detector.item_not_dropped.connect(addButton)
@@ -45,9 +55,11 @@ func _ready():
 		InventoryGlobals.added_item_to_inventory.connect(addButton)
 		InventoryGlobals.removed_item_from_inventory.connect(removeItem)
 	
-	inheritorReady()
-	focusFirstFilled()
 	
+	inheritorReady()
+	#focusFirstFilled()
+	closer.visible = show_corner_closer 
+
 func inheritorReady():
 	pass
 
@@ -61,35 +73,63 @@ func showItems(filter:Callable=func(_item):return true):
 	focusFirstFilled()
 
 func updateCategories():
+	if !visible:
+		return
+	
 	await get_tree().process_frame
-	if !hide_empty_categories:
-		resource_category.setDisabled(isCategoryEmpty(items))
-		camp_category.setDisabled(isCategoryEmpty(camp_items))
-		ammo_category.setDisabled(isCategoryEmpty(ammo_items))
-		combat_category.setDisabled(isCategoryEmpty(combat_items))
-		charm_category.setDisabled(isCategoryEmpty(charms))
-	else:
-		resource_category.visible = !isCategoryEmpty(items)
-		camp_category.visible = !isCategoryEmpty(camp_items)
-		ammo_category.visible = !isCategoryEmpty(ammo_items)
-		combat_category.visible = !isCategoryEmpty(combat_items)
-		charm_category.visible = !isCategoryEmpty(charms)
+	for category in category_containers:
+		if hide_empty_categories:
+			category.visible = !isCategoryEmpty(category_containers[category])
+		else:
+			category.setDisabled(isCategoryEmpty(category_containers[category]))
+	
+	if current_category != null and current_category.get_child_count() == 0:
+		focusFirstFilled()
 
 
 
+#func currentCategory():
+#	for item_container in category_containers.values():
+#		if item_container.find_children('*', 'ItemButton').size() > 0 and item_container.visible:
+#			return item_container
+#	for item_container in mini_inv.get_children():
+#		if item_container == categories: 
+#			continue
+#		elif item_container.visible and :
+#			print(item_container, ' passed!')
+#			return item_container
+#
+#	return null
 
 func focusFirstFilled():
 	for category in categories.get_children():
 		var node_path='MarginContainer/VBoxContainer/%s/%s' % [category.name,category.name]
 		if !has_node(node_path):
 			continue
-		
+
 		var category_container = get_node(node_path)
 		if !isCategoryEmpty(category_container):
 			changeCategories(category.name)
+			category_container.get_child(0).grab_focus()
 			return
 
+func focusCategory(item:ResItem):
+	getCategory(item).get_child(0).grab_focus()
+
+func getCategory(item:ResItem):
+	if item is ResCharm:
+		return charms
+	elif item is ResWeapon:
+		return combat_items
+	elif item is ResProjectileAmmo:
+		return ammo_items
+	elif item is ResCampItem:
+		return camp_items
+	else:
+		return items
+
 func isCategoryEmpty(category)-> bool:
+	#print(category, ': ', category.get_children().size())
 	return category.get_children().size() == 0
 
 func addButton(item,_count=null):
@@ -109,6 +149,9 @@ func addButton(item,_count=null):
 		charms.add_child(button)
 	else:
 		items.add_child(button)
+	if button.has_node('CustomTooltip'):
+		button.get_node('CustomTooltip').tooltip_position = tooltip_direction
+	
 	
 	if remove_dragged_items and button is CustomDragDropButton:
 		button.item_dragging.connect(removeItem)
@@ -148,26 +191,14 @@ func getItemCatalog(filter):
 	catalog.sort_custom(func(a,b): return a.name < b.name)
 	return catalog
 
-func _on_custom_button_pressed():
-	pass
-
 func changeCategories(change_to: String):
 	for child in mini_inv.get_children():
 		if child.name != change_to and child.name != 'Categories':
 			child.hide()
 		elif child.name == change_to:
+			current_category = child.get_child(0)
 			child.show()
-
-func hasFocus()->bool:
-	if is_queued_for_deletion():
-		return true
-	
-	for child in categories.get_children():
-		if child.has_focus(): return true
-	for item in item_button_map.keys():
-		if item_button_map[item].has_focus(): return true
-	
-	return false
+		
 
 func reset():
 	clearChildren(camp_items)

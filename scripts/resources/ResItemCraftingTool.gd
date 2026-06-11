@@ -6,9 +6,8 @@ class_name ResCraftingTool
 @export var repair_cost = 1
 var durability:int
 
-func useDurability():
-	RepairableItem.useDurability(self)
-	#combatant.file_references['equipped_weapon'][1] = durability
+func useDurability(count:int):
+	RepairableItem.useDurability(self,count)
 
 func repair(repair_amount: int):
 	RepairableItem.repair(self, repair_amount)

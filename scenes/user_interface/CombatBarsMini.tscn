@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://b57tm5xnp0h5c"]
+[gd_scene load_steps=9 format=3 uid="uid://b57tm5xnp0h5c"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBarsMini.gd" id="1_0kb5o"]
 [ext_resource type="Texture2D" uid="uid://cccrvcn7bhykq" path="res://images/sprites/health_bar_under.png" id="2_8g8wo"]
 [ext_resource type="PackedScene" uid="uid://507m3nw3cpie" path="res://scenes/user_interface/ProgressBarTrueValues.tscn" id="2_nm6g7"]
 [ext_resource type="Texture2D" uid="uid://d3ouvhymj2yy3" path="res://images/sprites/health_bar_progress.png" id="3_kfjl1"]
-[ext_resource type="PackedScene" uid="uid://bpysmuqphlqeo" path="res://scenes/user_interface/CustomCampButton.tscn" id="8_5nq1q"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="8_adtnc"]
 [ext_resource type="Texture2D" uid="uid://bkybrnpuy5xws" path="res://images/sprites/watch_mark.png" id="9_f562a"]
 [ext_resource type="Texture2D" uid="uid://da5chbauvphss" path="res://images/sprites/outlined_circle_empty.png" id="9_pyvaa"]
@@ -91,13 +90,6 @@ max_value = 4
 empty_circle = ExtResource("9_pyvaa")
 filled_circle = ExtResource("10_mimle")
 
-[node name="CharacterCampButton" parent="." instance=ExtResource("8_5nq1q")]
-layout_mode = 1
-offset_left = -16.0
-offset_top = -26.0
-offset_right = 16.0
-offset_bottom = 34.0
-
 [node name="Watchmark" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 0
@@ -110,7 +102,5 @@ texture = ExtResource("9_f562a")
 stretch_mode = 3
 
 [connection signal="value_changed" from="HealthBar" to="." method="_on_health_bar_value_changed"]
-[connection signal="focus_entered" from="CharacterCampButton" to="." method="_on_character_camp_button_focus_entered"]
-[connection signal="focus_exited" from="CharacterCampButton" to="." method="_on_character_camp_button_focus_exited"]
 
 [editable path="StrainBar"]

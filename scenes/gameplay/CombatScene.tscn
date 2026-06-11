@@ -280,11 +280,6 @@ libraries = {
 [node name="CombatCamera" parent="." instance=ExtResource("5_18n2n")]
 offset = Vector2(0, 5)
 zoom = Vector2(1.6, 1.6)
-limit_left = -200
-limit_top = -200
-limit_right = 200
-limit_bottom = 200
-limit_smoothed = true
 
 [node name="Interface" type="CanvasLayer" parent="CombatCamera"]
 metadata/_edit_use_anchors_ = true

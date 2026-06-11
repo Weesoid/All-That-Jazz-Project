@@ -20,10 +20,6 @@ class_name CustomTalentButton
 
 var initial_pos:Vector2
 
-#func _init(p_talent:ResTalent, p_combtant:ResPlayerCombatant):
-#	talent = p_talent
-#	combatant = p_combtant
-
 func _ready():
 	#print(talent_icon.position, ' pulsaation')
 	if talent == null:
@@ -92,9 +88,6 @@ func focus_feedback():
 	audio_player.play()
 	
 	z_index = 99
-	#if outside_combat:
-	#	talent_icon.self_modulate = Color.YELLOW
-	##else:
 	icon_animator.play("Focus")
 
 func exit_focus_feedback():
