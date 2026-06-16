@@ -1,7 +1,7 @@
 extends Node
 class_name PatrollerGroup
 
-@export var enemy_faction: CombatGlobals.Enemy_Factions
+#@export var enemy_faction: CombatGlobals.Enemy_Factions
 @export var max_spawns: int = 4
 @export var destroy_objectives_chance:float= 0.0 # Chance to spawn destroyable objectives on patroller respawn.
 @export var destroy_objectives: bool = false
@@ -17,7 +17,7 @@ func spawn():
 		destroy_objectives = rollDestroyObjectives()
 		if canSpawnDestructibleObjectives(): 
 			spawnDestructibleObjectives()
-		spawnPatrollers()
+#		spawnPatrollers()
 
 func rollDestroyObjectives():
 	return PlayerGlobals.hasMapEvent(get_parent().scene_file_path) and CombatGlobals.randomRoll(destroy_objectives_chance)
@@ -26,22 +26,22 @@ func isCleared():
 	var map = get_parent().scene_file_path
 	return PlayerGlobals.map_logs.has(map) and PlayerGlobals.map_logs[map].has(name)
 
-func spawnPatrollers():
-	randomize()
-	for spawn_point in getSpawnPoints():
-		if getPatrollers().size() == max_spawns: return
-		
-		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
-			continue
-		var patroller: GenericPatroller
-		if CombatGlobals.randomRoll(special_chance):
-			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, -1)
-		else:
-			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, 0)
-		
-		patroller.global_position = spawn_point.global_position
-		CombatGlobals.generateCombatantSquad(patroller, enemy_faction)
-		add_child(patroller)
+#func spawnPatrollers():
+#	randomize()
+#	for spawn_point in getSpawnPoints():
+#		if getPatrollers().size() == max_spawns: return
+#
+#		if isChancedSpawn(spawn_point) and !CombatGlobals.randomRoll(float(spawn_point.name.split(' ')[1])*0.01): 
+#			continue
+#		var patroller: GenericPatroller
+#		if CombatGlobals.randomRoll(special_chance):
+#			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, -1)
+#		else:
+#			patroller = CombatGlobals.generateFactionPatroller(enemy_faction, 0)
+#
+#		patroller.global_position = spawn_point.global_position
+#		CombatGlobals.generateCombatantSquad(patroller, enemy_faction)
+#		add_child(patroller)
 
 func spawnDestructibleObjectives():
 	var spawn_points = getSpawnPoints()

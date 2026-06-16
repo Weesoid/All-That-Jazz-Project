@@ -14,7 +14,7 @@ static func executePower(player: PlayerScene):
 			player.global_position = anchor.global_position
 			OverworldGlobals.addPatrollerPulse(player, 80.0, 3)
 			anchor.queue_free()
-		else:
-			OverworldGlobals.showPrompt('Not enough [color=yellow]stamina[/color].')
-	else:
-		OverworldGlobals.showPrompt('Not enough [color=yellow]stamina[/color].')
+		#else:
+			#OverworldGlobals.showPrompt('Not enough [color=yellow]stamina[/color].')
+	#else:
+		#OverworldGlobals.showPrompt('Not enough [color=yellow]stamina[/color].')

@@ -5,11 +5,9 @@ class_name EnemyCombatantSquad
 @export var fill_empty: bool = false
 @export var random_size: bool = false
 @export var unique_id: String
-#@export var TAMEABLE_CHANCE: float = 0.0
 @export var turn_time: float = 0.0
 @export var can_escape:bool = true
 @export var do_reinforcements:bool = true
-#var reward_bank ={'experience':0.0, 'loot':{}}
 
 func _ready():
 	unique_id = get_parent().name

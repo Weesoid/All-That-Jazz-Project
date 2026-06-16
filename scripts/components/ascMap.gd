@@ -12,7 +12,7 @@ enum MapProperties {
 
 @export var map_name: String
 @export_multiline var description: String
-@export var occupying_faction: CombatGlobals.Enemy_Factions
+@export var occupying_faction: ResFaction
 @export var events: Dictionary = {
 	'additional_enemies':null,
 	'combat_event':preload("res://_Resource.tres"),

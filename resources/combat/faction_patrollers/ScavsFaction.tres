@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ResFaction" load_steps=5 format=3 uid="uid://ctlsikc0c6iac"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResFactionPatrollerProperties.gd" id="1_iulig"]
+[ext_resource type="Script" path="res://scripts/resources/ResPatrollerProperties.gd" id="1_wjv6f"]
+[ext_resource type="Texture2D" uid="uid://vrc6khek60cj" path="res://images/character_sprites/faction_scavs/scav_patrol_chaser.png" id="2_3p64n"]
+
+[sub_resource type="Resource" id="Resource_i6o8g"]
+script = ExtResource("1_wjv6f")
+sprite = ExtResource("2_3p64n")
+base_move_speed = 20.0
+alerted_speed_multiplier = 5.0
+chase_speed_multiplier = 13.0
+min_action_distance = 25.0
+direction = -1
+detection_time = 0.0
+action_cooldown_time = 0.0
+stun_time = 0.0
+
+[resource]
+script = ExtResource("1_iulig")
+name = ""
+patroller_properties = Array[ExtResource("1_wjv6f")]([SubResource("Resource_i6o8g")])
+combatants_path = "res://resources/combat/combatants_enemies/scavs/"
+music = Array[String](["res://audio/music/Little Speck DV.ogg"])

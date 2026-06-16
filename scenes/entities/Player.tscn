@@ -129,7 +129,7 @@ _data = {
 size = Vector2(17, 22)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ul7c"]
-size = Vector2(22, 4)
+size = Vector2(11.9996, 4)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
 radius = 9.0
@@ -1282,17 +1282,19 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
-tracks/2/type = "value"
+tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../PlayerDirection:rotation")
+tracks/2/path = NodePath("..")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.5),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
+"values": [{
+"args": [],
+"method": &"setClimbDirection"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_l7n3f"]
@@ -2252,7 +2254,7 @@ tracks/1/path = NodePath("../PlayerDirection:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [3.14159]
@@ -2823,12 +2825,13 @@ wait_time = 5.0
 one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -20)
+position = Vector2(0.166667, -20)
 texture = ExtResource("5_nms4n")
 offset = Vector2(0, -33)
+flip_h = true
 hframes = 9
 vframes = 6
-frame = 19
+frame = 26
 
 [node name="AnimationSprite" type="Sprite2D" parent="."]
 visible = false
@@ -2850,7 +2853,7 @@ libraries = {
 [node name="PlayerDirection" type="Marker2D" parent="."]
 z_index = 1
 position = Vector2(0, -42)
-rotation = 1.5708
+rotation = -1.5708
 
 [node name="InteractionDetector" type="Area2D" parent="PlayerDirection"]
 position = Vector2(0, 16)

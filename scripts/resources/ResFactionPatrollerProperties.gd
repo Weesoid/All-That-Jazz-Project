@@ -1,10 +1,11 @@
 extends Resource
-class_name ResFactionProperties
+class_name ResFaction
 
-@export var faction: CombatGlobals.Enemy_Factions
+@export var name:String
 @export var patroller_properties: Array[ResPatrollerProperties]
 @export var combatants_path: String
 @export var music: Array[String] = []
+var enemies: Array[ResEnemyCombatant] = []
 
 func pickRandomSpecial():
 	var specials = []
@@ -29,3 +30,9 @@ func getPatrollerType(type:int):
 
 func getPatrollerProperties(type:int):
 	return getPatrollerType(type).pick_random()
+
+func getEnemies():
+	if enemies.is_empty():
+		enemies.assign(ResourceGlobals.loadArrayFromPath(combatants_path))
+	
+	return enemies

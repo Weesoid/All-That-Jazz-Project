@@ -32,11 +32,17 @@ func _ready():
 	loadCombatantSquad()
 
 func loadCombatantSquad():
-	combatant_squad = CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)
+	if OverworldGlobals.getCurrentMap().occupying_faction == null:
+		return
+	
+	combatant_squad = CombatGlobals.generateCombatantSquad(null,OverworldGlobals.getCurrentMap().occupying_faction)
 	combatant_squad.can_escape = false
-	add_child(combatant_squad) # Change to current map faction later
+	add_child(combatant_squad)
 
 func fightCombatantSquad():
+	if combatant_squad == null:
+		return
+	
 	OverworldGlobals.changeToCombat(name)
 	await OverworldGlobals.combat_exited
 	ambush_ended.emit()
@@ -200,3 +206,7 @@ func kindleFire():
 	animator.play("Lit")
 	fire_kindled=true
 	OverworldGlobals.getCamera().flash(Color.ORANGE,0.5,0.05,2.0)
+
+
+#func _on_visible_on_screen_notifier_2d_screen_entered():
+#	print('hello! ')

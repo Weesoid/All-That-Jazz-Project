@@ -201,14 +201,14 @@ func addAbility(combatant, ability):
 	else:
 		added_abilities[combatant] = []
 		added_abilities[combatant].append(ability)
-	OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.name, ability.name])
+	#OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.name, ability.name])
 	loadAddedAbilities()
 
 func addPower(power_file_name: String):
 	if FileAccess.file_exists("res://resources/powers/%s.tres" % power_file_name):
 		var loaded_power = load("res://resources/powers/%s.tres" % power_file_name)
 		known_powers.append(loaded_power)
-		OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.name)
+		#OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.name)
 
 func loadAddedAbilities():
 	for member in team:
@@ -246,7 +246,7 @@ func addCombatantToTeam(combatant_id):
 		return
 	combatant.stat_points = team_level
 	team.append(combatant)
-	OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your party!' % combatant.name)
+	#OverworldGlobals.showPrompt('[color=yellow]%s[/color] joined your party!' % combatant.name)
 
 func setAbilityActive(combatant: ResPlayerCombatant, ability: ResAbility, set_active:bool):
 	if set_active:

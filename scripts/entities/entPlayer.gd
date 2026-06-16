@@ -48,16 +48,19 @@ var camping = false
 var current_camp_spot:SavePoint
 var do_gravity:bool = true
 var do_land_flag
+var landed_from_climb:bool=false
+
 
 signal jumped(jump_velocity)
 signal dived
 signal phased
-signal landed
+signal landed(from_ladder:bool)
 signal bow_shot
 signal bow_equipped
 signal bow_unequipped
 signal bow_drawn
 signal bow_undrawn
+signal climb_started
 
 func _ready():
 	#print('Test1'.contains('Test'))
@@ -72,7 +75,7 @@ func _ready():
 	
 	default_camera_pos = player_camera.position
 	OverworldGlobals.player = self
-	landed.connect(playFootstep)
+	landed.connect(playFootstep.unbind(1))
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -130,7 +133,6 @@ func _physics_process(delta):
 	
 	# Fall damage
 	if fall_damage != 0 and get_node('CombatantSquadComponent').combatant_squad.size() > 0 and is_on_floor():
-		
 		var damage = floor(float(fall_damage)/6.0)
 		if damage < 6:
 			fall_damage = 0
@@ -145,8 +147,9 @@ func _physics_process(delta):
 		resetAnimation()
 	elif is_on_floor():
 		if do_land_flag: 
-			landed.emit()
+			landed.emit(landed_from_climb)
 			do_land_flag=false
+			landed_from_climb=false
 		fall_damage = 0
 	
 	# Movement inputs
@@ -184,8 +187,11 @@ func _physics_process(delta):
 	# Physical movement
 	if isMovementAllowed() and direction and !diving:
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing
+			do_land_flag=true
+			landed_from_climb=true
 			sprinting = false
 			velocity.y = direction.y * 100.0
+			climb_started.emit()
 		velocity.x = direction.x * speed # Walking
 	else:
 		if climbing:
@@ -225,6 +231,14 @@ func _physics_process(delta):
 	# Follower points
 	#OverworldGlobals.follow_array.push_front(global_position)
 	#OverworldGlobals.follow_array.pop_back()
+
+func setClimbDirection():
+	if velocity.y < 0:
+		#print('uppity')
+		player_direction.rotation_degrees = 179
+	elif velocity.y > 0:
+		#print('suckity')
+		player_direction.rotation_degrees = 0
 
 ## NOTE: Must be called last.
 func canDoStaminaAction(cost:float):

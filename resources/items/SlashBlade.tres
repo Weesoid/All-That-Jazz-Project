@@ -11,7 +11,7 @@
 [sub_resource type="Resource" id="Resource_ei452"]
 script = ExtResource("2_mi15u")
 damage_type = 2
-bonus_stats = {}
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
 damage_modifier = 0.2
 cast_animation = {
 "animation": "",
@@ -20,10 +20,7 @@ cast_animation = {
 can_miss = true
 can_crit = true
 return_pos = true
-plant_self_on_combo = false
 indicator_bb = ""
-condition = ""
-is_combo_effect = false
 animation_time = 0.0
 animate_on = 0
 
@@ -51,7 +48,6 @@ required_effect = {
 }
 tension_cost = 0
 instant_cast = false
-required_level = 0
 
 [resource]
 script = ExtResource("2_thh0s")

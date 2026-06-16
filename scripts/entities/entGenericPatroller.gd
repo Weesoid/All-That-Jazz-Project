@@ -20,6 +20,7 @@ enum State {
 @onready var melee_hitbox = $MeleeHitbox
 @onready var sprite = $Sprite2D
 @onready var combat_hitbox = $CombatHitbox/CollisionShape2D2
+@onready var visible_on_screen = $VisibleOnScreenNotifier2D
 
 @export var base_move_speed: float = 20.0
 @export var alerted_speed_multiplier: float = 5.0
@@ -38,7 +39,7 @@ var flicker_tween: Tween
 
 func _ready():
 	if !has_node('CombatantSquadComponent'):
-		CombatGlobals.generateCombatantSquad(self, CombatGlobals.Enemy_Factions.Scavs)
+		CombatGlobals.generateCombatantSquad(self, OverworldGlobals.getCurrentMap().occupying_faction)
 	if get_parent() is PatrollerGroup:
 		patroller_group = get_parent()
 	
@@ -48,6 +49,9 @@ func _ready():
 		action_cooldown.wait_time = action_cooldown_time
 	if stun_time > 0:
 		stun_timer.wait_time = stun_time
+
+func isOnScreen()-> bool:
+	return visible_on_screen.is_on_screen()
 
 func updateState(new_state:State):
 	if new_state == State.IDLE:
@@ -214,6 +218,9 @@ func destroy(give_drops=false, check_rewards:bool=true):
 		patroller_group.checkGiveRewards()
 
 func playFootstep():
+	
+	#var camera:Camera2D
+	#camera.is_position
 	pass
 	#	if is_on_floor():
 	#		FootstepSoundManager.playFootstep(global_position,-10,0.5)

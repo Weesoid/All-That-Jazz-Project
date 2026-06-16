@@ -17,6 +17,8 @@ signal combat_exited
 signal group_cleared(group:PatrollerGroup)
 signal start_camp
 signal end_camp
+signal start_climb
+signal end_climb
 #signal update_inventory
 
 func initializePlayerParty():
@@ -209,8 +211,8 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
 #	if OverworldGlobals.getCurrentMap().SAFE:
-	if getCurrentMap().getClearState() == MapData.PatrollerClearState.FULL_CLEAR:
-		OverworldGlobals.loadFollowers()
+#	if getCurrentMap().getClearState() == MapData.PatrollerClearState.FULL_CLEAR:
+	OverworldGlobals.loadFollowers()
 	if save:
 		SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	getCurrentMap().show()
@@ -529,7 +531,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_scene.can_escape = enemy_squad.can_escape
 	combat_scene.turn_time = enemy_squad.turn_time
 	#combat_scene.reinforcements_turn = enemy_squad.reinforcements_turn
-	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
+	var combat_music ="res://audio/music/Little Speck DV.ogg" #enemy_squad.getMajorityFaction().music
 	if !combat_music.is_empty():
 		combat_scene.battle_music_path = combat_music.pick_random()
 	get_parent().add_child(combat_scene)

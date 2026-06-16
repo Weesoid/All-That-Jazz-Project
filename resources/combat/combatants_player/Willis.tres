@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=37 format=3 uid="uid://cohe0ng5gyu4h"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=35 format=3 uid="uid://cohe0ng5gyu4h"]
 
 [ext_resource type="Resource" uid="uid://bnol4xomec0g1" path="res://resources/combat/abilities/BasicAttack.tres" id="1_j1bk8"]
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_43nme"]
@@ -252,59 +252,9 @@ required_effect = {
 tension_cost = 0
 instant_cast = false
 
-[sub_resource type="Resource" id="Resource_qv2us"]
-script = ExtResource("11_fj5br")
-name = ""
-description = ""
-icon = ExtResource("10_8dxm1")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
-ability_script = ExtResource("6_82428")
-target_type = 0
-target_group = 1
-caster_position = {
-"max": 3,
-"min": 0
-}
-target_position = {
-"max": 3,
-"min": 0
-}
-charges = 0
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-tension_cost = 0
-instant_cast = false
-
-[sub_resource type="Resource" id="Resource_okftq"]
-script = ExtResource("11_fj5br")
-name = ""
-description = ""
-icon = ExtResource("10_8dxm1")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
-ability_script = ExtResource("6_82428")
-target_type = 0
-target_group = 1
-caster_position = {
-"max": 3,
-"min": 0
-}
-target_position = {
-"max": 3,
-"min": 0
-}
-charges = 0
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-tension_cost = 0
-instant_cast = false
-
 [resource]
 script = ExtResource("2_vmsk2")
-ability_pool = Array[ExtResource("11_fj5br")]([ExtResource("1_j1bk8"), ExtResource("2_43nme"), ExtResource("3_xqwg4"), ExtResource("4_nd134"), ExtResource("5_nj581"), SubResource("Resource_qwuxy"), SubResource("Resource_c7tcy"), SubResource("Resource_gmos3"), SubResource("Resource_q6fmt"), SubResource("Resource_lhl2v"), SubResource("Resource_crclc"), SubResource("Resource_qv2us"), SubResource("Resource_okftq")])
+ability_pool = Array[ExtResource("11_fj5br")]([ExtResource("1_j1bk8"), ExtResource("2_43nme"), ExtResource("3_xqwg4"), ExtResource("4_nd134"), ExtResource("5_nj581"), SubResource("Resource_qwuxy"), SubResource("Resource_c7tcy"), SubResource("Resource_gmos3"), SubResource("Resource_q6fmt"), SubResource("Resource_lhl2v"), SubResource("Resource_crclc")])
 base_traits = Array[String]([])
 mandatory = true
 rest_sprite = ExtResource("5_clolb")

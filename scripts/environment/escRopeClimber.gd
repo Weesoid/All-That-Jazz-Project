@@ -39,6 +39,7 @@ func setClimbingFalse():
 	OverworldGlobals.player.toggleClimbAnimation(false)
 	if !OverworldGlobals.player.get_collision_mask_value(1):
 		OverworldGlobals.player.set_collision_mask_value(1, true)
+	OverworldGlobals.end_climb.emit()
 
 func playerInClimbable():
 	return get_overlapping_bodies().has(OverworldGlobals.player)

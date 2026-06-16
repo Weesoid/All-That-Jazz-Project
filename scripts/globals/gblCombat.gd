@@ -7,12 +7,12 @@ const BASE_VARIATION = 0.1
 enum Enemy_Factions {
 	Scavs
 }
-var FACTION_PATROLLER_PROPERTIES = {
-	Enemy_Factions.Scavs: load("res://resources/combat/faction_patrollers/Scavs.tres")
-}
-var back_up_enemies = [
-	'res://resources/combat/combatants_enemies/mercenaries/'
-]
+#var FACTION_PATROLLER_PROPERTIES = {
+#	Enemy_Factions.Scavs: load("res://resources/combat/faction_patrollers/Scavs.tres")
+#}
+#var back_up_enemies = [
+#	'res://resources/combat/combatants_enemies/mercenaries/'
+#]
 var tension: int = 0
 var critical_bb = '[img color=red]res://images/status_icons/icon_crit_eye.png[/img][color=red]'
 
@@ -621,8 +621,7 @@ func isSameCombatantType(combatant_a, combatant_b):
 	return getCombatantType(combatant_a) == getCombatantType(combatant_b)
 
 ## -1: Random Special, 0: Chaser, 1: Shooter, 2: Hybrid
-func generateFactionPatroller(faction: Enemy_Factions, type:int)-> GenericPatroller:
-	var faction_properties: ResFactionProperties = FACTION_PATROLLER_PROPERTIES[faction]
+func generateFactionPatroller(faction_properties: ResFaction, type:int)-> GenericPatroller:
 	if type == -1:
 		type = faction_properties.pickRandomSpecial()
 	var patroller: GenericPatroller = instantiatePatroller(type)
@@ -642,15 +641,14 @@ func instantiatePatroller(type:int)-> GenericPatroller:
 	
 	return null
 
-func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions):
+func generateCombatantSquad(patroller: GenericPatroller, faction: ResFaction):
 	randomize()
 	var squad: EnemyCombatantSquad = load("res://scenes/components/CombatantSquadEnemy.tscn").instantiate()
 	var squad_size = randi_range(PlayerGlobals.getLevelTier(), PlayerGlobals.getLevelTier()+2)
 	var map_events = OverworldGlobals.getCurrentMap().events
 	if squad_size > 4: squad_size = 4
 	squad.fill_empty = true
-	squad.enemy_pool = getFactionEnemies(faction)
-	print(map_events)
+	squad.enemy_pool = faction.getEnemies()
 	if map_events.has('additional_enemies') and map_events['additional_enemies'] != null:
 		squad.enemy_pool.append_array(ResourceGlobals.loadArrayFromPath(map_events['additional_enemies']))
 	squad.enemy_pool = squad.enemy_pool.filter(func(combatant): return isWithinPlayerTier(combatant))
@@ -667,12 +665,6 @@ func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties
 	squad.combatant_squad = combatants
 	squad.setProperties(properties)
 	patroller.add_child(squad)
-
-func getFactionEnemies(faction: Enemy_Factions):
-	var out = ResourceGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
-	var array_of_combatants: Array[ResEnemyCombatant]=[]
-	array_of_combatants.assign(out)
-	return array_of_combatants
 
 func getFactionName(faction_value:int):
 	return Enemy_Factions.find_key(faction_value)

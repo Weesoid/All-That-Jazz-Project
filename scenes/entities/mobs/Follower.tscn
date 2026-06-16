@@ -18,20 +18,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [2, 4]
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"playFootstep"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_jaucr"]
 length = 0.001
@@ -62,7 +48,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_31icp"]
 resource_name = "Walk_Down"
-length = 1.2
+length = 0.1
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -71,10 +57,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [2, 1, 0, 1]
+"values": [1]
 }
 
 [sub_resource type="Animation" id="Animation_6sc3m"]
@@ -171,7 +157,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_dpwad"]
 resource_name = "Walk_Up"
-length = 1.2
+length = 0.1
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -180,10 +166,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [8, 7, 6, 7]
+"values": [7]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sx3aq"]
@@ -227,3 +213,7 @@ vframes = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
 shape = SubResource("CapsuleShape2D_nnd2o")
+
+[node name="FadeInDelay" type="Timer" parent="."]
+
+[connection signal="timeout" from="FadeInDelay" to="." method="_on_fade_in_delay_timeout"]

@@ -35,6 +35,7 @@ stat_modifications = {
 duration_type = 1
 duration = 1
 stacks = false
+resistable = false
 animation_time = 0.0
 animate_on = 0
 
@@ -62,6 +63,7 @@ stat_modifications = {
 duration_type = 1
 duration = 2
 stacks = true
+resistable = false
 condition = SubResource("Resource_sthyd")
 animation_time = 0.0
 animate_on = 0

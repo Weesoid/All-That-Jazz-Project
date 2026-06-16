@@ -19,7 +19,6 @@ func loadInventory():
 	for item_path in inventory.keys():
 		if !FileAccess.file_exists(item_path): 
 			continue
-		
 		var item:ResItem = load(item_path)
 		var append_count = 1
 		

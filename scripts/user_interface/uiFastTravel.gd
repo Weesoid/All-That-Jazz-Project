@@ -94,8 +94,10 @@ func _on_debug_button_pressed():
 
 func addAllFastTravelPoints():
 	var maps = ResourceGlobals.loadArrayFromPath("res://scenes/maps/")
+	print('maps: ', maps)
 	for map in maps:
 		if map == null: continue
+		print(map)
 		var data = map.instantiate()
 		PlayerGlobals.addMapLog(data.scene_file_path)
 		data.queue_free()
