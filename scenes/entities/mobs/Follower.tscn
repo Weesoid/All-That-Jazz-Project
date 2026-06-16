@@ -227,3 +227,8 @@ vframes = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
 shape = SubResource("CapsuleShape2D_nnd2o")
+
+[node name="FadeInDelay" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="FadeInDelay" to="." method="_on_fade_in_delay_timeout"]

@@ -190,26 +190,23 @@ layer_5/tile_data = PackedInt32Array(655351, 2, 0, 655352, 65538, 0, 655353, 655
 
 [node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 1
-enabled = false
 special_chance = 0.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(-97, 68)
+position = Vector2(0, 256)
 
 [node name="Chance 1" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(163, -50)
+position = Vector2(-64, 256)
 
 [node name="PatrollerGroup2" parent="." instance=ExtResource("23_1rrnk")]
 max_spawns = 2
-enabled = false
 special_chance = 0.0
 
 [node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup2"]
-visible = false
-position = Vector2(528, 163)
+position = Vector2(-128, 256)
 
 [node name="SpawnPoint2" type="Marker2D" parent="PatrollerGroup2"]
-position = Vector2(574, 165)
+position = Vector2(-200, 256)
 
 [node name="Rope" parent="." instance=ExtResource("3_gkab1")]
 position = Vector2(234, -4)

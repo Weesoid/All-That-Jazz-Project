@@ -483,6 +483,9 @@ libraries = {
 "": SubResource("AnimationLibrary_sx3aq")
 }
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-10, -64, 20, 64)
+
 [connection signal="body_entered" from="MeleeHitbox" to="." method="_on_melee_hitbox_body_entered"]
 [connection signal="timeout" from="DetectTimer" to="." method="_on_detect_timer_timeout"]
 [connection signal="timeout" from="StunTimer" to="." method="_on_stun_timer_timeout"]

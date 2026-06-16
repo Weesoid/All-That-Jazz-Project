@@ -397,6 +397,9 @@ offset_bottom = -63.0
 tint_progress = Color(1, 0, 0, 1)
 melee_timer = NodePath("../ActionCooldown")
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-10, -64, 20, 64)
+
 [connection signal="body_entered" from="MeleeHitbox" to="." method="_on_melee_hitbox_body_entered"]
 [connection signal="body_entered" from="CombatHitbox" to="." method="_on_combat_hitbox_body_entered"]
 [connection signal="tree_exited" from="DetectBar" to="." method="_on_detect_bar_tree_exited"]

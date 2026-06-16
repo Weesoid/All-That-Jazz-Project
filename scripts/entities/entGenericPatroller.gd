@@ -20,6 +20,7 @@ enum State {
 @onready var melee_hitbox = $MeleeHitbox
 @onready var sprite = $Sprite2D
 @onready var combat_hitbox = $CombatHitbox/CollisionShape2D2
+@onready var visible_on_screen = $VisibleOnScreenNotifier2D
 
 @export var base_move_speed: float = 20.0
 @export var alerted_speed_multiplier: float = 5.0
@@ -48,6 +49,9 @@ func _ready():
 		action_cooldown.wait_time = action_cooldown_time
 	if stun_time > 0:
 		stun_timer.wait_time = stun_time
+
+func isOnScreen()-> bool:
+	return visible_on_screen.is_on_screen()
 
 func updateState(new_state:State):
 	if new_state == State.IDLE:
