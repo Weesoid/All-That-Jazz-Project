@@ -32,9 +32,11 @@ func _ready():
 	loadCombatantSquad()
 
 func loadCombatantSquad():
-	combatant_squad = CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)
-	combatant_squad.can_escape = false
-	add_child(combatant_squad) # Change to current map faction later
+	return
+	
+#	combatant_squad = CombatGlobals.generateCombatantSquad(null,CombatGlobals.Enemy_Factions.Scavs)
+#	combatant_squad.can_escape = false
+#	add_child(combatant_squad) # Change to current map faction later
 
 func fightCombatantSquad():
 	OverworldGlobals.changeToCombat(name)
@@ -71,12 +73,16 @@ func exit():
 	animator.play("RESET")
 	for member in PlayerGlobals.team:
 		member.removeTemporaryModifier('Warmth')
+	OverworldGlobals.loadFollowers()
+	await get_tree().process_frame
 	OverworldGlobals.fadeFollowers(Color.WHITE)
 	
 	for bar in ui_layer.get_children():
 		removeRestSprite(bar.attached_combatant)
 	for sprite in rest_spots.get_children():
 		sprite.texture = null
+		sprite.get_node('Throbber').hide()
+		sprite.get_node('Throbber').animation_player.play('RESET')
 	OverworldGlobals.player.sprite.show()
 	OverworldGlobals.player.player_camera.showOverlay(Color.TRANSPARENT,0.5)
 	#kindle_slot.setDisabled(false)
@@ -91,8 +97,9 @@ func exit():
 	OverworldGlobals.setPlayerInput(true)
 
 func addRestSprite(combatant: ResPlayerCombatant,pos:int=-1):
+	#print('ICP: ', pos)
 	if pos >= 0:
-		var sprite = rest_spots.get_children()[pos]
+		var sprite = rest_spots.get_node('Sprite2D'+str(pos))#rest_spots.get_children()[pos]
 		setSprite(sprite,combatant)
 		return
 	
@@ -115,14 +122,14 @@ func setSprite(sprite: Sprite2D, combatant:ResPlayerCombatant):
 	create_tween().tween_property(sprite,'modulate',Color.WHITE,0.5)
 
 func removeRestSprite(character:ResPlayerCombatant):
-	for sprite in ui_layer.get_children():
-		if sprite.attached_combatant == null:
+#	for rest_sprite in rest_spots.get_children():
+#		i
+	for bar in ui_layer.get_children():
+		if bar.attached_combatant == null:
 			continue
-		if sprite.attached_combatant == character:
-			#sprite.texture = null
-			sprite.setConnections(false)
-			sprite.attached_combatant = null
-			sprite.hide()
+		if bar.attached_combatant == character:
+			bar.reset()
+			bar.hide()
 
 func showEmptyMembers():
 	for sprite in rest_spots.get_children():
@@ -146,16 +153,21 @@ func getResterPosition(character: ResPlayerCombatant)-> String:
 	
 	return '-1'
 
+func getRestSprite(pos:String):
+	for sprite in rest_spots.get_children():
+		#print(sprite.name.trim_prefix('Sprite2D'))
+		if sprite.name.trim_prefix('Sprite2D') == pos: return sprite
+
 func setBarVisibility(set_to:bool):
 	for sprite in rest_spots.get_children():
 		if sprite.texture != null: sprite.get_node('CombatBars').visible = set_to
 
-func getRestSprite(combatant: ResPlayerCombatant):
-	for sprite in rest_spots.get_children():
-		if sprite.texture == null: continue
-		
-		if sprite.get_node('CombatBars').attached_combatant == combatant:
-			return sprite
+#func getRestSprite(combatant: ResPlayerCombatant):
+#	for sprite in rest_spots.get_children():
+#		if sprite.texture == null: continue
+#
+#		if sprite.get_node('CombatBars').attached_combatant == combatant:
+#			return sprite
 
 func getCombatBars(only_visible:bool)-> Array[CombatBarsMini]:
 	var out: Array[CombatBarsMini] = []

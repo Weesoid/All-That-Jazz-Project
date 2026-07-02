@@ -15,6 +15,9 @@ func loadFromPath(path:String, key:String, exstension:String='.tres'):
 		print("An error occurred when trying to access the path.")
 		print(path)
 
+func flattenVector(vector:Vector2)-> Vector2:
+	return Vector2(vector.x,0)
+
 func loadArrayFromPath(path:String, filter=null)-> Array:
 	var out = []
 	var dir = DirAccess.open(path)

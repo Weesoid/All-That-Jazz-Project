@@ -12,6 +12,7 @@ func setItem(p_item):
 		InventoryGlobals.item_repaired.connect(update_values.unbind(2))
 	if !InventoryGlobals.item_used.is_connected(update_values):
 		InventoryGlobals.item_used.connect(update_values.unbind(1))
+	update_values()
 
 func _ready():
 	if item != null:

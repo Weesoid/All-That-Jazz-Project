@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b57tm5xnp0h5c"]
+[gd_scene load_steps=14 format=3 uid="uid://b57tm5xnp0h5c"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBarsMini.gd" id="1_0kb5o"]
 [ext_resource type="Texture2D" uid="uid://cccrvcn7bhykq" path="res://images/sprites/health_bar_under.png" id="2_8g8wo"]
@@ -9,10 +9,72 @@
 [ext_resource type="Texture2D" uid="uid://da5chbauvphss" path="res://images/sprites/outlined_circle_empty.png" id="9_pyvaa"]
 [ext_resource type="Texture2D" uid="uid://cqfesavmoprif" path="res://images/sprites/outlined_circle_filled.png" id="10_mimle"]
 
+[sub_resource type="Gradient" id="Gradient_wwoqn"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6d8rn"]
+gradient = SubResource("Gradient_wwoqn")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="Animation" id="Animation_sroc2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.45098)]
+}
+
+[sub_resource type="Animation" id="Animation_mi4bj"]
+resource_name = "Show"
+length = 2.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.45098), Color(1, 1, 1, 0.588235)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j5s4k"]
+_data = {
+"RESET": SubResource("Animation_sroc2"),
+"Show": SubResource("Animation_mi4bj")
+}
+
 [node name="CombatBars" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0kb5o")
+
+[node name="FocusGradient" type="TextureRect" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.45098)
+self_modulate = Color(1, 1, 1, 0.588235)
+layout_mode = 0
+offset_left = -16.0
+offset_right = 16.0
+offset_bottom = 39.0
+texture = SubResource("GradientTexture2D_6d8rn")
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FocusGradient"]
+libraries = {
+"": SubResource("AnimationLibrary_j5s4k")
+}
 
 [node name="HealthBarFader" type="TextureProgressBar" parent="."]
 layout_mode = 1
@@ -56,10 +118,11 @@ tint_under = Color(0, 0, 0, 1)
 
 [node name="PermaStatusEffectContainer" type="HBoxContainer" parent="HealthBar"]
 layout_mode = 2
-offset_left = -1.0
-offset_top = 4.0
-offset_right = 19.0
-offset_bottom = 9.0
+offset_left = 7.0
+offset_top = 10.0
+offset_right = 31.0
+offset_bottom = 15.0
+scale = Vector2(0.75, 0.75)
 theme_override_constants/separation = 0
 alignment = 1
 
@@ -81,10 +144,15 @@ horizontal_alignment = 1
 
 [node name="StrainBar" parent="." instance=ExtResource("8_adtnc")]
 layout_mode = 1
-offset_top = -30.0
-offset_bottom = -30.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 42.0
+offset_bottom = 42.0
 mouse_filter = 2
-theme_override_constants/separation = -2
+theme_override_constants/separation = -1
 value = 3
 max_value = 4
 empty_circle = ExtResource("9_pyvaa")

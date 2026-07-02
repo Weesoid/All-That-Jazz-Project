@@ -240,26 +240,27 @@ func getCurrentMap()-> MapData:
 	return get_tree().current_scene
 
 func getAllPatrollers():
-	var patrol_groups = getCurrentMap().getPatrolGroups()
-	var patrollers = getCurrentMap().get_children().filter(func(child): return child is GenericPatroller)
-	for group in patrol_groups:
-		patrollers.append_array(group.getPatrollers())
-	
-	return patrollers.filter(func(patroller): return is_instance_valid(patroller))
+	var patrollers = getCurrentMap().get_children().filter(
+		func(patroller): 
+			return patroller is GenericPatroller and is_instance_valid(patroller)
+			)
+	return patrollers
 
 func destroyAllPatrollers(respawn:bool=false):
 	for patroller in getAllPatrollers():
 		patroller.destroy(false,false)
 	await get_tree().process_frame
-	for group in getCurrentMap().getPatrolGroups():
-		if respawn and !group.isCleared(): group.spawn()
+	if respawn:
+		for spawn_point in getCurrentMap().find_children('*', 'PatrollerSpawnPoint'):
+			spawn_point.spawn()
 
 func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and player.has_node('DebugComponent')
 
 func showGameOver(end_sentence: String=''):
 	destroyAllPatrollers()
-	player.setUIVisibility(false)
+	UIGlobals.setPlayerUIVisiblity(false)
+	#player.setUIVisibility(false)
 	player.resetStates()
 	setPlayerInput(false)
 	player.set_process_unhandled_input(false)
@@ -484,7 +485,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	else:
 		combat_entity = patroller
 	player.resetStates()
-	OverworldGlobals.player.setUIVisibility(false)
+	UIGlobals.setPlayerUIVisiblity(false)
+	#OverworldGlobals.player.setUIVisibility(false)
 	moveCamera(combat_entity.get_node('Sprite2D'), 0.05, Vector2.ZERO, true)
 	await zoomCamera(Vector2(2,2), 0.1, true)
 	setPlayerInput(false)
@@ -504,6 +506,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var enemy_squad = combat_entity.get_node('CombatantSquadComponent')
 	var map_events = getCurrentMap().events
 	var combatants:Array[ResCombatant] = []
+	var majority_faction = enemy_squad.getMajorityFaction()
 #	if map_events.has('patroller_effect'):
 #		enemy_squad.addLingeringEffect(map_events['patroller_effect'])
 	combatants.append_array(getCombatantSquad('Player'))
@@ -528,10 +531,12 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	combat_scene.do_reinforcements = enemy_squad.do_reinforcements
 	combat_scene.can_escape = enemy_squad.can_escape
 	combat_scene.turn_time = enemy_squad.turn_time
-	#combat_scene.reinforcements_turn = enemy_squad.reinforcements_turn
-	var combat_music = CombatGlobals.FACTION_PATROLLER_PROPERTIES[enemy_squad.getMajorityFaction()].music
-	if !combat_music.is_empty():
-		combat_scene.battle_music_path = combat_music.pick_random()
+	if enemy_squad.combat_music != '':
+		combat_scene.battle_music_path = enemy_squad.combat_music
+	elif !majority_faction.music.is_empty():
+		combat_scene.battle_music_path = getFactionMusic(majority_faction)
+	else:
+		combat_scene.battle_music_path = CombatGlobals.DEFAULT_COMBAT_MUSIC.pick_random()
 	get_parent().add_child(combat_scene)
 	combat_scene.initializeCombat(combatants)
 	combat_enetered.emit()
@@ -552,7 +557,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	getCurrentMap().show()
 	player.resetStates()
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
-	OverworldGlobals.player.setUIVisibility(true)
+	UIGlobals.setPlayerUIVisiblity(true)
+	#OverworldGlobals.player.setUIVisibility(true)
 	if combat_entity is GenericPatroller and combat_results == 1:
 		addPatrollerPulse(player, 180.0, GenericPatroller.State.CHASING)
 		combat_entity.destroy()
@@ -563,6 +569,8 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		addPatrollerPulse(player, 180.0, GenericPatroller.State.STUNNED)
 		await get_tree().process_frame
 		setPlayerInput(true)
+	if combat_results == 1:
+		PlayerGlobals.healBenchedTeam()
 	combat_exited.emit()
 	entering_combat=false
 #	if combat_results == 1 and give_non_pg_reward:
@@ -571,6 +579,12 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		#combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
 #	elif combat_results == 0:
 #		showGameOver('')
+
+func getFactionMusic(faction:ResFaction):
+	if faction.music.is_empty():
+		return null
+	
+	return faction.music.pick_random()
 
 #func giveRewardBank(reward_bank: Dictionary):
 ##	var map = getCurrentMap()
@@ -610,6 +624,7 @@ func getCombatant(entity_name: String, combatant_name: String)-> ResCombatant:
 	return null
 
 func setCombatantSquad(entity_name: String, combatants: Array[ResCombatant]):
+	combatants.sort_custom(func(ca, cb): return ca.assigned_position > cb.assigned_position)
 	get_tree().current_scene.get_node(entity_name).get_node('CombatantSquadComponent').combatant_squad = combatants
 
 func getCombatantSquadComponent(entity_name: String)-> CombatantSquad:
@@ -628,7 +643,6 @@ func isPlayerSquadDead():
 
 
 func damageParty(damage:int, lethal:bool=false):
-	player.player_camera.flash(Color.RED,0.2,0.05)
 	for member in getCombatantSquad('Player'):
 		if member.isDead(): continue
 		member.changeHealth(-int(damage))
@@ -649,6 +663,7 @@ func damageParty(damage:int, lethal:bool=false):
 		setPlayerInput(false,true)
 		await get_tree().create_timer(0.25).timeout
 		showGameOver()
+	await player.player_camera.flash(Color.RED,0.2,0.05)
 
 func getCamera()-> DynamicCamera:
 	return player.player_camera

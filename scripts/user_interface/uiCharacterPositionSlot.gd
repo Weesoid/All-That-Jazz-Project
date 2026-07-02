@@ -31,6 +31,11 @@ func addCharacter(button: CharacterButton):
 	await get_tree().process_frame
 	character_button.grab_focus()
 
+func reset():
+	character_button = null
+	if character_button_container.get_child_count() > 0:
+		character_button_container.get_child(0).queue_free()
+
 func addCharacterNoPos(button: CharacterButton):
 	assign_position=false
 	character_button_container.add_child(button)

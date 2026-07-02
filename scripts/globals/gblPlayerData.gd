@@ -82,6 +82,18 @@ func initializeBenchedTeam():
 		if !member.initialized:
 			member.initializeCombatant(false)
 
+func healBenchedTeam(percent_amount:float=0.2):
+	for member in team:
+		if OverworldGlobals.getCombatantSquad('Player').has(member): continue
+		
+		if member.stat_values['health'] < member.getMaxHealth(): 
+			CombatGlobals.calculatePercentHealing(member, percent_amount, false)
+		elif member.getTraitsWithFlag('injury').size() > 0:
+			for injury in member.getTraitsWithFlag('injury'): member.removeTrait(injury)
+		
+		if member.stat_values['resolve'] < member.getMaxResolve():
+			CombatGlobals.healResolve(member, 1)
+
 func getTeamMemberNames():
 	var out = []
 	for combatant in team:
@@ -233,6 +245,23 @@ func levelUpCombatants():
 		#combatant.scaleStats()
 	level_up.emit()
 
+func addCombatantToSquad(combatant:ResPlayerCombatant, replace:ResPlayerCombatant):
+	if replace != null:
+		var replace_idx = team_formation.find(replace)
+		team_formation[replace_idx] = combatant
+	else:
+		team_formation.append(combatant)
+	combatant.assigned_position = -1
+	OverworldGlobals.setCombatantSquad('Player', team_formation)
+
+func removeCombatantFromSquad(combatant:ResPlayerCombatant):
+	if combatant.mandatory:
+		return
+	
+	combatant.assigned_position = -1
+	team_formation.erase(combatant)
+	OverworldGlobals.setCombatantSquad('Player', team_formation)
+
 func addCombatantToTeam(combatant_id):
 	var combatant
 	if combatant_id is String:
@@ -272,7 +301,6 @@ func removeCombatant(combatant_id: ResPlayerCombatant):
 	for member in removed_combatants:
 		OverworldGlobals.getCombatantSquad('Player').erase(member)
 	team_formation = OverworldGlobals.player.squad.combatant_squad
-	#overwriteTeam()
 
 func loadSquad():
 	OverworldGlobals.setCombatantSquad('Player', PlayerGlobals.team_formation)
@@ -317,42 +345,40 @@ func setFollowersMotion(enable:bool):
 		else:
 			follower.speed_multiplier = 0.0
 			follower.stopWalkAnimation()
-
-func addMapLog(map_path: String, entry=null):
-	if !map_logs.has(map_path):
-		if entry != null:
-			map_logs[map_path] = [entry]
-		else:
-			map_logs[map_path] = []
-	elif entry != null and !map_logs[map_path].has(entry):
-		map_logs[map_path].append(entry)
-	
-
+# { '/map.tres': {'slain_enemies': ['SP1', 'SP2'], 'map_events': {...}}
+func addMapLog(map_path: String, key:String='', entry=null):
+	if !map_logs.has(map_path) and key == '':
+		map_logs[map_path] = {}
+	elif key != '' and (!map_logs.has(map_path) or !map_logs[map_path].has(key)):
+		map_logs[map_path] = {key: entry}
+	elif key != '' and (map_logs[map_path][key] is Array and entry is Array):
+		map_logs[map_path][key].append_array(entry)
+	print(map_logs[map_path])
 func randomizeMapEvents(exclude_map:String=''):
 	for map in map_logs.keys().filter(func(map): return hasMapEvent(map)):
-		clearMapPatrollers(map)
+	#	clearMapPatrollers(map)
 		removeMapEvents(map)
 	var map_keys = map_logs.keys().filter(
 		func(key): 
-			return hasClearedPatrolGroups(key) and (exclude_map == '' or key != exclude_map)
+			return (exclude_map == '' or key != exclude_map)
 			)
 	map_keys.shuffle()
 	map_keys.resize(ceil(map_keys.size()*0.5))
 	for map in map_keys:
-		respawnMapPatrollers(map)
+	#	respawnMapPatrollers(map)
 		removeMapEvents(map)
 		map_logs[map].append(generateMapEvent())
 
-func getClearedMaps():
-	return map_logs.keys().filter(func(map): return hasClearedPatrolGroups(map))
+#func getClearedMaps():
+#	return map_logs.keys().filter(func(map): return hasClearedPatrolGroups(map))
 
-func respawnMapPatrollers(map):
-	map_logs[map] = map_logs[map].filter(func(entry): return !(entry is StringName and entry.contains('PatrollerGroup')))
+#func respawnMapPatrollers(map):
+#	map_logs[map] = map_logs[map].filter(func(entry): return !(entry is StringName and entry.contains('PatrollerGroup')))
 
-func clearMapPatrollers(map_path):
-	var map: MapData = load(map_path).instantiate()
-	map.clearPatrollers()
-	map.queue_free()
+#func clearMapPatrollers(map_path):
+#	var map: MapData = load(map_path).instantiate()
+#	#map.clearPatrollers()
+#	map.queue_free()
 
 func removeMapEvents(map):
 	map_logs[map] = map_logs[map].filter(func(entry): return !(entry is Dictionary and entry.has('map_events')))
@@ -361,10 +387,10 @@ func generateMapEvent():
 	var events = {}
 	var chance_budget = 1.0
 	var possible_events = [
-#		'combat_event',
+		'combat_event',
 #		'additional_enemies',
-#		'patroller_effect',
-#		'reward_item',
+		'patroller_effect',
+		'reward_item',
 		'bonus_loot',
 		'bonus_experience'
 		]
@@ -376,7 +402,7 @@ func generateMapEvent():
 			possible_events.erase(random_event)
 			match random_event:
 				'combat_event': events['combat_event'] = ResourceGlobals.loadArrayFromPath("res://resources/combat/events/").pick_random()
-				'additional_enemies': events['additional_enemies'] = CombatGlobals.back_up_enemies.pick_random()
+#				'additional_enemies': events['additional_enemies'] = CombatGlobals.back_up_enemies.pick_random()
 				'patroller_effect': events['patroller_effect'] = ['CriticalEye'].pick_random()
 				'reward_item': events['reward_item'] = ResourceGlobals.loadArrayFromPath("res://resources/items/", func(item): return item is ResCharm and !item.unique).pick_random()
 				'bonus_loot': events['bonus_loot'] = {}
@@ -394,22 +420,25 @@ func hasMapEvent(map_path):
 		return false
 	
 	for entry in map_logs[map_path]:
-		if entry is Dictionary and entry.has('map_events') and hasPatrolGroups(map_path):
+		if entry is Dictionary and entry.has('map_events'):# and hasPatrolGroups(map_path):
 			return true
 
-# Checks if map has patrol groups.
-func hasPatrolGroups(map_path):
-	var map: MapData = load(map_path).instantiate()
-	var has_patrol_groups = map.getPatrolGroups().size() > 0
-	map.queue_free()
-	return has_patrol_groups
+func isPatrollerSlain(map_path:String, spawn_point_name:String):
+	return map_logs.has(map_path) and map_logs[map_path].has('slain_patrollers') and map_logs[map_path]['slain_patrollers'].has(spawn_point_name)
 
-# Check if player cleared the maps with patrol groups.
-func hasClearedPatrolGroups(map_path):
-	var map: MapData = load(map_path).instantiate()
-	var has_patrol_groups = (map.getClearState() == MapData.PatrollerClearState.FULL_CLEAR and hasPatrolGroups(map_path))
-	map.queue_free()
-	return has_patrol_groups
+## Checks if map has patrol groups.
+#func hasPatrolGroups(map_path):
+#	var map: MapData = load(map_path).instantiate()
+#	var has_patrol_groups = map.getPatrolGroups().size() > 0
+#	map.queue_free()
+#	return has_patrol_groups
+#
+## Check if player cleared the maps with patrol groups.
+#func hasClearedPatrolGroups(map_path):
+#	var map: MapData = load(map_path).instantiate()
+#	var has_patrol_groups = (map.getClearState() == MapData.PatrollerClearState.FULL_CLEAR and hasPatrolGroups(map_path))
+#	map.queue_free()
+#	return has_patrol_groups
 
 #func hasRespawnedPatrols(map_path):
 #	return map_logs[map_path].has('respawned')

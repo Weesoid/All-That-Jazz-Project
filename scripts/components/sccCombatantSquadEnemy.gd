@@ -9,6 +9,7 @@ class_name EnemyCombatantSquad
 @export var turn_time: float = 0.0
 @export var can_escape:bool = true
 @export var do_reinforcements:bool = true
+@export var combat_music:String = ''
 #var reward_bank ={'experience':0.0, 'loot':{}}
 
 func _ready():
@@ -39,15 +40,16 @@ func pickRandomEnemies():
 		var enemy = valid_enemies.pick_random()
 		combatant_squad[index] = enemy
 
-func getMajorityFaction()-> int:
+func getMajorityFaction()-> ResFaction:
 	var faction_count = {}
-	for faction in range(CombatGlobals.Enemy_Factions.size()):
-		faction_count[faction] = 0
 	var combatants = combatant_squad.filter(func(combatant): return combatant != null)
 	for combatant in combatants:
-		faction_count[combatant.faction] += 1
-	
-	return faction_count.find_key(faction_count.values().max())
+		if faction_count.has(combatant.faction):
+			faction_count[combatant.faction] += 1
+		else:
+			faction_count[combatant.faction] = 1
+	#var out = CombatGlobals.loadFaction(faction_count.find_key(faction_count.values().max()))
+	return CombatGlobals.loadFaction(faction_count.find_key(faction_count.values().max()))
 
 func getExperience():
 	var out = 0

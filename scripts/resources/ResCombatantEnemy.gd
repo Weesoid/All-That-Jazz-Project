@@ -12,7 +12,8 @@ enum PreferredPosition {
 	BACKLINE
 }
 
-@export var faction: CombatGlobals.Enemy_Factions
+#@export var faction: ResFaction
+@export var faction: CombatGlobals.Enemy_Factions = CombatGlobals.Enemy_Factions.UNAFFILIATED
 @export var tier: Tier
 @export var preferred_position: PreferredPosition
 @export var chance_to_drop = 0.5
@@ -40,6 +41,9 @@ func initializeCombatant():
 
 func act():
 	enemy_turn.emit()
+
+func getFaction()-> ResFaction:
+	return load(CombatGlobals.FACTIONS[faction])
 
 #func applyStatusEffects():
 #	for effect in lingering_effects:

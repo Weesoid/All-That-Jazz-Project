@@ -112,6 +112,7 @@ custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 disabled = true
 allow_drag = false
+hide_stack = true
 hold_time = 0.25
 hold_delay = 0.25
 hold_ignore_disabled = false

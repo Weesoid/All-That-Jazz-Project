@@ -34,6 +34,7 @@ script = ExtResource("4_if1fj")
 base_heal = 0
 percent_heal = 0.25
 use_multiplier = true
+revive_from_ko = false
 cast_animation = ""
 condition = SubResource("Resource_1dqu6")
 animation_time = 0.0

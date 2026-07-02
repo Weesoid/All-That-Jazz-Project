@@ -56,6 +56,7 @@ signal resolve_changed
 signal stat_modified(combatant, stat_dict)
 signal stat_removed(combatant, stat_dict)
 signal extra_stat_added(combatant, stat)
+signal status_effect_stored(status_effect)
 
 func initializeCombatant():
 	pass
@@ -357,14 +358,16 @@ func applyStoredStatusEffects():
 			stored_status_effects.erase(effect)
 
 func storeStatusEffect(effect, persistent:bool=false):
-	#assert(effect is ResStatusEffect or effect)
 	if effect is String:
 		effect = CombatGlobals.loadStatusEffect(effect)
+	if stored_status_effects.has(effect.getFilename()) or stored_status_effects.has(effect.getFilename()+'/persist'):
+		return
 	
 	if persistent:
 		stored_status_effects.append(effect.getFilename()+'/persist')
 	else:
 		stored_status_effects.append(effect.getFilename())
+	status_effect_stored.emit(effect)
 
 # TODO: Remove based on effect
 func unstoreStatusEffect(remove_effect: ResStatusEffect):

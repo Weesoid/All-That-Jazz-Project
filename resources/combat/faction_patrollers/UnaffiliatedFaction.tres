@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ResFaction" load_steps=2 format=3 uid="uid://br0gddqlh6crm"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResFactionPatrollerProperties.gd" id="6_cwlh6"]
+
+[resource]
+script = ExtResource("6_cwlh6")
+name = "Unaffiliated"
+patroller_properties = Array[Resource("res://scripts/resources/ResPatrollerProperties.gd")]([])
+combatants_path = ""
+music = Array[String]([])

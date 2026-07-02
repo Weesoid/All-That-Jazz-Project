@@ -43,11 +43,13 @@ func createSaveButtons():
 	UIGlobals.setMenuFocus(panel)
 
 func createSaveButton(save_name: String):
+	#print(save_name)
 	var button: Button = UIGlobals.createCustomButton()
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if ResourceLoader.exists("res://saves/%s.tres" % save_name):
 		#await get_tree().process_frame
 		var save: SavedGame = load("res://saves/%s.tres" % save_name)
+		#print(save)
 		button.text = save.name
 	else:
 		button.text = 'EMPTY'

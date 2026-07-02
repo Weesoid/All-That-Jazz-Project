@@ -35,8 +35,8 @@ func _ready():
 	removeEmptyEvents()
 	await get_tree().process_frame
 	done_loading_map = true
-	for group in getPatrolGroups():
-		group.spawn()
+#	for group in getPatrolGroups():
+#		group.spawn()
 	# TODO Fix bug here, figure out what happened, save file 1
 	#for save_point in getSavePoints():
 	#	save_point.loadCombatantSquad()
@@ -58,28 +58,28 @@ func removeEmptyEvents():
 		if (events[key] is Resource and ResourceGlobals.isResourcePlaceholder(events[key])) or events[key] == null:
 			events.erase(key)
 
-func getPatrolGroups():
-	return get_children().filter(func(child): return child is PatrollerGroup)
+#func getPatrolGroups():
+#	return get_children().filter(func(child): return child is PatrollerGroup)
 
-func getClearState():
-	var total_groups = getPatrolGroups().size()
-	var cleared_groups = getPatrolGroups().filter(func(group): return group.isCleared()).size()
-	
-	if cleared_groups == 0 and total_groups > 0:
-		return PatrollerClearState.UNCLEAR
-	elif total_groups > cleared_groups and total_groups > 0:
-		return PatrollerClearState.PARTIAL_CLEAR
-	elif total_groups == cleared_groups or total_groups == 0:
-		return PatrollerClearState.FULL_CLEAR
+#func getClearState():
+#	var total_groups = getPatrolGroups().size()
+#	var cleared_groups = getPatrolGroups().filter(func(group): return group.isCleared()).size()
+#
+#	if cleared_groups == 0 and total_groups > 0:
+#		return PatrollerClearState.UNCLEAR
+#	elif total_groups > cleared_groups and total_groups > 0:
+#		return PatrollerClearState.PARTIAL_CLEAR
+#	elif total_groups == cleared_groups or total_groups == 0:
+#		return PatrollerClearState.FULL_CLEAR
 
-func getVerbalClearState():
-	if getPatrolGroups().size() == 0:
-		return '[color=green]Safe[/color]'
-	
-	match getClearState():
-		0: return '[color=red]Hostiles Active[/color]'
-		1: return '[color=orange]Partially Cleared[/color]'
-		2: return '[color=green]Fully Cleared[/color]'
+#func getVerbalClearState():
+#	if getPatrolGroups().size() == 0:
+#		return '[color=green]Safe[/color]'
+#
+#	match getClearState():
+#		0: return '[color=red]Hostiles Active[/color]'
+#		1: return '[color=orange]Partially Cleared[/color]'
+#		2: return '[color=green]Fully Cleared[/color]'
 
 #func checkGiveClearRewards():
 #	if getClearState() != PatrollerClearState.FULL_CLEAR:
@@ -94,9 +94,9 @@ func getVerbalClearState():
 #
 #	PlayerGlobals.randomizeMapEvents(scene_file_path)
 
-func clearPatrollers():
-	for group in getPatrolGroups():
-		PlayerGlobals.addMapLog(scene_file_path, group.name)
+#func clearPatrollers():
+#	for group in getPatrolGroups():
+#		PlayerGlobals.addMapLog(scene_file_path, group.name)
 
 func getSavePoints():
 	return get_children().filter(func(child): return child is SavePoint)

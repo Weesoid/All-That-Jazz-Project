@@ -278,8 +278,8 @@ libraries = {
 }
 
 [node name="CombatCamera" parent="." instance=ExtResource("5_18n2n")]
-offset = Vector2(0, 5)
-zoom = Vector2(1.6, 1.6)
+position = Vector2(0, -20)
+zoom = Vector2(1.5, 1.5)
 
 [node name="Interface" type="CanvasLayer" parent="CombatCamera"]
 metadata/_edit_use_anchors_ = true

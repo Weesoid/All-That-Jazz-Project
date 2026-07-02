@@ -449,7 +449,7 @@ wait_time = 5.0
 one_shot = true
 
 [node name="StunTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 1.5
 one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -5,13 +5,14 @@ class_name ResCampItem
 @export var effects: Array[ResAbilityEffect]
 @export var strain: int = 1
 @export var party_wide: bool
+@export var condition: ResEffectCondition
 
 func canApply(combatant: ResPlayerCombatant):
-	return (combatant.stat_values['strain']+strain) <= PlayerGlobals.strain_cap# and !combatant.isDead(true)
+	return (combatant.stat_values['strain']+strain) <= PlayerGlobals.strain_cap and (condition == null or condition.isPassed(combatant)) and (!combatant.isDead() or (combatant.isDead() and hasHeal(true)))# and !combatant.isDead(true)
 
-func hasHeal():
+func hasHeal(is_revive_heal:bool):
 	for effect in effects:
-		if effect is ResHealEffect and effect.condition == null: return true
+		if effect is ResHealEffect and effect.condition == null and is_revive_heal and effect.revive_from_ko: return true
 	
 	return false
 
@@ -38,10 +39,12 @@ func apply(combatant: ResPlayerCombatant):
 				CombatGlobals.calculateHealing(combatant, effect.base_heal, effect.use_multiplier)
 			if effect.percent_heal > 0.0: 
 				CombatGlobals.calculatePercentHealing(combatant, effect.percent_heal, effect.use_multiplier)
+		elif effect is ResHealResolveEffect and conditions_passed:
+			CombatGlobals.healResolve(combatant, effect.amount)
 		elif effect is ResCustomDamageEffect and conditions_passed:
 			OverworldGlobals.damageMember(combatant, effect.damage, effect.use_damage_formula)
 		elif effect is ResApplyStatusEffect and conditions_passed:
-			combatant.stored_status_effects.append(effect.status_effect.getFilename())
+			combatant.storeStatusEffect(effect.status_effect)
 		elif effect is ResStatModifierEffect and !modifiers_added and conditions_passed:
 			var dupe_count = getDupeCount(combatant)
 			if dupe_count > 0 and !count_appended: 
@@ -132,8 +135,11 @@ func getLongestModiferDuration(modifier_effects:Array):
 
 func getInformation():
 	var out = '[center]'+UIGlobals.insertTextureCode(icon)+' '+name.to_upper()+'\n'
-	out += strainCostLabel()+'\n'
+	if strain > 0: out += SettingsGlobals.ui_colors['down-bb']+'+%s STRAIN[/color]' % strain + SettingsGlobals.bb_line
 	out += CombatGlobals.getBasicEffectsDescription(effects)
+	if condition != null:
+		#if out.contains('STRAIN'): out+=SettingsGlobals.bb_line 
+		out += '\n('+condition._to_string().replace('when', 'Requires')+')'
 	if party_wide:
 		out = out.replace('Target', 'Party')
 	#out += SettingsGlobals.bb_line+'Strain '+strainCostLabel()

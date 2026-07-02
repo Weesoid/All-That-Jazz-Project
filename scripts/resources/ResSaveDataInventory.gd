@@ -32,7 +32,9 @@ func loadInventory():
 		elif item is ResCharm and inventory[item_path] is int:
 			append_count = inventory[item_path]
 		elif item.isRepairable():
-			item.durability = min(inventory[item_path],item.max_durability)
+			var durability = inventory[item_path]
+			if item.name.contains('Whitt'): print('durability of %s is ' % item, durability, ' max dura is ', item.max_durability)
+			item.durability = durability if durability <= item.max_durability else item.max_durability 
 		
 		#elif item is ResCharm:
 			#item.parent_item = inventory[item_path]

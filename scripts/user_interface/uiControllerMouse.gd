@@ -29,7 +29,7 @@ func _unhandled_input(event):
 		UIGlobals.focusFirstControl()
 
 func canDrag(control:Control)-> bool:
-	return control != null and control.has_method('_force_drag') and !get_viewport().gui_is_dragging() and control.allow_drag
+	return control != null and control.has_method('_force_drag') and !get_viewport().gui_is_dragging() and (control is ItemButton and control.allow_drag)
 
 func canDrop(control:Control):
 	if control == null: return false

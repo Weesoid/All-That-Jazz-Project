@@ -10,6 +10,6 @@ barter_item = false
 name = "Remembrance"
 icon = ExtResource("1_xmpqv")
 description = "Used to unlock one's abilities, among other things.
-[color=dim_gray]Reflect, rememember, reconcile.[/color]"
+[color=dim_gray]\"Reflect, rememember, and reconcile.\"[/color]"
 value = 0
 mandatory = false

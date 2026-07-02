@@ -68,7 +68,8 @@ var current_rank = 1
 var afflicted_combatant: ResCombatant
 var attached_data
 var status_visuals
-#var icon: TextureRect
+var parent_path: String
+
 signal ticked
 signal expired
 
@@ -90,7 +91,7 @@ func initializeStatus():
 		duration = max_duration
 	else:
 		duration = extend_duration
-	
+	print('parent path for %s: %s' % [name, parent_path])
 	CombatGlobals.status_effect_added.emit(afflicted_combatant, self)
 
 func onHitTick(combatant, caster, received_value):
@@ -121,6 +122,7 @@ func tick(update_duration=true, override_permanent=false, apply_effects=true):
 		status_script.applyEffects(afflicted_combatant, self)
 	
 	apply_once = false
+	#if name == 'Poised': print('%s , %s , %s' % [(duration <= 0 and ((permanent and !remove_when.is_empty()) or !permanent)) , (afflicted_combatant.isOnBrink() and remove_on_brink)])
 	if ((duration <= 0 and ((permanent and !remove_when.is_empty()) or !permanent)) or (afflicted_combatant.isOnBrink() and remove_on_brink)) and status_script != null: #or (afflicted_combatant.isDead() and !persist_on_dead)
 		removeStatusEffect()
 	ticked.emit()
@@ -203,3 +205,10 @@ func getFilename():
 	var filename=resource_path.get_file().replace('.tres','')
 	assert(name.replace(' ','') == filename, '%s has invalid naming format! (%s)' % [name, resource_path])
 	return name.replace(' ','')
+
+func getFilepath():
+	assert(resource_path != '' or (resource_path == '' and parent_path != ''), '%s was not assigned a parent path!' % name)
+	if parent_path != '':
+		return parent_path
+	else:
+		return resource_path

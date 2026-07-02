@@ -46,8 +46,12 @@ func _ready():
 	indicator_direction = [-1,1].pick_random()
 	target_top_sprite.hide()
 	target_top.play("Show")
+	stat_buff_arrow.hide()
+	stat_debuff_arrow.hide()
 	attached_combatant.health_changed.connect(updateHealthBar.unbind(1))
 	attached_combatant.resolve_changed.connect(updateResolveBar)
+	attached_combatant.stat_modified.connect(showStatModIndicators.unbind(2))
+	attached_combatant.stat_removed.connect(showStatModIndicators.unbind(2))
 	updateHealthBar()
 	updateResolveBar()
 	animateFaderBar(0,attached_combatant.stat_values['health'])
@@ -60,6 +64,21 @@ func _ready():
 		true
 		)
 	stat_debuff_arrow.self_modulate = SettingsGlobals.ui_colors['down']
+
+func showStatModIndicators():
+	if attached_combatant.getTemporaryModifierKeys('turns').is_empty():
+		stat_buff_arrow.hide()
+		stat_debuff_arrow.hide()
+		return
+	
+	for modifers in attached_combatant.getTemporaryModifierKeys('turns'):
+		for stat in  attached_combatant.stat_modifiers[modifers]:
+			var stat_value = attached_combatant.stat_modifiers[modifers][stat]
+			if stat_value > 0:
+				stat_buff_arrow.show()
+			elif stat_value < 0:
+				stat_debuff_arrow.show()
+	
 
 func showActingGradient(combatant:ResCombatant):
 	if attached_combatant == combatant:
@@ -139,12 +158,39 @@ func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	if combatant != attached_combatant or effect.hide_icon or attached_combatant.isDead(true):
 		return
 	
-	var tick_down = load("res://scenes/user_interface/StatusIcon.tscn").instantiate()
-	tick_down.attached_status = effect
-	if effect.permanent:
-		permanent_status_effects.add_child(tick_down)
+	#print('%s: %s %s' % [combatant, effect.seperate_instances, hasIcon(effect)])
+	if effect.seperate_instances and hasIcon(effect):
+		#print('POOLING!')
+		print('Pooling for ', effect)
+		getStatusIcon(effect).poolEffects(effect)
 	else:
-		status_effects.add_child(tick_down)
+		print('Adding fresh icon for ', effect)
+		var tick_down = load("res://scenes/user_interface/StatusIcon.tscn").instantiate()
+		tick_down.attached_status = effect
+		if effect.permanent:
+			permanent_status_effects.add_child(tick_down)
+		else:
+			status_effects.add_child(tick_down)
+
+func hasIcon(effect:ResStatusEffect)->bool:
+	var all_effects = []
+	all_effects.append_array(status_effects.get_children())
+	all_effects.append_array(permanent_status_effects.get_children())
+	
+	for icon in all_effects:
+		if icon.attached_status.getFilepath() == effect.getFilepath(): return true
+	
+	return false
+
+func getStatusIcon(effect)-> StatusIcon:
+	var all_effects = []
+	all_effects.append_array(status_effects.get_children())
+	all_effects.append_array(permanent_status_effects.get_children())
+	
+	for icon in all_effects:
+		if icon.attached_status.getFilepath() == effect.getFilepath(): return icon
+		
+	return null
 
 func removeStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	if combatant != attached_combatant:

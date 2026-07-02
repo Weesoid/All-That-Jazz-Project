@@ -1,10 +1,11 @@
-[gd_scene load_steps=152 format=3 uid="uid://doc3puk0lkp31"]
+[gd_scene load_steps=153 format=3 uid="uid://doc3puk0lkp31"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_ivxm1"]
 [ext_resource type="PackedScene" uid="uid://i21m5gws8dde" path="res://scenes/user_interface/MeleeCooldownBar.tscn" id="2_mk8cj"]
 [ext_resource type="Texture2D" uid="uid://b6cqkjxri3s63" path="res://images/animations/power_dark.png" id="3_h566x"]
 [ext_resource type="PackedScene" uid="uid://b3l4n202ialfr" path="res://scenes/user_interface/CurrentArrowView.tscn" id="3_iakdp"]
-[ext_resource type="PackedScene" uid="uid://b6b2qvfh6cipk" path="res://scenes/user_interface/StaminaBar.tscn" id="4_e8xoe"]
+[ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="4_kp173"]
+[ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="5_koo40"]
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/character_sprites/willis/player.png" id="5_nms4n"]
 [ext_resource type="PackedScene" uid="uid://cdkunqmsd5yml" path="res://scenes/components/MeleeHitbox.tscn" id="6_31qdv"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
@@ -2800,17 +2801,13 @@ melee_timer = NodePath("../MeleeCooldown")
 z_index = 2
 offset_left = 0.0
 offset_top = -80.0
-offset_right = 48.0
+offset_right = 40.0
 offset_bottom = -56.0
 mouse_filter = 2
 
-[node name="StaminaBar" parent="." instance=ExtResource("4_e8xoe")]
-visible = false
-offset_left = -16.0
-offset_top = -16.0
-offset_right = 16.0
-offset_bottom = -14.0
-mouse_filter = 2
+[node name="ItemButton" parent="CurrentArrowView" instance=ExtResource("4_kp173")]
+layout_mode = 2
+theme = ExtResource("5_koo40")
 
 [node name="CombatantSquadComponent" parent="." instance=ExtResource("6_ucs2i")]
 

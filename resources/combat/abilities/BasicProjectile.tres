@@ -41,4 +41,4 @@ required_effect = {
 "status_effect": null
 }
 tension_cost = 0
-instant_cast = false
+instant_cast = true

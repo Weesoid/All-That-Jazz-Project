@@ -38,7 +38,7 @@ func _get_drag_data(at_position):
 	return item_copy
 
 func _can_drop_data(_at_position, data):
-	return ((slot != -1 and data is ResCharm and !combatant.hasCharm(data) and InventoryGlobals.getCharms(data).size() > 0) or (slot == -1 and data is ResWeapon))
+	return combatant != null and ((slot != -1 and data is ResCharm and !combatant.hasCharm(data) and InventoryGlobals.getCharms(data).size() > 0) or (slot == -1 and data is ResWeapon))
 
 func _drop_data(_at_position, data):
 	durability.hide()

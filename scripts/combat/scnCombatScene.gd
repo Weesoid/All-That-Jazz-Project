@@ -1,9 +1,9 @@
 extends Node2D
 class_name CombatScene
 
-const COMBATANT_DISTANCE=40
+const COMBATANT_DISTANCE=42
 const DEFAULT_ZOOM = Vector2(1.5,1.5)
-const DEFAULT_CAM_POS: Vector2 = Vector2(0, 6)
+var DEFAULT_CAM_POS: Vector2
 
 enum TargetState {
 	NONE,
@@ -105,6 +105,7 @@ signal round_concluded
 # INITIALIZATION AND COMBAT LOOP
 #********************************************************************************
 func initializeCombat(combatants:Array[ResCombatant]):
+	DEFAULT_CAM_POS = combat_camera.global_position
 	#flasher.show()
 	#team_hp_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	#print('REINFORCEMENTS: ',enemy_reinforcements)
@@ -141,12 +142,12 @@ func initializeCombat(combatants:Array[ResCombatant]):
 			CombatGlobals.calculateRawDamage(combatant, combatant.getMaxHealth()*initial_damage)
 	
 	await removeDeadCombatants(false)
-	
+	#combatant_positions['team'].reverse()
 	rollTurns()
 	setActiveCombatant(false)
 	while active_combatant.isImmobilized():
 		setActiveCombatant(false)
-	
+	enemy_reinforcements = enemy_reinforcements.filter(func(combatant): return combatant != null)
 	active_combatant.act()
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
@@ -195,6 +196,7 @@ func _unhandled_input(_event):
 #		moveOnslaught(1)
 	
 	if (Input.is_action_just_pressed('ui_cancel') or Input.is_action_just_pressed("ui_show_menu")  or Input.is_action_just_pressed("ui_right_mouse")) and !ability_executing: 
+		#pass
 		resetUI()
 	
 	if targeting and Input.is_action_just_pressed("ui_right"):
@@ -238,6 +240,7 @@ func on_player_turn():
 	Input.action_release("ui_accept")
 	if rebuking:
 		await rebuke_finished
+	print(DEFAULT_CAM_POS)
 	moveCamera(DEFAULT_CAM_POS)
 	combat_ui.showAbilities(active_combatant)
 #	if do_reinforcements and doReinforcementWarning():
@@ -261,7 +264,7 @@ func on_enemy_turn():
 func useAIPackage():
 	selected_ability = active_combatant.ai_package.selectAbility(active_combatant.ability_set, active_combatant)
 	if selected_ability != null and !active_combatant.isDead(true):
-		valid_targets = selected_ability.getValidTargets(getAllCombatants(), active_combatant is ResPlayerCombatant)
+		valid_targets = selected_ability.getValidTargets(getOrderedCombatants(), active_combatant is ResPlayerCombatant)
 		if selected_ability.getTargetType() == 1 and selected_ability.target_group != 2:
 			target_combatant = active_combatant.ai_package.selectTarget(valid_targets)
 		else:
@@ -368,7 +371,8 @@ func end_turn(combatant_act=true):
 		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead(true):
 			if target_combatant is ResCombatant and !target_combatant.hasStatusEffect('Guard'): 
 				#print('moving to active !')
-				moveCamera(active_combatant.combatant_scene.global_position)
+				shiftCamera(active_combatant)
+				#moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 			active_combatant_changed.emit(active_combatant)
 			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE
@@ -403,7 +407,7 @@ func canCallReinforcements()->bool:
 #	return party_sizes_valid and no_attacks
 
 func showCannotAct(message:String,emit_confirm:bool=false):
-	moveCamera(active_combatant.combatant_scene.global_position)
+	shiftCamera(active_combatant)
 	CombatGlobals.manual_call_indicator.emit(active_combatant, message, 'Show')
 	selected_ability = null
 	await get_tree().create_timer(1.25).timeout
@@ -540,14 +544,15 @@ func executeAbility():
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant.combatant_scene, selected_ability)
 	else:
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant, selected_ability)
-	if selected_ability.target_type == ResAbility.TargetType.SINGLE:
-		#if target_combatant.hasStatusEffect('Guard'): 
-		zoomCamera(Vector2(0.08,0.08))
-		moveCamera(target_combatant.combatant_scene.global_position)
-	elif selected_ability.target_type == ResAbility.TargetType.MULTI:
-		#if target_combatant.filter(func(combatant): return combatant.hasStatusEffect('Guard')).size() > 0:
-		zoomCamera(Vector2(0.08,0.08))
-		moveCamera(target_combatant[0].combatant_scene.global_position)
+	shiftCamera(target_combatant[0] if target_combatant is Array else target_combatant)
+#	if selected_ability.target_type == ResAbility.TargetType.SINGLE:
+#		#if target_combatant.hasStatusEffect('Guard'): 
+#		#zoomCamera(Vector2(0.08,0.08))
+#		moveCamera(target_combatant.combatant_scene.global_position)
+#	elif selected_ability.target_type == ResAbility.TargetType.MULTI:
+#		#if target_combatant.filter(func(combatant): return combatant.hasStatusEffect('Guard')).size() > 0:
+#		#zoomCamera(Vector2(0.08,0.08))
+#		moveCamera(target_combatant[0].combatant_scene.global_position)
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
 	if has_node('QTE'):
@@ -638,10 +643,15 @@ func commandExecuteAbility(target, ability: ResAbility):
 #********************************************************************************
 # MISCELLANEOUS
 #********************************************************************************
-func moveCamera(target: Vector2, speed=0.25):
+func moveCamera(target: Vector2, speed=0.25):#, flattened:bool=true):
+	#return
 	var tween = create_tween()
 	tween.tween_property(combat_camera, 'global_position', target, speed)
 	await tween.finished
+
+func shiftCamera(target:ResCombatant):
+	var shift = Vector2(8 * (-1 if target is ResPlayerCombatant else 1),0)
+	moveCamera(DEFAULT_CAM_POS+shift,0.1)
 
 func zoomCamera(zoom: Vector2, speed=0.25):
 	var tween = create_tween()
@@ -748,7 +758,7 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	targeting=true
 	selected_ability = ability
 	var target_selection:Array[ResCombatant] = []
-	target_selection.assign(selected_ability.getValidTargets(getAllCombatants(), true)) 
+	target_selection.assign(selected_ability.getValidTargets(getOrderedCombatants(), true)) 
 	valid_targets = target_selection
 	moveTarget('')
 	targeting_started.emit(target_selection)
@@ -925,10 +935,7 @@ func moveTarget(target):
 	
 	await get_tree().process_frame
 	target_hovered.emit(target_combatant)
-	if target_combatant is Array:
-		moveCamera(target_combatant[0].combatant_scene.global_position)
-	else:
-		moveCamera(target_combatant.combatant_scene.global_position)
+	shiftCamera(target_combatant[0] if target_combatant is Array else target_combatant)
 
 func moveInspect(direction:String):
 	var all_combatants = getOrderedCombatants()
@@ -944,8 +951,8 @@ func moveInspect(direction:String):
 	moveCamera(inspect_combatant.combatant_scene.global_position)
 
 ## Array of combatants ordered according to visual position
-func getOrderedCombatants():
-	var all_combatants = []
+func getOrderedCombatants()-> Array[ResCombatant]:
+	var all_combatants: Array[ResCombatant] = []
 	var enemies = combatant_positions['enemies'].duplicate()
 	var allies = combatant_positions['team'].duplicate()
 	allies.reverse()
@@ -1179,9 +1186,9 @@ func _on_turn_timer_timeout():
 	confirm.emit()
 
 func resetUI():
+	moveCamera(DEFAULT_CAM_POS)
 	targeting=false
 	targeting_ended.emit()
-	moveCamera(DEFAULT_CAM_POS)
 	removeTargetButtons()
 	combat_ui.showUI(true)
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpysmuqphlqeo"]
+[gd_scene load_steps=14 format=3 uid="uid://bpysmuqphlqeo"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomCampButton.gd" id="2_hjpw3"]
 [ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="2_qbrtl"]
 [ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="3_gmt77"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_lmbce"]
 [ext_resource type="Texture2D" uid="uid://nyr8hffx6x17" path="res://images/sprites/icon_cross.png" id="3_s0b2d"]
+[ext_resource type="Texture2D" uid="uid://n1gd730kfdxv" path="res://images/sprites/plus_icon_big.png" id="6_mfgvi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -16,6 +17,51 @@ border_blend = true
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icdui"]
 bg_color = Color(1, 1, 1, 0.466667)
 
+[sub_resource type="Gradient" id="Gradient_8igr3"]
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1cb3m"]
+gradient = SubResource("Gradient_8igr3")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Animation" id="Animation_evyt1"]
+resource_name = "Loop"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.25, 1.25), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_43ppe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6sflt"]
+_data = {
+"Loop": SubResource("Animation_evyt1"),
+"RESET": SubResource("Animation_43ppe")
+}
+
 [node name="CharacterCampButton" type="Button"]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
@@ -26,6 +72,9 @@ grow_vertical = 2
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("2_hjpw3")
+hold_color = Color(0.580392, 0, 0, 1)
+hold_key = Array[String](["ui_alternate_cancel"])
+hold_time = 0.5
 
 [node name="CustomTooltip" parent="." instance=ExtResource("2_qbrtl")]
 layout_mode = 0
@@ -83,10 +132,42 @@ mouse_filter = 2
 texture = ExtResource("3_s0b2d")
 stretch_mode = 4
 
-[connection signal="focus_entered" from="." to="." method="test"]
+[node name="EmptyGradient" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -4.0
+offset_right = -16.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_1cb3m")
+
+[node name="TextureRect" type="TextureRect" parent="EmptyGradient"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(304, 180)
+texture = ExtResource("6_mfgvi")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EmptyGradient"]
+libraries = {
+"": SubResource("AnimationLibrary_6sflt")
+}
+
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_entered" from="." to="." method="test"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
 [connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]

@@ -35,3 +35,6 @@ func pulse(color:Color):
 			)
 	pulse_tween.tween_property(self, 'tint_over', color, 0.25)
 	pulse_tween.tween_property(self, 'tint_over', Color.BLACK, 0.5)
+
+func canShow():
+	return !OverworldGlobals.player.melee_cooldown.is_stopped()

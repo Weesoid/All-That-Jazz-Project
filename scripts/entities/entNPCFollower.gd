@@ -135,7 +135,6 @@ func _physics_process(delta):
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
 		do_land_flag = true
 	elif do_land_flag:
-		print('emittarium')
 		landed.emit(false)
 		do_land_flag = false
 	
@@ -162,7 +161,6 @@ func _physics_process(delta):
 		var direction = (OverworldGlobals.player.position-position).normalized()
 		velocity.x = snappedf(direction.x*(OverworldGlobals.player.speed),100.0)
 		updateSprite()
-		print('AGH!')
 	else:
 		velocity.x = move_toward(velocity.x, 0, (OverworldGlobals.player.speed*speed_multiplier))
 		stopWalkAnimation()

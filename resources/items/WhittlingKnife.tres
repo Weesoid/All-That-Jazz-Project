@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("2_olbhp")
-max_durability = 16
+max_durability = 32
 repair_item = ExtResource("2_uwm4c")
 repair_cost = 1
 name = "Whittling Knife"

@@ -7,6 +7,7 @@ class_name DynamicCamera
 var shake_strength: float = 0.0
 var shake_speed: float = 0.0
 var flashers = {}
+var flashing:bool=false
 
 func _ready():
 	var ui_layer_ordered = ui_layer.get_children()
@@ -27,12 +28,16 @@ func shake(strength: float, speed: float):
 	shake_strength = strength
 
 func flash(color:Color,alpha:float=1.0, fade_in:float=0.1, fade_out:float=0.25):
+	#flashing=true
 	for f in flashers:
 		if flashers[f]: continue
 		
 		flashers[f]=true
 		var tween = get_tree().create_tween() if !CombatGlobals.inCombat() else\
 					CombatGlobals.getCombatScene().create_tween()
+		tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		#tween.set_process_mode()
+		#tween.tween_callback(tween.kill)
 		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.finished.connect(func():flashers[f]=false)
 		tween.tween_property(f,'color',Color(color,alpha),fade_in)

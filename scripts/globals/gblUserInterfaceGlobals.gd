@@ -63,14 +63,15 @@ func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool
 	button.icon = item.icon
 	#button.tooltip_text = item.name
 	button.description_text = item.getInformation()
-	if item is ResStackItem and show_count:
-		var count_label = StackCountLabel.new(item)
-		button.add_child(count_label)
-	elif item.isRepairable():
-		var durability_bar = load("res://scenes/user_interface/DurabilityBar.tscn").instantiate()
-		durability_bar.item = item
-		InventoryGlobals.item_repaired.connect(durability_bar.update_values.unbind(2))
-		button.add_child(durability_bar)
+#	if item is ResStackItem and show_count:
+#		var count_label = StackCountLabel.new(item)
+#		count_label.name = 'Count'
+#		button.add_child(count_label)
+#	elif item.isRepairable():
+#		var durability_bar = load("res://scenes/user_interface/DurabilityBar.tscn").instantiate()
+#		durability_bar.item = item
+#		InventoryGlobals.item_repaired.connect(durability_bar.update_values.unbind(2))
+#		button.add_child(durability_bar)
 		#durability_bar.setWeapon(item)
 	
 	if value_modifier != 0.0:
@@ -180,7 +181,8 @@ func getMenu():
 		return OverworldGlobals.player.player_camera.get_node('UI').get_node('uiMenu')
 
 func closeMenu(menu: Control=getMenu()):
-	OverworldGlobals.player.setUIVisibility(true)
+	setPlayerUIVisiblity(true)
+	#OverworldGlobals.player.setUIVisibility(true)
 	setControllerAdapter(false)
 	menu.queue_free()
 	OverworldGlobals.player.player_camera.get_node('UI').get_node('uiMenu').queue_free()
@@ -196,7 +198,8 @@ func showMenu(path: String, as_submenu:bool=false):
 		main_menu.name = 'uiMenu'
 		OverworldGlobals.player.suddenStop()
 		OverworldGlobals.player.resetStates()
-		OverworldGlobals.player.setUIVisibility(false)
+		UIGlobals.setPlayerUIVisiblity(false)
+		#OverworldGlobals.player.setUIVisibility(false)
 		OverworldGlobals.setPlayerInput(false)
 		if !inMenu():
 			if OverworldGlobals.isPlayerCheating(): 
@@ -268,11 +271,19 @@ func showDialogueBox(resource: DialogueResource, title: String = "0", extra_game
 	var balloon: Node = ExampleBalloonScene.instantiate()
 	
 	if get_parent().has_node('CombatScene'):
-		get_parent().get_node('CombatScene').add_child(balloon) # TO-DO TEST THIS
+		get_parent().get_node('CombatScene').add_child(balloon)
 	else:
 		get_tree().current_scene.add_child(balloon)
 	#balloon.global_position = OverworldGlobals.player.getPosOffset()+Vector2(margin.size.x/2,-80)
 	balloon.start(resource, title, extra_game_states)
+
+func setPlayerUIVisiblity(set_to:bool):
+	var color = Color.WHITE if set_to else Color.TRANSPARENT
+	var player:PlayerScene = OverworldGlobals.player
+	#for element in player.hud: 
+	player.melee_bar.visible = set_to#player.melee_bar.canShow() if set_to else false
+	player.current_arrow_icon.visible = set_to#player.current_arrow_icon.canShow() if set_to else false
+	create_tween().tween_property(OverworldGlobals.player.player_camera.player_ui, 'modulate', color, 0.5)
 
 func hasCombatDialogue(entity_name: String)-> bool:
 	return OverworldGlobals.hasEntity(entity_name) and OverworldGlobals.getEntity(entity_name).has_node('CombatDialogue') and OverworldGlobals.getComponent(entity_name, 'CombatDialogue').enabled
@@ -301,3 +312,16 @@ func createStatusEffectLabel(effect, combatant)-> StatusEffectLabel:
 		CONNECT_ONE_SHOT
 		)
 	return status_label
+
+func focusValidDrop():
+	if !isUsingController():
+		return
+	
+	for child in getMenu().find_children('*', 'CustomDragDropButton'):
+		if child.has_method('_can_drop_data') and child._can_drop_data(Vector2.ZERO, get_viewport().gui_get_drag_data()):
+			child.grab_focus()
+			return
+
+#func _notification(what):
+#	if what == NOTIFICATION_DRAG_BEGIN and isUsingController():
+#		focusValidDrop()

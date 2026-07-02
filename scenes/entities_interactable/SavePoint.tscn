@@ -81,37 +81,41 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="CombatBars1" parent="UI" instance=ExtResource("2_m1oiv")]
+[node name="CombatBars1" parent="UI" node_paths=PackedStringArray("rest_sprite") instance=ExtResource("2_m1oiv")]
 visible = false
 z_index = 25
 offset_left = -40.0
 offset_top = -32.0
 offset_right = -40.0
 offset_bottom = -32.0
+rest_sprite = NodePath("../../RestSpots/Sprite2D1")
 
-[node name="CombatBars2" parent="UI" instance=ExtResource("2_m1oiv")]
+[node name="CombatBars2" parent="UI" node_paths=PackedStringArray("rest_sprite") instance=ExtResource("2_m1oiv")]
 visible = false
 z_index = 25
 offset_left = 40.0
 offset_top = -32.0
 offset_right = 40.0
 offset_bottom = -32.0
+rest_sprite = NodePath("../../RestSpots/Sprite2D2")
 
-[node name="CombatBars3" parent="UI" instance=ExtResource("2_m1oiv")]
+[node name="CombatBars3" parent="UI" node_paths=PackedStringArray("rest_sprite") instance=ExtResource("2_m1oiv")]
 visible = false
 z_index = 25
 offset_left = -80.0
 offset_top = -32.0
 offset_right = -80.0
 offset_bottom = -32.0
+rest_sprite = NodePath("../../RestSpots/Sprite2D3")
 
-[node name="CombatBars4" parent="UI" instance=ExtResource("2_m1oiv")]
+[node name="CombatBars4" parent="UI" node_paths=PackedStringArray("rest_sprite") instance=ExtResource("2_m1oiv")]
 visible = false
 z_index = 25
 offset_left = 80.0
 offset_top = -32.0
 offset_right = 80.0
 offset_bottom = -32.0
+rest_sprite = NodePath("../../RestSpots/Sprite2D4")
 
 [node name="RestSpots" type="Node2D" parent="."]
 
@@ -123,6 +127,7 @@ position = Vector2(-40, -32)
 visible = false
 scale = Vector2(0.274, 0.274)
 animation_name = "Show_Yellow"
+free_after = false
 
 [node name="Sprite2D2" type="Sprite2D" parent="RestSpots"]
 clip_children = 2
@@ -133,6 +138,7 @@ flip_h = true
 visible = false
 scale = Vector2(0.274, 0.274)
 animation_name = "Show_Yellow"
+free_after = false
 
 [node name="Sprite2D3" type="Sprite2D" parent="RestSpots"]
 clip_children = 2
@@ -142,6 +148,7 @@ position = Vector2(-80, -32)
 visible = false
 scale = Vector2(0.274, 0.274)
 animation_name = "Show_Yellow"
+free_after = false
 
 [node name="Sprite2D4" type="Sprite2D" parent="RestSpots"]
 clip_children = 2
@@ -152,6 +159,7 @@ flip_h = true
 visible = false
 scale = Vector2(0.274, 0.274)
 animation_name = "Show_Yellow"
+free_after = false
 
 [node name="Flame" type="Sprite2D" parent="."]
 visible = false

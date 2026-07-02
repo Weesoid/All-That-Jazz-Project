@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://0eiolcx87vuh"]
+[gd_scene load_steps=10 format=3 uid="uid://0eiolcx87vuh"]
 
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_yrp6h"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomItemButton.gd" id="2_dd5ro"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_iak7o"]
 [ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="4_ckwin"]
 [ext_resource type="PackedScene" uid="uid://rnmhg7xo8gm4" path="res://scenes/user_interface/DurabilityBar.tscn" id="5_t2euj"]
+[ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="7_qbtme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -57,6 +58,13 @@ one_shot = true
 layout_mode = 1
 
 [node name="DragDelay" type="Timer" parent="."]
+
+[node name="Count" type="Label" parent="."]
+layout_mode = 1
+offset_right = 12.0
+offset_bottom = 13.0
+theme = ExtResource("7_qbtme")
+text = "67"
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

@@ -40,6 +40,7 @@ func block(bonus_grit: float=999.0):
 		doAnimation('Block', null, {'skip_pause'=true})
 		await animator.animation_finished
 		CombatGlobals.resetStat(combatant_resource, 'block')
+		block_timer.start()
 
 func canBlock()-> bool:
 	var combat_scene = CombatGlobals.getCombatScene()

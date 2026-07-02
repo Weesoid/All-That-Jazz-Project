@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ca04yuaidlo7v"]
+[gd_scene load_steps=29 format=3 uid="uid://ca04yuaidlo7v"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCampMenu.gd" id="1_gr40e"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="2_e0123"]
@@ -6,16 +6,25 @@
 [ext_resource type="PackedScene" uid="uid://b2a3ym1wbpm6v" path="res://scenes/user_interface/Crafting.tscn" id="3_tmwur"]
 [ext_resource type="Texture2D" uid="uid://36ou1mhhbvwi" path="res://images/sprites/button_pinpoint_normal.png" id="4_acfgp"]
 [ext_resource type="Texture2D" uid="uid://by81ic0dfnm67" path="res://images/sprites/icon_camp.png" id="7_3vebw"]
+[ext_resource type="PackedScene" uid="uid://maahusohnamc" path="res://scenes/user_interface/CharacterButton.tscn" id="7_lnx8w"]
 [ext_resource type="Texture2D" uid="uid://bnagfxcsc0wmt" path="res://images/sprites/forward.png" id="8_2b6pd"]
 [ext_resource type="PackedScene" uid="uid://cw0gvoxm7mdqr" path="res://scenes/user_interface/FastTravel.tscn" id="9_ebjm5"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="10_2yobm"]
 [ext_resource type="Theme" uid="uid://clgfgqvh2f440" path="res://design/BorderfulButton.tres" id="10_5gn5l"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="10_r6qj5"]
+[ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="10_sowkb"]
+[ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="11_wmeta"]
 [ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="12_7weyb"]
+[ext_resource type="Resource" uid="uid://dj8hhj5xp7va4" path="res://resources/items/SmellingSalts.tres" id="12_irxur"]
+[ext_resource type="Texture2D" uid="uid://c3pv6ahqjaj00" path="res://images/sprites/sack_inverted.png" id="12_itq0b"]
 [ext_resource type="PackedScene" uid="uid://bpysmuqphlqeo" path="res://scenes/user_interface/CustomCampButton.tscn" id="13_uq8al"]
 [ext_resource type="PackedScene" uid="uid://s53582o5noca" path="res://scenes/user_interface/CustomItemSlotButton.tscn" id="14_b8omb"]
+[ext_resource type="Texture2D" uid="uid://dd2hvxqa8mrra" path="res://images/sprites/button_gang_normal.png" id="14_iybx4"]
 [ext_resource type="AudioStream" uid="uid://druxglqmwj4yi" path="res://audio/sounds/149831__villen__zapalenie_ognia.ogg" id="15_q7fa7"]
 [ext_resource type="Resource" uid="uid://cekyixtnv6op3" path="res://resources/items/Kindling.tres" id="16_mgtf2"]
+[ext_resource type="PackedScene" uid="uid://dl5lgui67w0wr" path="res://scenes/user_interface/GameMenu.tscn" id="20_0ch88"]
+[ext_resource type="PackedScene" uid="uid://ojvf2nc2mubf" path="res://CharSheet.tscn" id="21_50sis"]
+[ext_resource type="PackedScene" uid="uid://uvj0h00sirue" path="res://scenes/user_interface/CustomCornerCloserButton.tscn" id="22_fpynk"]
 
 [sub_resource type="Gradient" id="Gradient_qhaqm"]
 offsets = PackedFloat32Array(0.00763359, 1)
@@ -65,9 +74,9 @@ layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 120.0
+offset_left = 112.0
 offset_top = 128.0
-offset_right = 200.0
+offset_right = 192.0
 offset_bottom = 248.0
 grow_horizontal = 1
 grow_vertical = 1
@@ -91,9 +100,9 @@ layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 360.0
+offset_left = 352.0
 offset_top = 128.0
-offset_right = 440.0
+offset_right = 432.0
 offset_bottom = 248.0
 grow_horizontal = 1
 grow_vertical = 1
@@ -110,7 +119,7 @@ drop_sound = ExtResource("15_q7fa7")
 item_whitelist = Array[Resource("res://scripts/resources/ResItem.gd")]([ExtResource("16_mgtf2")])
 
 [node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.490196)
+self_modulate = Color(1, 1, 1, 0.490196)
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -133,6 +142,128 @@ offset_bottom = -40.0
 [node name="MenuCloser" parent="uiCrafting/DragDropBlocker" index="1"]
 mode = 2
 
+[node name="Roster" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_right = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+alignment = 1
+
+[node name="RosterButtonTemplate" parent="Roster" instance=ExtResource("7_lnx8w")]
+visible = false
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+focus_motion = 1
+controller_click_to_drag = true
+hold_time = -1.0
+
+[node name="Healthbar" parent="Roster/RosterButtonTemplate/Bar" index="0"]
+offset_left = 0.0
+offset_right = -32.0
+
+[node name="Name" parent="Roster/RosterButtonTemplate/Bar/Healthbar" index="1"]
+offset_left = -1.0
+offset_top = -16.0
+offset_right = -1.0
+offset_bottom = -3.0
+
+[node name="CharacterPortrait" parent="Roster/RosterButtonTemplate/Bar" index="1"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -16.0
+offset_right = 0.0
+offset_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="CharacterFrame" parent="Roster/RosterButtonTemplate/Bar" index="2"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -16.0
+offset_right = 0.0
+offset_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="Roster"]
+top_level = true
+z_index = 25
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Roster/Control"]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 12.0
+offset_right = 496.0
+offset_bottom = 348.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Roster/Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="CharacterSheet" parent="Roster/Control/PanelContainer/MarginContainer" instance=ExtResource("21_50sis")]
+layout_mode = 2
+
+[node name="MenuCloser" parent="Roster/Control/PanelContainer" instance=ExtResource("22_fpynk")]
+layout_mode = 2
+
+[node name="ReviveIndicator" type="Label" parent="Roster/Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+offset_left = 473.0
+offset_top = 180.0
+offset_right = 506.0
+offset_bottom = 193.0
+pivot_offset = Vector2(33, 6)
+theme = ExtResource("10_2yobm")
+text = "Revive"
+vertical_alignment = 2
+
+[node name="ReviveIndicator" parent="Roster/Control/ReviveIndicator" instance=ExtResource("10_sowkb")]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -17.0
+offset_top = -8.0
+offset_right = -1.0
+offset_bottom = 8.0
+grow_vertical = 2
+focus_mode = 0
+mouse_filter = 2
+theme = ExtResource("11_wmeta")
+item = ExtResource("12_irxur")
+allow_drag = false
+
+[node name="Count" parent="Roster/Control/ReviveIndicator/ReviveIndicator" index="7"]
+visible = false
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_right = 6.0
+offset_bottom = 0.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 4
+vertical_alignment = 2
+
 [node name="MiniInventory" parent="." instance=ExtResource("12_7weyb")]
 layout_mode = 1
 anchors_preset = 11
@@ -146,6 +277,19 @@ remove_dragged_items = false
 yellow_border = false
 description_offset = Vector2(-106, 24)
 tooltip_direction = 1
+
+[node name="Control" type="Control" parent="MiniInventory"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Crafting" parent="MiniInventory/Control" instance=ExtResource("2_e0123")]
+layout_mode = 2
+offset_left = -10.0
+offset_top = 294.0
+offset_right = 14.0
+offset_bottom = 318.0
+texture = ExtResource("3_4eso8")
+description_text = "CRAFTING"
 
 [node name="FastTravel" parent="." instance=ExtResource("9_ebjm5")]
 visible = false
@@ -171,9 +315,13 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
-[node name="Crafting" parent="HBoxContainer" instance=ExtResource("2_e0123")]
+[node name="Inventory" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
-texture = ExtResource("3_4eso8")
+texture = ExtResource("12_itq0b")
+
+[node name="Party" parent="HBoxContainer" instance=ExtResource("2_e0123")]
+layout_mode = 2
+texture = ExtResource("14_iybx4")
 
 [node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
@@ -183,6 +331,7 @@ texture = ExtResource("4_acfgp")
 layout_mode = 2
 texture = ExtResource("7_3vebw")
 hold_time = 0.5
+hold_ignore_disabled = false
 
 [node name="Embark" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
@@ -309,9 +458,15 @@ offset_right = 512.0
 offset_bottom = 280.0
 focus_neighbor_left = NodePath("../CustomButton2")
 
+[node name="GameMenu" parent="." instance=ExtResource("20_0ch88")]
+visible = false
+layout_mode = 1
+
 [connection signal="item_received" from="OutsideButtons/KindlingSlot" to="." method="_on_kindling_slot_item_received"]
 [connection signal="custom_close" from="uiCrafting/DragDropBlocker/MenuCloser" to="." method="_on_crafting_pressed"]
-[connection signal="pressed" from="HBoxContainer/Crafting" to="." method="_on_crafting_pressed"]
+[connection signal="pressed" from="MiniInventory/Control/Crafting" to="." method="_on_crafting_pressed"]
+[connection signal="pressed" from="HBoxContainer/Inventory" to="." method="_on_inventory_pressed"]
+[connection signal="pressed" from="HBoxContainer/Party" to="." method="_on_party_pressed"]
 [connection signal="pressed" from="HBoxContainer/FastTravel" to="." method="_on_fast_travel_pressed"]
 [connection signal="held_press" from="HBoxContainer/Rest" to="." method="_on_rest_held_press"]
 [connection signal="held_press" from="HBoxContainer/Embark" to="." method="_on_embark_held_press"]
@@ -319,3 +474,6 @@ focus_neighbor_left = NodePath("../CustomButton2")
 [connection signal="held_press" from="RestOptions/RestOptions/Confirm" to="." method="_on_custom_button_held_press"]
 
 [editable path="uiCrafting"]
+[editable path="Roster/RosterButtonTemplate"]
+[editable path="Roster/RosterButtonTemplate/Bar"]
+[editable path="Roster/Control/ReviveIndicator/ReviveIndicator"]

@@ -35,7 +35,13 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		
 		elif effect is ResHealEffect:
 			await caster.doAnimation(effect.cast_animation)
-			await applyAbilityEffects(caster, target, ability)
+			if ability.current_effect.base_heal > 0: 
+				CombatGlobals.calculateHealing(target, ability.current_effect.base_heal, ability.current_effect.use_multiplier)
+			if ability.current_effect.percent_heal > 0.0: 
+				CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_effect.percent_heal, ability.current_effect.use_multiplier)
+		
+		elif effect is ResHealResolveEffect:
+			CombatGlobals.healResolve(target.combatant_resource, effect.amount)
 		
 		elif effect is ResCommandAbilityEffect:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
@@ -145,11 +151,11 @@ static func applyToTarget(caster, target, ability: ResAbility):
 				target = caster
 		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect)
 	
-	elif ability.current_effect is ResHealEffect:
-		if ability.current_effect.base_heal > 0: 
-			CombatGlobals.calculateHealing(target, ability.current_effect.base_heal, ability.current_effect.use_multiplier)
-		if ability.current_effect.percent_heal > 0.0: 
-			CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_effect.percent_heal, ability.current_effect.use_multiplier)
+#	elif ability.current_effect is ResHealEffect:
+#		if ability.current_effect.base_heal > 0: 
+#			CombatGlobals.calculateHealing(target, ability.current_effect.base_heal, ability.current_effect.use_multiplier)
+#		if ability.current_effect.percent_heal > 0.0: 
+#			CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_effect.percent_heal, ability.current_effect.use_multiplier)
 		
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):

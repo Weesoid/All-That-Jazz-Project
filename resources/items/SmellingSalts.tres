@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="ResCampItem" load_steps=9 format=3 uid="uid://dj8hhj5xp7va4"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="1_3fxob"]
+[ext_resource type="Script" path="res://scripts/resources/ResEffectConditionHealth.gd" id="1_cpirg"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHealResolve.gd" id="2_a05fc"]
+[ext_resource type="Texture2D" uid="uid://dded8trs0jorw" path="res://images/item_icons/salt.png" id="2_o7ljf"]
+[ext_resource type="Script" path="res://scripts/resources/ResItemCamp.gd" id="3_2dps1"]
+
+[sub_resource type="Resource" id="Resource_a5eus"]
+script = ExtResource("1_cpirg")
+inequality = 1
+health_threshold = 0.0
+
+[sub_resource type="Resource" id="Resource_w5uhc"]
+script = ExtResource("1_3fxob")
+base_heal = 0
+percent_heal = 0.25
+use_multiplier = false
+revive_from_ko = true
+cast_animation = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_ssb8a"]
+script = ExtResource("2_a05fc")
+amount = 1
+animation_time = 0.0
+animate_on = 0
+
+[resource]
+script = ExtResource("3_2dps1")
+effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_w5uhc"), SubResource("Resource_ssb8a")])
+strain = 0
+party_wide = false
+condition = SubResource("Resource_a5eus")
+max_stack = 9999
+barter_item = false
+name = "Smelling Salts"
+icon = ExtResource("2_o7ljf")
+description = ""
+value = 0
+mandatory = false

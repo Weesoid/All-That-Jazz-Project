@@ -17,6 +17,9 @@ func _ready():
 		#character_background.hide()
 
 func setCharacter(combatant:ResPlayerCombatant):
+	if combatant == null:
+		return
+	
 	if combatant.preferred_alias != '':
 		character_name.text = combatant.preferred_alias
 	else:
@@ -25,7 +28,8 @@ func setCharacter(combatant:ResPlayerCombatant):
 	character_health.value = combatant.stat_values['health']
 	character_health.max_value = combatant.getMaxHealth()
 	#OverworldGlobals.party_damaged.connect(setHealthValue.bind(combatant.stat_values['health']))
-	combatant.health_changed.connect(setHealthValue)
+	if !combatant.health_changed.is_connected(setHealthValue):
+		combatant.health_changed.connect(setHealthValue)
 	setHealthValue(combatant)
 
 func setHealthValue(combatant):

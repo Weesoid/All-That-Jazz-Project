@@ -3,16 +3,27 @@ extends Node
 const BASE_CRIT = 0.05
 const BASE_RESIST = 0.05
 const BASE_VARIATION = 0.1
+const FACTIONS = {
+	Enemy_Factions.UNAFFILIATED: "res://resources/combat/faction_patrollers/UnaffiliatedFaction.tres",
+	Enemy_Factions.SCAVS: "res://resources/combat/faction_patrollers/ScavsFaction.tres",
+	Enemy_Factions.DEBUG: "res://resources/combat/faction_patrollers/DebugFaction.tres"
+}
+const DEFAULT_COMBAT_MUSIC = [
+	"res://audio/music/859222__josefpres__piano-loops-209-octave-long-loop-120-bpm.ogg",
+	"res://audio/music/453396__oymaldonado__little-latin-jazz-intro.ogg"
+]
 
 enum Enemy_Factions {
-	Scavs
+	UNAFFILIATED,
+	SCAVS,
+	DEBUG
 }
-var FACTION_PATROLLER_PROPERTIES = {
-	Enemy_Factions.Scavs: load("res://resources/combat/faction_patrollers/Scavs.tres")
-}
-var back_up_enemies = [
-	'res://resources/combat/combatants_enemies/mercenaries/'
-]
+#var FACTION_PATROLLER_PROPERTIES = {
+#	Enemy_Factions.Scavs: load("res://resources/combat/faction_patrollers/Scavs.tres")
+#}
+#var back_up_enemies = [
+#	'res://resources/combat/combatants_enemies/mercenaries/'
+#]
 var tension: int = 0
 var critical_bb = '[img color=red]res://images/status_icons/icon_crit_eye.png[/img][color=red]'
 
@@ -39,6 +50,9 @@ signal tp_changed(health, combatant)
 #********************************************************************************
 func emit_exp_updated(value, max_value):
 	exp_updated.emit(value, max_value)
+
+func loadFaction(faction:Enemy_Factions)-> ResFaction:
+	return load(FACTIONS[faction])
 
 #********************************************************************************
 # ability EFFECTS & UTILITY
@@ -275,7 +289,7 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 	
 	if base_healing >= 1.0:
 		manual_call_indicator.emit(target, '[color=green]'+str(int(base_healing)), 'Damage')
-		OverworldGlobals.playSound('02_Heal_02.ogg')
+		if inCombat() or OverworldGlobals.player.camping: OverworldGlobals.playSound('02_Heal_02.ogg')
 	else:
 		manual_call_indicator.emit(target, "Broken.", 'Flunk')
 	
@@ -445,6 +459,9 @@ func playSecondWindTween(target: ResCombatant):
 	tween.tween_property(target.combatant_scene, 'scale', Vector2(1, 1), 0.15)
 
 func playKnockOutTween(target: ResCombatant):
+	if !is_instance_valid(target.combatant_scene):
+		return
+	
 	if target is ResPlayerCombatant: OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(target.getSprite(), 'modulate', Color.BLACK, 0.75)
@@ -531,6 +548,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		elif status_effect.get(property) != null:
 			status_effect.set(property, override_data[property])
 	
+	status_effect.parent_path = path
 	if !target.getStatusEffectNames().has(status_effect.name) or status_effect.seperate_instances:
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
@@ -622,10 +640,11 @@ func isSameCombatantType(combatant_a, combatant_b):
 
 ## -1: Random Special, 0: Chaser, 1: Shooter, 2: Hybrid
 func generateFactionPatroller(faction: Enemy_Factions, type:int)-> GenericPatroller:
-	var faction_properties: ResFactionProperties = FACTION_PATROLLER_PROPERTIES[faction]
+	var faction_properties = loadFaction(faction)
 	if type == -1:
 		type = faction_properties.pickRandomSpecial()
 	var patroller: GenericPatroller = instantiatePatroller(type)
+	patroller.faction = faction
 	faction_properties.getPatrollerProperties(type).setPatrollerProperties(patroller)
 	return patroller
 
@@ -649,7 +668,7 @@ func generateCombatantSquad(patroller: GenericPatroller, faction: Enemy_Factions
 	var map_events = OverworldGlobals.getCurrentMap().events
 	if squad_size > 4: squad_size = 4
 	squad.fill_empty = true
-	squad.enemy_pool = getFactionEnemies(faction)
+	squad.enemy_pool = loadFaction(faction).getEnemies()
 	print(map_events)
 	if map_events.has('additional_enemies') and map_events['additional_enemies'] != null:
 		squad.enemy_pool.append_array(ResourceGlobals.loadArrayFromPath(map_events['additional_enemies']))
@@ -668,11 +687,11 @@ func createCombatantSquad(patroller, combatants: Array[ResCombatant], properties
 	squad.setProperties(properties)
 	patroller.add_child(squad)
 
-func getFactionEnemies(faction: Enemy_Factions):
-	var out = ResourceGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
-	var array_of_combatants: Array[ResEnemyCombatant]=[]
-	array_of_combatants.assign(out)
-	return array_of_combatants
+#func getFactionEnemies(faction: Enemy_Factions):
+#	var out = ResourceGlobals.loadArrayFromPath(FACTION_PATROLLER_PROPERTIES[faction].combatants_path)
+#	var array_of_combatants: Array[ResEnemyCombatant]=[]
+#	array_of_combatants.assign(out)
+#	return array_of_combatants
 
 func getFactionName(faction_value:int):
 	return Enemy_Factions.find_key(faction_value)

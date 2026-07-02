@@ -1,43 +1,26 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=13 format=3 uid="uid://cvjlkid4m1aae"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://cvjlkid4m1aae"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_2dvec"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatus.gd" id="2_1udj8"]
-[ext_resource type="Resource" uid="uid://bnnwkaaycfdkg" path="res://resources/combat/status_effects/GuardBreak.tres" id="3_nxrdc"]
-[ext_resource type="Resource" uid="uid://blm4dyw2h22m2" path="res://resources/combat/status_effects/Poison.tres" id="3_ukonc"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatModifier.gd" id="2_byxiq"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_wjsqd"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_00swq"]
-[ext_resource type="Resource" uid="uid://w3qwgxv70emm" path="res://resources/combat/status_effects/Poised.tres" id="4_l2rrr"]
-[ext_resource type="Resource" uid="uid://2rqc25bhve85" path="res://resources/combat/status_effects/Burnout.tres" id="5_83du3"]
 
-[sub_resource type="Resource" id="Resource_vy4ej"]
-script = ExtResource("2_1udj8")
-target = 0
-status_effect = ExtResource("3_ukonc")
-cast_animation = ""
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_n4t1l"]
-script = ExtResource("2_1udj8")
-target = 0
-status_effect = ExtResource("4_l2rrr")
-cast_animation = ""
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_u2j5n"]
-script = ExtResource("2_1udj8")
-target = 0
-status_effect = ExtResource("5_83du3")
-cast_animation = ""
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_y8x4r"]
-script = ExtResource("2_1udj8")
-target = 0
-status_effect = ExtResource("3_nxrdc")
-cast_animation = ""
+[sub_resource type="Resource" id="Resource_ww68q"]
+script = ExtResource("2_byxiq")
+stat_modifications = {
+"crit": 0.0,
+"damage": 3,
+"dmg_variance": 0.0,
+"handling": -1,
+"health": 0,
+"resist": 0.0,
+"resolve": 0,
+"speed": 0
+}
+duration_type = 0
+duration = 1
+stacks = false
+resistable = false
 animation_time = 0.0
 animate_on = 0
 
@@ -46,10 +29,10 @@ script = ExtResource("4_00swq")
 name = "Miscy"
 description = ""
 icon = ExtResource("3_wjsqd")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_vy4ej"), SubResource("Resource_n4t1l"), SubResource("Resource_u2j5n"), SubResource("Resource_y8x4r")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_ww68q")])
 ability_script = ExtResource("1_2dvec")
 target_type = 0
-target_group = 2
+target_group = 0
 caster_position = {
 "max": 3,
 "min": 0

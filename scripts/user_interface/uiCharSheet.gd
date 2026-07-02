@@ -118,7 +118,7 @@ func equipmentButtonPressed():
 		loadEquipment()
 	
 	if !equipment.visible:
-		animateSubmenu(true, equipment, submenu_positions['equipment-offset'])
+		_on_toggle_stats_pressed()
 	if UIGlobals.isUsingController():
 		await get_tree().process_frame
 		equipment.focusFirstFilled()

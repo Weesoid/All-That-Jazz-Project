@@ -1,6 +1,7 @@
 extends DynamicCamera
 class_name PlayerCamera
 
+@onready var ui_canvas = $UI
 @onready var player_ui: PlayerUI= $UI/PlayerUI
 
 

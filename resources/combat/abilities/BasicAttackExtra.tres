@@ -1,26 +1,32 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=10 format=3 uid="uid://cbu52ciuiwyfq"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=13 format=3 uid="uid://cbu52ciuiwyfq"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_xfjkp"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_4s00p"]
 [ext_resource type="Script" path="res://scripts/resources/ResDamageOvertimeEffect.gd" id="2_72tmv"]
 [ext_resource type="Script" path="res://scripts/resources/ResAttackBonusDot.gd" id="3_1oqiy"]
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusStatusEffect.gd" id="4_0vsfp"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="5_0mly7"]
+[ext_resource type="Resource" uid="uid://w3qwgxv70emm" path="res://resources/combat/status_effects/Poised.tres" id="6_3uaiv"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="6_5hiy4"]
 
 [sub_resource type="Resource" id="Resource_mgkrs"]
 script = ExtResource("2_72tmv")
 dot_effect = 1
 damage = 1
-duration = 9
+duration = 3
 
 [sub_resource type="Resource" id="Resource_j0f5g"]
 script = ExtResource("3_1oqiy")
 dot_effect = SubResource("Resource_mgkrs")
 
+[sub_resource type="Resource" id="Resource_e403m"]
+script = ExtResource("4_0vsfp")
+status_effects = Array[Resource("res://scripts/resources/ResStatusEffect.gd")]([ExtResource("6_3uaiv")])
+
 [sub_resource type="Resource" id="Resource_x0yt7"]
 script = ExtResource("2_4s00p")
 damage_type = 0
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_j0f5g")])
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_j0f5g"), SubResource("Resource_e403m")])
 damage_modifier = 1.0
 cast_animation = {
 "animation": "",

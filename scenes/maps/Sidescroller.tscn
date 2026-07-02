@@ -1,16 +1,17 @@
-[gd_scene load_steps=31 format=3 uid="uid://dkxd0fi262mch"]
+[gd_scene load_steps=31 format=3 uid="uid://diyg4st2qsvu5"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="PackedScene" uid="uid://b6rlytpeavs4h" path="res://scenes/environment/TileMap.tscn" id="2_76a3s"]
 [ext_resource type="PackedScene" uid="uid://dvstysplrop1t" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
 [ext_resource type="TileSet" uid="uid://dd7xgc75lojfx" path="res://resources/tilesets/Sand.tres" id="3_pfyuo"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="3_t6mhi"]
+[ext_resource type="PackedScene" uid="uid://cqb2pyb7p4he7" path="res://scenes/environment/PatrollerSpawnPoint.tscn" id="4_lloms"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="5_rwctp"]
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="6_8oxsm"]
 [ext_resource type="PackedScene" uid="uid://mjs3qc7nxo7b" path="res://scenes/components/ShopWares.tscn" id="6_ppbds"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="8_5ag6f"]
-[ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/Dummy.tres" id="11_2bouc"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="11_fghhp"]
+[ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/debugs/Dummy.tres" id="11_ua6bd"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="12_1xr6o"]
 [ext_resource type="Texture2D" uid="uid://lmmr2dkcaseq" path="res://images/animations/antelope.png" id="13_s8kga"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="14_ie3ty"]
@@ -21,7 +22,6 @@
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="20_1s302"]
 [ext_resource type="PackedScene" uid="uid://cmvvapgedbg4q" path="res://scenes/entities/GenericNPC.tscn" id="21_cchwb"]
 [ext_resource type="Texture2D" uid="uid://bgfd4prdnyfft" path="res://images/animations/base_battler.png" id="22_b8a2s"]
-[ext_resource type="PackedScene" uid="uid://bnh7ste0fc6w4" path="res://scenes/environment/PatrollerGroup.tscn" id="23_1rrnk"]
 [ext_resource type="Resource" uid="uid://duokdpjjw1bgv" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_MrQuesty.dialogue" id="23_uupkl"]
 [ext_resource type="Texture2D" uid="uid://crg0c4pd2bcgq" path="res://images/sprites/NPC_unknown_entity.png" id="24_qqfd5"]
 [ext_resource type="Resource" uid="uid://dpx62r3hkqksv" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_MrMan.dialogue" id="25_m8hhu"]
@@ -145,6 +145,7 @@ size = Vector2(21980, 166)
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
+occupying_faction = 2
 map_properties = Array[int]([0])
 
 [node name="TileMap" parent="." instance=ExtResource("2_76a3s")]
@@ -188,25 +189,16 @@ layer_5/y_sort_origin = 0
 layer_5/z_index = 0
 layer_5/tile_data = PackedInt32Array(655351, 2, 0, 655352, 65538, 0, 655353, 65538, 0, 655354, 65538, 0, 655355, 65538, 0, 655356, 65538, 0, 655357, 65538, 0, 655358, 65538, 0, 655359, 65538, 0, 589824, 65538, 0, 589825, 65538, 0, 589826, 65538, 0, 589827, 65538, 0, 589828, 65538, 0, 589829, 65538, 0, 589830, 65538, 0, 589831, 131074, 0)
 
-[node name="PatrollerGroup" parent="." instance=ExtResource("23_1rrnk")]
-max_spawns = 1
-special_chance = 0.0
+[node name="SpawnPoint" parent="." instance=ExtResource("4_lloms")]
+position = Vector2(-200, 256)
+use_map_faction = true
 
-[node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup"]
-position = Vector2(0, 256)
-
-[node name="Chance 1" type="Marker2D" parent="PatrollerGroup"]
+[node name="SpawnPoint2" parent="." instance=ExtResource("4_lloms")]
 position = Vector2(-64, 256)
 
-[node name="PatrollerGroup2" parent="." instance=ExtResource("23_1rrnk")]
-max_spawns = 2
-special_chance = 0.0
-
-[node name="SpawnPoint" type="Marker2D" parent="PatrollerGroup2"]
-position = Vector2(-128, 256)
-
-[node name="SpawnPoint2" type="Marker2D" parent="PatrollerGroup2"]
-position = Vector2(-200, 256)
+[node name="SpawnPoint3" parent="." instance=ExtResource("4_lloms")]
+position = Vector2(-136, 256)
+spawn_chance = 0.5
 
 [node name="Rope" parent="." instance=ExtResource("3_gkab1")]
 position = Vector2(234, -4)
@@ -230,9 +222,9 @@ position = Vector2(155, 0)
 position = Vector2(-412, -20)
 
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
-enemy_pool = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("11_2bouc")])
+enemy_pool = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("11_ua6bd")])
 do_reinforcements = false
-combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("11_2bouc"), ExtResource("11_2bouc"), ExtResource("11_2bouc"), ExtResource("11_2bouc")])
+combatant_squad = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("11_ua6bd")])
 afflicted_status_effects = Array[String](["CriticalEye"])
 
 [node name="CombatDialogue" parent="Entity" instance=ExtResource("11_fghhp")]

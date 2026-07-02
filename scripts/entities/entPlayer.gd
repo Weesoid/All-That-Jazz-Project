@@ -21,6 +21,8 @@ class_name PlayerScene
 @onready var melee_cooldown: Timer = $MeleeCooldown
 @onready var melee_bar = $MeleeCooldownBar
 @onready var melee_hitbox = $PlayerDirection/MeleeHitbox
+#@onready var stamina_bar = $StaminaBar
+@onready var current_arrow_icon = $CurrentArrowView
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -49,7 +51,7 @@ var current_camp_spot:SavePoint
 var do_gravity:bool = true
 var do_land_flag
 var landed_from_climb:bool=false
-
+var hud: Array = []
 
 signal jumped(jump_velocity)
 signal dived
@@ -76,6 +78,11 @@ func _ready():
 	default_camera_pos = player_camera.position
 	OverworldGlobals.player = self
 	landed.connect(playFootstep.unbind(1))
+	hud = [
+		melee_bar,
+		current_arrow_icon
+	]
+
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -322,22 +329,21 @@ func _unhandled_input(_event: InputEvent):
 	# UI Handling
 	if Input.is_action_just_pressed("ui_show_menu") and !camping:
 		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
-	#if Input.is_action_just_pressed("ui_cancel") and UIGlobals.inMenu() and !camping:
-	#	UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
+	
 	# Interaction handling
 	if Input.is_action_just_pressed("ui_select"):
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
-			#velocity = Vector2.ZERO CHANGE LATER
 			velocity.move_toward(Vector2.ZERO,get_physics_process_delta_time())
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
+	# TODO REMOVE THIS DEBUG CODE
 	if Input.is_action_just_pressed("ui_text_backspace"):
-		#get_tree().change_scene_to_file("res://EmptyScene.tscn")
 		OverworldGlobals.changeToCombat('Entity')
-#	if Input.is_action_just_pressed('ui_accept'):
-#		PlayerGlobals.addCombatantTemperment(OverworldGlobals.getCombatantSquad('Player').pick_random())
+
+#func getHUD():
+#
 
 func canInteract():
 	return !channeling_power and can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing and !animation_player.is_playing()
@@ -588,8 +594,8 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 		Input.action_release('ui_move_right')
 		can_move = false
 
-func setUIVisibility(set_visibility:bool):
-	pass
+#func setUIVisibility(set_visibility:bool):
+#	pass
 #	var exceptions = ['ColorOverlay', 'PlayerPrompt','SaveIndicator','BigLabel']
 #	for child in player_camera.get_node('UI').get_children():
 #		if child is Control and !exceptions.has(child.name): 

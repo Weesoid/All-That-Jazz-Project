@@ -3,22 +3,46 @@ class_name CustomCampButton
 
 @onready var action_texture = $ActionTexture
 @onready var cross_out_texture = $ActionTexture/TextureRect
+@onready var empty_gradient = $EmptyGradient
 @export var combatant: ResPlayerCombatant
+#@export_range(0,3) var rank:int = 0
 signal item_received(item, combatant_recepient)
 signal party_wide_item_hovered(item)
+signal combatant_changed(combatant)
+
 
 func _can_drop_data(_at_position, data):
+	if combatant == null and !data is CharacterButton:
+		return false
+	
 	if data is ResCampItem:
 		showAction(data)
 		if data.party_wide: party_wide_item_hovered.emit(data)
 	
-	return combatant != null and data is ResCampItem and data.canApply(combatant) and (!combatant.isDead() or (combatant.isDead() and data.hasHeal()))
+	return (isValidCampItem(data) or isValidCharacterButton(data))
+
+func isValidCampItem(data):
+	return data is ResCampItem and data.canApply(combatant) and combatant != null
+
+func isValidCharacterButton(data):
+	var current_squad = OverworldGlobals.getCombatantSquad('Player')
+	return data is CharacterButton and !current_squad.has(data.combatant) and (combatant == null or !combatant.mandatory) and !data.combatant.isDead()
 
 func _drop_data(_at_position, data):
-	data.applyEffects(combatant)
-	data.take(1)
-	item_received.emit(data)
-	#print(data.stack)
+	if data is ResCampItem:
+		data.applyEffects(combatant)
+		data.take(1)
+		item_received.emit(data)
+	elif data is CharacterButton:
+		var p_combatant = data.combatant
+		PlayerGlobals.addCombatantToSquad(data.combatant, combatant)
+		combatant = p_combatant
+		combatant_changed.emit(p_combatant)
+		#print(OverworldGlobals.getCombatantSquad('Player'))
+	updateGradient()
+
+func updateGradient():
+	empty_gradient.visible = combatant == null
 
 func focus_feedback():
 	if focused_entered_sound != null and focus_mode != FOCUS_NONE:
@@ -53,3 +77,11 @@ func exit_focus_feedback():
 
 func test():
 	print(combatant)
+
+#func _unhandled_input(event):
+#	if Input.is_action_just_pressed("ui_alternate_cancel") and has_focus():
+#
+
+func _on_tree_entered():
+	pass
+	#$EmptyGradient/AnimationPlayer.play('Loop')

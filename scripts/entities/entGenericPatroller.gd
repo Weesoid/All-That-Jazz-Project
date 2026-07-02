@@ -31,17 +31,19 @@ enum State {
 @export var action_cooldown_time: float
 @export var stun_time: float
 
+var faction: CombatGlobals.Enemy_Factions
 var state: State
 var speed: float = 15.0
 var combat_switch: bool = true
-var patroller_group: PatrollerGroup
+var spawn_point: PatrollerSpawnPoint
+#var patroller_group: PatrollerGroup
 var flicker_tween: Tween
 
 func _ready():
 	if !has_node('CombatantSquadComponent'):
-		CombatGlobals.generateCombatantSquad(self, CombatGlobals.Enemy_Factions.Scavs)
-	if get_parent() is PatrollerGroup:
-		patroller_group = get_parent()
+		CombatGlobals.generateCombatantSquad(self, faction)
+#	if get_parent() is PatrollerGroup:
+#		patroller_group = get_parent()
 	
 	if detection_time > 0:
 		detect_timer.wait_time = detection_time
@@ -204,18 +206,21 @@ func _on_melee_hitbox_body_entered(body):
 		OverworldGlobals.changeToCombat(str(name),{},self)
 
 # TODO Give drops
-func destroy(give_drops=false, check_rewards:bool=true):
+func destroy(record_slain:bool=true, give_drops:bool=false):# check_rewards:bool=true):
 	#if give_drops:
 	#	continue
 		#var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")
 		#patroller_group.reward_bank['experience'] += combatant_squad.getExperience()
 		#combatant_squad.addDrops()
 		#OverworldGlobals.player.player_camera.addRewardBank(patroller_group)
+	var map_path = OverworldGlobals.getCurrentMap().scene_file_path
+	if record_slain and spawn_point != null and !PlayerGlobals.isPatrollerSlain(map_path, spawn_point.name):
+		PlayerGlobals.addMapLog(map_path, 'slain_patrollers', [spawn_point.name])
 	updateState(GenericPatroller.State.STUNNED)
 	queue_free()
-	if check_rewards:
-		await tree_exited
-		patroller_group.checkGiveRewards()
+
+#func canRecordSlain()-> bool:
+#	return PlayerGlobals.map_logs.has(OverworldGlobals.getCurrentMap().scene_file_path) and PlayerGlobals.map_logs
 
 func playFootstep():
 	pass

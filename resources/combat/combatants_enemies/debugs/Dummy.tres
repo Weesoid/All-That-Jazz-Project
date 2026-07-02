@@ -54,7 +54,7 @@ instant_cast = false
 
 [sub_resource type="Resource" id="Resource_l0fp2"]
 script = ExtResource("4_e0wdu")
-damage_type = 0
+damage_type = 1
 attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
 damage_modifier = 1.25
 cast_animation = {
@@ -117,7 +117,7 @@ drop_chance = 1.0
 
 [resource]
 script = ExtResource("1_hgql2")
-faction = 0
+faction = 1
 tier = 0
 preferred_position = 0
 chance_to_drop = 0.5
@@ -130,10 +130,10 @@ packed_scene = ExtResource("4_4d8jx")
 description = ""
 stat_values = {
 "crit": 0.0,
-"damage": 4,
+"damage": 1,
 "dmg_variance": 0.0,
 "handling": 0,
-"health": 20,
+"health": 999,
 "resist": 0.0,
 "resolve": 0,
 "speed": 0
