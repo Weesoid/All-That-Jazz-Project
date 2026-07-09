@@ -20,6 +20,20 @@ func addTooltip(control:Control, text:String, tooltip_position:CustomTooltip.Anc
 	if !control is Button:
 		addFocusMode(control)
 
+func editTooltip(parent:Control, text:String, append:bool):
+	var tooltip:CustomTooltip=null
+	for child in parent.get_children():
+		if child is CustomTooltip: 
+			tooltip = child
+			break
+	#var tooltip: CustomTooltip = parent.find_children('*', 'CustomTooltip')[0]
+	if !append:
+		tooltip.setText(text)
+	else:
+		print(tooltip.getText(), ' + ', text)
+		tooltip.setText(tooltip.getText()+text)
+	
+
 func setVerticalNeighbors(container:VBoxContainer):
 	var nodes = container.get_children()
 	for i in range(nodes.size()):
@@ -232,13 +246,13 @@ func focusFirstControl():
 	focus_button.grab_focus()
 	moveCursorToControl(focus_button)
 
-func focusEmptyEquipSlot(focused_item:ResItem):
-	var slots = getMenu().find_children("*","EquipSlot")
-	var empty_slots = slots.filter(func(button:ItemSlot):return button.item == null and button._can_drop_data(Vector2.ZERO, focused_item) and button.visible)
-	var focused_slot = empty_slots[0] if empty_slots.size() > 0 else slots[0]
-	
-	focused_slot.grab_focus()
-	moveCursorToControl(focused_slot)
+#func focusEmptyEquipSlot(focused_item:ResItem):
+#	var slots = getMenu().find_children("*","EquipSlot")
+#	var empty_slots = slots.filter(func(button:ItemSlot):return button.item == null and button._can_drop_data(Vector2.ZERO, focused_item) and button.visible)
+#	var focused_slot = empty_slots[0] if empty_slots.size() > 0 else slots[0]
+#
+#	focused_slot.grab_focus()
+#	moveCursorToControl(focused_slot)
 
 func isEmptyEquipslot(equip_slot):
 	return equip_slot is EquipSlot# and equip_slot.item == null and canFocus(equip_slot) and isUsingController()
@@ -246,13 +260,13 @@ func isEmptyEquipslot(equip_slot):
 func insertTextureCode(texture: Texture)-> String:
 	return '[img]%s[/img]' % texture.resource_path
 
-func setMenuFocus(container: Control):
-	pass
+#func setMenuFocus(container: Control):
+#	pass
 #	if container.get_child_count() > 0:
 #		container.get_child(0).grab_focus()
 
-func setMenuFocusMode(control_item, mode: bool):
-	pass
+#func setMenuFocusMode(control_item, mode: bool):
+#	pass
 #	if control_item is Button:
 #		if mode:
 #			control_item.focus_mode = Control.FOCUS_ALL
@@ -317,8 +331,9 @@ func focusValidDrop():
 	if !isUsingController():
 		return
 	
+	print('tung tung')
 	for child in getMenu().find_children('*', 'CustomDragDropButton'):
-		if child.has_method('_can_drop_data') and child._can_drop_data(Vector2.ZERO, get_viewport().gui_get_drag_data()):
+		if child.has_method('_can_drop_data') and child._can_drop_data(Vector2.ZERO, get_viewport().gui_get_drag_data()) and child.is_visible_in_tree():
 			child.grab_focus()
 			return
 

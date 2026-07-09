@@ -33,8 +33,10 @@ var editable_keybinds: Dictionary = {
 	'ui_sprint': 'Sprint',
 	'ui_bow': 'Equip Bow',
 	'ui_show_info': 'Quiver',
-	'ui_gambit': 'Channel Void',
-	'ui_show_menu': 'Show Menu'
+	#'ui_gambit': 'Channel Void',
+	'ui_show_menu': 'Show Menu',
+	'ui_melee': 'Melee',
+	'ui_interact': 'Interact'
 }
 var is_rebinding: bool = false
 var rebinding_action: String
@@ -50,12 +52,9 @@ var settings = {
 	'toggle_cheats': false,
 	'binds': InputHelper.serialize_inputs_for_actions()
 }
-#var option_button_settings = {
-#	'window_mode': 0,
-#	'resolution': 0
-#}
 
 signal done_rebinding
+
 
 func _process(_delta):
 	if fps != null:
@@ -71,6 +70,7 @@ func _process(_delta):
 		vol_sounds.text = str(int(sounds_slider.value * 100))+'%'
 
 func _ready():
+	SettingsGlobals.keybind_updated.connect(apply_button.show.unbind(2))
 	for mode in SettingsGlobals.window_modes:
 		window_options.add_item(mode)
 	for resolution in SettingsGlobals.resolutions:
@@ -151,26 +151,9 @@ func loadKeybinds(device: String, _device_index:int=0):
 	await get_tree().process_frame
 	for action in editable_keybinds.keys():
 		var button: KeybindButton = KEYBIND_BUTTON.instantiate()
-		button.find_child('Action').text = str(editable_keybinds[action])
-		if device == 'keyboard':
-			button.find_child('Input').text = InputHelper.get_label_for_input(InputHelper.get_keyboard_input_for_action(action)) 
-		elif SettingsGlobals.CONTROLLER_DEVICES.has(device):
-			button.find_child('Input').text = InputHelper.get_label_for_input(InputHelper.get_joypad_input_for_action(action)) 
-			if action.contains('move'): button.disabled = true
+		button.action = action
 		keybind_container.add_child(button)
-		button.pressed.connect(
-			func():
-				Input.action_release("ui_accept")
-				button.release_focus()
-				rebinding_action = action
-				await get_tree().process_frame
-				is_rebinding = true
-				button.find_child('Input').text = 'Awaiting input...'
-				await done_rebinding
-				await loadKeybinds(InputHelper.device)
-				UIGlobals.setMenuFocus(keybind_container)
-				apply_button.show()
-				)
+		button.update()
 	
 	await get_tree().process_frame
 	settings['binds'] = InputHelper.serialize_inputs_for_actions()
@@ -271,7 +254,7 @@ func _on_panel_container_tab_changed(tab):
 		0:
 			window_options.grab_focus()
 		1: 
-			UIGlobals.setMenuFocus(keybind_container)
+			keybind_container.get_children()[0].grab_focus()
 
 func addSound(ui_element: Control):
 	ui_element.focus_entered.connect(playFocusSound)

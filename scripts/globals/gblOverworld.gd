@@ -554,7 +554,6 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	var combat_results = combat_scene.combat_result
 	var combat_drops = combat_scene.reward_bank
 	player.player_camera.make_current()
-	getCurrentMap().show()
 	player.resetStates()
 	getCombatantSquadComponent('Player').afflicted_status_effects.clear()
 	UIGlobals.setPlayerUIVisiblity(true)
@@ -577,8 +576,10 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 #		giveRewardBank(combat_drops)
 		#giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank, 'ADVERSARY DEFEATED !')
 		#combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
-#	elif combat_results == 0:
-#		showGameOver('')
+	if combat_results == 0:
+		showGameOver('')
+	else:
+		getCurrentMap().show()
 
 func getFactionMusic(faction:ResFaction):
 	if faction.music.is_empty():

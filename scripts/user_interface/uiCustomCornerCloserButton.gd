@@ -24,5 +24,5 @@ func close():
 		Mode.CUSTOM: custom_close.emit()
 
 func _unhandled_input(event):
-	if Input.is_action_just_pressed("ui_cancel") and visible and modulate != Color.TRANSPARENT:
+	if Input.is_action_just_pressed("ui_cancel") and is_visible_in_tree() and modulate != Color.TRANSPARENT:
 		close()

@@ -42,7 +42,7 @@ func loadFastTravelButtons():
 		travel_panel.add_child(button)
 		map.queue_free()
 	
-	UIGlobals.setMenuFocus(travel_panel)
+	#UIGlobals.setMenuFocus(travel_panel)
 
 func getMapInfo(path):
 	pass

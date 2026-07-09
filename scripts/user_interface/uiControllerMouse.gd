@@ -5,18 +5,28 @@ class_name MouseControllerAdapter
 var using_controller:bool=false
 var show_cursor:bool=true
 var clicking:bool=false
+var send_signal:bool=true
+
+signal device_switched(type:String)
 
 func _ready():
 	if show_cursor:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 
 func _unhandled_input(event):
+	if event is InputEventMouseMotion:
+		return
 	if show_cursor and Input.mouse_mode != Input.MOUSE_MODE_CONFINED: 
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	
+	var last_device = 'controller' if using_controller else 'keyboard'
 	var focused = get_viewport().gui_get_focus_owner()
 	var is_dragging = get_viewport().gui_is_dragging()
 	using_controller = event is InputEventJoypadButton or event is InputEventJoypadMotion
+	if using_controller and last_device != 'controller':
+		device_switched.emit('controller')
+	elif !using_controller and last_device != 'keyboard':
+		device_switched.emit('keyboard')
 	
 	if using_controller and Input.is_action_just_pressed("ui_accept") and (canDrag(focused) or canDrop(focused)):
 		fastClick()

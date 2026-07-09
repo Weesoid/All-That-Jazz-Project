@@ -11,6 +11,7 @@ class_name CombatInspector
 @onready var animator = $AnimationPlayer
 var combat_scene: CombatScene
 var current_combatant: ResCombatant
+var pooled_status_labels = {}
 #var original_positions = {}
 
 func _ready():
@@ -32,7 +33,8 @@ func setCombatant(combatant:ResCombatant):
 	for ability in combatant.ability_set:
 		ability_label_container.add_child(UIGlobals.createAbilityLabel(ability, combatant))
 	for effect in combatant.status_effects:
-		modifier_label_container.add_child(UIGlobals.createStatusEffectLabel(effect, combatant))
+		addStatusLabel(effect, combatant)
+		#modifier_label_container.add_child(UIGlobals.createStatusEffectLabel(effect, combatant))
 	for modifier in combatant.getTemporaryModifierKeys():
 		modifier_label_container.add_child(UIGlobals.createStatModifierLabel(modifier, combatant))
 	if combatant is ResPlayerCombatant:
@@ -40,6 +42,16 @@ func setCombatant(combatant:ResCombatant):
 			modifier_label_container.add_child(UIGlobals.createStatModifierLabel(modifier, combatant))
 	await get_tree().process_frame
 	UIGlobals.setVerticalNeighbors(modifier_label_container)
+
+func addStatusLabel(effect, combatant):
+	var effect_path = effect.getFilepath()
+	if !pooled_status_labels.has(effect_path):
+		var status_label = UIGlobals.createStatusEffectLabel(effect, combatant)
+		modifier_label_container.add_child(status_label)
+		if effect.seperate_instances: pooled_status_labels[effect_path] = status_label
+	else:
+		await get_tree().process_frame
+		UIGlobals.editTooltip(pooled_status_labels[effect_path], '\n'+effect.getDescription().strip_edges(), true)
 
 func showInspector():
 	show()
@@ -49,11 +61,13 @@ func hideInspector():
 	animator.play_backwards("Show")
 	await animator.animation_finished
 	hide()
+
 func clear():
 	for ability in ability_label_container.get_children():
 		ability.queue_free()
 	for effect in modifier_label_container.get_children():
 		effect.queue_free()
+	pooled_status_labels.clear()
 
 func updateRound():
 	round_count_label.text = 'ROUND ' + str(combat_scene.round_count)

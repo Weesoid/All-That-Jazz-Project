@@ -23,7 +23,7 @@ func _ready():
 	else:
 		mode = Modes.SAVE
 		createSaveButton(PlayerGlobals.save_name)
-	UIGlobals.setMenuFocus(panel)
+	#UIGlobals.setMenuFocus(panel)
 	initial_mode = mode
 
 func createSaveButtons():
@@ -40,7 +40,7 @@ func createSaveButtons():
 		print("An error occurred when trying to access the path.")
 		print(path)
 	
-	UIGlobals.setMenuFocus(panel)
+	#UIGlobals.setMenuFocus(panel)
 
 func createSaveButton(save_name: String):
 	#print(save_name)

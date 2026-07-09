@@ -161,10 +161,9 @@ func addStatusIcon(combatant: ResCombatant, effect: ResStatusEffect):
 	#print('%s: %s %s' % [combatant, effect.seperate_instances, hasIcon(effect)])
 	if effect.seperate_instances and hasIcon(effect):
 		#print('POOLING!')
-		print('Pooling for ', effect)
+		#print('Pooling for ', effect)
 		getStatusIcon(effect).poolEffects(effect)
 	else:
-		print('Adding fresh icon for ', effect)
 		var tick_down = load("res://scenes/user_interface/StatusIcon.tscn").instantiate()
 		tick_down.attached_status = effect
 		if effect.permanent:

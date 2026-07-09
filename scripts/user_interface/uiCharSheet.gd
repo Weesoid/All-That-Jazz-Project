@@ -51,6 +51,9 @@ func _ready():
 	equipment.item_button_added.connect(connectAutosnap)
 	#equipment.item_button_removed.connect(checkEquipmentHide)
 
+func snapFocusToEquipment(_item):
+	equipment.focusFirstFilled()
+
 func hideSubmenus():
 	#animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
 	animateSubmenu(false, talents,submenu_positions['talents-offset'])
@@ -107,9 +110,9 @@ func equipmentButtonPressed():
 	if !press_cooldown.is_stopped() or equipment.visible:
 		return
 	var all_equippables = InventoryGlobals.inventory.filter(func(item): return item is ResEquippable)
-	if all_equippables.is_empty():
-		CombatGlobals.spawnIndicator(get_global_mouse_position(), 'No equipment!')
-		return
+#	if all_equippables.is_empty():
+#		CombatGlobals.spawnIndicator(get_global_mouse_position(), 'No equipment!')
+#		return
 	
 	press_cooldown.start()
 	if equipment.visible:
@@ -131,27 +134,7 @@ func loadEquipment():
 	equipment.showItems(func(item): return item is ResEquippable)
 
 func connectAutosnap(item_button):
-	if !UIGlobals.isUsingController():
-		return
-	
-	item_button.item_dragging.connect(UIGlobals.focusEmptyEquipSlot)
-
-func snapFocusToEquipment(item):
-	if !equipment.visible or equipment.modulate != Color.WHITE:
-		return
-	
-	await get_tree().process_frame
-	if !UIGlobals.isUsingController():
-		if equip_slot_weapon.item == item: equip_slot_weapon.grab_focus()
-		if equip_slot_a.item == item: equip_slot_a.grab_focus()
-		if equip_slot_b.item == item: equip_slot_b.grab_focus()
-		if equip_slot_c.item == item: equip_slot_c.grab_focus()
-		return
-	else:
-		if equipment.getCategory(item).get_child_count() > 0:
-			equipment.focusCategory(item)
-		else:
-			equipment.focusFirstFilled()
+	item_button.item_dragging.connect(UIGlobals.focusValidDrop.unbind(1))
 
 func checkEquipmentHide(_item):
 	if equipment.getButtons().size() == 0:

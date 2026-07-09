@@ -9,7 +9,7 @@ func getAttackEffect():
 func _to_string():
 	var effect = dot_effect.getDotStatusEffect()
 	return effect.getIconColor(true) + '%s%s (%s turns) ' % [
-		dot_effect.duration, 
+		dot_effect.damage, 
 		effect.getMessageIcon(), 
-		dot_effect.damage
+		dot_effect.duration
 		] + '[/color]' + getStringCondition()

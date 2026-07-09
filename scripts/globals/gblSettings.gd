@@ -26,6 +26,8 @@ var ui_colors: Dictionary = {
 	'unique-bb-nobracket':'color=ORANGE'
 }
 var bb_line:String = '\n[color=transparent]a[/color][img]res://images/user_interface/bb_line.png[/img][color=transparent]a[/color]\n'
+signal keybind_updated(action, new_bind)
+signal keybind_pressed(action)
 
 func colorImgBB(ui_color:String):
 	return '[img '+ui_colors[ui_color].replace('[','').replace(']','')+']'

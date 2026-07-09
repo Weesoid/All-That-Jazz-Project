@@ -89,12 +89,12 @@ func _ready():
 				)
 		guard_button.focus_entered.connect(
 			func():
-				if guard_button.get_meta('combatant') == null: return
+				if guard_button.get_meta('combatant') == null or camp_spot.getCombatantBar(guard_button.get_meta('combatant')) == null: return
 				camp_spot.getCombatantBar(guard_button.get_meta('combatant')).setFocusGradient(true)
 				)
 		guard_button.focus_exited.connect(
 			func():
-				if guard_button.get_meta('combatant') == null: return
+				if guard_button.get_meta('combatant') == null or camp_spot.getCombatantBar(guard_button.get_meta('combatant')) == null: return
 				camp_spot.getCombatantBar(guard_button.get_meta('combatant')).setFocusGradient(false)
 				)
 	for button in camp_buttons:
@@ -283,6 +283,10 @@ func setMenuVisibility(menu:Control, set_to:bool, offset_to_top:bool=false,durat
 		for button in camp_buttons: 
 			button.show()
 			button.updateGradient()
+		if !outside_buttons.visible:
+			outside_buttons.show()
+	if menu == inventory and crafting.visible:
+		setMenuVisibility(crafting, false)
 	
 	if set_to:
 		menu.show()
@@ -296,6 +300,7 @@ func setMenuVisibility(menu:Control, set_to:bool, offset_to_top:bool=false,durat
 
 func setBaseMenuVisibility(set_to:bool, entire_menu:bool=true):
 	setMenuVisibility(inventory, set_to)
+#	setMenuVisibility(crafting, set_to)
 	setMenuVisibility(buttons, set_to)
 	setMenuVisibility(gradient, set_to)
 	if entire_menu:
@@ -303,9 +308,6 @@ func setBaseMenuVisibility(set_to:bool, entire_menu:bool=true):
 		setMenuVisibility(crafting, set_to)
 
 func _on_crafting_pressed():
-	if fast_travel.visible:
-		fast_travel_button.pressed.emit()
-	
 	crafting.resetCrafting()
 	await setMenuVisibility(crafting, crafting.position != original_positions[crafting])
 	outside_buttons.visible = !crafting.visible
@@ -441,12 +443,10 @@ func _on_kindling_slot_item_received(_item):
 	camp_spot.kindleFire()
 
 func setGuardMeta(index:String):
-	print('setting meta!')
 	var guard_button = set_guard_buttons.get_node('CustomButton'+index)
 	var camp_button = outside_buttons.get_node('CharacterCampButton'+index) 
 	guard_button.set_meta('combatant', camp_button.combatant)
 	guard_button.show()
-	print('META IS: ', guard_button.get_meta('combatant'))
 
 func toggleGameMenu(set_to:bool):
 	#for menu in get_children(): if menu != game_menu: menu.visible = !set_to

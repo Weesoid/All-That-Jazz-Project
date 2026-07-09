@@ -203,14 +203,14 @@ func _unhandled_input(_event):
 		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 		if isInspecting(): 
 			moveInspect('right')
-			inspectTarget()
+			#inspectTarget(false)
 		else:
 			moveTarget('right')
 	if targeting and Input.is_action_just_pressed("ui_left"):
 		OverworldGlobals.playSound("342694__spacejoe__lock-2-remove-key-2.ogg")
 		if isInspecting(): 
 			moveInspect('left')
-			inspectTarget()
+			#inspectTarget()
 		else:
 			moveTarget('left')
 	if targeting and Input.is_action_just_pressed("ui_accept"):
@@ -220,9 +220,11 @@ func _unhandled_input(_event):
 		target_selected.emit()
 	if targeting and Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
 		removeTargetButtons()
-	if targeting and Input.is_action_just_pressed("ui_show_info"):
-		inspectTarget()
-	elif targeting and Input.is_action_just_released("ui_show_info"):
+	if targeting and Input.is_action_pressed("ui_show_info") and !isInspecting():
+		print('inspecting!')
+		inspectTarget(true)
+	elif targeting and Input.is_action_just_released("ui_show_info") and isInspecting():
+		print('releasing!')
 		releaseInspect()
 
 func on_player_turn():
@@ -545,14 +547,6 @@ func executeAbility():
 	else:
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant, selected_ability)
 	shiftCamera(target_combatant[0] if target_combatant is Array else target_combatant)
-#	if selected_ability.target_type == ResAbility.TargetType.SINGLE:
-#		#if target_combatant.hasStatusEffect('Guard'): 
-#		#zoomCamera(Vector2(0.08,0.08))
-#		moveCamera(target_combatant.combatant_scene.global_position)
-#	elif selected_ability.target_type == ResAbility.TargetType.MULTI:
-#		#if target_combatant.filter(func(combatant): return combatant.hasStatusEffect('Guard')).size() > 0:
-#		#zoomCamera(Vector2(0.08,0.08))
-#		moveCamera(target_combatant[0].combatant_scene.global_position)
 	CombatGlobals.ability_casted.emit(selected_ability)
 	await CombatGlobals.ability_finished
 	if has_node('QTE'):
@@ -948,8 +942,8 @@ func moveInspect(direction:String):
 	elif direction == 'right':
 		inspect_combatant = all_combatants[index+1 if index+1 <= targets_size else 0]
 	
+	inspectTarget(false)
 	moveCamera(inspect_combatant.combatant_scene.global_position)
-
 ## Array of combatants ordered according to visual position
 func getOrderedCombatants()-> Array[ResCombatant]:
 	var all_combatants: Array[ResCombatant] = []
@@ -961,7 +955,7 @@ func getOrderedCombatants()-> Array[ResCombatant]:
 	all_combatants = all_combatants.filter(func(combatant): return combatant != null)
 	return all_combatants
 
-func inspectTarget():
+func inspectTarget(move_cam:bool):
 	if combat_ui.inspector.animator.is_playing():
 		return
 	
@@ -972,23 +966,26 @@ func inspectTarget():
 	if !combat_ui.inspector.visible:
 		combat_ui.inspector.showInspector()
 	combat_ui.inspector.setCombatant(inspect_combatant)
-	setUIModulation(Color.TRANSPARENT,0.2)
-	setCameraZoom(DEFAULT_ZOOM+Vector2(0.5,0.5))
+	if move_cam:
+		setUIModulation(Color.TRANSPARENT,0.2)
+		setCameraZoom(DEFAULT_ZOOM+Vector2(0.25,0.25))
+		moveCamera(inspect_combatant.combatant_scene.global_position,0.1)
 	fadeInAllCombatants()
 	await get_tree().process_frame
 	fadeOutUntargeted(true)
 
 func releaseInspect():
-	if combat_ui.inspector.animator.is_playing():
-		return
+#	if combat_ui.inspector.animator.is_playing():
+#		return
 	
 	#combat_ui.showUI(false, false)
 	fadeInAllCombatants()
 	if combat_ui.inspector.visible:
 		combat_ui.inspector.hideInspector()
 	setUIModulation(Color.WHITE,0.2)
+	shiftCamera(target_combatant[0] if target_combatant is Array else target_combatant)
 	setCameraZoom(DEFAULT_ZOOM,0.1)
-	moveCamera(target_combatant[0].combatant_scene.global_position if target_combatant is Array else target_combatant.combatant_scene.global_position)
+	#shiftCamera(target_combatant[0].combatant_scene.global_position if target_combatant is Array else target_combatant.combatant_scene.global_position)
 	inspect_combatant = null
 
 func isInspecting():

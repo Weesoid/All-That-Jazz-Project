@@ -35,7 +35,8 @@ func _ready():
 	animator.play('Show')
 	OverworldGlobals.playSound("res://audio/sounds/252198__pepingrillin__rocket_impact.ogg")
 	UIGlobals.setControllerAdapter(true)
-	UIGlobals.setMenuFocus(buttons)
+	#UIGlobals.setMenuFocus(buttons)
+	$VBoxContainer/Yes.grab_focus()
 
 func _on_yes_pressed():
 	buttons.hide()

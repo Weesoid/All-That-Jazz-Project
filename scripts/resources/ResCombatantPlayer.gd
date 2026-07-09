@@ -42,7 +42,7 @@ func initializeCombatant(do_scene:bool=true):
 	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
 	if !stat_modifiers.has('base_rebuke'):
-		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:1.25},'base_rebuke')
+		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:0.25},'base_rebuke')
 	if !stat_modifiers.has('base_resolve'):
 		CombatGlobals.modifyStat(self, {'resolve':3},'base_resolve')
 	if !stat_values.has('strain'):

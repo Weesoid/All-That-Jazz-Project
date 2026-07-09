@@ -331,7 +331,7 @@ func _unhandled_input(_event: InputEvent):
 		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	
 	# Interaction handling
-	if Input.is_action_just_pressed("ui_select"):
+	if Input.is_action_just_pressed("ui_interact"):
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity.move_toward(Vector2.ZERO,get_physics_process_delta_time())

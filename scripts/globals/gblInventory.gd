@@ -5,6 +5,7 @@ var crafted_items: Array[String] = []
 var recipes: Dictionary = {
 	# .tres name -> .tres name
 	'Arrow.2':{'ScrapSalvage': 1, 'Wood':1},
+	'Remembrance':{'Arrow': 1, 'ScrapSalvage':1},
 	'Rations':{'CharmMurder': 1, 'ScrapSalvage': 1},
 	'CharmMurder':{'ScrapSalvage': 12, 'ArrowJunk': 16,'ArrowSleeper':1},
 	'RushDown':{'CritRations': 1, 'ExtraRations': 1,'Rations':1, 'ScrapSalvage':1},

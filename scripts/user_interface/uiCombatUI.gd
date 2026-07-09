@@ -48,27 +48,6 @@ func initialize():
 		giveButtonFunction(button, button.ability)
 		button._ready()
 
-#	CombatGlobals.tension_changed.connect(setTensionValue)
-
-#func setTensionValue(prev_amount:int,amount:int, target:CombatantScene):
-#	if prev_amount == amount:
-#		return
-#	var tension_increased:bool = prev_amount < amount
-#
-#	setTensionBarVisible(true)
-#	tension_bar.setValue(amount) # Set value
-#	await get_tree().process_frame
-#	if target != null and tension_increased:
-#		spawnTensionParticles(target, amount-prev_amount, target.combatant_resource is ResPlayerCombatant)
-#	if tension_increased:
-#		var circles = tension_bar.getCircles('filled')
-#		circles.reverse()
-#		increaseTensionBarAnimation(circles,amount-prev_amount)
-#	else:
-#		var circles = tension_bar.getCircles('empty')
-#		decreaseTensionBarAnimation(circles,prev_amount-amount)
-#		attractTensionParticles(combat_scene.active_combatant.combatant_scene,prev_amount-amount)
-
 func increaseTensionBarAnimation(circles,increased_amount:int):
 	var increased = 0
 	for circle in circles:
@@ -98,68 +77,6 @@ func decreaseTensionBarAnimation(circles, decrease_amount:int):
 		tween.tween_property(circle,'modulate',Color.WHITE,0.2)
 		decreased +=1
 		await get_tree().create_timer(0.1).timeout
-
-#func spawnTensionParticles(target:CombatantScene, tp_amount:int,is_player:bool):
-#	var pitch = 1.0
-#	var direction = 1.0
-#	var receiver = combat_scene.tp_particle_magnet
-#	if is_player:
-#		direction = -1.0
-#
-#	for i in range(tp_amount):
-#		var tween = create_tween().chain().set_trans(Tween.TRANS_CIRC)
-#		var tp_particle = Sprite2D.new()
-#		tween.finished.connect(
-#			func():
-#				pulseAnimation(tp_particle)
-#				OverworldGlobals.playSound("res://audio/sounds/27_sword_miss_3.ogg",tension_particles_db,pitch,false)
-#				)
-#		tp_particle.modulate = Color.TRANSPARENT
-#		tp_particle.texture = TP_PARTICLE_TEXTURE
-#		combat_scene.add_child(tp_particle)
-#		tp_particle.global_position = target.global_position
-#		create_tween().tween_property(tp_particle,'modulate',tension_color,0.3)
-#		tween.tween_property(
-#			tp_particle, 
-#			'global_position', 
-#			tp_particle.global_position+Vector2(randf_range(32,48)*direction,randf_range(-16,16)*direction),
-#			0.25
-#			).set_ease(Tween.EASE_OUT)
-#		tween.tween_property(tp_particle,'rotation', randf_range(-8,8),0.25)
-#		tween.tween_property(tp_particle,'global_position', receiver.global_position,0.2).set_ease(Tween.EASE_IN)
-#		pitch += 0.2
-#		await get_tree().create_timer(0.08).timeout
-
-#func attractTensionParticles(target:CombatantScene, tp_amount:int):
-#	var pitch = 1.0
-#	for i in range(tp_amount):
-#		var tween = create_tween().chain().set_trans(Tween.TRANS_EXPO)
-#		var tp_particle = Sprite2D.new()
-#		tween.finished.connect(func(): pulseAnimation(tp_particle,target.combatant_resource.getSprite(),false))
-#		tp_particle.modulate = tension_color
-#		tp_particle.texture = TP_PARTICLE_TEXTURE
-#		combat_scene.add_child(tp_particle)
-#		tp_particle.global_position = combat_scene.tp_particle_magnet.global_position
-#		create_tween().tween_property(tp_particle,'modulate',Color.TRANSPARENT,0.24)
-#		tween.tween_property(
-#			tp_particle, 
-#			'global_position', 
-#			target.global_position,
-#			0.3
-#			)
-#		OverworldGlobals.playSound("res://audio/sounds/07_human_atk_sword_1.ogg",tension_particles_db,pitch,false)
-#		pitch += 0.2
-#		await get_tree().create_timer(0.06).timeout
-
-#func pulseAnimation(tp_particle, pulse_on=tension_icon,do_scale=true): 
-#	var pulse = create_tween().chain()
-#	pulse.tween_property(pulse_on,'self_modulate',tension_color,0.1)
-#	pulse.tween_property(pulse_on,'self_modulate',Color.WHITE,0.25).set_ease(Tween.EASE_OUT)
-#	if do_scale:
-#		var scale_tween = create_tween().chain()
-#		scale_tween.tween_property(pulse_on,'scale',Vector2(1.25,1.25),0.1).set_ease(Tween.EASE_IN)
-#		scale_tween.tween_property(pulse_on,'scale',Vector2(1.0,1.0),0.25)
-#	tp_particle.queue_free()
 
 func showAbilities(combatant: ResCombatant):
 	await get_tree().process_frame
@@ -207,8 +124,8 @@ func showAbilities(combatant: ResCombatant):
 		for child in getAbilityButtons():
 			if child.ability == last_used_ability[combatant][0]: 
 				child.grab_focus()
-	else:
-		UIGlobals.setMenuFocus(ability_buttons)
+	#else:
+	#	UIGlobals.setMenuFocus(ability_buttons)
 
 func getAbilityButtons():
 	return ability_buttons.get_children().filter(func(control): return control is Button)

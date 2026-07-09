@@ -92,7 +92,6 @@ func update():
 	match visual:
 		StatVisuals.BAR: 
 			updateBar()
-			print('bar: (%s/%s)' % [bar.value, bar.max_value])
 		StatVisuals.COUNT_BAR: updateCountBar()
 		StatVisuals.LABEL: updateLabel()
 	highlightChange()

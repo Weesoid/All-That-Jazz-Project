@@ -75,7 +75,7 @@ func hideTooltip():
 	await animator.animation_finished
 	hide()
 
-func setText(text:String):
+func setText(text:String, update:bool=false):
 	var alignment
 	match text_alignment:
 		TextAlignment.RIGHT: alignment = '[right]'
@@ -86,6 +86,9 @@ func setText(text:String):
 	await text_label.resized
 	await get_tree().process_frame
 	setAnchor()
+
+func getText()-> String:
+	return text_label.text
 
 func setAnchor():
 	if shrink:

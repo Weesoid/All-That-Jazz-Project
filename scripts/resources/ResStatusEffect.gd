@@ -91,7 +91,7 @@ func initializeStatus():
 		duration = max_duration
 	else:
 		duration = extend_duration
-	print('parent path for %s: %s' % [name, parent_path])
+	#print('parent path for %s: %s' % [name, parent_path])
 	CombatGlobals.status_effect_added.emit(afflicted_combatant, self)
 
 func onHitTick(combatant, caster, received_value):
@@ -113,6 +113,13 @@ func removeStatusEffect():
 	afflicted_combatant.status_effects.erase(self)
 	#CombatGlobals.status_effect_removed.emit(afflicted_combatant, self)
 	expired.emit()
+
+func isDoT()->bool:
+	for effect in basic_effects:
+		if effect is ResStatusDamageEffect and effect.identifier == 'tickdmg': 
+			return true
+	
+	return false
 
 func tick(update_duration=true, override_permanent=false, apply_effects=true):
 	if (!permanent and update_duration) or override_permanent: 
@@ -145,6 +152,15 @@ func getRichDescription():
 
 func getDescription():
 	var out_description = description
+	if isDoT(): 
+		out_description = ''
+		#var dot_effect = Combat
+		var dot_description = getIconColor(true) + '%s%s (%s turns) ' % [
+		CombatGlobals.findBasicEffect('tickdmg', self).damage, 
+		getMessageIcon(), 
+		duration
+		] + '[/color]'
+		out_description += '\n' + dot_description
 	if max_rank > 1: out_description += ' (%s/%s)' % [current_rank, max_rank]
 	return out_description
 
