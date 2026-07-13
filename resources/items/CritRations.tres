@@ -11,7 +11,7 @@
 script = ExtResource("3_x0wcf")
 use_caster = false
 cast_animation = ""
-damage = 2
+damage = 9999
 use_damage_formula = false
 crit_chance = 0.0
 variation = -1.0
@@ -46,6 +46,7 @@ stat_modifications = {
 duration_type = 1
 duration = 1
 stacks = true
+resistable = false
 animation_time = 0.0
 animate_on = 0
 

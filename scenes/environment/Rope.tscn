@@ -44,4 +44,4 @@ debug_color = Color(0.701961, 0.52549, 0, 0.419608)
 position = Vector2(0, 16)
 
 [connection signal="area_entered" from="PinArea" to="." method="_on_pin_area_area_entered"]
-[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]
+[connection signal="body_entered" from="PinArea" to="." method="autoJump"]

@@ -210,7 +210,7 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 		90: player.direction = Vector2(-1,0) # Left
 #	if OverworldGlobals.getCurrentMap().SAFE:
 	#if getCurrentMap().getClearState() == MapData.PatrollerClearState.FULL_CLEAR:
-	OverworldGlobals.loadFollowers()
+	
 	if save:
 		SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	getCurrentMap().show()
@@ -310,12 +310,13 @@ func loadFollowers():
 	
 	for combatant in PlayerGlobals.team:
 		if getCombatantSquad('Player').has(combatant) and combatant.follower_texture != null:
+			print('adding cbt: ', combatant)
 			player_follower_count += 1
 			var follower_scene: Node2D = load("res://scenes/entities/mobs/Follower.tscn").instantiate()
 			follower_scene.texture = combatant.follower_texture
 			follower_scene.host_combatant = combatant
 			follower_scene.follow_index = player_follower_count
-			follower_scene.global_position = player.global_position+Vector2(0, -32)
+			follower_scene.global_position = player.global_position+Vector2(0, -20)
 			#follower_scene.sprite.offset.y = -24 
 			getCurrentMap().add_child.call_deferred(follower_scene)
 			#follower_scene.visible = player.visible

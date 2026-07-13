@@ -324,7 +324,10 @@ func removeEmptyStats():
 
 func updateHealth(amount:int):
 	base_stat_values['health'] += amount
-	stat_values['health'] = int(getMaxHealth()*percent_health)
+	var scaled = int(getMaxHealth()*percent_health)
+	if scaled <= 0 and percent_health > 0:
+		scaled = 1
+	stat_values['health'] = scaled
 
 # TODO: Figure out a wway to handle negative health via statmodifiers
 #func updateHealth(amount: int):

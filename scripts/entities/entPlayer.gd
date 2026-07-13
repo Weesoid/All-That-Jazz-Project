@@ -82,7 +82,8 @@ func _ready():
 		melee_bar,
 		current_arrow_icon
 	]
-
+	await get_tree().process_frame
+	OverworldGlobals.loadFollowers()
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -117,6 +118,15 @@ func dodge(time:float=0.2):
 	await get_tree().create_timer(time).timeout
 	invincible=false
 	setPatrollerCollisionExceptions(false)
+
+func setClimbing(to:bool):
+	print('Setting climbing to ', to)
+	OverworldGlobals.player.climbing = to
+	OverworldGlobals.player.toggleClimbAnimation(to)
+	if !to:
+		climb_cooldown.start()
+	#if OverworldGlobals.player.get_collision_mask_value(1) != !to:
+	#	OverworldGlobals.player.set_collision_mask_value(1, !to)
 
 func setPatrollerCollisionExceptions(set_to:bool):
 	var patrollers = OverworldGlobals.getAllPatrollers()
@@ -194,6 +204,7 @@ func _physics_process(delta):
 	# Physical movement
 	if isMovementAllowed() and direction and !diving:
 		if climbing and (isFacingUp() or isFacingDown()): # Climbing
+			#set_collision_mask_value(1, !is_on_floor())
 			do_land_flag=true
 			landed_from_climb=true
 			sprinting = false

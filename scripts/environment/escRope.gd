@@ -20,8 +20,8 @@ func _ready():
 	if !must_shoot:
 		initializeRope()
 
-func moveEnterArea(pos: Vector2):
-	top_pin.position = pos
+#func moveEnterArea(pos: Vector2):
+#	top_pin.position = pos
 
 func isPlayerOnEnterArea():
 	return is_instance_valid(top_pin) and top_pin.get_overlapping_bodies().has(OverworldGlobals.player)
@@ -82,8 +82,20 @@ func _on_pin_area_area_entered(area):
 		initializeRope()
 
 func jumpRope(jump_strength=-200.0):
-	if !OverworldGlobals.player.get_collision_mask_value(1):
-			OverworldGlobals.player.set_collision_mask_value(1, true)
 	OverworldGlobals.player.climbing = false
 	OverworldGlobals.player.toggleClimbAnimation(false)
 	OverworldGlobals.player.jump(jump_strength)
+
+
+func _on_pin_area_body_exited(body):
+	if body is PlayerScene:
+		OverworldGlobals.player.setClimbing(false)
+
+
+func autoJump(body):
+	if !body is PlayerScene: return
+	
+	if OverworldGlobals.player.velocity.y < 0:
+		OverworldGlobals.player.setClimbing(false)
+		OverworldGlobals.player.jump(-250)
+	#pass # Replace with function body.
