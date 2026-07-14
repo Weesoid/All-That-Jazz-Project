@@ -42,7 +42,7 @@ func apply(combatant: ResPlayerCombatant):
 		elif effect is ResHealResolveEffect and conditions_passed:
 			CombatGlobals.healResolve(combatant, effect.amount)
 		elif effect is ResCustomDamageEffect and conditions_passed:
-			OverworldGlobals.damageMember(combatant, effect.damage, effect.use_damage_formula)
+			OverworldGlobals.damageMember(combatant, effect.damage)
 		elif effect is ResApplyStatusEffect and conditions_passed:
 			combatant.storeStatusEffect(effect.status_effect)
 		elif effect is ResStatModifierEffect and !modifiers_added and conditions_passed:

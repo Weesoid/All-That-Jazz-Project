@@ -34,7 +34,7 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		toggle_button.text = 'Shop'
 	
 	for item in array:
-		var button = UIGlobals.createItemButton(item, 0.0, mode!=1)
+		var button = UIGlobals.createItemButton(item, 0.0)
 		var label = Label.new()
 		if item.value * modifier <= 0:
 			label.text = 'Free'
@@ -94,8 +94,8 @@ func loadWares(array=wares_array, focus_item:ResItem=null):
 		elif item == focus_item:
 			button.grab_focus()
 		
-	if focus_item == null: 
-		UIGlobals.setMenuFocus(wares)
+	#if focus_item == null: 
+	#	UIGlobals.setMenuFocus(wares)
 
 func clearButtons():
 	for child in wares.get_children():
@@ -132,11 +132,11 @@ func setButtonFunction(selected_item):
 				return
 			
 			if selected_item is ResGhostStackItem:
-				UIGlobals.setMenuFocusMode(wares, false)
-				UIGlobals.setMenuFocusMode(toggle_button, false)
+	#			UIGlobals.setMenuFocusMode(wares, false)
+		#		UIGlobals.setMenuFocusMode(toggle_button, false)
 				var amount = await loadSlider(selected_item)
-				UIGlobals.setMenuFocusMode(wares, true)
-				UIGlobals.setMenuFocusMode(toggle_button, true)
+		#		UIGlobals.setMenuFocusMode(wares, true)
+			#	UIGlobals.setMenuFocusMode(toggle_button, true)
 				InventoryGlobals.takeFromGhostStack(selected_item, amount)
 				PlayerGlobals.currency -= (floor(selected_item.value * buy_modifier) * amount)
 				showChange(-floor(selected_item.value * buy_modifier) * amount)

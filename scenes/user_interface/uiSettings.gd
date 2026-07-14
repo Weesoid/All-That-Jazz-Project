@@ -75,7 +75,7 @@ func _ready():
 		window_options.add_item(mode)
 	for resolution in SettingsGlobals.resolutions:
 		resolution_options.add_item(resolution)
-	loadKeybinds(InputHelper.device)
+	loadKeybinds()
 	if FileAccess.file_exists('saved_settings.tres'):
 		await loadSettings(SAVED_SETTINGS, false)
 	else:
@@ -145,7 +145,7 @@ func changeSoundsVolume(value):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index('Sounds'), linear_to_db(value))
 	settings['sound_vol'] = value
 
-func loadKeybinds(device: String, _device_index:int=0):
+func loadKeybinds():
 	for child in keybind_container.get_children():
 		child.queue_free()
 	await get_tree().process_frame
@@ -212,7 +212,7 @@ func loadSettings(saved_settings: SavedSettings, apply:bool=true):
 	sprint_toggle.button_pressed = saved_settings.toggle_sprint
 	cheat_toggle.button_pressed = saved_settings.toggle_cheats
 	#InputHelper.deserialize_inputs_for_actions(settings['binds'])
-	loadKeybinds(InputHelper.device)
+	loadKeybinds()
 	if apply:
 		_on_apply_settings_pressed()
 
@@ -287,4 +287,4 @@ func playSlideSound(_val):
 	ui_slide_sounds.play()
 
 func _on_swap_device_pressed():
-	loadKeybinds(InputHelper.device)
+	loadKeybinds()

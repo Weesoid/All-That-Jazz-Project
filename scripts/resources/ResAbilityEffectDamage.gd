@@ -19,7 +19,7 @@ enum DamageType {
 @export var projectile_texture: Texture
 
 func getAttackBonuses(target:ResCombatant):
-	return getPassedAttackBonuses(target, attack_bonuses) 
+	return ResAttackEffect.getPassedAttackBonuses(target, attack_bonuses) 
 
 static func getPassedAttackBonuses(target:ResCombatant, p_attack_bonuses: Array):
 	var out = {}
@@ -42,12 +42,12 @@ func _to_string():
 		out += "[img]res://images/sprites/icon_range.png[/img] "
 	
 	if damage_modifier > 1.0 or damage_modifier < 1.0:
-		var sign
+		var op_sign
 		if damage_modifier > 1.0:
-			sign = SettingsGlobals.ui_colors['up-bb']+'+[/color]'
+			op_sign = SettingsGlobals.ui_colors['up-bb']+'+[/color]'
 		elif damage_modifier < 1.0:
-			sign = SettingsGlobals.ui_colors['down-bb']+'-[/color]'
-		out += sign+SettingsGlobals.colorValueBB(damage_modifier*100,100.0)+'%[/color]\n'
+			op_sign = SettingsGlobals.ui_colors['down-bb']+'-[/color]'
+		out += op_sign+SettingsGlobals.colorValueBB(damage_modifier*100,100.0)+'%[/color]\n'
 	else:
 		out += '\n'
 	

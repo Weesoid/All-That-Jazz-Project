@@ -185,15 +185,15 @@ func applyAllTraits():
 	for t in traits:
 		applyTrait(t,false)
 
-func applyTrait(t,show_indicator,append_indicator:String=''):
+func applyTrait(t,show_indicator):
 	if (PlayerGlobals.trait_presets.keys().has(t) and !stat_modifiers.keys().has(t)):
 		CombatGlobals.modifyStat(self, PlayerGlobals.trait_presets[t], t,true)
 	elif t.split('/').size() > 1:
 		var trait_data = t.split('/')
-		CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0], false, false, show_indicator,append_indicator)
+		CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0], false, false, show_indicator)
 
 # Trait data is a dictionary that contains unique trait data. E.g. <Trait name>/{"damage":69}/{"disease":true} can be a element in the traits array
-func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={},append_indicator:String=''):
+func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={}):
 	if data.has('append') and stat_modifiers.has(trait_name):
 		stat_mods = CombatGlobals.combineDictionaries(stat_modifiers[trait_name],stat_mods)
 	
@@ -206,7 +206,7 @@ func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={},appen
 	traits.append(input_trait)
 	
 	if CombatGlobals.inCombat():
-		applyTrait(input_trait,true,append_indicator)
+		applyTrait(input_trait,true)
 	else:
 		applyAllTraits()
 
@@ -224,10 +224,11 @@ func getTraitsWithFlag(key:String):
 	
 	return out
 
-func updateCombatant(save_data: PlayerSaveData):
+func updateCombatant():
 	loadFileReferences()
 	updateHealth(0)
-	stat_values['resolve'] = saved_resolve
+	updateResolve(0)
+	#stat_values['resolve'] = saved_resolve
 	#updateResolve(saved_resolve)
 	#var path = resource_path
 	#var percent_health = float(save_data.combatant_save_data[path].stat_values['health']) / float(save_data.combatant_save_data[path].base_stat_values['health'])
@@ -268,7 +269,7 @@ func equipWeapon(weapon: ResWeapon):
 		unequipWeapon()
 		
 	if InventoryGlobals.getItem(weapon) != null:
-		InventoryGlobals.removeItemResource(weapon, 1, false, true)
+		InventoryGlobals.removeItemResource(weapon, 1, true)
 		weapon.equip(self)
 		file_references['equipped_weapon'] = [weapon.resource_path,weapon.durability]
 		InventoryGlobals.item_equipped.emit(weapon)
@@ -292,7 +293,7 @@ func equipCharm(charm: ResCharm, slot: int):
 		if charms[slot] != null:
 			unequipCharm(slot)
 		charm.equip(self)
-		InventoryGlobals.removeItemResource(charm, 1, false, true)
+		InventoryGlobals.removeItemResource(charm, 1, true)
 		charms[slot] = charm
 		InventoryGlobals.item_equipped.emit(charm)
 		return

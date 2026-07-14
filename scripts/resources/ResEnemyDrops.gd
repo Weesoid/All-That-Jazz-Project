@@ -8,5 +8,5 @@ class_name ResEnemyDrops
 
 func getDropCount()->int:
 	var max_roll = ceil(drop_count*drop_count_variance)
-	var count_variance = randi_range(0, max_roll) 
+	#var count_variance = randi_range(0, max_roll) 
 	return drop_count+max_roll

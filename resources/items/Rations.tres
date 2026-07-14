@@ -9,6 +9,7 @@ script = ExtResource("1_ysrfq")
 base_heal = 0
 percent_heal = 0.25
 use_multiplier = false
+revive_from_ko = false
 cast_animation = ""
 animation_time = 0.0
 animate_on = 0

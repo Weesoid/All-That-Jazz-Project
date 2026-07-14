@@ -52,6 +52,7 @@ var do_gravity:bool = true
 var do_land_flag
 var landed_from_climb:bool=false
 var hud: Array = []
+var fast_travelling:bool=false
 
 signal jumped(jump_velocity)
 signal dived
@@ -307,15 +308,17 @@ func _input(_event):
 	elif SettingsGlobals.stopSprint():
 		sprinting = false
 	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
-		if bow_draw_strength == 0: 
-			bow_mode = !bow_mode
-			if bow_mode:
-				bow_equipped.emit()
-			else:
-				bow_unequipped.emit()
-		elif bow_draw_strength > 0:
-			undrawBow()
+		toggleBowMode(!bow_mode)
 
+func toggleBowMode(toggle):
+	if bow_draw_strength == 0: 
+		bow_mode = toggle
+		if bow_mode:
+			bow_equipped.emit()
+		else:
+			bow_unequipped.emit()
+	elif bow_draw_strength > 0:
+		undrawBow()
 	
 	# Debug
 #	if Input.is_action_pressed("ui_cheat_mode"):
@@ -342,16 +345,19 @@ func _unhandled_input(_event: InputEvent):
 		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	
 	# Interaction handling
-	if Input.is_action_just_pressed("ui_interact"):
+	if Input.is_action_just_pressed("ui_interact") and can_move:
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity.move_toward(Vector2.ZERO,get_physics_process_delta_time())
 			undrawBowAnimation()
 			interactables[0].interact()
 			return
-	# TODO REMOVE THIS DEBUG CODE
-	if Input.is_action_just_pressed("ui_text_backspace"):
-		OverworldGlobals.changeToCombat('Entity')
+	
+	if Input.is_action_just_pressed("ui_text_backspace") and OverworldGlobals.isPlayerCheating():
+		if OverworldGlobals.getCurrentMap().scene_file_path != 'res://scenes/maps/Sidescroller.tscn':
+			OverworldGlobals.changeMap("res://scenes/maps/Sidescroller.tscn")
+		else:
+			OverworldGlobals.changeMap("res://scenes/maps/SidescrollerB.tscn")
 
 #func getHUD():
 #
@@ -653,7 +659,7 @@ func undrawBowAnimation():
 
 func playFootstep():
 	if is_on_floor():
-		FootstepSoundManager.playFootstep(getPosOffset())
+		FootstepSoundManager.playFootstep(global_position)
 
 func saveData(save_data: Array):
 	var data = EntitySaveData.new()

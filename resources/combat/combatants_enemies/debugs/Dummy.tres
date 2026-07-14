@@ -117,7 +117,7 @@ drop_chance = 1.0
 
 [resource]
 script = ExtResource("1_hgql2")
-faction = 1
+faction = 0
 tier = 0
 preferred_position = 0
 chance_to_drop = 0.5
@@ -133,9 +133,9 @@ stat_values = {
 "damage": 999,
 "dmg_variance": 0.0,
 "handling": 0,
-"health": 999,
+"health": 1,
 "resist": 0.0,
-"resolve": 0,
+"resolve": 3,
 "speed": 0
 }
 scale_stats = {

@@ -121,14 +121,14 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 func resizeHitbox(target_count:int):
 	var hitbox_size = 32
 	hitbox_shape.shape.size.x = hitbox_size * target_count
-	hitbox_shape.position.x = (hitbox_size/2) * (target_count+1.75)
+	hitbox_shape.position.x = (hitbox_size/2.0) * (target_count+1.75)
 	if combatant_resource is ResEnemyCombatant:
 		hitbox_shape.position.x *= -1
 
 func cannotAct()-> bool:
 	return combatant_resource.isDead(true) #and !combatant_resource.hasStatusEffect('Fading')
 
-func playIdle(new_idle:String='',is_temporary:bool=false):
+func playIdle(new_idle:String=''):
 	if !animator.get_animation_list().has(new_idle) and new_idle != '':
 		return
 	if new_idle != '':

@@ -157,10 +157,10 @@ func addItemResource(item: ResItem, count:int=1, show_message:bool=true, check_r
 	
 	if item is ResStackItem and inventory.has(item):
 		if item.stack+count > item.max_stack: count = item.max_stack-item.stack
-		inventory[inventory.find(item)].add(count, show_message)
+		inventory[inventory.find(item)].add(count)
 	elif item is ResStackItem:
 		if item.stack <= 0: item.stack = 1
-		item.add(count-1, false)
+		item.add(count-1)
 		inventory.append(item)
 	
 	elif item is ResCharm:
@@ -199,7 +199,7 @@ func hasItem(item_key, count:int=1, check_equipped:bool=true)-> bool:
 	elif item_key is ResItem:
 		find_item = item_key
 	else:
-		assert(true, 'Unknown item key type: %s'%item_key)
+		assert(!item_key is ResItem and !item_key is String, 'Unknown item key type: %s'%item_key)
 	
 	if find_item is ResEquippable and check_equipped:
 		for member in PlayerGlobals.team:
@@ -217,7 +217,6 @@ func hasItem(item_key, count:int=1, check_equipped:bool=true)-> bool:
 	return inventory.has(find_item)
 
 func getCharms(charm:ResCharm)-> Array:
-	var parent_charm = load("res://resources/items/%s.tres"%charm.getFilename())
 	return inventory.filter(func(item): return item == charm)
 
 func getEquippedWeapons()-> Array:
@@ -257,7 +256,7 @@ func removeItemWithName(item_name: String, count=1, revoke_mandatory=false):
 			if revoke_mandatory: item.mandatory = false
 			removeItemResource(item,count)
 
-func removeItemResource(item, count=1, prompt=true, ignore_mandatory=false):
+func removeItemResource(item, count=1, ignore_mandatory=false):
 	if count == 0:
 		return
 	elif item.mandatory and !ignore_mandatory:

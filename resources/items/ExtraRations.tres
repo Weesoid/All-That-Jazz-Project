@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResCampItem" load_steps=10 format=3 uid="uid://dorqpf5we3uoi"]
+[gd_resource type="Resource" script_class="ResCampItem" load_steps=12 format=3 uid="uid://dorqpf5we3uoi"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="1_8e2li"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectStatModifier.gd" id="2_hxptb"]
 [ext_resource type="Script" path="res://scripts/resources/ResEffectConditionChance.gd" id="3_63mnh"]
 [ext_resource type="Texture2D" uid="uid://cyxtiioot8nqc" path="res://images/sprites/item_unknown.png" id="3_grqug"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHealResolve.gd" id="4_fqtb7"]
 [ext_resource type="Script" path="res://scripts/resources/ResItemCamp.gd" id="6_r1feb"]
 
 [sub_resource type="Resource" id="Resource_6412b"]
@@ -11,6 +12,7 @@ script = ExtResource("1_8e2li")
 base_heal = 15
 percent_heal = 0.0
 use_multiplier = false
+revive_from_ko = false
 cast_animation = ""
 animation_time = 0.0
 animate_on = 0
@@ -35,6 +37,7 @@ stat_modifications = {
 duration_type = 1
 duration = 1
 stacks = false
+resistable = false
 animation_time = 0.0
 animate_on = 0
 
@@ -62,13 +65,20 @@ stat_modifications = {
 duration_type = 1
 duration = 2
 stacks = true
+resistable = false
 condition = SubResource("Resource_sthyd")
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_guvj5"]
+script = ExtResource("4_fqtb7")
+amount = 1
 animation_time = 0.0
 animate_on = 0
 
 [resource]
 script = ExtResource("6_r1feb")
-effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_6412b"), SubResource("Resource_ulp6k"), SubResource("Resource_q43xn")])
+effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_6412b"), SubResource("Resource_ulp6k"), SubResource("Resource_q43xn"), SubResource("Resource_guvj5")])
 strain = 1
 party_wide = true
 max_stack = 6

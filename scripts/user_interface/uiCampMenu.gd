@@ -23,6 +23,7 @@ const FAST_TRAVEL_ICON = preload("res://images/sprites/button_pinpoint_normal.pn
 @onready var game_menu = $GameMenu
 @onready var char_sheet: CharSheet = $Roster/Control/PanelContainer/MarginContainer/CharacterSheet
 @onready var char_sheet_panel = $Roster/Control/PanelContainer
+@onready var char_sheet_closer = $Roster/Control/PanelContainer/MenuCloser
 @onready var roster_elements = $Roster/Control
 @onready var revive_indicator = $Roster/Control/ReviveIndicator
 @onready var revive_indicator_button = $Roster/Control/ReviveIndicator/ReviveIndicator
@@ -41,6 +42,7 @@ var last_selected_item: ItemButton = null
 signal combatant_revived
 
 func _ready():
+	char_sheet_closer.closed.connect(func(): outside_buttons.show())
 	modulate=Color.TRANSPARENT
 	revive_indicator.modulate = Color.TRANSPARENT
 	camp_bars = camp_spot.getCampBars()
@@ -172,8 +174,12 @@ func reviveCombatant(combatant):
 	#combatant_revived.emit()
 
 func showCharacterSheet(combatant:ResPlayerCombatant):
+	outside_buttons.hide()
 	char_sheet.setCombatant(combatant)
 	char_sheet_panel.show()
+	await get_tree().process_frame
+	$Roster/Control/PanelContainer/MarginContainer/CharacterSheet.focus()
+	#char_sheet.focus()
 
 func focusCamper(item):
 	if !UIGlobals.isUsingController() or !get_viewport().gui_is_dragging():
@@ -248,7 +254,7 @@ func hideAllItems():
 		if camp_button.combatant != null: camp_button.showAction(null)
 
 # DUCT TAPE
-func _process(delta):
+func _process(_delta):
 	if !done:
 		modulate = Color.TRANSPARENT
 
@@ -382,7 +388,7 @@ func restCombatant(combatant: ResPlayerCombatant):
 	combatant.addTemporaryModifer('Well Rested',3,{'resist':0.1,random_stat_boost:1,'health':5},false,true)
 	CombatGlobals.calculateHealing(combatant, ceil(combatant.getMaxHealth()*0.05),false)
 	CombatGlobals.healResolve(combatant,3)
-	CombatGlobals.removeInjury(combatant,0.1,randi_range(1,2))
+	if CombatGlobals.randomRoll(0.1): CombatGlobals.removeInjury(combatant,randi_range(1,2))
 
 func _on_return_pressed():
 	outside_buttons.show()
@@ -399,7 +405,6 @@ func _on_embark_held_press():
 
 func doExitTransition(do_screen_fade:bool=true):
 	if do_screen_fade: await doScreenFade()
-	#await get_tree().process_frame
 	setGuard(null)
 	camp_spot.done.emit()
 	queue_free()
@@ -449,7 +454,6 @@ func setGuardMeta(index:String):
 	guard_button.show()
 
 func toggleGameMenu(set_to:bool):
-	#for menu in get_children(): if menu != game_menu: menu.visible = !set_to
 	game_menu.visible = set_to
 	if game_menu.visible: 
 		outside_buttons.hide()

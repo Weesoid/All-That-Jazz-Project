@@ -23,15 +23,14 @@ func showTween():
 func loadParty():
 	resetSlots()
 	await get_tree().process_frame
-	var slot:int=0
 	var squad = OverworldGlobals.getCombatantSquad('Player')
 	for character in squad:
-		var char = UIGlobals.createCharacterButton(character)
+		var charact = UIGlobals.createCharacterButton(character)
 		if character.assigned_position == -1:
-			getFirstEmptySlot().addCharacter(char)
+			getFirstEmptySlot().addCharacter(charact)
 		else:
-			getSlot(character.assigned_position).addCharacter(char)
-		char.character_presssed.connect(sheet.setCombatant)
+			getSlot(character.assigned_position).addCharacter(charact)
+		charact.character_presssed.connect(sheet.setCombatant)
 	
 	sheet.setCombatant(squad[0])
 

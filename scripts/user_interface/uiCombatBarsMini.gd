@@ -2,7 +2,7 @@ extends Control
 class_name CombatBarsMini
 
 @onready var fader_bar = $HealthBarFader
-@onready var fader_animator = $HealthBarFader/AnimationPlayer
+#@onready var fader_animator = $HealthBarFader/AnimationPlayer
 @onready var health_bar = $HealthBar
 @onready var status_effects = $HealthBar/PermaStatusEffectContainer
 @onready var prompts = $Marker2D
@@ -74,14 +74,14 @@ func setConnections(set_to:bool):
 
 func manualCallIndicator(combatant: ResCombatant, text: String, animation: String,top_position:bool=false):
 	if attached_combatant == combatant and prompts.visible:
-		var range = 8
+		var float_range = 8
 		var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
 		var final_pos:Vector2
 		
 		if top_position:
-			final_pos = Vector2(0,-range)
+			final_pos = Vector2(0,-float_range)
 		else:
-			final_pos = Vector2(range,randf_range(-range,range))
+			final_pos = Vector2(float_range,randf_range(-float_range,float_range))
 		
 		indicator.modulate = Color.TRANSPARENT
 		prompts.add_child(indicator)

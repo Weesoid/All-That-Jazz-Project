@@ -37,12 +37,13 @@ func focusEmptySlot():
 			return
 	
 	first_slot.grab_focus()
+
 # CRAFT HANDLING
 func connectSlots():
 	for slot in crafting_slots:
 		slot.current_recipe = current_recipe
 		
-		slot.item_received.connect(addMaterial.bind(slot))
+		slot.item_received.connect(addMaterial)
 		slot.item_dragged.connect(removeMaterial)
 		slot.item_replaced.connect(removeMaterial)
 		
@@ -52,7 +53,7 @@ func connectSlots():
 		InventoryGlobals.stack_item_changed.connect(slot.update_count.unbind(2).bind(craft_item))
 		InventoryGlobals.item_repaired.connect(slot.update_count.unbind(2).bind(craft_item))
 
-func addMaterial(item:ResItem, slot:ItemSlot):
+func addMaterial(item:ResItem):
 	current_recipe.append(item.getFilename())
 	showResult()
 

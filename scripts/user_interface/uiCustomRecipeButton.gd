@@ -38,13 +38,13 @@ func update():
 	#setDisabled(!canCraftOrRepair())
 
 func initializeIcons():
-	var recipe = InventoryGlobals.getRecipe(item)
+	var item_recipe = InventoryGlobals.getRecipe(item)
 	
 	var component_container = comp_container.get_children()
 	var icon_count=0
-	for comp in recipe:
+	for comp in item_recipe:
 		var component_icon = component_container[icon_count]
-		component_icon.setItem(InventoryGlobals.loadItemResource(comp), recipe[comp])
+		component_icon.setItem(InventoryGlobals.loadItemResource(comp), item_recipe[comp])
 		component_icon.show()
 		icon_count += 1
 	if is_repair_recipe:

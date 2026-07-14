@@ -146,5 +146,3 @@ offset_top = 16.0
 offset_right = -40.0
 offset_bottom = -340.0
 show_value = true
-
-[connection signal="tab_changed" from="TabContainer" to="." method="grabTabFocus"]

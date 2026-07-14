@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://by2x5bgg618kl"]
+[gd_scene load_steps=33 format=3 uid="uid://by2x5bgg618kl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatBars.gd" id="1_i2y2p"]
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="3_ivcce"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cccrvcn7bhykq" path="res://images/sprites/health_bar_under.png" id="10_iwynr"]
 [ext_resource type="Texture2D" uid="uid://dcbmh0ebjbbom" path="res://images/sprites/resolve_bar_filled.png" id="10_l5fn2"]
 [ext_resource type="Texture2D" uid="uid://d3ouvhymj2yy3" path="res://images/sprites/health_bar_progress.png" id="11_jndj7"]
+[ext_resource type="Texture2D" uid="uid://c1chlf5nv15uq" path="res://images/status_icons/icon_combo.png" id="13_c6x35"]
 
 [sub_resource type="Gradient" id="Gradient_12uoa"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -405,6 +406,25 @@ _data = {
 "Show": SubResource("Animation_ox4cc")
 }
 
+[sub_resource type="GDScript" id="GDScript_hxthi"]
+script/source = "extends TextureRect
+
+@export var active:bool=true
+
+var c: ResCombatant
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if !active:
+		queue_free()
+	
+	await get_tree().create_timer(0.25).timeout
+	c = get_parent().attached_combatant
+
+func _process(_delta):
+	if c == null: return
+	visible = c.resolve_gate
+"
+
 [node name="CombatBars" type="Node2D"]
 z_index = 999
 script = ExtResource("1_i2y2p")
@@ -606,6 +626,15 @@ libraries = {
 libraries = {
 "": SubResource("AnimationLibrary_7dxpw")
 }
+
+[node name="DebugIndic" type="TextureRect" parent="."]
+modulate = Color(1, 0, 1, 1)
+offset_left = 20.0
+offset_top = 23.0
+offset_right = 28.0
+offset_bottom = 31.0
+texture = ExtResource("13_c6x35")
+script = SubResource("GDScript_hxthi")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

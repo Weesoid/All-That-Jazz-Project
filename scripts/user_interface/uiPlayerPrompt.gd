@@ -5,7 +5,7 @@ extends RichTextLabel
 @onready var audio_player = $AudioStreamPlayer
 var prompts = {}
 
-# TODO Turn this to process
+# TODO Turn this to signal
 func _process(_delta):
 	if prompts.size() > 100:
 		prompts.clear()

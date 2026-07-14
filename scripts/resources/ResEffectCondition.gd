@@ -1,7 +1,8 @@
 extends Resource
 class_name ResEffectCondition
 
-func isPassed(combatant:ResCombatant)->bool:
+func isPassed(_combatant:ResCombatant)->bool:
+	#combatant=null
 	return true
 
 func _to_string():

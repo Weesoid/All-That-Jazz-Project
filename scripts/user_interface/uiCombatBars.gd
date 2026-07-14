@@ -146,7 +146,7 @@ func updateHealthBar():
 	if attached_combatant.isDead(true):
 		create_tween().tween_property(self, 'modulate',Color.TRANSPARENT,0.5)
 		#OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/SkullKill.tscn",attached_combatant.combatant_scene)
-		manualCallIndicator(attached_combatant,'[color=RED]KILLING BLOW!','Show',true)
+		manualCallIndicator('[color=RED]KILLING BLOW!','Show',true)
 		#await tween.finished
 		return
 
@@ -233,7 +233,7 @@ func addIndicatorToQueue(combatant: ResCombatant, text: String, animation: Strin
 	if attached_combatant != combatant or !indicator_spawn_point.visible or !combat_scene.isCombatValid():
 		return
 	if !top_position:
-		manualCallIndicator(combatant,text,animation,top_position)
+		manualCallIndicator(text,animation,top_position)
 		return
 	var split_messsage = text.split('\n')
 	if split_messsage.size() == 0: 
@@ -251,11 +251,11 @@ func addIndicatorToQueue(combatant: ResCombatant, text: String, animation: Strin
 #		manualCallIndicator(indicator['combatant'], indicator['text'], indicator['animation'], indicator['top_position'])
 #		await get_tree().create_timer(0.25).timeout
 
-func manualCallIndicator(combatant: ResCombatant, text: String, animation: String,top_position:bool=false):
+func manualCallIndicator(text: String, animation: String,top_position:bool=false):
 	var spawnpoint = indicator_spawn_point if !top_position else status_spawn_point
-	var range = 24
+	var float_range = 24
 	var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
-	var final_pos:Vector2 = Vector2(0,-range) if top_position else Vector2(indicator_direction*range,randf_range(-range,range))
+	var final_pos:Vector2 = Vector2(0,-float_range) if top_position else Vector2(indicator_direction*float_range,randf_range(-float_range,float_range))
 	indicator.modulate = Color.TRANSPARENT
 	spawnpoint.add_child(indicator)
 	indicator.modulate = Color.WHITE
@@ -330,5 +330,5 @@ func _on_indicator_intervals_timeout():
 		return
 	
 	var indicator = indicator_queue.pop_front()
-	manualCallIndicator(indicator['combatant'], indicator['text'], indicator['animation'], indicator['top_position'])
+	manualCallIndicator(indicator['text'], indicator['animation'], indicator['top_position'])
 	indicator_intervals.start()

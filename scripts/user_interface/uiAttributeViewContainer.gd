@@ -7,10 +7,10 @@ class_name AttributeViewer
 func _ready():
 	UIGlobals.setVerticalNeighbors(self)
 
-func setCombatant(combatant, clear:bool=false):
+func setCombatant(combatant, reset:bool=false):
 	if combatant == null:
 		return
-	if clear:
+	if reset:
 		clear()
 		await get_tree().process_frame
 	for stat_tracker in get_children():

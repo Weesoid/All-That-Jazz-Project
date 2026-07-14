@@ -1,7 +1,7 @@
 extends Control
 
 @onready var travel_panel = $ScrollContainer/VBoxContainer
-var map_component_data = {}
+#var map_component_data = {}
 
 func _ready():
 	addAllFastTravelPoints()
@@ -14,8 +14,19 @@ func loadFastTravelButtons():
 		
 		var button = UIGlobals.createCustomButton()
 		button.alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		var map:MapData = load(location).instantiate()
-		button.text = map.name
+		#button.text = location.get_file().trim_suffix('.tscn')
+		var map_state = load(location).instantiate()#.get('map_name')#.get_sta()#.get_method_list()
+#		var root_node_index = 0 
+#		for i in map_state.get_node_property_count(root_node_index):
+#			var prop_name = map_state.get_node_property_name(root_node_index, i)
+#			var prop_value = map_state.get_node_property_value(root_node_index, i)
+#
+#			if prop_name == "map_name":
+		button.text = map_state.map_name
+		map_state.free()
+		#		break
+		#map.queue_free()
+		#button.text = map._bundled.variants[map._bundled.names.find('name') - 2] as String
 		button.pressed.connect(
 			func(): 
 				if PlayerGlobals.hasMapEvent(OverworldGlobals.getCurrentMap().scene_file_path):
@@ -23,51 +34,11 @@ func loadFastTravelButtons():
 				else:
 					travel(location)
 				)
-#		button.focus_entered.connect(
-#			func():
-#				getMapInfo(location)
-#		)
-#		button.mouse_entered.connect(
-#			func():
-#				getMapInfo(location)
-#		)
 		button.tooltip_text=str(PlayerGlobals.map_logs[location])
-#		if map.getClearState() != MapData.PatrollerClearState.FULL_CLEAR and PlayerGlobals.hasMapEvent(location):
-#			button.icon = load("res://images/sprites/icon_patrol_spawned.png")
-#		elif map.getClearState() != MapData.PatrollerClearState.FULL_CLEAR:
-#			button.icon = load("res://images/sprites/icon_patrol_uncleared.png")
 			
 		if OverworldGlobals.getCurrentMap().scene_file_path == location:
 			button.disabled = true
 		travel_panel.add_child(button)
-		map.queue_free()
-	
-	#UIGlobals.setMenuFocus(travel_panel)
-
-func getMapInfo(path):
-	pass
-#	var map: MapData = load(path).instantiate()
-#	var map_log = PlayerGlobals.map_logs[map.scene_file_path]
-#	var total_patrols = map.getPatrolGroups().size()
-#	var cleared_patrols = map_log.filter(func(entry): return entry is String and entry.contains('PatrollerGroup')).size()
-#	getMapEventInfo(map_log)
-#	description.text = 'Status: %s' % map.getVerbalClearState()
-#	if total_patrols > 0 or cleared_patrols != total_patrols: 
-#		if cleared_patrols > 0:
-#			description.text += ' (%s/%s)' % [str(cleared_patrols),total_patrols]
-#		description.text += '\nFaction: '+str(CombatGlobals.Enemy_Factions.keys()[map.occupying_faction])
-#
-#	map.queue_free()
-
-func getMapEventInfo(map_log: Array):
-	pass
-#	event_description.hide()
-#
-#	for entry in map_log:
-#		if entry is Dictionary and entry.has('map_events'):
-#			event_description.text = str(entry)
-#			event_description.show()
-#			return
 
 func checkTravel(location):
 	var confirm_dialog: CustomConfirmationDialogue = load("res://scenes/user_interface/ConfirmationDialog.tscn").instantiate()
@@ -83,8 +54,17 @@ func checkTravel(location):
 	confirm_dialog.no_button.pressed.connect(func():UIGlobals.showMenu("res://scenes/user_interface/ConfirmationDialog.tscn"))
 
 func travel(location):
-	UIGlobals.closeMenu(self)
-	OverworldGlobals.changeMap(location, '0,0,0', ['SavePoint','FastTravel'])
+	if OverworldGlobals.player.camping:
+		OverworldGlobals.player.fast_travelling=true
+		OverworldGlobals.end_camp.connect(
+			func(): 
+				#await get_tree().process_frame
+			#	OverworldGlobals.getCurrentMap().hide()
+				OverworldGlobals.changeMap(location, '0,0,0', ['SavePoint','FastTravel'],false)
+				, CONNECT_ONE_SHOT)
+		UIGlobals.getMenu().doExitTransition()
+	else:
+		OverworldGlobals.changeMap(location, '0,0,0', ['SavePoint','FastTravel'])
 
 func _on_debug_button_pressed():
 	PlayerGlobals.randomizeMapEvents(OverworldGlobals.getCurrentMap().scene_file_path)
@@ -93,9 +73,10 @@ func _on_debug_button_pressed():
 	loadFastTravelButtons()
 
 func addAllFastTravelPoints():
-	var maps = ResourceGlobals.loadArrayFromPath("res://scenes/maps/")
-	for map in maps:
-		if map == null: continue
-		var data = map.instantiate()
-		PlayerGlobals.addMapLog(data.scene_file_path)
-		data.queue_free()
+	pass
+#	var maps = ResourceGlobals.loadArrayFromPath("res://scenes/maps/")
+#	for map in maps:
+#		if map == null: continue
+#		var data = map.instantiate()
+#		PlayerGlobals.addMapLog(data.scene_file_path)
+#		data.queue_free()

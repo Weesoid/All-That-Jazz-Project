@@ -109,7 +109,7 @@ func _on_show_talents_pressed():
 func equipmentButtonPressed():
 	if !press_cooldown.is_stopped() or equipment.visible:
 		return
-	var all_equippables = InventoryGlobals.inventory.filter(func(item): return item is ResEquippable)
+#	var all_equippables = InventoryGlobals.inventory.filter(func(item): return item is ResEquippable)
 #	if all_equippables.is_empty():
 #		CombatGlobals.spawnIndicator(get_global_mouse_position(), 'No equipment!')
 #		return
@@ -140,10 +140,10 @@ func checkEquipmentHide(_item):
 	if equipment.getButtons().size() == 0:
 		animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
 
-func animateSubmenu(set_visible:bool, submenu:Control, offscreen_offset:Vector2):
+func animateSubmenu(set_vis:bool, submenu:Control, offscreen_offset:Vector2):
 	var tween = create_tween().set_parallel()
 	var offscreen_pos = submenu_positions[submenu]+offscreen_offset
-	if set_visible:
+	if set_vis:
 		tween.set_ease(Tween.EASE_IN)
 		submenu.modulate = Color.TRANSPARENT
 		submenu.position = offscreen_pos
@@ -168,15 +168,9 @@ func _on_toggle_stats_pressed():
 	
 	if attributes.visible:
 		toggle_stats_button.setTexture(SHIELD_SWORD_ICON)
-		#toggle_stats_button.getTexture().flip_h = false
 	else:
-		print('ragh')
 		toggle_stats_button.setTexture(BACKPACK_ICON)
 		loadEquipment()
-		#await get_tree().process_frame
-		#equipment.focusFirstFilled()
-		#toggle_stats_button.getTexture().flip_h = true
-
 
 func _on_toggle_ability_modifiers_pressed():
 	if abilities_container.visible:
@@ -188,6 +182,8 @@ func _on_toggle_ability_modifiers_pressed():
 		modifier_viewer.hide()
 		toggle_ability_modifier_button.setTexture(ABILITIES_ICON)
 
+func focus():
+	abilities_container.pool.get_child(0).grab_focus()
 
 func _on_toggle_equipment_pressed():
 	pass # Replace with function body.

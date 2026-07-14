@@ -57,7 +57,7 @@ func giveButtonUnlockAbility(button:CustomButton, combatant:ResPlayerCombatant, 
 	button.hold_time = 0.25
 	button.held_press.connect(
 		func():
-			var ability_cost = PlayerGlobals.getAbilityCost(combatant, ability)
+			var ability_cost = PlayerGlobals.getAbilityCost(combatant)
 			if !InventoryGlobals.hasItem('Remembrance', ability_cost): 
 				return
 			

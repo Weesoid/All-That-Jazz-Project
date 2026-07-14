@@ -54,7 +54,7 @@ func setShowHover(set_to:bool):
 	if !parent.mouse_exited.is_connected(hideTooltip):
 		parent.mouse_exited.connect(hideTooltip)
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_pressed('ui_show_info') and get_parent_control().has_focus() and modulate == Color.TRANSPARENT:
 		showTooltip()
 	if Input.is_action_just_released('ui_show_info'):
@@ -75,14 +75,14 @@ func hideTooltip():
 	await animator.animation_finished
 	hide()
 
-func setText(text:String, update:bool=false):
+func setText(p_text:String):
 	var alignment
 	match text_alignment:
 		TextAlignment.RIGHT: alignment = '[right]'
 		TextAlignment.LEFT: alignment = '[left]'
 		TextAlignment.CENTER: alignment = '[center]'
 	
-	text_label.text = alignment+text.strip_edges()
+	text_label.text = alignment+p_text.strip_edges()
 	await text_label.resized
 	await get_tree().process_frame
 	setAnchor()

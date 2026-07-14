@@ -55,7 +55,7 @@ func getPreview():
 	print(dupe_bar.position)
 	return preview
 
-func _get_drag_data(at_position):
+func _get_drag_data(_at_position):
 	set_drag_preview(getPreview())
 	drag_start.emit()
 	return self

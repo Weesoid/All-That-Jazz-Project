@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedSettings" load_steps=2 format=3 uid="uid://b3ywxk5jv7bg4"]
+[gd_resource type="Resource" script_class="SavedSettings" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSavedSettings.gd" id="1_i8cl7"]
 

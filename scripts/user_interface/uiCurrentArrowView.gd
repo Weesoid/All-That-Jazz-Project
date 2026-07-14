@@ -13,7 +13,7 @@ func _ready():
 	OverworldGlobals.player.bow_unequipped.connect(changeOpacity.bind(3))
 
 func updateArrowIndicator():
-	if PlayerGlobals.equipped_arrow == null:
+	if PlayerGlobals.equipped_arrow == null or arrow_counter.item == PlayerGlobals.equipped_arrow:
 		return
 	arrow_counter.setItem(PlayerGlobals.equipped_arrow)
 
@@ -23,10 +23,12 @@ func getCountLabel(button):
 	return null
 
 func changeOpacity(change_to:int):
+	if change_to < 3 and !visible:
+		show()
 	match change_to:
 		1:get_tree().create_tween().tween_property(self,'modulate',Color.WHITE,0.25)
 		2:get_tree().create_tween().tween_property(self,'modulate',Color(Color.WHITE,0.5),0.25)
 		3:get_tree().create_tween().tween_property(self,'modulate',Color.TRANSPARENT,0.25)
 
 func canShow():
-	return OverworldGlobals.player.bow_mode
+	return OverworldGlobals.player.bow_mode and !OverworldGlobals.player.camping

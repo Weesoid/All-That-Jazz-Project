@@ -41,25 +41,25 @@ func update_counts(is_repair:bool=false):
 	else:
 		var count_string
 		if is_repair: 
-			count_string = getCurrentDurabilityString(item)
+			count_string = ItemComponentIcon.getCurrentDurabilityString(item)
 		else:
-			count_string = getCurrentCountString(item)
+			count_string = ItemComponentIcon.getCurrentCountString(item)
 		required_count.text = count_string[0]
 		required_count.modulate = count_string[1]
 
 ## Returns [<Count string>, <String color>] e.g. ["16/16", Color.YELLOW]
 static func getCurrentCountString(p_item: ResItem):
 	var item_count = InventoryGlobals.getItemCount(p_item)
-	var max:int=-1
+	var maximum:int=-1
 	if p_item is ResStackItem:
-		max = p_item.max_stack
+		maximum = p_item.max_stack
 	elif p_item.isRepairable():
-		max = 1
+		maximum = 1
 	
-	if max > 0 and max != 9999:
-		return [str('%s/%s' % [item_count, max]), Color.YELLOW if item_count == max else Color.WHITE]
+	if maximum > 0 and maximum != 9999:
+		return [str('%s/%s' % [item_count, maximum]), Color.YELLOW if item_count == maximum else Color.WHITE]
 	else:
-		return [str(item_count), Color.YELLOW if item_count == max else Color.WHITE]
+		return [str(item_count), Color.YELLOW if item_count == maximum else Color.WHITE]
 
 static func getCurrentDurabilityString(p_weapon:ResItem):
 	return [str(p_weapon.durability)+'/'+str(p_weapon.max_durability), Color.YELLOW if p_weapon.durability == p_weapon.max_durability else Color.WHITE]

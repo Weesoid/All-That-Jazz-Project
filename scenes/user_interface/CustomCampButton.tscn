@@ -103,6 +103,8 @@ one_shot = true
 [node name="HoldDelay" type="Timer" parent="."]
 one_shot = true
 
+[node name="DragDelay" type="Timer" parent="."]
+
 [node name="ActionTexture" type="TextureRect" parent="."]
 visible = false
 layout_mode = 1

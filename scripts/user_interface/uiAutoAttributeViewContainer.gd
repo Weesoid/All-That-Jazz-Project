@@ -5,10 +5,10 @@ class_name AutoAttribueViewer
 var tracked_stats:Array[String] = []
 var skip_stats = CombatExtras.BASE_STATS
 
-func setCombatant(combatant:ResCombatant, clear:bool=false):
+func setCombatant(combatant:ResCombatant, reset:bool=false):
 	if combatant == null:
 		return
-	if clear:
+	if reset:
 		clear()
 		await get_tree().process_frame
 	
@@ -28,11 +28,11 @@ func clear():
 		stat_tracker.queue_free()
 	tracked_stats.clear()
 
-func createStatTracker(combatant, stat,tooltip_position:CustomTooltip.AnchorPreset=CustomTooltip.AnchorPreset.LEFT):
+func createStatTracker(combatant, stat,tooltop_pos:CustomTooltip.AnchorPreset=CustomTooltip.AnchorPreset.LEFT):
 	var tracker = load("res://scenes/user_interface/StatLabel.tscn").instantiate()
 	tracker.track_stat = stat
 	tracker.visual = StatLabel.StatVisuals.LABEL
-	tracker.tooltip_pos = tooltip_position
+	tracker.tooltip_pos = tooltop_pos
 	if combatant.stat_values[stat] is float:
 		tracker.label_style = StatLabel.LabelStyle.PERCENTAGE
 	else:

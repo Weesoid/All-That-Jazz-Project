@@ -72,7 +72,7 @@ func enter():
 		await moveFollowers()
 	elif !show_followers:
 		OverworldGlobals.fadeFollowers(Color.TRANSPARENT)
-
+	OverworldGlobals.interaction_started.emit()
 
 func exit():
 	cooldown_timer.start(cooldown)
@@ -94,7 +94,7 @@ func exit():
 		OverworldGlobals.zoomCamera(Vector2(1,1),0.5)
 	PlayerGlobals.setFollowersMotion(true)
 	cooldown_timer.start(cooldown)
-
+	OverworldGlobals.interaction_ended.emit()
 
 
 func _on_area_entered(area):

@@ -125,9 +125,6 @@ func fade(color: Color,duration:float=0.25,override_direction:int=-1):
 	var tween = create_tween().tween_property(self, 'modulate', color, duration)
 	await tween.finished
 
-# TODO Change to signals
-# Climb start > fade trans
-# 
 func _physics_process(delta):
 #	if !OverworldGlobals.getCombatantSquad('Player').has(host_combatant):
 #		queue_free()

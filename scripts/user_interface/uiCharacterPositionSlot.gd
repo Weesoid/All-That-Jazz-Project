@@ -54,7 +54,7 @@ func _on_character_button_container_child_exiting_tree(node):
 	character_button = null
 	focus_mode = Control.FOCUS_ALL
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if (has_focus() or (character_button != null and character_button.has_focus())) and _can_drop_data(position, get_viewport().gui_get_drag_data()) and UIGlobals.isUsingController() and Input.is_action_pressed("ui_accept"):
 		UIGlobals.getControllerAdapter().fastClick()
 		#_drop_data(position, get_viewport().gui_get_drag_data())

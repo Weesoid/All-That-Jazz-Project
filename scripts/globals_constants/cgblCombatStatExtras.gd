@@ -38,6 +38,14 @@ const BASE_STATS = [
 	"strain",
 	"rebuke_chance"
 ]
+const EXPERIENCE_WEIGHTS = {
+	"health":0.1, 
+	"damage":1.0,  
+	"speed":2.0, 
+	"crit":110.0,
+	"resist":100.0, 
+	"resolve":10
+}
 const ALL_STATS = {
 	"health":0,
 	"damage":0,

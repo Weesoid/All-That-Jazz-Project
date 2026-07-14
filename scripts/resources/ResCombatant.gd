@@ -33,7 +33,7 @@ class_name ResCombatant
 @export var assigned_position:int = -1
 @export var ai_package: GDScript
 var percent_health:float
-var saved_resolve:int
+var percent_resolve:float
 var resolve_gate:bool=true
 var resolve_dot_shield:bool=false
 var turn_charges: int
@@ -199,7 +199,6 @@ func appendStatModification(modifier_id:String, append_stats: Dictionary):
 		if modifier == modifier_id:
 			stat_modifiers[modifier_id] = CombatGlobals.combineDictionaries(stat_modifiers[modifier_id], append_stats)
 
-# TODO?  Update handling. Replace outdated modifiers based on modifier_id?
 func addTemporaryModifer(modifier_id:String, duration:int, stat_dict: Dictionary, append_stats:bool,per_battle:bool=false, resistable:bool=false,show_indicator:bool=true):
 	var key
 	var data
@@ -271,7 +270,7 @@ func applyStatModifications(modifier_id: String):
 				if stat == 'health':
 					updateHealth(stat_modifiers[modifier][stat])
 				elif stat == 'resolve':
-					updateResolve(stat_modifiers[modifier][stat],false)
+					updateResolve(stat_modifiers[modifier][stat])
 				elif stat_values.has(stat):
 					stat_values[stat] += stat_modifiers[modifier][stat]
 				else:
@@ -287,7 +286,7 @@ func removeStatModification(modifier_id: String):
 				if stat == 'health':
 					updateHealth(-stat_modifiers[modifier][stat])
 				elif stat == 'resolve':
-					updateResolve(-stat_modifiers[modifier][stat],false)
+					updateResolve(-stat_modifiers[modifier][stat])
 				else:
 					stat_values[stat] -= stat_modifiers[modifier][stat]
 			stat_modifiers.erase(modifier)
@@ -307,10 +306,14 @@ func changeHealth(value:int,set_to:bool=false):
 	health_changed.emit(self)
 
 func changeResolve(value:int):
-	stat_values['resolve'] += value
-	if stat_values['resolve'] > getMaxResolve():
-		stat_values['resolve']=getMaxResolve()
-	saved_resolve = stat_values['resolve']
+	print('received val ', value)
+	var fag = stat_values['resolve']+value
+	if fag > getMaxResolve():
+		fag=getMaxResolve()
+	print('setting resolve to ', fag, ' (was %s)' % stat_values['resolve'])
+	stat_values['resolve'] = fag
+	print('resolve is now: ', stat_values['resolve'])
+	percent_resolve = float(stat_values['resolve'])/float(getMaxResolve())
 	resolve_changed.emit()
 
 func removeEmptyStats():
@@ -322,6 +325,7 @@ func removeEmptyStats():
 		if stat_modifiers[stat] == 0.0:
 			stat_modifiers.erase(stat)
 
+# TODO: Figure out a wway to handle negative health via statmodifiers
 func updateHealth(amount:int):
 	base_stat_values['health'] += amount
 	var scaled = int(getMaxHealth()*percent_health)
@@ -329,21 +333,14 @@ func updateHealth(amount:int):
 		scaled = 1
 	stat_values['health'] = scaled
 
-# TODO: Figure out a wway to handle negative health via statmodifiers
-#func updateHealth(amount: int):
-#	pass
-##	var percent_health = float(stat_values['health']) / float(base_stat_values['health'])
-##
-##	base_stat_values['health'] += amount
-##	if stat_values['health'] >= base_stat_values['health'] or percent_health == 1:
-##		stat_values['health'] = base_stat_values['health']
 
-func updateResolve(amount: int, heal_resolve:bool=true):
+
+func updateResolve(amount: int):
 	base_stat_values['resolve'] += amount
-	if base_stat_values['resolve'] < stat_values['resolve']:
-		stat_values['resolve'] = base_stat_values['resolve']
-	if amount > 0 and heal_resolve:
-		CombatGlobals.healResolve(self, amount)
+	var scaled = int(base_stat_values['resolve']*percent_resolve)
+	if scaled <= 0 and percent_resolve > 0:
+		scaled = 1
+	stat_values['resolve'] = scaled
 
 func clearAbilityMutations():
 	for ability in ability_set.filter(func(ability): return ability.mutated):
@@ -372,7 +369,6 @@ func storeStatusEffect(effect, persistent:bool=false):
 		stored_status_effects.append(effect.getFilename())
 	status_effect_stored.emit(effect)
 
-# TODO: Remove based on effect
 func unstoreStatusEffect(remove_effect: ResStatusEffect):
 	for effect in stored_status_effects:
 		var effect_data = effect.split('/')

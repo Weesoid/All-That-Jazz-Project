@@ -10,12 +10,13 @@ func _on_timer_timeout():
 
 func _on_tree_entered():
 	blessing.setBlessing(true)
-	OverworldGlobals.showPrompt('You are affected by [color=yellow]%s[/color]!' % blessing.blessing_name)
+	#OverworldGlobals.showPrompt('You are affected by [color=yellow]%s[/color]!' % blessing.blessing_name)
 	#timer.start(time)
 
 func _on_tree_exited():
 	blessing.setBlessing(false)
 
 func _on_tree_exiting():
-	if is_inside_tree():
-		OverworldGlobals.showPrompt('[color=yellow]%s[/color] has worn out!' % blessing.blessing_name)
+	pass
+#	if is_inside_tree():
+#		OverworldGlobals.showPrompt('[color=yellow]%s[/color] has worn out!' % blessing.blessing_name)

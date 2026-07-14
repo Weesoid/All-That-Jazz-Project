@@ -4,7 +4,7 @@ class_name CraftingSlot
 @onready var count_label = $CountLabel
 var current_recipe
 
-func _get_drag_data(at_position):
+func _get_drag_data(_at_position):
 	if item == null or !drag_delay.is_stopped():
 		return
 	var item_copy = item
@@ -18,7 +18,6 @@ func _can_drop_data(_at_position, data):
 	return data is ResItem and !current_recipe.has(data.getFilename())
 
 func _drop_data(_at_position, data):
-	var previous_item=item
 	setItem(data)
 	drop_feedback()
 
@@ -35,7 +34,7 @@ func update_count(item_to_craft:ResItem):
 		if recipe_dict.has(item.getFilename()): append = '/'+str(recipe_dict[item.getFilename()])
 	count_label.text = out+append
 
-func update_count_labels(received_item, last_item):
+func update_count_labels(received_item):
 	if received_item != null:
 		count_label.show()
 	else:

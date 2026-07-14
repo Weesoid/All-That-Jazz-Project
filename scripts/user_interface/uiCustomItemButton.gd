@@ -14,7 +14,7 @@ func _ready():
 	setItem(item)
 	setTooltip()
 
-func _get_drag_data(at_position):
+func _get_drag_data(_at_position):
 	if item == null or !allow_drag:
 		return
 	set_drag_preview(getPreview())

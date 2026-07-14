@@ -1,8 +1,6 @@
 extends RichTextLabel
 class_name StatModifierLabel
 
-
-# TODO CLEANUP
 func setModifier(p_trait:String, combatant:ResCombatant, left_aligned:bool=false):
 	var bb = '[table=2]'
 	var trait_name = p_trait.split('/')[0].capitalize()

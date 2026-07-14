@@ -33,7 +33,7 @@ func setCombatant(combatant:ResCombatant):
 	for ability in combatant.ability_set:
 		ability_label_container.add_child(UIGlobals.createAbilityLabel(ability, combatant))
 	for effect in combatant.status_effects:
-		addStatusLabel(effect, combatant)
+		addStatusLabel(effect)
 		#modifier_label_container.add_child(UIGlobals.createStatusEffectLabel(effect, combatant))
 	for modifier in combatant.getTemporaryModifierKeys():
 		modifier_label_container.add_child(UIGlobals.createStatModifierLabel(modifier, combatant))
@@ -43,10 +43,10 @@ func setCombatant(combatant:ResCombatant):
 	await get_tree().process_frame
 	UIGlobals.setVerticalNeighbors(modifier_label_container)
 
-func addStatusLabel(effect, combatant):
+func addStatusLabel(effect):
 	var effect_path = effect.getFilepath()
 	if !pooled_status_labels.has(effect_path):
-		var status_label = UIGlobals.createStatusEffectLabel(effect, combatant)
+		var status_label = UIGlobals.createStatusEffectLabel(effect)
 		modifier_label_container.add_child(status_label)
 		if effect.seperate_instances: pooled_status_labels[effect_path] = status_label
 	else:

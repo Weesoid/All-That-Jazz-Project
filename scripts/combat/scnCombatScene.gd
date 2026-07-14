@@ -25,9 +25,9 @@ enum TargetState {
 @onready var turn_timer_bar = $CombatCamera/Interface/TurnTimerBar
 @onready var turn_timer_animator = $CombatCamera/Interface/TurnTimerBar/AnimationPlayer
 @onready var turn_timer = $TurnTimer
-@onready var fade_bars_animator = $CombatCamera/FadeBars/AnimationPlayer
-@onready var ui_inspect_target = $CombatCamera/Interface/Inspect
-@onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
+#@onready var fade_bars_animator = $CombatCamera/FadeBars/AnimationPlayer
+#@onready var ui_inspect_target = $CombatCamera/Interface/Inspect
+#@onready var ui_attribute_view = $CombatCamera/Interface/Inspect/AttributeView
 @onready var combat_ui: CombatUI = $CombatCamera/Interface/CombatUI
 @onready var tension_magnet = $CombatCamera/TensionMagnet
 
@@ -74,6 +74,7 @@ var reward_bank={
 	'loot':{}
 	}
 var reinforcements_summoning:bool=false
+var slain_enemies: Array[ResEnemyCombatant] = []
 # ex.
 #{
 # <round>: {
@@ -125,7 +126,7 @@ func initializeCombat(combatants:Array[ResCombatant]):
 		if combatant.isDead(): 
 			dead_combatants.append(combatant)
 			continue
-		await addCombatant(combatant, false, '', true)
+		await addCombatant(combatant, false, '')
 	for combatant in dead_combatants:
 		combatants.erase(combatant)
 	if battle_music_path != "":
@@ -138,7 +139,8 @@ func initializeCombat(combatants:Array[ResCombatant]):
 	
 	if initial_damage > 0.0:
 		for combatant in combatant_positions['enemies']:
-			await get_tree().create_timer(0.05).timeout
+			if combatant == null: continue
+			await get_tree().create_timer(0.1).timeout
 			CombatGlobals.calculateRawDamage(combatant, combatant.getMaxHealth()*initial_damage)
 	
 	await removeDeadCombatants(false)
@@ -215,11 +217,11 @@ func _unhandled_input(_event):
 			moveTarget('left')
 	if targeting and Input.is_action_just_pressed("ui_accept"):
 		if isInspecting(): releaseInspect()
-		removeTargetButtons()
+	#	removeTargetButtons()
 		OverworldGlobals.playSound("56243__qk__latch_01.ogg")
 		target_selected.emit()
-	if targeting and Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
-		removeTargetButtons()
+	#if targeting and Input.is_action_just_pressed("ui_tab") or Input.is_action_just_pressed("ui_right_mouse") or Input.is_action_just_pressed("ui_cancel"):
+	#	removeTargetButtons()
 	if targeting and Input.is_action_pressed("ui_show_info") and !isInspecting():
 		print('inspecting!')
 		inspectTarget(true)
@@ -438,6 +440,7 @@ func removeDeadCombatants(is_valid_check=true):
 			combatant.acted = true
 		if combatant is ResEnemyCombatant:
 			getEnemyDrops(combatant)
+			slain_enemies.append(combatant)
 			if combatant.spawn_on_death != null:
 				replaceCombatant(combatant, combatant.spawn_on_death) ## Also keeping this!
 
@@ -657,7 +660,7 @@ func setCameraZoom(set_zoom: Vector2, speed=0.25):
 	tween.tween_property(combat_camera, 'zoom', set_zoom, speed)
 	await tween.finished
 
-func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:String='', do_tween:bool=false):
+func addCombatant(combatant:ResCombatant, spawned:bool=false, animation_path:String=''):
 	if !isCombatValid() and round_count > 0:
 		return
 	var allegiance = 'team' if combatant is ResPlayerCombatant else 'enemies'
@@ -757,12 +760,12 @@ func forceCastAbility(ability: ResAbility, weapon: ResWeapon=null):
 	moveTarget('')
 	targeting_started.emit(target_selection)
 	
-	if ability.target_type == ResAbility.TargetType.MULTI:
-		addTargetClickButton(active_combatant)
-	elif valid_targets is Array:
-		for target in valid_targets: addTargetClickButton(target)
-	else:
-		addTargetClickButton(valid_targets)
+#	if ability.target_type == ResAbility.TargetType.MULTI:
+#		addTargetClickButton(active_combatant)
+#	elif valid_targets is Array:
+#		for target in valid_targets: addTargetClickButton(target)
+#	else:
+#		addTargetClickButton(valid_targets)
 	#target_state = selected_ability.getTargetType()
 	if last_used_ability.keys().has(active_combatant) and last_used_ability[active_combatant][0] == ability and ability.target_type == ability.TargetType.SINGLE:
 		moveTarget(last_used_ability[active_combatant][1])
@@ -896,7 +899,6 @@ func checkDialogue():
 	return combat_dialogue.dialogue_triggered
 
 func clearStatusEffects(combatant: ResCombatant):
-	var effects = combatant.status_effects
 	while !combatant.status_effects.is_empty():
 		combatant.status_effects[0].removeStatusEffect()
 
@@ -912,7 +914,16 @@ func tickStatusEffects(combatant: ResCombatant, tick_type: int):
 #		if !ability.enabled and ability.instant_cast: ability.enabled = true
 
 func moveTarget(target):
-	var index = 0 if target_combatant == null else valid_targets.find(target_combatant)
+	var index = -1 #if target_combatant == null else valid_targets.find(target_combatant)
+	if target_combatant == null:
+		index = 0
+	elif valid_targets is Array:
+		index = valid_targets.find(target_combatant)
+	elif valid_targets is ResCombatant:
+		index = getAllCombatants().find(valid_targets)
+	#elif target_combatant is ResCombatant:
+	#	index = getAllCombatants().find(target_combatant)
+	
 	var targets_size = valid_targets.size()-1
 	if target is ResCombatant and target.isDead(true): target = ''
 	
@@ -1024,7 +1035,6 @@ func concludeCombat(results: int):
 	var morale_bonus = 1
 	var loot_bonus = 1
 	var morale_before = 0
-	var drops = {}
 	var bonuses = []
 	await get_tree().create_timer(1.0).timeout
 	toggleUI(false)
@@ -1041,21 +1051,11 @@ func concludeCombat(results: int):
 			morale_bonus += 0.25
 			bonuses.append('Exhausted Tension!')
 		reward_bank['experience'] *= morale_bonus
-#		for enemy in combatant_positions['enemies']:
-#			var enemy_drops = enemy.getDrops()
-#			var barter_drops = enemy.getBarterDrops()
-#			enemy_drops.merge(barter_drops)
-#			#addDropToBank(enemy_drops)
-#			drops.merge(enemy_drops)
-#		if loot_bonus > 1:
-#			for i in range(loot_bonus):
-#					for enemy in combatant_positions['enemies']:
-#						var enemy_drops = enemy.getDrops()
-#						#addDropToBank(enemy_drops)
-#						drops.merge(enemy_drops)
+		for i in range(loot_bonus):
+			var enemy = slain_enemies.pick_random()
+			reward_bank['loot'] = CombatGlobals.combineDictionaries(reward_bank['loot'], enemy.getDrops())
 		var bc_ui = load("res://scenes/user_interface/CombatResultScreen.tscn").instantiate()
 		bc_ui.morale = morale_before
-		#bc_ui.drops = drops
 		bc_ui.reward_bank = reward_bank
 		bc_ui.bonuses = bonuses
 		add_child(bc_ui)
@@ -1142,8 +1142,8 @@ func moveCombatantScenes(group: String, direction:int):
 	
 	move_finished.emit()
 
-func moveCombatantToEmpty(combatant):
-	var group = 'enemies' if combatant is ResEnemyCombatant else 'team'
+#func moveCombatantToEmpty(combatant):
+#	var group = 'enemies' if combatant is ResEnemyCombatant else 'team'
 
 func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	var tween = CombatGlobals.getCombatScene().create_tween()
@@ -1154,14 +1154,14 @@ func fadeCombatant(target: CombatantScene, fade_in: bool, duration: float=0.25):
 	target.get_node('CombatBars').setBarVisibility(fade_in)
 	await tween.finished
 
-func addTargetClickButton(combatant: ResCombatant):
-	return
+#func addTargetClickButton(combatant: ResCombatant):
+#	return
 #	if !is_instance_valid(combatant.combatant_scene): 
 #		return
 #	combatant.combatant_scene.get_node('CombatBars').enableClicker()
 
-func removeTargetButtons():
-	return
+#func removeTargetButtons():
+#	return
 #	for combatant in combatants:
 #		combatant.combatant_scene.get_node('CombatBars').disableClicker()
 
@@ -1186,8 +1186,8 @@ func resetUI():
 	moveCamera(DEFAULT_CAM_POS)
 	targeting=false
 	targeting_ended.emit()
-	removeTargetButtons()
-	combat_ui.showUI(true)
+#	removeTargetButtons()
+	combat_ui.showUI()
 
 func attemptEscape():
 	if CombatGlobals.randomRoll(calculateEscapeChance()):

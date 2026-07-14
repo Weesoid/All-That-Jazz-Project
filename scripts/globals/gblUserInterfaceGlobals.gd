@@ -66,7 +66,7 @@ func createCustomButton(theme: Theme = load("res://design/DefaultTheme.tres"))->
 	button.theme = theme
 	return button
 
-func createItemButton(item: ResItem, value_modifier: float=0.0, show_count: bool=true, white_borders:bool=false)-> ItemButton:
+func createItemButton(item: ResItem, value_modifier: float=0.0)-> ItemButton:
 	var button: CustomButton = load("res://scenes/user_interface/CustomItemButton.tscn").instantiate()
 	button.item = item
 	button.focused_entered_sound = load("res://audio/sounds/421453__jaszunio15__click_190.ogg")
@@ -296,8 +296,13 @@ func setPlayerUIVisiblity(set_to:bool):
 	var player:PlayerScene = OverworldGlobals.player
 	#for element in player.hud: 
 	player.melee_bar.visible = set_to#player.melee_bar.canShow() if set_to else false
-	player.current_arrow_icon.visible = set_to#player.current_arrow_icon.canShow() if set_to else false
-	create_tween().tween_property(OverworldGlobals.player.player_camera.player_ui, 'modulate', color, 0.5)
+	player.current_arrow_icon.visible = false if !set_to or !player.bow_mode else true
+#	if player.bow_mode and set_to:
+#		player.current_arrow_icon.visible = true
+#	else:
+		
+		#player.current_arrow_icon.canShow() if set_to else false
+	create_tween().tween_property(player.player_camera.player_ui, 'modulate', color, 0.5)
 
 func hasCombatDialogue(entity_name: String)-> bool:
 	return OverworldGlobals.hasEntity(entity_name) and OverworldGlobals.getEntity(entity_name).has_node('CombatDialogue') and OverworldGlobals.getComponent(entity_name, 'CombatDialogue').enabled
@@ -319,10 +324,10 @@ func createStatModifierLabel(p_trait, combatant, left_aligned:bool=false)-> Stat
 		)
 	return modifier_label
 
-func createStatusEffectLabel(effect, combatant)-> StatusEffectLabel:
+func createStatusEffectLabel(effect)-> StatusEffectLabel:
 	var status_label: StatusEffectLabel = load("res://scenes/user_interface/StatusLabel.tscn").instantiate()
 	status_label.tree_entered.connect(
-		func(): status_label.setStatusEffect(effect, combatant),
+		func(): status_label.setStatusEffect(effect),
 		CONNECT_ONE_SHOT
 		)
 	return status_label

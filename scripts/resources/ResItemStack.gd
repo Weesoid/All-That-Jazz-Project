@@ -5,7 +5,7 @@ class_name ResStackItem
 @export var barter_item:bool = false
 var stack = 1
 
-func add(count: int, show_prompt=true):
+func add(count: int):
 	if (count + stack <= max_stack and max_stack != 0) or max_stack == 0:
 		InventoryGlobals.stack_item_changed.emit(self, count)
 		stack += count

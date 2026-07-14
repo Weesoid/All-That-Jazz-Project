@@ -110,16 +110,13 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, ca
 func calcDamageModifier(combatant:ResCombatant):
 	return (1+combatant.stat_values.get(CombatExtras.DAMAGE_MODIFIER,0))
 
-func checkBonusStatConditions(bonus_stats: Dictionary, key: String, target: ResCombatant)-> bool:
-	return false
-
 func getStatChanges(stat_dict:Dictionary):
 	var out = {}
 	for stat in stat_dict:
 		if stat_dict[stat] != 0: out[stat] = stat_dict[stat]
 	return out
 
-func doDodgeEffects(caster: ResCombatant, target: ResCombatant, damage):
+func doDodgeEffects(caster: ResCombatant, target: ResCombatant):
 	caster.removeTokens(ResStatusEffect.RemoveType.MISSED)
 	manual_call_indicator.emit(target, 'Whiff!', 'Whiff')
 	playDodgeTween(target)
@@ -158,11 +155,9 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 			getCombatScene().doRebuke(target,caster)
 		else:
 			target.changeResolve(-1)
-			#target.stat_values['resolve'] -= 1
 			addInjury(target, 1.0-resist_chance)
 	elif target.isDead() and target.resolve_gate:
 		playBrinkEffects(target)
-		#OverworldGlobals.freezeFrame(0.3, 0.5)
 		target.resolve_gate=false
 		addInjury(target, 1.0-resist_chance)
 	if target.isDead() and bonus_stats.has('is_dot'): 
@@ -239,8 +234,8 @@ func addInjury(combatant: ResCombatant, chance:float,is_grevious:bool=false):
 		combatant.addTrait(
 			append_name+chosen_injury, 
 			injuries[chosen_injury],
-			{flag:true,'append':true},
-			' [img %s]res://images/status_icons/injury.png[/img]'%SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
+			{flag:true,'append':true}
+			#' [img %s]res://images/status_icons/injury.png[/img]'%SettingsGlobals.ui_colors['down-bb'].replace('[','').replace(']','')
 			)
 	else:
 		combatant.addTemporaryModifer(
@@ -251,7 +246,7 @@ func addInjury(combatant: ResCombatant, chance:float,is_grevious:bool=false):
 			true
 			)
 
-func removeInjury(combatant: ResPlayerCombatant,chance:float, count:int):
+func removeInjury(combatant: ResPlayerCombatant, count:int):
 	var injuries = combatant.getTraitsWithFlag('injury')
 	if count > injuries.size():
 		count = injuries.size()
@@ -267,7 +262,7 @@ func calculatePercentHealing(target: ResCombatant, percentage:float, use_mult:bo
 	calculateHealing(target, ceil(target.getMaxHealth()*percentage), use_mult, trigger_on_heal)
 
 func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:bool=true):
-	var from_death:bool=false
+	#var from_death:bool=false
 	
 	if target is CombatantScene:
 		target = target.combatant_resource
@@ -275,7 +270,7 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 		target.stat_values['health'] = 0
 		if inCombat(): removeBrinkEffects(target)
 		target.resolve_gate=true
-		from_death=true
+	#	from_death=true
 	base_healing = valueVariate(base_healing, 0.1)
 	if use_mult:
 		base_healing *= max(0, 1.0+target.stat_values.get(CombatExtras.HEAL_AMP,0))
@@ -299,8 +294,8 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 func healResolve(target: ResCombatant, amount:int):
 	target.changeResolve(amount)
 	#target.stat_values['resolve'] += amount
-	if target.stat_values['resolve'] > target.getMaxResolve():
-		target.stat_values['resolve'] = target.getMaxResolve()
+#	if target.stat_values['resolve'] > target.getMaxResolve():
+#		target.stat_values['resolve'] = target.getMaxResolve()
 
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
@@ -317,7 +312,7 @@ func valueVariate(value, percent_variance: float):
 	value += randf_range(variation*-1, variation)
 	return round(value)
 
-func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, resistable:bool=false, show_indicator:bool=false,append_indiactor:String=''):
+func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, resistable:bool=false, show_indicator:bool=false):
 	if resistable and randomRoll(BASE_RESIST+target.stat_values['resist']):
 		var debuff_icon = '[img %s]res://images/status_icons/debuff.png[/img]' % SettingsGlobals.ui_colors['down-bb-nobracket']
 		manual_call_indicator.emit(target, debuff_icon+' [color=dark_gray]Resist', 'Resist', true)
@@ -569,10 +564,12 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		manual_call_indicator.emit(target, status_effect.getMessageIcon()+' '+status_effect.getIconColor(true)+status_effect.name, 'Show',true)
 
 func findBasicEffect(identifer:String, status_effect: ResStatusEffect)-> ResBasicEffect:
+	var not_found=true
 	for effect in status_effect.basic_effects:
 		if effect.identifier == identifer: return effect
+		
 	
-	assert(false, 'Could not find identifer "%s" in "%s" basic effects.' % [identifer, status_effect])
+	assert(not_found, 'Could not find identifer "%s" in "%s" basic effects.' % [identifer, status_effect])
 	return null
 
 func removeStatusEffect(combatant: ResCombatant, effect_name:String):
@@ -704,7 +701,7 @@ func addTension(amount: int,gainer:ResPlayerCombatant=null,target:ResCombatant=n
 		return
 	
 	#var show_particle:bool=false
-	var previous_tension = tension
+	#var previous_tension = tension
 	if tension + amount > 4:
 		amount = 4-tension
 	elif tension + amount < 0:

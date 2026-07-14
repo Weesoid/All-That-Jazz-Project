@@ -196,7 +196,7 @@ func unlockAbility(combatant: ResPlayerCombatant, ability: ResAbility):
 #		unlocked_abilities[combatant] = []
 #		unlocked_abilities[combatant].append(ability)
 
-func getAbilityCost(combatant: ResPlayerCombatant, ability: ResAbility):
+func getAbilityCost(combatant: ResPlayerCombatant):
 	return (1 + int(0.5*(unlocked_abilities[combatant].size()-combatant.getStartingAbilityCount())))
 
 func addAbility(combatant, ability):
@@ -345,6 +345,7 @@ func setFollowersMotion(enable:bool):
 		else:
 			follower.speed_multiplier = 0.0
 			follower.stopWalkAnimation()
+
 # { '/map.tres': {'slain_enemies': ['SP1', 'SP2'], 'map_events': {...}}
 func addMapLog(map_path: String, key:String='', entry=null):
 	if !map_logs.has(map_path) and key == '':
@@ -353,7 +354,7 @@ func addMapLog(map_path: String, key:String='', entry=null):
 		map_logs[map_path] = {key: entry}
 	elif key != '' and (map_logs[map_path][key] is Array and entry is Array):
 		map_logs[map_path][key].append_array(entry)
-	print(map_logs[map_path])
+
 func randomizeMapEvents(exclude_map:String=''):
 	for map in map_logs.keys().filter(func(map): return hasMapEvent(map)):
 	#	clearMapPatrollers(map)
@@ -490,7 +491,7 @@ func saveData(save_data: Array):
 				combatant.temp_modifier_tracker,
 				combatant.assigned_position,
 				combatant.percent_health,
-				combatant.saved_resolve
+				combatant.percent_resolve
 				#combatant.item_strain_tracker
 			)
 	
@@ -531,10 +532,9 @@ func loadData(save_data: PlayerSaveData):
 				charm.equip(combatant)
 		#combatant.loadStrain()
 		combatant.initializeCombatant(false)
-		combatant.updateCombatant(save_data)
+		combatant.updateCombatant()
 		combatant.initializeCombatant(false)
 		#combatant.stat_values['health'] = combatant.stat_values['health']*combatant.percent_health
-	# TO DO: Fade followers based on interaction instead...?
 #	if OverworldGlobals.getCurrentMap().SAFE:
 #		OverworldGlobals.loadFollowers()
 	InventoryGlobals.addAllRepairRecipes()

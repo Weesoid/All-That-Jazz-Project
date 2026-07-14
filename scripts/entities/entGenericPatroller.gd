@@ -206,7 +206,7 @@ func _on_melee_hitbox_body_entered(body):
 		OverworldGlobals.changeToCombat(str(name),{},self)
 
 # TODO Give drops
-func destroy(record_slain:bool=true, give_drops:bool=false):# check_rewards:bool=true):
+func destroy(record_slain:bool=true, _give_drops:bool=false):# check_rewards:bool=true):
 	#if give_drops:
 	#	continue
 		#var combatant_squad: EnemyCombatantSquad = get_node("CombatantSquadComponent")

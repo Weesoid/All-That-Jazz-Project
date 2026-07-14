@@ -12,7 +12,7 @@ func _ready():
 	exp_bar.exp_bar_filled.connect(doLevelUpAnimation)
 	level_gradient.self_modulate = Color.TRANSPARENT
 	exp_bar.modulate = Color.TRANSPARENT
-	PlayerGlobals.experience_added.connect(func(_arg): showSelf(true))
+	PlayerGlobals.experience_added.connect(func(_arg): showSelf())
 	#print(exp_bar.position)
 
 func doLevelUpAnimation():
@@ -23,7 +23,7 @@ func doLevelUpAnimation():
 	await tween.finished
 	linger_timer.start()
 
-func showSelf(set_to:bool):
+func showSelf():
 	var tween = get_tree().create_tween().set_parallel()
 	linger_timer.stop()
 	exp_bar.position = exp_bar_positions['hidden']

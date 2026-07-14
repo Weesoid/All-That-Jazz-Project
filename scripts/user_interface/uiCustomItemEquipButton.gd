@@ -19,7 +19,7 @@ func setCombatant(p_combatant:ResPlayerCombatant):
 			if combatant.equipped_weapon.canUse(combatant):
 				modulate =Color.RED
 
-func _get_drag_data(at_position):
+func _get_drag_data(_at_position):
 	modulate = Color.WHITE
 	durability.hide()
 	if item == null:
@@ -43,7 +43,6 @@ func _can_drop_data(_at_position, data):
 func _drop_data(_at_position, data):
 	durability.hide()
 	modulate =Color.WHITE
-	var previous_item=item
 	setItem(data)
 	
 	if data is ResCharm:
@@ -60,7 +59,7 @@ func _drop_data(_at_position, data):
 	#await get_tree().process_frame
 	#grab_focus()
 
-func _input(event):
+func _input(_event):
 	if has_focus() and Input.is_action_pressed("ui_alternate_cancel"):
 		setItem(null)
 		if slot != -1 and combatant.charms[slot] != null:

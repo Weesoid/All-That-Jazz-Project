@@ -56,6 +56,6 @@ func _force_drag():
 	force_drag(item, getPreview())
 	setItem(null)
 #
-func _input(event):
+func _input(_event):
 	if has_focus() and Input.is_action_pressed("ui_alternate_cancel"):
 		setItem(null)

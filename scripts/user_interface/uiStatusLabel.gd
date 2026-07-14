@@ -3,7 +3,7 @@ class_name StatusEffectLabel
 
 var effect:ResStatusEffect
 
-func setStatusEffect(status_effect:ResStatusEffect, combatant:ResCombatant):
+func setStatusEffect(status_effect:ResStatusEffect):
 	text = '[table=3]
 			[cell]%s[/cell]
 			[cell]%s[/cell]

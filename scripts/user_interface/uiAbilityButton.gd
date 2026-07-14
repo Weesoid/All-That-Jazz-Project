@@ -67,7 +67,7 @@ func setLocked(set_to:bool):
 		lock_icon.hide()
 
 func setCost(combatant:ResCombatant):
-	ability_cost.text = str(PlayerGlobals.getAbilityCost(combatant, ability))
+	ability_cost.text = str(PlayerGlobals.getAbilityCost(combatant))
 
 func setDisabled(set_to:bool):
 	if set_to:

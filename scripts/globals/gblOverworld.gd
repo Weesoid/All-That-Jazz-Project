@@ -17,6 +17,8 @@ signal combat_exited
 signal group_cleared(group:PatrollerGroup)
 signal start_camp
 signal end_camp
+signal interaction_started
+signal interaction_ended
 #signal update_inventory
 
 func initializePlayerParty():
@@ -182,14 +184,11 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 		player.velocity = Vector2.ZERO
 		setPlayerInput(false, true)
 		await showTransition('FadeIn', player)
+	
+	await get_tree().process_frame
 	get_tree().change_scene_to_file(map_name_path)
 	await get_tree().process_frame
 	
-#	if getCurrentMap().has_node('Player'): 
-#		getCurrentMap().hide()
-#		getCurrentMap().get_node('Player').queue_free()
-#		player.loadData()
-#	var player
 	match player_type:
 		PlayerType.WILLIS: player = load("res://scenes/entities/Player.tscn").instantiate()
 		PlayerType.ARCHIE: player = load("res://scenes/entities/PlayerAlternate.tscn").instantiate()
@@ -208,20 +207,12 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 		179: player.direction = Vector2(0,-1) # Up
 		-90: player.direction = Vector2(1, 0) # Right
 		90: player.direction = Vector2(-1,0) # Left
-#	if OverworldGlobals.getCurrentMap().SAFE:
-	#if getCurrentMap().getClearState() == MapData.PatrollerClearState.FULL_CLEAR:
 	
 	if save:
 		SaveLoadGlobals.saveGame(PlayerGlobals.save_name)
 	getCurrentMap().show()
 	if show_transition:
 		showTransition('FadeOut', player)
-#	if !delayed_rewards.is_empty():
-#		getCurrentMap().REWARD_BANK = delayed_rewards
-#		getCurrentMap().giveRewards()
-#		await SaveLoadGlobals.done_saving
-#		delayed_rewards.clear()
-	#print(getCurrentMap().name, ' <=========================================')
 
 func forceGiveRewards():
 	getCurrentMap().giveRewards(true)
@@ -257,7 +248,7 @@ func destroyAllPatrollers(respawn:bool=false):
 func isPlayerCheating()-> bool:
 	return getCurrentMap().has_node('Player') and player.has_node('DebugComponent')
 
-func showGameOver(end_sentence: String=''):
+func showGameOver():
 	destroyAllPatrollers()
 	UIGlobals.setPlayerUIVisiblity(false)
 	#player.setUIVisibility(false)
@@ -316,7 +307,7 @@ func loadFollowers():
 			follower_scene.texture = combatant.follower_texture
 			follower_scene.host_combatant = combatant
 			follower_scene.follow_index = player_follower_count
-			follower_scene.global_position = player.global_position+Vector2(0, -20)
+			follower_scene.global_position = player.global_position+Vector2(0, -24)
 			#follower_scene.sprite.offset.y = -24 
 			getCurrentMap().add_child.call_deferred(follower_scene)
 			#follower_scene.visible = player.visible
@@ -467,7 +458,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 #		getCurrentMap().get_node('Balloon').queue_free()
 		await getCurrentMap().get_node('Balloon').tree_exited
 	if getCombatantSquad('Player').is_empty() or getCombatantSquadComponent('Player').isTeamDead():
-		showGameOver('You could not defend yourself!')
+		showGameOver()
 		return
 	if patroller != null and !is_instance_valid(patroller):
 		return
@@ -478,11 +469,11 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 	# Enter combat
 	#await get_tree().create_timer(0.5).timeout
 	var combat_entity 
-	var give_non_pg_reward:bool=false
+	#var give_non_pg_reward:bool=false
 	var player_squad = getCombatantSquad('Player')
 	if patroller == null:
 		combat_entity = getEntity(entity_name)
-		give_non_pg_reward=true
+		#give_non_pg_reward=true
 	else:
 		combat_entity = patroller
 	player.resetStates()
@@ -573,12 +564,16 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		PlayerGlobals.healBenchedTeam()
 	combat_exited.emit()
 	entering_combat=false
+	if combat_results == 1:
+		print('DROPS: ', combat_drops)
+		PlayerGlobals.addExperience(combat_drops['experience'])
+		InventoryGlobals.giveItemDict(combat_drops['loot'],false)
 #	if combat_results == 1 and give_non_pg_reward:
 #		giveRewardBank(combat_drops)
 		#giveRewardBank(combat_entity.get_node('CombatantSquadComponent').reward_bank, 'ADVERSARY DEFEATED !')
 		#combat_entity.get_node('CombatantSquadComponent').reward_bank = {'loot':{},'experience':0.0}
 	if combat_results == 0:
-		showGameOver('')
+		showGameOver()
 	else:
 		getCurrentMap().show()
 
@@ -671,7 +666,7 @@ func getCamera()-> DynamicCamera:
 	return player.player_camera
 
 # Damage combatant out of combat
-func damageMember(combatant: ResPlayerCombatant, damage:int, use_damage_formula:bool=true,lethal:bool=false):
+func damageMember(combatant: ResPlayerCombatant, damage:int,lethal:bool=false):
 	if combatant.isDead():
 		return
 	OverworldGlobals.player.player_camera.shake(15.0,10.0)

@@ -3,20 +3,20 @@
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="PackedScene" uid="uid://b6rlytpeavs4h" path="res://scenes/environment/TileMap.tscn" id="2_76a3s"]
 [ext_resource type="PackedScene" uid="uid://dvstysplrop1t" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
-[ext_resource type="TileSet" uid="uid://dd7xgc75lojfx" path="res://resources/tilesets/Sand.tres" id="3_pfyuo"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="3_t6mhi"]
+[ext_resource type="TileSet" uid="uid://bnfv6ipqyacgr" path="res://resources/tilesets/Test.tres" id="3_xhny1"]
 [ext_resource type="PackedScene" uid="uid://cqb2pyb7p4he7" path="res://scenes/environment/PatrollerSpawnPoint.tscn" id="4_lloms"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="5_rwctp"]
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="6_8oxsm"]
 [ext_resource type="PackedScene" uid="uid://mjs3qc7nxo7b" path="res://scenes/components/ShopWares.tscn" id="6_ppbds"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="8_5ag6f"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="11_fghhp"]
-[ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/debugs/Dummy.tres" id="11_ua6bd"]
 [ext_resource type="Resource" uid="uid://dsqfxba1b1660" path="res://resources/combat/dialogue/combat_dialogue.dialogue" id="12_1xr6o"]
 [ext_resource type="Texture2D" uid="uid://lmmr2dkcaseq" path="res://images/animations/antelope.png" id="13_s8kga"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="14_ie3ty"]
 [ext_resource type="Resource" uid="uid://crf6wo1o4pndo" path="res://scenes/maps/TestRoom/dialogue/TestRoomA_test_fight.dialogue" id="15_21t34"]
 [ext_resource type="PackedScene" uid="uid://8aufe1ycaau4" path="res://scenes/entities_interactable/SavePoint.tscn" id="16_jpex5"]
+[ext_resource type="Resource" uid="uid://ewb80noaamii" path="res://resources/combat/combatants_enemies/debugs/Dummy.tres" id="16_q6tno"]
 [ext_resource type="Texture2D" uid="uid://bbhysex5d5b3a" path="res://images/animations/ent_walker.png" id="18_hpo7g"]
 [ext_resource type="Resource" uid="uid://cdl8vad57bffh" path="res://scenes/maps/TestRoom/dialogue/TestRoomB_animate.dialogue" id="19_hkcb8"]
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="20_1s302"]
@@ -145,21 +145,22 @@ size = Vector2(21980, 166)
 [node name="Node2D" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_q8phr")
+map_name = "The Testing Grounds"
 occupying_faction = 2
 map_properties = Array[int]([0])
 
 [node name="TileMap" parent="." instance=ExtResource("2_76a3s")]
-tile_set = ExtResource("3_pfyuo")
+tile_set = ExtResource("3_xhny1")
 cell_quadrant_size = 64
 layer_0/name = "Ground"
-layer_0/tile_data = PackedInt32Array(196613, 196610, 2, 131077, 196610, 0)
+layer_0/tile_data = PackedInt32Array(720899, 131072, 2, 655363, 131072, 1, 589827, 131072, 1, 524291, 131072, 1, 458755, 131072, 1, 393219, 131072, 1, 327683, 131072, 1, 262147, 131072, 1, 196611, 131072, 0, 720898, 65536, 2, 655362, 65536, 1, 589826, 65536, 1, 524290, 65536, 1, 458754, 65536, 1, 393218, 65536, 1, 327682, 65536, 1, 262146, 65536, 1, 196610, 65536, 0, 720897, 65536, 2, 655361, 65536, 1, 589825, 65536, 1, 524289, 65536, 1, 458753, 65536, 1, 393217, 65536, 1, 327681, 65536, 1, 262145, 65536, 1, 196609, 65536, 0, 720896, 65536, 2, 655360, 65536, 1, 589824, 65536, 1, 524288, 65536, 1, 458752, 65536, 1, 393216, 65536, 1, 327680, 65536, 1, 262144, 65536, 1, 196608, 65536, 0, 786431, 65536, 2, 720895, 65536, 1, 655359, 65536, 1, 589823, 65536, 1, 524287, 65536, 1, 458751, 65536, 1, 393215, 65536, 1, 327679, 65536, 1, 262143, 65536, 0, 786430, 65536, 2, 720894, 65536, 1, 655358, 65536, 1, 589822, 65536, 1, 524286, 65536, 1, 458750, 65536, 1, 393214, 65536, 1, 327678, 65536, 1, 262142, 65536, 0, 786429, 65536, 2, 720893, 65536, 1, 655357, 65536, 1, 589821, 65536, 1, 524285, 65536, 1, 458749, 65536, 1, 393213, 65536, 1, 327677, 65536, 1, 262141, 65536, 0, 786428, 65536, 2, 720892, 65536, 1, 655356, 65536, 1, 589820, 65536, 1, 524284, 65536, 1, 458748, 65536, 1, 393212, 65536, 1, 327676, 65536, 1, 262140, 65536, 0, 786427, 65536, 2, 720891, 65536, 1, 655355, 65536, 1, 589819, 65536, 1, 524283, 65536, 1, 458747, 65536, 1, 393211, 65536, 1, 327675, 65536, 1, 262139, 65536, 0, 786426, 65536, 2, 720890, 65536, 1, 655354, 65536, 1, 589818, 65536, 1, 524282, 65536, 1, 458746, 65536, 1, 393210, 65536, 1, 327674, 65536, 1, 262138, 65536, 0, 786425, 65536, 2, 720889, 65536, 1, 655353, 65536, 1, 589817, 65536, 1, 524281, 65536, 1, 458745, 65536, 1, 393209, 65536, 1, 327673, 65536, 1, 262137, 65536, 0, 786424, 65536, 2, 720888, 65536, 1, 655352, 65536, 1, 589816, 65536, 1, 524280, 65536, 1, 458744, 65536, 1, 393208, 65536, 1, 327672, 65536, 1, 262136, 65536, 0, 786423, 65536, 2, 720887, 65536, 1, 655351, 65536, 1, 589815, 65536, 1, 524279, 65536, 1, 458743, 65536, 1, 393207, 65536, 1, 327671, 65536, 1, 262135, 65536, 0, 786422, 0, 2, 720886, 0, 1, 655350, 0, 1, 589814, 0, 1, 524278, 0, 1, 458742, 0, 1, 393206, 0, 1, 327670, 0, 1, 262134, 0, 0)
 layer_1/name = ""
 layer_1/enabled = true
 layer_1/modulate = Color(1, 1, 1, 1)
 layer_1/y_sort_enabled = false
 layer_1/y_sort_origin = 0
 layer_1/z_index = 0
-layer_1/tile_data = PackedInt32Array(262141, 131074, 1, 196605, 131074, 2, 131069, 131074, 2, 65533, 131074, 0, 262140, 65538, 2, 196604, 65538, 2, 131068, 65538, 2, 65532, 65538, 0, 262139, 65538, 2, 196603, 65538, 2, 131067, 65538, 1, 65531, 65538, 0, 262138, 65538, 2, 196602, 65538, 2, 131066, 65538, 1, 65530, 65538, 0, 262137, 2, 2, 196601, 2, 2, 131065, 2, 2, 65529, 2, 0, 65535, 2, 0, 196611, 131074, 2, 131075, 131074, 2, 65539, 131074, 1, 3, 131074, 0, 196610, 65538, 1, 131074, 65538, 2, 65538, 65538, 1, 2, 65538, 0, 196609, 65538, 2, 131073, 65538, 2, 65537, 65538, 2, 1, 65538, 0, 196608, 65538, 1, 131072, 65538, 2, 65536, 65538, 1, 0, 65538, 0, 262143, 2, 2, 196607, 2, 1, 131071, 2, 2)
+layer_1/tile_data = PackedInt32Array(262141, 131074, 1, 196605, 131074, 2, 131069, 131074, 2, 65533, 131074, 0, 262140, 65538, 2, 196604, 65538, 2, 131068, 65538, 2, 65532, 65538, 0, 262139, 65538, 2, 196603, 65538, 2, 131067, 65538, 1, 65531, 65538, 0, 262138, 65538, 2, 196602, 65538, 2, 131066, 65538, 1, 65530, 65538, 0, 262137, 2, 2, 196601, 2, 2, 131065, 2, 2, 65529, 2, 0, 65535, 0, 0, 196611, 131074, 2, 131075, 131072, 2, 65539, 131072, 1, 3, 131072, 0, 196610, 65538, 1, 131074, 65536, 2, 65538, 65536, 1, 2, 65536, 0, 196609, 65538, 2, 131073, 65536, 2, 65537, 65536, 1, 1, 65536, 0, 196608, 65538, 1, 131072, 65536, 2, 65536, 65536, 1, 0, 65536, 0, 262143, 2, 2, 196607, 0, 2, 131071, 0, 1)
 layer_2/name = ""
 layer_2/enabled = true
 layer_2/modulate = Color(1, 1, 1, 1)
@@ -219,13 +220,7 @@ visible = false
 position = Vector2(155, 0)
 
 [node name="Entity" type="CharacterBody2D" parent="."]
-position = Vector2(-412, -20)
-
-[node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
-enemy_pool = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("11_ua6bd")])
-do_reinforcements = false
-combatant_squad = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("11_ua6bd")])
-afflicted_status_effects = Array[String](["CriticalEye"])
+position = Vector2(-440, 80)
 
 [node name="CombatDialogue" parent="Entity" instance=ExtResource("11_fghhp")]
 dialogue_resource = ExtResource("12_1xr6o")
@@ -240,6 +235,9 @@ vframes = 2
 [node name="InteractComponent" parent="Entity" instance=ExtResource("14_ie3ty")]
 position = Vector2(0, 8)
 dialogue_resource = ExtResource("15_21t34")
+
+[node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
+combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("16_q6tno")])
 
 [node name="SavePoint" parent="." instance=ExtResource("16_jpex5")]
 position = Vector2(113, 0)

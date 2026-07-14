@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatUI.gd" id="1_xa35n"]
 [ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="1_xjxjm"]
-[ext_resource type="Resource" uid="uid://n15uy40oimtq" path="res://resources/combat/abilities/Defend.tres" id="2_mvnss"]
 [ext_resource type="Texture2D" uid="uid://cc77vpghixtg8" path="res://images/ability_icons/move.png" id="2_rufvp"]
+[ext_resource type="Texture2D" uid="uid://mdq0i44s7xd3" path="res://images/ability_icons/defend.png" id="4_n2k63"]
 [ext_resource type="Resource" uid="uid://ol8t3xlrcx8b" path="res://resources/combat/abilities/Advance.tres" id="6_15don"]
 [ext_resource type="Resource" uid="uid://vedm8h64ew7u" path="res://resources/combat/abilities/Recede.tres" id="7_et8gl"]
 [ext_resource type="Texture2D" uid="uid://du1iddji1w8cp" path="res://images/ability_icons/combat_gear.png" id="8_k8onw"]
@@ -169,10 +169,15 @@ anchor_left = 0.0
 anchor_right = 0.0
 offset_left = 34.0
 offset_right = 58.0
+focus_neighbor_left = NodePath("../Gear")
 focus_neighbor_top = NodePath("../Move")
-focus_neighbor_right = NodePath("../Gear")
+focus_neighbor_right = NodePath("../../../../EscapeButton")
 focus_neighbor_bottom = NodePath("../Pass")
-ability = ExtResource("2_mvnss")
+descriptions = {
+"description": "",
+"icon": ExtResource("4_n2k63"),
+"title": ""
+}
 
 [node name="Movements" type="Control" parent="AbilityContainer/BaseAbilities/BaseAbilities"]
 visible = false
@@ -187,7 +192,6 @@ offset_left = 3.0
 offset_top = 11.0
 offset_right = 27.0
 offset_bottom = 35.0
-focus_neighbor_bottom = NodePath("../../Move")
 ability = ExtResource("6_15don")
 
 [node name="Recede" parent="AbilityContainer/BaseAbilities/BaseAbilities/Movements" instance=ExtResource("1_xjxjm")]
@@ -196,7 +200,6 @@ offset_left = -25.0
 offset_top = 11.0
 offset_right = -1.0
 offset_bottom = 35.0
-focus_neighbor_bottom = NodePath("../../Move")
 ability = ExtResource("7_et8gl")
 
 [node name="Move" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
@@ -208,12 +211,14 @@ offset_left = 18.0
 offset_top = -15.0
 offset_right = 42.0
 offset_bottom = 9.0
-focus_neighbor_left = NodePath("../Defend")
-focus_neighbor_right = NodePath("../Gear")
+focus_neighbor_left = NodePath("../Gear")
+focus_neighbor_top = NodePath("../Defend")
+focus_neighbor_right = NodePath("../Defend")
+focus_neighbor_bottom = NodePath("../Pass")
 descriptions = {
-"description": "Show movement abilities.",
+"description": "",
 "icon": ExtResource("2_rufvp"),
-"title": "Movement"
+"title": ""
 }
 
 [node name="Gear" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
@@ -223,8 +228,8 @@ anchor_left = 0.0
 anchor_right = 0.0
 offset_left = 2.0
 offset_right = 26.0
-focus_neighbor_left = NodePath("../Defend")
 focus_neighbor_top = NodePath("../Move")
+focus_neighbor_right = NodePath("../Defend")
 focus_neighbor_bottom = NodePath("../Pass")
 descriptions = {
 "description": "",
@@ -251,12 +256,13 @@ offset_left = 18.0
 offset_top = 15.0
 offset_right = 42.0
 offset_bottom = 39.0
-focus_neighbor_left = NodePath("../Defend")
-focus_neighbor_right = NodePath("../Gear")
+focus_neighbor_left = NodePath("../Gear")
+focus_neighbor_top = NodePath("../Move")
+focus_neighbor_right = NodePath("../Defend")
 descriptions = {
-"description": "Skip this turn.",
+"description": "",
 "icon": ExtResource("9_hipl7"),
-"title": "Pass"
+"title": ""
 }
 hold_time = 0.25
 
@@ -273,12 +279,13 @@ offset_right = 16.0
 offset_bottom = -8.0
 grow_horizontal = 0
 grow_vertical = 0
+focus_neighbor_left = NodePath("../AbilityContainer/BaseAbilities/BaseAbilities/Defend")
 descriptions = {
 "description": "",
 "icon": ExtResource("9_1g12q"),
 "title": ""
 }
-hold_time = 1.0
+hold_time = 0.5
 
 [node name="EscapeChance" type="Label" parent="EscapeButton"]
 modulate = Color(1, 1, 1, 0)

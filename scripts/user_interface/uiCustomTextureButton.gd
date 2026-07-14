@@ -4,6 +4,7 @@ class_name CustomTextureButton
 
 @export var texture: Texture: 
 	set(p_texture):
+		if p_texture == null: return
 		texture = p_texture
 		if Engine.is_editor_hint() and texture != null: texture_button.texture = texture
 @export var auto_resize:bool=true

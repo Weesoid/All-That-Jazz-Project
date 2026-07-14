@@ -55,13 +55,16 @@ func selectTarget(combatant_array: Array[ResCombatant])-> ResCombatant:
 func getExperience():
 	if base_stat_values.is_empty(): 
 		base_stat_values = stat_values
-	var hustle
-	if base_stat_values['speed'] < 0:
-		hustle = 0
-	else:
-		hustle = base_stat_values['speed']*2
+#	var hustle = 0
+#	if base_stat_values['speed'] < 0:
+#		hustle = 0
+#	else:
+#		hustle = base_stat_values['speed']*2
 	# TODO Revalue this
-	var gain = 100
+	var gain = 0
+	for stat in base_stat_values:
+		if CombatExtras.EXPERIENCE_WEIGHTS.has(stat):
+			gain += base_stat_values[stat]*CombatExtras.EXPERIENCE_WEIGHTS[stat]
 	return ceil(gain)*experience_multiplier
 
 func getDrops():

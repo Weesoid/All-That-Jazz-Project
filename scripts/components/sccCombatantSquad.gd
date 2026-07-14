@@ -1,7 +1,7 @@
 extends Node
 class_name CombatantSquad
  
-@export var combatant_squad: Array[ResCombatant]
+@export var combatant_squad: Array[ResCombatant] = []
 @export var afflicted_status_effects: Array[String] # Effects in this array will ALWAYS be gone after combat.
 
 func isTeamDead()->bool:

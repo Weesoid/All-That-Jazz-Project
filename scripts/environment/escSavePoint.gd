@@ -10,7 +10,7 @@ class_name SavePoint
 @onready var music = $Music
 @onready var ambience = $Ambience
 @onready var flame_sprite = $Flame
-@onready var kindle_slot = $UI/KindlingSlot
+#@onready var kindle_slot = $UI/KindlingSlot
 @onready var heads_up_cd = $HeadsUpCooldown
 @onready var ui_layer = $UI
 var camp_music:Array[String]=[
@@ -51,6 +51,7 @@ func interact():
 	OverworldGlobals.player.current_camp_spot = self
 	OverworldGlobals.destroyAllPatrollers(true)
 	OverworldGlobals.setPlayerInput(false)
+	#OverworldGlobals.player.toggleBowMode(false)
 	#await OverworldGlobals.player.player_camera.flashOverlay(Color.RED,1.0)
 	await OverworldGlobals.player.player_camera.showOverlay(Color.BLACK, 0.5)
 	#PlayerGlobals.overworld_stats['stamina'] = 100.0
@@ -67,7 +68,6 @@ func interact():
 
 func exit():
 	await done
-	OverworldGlobals.end_camp.emit()
 	music.stop()
 	ambience.stop()
 	animator.play("RESET")
@@ -84,7 +84,8 @@ func exit():
 		sprite.get_node('Throbber').hide()
 		sprite.get_node('Throbber').animation_player.play('RESET')
 	OverworldGlobals.player.sprite.show()
-	OverworldGlobals.player.player_camera.showOverlay(Color.TRANSPARENT,0.5)
+	if !OverworldGlobals.player.fast_travelling:
+		OverworldGlobals.player.player_camera.showOverlay(Color.TRANSPARENT,0.5)
 	#kindle_slot.setDisabled(false)
 	fire_kindled=false
 	await get_tree().process_frame
@@ -95,6 +96,8 @@ func exit():
 	OverworldGlobals.moveCamera("RESET",0.5)
 	OverworldGlobals.zoomCamera(Vector2(1,1),0.5)
 	OverworldGlobals.setPlayerInput(true)
+	OverworldGlobals.end_camp.emit()
+	#print('emitting end cuh')
 
 func addRestSprite(combatant: ResPlayerCombatant,pos:int=-1):
 	#print('ICP: ', pos)

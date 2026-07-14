@@ -160,7 +160,6 @@ static func applyToTarget(caster, target, ability: ResAbility):
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):
 	var animation_data = {}
-	var animation = ''
 	if target is Array[ResCombatant]:
 		animation_data['target_count'] = target.size()
 	

@@ -25,7 +25,7 @@ const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
 @onready var move_back_button = $AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede
 @onready var defend_button = $AbilityContainer/BaseAbilities/BaseAbilities/Defend
 @onready var movements = $AbilityContainer/BaseAbilities/BaseAbilities/Movements
-@onready var round_counter_animator = $Rounds/RoundCounter/AnimationPlayer
+#@onready var round_counter_animator = $Rounds/RoundCounter/AnimationPlayer
 @onready var rushed_movement_timer = $Timer
 @onready var weapon_uses = $AbilityContainer/BaseAbilities/BaseAbilities/Gear/TextureRect/Label
 @onready var tension_bar = $TensionBar
@@ -91,15 +91,15 @@ func showAbilities(combatant: ResCombatant):
 	setButtonDisabled(escape_button, !combat_scene.can_escape)
 	if combatant.equipped_weapon != null:
 		weapon_uses.show()
-		setButtonDisabled(gear_button,false,false)
+		setButtonDisabled(gear_button,false)
 		gear_button.ability = combatant.equipped_weapon.effect
 		gear_button.custom_charge = combatant.equipped_weapon.durability
 		if !combatant.equipped_weapon.effect.enabled or combatant.equipped_weapon.durability <= 0:
-			setButtonDisabled(gear_button,true,false)
+			setButtonDisabled(gear_button,true)
 		weapon_uses.text = str(combatant.equipped_weapon.durability)
 		#giveButtonFunction(gear_button,combatant.equipped_weapon.effect,combatant.equipped_weapon)
 	else:
-		setButtonDisabled(gear_button,true,false)
+		setButtonDisabled(gear_button,true)
 		gear_button.descriptions['icon'] = COMBAT_GEAR_ICON
 		gear_button.ability_icon.texture = gear_button.descriptions['icon']
 	
@@ -130,13 +130,13 @@ func showAbilities(combatant: ResCombatant):
 func getAbilityButtons():
 	return ability_buttons.get_children().filter(func(control): return control is Button)
 
-func giveButtonFunction(button:CustomAbilityButton, ability:ResAbility,weapon:ResWeapon=null):
+func giveButtonFunction(button:CustomAbilityButton, ability:ResAbility):
 	var active_combatant = combat_scene.active_combatant
 	var combatants = combat_scene.getAllCombatants()
 	button.pressed.connect(castAbility.bind(ability))
 	
 	if !ability.enabled or !ability.canUse(active_combatant, combatants):
-		setButtonDisabled(button,true,false)
+		setButtonDisabled(button,true)
 
 func castAbility(ability:ResAbility,weapon:ResWeapon=null):
 	combat_scene.forceCastAbility(ability, weapon)
@@ -182,7 +182,7 @@ func hideUI():
 	escape_button.hide()
 	bottom_gradient.hide()
 
-func showUI(set_focus:bool=false, show_abilities:bool=true):
+func showUI(show_abilities:bool=true):
 	ui_visible=true
 	create_tween().tween_property(self,'modulate',Color.WHITE,0.25).set_ease(Tween.EASE_IN)
 	hideMovements()
@@ -195,8 +195,8 @@ func showUI(set_focus:bool=false, show_abilities:bool=true):
 		tweenAbilityButtons(getAbilityButtons())
 		tweenAbilityButtons(base_abilities.get_children(),'')
 	#resetMovements()
-	if set_focus:
-		UIGlobals.setMenuFocus(ability_buttons)
+	#if set_focus:
+	#	UIGlobals.setMenuFocus(ability_buttons)
 
 func fillInvalid():
 	for i in range(PlayerGlobals.ability_cap-getAbilityButtons().size()):
@@ -254,7 +254,7 @@ func canUseAbility(button: CustomAbilityButton):
 	#if button.ability.name == 'Defend':
 	#	setButtonDisabled(button, active_combatant.hasStatusEffect('Guard') or active_combatant.hasStatusEffect('Guard Break'),false)
 	#else:
-	setButtonDisabled(button, !(button.ability.enabled and button.ability.canUse(active_combatant, combatants)),false)
+	setButtonDisabled(button, !(button.ability != null and button.ability.enabled and button.ability.canUse(active_combatant, combatants)))
 
 func hideMovements():
 	movements.hide()
@@ -290,7 +290,7 @@ func _on_recede_focus_exited():
 #		round_text.text = 'Round'
 #	round_counter_animator.play("New_Round")
 
-func setButtonDisabled(button:CustomAbilityButton,set_to:bool, set_focus=true):
+func setButtonDisabled(button:CustomAbilityButton,set_to:bool):
 	button.disabled = set_to
 	if button.disabled:
 		button.dimButton()

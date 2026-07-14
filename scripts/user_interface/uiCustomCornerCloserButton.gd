@@ -11,6 +11,7 @@ enum Mode {
 @export var set_parent_menu:bool=false
 @onready var button = $CustomButton
 signal custom_close
+signal closed
 
 func _ready():
 	if set_parent_menu:
@@ -22,7 +23,8 @@ func close():
 		Mode.QUEUE_FREE: close_menu.queue_free()
 		Mode.HIDE: close_menu.hide()
 		Mode.CUSTOM: custom_close.emit()
+	closed.emit()
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_cancel") and is_visible_in_tree() and modulate != Color.TRANSPARENT:
 		close()
