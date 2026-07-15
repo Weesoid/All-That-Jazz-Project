@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=18 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=19 format=3 uid="uid://ewb80noaamii"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_ghl27"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
 [ext_resource type="Resource" uid="uid://bc3yscth1qntp" path="res://resources/items/ScrapSalvage.tres" id="1_w1nhd"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="2_le6fy"]
+[ext_resource type="Texture2D" uid="uid://dphlgqo7lq5js" path="res://images/item_icons/arrow.png" id="2_n0efy"]
 [ext_resource type="Resource" uid="uid://lan7r1qpxbte" path="res://resources/items/Wood.tres" id="2_rodjc"]
 [ext_resource type="Script" path="res://scripts/resources/ResEnemyDrops.gd" id="3_s53eg"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_sn163"]
@@ -24,6 +25,7 @@ can_miss = true
 can_crit = true
 return_pos = true
 indicator_bb = ""
+projectile_texture = ExtResource("2_n0efy")
 animation_time = 0.0
 animate_on = 0
 
@@ -127,10 +129,11 @@ experience_multiplier = 1.0
 name = "Dummy"
 preferred_alias = ""
 packed_scene = ExtResource("4_4d8jx")
+bullet_texture = ExtResource("2_n0efy")
 description = ""
 stat_values = {
 "crit": 0.0,
-"damage": 999,
+"damage": 25,
 "dmg_variance": 0.0,
 "handling": 0,
 "health": 1,

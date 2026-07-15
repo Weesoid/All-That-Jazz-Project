@@ -42,7 +42,7 @@ func initializeCombatant(do_scene:bool=true):
 	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
 	if !stat_modifiers.has('base_rebuke'):
-		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:0.25},'base_rebuke')
+		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:1.25},'base_rebuke')
 	if !stat_modifiers.has('base_resolve'):
 		CombatGlobals.modifyStat(self, {'resolve':3},'base_resolve')
 	if !stat_values.has('strain'):
@@ -185,15 +185,16 @@ func applyAllTraits():
 	for t in traits:
 		applyTrait(t,false)
 
-func applyTrait(t,show_indicator):
+func applyTrait(t,show_indicator,message=''):
 	if (PlayerGlobals.trait_presets.keys().has(t) and !stat_modifiers.keys().has(t)):
 		CombatGlobals.modifyStat(self, PlayerGlobals.trait_presets[t], t,true)
 	elif t.split('/').size() > 1:
 		var trait_data = t.split('/')
-		CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0], false, false, show_indicator)
+		CombatGlobals.modifyStat(self, JSON.parse_string(trait_data[1]), trait_data[0], false, false, show_indicator, message)
 
 # Trait data is a dictionary that contains unique trait data. E.g. <Trait name>/{"damage":69}/{"disease":true} can be a element in the traits array
 func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={}):
+	var added_stat_mod = stat_mods
 	if data.has('append') and stat_modifiers.has(trait_name):
 		stat_mods = CombatGlobals.combineDictionaries(stat_modifiers[trait_name],stat_mods)
 	
@@ -206,7 +207,7 @@ func addTrait(trait_name: String, stat_mods: Dictionary,data:Dictionary={}):
 	traits.append(input_trait)
 	
 	if CombatGlobals.inCombat():
-		applyTrait(input_trait,true)
+		applyTrait(input_trait,true,CombatGlobals.getStatListString(added_stat_mod))
 	else:
 		applyAllTraits()
 

@@ -26,7 +26,6 @@ var projectile_hit_data: Dictionary = {
 func _ready():
 	initializeShapes()
 
-
 func initializeShapes():
 	if combatant_resource is ResEnemyCombatant:
 		sprite.flip_h = true
@@ -82,9 +81,6 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 		await moveTo(get_parent(),0.12)
 		combatant_resource.getStatusEffect('Knockback').removeStatusEffect()
 		return
-#	if CombatGlobals.getCombatScene().has_node('QTE'):
-#		await CombatGlobals.qte_finished
-#		await CombatGlobals.getCombatScene().get_node('QTE').tree_exited
 	if !animator.get_animation_list().has(animation) and !data.has('no_anim_fallback'): 
 		if animator.get_animation_list().has('Cast_Misc'):
 			animation = 'Cast_Misc'
@@ -92,13 +88,14 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 			animation = 'Cast_Melee'
 		combatant_resource.stopBreatheTween()
 	
-	#CLEAN
 	if script != null: 
 		hit_script = script
 		if data.has('target_count'): 
 			resizeHitbox(data['target_count'])
 		else:
 			resizeHitbox(1)
+		await get_tree().process_frame
+	
 	if animation.contains('Cast_Ranged') and data.has('target') and CombatGlobals.inCombat():
 		var projectile_texture = data['projectile_texture'] if data.has('projectile_texture') else null
 		setProjectileTarget(data['target'], data['ability'], projectile_texture)

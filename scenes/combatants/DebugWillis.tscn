@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://cke17m10rs7u5"]
 
-[ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_3j2sh"]
+[ext_resource type="Script" path="res://scripts/combat/entCombatantScene.gd" id="1_lnxcs"]
 [ext_resource type="Texture2D" uid="uid://spy638phe6iq" path="res://images/character_sprites/willis/willis_battler.png" id="2_3m8i6"]
 [ext_resource type="Script" path="res://scripts/components/sccBlockTimer.gd" id="3_ttsqb"]
 
@@ -151,7 +151,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0.5),
 "transitions": PackedFloat32Array(1),
 "values": [{
-"args": [null],
+"args": [],
 "method": &"shootProjectile"
 }]
 }
@@ -321,7 +321,7 @@ _data = {
 }
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-script = ExtResource("1_3j2sh")
+script = ExtResource("1_lnxcs")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 clip_children = 2

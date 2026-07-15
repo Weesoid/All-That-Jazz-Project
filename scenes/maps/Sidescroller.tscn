@@ -237,6 +237,7 @@ position = Vector2(0, 8)
 dialogue_resource = ExtResource("15_21t34")
 
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
+do_reinforcements = false
 combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("16_q6tno")])
 
 [node name="SavePoint" parent="." instance=ExtResource("16_jpex5")]

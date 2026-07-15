@@ -25,13 +25,6 @@ func checkHasBlockModifier():
 
 func setBlocking(set_to: bool):
 	blocking = set_to
-#	if blocking:
-#		playIdle('Idle_Block')
-#	else:
-#		if (combatant_resource.isDead() or combatant_resource.hasStatusEffect('Fading')) and combatant_resource is ResPlayerCombatant:
-#			playIdle('Fading')
-#		else:
-#			playIdle('Idle')
 
 func block(bonus_grit: float=999.0):
 	if canBlock():
@@ -58,7 +51,3 @@ func canBlock()-> bool:
 func _input(_event):
 	if Input.is_action_just_pressed('ui_accept') and CombatGlobals.inCombat():
 		block()
-
-
-#func _on_animation_player_animation_started(anim_name):
-#	pass

@@ -218,9 +218,7 @@ func addInjury(combatant: ResCombatant, chance:float,is_grevious:bool=false):
 		'Shellshocked': {'crit':-0.03},
 		'Pulled Muscle': {'crit_amp':-0.03},
 		'Infected Wound': {'resist':-0.03}
-		# Broken ribs: dmg taken +2%
-		
-	}
+		}
 	if combatant is ResPlayerCombatant:
 		injuries['Concussed'] = {'handling':-1}
 	if is_grevious:
@@ -293,9 +291,6 @@ func calculateHealing(target, base_healing, use_mult:bool=true, trigger_on_heal:
 
 func healResolve(target: ResCombatant, amount:int):
 	target.changeResolve(amount)
-	#target.stat_values['resolve'] += amount
-#	if target.stat_values['resolve'] > target.getMaxResolve():
-#		target.stat_values['resolve'] = target.getMaxResolve()
 
 func randomRoll(percent_chance: float):
 	percent_chance = 1.0 - percent_chance
@@ -312,7 +307,7 @@ func valueVariate(value, percent_variance: float):
 	value += randf_range(variation*-1, variation)
 	return round(value)
 
-func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, resistable:bool=false, show_indicator:bool=false):
+func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_id: String, append_stat:bool=false, resistable:bool=false, show_indicator:bool=false, override_indicator:String=''):
 	if resistable and randomRoll(BASE_RESIST+target.stat_values['resist']):
 		var debuff_icon = '[img %s]res://images/status_icons/debuff.png[/img]' % SettingsGlobals.ui_colors['down-bb-nobracket']
 		manual_call_indicator.emit(target, debuff_icon+' [color=dark_gray]Resist', 'Resist', true)
@@ -320,7 +315,11 @@ func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_i
 	
 	var change_relevant:bool=false
 	var stats_added = stat_modifications.duplicate()
-	if append_stat and target.stat_modifiers.has(modifier_id):
+	var indicator_popup = CombatGlobals.getStatListString(stats_added)
+	if override_indicator != '':
+		indicator_popup = override_indicator
+		change_relevant=true
+	elif append_stat and target.stat_modifiers.has(modifier_id):
 		stat_modifications = combineDictionaries(stat_modifications, target.stat_modifiers[modifier_id])
 		change_relevant=true
 	elif !target.stat_modifiers.has(modifier_id):
@@ -331,15 +330,7 @@ func modifyStat(target: ResCombatant, stat_modifications: Dictionary, modifier_i
 	target.applyStatModifications(modifier_id)
 	
 	if show_indicator and change_relevant:
-		manual_call_indicator.emit(target, CombatGlobals.getStatListString(stats_added),'Show',true)
-#		await get_tree().process_frame
-#		# move this to combatbars
-#		if (inCombat() or (OverworldGlobals.player != null and OverworldGlobals.player.camping)) and change_relevant:
-#			var string_stats = CombatGlobals.getStatListString(stats_added).split('\n')
-#			for stat_message in string_stats:
-#				var mes = stat_message.replace('[/color]','')
-#				if mes == '': continue
-#				await get_tree().create_timer(0.25).timeout
+		manual_call_indicator.emit(target, indicator_popup,'Show',true)
 
 func combineDictionaries(dict_a:Dictionary, dict_b:Dictionary)-> Dictionary:
 	var out = {}
@@ -389,6 +380,10 @@ func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 		playHurtTween(target, damage)
 		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
 		return
+#	if getCombatScene().rebuking:
+#		return
+#	if getCombatScene().rebuking:
+#		return
 	
 	randomize()
 	if sound_path == '':
@@ -402,7 +397,6 @@ func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 		if target is ResEnemyCombatant:
 			OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
 		elif target is ResPlayerCombatant:
-			target.combatant_scene.playIdle('Hurt')
 			OverworldGlobals.playSound("res://audio/sounds/542038__rob_marion__gasp_sweep-shot_2.ogg")
 	target.combatant_scene.doAnimation('Hurt',null,{'no_anim_fallback':true,'low_priority':true,'bypass_invalid_pause':true})
 	playHurtTween(target, damage)

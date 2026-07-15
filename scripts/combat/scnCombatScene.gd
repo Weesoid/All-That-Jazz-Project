@@ -1238,6 +1238,7 @@ func doRebuke(target: ResCombatant, caster: ResCombatant):
 		moveCamera(target.combatant_scene.global_position,0)
 	
 	# Do visual effects
+	target.combatant_scene.z_index = caster.combatant_scene.z_index+1
 	toggleUI(false)
 	OverworldGlobals.playSound("res://audio/sounds/744329__fairsonicstudio__bbrs_sfx_soulretrieve.ogg")
 	OverworldGlobals.playSound(['165491__chripei__victory-cry-reverb-2.ogg', '165492__chripei__victory-cry-reverb-1.ogg'].pick_random())
