@@ -325,7 +325,7 @@ stat_values = {
 "handling": 0,
 "health": 20,
 "resist": 0.0,
-"resolve": 0,
+"resolve": 5,
 "speed": 0
 }
 scale_stats = {

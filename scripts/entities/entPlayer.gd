@@ -126,6 +126,8 @@ func setClimbing(to:bool):
 	OverworldGlobals.player.toggleClimbAnimation(to)
 	if !to:
 		climb_cooldown.start()
+	else:
+		fall_damage = 0
 	#if OverworldGlobals.player.get_collision_mask_value(1) != !to:
 	#	OverworldGlobals.player.set_collision_mask_value(1, !to)
 
@@ -289,13 +291,13 @@ func _input(_event):
 		elif Input.is_action_just_pressed('ui_down'):
 			power_inputs += 's'
 			showPowerInput(POWER_DOWN)
-	if Input.is_action_pressed("ui_gambit") and canUsePower():
-		OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg")
-		OverworldGlobals.zoomCamera(Vector2(1.01,1.01))
-		toggleVoidAnimation(true)
-		sprinting = false
-		can_move = false
-		power_listening = true
+#	if Input.is_action_pressed("ui_gambit") and canUsePower():
+#		OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg")
+#		OverworldGlobals.zoomCamera(Vector2(1.01,1.01))
+#		toggleVoidAnimation(true)
+#		sprinting = false
+#		can_move = false
+#		power_listening = true
 
 	elif (Input.is_action_just_released("ui_gambit") and canUsePower() and power_listening and !can_move) or (power_inputs.length() >= 3) and isMobile():
 		OverworldGlobals.zoomCamera(Vector2(1.0,1.0))
@@ -424,7 +426,7 @@ func canDrawBow()-> bool:
 	if UIGlobals.inMenu():
 		return false
 	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
-		OverworldGlobals.showPrompt("Out of [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
+		#OverworldGlobals.showPrompt("Out of [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
 		return false
 	if PlayerGlobals.equipped_arrow == null:
 		return false

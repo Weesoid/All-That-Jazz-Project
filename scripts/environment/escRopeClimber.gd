@@ -25,7 +25,7 @@ func _input(_event):
 	if inputtedMovement():
 		if global_position.y > player.global_position.y and !player_snapped and Input.is_action_pressed("ui_move_down"): #and player.velocity.y > 0:
 			#if get_parent().name == 'Rope2': print(global_position.distance_to(player.global_position))
-			player.global_position.y += 16
+			player.global_position.y += 32
 			player_snapped=true
 		player.setClimbing(true)
 	
@@ -64,3 +64,10 @@ func inputtedMovement():
 
 func playerInClimbable():
 	return get_overlapping_bodies().has(OverworldGlobals.player)
+
+
+func _on_body_exited(body):
+	if !body is PlayerScene or !body.climbing: 
+		return
+	
+	body.setClimbing(false)

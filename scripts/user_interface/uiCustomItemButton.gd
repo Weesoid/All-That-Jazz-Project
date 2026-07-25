@@ -43,6 +43,7 @@ func setItem(data: ResItem):
 		stack_count.hide()
 
 func updateCount(changed_item):
+	await get_tree().process_frame
 	if changed_item != item:
 		return
 	stack_count.text = str(changed_item.stack)

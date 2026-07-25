@@ -98,6 +98,7 @@ func exit():
 
 
 func _on_area_entered(area):
+	if OverworldGlobals.player == null: return
 	if area == OverworldGlobals.player.interaction_detector and OverworldGlobals.player.canInteract() and cooldown_timer.is_stopped():
 		interact_animator.play("Show")
 

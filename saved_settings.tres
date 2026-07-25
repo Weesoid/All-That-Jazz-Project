@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SavedSettings" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="SavedSettings" load_steps=2 format=3 uid="uid://bqaxuoeokwb5t"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResSavedSettings.gd" id="1_i8cl7"]
 
@@ -8,7 +8,7 @@ window_mode = 2
 resolution = 0
 fps_cap = 60
 vsync = true
-master_vol = 1.0
+master_vol = 0.0
 music_vol = 1.0
 sound_vol = 1.0
 toggle_sprint = true

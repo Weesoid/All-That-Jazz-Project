@@ -152,7 +152,6 @@ func addButton(item,_count=null):
 	if button.has_node('CustomTooltip'):
 		button.get_node('CustomTooltip').tooltip_position = tooltip_direction
 	
-	
 	if remove_dragged_items and button is CustomDragDropButton:
 		button.item_dragging.connect(removeItem)
 	updateCategories()
