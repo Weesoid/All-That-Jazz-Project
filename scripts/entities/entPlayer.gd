@@ -23,6 +23,7 @@ class_name PlayerScene
 @onready var melee_hitbox = $PlayerDirection/MeleeHitbox
 #@onready var stamina_bar = $StaminaBar
 @onready var current_arrow_icon = $CurrentArrowView
+@onready var walking_animations = $WalkingAnimations
 
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
@@ -44,7 +45,7 @@ var fall_damage: int = 0
 var ANIMATION_SPEED = 0.0
 var default_camera_pos: Vector2
 var diving = false
-var dive_strength:float=-125
+var dive_strength:float=-140
 var invincible = false
 var camping = false
 var current_camp_spot:SavePoint
@@ -76,8 +77,9 @@ func _ready():
 	if SettingsGlobals.cheat_mode and !has_node('DebugComponent'):
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
-	default_camera_pos = player_camera.position
 	OverworldGlobals.player = self
+	
+	default_camera_pos = player_camera.position
 	landed.connect(playFootstep.unbind(1))
 	hud = [
 		melee_bar,
@@ -85,6 +87,7 @@ func _ready():
 	]
 	await get_tree().process_frame
 	OverworldGlobals.loadFollowers()
+	OverworldGlobals.player_ready.emit()
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -179,6 +182,7 @@ func _physics_process(delta):
 			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
 		)
 		direction = direction.normalized()
+		$Battler.get_node('Sprite2D').flip_h = !sprite.flip_h
 		
 		if Input.is_action_just_pressed("ui_accept") and canDive() and canDoStaminaAction(5.0):
 			dived.emit()

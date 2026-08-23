@@ -62,5 +62,5 @@ required_effect = {
 "rank": 0,
 "status_effect": null
 }
-tension_cost = 4
+tension_cost = 1
 instant_cast = false

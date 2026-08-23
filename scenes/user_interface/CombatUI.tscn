@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatUI.gd" id="1_xa35n"]
 [ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="1_xjxjm"]
 [ext_resource type="Texture2D" uid="uid://cc77vpghixtg8" path="res://images/ability_icons/move.png" id="2_rufvp"]
-[ext_resource type="Texture2D" uid="uid://mdq0i44s7xd3" path="res://images/ability_icons/defend.png" id="4_n2k63"]
+[ext_resource type="Resource" uid="uid://n15uy40oimtq" path="res://resources/combat/abilities/Defend.tres" id="4_pw7md"]
 [ext_resource type="Resource" uid="uid://ol8t3xlrcx8b" path="res://resources/combat/abilities/Advance.tres" id="6_15don"]
 [ext_resource type="Resource" uid="uid://vedm8h64ew7u" path="res://resources/combat/abilities/Recede.tres" id="7_et8gl"]
 [ext_resource type="Texture2D" uid="uid://du1iddji1w8cp" path="res://images/ability_icons/combat_gear.png" id="8_k8onw"]
@@ -173,11 +173,7 @@ focus_neighbor_left = NodePath("../Gear")
 focus_neighbor_top = NodePath("../Move")
 focus_neighbor_right = NodePath("../../../../EscapeButton")
 focus_neighbor_bottom = NodePath("../Pass")
-descriptions = {
-"description": "",
-"icon": ExtResource("4_n2k63"),
-"title": ""
-}
+ability = ExtResource("4_pw7md")
 
 [node name="Movements" type="Control" parent="AbilityContainer/BaseAbilities/BaseAbilities"]
 visible = false

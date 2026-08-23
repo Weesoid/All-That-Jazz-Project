@@ -60,4 +60,4 @@ func talentDumped(talent: ResTalent,emit:bool=true):
 		return
 	combatant.removeTalent(talent)
 	if emit:
-		talent_interacted.emit()
+		talent_interacted.emit(combatant)

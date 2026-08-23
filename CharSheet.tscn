@@ -83,6 +83,7 @@ focus_neighbor_right = NodePath("../../../../Right/VBoxContainer/Equipment/Weapo
 texture = ExtResource("7_xwp5c")
 
 [node name="Label" type="Label" parent="Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents"]
+modulate = Color(1, 1, 0, 1)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0

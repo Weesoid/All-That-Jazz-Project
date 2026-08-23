@@ -41,14 +41,14 @@ var dialogue_line: DialogueLine:
 		
 		dialogue_line = next_dialogue_line
 		
-		character_label.visible = not dialogue_line.character.is_empty()
-		character_label.text = tr(dialogue_line.character.split("-")[0], "dialogue")
-		var portrait = load("res://images/dialogue_portraits/%s%s.png" % [dialogue_line.character.to_lower(), file_suffix])
-		if portrait != null:
-			character_portrait.visible = true
-			character_portrait.texture = portrait
-		else:
-			character_portrait.visible = false
+		#character_label.visible = not dialogue_line.character.is_empty()
+		#character_label.text = tr(dialogue_line.character.split("-")[0], "dialogue")
+		#var portrait = load("res://images/dialogue_portraits/%s%s.png" % [dialogue_line.character.to_lower(), file_suffix])
+#		if portrait != null:
+#			character_portrait.visible = true
+#			character_portrait.texture = portrait
+#		else:
+#			character_portrait.visible = false
 		
 		dialogue_label.modulate.a = 0
 		dialogue_label.custom_minimum_size.x = dialogue_label.get_parent().size.x - 1

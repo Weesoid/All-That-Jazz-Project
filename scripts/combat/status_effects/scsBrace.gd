@@ -43,7 +43,7 @@ static func doRiposte(target, caster, status_effect):
 	var riposte_anim = determineRiposte(target, caster)
 	if riposte_anim == 'Cast_Melee' or riposte_anim == 'Cast_Riposte':
 		#print('Riposting melee!')
-		print('scriptarion ', status_effect.status_script)
+		#print('scriptarion ', status_effect.status_script)
 		target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'anim_speed'=1.5})
 	else:
 		target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'target'=caster.combatant_scene,'frame_time'=0.7,'ability'=null,'anim_speed'=2.0})

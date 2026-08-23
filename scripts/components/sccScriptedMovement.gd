@@ -18,7 +18,7 @@ signal animation_done
 func _ready():
 	body = get_parent()
 	body.set_physics_process(false)
-	#setCollisionExceptions()
+	setCollisionExceptions()
 
 func setCollisionExceptions():
 	for child in OverworldGlobals.getCurrentMap().get_children().filter(func(chimp): return chimp is CharacterBody2D):
@@ -35,6 +35,17 @@ func _physics_process(delta):
 		if target_positions[0] is Vector2:
 			body.velocity.x = (flattenY(body.global_position).direction_to(flattenY(target_positions[0]))).x * move_speed 
 			if distanceX(body.global_position, target_positions[0]) < 1.0:
+				if body.has_meta('stop_frame'):
+					var animator 
+					if body.has_node('WalkingAnimations'):
+						animator = body.get_node('WalkingAnimations')
+					else:
+						animator = OverworldGlobals.getEntityAnimator(body.name)
+					animator.stop()
+					print('stop frame is ', body.get_meta('stop_frame'))
+					body.get_node('Sprite2D').frame = body.get_meta('stop_frame')
+				#if hasWalkingAnimations() and body.has_node('Sprite2D'):
+				#	body.get_node('Sprite2D').frame = getStopFrame()
 				target_positions.remove_at(0)
 		elif target_positions[0] is float:
 			jumpBody(target_positions[0])
@@ -56,17 +67,22 @@ func _physics_process(delta):
 		if !target_positions.is_empty() and target_positions[0] is Vector2 and animate_direction:
 			if body is PlayerScene:
 				OverworldGlobals.player.direction = body.velocity.normalized()
-			elif body.has_node('WalkingAnimations'):
+			elif hasWalkingAnimations():
 				animateWalk()
 	elif target_positions.is_empty():
 		body.velocity = Vector2.ZERO
 		#body.set_collision_layer_value(1, true)
 		#body.set_collision_mask_value(1, true)
+		#OverworldGlobals.getEntityAnimator(body.name).play('RESET')
 		movement_finished.emit()
 		body.set_physics_process(true)
 		queue_free()
 	
 	body.move_and_slide()
+
+func hasWalkingAnimations():
+	var anim: AnimationPlayer = body.find_children('*', 'AnimationPlayer')[0]
+	return anim.has_animation('Walk_Left')
 
 func flattenY(vector):
 	return Vector2(vector.x,0)
@@ -115,6 +131,20 @@ func jumpBody(jump_velocity:float):
 		body.velocity.y = jump_velocity
 		jumping=true
 
+#func getStopFrame():
+#	var animator: AnimationPlayer 
+#	if body.has_node('WalkingAnimations'):
+#		animator = body.get_node('WalkingAnimations')
+#	else:
+#		animator = OverworldGlobals.getEntityAnimator(body.name)
+#	if !animator.has_animation('Walk_Left'): return
+##	animator.get_animation_list()
+#	var animation = animator.get_animation('Walk_Left')
+#	print(animation.find_track('Sprite2D:frame',Animation.TYPE_VALUE ))
+#	var track_idx = animation.find_track( NodePath("Sprite2D:frame"), Animation.TYPE_VALUE)
+#	var key_idx = animation.track_find_key(track_idx,0.3,Animation.FIND_MODE_NEAREST)
+#	return animator.get_animation('Walk_Left').track_get_key_value(track_idx, key_idx)
+
 func setVectorMoveSequence(movements: Array[String]):
 	for pos in movements:
 		if setAnimation(pos):
@@ -145,16 +175,17 @@ func animateWalk():
 
 func updateSprite(direction: String):
 	var animator 
-	if body is PlayerScene:
+	if body.has_node('WalkingAnimations'):
 		animator = body.get_node('WalkingAnimations')
 	else:
 		animator = OverworldGlobals.getEntityAnimator(body.name)
-		
 	
+	#print(animator, ' < ANIM')
 	if direction == 'L':
 		animator.play('Walk_Left')
 	elif direction == 'R':
 		animator.play('Walk_Right')
+	#getStopFrame()
 	elif direction == 'D':
 		animator.play('Walk_Down')
 	else:

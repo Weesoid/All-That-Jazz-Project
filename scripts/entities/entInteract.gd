@@ -8,6 +8,7 @@ extends Area2D
 @export var show_followers: bool = true
 @export var move_followers:bool = false
 @export var cooldown: float = 1.0
+@export var autorun:bool=false
 @onready var cooldown_timer = $Timer
 @onready var interact_animator = $Sprite2D/AnimationPlayer
 
@@ -17,6 +18,9 @@ func _ready():
 	if go_left:
 		direction = -1
 	centerSelf()
+	if autorun:
+		await OverworldGlobals.player_ready
+		interact()
 
 func centerSelf():
 	if get_parent().has_node('CollisionShape2D'):
@@ -104,7 +108,7 @@ func _on_area_entered(area):
 
 
 func _on_area_exited(area):
-	if area == OverworldGlobals.player.interaction_detector:
+	if OverworldGlobals.player != null and area == OverworldGlobals.player.interaction_detector:
 		interact_animator.play("RESET")
 
 func _on_timer_timeout():

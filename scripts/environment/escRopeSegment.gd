@@ -4,11 +4,12 @@ class_name RopeSegment
 @onready var END_TEXTURE = preload("res://images/sprites/rope_seg_bottom.png")
 @onready var sprite = $CollisionShape2D/Sprite2D
 var player_on_segment = false
+var physics:bool=true
 
 func _on_area_2d_body_entered(body):
 	if body is PlayerScene:
 		player_on_segment = true
-		linear_velocity.x = 20
+		linear_velocity.x = 24
 
 func _on_area_2d_body_exited(body):
 	if body is PlayerScene:
@@ -17,6 +18,10 @@ func _on_area_2d_body_exited(body):
 	
 # MIGHT BE A PROBLEM!
 func _physics_process(_delta):
+	if !physics:
+		freeze=true
+		set_physics_process(false)
+	
 	if player_on_segment and OverworldGlobals.player.climbing and !OverworldGlobals.player.is_on_floor():
 		OverworldGlobals.player.global_position.x = global_position.x
 

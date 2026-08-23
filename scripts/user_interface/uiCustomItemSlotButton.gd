@@ -38,7 +38,7 @@ func setItem(data: ResItem):
 		item_received.emit(data)
 
 func _can_drop_data(_at_position, data):
-	return !item_whitelist.is_empty() and item_whitelist.has(data) and !disabled and can_drop_function.call()
+	return data is ResItem and !item_whitelist.is_empty() and item_whitelist.has(data) and !disabled and can_drop_function.call()
 
 func _drop_data(_at_position, data):
 	setItem(data)

@@ -1,4 +1,3 @@
-@tool
 extends Node2D
 class_name DynamicRope
 
@@ -8,6 +7,7 @@ class_name DynamicRope
 			segment_count = seg_count
 		if Engine.is_editor_hint() and seg_count >= 0:
 			initializeRope()
+@export var physics:bool=true
 @export var must_shoot: bool = false
 @onready var top_pin = $PinArea
 @onready var top_pin_tex = $Pin
@@ -28,6 +28,7 @@ func isPlayerOnEnterArea():
 
 func createSegment():
 	var segment = load("res://scenes/environment/RopeSegment.tscn").instantiate()
+	segment.physics = physics
 	if segments.size() == 0:
 		segment.position = Vector2(0,24)
 	else:

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bln0ahed21w6e"
-path="res://.godot/imported/archie.png-e583d04167d2c5651f6db017969ecd9f.ctex"
+uid="uid://4ehfc8b2wr3x"
+path="res://.godot/imported/freight_train_indoors.png-3da440ce92f53297dd0ffacd58786f80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/character_sprites/archie/archie.png"
-dest_files=["res://.godot/imported/archie.png-e583d04167d2c5651f6db017969ecd9f.ctex"]
+source_file="res://images/tiles/freight_train_indoors.png"
+dest_files=["res://.godot/imported/freight_train_indoors.png-3da440ce92f53297dd0ffacd58786f80.ctex"]
 
 [params]
 

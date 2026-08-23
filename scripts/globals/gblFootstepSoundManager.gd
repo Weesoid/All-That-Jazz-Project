@@ -5,15 +5,16 @@ const FOOTSTEP_SOUNDS = {
 	'sand': [
 		'353799__monte32__footsteps_6_dirt_shoe 01.ogg',
 		'353799__monte32__footsteps_6_dirt_shoe 02.ogg',
-		'353799__monte32__footsteps_6_dirt_shoe 03.ogg'
-		#'353799__monte32__footsteps_6_dirt_shoe 04.ogg'.
-		#'353799__monte32__footsteps_6_dirt_shoe 05.ogg'
+		'353799__monte32__footsteps_6_dirt_shoe 03.ogg',
+		'353799__monte32__footsteps_6_dirt_shoe 04.ogg',
+		#'353799__monte32__footsteps_6_dirt_shoe 05.ogg',
 	]
 }
 
-func playFootstep(position:Vector2,db:float=-6,pitch=1.0):
-	position+=Vector2(0,7)
-	#OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/DebugPoint.tscn",position)
+func playFootstep(position:Vector2,db:float=-8,pitch=1.0):
+	position+=Vector2(0,-12)
+	#OverworldGlobals.addPatrollerPulse(position,30,0)
+	OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/DebugPoint.tscn",position)
 	var tile_data = []
 	for tilemap in tilemaps:
 		if !is_instance_valid(tilemap):
@@ -28,6 +29,9 @@ func playFootstep(position:Vector2,db:float=-6,pitch=1.0):
 		#	tile_data.push_back(data_b)
 	
 	if tile_data.size() > 0:
+		#if !tile_data.back().has_custom_data("footstep_sound"):
+		#	return
+		
 		var tile_type = tile_data.back().get_custom_data("footstep_sound")
 		if FOOTSTEP_SOUNDS.has(tile_type):
 			OverworldGlobals.playSound2D(position, FOOTSTEP_SOUNDS[tile_type].pick_random(),db,pitch,true,[0.0,2.0])

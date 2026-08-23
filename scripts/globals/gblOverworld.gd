@@ -19,6 +19,7 @@ signal start_camp
 signal end_camp
 signal interaction_started
 signal interaction_ended
+signal player_ready
 #signal update_inventory
 
 func initializePlayerParty():
@@ -56,6 +57,8 @@ func setPlayerInput(enabled:bool, disable_collision=false, hide_player=false):
 func inDialogue() -> bool:
 	return getCurrentMap().has_node('Balloon')
 
+
+
 #********************************************************************************
 # SIGNALS
 #********************************************************************************
@@ -77,7 +80,7 @@ func moveEntity(entity_body_name: String, move_to, offset=Vector2(0,0), speed=10
 	
 	if wait:
 		await getEntity(entity_body_name).get_node('ScriptedMovementComponent').movement_finished
-
+		
 #********************************************************************************
 # GENERAL UTILITY
 #********************************************************************************
@@ -93,7 +96,7 @@ func getEntity(entity_name: String):
 func hasEntity(entity_name: String):
 	return get_tree().current_scene.has_node(entity_name)
 
-func playEntityAnimation(entity_name: String, animation_name: String, reset:bool=false,wait=true):
+func playEntityAnimation(entity_name: String, animation_name: String, reset:bool=false,wait:=true,reverse:=false):
 	getEntityAnimator(entity_name).play(animation_name)
 	if reset:
 		await getEntityAnimator(entity_name).animation_finished
@@ -101,27 +104,41 @@ func playEntityAnimation(entity_name: String, animation_name: String, reset:bool
 	if wait:
 		await getEntityAnimator(entity_name).animation_finished
 
+func setSpriteFrame(entity_name: String, frame:int, flip:bool=false):
+	var entity = getEntity(entity_name)
+	var sprite: Sprite2D
+	if entity is Sprite2D:
+		sprite = entity
+	elif entity.has_node('Sprite2D'):
+		sprite = entity.get_node('Sprite2D')
+	sprite.frame = frame
+	#if flip:
+	sprite.flip_h = flip
+
 func getEntityAnimator(entity_name: String)-> AnimationPlayer:
 	for child in getEntity(entity_name).get_children():
 		if child is AnimationPlayer: return child
 	
 	return null
 
-func changeEntityVisibility(entity_name: String, visibility:bool):
+func setEntityVisibility(entity_name: String, visibility:bool):
 	if get_tree().current_scene.get_node(entity_name) is PlayerScene:
 		player.sprite.visible = visibility
 	else:
 		get_tree().current_scene.get_node(entity_name).visible = visibility
 
 func shakeSprite(entity: Node2D, strength:float=15.0, speed:float=50.0, sprite_name:String='Sprite2D'):
-	if !entity.has_node(sprite_name):
+	if !entity.has_node(sprite_name) and !entity is Sprite2D:
 		return
 	
-	var sprite = entity.get_node(sprite_name)
+	var sprite = entity.get_node(sprite_name) if !entity is Sprite2D else entity
 	var sprite_shaker: SpriteShaker = load("res://scenes/components/SpriteShaker.tscn").instantiate()
 	sprite_shaker.shake_speed = speed
 	sprite_shaker.shake_strength = strength
 	sprite.add_child(sprite_shaker)
+
+func shakeCharacter(entity:String):
+	shakeSprite(getCurrentMap().get_node(entity))
 
 func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 	if teleport_to is Vector2:
@@ -217,6 +234,9 @@ func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Arr
 func forceGiveRewards():
 	getCurrentMap().giveRewards(true)
 
+func hidePlayer():
+	player.hide()
+
 func showTransition(animation: String, player_scene:PlayerScene=null):
 	var transition = load("res://scenes/miscellaneous/BattleTransition.tscn").instantiate()
 	if player_scene == null:
@@ -275,6 +295,14 @@ func moveCamera(to, duration:float=0.25, offset:Vector2=Vector2.ZERO, wait:bool=
 	if wait:
 		await tween.finished
 
+func offsetCamera(offset:Vector2, duration=0.25, wait:bool=false):
+	var tween = create_tween()
+	var camera = player.player_camera
+	tween.finished.connect(tween.kill)
+	tween.tween_property(camera, 'global_position', camera.global_position+offset, duration)
+	if wait:
+		await tween.finished
+
 func zoomCamera(zoom: Vector2, duration:float=0.25, wait:bool=false):
 	var tween = create_tween()
 	tween.finished.connect(tween.kill)
@@ -317,6 +345,18 @@ func fadeFollowers(color: Color):
 	for follower in PlayerGlobals.getActiveFollowers():
 		follower.fade(color)
 
+func playMusic(filename:String,db=0.0):
+	var audio_player = AudioStreamPlayer.new()
+	audio_player.bus = "Music"
+	audio_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	audio_player.volume_db = db
+	if filename.begins_with('res://'):
+		audio_player.stream = load(filename)
+	else:
+		audio_player.stream = load("res://audio/music/%s" % filename)
+	add_child(audio_player)
+	audio_player.play()
+
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true, end_signal=null):
 	var audio_player = AudioStreamPlayer.new()
 	audio_player.bus = "Sounds"
@@ -340,6 +380,9 @@ func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true, end_signa
 		add_child(audio_player)
 	audio_player.play()
 
+#
+	
+
 func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_pitch=true, pitch_range=[0,0.25]):
 	if !CombatGlobals.inCombat() and player.getPosOffset().distance_to(position) > 300:
 		return
@@ -349,6 +392,7 @@ func playSound2D(position: Vector2, filename: String, db=0.0, pitch = 1, random_
 	audio_player.connect("finished", audio_player.queue_free)
 	audio_player.pitch_scale = pitch
 	audio_player.global_position = position
+	#addPatrollerPulse(position,999,0)
 	if filename.begins_with('res://'):
 		audio_player.stream = load(filename)
 	else:
@@ -664,6 +708,12 @@ func damageParty(damage:int, lethal:bool=false):
 
 func getCamera()-> DynamicCamera:
 	return player.player_camera
+
+func showCameraOverlay(color:String,fade_time=0.25):
+	await getCamera().showOverlay(Color.from_string(color,Color.PINK),fade_time)
+
+func flashCamera(color:String,alpha:float=1.0, fade_in:float=0.1, fade_out:float=0.25):
+	getCamera().flash(Color.from_string(color,Color.PINK),alpha, fade_in, fade_out)
 
 # Damage combatant out of combat
 func damageMember(combatant: ResPlayerCombatant, damage:int,lethal:bool=false):

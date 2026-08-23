@@ -1,0 +1,125 @@
+~ sword
+Your sword.
+do setEntityVisibility("Sword", false)
+do playEntityAnimation("Player", "BrandishSword",false)
+do wait(1)
+do playEntityAnimation("Player", "SheatheSword",false,true,true)
+do wait(0.75)
+do playEntityAnimation("Player", "RESET")
+=> map
+
+~ bow
+A bow.
+do setEntityVisibility("Bow", false)
+do playEntityAnimation("Player", "DrawBow")
+do wait(0.5)
+do playEntityAnimation("Player", "UndrawBow",false,true,true)
+do wait(0.75)
+do playEntityAnimation("Player", "RESET")
+=> END
+
+~ map
+do wait(0.1)
+do playEntityAnimation("Player", "Map_Check")
+do wait(1)
+Player: Alright... only...
+Player: 2,167 more miles to go.
+do playEntityAnimation("Player", "Map_Emote")
+do wait(2)
+Player: God damn it.
+do wait(1)
+do playEntityAnimation("Player", "RESET")
+=> END
+
+~ cutscene
+do showCameraOverlay("Black",0)
+do hidePlayer()
+do moveCamera("CamMarker")
+do zoomCamera(Vector2(2,2))
+do showCameraOverlay("transparent",3)
+do wait(5)
+do setSpriteFrame("Willis",1)
+do wait(2)
+Willis: ...Do you wanna talk about it?
+do setSpriteFrame("Archie",1)
+Archie: About what?
+Willis: The rebellion, what you’ve seen. What you’ve done.
+do setSpriteFrame("Archie",0)
+do wait(2)
+Archie: I don't know.
+Archie: It's...[wait=0.5] a lot.
+Willis: That’s fair. 
+Willis: Something more topical then.
+do setSpriteFrame("Willis",0)
+Willis: You think it'll be any better Eastside?
+Archie: ...
+do setSpriteFrame("Archie",1)
+Archie: Y’know what’s funny? 
+Archie: After everything we’ve been through- 
+Archie: I do think things will be better.
+Archie: Guess that makes me a fool huh?
+Willis: No.
+do setSpriteFrame("Willis",1)
+Willis: I think it's strong actually.
+Willis: To hold on to hope despite everything.
+Archie: I think it's stupid.
+Archie: What good did my hope do?
+Archie: It's how [color=red]he[color=white] sunk his teeth in me.
+Archie: Got me thinking I was fighting for a better tomorrow.
+Archie: When I was only fighting another pointless war.
+Archie: I thought I could be a hero.
+Archie: And you all paid for it.
+do setSpriteFrame("Archie",0)
+do wait(2)
+Archie: It was selfish.
+Archie: I never should've left.
+do wait(2)
+Willis: I'm just glad you didn't die for it.
+do wait(3)
+Archie: I...[wait=0.5] still think about them.
+Archie: My comrades.
+Archie: I never would’ve made it home if Pike hadn't showed me mercy.
+Archie: I wonder if he’s okay. 
+Archie: If they suspect him of letting me go.
+Willis: What would they do to him?
+Archie: ...I don’t know.
+Archie: That's what scares me.
+do wait(2)
+Willis: You know what I think?
+Willis: He knew the risk he was taking.
+do setSpriteFrame("Willis",0)
+Willis: and he'd want you to put all that behind you.
+Archie: Yeah...
+Archie: I guess he would.
+do wait(2)
+do setSpriteFrame("Archie",1)
+do wait(1)
+Archie:  Thanks Will.
+do setSpriteFrame("Willis",1)
+Willis:  Where’d you be without my wise-ass.
+Archie: Probably dead in some ditch.
+Willis: That’s right! So next time you better sit your ass down and listen!
+do wait(0.5)
+do playEntityAnimation("Archie", "Punch")
+do wait(1)
+Archie: Don’t push it squirt.
+Willis: Hahah!
+do setSpriteFrame("Archie", 0)
+Archie: We better get some shut-eye.
+Archie: It's a new life ahead of us.
+do wait(1)
+do setSpriteFrame("Willis", 0)
+do wait(1)
+Willis: Let's just sit here for a minute.
+Willis: I've never seen this much trees before.
+do wait(1)
+Archie: ...Sure.
+do showCameraOverlay("Black",5)
+do wait(5)
+Archie-
+do wait(1)
+Archie, wake up-
+do wait(3)
+The train stopped.
+do changeMap("res://scenes/maps/Forest.tscn","875.0011,734.9305,0")
+=> END

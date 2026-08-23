@@ -1,4 +1,4 @@
-[gd_scene load_steps=153 format=3 uid="uid://doc3puk0lkp31"]
+[gd_scene load_steps=154 format=3 uid="uid://doc3puk0lkp31"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_ivxm1"]
 [ext_resource type="PackedScene" uid="uid://i21m5gws8dde" path="res://scenes/user_interface/MeleeCooldownBar.tscn" id="2_mk8cj"]
@@ -9,13 +9,12 @@
 [ext_resource type="Texture2D" uid="uid://c4mxnd122fr4x" path="res://images/character_sprites/willis/player.png" id="5_nms4n"]
 [ext_resource type="PackedScene" uid="uid://cdkunqmsd5yml" path="res://scenes/components/MeleeHitbox.tscn" id="6_31qdv"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
-[ext_resource type="Texture2D" uid="uid://8thn8af4p4s8" path="res://images/character_sprites/archie/player_alt_dive.png" id="8_s7ls0"]
 [ext_resource type="Texture2D" uid="uid://c6iacu5bntvp7" path="res://images/character_sprites/willis/player_dive.png" id="9_30p1c"]
 [ext_resource type="PackedScene" uid="uid://cplh3ysdnrlej" path="res://scenes/components/PlayerCamera.tscn" id="10_ay08a"]
+[ext_resource type="PackedScene" uid="uid://hojidodoc70i" path="res://scenes/combatants/Willis.tscn" id="10_kwsik"]
 [ext_resource type="Texture2D" uid="uid://c8nn87vbmr36y" path="res://images/character_sprites/willis/faceplant_willis.png" id="10_llrcm"]
-[ext_resource type="Texture2D" uid="uid://emh44pfnyck" path="res://images/animations/player_alt_fall.png" id="10_m77of"]
 [ext_resource type="Texture2D" uid="uid://cj32tg5nignkb" path="res://images/animations/power.png" id="10_wsxx2"]
-[ext_resource type="Texture2D" uid="uid://c2afm2s7jwkso" path="res://images/animations/fall.png" id="11_rb05q"]
+[ext_resource type="Texture2D" uid="uid://be1usc4qy4iil" path="res://images/character_sprites/willis/willis_map.png" id="14_rskos"]
 [ext_resource type="Texture2D" uid="uid://bvyg2cse4ksm7" path="res://images/sprites/circle_filled.png" id="14_w0217"]
 
 [sub_resource type="Animation" id="Animation_te3tf"]
@@ -133,12 +132,12 @@ size = Vector2(17, 22)
 size = Vector2(22, 4)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8i7nm"]
-radius = 9.0
-height = 24.0
+radius = 19.0
+height = 66.0
 
-[sub_resource type="Animation" id="Animation_5j7ww"]
-resource_name = "Dive"
-length = 0.1
+[sub_resource type="Animation" id="Animation_dtwsi"]
+resource_name = "BrandishSword"
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -151,65 +150,27 @@ tracks/0/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/1/type = "value"
+tracks/1/type = "animation"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationSprite:visible")
+tracks/1/path = NodePath("Battler/AnimationPlayer")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"clips": PackedStringArray("Cast_Misc"),
+"times": PackedFloat32Array(0)
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationSprite:texture")
+tracks/2/path = NodePath("Battler:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("8_s7ls0")]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AnimationSprite:hframes")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [2]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AnimationSprite:position")
-tracks/4/interp = 2
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -21)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("AnimationSprite:frame")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_rb2us"]
@@ -300,9 +261,9 @@ tracks/6/keys = {
 "values": [0, 1]
 }
 
-[sub_resource type="Animation" id="Animation_tue3p"]
-resource_name = "Dive_Land"
-length = 0.4
+[sub_resource type="Animation" id="Animation_rd3px"]
+resource_name = "DrawBow"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -315,77 +276,27 @@ tracks/0/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/1/type = "value"
+tracks/1/type = "animation"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationSprite:visible")
+tracks/1/path = NodePath("Battler/AnimationPlayer")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"clips": PackedStringArray("Cast_Ranged"),
+"times": PackedFloat32Array(0)
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationSprite:texture")
+tracks/2/path = NodePath("Battler:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("8_s7ls0")]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AnimationSprite:hframes")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [2]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AnimationSprite:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(1.05, 1.05), Vector2(1, 1)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("AnimationSprite:position")
-tracks/5/interp = 2
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -21)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("AnimationSprite:frame")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_f83nl"]
@@ -476,9 +387,8 @@ tracks/6/keys = {
 "values": [0]
 }
 
-[sub_resource type="Animation" id="Animation_r16ng"]
-resource_name = "Falling"
-length = 0.6
+[sub_resource type="Animation" id="Animation_oid70"]
+resource_name = "Map_Check"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -513,55 +423,119 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("10_m77of")]
+"values": [ExtResource("14_rskos")]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("AnimationSprite:hframes")
-tracks/3/interp = 1
+tracks/3/path = NodePath("AnimationSprite:position")
+tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -27)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimationSprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationSprite:hframes")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [3]
 }
+
+[sub_resource type="Animation" id="Animation_1rsdg"]
+resource_name = "Map_Emote"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationSprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("14_rskos")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimationSprite:position")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -27)]
+}
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("AnimationSprite:position")
-tracks/4/interp = 2
+tracks/4/path = NodePath("AnimationSprite:frame")
+tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -21)]
+"update": 1,
+"values": [2]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("AnimationSprite:frame")
+tracks/5/path = NodePath("AnimationSprite:hframes")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [0, 1, 2]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("AnimationSprite:scale")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
+"update": 1,
+"values": [3]
 }
 
 [sub_resource type="Animation" id="Animation_x7qsu"]
@@ -662,10 +636,21 @@ tracks/7/keys = {
 "update": 0,
 "values": [Vector2(0, -21.9902)]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Battler:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
-[sub_resource type="Animation" id="Animation_c11le"]
-resource_name = "Stun"
-length = 0.3
+[sub_resource type="Animation" id="Animation_1oh16"]
+resource_name = "SheatheSword"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -681,7 +666,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationSprite:visible")
+tracks/1/path = NodePath("Battler:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -690,65 +675,60 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
-tracks/2/type = "value"
+tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationSprite:texture")
+tracks/2/path = NodePath("Battler/AnimationPlayer")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("11_rb05q")]
+"values": [{
+"args": ["Cast_Misc", -1],
+"method": &"play_backwards"
+}]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AnimationSprite:hframes")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
+
+[sub_resource type="Animation" id="Animation_yt7j5"]
+resource_name = "UndrawBow"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [6]
+"values": [false]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AnimationSprite:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Battler:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("AnimationSprite:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -21.9902)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("AnimationSprite:frame")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [2, 3, 4]
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Battler/AnimationPlayer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Slow_Draw", -1],
+"method": &"play_backwards"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_ogoem"]
@@ -817,13 +797,15 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c2xtv"]
 _data = {
-"Dive": SubResource("Animation_5j7ww"),
+"BrandishSword": SubResource("Animation_dtwsi"),
 "Dive_2": SubResource("Animation_rb2us"),
-"Dive_Land": SubResource("Animation_tue3p"),
+"DrawBow": SubResource("Animation_rd3px"),
 "Faceplant": SubResource("Animation_f83nl"),
-"Falling": SubResource("Animation_r16ng"),
+"Map_Check": SubResource("Animation_oid70"),
+"Map_Emote": SubResource("Animation_1rsdg"),
 "RESET": SubResource("Animation_x7qsu"),
-"Stun": SubResource("Animation_c11le"),
+"SheatheSword": SubResource("Animation_1oh16"),
+"UndrawBow": SubResource("Animation_yt7j5"),
 "VoidChannel": SubResource("Animation_ogoem")
 }
 
@@ -2819,17 +2801,13 @@ wait_time = 5.0
 one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -20)
+y_sort_enabled = true
+position = Vector2(1, -20)
 texture = ExtResource("5_nms4n")
 offset = Vector2(0, -33)
 hframes = 9
 vframes = 6
-frame = 5
-
-[node name="AnimationSprite" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(0, -21.9902)
-offset = Vector2(0, -24)
+frame = 19
 
 [node name="PlayerPower" type="Sprite2D" parent="."]
 visible = false
@@ -2876,8 +2854,24 @@ debug_color = Color(0.490196, 0.584314, 0, 0.419608)
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 z_index = 2
-position = Vector2(0, -33)
+position = Vector2(0, -54)
 shape = SubResource("CapsuleShape2D_8i7nm")
+
+[node name="Battler" parent="." instance=ExtResource("10_kwsik")]
+visible = false
+position = Vector2(0, -41)
+
+[node name="Sprite2D" parent="Battler" index="0"]
+flip_h = true
+
+[node name="CollisionShape2D" parent="Battler" index="1"]
+disabled = true
+
+[node name="AnimationSprite" type="Sprite2D" parent="."]
+visible = false
+y_sort_enabled = true
+position = Vector2(0, -21.9902)
+offset = Vector2(0, -24)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -2922,3 +2916,5 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("14_w0217")
 
 [node name="PlayerCamera" parent="." instance=ExtResource("10_ay08a")]
+
+[editable path="Battler"]

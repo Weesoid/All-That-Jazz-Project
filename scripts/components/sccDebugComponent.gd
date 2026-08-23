@@ -36,5 +36,5 @@ func _unhandled_input(_event):
 		SaveLoadGlobals.loadSaveFile()
 	elif Input.is_action_just_pressed("ui_debug_copy_coords"):
 		var copied = coordinates.text.replace('(','').replace(')','').replace(' ','')
-		OverworldGlobals.showPrompt('Copied coordinates to clipboard! [color=yellow]%s[/color]' % copied)
+#		OverworldGlobals.showPrompt('Copied coordinates to clipboard! [color=yellow]%s[/color]' % copied)
 		DisplayServer.clipboard_set(copied)

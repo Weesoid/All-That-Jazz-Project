@@ -14,6 +14,9 @@ func _ready():
 		$Sprite2D/WarningGradient/AnimationPlayer.play("Show")
 
 func _exit_tree():
+	if combatant_resource == null:
+		return
+	
 	if combatant_resource.stat_modifiers.has('block'):
 		CombatGlobals.resetStat(combatant_resource, 'block')
 	if block_timer.timeout.is_connected(checkHasBlockModifier):

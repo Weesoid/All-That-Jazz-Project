@@ -7,7 +7,7 @@
 process_mode = 3
 position = Vector2(0, -128)
 position_smoothing_enabled = true
-position_smoothing_speed = 8.0
+position_smoothing_speed = 9.0
 script = ExtResource("1_1hnbr")
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -57,7 +57,7 @@ mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
 [node name="ColorOverlay" type="ColorRect" parent="UI"]
-z_index = 4096
+z_index = 4095
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbcg77hqsgne0"
-path="res://.godot/imported/battler_willis.png-c3fd6db46a6b7af32a14334655c71f14.ctex"
+uid="uid://bvrjcgs8ioqb0"
+path="res://.godot/imported/archie_sit_back.png-1265d2a0d79fda8204111eb6b6d70132.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/character_sprites/willis/battler_willis.png"
-dest_files=["res://.godot/imported/battler_willis.png-c3fd6db46a6b7af32a14334655c71f14.ctex"]
+source_file="res://images/character_sprites/archie/archie_sit_back.png"
+dest_files=["res://.godot/imported/archie_sit_back.png-1265d2a0d79fda8204111eb6b6d70132.ctex"]
 
 [params]
 

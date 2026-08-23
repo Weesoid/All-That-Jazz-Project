@@ -1,16 +1,13 @@
-[gd_scene load_steps=38 format=3 uid="uid://diyg4st2qsvu5"]
+[gd_scene load_steps=34 format=3]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_q8phr"]
 [ext_resource type="PackedScene" uid="uid://b6rlytpeavs4h" path="res://scenes/environment/TileMap.tscn" id="2_76a3s"]
 [ext_resource type="PackedScene" uid="uid://dvstysplrop1t" path="res://scenes/environment/Rope.tscn" id="3_gkab1"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="3_t6mhi"]
-[ext_resource type="TileSet" uid="uid://cdmpm8lrfuk2q" path="res://resources/tilesets/Test.tres" id="3_xhny1"]
-[ext_resource type="TileSet" uid="uid://bk3scw7p18i7k" path="res://resources/tilesets/Props.tres" id="4_ekx0t"]
+[ext_resource type="TileSet" uid="uid://cdmpm8lrfuk2q" path="res://resources/tilesets/GroundDesert.tres" id="3_xhny1"]
 [ext_resource type="PackedScene" uid="uid://cqb2pyb7p4he7" path="res://scenes/environment/PatrollerSpawnPoint.tscn" id="4_lloms"]
-[ext_resource type="TileSet" uid="uid://5eaufyv2tot" path="res://resources/tilesets/Houses.tres" id="5_a1pos"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="5_rwctp"]
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="6_8oxsm"]
-[ext_resource type="TileSet" uid="uid://cnr0y768r0i8t" path="res://resources/tilesets/Flora.tres" id="6_55wia"]
 [ext_resource type="PackedScene" uid="uid://mjs3qc7nxo7b" path="res://scenes/components/ShopWares.tscn" id="6_ppbds"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="8_5ag6f"]
 [ext_resource type="PackedScene" uid="uid://bywh5xbwfj453" path="res://scenes/components/CombatDialogue.tscn" id="11_fghhp"]
@@ -144,9 +141,6 @@ _data = {
 "RESET": SubResource("Animation_j4r3k")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_10y5l"]
-size = Vector2(21980, 166)
-
 [sub_resource type="Gradient" id="Gradient_b04o6"]
 offsets = PackedFloat32Array(0.442857, 0.525714, 1)
 colors = PackedColorArray(0.243137, 0.556863, 0.678431, 1, 0.996078, 0.752941, 0.619608, 1, 0.933333, 1, 1, 1)
@@ -205,29 +199,6 @@ layer_5/y_sort_origin = 0
 layer_5/z_index = 0
 layer_5/tile_data = PackedInt32Array()
 
-[node name="Houses" parent="." instance=ExtResource("2_76a3s")]
-tile_set = ExtResource("5_a1pos")
-cell_quadrant_size = 64
-layer_0/tile_data = PackedInt32Array(131082, 65537, 2, 65546, 65537, 1, 10, 65537, 1, -65526, 65537, 1, 131081, 1, 2, 65545, 1, 1, 9, 1, 1, -65527, 1, 1, -131063, 1, 0, -131062, 65537, 0, 131083, 131073, 1, 65547, 131073, 2, 11, 131073, 1, -65525, 131073, 1, -131061, 131073, 0)
-
-[node name="Props" parent="." instance=ExtResource("2_76a3s")]
-tile_set = ExtResource("4_ekx0t")
-cell_quadrant_size = 64
-layer_0/tile_data = PackedInt32Array(2, 131074, 0, -65527, 196610, 0, 10, 2, 0, 65546, 2, 1, 131082, 2, 2, -131063, 131074, 0, 11, 196610, 0, 65547, 196610, 1, 9, 196610, 1, -524268, 393218, 0, -458732, 393218, 1, -393196, 393218, 2)
-layer_1/name = ""
-layer_1/enabled = true
-layer_1/modulate = Color(1, 1, 1, 1)
-layer_1/y_sort_enabled = false
-layer_1/y_sort_origin = 0
-layer_1/z_index = 0
-layer_1/tile_data = PackedInt32Array(-65527, 65538, 2, -65525, 196610, 2, -65526, 131074, 2)
-
-[node name="Flora" parent="." instance=ExtResource("2_76a3s")]
-y_sort_enabled = true
-tile_set = ExtResource("6_55wia")
-cell_quadrant_size = 64
-layer_0/tile_data = PackedInt32Array(65553, 262145, 0, 131089, 262145, 1, 196625, 262145, 2, -327670, 131073, 2, -393199, 65537, 2, 131081, 196609, 2)
-
 [node name="SpawnPoint" parent="." instance=ExtResource("4_lloms")]
 position = Vector2(-200, 256)
 use_map_faction = true
@@ -255,7 +226,6 @@ visible = false
 position = Vector2(155, 0)
 
 [node name="Entity" type="CharacterBody2D" parent="."]
-visible = false
 position = Vector2(-440, 80)
 
 [node name="CombatDialogue" parent="Entity" instance=ExtResource("11_fghhp")]
@@ -317,8 +287,10 @@ dialogue_resource = ExtResource("25_m8hhu")
 
 [node name="GenericNPC" parent="." instance=ExtResource("21_cchwb")]
 visible = false
-position = Vector2(57, -48)
+position = Vector2(57, 1.11697e+12)
+velocity = Vector2(0, 4.63301e+07)
 texture = ExtResource("22_b8a2s")
+metadata/stop_frame = 0
 
 [node name="InteractComponent" parent="GenericNPC" instance=ExtResource("14_ie3ty")]
 dialogue_resource = ExtResource("23_uupkl")
@@ -328,13 +300,6 @@ move_followers = true
 [node name="Rope2" parent="." instance=ExtResource("3_gkab1")]
 position = Vector2(144, 96)
 segment_count = 3
-
-[node name="Void" type="Area2D" parent="."]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Void"]
-position = Vector2(0, 424)
-shape = SubResource("RectangleShape2D_10y5l")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 scroll_ignore_camera_zoom = true
@@ -377,11 +342,3 @@ use_parent_material = true
 position = Vector2(512, 0)
 texture = ExtResource("26_ue7fj")
 metadata/_edit_lock_ = true
-
-[node name="Rope" parent="." instance=ExtResource("3_gkab1")]
-position = Vector2(33, -6)
-segment_count = 1
-
-[node name="Rope3" parent="." instance=ExtResource("3_gkab1")]
-position = Vector2(1331, -108)
-segment_count = 3

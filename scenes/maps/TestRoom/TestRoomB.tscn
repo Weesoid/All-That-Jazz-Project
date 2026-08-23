@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="6_65xht"]
 [ext_resource type="Texture2D" uid="uid://cht1xhb8wi4h3" path="res://images/sprites/hug.png" id="8_oqijn"]
 [ext_resource type="PackedScene" uid="uid://cybifxvcyf4g7" path="res://scenes/entities_interactable/Door.tscn" id="9_jv7s8"]
-[ext_resource type="PackedScene" uid="uid://c7mg0vkj75woi" path="res://scenes/entities_interactable/SavePoint.tscn" id="10_ciej6"]
+[ext_resource type="PackedScene" uid="uid://8aufe1ycaau4" path="res://scenes/entities_interactable/SavePoint.tscn" id="10_ciej6"]
 [ext_resource type="PackedScene" uid="uid://db24pbalvd8xy" path="res://scenes/entities_interactable/FastTravelPoint.tscn" id="11_ppd0g"]
 [ext_resource type="PackedScene" uid="uid://cesnt15tg850w" path="res://scenes/entities_interactable/PartyManager.tscn" id="11_ykp5y"]
 [ext_resource type="PackedScene" uid="uid://baol22t6hknfh" path="res://scenes/entities_interactable/ShopKeep.tscn" id="12_j1ycp"]

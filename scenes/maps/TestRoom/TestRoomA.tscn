@@ -1,7 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://e2ublu1bi2bu"]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]
-[ext_resource type="TileSet" uid="uid://cxwk6q11ndqhe" path="res://resources/tilesets/Desert.tres" id="2_7l0ay"]
+[ext_resource type="TileSet" uid="uid://cxwk6q11ndqhe" path="res://resources/tilesets/zDEPRECATED_Desert.tres" id="2_7l0ay"]
 [ext_resource type="Script" path="res://scripts/components/ascTileMapNavDecoRemover.gd" id="3_mc0dq"]
 [ext_resource type="PackedScene" uid="uid://knc1563g65sr" path="res://scenes/entities_interactable/CraftingTable.tscn" id="5_u7bub"]
 [ext_resource type="PackedScene" uid="uid://dxkukmp8des0d" path="res://scenes/components/CombatantSquadEnemy.tscn" id="5_v1cwg"]

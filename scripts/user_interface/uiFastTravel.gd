@@ -73,10 +73,9 @@ func _on_debug_button_pressed():
 	loadFastTravelButtons()
 
 func addAllFastTravelPoints():
-	pass
-#	var maps = ResourceGlobals.loadArrayFromPath("res://scenes/maps/")
-#	for map in maps:
-#		if map == null: continue
-#		var data = map.instantiate()
-#		PlayerGlobals.addMapLog(data.scene_file_path)
-#		data.queue_free()
+	var maps = ResourceGlobals.loadArrayFromPath("res://scenes/maps/")
+	for map in maps:
+		if map == null: continue
+		var data = map.instantiate()
+		PlayerGlobals.addMapLog(data.scene_file_path)
+		data.queue_free()

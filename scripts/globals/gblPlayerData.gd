@@ -28,8 +28,8 @@ var overworld_stats: Dictionary = {
 	'bow_max_draw': 5.0,
 	'walk_speed': 100.0,
 	'sprint_speed': 200.0,
-	'sprint_drain': 0.25,
-	'stamina_gain': 0.15
+	'sprint_drain': 0.3,
+	'stamina_gain': 0.25
 } 
 var trait_presets: Dictionary = {
 	# Buffs
@@ -575,6 +575,6 @@ func resetVariables(reset_save_name:bool=true):
 		'walk_speed': 100.0,
 		'sprint_speed': 200.0,
 		'sprint_drain': 0.25,
-		'stamina_gain': 0.15
+		'stamina_gain': 0.3
 	}
 

@@ -10,16 +10,18 @@ const MAX_WIDTH = 256
 
 @export var response_template: Node
 @export var file_suffix: String = ""
+@onready var canvas = $CanvasLayer
 @onready var talk_sound: AudioStreamPlayer = $TalkSound
-@onready var balloon = $Balloon
+@onready var hover_balloon = $Balloon
+@onready var canvas_balloon = $CanvasLayer/CanvasBalloon
 @onready var panel = $Balloon/Panel
 @onready var arrow = $Balloon/TextureRect
-@onready var character_portrait: Sprite2D = $Balloon/Portrait/Face
-@onready var potrait_holder = $Balloon/Portrait
+#@onready var character_portrait: Sprite2D = $Balloon/Portrait/Face
 @onready var character_label: RichTextLabel = $Balloon/CharacterLabel
-@onready var dialogue_label := $Balloon/MarginContainer/DialogueLabel
+@onready var hover_dialogue_label := $Balloon/MarginContainer/DialogueLabel
+@onready var canvas_dialogue_label := $CanvasLayer/CanvasBalloon/MarginContainer/DialogueLabel
 @onready var responses_menu = $Responses
-@onready var animator = $AnimationPlayer
+#@onready var animator = $AnimationPlayer
 ## The dialogue resource
 var resource: DialogueResource
 
@@ -28,6 +30,8 @@ var temporary_game_states: Array = []
 
 ## See if we are waiting for the player
 var is_waiting_for_input: bool = false
+var balloon
+var dialogue_label
 
 ## The current line
 var dialogue_line: DialogueLine:
@@ -35,7 +39,7 @@ var dialogue_line: DialogueLine:
 		if not next_dialogue_line:
 			queue_free()
 			return
-		
+				# Character portait setting
 		is_waiting_for_input = false
 		
 		# Remove any previous responses
@@ -46,30 +50,23 @@ var dialogue_line: DialogueLine:
 		dialogue_line = next_dialogue_line
 		arrow.hide()
 		
-		# Character portait setting
 		var speaker = dialogue_line.character.split("-")[0]
-		var face_path = speaker
-		if speaker == 'Player': 
-			face_path = determinePlayerSpeaker()
-		var portrait_path = "res://images/character_sprites/%s/%s.png" % [face_path.to_lower(), face_path.to_lower()]
-		character_label.text = tr(speaker, "dialogue")
-		if FileAccess.file_exists(portrait_path):
-			var portrait = load(portrait_path)
-			potrait_holder.show()
-			character_portrait.visible = true
-			character_portrait.texture = portrait
+		print(speaker)
+		if speaker != '':
+			balloon = hover_balloon
+			dialogue_label = hover_dialogue_label
 		else:
-			potrait_holder.hide()
-			character_portrait.visible = false
-		
-		dialogue_label.modulate.a = 0
+			canvas.show()
+			balloon = canvas_balloon
+			dialogue_label = canvas_dialogue_label
+		#dialogue_label.modulate.a = 0
 		#dialogue_label.custom_minimum_size.x = dialogue_label.get_parent().size.x - 1
 		dialogue_label.dialogue_line = dialogue_line
 		
 		setSizePosition(speaker)
 		balloon.show()
 		
-		dialogue_label.modulate.a = 1
+		#dialogue_label.modulate.a = 1
 		dialogue_label.type_out()
 		await dialogue_label.finished_typing
 		arrow.show()
@@ -109,6 +106,8 @@ func determinePlayerSpeaker():
 		return 'Archie'
 
 func setSizePosition(speaker:String):
+	if speaker == '':
+		return
 	balloon.modulate=Color.TRANSPARENT # Duct tape
 	balloon.custom_minimum_size.x = min(balloon.size.x, MAX_WIDTH)
 	if balloon.size.x > MAX_WIDTH:
@@ -119,17 +118,35 @@ func setSizePosition(speaker:String):
 	
 	var speaker_entity = OverworldGlobals.getEntity(speaker)
 	var offset = Vector2.ZERO
+	var sprite:Sprite2D
 	if speaker_entity.has_node('Sprite2D'):
-		offset = speaker_entity.get_node('Sprite2D').offset
-	var entity_position = Vector2(speaker_entity.global_position.x+offset.x,speaker_entity.global_position.y+offset.y)
-	var cam_position = Vector2(entity_position.x,entity_position.y+OverworldGlobals.player.default_camera_pos.y)
+		sprite = speaker_entity.get_node('Sprite2D')
+		var sprite_size = sprite.texture.get_size()
+		var frame_w = sprite_size.x/ sprite.hframes
+		var frame_h = sprite_size.y/ sprite.vframes
+		var frame_size = Vector2(frame_w, frame_h)
+		offset = frame_size #* sprite.global_scale # * spr ite.global_scale#(speaker_entity.get_node('Sprite2D').get_rect().size/2) * global_scale
+	elif speaker_entity is Sprite2D:
+		sprite = speaker_entity
+		var sprite_size = sprite.texture.get_size()
+		var frame_w = sprite_size.x/ sprite.hframes
+		var frame_h = sprite_size.y/ sprite.vframes
+		var frame_size = Vector2(frame_w, frame_h)
+		offset = frame_size #* sprite.global_scale # * spr ite.global_scale#(speaker_entity.get_node('Sprite2D').get_rect().size/2) * global_scale
+	
+	var entity_position = Vector2(sprite.global_position.x,sprite.global_position.y)
+	#var cam_position = Vector2(entity_position.x,entity_position.y+OverworldGlobals.player.default_camera_pos.y)
 	global_position.x = entity_position.x - (balloon.size.x/2)
-	global_position.y = entity_position.y - (48+balloon.size.y)
+	global_position.y = entity_position.y - (offset.y/2+balloon.size.y)
+	#OverworldGlobals.moveCamera(self)
+	create_tween().tween_property(balloon, 'modulate',Color.WHITE,0.1)
 	print(global_position)
-	OverworldGlobals.moveCamera(cam_position)
-	animator.play("Show")
+#	OverworldGlobals.moveCamera(cam_position)
+	#animator.play("Show")
 
 func _ready() -> void:
+	balloon = hover_balloon
+	dialogue_label = hover_dialogue_label
 	response_template.hide()
 	#balloon.custom_minimum_size.x = MAX_WIDTH
 	balloon.hide()

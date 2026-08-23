@@ -1,0 +1,146 @@
+~ cutscene
+
+do showCameraOverlay("Black",0)
+do hidePlayer()
+do moveCamera("Archie",0,Vector2(17,-64))
+do zoomCamera(Vector2(1.5,1.5))
+Begin.
+do wait(0.5)
+do playSound("training_sounds.ogg",0,1,false)
+do wait(1.4)
+do showCameraOverlay("Transparent",0)
+do playSound("181906__capslok__short-swooshes2--01.ogg")
+do playEntityAnimation("Archie", "Swing",false, false)
+do shakeCamera()
+do playSound("default_hit.ogg")
+do flashCamera("red",0.25)
+do moveEntity("Willis", ">R125,*Fall", Vector2(0,0), 10)
+do wait(2.5)
+do setSpriteFrame("Archie", 6,true)
+do wait(0.25)
+do setSpriteFrame("Willis", 4)
+Willis: Wait!
+do setSpriteFrame("Archie", 11,true) #x
+do wait(1.5)
+do setSpriteFrame("Willis", 5)
+do wait(2)
+Mother: You hesistate.
+do setSpriteFrame("Archie", 12,false)
+do wait(0.5)
+do setSpriteFrame("Willis", 6)
+do moveEntity("Mother", "Archie", Vector2(-65,0), 25,true)
+do wait(2)
+Mother: Give me that.
+do wait(2)
+Mother: Do not make me ask you twice.
+do wait(1.5)
+do playEntityAnimation("Archie", "Stand_Inhale")
+do playEntityAnimation("Mother", "Grab")
+do playSound("421461__jaszunio15__click_46.ogg", -6)
+do wait(3)
+do playEntityAnimation("Mother", "Inspect")
+Mother: Ah. I see the problem.
+do playEntityAnimation("Mother", "Swing",false,false)
+do flashCamera("red",0.25)
+do shakeCamera()
+do playSound("default_hit.ogg")
+do playSound("630593__vinni_r__bone-break_1.ogg",8)
+do flashCamera("red",0.25)
+do setSpriteFrame("Willis", 7)
+do playEntityAnimation("Archie", "Recoil")
+do playEntityAnimation("Archie", "Drip",false,false)
+do wait(2)
+Mother: You're daft.
+do playEntityAnimation("Willis", "Shame",false,false)
+do setSpriteFrame("Mother", 8)
+do playMusic("742198__lilfoxeone__tension-beat.ogg")
+Mother: Do you think this is a game, boy?!
+Mother: You hesistate!? Do you think the animals out there will show you the same courtesy?!
+Mother: They sense weakness, they'll take *everything*.
+Mother: Thus weakness is a luxury we cannot afford.
+Mother: I am the light that will cleanse this land in holy fire.
+Mother: I am it's salvation.
+Mother: And you my hounds of war.
+Mother: If you cannot fight.
+Mother: If you cannot act decisively.
+Mother: You will be put down like lame dogs.
+Mother: Do you want that?!
+Archie: N-No. Mother.
+Mother: Then please, child.
+do playEntityAnimation("Mother", "RESET")
+do wait(2)
+Mother: Show a little more care for our cause.
+do wait(1)
+do moveEntity("Mother", ">L500", Vector2(0,0), 25)
+#do playEntityAnimation("Mother", "RESET_2")
+Mother: Relocate your jaw.
+Mother: Supper's ready.
+# BUG: if you set it to L something it just infinitely walks
+do moveEntity("Mother", "v>657.9832 122.9338", Vector2(0,0), 25)
+do wait(2)
+do playEntityAnimation("Willis", "Fall", false,false)
+Willis: ...You okay?
+Archie: Yeah... I just gotta-
+do playEntityAnimation("Archie", "Fix_Jaw")
+Archie: There.
+do wait(1)
+do setSpriteFrame("Archie", 16)
+Archie: Good as new.
+do setSpriteFrame("Willis", 8)
+Willis: I'm sorry.[wait=0.25] I didn't meant to-
+Archie: Wasn't your fault.
+Archie: I shoulda just hit you in the face.
+do setSpriteFrame("Willis", 9)
+Willis: Heh.
+do wait(2)
+do setSpriteFrame("Willis", 8)
+Willis: You beat me...[wait=0.25] Again.
+do setSpriteFrame("Willis", 11)
+Willis: If only I was...
+do setSpriteFrame("Archie", 21)
+Archie: Hey.
+Archie: This isn't a competition, and you have plenty of time to improve.
+do setSpriteFrame("Archie", 16)
+Archie: That's what training is for.
+Willis: I guess.
+do setSpriteFrame("Archie", 21)
+do wait(3)
+do setSpriteFrame("Archie", 16)
+Archie: If you want I could always go easier on you.
+do setSpriteFrame("Willis", 12)
+Willis: Oh-[wait=0.25] Don't you dare!
+Archie: Hah! You'll be making me eat dirt in no time!
+# Both laugh/smile
+#Archie: Chin up, 
+#do setSpriteFrame("Archie", 20)
+#do playEntityAnimation("Archie", "Shrug")
+#do wait(0.5)
+#Archie: That's what we're training for aren't we?
+#do wait(1)
+#Willis: I guess.
+do setSpriteFrame("Archie", 16)
+do setSpriteFrame("Willis", 9)
+Willis: Hahah.
+do wait(1.5)
+do setSpriteFrame("Archie", 20)
+Archie: Okay, we really gotta get back before she blows another gasket.
+do wait(1)
+do moveEntity("Archie", ">L200", Vector2(0,0), 30, true,false)
+do wait(0.5)
+do setSpriteFrame("Willis", 11)
+do wait(1.5)
+do setSpriteFrame("Archie", 23)
+do wait(2)
+do moveEntity("Archie", ">R1", Vector2(0,0), 30)
+Archie: You comin?
+do setSpriteFrame("Willis", 9)
+Willis: Yeah I'll...
+do setSpriteFrame("Willis", 10)
+Willis: I'll be right there.
+Archie: Don't wait up.
+do offsetCamera(Vector2(66,0),3)
+do moveEntity("Archie", "v>766.6677 122.9253", Vector2(0,0), 30)
+do wait(2)
+do setSpriteFrame("Willis", 11)
+do wait(5)
+=> END

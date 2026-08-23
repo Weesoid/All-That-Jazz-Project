@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ibwpkjc2lj4a"]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_3qpcp"]
 [ext_resource type="PackedScene" uid="uid://b6rlytpeavs4h" path="res://scenes/environment/TileMap.tscn" id="3_k8et5"]
 [ext_resource type="PackedScene" uid="uid://8aufe1ycaau4" path="res://scenes/entities_interactable/SavePoint.tscn" id="3_n11qw"]
-[ext_resource type="TileSet" uid="uid://bnfv6ipqyacgr" path="res://resources/tilesets/Test.tres" id="4_avdcb"]
+[ext_resource type="TileSet" uid="uid://cdmpm8lrfuk2q" path="res://resources/tilesets/GroundDesert.tres" id="4_avdcb"]
 
 [node name="Safe" type="Node2D"]
 y_sort_enabled = true

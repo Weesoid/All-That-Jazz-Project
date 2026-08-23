@@ -18,7 +18,7 @@ script = ExtResource("1_phgfu")
 [node name="PinArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PinArea"]
-position = Vector2(0, -8)
+position = Vector2(0, -48)
 shape = SubResource("RectangleShape2D_pfrpv")
 debug_color = Color(0.92549, 0.27451, 0, 0.419608)
 

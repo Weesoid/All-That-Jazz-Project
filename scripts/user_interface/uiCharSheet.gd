@@ -28,6 +28,7 @@ const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 @onready var ability_view = $Sheet/LeftBeef/AbilitiesViewer
 #@onready var modifier_view = $Sheet/LeftBeef/ModifierViewer
 @onready var stat_point_count = $Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents/Label
+@onready var talent_button = $Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents
 
 var submenu_positions = {}
 var selected_equip_slot:int=0
@@ -50,7 +51,7 @@ func _ready():
 	combatant_switched.connect(hideSubmenus.unbind(1))
 	equipment.item_button_added.connect(connectAutosnap)
 	#equipment.item_button_removed.connect(checkEquipmentHide)
-
+	talent_button.setDisabled(!OverworldGlobals.player.camping)# = 
 func snapFocusToEquipment(_item):
 	equipment.focusFirstFilled()
 
