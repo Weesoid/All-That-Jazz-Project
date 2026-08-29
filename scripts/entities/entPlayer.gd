@@ -5,7 +5,6 @@ class_name PlayerScene
 
 @onready var sprite = $Sprite2D
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
-@onready var player_animator = $WalkingAnimations
 @onready var animation_player = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
 @onready var cast_animator = $PlayerPower/PowerAnimator
@@ -274,6 +273,19 @@ func canDoStaminaAction(cost:float):
 		#player_camera.flashStamina(Color.RED)
 		return false
 
+## TODO This sucks
+#func changeSpriteDirection(face_directon:String):
+#	match face_directon:
+#		'R': 
+#			sprite.frame = 4 if !bow_mode else 13
+#			sprite.flip_h = true
+#		'L': 
+#			sprite.frame = 4 if !bow_mode else 13
+#			sprite.flip_h = false
+#		'D': 
+#			sprite.frame = 1 if !bow_mode else 10
+#		'U': 
+#			sprite.frame = 7 if !bow_mode else 16
 
 func isMovementAllowed():
 	return can_move and is_processing_input() and isMobile() and !animation_player.is_playing()
@@ -369,7 +381,7 @@ func _unhandled_input(_event: InputEvent):
 #
 
 func canInteract():
-	return !channeling_power and can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing and !animation_player.is_playing()
+	return !channeling_power and can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing and !animation_player.is_playing() and velocity == Vector2.ZERO
 
 func isMobile():
 	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0
@@ -605,6 +617,9 @@ func canMelee():
 		!diving and \
 		is_on_floor() and \
 		!UIGlobals.inMenu()
+
+#func changeDirection():
+#
 
 func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 	if stop_sprint:

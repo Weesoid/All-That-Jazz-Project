@@ -1,96 +1,20 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=23 format=3 uid="uid://bnol4xomec0g1"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://bnol4xomec0g1"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_jyuxu"]
-[ext_resource type="Script" path="res://scripts/resources/ResDamageOvertimeEffect.gd" id="2_o3cxo"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusDot.gd" id="3_m0i1t"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusMove.gd" id="4_1yko3"]
 [ext_resource type="Script" path="res://scripts/resources/ResAttackBonusTP.gd" id="4_ico1d"]
-[ext_resource type="Script" path="res://scripts/resources/ResEffectConditionChance.gd" id="5_koooh"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusStats.gd" id="6_cy1jt"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusStatusEffect.gd" id="7_akl4w"]
-[ext_resource type="Resource" uid="uid://8s6r5kod7gys" path="res://resources/combat/status_effects/Combo.tres" id="8_4uj5o"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusStatMods.gd" id="10_bitjf"]
 
-[sub_resource type="Resource" id="Resource_w0j48"]
-script = ExtResource("2_o3cxo")
-dot_effect = 1
-damage = 1
-duration = 8
-
-[sub_resource type="Resource" id="Resource_mx2yu"]
-script = ExtResource("3_m0i1t")
-dot_effect = SubResource("Resource_w0j48")
-
-[sub_resource type="Resource" id="Resource_ercxy"]
-script = ExtResource("5_koooh")
-chance = 0.25
-
-[sub_resource type="Resource" id="Resource_jh636"]
-script = ExtResource("6_cy1jt")
-stats = {
-"crit": 0.25,
-"crit_amp": 0.0,
-"damage": 8,
-"dmg_modifier": 0.0,
-"execute_dmg": 0,
-"handling": 0,
-"heal_amp": 0.0,
-"heal_skill": 0.0,
-"health": 0,
-"rebuke_chance": 0.0,
-"resist": 0,
-"resolve": 0,
-"riposte_dmg": 0.0,
-"speed": 0,
-"strain": 0
-}
-condition = SubResource("Resource_ercxy")
-
-[sub_resource type="Resource" id="Resource_tti4c"]
-script = ExtResource("10_bitjf")
-stat_modifiers = {
-"crit": 0.0,
-"crit_amp": 0.0,
-"damage": -8,
-"dmg_modifier": 0.0,
-"execute_dmg": 0,
-"handling": 0,
-"heal_amp": 0.0,
-"heal_skill": 0.0,
-"health": 0,
-"rebuke_chance": 0.0,
-"resist": 0,
-"resolve": 0,
-"riposte_dmg": 0.0,
-"speed": 0,
-"strain": 0
-}
-duration = 1
-per_battle = true
-stacks = false
-resistable = true
-
-[sub_resource type="Resource" id="Resource_oe8ks"]
-script = ExtResource("7_akl4w")
-status_effects = Array[Resource("res://scripts/resources/ResStatusEffect.gd")]([ExtResource("8_4uj5o")])
-
-[sub_resource type="Resource" id="Resource_td1b6"]
-script = ExtResource("4_1yko3")
-direction = 0
-move_count = 1
-
-[sub_resource type="Resource" id="Resource_6201a"]
+[sub_resource type="Resource" id="Resource_kgbnd"]
 script = ExtResource("4_ico1d")
 add_amount = 4
 
-[sub_resource type="Resource" id="Resource_njsrw"]
+[sub_resource type="Resource" id="Resource_a0lre"]
 script = ExtResource("2_jyuxu")
 damage_type = 0
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_mx2yu"), SubResource("Resource_jh636"), SubResource("Resource_tti4c"), SubResource("Resource_oe8ks"), SubResource("Resource_td1b6"), SubResource("Resource_6201a")])
-damage_modifier = 0.1
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_kgbnd")])
+damage_modifier = 1.0
 cast_animation = {
 "animation": "",
 "go_to_target": false
@@ -107,7 +31,7 @@ script = ExtResource("1_k0byw")
 name = "Descriptarion"
 description = ""
 icon = ExtResource("3_aoac4")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_njsrw")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_a0lre")])
 ability_script = ExtResource("1_y24xu")
 target_type = 1
 target_group = 1

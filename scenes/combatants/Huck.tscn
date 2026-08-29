@@ -1,8 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://bqe7unaj4matg"]
+[gd_scene load_steps=13 format=3 uid="uid://bqe7unaj4matg"]
 
 [ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_br0bs"]
 [ext_resource type="Texture2D" uid="uid://dxwl72n7aa3vg" path="res://images/character_sprites/huck/huck_battler.png" id="2_6yg3q"]
-[ext_resource type="Script" path="res://scripts/components/sccBlockTimer.gd" id="3_iewgm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5sw1x"]
 radius = 8.0
@@ -302,17 +301,7 @@ libraries = {
 "": SubResource("AnimationLibrary_ji3ch")
 }
 
-[node name="BlockCooldownBar" type="ProgressBar" parent="."]
-offset_left = 17.0
-offset_top = -16.0
-offset_right = 21.0
-offset_bottom = -2.0
-value = 50.0
-fill_mode = 3
-show_percentage = false
-script = ExtResource("3_iewgm")
-
-[node name="BlockTimer" type="Timer" parent="BlockCooldownBar"]
+[node name="BlockTimer" type="Timer" parent="."]
 one_shot = true
 
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

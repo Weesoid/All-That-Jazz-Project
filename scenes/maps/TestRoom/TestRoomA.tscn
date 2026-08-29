@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=22 format=3 uid="uid://daw2y7ahkhrpo"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_mdfbo"]
 [ext_resource type="TileSet" uid="uid://cxwk6q11ndqhe" path="res://resources/tilesets/zDEPRECATED_Desert.tres" id="2_7l0ay"]

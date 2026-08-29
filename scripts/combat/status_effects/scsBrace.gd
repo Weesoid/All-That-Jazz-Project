@@ -2,29 +2,26 @@
 static func applyEffects(target, status_effect:ResStatusEffect):
 	if target.stat_modifiers.keys().has('block') and !target.combatant_scene.allow_block:
 		CombatGlobals.resetStat(target, 'block')
-#	if target.stat_values['health'] <= 0 and status_effect.apply_once:
-#		CombatGlobals.calculatePercentHealing(target, 0.1,false)
+		#perfect_block=false
 	target.combatant_scene.setBlocking(true)
-	status_effect.attached_data = 1
-#	if !target.hasStatusEffect('Guard Break'):
-#		if target.stat_values['health'] <= 0 and status_effect.apply_once:
-#			CombatGlobals.calculatePercentHealing(target, 0.1,false)
-#		target.combatant_scene.setBlocking(true)
-#		status_effect.attached_data = 1
-#	else:
-#		status_effect.removeStatusEffect()
+	#status_effect.attached_data = 1
+	#if CombatGlobals.getCombatScene().isCombatantTargeted(target) and status_effect.apply_once:
+	#	status_effect.duration += 1
 
 static func applyOnHitEffects(target, caster, _value, status_effect):
 	if target is ResPlayerCombatant and target.stat_modifiers.keys().has('block'):
 		CombatGlobals.getCombatScene().combat_camera.flash(Color.WHITE,0.1,0.05)
-		if target is ResPlayerCombatant and status_effect.attached_data == 1:
-			CombatGlobals.addTension(1,target)
-			status_effect.attached_data = 0
 	else:
 		target.combatant_scene.block_timer.start(0.8)
 	
-	if target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized() and ((target is ResPlayerCombatant and target.stat_modifiers.has('block')) or target is ResEnemyCombatant):
+	if target.combatant_scene.perfect_block: #target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized() and ((target is ResPlayerCombatant and target.stat_modifiers.has('block')) or target is ResEnemyCombatant):
+		CombatGlobals.manual_call_indicator.emit(target, 'PERFECT!', 'Show',true)
 		doRiposte(target,caster,status_effect)
+	elif target.stat_modifiers.keys().has('block'):
+		CombatGlobals.manual_call_indicator.emit(target, 'BLOCKED', 'Show',true)
+		#if target is ResPlayerCombatant and status_effect.attached_data == 1:
+		#	CombatGlobals.addTension(1,target)
+		#	status_effect.attached_data = 0
 
 static func endEffects(target, _status_effect: ResStatusEffect):
 	target.combatant_scene.setBlocking(false)
@@ -33,10 +30,10 @@ static func endEffects(target, _status_effect: ResStatusEffect):
 	if !CombatGlobals.getCombatScene().isCombatValid():
 		return
 	
-	if !target.hasStatusEffect('Guard Break'):
-		CombatGlobals.addStatusEffect(target, 'GuardBreak')
-	else:
-		CombatGlobals.removeStatusEffect(target, 'Guard Break')
+#	if !target.hasStatusEffect('Guard Break'):
+#		CombatGlobals.addStatusEffect(target, 'GuardBreak')
+#	else:
+#		CombatGlobals.removeStatusEffect(target, 'Guard Break')
 
 # Riposte code
 static func doRiposte(target, caster, status_effect):

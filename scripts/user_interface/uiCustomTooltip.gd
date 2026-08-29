@@ -21,7 +21,7 @@ enum TextAlignment {
 @export var tooltip_position: AnchorPreset = AnchorPreset.RIGHT
 @export var show_on_hover:bool=true
 @export var spacing = 8
-@export var show_delay:float = 0.1
+@export var show_delay:float = 1
 @export var shrink: bool=false
 #@export var show_on_hover:bool=true
 

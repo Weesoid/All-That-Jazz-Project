@@ -8,6 +8,8 @@ tmnt_2012_inspired_smokebomb_sounds_05202025 by Artninja -- https://freesound.or
 BBRS_SFX_SoulRetrieve by FairSonicStudio -- https://freesound.org/s/744329/ -- License: Attribution 4.0 MODIFIED (Added Reverb)
 VICTORY CRY REVERB 1.wav by chripei -- https://freesound.org/s/165492/ -- License: Attribution 4.0 MODIFIED (Added Reverb)
 VICTORY CRY REVERB 2.wav by chripei -- https://freesound.org/s/165491/ -- License: Attribution 4.0 MODIFIED (Added Reverb)
+Chainmail Rustle Sound by BeezleFM -- https://freesound.org/s/512134/ -- License: Attribution 4.0 MODIFIED (Shortened)
+leather rustle 6 by sgossner -- https://freesound.org/s/209403/ -- License: Attribution 4.0
 
 arrow and bow in one by jzdnvdoosj -- https://freesound.org/s/626263/ -- License: Attribution 3.0
 Cinematic Trailer Risers 1.mp3 by original_sound -- https://freesound.org/s/494984/ -- License: Attribution 3.0
@@ -53,6 +55,11 @@ Windy Desert.mp3 by iliyabylich04 -- https://freesound.org/s/651350/ -- License:
 Short Swooshes2.wav by CapsLok -- https://freesound.org/s/181906/ -- License: Creative Commons 0
 WOODTonl Creaking of one branch, and pine forest ambience by a path, Rödeby, Sweden by vhio -- https://freesound.org/s/811076/ -- License: Creative Commons 0
 sad electric guitar loop for background music by Garuda1982 -- https://freesound.org/s/706196/ -- License: Creative Commons 0
+Flamethrower by 1bob -- https://freesound.org/s/831929/ -- License: Creative Commons 0
+Parry SFX Idea.mp3 by Sam300Productions -- https://freesound.org/s/611767/ -- License: Creative Commons 0
+G17 Handling 06 by qubodup -- https://freesound.org/s/844189/ -- License: Creative Commons 0
+Glock17_Magazine.1 by Stoniac -- https://freesound.org/s/842728/ -- License: Creative Commons 0
+Sword sound 1.wav by Merrick079 -- https://freesound.org/s/568170/ -- License: Creative Commons 0
 
 [Bow.wav and snippets from arrow and bow in one has been combined to make the bow shoot sound in file '178872__hanbaal__bow.ogg']
 

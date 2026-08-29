@@ -1,11 +1,11 @@
-[gd_scene load_steps=63 format=3]
+[gd_scene load_steps=63 format=3 uid="uid://y872rxxn7cut"]
 
 [ext_resource type="Script" path="res://scripts/components/ascMap.gd" id="1_tnsjm"]
 [ext_resource type="PackedScene" uid="uid://b6rlytpeavs4h" path="res://scenes/environment/TileMap.tscn" id="2_yo4wu"]
 [ext_resource type="TileSet" uid="uid://cdmpm8lrfuk2q" path="res://resources/tilesets/GroundDesert.tres" id="3_75foo"]
-[ext_resource type="TileSet" uid="uid://5eaufyv2tot" path="res://resources/tilesets/Architecture.tres" id="4_dfnwt"]
-[ext_resource type="TileSet" uid="uid://bk3scw7p18i7k" path="res://resources/tilesets/DecorProps.tres" id="5_8w82t"]
-[ext_resource type="TileSet" uid="uid://cnr0y768r0i8t" path="res://resources/tilesets/DecorDesertFlora.tres" id="6_ajf7o"]
+[ext_resource type="TileSet" uid="uid://bkqkjw63sjsnc" path="res://resources/tilesets/Constructions.tres" id="4_dfnwt"]
+[ext_resource type="TileSet" uid="uid://bk3scw7p18i7k" path="res://resources/tilesets/Props.tres" id="5_8w82t"]
+[ext_resource type="TileSet" uid="uid://cnr0y768r0i8t" path="res://resources/tilesets/Flora.tres" id="6_ajf7o"]
 [ext_resource type="Texture2D" uid="uid://b316nl0dnk63t" path="res://images/sprites/training_staff.png" id="11_7iyc6"]
 [ext_resource type="AudioStream" uid="uid://677xwqwspfvb" path="res://audio/sounds/181906__capslok__short-swooshes2--01.ogg" id="12_heuei"]
 [ext_resource type="PackedScene" uid="uid://b2indy2nvik2c" path="res://scenes/components/Interact.tscn" id="15_hnb7v"]
@@ -24,12 +24,12 @@
 [ext_resource type="AudioStream" uid="uid://cb6a3eab6voko" path="res://audio/sounds/630591__vinni_r__bone-break_3.ogg" id="37_mqvqm"]
 [ext_resource type="Texture2D" uid="uid://io8q35cn3osw" path="res://images/character_sprites/willis/child_training_willis.png" id="38_2mmm7"]
 
-[sub_resource type="Gradient" id="Gradient_b04o6"]
+[sub_resource type="Gradient" id="Gradient_rl4ar"]
 offsets = PackedFloat32Array(0.442857, 0.525714, 1)
 colors = PackedColorArray(0.243137, 0.556863, 0.678431, 1, 0.996078, 0.752941, 0.619608, 1, 0.933333, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_emygk"]
-gradient = SubResource("Gradient_b04o6")
+gradient = SubResource("Gradient_rl4ar")
 width = 1920
 height = 5760
 fill_to = Vector2(0, 1)

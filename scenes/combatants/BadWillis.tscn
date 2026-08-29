@@ -538,30 +538,4 @@ libraries = {
 "": SubResource("AnimationLibrary_ji3ch")
 }
 
-[node name="OnslaughtReference" type="Node2D" parent="."]
-
-[node name="Marker2D" type="Marker2D" parent="OnslaughtReference"]
-top_level = true
-position = Vector2(48, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="OnslaughtReference/Marker2D"]
-
-[node name="Marker2D2" type="Marker2D" parent="OnslaughtReference"]
-top_level = true
-position = Vector2(16, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="OnslaughtReference/Marker2D2"]
-
-[node name="Marker2D3" type="Marker2D" parent="OnslaughtReference"]
-top_level = true
-position = Vector2(-16, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="OnslaughtReference/Marker2D3"]
-
-[node name="Marker2D4" type="Marker2D" parent="OnslaughtReference"]
-top_level = true
-position = Vector2(-48, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="OnslaughtReference/Marker2D4"]
-
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

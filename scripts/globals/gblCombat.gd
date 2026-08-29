@@ -26,6 +26,8 @@ enum Enemy_Factions {
 #]
 var tension: int = 0
 var critical_bb = '[img color=red]res://images/status_icons/icon_crit_eye.png[/img][color=red]'
+var damage_shake_strength := 5.0
+var damage_shake_speed := 9.0
 
 signal combat_won(unique_id)
 signal combat_lost(unique_id)
@@ -63,7 +65,8 @@ func calculateDamage(caster, target, modifier, can_crit = true, sound:String='',
 		caster = caster.combatant_resource
 	if target is CombatantScene:
 		target = target.combatant_resource
-	
+	if caster != null:
+		getCombatScene().combat_camera.shake(damage_shake_strength, damage_shake_speed)
 	damageTarget(caster, target, modifier, can_crit, sound, indicator_bb_code, attack_bonuses)
 
 ## Calculate damage using custom formula and parameters
@@ -74,9 +77,13 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	var combatant_crit = caster.stat_values['crit']+bonus_crit+BASE_CRIT if caster != null else bonus_crit+BASE_CRIT
 	var damage_crit = crit_chance+bonus_crit
 	damage += attack_bonuses.get('damage',0)
-	if target.stat_modifiers.has('block'):
-		damage = 0
-	elif damage < 0:
+	#damage = target.stat_modifiers.
+	damage = calculateBlockedDamage(damage, target)
+	#print('calcd dmg after bluh: ', damage, ' >>> ', target.stat_values['block'])
+	#print('calcd dmg after bluh: ', damage)
+#	if target.stat_modifiers.has('block'):
+#		damage /= 2
+	if damage < 0:
 		damage = 1
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
@@ -84,6 +91,8 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 		damage = doCritEffects(damage, caster, attack_bonuses.get(CombatExtras.CRIT_AMP,0))
 		indicator_bb_code += critical_bb
 	target.changeHealth(-int(damage))
+	if caster != null:
+		getCombatScene().combat_camera.shake(damage_shake_strength, damage_shake_speed)
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits, attack_bonuses)
 
 ## Basic damage calculations
@@ -93,9 +102,12 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, ca
 	var dmg_variation = BASE_VARIATION + caster.stat_values['dmg_variance']
 	
 	damage = valueVariate(damage, dmg_variation)
-	if target.stat_modifiers.has('block'):
-		damage = 0
-	elif damage < 0:
+	damage = calculateBlockedDamage(damage, target)
+	#damage = int(damage * target.stat_values.get('block',1))
+	#print('calcd dmg after bluh: ', damage, ' >>> ', target.stat_values['block'])
+#	if target.stat_modifiers.has('block'):
+#		damage /= 2
+	if damage < 0:
 		damage = 1
 	
 	if randomRoll(crit_chance) and can_crit:
@@ -106,6 +118,13 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, ca
 	
 	target.changeHealth(-int(damage))
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, true, attack_bonuses)
+
+func calculateBlockedDamage(damage:int, combatant:ResCombatant)-> int:
+	if !combatant is ResPlayerCombatant or combatant.stat_values.get('block',0) == 0:
+		return damage
+	
+	return int(damage * combatant.stat_values['block']) if combatant.stat_values['block'] > 0 else 0
+	
 
 func calcDamageModifier(combatant:ResCombatant):
 	return (1+combatant.stat_values.get(CombatExtras.DAMAGE_MODIFIER,0))
@@ -129,7 +148,7 @@ func doCritEffects(base_damage, caster: ResCombatant, bonus_mult:float=0.0):
 	else:
 		base_damage *= base_mult+bonus_mult
 	base_damage = ceil(base_damage)
-	getCombatScene().combat_camera.shake(15.0, 10.0)
+	#getCombatScene().combat_camera.shake(15.0, 10.0)
 	OverworldGlobals.playSound("res://audio/sounds/13_Ice_explosion_01.ogg")
 	return base_damage
 
@@ -150,7 +169,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		received_combatant_value.emit(target, caster, int(damage))
 		
 	## Resolve handling
-	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and !target.stat_modifiers.has('block'): 
+	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and !target.combatant_scene.perfect_block: 
 		if target.stat_values['resolve'] - 1 <= 0 and randomRoll(target.stat_values.get(CombatExtras.REBUKE_CHANCE,0.0)):
 			getCombatScene().doRebuke(target,caster)
 		else:
@@ -376,10 +395,14 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 		await animation.playAnimation(target.combatant_scene.global_position)
 
 func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
-	if target.stat_modifiers.keys().has('block'):
-		playHurtTween(target, damage)
-		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
+	playHurtTween(target, damage)
+	if target is ResPlayerCombatant and target.combatant_scene.perfect_block:
+		OverworldGlobals.playSound("res://audio/sounds/370203__nekoninja__shield-guard.ogg")
 		return
+	elif target.stat_modifiers.keys().has('block'):
+		
+		OverworldGlobals.playSound('348244__newagesoup__punch-boxing-01.ogg')
+		#return
 #	if getCombatScene().rebuking:
 #		return
 #	if getCombatScene().rebuking:
@@ -393,7 +416,6 @@ func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 		else:
 			OverworldGlobals.playSound("530117__magnuswaker__pound-of-flesh-3.ogg", -8.0)
 	if target.isDead(true):
-		getCombatScene().combat_camera.shake(25.0, 10.0)
 		if target is ResEnemyCombatant:
 			OverworldGlobals.playSound("res://audio/sounds/542052__rob_marion__gasp_space-shot_1.ogg")
 		elif target is ResPlayerCombatant:
@@ -541,12 +563,15 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 	if !target.getStatusEffectNames().has(status_effect.name) or status_effect.seperate_instances:
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
-		if override_data.has('bonus_duration'):
-			status_effect.duration += override_data['bonus_duration']
 		target.status_effects.append(status_effect)
-		if status_effect.sounds['apply'] != '': OverworldGlobals.playSound(status_effect.sounds['apply'])
+		if status_effect.sounds['apply'] != '' and getCombatScene().round_count > 0: 
+			OverworldGlobals.playSound(status_effect.sounds['apply'])
+		#elif getCombatScene().round_count > 0:
+		#	OverworldGlobals.playSound("res://audio/sounds/536805__egomassive__gun_1.ogg",-)
 	else:
 		rankUpStatusEffect(target, status_effect)
+	if override_data.has('bonus_duration'):
+		status_effect.duration += override_data['bonus_duration']
 #		if status_effect.max_rank > 0:
 #			if target.getStatusEffect(status_effect.name).current_rank < status_effect.max_rank:
 #				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Up')
@@ -692,7 +717,12 @@ func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
 
 func addTension(amount: int,gainer:ResPlayerCombatant=null,target:ResCombatant=null):
 	if amount > 0 and gainer.hasStatusEffect('Burnout'):
+		if tension < 4: gainer.removeTokens(ResStatusEffect.RemoveType.GAIN_TP)
+		animateTPParticle(amount,gainer,target,true)
 		return
+	
+	if amount > 0 and tension < 4:
+		gainer.removeTokens(ResStatusEffect.RemoveType.GAIN_TP)
 	
 	#var show_particle:bool=false
 	#var previous_tension = tension
@@ -706,16 +736,21 @@ func addTension(amount: int,gainer:ResPlayerCombatant=null,target:ResCombatant=n
 	
 	tension_changed.emit(gainer,target)
 	if amount > 0 and gainer != null:
+		animateTPParticle(amount,gainer,target)
+		#tp_particle.global_position = from_target.global_position
+	if amount < 0:
+		getCombatScene().combat_ui.tension_bar.update()
+
+func animateTPParticle(amount,gainer,target,is_burnout:=false):
+	if amount > 0 and gainer != null:
 		for i in range(amount):
 			var expulse_target = target.combatant_scene if target != null else gainer.combatant_scene
 			var tp_particle = load("res://scenes/miscellaneous/TensionParticle.tscn").instantiate()
+			tp_particle.is_burnout = is_burnout
 			tp_particle.finished.connect(getCombatScene().combat_ui.tension_bar.update)
 			getCombatScene().add_child(tp_particle)
 			tp_particle.expulse(expulse_target)
 			await get_tree().create_timer(0.1).timeout
-		#tp_particle.global_position = from_target.global_position
-	elif amount < 0:
-		getCombatScene().combat_ui.tension_bar.update()
 
 func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
 	var out = ''

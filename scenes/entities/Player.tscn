@@ -126,7 +126,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b8rwl"]
-size = Vector2(17, 22)
+size = Vector2(24, 22)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ul7c"]
 size = Vector2(22, 4)
@@ -2802,7 +2802,7 @@ one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 y_sort_enabled = true
-position = Vector2(1, -20)
+position = Vector2(0, -20)
 texture = ExtResource("5_nms4n")
 offset = Vector2(0, -33)
 hframes = 9

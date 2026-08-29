@@ -153,11 +153,11 @@ func setButtonFunction(selected_item):
 				#OverworldGlobals.showPrompt('[color=yellow]%s[/color] is mandatory.' % selected_item.name)
 				return
 			
-			UIGlobals.setMenuFocusMode(wares, false)
-			UIGlobals.setMenuFocusMode(toggle_button, false)
+			#UIGlobals.setMenuFocusMode(wares, false)
+			#UIGlobals.setMenuFocusMode(toggle_button, false)
 			var amount = await loadSlider(selected_item)
-			UIGlobals.setMenuFocusMode(wares, true)
-			UIGlobals.setMenuFocusMode(toggle_button, true)
+			#UIGlobals.setMenuFocusMode(wares, true)
+			#UIGlobals.setMenuFocusMode(toggle_button, true)
 			InventoryGlobals.removeItemResource(selected_item, amount, false)
 			PlayerGlobals.currency += (floor(selected_item.value * sell_modifier) * amount)
 			showChange(floor(selected_item.value * sell_modifier) * amount)

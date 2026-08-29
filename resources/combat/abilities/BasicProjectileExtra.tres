@@ -2,19 +2,19 @@
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_gh2mi"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_frihu"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusMove.gd" id="2_w17qb"]
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusMove.gd" id="2_waegn"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_buv2f"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_u8v7o"]
 
-[sub_resource type="Resource" id="Resource_m6rqo"]
-script = ExtResource("2_w17qb")
+[sub_resource type="Resource" id="Resource_bsv0s"]
+script = ExtResource("2_waegn")
 direction = 0
-move_count = 1
+move_count = 3
 
 [sub_resource type="Resource" id="Resource_o3qoi"]
 script = ExtResource("2_frihu")
 damage_type = 1
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_m6rqo")])
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_bsv0s")])
 damage_modifier = 1.0
 cast_animation = {
 "animation": "",

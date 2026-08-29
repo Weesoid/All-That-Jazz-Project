@@ -11,5 +11,5 @@ name = "Remembrance"
 icon = ExtResource("1_xmpqv")
 description = "Used to unlock one's abilities, among other things.
 [color=dim_gray]\"Reflect, rememember, and reconcile.\"[/color]"
-value = 0
+value = 100
 mandatory = false

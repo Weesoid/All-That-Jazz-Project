@@ -1,12 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://dcwbl5wpwb8dc"]
+[gd_scene load_steps=6 format=3 uid="uid://dcwbl5wpwb8dc"]
 
+[ext_resource type="Texture2D" uid="uid://b03spp2atatwd" path="res://images/status_icons/icon_shield.png" id="1_6fqxf"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiStatusIcon.gd" id="1_aytai"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="2_saqgj"]
 
+[sub_resource type="Gradient" id="Gradient_r2atl"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yfcpf"]
+gradient = SubResource("Gradient_r2atl")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.9, 0.5)
+
 [node name="StatusIcon" type="TextureRect"]
+clip_children = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6fqxf")
 script = ExtResource("1_aytai")
 
 [node name="Duration" type="Label" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -40,3 +58,15 @@ horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Pulser" type="TextureRect" parent="."]
+clip_children = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_yfcpf")
+
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]

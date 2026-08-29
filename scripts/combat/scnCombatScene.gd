@@ -1,7 +1,7 @@
 extends Node2D
 class_name CombatScene
 
-const COMBATANT_DISTANCE=42
+const COMBATANT_DISTANCE=40
 const DEFAULT_ZOOM = Vector2(1.5,1.5)
 var DEFAULT_CAM_POS: Vector2
 
@@ -21,7 +21,7 @@ enum TargetState {
 #@onready var transition_scene = $CombatCamera/BattleTransition
 #@onready var transition = $CombatCamera/BattleTransition.get_node('AnimationPlayer')
 @onready var battle_music = $BattleMusic
-@onready var battle_back = $ParallaxBackground/AnimationPlayer
+#@onready var battle_back = $ParallaxBackground/AnimationPlayer
 @onready var turn_timer_bar = $CombatCamera/Interface/TurnTimerBar
 @onready var turn_timer_animator = $CombatCamera/Interface/TurnTimerBar/AnimationPlayer
 @onready var turn_timer = $TurnTimer
@@ -117,7 +117,7 @@ func initializeCombat(combatants:Array[ResCombatant]):
 	CombatGlobals.execute_ability.connect(commandExecuteAbility)
 	renameDuplicates()
 	
-	battle_back.play('Show')
+	#battle_back.play('Show')
 	#transition.play('Out')
 	#await transition.animation_finished
 	
@@ -150,7 +150,6 @@ func initializeCombat(combatants:Array[ResCombatant]):
 	while active_combatant.isImmobilized():
 		setActiveCombatant(false)
 	enemy_reinforcements = enemy_reinforcements.filter(func(combatant): return combatant != null)
-	active_combatant.act()
 	if combat_dialogue != null:
 		combat_dialogue.initialize()
 	
@@ -162,8 +161,12 @@ func initializeCombat(combatants:Array[ResCombatant]):
 	if OverworldGlobals.getCurrentMap().has_node('Stalker'):
 		OverworldGlobals.getCurrentMap().get_node('Stalker').modulate = Color.WHITE
 	#print('ENFORCEMENTS: ', enemy_reinforcements)
+	#setZIndices()
 	combat_ui.initialize()
 	combat_ui.inspector.setCombatant(active_combatant)
+	
+	await get_tree().create_timer(0.25).timeout
+	active_combatant.act()
 
 func getAllCombatants()-> Array[ResCombatant]:
 	var all_combatants: Array[ResCombatant] = [] 
@@ -326,7 +329,7 @@ func end_turn(combatant_act=true):
 		await get_tree().create_timer(0.25).timeout
 		is_combatant_moving = false
 		#await get_tree().create_timer(0.25).timeout
-	
+	setZIndices()
 	if combat_event != null and turn_count % combat_event.turn_trigger == 0:
 		combat_ui.writeCombatLog(combat_event.event_message)
 		commandExecuteAbility(null, combat_event.ability)
@@ -517,6 +520,15 @@ func setUIModulation(ui_modulate: Color, duration:float=0.1):
 #		zoomCamera(Vector2(-0.25,-0.25))
 #		ui_inspect_target.hide()
 
+# Return true if combatant is being targeted by opposing combatant
+func isCombatantTargeted(combatant:ResCombatant)-> bool:
+	if target_combatant is ResCombatant:
+		return target_combatant == combatant and !CombatGlobals.isSameCombatantType(active_combatant,target_combatant)
+	elif target_combatant is Array:
+		return target_combatant.has(combatant) and !CombatGlobals.isSameCombatantType(active_combatant,target_combatant[0]) # Might have issues with target all combatnts
+	
+	return false
+
 func removeTargetToken(target, caster):
 	if target is ResCombatant and !CombatGlobals.isSameCombatantType(target,caster):
 		target_combatant.removeTokens(ResStatusEffect.RemoveType.GET_TARGETED)
@@ -526,6 +538,7 @@ func removeRoundStartTokens():
 		combatant.removeTokens(ResStatusEffect.RemoveType.ROUND_START)
 
 func executeAbility():
+	var remove_target_statuses = []
 	ability_executing=true
 	if !turn_timer.is_stopped(): 
 		stopTimer()
@@ -537,14 +550,16 @@ func executeAbility():
 	if target_combatant is ResPlayerCombatant:
 		allowBlocking(target_combatant)
 	elif target_combatant is Array:
-		for target in target_combatant: allowBlocking(target)
+		for target in target_combatant: 
+			allowBlocking(target)
 	
 	if active_combatant is ResPlayerCombatant:
 		CombatGlobals.addTension(-selected_ability.tension_cost)
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	recordAbilityHistory(active_combatant, selected_ability)
 	
-	await get_tree().create_timer(0.25).timeout
+#	await get_tree().create_timer(0.25).timeout
+#	zoomCamera(Vector2(.05,.05))
 	if target_combatant is ResCombatant:
 		selected_ability.ability_script.animate(active_combatant.combatant_scene, target_combatant.combatant_scene, selected_ability)
 	else:
@@ -566,10 +581,12 @@ func executeAbility():
 		revokeBlocking(target_combatant)
 	elif target_combatant is Array:
 		for target in target_combatant:
+			if !is_instance_valid(target.combatant_scene): continue
 			removeTargetToken(target_combatant, active_combatant)
 			revokeBlocking(target)
 	
 	await get_tree().process_frame # Attempt to fix combatants standing there like idiots, keep an eye out
+	target_combatant = null
 	confirm.emit()
 
 func fadeInAllCombatants():
@@ -613,14 +630,17 @@ func damageAbilityUsed(check_round:int, team:String):
 func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
 		target.combatant_scene.allow_block = true
+		target.combatant_scene.perfect_block = false
 		CombatGlobals.showWarning(target.combatant_scene)
-		if target.combatant_scene.has_node('CombatBars'):
-			target.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
-			active_combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
+		#zoomCamera(Vector2(0.1,0.1))
+		#if target.combatant_scene.has_node('CombatBars'):
+		#	target.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
+		#	active_combatant.combatant_scene.get_node('CombatBars').setStatusVisibility(false)
 
 func revokeBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
 		target.combatant_scene.allow_block = false
+		target.combatant_scene.perfect_block = false
 
 func skipTurn():
 	#target_state = TargetState.NONE
@@ -651,7 +671,7 @@ func shiftCamera(target:ResCombatant):
 	moveCamera(DEFAULT_CAM_POS+shift,0.1)
 
 func zoomCamera(zoom: Vector2, speed=0.25):
-	var tween = create_tween()
+	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(combat_camera, 'zoom', combat_camera.zoom+zoom, speed)
 	await tween.finished
 
@@ -1131,7 +1151,7 @@ func moveCombatantScenes(group: String, direction:int):
 		if combatant == null: continue
 		var scene = combatant.combatant_scene
 		if getRankPosition(combatant) == scene.global_position: continue
-		
+		#combatant.combatant_scene.z_index = getCombatantPosition(combatant)
 		var move_tween = CombatGlobals.getCombatScene().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
 		move_tween.finished.connect(move_tween.kill)
 		move_tween.tween_property(scene, 'global_position', getRankPosition(combatant),0.25)
@@ -1141,6 +1161,10 @@ func moveCombatantScenes(group: String, direction:int):
 		#await get_tree().create_timer(0.05).timeout
 	
 	move_finished.emit()
+
+func setZIndices():
+	for combatant in getAllCombatants():
+		combatant.combatant_scene.z_index = getCombatantPosition(combatant)
 
 #func moveCombatantToEmpty(combatant):
 #	var group = 'enemies' if combatant is ResEnemyCombatant else 'team'

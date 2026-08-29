@@ -24,6 +24,8 @@ var projectile_hit_data: Dictionary = {
 
 
 func _ready():
+	#print(name)
+	#assert(name == 'CharacterBody2D', "CombatantScene of %s must be named 'CharacterBody2D'!" % combatant_resource)
 	initializeShapes()
 
 func initializeShapes():
@@ -47,6 +49,8 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 		offset *= -1
 	if target is ResCombatant:
 		target = target.combatant_scene
+	if target is ResEnemyCombatant:
+		duration -= randf_range(0.1,0.15)
 	
 	combatant_resource.resetSprite()
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
@@ -71,6 +75,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
 	#CLEAN
+	#print('scr is ', script)
 	if data.has('low_priority') and animator.is_playing():
 		return
 	if !data.has('bypass_invalid_pause') and (cannotAct() or animation == ''): 
@@ -110,7 +115,7 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	#animator.play('RESET')
 	if !data.has('skip_pause') or (CombatGlobals.inCombat()):
-		await get_tree().create_timer(0.25).timeout
+		await get_tree().create_timer(0.1).timeout
 	if !data.has('skip_idle'):
 		playIdle()
 	hit_script = null
@@ -121,6 +126,13 @@ func resizeHitbox(target_count:int):
 	hitbox_shape.position.x = (hitbox_size/2.0) * (target_count+1.75)
 	if combatant_resource is ResEnemyCombatant:
 		hitbox_shape.position.x *= -1
+
+func activateHitbox(duration:float=0.1):
+	if hitbox.monitoring: return
+	
+	hitbox.monitoring = true
+	await get_tree().create_timer(duration).timeout
+	hitbox.monitoring = false
 
 func cannotAct()-> bool:
 	return combatant_resource.isDead(true) #and !combatant_resource.hasStatusEffect('Fading')

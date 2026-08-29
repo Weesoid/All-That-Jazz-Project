@@ -11,24 +11,25 @@ description = "Target cannot gain TP."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 status_script = ExtResource("2_65u5p")
 effect_type = 0
-remove_when = Array[int]([])
-remove_style = 0
+remove_when = Array[int]([9])
+remove_style = 1
 seperate_instances = false
 texture = ExtResource("3_5yrv4")
 style = 2
 custom_style_color = Color(0, 0, 0, 1)
-max_duration = 3
+max_duration = 8
 extend_duration = 1
-apply_extend_duration = false
+apply_extend_duration = true
 max_rank = 0
 tick_on_apply = false
-tick_type = 0
+tick_type = 1
 do_ticks = false
 resistable = true
-permanent = false
+permanent = true
 remove_on_brink = false
 hide_icon = false
 sounds = {
 "apply": "",
-"expire": ""
+"expire": "",
+"hit_tick": ""
 }

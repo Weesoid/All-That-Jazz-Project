@@ -149,7 +149,12 @@ static func applyToTarget(caster, target, ability: ResAbility):
 				target = caster.combatant_resource
 			else:
 				target = caster
-		CombatGlobals.addStatusEffect(target, ability.current_effect.status_effect)
+		CombatGlobals.addStatusEffect(
+			target, 
+			ability.current_effect.status_effect,
+			ability.current_effect.guaranteed,
+			{'bonus_duration': ability.current_effect.add_duration}
+			)
 	
 #	elif ability.current_effect is ResHealEffect:
 #		if ability.current_effect.base_heal > 0: 

@@ -47,5 +47,6 @@ func flash(color:Color,alpha:float=1.0, fade_in:float=0.1, fade_out:float=0.25):
 
 func showOverlay(color:Color, duration:float=0.25, alpha:float=1.0):
 	var tween = get_tree().create_tween()
+	#color_overlay.color = Color.TRANSPARENT
 	tween.tween_property(color_overlay,'color',color,duration)
 	await tween.finished

@@ -15,8 +15,8 @@ enum FillTween {
 @export var filled_circle: Texture = preload("res://images/sprites/circle_filled.png")
 @export var fill_tween := FillTween.NONE
 
-var filled_modulate:Color = Color.WHITE
-var empty_modulate:Color = Color.WHITE
+@export var filled_modulate:Color = Color.WHITE
+@export var empty_modulate:Color = Color.WHITE
 var tween_running:bool=false
 signal value_changed(value)
 

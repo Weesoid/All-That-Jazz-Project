@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdoyalglahinb"
-path="res://.godot/imported/buildingss.png-7bb266eba9623d8bd548b622f97563e4.ctex"
+uid="uid://dxi2t5h1mjeo0"
+path="res://.godot/imported/cone_light.png-53bfb72ea5400ab91b05a588f2ff38f5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/tiles/buildingss.png"
-dest_files=["res://.godot/imported/buildingss.png-7bb266eba9623d8bd548b622f97563e4.ctex"]
+source_file="res://images/tiles/cone_light.png"
+dest_files=["res://.godot/imported/cone_light.png-53bfb72ea5400ab91b05a588f2ff38f5.ctex"]
 
 [params]
 

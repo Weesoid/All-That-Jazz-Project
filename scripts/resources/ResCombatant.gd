@@ -140,6 +140,10 @@ func getStatusEffectNames()-> Array[String]:
 func removeTokens(remove_type: int):
 	for effect in status_effects:
 		if effect.remove_when.has(remove_type): 
+			if effect.name == 'Guard':
+				print('Guard was removed by get targeted!')
+			if remove_type == ResStatusEffect.RemoveType.GET_HIT and effect.sounds['hit_tick'] != '': 
+				OverworldGlobals.playSound(effect.sounds['hit_tick'])
 			match effect.remove_style:
 				ResStatusEffect.RemoveStyle.REMOVE: effect.removeStatusEffect()
 				ResStatusEffect.RemoveStyle.TICK_DOWN: effect.tick(false, true)
@@ -292,7 +296,6 @@ func removeStatModification(modifier_id: String):
 			stat_modifiers.erase(modifier)
 			stat_removed.emit(self, modifier)
 			return
-	
 	#removeEmptyStats()
 
 func changeHealth(value:int,set_to:bool=false):

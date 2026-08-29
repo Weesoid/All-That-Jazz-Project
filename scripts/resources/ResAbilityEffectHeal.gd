@@ -9,7 +9,7 @@ class_name ResHealEffect
 
 func _to_string():
 	var out = ''
-	var condition_str = condition._to_string() if condition != null else ''
+	var condition_str = ' '+condition._to_string() if condition != null else ''
 	
 	#return '[color=green]Heal %s%s [/color] %s' % [str(base_heal), ' (Flat)' if !use_multiplier else '', condition._to_string() if condition != null else ''] #+ ' (Flat)' if !use_multiplier else '' + '[/color]'
 	if base_heal > 0:

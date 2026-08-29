@@ -9,7 +9,7 @@
 [sub_resource type="Resource" id="Resource_ww68q"]
 script = ExtResource("2_byxiq")
 stat_modifications = {
-"crit": 0.0,
+"crit": 1.0,
 "damage": 3,
 "dmg_variance": 0.0,
 "handling": -1,

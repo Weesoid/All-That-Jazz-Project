@@ -15,7 +15,8 @@ enum RemoveType {
 	GET_STATUSED,
 	ON_TURN,
 	GET_MISSED,
-	ROUND_START
+	ROUND_START,
+	GAIN_TP
 }
 enum RemoveStyle {
 	REMOVE,
@@ -61,7 +62,7 @@ enum TickType {
 @export var permanent: bool = false
 @export var remove_on_brink: bool = false
 @export var hide_icon = false
-@export var sounds: Dictionary = {'apply':'', 'expire':''}
+@export var sounds: Dictionary = {'apply':'', 'expire':'', 'hit_tick':''}
 var apply_once = true
 var duration:int
 var current_rank = 1

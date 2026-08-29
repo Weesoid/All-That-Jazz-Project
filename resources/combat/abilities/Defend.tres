@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=14 format=3 uid="uid://n15uy40oimtq"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=16 format=3 uid="uid://n15uy40oimtq"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_v8or2"]
 [ext_resource type="Resource" uid="uid://bnnwkaaycfdkg" path="res://resources/combat/status_effects/GuardBreak.tres" id="2_iubfv"]
@@ -13,21 +13,39 @@
 [sub_resource type="Resource" id="Resource_u7g7t"]
 script = ExtResource("3_ba127")
 cleanse_status = ExtResource("2_iubfv")
-animation_time = 0.0
+animation_time = -1.0
 animate_on = 0
 
 [sub_resource type="Resource" id="Resource_cqkbb"]
 script = ExtResource("4_k1wj8")
 target = 1
 status_effect = ExtResource("5_1ytoe")
+guaranteed = true
+add_duration = 0
 cast_animation = ""
+animation_time = -1.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_6khnm"]
+script = ExtResource("6_3f6xh")
+inequality = 1
+health_threshold = 0.0
+
+[sub_resource type="Resource" id="Resource_acp8h"]
+script = ExtResource("4_k1wj8")
+target = 1
+status_effect = ExtResource("5_1ytoe")
+guaranteed = true
+add_duration = 0
+cast_animation = ""
+condition = SubResource("Resource_6khnm")
 animation_time = 0.0
 animate_on = 0
 
 [sub_resource type="Resource" id="Resource_1dqu6"]
 script = ExtResource("6_3f6xh")
 inequality = 1
-health_threshold = 0.5
+health_threshold = 0.0
 
 [sub_resource type="Resource" id="Resource_b0dn7"]
 script = ExtResource("4_if1fj")
@@ -37,7 +55,7 @@ use_multiplier = true
 revive_from_ko = false
 cast_animation = ""
 condition = SubResource("Resource_1dqu6")
-animation_time = 0.0
+animation_time = -1.0
 animate_on = 0
 
 [resource]
@@ -45,7 +63,7 @@ script = ExtResource("3_ellp4")
 name = "Defend"
 description = ""
 icon = ExtResource("4_f5m2x")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_u7g7t"), SubResource("Resource_cqkbb"), SubResource("Resource_b0dn7")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_u7g7t"), SubResource("Resource_cqkbb"), SubResource("Resource_acp8h"), SubResource("Resource_b0dn7")])
 ability_script = ExtResource("1_v8or2")
 target_type = 0
 target_group = 2

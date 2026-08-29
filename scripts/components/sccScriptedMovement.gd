@@ -42,7 +42,6 @@ func _physics_process(delta):
 					else:
 						animator = OverworldGlobals.getEntityAnimator(body.name)
 					animator.stop()
-					print('stop frame is ', body.get_meta('stop_frame'))
 					body.get_node('Sprite2D').frame = body.get_meta('stop_frame')
 				#if hasWalkingAnimations() and body.has_node('Sprite2D'):
 				#	body.get_node('Sprite2D').frame = getStopFrame()
@@ -55,6 +54,7 @@ func _physics_process(delta):
 			await animation_done
 			target_positions.erase(animation)
 		elif target_positions[0] is String and target_positions[0].substr(0,1) == '^':
+			assert(!body is PlayerScene, 'Move player by 1 unit to change direction!')
 			var animation = target_positions[0]
 			updateSprite(target_positions[0].replace('^', ''))
 			target_positions.erase(animation)

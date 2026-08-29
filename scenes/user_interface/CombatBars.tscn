@@ -628,7 +628,9 @@ libraries = {
 }
 
 [node name="DebugIndic" type="TextureRect" parent="."]
+visible = false
 modulate = Color(1, 0, 1, 1)
+self_modulate = Color(1, 1, 1, 0)
 offset_left = 20.0
 offset_top = 23.0
 offset_right = 28.0

@@ -11,7 +11,7 @@ description = "Target is guarding."
 basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 status_script = ExtResource("2_sh6iq")
 effect_type = 1
-remove_when = Array[int]([4])
+remove_when = Array[int]([])
 remove_style = 1
 seperate_instances = false
 texture = ExtResource("3_mek1h")
@@ -27,8 +27,9 @@ do_ticks = true
 resistable = false
 permanent = true
 remove_on_brink = false
-hide_icon = false
+hide_icon = true
 sounds = {
-"apply": "",
-"expire": ""
+"apply": "res://audio/sounds/611767__sam300productions__parry-sfx-idea.ogg",
+"expire": "",
+"hit_tick": ""
 }

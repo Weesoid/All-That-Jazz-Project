@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=19 format=3 uid="uid://ewb80noaamii"]
+[gd_resource type="Resource" script_class="ResEnemyCombatant" load_steps=17 format=3 uid="uid://ewb80noaamii"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_ghl27"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantEnemy.gd" id="1_hgql2"]
@@ -10,9 +10,49 @@
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="3_sn163"]
 [ext_resource type="PackedScene" uid="uid://cke17m10rs7u5" path="res://scenes/combatants/DebugWillis.tscn" id="4_4d8jx"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="4_e0wdu"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectMove.gd" id="5_y1ess"]
 
-[sub_resource type="Resource" id="Resource_1l6ex"]
+[sub_resource type="Resource" id="Resource_d83vj"]
+script = ExtResource("4_e0wdu")
+damage_type = 1
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
+damage_modifier = 1.0
+cast_animation = {
+"animation": "",
+"go_to_target": false
+}
+can_miss = true
+can_crit = true
+return_pos = true
+indicator_bb = ""
+animation_time = 0.0
+animate_on = 0
+
+[sub_resource type="Resource" id="Resource_6t0q7"]
+script = ExtResource("3_sn163")
+name = "Rara"
+description = ""
+icon = ExtResource("2_le6fy")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_d83vj")])
+ability_script = ExtResource("1_ghl27")
+target_type = 0
+target_group = 1
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false
+
+[sub_resource type="Resource" id="Resource_we80e"]
 script = ExtResource("4_e0wdu")
 damage_type = 0
 attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
@@ -25,71 +65,21 @@ can_miss = true
 can_crit = true
 return_pos = true
 indicator_bb = ""
-projectile_texture = ExtResource("2_n0efy")
 animation_time = 0.0
 animate_on = 0
 
-[sub_resource type="Resource" id="Resource_y4pfv"]
+[sub_resource type="Resource" id="Resource_rjy6q"]
 script = ExtResource("3_sn163")
-name = "Dummy's Raging Fury"
+name = "asdsad"
 description = ""
 icon = ExtResource("2_le6fy")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_1l6ex")])
-ability_script = ExtResource("1_ghl27")
-target_type = 0
-target_group = 1
-caster_position = {
-"max": 0,
-"min": 0
-}
-target_position = {
-"max": 0,
-"min": 0
-}
-charges = 0
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-tension_cost = 0
-instant_cast = false
-
-[sub_resource type="Resource" id="Resource_l0fp2"]
-script = ExtResource("4_e0wdu")
-damage_type = 1
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
-damage_modifier = 1.25
-cast_animation = {
-"animation": "",
-"go_to_target": false
-}
-can_miss = true
-can_crit = true
-return_pos = true
-indicator_bb = ""
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_tabb0"]
-script = ExtResource("5_y1ess")
-target = 1
-direction = 0
-move_count = 1
-animation_time = 0.0
-animate_on = 0
-
-[sub_resource type="Resource" id="Resource_pc5p4"]
-script = ExtResource("3_sn163")
-name = "Dummy's Lunging Lunge"
-description = ""
-icon = ExtResource("2_le6fy")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_l0fp2"), SubResource("Resource_tabb0")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_we80e")])
 ability_script = ExtResource("1_ghl27")
 target_type = 0
 target_group = 1
 caster_position = {
 "max": 3,
-"min": 1
+"min": 0
 }
 target_position = {
 "max": 3,
@@ -133,13 +123,13 @@ bullet_texture = ExtResource("2_n0efy")
 description = ""
 stat_values = {
 "crit": 0.0,
-"damage": 2,
+"damage": 12,
 "dmg_variance": 0.0,
 "handling": 0,
 "health": 999,
 "resist": 0.0,
 "resolve": 3,
-"speed": 0
+"speed": 1
 }
 scale_stats = {
 "crit": 0.0,
@@ -151,6 +141,6 @@ scale_stats = {
 "resolve": 0.0,
 "speed": 0.0
 }
-ability_set = Array[ExtResource("3_sn163")]([SubResource("Resource_y4pfv"), SubResource("Resource_pc5p4")])
-max_turn_charges = 1
+ability_set = Array[ExtResource("3_sn163")]([SubResource("Resource_6t0q7"), SubResource("Resource_rjy6q")])
+max_turn_charges = 3
 assigned_position = -1
