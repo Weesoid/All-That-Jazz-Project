@@ -12,7 +12,7 @@ static func applyOnHitEffects(target, caster, _value, status_effect):
 	if target is ResPlayerCombatant and target.stat_modifiers.keys().has('block'):
 		CombatGlobals.getCombatScene().combat_camera.flash(Color.WHITE,0.1,0.05)
 	else:
-		target.combatant_scene.block_timer.start(0.8)
+		target.combatant_scene.startBlockCooldown()
 	
 	if target.combatant_scene.perfect_block: #target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized() and ((target is ResPlayerCombatant and target.stat_modifiers.has('block')) or target is ResEnemyCombatant):
 		CombatGlobals.manual_call_indicator.emit(target, 'PERFECT!', 'Show',true)
@@ -43,7 +43,17 @@ static func doRiposte(target, caster, status_effect):
 		#print('scriptarion ', status_effect.status_script)
 		target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'anim_speed'=1.5})
 	else:
-		target.combatant_scene.doAnimation(riposte_anim, status_effect.status_script, {'target'=caster.combatant_scene,'frame_time'=0.7,'ability'=null,'anim_speed'=2.0})
+		target.combatant_scene.doAnimation(
+			riposte_anim, 
+			status_effect.status_script, 
+			{
+			'target'=caster.combatant_scene,
+			'frame_time'=0.7,
+			'ability'=null,
+			'bonus_speed'=2000.0,
+			'anim_speed'=3.0
+			}
+			)
 
 static func determineRiposte(target, caster):
 	var distance = target.combatant_scene.global_position.distance_to(caster.combatant_scene.global_position)
@@ -70,7 +80,7 @@ static func applyAbilityEffects(caster: CombatantScene , target: CombatantScene,
 		CombatGlobals.calculateDamage(
 			caster, 
 			target, 
-			0.75,
+			0.5,
 			#true,
 			true,
 			'',

@@ -75,6 +75,7 @@ var reward_bank={
 	}
 var reinforcements_summoning:bool=false
 var slain_enemies: Array[ResEnemyCombatant] = []
+var enemy_start_wait := true
 # ex.
 #{
 # <round>: {
@@ -247,7 +248,7 @@ func on_player_turn():
 	Input.action_release("ui_accept")
 	if rebuking:
 		await rebuke_finished
-	print(DEFAULT_CAM_POS)
+	if await checkWin(): return
 	moveCamera(DEFAULT_CAM_POS)
 	combat_ui.showAbilities(active_combatant)
 #	if do_reinforcements and doReinforcementWarning():
@@ -325,10 +326,11 @@ func end_turn(combatant_act=true):
 		enemy_turn_count += 1
 	
 	if is_combatant_moving:
-		#await move_finished
-		await get_tree().create_timer(0.25).timeout
-		is_combatant_moving = false
+		await move_finished
 		#await get_tree().create_timer(0.25).timeout
+		
+		#await get_tree().create_timer(0.25).timeout
+	
 	setZIndices()
 	if combat_event != null and turn_count % combat_event.turn_trigger == 0:
 		combat_ui.writeCombatLog(combat_event.event_message)
@@ -337,7 +339,9 @@ func end_turn(combatant_act=true):
 		if await checkWin(): return
 	elif combat_event != null and turn_count % combat_event.turn_trigger == combat_event.turn_trigger - 3:
 		combat_ui.writeCombatLog(combat_event.warning_message)
-	
+	if has_node('Projectile'):
+		await get_node('Projectile').tree_exited
+		if await checkWin(): return
 	var turn_title = 'turn/%s' % turn_count
 	CombatGlobals.dialogue_signal.emit(turn_title)
 	
@@ -372,14 +376,15 @@ func end_turn(combatant_act=true):
 	
 	if !active_combatant.isImmobilized():
 		active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
+		if active_combatant is ResEnemyCombatant and enemy_start_wait:
+			enemy_start_wait = false
+			await get_tree().create_timer(0.3).timeout
 		active_combatant.act()
 #		active_combatant.combatant_scene.get_node('CombatBars').pulse_gradient.play('Show')
 	else:
 		if is_instance_valid(active_combatant.combatant_scene) and !active_combatant.isDead(true):
 			if target_combatant is ResCombatant and !target_combatant.hasStatusEffect('Guard'): 
-				#print('moving to active !')
 				shiftCamera(active_combatant)
-				#moveCamera(active_combatant.combatant_scene.global_position)
 			active_combatant.removeTokens(ResStatusEffect.RemoveType.ON_TURN)
 			active_combatant_changed.emit(active_combatant)
 			await showCannotAct('[color=%s][img color=%s outline=1]res://images/status_icons/icon_stun.png[/img] Stunned!' % ['STEEL_BLUE', 'STEEL_BLUE']) # DUCT TAPE
@@ -823,6 +828,8 @@ func getDeadCombatants(type: String=''):
 	return combatants.filter(func(combatant:ResCombatant): return combatant != null and combatant.isDead(true)) #dead_combatants.filter(func getDead(combatant): return combatant.isDead(return combatant != null and true))
 
 func rollTurns():
+	enemy_start_wait = true
+	var teams = {'enemies':[], 'team':[]}
 	removeRoundStartTokens()
 	for combatant in getAllCombatants():
 		tickStatusEffects(combatant, ResStatusEffect.TickType.ROUND_START)
@@ -835,8 +842,16 @@ func rollTurns():
 		combatant.turn_charges = combatant.max_turn_charges
 		for turn_charge in range(combatant.max_turn_charges):
 			var rolled_speed = randi_range(1, 8) + combatant.stat_values['speed']
-			combatant_turn_order.append([combatant, rolled_speed])
-	combatant_turn_order.sort_custom(func(a, b): return a[1] > b[1])
+			var combatant_speed = [combatant, rolled_speed]
+			if combatant is ResPlayerCombatant:
+				teams['team'].append(combatant_speed)
+			else:
+				teams['enemies'].append(combatant_speed)
+			#combatant_turn_order.append([combatant, rolled_speed])
+	teams['team'].sort_custom(func(a, b): return a[1] > b[1])
+	teams['enemies'].sort_custom(func(a, b): return a[1] > b[1])
+	combatant_turn_order.append_array(teams['team'])
+	combatant_turn_order.append_array(teams['enemies'])
 	round_count += 1
 #	combat_ui.updateRoundCounter(round_count)
 	if !ability_history.has(round_count): 
@@ -845,6 +860,12 @@ func rollTurns():
 		var caller = getLivingCombatants('enemies').pick_random()
 		CombatGlobals.addStatusEffect(caller, 'CallingReinforcements')
 	round_concluded.emit()
+
+func getTurnOrder():
+	var out = []
+	for turn_data in combatant_turn_order:
+		out.append(turn_data[0])
+	return out
 
 func callReinforcements():
 	combat_camera.flash(SettingsGlobals.ui_colors['unique'], 0.5,0.05,1.0)
@@ -1158,9 +1179,12 @@ func moveCombatantScenes(group: String, direction:int):
 		move_tween.tween_property(combatant.getSprite(), 'rotation', 0.2*direction,0.25)
 		move_tween.set_parallel(false)
 		move_tween.tween_property(combatant.getSprite(), 'rotation', 0,0.25)
+		#await move_tween.finished
 		#await get_tree().create_timer(0.05).timeout
 	
+	await get_tree().create_timer(0.26)
 	move_finished.emit()
+	is_combatant_moving = false
 
 func setZIndices():
 	for combatant in getAllCombatants():
@@ -1250,28 +1274,30 @@ func doRebuke(target: ResCombatant, caster: ResCombatant):
 	
 	# Heal ouchies
 	CombatGlobals.healResolve(target,99)
+	CombatGlobals.addTension(4,target)
 	if target is ResPlayerCombatant:
 		for injury in target.getTraitsWithFlag('injury'): target.removeTrait(injury)
-	# Do riposte
-	CombatGlobals.removeStatusEffect(target,'Guard Break')
-	CombatGlobals.addStatusEffect(target,'Guard',true,{'bonus_duration':1})
-	guard_effect=target.getStatusEffect('Guard')
-	if caster != null:
-		guard_effect.status_script.doRiposte(target,caster,guard_effect)
-	else:
-		moveCamera(target.combatant_scene.global_position,0)
+#	# Do riposte
+#	CombatGlobals.removeStatusEffect(target,'Guard Break')
+#	CombatGlobals.addStatusEffect(target,'Guard',true,{'bonus_duration':1})
+#	guard_effect=target.getStatusEffect('Guard')
+#	if caster != null:
+#		guard_effect.status_script.doRiposte(target,caster,guard_effect)
+#	else:
+#		moveCamera(target.combatant_scene.global_position,0)
 	
 	# Do visual effects
 	target.combatant_scene.z_index = caster.combatant_scene.z_index+1
-	toggleUI(false)
+	#toggleUI(false)
 	OverworldGlobals.playSound("res://audio/sounds/744329__fairsonicstudio__bbrs_sfx_soulretrieve.ogg")
 	OverworldGlobals.playSound(['165491__chripei__victory-cry-reverb-2.ogg', '165492__chripei__victory-cry-reverb-1.ogg'].pick_random())
 	OverworldGlobals.playSound("res://audio/sounds/482686__jocmusic__war-horn-blast.ogg")
-	setUIModulation(Color.TRANSPARENT)
-	playRebukeText()
-	await zoomCamera(Vector2(0.75,0.75),0.1)
-	await OverworldGlobals.freezeFrame(0.075, 2.8)
-	setUIModulation(Color.WHITE)
+#	setUIModulation(Color.TRANSPARENT)
+	#playRebukeText()
+#	await zoomCamera(Vector2(0.75,0.75),0.1)
+	CombatGlobals.manual_call_indicator.emit(target, 'REBUKED!', 'Crit',true)
+	#await OverworldGlobals.freezeFrame(0.5,1.25)
+#	setUIModulation(Color.WHITE)
 	CombatGlobals.calculatePercentHealing(target,1.0,false)
 	target.addTemporaryModifer(
 		'rebuke_penalty',
@@ -1285,7 +1311,7 @@ func doRebuke(target: ResCombatant, caster: ResCombatant):
 		setCameraZoom(DEFAULT_ZOOM)
 	if combat_camera.global_position != DEFAULT_CAM_POS:
 		moveCamera(DEFAULT_CAM_POS)
-	toggleUI(true)
+	#toggleUI(true)
 	
 	rebuking=false
 	rebuke_finished.emit()

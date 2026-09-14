@@ -33,18 +33,16 @@ func _ready():
 	if PlayerGlobals.hasMapEvent(scene_file_path):
 		events = getLogMapEvent()
 	removeEmptyEvents()
+	removeNodes()
 	await get_tree().process_frame
 	done_loading_map = true
-#	for group in getPatrolGroups():
-#		group.spawn()
-	# TODO Fix bug here, figure out what happened, save file 1
-	#for save_point in getSavePoints():
-	#	save_point.loadCombatantSquad()
 
-#func _on_node_removed(node: Node):
-#	await get_tree().process_frame
-#	if is_instance_valid(node) and not node.is_queued_for_deletion():
-#		print("Node is removed from tree but not freed: %s" % node.get_path())
+func removeNodes():
+	if !PlayerGlobals.hasMapLog(scene_file_path, 'remove') or true:
+		return
+	
+	for marked in PlayerGlobals.map_logs[scene_file_path]['remove']:
+		get_node(str(marked)).queue_free()
 
 func getLogMapEvent():
 	for entry in PlayerGlobals.map_logs[scene_file_path]:

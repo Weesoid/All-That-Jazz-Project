@@ -34,14 +34,20 @@ func block(bonus_grit: float=999.0):
 	if perfect_block:
 		CombatGlobals.modifyStat(combatant_resource, {"block":-1,"resist":999}, 'block')
 	else:
-		CombatGlobals.modifyStat(combatant_resource, {"block":0.5}, 'block')
+		CombatGlobals.modifyStat(combatant_resource, {"block":0.7}, 'block')
 	doAnimation('Block', null, {'skip_pause'=true})
 	await animator.animation_finished
 	CombatGlobals.resetStat(combatant_resource, 'block')
 	perfect_block=false
-	block_timer.start()
+	startBlockCooldown()
 
-func isPerfectBlock(window:float=0.015, projectile_distance:float=50.0)->bool:
+func startBlockCooldown():
+	block_timer.start(0.25)
+
+# These are perfect values, adjust accordingly
+# DEBT: Multiple hitbox frames, or multiple projectiles, probs better to just seperate these tho 
+func isPerfectBlock(window:float=0.03, projectile_distance:float=55.0)->bool:
+	var input_time = CombatGlobals.getCombatScene().active_combatant.combatant_scene.animator.current_animation_position
 	var combat_scene: CombatScene = CombatGlobals.getCombatScene()
 	var acting_enemy = combat_scene.active_combatant
 	var enemy_animator:AnimationPlayer = acting_enemy.combatant_scene.animator
@@ -52,12 +58,12 @@ func isPerfectBlock(window:float=0.015, projectile_distance:float=50.0)->bool:
 		var animation: Animation = enemy_animator.get_animation(animation_name)
 		var hitbox_track = animation.find_track(".", 5)
 		var active_hitbox_time = animation.track_get_key_time(hitbox_track,0)
-		var input_time = enemy_animator.current_animation_position
 		var calculated_time = active_hitbox_time-input_time
-		return calculated_time < window
+		#print('diff: ', calculated_time, ' (PASS)' if calculated_time > 0 and calculated_time < window else '')
+		return calculated_time > 0 and calculated_time <= window
 	elif animation_name.to_lower().contains('ranged') and combat_scene.has_node("Projectile"):
 		var projectile: ProjectileBattles = combat_scene.get_node("Projectile")
-		print('>!>: ', projectile.global_position.distance_to(global_position))
+		#print('>!>: ', projectile.global_position.distance_to(global_position))
 		return projectile.global_position.distance_to(global_position) < projectile_distance
 	
 	return false
@@ -87,6 +93,7 @@ func canBlock()-> bool:
 
 func _input(_event):
 	if Input.is_action_just_pressed('ui_accept') and CombatGlobals.inCombat() and canBlock():
-		OverworldGlobals.playSound("res://audio/sounds/209403__sgossner__leather-rustle-6.ogg")
 		perfect_block = isPerfectBlock()
 		block()
+		OverworldGlobals.playSound("res://audio/sounds/209403__sgossner__leather-rustle-6.ogg")
+

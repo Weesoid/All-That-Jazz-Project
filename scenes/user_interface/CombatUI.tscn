@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dudecf5kpx35v"]
+[gd_scene load_steps=21 format=3 uid="uid://dudecf5kpx35v"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCombatUI.gd" id="1_xa35n"]
 [ext_resource type="PackedScene" uid="uid://bkmhlmo28f62i" path="res://scenes/user_interface/AbilityButton.tscn" id="1_xjxjm"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://booeu7atgv18m" path="res://images/ability_icons/escape.png" id="9_1g12q"]
 [ext_resource type="Texture2D" uid="uid://cac4xj6cte52y" path="res://images/ability_icons/pass.png" id="9_hipl7"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="10_0a084"]
+[ext_resource type="Resource" uid="uid://nljovo4vpket" path="res://resources/combat/abilities/Pass.tres" id="10_iltmt"]
 [ext_resource type="Theme" uid="uid://wd4l2cmo4vgn" path="res://design/OutlinedLabelThin.tres" id="11_udija"]
 [ext_resource type="PackedScene" uid="uid://bm8b8sbn5hofk" path="res://scenes/user_interface/TensionBar.tscn" id="13_0p67n"]
 [ext_resource type="PackedScene" uid="uid://l265si2qk30k" path="res://scenes/user_interface/CombatInspection.tscn" id="14_k44oi"]
@@ -140,29 +141,24 @@ grow_horizontal = 2
 grow_vertical = 0
 texture = SubResource("GradientTexture2D_adw8b")
 
-[node name="AbilityContainer" type="HFlowContainer" parent="."]
+[node name="BaseAbilities" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -256.0
-offset_top = -48.0
-offset_right = 256.0
-offset_bottom = -24.0
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_right = 25.0
 grow_horizontal = 2
-grow_vertical = 0
-alignment = 1
+grow_vertical = 2
 
-[node name="BaseAbilities" type="MarginContainer" parent="AbilityContainer"]
-layout_mode = 2
-
-[node name="BaseAbilities" type="Control" parent="AbilityContainer/BaseAbilities"]
+[node name="BaseAbilities" type="Control" parent="BaseAbilities"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="Defend" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+[node name="Defend" parent="BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.0
@@ -171,18 +167,18 @@ offset_left = 34.0
 offset_right = 58.0
 focus_neighbor_left = NodePath("../Gear")
 focus_neighbor_top = NodePath("../Move")
-focus_neighbor_right = NodePath("../../../../EscapeButton")
+focus_neighbor_right = NodePath("../../../EscapeButton")
 focus_neighbor_bottom = NodePath("../Pass")
 ability = ExtResource("4_pw7md")
 
-[node name="Movements" type="Control" parent="AbilityContainer/BaseAbilities/BaseAbilities"]
+[node name="Movements" type="Control" parent="BaseAbilities/BaseAbilities"]
 visible = false
 anchors_preset = 0
 offset_left = 9.0
 offset_top = -40.0
 offset_right = 49.0
 
-[node name="Advance" parent="AbilityContainer/BaseAbilities/BaseAbilities/Movements" instance=ExtResource("1_xjxjm")]
+[node name="Advance" parent="BaseAbilities/BaseAbilities/Movements" instance=ExtResource("1_xjxjm")]
 layout_mode = 1
 offset_left = 3.0
 offset_top = 11.0
@@ -190,7 +186,7 @@ offset_right = 27.0
 offset_bottom = 35.0
 ability = ExtResource("6_15don")
 
-[node name="Recede" parent="AbilityContainer/BaseAbilities/BaseAbilities/Movements" instance=ExtResource("1_xjxjm")]
+[node name="Recede" parent="BaseAbilities/BaseAbilities/Movements" instance=ExtResource("1_xjxjm")]
 layout_mode = 1
 offset_left = -25.0
 offset_top = 11.0
@@ -198,7 +194,7 @@ offset_right = -1.0
 offset_bottom = 35.0
 ability = ExtResource("7_et8gl")
 
-[node name="Move" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+[node name="Move" parent="BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.0
@@ -217,7 +213,7 @@ descriptions = {
 "title": ""
 }
 
-[node name="Gear" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+[node name="Gear" parent="BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.0
@@ -233,7 +229,7 @@ descriptions = {
 "title": ""
 }
 
-[node name="Label" type="Label" parent="AbilityContainer/BaseAbilities/BaseAbilities/Gear/TextureRect" index="3"]
+[node name="Label" type="Label" parent="BaseAbilities/BaseAbilities/Gear/TextureRect" index="3"]
 z_index = 2
 layout_mode = 0
 offset_left = 17.0
@@ -243,7 +239,7 @@ offset_bottom = 14.0
 theme = ExtResource("10_0a084")
 text = "3"
 
-[node name="Pass" parent="AbilityContainer/BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
+[node name="Pass" parent="BaseAbilities/BaseAbilities" instance=ExtResource("1_xjxjm")]
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.0
@@ -255,12 +251,28 @@ offset_bottom = 39.0
 focus_neighbor_left = NodePath("../Gear")
 focus_neighbor_top = NodePath("../Move")
 focus_neighbor_right = NodePath("../Defend")
+ability = ExtResource("10_iltmt")
 descriptions = {
 "description": "",
 "icon": ExtResource("9_hipl7"),
 "title": ""
 }
 hold_time = 0.25
+
+[node name="AbilityContainer" type="HFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -48.0
+offset_right = 256.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
 
 [node name="EscapeButton" parent="." instance=ExtResource("1_xjxjm")]
 layout_mode = 1
@@ -275,7 +287,7 @@ offset_right = 16.0
 offset_bottom = -8.0
 grow_horizontal = 0
 grow_vertical = 0
-focus_neighbor_left = NodePath("../AbilityContainer/BaseAbilities/BaseAbilities/Defend")
+focus_neighbor_left = NodePath("../BaseAbilities/BaseAbilities/Defend")
 descriptions = {
 "description": "",
 "icon": ExtResource("9_1g12q"),
@@ -326,13 +338,13 @@ offset_top = -24.0
 offset_bottom = -24.0
 grow_vertical = 0
 
-[connection signal="focus_exited" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_focus_exited"]
-[connection signal="held_press" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_held_press"]
-[connection signal="focus_exited" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede" to="." method="_on_recede_focus_exited"]
-[connection signal="held_press" from="AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede" to="." method="_on_recede_held_press"]
-[connection signal="pressed" from="AbilityContainer/BaseAbilities/BaseAbilities/Move" to="." method="_on_move_pressed"]
-[connection signal="pressed" from="AbilityContainer/BaseAbilities/BaseAbilities/Gear" to="." method="_on_gear_pressed"]
-[connection signal="held_press" from="AbilityContainer/BaseAbilities/BaseAbilities/Pass" to="." method="_on_pass_pressed"]
+[connection signal="focus_exited" from="BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_focus_exited"]
+[connection signal="held_press" from="BaseAbilities/BaseAbilities/Movements/Advance" to="." method="_on_advance_held_press"]
+[connection signal="focus_exited" from="BaseAbilities/BaseAbilities/Movements/Recede" to="." method="_on_recede_focus_exited"]
+[connection signal="held_press" from="BaseAbilities/BaseAbilities/Movements/Recede" to="." method="_on_recede_held_press"]
+[connection signal="pressed" from="BaseAbilities/BaseAbilities/Move" to="." method="_on_move_pressed"]
+[connection signal="pressed" from="BaseAbilities/BaseAbilities/Gear" to="." method="_on_gear_pressed"]
+[connection signal="held_press" from="BaseAbilities/BaseAbilities/Pass" to="." method="_on_pass_pressed"]
 [connection signal="focus_entered" from="EscapeButton" to="." method="_on_escape_button_focus_entered"]
 [connection signal="focus_exited" from="EscapeButton" to="." method="_on_escape_button_focus_exited"]
 [connection signal="held_press" from="EscapeButton" to="." method="_on_escape_button_pressed"]
@@ -340,4 +352,4 @@ grow_vertical = 0
 [connection signal="mouse_exited" from="EscapeButton" to="." method="_on_escape_button_mouse_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 
-[editable path="AbilityContainer/BaseAbilities/BaseAbilities/Gear"]
+[editable path="BaseAbilities/BaseAbilities/Gear"]

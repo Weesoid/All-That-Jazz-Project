@@ -135,6 +135,7 @@ bg_color = Color(1, 1, 1, 1)
 bg_color = Color(1, 1, 1, 1)
 
 [resource]
+default_font = ExtResource("1_cnnh2")
 default_font_size = 8
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_o677a")
 Button/colors/font_focus_color = Color(0.94902, 0.94902, 0, 1)

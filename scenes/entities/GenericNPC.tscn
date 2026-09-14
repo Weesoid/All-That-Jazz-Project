@@ -8,11 +8,12 @@ radius = 8.0
 height = 36.0
 
 [node name="GenericNPC" type="CharacterBody2D"]
-position = Vector2(0, 9.30813e+06)
+position = Vector2(0, 1.02517e+07)
 collision_layer = 0
-velocity = Vector2(0, 135067)
+velocity = Vector2(0, 141745)
 script = ExtResource("1_dlvcl")
 gravity = true
+metadata/stop_frame = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -24)

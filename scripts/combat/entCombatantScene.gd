@@ -22,6 +22,7 @@ var projectile_hit_data: Dictionary = {
 	'texture':null
 }
 
+signal projectile_exited
 
 func _ready():
 	#print(name)
@@ -36,7 +37,7 @@ func initializeShapes():
 	hitbox.position = Vector2.ZERO
 	hitbox_shape.shape.size = Vector2(32,32)
 
-func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
+func moveTo(target, duration:float=0.2, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
 	if cannotAct() and !ignore_dead: 
 		return
 	
@@ -103,7 +104,8 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	
 	if animation.contains('Cast_Ranged') and data.has('target') and CombatGlobals.inCombat():
 		var projectile_texture = data['projectile_texture'] if data.has('projectile_texture') else null
-		setProjectileTarget(data['target'], data['ability'], projectile_texture)
+		var projectile_speed = data['bonus_speed'] if data.has('bonus_speed') else 0
+		setProjectileTarget(data['target'], data['ability'], projectile_speed, projectile_texture)
 	if data.keys().has('anim_speed'):
 		animator.play(animation, -1, data['anim_speed'])
 	else:
@@ -114,11 +116,14 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	if CombatGlobals.inCombat() and CombatGlobals.getCombatScene().has_node('Projectile'): 
 		await CombatGlobals.getCombatScene().get_node('Projectile').tree_exited
 	#animator.play('RESET')
+	if animation.contains('Ranged') and CombatGlobals.getCombatScene().has_node('Projectile'):
+		await projectile_exited
 	if !data.has('skip_pause') or (CombatGlobals.inCombat()):
 		await get_tree().create_timer(0.1).timeout
 	if !data.has('skip_idle'):
 		playIdle()
 	hit_script = null
+	await get_tree().process_frame
 
 func resizeHitbox(target_count:int):
 	var hitbox_size = 32
@@ -151,9 +156,10 @@ func playIdle(new_idle:String=''):
 	else:
 		animator.play(idle_animation)
 
-func setProjectileTarget(target: CombatantScene, ability: ResAbility, texture:Texture=null):
+func setProjectileTarget(target: CombatantScene, ability: ResAbility, bonus_speed:float, texture:Texture=null):
 	projectile_hit_data['target'] = target
 	projectile_hit_data['ability'] = ability
+	projectile_hit_data['bonus_speed'] = bonus_speed
 	projectile_hit_data['texture'] = texture
 
 func shootProjectile():
@@ -162,6 +168,7 @@ func shootProjectile():
 	projectile.ability = projectile_hit_data['ability']
 	projectile.name = 'Projectile'
 	projectile.target = projectile_hit_data['target']
+	projectile.speed += projectile_hit_data['bonus_speed']
 	projectile.shooter = self
 	projectile.tree_exited.connect(resetProjectileData)
 	if projectile_hit_data['texture'] != null:
@@ -183,6 +190,7 @@ func resetProjectileData():
 		'ability':null,
 		'texture':null
 	}
+	projectile_exited.emit()
 
 func _to_string():
 	return combatant_resource.name +' (CombatantScene)'

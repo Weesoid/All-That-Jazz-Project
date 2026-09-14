@@ -1,29 +1,36 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://nljovo4vpket"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://nljovo4vpket"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_ygsyy"]
+[ext_resource type="Script" path="res://scripts/resources/ResEffectConditionHealth.gd" id="2_yq700"]
 [ext_resource type="Texture2D" uid="uid://cac4xj6cte52y" path="res://images/ability_icons/pass.png" id="3_djmm3"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectHeal.gd" id="3_rsb11"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_btlwk"]
+
+[sub_resource type="Resource" id="Resource_rh5uv"]
+script = ExtResource("2_yq700")
+inequality = 1
+health_threshold = 0.0
+
+[sub_resource type="Resource" id="Resource_ktin1"]
+script = ExtResource("3_rsb11")
+base_heal = 0
+percent_heal = 0.1
+use_multiplier = true
+revive_from_ko = false
+cast_animation = ""
+condition = SubResource("Resource_rh5uv")
+animation_time = 0.0
+animate_on = 0
 
 [resource]
 script = ExtResource("4_btlwk")
 name = "Pass"
-description = "Pass your turn!"
+description = "Skip this turn."
 icon = ExtResource("3_djmm3")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_ktin1")])
 ability_script = ExtResource("1_ygsyy")
 target_type = 0
 target_group = 2
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
-charges = 0
-can_target_self = false
-can_target_dead = false
-dead_target_params = {
-"only_dead": false,
-"only_faded": true
-}
 caster_position = {
 "max": 3,
 "min": 0
@@ -32,7 +39,10 @@ target_position = {
 "max": 3,
 "min": 0
 }
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
 tension_cost = 0
 instant_cast = false
-required_level = 0
-mutation = {}

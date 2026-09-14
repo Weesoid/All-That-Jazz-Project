@@ -14,7 +14,7 @@ health_threshold = 0.0
 [sub_resource type="Resource" id="Resource_w5uhc"]
 script = ExtResource("1_3fxob")
 base_heal = 0
-percent_heal = 0.25
+percent_heal = 0.33
 use_multiplier = false
 revive_from_ko = true
 cast_animation = ""
@@ -37,6 +37,6 @@ max_stack = 9999
 barter_item = false
 name = "Smelling Salts"
 icon = ExtResource("2_o7ljf")
-description = ""
+description = "It's pugnant odor reinvigorates the body."
 value = 0
 mandatory = false

@@ -164,6 +164,8 @@ static func applyToTarget(caster, target, ability: ResAbility):
 		
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):
+	var caster_position = caster.global_position
+	var caster_rank_position = CombatGlobals.getCombatScene().getRankPosition(caster.combatant_resource)
 	var animation_data = {}
 	if target is Array[ResCombatant]:
 		animation_data['target_count'] = target.size()
@@ -173,15 +175,17 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 			await caster.moveTo(target)
 		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ability_script, animation_data)
 		if damage_effect.cast_animation['go_to_target']:
-			await returnToPosition(damage_effect, caster)
+			returnToPosition(damage_effect, caster)
 
 	elif damage_effect.damage_type == damage_effect.DamageType.MELEE:
 		await caster.moveTo(target)
 		await caster.doAnimation(pickAnimation(caster, 'Melee'), ability.ability_script, animation_data) # SPEED UP {'anim_speed':1.5}
-		await returnToPosition(damage_effect, caster)
+		returnToPosition(damage_effect, caster)
 	
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
 		#animation_data['projectile_texture'] = ability.current_effect.projectile_texture
+		if caster_position != caster_rank_position:
+			await returnToPosition(damage_effect, caster)
 		await caster.doAnimation(pickAnimation(caster, 'Ranged'), ability.ability_script, 
 			{
 				'target'=target,
@@ -193,6 +197,8 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 	
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
 		#animation_data['projectile_texture'] = ability.current_effect.projectile_texture
+		if caster_position != caster_rank_position:
+			await returnToPosition(damage_effect, caster)
 		await caster.doAnimation(pickAnimation(caster, 'Ranged'), ability.ability_script, 
 			{
 				'target'=null,
@@ -212,9 +218,11 @@ static func pickAnimation(caster:CombatantScene, type:String):
 	return animations.pick_random()
 
 static func returnToPosition(damage_effect: ResAttackEffect, caster: CombatantScene):
-	if !damage_effect.return_pos: 
+	var turn_order = CombatGlobals.getCombatScene().getTurnOrder()
+	var caster_resource = caster.combatant_resource
+	if !damage_effect.return_pos or (turn_order.has(caster_resource) and turn_order.size() > 2 and turn_order[1] == caster_resource and damage_effect.damage_type == ResAttackEffect.DamageType.MELEE): 
 		return
-	await caster.moveTo(CombatGlobals.getCombatScene().getRankPosition(caster.combatant_resource))
+	await caster.moveTo(CombatGlobals.getCombatScene().getRankPosition(caster_resource))
 #	if damage_effect.do_not_return_pos:
 #		damage_effect.do_not_return_pos = false
 

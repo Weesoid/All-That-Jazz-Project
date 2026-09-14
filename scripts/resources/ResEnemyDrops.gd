@@ -1,5 +1,5 @@
 extends Resource
-class_name ResEnemyDrops
+class_name ResItemDrop
 
 @export var item:ResItem
 @export var drop_count:int=1

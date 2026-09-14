@@ -169,7 +169,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		received_combatant_value.emit(target, caster, int(damage))
 		
 	## Resolve handling
-	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and !target.combatant_scene.perfect_block: 
+	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and target.stat_values.get('block',0) != -1: 
 		if target.stat_values['resolve'] - 1 <= 0 and randomRoll(target.stat_values.get(CombatExtras.REBUKE_CHANCE,0.0)):
 			getCombatScene().doRebuke(target,caster)
 		else:
@@ -210,7 +210,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		#addStatusEffect(target,'Knockback',true)
 		playKnockOutTween(target)
 		target.combatant_scene.collision.set_deferred('disabled',true)
-		OverworldGlobals.freezeFrame()
+		OverworldGlobals.freezeFrame(0.3,0.5)
 
 func playBrinkEffects(target):
 	if target.getSprite().has_node('Throbber'):
@@ -397,6 +397,8 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 	playHurtTween(target, damage)
 	if target is ResPlayerCombatant and target.combatant_scene.perfect_block:
+		playDodgeTween(target)
+		OverworldGlobals.showAfterImages(target.getSprite())
 		OverworldGlobals.playSound("res://audio/sounds/370203__nekoninja__shield-guard.ogg")
 		return
 	elif target.stat_modifiers.keys().has('block'):
@@ -428,8 +430,9 @@ func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 
 func playDodgeTween(target: ResCombatant):
 	OverworldGlobals.playSound('607862__department64__whipstick-28.ogg')
+	OverworldGlobals.playSound(["res://audio/sounds/15_human_dash_1.ogg", "res://audio/sounds/15_human_dash_2.ogg"].pick_random())
 	var tween = getCombatScene().create_tween().set_trans(Tween.TRANS_CUBIC)
-	var sprite_push = 16
+	var sprite_push = 32
 	if target is ResPlayerCombatant: sprite_push *= -1
 	tween.tween_property(target.getSprite(), 'position', target.getSprite().position + Vector2(sprite_push, 0), 0.15)
 	tween.tween_property(target.getSprite(), 'position', Vector2(0, 0), 0.5)

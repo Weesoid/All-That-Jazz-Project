@@ -5,7 +5,7 @@ class_name PlayerScene
 
 @onready var sprite = $Sprite2D
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
-@onready var animation_player = $AnimationPlayer
+#@onready var animation_player = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
 @onready var cast_animator = $PlayerPower/PowerAnimator
 @onready var player_direction = $PlayerDirection
@@ -23,7 +23,8 @@ class_name PlayerScene
 #@onready var stamina_bar = $StaminaBar
 @onready var current_arrow_icon = $CurrentArrowView
 @onready var walking_animations = $WalkingAnimations
-
+@onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var battler = $Battler
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
 const POWER_LEFT = preload("res://images/sprites/power_left.png")
@@ -84,6 +85,7 @@ func _ready():
 		melee_bar,
 		current_arrow_icon
 	]
+	resetStates()
 	await get_tree().process_frame
 	OverworldGlobals.loadFollowers()
 	OverworldGlobals.player_ready.emit()
@@ -163,10 +165,12 @@ func _physics_process(delta):
 		fall_damage = 0
 		suddenStop()
 		resetStates()
-		animation_player.play('Faceplant')
-		await animation_player.animation_finished
+		# GUT REWORK
+		#animation_player.play('Faceplant')
+		#await animation_player.animation_finished
 		can_move = true
-		resetAnimation()
+		# GUT REWORK
+		#resetAnimation()
 	elif is_on_floor():
 		if do_land_flag: 
 			landed.emit(landed_from_climb)
@@ -181,17 +185,19 @@ func _physics_process(delta):
 			Input.get_action_strength("ui_move_down") - Input.get_action_strength("ui_move_up")
 		)
 		direction = direction.normalized()
-		$Battler.get_node('Sprite2D').flip_h = !sprite.flip_h
 		
 		if Input.is_action_just_pressed("ui_accept") and canDive() and canDoStaminaAction(5.0):
+			#OverworldGlobals.showAfterImages(sprite)
 			dived.emit()
 			diving=true
 			jump(dive_strength)
 			dodge()
-			animation_player.play('Dive_2')
-			await animation_player.animation_finished
+			# GUT REWORK
+			#animation_player.play('Dive_2')
+			#await animation_player.animation_finished
 			collision_shape.set_deferred('disabled', false)
-			animation_player.play('RESET')
+			# GUT REWORK
+			#animation_player.play('RESET')
 			diving=false
 			can_move=true
 		
@@ -200,6 +206,9 @@ func _physics_process(delta):
 			jump(-255.0)
 		elif Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_down") and get_collision_mask_value(1) and drop_detector.has_overlapping_bodies() and is_on_floor():
 			phase()
+	# TEMP
+	battler.get_node('Sprite2D').flip_h = !sprite.flip_h
+	anim_sprite.flip_h = sprite.flip_h
 	
 	# Dive
 	if diving and not is_on_floor():
@@ -288,7 +297,8 @@ func canDoStaminaAction(cost:float):
 #			sprite.frame = 7 if !bow_mode else 16
 
 func isMovementAllowed():
-	return can_move and is_processing_input() and isMobile() and !animation_player.is_playing()
+	# GUT REWORK
+	return can_move and is_processing_input() and isMobile() #and !animation_player.is_playing()
 
 func canDive():
 	return sprinting and !interaction_detector.has_overlapping_areas() and velocity.x != 0 and ((Input.is_action_pressed('ui_move_left') or Input.is_action_pressed('ui_move_right')) and !Input.is_action_pressed('ui_move_up'))
@@ -371,6 +381,7 @@ func _unhandled_input(_event: InputEvent):
 			interactables[0].interact()
 			return
 	
+	# DEBUG
 	if Input.is_action_just_pressed("ui_text_backspace") and OverworldGlobals.isPlayerCheating():
 		if OverworldGlobals.getCurrentMap().scene_file_path != 'res://scenes/maps/Sidescroller.tscn':
 			OverworldGlobals.changeMap("res://scenes/maps/Sidescroller.tscn")
@@ -381,7 +392,8 @@ func _unhandled_input(_event: InputEvent):
 #
 
 func canInteract():
-	return !channeling_power and can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing and !animation_player.is_playing() and velocity == Vector2.ZERO
+	# GUT REWORK
+	return !channeling_power and can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing# and !animation_player.is_playing()# and velocity == Vector2.ZERO
 
 func isMobile():
 	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0
@@ -434,9 +446,14 @@ func resetStates():
 	#player_camera.quiver.select_name.text = ''
 	#player_camera.quiver.visible = false
 	Input.action_release("ui_bow_draw")
+	sprite.show()
+	OverworldGlobals.removeAnimationOverlap(self, OverworldGlobals.SpriteType.MAIN)
+	#anim_sprite.play('default')
+	#battler.hide()
+	#sprite.show()
 
-func resetAnimation():
-	animation_player.play("RESET")
+#func resetAnimation():
+#	animation_player.play("RESET")
 
 func canDrawBow()-> bool: 
 	if UIGlobals.inMenu():
@@ -693,5 +710,8 @@ func loadData():
 	get_parent().remove_child(self)
 	queue_free()
 
-#func _on_tree_exiting():
-#	animation_player.play('RESET')
+func _on_animated_sprite_2d_animation_changed():
+	#if anim_sprite == null: return
+	var animation = anim_sprite.animation
+	anim_sprite.visible = animation != "default"
+	sprite.visible = animation == "default"

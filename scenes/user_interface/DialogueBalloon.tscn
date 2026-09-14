@@ -38,6 +38,7 @@ response_template = NodePath("ResponseTemplate")
 visible = false
 
 [node name="CanvasBalloon" type="MarginContainer" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0

@@ -51,7 +51,7 @@ var dialogue_line: DialogueLine:
 		arrow.hide()
 		
 		var speaker = dialogue_line.character.split("-")[0]
-		print(speaker)
+		#print(speaker)
 		if speaker != '':
 			balloon = hover_balloon
 			dialogue_label = hover_dialogue_label
@@ -113,36 +113,31 @@ func setSizePosition(speaker:String):
 	if balloon.size.x > MAX_WIDTH:
 		dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 		balloon.custom_minimum_size.y = balloon.size.y
-	await get_tree().process_frame
-	await get_tree().process_frame
-	
-	var speaker_entity = OverworldGlobals.getEntity(speaker)
-	var offset = Vector2.ZERO
-	var sprite:Sprite2D
-	if speaker_entity.has_node('Sprite2D'):
-		sprite = speaker_entity.get_node('Sprite2D')
-		var sprite_size = sprite.texture.get_size()
-		var frame_w = sprite_size.x/ sprite.hframes
-		var frame_h = sprite_size.y/ sprite.vframes
-		var frame_size = Vector2(frame_w, frame_h)
-		offset = frame_size #* sprite.global_scale # * spr ite.global_scale#(speaker_entity.get_node('Sprite2D').get_rect().size/2) * global_scale
-	elif speaker_entity is Sprite2D:
-		sprite = speaker_entity
-		var sprite_size = sprite.texture.get_size()
-		var frame_w = sprite_size.x/ sprite.hframes
-		var frame_h = sprite_size.y/ sprite.vframes
-		var frame_size = Vector2(frame_w, frame_h)
-		offset = frame_size #* sprite.global_scale # * spr ite.global_scale#(speaker_entity.get_node('Sprite2D').get_rect().size/2) * global_scale
-	
-	var entity_position = Vector2(sprite.global_position.x,sprite.global_position.y)
-	#var cam_position = Vector2(entity_position.x,entity_position.y+OverworldGlobals.player.default_camera_pos.y)
-	global_position.x = entity_position.x - (balloon.size.x/2)
-	global_position.y = entity_position.y - (offset.y/2+balloon.size.y)
-	#OverworldGlobals.moveCamera(self)
+	#await get_tree().process_frame
+	#await get_tree().process_frame
+	global_position = getPosition(OverworldGlobals.getEntity(speaker))
 	create_tween().tween_property(balloon, 'modulate',Color.WHITE,0.1)
-	print(global_position)
+	#print(global_position)
 #	OverworldGlobals.moveCamera(cam_position)
 	#animator.play("Show")
+
+func getPosition(speaker_entity:Node2D)-> Vector2:
+	if speaker_entity.has_node('DialoguePoint'):
+		var d_point:Marker2D = speaker_entity.get_node('DialoguePoint')
+		return d_point.global_position - Vector2(balloon.size.x/2, d_point.global_position.y/2)
+	else:
+		var pos:Vector2 = Vector2.ZERO
+		var sprite:Sprite2D = speaker_entity if speaker_entity is Sprite2D else speaker_entity.get_node('Sprite2D')
+		var sprite_size = sprite.texture.get_size()
+		var frame_w = sprite_size.x/ sprite.hframes
+		var frame_h = sprite_size.y/ sprite.vframes
+		var frame_size = Vector2(frame_w, frame_h)
+		var offset = frame_size
+		var entity_position = Vector2(sprite.global_position.x,sprite.global_position.y)
+		
+		pos.x = entity_position.x - (balloon.size.x/2)
+		pos.y = entity_position.y - (offset.y/2+balloon.size.y)
+		return pos
 
 func _ready() -> void:
 	balloon = hover_balloon
@@ -269,4 +264,5 @@ func _on_panel_resized():
 
 
 func _on_tree_exited():
+	OverworldGlobals.player.resetStates()
 	pass # Replace with function body.

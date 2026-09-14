@@ -2,13 +2,21 @@ extends Area2D
 
 @export var dialogue_resource: DialogueResource
 @export var dialogue_start: String = "start"
-@export var show_ui:bool = false
+
+@export_subgroup("Run Rules")
+@export var autorun:bool=false
+@export var area_run: Area2D
+@export var interactable:bool=true
+@export var cooldown: float = 1.0
+@export var free_after:bool=false
+
+@export_subgroup("Party Positioning")
 @export var move_player: bool = false
 @export var go_left: bool = false
 @export var show_followers: bool = true
 @export var move_followers:bool = false
-@export var cooldown: float = 1.0
-@export var autorun:bool=false
+@export var show_ui:bool = false
+
 @onready var cooldown_timer = $Timer
 @onready var interact_animator = $Sprite2D/AnimationPlayer
 
@@ -21,6 +29,13 @@ func _ready():
 	if autorun:
 		await OverworldGlobals.player_ready
 		interact()
+	if !interactable:
+		monitorable = false
+	if area_run != null:
+		area_run.body_entered.connect(
+			func(body):
+				if body is PlayerScene: interact()
+		)
 
 func centerSelf():
 	if get_parent().has_node('CollisionShape2D'):
@@ -28,7 +43,10 @@ func centerSelf():
 		position.y = -(get_parent().get_node('CollisionShape2D').shape.height/2)
 
 func interact():
-	assert(dialogue_resource != null, '%s has no dialogue resource' % get_parent().name)
+	#assert(dialogue_resource != null, '%s has no dialogue resource' % get_parent().name)
+	if dialogue_resource == null:
+		get_parent().interact()
+		return
 	if !OverworldGlobals.player.canInteract() or !get_parent().visible:
 		return
 	if !cooldown_timer.is_stopped():
@@ -56,11 +74,13 @@ func moveFollowers():
 				)
 
 func enter():
+	#OverworldGlobals.player.velocity.move_toward(Vector2.ZERO, get_physics_process_delta_time())
+	#var tween = create_tween()
+	#tween.tween_property(OverworldGlobals.player, 'velocity', Vector2.ZERO,0.1)
+	await get_tree().process_frame
 	cooldown_timer.start(cooldown)
-	#OverworldGlobals.player.player_camera.cinematic_bars.visible = true
 	OverworldGlobals.setPlayerInput(false)
 	UIGlobals.setPlayerUIVisiblity(false)
-	#OverworldGlobals.player.setUIVisibility(false)
 	OverworldGlobals.player.sprinting = false
 	UIGlobals.setControllerAdapter(true)
 	PlayerGlobals.setFollowersMotion(false)
@@ -99,6 +119,8 @@ func exit():
 	PlayerGlobals.setFollowersMotion(true)
 	cooldown_timer.start(cooldown)
 	OverworldGlobals.interaction_ended.emit()
+	if free_after:
+		queue_free()
 
 
 func _on_area_entered(area):
@@ -112,5 +134,8 @@ func _on_area_exited(area):
 		interact_animator.play("RESET")
 
 func _on_timer_timeout():
+	if !interactable or !monitoring:
+		return
+	
 	if get_overlapping_areas().has(OverworldGlobals.player.interaction_detector) and OverworldGlobals.player.canInteract() and cooldown_timer.is_stopped():
 		interact_animator.play("Show")

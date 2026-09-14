@@ -315,6 +315,10 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
+[node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_e0123")]
+layout_mode = 2
+texture = ExtResource("4_acfgp")
+
 [node name="Inventory" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("12_itq0b")
@@ -322,10 +326,6 @@ texture = ExtResource("12_itq0b")
 [node name="Party" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
 texture = ExtResource("14_iybx4")
-
-[node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_e0123")]
-layout_mode = 2
-texture = ExtResource("4_acfgp")
 
 [node name="Rest" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
@@ -465,9 +465,9 @@ layout_mode = 1
 [connection signal="item_received" from="OutsideButtons/KindlingSlot" to="." method="_on_kindling_slot_item_received"]
 [connection signal="custom_close" from="uiCrafting/DragDropBlocker/MenuCloser" to="." method="_on_crafting_pressed"]
 [connection signal="pressed" from="MiniInventory/Control/Crafting" to="." method="_on_crafting_pressed"]
+[connection signal="pressed" from="HBoxContainer/FastTravel" to="." method="_on_fast_travel_pressed"]
 [connection signal="pressed" from="HBoxContainer/Inventory" to="." method="_on_inventory_pressed"]
 [connection signal="pressed" from="HBoxContainer/Party" to="." method="_on_party_pressed"]
-[connection signal="pressed" from="HBoxContainer/FastTravel" to="." method="_on_fast_travel_pressed"]
 [connection signal="held_press" from="HBoxContainer/Rest" to="." method="_on_rest_held_press"]
 [connection signal="held_press" from="HBoxContainer/Embark" to="." method="_on_embark_held_press"]
 [connection signal="pressed" from="RestOptions/RestOptions/Return" to="." method="_on_return_pressed"]

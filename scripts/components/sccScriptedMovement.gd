@@ -19,6 +19,8 @@ func _ready():
 	body = get_parent()
 	body.set_physics_process(false)
 	setCollisionExceptions()
+	body.get_node('Sprite2D').show()
+	OverworldGlobals.removeAnimationOverlap(body, OverworldGlobals.SpriteType.MAIN)
 
 func setCollisionExceptions():
 	for child in OverworldGlobals.getCurrentMap().get_children().filter(func(chimp): return chimp is CharacterBody2D):

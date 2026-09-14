@@ -10,7 +10,7 @@ var recipes: Dictionary = {
 	'CharmMurder':{'ScrapSalvage': 12, 'ArrowJunk': 16,'ArrowSleeper':1},
 	'RushDown':{'CritRations': 1, 'ExtraRations': 1,'Rations':1, 'ScrapSalvage':1},
 	'ScrapSalvage.1':{'ArrowJunk': 1},
-	'Kindling':{'Wood':1,'WhittlingKnife':1}
+	'Kindling.3':{'Wood':1,'WhittlingKnife':1}
 }
 var max_inventory: int = 1000
 var duplicate_charm_cap:int=50

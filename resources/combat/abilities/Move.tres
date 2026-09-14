@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://fnvr2klesc3p"]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_83g8x"]
+[ext_resource type="Texture2D" uid="uid://cc77vpghixtg8" path="res://images/ability_icons/move.png" id="2_rgvob"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="5_dqvem"]
+
+[resource]
+script = ExtResource("5_dqvem")
+name = "Move"
+description = "Move forward or backward."
+icon = ExtResource("2_rgvob")
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+ability_script = ExtResource("1_83g8x")
+target_type = 0
+target_group = 2
+caster_position = {
+"max": 3,
+"min": 0
+}
+target_position = {
+"max": 3,
+"min": 0
+}
+charges = 0
+required_effect = {
+"rank": 0,
+"status_effect": null
+}
+tension_cost = 0
+instant_cast = false

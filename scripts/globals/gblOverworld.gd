@@ -4,6 +4,16 @@ enum PlayerType {
 	WILLIS,
 	ARCHIE
 }
+enum SpriteType {
+	BATTLER,
+	MISC,
+	MAIN
+}
+const SPRITE_NODES = {
+	SpriteType.BATTLER: 'Battler',
+	SpriteType.MISC: 'AnimatedSprite2D',
+	SpriteType.MAIN: 'Sprite2D',
+}
 
 var entering_combat:bool=false
 var player_type: PlayerType = PlayerType.WILLIS
@@ -96,13 +106,61 @@ func getEntity(entity_name: String):
 func hasEntity(entity_name: String):
 	return get_tree().current_scene.has_node(entity_name)
 
-func playEntityAnimation(entity_name: String, animation_name: String, reset:bool=false,wait:=true,reverse:=false):
-	getEntityAnimator(entity_name).play(animation_name)
+func animateEntity(entity_name: String, animation_name: String, reset:bool=false,wait:=true,reverse:=false):
+	var animator = getEntityAnimator(entity_name)
+	animator.play(animation_name)
 	if reset:
-		await getEntityAnimator(entity_name).animation_finished
-		getEntityAnimator(entity_name).play('RESET')
+		await animator.animation_finished
+		animator.play('RESET')
 	if wait:
-		await getEntityAnimator(entity_name).animation_finished
+		await animator.animation_finished
+
+func animateSprite(entity_name: String, animation_name: String, wait:=false):
+	
+	var animated_sprite:AnimatedSprite2D 
+	var entity = getEntity(entity_name)
+	if entity is AnimatedSprite2D:
+		animated_sprite = entity
+	else:
+		animated_sprite = entity.find_child("AnimatedSprite2D")
+	animated_sprite.show()
+	removeAnimationOverlap(getEntity(entity_name), SpriteType.MISC)
+	animated_sprite.play(animation_name)
+	if wait and animated_sprite.sprite_frames.get_frame_count(animation_name) > 1:
+		await animated_sprite.animation_finished
+
+func animateBattler(entity_name: String, animation_name: String, reset:bool=false,wait:=true,reverse:=false):
+	
+	var battler: CombatantScene = getEntity(entity_name).get_node('Battler')
+	battler.show()
+	var animator: AnimationPlayer = battler.animator
+	removeAnimationOverlap(getEntity(entity_name), SpriteType.BATTLER)
+	if !reverse:
+		animator.play(animation_name)
+	else:
+		animator.play_backwards(animation_name)
+	if wait:
+		await animator.animation_finished
+
+func removeAnimationOverlap(entity: Node2D, type:SpriteType):
+	match type:
+		SpriteType.BATTLER:
+			hideSpriteType(entity, SpriteType.MAIN)
+			hideSpriteType(entity, SpriteType.MISC)
+		SpriteType.MAIN:
+			hideSpriteType(entity, SpriteType.BATTLER)
+			hideSpriteType(entity, SpriteType.MISC)
+		SpriteType.MISC:
+			hideSpriteType(entity, SpriteType.BATTLER)
+			hideSpriteType(entity, SpriteType.MAIN)
+
+## Battler (Overworld batler sprite/Battler), AnimatedSprite (misc anims/AniamtedSprite2D), Main (main sprite/Sprite2D)
+func hideSpriteType(entity:Node2D, sprite_type:SpriteType):
+	var node = SPRITE_NODES[sprite_type]
+	if entity.has_node(node) and entity.get_node(node).visible:
+		entity.get_node(node).hide()
+		if sprite_type == SpriteType.MISC:
+			entity.get_node(node).play('default')
 
 func setSpriteFrame(entity_name: String, frame:int, flip:bool=false):
 	var entity = getEntity(entity_name)
@@ -115,6 +173,9 @@ func setSpriteFrame(entity_name: String, frame:int, flip:bool=false):
 	#if flip:
 	sprite.flip_h = flip
 
+func setZIndex(entity_name: String, index:int):
+	getEntity(entity_name).z_index = index
+
 func getEntityAnimator(entity_name: String)-> AnimationPlayer:
 	for child in getEntity(entity_name).get_children():
 		if child is AnimationPlayer: return child
@@ -126,6 +187,9 @@ func setEntityVisibility(entity_name: String, visibility:bool):
 		player.sprite.visible = visibility
 	else:
 		get_tree().current_scene.get_node(entity_name).visible = visibility
+
+func shakeScreen(strength: float=15.0, speed: float=10.0):
+	OverworldGlobals.player.player_camera.shake(strength,speed)
 
 func shakeSprite(entity: Node2D, strength:float=15.0, speed:float=50.0, sprite_name:String='Sprite2D'):
 	if !entity.has_node(sprite_name) and !entity is Sprite2D:
@@ -737,9 +801,18 @@ func isPlayerAlive()-> bool:
 	return false
 
 func freezeFrame(time_scale: float=0.3, duration: float=1.0):
+	#var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	Engine.time_scale = time_scale
+	
 	await get_tree().create_timer(duration * time_scale).timeout
 	Engine.time_scale = 1.0
+
+func showAfterImages(sprite:Sprite2D, delay_time:float=0.1, image_count:int=6):
+	var fx = load("res://scenes/miscellaneous/AfterImages.tscn").instantiate()
+	fx.delay_time = delay_time
+	fx.image_count = image_count
+	add_child(fx)
+	fx.showAfterImages(sprite)
 
 func resetVariables():
 	pass

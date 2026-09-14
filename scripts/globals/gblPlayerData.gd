@@ -355,6 +355,14 @@ func addMapLog(map_path: String, key:String='', entry=null):
 	elif key != '' and (map_logs[map_path][key] is Array and entry is Array):
 		map_logs[map_path][key].append_array(entry)
 
+func hasMapLog(map_path: String, key:String='')-> bool:
+	if key == '':
+		return map_logs.has(map_path)
+	else:
+		return map_logs.has(map_path) and map_logs[map_path].has(key)
+	
+	return false
+
 func randomizeMapEvents(exclude_map:String=''):
 	for map in map_logs.keys().filter(func(map): return hasMapEvent(map)):
 	#	clearMapPatrollers(map)

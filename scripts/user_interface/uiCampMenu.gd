@@ -387,7 +387,7 @@ func restCombatant(combatant: ResPlayerCombatant):
 	var random_stat_boost= ['speed', 'damage', 'resolve'].pick_random()
 	combatant.addTemporaryModifer('Well Rested',3,{'resist':0.1,random_stat_boost:1,'health':5},false,true)
 	CombatGlobals.calculateHealing(combatant, ceil(combatant.getMaxHealth()*0.05),false)
-	CombatGlobals.healResolve(combatant,3)
+	CombatGlobals.healResolve(combatant,99)
 	if CombatGlobals.randomRoll(0.1): CombatGlobals.removeInjury(combatant,randi_range(1,2))
 
 func _on_return_pressed():
@@ -443,6 +443,7 @@ func noRestedBuff():
 
 func _on_kindling_slot_item_received(_item):
 	InventoryGlobals.removeItemResource(kindling_item)
+	roster_button.setDisabled(true)
 	kindle_slot.setDisabled(true)
 	rest_button.setDisabled(false)
 	camp_spot.kindleFire()

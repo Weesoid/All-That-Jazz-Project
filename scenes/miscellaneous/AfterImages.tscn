@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cimjfal5gnkx4"]
+
+[ext_resource type="Script" path="res://scripts/fx/fxAfterImages.gd" id="1_oatfw"]
+
+[node name="AfterImages" type="Node2D"]
+script = ExtResource("1_oatfw")
+
+[node name="Timer" type="Timer" parent="."]

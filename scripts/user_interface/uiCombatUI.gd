@@ -3,31 +3,34 @@ class_name CombatUI
 
 const COMBAT_GEAR_ICON = preload("res://images/ability_icons/combat_gear.png")
 const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
+const PASS_ABILITY = preload("res://resources/combat/abilities/Pass.tres")
+const MOVE_ABILITY = preload("res://resources/combat/abilities/Move.tres")
+
 #const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
 #DialogueManager
 @export var tension_color:Color = SettingsGlobals.ui_colors['up']
 @export var tension_particles_db:float = -8.0
 @onready var ability_buttons = $AbilityContainer
-@onready var base_abilities = $AbilityContainer/BaseAbilities/BaseAbilities
+@onready var base_abilities = $BaseAbilities/BaseAbilities
 #@onready var tension_bar: CustomCountBar = $Tension/TensionBar
 #@onready var tension_icon = $Tension/TextureRect
 #@onready var tension_whole = $Tension
 @onready var combat_scene = CombatGlobals.getCombatScene()
-@onready var gear_button = $AbilityContainer/BaseAbilities/BaseAbilities/Gear
+@onready var gear_button = $BaseAbilities/BaseAbilities/Gear
 @onready var combat_log = $CombatLog
 @onready var combat_log_animator = $CombatLog/AnimationPlayer
 @onready var whole_ui_animator = $AnimationPlayer
 @onready var escape_button = $EscapeButton
 @onready var escape_chance = $EscapeButton/EscapeChance
 @onready var escape_button_default_pos = escape_button.position
-@onready var move_button = $AbilityContainer/BaseAbilities/BaseAbilities/Move
-@onready var move_forward_button = $AbilityContainer/BaseAbilities/BaseAbilities/Movements/Advance
-@onready var move_back_button = $AbilityContainer/BaseAbilities/BaseAbilities/Movements/Recede
-@onready var defend_button = $AbilityContainer/BaseAbilities/BaseAbilities/Defend
-@onready var movements = $AbilityContainer/BaseAbilities/BaseAbilities/Movements
+@onready var move_button = $BaseAbilities/BaseAbilities/Move
+@onready var move_forward_button = $BaseAbilities/BaseAbilities/Movements/Advance
+@onready var move_back_button = $BaseAbilities/BaseAbilities/Movements/Recede
+@onready var defend_button = $BaseAbilities/BaseAbilities/Defend
+@onready var movements = $BaseAbilities/BaseAbilities/Movements
 #@onready var round_counter_animator = $Rounds/RoundCounter/AnimationPlayer
 @onready var rushed_movement_timer = $Timer
-@onready var weapon_uses = $AbilityContainer/BaseAbilities/BaseAbilities/Gear/TextureRect/Label
+@onready var weapon_uses = $BaseAbilities/BaseAbilities/Gear/TextureRect/Label
 @onready var tension_bar = $TensionBar
 @onready var inspector = $CombatInspection
 @onready var bottom_gradient = $Graident
@@ -90,19 +93,21 @@ func showAbilities(combatant: ResCombatant):
 	weapon_uses.hide()
 	setButtonDisabled(escape_button, !combat_scene.can_escape)
 	if combatant.equipped_weapon != null:
-		weapon_uses.show()
-		setButtonDisabled(gear_button,false)
-		gear_button.ability = combatant.equipped_weapon.effect
-		gear_button.custom_charge = combatant.equipped_weapon.durability
-		if !combatant.equipped_weapon.effect.enabled or combatant.equipped_weapon.durability <= 0:
-			setButtonDisabled(gear_button,true)
-		weapon_uses.text = str(combatant.equipped_weapon.durability)
-		#giveButtonFunction(gear_button,combatant.equipped_weapon.effect,combatant.equipped_weapon)
+		var wpn_button = UIGlobals.createAbilityButton(combatant.equipped_weapon.effect)
+		combatant.equipped_weapon.effect.charges = combatant.equipped_weapon.durability
+		giveButtonFunction(wpn_button, combatant.equipped_weapon.effect)
+		ability_buttons.add_child(wpn_button)
 	else:
 		setButtonDisabled(gear_button,true)
 		gear_button.descriptions['icon'] = COMBAT_GEAR_ICON
 		gear_button.ability_icon.texture = gear_button.descriptions['icon']
 	
+	var mv_button = UIGlobals.createAbilityButton(MOVE_ABILITY)
+	giveButtonFunction(mv_button, MOVE_ABILITY)
+	ability_buttons.add_child(mv_button)
+	var pass_button = UIGlobals.createAbilityButton(PASS_ABILITY)
+	giveButtonFunction(pass_button, PASS_ABILITY)
+	ability_buttons.add_child(pass_button)
 	for ability in combatant.ability_set: 
 		var button = UIGlobals.createAbilityButton(ability)
 		giveButtonFunction(button,ability)

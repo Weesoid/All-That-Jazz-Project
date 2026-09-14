@@ -244,6 +244,7 @@ dialogue_resource = ExtResource("15_21t34")
 [node name="CombatantSquadComponent" parent="Entity" instance=ExtResource("8_5ag6f")]
 enemy_pool = Array[Resource("res://scripts/resources/ResCombatantEnemy.gd")]([ExtResource("16_q6tno")])
 fill_empty = true
+do_reinforcements = false
 combatant_squad = Array[Resource("res://scripts/resources/ResCombatant.gd")]([ExtResource("16_q6tno"), ExtResource("16_q6tno"), ExtResource("16_q6tno"), ExtResource("16_q6tno")])
 
 [node name="SavePoint" parent="." instance=ExtResource("16_jpex5")]
@@ -287,8 +288,8 @@ dialogue_resource = ExtResource("25_m8hhu")
 
 [node name="GenericNPC" parent="." instance=ExtResource("21_cchwb")]
 visible = false
-position = Vector2(57, 1.15506e+12)
-velocity = Vector2(0, 4.71049e+07)
+position = Vector2(57, 1.84614e+12)
+velocity = Vector2(0, 5.96363e+07)
 texture = ExtResource("22_b8a2s")
 metadata/stop_frame = 0
 

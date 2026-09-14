@@ -8,7 +8,7 @@ func _ready():
 	#OverworldGlobals.getCombatantSquadComponent(get_parent().name).addLingeringEffect('Stunned')
 	if get_parent() is PlayerScene:
 		OverworldGlobals.shakeCamera()
-		OverworldGlobals.playEntityAnimation('Player', 'Stun')
+		OverworldGlobals.animateEntity('Player', 'Stun')
 		PlayerGlobals.applyBlessing("res://scenes/temporary_blessings/Stun.tscn")
 		visible = false
 	else:

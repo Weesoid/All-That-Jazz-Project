@@ -18,8 +18,7 @@ enum PreferredPosition {
 @export var preferred_position: PreferredPosition
 @export var chance_to_drop = 0.5
 #@export var drop_count = 1
-## Key: Item to be dropped; Value: Vector2 representing drop chance (x) & drop count (y)
-@export var drop_pool:Array[ResEnemyDrops] = []
+@export var drop_pool:Array[ResItemDrop] = []
 @export var is_converted: bool
 @export var experience_multiplier:float = 1.0
 # @export var tamed_combatant: ResCombatant

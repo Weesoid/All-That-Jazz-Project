@@ -16,4 +16,7 @@ func isPassed(combatant:ResCombatant):
 		return combatant.stat_values['health'] <= combatant.getMaxHealth()*health_threshold
 
 func _to_string():
-	return 'when target HP %s %s%%' % ['<' if inequality == Inequality.LESS_THAN else '>', str(int(health_threshold*100))]
+	if health_threshold > 0:
+		return 'when target HP %s %s%%' % ['<' if inequality == Inequality.LESS_THAN else '>', str(int(health_threshold*100))]
+	else:
+		return 'when [color=RED]on the brink.[/color]'
