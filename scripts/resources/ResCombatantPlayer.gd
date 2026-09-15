@@ -141,7 +141,7 @@ func loadFileReferences():
 	}
 	
 	for ability_path in file_references['active_abilities']:
-		if !FileAccess.file_exists(ability_path):
+		if !FileAccess.file_exists(ability_path) or !ability_pool.has(load(ability_path)):
 			remove['active_abilities'].append(ability_path)
 			continue
 		ability_set.append(load(ability_path))

@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=27 format=3 uid="uid://cd5r32rnqq6ks"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=26 format=3 uid="uid://cd5r32rnqq6ks"]
 
-[ext_resource type="Resource" uid="uid://bnol4xomec0g1" path="res://resources/combat/abilities/BasicAttack.tres" id="1_ic5dt"]
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_gtfo3"]
 [ext_resource type="Resource" uid="uid://cvjlkid4m1aae" path="res://resources/combat/abilities/BasicMisc.tres" id="3_6d41e"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="3_8yngu"]
@@ -173,7 +172,7 @@ instant_cast = false
 
 [resource]
 script = ExtResource("7_rlsd5")
-ability_pool = Array[ExtResource("8_plvh5")]([ExtResource("1_ic5dt"), ExtResource("2_gtfo3"), ExtResource("3_6d41e"), ExtResource("4_rjkcl"), SubResource("Resource_hvyrf"), SubResource("Resource_1o6uk"), SubResource("Resource_j5fqi"), SubResource("Resource_4r665")])
+ability_pool = Array[ExtResource("8_plvh5")]([ExtResource("2_gtfo3"), ExtResource("3_6d41e"), ExtResource("4_rjkcl"), SubResource("Resource_hvyrf"), SubResource("Resource_1o6uk"), SubResource("Resource_j5fqi"), SubResource("Resource_4r665")])
 base_traits = Array[String]([])
 follower_texture = ExtResource("4_2iyqn")
 mandatory = false

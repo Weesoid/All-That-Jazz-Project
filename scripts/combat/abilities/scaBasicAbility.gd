@@ -24,15 +24,13 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			await applyAbilityEffects(caster, target, ability)
 		
 		elif effect is ResMoveEffect:
-			if effect.target == effect.Target.CASTER:
-				target = caster
-			else:
-				target = target
+			var temp_target = caster.combatant_resource if effect.Target.CASTER else target.combatant_resource
 			if effect.direction == effect.Direction.FORWARD:
-				await CombatGlobals.getCombatScene().moveCombatant(target.combatant_resource, -1, effect.move_count)
+				CombatGlobals.getCombatScene().moveCombatant(temp_target, -1, effect.move_count)
 			elif effect.direction == effect.Direction.BACK:
-				await CombatGlobals.getCombatScene().moveCombatant(target.combatant_resource, 1, effect.move_count)
-		
+				CombatGlobals.getCombatScene().moveCombatant(temp_target, 1, effect.move_count)
+			await CombatGlobals.getCombatScene().move_finished
+	
 		elif effect is ResHealEffect:
 			await caster.doAnimation(effect.cast_animation)
 			if ability.current_effect.base_heal > 0: 
@@ -166,26 +164,29 @@ static func applyToTarget(caster, target, ability: ResAbility):
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):
 	var caster_position = caster.global_position
 	var caster_rank_position = CombatGlobals.getCombatScene().getRankPosition(caster.combatant_resource)
+	var caster_rank = CombatGlobals.getCombatScene().getCombatantPosition(caster.combatant_resource)
 	var animation_data = {}
 	if target is Array[ResCombatant]:
 		animation_data['target_count'] = target.size()
 	
+	print(caster_rank_position)
 	if damage_effect.cast_animation['animation'] != '':
 		if damage_effect.cast_animation['go_to_target']:
 			await caster.moveTo(target)
 		await caster.doAnimation(damage_effect.cast_animation['animation'], ability.ability_script, animation_data)
 		if damage_effect.cast_animation['go_to_target']:
 			returnToPosition(damage_effect, caster)
-
-	elif damage_effect.damage_type == damage_effect.DamageType.MELEE:
+	
+	elif damage_effect.damage_type == damage_effect.DamageType.MELEE or (damage_effect.damage_type == damage_effect.DamageType.ADAPTIVE and caster_rank <= 1):
 		await caster.moveTo(target)
 		await caster.doAnimation(pickAnimation(caster, 'Melee'), ability.ability_script, animation_data) # SPEED UP {'anim_speed':1.5}
 		returnToPosition(damage_effect, caster)
 	
-	elif damage_effect.damage_type == damage_effect.DamageType.RANGED:
+	elif damage_effect.damage_type == damage_effect.DamageType.RANGED or (damage_effect.damage_type == damage_effect.DamageType.ADAPTIVE and caster_rank >= 2):
 		#animation_data['projectile_texture'] = ability.current_effect.projectile_texture
 		if caster_position != caster_rank_position:
 			await returnToPosition(damage_effect, caster)
+		print('Setting target to ', target)
 		await caster.doAnimation(pickAnimation(caster, 'Ranged'), ability.ability_script, 
 			{
 				'target'=target,

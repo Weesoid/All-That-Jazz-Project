@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhx3w8p2dtqc2"
-path="res://.godot/imported/icon_melee.png-395df7e3d09aea77af153590e17c488c.ctex"
+uid="uid://dgejnj5pkb6xl"
+path="res://.godot/imported/icon_range.png-69a1e2da19c2f3d43c535f501bcd13db.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/sprites/icon_melee.png"
-dest_files=["res://.godot/imported/icon_melee.png-395df7e3d09aea77af153590e17c488c.ctex"]
+source_file="res://images/user_interface/icon_range.png"
+dest_files=["res://.godot/imported/icon_range.png-69a1e2da19c2f3d43c535f501bcd13db.ctex"]
 
 [params]
 

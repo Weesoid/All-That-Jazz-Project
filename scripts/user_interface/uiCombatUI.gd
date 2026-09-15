@@ -5,6 +5,7 @@ const COMBAT_GEAR_ICON = preload("res://images/ability_icons/combat_gear.png")
 const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
 const PASS_ABILITY = preload("res://resources/combat/abilities/Pass.tres")
 const MOVE_ABILITY = preload("res://resources/combat/abilities/Move.tres")
+const TEST_ABILITY = preload("res://resources/combat/abilities/BasicAttack.tres")
 
 #const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
 #DialogueManager
@@ -102,6 +103,9 @@ func showAbilities(combatant: ResCombatant):
 		gear_button.descriptions['icon'] = COMBAT_GEAR_ICON
 		gear_button.ability_icon.texture = gear_button.descriptions['icon']
 	
+	var t = UIGlobals.createAbilityButton(TEST_ABILITY)
+	giveButtonFunction(t, TEST_ABILITY)
+	ability_buttons.add_child(t)
 	var mv_button = UIGlobals.createAbilityButton(MOVE_ABILITY)
 	giveButtonFunction(mv_button, MOVE_ABILITY)
 	ability_buttons.add_child(mv_button)
@@ -114,7 +118,6 @@ func showAbilities(combatant: ResCombatant):
 		ability_buttons.add_child(button)
 		ability_buttons.move_child(button,0)
 	canUseAbility(defend_button)
-	
 	await get_tree().process_frame
 	if getAbilityButtons().size() < PlayerGlobals.ability_cap:
 		fillInvalid()

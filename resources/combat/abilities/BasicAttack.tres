@@ -1,26 +1,21 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://bnol4xomec0g1"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=6 format=3 uid="uid://bnol4xomec0g1"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_k0byw"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_y24xu"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_jyuxu"]
-[ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_aoac4"]
-[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusTP.gd" id="4_ico1d"]
-
-[sub_resource type="Resource" id="Resource_kgbnd"]
-script = ExtResource("4_ico1d")
-add_amount = 4
+[ext_resource type="Texture2D" uid="uid://cpovaqepempw3" path="res://images/ability_icons/last_resort_attack.png" id="3_oitjg"]
 
 [sub_resource type="Resource" id="Resource_a0lre"]
 script = ExtResource("2_jyuxu")
-damage_type = 0
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_kgbnd")])
-damage_modifier = 1.0
+damage_type = 3
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
+damage_modifier = 0.25
 cast_animation = {
 "animation": "",
 "go_to_target": false
 }
 can_miss = true
-can_crit = true
+can_crit = false
 return_pos = true
 indicator_bb = ""
 animation_time = 0.0
@@ -28,12 +23,12 @@ animate_on = 0
 
 [resource]
 script = ExtResource("1_k0byw")
-name = "Descriptarion"
+name = "Basic Attack"
 description = ""
-icon = ExtResource("3_aoac4")
+icon = ExtResource("3_oitjg")
 basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_a0lre")])
 ability_script = ExtResource("1_y24xu")
-target_type = 1
+target_type = 0
 target_group = 1
 caster_position = {
 "max": 3,

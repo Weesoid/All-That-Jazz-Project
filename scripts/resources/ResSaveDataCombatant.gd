@@ -64,6 +64,7 @@ func loadData(combatant: ResPlayerCombatant):
 	combatant.assigned_position = assigned_position
 	combatant.percent_health = percent_health
 	combatant.percent_resolve = percent_resolve
+	#if combatant.name.contains('Willis'): print(combatant.ability_set)
 	#if combatant.name.contains('Will'): print(combatant, ' percent health: ',str(percent_health*100),'%')
 	#combatant.stat_values['health'] = int(combatant.getMaxHealth()*percent_health)
 	#combatant.item_strain_tracker = item_strain_tracker
@@ -104,3 +105,6 @@ func loadCharms():
 		i += 1
 	
 	return out
+
+func loadAbilities():
+	pass

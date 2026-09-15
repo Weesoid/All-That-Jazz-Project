@@ -761,6 +761,7 @@ position = Vector2(-121, 75)
 dialogue_resource = ExtResource("11_nrv16")
 dialogue_start = "corpse"
 area_run = NodePath("../Area2D2")
+interactable = false
 free_after = true
 
 [node name="Area2D2" type="Area2D" parent="Corpsepile"]

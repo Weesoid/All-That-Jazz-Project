@@ -163,12 +163,15 @@ func setProjectileTarget(target: CombatantScene, ability: ResAbility, bonus_spee
 	projectile_hit_data['texture'] = texture
 
 func shootProjectile():
+	if !CombatGlobals.inCombat():
+		return
+	
 	var projectile = load("res://scenes/entities_disposable/ProjectileBattles.tscn").instantiate()
 	projectile.hit_script = hit_script
 	projectile.ability = projectile_hit_data['ability']
 	projectile.name = 'Projectile'
 	projectile.target = projectile_hit_data['target']
-	projectile.speed += projectile_hit_data['bonus_speed']
+	projectile.speed += projectile_hit_data.get('bonus_speed',0)
 	projectile.shooter = self
 	projectile.tree_exited.connect(resetProjectileData)
 	if projectile_hit_data['texture'] != null:

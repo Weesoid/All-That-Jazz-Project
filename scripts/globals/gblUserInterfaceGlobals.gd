@@ -296,7 +296,7 @@ func setPlayerUIVisiblity(set_to:bool):
 	var player:PlayerScene = OverworldGlobals.player
 	#for element in player.hud: 
 	player.melee_bar.visible = set_to#player.melee_bar.canShow() if set_to else false
-	player.current_arrow_icon.visible = false if !set_to or !player.bow_mode else true
+	#player.current_arrow_icon.visible = false if !set_to or !player.bow_mode else true TODO FIX LATER
 #	if player.bow_mode and set_to:
 #		player.current_arrow_icon.visible = true
 #	else:

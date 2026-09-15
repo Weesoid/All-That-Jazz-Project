@@ -1,10 +1,19 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://dtuo8rjewsxxd"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=10 format=3 uid="uid://dtuo8rjewsxxd"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_gh2mi"]
+[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectMove.gd" id="2_7bk75"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="2_frihu"]
 [ext_resource type="Script" path="res://scripts/resources/ResAttackBonusMove.gd" id="2_waegn"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_buv2f"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="4_u8v7o"]
+
+[sub_resource type="Resource" id="Resource_fnf8j"]
+script = ExtResource("2_7bk75")
+target = 1
+direction = 1
+move_count = 1
+animation_time = 0.0
+animate_on = 0
 
 [sub_resource type="Resource" id="Resource_bsv0s"]
 script = ExtResource("2_waegn")
@@ -32,7 +41,7 @@ script = ExtResource("4_u8v7o")
 name = "Projectiliun II"
 description = ""
 icon = ExtResource("3_buv2f")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_o3qoi")])
+basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_fnf8j"), SubResource("Resource_o3qoi")])
 ability_script = ExtResource("1_gh2mi")
 target_type = 0
 target_group = 1

@@ -6,6 +6,9 @@ class_name ProjectileBattles
 @export var target: CombatantScene
 
 func _on_body_entered(body):
+	#print(target)
+	#if body == shooter:
+	#	return
 	if body is CombatantScene and body.combatant_resource.hasStatusEffect('Overguard') and !CombatGlobals.isSameCombatantType(body.combatant_resource, shooter):
 		if body is PlayerCombatantScene:
 			body.doAnimation('Block')

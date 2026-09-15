@@ -52,6 +52,7 @@ func interact():
 	if !cooldown_timer.is_stopped():
 		return
 	
+	OverworldGlobals.player.resetStates()
 	await enter()
 	interact_animator.play("RESET")
 	if get_parent().has_method('interact'):

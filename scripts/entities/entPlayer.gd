@@ -18,6 +18,8 @@ class_name PlayerScene
 @onready var collision_shape: CollisionShape2D = $PlayerCollision
 @onready var climb_cooldown: Timer = $ClimbCooldown
 @onready var melee_cooldown: Timer = $MeleeCooldown
+@onready var bow_draw_time = $BowDrawTime
+#@onready var bow_cooldown:Timer = $BowCooldown
 @onready var melee_bar = $MeleeCooldownBar
 @onready var melee_hitbox = $PlayerDirection/MeleeHitbox
 #@onready var stamina_bar = $StaminaBar
@@ -25,6 +27,8 @@ class_name PlayerScene
 @onready var walking_animations = $WalkingAnimations
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var battler = $Battler
+@onready var battler_animator = $Battler/AnimationPlayer
+
 const POWER_DOWN = preload("res://images/sprites/power_down.png")
 const POWER_UP = preload("res://images/sprites/power_up.png")
 const POWER_LEFT = preload("res://images/sprites/power_left.png")
@@ -32,8 +36,7 @@ const POWER_RIGHT = preload("res://images/sprites/power_right.png")
 
 var can_move = true
 var direction = Vector2()
-var bow_mode = false
-var bow_draw_strength = 0
+#var bow_mode = false
 var speed = 100.0
 var stamina_regen = true # MIND THIS, PREFERABLY ONLY INVI CAN DISABLE/ENABLE STAMINA REGEN
 var sprinting = false
@@ -54,6 +57,9 @@ var do_land_flag
 var landed_from_climb:bool=false
 var hud: Array = []
 var fast_travelling:bool=false
+var shoot_ready := false
+var pulling_bow := false
+var shooting_bow := false
 
 signal jumped(jump_velocity)
 signal dived
@@ -89,6 +95,8 @@ func _ready():
 	await get_tree().process_frame
 	OverworldGlobals.loadFollowers()
 	OverworldGlobals.player_ready.emit()
+	print(sprite.offset)
+	print(sprite.position)
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -148,7 +156,7 @@ func _physics_process(delta):
 	#print(velocity.x)
 	# Gravity
 	if not is_on_floor() and !climbing and do_gravity:
-		if bow_draw_strength > 0.0:
+		if pulling_bow:
 			setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		velocity.x = 0
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
@@ -233,37 +241,70 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	animation_tree.advance(ANIMATION_SPEED * delta)
-	# Bow
-	if bow_mode and is_processing_input() and PlayerGlobals.equipped_arrow != null:
-		drawBow()
 	
-	# Bow / sprint processes
-	if PlayerGlobals.overworld_stats['stamina'] <= 0.0 and animation_tree["parameters/conditions/draw_bow"]:
-		Input.action_press("ui_bow")
-	if sprinting and PlayerGlobals.overworld_stats['stamina'] > 0.0 and bow_draw_strength == 0 and can_move:
+	# Bow
+	if Input.is_action_just_pressed('ui_bow_draw') and canPullBow():
+		startBowPull()
+	elif (Input.is_action_just_released('ui_bow_draw') and !canShootBow()) or Input.is_action_just_pressed("ui_alternate_cancel"):
+		cancelBowPull()
+	if Input.is_action_just_released('ui_bow_draw') and canShootBow():
+		shootBow()
+	
+	# Sprint
+	if sprinting and PlayerGlobals.overworld_stats['stamina'] > 0.0 and !pulling_bow and can_move:
 		setSpeed(PlayerGlobals.overworld_stats['sprint_speed'])
 		ANIMATION_SPEED = 1.0
 		if velocity != Vector2.ZERO and is_on_floor(): 
 			PlayerGlobals.overworld_stats['stamina'] -= PlayerGlobals.overworld_stats['sprint_drain']
-	elif bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
-		if PlayerGlobals.overworld_stats['stamina'] > 0.0:
-			PlayerGlobals.overworld_stats['stamina'] -= 0.1
 	elif sprinting and PlayerGlobals.overworld_stats['stamina'] < 0.0:
 		setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		ANIMATION_SPEED = 0.0
 	elif !sprinting and PlayerGlobals.overworld_stats['stamina'] < 100 and stamina_regen and is_on_floor():
 		PlayerGlobals.overworld_stats['stamina'] += PlayerGlobals.overworld_stats['stamina_gain']
-	if (!sprinting or PlayerGlobals.overworld_stats['stamina'] <= 0.0) and bow_draw_strength == 0.0:
+	if (!sprinting or PlayerGlobals.overworld_stats['stamina'] <= 0.0) and !pulling_bow:
 		setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		ANIMATION_SPEED = 0.0
 	
 	# Ensure that stamina doesn't over regen
 	if PlayerGlobals.overworld_stats['stamina'] > 100.0:
 		PlayerGlobals.overworld_stats['stamina'] = 100.0
-	
-	# Follower points
-	#OverworldGlobals.follow_array.push_front(global_position)
-	#OverworldGlobals.follow_array.pop_back()
+
+func startBowPull():
+	if is_on_floor():
+		velocity = Vector2.ZERO
+	pulling_bow = true
+	setSpeed(25.0)
+	toggleBowDrawAnimation(true)
+	can_move=false
+	bow_draw_time.start()
+	await OverworldGlobals.animateBattler('Player', 'Slow_Draw',true)
+	can_move=true
+
+func cancelBowPull():
+	if is_on_floor():
+		velocity = Vector2.ZERO
+	shoot_ready = false
+	pulling_bow = false
+	if battler_animator.current_animation == 'Slow_Draw':
+		bow_draw_time.stop()
+		battler_animator.stop()
+		OverworldGlobals.removeAnimationOverlap(self,OverworldGlobals.SpriteType.MAIN, true)
+		if can_move == false: can_move = true
+	bow_draw_time.stop()
+	toggleBowDrawAnimation(false)
+
+func shootBow():
+	if is_on_floor():
+		velocity = Vector2.ZERO
+	shooting_bow=true
+	can_move=false
+	pulling_bow = false
+	shoot_ready=false
+	shootProjectile()
+	await OverworldGlobals.animateBattler('Player', 'Ranged_Nowindup',true)
+	shooting_bow=false
+	toggleBowDrawAnimation(false)
+	can_move=true
 
 func setClimbDirection():
 	if velocity.y < 0:
@@ -335,18 +376,18 @@ func _input(_event):
 		sprinting = true
 	elif SettingsGlobals.stopSprint():
 		sprinting = false
-	if Input.is_action_just_pressed("ui_bow") and canDrawBow():
-		toggleBowMode(!bow_mode)
+	#if Input.is_action_just_pressed("ui_bow") and canDrawBow():
+	#	toggleBowMode(!bow_mode)
 
-func toggleBowMode(toggle):
-	if bow_draw_strength == 0: 
-		bow_mode = toggle
-		if bow_mode:
-			bow_equipped.emit()
-		else:
-			bow_unequipped.emit()
-	elif bow_draw_strength > 0:
-		undrawBow()
+#func toggleBowMode(toggle):
+#	if bow_draw_strength == 0: 
+#		bow_mode = toggle
+#		if bow_mode:
+#			bow_equipped.emit()
+#		else:
+#			bow_unequipped.emit()
+#	elif bow_draw_strength > 0:
+#		undrawBow()
 	
 	# Debug
 #	if Input.is_action_pressed("ui_cheat_mode"):
@@ -373,11 +414,11 @@ func _unhandled_input(_event: InputEvent):
 		UIGlobals.showMenu("res://scenes/user_interface/GameMenu.tscn")
 	
 	# Interaction handling
-	if Input.is_action_just_pressed("ui_interact") and can_move:
+	if Input.is_action_just_pressed("ui_interact") and canInteract() and !pulling_bow and !shooting_bow:
 		var interactables = interaction_detector.get_overlapping_areas()
 		if interactables.size() > 0:
 			velocity.move_toward(Vector2.ZERO,get_physics_process_delta_time())
-			undrawBowAnimation()
+			#undrawBowAnimation()
 			interactables[0].interact()
 			return
 	
@@ -393,7 +434,7 @@ func _unhandled_input(_event: InputEvent):
 
 func canInteract():
 	# GUT REWORK
-	return !channeling_power and can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing# and !animation_player.is_playing()# and velocity == Vector2.ZERO
+	return can_move and !UIGlobals.inMenu() and !OverworldGlobals.inDialogue() and !climbing #and !pulling_bow and !shooting_bow# and !animation_player.is_playing()# and velocity == Vector2.ZERO
 
 func isMobile():
 	return PlayerGlobals.overworld_stats['walk_speed'] > 0 and PlayerGlobals.overworld_stats['sprint_speed'] > 0
@@ -422,7 +463,7 @@ func canCastPower(power: ResPower):
 
 func cancelPower():
 	Input.action_release("ui_gambit")
-	toggleVoidAnimation(false)
+	#toggleVoidAnimation(false)
 	power_listening = false
 	power_inputs = ''
 	player_camera.crystal_count.hide()
@@ -436,36 +477,32 @@ func cancelPower():
 		can_move = true
 
 func resetStates():
-	undrawBowAnimation()
-	toggleVoidAnimation(false)
+	#undrawBowAnimation()
+	#toggleVoidAnimation(false)
 	sprinting = false
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	ANIMATION_SPEED = 0.0
 	power_inputs = ''
-	#cancelPower()
-	#player_camera.quiver.select_name.text = ''
-	#player_camera.quiver.visible = false
-	Input.action_release("ui_bow_draw")
+	cancelBowPull()
 	sprite.show()
 	OverworldGlobals.removeAnimationOverlap(self, OverworldGlobals.SpriteType.MAIN)
-	#anim_sprite.play('default')
-	#battler.hide()
-	#sprite.show()
 
-#func resetAnimation():
-#	animation_player.play("RESET")
 
 func canDrawBow()-> bool: 
 	if UIGlobals.inMenu():
 		return false
-	if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
-		#OverworldGlobals.showPrompt("Out of [color=yellow]%ss[/color]." % PlayerGlobals.equipped_arrow.name)
+	if OverworldGlobals.inDialogue():
 		return false
-	if PlayerGlobals.equipped_arrow == null:
-		return false
+	# Redo empty later
+	#if !PlayerGlobals.equipNewArrowType() and (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0):
+	#	return false
+	#if PlayerGlobals.equipped_arrow == null: TEMP
+	#	return false
 	if !isMobile():
 		return false
 	if diving:
+		return false
+	if battler.visible:
 		return false
 	
 	return true
@@ -473,8 +510,8 @@ func canDrawBow()-> bool:
 func canUsePower():
 	if UIGlobals.inMenu():
 		return false
-	if bow_draw_strength != 0.0:
-		return false
+#	if bow_draw_strength != 0.0:
+#		return false
 	if OverworldGlobals.getCombatantSquad('Player').is_empty():
 		return false
 	
@@ -487,54 +524,63 @@ func canUsePower():
 #	else:
 #		interaction_prompt_animator.play('RESET')
 
-func drawBow():
-	if (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0) and !PlayerGlobals.equipNewArrowType():
-		bow_mode = false
-		toggleBowAnimation()
+func deprecatusDRAWBOW():
+	#if (PlayerGlobals.equipped_arrow != null and PlayerGlobals.equipped_arrow.stack <= 0) and !PlayerGlobals.equipNewArrowType():
+		#bow_mode = false
+	#	toggleBowAnimation()
 	
 	if Input.is_action_pressed("ui_bow_draw") and canPullBow():
-		if bow_draw_strength < 1.5: 
-			suddenStop(false)
-			bow_drawn.emit()
-		setSpeed(15.0)
-		bow_line.show()
-		bow_line.global_position = global_position + Vector2(0, -10) + sprite.offset
-		bow_draw_strength += 0.1
-		bow_line.points[1].y += 1
-		if velocity != Vector2.ZERO:
-			bow_line.default_color.a = 0.10
-		else:
-			bow_line.default_color.a = 0.5
-		if !isMobile():
-			bow_draw_strength = 0
-		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and bow_line.points[1].y < 275:
-			player_camera.flash(Color.WHITE,0.05,0.05)
-			var tween = create_tween()
-			tween.tween_property(sprite, 'self_modulate', Color.INDIAN_RED,0.1)
-			tween.tween_property(sprite, 'self_modulate', Color.WHITE, 0.25)
-			OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg", -8.0)
-			OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/BowReady.tscn",player_direction)
-		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
-			bow_line.points[1].y = 325
-			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
-	if Input.is_action_just_released("ui_bow_draw") and canShootBow(): 
-		suddenStop()
-		shootProjectile()
-		playShootAnimation()
-		await animation_tree.animation_finished
-		undrawBow()
+		print('sex')
+#		if bow_draw_strength < 1.5: 
+#			suddenStop(false)
+#			bow_drawn.emit()
+#		setSpeed(15.0)
+#		bow_line.show()
+#		bow_line.global_position = global_position + Vector2(0, -10) + sprite.offset
+#		bow_draw_strength += 0.1
+#		bow_line.points[1].y += 1
+#		if velocity != Vector2.ZERO:
+#			bow_line.default_color.a = 0.10
+#		else:
+#			bow_line.default_color.a = 0.5
+#		if !isMobile():
+#			bow_draw_strength = 0
+#		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and bow_line.points[1].y < 275:
+#			player_camera.flash(Color.WHITE,0.05,0.05)
+#			var tween = create_tween()
+#			tween.tween_property(sprite, 'self_modulate', Color.INDIAN_RED,0.1)
+#			tween.tween_property(sprite, 'self_modulate', Color.WHITE, 0.25)
+#			OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg", -8.0)
+#			OverworldGlobals.showQuickAnimation("res://scenes/animations_quick/BowReady.tscn",player_direction)
+#		if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw']:
+#			bow_line.points[1].y = 325
+#			bow_draw_strength = PlayerGlobals.overworld_stats['bow_max_draw']
+#	if Input.is_action_just_released("ui_bow_draw") and canShootBow(): 
+#		suddenStop()
+#		shootProjectile()
+#		#print('SHOOTIN!')
+#		playShootAnimation()
+		
+		#await animation_tree.animation_finished
+		#print('UNDRAWIN!')
+		#undrawBow()
 		
 
+func toggleBowDrawAnimation(toggle:bool):
+	animation_tree["parameters/conditions/draw_bow"] = toggle
+	animation_tree["parameters/conditions/undraw_bow"] = !toggle
+
 func canPullBow():
-	return !animation_tree["parameters/conditions/void_call"] and !OverworldGlobals.inDialogue() and !UIGlobals.inMenu() and can_move and isMobile() and !diving and (isFacingSide() or isFacingUp())
+	#print(walking_animations.an)
+	return !OverworldGlobals.inDialogue() and !UIGlobals.inMenu() and can_move and isMobile() and !diving and (isFacingSide() or isFacingUp()) and is_on_floor() #and bow_cooldown.is_stopped()
 
 func canShootBow()-> bool:
-	return can_move and bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and isMobile() and velocity.x == 0
+	return can_move and shoot_ready and isMobile() #and velocity.x == 0
 
 func undrawBow():
 	bow_line.hide()
 	bow_line.points[1].y = 0
-	bow_draw_strength = 0
+	#bow_draw_strength = 0
 	setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 	if !can_move:
 		can_move = true
@@ -570,67 +616,32 @@ func updateAnimationParameters():
 		animation_tree["parameters/conditions/idle"] = false
 		animation_tree["parameters/conditions/is_moving"] = true
 	
-	if direction != Vector2.ZERO and bow_draw_strength < 1.0:
+	if direction != Vector2.ZERO and !pulling_bow and !shooting_bow: #and bow_cooldown.is_stopped():
 		animation_tree["parameters/Idle/blend_position"] = direction
 		animation_tree["parameters/Walk/blend_position"] = direction
-		animation_tree["parameters/Idle Bow/blend_position"] = direction
-		animation_tree["parameters/Walk Bow/blend_position"] = direction
-		animation_tree["parameters/Shoot Bow/blend_position"] = direction
+		#animation_tree["parameters/Shoot Bow/blend_position"] = direction
 		animation_tree["parameters/Draw Bow/blend_position"] = direction
 		animation_tree["parameters/Draw Bow Walk/blend_position"] = direction
-		animation_tree["parameters/Melee/blend_position"] = direction
 		animation_tree["parameters/Climb/blend_position"] = direction
-	if Input.is_action_just_pressed('ui_bow') and !animation_tree["parameters/conditions/void_call"]:
-		suddenStop()
-		toggleBowAnimation()
-		if animation_tree["parameters/conditions/draw_bow"]:
-			bow_draw_strength = 0
-			Input.action_release("ui_bow_draw")
-			animation_tree["parameters/conditions/draw_bow"] = false
-			animation_tree["parameters/conditions/cancel"] = true
-			undrawBow()
-		await get_tree().process_frame
-		can_move = true
 	
-	if bow_mode:
-		if Input.is_action_pressed('ui_bow_draw') and  canPullBow(): # !animation_tree["parameters/conditions/void_call"] and !animation_tree["parameters/conditions/melee"] and !OverworldGlobals.inDialogue() and is_processing_input() and
-			animation_tree["parameters/conditions/draw_bow"] = true
-			animation_tree["parameters/conditions/shoot_bow"] = false
-			animation_tree["parameters/conditions/cancel"] = false
-		
-		if Input.is_action_just_released("ui_bow_draw"):
-			animation_tree["parameters/conditions/draw_bow"] = false
-			if bow_draw_strength >= PlayerGlobals.overworld_stats['bow_max_draw'] and velocity == Vector2.ZERO:
-				animation_tree["parameters/conditions/shoot_bow"] = true
-				can_move = false
-				await animation_tree.animation_finished
-				can_move = true
-				animation_tree["parameters/conditions/shoot_bow"] = false
-			else:
-				undrawBow()
-				animation_tree["parameters/conditions/cancel"] = true
-	if Input.is_action_just_pressed("ui_melee") and canMelee(): 
-		player_camera.flash(Color.WHITE,0.1,0.05,1.5)
-		undrawBowAnimation()
-		suddenStop()
-		animation_tree["parameters/conditions/melee"] = true
-		melee_hitbox.showSmear()
-		await animation_tree.animation_finished
-		animation_tree["parameters/conditions/melee"] = false
-		can_move = true 
-		melee_cooldown.start()
-		melee_bar.start()
-
-func playDrawSound():
-	if bow_draw_strength < 1:
-		OverworldGlobals.playSound("res://audio/sounds/bow-loading-38752.ogg")
+#	if Input.is_action_just_pressed("ui_melee") and canMelee(): 
+#		player_camera.flash(Color.WHITE,0.1,0.05,1.5)
+#		#undrawBowAnimation()
+#		suddenStop()
+#		# REDO WITH BATTLER
+#		#animation_tree["parameters/conditions/melee"] = true
+#		#await animation_tree.animation_finished
+#		#animation_tree["parameters/conditions/melee"] = false
+#		can_move = true 
+#		melee_cooldown.start()
+#		melee_bar.start()
 
 func canMelee():
 	return can_move and \
 		melee_cooldown.is_stopped() and \
 		!animation_tree["parameters/conditions/shoot_bow"] and \
 		isFacingSide() and \
-		bow_mode and \
+		#bow_mode and \
 		!diving and \
 		is_on_floor() and \
 		!UIGlobals.inMenu()
@@ -649,6 +660,11 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 		Input.action_release('ui_move_right')
 		can_move = false
 
+#func quickStop():
+#	velocity.move_toward(Vector2.ZERO,get_physics_process_delta_time())
+#	suddenStop()
+#	await get_tree().process_frame
+#	can_move=true
 #func setUIVisibility(set_visibility:bool):
 #	pass
 #	var exceptions = ['ColorOverlay', 'PlayerPrompt','SaveIndicator','BigLabel']
@@ -658,13 +674,13 @@ func suddenStop(stop_move:bool=true, stop_sprint:bool=true):
 #				true: child.modulate.a = 1.0
 #				false: child.modulate.a = 0.0
 
-func toggleVoidAnimation(enabled: bool):
-	if enabled:
-		animation_tree["parameters/conditions/void_call"] = true
-		animation_tree["parameters/conditions/void_release"] = false
-	else:
-		animation_tree["parameters/conditions/void_call"] = false
-		animation_tree["parameters/conditions/void_release"] = true
+#func toggleVoidAnimation(enabled: bool):
+#	if enabled:
+#		animation_tree["parameters/conditions/void_call"] = true
+#		animation_tree["parameters/conditions/void_release"] = false
+#	else:
+#		animation_tree["parameters/conditions/void_call"] = false
+#		animation_tree["parameters/conditions/void_release"] = true
 
 func toggleClimbAnimation(enabled: bool):
 	if (enabled and animation_tree["parameters/conditions/climb"]) or (!enabled and animation_tree["parameters/conditions/unclimb"]):
@@ -679,21 +695,21 @@ func toggleClimbAnimation(enabled: bool):
 	animation_tree["parameters/conditions/is_moving"] = false
 	animation_tree["parameters/conditions/idle"] = true
 
-func toggleBowAnimation():
-	animation_tree["parameters/conditions/equip_bow"] = bow_mode
-	animation_tree["parameters/conditions/unequip_bow"] = !bow_mode
+#func toggleBowAnimation():
+#	animation_tree["parameters/conditions/equip_bow"] = bow_mode
+#	animation_tree["parameters/conditions/unequip_bow"] = !bow_mode
 
-func playShootAnimation():
-	animation_tree["parameters/conditions/draw_bow"] = false
-	animation_tree["parameters/conditions/shoot_bow"] = true
+func toggleShootAnimation(toggle:bool):
+	animation_tree["parameters/conditions/shoot_bow"] = toggle
+	animation_tree["parameters/conditions/draw_bow"] = !toggle
 
-func playCastAnimation():
-	cast_animator.play("Show")
+#func playCastAnimation():
+#	cast_animator.play("Show")
 
-func undrawBowAnimation():
-	undrawBow()
-	animation_tree["parameters/conditions/draw_bow"] = false
-	animation_tree["parameters/conditions/cancel"] = true
+#func undrawBowAnimation():
+#	undrawBow()
+#	animation_tree["parameters/conditions/draw_bow"] = false
+#	animation_tree["parameters/conditions/cancel"] = true
 
 func playFootstep():
 	if is_on_floor():
@@ -710,8 +726,7 @@ func loadData():
 	get_parent().remove_child(self)
 	queue_free()
 
-func _on_animated_sprite_2d_animation_changed():
-	#if anim_sprite == null: return
-	var animation = anim_sprite.animation
-	anim_sprite.visible = animation != "default"
-	sprite.visible = animation == "default"
+
+func _on_bow_draw_time_timeout():
+	shoot_ready=true
+	OverworldGlobals.playSound("res://audio/sounds/MAGSpel_Anime Ability Ready 2.ogg", -8.0)

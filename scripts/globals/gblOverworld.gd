@@ -130,11 +130,18 @@ func animateSprite(entity_name: String, animation_name: String, wait:=false):
 		await animated_sprite.animation_finished
 
 func animateBattler(entity_name: String, animation_name: String, reset:bool=false,wait:=true,reverse:=false):
-	
-	var battler: CombatantScene = getEntity(entity_name).get_node('Battler')
+	var entity = getEntity(entity_name)
+	var battler: CombatantScene = entity.get_node('Battler')
 	battler.show()
 	var animator: AnimationPlayer = battler.animator
 	removeAnimationOverlap(getEntity(entity_name), SpriteType.BATTLER)
+	if reset:
+		animator.animation_finished.connect(
+			func(_name): 
+				battler.hide()
+				removeAnimationOverlap(entity, SpriteType.MAIN, true),
+			CONNECT_ONE_SHOT
+			)
 	if !reverse:
 		animator.play(animation_name)
 	else:
@@ -142,7 +149,9 @@ func animateBattler(entity_name: String, animation_name: String, reset:bool=fals
 	if wait:
 		await animator.animation_finished
 
-func removeAnimationOverlap(entity: Node2D, type:SpriteType):
+func removeAnimationOverlap(entity: Node2D, type:SpriteType, show_animating_sprite:bool=false):
+	if show_animating_sprite:
+		showSpriteType(entity, type)
 	match type:
 		SpriteType.BATTLER:
 			hideSpriteType(entity, SpriteType.MAIN)
@@ -161,6 +170,10 @@ func hideSpriteType(entity:Node2D, sprite_type:SpriteType):
 		entity.get_node(node).hide()
 		if sprite_type == SpriteType.MISC:
 			entity.get_node(node).play('default')
+func showSpriteType(entity:Node2D, sprite_type:SpriteType):
+	var node = SPRITE_NODES[sprite_type]
+	if entity.has_node(node) and !entity.get_node(node).visible:
+		entity.get_node(node).show()
 
 func setSpriteFrame(entity_name: String, frame:int, flip:bool=false):
 	var entity = getEntity(entity_name)

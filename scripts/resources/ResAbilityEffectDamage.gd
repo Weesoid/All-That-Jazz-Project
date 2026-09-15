@@ -5,7 +5,8 @@ class_name ResAttackEffect
 enum DamageType {
 	MELEE,
 	RANGED,
-	RANGED_PIERCING
+	RANGED_PIERCING,
+	ADAPTIVE
 }
 
 @export var damage_type: DamageType
@@ -37,17 +38,20 @@ func _to_string():
 #	if is_combo_effect:
 #		out += 'On [img]res://images/status_icons/icon_combo.png[/img]:\n'
 	if damage_type == DamageType.MELEE or cast_animation['animation'].to_lower().contains('melee'):
-		out += "[img]res://images/sprites/icon_melee.png[/img] "
+		out += "[img]res://images/user_interface/icon_melee.png[/img] "
 	elif (damage_type == DamageType.RANGED or damage_type == DamageType.RANGED_PIERCING) or cast_animation['animation'].to_lower().contains('ranged'):
-		out += "[img]res://images/sprites/icon_range.png[/img] "
+		out += "[img]res://images/user_interface/icon_range.png[/img] "
+	elif damage_type == DamageType.ADAPTIVE:
+		out += "[img]res://images/user_interface/icon_melee.png[/img] "
+		out += "[img]res://images/user_interface/icon_range.png[/img] "
 	
 	if damage_modifier > 1.0 or damage_modifier < 1.0:
 		var op_sign
 		if damage_modifier > 1.0:
 			op_sign = SettingsGlobals.ui_colors['up-bb']+'+[/color]'
 		elif damage_modifier < 1.0:
-			op_sign = SettingsGlobals.ui_colors['down-bb']+'-[/color]'
-		out += op_sign+SettingsGlobals.colorValueBB(damage_modifier*100,100.0)+'%[/color]\n'
+			op_sign = SettingsGlobals.ui_colors['down-bb']+'[/color]'
+		out += op_sign+SettingsGlobals.colorValueBB((damage_modifier*100)-100,0.0)+'% DMG[/color]\n'
 	else:
 		out += '\n'
 	
