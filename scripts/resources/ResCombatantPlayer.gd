@@ -6,10 +6,11 @@ class_name ResPlayerCombatant
 @export var follower_texture: Texture
 @export var mandatory = false
 @export var rest_sprite:  Texture = load("res://images/sprites/rest_unknown.png")
-@export var character_portrait:Texture = load("res://images/character_sprites/char_icon_missing.png")
+@export var character_portrait:Texture = load("res://images/characters/char_icon_missing.png")
 @export var stat_multiplier = 0.01
 @export var talent_trees: Array[ResTalentTree] = [CombatExtras.BASE_TALENTS]
 @export var talents: Array[String]
+@export var subclass_name: String = ''
 
 var file_references: Dictionary = {
 	'active_abilities': [],
@@ -42,7 +43,7 @@ func initializeCombatant(do_scene:bool=true):
 	if !stat_modifiers.keys().has('scaled_stats'):
 		scaleStats()
 	if !stat_modifiers.has('base_rebuke'):
-		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:1.25},'base_rebuke')
+		CombatGlobals.modifyStat(self, {CombatExtras.REBUKE_CHANCE:0.1},'base_rebuke')
 	if !stat_modifiers.has('base_resolve'):
 		CombatGlobals.modifyStat(self, {'resolve':3},'base_resolve')
 	if !stat_values.has('strain'):

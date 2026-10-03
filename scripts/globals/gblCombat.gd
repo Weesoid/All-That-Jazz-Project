@@ -113,8 +113,8 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, ca
 	if randomRoll(crit_chance) and can_crit:
 		damage = doCritEffects(damage, caster, attack_bonuses.get(CombatExtras.CRIT_AMP,0))
 		indicator_bb_code += critical_bb
-	if attack_bonuses.has('non-lethal') and target.stat_values['health']-damage <= 0:
-		damage = 0
+	#if attack_bonuses.has('non-lethal') and target.stat_values['health']-damage <= 0:
+	#	damage = 0
 	
 	target.changeHealth(-int(damage))
 	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, true, attack_bonuses)
@@ -169,7 +169,7 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		received_combatant_value.emit(target, caster, int(damage))
 		
 	## Resolve handling
-	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and target.stat_values.get('block',0) != -1: 
+	if target.isDead() and target.stat_values['resolve'] > 0 and ((bonus_stats.has('is_dot') and !target.resolve_dot_shield) or !bonus_stats.has('is_dot')) and !target.resolve_gate and damage > 0 and target.stat_values.get('block',0) != -1 and !bonus_stats.has('non-lethal'): 
 		if target.stat_values['resolve'] - 1 <= 0 and randomRoll(target.stat_values.get(CombatExtras.REBUKE_CHANCE,0.0)):
 			getCombatScene().doRebuke(target,caster)
 		else:
@@ -228,6 +228,8 @@ func removeBrinkEffects(target):
 func addInjury(combatant: ResCombatant, chance:float,is_grevious:bool=false):
 	if combatant.isDead(true):
 		return
+	#if combatant.stat_modifiers.has('block'):
+	#	chance -= 0.05
 	if !randomRoll(chance):
 		manual_call_indicator.emit(combatant, SettingsGlobals.ui_colors['up-bb']+'Injury Resisted!', 'Show',true)
 		return
@@ -394,10 +396,14 @@ func playAbilityAnimation(target:ResCombatant, animation_scene, time=0.0):
 	else:
 		await animation.playAnimation(target.combatant_scene.global_position)
 
+func isPerfectBlock(target:ResCombatant)->bool:
+	return target.stat_modifiers.has('block') and target.stat_modifiers['block']['block_tier'] == 2
+
 func playHurtAnimation(target: ResCombatant, damage, sound_path: String=''):
 	playHurtTween(target, damage)
-	if target is ResPlayerCombatant and target.combatant_scene.perfect_block:
+	if target is ResPlayerCombatant and isPerfectBlock(target):
 		playDodgeTween(target)
+		target.combatant_scene.doAnimation('Dodge',null,{'no_anim_fallback':true,'low_priority':true,'bypass_invalid_pause':true})
 		OverworldGlobals.showAfterImages(target.getSprite())
 		OverworldGlobals.playSound("res://audio/sounds/370203__nekoninja__shield-guard.ogg")
 		return
@@ -553,12 +559,13 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		return
 	
 	for property in override_data.keys():
-		if property.contains('be_'): # be stands fir basic_effect
+		if property.contains('be_'): # be stands for basic_effect
 			var effect_overrides = override_data[property]
 			var id = property.split('_')[1]
-			var basic_effect = findBasicEffect(id, status_effect)
+			var basic_effect = findBasicEffect(id, status_effect).duplicate()
 			for basic_effect_property in effect_overrides:
 				basic_effect.set(basic_effect_property, effect_overrides[basic_effect_property])
+			replaceBasicEffect(property,status_effect,basic_effect)
 		elif status_effect.get(property) != null:
 			status_effect.set(property, override_data[property])
 	
@@ -573,6 +580,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		#	OverworldGlobals.playSound("res://audio/sounds/536805__egomassive__gun_1.ogg",-)
 	else:
 		rankUpStatusEffect(target, status_effect)
+	
 	if override_data.has('bonus_duration'):
 		status_effect.duration += override_data['bonus_duration']
 #		if status_effect.max_rank > 0:
@@ -582,8 +590,15 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 #				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Max')
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
-	if target.status_effects.has(status_effect) and !status_effect.hide_icon: # Because some effects get removed on apply!
+	if target.hasStatusEffect(status_effect.name) and !status_effect.hide_icon: # Because some effects get removed on apply!
 		manual_call_indicator.emit(target, status_effect.getMessageIcon()+' '+status_effect.getIconColor(true)+status_effect.name, 'Show',true)
+	#print(status_effect.current_rank, ' / ', status_effect.max_rank)
+	
+	var target_effect = target.getStatusEffect(status_effect.name)
+	if target_effect.remove_when.has(ResStatusEffect.RemoveType.MAXED_RANK) and target_effect != null and target_effect.isMaxRank():
+		removeStatusEffect(target, status_effect.name)
+	if target_effect.remove_when.has(ResStatusEffect.RemoveType.MAXED_DURATION) and target_effect != null and target_effect.isMaxDuration():
+		removeStatusEffect(target, status_effect.name)
 
 func findBasicEffect(identifer:String, status_effect: ResStatusEffect)-> ResBasicEffect:
 	var not_found=true
@@ -593,6 +608,15 @@ func findBasicEffect(identifer:String, status_effect: ResStatusEffect)-> ResBasi
 	
 	assert(not_found, 'Could not find identifer "%s" in "%s" basic effects.' % [identifer, status_effect])
 	return null
+
+func replaceBasicEffect(identifer:String, status_effect: ResStatusEffect, replacement:ResBasicEffect):
+	var old_effect
+	for effect in status_effect.basic_effects:
+		if effect.identifier == identifer: 
+			old_effect = effect
+			return
+	
+	status_effect.basic_effects[status_effect.basic_effects.find(old_effect)] = replacement
 
 func removeStatusEffect(combatant: ResCombatant, effect_name:String):
 	for effect in combatant.status_effects:
@@ -611,9 +635,11 @@ func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatus
 				effect.duration = effect.max_duration
 			else:
 				effect.duration += status_effect.extend_duration
-		if effect.current_rank != effect.max_rank and effect.max_rank != 0:
-			effect.apply_once = true
-			effect.current_rank += 1
+			if effect.current_rank != effect.max_rank and effect.max_rank != 0:
+				print('RANKIN UP!')
+				effect.apply_once = true
+				effect.current_rank += 1
+				effect.rank_up.emit()
 
 func spawnIndicator(position: Vector2, message:String, animation:String='Show',add_to:Node=null,time:float=1.0):
 	var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()

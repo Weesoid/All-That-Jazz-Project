@@ -11,6 +11,10 @@ script = ExtResource("2_otmu8")
 dot_effect = 1
 damage = 9
 duration = 9
+conditional_bonuses = {
+"damage": 0,
+"duration": 0
+}
 
 [sub_resource type="Resource" id="Resource_1oq7y"]
 script = ExtResource("3_cau52")

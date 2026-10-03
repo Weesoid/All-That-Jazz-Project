@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3 uid="uid://bt47t35j5qxrq"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=6 format=3]
 
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="2_i8m6m"]
-[ext_resource type="Texture2D" uid="uid://n3be8sd47yqk" path="res://images/character_sprites/archie/rest_archie.png" id="5_b1vt3"]
+[ext_resource type="Texture2D" uid="uid://n3be8sd47yqk" path="res://images/characters/archie/rest_archie.png" id="5_b1vt3"]
 [ext_resource type="PackedScene" uid="uid://bqe7unaj4matg" path="res://scenes/combatants/Huck.tscn" id="8_7u0fs"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="11_avhlp"]
 [ext_resource type="Resource" uid="uid://s6fo2fxv6en2" path="res://resources/combat/talent_trees/BaseTalents.tres" id="11_u2nmg"]

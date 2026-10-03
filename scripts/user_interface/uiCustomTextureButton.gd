@@ -8,6 +8,7 @@ class_name CustomTextureButton
 		texture = p_texture
 		if Engine.is_editor_hint() and texture != null: texture_button.texture = texture
 @export var auto_resize:bool=true
+@export var set_toggled:bool=false
 @onready var texture_button = $TextureRect
 
 func _ready():
@@ -20,6 +21,10 @@ func _ready():
 	texture_button.set_anchors_preset(Control.PRESET_CENTER)
 	
 	setTooltip()
+	if button_group != null:
+		toggle_mode = true
+	if set_toggled and toggle_mode:
+		button_pressed = true
 
 func setTexture(tex:Texture):
 	texture_button.texture = tex
@@ -55,3 +60,11 @@ func setDisabled(set_to: bool):
 		dimButton()
 	else:
 		undimButton()
+
+
+func _on_toggled(button_pressed):
+	if texture_button == null:
+		await ready
+		print('ERROR! button_pressed is set to true for path: ', get_path())
+		return
+	texture_button.modulate = SettingsGlobals.ui_colors['up'] if button_pressed else Color.WHITE 

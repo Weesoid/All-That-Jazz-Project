@@ -7,6 +7,8 @@ enum FocusMotion {
 }
 
 @onready var bar = $Bar
+@onready var indicator_spawn_point = $Indicator_Spawnpoint
+
 @export var combatant: ResPlayerCombatant
 @export var focus_pos_offset = Vector2(0,6)
 @export var focus_motion: FocusMotion = FocusMotion.UP
@@ -44,6 +46,7 @@ func playFocusMotions(focused:bool):
 		tween.tween_property(bar, 'position', initial_bar_pos,0.1)
 		tween.tween_property(bar, 'modulate', Color.WHITE,0.25)
 
+
 func getPreview():
 	var preview = Control.new()
 	var dupe_bar = bar.duplicate()
@@ -52,7 +55,7 @@ func getPreview():
 	preview.z_index=4000
 	preview.add_child(dupe_bar)
 	dupe_bar.position -= preview.size/2
-	print(dupe_bar.position)
+	#print(dupe_bar.position)
 	return preview
 
 func _get_drag_data(_at_position):
@@ -79,3 +82,21 @@ func _notification(what):
 		modulate = Color(Color.WHITE, 0.5)
 	if what == NOTIFICATION_DRAG_END:
 		modulate = Color.WHITE
+
+func showHeal(amount:int):
+	var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()
+	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
+	bar.modulate = Color.GREEN
+	bar.character_health.value -= amount
+	indicator.modulate = Color.TRANSPARENT
+	indicator_spawn_point.add_child(indicator)
+	indicator.modulate = Color.WHITE
+	indicator.playAnimation(
+		indicator.global_position,
+		'[color=GREEN]'+str(amount), 
+		'Heal',
+		6
+		)
+	tween.tween_property(bar.character_health, 'value', bar.character_health.value + amount,1)
+	tween.tween_property(bar, 'modulate',Color.WHITE,1)
+	OverworldGlobals.playSound('02_Heal_02.ogg')

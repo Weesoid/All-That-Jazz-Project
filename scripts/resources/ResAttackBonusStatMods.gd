@@ -7,7 +7,7 @@ class_name ResAttackBonusStatModifiers
 @export var stacks:bool=false
 @export var resistable:bool=true
 
-func getAttackEffect():
+func getAttackEffect(_target:ResCombatant=null):
 	return {'stat_modifiers': self}
 
 func _to_string():

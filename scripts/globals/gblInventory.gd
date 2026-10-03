@@ -22,6 +22,7 @@ signal stack_item_changed(item, change_amount)
 signal item_repaired(weapon, new_durability)
 signal item_used(item)
 signal recipe_added(item_recipe)
+signal equipped_arrow(arrow)
 
 func loadItemResource(resource_name: String)-> ResItem:
 	assert(FileAccess.file_exists("res://resources/items/"+resource_name+".tres"), 'Item %s in path "res://resources/items/%s.tres" does not exist!' % [resource_name, resource_name])
@@ -215,6 +216,9 @@ func hasItem(item_key, count:int=1, check_equipped:bool=true)-> bool:
 		return getCharms(find_item).size() >= count
 	
 	return inventory.has(find_item)
+
+func hasArrows()-> bool:
+	return !InventoryGlobals.inventory.filter(func(item): return item is ResProjectileAmmo).is_empty()
 
 func getCharms(charm:ResCharm)-> Array:
 	return inventory.filter(func(item): return item == charm)

@@ -17,8 +17,12 @@ static func run(effect,target,status_effect):
 		changeStat(effect, status_effect)
 	elif effect is ResStatusDamageEffect and checkApplyOnce(effect, status_effect):
 		var damage = effect.damage
+		if effect.percentage_health_damage > 0:
+			damage += ceil(status_effect.afflicted_combatant.getMaxHealth() * effect.percentage_health_damage)
 		if effect.rank_scaling:
 			damage *= status_effect.current_rank
+		if effect.duration_scaling:
+			damage *= min(status_effect.duration, status_effect.max_duration)+1
 		#effect.bonus_stats['is_dot']=true
 		CombatGlobals.calculateRawDamage(
 			status_effect.afflicted_combatant, 

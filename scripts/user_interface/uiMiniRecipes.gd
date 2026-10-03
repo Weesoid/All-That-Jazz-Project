@@ -5,6 +5,7 @@ class_name MiniRecipes
 @onready var repair_items = $MarginContainer/VBoxContainer/RepairRecipes/RepairRecipes
 
 func inheritorReady():
+	category_containers[repair_category] = repair_items
 	InventoryGlobals.recipe_added.connect(addButton)
 	repair_category.pressed.connect(func(): changeCategories('RepairRecipes'))
 	loadRepairRecipes()

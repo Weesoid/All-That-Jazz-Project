@@ -3,7 +3,7 @@ class_name ResAttackTP
 
 @export var add_amount: int
 
-func getAttackEffect():
+func getAttackEffect(_target:ResCombatant=null):
 	return {'tp':add_amount}
 
 func _to_string():

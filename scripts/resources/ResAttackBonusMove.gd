@@ -9,7 +9,7 @@ enum Direction {
 @export var direction:Direction=Direction.PUSH
 @export_range(1,3) var move_count:int=1
 
-func getAttackEffect():
+func getAttackEffect(_target:ResCombatant=null):
 	return {'move': self}
 
 func getDirection():

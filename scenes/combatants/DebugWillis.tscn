@@ -1,7 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://cke17m10rs7u5"]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/entCombatantScene.gd" id="1_lnxcs"]
-[ext_resource type="Texture2D" uid="uid://spy638phe6iq" path="res://images/character_sprites/willis/willis_battler.png" id="2_3m8i6"]
+[ext_resource type="Texture2D" uid="uid://spy638phe6iq" path="res://images/characters/willis/willis_battler.png" id="2_3m8i6"]
 [ext_resource type="Script" path="res://scripts/components/sccBlockTimer.gd" id="3_ttsqb"]
 
 [sub_resource type="Gradient" id="Gradient_ewywm"]

@@ -25,7 +25,8 @@ const STAT_DESCRIPTIONS = {
 	CRIT_AMP: 'Effectiveness of criticals.',
 	HEAL_SKILL: 'Percentage increase to healing skills',
 	REBUKE_CHANCE: 'Chance to execute a rebuke.',
-	DAMAGE_MODIFIER: 'Percentage variation to damage.'
+	DAMAGE_MODIFIER: 'Percentage variation to damage.',
+	'non-lethal': 'Cannot damage Resolve.'
 }
 const BASE_STATS = [
 	"health", 

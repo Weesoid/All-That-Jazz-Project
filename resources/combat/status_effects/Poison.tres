@@ -8,7 +8,9 @@
 [sub_resource type="Resource" id="Resource_h03bo"]
 script = ExtResource("1_va5wg")
 damage = 1
+percentage_health_damage = 0.0
 rank_scaling = false
+duration_scaling = false
 attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
 crit_chance = -1.0
 variation = -1.0
@@ -25,27 +27,27 @@ apply_on_expiry = false
 script = ExtResource("1_5ugit")
 name = "Poison"
 description = "Target takes damage overtime."
-basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_h03bo")])
-status_script = ExtResource("4_3i67t")
-effect_type = 0
-remove_when = Array[int]([])
-remove_style = 0
-seperate_instances = true
 texture = ExtResource("3_1sqmf")
-style = 5
-custom_style_color = Color(0.74902, 0, 1, 1)
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_h03bo")])
+effect_type = 0
+seperate_instances = true
+status_script = ExtResource("4_3i67t")
+resistable = true
+do_ticks = true
+tick_on_apply = false
+tick_type = 0
+permanent = false
 max_duration = 1
 extend_duration = 1
 apply_extend_duration = false
 max_rank = 0
-tick_on_apply = false
-tick_type = 0
-do_ticks = true
-resistable = true
-permanent = false
-remove_on_brink = false
+style = 5
+custom_style_color = Color(0.74902, 0, 1, 1)
 hide_icon = false
 sounds = {
 "apply": "",
 "expire": ""
 }
+remove_when = Array[int]([])
+remove_style = 0
+remove_on_brink = false

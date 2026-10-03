@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://cueh0gxx74d6r"]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Theme" uid="uid://c1j102ipq8685" path="res://design/ItemButtons.tres" id="1_6f8l3"]
-[ext_resource type="Texture2D" uid="uid://cwmgug742co0t" path="res://images/sprites/icon_sack_trans.png" id="2_axtaa"]
+[ext_resource type="Texture2D" uid="uid://cwmgug742co0t" path="res://images/user_interface/icon_sack_trans.png" id="2_axtaa"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCustomCraftSlotButton.gd" id="2_tlray"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="3_u731w"]
 [ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="4_jc7cx"]

@@ -1,8 +1,8 @@
 extends Control
 class_name CampMenu
 
-const INV_ICON = preload("res://images/sprites/sack_inverted.png")
-const FAST_TRAVEL_ICON = preload("res://images/sprites/button_pinpoint_normal.png")
+#const INV_ICON = preload("res://images/sprites/sack_inverted.png")
+#const FAST_TRAVEL_ICON = preload("res://images/sprites/button_pinpoint_normal.png")
 
 @onready var inventory: MiniInventory = $MiniInventory
 @onready var crafting: CraftingMenu = $uiCrafting
@@ -326,7 +326,7 @@ func _on_inventory_pressed():
 
 func _on_party_pressed():
 	showSideMenuVisiblity(roster_container)
-	
+	showRosterHeals()
 
 func showSideMenuVisiblity(menu):
 	if menu.visible: return
@@ -335,6 +335,19 @@ func showSideMenuVisiblity(menu):
 	if menu != fast_travel: setMenuVisibility(fast_travel, false)
 	if menu != roster_container: setMenuVisibility(roster_container, false)
 	setMenuVisibility(menu, true)
+
+func showRosterHeals():
+	print(PlayerGlobals.progression_data.has('heal_amounts'))
+	print(PlayerGlobals.progression_data['heal_amounts'])
+	for button in roster_container.get_children():
+	#	print(button.combatant)
+		if roster_button == roster_character_button or !button is CharacterButton: continue
+		var combatant = button.combatant
+		if combatant == null: continue
+		print(combatant.name,  ' in ', PlayerGlobals.progression_data['heal_amounts'].keys())
+		if PlayerGlobals.progression_data.has('heal_amounts') and PlayerGlobals.progression_data['heal_amounts'].has(combatant.name):
+			button.showHeal(PlayerGlobals.progression_data['heal_amounts'][combatant.name])
+			PlayerGlobals.progression_data['heal_amounts'].erase(combatant.name)
 
 func setGuard(combatant:ResPlayerCombatant):
 	if !rest_mode:

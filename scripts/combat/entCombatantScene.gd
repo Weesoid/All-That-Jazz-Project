@@ -37,7 +37,7 @@ func initializeShapes():
 	hitbox.position = Vector2.ZERO
 	hitbox_shape.shape.size = Vector2(32,32)
 
-func moveTo(target, duration:float=0.2, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
+func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dead:bool=false):
 	if cannotAct() and !ignore_dead: 
 		return
 	
@@ -77,6 +77,8 @@ func doAnimation(animation: String, script: GDScript=null, data:Dictionary={}):
 	#animator.play("RESET")
 	#CLEAN
 	#print('scr is ', script)
+	#if data.has('optional') and !animator.get_animation_list().has(animation):
+	#	return
 	if data.has('low_priority') and animator.is_playing():
 		return
 	if !data.has('bypass_invalid_pause') and (cannotAct() or animation == ''): 

@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://bqe7unaj4matg"]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_br0bs"]
-[ext_resource type="Texture2D" uid="uid://dxwl72n7aa3vg" path="res://images/character_sprites/huck/huck_battler.png" id="2_6yg3q"]
+[ext_resource type="Texture2D" uid="uid://dxwl72n7aa3vg" path="res://images/characters/huck/huck_battler.png" id="2_6yg3q"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5sw1x"]
 radius = 8.0

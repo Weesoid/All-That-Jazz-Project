@@ -111,6 +111,7 @@ func focusFirstFilled():
 		if !isCategoryEmpty(category_container):
 			changeCategories(category.name)
 			category_container.get_child(0).grab_focus()
+			category_containers.find_key(category_container).button_pressed = true
 			return
 
 func focusCategory(item:ResItem):
@@ -196,7 +197,10 @@ func changeCategories(change_to: String):
 			child.hide()
 		elif child.name == change_to:
 			current_category = child.get_child(0)
+			category_containers.find_key(current_category).button_pressed = true
 			child.show()
+			
+		#category_containers
 		
 
 func reset():

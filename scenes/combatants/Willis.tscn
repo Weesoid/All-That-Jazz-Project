@@ -1,7 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://hojidodoc70i"]
+[gd_scene load_steps=23 format=3 uid="uid://bxxs74ftwu3ck"]
 
 [ext_resource type="Script" path="res://scripts/combat/entCombatantScenePlayer.gd" id="1_y6fp3"]
-[ext_resource type="Texture2D" uid="uid://spy638phe6iq" path="res://images/character_sprites/willis/willis_battler.png" id="2_51w0l"]
+[ext_resource type="Texture2D" uid="uid://spy638phe6iq" path="res://images/characters/willis/willis_battler.png" id="2_51w0l"]
 [ext_resource type="AudioStream" uid="uid://bjevm057ov6kk" path="res://audio/sounds/490556__paveroux__bow-drawn.ogg" id="3_kl7l7"]
 [ext_resource type="AudioStream" uid="uid://b6ns7dq1l7kwl" path="res://audio/sounds/bow-loading-38752.ogg" id="3_yfwup"]
 [ext_resource type="AudioStream" uid="uid://nklforkxnl" path="res://audio/sounds/178872__hanbaal__bow.ogg" id="4_q8es8"]
@@ -15,7 +15,7 @@ size = Vector2(32, 32)
 
 [sub_resource type="Animation" id="Animation_lg5r5"]
 resource_name = "Block"
-length = 0.1
+length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

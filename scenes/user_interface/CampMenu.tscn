@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ca04yuaidlo7v"]
+[gd_scene load_steps=30 format=3 uid="uid://c2cqbhb5wd4ff"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiCampMenu.gd" id="1_gr40e"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="2_e0123"]
@@ -12,18 +12,19 @@
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="10_2yobm"]
 [ext_resource type="Theme" uid="uid://clgfgqvh2f440" path="res://design/BorderfulButton.tres" id="10_5gn5l"]
 [ext_resource type="PackedScene" uid="uid://bpkffg1rqjdpp" path="res://scenes/user_interface/CustomButton.tscn" id="10_r6qj5"]
-[ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="10_sowkb"]
+[ext_resource type="PackedScene" path="res://scenes/user_interface/CustomItemButton.tscn" id="10_sowkb"]
 [ext_resource type="Theme" uid="uid://b4nk84ci52y3a" path="res://design/TransparentButton.tres" id="11_wmeta"]
 [ext_resource type="PackedScene" uid="uid://by0ydg0m5o6ur" path="res://scenes/user_interface/MiniInventory.tscn" id="12_7weyb"]
 [ext_resource type="Resource" uid="uid://dj8hhj5xp7va4" path="res://resources/items/SmellingSalts.tres" id="12_irxur"]
-[ext_resource type="Texture2D" uid="uid://c3pv6ahqjaj00" path="res://images/sprites/sack_inverted.png" id="12_itq0b"]
-[ext_resource type="PackedScene" uid="uid://bpysmuqphlqeo" path="res://scenes/user_interface/CustomCampButton.tscn" id="13_uq8al"]
+[ext_resource type="Texture2D" uid="uid://c3pv6ahqjaj00" path="res://images/user_interface/sack_inverted.png" id="12_itq0b"]
+[ext_resource type="PackedScene" path="res://scenes/user_interface/CustomCampButton.tscn" id="13_uq8al"]
 [ext_resource type="PackedScene" uid="uid://s53582o5noca" path="res://scenes/user_interface/CustomItemSlotButton.tscn" id="14_b8omb"]
 [ext_resource type="Texture2D" uid="uid://dd2hvxqa8mrra" path="res://images/sprites/button_gang_normal.png" id="14_iybx4"]
 [ext_resource type="AudioStream" uid="uid://druxglqmwj4yi" path="res://audio/sounds/149831__villen__zapalenie_ognia.ogg" id="15_q7fa7"]
 [ext_resource type="Resource" uid="uid://cekyixtnv6op3" path="res://resources/items/Kindling.tres" id="16_mgtf2"]
+[ext_resource type="ButtonGroup" uid="uid://prcetba4dn65" path="res://resources/user_interface/CampButtons.tres" id="18_icrek"]
 [ext_resource type="PackedScene" uid="uid://dl5lgui67w0wr" path="res://scenes/user_interface/GameMenu.tscn" id="20_0ch88"]
-[ext_resource type="PackedScene" uid="uid://ojvf2nc2mubf" path="res://CharSheet.tscn" id="21_50sis"]
+[ext_resource type="PackedScene" uid="uid://on1j7p804jt4" path="res://CharSheet.tscn" id="21_50sis"]
 [ext_resource type="PackedScene" uid="uid://uvj0h00sirue" path="res://scenes/user_interface/CustomCornerCloserButton.tscn" id="22_fpynk"]
 
 [sub_resource type="Gradient" id="Gradient_qhaqm"]
@@ -317,14 +318,22 @@ alignment = 1
 
 [node name="FastTravel" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("18_icrek")
 texture = ExtResource("4_acfgp")
 
 [node name="Inventory" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("18_icrek")
 texture = ExtResource("12_itq0b")
+set_toggled = true
 
 [node name="Party" parent="HBoxContainer" instance=ExtResource("2_e0123")]
 layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("18_icrek")
 texture = ExtResource("14_iybx4")
 
 [node name="Rest" parent="HBoxContainer" instance=ExtResource("2_e0123")]

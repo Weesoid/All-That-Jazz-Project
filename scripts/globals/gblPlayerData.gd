@@ -5,8 +5,6 @@ var save_name:String
 var team: Array[ResPlayerCombatant] 
 var team_formation: Array[ResCombatant] 
 var map_logs: Dictionary = {}
-var power: GDScript
-var known_powers: Array = [load("res://resources/powers/Stealth.tres")] 
 var equipped_arrow: ResProjectileAmmo 
 var equipped_blessing: ResBlessing 
 var currency = 10000
@@ -82,15 +80,22 @@ func initializeBenchedTeam():
 		if !member.initialized:
 			member.initializeCombatant(false)
 
-func healBenchedTeam(percent_amount:float=0.2):
+func healBenchedTeam(percent_amount:float=0.25):
 	for member in team:
-		if OverworldGlobals.getCombatantSquad('Player').has(member): continue
+		if OverworldGlobals.getCombatantSquad('Player').has(member): 
+			continue
 		
+		if !progression_data.has('heal_amounts'): 
+			progression_data['heal_amounts'] = {}
+		if !member.isMaxHealth():
+			progression_data['heal_amounts'][member.name] = ceil(member.getMaxHealth()*percent_amount)
+		
+		for temp_mod in member.getTemporaryModifierKeys('battle'):
+			member.removeTemporaryModifier(temp_mod)
 		if member.stat_values['health'] < member.getMaxHealth(): 
 			CombatGlobals.calculatePercentHealing(member, percent_amount, false)
 		elif member.getTraitsWithFlag('injury').size() > 0:
 			for injury in member.getTraitsWithFlag('injury'): member.removeTrait(injury)
-		
 		if member.stat_values['resolve'] < member.getMaxResolve():
 			CombatGlobals.healResolve(member, 1)
 
@@ -123,8 +128,10 @@ func applyBlessing(blessing):
 func equipNewArrowType():
 	var arrows: Array = InventoryGlobals.inventory.filter(func(item): return item is ResProjectileAmmo)
 	arrows.sort_custom(func(a, b): return a.stack > b.stack)
-	if !InventoryGlobals.hasItem(PlayerGlobals.equipped_arrow) and !arrows.is_empty():
+	if (!InventoryGlobals.hasItem(PlayerGlobals.equipped_arrow) or PlayerGlobals.equipped_arrow == null) and !arrows.is_empty():
+		print('EQUIPPING ', arrows[0])
 		arrows[0].equip()
+		#PlayerGlobals.equipped_arrow = arrows[0]
 		return true
 	
 	return false
@@ -215,12 +222,6 @@ func addAbility(combatant, ability):
 		added_abilities[combatant].append(ability)
 	OverworldGlobals.showPrompt('[color=yellow]%s[/color] learnt [color=yellow]%s[/color]!' % [combatant.name, ability.name])
 	loadAddedAbilities()
-
-func addPower(power_file_name: String):
-	if FileAccess.file_exists("res://resources/powers/%s.tres" % power_file_name):
-		var loaded_power = load("res://resources/powers/%s.tres" % power_file_name)
-		known_powers.append(loaded_power)
-		OverworldGlobals.showPrompt('Willis learnt the power of [color=yellow]%s[/color]!' % power.name)
 
 func loadAddedAbilities():
 	for member in team:
@@ -346,6 +347,10 @@ func setFollowersMotion(enable:bool):
 			follower.speed_multiplier = 0.0
 			follower.stopWalkAnimation()
 
+#func addProgressionData(key, value):
+#	if progression_data.has(key):
+#		progression_data[key]
+
 # { '/map.tres': {'slain_enemies': ['SP1', 'SP2'], 'map_events': {...}}
 func addMapLog(map_path: String, key:String='', entry=null):
 	if !map_logs.has(map_path) and key == '':
@@ -361,7 +366,7 @@ func hasMapLog(map_path: String, key:String='')-> bool:
 	else:
 		return map_logs.has(map_path) and map_logs[map_path].has(key)
 	
-	return false
+#	return false
 
 func randomizeMapEvents(exclude_map:String=''):
 	for map in map_logs.keys().filter(func(map): return hasMapEvent(map)):
@@ -472,12 +477,12 @@ func saveData(save_data: Array):
 	var data: PlayerSaveData = PlayerSaveData.new()
 	data.team.assign(ResourceGlobals.getResourcePathArray(team))
 	data.team_formation.assign(ResourceGlobals.getResourcePathArray(team_formation))
-	data.known_powers.assign(ResourceGlobals.getResourcePathArray(known_powers))
+	#data.known_powers.assign(ResourceGlobals.getResourcePathArray(known_powers))
 	data.equipped_arrow = ResourceGlobals.getResourcePath(equipped_arrow) 
 	data.equipped_blessing = ResourceGlobals.getResourcePath(equipped_blessing)
 	data.unlocked_abilities = ResourceGlobals.getResourcePathDict(unlocked_abilities)
 	data.added_abilities = ResourceGlobals.getResourcePathDict(added_abilities)
-	data.power = power
+	#data.power = power
 	data.currency = currency
 	data.team_level = team_level
 	data.current_exp = current_exp
@@ -509,12 +514,12 @@ func loadData(save_data: PlayerSaveData):
 	OverworldGlobals.player.squad.combatant_squad.clear()
 	team.assign(ResourceGlobals.loadResourcePathArray(save_data.team))
 	team_formation.assign(ResourceGlobals.loadResourcePathArray(save_data.team_formation))
-	known_powers.assign(ResourceGlobals.loadResourcePathArray(save_data.known_powers))
+	#known_powers.assign(ResourceGlobals.loadResourcePathArray(save_data.known_powers))
 	equipped_arrow = ResourceGlobals.loadResourcePath(save_data.equipped_arrow)
 	equipped_blessing = ResourceGlobals.loadResourcePath(save_data.equipped_blessing)
 	unlocked_abilities = ResourceGlobals.loadResourcePathDict(save_data.unlocked_abilities) 
 	added_abilities = ResourceGlobals.loadResourcePathDict(save_data.added_abilities)
-	power = save_data.power
+	#power = save_data.power
 	currency = save_data.currency
 	team_level = save_data.team_level
 	current_exp = save_data.current_exp
@@ -566,8 +571,8 @@ func resetVariables(reset_save_name:bool=true):
 	team_formation = []
 	#FOLLOWERS = []
 	map_logs = {}
-	power = null
-	known_powers = [load("res://resources/powers/Stealth.tres"), load("res://resources/powers/Anchor.tres")]
+	#power = null
+	#known_powers = [load("res://resources/powers/Stealth.tres"), load("res://resources/powers/Anchor.tres")]
 	equipped_arrow = null
 	equipped_blessing = null
 	currency = 10000

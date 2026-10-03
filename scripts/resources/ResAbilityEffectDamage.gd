@@ -13,7 +13,6 @@ enum DamageType {
 @export var attack_bonuses: Array[ResAttackBonus]
 @export var damage_modifier: float = 1.0
 @export var cast_animation: Dictionary= {'animation': '', 'go_to_target': false}
-@export var can_miss: bool = true
 @export var can_crit: bool = true
 @export var return_pos: bool = true
 @export var indicator_bb:  String = ''
@@ -27,7 +26,7 @@ static func getPassedAttackBonuses(target:ResCombatant, p_attack_bonuses: Array)
 	
 	for attack_bonus in p_attack_bonuses:
 		if attack_bonus == null or !attack_bonus.conditionsPassed(target): continue
-		out = CombatGlobals.combineDictionaries(out,attack_bonus.getAttackEffect())
+		out = CombatGlobals.combineDictionaries(out,attack_bonus.getAttackEffect(target))
 	
 	return out 
 

@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=26 format=3 uid="uid://cd5r32rnqq6ks"]
+[gd_resource type="Resource" script_class="ResPlayerCombatant" load_steps=26 format=3]
 
 [ext_resource type="Resource" uid="uid://dv0xfbxshoi5p" path="res://resources/combat/abilities/BasicProjectile.tres" id="2_gtfo3"]
 [ext_resource type="Resource" uid="uid://cvjlkid4m1aae" path="res://resources/combat/abilities/BasicMisc.tres" id="3_6d41e"]
 [ext_resource type="Texture2D" uid="uid://0gelchg2kq6n" path="res://images/sprites/arrow.png" id="3_8yngu"]
-[ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/character_sprites/huck/huck_follower.png" id="4_2iyqn"]
+[ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/characters/huck/huck_follower.png" id="4_2iyqn"]
 [ext_resource type="Resource" uid="uid://cbu52ciuiwyfq" path="res://resources/combat/abilities/BasicAttackExtra.tres" id="4_rjkcl"]
-[ext_resource type="Texture2D" uid="uid://68stwkmd5vob" path="res://images/character_sprites/huck/huck_portrait.png" id="5_p6vgu"]
+[ext_resource type="Texture2D" uid="uid://68stwkmd5vob" path="res://images/characters/huck/huck_portrait.png" id="5_p6vgu"]
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="5_y3601"]
 [ext_resource type="PackedScene" uid="uid://bqe7unaj4matg" path="res://scenes/combatants/Huck.tscn" id="6_csx4u"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDamage.gd" id="6_ifjgl"]
-[ext_resource type="Texture2D" uid="uid://cxyp2od4rl1ln" path="res://images/character_sprites/huck/rest_huck.png" id="7_i8uri"]
+[ext_resource type="Texture2D" uid="uid://cxyp2od4rl1ln" path="res://images/characters/huck/rest_huck.png" id="7_i8uri"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="7_qfcg1"]
 [ext_resource type="Script" path="res://scripts/resources/ResCombatantPlayer.gd" id="7_rlsd5"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="8_plvh5"]
@@ -27,7 +27,6 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-can_miss = true
 can_crit = true
 return_pos = true
 indicator_bb = ""
@@ -68,7 +67,6 @@ cast_animation = {
 "animation": "",
 "go_to_target": false
 }
-can_miss = true
 can_crit = true
 return_pos = true
 indicator_bb = ""
@@ -181,6 +179,7 @@ character_portrait = ExtResource("5_p6vgu")
 stat_multiplier = 0.01
 talent_trees = Array[Resource("res://scripts/resources/ResTalentTree.gd")]([ExtResource("10_wl0yg")])
 talents = Array[String]([])
+subclass_name = ""
 name = "Huck Huckleberry"
 preferred_alias = "Huck"
 packed_scene = ExtResource("6_csx4u")

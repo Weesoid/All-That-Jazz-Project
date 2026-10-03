@@ -10,7 +10,7 @@ do playSound("training_sounds.ogg",0,1,false)
 do wait(1.4)
 do showCameraOverlay("Transparent",0)
 do playSound("181906__capslok__short-swooshes2--01.ogg")
-do playEntityAnimation("Archie", "Swing",false, false)
+do animateEntity("Archie", "Swing",false, false)
 do shakeCamera()
 do playSound("default_hit.ogg")
 do flashCamera("red",0.25)
@@ -34,24 +34,24 @@ Mother: Give me that.
 do wait(2)
 Mother: Do not make me ask you twice.
 do wait(1.5)
-do playEntityAnimation("Archie", "Stand_Inhale")
-do playEntityAnimation("Mother", "Grab")
+do animateEntity("Archie", "Stand_Inhale")
+do animateEntity("Mother", "Grab")
 do playSound("421461__jaszunio15__click_46.ogg", -6)
 do wait(3)
-do playEntityAnimation("Mother", "Inspect")
+do animateEntity("Mother", "Inspect")
 Mother: Ah. I see the problem.
-do playEntityAnimation("Mother", "Swing",false,false)
+do animateEntity("Mother", "Swing",false,false)
 do flashCamera("red",0.25)
 do shakeCamera()
 do playSound("default_hit.ogg")
 do playSound("630593__vinni_r__bone-break_1.ogg",8)
 do flashCamera("red",0.25)
 do setSpriteFrame("Willis", 7)
-do playEntityAnimation("Archie", "Recoil")
-do playEntityAnimation("Archie", "Drip",false,false)
+do animateEntity("Archie", "Recoil")
+do animateEntity("Archie", "Drip",false,false)
 do wait(2)
 Mother: You're daft.
-do playEntityAnimation("Willis", "Shame",false,false)
+do animateEntity("Willis", "Shame",false,false)
 do setSpriteFrame("Mother", 8)
 do playMusic("742198__lilfoxeone__tension-beat.ogg")
 Mother: Do you think this is a game, boy?!
@@ -67,21 +67,21 @@ Mother: You will be put down like lame dogs.
 Mother: Do you want that?!
 Archie: N-No. Mother.
 Mother: Then please, child.
-do playEntityAnimation("Mother", "RESET")
+do animateEntity("Mother", "RESET")
 do wait(2)
 Mother: Show a little more care for our cause.
 do wait(1)
 do moveEntity("Mother", ">L500", Vector2(0,0), 25)
-#do playEntityAnimation("Mother", "RESET_2")
+#do animateEntity("Mother", "RESET_2")
 Mother: Relocate your jaw.
 Mother: Supper's ready.
 # BUG: if you set it to L something it just infinitely walks
 do moveEntity("Mother", "v>657.9832 122.9338", Vector2(0,0), 25)
 do wait(2)
-do playEntityAnimation("Willis", "Fall", false,false)
+do animateEntity("Willis", "Fall", false,false)
 Willis: ...You okay?
 Archie: Yeah... I just gotta-
-do playEntityAnimation("Archie", "Fix_Jaw")
+do animateEntity("Archie", "Fix_Jaw")
 Archie: There.
 do wait(1)
 do setSpriteFrame("Archie", 16)
@@ -113,7 +113,7 @@ Archie: Hah! You'll be making me eat dirt in no time!
 # Both laugh/smile
 #Archie: Chin up, 
 #do setSpriteFrame("Archie", 20)
-#do playEntityAnimation("Archie", "Shrug")
+#do animateEntity("Archie", "Shrug")
 #do wait(0.5)
 #Archie: That's what we're training for aren't we?
 #do wait(1)

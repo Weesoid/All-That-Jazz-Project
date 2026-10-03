@@ -269,9 +269,7 @@ func teleportEntity(entity_name, teleport_to, offset=Vector2(0, 0)):
 func changeMap(map_name_path: String, coordinates: String='0,0,0',to_entity: Array[String]=[],show_transition:bool=true,save:bool=false):
 #	if getCurrentMap().has_node('Player') and getCurrentMap().give_on_exit and !getCurrentMap().REWARD_BANK.is_empty():
 #		delayed_rewards = getCurrentMap().REWARD_BANK
-	for combatant in PlayerGlobals.team:
-		for temp_mod in combatant.getTemporaryModifierKeys('battle'):
-			combatant.removeTemporaryModifier(temp_mod)
+
 	
 	if show_transition:
 		player.do_gravity=false
@@ -597,7 +595,7 @@ func changeToCombat(entity_name: String, data: Dictionary={}, patroller:GenericP
 		#give_non_pg_reward=true
 	else:
 		combat_entity = patroller
-	player.resetStates()
+	player.resetStates(false)
 	UIGlobals.setPlayerUIVisiblity(false)
 	#OverworldGlobals.player.setUIVisibility(false)
 	moveCamera(combat_entity.get_node('Sprite2D'), 0.05, Vector2.ZERO, true)

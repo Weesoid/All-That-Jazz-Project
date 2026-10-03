@@ -140,8 +140,6 @@ func getStatusEffectNames()-> Array[String]:
 func removeTokens(remove_type: int):
 	for effect in status_effects:
 		if effect.remove_when.has(remove_type): 
-			if effect.name == 'Guard':
-				print('Guard was removed by get targeted!')
 			if remove_type == ResStatusEffect.RemoveType.GET_HIT and effect.sounds['hit_tick'] != '': 
 				OverworldGlobals.playSound(effect.sounds['hit_tick'])
 			match effect.remove_style:
@@ -176,6 +174,9 @@ func isDead(check_resolve: bool=false)-> bool:
 
 func isOnBrink():
 	return stat_values['health'] < 1.0 and stat_values['resolve'] >= 0
+
+func isMaxHealth(offset:int=0):
+	return stat_values['health']+offset >= getMaxHealth()
 
 func isImmobilized()-> bool:
 	return stat_values['speed'] < -99 or hasStatusEffect('Stunned')

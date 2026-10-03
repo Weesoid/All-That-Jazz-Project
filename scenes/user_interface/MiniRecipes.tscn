@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://bampaa6cb3ukl"]
+[gd_scene load_steps=13 format=3 uid="uid://bampaa6cb3ukl"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiMiniRecipes.gd" id="1_h6qy0"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="2_hqaue"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="3_2gpkr"]
+[ext_resource type="ButtonGroup" uid="uid://crtb2m26jesai" path="res://resources/user_interface/Recipes.tres" id="4_3a8l0"]
 [ext_resource type="Texture2D" uid="uid://gc571ukvy2xi" path="res://images/sprites/icon_resources.png" id="4_h3hhc"]
 [ext_resource type="Texture2D" uid="uid://dkwkoprestgl2" path="res://images/sprites/icon_camp_item.png" id="5_ki666"]
 [ext_resource type="Texture2D" uid="uid://dp2j72h30680c" path="res://images/sprites/icon_combat_item.png" id="6_0e2ho"]
@@ -39,31 +40,45 @@ alignment = 1
 
 [node name="Resources" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
 layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("4_3a8l0")
 texture = ExtResource("4_h3hhc")
+set_toggled = true
 hold_delay = 0.5
 
 [node name="CampItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
 layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_3a8l0")
 texture = ExtResource("5_ki666")
 hold_delay = 0.5
 
 [node name="AmmoItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
 layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_3a8l0")
 texture = ExtResource("6_miibg")
 hold_delay = 0.5
 
 [node name="CombatItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
 layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_3a8l0")
 texture = ExtResource("6_0e2ho")
 hold_delay = 0.5
 
 [node name="Charms" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
 layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_3a8l0")
 texture = ExtResource("7_kdyl2")
 hold_delay = 0.5
 
 [node name="Repair" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2gpkr")]
 layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_3a8l0")
 texture = ExtResource("9_gfhqx")
 hold_delay = 0.5
 

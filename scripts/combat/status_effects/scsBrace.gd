@@ -13,9 +13,13 @@ static func applyOnHitEffects(target, caster, _value, status_effect):
 		CombatGlobals.getCombatScene().combat_camera.flash(Color.WHITE,0.1,0.05)
 	else:
 		target.combatant_scene.startBlockCooldown()
+	if !target.stat_modifiers.has('block'):
+		return
 	
-	if target.combatant_scene.perfect_block: #target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized() and ((target is ResPlayerCombatant and target.stat_modifiers.has('block')) or target is ResEnemyCombatant):
-		CombatGlobals.manual_call_indicator.emit(target, 'PERFECT!', 'Show',true)
+	var block_tier = target.stat_modifiers['block']['block_tier']
+	if block_tier > 0: #target != CombatGlobals.getCombatScene().active_combatant and !status_effect.afflicted_combatant.isImmobilized() and ((target is ResPlayerCombatant and target.stat_modifiers.has('block')) or target is ResEnemyCombatant):
+		var message = 'RIPOSTE' if block_tier == 1 else '[wave amp=25 freq=5]EVADED![/wave]'
+		CombatGlobals.manual_call_indicator.emit(target, message, 'Show',true)
 		doRiposte(target,caster,status_effect)
 	elif target.stat_modifiers.keys().has('block'):
 		CombatGlobals.manual_call_indicator.emit(target, 'BLOCKED', 'Show',true)

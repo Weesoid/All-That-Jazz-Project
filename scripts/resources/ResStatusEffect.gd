@@ -16,7 +16,9 @@ enum RemoveType {
 	ON_TURN,
 	GET_MISSED,
 	ROUND_START,
-	GAIN_TP
+	GAIN_TP,
+	MAXED_RANK,
+	MAXED_DURATION
 }
 enum RemoveStyle {
 	REMOVE,
@@ -40,29 +42,33 @@ enum TickType {
 ## NOTE: Always name status effects with the following convention: File-GuardBreak.tres;Name-Guard Break
 @export var name: String
 @export_multiline var description: String
-@export var basic_effects: Array[ResBasicEffect]
-@export var status_script: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
-@export var packed_scene: PackedScene
-@export var effect_type: EffectType
-@export var remove_when: Array[RemoveType]
-@export var remove_style: RemoveStyle
-@export var seperate_instances:bool=false
 @export var texture: Texture = preload("res://images/status_icons/icon_unknown.png")
-@export var style: StatusStyle
-@export var custom_style_color: Color
+@export var basic_effects: Array[ResBasicEffect]
+@export_subgroup('Behaviour')
+@export var effect_type: EffectType
+@export var seperate_instances:bool=false
+@export var resistable: bool = true
+@export var status_script: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
+@export_subgroup('Tick Behaviour')
+@export var do_ticks: bool = true
+@export var tick_on_apply: bool = true
+@export var tick_type: TickType = TickType.TURN_END
+@export_subgroup('Duration Behaviour')
+@export var permanent: bool = false
 @export var max_duration: int = 1
 @export var extend_duration: int = 1
 @export var apply_extend_duration:  bool = false
 @export var max_rank: int
-@export var tick_on_apply: bool = true
-## Do ticks even though it's not the afflicted combatant's turn.
-@export var tick_type: TickType = TickType.TURN_END
-@export var do_ticks: bool = true
-@export var resistable: bool = true
-@export var permanent: bool = false
-@export var remove_on_brink: bool = false
+@export_subgroup('Audio / Visuals')
+@export var style: StatusStyle
+@export var custom_style_color: Color
+@export var packed_scene: PackedScene
 @export var hide_icon = false
 @export var sounds: Dictionary = {'apply':'', 'expire':'', 'hit_tick':''}
+@export_subgroup('Removal Behaviour')
+@export var remove_when: Array[RemoveType]
+@export var remove_style: RemoveStyle
+@export var remove_on_brink: bool = false
 var apply_once = true
 var duration:int
 var current_rank = 1
@@ -73,6 +79,7 @@ var parent_path: String
 
 signal ticked
 signal expired
+signal rank_up
 
 func initializeStatus():
 	#icon = TextureRect.new()
@@ -122,6 +129,14 @@ func isDoT()->bool:
 	
 	return false
 
+func isMaxRank()->bool:
+#	print(current_rank, ' vs ', max_rank)
+	return current_rank >= max_rank
+
+func isMaxDuration()->bool:
+	print(duration, ' vs ', max_duration)
+	return duration >= max_duration
+
 func tick(update_duration=true, override_permanent=false, apply_effects=true):
 	if (!permanent and update_duration) or override_permanent: 
 		duration -= 1
@@ -162,7 +177,7 @@ func getDescription():
 		duration
 		] + '[/color]'
 		out_description += '\n' + dot_description
-	if max_rank > 1: out_description += ' (%s/%s)' % [current_rank, max_rank]
+	if max_rank > 0: out_description += ' (%s/%s)' % [current_rank, max_rank]
 	return out_description
 
 func _to_string():

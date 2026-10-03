@@ -32,7 +32,18 @@ func editTooltip(parent:Control, text:String, append:bool):
 	else:
 		print(tooltip.getText(), ' + ', text)
 		tooltip.setText(tooltip.getText()+text)
-	
+
+#func setToggleButtonGroup(buttons:Array):
+#	pass
+#	for button in buttons:
+#		button.toggled.connect(
+#			func(_set):
+#				if 
+#				print('________________________________________')
+#				for b in buttons: 
+#					b._on_toggled(false)
+#					print('falsing ', b)
+#		)
 
 func setVerticalNeighbors(container:VBoxContainer):
 	var nodes = container.get_children()
@@ -244,6 +255,10 @@ func focusFirstControl():
 	
 	var focus_button = visible_buttons[0]
 	focus_button.grab_focus()
+	var button: Button
+	#button.toggled
+	if focus_button.toggle_mode:
+		focus_button.button_pressed = true
 	moveCursorToControl(focus_button)
 
 #func focusEmptyEquipSlot(focused_item:ResItem):

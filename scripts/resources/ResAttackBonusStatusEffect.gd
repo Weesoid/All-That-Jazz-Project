@@ -3,7 +3,7 @@ class_name ResAttackStatusEffect
 
 @export var status_effects: Array[ResStatusEffect]
 
-func getAttackEffect():
+func getAttackEffect(_target:ResCombatant=null):
 	return {'status_effects': status_effects}
 
 func _to_string():

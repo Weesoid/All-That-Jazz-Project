@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResFaction" load_steps=5 format=3 uid="uid://d251clom41mjf"]
+[gd_resource type="Resource" script_class="ResFaction" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/ResPatrollerProperties.gd" id="1_xuf4p"]
-[ext_resource type="Texture2D" uid="uid://v4ocgahxak5o" path="res://images/character_sprites/faction_scavs/scav_patrol_chaser_DEBUG.png" id="2_ffsdi"]
+[ext_resource type="Texture2D" uid="uid://v4ocgahxak5o" path="res://images/characters/faction_scavs/scav_patrol_chaser_DEBUG.png" id="2_ffsdi"]
 [ext_resource type="Script" path="res://scripts/resources/ResFactionPatrollerProperties.gd" id="6_y5rj0"]
 
 [sub_resource type="Resource" id="Resource_swyfo"]

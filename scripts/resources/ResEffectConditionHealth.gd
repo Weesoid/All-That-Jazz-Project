@@ -19,4 +19,4 @@ func _to_string():
 	if health_threshold > 0:
 		return 'when target HP %s %s%%' % ['<' if inequality == Inequality.LESS_THAN else '>', str(int(health_threshold*100))]
 	else:
-		return 'when [color=RED]on the brink.[/color]'
+		return 'when [color=RED]on the brink[/color].' #if CombatGlobals.inCombat() else 

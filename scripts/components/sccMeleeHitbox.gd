@@ -16,3 +16,8 @@ func _on_body_entered(body):
 			OverworldGlobals.changeToCombat(body.name, {'initial_damage'=float(0.2)},body)
 	if body.has_node('Sprite2D') and body != OverworldGlobals.player:
 		OverworldGlobals.shakeSprite(body,  5.0, 10.0)
+
+func activate():
+	monitoring=true
+	await get_tree().create_timer(0.1).timeout
+	monitoring=false

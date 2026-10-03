@@ -3,10 +3,10 @@ class_name CharSheet
 
 const SWORD_ICON = "res://images/sprites/icon_combat_item_trans.png"
 const SACK_ICON = "res://images/sprites/icon_charm_trans.png"
-const BACKPACK_ICON = preload("res://images/sprites/icon_sack.png")
+const BACKPACK_ICON = preload("res://images/user_interface/icon_sack.png")
 const SHIELD_SWORD_ICON = preload("res://images/sprites/shield_n_sword.png")
-const ABILITIES_ICON = preload("res://images/sprites/abilities_icon.png")
-const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
+const ABILITIES_ICON = preload("res://images/user_interface/abilities_icon.png")
+const MODIFIERS_ICON = preload("res://images/user_interface/modifiers.png")
 
 @onready var modifier_viewer = $Sheet/LeftBeef/AbilitiesViewer/ModifierViewer
 @onready var attributes = $Sheet/Right/VBoxContainer/ScrollContainer
@@ -14,17 +14,19 @@ const MODIFIERS_ICON = preload("res://images/sprites/modifiers.png")
 @onready var other_attribute_viewer = $Sheet/Right/VBoxContainer/ScrollContainer/Stats/AutoAttributeView
 @onready var abilities_container = $Sheet/LeftBeef/AbilitiesViewer/AbilityContainer
 @onready var character_view = $Sheet/Center/CharacterPosition/Marker2D
-@onready var character_name = $Sheet/Center/Label
+@onready var character_name = $Sheet/Right/HBoxContainer2/RichTextLabel
 @onready var talents = $Talents
-@onready var equipment: MiniInventory = $Sheet/Right/VBoxContainer/MiniInventory
+@onready var equipment: MiniInventory = $Sheet/LeftBeef/AbilitiesViewer/MiniInventory
 @onready var equip_slot_weapon = $Sheet/Right/VBoxContainer/Equipment/Weapon
 #@onready var weapon_durability_label = $Sheet/Right/VBoxContainer/Equipment/Weapon/Label
 @onready var equip_slot_a = $Sheet/Right/VBoxContainer/Equipment/SlotA
 @onready var equip_slot_b =$Sheet/Right/VBoxContainer/Equipment/SlotB
 @onready var equip_slot_c = $Sheet/Right/VBoxContainer/Equipment/SlotC
 @onready var press_cooldown = $Timer
-@onready var toggle_stats_button = $Sheet/Right/HBoxContainer2/ToggleStats
-@onready var toggle_ability_modifier_button = $Sheet/LeftBeef/HBoxContainer/ToggleAbilityModifiers
+#@onready var toggle_stats_button = $Sheet/Right/HBoxContainer2/ToggleStats
+@onready var abilities_button = $Sheet/LeftBeef/HBoxContainer/Abilities
+@onready var stat_modifiers_button = $Sheet/LeftBeef/HBoxContainer/Modifiers
+@onready var equippable_button = $Sheet/LeftBeef/HBoxContainer/Equippables
 @onready var ability_view = $Sheet/LeftBeef/AbilitiesViewer
 #@onready var modifier_view = $Sheet/LeftBeef/ModifierViewer
 @onready var stat_point_count = $Sheet/LeftBeef/AbilitiesViewer/HBoxContainer/ShowTalents/Label
@@ -43,27 +45,18 @@ func _ready():
 	submenu_positions[equipment] = equipment.position
 	submenu_positions['talents-offset'] = Vector2(-128,0)
 	submenu_positions['equipment-offset'] = Vector2(0,64)
-#	equip_slot_weapon.item_received.connect(replaceEquippable)
-#	equip_slot_a.item_received.connect(replaceEquippable)
-#	equip_slot_b.item_received.connect(replaceEquippable)
-#	equip_slot_c.item_received.connect(replaceEquippable)
 	talents.talent_interacted.connect(updateStatPoints)
 	combatant_switched.connect(hideSubmenus.unbind(1))
 	equipment.item_button_added.connect(connectAutosnap)
-	#equipment.item_button_removed.connect(checkEquipmentHide)
-	talent_button.setDisabled(!OverworldGlobals.player.camping)# = 
+	talent_button.setDisabled(!OverworldGlobals.player.camping)
+	stat_point_count.modulate = SettingsGlobals.ui_colors['up']
+	talents.get_node('MenuCloser').closed.connect(func(): talent_button.button_pressed=false)
+
 func snapFocusToEquipment(_item):
 	equipment.focusFirstFilled()
 
 func hideSubmenus():
-	#animateSubmenu(false, equipment,submenu_positions['equipment-offset'])
 	animateSubmenu(false, talents,submenu_positions['talents-offset'])
-
-#func replaceEquippable(item_equipped):
-#	if item_replaced != null:
-#		equipment.addButton(item_replaced)
-#	if equipment.item_button_map.is_empty():
-#		animateSubmenu(false,equipment,submenu_positions['equipment-offset'])
 
 func setCombatant(combatant: ResPlayerCombatant):
 	combatant_switched.emit(combatant)
@@ -94,7 +87,7 @@ func updateCharacterView(member: ResPlayerCombatant):
 		last_member.queue_free()
 	
 	var character_scene = member.getScenePreview()
-	character_name.text = member.name.to_upper()
+	character_name.text = '[center]%s\n[color=DIM_GRAY]%s[/color][/center]' % [member.name.to_upper(), member.subclass_name.to_upper()]
 	if character_scene:
 		character_scene.scale = Vector2(2,2)
 		character_view.add_child(character_scene)
@@ -167,24 +160,35 @@ func _on_toggle_stats_pressed():
 		attributes.show()
 		equipment.hide()
 	
-	if attributes.visible:
-		toggle_stats_button.setTexture(SHIELD_SWORD_ICON)
-	else:
-		toggle_stats_button.setTexture(BACKPACK_ICON)
-		loadEquipment()
+#	if attributes.visible:
+#		toggle_stats_button.setTexture(SHIELD_SWORD_ICON)
+#	else:
+#		toggle_stats_button.setTexture(BACKPACK_ICON)
+#		loadEquipment()
 
 func _on_toggle_ability_modifiers_pressed():
-	if abilities_container.visible:
-		abilities_container.hide()
-		modifier_viewer.show()
-		toggle_ability_modifier_button.setTexture(MODIFIERS_ICON)
-	else:
-		abilities_container.show()
-		modifier_viewer.hide()
-		toggle_ability_modifier_button.setTexture(ABILITIES_ICON)
+	equipment.hide()
+	abilities_container.show()
+	modifier_viewer.hide()
+
+func _on_modifiers_pressed():
+	equipment.hide()
+	abilities_container.hide()
+	modifier_viewer.show()
+
+func _on_equippables_pressed():
+	equipment.show()
+	abilities_container.hide()
+	modifier_viewer.hide()
+	loadEquipment()
 
 func focus():
 	abilities_container.pool.get_child(0).grab_focus()
 
 func _on_toggle_equipment_pressed():
 	pass # Replace with function body.
+
+
+
+
+

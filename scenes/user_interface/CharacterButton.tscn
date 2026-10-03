@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/user_interface/CharacterButton.gd" id="2_1t7qn"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTimerBar.gd" id="2_4cwev"]
 [ext_resource type="PackedScene" uid="uid://cv0islsjvtbb1" path="res://scenes/user_interface/CustomTooltip.tscn" id="3_j74ek"]
-[ext_resource type="PackedScene" uid="uid://cvt7iywcifdfq" path="res://scenes/user_interface/CharacterBar.tscn" id="4_owkil"]
+[ext_resource type="PackedScene" uid="uid://bggioddtphuge" path="res://scenes/user_interface/CharacterBar.tscn" id="4_owkil"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mumdi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -68,6 +68,8 @@ grow_vertical = 0
 pivot_offset = Vector2(320, 37)
 
 [node name="DragDelay" type="Timer" parent="."]
+
+[node name="Indicator_Spawnpoint" type="Marker2D" parent="."]
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered_bar_motion"]

@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=8 format=3 uid="uid://dfaccwrdvk8r4"]
+
+[ext_resource type="Script" path="res://scripts/resources/ResAttackBonusTag.gd" id="1_835lt"]
+[ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_hbu67"]
+[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectDamage.gd" id="1_u3yrw"]
+[ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="2_bjfkp"]
+[ext_resource type="Texture2D" uid="uid://dnpn4uopdd12d" path="res://images/status_icons/bleed.png" id="5_fju28"]
+
+[sub_resource type="Resource" id="Resource_lnj4i"]
+script = ExtResource("1_835lt")
+tag = "bleed_dmg"
+override_description = "Hey wees u should really add this tags description to CombatExtras.STAT_DESCRIPTIONS"
+
+[sub_resource type="Resource" id="Resource_212np"]
+script = ExtResource("1_u3yrw")
+damage = 0
+percentage_health_damage = 0.05
+rank_scaling = false
+duration_scaling = true
+attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_lnj4i")])
+crit_chance = -1.0
+variation = -1.0
+trigger_on_hits = false
+sound_path = "res://audio/sounds/bleed.ogg"
+indicator_bb = "[color=red][img color=red]res://images/status_icons/bleed.png[/img]"
+apply_once = false
+message = ""
+sound_effect = ""
+identifier = "tickdmg"
+apply_on_expiry = true
+
+[resource]
+script = ExtResource("1_hbu67")
+name = "Bleed"
+description = "Deal percentage health damage on max rank."
+texture = ExtResource("5_fju28")
+basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_212np")])
+effect_type = 0
+seperate_instances = false
+resistable = true
+status_script = ExtResource("2_bjfkp")
+do_ticks = false
+tick_on_apply = true
+tick_type = 0
+permanent = false
+max_duration = 10
+extend_duration = 1
+apply_extend_duration = true
+max_rank = 0
+style = 5
+custom_style_color = Color(1, 0, 0, 1)
+hide_icon = false
+sounds = {
+"apply": "",
+"expire": "",
+"hit_tick": ""
+}
+remove_when = Array[int]([11])
+remove_style = 0
+remove_on_brink = false

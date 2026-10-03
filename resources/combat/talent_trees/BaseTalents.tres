@@ -14,7 +14,7 @@ status_change = {
 "damage": 0,
 "handling": 0,
 "heal_mult": 0.0,
-"health": 2,
+"health": 3,
 "resist": 0.0,
 "speed": 0
 }

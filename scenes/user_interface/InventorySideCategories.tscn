@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bn0trxi6y1mt5"]
+[gd_scene load_steps=11 format=3 uid="uid://bn0trxi6y1mt5"]
 
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_tk30j"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiMiniInventory.gd" id="2_fagy1"]
 [ext_resource type="PackedScene" uid="uid://c87gpcles4gjo" path="res://scenes/user_interface/CustomTextureButton.tscn" id="3_yql5l"]
 [ext_resource type="Texture2D" uid="uid://gc571ukvy2xi" path="res://images/sprites/icon_resources.png" id="4_bs10q"]
+[ext_resource type="ButtonGroup" uid="uid://8yvt1b5d7m8y" path="res://resources/user_interface/MiniInventoryItems.tres" id="4_gegb8"]
 [ext_resource type="Texture2D" uid="uid://dkwkoprestgl2" path="res://images/sprites/icon_camp_item.png" id="5_lck5s"]
 [ext_resource type="Texture2D" uid="uid://cqjhmuvbye63b" path="res://images/sprites/icon_projectiles.png" id="6_0fwdm"]
 [ext_resource type="Texture2D" uid="uid://dp2j72h30680c" path="res://images/sprites/icon_combat_item.png" id="7_376pi"]
@@ -21,11 +22,49 @@ script = ExtResource("2_fagy1")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_left = -8
 
 [node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+
+[node name="Categories" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Resources" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_gegb8")
+texture = ExtResource("4_bs10q")
+hold_delay = 0.5
+
+[node name="CampItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_gegb8")
+texture = ExtResource("5_lck5s")
+hold_delay = 0.5
+
+[node name="AmmoItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_gegb8")
+texture = ExtResource("6_0fwdm")
+hold_delay = 0.5
+
+[node name="Charms" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_gegb8")
+texture = ExtResource("8_kc4bu")
+hold_delay = 0.5
+
+[node name="CombatItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_gegb8")
+texture = ExtResource("7_376pi")
+hold_delay = 0.5
 
 [node name="Resources" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -37,7 +76,6 @@ vertical_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 2
 
 [node name="CampItems" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
@@ -49,7 +87,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 2
 
 [node name="Charms" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
@@ -62,7 +99,6 @@ horizontal_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 2
 
 [node name="CombatItems" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
@@ -74,7 +110,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 2
 
 [node name="AmmoItems" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
@@ -86,36 +121,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 2
-
-[node name="Categories" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="Resources" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
-layout_mode = 2
-texture = ExtResource("4_bs10q")
-hold_delay = 0.5
-
-[node name="CampItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
-layout_mode = 2
-texture = ExtResource("5_lck5s")
-hold_delay = 0.5
-
-[node name="AmmoItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
-layout_mode = 2
-texture = ExtResource("6_0fwdm")
-hold_delay = 0.5
-
-[node name="Charms" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
-layout_mode = 2
-texture = ExtResource("8_kc4bu")
-hold_delay = 0.5
-
-[node name="CombatItems" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_yql5l")]
-layout_mode = 2
-texture = ExtResource("7_376pi")
-hold_delay = 0.5
 
 [node name="MenuCloser" parent="." instance=ExtResource("12_begnp")]
 layout_mode = 2

@@ -5,12 +5,15 @@ class_name CurrentArrowView
 
 func _ready():
 	await get_tree().process_frame
-	OverworldGlobals.player.bow_equipped.connect(updateArrowIndicator)
-	OverworldGlobals.player.bow_equipped.connect(changeOpacity.bind(2))
-	OverworldGlobals.player.bow_shot.connect(changeOpacity.bind(2))
-	OverworldGlobals.player.bow_undrawn.connect(changeOpacity.bind(2))
+#	OverworldGlobals.player.bow_equipped.connect(updateArrowIndicator)
+#	OverworldGlobals.player.bow_equipped.connect(changeOpacity.bind(2))
+#	OverworldGlobals.player.bow_shot.connect(changeOpacity.bind(2))
+	OverworldGlobals.player.bow_drawn.connect(updateArrowIndicator)
+	OverworldGlobals.player.bow_undrawn.connect(changeOpacity.bind(3))
 	OverworldGlobals.player.bow_drawn.connect(changeOpacity.bind(1))
-	OverworldGlobals.player.bow_unequipped.connect(changeOpacity.bind(3))
+	#InventoryGlobals.equipped_arrow.connect(arrow_counter.setItem)
+	
+#	OverworldGlobals.player.bow_unequipped.connect(changeOpacity.bind(3))
 
 func updateArrowIndicator():
 	if PlayerGlobals.equipped_arrow == null or arrow_counter.item == PlayerGlobals.equipped_arrow:

@@ -157,7 +157,7 @@ do setSpriteFrame("Corpsepile", 3)
 	do wait(0.5)
 	do animateSprite("Player","sword_up_crouched")
 	do wait(0.5)
-	do flashCamera("RED")
+	do flashCamera("RED",0.5)
 	do shakeScreen()
 	do animateSprite("Bloodsplatter","default")
 	do playSound("641040__magnuswaker__gross-impact.ogg",-16)
@@ -175,6 +175,7 @@ do setSpriteFrame("Corpsepile", 3)
 	do animateSprite("Player","sword_up")
 	do wait(0.5)
 	#do animateSprite("Player","default")
+	Player: Mandate mongrel.
 	do addExperience(25)
 	=> END
 - Leave

@@ -635,7 +635,7 @@ func damageAbilityUsed(check_round:int, team:String):
 func allowBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
 		target.combatant_scene.allow_block = true
-		target.combatant_scene.perfect_block = false
+		#target.combatant_scene.perfect_block = false
 		CombatGlobals.showWarning(target.combatant_scene)
 		#zoomCamera(Vector2(0.1,0.1))
 		#if target.combatant_scene.has_node('CombatBars'):
@@ -645,7 +645,7 @@ func allowBlocking(target: ResCombatant):
 func revokeBlocking(target: ResCombatant):
 	if target is ResPlayerCombatant and target.combatant_scene.blocking and active_combatant is ResEnemyCombatant:
 		target.combatant_scene.allow_block = false
-		target.combatant_scene.perfect_block = false
+		#target.combatant_scene.perfect_block = false
 
 func skipTurn():
 	#target_state = TargetState.NONE
@@ -1175,10 +1175,10 @@ func moveCombatantScenes(group: String, direction:int):
 		#combatant.combatant_scene.z_index = getCombatantPosition(combatant)
 		var move_tween = CombatGlobals.getCombatScene().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
 		move_tween.finished.connect(move_tween.kill)
-		move_tween.tween_property(scene, 'global_position', getRankPosition(combatant),0.25)
-		move_tween.tween_property(combatant.getSprite(), 'rotation', 0.2*direction,0.25)
+		move_tween.tween_property(scene, 'global_position', getRankPosition(combatant),0.25-randf_range(0,0.15))
+		move_tween.tween_property(combatant.getSprite(), 'rotation', 0.1*direction,0.25-randf_range(0,0.15))
 		move_tween.set_parallel(false)
-		move_tween.tween_property(combatant.getSprite(), 'rotation', 0,0.25)
+		move_tween.tween_property(combatant.getSprite(), 'rotation', 0,0.25-randf_range(0,0.15))
 		#await move_tween.finished
 		#await get_tree().create_timer(0.05).timeout
 	

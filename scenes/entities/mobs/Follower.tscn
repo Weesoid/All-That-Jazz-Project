@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://bm7u5gnsux8sp"]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/entities/entNPCFollower.gd" id="1_ddcxm"]
-[ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/character_sprites/huck/huck_follower.png" id="2_tswjs"]
+[ext_resource type="Texture2D" uid="uid://c2l6f3t6ieogh" path="res://images/characters/huck/huck_follower.png" id="2_tswjs"]
 
 [sub_resource type="Animation" id="Animation_ndr0a"]
 resource_name = "Dive"

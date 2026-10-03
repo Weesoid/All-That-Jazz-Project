@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://b2a3ym1wbpm6v"]
 
-[ext_resource type="PackedScene" uid="uid://cueh0gxx74d6r" path="res://scenes/user_interface/CustomCraftSlotButton.tscn" id="1_73wis"]
+[ext_resource type="PackedScene" path="res://scenes/user_interface/CustomCraftSlotButton.tscn" id="1_73wis"]
 [ext_resource type="Theme" uid="uid://b1w4e8m2ojq6j" path="res://design/AbilityButtonsOutCombat.tres" id="1_ard1k"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiCrafting.gd" id="1_kee3e"]
 [ext_resource type="PackedScene" uid="uid://bampaa6cb3ukl" path="res://scenes/user_interface/MiniRecipes.tscn" id="1_vg2cb"]
-[ext_resource type="PackedScene" uid="uid://0eiolcx87vuh" path="res://scenes/user_interface/CustomItemButton.tscn" id="2_6bjuj"]
+[ext_resource type="PackedScene" path="res://scenes/user_interface/CustomItemButton.tscn" id="2_6bjuj"]
 [ext_resource type="PackedScene" uid="uid://uvj0h00sirue" path="res://scenes/user_interface/CustomCornerCloserButton.tscn" id="2_psr62"]
 [ext_resource type="Texture2D" uid="uid://c6scpci5m38wp" path="res://images/status_icons/hammer.png" id="4_73a3f"]
 [ext_resource type="Theme" uid="uid://yo85ef7wg3gc" path="res://design/OutlinedLabel.tres" id="8_8pm36"]

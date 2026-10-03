@@ -135,7 +135,7 @@ func _physics_process(delta):
 		landed.emit(false)
 		do_land_flag = false
 	
-	if speed_multiplier < 1.0 or OverworldGlobals.player.bow_draw_strength > 0:
+	if speed_multiplier < 1.0: #or OverworldGlobals.player.bow_draw_strength > 0:
 		stopWalkAnimation()
 		return
 	if OverworldGlobals.player.sprinting:

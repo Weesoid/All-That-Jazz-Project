@@ -10,3 +10,4 @@ func equip():
 	if !OverworldGlobals.getCurrentMap().has_node('PlayerArrow'):
 		OverworldGlobals.playSound("res://audio/sounds/709597__alexcoover__unsheath-arrow.ogg", -16.0)
 		PlayerGlobals.equipped_arrow = self
+		InventoryGlobals.equipped_arrow.emit(self)

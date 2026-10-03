@@ -67,7 +67,7 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			CombatGlobals.removeStatusEffect(target.combatant_resource, ability.current_effect.cleanse_status.name)
 		
 		elif ability.current_effect is ResDotEffect:
-			var dot_data = ability.current_effect.getDot()
+			var dot_data = ability.current_effect.getDot(target.combatant_resource)
 			CombatGlobals.addStatusEffect(target.combatant_resource, dot_data[0], false, dot_data[1])
 		
 	await CombatGlobals.getCombatScene().get_tree().process_frame
@@ -169,7 +169,6 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 	if target is Array[ResCombatant]:
 		animation_data['target_count'] = target.size()
 	
-	print(caster_rank_position)
 	if damage_effect.cast_animation['animation'] != '':
 		if damage_effect.cast_animation['go_to_target']:
 			await caster.moveTo(target)
@@ -186,7 +185,6 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 		#animation_data['projectile_texture'] = ability.current_effect.projectile_texture
 		if caster_position != caster_rank_position:
 			await returnToPosition(damage_effect, caster)
-		print('Setting target to ', target)
 		await caster.doAnimation(pickAnimation(caster, 'Ranged'), ability.ability_script, 
 			{
 				'target'=target,

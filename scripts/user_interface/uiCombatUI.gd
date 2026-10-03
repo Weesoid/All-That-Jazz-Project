@@ -1,11 +1,11 @@
 extends Control
 class_name CombatUI
 
-const COMBAT_GEAR_ICON = preload("res://images/ability_icons/combat_gear.png")
-const EMPTY_ABILITY_ICON = preload("res://images/ability_icons/invalid.png")
-const PASS_ABILITY = preload("res://resources/combat/abilities/Pass.tres")
-const MOVE_ABILITY = preload("res://resources/combat/abilities/Move.tres")
-const TEST_ABILITY = preload("res://resources/combat/abilities/BasicAttack.tres")
+var COMBAT_GEAR_ICON = load("res://images/ability_icons/combat_gear.png")
+var EMPTY_ABILITY_ICON = load("res://images/ability_icons/invalid.png")
+var PASS_ABILITY = load("res://resources/combat/abilities/Pass.tres")
+var MOVE_ABILITY = load("res://resources/combat/abilities/Move.tres")
+var TEST_ABILITY = load("res://resources/combat/abilities/BasicAttack.tres")
 
 #const TP_PARTICLE_TEXTURE = preload("res://images/sprites/tp_particle.png")
 #DialogueManager

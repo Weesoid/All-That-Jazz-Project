@@ -6,6 +6,7 @@ class_name StatusIcon
 @onready var pulser = $Pulser
 var attached_status: ResStatusEffect
 var pooled_statuses: Array[ResStatusEffect] = []
+#var original_position:Vector2
 
 func _ready():
 	pulser.modulate=Color.TRANSPARENT
@@ -15,6 +16,7 @@ func _ready():
 	self_modulate = attached_status.getIconColor()
 	attached_status.ticked.connect(updateDuration)
 	attached_status.expired.connect(queue_free)
+	#attached_status.rank_up.connect(bounce)
 	updateDuration()
 
 func updateDuration():
@@ -27,6 +29,7 @@ func poolEffects(effect:ResStatusEffect):
 	pooled_statuses.append(effect)
 	setAttachedStatus()
 	updateDuration()
+	#bounce()
 
 func getLongestDuration():
 	var current_longest = attached_status
@@ -49,6 +52,15 @@ func pulse(color:Color):
 	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(pulser,"modulate",color, 0.1)
 	tween.tween_property(pulser,"modulate",Color.TRANSPARENT, 0.5)
+
+#func bounce():
+#	await get_tree().process_frame
+#	#var original_position = position
+#	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_ELASTIC)
+#	#var scale_tween  create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+#	tween.tween_property(self, 'pivot_offset', Vector2(0,-8),0.1)
+#	#scale_tween.tween_property()
+#	tween.tween_property(self, 'pivot_offset', Vector2.ZERO,0.5)
 
 func _on_tree_entered():
 	modulate = Color.TRANSPARENT

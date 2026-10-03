@@ -10,7 +10,6 @@ class_name ResCustomDamageEffect
 @export var variation: float = -1.0
 @export var can_crit: bool = false
 @export var bonus_stats: Dictionary
-@export var can_miss: bool = false
 @export var trigger_on_hits = false
 @export var indicator_bb:  String = ''
 

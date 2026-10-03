@@ -18,11 +18,11 @@
 [ext_resource type="Texture2D" uid="uid://b0sccmpd3dblu" path="res://images/sprites/splintered_stick.png" id="31_yjj43"]
 [ext_resource type="Script" path="res://scripts/entities/entGenericNPC.gd" id="32_6h0kc"]
 [ext_resource type="Resource" uid="uid://in2py2jaw6i3" path="res://scenes/maps/TestRoom/dialogue/House.dialogue" id="33_thp6k"]
-[ext_resource type="Texture2D" uid="uid://cg5x0id1vxn5h" path="res://images/character_sprites/mother/mom_custscene.png" id="34_gxhf2"]
-[ext_resource type="Texture2D" uid="uid://dey3s4gm8elep" path="res://images/character_sprites/archie/child_archie.png" id="35_iklr7"]
+[ext_resource type="Texture2D" uid="uid://cg5x0id1vxn5h" path="res://images/characters/mother/mom_custscene.png" id="34_gxhf2"]
+[ext_resource type="Texture2D" uid="uid://dey3s4gm8elep" path="res://images/characters/archie/child_archie.png" id="35_iklr7"]
 [ext_resource type="AudioStream" uid="uid://bfrkmkbyqeiqm" path="res://audio/sounds/630590__vinni_r__bone-break_4.ogg" id="36_65skm"]
 [ext_resource type="AudioStream" uid="uid://cb6a3eab6voko" path="res://audio/sounds/630591__vinni_r__bone-break_3.ogg" id="37_mqvqm"]
-[ext_resource type="Texture2D" uid="uid://io8q35cn3osw" path="res://images/character_sprites/willis/child_training_willis.png" id="38_2mmm7"]
+[ext_resource type="Texture2D" uid="uid://io8q35cn3osw" path="res://images/characters/willis/child_training_willis.png" id="38_2mmm7"]
 
 [sub_resource type="Gradient" id="Gradient_rl4ar"]
 offsets = PackedFloat32Array(0.442857, 0.525714, 1)

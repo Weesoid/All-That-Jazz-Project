@@ -62,6 +62,9 @@ Glock17_Magazine.1 by Stoniac -- https://freesound.org/s/842728/ -- License: Cre
 Sword sound 1.wav by Merrick079 -- https://freesound.org/s/568170/ -- License: Creative Commons 0
 Pick up or found it secret item by gordeszkakerek -- https://freesound.org/s/234924/ -- License: Creative Commons 0
 GROSS IMPACT by magnuswaker -- https://freesound.org/s/641040/ -- License: Creative Commons 0
+Blood Splat by Vikra9409 -- https://freesound.org/s/825524/ -- License: Creative Commons 0 (Combined with Blood Hitting Window.wav by Rock Savage in bleed.ogg)
+
+Blood Hitting Window.wav by Rock Savage -- https://freesound.org/s/81042/ -- License: Sampling+ (Combined with Blood Splat by Vikra9409 in bleed.ogg)
 
 [Bow.wav and snippets from arrow and bow in one has been combined to make the bow shoot sound in file '178872__hanbaal__bow.ogg']
 

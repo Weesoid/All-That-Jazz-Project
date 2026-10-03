@@ -2,7 +2,9 @@ extends ResBasicEffect
 class_name ResStatusDamageEffect
 
 @export var damage: int
+@export_range(0.0,1.0) var percentage_health_damage:float = 0.0
 @export var rank_scaling:bool = false
+@export var duration_scaling:bool = false
 @export var attack_bonuses: Array[ResAttackBonus] = []
 @export var crit_chance: float = -1.0
 @export var variation: float = -1.0

@@ -3,7 +3,7 @@ class_name ResAttackStats
 
 @export var stats:Dictionary= CombatExtras.ALL_STATS
 
-func getAttackEffect():
+func getAttackEffect(_target:ResCombatant=null):
 	return CombatGlobals.getStatChanges(stats)
 
 func _to_string():
