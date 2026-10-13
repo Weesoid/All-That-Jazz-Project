@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResApplyStatusEffect
+extends ResAbilityAction
+class_name ResApplyStatusAction
 
 enum Target {
 	TARGET,

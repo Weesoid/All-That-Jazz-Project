@@ -1,6 +1,6 @@
 # A more general Damage effect. Does not need a caster. Best for independent damage or AoE attacks.
-extends ResAbilityEffect
-class_name ResCustomDamageEffect
+extends ResAbilityAction
+class_name ResDirectDamageAction
 
 @export var use_caster: bool
 @export var cast_animation: String

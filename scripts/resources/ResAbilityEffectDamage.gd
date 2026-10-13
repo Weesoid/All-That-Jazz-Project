@@ -1,6 +1,6 @@
 ## Basically the "Attack" action. Requires a caster to execute.
-extends ResAbilityEffect
-class_name ResAttackEffect
+extends ResAbilityAction
+class_name ResAttackAction
 
 enum DamageType {
 	MELEE,
@@ -19,7 +19,7 @@ enum DamageType {
 @export var projectile_texture: Texture
 
 func getAttackBonuses(target:ResCombatant):
-	return ResAttackEffect.getPassedAttackBonuses(target, attack_bonuses) 
+	return ResAttackAction.getPassedAttackBonuses(target, attack_bonuses) 
 
 static func getPassedAttackBonuses(target:ResCombatant, p_attack_bonuses: Array):
 	var out = {}

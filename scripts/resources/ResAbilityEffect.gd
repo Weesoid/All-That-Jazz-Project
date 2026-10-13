@@ -1,5 +1,5 @@
 extends Resource
-class_name ResAbilityEffect
+class_name ResAbilityAction
 
 enum AnimateOn {
 	TARGET,

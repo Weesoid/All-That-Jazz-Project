@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResStatModifierEffect
+extends ResAbilityAction
+class_name ResStatModifierAction
 
 enum DurationType {
 	TURNS,

@@ -11,19 +11,19 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 		if effect.sound_effect != null: 
 			OverworldGlobals.playSound(effect.resource_path)
 		
-		if effect is ResAttackEffect:
+		if effect is ResAttackAction:
 			await doAttackAnimations(caster, target, ability, effect)
 		
-		elif effect is ResCustomDamageEffect:
+		elif effect is ResDirectDamageAction:
 			if effect.cast_animation != '': await caster.doAnimation(effect.cast_animation)
 			await applyAbilityEffects(caster, target, ability)
 		
-		elif effect is ResApplyStatusEffect:
+		elif effect is ResApplyStatusAction:
 			if caster != null:
 				await caster.doAnimation(effect.cast_animation)
 			await applyAbilityEffects(caster, target, ability)
 		
-		elif effect is ResMoveEffect:
+		elif effect is ResMoveAction:
 			var temp_target = caster.combatant_resource if effect.Target.CASTER else target.combatant_resource
 			if effect.direction == effect.Direction.FORWARD:
 				CombatGlobals.getCombatScene().moveCombatant(temp_target, -1, effect.move_count)
@@ -31,42 +31,42 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 				CombatGlobals.getCombatScene().moveCombatant(temp_target, 1, effect.move_count)
 			await CombatGlobals.getCombatScene().move_finished
 	
-		elif effect is ResHealEffect:
+		elif effect is ResHealAction:
 			await caster.doAnimation(effect.cast_animation)
 			if ability.current_action.base_heal > 0: 
 				CombatGlobals.calculateHealing(target, ability.current_action.base_heal, ability.current_action.use_multiplier)
 			if ability.current_action.percent_heal > 0.0: 
 				CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_action.percent_heal, ability.current_action.use_multiplier)
 		
-		elif effect is ResHealResolveEffect:
+		elif effect is ResHealResolveAction:
 			CombatGlobals.healResolve(target.combatant_resource, effect.amount)
 		
-		elif effect is ResCommandAbilityEffect:
+		elif effect is ResCommandAbilityAction:
 			CombatGlobals.execute_ability.emit(target, effect.ability)
 			await CombatGlobals.get_tree().create_timer(0.5).timeout
 		
-		elif effect is ResAddTPEffect:
+		elif effect is ResAddTPAction:
 			CombatGlobals.addTension(effect.add_amount, caster.combatant_resource, target.combatant_resource)
 			await applyAbilityEffects(caster, target, ability)
 		
-		elif ability.current_action is ResChangeIdleEffect and target.temporary_idle != ability.current_action.idle_name:
+		elif ability.current_action is ResChangeIdleAction and target.temporary_idle != ability.current_action.idle_name:
 			target.temporary_idle = ability.current_action.idle_name
 			target.playIdle()
 		
-		elif ability.current_action is ResStatModifierEffect:
+		elif ability.current_action is ResStatModifierAction:
 			target.combatant_resource.addTemporaryModifer(
 				ability.name, 
 				ability.current_action.duration,
 				ability.current_action.getModifications(),
 				ability.current_action.stacks,
-				ability.current_action.duration_type == ResStatModifierEffect.DurationType.BATTLE,
+				ability.current_action.duration_type == ResStatModifierAction.DurationType.BATTLE,
 				ability.current_action.resistable
 				)
 		
-		elif ability.current_action is ResCleanseEffect:
+		elif ability.current_action is ResCleanseAction:
 			CombatGlobals.removeStatusEffect(target.combatant_resource, ability.current_action.cleanse_status.name)
 		
-		elif ability.current_action is ResDotEffect:
+		elif ability.current_action is ResDotAction:
 			var dot_data = ability.current_action.getDot(target.combatant_resource)
 			CombatGlobals.addStatusEffect(target.combatant_resource, dot_data[0], false, dot_data[1])
 		
@@ -101,7 +101,7 @@ static func playAnimation(ability: ResAbility, target):
 
 # Combat values calculations (damage, healing, etc.) APPLIES ON ATTACK HITBOX
 static func applyToTarget(caster, target, ability: ResAbility):
-	if ability.current_action is ResAttackEffect:
+	if ability.current_action is ResAttackAction:
 		CombatGlobals.calculateDamage(
 				caster, 
 				target, 
@@ -118,7 +118,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 #			#CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
 #			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
 	
-	elif ability.current_action is ResCustomDamageEffect:
+	elif ability.current_action is ResDirectDamageAction:
 		if !ability.current_action.use_caster:
 			caster = null
 		else:
@@ -138,7 +138,7 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			ability.current_action.bonus_stats
 			)
 	
-	elif ability.current_action is ResApplyStatusEffect:
+	elif ability.current_action is ResApplyStatusAction:
 		if ability.current_action.target == ability.current_action.Target.TARGET:
 			if target is CombatantScene:
 				target = target.combatant_resource
@@ -154,14 +154,14 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			{'bonus_duration': ability.current_action.add_duration}
 			)
 	
-#	elif ability.current_action is ResHealEffect:
+#	elif ability.current_action is ResHealAction:
 #		if ability.current_action.base_heal > 0: 
 #			CombatGlobals.calculateHealing(target, ability.current_action.base_heal, ability.current_action.use_multiplier)
 #		if ability.current_action.percent_heal > 0.0: 
 #			CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_action.percent_heal, ability.current_action.use_multiplier)
 		
 # Attack animations (Ranged, melee)
-static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):
+static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackAction):
 	var caster_position = caster.global_position
 	var caster_rank_position = CombatGlobals.getCombatScene().getRankPosition(caster.combatant_resource)
 	var caster_rank = CombatGlobals.getCombatScene().getCombatantPosition(caster.combatant_resource)
@@ -216,16 +216,16 @@ static func pickAnimation(caster:CombatantScene, type:String):
 	#print('valid anims: ',animations)
 	return animations.pick_random()
 
-static func returnToPosition(damage_effect: ResAttackEffect, caster: CombatantScene):
+static func returnToPosition(damage_effect: ResAttackAction, caster: CombatantScene):
 	var turn_order = CombatGlobals.getCombatScene().getTurnOrder()
 	var caster_resource = caster.combatant_resource
-	if !damage_effect.return_pos or (turn_order.has(caster_resource) and turn_order.size() > 2 and turn_order[1] == caster_resource and damage_effect.damage_type == ResAttackEffect.DamageType.MELEE): 
+	if !damage_effect.return_pos or (turn_order.has(caster_resource) and turn_order.size() > 2 and turn_order[1] == caster_resource and damage_effect.damage_type == ResAttackAction.DamageType.MELEE): 
 		return
 	await caster.moveTo(CombatGlobals.getCombatScene().getRankPosition(caster_resource))
 #	if damage_effect.do_not_return_pos:
 #		damage_effect.do_not_return_pos = false
 
-#static func canDoCombo(effect: ResAbilityEffect, target)-> bool:
+#static func canDoCombo(effect: ResAbilityAction, target)-> bool:
 #	if target is CombatantScene:
 #		return effect.is_combo_effect and target.combatant_resource.hasStatusEffect('Combo')
 #	elif target is  Array:

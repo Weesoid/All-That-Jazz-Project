@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResMoveEffect
+extends ResAbilityAction
+class_name ResMoveAction
 
 enum Target {
 	TARGET,

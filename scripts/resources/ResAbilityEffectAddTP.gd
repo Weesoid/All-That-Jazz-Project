@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResAddTPEffect
+extends ResAbilityAction
+class_name ResAddTPAction
 
 @export var add_amount: int
 

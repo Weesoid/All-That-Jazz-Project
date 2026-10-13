@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResChangeIdleEffect
+extends ResAbilityAction
+class_name ResChangeIdleAction
 
 @export var idle_name:String
 @export var reset_after:bool

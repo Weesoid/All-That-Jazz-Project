@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResHealEffect
+extends ResAbilityAction
+class_name ResHealAction
 
 @export var base_heal: int = 0
 @export_range(0.0,1.0) var percent_heal:float = 0.0

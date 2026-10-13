@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResDotEffect
+extends ResAbilityAction
+class_name ResDotAction
 
 @export var dot_effect:ResDamageOvertimeEffect
 

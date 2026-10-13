@@ -16,6 +16,6 @@ func _to_string():
 	return str(damage)
 
 func getAttackBonuses(target:ResCombatant):
-	var out = ResAttackEffect.getPassedAttackBonuses(target, attack_bonuses)
+	var out = ResAttackAction.getPassedAttackBonuses(target, attack_bonuses)
 	out['is_dot'] = true
 	return out 

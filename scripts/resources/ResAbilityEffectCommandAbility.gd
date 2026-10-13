@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResCommandAbilityEffect
+extends ResAbilityAction
+class_name ResCommandAbilityAction
 
 @export var ability: ResAbility
 

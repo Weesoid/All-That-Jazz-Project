@@ -1,8 +1,8 @@
 extends ResStackItem
 class_name ResCampItem
 
-## Only uses ResHeal, ResCustomDamage, ResStatModifierEffect, and ResApplyStatus
-@export var effects: Array[ResAbilityEffect]
+## Only uses ResHeal, ResCustomDamage, ResStatModifierAction, and ResApplyStatus
+@export var effects: Array[ResAbilityAction]
 @export var strain: int = 1
 @export var party_wide: bool
 @export var condition: ResEffectCondition
@@ -12,7 +12,7 @@ func canApply(combatant: ResPlayerCombatant):
 
 func hasHeal(is_revive_heal:bool):
 	for effect in effects:
-		if effect is ResHealEffect and effect.condition == null and is_revive_heal and effect.revive_from_ko: return true
+		if effect is ResHealAction and effect.condition == null and is_revive_heal and effect.revive_from_ko: return true
 	
 	return false
 
@@ -34,18 +34,18 @@ func apply(combatant: ResPlayerCombatant):
 	
 	for effect in effects:
 		var conditions_passed = effect.conditionPassed(combatant)
-		if effect is ResHealEffect and conditions_passed:
+		if effect is ResHealAction and conditions_passed:
 			if effect.base_heal > 0: 
 				CombatGlobals.calculateHealing(combatant, effect.base_heal, effect.use_multiplier)
 			if effect.percent_heal > 0.0: 
 				CombatGlobals.calculatePercentHealing(combatant, effect.percent_heal, effect.use_multiplier)
-		elif effect is ResHealResolveEffect and conditions_passed:
+		elif effect is ResHealResolveAction and conditions_passed:
 			CombatGlobals.healResolve(combatant, effect.amount)
-		elif effect is ResCustomDamageEffect and conditions_passed:
+		elif effect is ResDirectDamageAction and conditions_passed:
 			OverworldGlobals.damageMember(combatant, effect.damage)
-		elif effect is ResApplyStatusEffect and conditions_passed:
+		elif effect is ResApplyStatusAction and conditions_passed:
 			combatant.storeStatusEffect(effect.status_effect)
-		elif effect is ResStatModifierEffect and !modifiers_added and conditions_passed:
+		elif effect is ResStatModifierAction and !modifiers_added and conditions_passed:
 			var dupe_count = getDupeCount(combatant)
 			if dupe_count > 0 and !count_appended: 
 				key += '^'+str(dupe_count)
@@ -55,7 +55,7 @@ func apply(combatant: ResPlayerCombatant):
 				modifier_data[1].duration,
 				modifier_data[0],
 				effect.stacks,
-				modifier_data[1].duration_type == ResStatModifierEffect.DurationType.BATTLE,
+				modifier_data[1].duration_type == ResStatModifierAction.DurationType.BATTLE,
 				modifier_data[1].resistable
 				)
 			modifiers_added = true
@@ -70,7 +70,7 @@ func apply(combatant: ResPlayerCombatant):
 			1,
 			{'strain': strain},
 			false,
-			ResStatModifierEffect.DurationType.BATTLE
+			ResStatModifierAction.DurationType.BATTLE
 			)
 		strain_added = true
 	
@@ -108,7 +108,7 @@ func getDupeCount(combatant:ResCombatant):
 # Returns [<Combined modifier effects, longest duration modifier]
 func combineStatModifiers(combatant:ResCombatant)-> Array:
 	randomize()
-	var all_modifiers=effects.filter(func(effect): return effect is ResStatModifierEffect and effect.conditionPassed(combatant))
+	var all_modifiers=effects.filter(func(effect): return effect is ResStatModifierAction and effect.conditionPassed(combatant))
 	var longest_duration_modifier = getLongestModiferDuration(all_modifiers)
 	var combined_modifiers = {}
 	for effect in all_modifiers:
@@ -121,7 +121,7 @@ func getLongestModiferDuration(modifier_effects:Array):
 	if modifier_effects.is_empty():
 		return []
 	
-	var longest_modifier: ResStatModifierEffect = modifier_effects[0]
+	var longest_modifier: ResStatModifierAction = modifier_effects[0]
 	
 	for current_modifier in modifier_effects:
 		if longest_modifier.duration_type > current_modifier.duration_type:

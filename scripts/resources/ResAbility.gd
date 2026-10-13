@@ -15,7 +15,7 @@ enum TargetGroup {
 @export var name: String
 @export_multiline var description: String
 @export var icon: Texture = preload("res://images/ability_icons/default.png")
-@export var action_sequence: Array[ResAbilityEffect]
+@export var action_sequence: Array[ResAbilityAction]
 @export var animation: PackedScene
 @export var ability_script: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
 @export var target_type: TargetType
@@ -28,7 +28,7 @@ enum TargetGroup {
 @export var instant_cast: bool = false
 #@export var required_level = 0
 
-var current_action: ResAbilityEffect
+var current_action: ResAbilityAction
 var current_charge: int
 var enabled: bool = true
 var default_properties:Dictionary={}
@@ -40,7 +40,7 @@ signal random_target(type)
 
 #func setupAttackBonuses():
 #	for effect in basic_effects:
-#		if effect is ResAttackEffect: effect.initializeAttackBonuses()
+#		if effect is ResAttackAction: effect.initializeAttackBonuses()
 
 func execute():
 	match target_type:
@@ -193,13 +193,13 @@ func isBasicAbility():
 
 func isAttack():
 	for effect in action_sequence:
-		if effect is ResAttackEffect: return true
+		if effect is ResAttackAction: return true
 	
 	return false
 
 func isDamaging():
 	for effect in action_sequence:
-		if effect is ResAttackEffect or effect is ResCustomDamageEffect: return true
+		if effect is ResAttackAction or effect is ResDirectDamageAction: return true
 	
 	return false
 

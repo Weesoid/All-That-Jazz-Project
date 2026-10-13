@@ -1,5 +1,5 @@
-extends ResAbilityEffect
-class_name ResHealResolveEffect
+extends ResAbilityAction
+class_name ResHealResolveAction
 
 @export var amount:int
 

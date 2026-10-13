@@ -1,4 +1,4 @@
-extends ResAbilityEffect
-class_name ResCleanseEffect
+extends ResAbilityAction
+class_name ResCleanseAction
 
 @export var cleanse_status: ResStatusEffect
