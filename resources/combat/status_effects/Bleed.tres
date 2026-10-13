@@ -15,7 +15,6 @@ override_description = "Hey wees u should really add this tags description to Co
 script = ExtResource("1_u3yrw")
 damage = 0
 percentage_health_damage = 0.05
-rank_scaling = false
 duration_scaling = true
 attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([SubResource("Resource_lnj4i")])
 crit_chance = -1.0
@@ -46,7 +45,6 @@ permanent = false
 max_duration = 10
 extend_duration = 1
 apply_extend_duration = true
-max_rank = 0
 style = 5
 custom_style_color = Color(1, 0, 0, 1)
 hide_icon = false
@@ -55,6 +53,6 @@ sounds = {
 "expire": "",
 "hit_tick": ""
 }
-remove_when = Array[int]([11])
+remove_when = Array[int]([10])
 remove_style = 0
 remove_on_brink = false

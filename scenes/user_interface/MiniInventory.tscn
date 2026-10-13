@@ -37,7 +37,6 @@ alignment = 1
 [node name="Resources" parent="MarginContainer/VBoxContainer/Categories" instance=ExtResource("3_2cljh")]
 layout_mode = 2
 toggle_mode = true
-button_pressed = true
 button_group = ExtResource("4_aogt8")
 texture = ExtResource("4_hs3nd")
 set_toggled = true

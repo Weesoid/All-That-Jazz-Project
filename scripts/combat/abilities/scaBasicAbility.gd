@@ -1,9 +1,9 @@
 # Cast animations, gap closing, etc.
 static func animate(caster: CombatantScene, target, ability:ResAbility):
-	for effect in ability.basic_effects:
-		ability.current_effect = effect
+	for effect in ability.action_sequence:
+		ability.current_action = effect
 		var check_target = target[0] if target is Array else target.combatant_resource
-		if !ability.current_effect.conditionPassed(check_target): 
+		if !ability.current_action.conditionPassed(check_target): 
 			continue
 		
 		if effect.animate_on == 1:
@@ -33,10 +33,10 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 	
 		elif effect is ResHealEffect:
 			await caster.doAnimation(effect.cast_animation)
-			if ability.current_effect.base_heal > 0: 
-				CombatGlobals.calculateHealing(target, ability.current_effect.base_heal, ability.current_effect.use_multiplier)
-			if ability.current_effect.percent_heal > 0.0: 
-				CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_effect.percent_heal, ability.current_effect.use_multiplier)
+			if ability.current_action.base_heal > 0: 
+				CombatGlobals.calculateHealing(target, ability.current_action.base_heal, ability.current_action.use_multiplier)
+			if ability.current_action.percent_heal > 0.0: 
+				CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_action.percent_heal, ability.current_action.use_multiplier)
 		
 		elif effect is ResHealResolveEffect:
 			CombatGlobals.healResolve(target.combatant_resource, effect.amount)
@@ -49,25 +49,25 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			CombatGlobals.addTension(effect.add_amount, caster.combatant_resource, target.combatant_resource)
 			await applyAbilityEffects(caster, target, ability)
 		
-		elif ability.current_effect is ResChangeIdleEffect and target.temporary_idle != ability.current_effect.idle_name:
-			target.temporary_idle = ability.current_effect.idle_name
+		elif ability.current_action is ResChangeIdleEffect and target.temporary_idle != ability.current_action.idle_name:
+			target.temporary_idle = ability.current_action.idle_name
 			target.playIdle()
 		
-		elif ability.current_effect is ResStatModifierEffect:
+		elif ability.current_action is ResStatModifierEffect:
 			target.combatant_resource.addTemporaryModifer(
 				ability.name, 
-				ability.current_effect.duration,
-				ability.current_effect.getModifications(),
-				ability.current_effect.stacks,
-				ability.current_effect.duration_type == ResStatModifierEffect.DurationType.BATTLE,
-				ability.current_effect.resistable
+				ability.current_action.duration,
+				ability.current_action.getModifications(),
+				ability.current_action.stacks,
+				ability.current_action.duration_type == ResStatModifierEffect.DurationType.BATTLE,
+				ability.current_action.resistable
 				)
 		
-		elif ability.current_effect is ResCleanseEffect:
-			CombatGlobals.removeStatusEffect(target.combatant_resource, ability.current_effect.cleanse_status.name)
+		elif ability.current_action is ResCleanseEffect:
+			CombatGlobals.removeStatusEffect(target.combatant_resource, ability.current_action.cleanse_status.name)
 		
-		elif ability.current_effect is ResDotEffect:
-			var dot_data = ability.current_effect.getDot(target.combatant_resource)
+		elif ability.current_action is ResDotEffect:
+			var dot_data = ability.current_action.getDot(target.combatant_resource)
 			CombatGlobals.addStatusEffect(target.combatant_resource, dot_data[0], false, dot_data[1])
 		
 	await CombatGlobals.getCombatScene().get_tree().process_frame
@@ -75,51 +75,51 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 
 # Determine if target(s) are single or multi then apply ability effects
 static func applyAbilityEffects(caster: CombatantScene, target, ability: ResAbility):
-	if ability.current_effect == null:
-		ability.current_effect = ability.basic_effects[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
+	if ability.current_action == null:
+		ability.current_action = ability.action_sequence[0] # Mainly to fix follow up ability, as the projectile only runs THIS function and nothin else. Bugs later? idc.
 	
-#	if target is Array and ability.current_effect.is_combo_effect and ability.current_effect.effect_only_combo_targets:
+#	if target is Array and ability.current_action.is_combo_effect and ability.current_action.effect_only_combo_targets:
 #		target = target.filter(func(combatant): return combatant.hasStatusEffect('Combo'))
 	if target is Array:
 		for t in target: 
 			applyToTarget(caster, t, ability)
-			if ability.current_effect.animate_on == 0: 
+			if ability.current_action.animate_on == 0: 
 				await playAnimation(ability, t)
 	else:
 		applyToTarget(caster, target, ability)
-		if ability.current_effect.animate_on == 0: 
+		if ability.current_action.animate_on == 0: 
 			await playAnimation(ability, target)
 
 static func playAnimation(ability: ResAbility, target):
 	if target is CombatantScene:
 		target = target.combatant_resource
 	
-	if ability.current_effect.animation != null and ability.current_effect.animation_time >= 0.0:
-		await CombatGlobals.playAbilityAnimation(target, ability.current_effect.animation, ability.current_effect.animation_time)
-	elif ability.current_effect.animation != null:
-		CombatGlobals.playAbilityAnimation(target, ability.current_effect.animation, ability.current_effect.animation_time)
+	if ability.current_action.animation != null and ability.current_action.animation_time >= 0.0:
+		await CombatGlobals.playAbilityAnimation(target, ability.current_action.animation, ability.current_action.animation_time)
+	elif ability.current_action.animation != null:
+		CombatGlobals.playAbilityAnimation(target, ability.current_action.animation, ability.current_action.animation_time)
 
 # Combat values calculations (damage, healing, etc.) APPLIES ON ATTACK HITBOX
 static func applyToTarget(caster, target, ability: ResAbility):
-	if ability.current_effect is ResAttackEffect:
+	if ability.current_action is ResAttackEffect:
 		CombatGlobals.calculateDamage(
 				caster, 
 				target, 
-				ability.current_effect.damage_modifier, 
-				ability.current_effect.can_crit, 
+				ability.current_action.damage_modifier, 
+				ability.current_action.can_crit, 
 				'', 
-				ability.current_effect.indicator_bb,
-				ability.current_effect.getAttackBonuses(target.combatant_resource)
+				ability.current_action.indicator_bb,
+				ability.current_action.getAttackBonuses(target.combatant_resource)
 				)
-#		if ability.current_effect.plant_self_on_combo and target.combatant_resource.hasStatusEffect('Combo'):
-#			ability.current_effect.do_not_return_pos = true
+#		if ability.current_action.plant_self_on_combo and target.combatant_resource.hasStatusEffect('Combo'):
+#			ability.current_action.do_not_return_pos = true
 		
-#		if (target.combatant_resource.hasStatusEffect('Combo') and ability.current_effect.is_combo_effect): #and !ability.current_effect.plant_self_on_combo:
+#		if (target.combatant_resource.hasStatusEffect('Combo') and ability.current_action.is_combo_effect): #and !ability.current_action.plant_self_on_combo:
 #			#CombatGlobals.manual_call_indicator_bb.emit(target.combatant_resource, 'COMBO!!', 'Show', '[img]res://images/sprites/icon_combo.png[/img] [color=turquoise]')
 #			target.combatant_resource.getStatusEffect('Combo').removeStatusEffect()
 	
-	elif ability.current_effect is ResCustomDamageEffect:
-		if !ability.current_effect.use_caster:
+	elif ability.current_action is ResCustomDamageEffect:
+		if !ability.current_action.use_caster:
 			caster = null
 		else:
 			caster = caster.combatant_resource
@@ -127,38 +127,38 @@ static func applyToTarget(caster, target, ability: ResAbility):
 			target = target.combatant_resource
 		CombatGlobals.calculateRawDamage(
 			target, 
-			ability.current_effect.damage,
+			ability.current_action.damage,
 			caster, 
-			ability.current_effect.can_crit, 
-			ability.current_effect.crit_chance, 
-			ability.current_effect.variation, 
-			ability.current_effect.trigger_on_hits, 
+			ability.current_action.can_crit, 
+			ability.current_action.crit_chance, 
+			ability.current_action.variation, 
+			ability.current_action.trigger_on_hits, 
 			'', 
-			ability.current_effect.indicator_bb,
-			ability.current_effect.bonus_stats
+			ability.current_action.indicator_bb,
+			ability.current_action.bonus_stats
 			)
 	
-	elif ability.current_effect is ResApplyStatusEffect:
-		if ability.current_effect.target == ability.current_effect.Target.TARGET:
+	elif ability.current_action is ResApplyStatusEffect:
+		if ability.current_action.target == ability.current_action.Target.TARGET:
 			if target is CombatantScene:
 				target = target.combatant_resource
-		elif ability.current_effect.target == ability.current_effect.Target.CASTER:
+		elif ability.current_action.target == ability.current_action.Target.CASTER:
 			if target is CombatantScene:
 				target = caster.combatant_resource
 			else:
 				target = caster
 		CombatGlobals.addStatusEffect(
 			target, 
-			ability.current_effect.status_effect,
-			ability.current_effect.guaranteed,
-			{'bonus_duration': ability.current_effect.add_duration}
+			ability.current_action.status_effect,
+			ability.current_action.guaranteed,
+			{'bonus_duration': ability.current_action.add_duration}
 			)
 	
-#	elif ability.current_effect is ResHealEffect:
-#		if ability.current_effect.base_heal > 0: 
-#			CombatGlobals.calculateHealing(target, ability.current_effect.base_heal, ability.current_effect.use_multiplier)
-#		if ability.current_effect.percent_heal > 0.0: 
-#			CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_effect.percent_heal, ability.current_effect.use_multiplier)
+#	elif ability.current_action is ResHealEffect:
+#		if ability.current_action.base_heal > 0: 
+#			CombatGlobals.calculateHealing(target, ability.current_action.base_heal, ability.current_action.use_multiplier)
+#		if ability.current_action.percent_heal > 0.0: 
+#			CombatGlobals.calculatePercentHealing(target.combatant_resource, ability.current_action.percent_heal, ability.current_action.use_multiplier)
 		
 # Attack animations (Ranged, melee)
 static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbility, damage_effect: ResAttackEffect):
@@ -182,7 +182,7 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 		returnToPosition(damage_effect, caster)
 	
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED or (damage_effect.damage_type == damage_effect.DamageType.ADAPTIVE and caster_rank >= 2):
-		#animation_data['projectile_texture'] = ability.current_effect.projectile_texture
+		#animation_data['projectile_texture'] = ability.current_action.projectile_texture
 		if caster_position != caster_rank_position:
 			await returnToPosition(damage_effect, caster)
 		await caster.doAnimation(pickAnimation(caster, 'Ranged'), ability.ability_script, 
@@ -190,12 +190,12 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 				'target'=target,
 				'frame_time'=0.4,
 				'ability'=ability, 
-				'projectile_texture'=ability.current_effect.projectile_texture
+				'projectile_texture'=ability.current_action.projectile_texture
 			}
 		)
 	
 	elif damage_effect.damage_type == damage_effect.DamageType.RANGED_PIERCING:
-		#animation_data['projectile_texture'] = ability.current_effect.projectile_texture
+		#animation_data['projectile_texture'] = ability.current_action.projectile_texture
 		if caster_position != caster_rank_position:
 			await returnToPosition(damage_effect, caster)
 		await caster.doAnimation(pickAnimation(caster, 'Ranged'), ability.ability_script, 
@@ -203,7 +203,7 @@ static func doAttackAnimations(caster: CombatantScene, target, ability:ResAbilit
 				'target'=null,
 				'frame_time'=0.4,
 				'ability'=ability, 
-				'projectile_texture'=ability.current_effect.projectile_texture
+				'projectile_texture'=ability.current_action.projectile_texture
 			}
 		)
 

@@ -19,8 +19,8 @@ static func run(effect,target,status_effect):
 		var damage = effect.damage
 		if effect.percentage_health_damage > 0:
 			damage += ceil(status_effect.afflicted_combatant.getMaxHealth() * effect.percentage_health_damage)
-		if effect.rank_scaling:
-			damage *= status_effect.current_rank
+#		if effect.rank_scaling:
+#			damage *= status_effect.current_rank
 		if effect.duration_scaling:
 			damage *= min(status_effect.duration, status_effect.max_duration)+1
 		#effect.bonus_stats['is_dot']=true
@@ -69,14 +69,14 @@ static func checkApplyOnce(effect: ResBasicEffect, status_effect: ResStatusEffec
 #	return (status_effect.tick_any_turn and status_effect.apply_once) or !status_effect.tick_any_turn
 
 static func changeStat(effect: ResStatChangeEffect, status_effect: ResStatusEffect):#,target:ResCombatant):
-	var scale
-	if effect.rank_scaling:
-		scale = status_effect.current_rank
-	else:
-		scale = 0
+#	var scale
+#	if effect.rank_scaling:
+#		scale = status_effect.current_rank
+#	else:
+#		scale = 0
 	
 	CombatGlobals.modifyStat(
 		status_effect.afflicted_combatant, 
-		effect.getStatChanges(scale), 
+		effect.getStatChanges(), 
 		status_effect.name
 		)

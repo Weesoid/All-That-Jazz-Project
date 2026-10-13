@@ -15,7 +15,7 @@ enum TargetGroup {
 @export var name: String
 @export_multiline var description: String
 @export var icon: Texture = preload("res://images/ability_icons/default.png")
-@export var basic_effects: Array[ResAbilityEffect]
+@export var action_sequence: Array[ResAbilityEffect]
 @export var animation: PackedScene
 @export var ability_script: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
 @export var target_type: TargetType
@@ -23,12 +23,12 @@ enum TargetGroup {
 @export var caster_position: Dictionary = {'min':0, 'max':3}
 @export var target_position: Dictionary = {'min':0, 'max':3}
 @export var charges: int = 0
-@export var required_effect: Dictionary = {'status_effect': null, 'rank': 0}
+@export var required_effect: ResStatusEffect
 @export var tension_cost: int = 0
 @export var instant_cast: bool = false
 #@export var required_level = 0
 
-var current_effect: ResAbilityEffect
+var current_action: ResAbilityEffect
 var current_charge: int
 var enabled: bool = true
 var default_properties:Dictionary={}
@@ -79,7 +79,7 @@ func getValidTargets(combatants: Array[ResCombatant], is_caster_player: bool):
 func canUse(caster: ResCombatant, targets=null):
 	if caster is ResPlayerCombatant and CombatGlobals.tension < tension_cost:
 		return false
-	if required_effect['status_effect'] != null and !(caster.hasStatusEffect(required_effect['status_effect'].name) and caster.getStatusEffect(required_effect['status_effect'].name).current_rank >= required_effect['rank']):
+	if required_effect != null and !caster.hasStatusEffect(required_effect.name):
 		return false
 	if charges > 0 and CombatGlobals.getCombatScene().getChargesLeft(caster, self) <= 0:
 		return false
@@ -121,17 +121,17 @@ func getRichDescription(with_name=true)-> String:
 	if instant_cast:
 		rich_description += ' [img]%s[/img]' % "res://images/sprites/icon_fast_cast.png"
 	if isBasicAbility():
-		rich_description += '\n '+CombatGlobals.getBasicEffectsDescription(basic_effects)
+		rich_description += '\n '+CombatGlobals.getBasicEffectsDescription(action_sequence)
 	if description != '':
 		rich_description += SettingsGlobals.bb_line
 		rich_description += description
-	if required_effect['status_effect'] != null:
+	if required_effect != null:
 		rich_description += SettingsGlobals.bb_line
-		var effect = CombatGlobals.loadStatusEffect(required_effect['status_effect'].name)
-		var rank = ''
-		if required_effect['rank'] > 0:
-			rank = effect.getIconColor(true)+str(required_effect['rank'])
-		rich_description += '[color=yellow]Requires[/color] %s%s' % [rank, effect.getMessageIcon()]
+		var effect = CombatGlobals.loadStatusEffect(required_effect.name)
+#		var rank = ''
+#		if required_effect['rank'] > 0:
+#			rank = effect.getIconColor(true)+str(required_effect['rank'])
+		rich_description += '[color=yellow]Requires[/color] %s' % effect.getMessageIcon()
 	if charges > 0 and !CombatGlobals.inCombat():
 		rich_description += SettingsGlobals.bb_line
 		rich_description += '[color=yellow] Uses: '+str(charges)
@@ -189,16 +189,16 @@ func setBBColor(image_path:String, bb_color:String):
 	return '[img %s]%s[/img]' % [bb_color.replace('[','').replace(']',''), image_path]
 
 func isBasicAbility():
-	return basic_effects.size() > 0
+	return action_sequence.size() > 0
 
 func isAttack():
-	for effect in basic_effects:
+	for effect in action_sequence:
 		if effect is ResAttackEffect: return true
 	
 	return false
 
 func isDamaging():
-	for effect in basic_effects:
+	for effect in action_sequence:
 		if effect is ResAttackEffect or effect is ResCustomDamageEffect: return true
 	
 	return false

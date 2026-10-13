@@ -9,15 +9,15 @@ class_name ResStatChangeEffect
 	'crit': 0.0,
 	'resist': 0.0
 }
-@export var rank_scaling = true
+#@export var rank_scaling = true
 
-func getStatChanges(current_rank: int=1):
+func getStatChanges(multiplier: int=1):
 	var out = {}
 	for key in status_change.keys():
 		if status_change[key] != 0: 
 			out[key] = status_change[key]
-			if current_rank != 0:
-				out[key] *= current_rank
+			if multiplier != 0:
+				out[key] *= multiplier
 	return out
 
 func _to_string():

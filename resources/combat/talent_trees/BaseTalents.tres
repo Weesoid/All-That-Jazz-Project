@@ -18,7 +18,6 @@ status_change = {
 "resist": 0.0,
 "speed": 0
 }
-rank_scaling = true
 apply_once = false
 message = ""
 sound_effect = ""

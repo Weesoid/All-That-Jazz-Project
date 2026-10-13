@@ -72,7 +72,7 @@ func startBlockCooldown():
 	block_timer.start(0.25)
 
 # These are perfect values, adjust accordingly
-# DEBT: Multiple hitbox frames, or multiple projectiles, probs better to just seperate these in the basic_effects seq tho
+# DEBT: Multiple hitbox frames, or multiple projectiles, probs better to just seperate these in the action_sequence seq tho
 func getBlockTier()-> BlockTiers:
 	var input_time = CombatGlobals.getCombatScene().active_combatant.combatant_scene.animator.current_animation_position
 	var combat_scene: CombatScene = CombatGlobals.getCombatScene()

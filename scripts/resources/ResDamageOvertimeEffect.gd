@@ -19,9 +19,9 @@ enum DotEffect {
 ## Returns [<effect>, <override_data>]
 func getDotEffect(target:ResCombatant=null):
 	var effect:String
-	var temp = bonus_condition.isPassed(target)
-	var conditions_passed = target != null and temp
-	print('cond passed? ', target != null, ' and ', temp)
+	#var temp = bonus_condition.isPassed(target)
+	var conditions_passed = bonus_condition != null and target != null and bonus_condition.isPassed(target)
+	#print('cond passed? ', target != null, ' and ', temp)
 	var calculated_damage = damage if !conditions_passed else damage + conditional_bonuses['damage']
 	var calculated_duration = duration if !conditions_passed else duration + conditional_bonuses['duration']
 	

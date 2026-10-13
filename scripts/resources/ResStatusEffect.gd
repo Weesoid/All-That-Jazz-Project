@@ -17,7 +17,6 @@ enum RemoveType {
 	GET_MISSED,
 	ROUND_START,
 	GAIN_TP,
-	MAXED_RANK,
 	MAXED_DURATION
 }
 enum RemoveStyle {
@@ -58,7 +57,7 @@ enum TickType {
 @export var max_duration: int = 1
 @export var extend_duration: int = 1
 @export var apply_extend_duration:  bool = false
-@export var max_rank: int
+#@export var max_rank: int
 @export_subgroup('Audio / Visuals')
 @export var style: StatusStyle
 @export var custom_style_color: Color
@@ -71,7 +70,7 @@ enum TickType {
 @export var remove_on_brink: bool = false
 var apply_once = true
 var duration:int
-var current_rank = 1
+#var current_rank = 1
 var afflicted_combatant: ResCombatant
 var attached_data
 var status_visuals
@@ -79,7 +78,7 @@ var parent_path: String
 
 signal ticked
 signal expired
-signal rank_up
+#signal rank_up
 
 func initializeStatus():
 	#icon = TextureRect.new()
@@ -128,10 +127,10 @@ func isDoT()->bool:
 			return true
 	
 	return false
-
-func isMaxRank()->bool:
-#	print(current_rank, ' vs ', max_rank)
-	return current_rank >= max_rank
+#
+#func isMaxRank()->bool:
+##	print(current_rank, ' vs ', max_rank)
+#	return current_rank >= max_rank
 
 func isMaxDuration()->bool:
 	print(duration, ' vs ', max_duration)
@@ -166,6 +165,9 @@ func animateStatusEffect():
 func getRichDescription():
 	return CombatGlobals.getBasicEffectsDescription(basic_effects)
 
+func addDuration(bonus_amount:int=0, amount:int=extend_duration):
+	duration = min(duration+amount+bonus_amount, max_duration)
+
 func getDescription():
 	var out_description = description
 	if isDoT(): 
@@ -177,7 +179,7 @@ func getDescription():
 		duration
 		] + '[/color]'
 		out_description += '\n' + dot_description
-	if max_rank > 0: out_description += ' (%s/%s)' % [current_rank, max_rank]
+	#if max_rank > 0: out_description += ' (%s/%s)' % [current_rank, max_rank]
 	return out_description
 
 func _to_string():

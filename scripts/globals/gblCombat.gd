@@ -574,29 +574,18 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		status_effect.afflicted_combatant = target
 		status_effect.initializeStatus()
 		target.status_effects.append(status_effect)
+		status_effect.duration += override_data.get('bonus_duration',0)
 		if status_effect.sounds['apply'] != '' and getCombatScene().round_count > 0: 
 			OverworldGlobals.playSound(status_effect.sounds['apply'])
-		#elif getCombatScene().round_count > 0:
-		#	OverworldGlobals.playSound("res://audio/sounds/536805__egomassive__gun_1.ogg",-)
 	else:
-		rankUpStatusEffect(target, status_effect)
-	
-	if override_data.has('bonus_duration'):
-		status_effect.duration += override_data['bonus_duration']
-#		if status_effect.max_rank > 0:
-#			if target.getStatusEffect(status_effect.name).current_rank < status_effect.max_rank:
-#				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Up')
-#			elif target.getStatusEffect(status_effect.name).current_rank >= status_effect.max_rank:
-#				manual_call_indicator.emit(target, status_effect.getMessageIcon(), 'Status_Max')
+		target.getStatusEffect(status_effect.name).addDuration(override_data.get('bonus_duration',0))
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
+	
 	if target.hasStatusEffect(status_effect.name) and !status_effect.hide_icon: # Because some effects get removed on apply!
 		manual_call_indicator.emit(target, status_effect.getMessageIcon()+' '+status_effect.getIconColor(true)+status_effect.name, 'Show',true)
-	#print(status_effect.current_rank, ' / ', status_effect.max_rank)
 	
 	var target_effect = target.getStatusEffect(status_effect.name)
-	if target_effect.remove_when.has(ResStatusEffect.RemoveType.MAXED_RANK) and target_effect != null and target_effect.isMaxRank():
-		removeStatusEffect(target, status_effect.name)
 	if target_effect.remove_when.has(ResStatusEffect.RemoveType.MAXED_DURATION) and target_effect != null and target_effect.isMaxDuration():
 		removeStatusEffect(target, status_effect.name)
 
@@ -628,18 +617,18 @@ func runReaction(target: ResCombatant, effectA: String, effectB: String, reactio
 	removeStatusEffect(target, effectB)
 	execute_ability.emit(target, reaction)
 
-func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
-	for effect in afflicted_target.status_effects:
-		if effect.name == status_effect.name:
-			if effect.duration + status_effect.extend_duration > effect.max_duration:
-				effect.duration = effect.max_duration
-			else:
-				effect.duration += status_effect.extend_duration
-			if effect.current_rank != effect.max_rank and effect.max_rank != 0:
-				print('RANKIN UP!')
-				effect.apply_once = true
-				effect.current_rank += 1
-				effect.rank_up.emit()
+#func rankUpStatusEffect(afflicted_target: ResCombatant, status_effect: ResStatusEffect):
+#	for effect in afflicted_target.status_effects:
+#		if effect.name == status_effect.name:
+#			if effect.duration + status_effect.extend_duration > effect.max_duration:
+#				effect.duration = effect.max_duration
+#			else:
+#				effect.duration += status_effect.extend_duration
+#			if effect.current_rank != effect.max_rank and effect.max_rank != 0:
+#				print('RANKIN UP!')
+#				effect.apply_once = true
+#				effect.current_rank += 1
+#				effect.rank_up.emit()
 
 func spawnIndicator(position: Vector2, message:String, animation:String='Show',add_to:Node=null,time:float=1.0):
 	var indicator = load("res://scenes/user_interface/Indicator.tscn").instantiate()

@@ -6,7 +6,6 @@ enum AnimateOn {
 	CASTER
 }
 
-## This effect will not execute unless the target has a combo token
 @export var condition: ResEffectCondition
 @export var sound_effect: AudioStream
 @export var animation: PackedScene
