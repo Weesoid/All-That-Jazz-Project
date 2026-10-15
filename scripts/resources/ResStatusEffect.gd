@@ -42,7 +42,7 @@ enum TickType {
 @export var name: String
 @export_multiline var description: String
 @export var texture: Texture = preload("res://images/status_icons/icon_unknown.png")
-@export var basic_effects: Array[ResBasicEffect]
+@export var effect_sequence: Array[ResBasicEffect]
 @export_subgroup('Behaviour')
 @export var effect_type: EffectType
 @export var seperate_instances:bool=false
@@ -58,7 +58,7 @@ enum TickType {
 @export var extend_duration: int = 1
 @export var apply_extend_duration:  bool = false
 #@export var max_rank: int
-@export_subgroup('Audio / Visuals')
+@export_subgroup('Audio & Visuals')
 @export var style: StatusStyle
 @export var custom_style_color: Color
 @export var packed_scene: PackedScene
@@ -122,7 +122,7 @@ func removeStatusEffect():
 	expired.emit()
 
 func isDoT()->bool:
-	for effect in basic_effects:
+	for effect in effect_sequence:
 		if effect is ResStatusDamageEffect and effect.identifier == 'tickdmg': 
 			return true
 	
@@ -163,7 +163,7 @@ func animateStatusEffect():
 			status_visuals.rotation_degrees = -180
 
 func getRichDescription():
-	return CombatGlobals.getBasicEffectsDescription(basic_effects)
+	return CombatGlobals.getBasicEffectsDescription(effect_sequence)
 
 func addDuration(bonus_amount:int=0, amount:int=extend_duration):
 	duration = min(duration+amount+bonus_amount, max_duration)
@@ -229,7 +229,7 @@ func getIconColor(as_bb:bool=false):
 	return Color.WHITE
 
 func getStatusModiferEffect():
-	for effect in basic_effects:
+	for effect in effect_sequence:
 		if effect is ResStatChangeEffect:
 			return effect
 	

@@ -6,7 +6,7 @@ static func applyOnHitEffects(target: ResCombatant, _caster: ResCombatant, _valu
 	runEffects(target, status_effect)
 
 static func runEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	for effect in status_effect.basic_effects:
+	for effect in status_effect.effect_sequence:
 		if effect.apply_on_expiry: continue
 		run(effect,target,status_effect)
 
@@ -44,7 +44,7 @@ static func run(effect,target,status_effect):
 		CombatGlobals.getCombatScene().callReinforcements()
 
 static func endEffects(target: ResCombatant, status_effect: ResStatusEffect):
-	var expiry_effects = status_effect.basic_effects.filter(func(effect): return effect.apply_on_expiry)
+	var expiry_effects = status_effect.effect_sequence.filter(func(effect): return effect.apply_on_expiry)
 	if target.stat_modifiers.has(status_effect.name):
 		CombatGlobals.resetStat(target, status_effect.name)
 	if !CombatGlobals.getCombatScene().isCombatValid():

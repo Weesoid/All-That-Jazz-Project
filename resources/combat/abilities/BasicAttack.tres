@@ -39,10 +39,9 @@ animate_on = 0
 [resource]
 script = ExtResource("1_k0byw")
 name = "Basic Attack"
-description = ""
 icon = ExtResource("3_oitjg")
 action_sequence = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_32f05")])
-ability_script = ExtResource("1_y24xu")
+instant_cast = true
 target_type = 0
 target_group = 1
 caster_position = {
@@ -54,9 +53,6 @@ target_position = {
 "min": 0
 }
 charges = 0
-required_effect = {
-"rank": 0,
-"status_effect": null
-}
 tension_cost = 0
-instant_cast = true
+description = ""
+ability_script = ExtResource("1_y24xu")

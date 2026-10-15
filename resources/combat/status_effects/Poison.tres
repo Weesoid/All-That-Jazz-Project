@@ -1,38 +1,19 @@
-[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=6 format=3 uid="uid://blm4dyw2h22m2"]
+[gd_resource type="Resource" script_class="ResStatusEffect" load_steps=4 format=3 uid="uid://blm4dyw2h22m2"]
 
 [ext_resource type="Script" path="res://scripts/resources/ResStatusEffect.gd" id="1_5ugit"]
-[ext_resource type="Script" path="res://scripts/resources/ResBasicEffectDamage.gd" id="1_va5wg"]
 [ext_resource type="Texture2D" uid="uid://cws4qm00g4avt" path="res://images/status_icons/icon_poison.png" id="3_1sqmf"]
 [ext_resource type="Script" path="res://scripts/combat/status_effects/scsBasicStatus.gd" id="4_3i67t"]
-
-[sub_resource type="Resource" id="Resource_h03bo"]
-script = ExtResource("1_va5wg")
-damage = 1
-percentage_health_damage = 0.0
-rank_scaling = false
-duration_scaling = false
-attack_bonuses = Array[Resource("res://scripts/resources/ResAttackBonus.gd")]([])
-crit_chance = -1.0
-variation = -1.0
-trigger_on_hits = false
-sound_path = "res://audio/sounds/46_Poison_01.ogg"
-indicator_bb = "[color=purple][img color=purple]res://images/status_icons/icon_poison.png[/img]"
-apply_once = false
-message = ""
-sound_effect = ""
-identifier = "tickdmg"
-apply_on_expiry = false
 
 [resource]
 script = ExtResource("1_5ugit")
 name = "Poison"
 description = "Target takes damage overtime."
 texture = ExtResource("3_1sqmf")
-basic_effects = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([SubResource("Resource_h03bo")])
+effect_sequence = Array[Resource("res://scripts/resources/ResBasicEffect.gd")]([])
 effect_type = 0
 seperate_instances = true
-status_script = ExtResource("4_3i67t")
 resistable = true
+status_script = ExtResource("4_3i67t")
 do_ticks = true
 tick_on_apply = false
 tick_type = 0
@@ -40,7 +21,6 @@ permanent = false
 max_duration = 1
 extend_duration = 1
 apply_extend_duration = false
-max_rank = 0
 style = 5
 custom_style_color = Color(0.74902, 0, 1, 1)
 hide_icon = false

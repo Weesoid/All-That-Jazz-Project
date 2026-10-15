@@ -13,19 +13,22 @@ enum TargetGroup {
 }
 
 @export var name: String
-@export_multiline var description: String
 @export var icon: Texture = preload("res://images/ability_icons/default.png")
 @export var action_sequence: Array[ResAbilityAction]
-@export var animation: PackedScene
-@export var ability_script: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
+@export var instant_cast: bool = false
+@export_subgroup('Targetting')
 @export var target_type: TargetType
 @export var target_group: TargetGroup = TargetGroup.ENEMIES
 @export var caster_position: Dictionary = {'min':0, 'max':3}
 @export var target_position: Dictionary = {'min':0, 'max':3}
+@export_subgroup('Conditionals')
 @export var charges: int = 0
-@export var required_effect: ResStatusEffect
 @export var tension_cost: int = 0
-@export var instant_cast: bool = false
+@export var required_effect: ResStatusEffect
+@export_subgroup('Flavour')
+@export var animation: PackedScene
+@export_multiline var description: String
+@export var ability_script: GDScript = preload("res://scripts/combat/abilities/scaBasicAbility.gd")
 #@export var required_level = 0
 
 var current_action: ResAbilityAction
@@ -39,7 +42,7 @@ signal multi_target(type)
 signal random_target(type)
 
 #func setupAttackBonuses():
-#	for effect in basic_effects:
+#	for effect in effect_sequence:
 #		if effect is ResAttackAction: effect.initializeAttackBonuses()
 
 func execute():
@@ -204,7 +207,7 @@ func isDamaging():
 	return false
 
 #func isOnslaught():
-#	return basic_effects.filter(func(effect): return effect is ResOnslaughtEffect).size() > 0
+#	return effect_sequence.filter(func(effect): return effect is ResOnslaughtEffect).size() > 0
 
 func mutateProperties(mutation: Dictionary):
 	if mutated:

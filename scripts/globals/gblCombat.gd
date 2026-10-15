@@ -559,7 +559,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		return
 	
 	for property in override_data.keys():
-		if property.contains('be_'): # be stands for basic_effect
+		if property.contains('be_') and !status_effect.effect_sequence.is_empty(): # be stands for basic_effect
 			var effect_overrides = override_data[property]
 			var id = property.split('_')[1]
 			var basic_effect = findBasicEffect(id, status_effect).duplicate()
@@ -591,7 +591,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 
 func findBasicEffect(identifer:String, status_effect: ResStatusEffect)-> ResBasicEffect:
 	var not_found=true
-	for effect in status_effect.basic_effects:
+	for effect in status_effect.effect_sequence:
 		if effect.identifier == identifer: return effect
 		
 	
@@ -600,12 +600,12 @@ func findBasicEffect(identifer:String, status_effect: ResStatusEffect)-> ResBasi
 
 func replaceBasicEffect(identifer:String, status_effect: ResStatusEffect, replacement:ResBasicEffect):
 	var old_effect
-	for effect in status_effect.basic_effects:
+	for effect in status_effect.effect_sequence:
 		if effect.identifier == identifer: 
 			old_effect = effect
 			return
 	
-	status_effect.basic_effects[status_effect.basic_effects.find(old_effect)] = replacement
+	status_effect.effect_sequence[status_effect.effect_sequence.find(old_effect)] = replacement
 
 func removeStatusEffect(combatant: ResCombatant, effect_name:String):
 	for effect in combatant.status_effects:
@@ -770,16 +770,16 @@ func animateTPParticle(amount,gainer,target,is_burnout:=false):
 			tp_particle.expulse(expulse_target)
 			await get_tree().create_timer(0.1).timeout
 
-func getBasicEffectsDescription(basic_effects:Array, seperator:bool=true):
+func getBasicEffectsDescription(effect_sequence:Array, seperator:bool=true):
 	var out = ''
 	
-	for i in range(basic_effects.size()):
-		var effect = basic_effects[i]
+	for i in range(effect_sequence.size()):
+		var effect = effect_sequence[i]
 		if effect == null:continue
 		if !effect.has_method('_to_string'):
 			continue
 		out+=effect._to_string()
-		if seperator and i != basic_effects.size()-1:
+		if seperator and i != effect_sequence.size()-1:
 			out += SettingsGlobals.bb_line
 		elif !seperator:
 			out += '\n'
