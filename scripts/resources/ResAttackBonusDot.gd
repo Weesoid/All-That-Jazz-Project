@@ -1,5 +1,5 @@
-extends ResAttackBonus
-class_name ResAttackDot
+extends ResDamageProperty
+class_name ResDamageDot
 
 @export var dot_effect: ResDamageOvertimeEffect
 

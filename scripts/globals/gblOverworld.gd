@@ -19,6 +19,7 @@ var entering_combat:bool=false
 var player_type: PlayerType = PlayerType.WILLIS
 var player_follower_count = 0
 var player: PlayerScene
+var anchor_combatant: ResPlayerCombatant
 
 signal update_patroller_modes(mode:int)
 signal party_damaged
@@ -432,6 +433,9 @@ func playMusic(filename:String,db=0.0):
 	add_child(audio_player)
 	audio_player.play()
 
+func playerInMap()-> bool:
+	return getCurrentMap().find_children('PlayerScene').size() > 0
+
 func playSound(filename: String, db=0.0, pitch = 1, random_pitch=true, end_signal=null):
 	var audio_player = AudioStreamPlayer.new()
 	audio_player.bus = "Sounds"
@@ -756,30 +760,39 @@ func isPlayerSquadDead():
 	
 	return true
 
-
-
-func damageParty(damage:int, lethal:bool=false):
-	for member in getCombatantSquad('Player'):
-		if member.isDead(): continue
+func damageParty(damage:int, lethal:bool=true):
+	var member_died:bool = false
+	var squad = getCombatantSquad('Player')
+	squad.sort_custom(
+		func(mem_a:ResPlayerCombatant, mem_b:ResPlayerCombatant):
+			return mem_a.percent_health < mem_b.percent_health
+			)
+	for member in squad:
+		if member.isDead():
+			continue
 		member.changeHealth(-int(damage))
-		#member.stat_values['health'] -= int(damage)
-		if !lethal and member.isDead():
+		if (!lethal and member.isDead()) or (member == anchor_combatant and getLivingMembers(squad, anchor_combatant).size() > 0):
 			member.changeHealth(1,true)
 		if member.isDead():
 			OverworldGlobals.playSound("res://audio/sounds/542039__rob_marion__gasp_sweep-shot_1.ogg")
-	
+			member_died = true
+			lethal = false
 	if !isPlayerSquadDead():
 		OverworldGlobals.player.player_camera.shake(15.0,10.0)
 		playSound('522091__magnuswaker__pound-of-flesh-%s.ogg' % randi_range(1, 2), -6.0)
 		party_damaged.emit()
-		#var pop_up = load("res://scenes/user_interface/HealthPopUp.tscn").instantiate()
-		#OverworldGlobals.player.player_camera.add_child(pop_up)
 	else:
-		player.do_gravity=false
+		#player.do_gravity=false
 		setPlayerInput(false,true)
 		await get_tree().create_timer(0.25).timeout
 		showGameOver()
 	await player.player_camera.flash(Color.RED,0.2,0.05)
+
+func getLivingMembers(squad: Array[ResCombatant], exclude:ResCombatant=null):
+	var living = []
+	for member in squad:
+		if !member.isDead() and member != exclude: living.append(member)
+	return living
 
 func getCamera()-> DynamicCamera:
 	return player.player_camera

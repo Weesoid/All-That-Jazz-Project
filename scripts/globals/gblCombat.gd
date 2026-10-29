@@ -1,5 +1,6 @@
 extends Node
 
+const TENSION_CAP:int = 4
 const BASE_CRIT = 0.05
 const BASE_RESIST = 0.05
 const BASE_VARIATION = 0.1
@@ -25,6 +26,8 @@ enum Enemy_Factions {
 #	'res://resources/combat/combatants_enemies/mercenaries/'
 #]
 var tension: int = 0
+var blocked_tension:int = 3
+
 var critical_bb = '[img color=red]res://images/status_icons/icon_crit_eye.png[/img][color=red]'
 var damage_shake_strength := 5.0
 var damage_shake_speed := 9.0
@@ -38,14 +41,15 @@ signal exp_updated(value: float, max_value: float)
 signal received_combatant_value(combatant: ResCombatant, caster: ResCombatant, value)
 signal manual_call_indicator(combatant: ResCombatant, text: String, animation: String)
 signal status_effect_added(combatant: ResCombatant, status_effect: ResStatusEffect)
+signal party_status_added(status_effect: ResStatusEffect)
 signal execute_ability(target, ability: ResAbility)
 signal qte_finished()
 signal ability_finished
 signal ability_casted(ability: ResAbility)
-signal tension_changed(gainer,target)
+signal tension_changed
+signal blocked_tp_changed
 signal ability_selected(ability)
 signal ability_cancelled(ability)
-signal tp_changed(health, combatant)
 
 #********************************************************************************
 # COMBAT PROGRESSION / SIGNALS
@@ -60,23 +64,23 @@ func loadFaction(faction:Enemy_Factions)-> ResFaction:
 # ability EFFECTS & UTILITY
 #********************************************************************************
 ## Calculate damage using basic formula and parameters
-func calculateDamage(caster, target, modifier, can_crit = true, sound:String='', indicator_bb_code: String='', attack_bonuses: Dictionary={}):
+func calculateDamage(caster, target, modifier, can_crit = true, sound:String='', indicator_bb_code: String='', damage_properties: Dictionary={}):
 	if caster is CombatantScene:
 		caster = caster.combatant_resource
 	if target is CombatantScene:
 		target = target.combatant_resource
 	if caster != null:
 		getCombatScene().combat_camera.shake(damage_shake_strength, damage_shake_speed)
-	damageTarget(caster, target, modifier, can_crit, sound, indicator_bb_code, attack_bonuses)
+	damageTarget(caster, target, modifier, can_crit, sound, indicator_bb_code, damage_properties)
 
 ## Calculate damage using custom formula and parameters
-func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, variation = -1.0, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', attack_bonuses:Dictionary={}):
+func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = false, crit_chance = -1.0, variation = -1.0, trigger_on_hits = false, sound:String='', indicator_bb_code:String='', damage_properties:Dictionary={}):
 	if !target is ResCombatant:
 		target = target.combatant_resource
-	var bonus_crit = attack_bonuses.get('crit',0)
+	var bonus_crit = damage_properties.get('crit',0)
 	var combatant_crit = caster.stat_values['crit']+bonus_crit+BASE_CRIT if caster != null else bonus_crit+BASE_CRIT
 	var damage_crit = crit_chance+bonus_crit
-	damage += attack_bonuses.get('damage',0)
+	damage += damage_properties.get('damage',0)
 	#damage = target.stat_modifiers.
 	damage = calculateBlockedDamage(damage, target)
 	#print('calcd dmg after bluh: ', damage, ' >>> ', target.stat_values['block'])
@@ -88,17 +92,17 @@ func calculateRawDamage(target, damage, caster: ResCombatant = null, can_crit = 
 	if variation != -1.0:
 		damage = valueVariate(damage, variation)
 	if can_crit and ((caster != null and randomRoll(combatant_crit)) or (crit_chance != -1.0 and randomRoll(damage_crit))):
-		damage = doCritEffects(damage, caster, attack_bonuses.get(CombatExtras.CRIT_AMP,0))
+		damage = doCritEffects(damage, caster, damage_properties.get(CombatExtras.CRIT_AMP,0))
 		indicator_bb_code += critical_bb
 	target.changeHealth(-int(damage))
 	if caster != null:
 		getCombatScene().combat_camera.shake(damage_shake_strength, damage_shake_speed)
-	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits, attack_bonuses)
+	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, trigger_on_hits, damage_properties)
 
 ## Basic damage calculations
-func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, can_crit: bool, sound:String='', indicator_bb_code: String='', attack_bonuses: Dictionary={}):
-	var damage = (caster.stat_values['damage'] + attack_bonuses.get('damage',0)) * (calcDamageModifier(caster) * modifier)
-	var crit_chance = BASE_CRIT + caster.stat_values['crit']+attack_bonuses.get('crit',0)
+func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, can_crit: bool, sound:String='', indicator_bb_code: String='', damage_properties: Dictionary={}):
+	var damage = (caster.stat_values['damage'] + damage_properties.get('damage',0)) * (calcDamageModifier(caster) * modifier)
+	var crit_chance = BASE_CRIT + caster.stat_values['crit']+damage_properties.get('crit',0)
 	var dmg_variation = BASE_VARIATION + caster.stat_values['dmg_variance']
 	
 	damage = valueVariate(damage, dmg_variation)
@@ -111,13 +115,13 @@ func damageTarget(caster: ResCombatant, target: ResCombatant, modifier:float, ca
 		damage = 1
 	
 	if randomRoll(crit_chance) and can_crit:
-		damage = doCritEffects(damage, caster, attack_bonuses.get(CombatExtras.CRIT_AMP,0))
+		damage = doCritEffects(damage, caster, damage_properties.get(CombatExtras.CRIT_AMP,0))
 		indicator_bb_code += critical_bb
-	#if attack_bonuses.has('non-lethal') and target.stat_values['health']-damage <= 0:
+	#if damage_properties.has('non-lethal') and target.stat_values['health']-damage <= 0:
 	#	damage = 0
 	
 	target.changeHealth(-int(damage))
-	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, true, attack_bonuses)
+	doPostDamageEffects(caster, target, damage, sound, indicator_bb_code, true, damage_properties)
 
 func calculateBlockedDamage(damage:int, combatant:ResCombatant)-> int:
 	if !combatant is ResPlayerCombatant or combatant.stat_values.get('block',0) == 0:
@@ -190,14 +194,17 @@ func doPostDamageEffects(caster: ResCombatant, target: ResCombatant, damage, sou
 		addStatusEffect(target, dot_data[0], false, dot_data[1])
 	
 	if bonus_stats.has('move'):
-		var move_data:ResAttackMove = bonus_stats['move']
+		var move_data:ResDamageMove = bonus_stats['move']
 		getCombatScene().moveCombatant(target, move_data.getDirection(),move_data.move_count)
 	
 	if bonus_stats.has('tp') and caster is ResPlayerCombatant:
 		addTension(bonus_stats['tp'], caster, target)
 	
+	if bonus_stats.has('limit_tp'):
+		addBlockedTension(bonus_stats['limit_tp'])
+	
 	if bonus_stats.has('stat_modifiers'):
-		var attack_modifier: ResAttackBonusStatModifiers = bonus_stats['stat_modifiers']
+		var attack_modifier: ResDamageStatModifiers = bonus_stats['stat_modifiers']
 		var ability = getCombatScene().selected_ability
 		var key = ability.name if ability.name != '' else str(caster.name+' Ability '+str(caster.ability_set.find(ability)))
 		target.addTemporaryModifer(key, attack_modifier.duration, attack_modifier.stat_modifiers, attack_modifier.stacks, attack_modifier.per_battle, attack_modifier.resistable)
@@ -543,6 +550,8 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 	var status_effect: ResStatusEffect
 	var path
 	var resist_chance = BASE_RESIST + target.stat_values['resist']
+	
+	# Validation
 	if effect is String:
 		path = str("res://resources/combat/status_effects/"+effect.replace(' ', '')+".tres")
 		assert(FileAccess.file_exists(path), 'Could not find "%s" effect!' % effect)
@@ -558,6 +567,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 	if status_effect.remove_on_brink and target.isOnBrink():
 		return
 	
+	# Property editing
 	for property in override_data.keys():
 		if property.contains('be_') and !status_effect.effect_sequence.is_empty(): # be stands for basic_effect
 			var effect_overrides = override_data[property]
@@ -569,6 +579,7 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 		elif status_effect.get(property) != null:
 			status_effect.set(property, override_data[property])
 	
+	# Application / Re-application
 	status_effect.parent_path = path
 	if !target.getStatusEffectNames().has(status_effect.name) or status_effect.seperate_instances:
 		status_effect.afflicted_combatant = target
@@ -579,12 +590,12 @@ func addStatusEffect(target: ResCombatant, effect, guaranteed:bool=false, overri
 			OverworldGlobals.playSound(status_effect.sounds['apply'])
 	else:
 		target.getStatusEffect(status_effect.name).addDuration(override_data.get('bonus_duration',0))
+	
+	# Misc
 	if status_effect.tick_on_apply:
 		target.getStatusEffect(status_effect.name).tick(false)
-	
 	if target.hasStatusEffect(status_effect.name) and !status_effect.hide_icon: # Because some effects get removed on apply!
 		manual_call_indicator.emit(target, status_effect.getMessageIcon()+' '+status_effect.getIconColor(true)+status_effect.name, 'Show',true)
-	
 	var target_effect = target.getStatusEffect(status_effect.name)
 	if target_effect.remove_when.has(ResStatusEffect.RemoveType.MAXED_DURATION) and target_effect != null and target_effect.isMaxDuration():
 		removeStatusEffect(target, status_effect.name)
@@ -734,30 +745,37 @@ func isWithinPlayerTier(enemy: ResEnemyCombatant)-> bool:
 	return enemy.tier+1 <= PlayerGlobals.getLevelTier()
 
 func addTension(amount: int,gainer:ResPlayerCombatant=null,target:ResCombatant=null):
-	if amount > 0 and gainer.hasStatusEffect('Burnout'):
-		if tension < 4: gainer.removeTokens(ResStatusEffect.RemoveType.GAIN_TP)
-		animateTPParticle(amount,gainer,target,true)
-		return
-	
-	if amount > 0 and tension < 4:
-		gainer.removeTokens(ResStatusEffect.RemoveType.GAIN_TP)
-	
-	#var show_particle:bool=false
-	#var previous_tension = tension
-	if tension + amount > 4:
-		amount = 4-tension
-	elif tension + amount < 0:
-		amount = 4
-	
-	tension += amount
-	#show_particle = amount > 0 and tension < 4
-	
-	tension_changed.emit(gainer,target)
-	if amount > 0 and gainer != null:
+	var initial_amount = amount
+	amount = max(0, amount-blocked_tension)
+	if initial_amount-amount > 0:
+		var clear_blocked = initial_amount-amount
+		removeBlockedTension(clear_blocked)
+		animateTPParticle(clear_blocked, gainer, target, true)
+		blocked_tp_changed.emit()
+	if tension + amount > getTensionCap():
+		amount = max(getTensionCap()-tension,0)
+	if amount > 0:
+		tension += amount
+		tension_changed.emit()
 		animateTPParticle(amount,gainer,target)
-		#tp_particle.global_position = from_target.global_position
-	if amount < 0:
-		getCombatScene().combat_ui.tension_bar.update()
+
+func removeTension(amount: int):
+	tension = max(0, tension-amount)
+	tension_changed.emit()
+
+func getTensionCap():
+	return TENSION_CAP-blocked_tension
+
+func addBlockedTension(amount:int):
+	blocked_tension = min(blocked_tension+amount, TENSION_CAP)
+	blocked_tp_changed.emit()
+	#if tension > getTensionCap():
+	#	tension = getTensionCap()
+	#	tension_changed.emit()
+
+func removeBlockedTension(amount:int):
+	blocked_tension = max(0, blocked_tension-amount)
+	blocked_tp_changed.emit()
 
 func animateTPParticle(amount,gainer,target,is_burnout:=false):
 	if amount > 0 and gainer != null:
@@ -765,7 +783,7 @@ func animateTPParticle(amount,gainer,target,is_burnout:=false):
 			var expulse_target = target.combatant_scene if target != null else gainer.combatant_scene
 			var tp_particle = load("res://scenes/miscellaneous/TensionParticle.tscn").instantiate()
 			tp_particle.is_burnout = is_burnout
-			tp_particle.finished.connect(getCombatScene().combat_ui.tension_bar.update)
+			#tp_particle.finished.connect(getCombatScene().combat_ui.tension_bar.update)
 			getCombatScene().add_child(tp_particle)
 			tp_particle.expulse(expulse_target)
 			await get_tree().create_timer(0.1).timeout

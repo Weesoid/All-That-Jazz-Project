@@ -1,5 +1,5 @@
-extends ResAttackBonus
-class_name ResAttackStatusEffect
+extends ResDamageProperty
+class_name ResDamageStatusEffect
 
 @export var status_effects: Array[ResStatusEffect]
 

@@ -1,8 +1,10 @@
 extends CharacterBody2D
 class_name PlayerScene
 
-@export var dialogue_name: String
+var fall_damage_threshold := 7
+const FALL_DAMAGE_SCALING := 0.2
 
+@export var dialogue_name: String
 @onready var sprite = $Sprite2D
 @onready var interaction_detector = $PlayerDirection/InteractionDetector
 @onready var animation_tree = $AnimationTree
@@ -29,7 +31,7 @@ var speed = 100.0
 var stamina_regen = true 
 var sprinting = false
 var climbing = false
-var fall_damage: int = 0
+var fall_damage: float = 0
 var ANIMATION_SPEED = 0.0
 var default_camera_pos: Vector2
 var diving = false
@@ -45,6 +47,7 @@ var fast_travelling:bool=false
 var shoot_ready := false
 var pulling_bow := false
 var shooting_bow := false
+var do_faceplant_anim := false
 
 signal jumped(jump_velocity)
 signal dived
@@ -68,9 +71,9 @@ func _ready():
 		add_child(load("res://scenes/components/DebugComponent.tscn").instantiate())
 	
 	OverworldGlobals.player = self
+	OverworldGlobals.anchor_combatant = load("res://resources/combat/combatants_player/Willis.tres")
 	
 	default_camera_pos = player_camera.position
-	landed.connect(playFootstep.unbind(1))
 	hud = [
 		melee_bar,
 		current_arrow_icon
@@ -79,8 +82,10 @@ func _ready():
 	await get_tree().process_frame
 	OverworldGlobals.loadFollowers()
 	OverworldGlobals.player_ready.emit()
-	print(sprite.offset)
-	print(sprite.position)
+	landed.connect(playFootstep.unbind(1))
+	landed.connect(doLandActions)
+#	print(sprite.offset)
+#	print(sprite.position)
 
 func _process(_delta):
 	updateAnimationParameters()
@@ -137,17 +142,17 @@ func _physics_process(delta):
 			setSpeed(PlayerGlobals.overworld_stats['walk_speed'],false)
 		velocity.x = 0
 		velocity.y += ProjectSettings.get_setting('physics/2d/default_gravity') * delta
-		fall_damage += 1
+		fall_damage += FALL_DAMAGE_SCALING
 		do_land_flag=true
 	
 	#print(fall_damage)
 	# Fall damage
 	if fall_damage != 0 and get_node('CombatantSquadComponent').combatant_squad.size() > 0 and is_on_floor():
-		var damage = floor(float(fall_damage)/5)
-		if damage < 6:
+		if fall_damage < fall_damage_threshold:
 			fall_damage = 0
 			return
-		OverworldGlobals.damageParty(damage,false)
+		do_faceplant_anim = true
+		OverworldGlobals.damageParty(floor(fall_damage))
 		fall_damage = 0
 		suddenStop()
 		resetStates()
@@ -173,19 +178,13 @@ func _physics_process(delta):
 		direction = direction.normalized()
 		
 		if Input.is_action_just_pressed("ui_accept") and canDive() and canDoStaminaAction(5.0):
-			#OverworldGlobals.showAfterImages(sprite)
 			dived.emit()
+			can_move=false
 			diving=true
 			jump(dive_strength)
 			dodge()
-			# GUT REWORK
-			#animation_player.play('Dive_2')
-			#await animation_player.animation_finished
 			collision_shape.set_deferred('disabled', false)
-			# GUT REWORK
-			#animation_player.play('RESET')
-			diving=false
-			can_move=true
+			OverworldGlobals.animateSprite('Player', 'dash',true)
 		
 		# Jump detector
 		if Input.is_action_just_pressed("ui_accept") and Input.is_action_pressed("ui_move_up") and is_on_floor() and velocity == Vector2.ZERO and isFacingUp()  and canDoStaminaAction(5) :
@@ -245,6 +244,25 @@ func _physics_process(delta):
 	# Ensure that stamina doesn't over regen
 	if PlayerGlobals.overworld_stats['stamina'] > 100.0:
 		PlayerGlobals.overworld_stats['stamina'] = 100.0
+
+func doLandActions(_from_climb):
+	var squash_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
+	var squash_sprite = sprite
+	
+	if do_faceplant_anim:
+		OverworldGlobals.animateSprite('Player', 'faceplant',true)
+		squash_sprite = anim_sprite
+		do_faceplant_anim = false
+	elif diving:
+		OverworldGlobals.animateSprite('Player', 'dash_land',true)
+		squash_sprite = anim_sprite
+	
+	squash_tween.tween_property(squash_sprite, 'scale', Vector2(1.05,0.95),0.05)
+	squash_tween.tween_property(squash_sprite, 'scale', Vector2(1,1),0.1)
+	await get_tree().create_timer(0.5).timeout
+	diving=false
+	can_move=true
+	OverworldGlobals.removeAnimationOverlap(self, OverworldGlobals.SpriteType.MAIN,true)
 
 func startBowPull():
 	bow_drawn.emit()
@@ -402,10 +420,10 @@ func canPullBow():
 	if !has_equipped_arrow and InventoryGlobals.hasArrows():
 		PlayerGlobals.equipNewArrowType()
 	
-	return !OverworldGlobals.inDialogue() and !UIGlobals.inMenu() and can_move and isMobile() and !diving and (isFacingSide() or isFacingUp()) and is_on_floor() and has_equipped_arrow#and has_arrow#and bow_cooldown.is_stopped()
+	return !OverworldGlobals.inDialogue() and !UIGlobals.inMenu() and can_move and isMobile() and !diving and (isFacingSide() or isFacingUp()) and is_on_floor() and has_equipped_arrow and isFacingSide()#and has_arrow#and bow_cooldown.is_stopped()
 
 func canShootBow()-> bool:
-	return can_move and shoot_ready and isMobile() #and velocity.x == 0
+	return can_move and shoot_ready and isMobile()#and velocity.x == 0
 
 func shootProjectile():
 	bow_line.hide()
@@ -502,6 +520,9 @@ func playFootstep():
 		FootstepSoundManager.playFootstep(global_position)
 
 func saveData(save_data: Array):
+	for item in save_data:
+		if item is EntitySaveData and item.scene_path == scene_file_path: return
+	
 	var data = EntitySaveData.new()
 	data.scene_path = scene_file_path
 	data.position = global_position

@@ -35,4 +35,6 @@ func setCharacter(combatant:ResPlayerCombatant):
 func setHealthValue(combatant):
 	character_health.value = combatant.stat_values['health']
 	character_health.max_value = combatant.getMaxHealth()
+	#if combatant.isDead():
+	#	modulate = Color.RED
 #character_health.max_value = combatant.getMaxHealth()

@@ -1,5 +1,5 @@
 extends Resource
-class_name ResAttackBonus
+class_name ResDamageProperty
 
 var target_text:String = 'Target: '#SettingsGlobals.ui_colors['down-bb']+'Target: [/color]'
 var self_text:String = 'Self: '#SettingsGlobals.ui_colors['up-bb']+'Self: [/color]'

@@ -1,5 +1,5 @@
-extends ResAttackBonus
-class_name ResAttackBonusTag
+extends ResDamageProperty
+class_name ResDamageTag
 
 @export var tag:String
 @export_multiline var override_description:String = 'Hey wees u should really add this tags description to CombatExtras.STAT_DESCRIPTIONS'

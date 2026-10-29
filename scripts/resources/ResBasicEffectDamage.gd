@@ -5,7 +5,7 @@ class_name ResStatusDamageEffect
 @export_range(0.0,1.0) var percentage_health_damage:float = 0.0
 #@export var rank_scaling:bool = false
 @export var duration_scaling:bool = false
-@export var attack_bonuses: Array[ResAttackBonus] = []
+@export var damage_properties: Array[ResDamageProperty] = []
 @export var crit_chance: float = -1.0
 @export var variation: float = -1.0
 @export var trigger_on_hits:bool = false
@@ -16,6 +16,6 @@ func _to_string():
 	return str(damage)
 
 func getAttackBonuses(target:ResCombatant):
-	var out = ResAttackAction.getPassedAttackBonuses(target, attack_bonuses)
+	var out = ResAttackAction.getPassedAttackBonuses(target, damage_properties)
 	out['is_dot'] = true
 	return out 

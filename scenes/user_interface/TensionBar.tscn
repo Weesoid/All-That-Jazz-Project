@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bm8b8sbn5hofk"]
+[gd_scene load_steps=9 format=3 uid="uid://ikl0qwx2xeah"]
 
 [ext_resource type="PackedScene" uid="uid://di5s6dqvu1lav" path="res://scenes/user_interface/CustomCountBar.tscn" id="1_55s7p"]
 [ext_resource type="Script" path="res://scripts/user_interface/uiTensionBar.gd" id="1_rqfnn"]
 [ext_resource type="Texture2D" uid="uid://8pm1is5hmm5c" path="res://images/user_interface/outlined_circle_empty.png" id="3_2icq2"]
 [ext_resource type="Texture2D" uid="uid://wk6a66h5sxj2" path="res://images/user_interface/tp_particle.png" id="4_p80jc"]
+[ext_resource type="Texture2D" uid="uid://gpmr1xw22t87" path="res://images/user_interface/empty_8x8.png" id="5_k7ftb"]
+[ext_resource type="Texture2D" uid="uid://bv0x3rmdu21dj" path="res://images/user_interface/slashed_tp.png" id="6_3uvu1"]
 
 [sub_resource type="Gradient" id="Gradient_o1g4r"]
 offsets = PackedFloat32Array(0, 0.99458)
@@ -45,4 +47,17 @@ alignment = 1
 max_value = 4
 empty_circle = ExtResource("3_2icq2")
 filled_circle = ExtResource("4_p80jc")
-fill_tween = 1
+
+[node name="LimitBar" parent="." instance=ExtResource("1_55s7p")]
+layout_mode = 1
+anchors_preset = 10
+anchor_bottom = 0.0
+offset_top = 8.0
+offset_bottom = 24.0
+grow_vertical = 1
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+max_value = 4
+empty_circle = ExtResource("5_k7ftb")
+filled_circle = ExtResource("6_3uvu1")

@@ -88,6 +88,7 @@ var ability_history = {}
 var ability_executing:bool=false
 var rebuking:bool=false
 var targeting:bool=false
+#var party_effects: Array[ResStatusEffect] = []
 
 signal confirm
 signal target_selected
@@ -542,6 +543,10 @@ func removeRoundStartTokens():
 	for combatant in getAllCombatants():
 		combatant.removeTokens(ResStatusEffect.RemoveType.ROUND_START)
 
+#func addPartyEffect(effect:ResStatusEffect):
+#	party_effects.append(effect)
+#	effect
+
 func executeAbility():
 	var remove_target_statuses = []
 	ability_executing=true
@@ -559,7 +564,7 @@ func executeAbility():
 			allowBlocking(target)
 	
 	if active_combatant is ResPlayerCombatant:
-		CombatGlobals.addTension(-selected_ability.tension_cost)
+		CombatGlobals.removeTension(selected_ability.tension_cost)
 	last_used_ability[active_combatant] = [selected_ability, target_combatant]
 	recordAbilityHistory(active_combatant, selected_ability)
 	
@@ -1119,6 +1124,7 @@ func concludeCombat(results: int):
 		combat_dialogue.disconnectSignal()
 		end_sentence = combat_dialogue.end_sentence
 	CombatGlobals.tension = 0
+	CombatGlobals.blocked_tension = 0
 	UIGlobals.setControllerAdapter(false)
 	queue_free()
 

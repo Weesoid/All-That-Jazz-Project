@@ -1,7 +1,7 @@
-extends ResAttackBonus
-class_name ResAttackTP
+extends ResDamageProperty
+class_name ResDamageTP
 
-@export var add_amount: int
+@export_range(1,4) var add_amount: int = 1
 
 func getAttackEffect(_target:ResCombatant=null):
 	return {'tp':add_amount}

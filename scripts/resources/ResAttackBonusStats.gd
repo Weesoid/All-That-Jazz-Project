@@ -1,5 +1,5 @@
-extends ResAttackBonus
-class_name ResAttackStats
+extends ResDamageProperty
+class_name ResDamageStats
 
 @export var stats:Dictionary= CombatExtras.ALL_STATS
 

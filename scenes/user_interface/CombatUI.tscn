@@ -329,6 +329,18 @@ libraries = {
 
 [node name="Timer" type="Timer" parent="."]
 
+[node name="StatusContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -40.0
+offset_right = 16.0
+offset_bottom = -8.0
+grow_vertical = 0
+alignment = 2
+
 [node name="TensionBar" parent="." instance=ExtResource("13_0p67n")]
 layout_mode = 1
 anchors_preset = 12

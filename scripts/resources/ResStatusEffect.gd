@@ -43,10 +43,12 @@ enum TickType {
 @export_multiline var description: String
 @export var texture: Texture = preload("res://images/status_icons/icon_unknown.png")
 @export var effect_sequence: Array[ResBasicEffect]
+#@export var party_effect:bool=false
 @export_subgroup('Behaviour')
 @export var effect_type: EffectType
 @export var seperate_instances:bool=false
 @export var resistable: bool = true
+#@export var shared_effect:bool=false
 @export var status_script: GDScript = preload("res://scripts/combat/status_effects/scsBasicStatus.gd")
 @export_subgroup('Tick Behaviour')
 @export var do_ticks: bool = true
@@ -78,6 +80,7 @@ var parent_path: String
 
 signal ticked
 signal expired
+signal reapplied
 #signal rank_up
 
 func initializeStatus():
@@ -98,7 +101,14 @@ func initializeStatus():
 		duration = max_duration
 	else:
 		duration = extend_duration
+		
+	#if shared_effect:
+		#hide_icon = true
+		#tick_type = TickType.ROUND_START
 	#print('parent path for %s: %s' % [name, parent_path])
+#	if party_effect:
+#		CombatGlobals.party_status_added(self)
+#	else:
 	CombatGlobals.status_effect_added.emit(afflicted_combatant, self)
 
 func onHitTick(combatant, caster, received_value):
@@ -167,6 +177,7 @@ func getRichDescription():
 
 func addDuration(bonus_amount:int=0, amount:int=extend_duration):
 	duration = min(duration+amount+bonus_amount, max_duration)
+	reapplied.emit()
 
 func getDescription():
 	var out_description = description

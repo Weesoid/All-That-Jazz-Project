@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dg4x3d37enifs"]
 
 [ext_resource type="Script" path="res://scripts/user_interface/uiHealtherPopUp.gd" id="1_t1cp8"]
-[ext_resource type="PackedScene" uid="uid://cvt7iywcifdfq" path="res://scenes/user_interface/CharacterBar.tscn" id="2_y0t3p"]
+[ext_resource type="PackedScene" uid="uid://bggioddtphuge" path="res://scenes/user_interface/CharacterBar.tscn" id="2_y0t3p"]
 
 [sub_resource type="Animation" id="Animation_p4d7x"]
 length = 0.001

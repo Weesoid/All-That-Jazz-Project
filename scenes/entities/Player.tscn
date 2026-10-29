@@ -1,4 +1,4 @@
-[gd_scene load_steps=92 format=3 uid="uid://c1arhxnusmxt3"]
+[gd_scene load_steps=94 format=3 uid="uid://c1arhxnusmxt3"]
 
 [ext_resource type="Script" path="res://scripts/entities/entPlayer.gd" id="1_ivxm1"]
 [ext_resource type="PackedScene" uid="uid://i21m5gws8dde" path="res://scenes/user_interface/MeleeCooldownBar.tscn" id="2_mk8cj"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cdkunqmsd5yml" path="res://scenes/components/MeleeHitbox.tscn" id="6_31qdv"]
 [ext_resource type="PackedScene" uid="uid://ca73rnpg85py1" path="res://scenes/components/CombatantSquad.tscn" id="6_ucs2i"]
 [ext_resource type="Texture2D" uid="uid://c6iacu5bntvp7" path="res://images/characters/willis/player_dive.png" id="9_30p1c"]
+[ext_resource type="Texture2D" uid="uid://c8nn87vbmr36y" path="res://images/characters/willis/faceplant_willis.png" id="10_4fk1e"]
 [ext_resource type="PackedScene" uid="uid://cplh3ysdnrlej" path="res://scenes/components/PlayerCamera.tscn" id="10_ay08a"]
 [ext_resource type="PackedScene" uid="uid://bxxs74ftwu3ck" path="res://scenes/combatants/Willis.tscn" id="10_kwsik"]
 [ext_resource type="Texture2D" uid="uid://cy7xx27fygue8" path="res://images/characters/willis/emotes.png" id="12_hpacg"]
@@ -48,13 +49,17 @@ region = Rect2(384, 0, 128, 128)
 atlas = ExtResource("12_hpacg")
 region = Rect2(256, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_10wyw"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_g44dd"]
 atlas = ExtResource("9_30p1c")
-region = Rect2(0, 0, 64, 64)
+region = Rect2(0, 0, 256, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4t1ew"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_585s8"]
 atlas = ExtResource("9_30p1c")
-region = Rect2(64, 0, 64, 64)
+region = Rect2(256, 0, 256, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jpt7s"]
+atlas = ExtResource("10_4fk1e")
+region = Rect2(0, 0, 256, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vsdnp"]
 atlas = ExtResource("12_hpacg")
@@ -110,14 +115,19 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_10wyw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4t1ew")
+"texture": SubResource("AtlasTexture_g44dd")
 }],
 "loop": false,
 "name": &"dash",
-"speed": 3.0
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_585s8")
+}],
+"loop": false,
+"name": &"dash_land",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -126,6 +136,14 @@ animations = [{
 "loop": false,
 "name": &"default",
 "speed": 120.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jpt7s")
+}],
+"loop": true,
+"name": &"faceplant",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -299,7 +317,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [9]
+"values": [8]
 }
 
 [sub_resource type="Animation" id="Animation_k0d16"]
@@ -316,7 +334,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [11]
+"values": [10]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -328,7 +346,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -357,7 +375,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [11]
+"values": [10]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -369,7 +387,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -398,7 +416,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [10, 9]
+"values": [8, 9]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1416,13 +1434,13 @@ position = Vector2(0, -33)
 shape = SubResource("CapsuleShape2D_8i7nm")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_50g8k")
-animation = &"crouch_pushdown"
+animation = &"faceplant"
 autoplay = "default"
+offset = Vector2(0, -32)
 
 [node name="Battler" parent="." instance=ExtResource("10_kwsik")]
-position = Vector2(0, -22)
+position = Vector2(0, -24)
 
 [node name="Sprite2D" parent="Battler" index="0"]
 flip_h = true

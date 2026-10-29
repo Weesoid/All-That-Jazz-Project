@@ -35,9 +35,11 @@ var TEST_ABILITY = load("res://resources/combat/abilities/BasicAttack.tres")
 @onready var tension_bar = $TensionBar
 @onready var inspector = $CombatInspection
 @onready var bottom_gradient = $Graident
+@onready var status_container = $StatusContainer
 var tension_orig_pos
 var rounds_orig_pos
 var ui_visible:bool
+#var shared_effects:Array[ResStatusEffect] = []
 
 func _ready():
 	hideUI()
@@ -51,36 +53,6 @@ func initialize():
 	for button in movements.get_children():
 		giveButtonFunction(button, button.ability)
 		button._ready()
-
-func increaseTensionBarAnimation(circles,increased_amount:int):
-	var increased = 0
-	for circle in circles:
-		if increased >= increased_amount:
-			break
-		var orig_pos = circle.position
-		var tween = create_tween().chain().set_trans(Tween.TRANS_CUBIC)
-		var modulate_tween = create_tween().chain()
-		tween.tween_property(circle,'position',circle.position+Vector2(0,-4),0.12).set_ease(Tween.EASE_IN)
-		tween.tween_property(circle,'position',orig_pos,0.6).set_ease(Tween.EASE_OUT)
-		modulate_tween.tween_property(circle,'modulate',tension_color,0.25)
-		modulate_tween.tween_property(circle,'modulate',Color.WHITE,1.0)
-		increased += 1
-		await get_tree().create_timer(0.1).timeout
-
-func decreaseTensionBarAnimation(circles, decrease_amount:int):
-	#combat_scene.battleFlash('Flash', tension_color)
-	var decreased = 0
-	for circle in circles:
-		if decreased >= decrease_amount:
-			break
-		var tween = create_tween().parallel()
-		tween.tween_property(circle,'scale',Vector2(2.0,2.0),0.2).set_ease(Tween.EASE_OUT)
-		tween.chain()
-		tween.tween_property(circle,'scale',Vector2(1.0,1.0),0.1).set_ease(Tween.EASE_OUT)
-		tween.tween_property(circle,'modulate',SettingsGlobals.ui_colors['down'],0.1)
-		tween.tween_property(circle,'modulate',Color.WHITE,0.2)
-		decreased +=1
-		await get_tree().create_timer(0.1).timeout
 
 func showAbilities(combatant: ResCombatant):
 	await get_tree().process_frame
@@ -132,8 +104,6 @@ func showAbilities(combatant: ResCombatant):
 		for child in getAbilityButtons():
 			if child.ability == last_used_ability[combatant][0]: 
 				child.grab_focus()
-	#else:
-	#	UIGlobals.setMenuFocus(ability_buttons)
 
 func getAbilityButtons():
 	return ability_buttons.get_children().filter(func(control): return control is Button)
@@ -149,9 +119,6 @@ func giveButtonFunction(button:CustomAbilityButton, ability:ResAbility):
 func castAbility(ability:ResAbility,weapon:ResWeapon=null):
 	combat_scene.forceCastAbility(ability, weapon)
 	hideUI()
-#	if ability.tension_cost > 0:
-#		setTensionBarVisible(true)
-#		showTensionCost(ability.tension_cost)
 
 func tweenAbilityButtons(buttons: Array, sound:String='536805__egomassive__gun_2.ogg'):
 	for button in buttons:

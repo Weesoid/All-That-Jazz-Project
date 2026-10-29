@@ -49,6 +49,10 @@ static func animate(caster: CombatantScene, target, ability:ResAbility):
 			CombatGlobals.addTension(effect.add_amount, caster.combatant_resource, target.combatant_resource)
 			await applyAbilityEffects(caster, target, ability)
 		
+		elif effect is ResLimitTPAction:
+			CombatGlobals.addBlockedTension(effect.amount)
+			await applyAbilityEffects(caster, target, ability)
+		
 		elif ability.current_action is ResChangeIdleAction and target.temporary_idle != ability.current_action.idle_name:
 			target.temporary_idle = ability.current_action.idle_name
 			target.playIdle()

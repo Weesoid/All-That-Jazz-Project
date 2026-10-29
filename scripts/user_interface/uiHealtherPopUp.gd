@@ -7,6 +7,7 @@ extends Control
 func _ready():
 	await get_tree().create_timer(0.2).timeout
 	OverworldGlobals.party_damaged.connect(popUp)
+	OverworldGlobals.end_camp.connect(loadCombatants)
 	loadCombatants()
 
 func popUp():
@@ -23,7 +24,13 @@ func popUp():
 	#await animator.animation_finished
 	#queue_free()
 
+#func hideDead():
+#	for bar in main_container.get_children():
+#		if bar.combatant != null and bar.
+
 func loadCombatants():
+	for bar in main_container.get_children():
+		bar.queue_free()
 	for combatant in OverworldGlobals.getCombatantSquad('Player'):
 		var bar:CharacterBar = load("res://scenes/user_interface/CharacterBar.tscn").instantiate()
 		bar.size_flags_vertical = Control.SIZE_EXPAND_FILL

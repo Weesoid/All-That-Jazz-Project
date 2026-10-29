@@ -10,7 +10,7 @@ enum DamageType {
 }
 
 @export var damage_type: DamageType
-@export var attack_bonuses: Array[ResAttackBonus]
+@export var damage_properties: Array[ResDamageProperty]
 @export var damage_modifier: float = 1.0
 @export var cast_animation: Dictionary= {'animation': '', 'go_to_target': false}
 @export var can_crit: bool = true
@@ -19,12 +19,12 @@ enum DamageType {
 @export var projectile_texture: Texture
 
 func getAttackBonuses(target:ResCombatant):
-	return ResAttackAction.getPassedAttackBonuses(target, attack_bonuses) 
+	return ResAttackAction.getPassedAttackBonuses(target, damage_properties) 
 
-static func getPassedAttackBonuses(target:ResCombatant, p_attack_bonuses: Array):
+static func getPassedAttackBonuses(target:ResCombatant, p_damage_properties: Array):
 	var out = {}
 	
-	for attack_bonus in p_attack_bonuses:
+	for attack_bonus in p_damage_properties:
 		if attack_bonus == null or !attack_bonus.conditionsPassed(target): continue
 		out = CombatGlobals.combineDictionaries(out,attack_bonus.getAttackEffect(target))
 	
@@ -54,10 +54,10 @@ func _to_string():
 	else:
 		out += '\n'
 	
-	for attack_bonus in attack_bonuses:
+	for attack_bonus in damage_properties:
 		if !attack_bonus.has_method('_to_string'): continue
 		out += str(attack_bonus)
-		if attack_bonuses.find(attack_bonus)+1 < attack_bonuses.size():
+		if damage_properties.find(attack_bonus)+1 < damage_properties.size():
 			out += SettingsGlobals.bb_line
 	#print(out)
 	#out.trim_suffix(SettingsGlobals.bb_line+'\n')

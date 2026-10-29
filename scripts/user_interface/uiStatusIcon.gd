@@ -9,12 +9,15 @@ var pooled_statuses: Array[ResStatusEffect] = []
 #var original_position:Vector2
 
 func _ready():
+	if attached_status == null:
+		return
 	pulser.modulate=Color.TRANSPARENT
 	if attached_status.seperate_instances:
 		pooled_statuses.append(attached_status)
 	texture = attached_status.texture
 	self_modulate = attached_status.getIconColor()
 	attached_status.ticked.connect(updateDuration)
+	attached_status.reapplied.connect(updateDuration)
 	attached_status.expired.connect(queue_free)
 	#attached_status.rank_up.connect(bounce)
 	updateDuration()
@@ -38,14 +41,16 @@ func getLongestDuration():
 	
 	return current_longest
 
-func setAttachedStatus():
-	var longest_effect = getLongestDuration()
+func setAttachedStatus(effect:ResStatusEffect=null):
+	var longest_effect = getLongestDuration() if effect == null else effect
 	if longest_effect == attached_status: return
 	
 	attached_status.ticked.disconnect(updateDuration)
+	attached_status.reapplied.disconnect(updateDuration)
 	attached_status.expired.disconnect(queue_free)
 	attached_status = longest_effect
 	attached_status.ticked.connect(updateDuration)
+	attached_status.reapplied.connect(updateDuration)
 	attached_status.expired.connect(queue_free)
 
 func pulse(color:Color):
@@ -63,6 +68,9 @@ func pulse(color:Color):
 #	tween.tween_property(self, 'pivot_offset', Vector2.ZERO,0.5)
 
 func _on_tree_entered():
+	if attached_status == null:
+		return
+	
 	modulate = Color.TRANSPARENT
 	if attached_status.afflicted_combatant.isDead(true): return
 	await get_tree().process_frame

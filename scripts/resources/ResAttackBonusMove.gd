@@ -1,5 +1,5 @@
-extends ResAttackBonus
-class_name ResAttackMove
+extends ResDamageProperty
+class_name ResDamageMove
 
 enum Direction {
 	PUSH,

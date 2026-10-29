@@ -42,6 +42,9 @@ func loadGame(save_name: String):
 	await get_tree().process_frame
 	
 	for item in saved_game.save_data:
+		if item is PlayerScene and OverworldGlobals.playerInMap():
+			continue
+		
 		if item is EntitySaveData:
 			var scene: Node2D = load(item.scene_path).instantiate()
 			scene.global_position = item.position

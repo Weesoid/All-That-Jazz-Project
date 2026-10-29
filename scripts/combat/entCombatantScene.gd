@@ -11,6 +11,7 @@ const HURTBOX_HEIGHT = 48
 @onready var hitbox_shape = $HitBox/CollisionShape2D
 @onready var sprite = $Sprite2D
 @export var combatant_resource: ResCombatant
+@export var melee_distance: float = 60
 
 var idle_animation: String = 'Idle'
 var temporary_idle:String
@@ -45,7 +46,7 @@ func moveTo(target, duration:float=0.25, offset:Vector2=Vector2(0,0), ignore_dea
 	if target is CombatantScene: 
 		target = target.combatant_resource
 	if target is ResCombatant or target is Array[ResCombatant]:
-		offset = Vector2(40,0)
+		offset = Vector2(melee_distance,0)
 	if target is ResEnemyCombatant or (target is Array and target[0] is ResEnemyCombatant):
 		offset *= -1
 	if target is ResCombatant:

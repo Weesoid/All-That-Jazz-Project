@@ -96,6 +96,8 @@ func createCircle(texture: Texture):
 	rect.texture = texture
 	rect.modulate = filled_modulate if texture == filled_circle else empty_modulate
 	rect.pivot_offset = rect.texture.get_size()/2
+	#if rect.modulate == Color.TRANSPARENT:
+	#	rect.texture.modu
 	return rect
 
 func getCircles(type:String='all'):

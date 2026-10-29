@@ -1,34 +1,15 @@
-[gd_resource type="Resource" script_class="ResAbility" load_steps=8 format=3 uid="uid://dv0xfbxshoi5p"]
+[gd_resource type="Resource" script_class="ResAbility" load_steps=4 format=3 uid="uid://dv0xfbxshoi5p"]
 
 [ext_resource type="Script" path="res://scripts/combat/abilities/scaBasicAbility.gd" id="1_g0kd2"]
 [ext_resource type="Script" path="res://scripts/resources/ResAbility.gd" id="1_yj0nf"]
-[ext_resource type="Script" path="res://scripts/resources/ResDamageOvertimeEffect.gd" id="2_otmu8"]
-[ext_resource type="Script" path="res://scripts/resources/ResAbilityEffectDot.gd" id="3_cau52"]
 [ext_resource type="Texture2D" uid="uid://dnqcv703t458d" path="res://images/ability_icons/default.png" id="3_hgmaq"]
-
-[sub_resource type="Resource" id="Resource_vud6i"]
-script = ExtResource("2_otmu8")
-dot_effect = 1
-damage = 9
-duration = 9
-conditional_bonuses = {
-"damage": 0,
-"duration": 0
-}
-
-[sub_resource type="Resource" id="Resource_1oq7y"]
-script = ExtResource("3_cau52")
-dot_effect = SubResource("Resource_vud6i")
-animation_time = 0.0
-animate_on = 0
 
 [resource]
 script = ExtResource("1_yj0nf")
 name = "Pullarion"
-description = ""
 icon = ExtResource("3_hgmaq")
-basic_effects = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([SubResource("Resource_1oq7y")])
-ability_script = ExtResource("1_g0kd2")
+action_sequence = Array[Resource("res://scripts/resources/ResAbilityEffect.gd")]([])
+instant_cast = true
 target_type = 0
 target_group = 1
 caster_position = {
@@ -40,9 +21,10 @@ target_position = {
 "min": 0
 }
 charges = 0
+tension_cost = 0
 required_effect = {
 "rank": 0,
 "status_effect": null
 }
-tension_cost = 0
-instant_cast = true
+description = ""
+ability_script = ExtResource("1_g0kd2")
